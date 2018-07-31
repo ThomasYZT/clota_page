@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "core-js": "^2.5.7",
     "element-ui": "^2.4.5",
     "iview": "^2.14.2",
     "klwk-ui": "^0.4.1",
