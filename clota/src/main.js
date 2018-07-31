@@ -12,12 +12,13 @@ import 'core-js/es6';
 import i18n from './assets/js/lang.config';
 // 样式文件
 import './assets/theme/iviewTheme/index.less';
-import 'klwk-ui/src/lib/css/index.scss'
+import 'klwk-ui/src/lib/css/index.scss';
+import 'element-ui/lib/theme-chalk/index.css';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
 Vue.use(plugin);
-// Vue.config.productionTip = false;
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
@@ -25,5 +26,6 @@ new Vue({
   render: (h) => h(App),
   router,
   i18n,
+  store,
   components: { App },
 })

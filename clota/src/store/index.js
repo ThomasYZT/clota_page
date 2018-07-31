@@ -13,8 +13,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        //左侧菜单是否收起
+        menuIsPackUp : false,
         userInfo: null,
-        roleType: [],  //（角色类型。perf_hr : HR，perf_superior : 上级，perf_subordinate : 下级）
         // 组织架构树
         orgTree: {},
         // 员工列表
@@ -38,95 +39,22 @@ export default new Vuex.Store({
         userInfo: state => {
             return _.defaultsDeep({}, state.userInfo );
         },
-
-        // 仅用户信息
-        empInfo: state => {
-            return _.defaultsDeep({}, state.userInfo && state.userInfo.empInfo ? state.userInfo.empInfo : {} );
-        },
-
-        // 当前账号对应公司信息
-        companyInfo: state => {
-            if(state.userInfo && state.userInfo.companys){
-                return _.defaultsDeep({}, state.userInfo.companys.find( attr => { return attr.id == state.userInfo.empInfo.companyId}) );
-            }else{
-                return {}
-            }
-        },
-
-        // 当前账号是否是超级管理员
-        isAdministrator: (state, getters) => {
-            return getters.companyInfo && getters.companyInfo.accountType === 'yes' ? true : false;
-        },
-
-        // 组织架构树
-        orgTree: state => {
-            return _.defaultsDeep({}, state.orgTree );
-        },
-
-        // 员工列表
-        employeeList: state => {
-            return _.defaultsDeep([], state.employeeList );
-        },
-
-        // 职位列表
-        postList: state => {
-            return _.defaultsDeep([], state.postList );
-        },
-
-        // 通知列表
-        bootList: state => {
-            return _.defaultsDeep([], state.bootList );
-        },
-
-        // 未读消息数目
-        noticeUnreadNum: state => {
-            return _.defaultsDeep([], state.noticeUnreadNum );
-        },
-
-        // 系统消息列表
-        systemNoticeList: state => {
-            return _.defaultsDeep([], state.systemNoticeList );
-        },
+        //左侧菜单是否收起
+        menuIsPackUp : state => {
+            return state.menuIsPackUp;
+        }
 
     },
     mutations: {
-        // 更新用户信息
-        updateUserInfo( state, payload){
-            localStorage.setItem('userInfo', JSON.stringify(payload));
-            state.userInfo = payload;
-            state.roleType = payload && payload.roleType ? payload.roleType : [];
-        },
-
-        // 更新组织架构树
-        updateOrgTree( state, payload){
-            state.orgTree = payload;
-        },
-
-        // 更新员工列表
-        updateEmployeeList( state, payload){
-            state.employeeList = payload;
-        },
-
-        // 更新职位列表
-        updatePostList( state, payload){
-            state.postList = payload;
-        },
-
-        // 更新通知列表
-        updateBootList( state, payload){
-            state.bootList = payload;
-        },
-
-        // 更新未读消息数目
-        updateNoticeUnreadNum( state, payload){
-            state.noticeUnreadNum = payload;
-        },
-
-        // 更新系统消息列表
-        updateSystemNoticeList( state, payload){
-            state.systemNoticeList = payload;
-        },
-
+        // // 更新用户信息
+        // updateUserInfo( state, payload){
+        //     localStorage.setItem('userInfo', JSON.stringify(payload));
+        //     state.userInfo = payload;
+        // },
+        //更新左侧菜单是否收起
+        updateMenuIsPackUp( state,payload ){
+          state.menuIsPackUp = payload;
+        }
     },
     actions: {
         // 更新用户信息

@@ -36,13 +36,21 @@
     @include block_outline();
 
     .frame-content{
+      display: flex;
       @include block_outline($height : unquote('calc(100% - 60px)'));
 
       .router-con{
-        @include block_outline($width : unquote('calc(100% - 210px)'));
+        flex: 1;
+        @include block_outline(auto);
         float: left;
         background: $color_fff;
         border-radius: 5px 5px 0 0 ;
+      }
+
+      &::after{
+        display: block;
+        content : '';
+        @include block_outline(10px);
       }
     }
   }
