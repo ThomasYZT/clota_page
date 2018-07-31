@@ -3,16 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import iview from 'iview';
-Vue.use(iview);
 
 //引入多语言配置文件
-// import VueI18n from 'vue-i18n';
-// Vue.use(VueI18n);
 import i18n from './assets/js/lang.config';
 // 样式文件
-import './assets/theme/iviewTheme/index.less'
+import './assets/theme/iviewTheme/index.less';
 
+// 按需引用iview, elment-ui 以及其他自定义组件或指令
+import plugin from './assets/js/plugin'
+Vue.use(plugin);
 // Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

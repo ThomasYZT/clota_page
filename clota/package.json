@@ -15,8 +15,10 @@
     "dll": "npx webpack -p --progress --config build/webpack.dll.conf.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "element-ui": "^2.4.5",
     "iview": "^2.14.2",
+    "klwk-ui": "^0.4.1",
     "vue": "^2.5.2",
     "vue-i18n": "^8.0.0",
     "vue-router": "^3.0.1",
