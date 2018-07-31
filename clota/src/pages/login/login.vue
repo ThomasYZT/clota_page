@@ -1,46 +1,50 @@
 <template>
-  <div class="login">
-    <div class="header">
-        <div class="logo">
-          <img src="" alt="">
-        </div>
-        <div class="lang">
-          <span>简体中文</span>
-          <span>|</span>
-          <span>English</span>
-        </div>
-      </div>
-    <div class="content">
-      <div class="form-content">
-        <h1>{{ $t("project-title") }}</h1>
-        <Form ref="formInline" :model="formInline" :rules="ruleInline" >
-          <Form-item prop="user">
-            <div>
-              <Input type="text"
-                     prefix="ios-contact"
-                     v-model="formInline.user"
-                     :placeholder="$t('userName')" /></Input>
-              <span class="icon"></span>
-            </div>
-          </Form-item>
-          <Form-item prop="password">
-            <Input type="password"
-                   prefix="logo-usd"
-                   v-model="formInline.password"
-                   :placeholder="$t('password')">
-            </Input>
-          </Form-item>
-          <Form-item>
-            <Checkbox >{{ $t("autoLogin") }}</Checkbox>
-          </Form-item>
-          <Form-item>
-            <div class="submit" @click="handleSubmit('formInline')">{{ $t("login") }}</div>
-          </Form-item>
-        </Form>
+  <div class="loginPage">
 
+    <div class="header">
+      <div class="logo">
+        <img src="../../assets/images/logo.svg" alt="">
+      </div>
+      <div class="lang">
+        <span @click="changeLang">简体中文</span>
+        <span>|</span>
+        <span @click="changeLang">English</span>
       </div>
     </div>
-    <div class="copyright">{{ $t("copyright") }}</div>
+    <div class="login">
+      <div class="content">
+        <img src="../../assets/images/loginImg.svg" alt="">
+        <div class="form-content">
+          <h1>{{ $t("project-title") }}</h1>
+          <Form ref="formInline" :model="formInline" :rules="ruleInline" >
+            <Form-item prop="user">
+              <div>
+                <Input type="text"
+                       prefix="ios-contact"
+                       v-model="formInline.user"
+                       :placeholder="$t('userName')" /></Input>
+                <span class="icon"></span>
+              </div>
+            </Form-item>
+            <Form-item prop="password">
+              <Input type="password"
+                     prefix="logo-usd"
+                     v-model="formInline.password"
+                     :placeholder="$t('password')">
+              </Input>
+            </Form-item>
+            <Form-item>
+              <Checkbox >{{ $t("autoLogin") }}</Checkbox>
+            </Form-item>
+            <Form-item>
+              <div class="submit" @click="handleSubmit('formInline')">{{ $t("login") }}</div>
+            </Form-item>
+          </Form>
+
+        </div>
+      </div>
+      <div class="copyright">{{ $t("copyright") }}</div>
+    </div>
   </div>
 </template>
 
@@ -68,6 +72,10 @@
       }
     },
     methods: {
+        //
+      changeLang(){
+        this.$store.commit('setLang', 'lang');
+      },
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
@@ -95,51 +103,61 @@
 
 <style lang="scss"  scoped>
   @import '~@/assets/scss/base';
+  $img_base_url : '../../assets/images/';
+  .loginPage{
+    height: 100%;
+    background-color: #fff;
+    background-image: get_url('loginBG.png');
+    background-position: center;
+    background-size: cover;
+  }
+  .header{
+    @include clearfix;
+    padding: 40px 80px;
+    height: 53px;
+    line-height: 53px;
+    box-sizing: content-box;
+    .logo{
+      float: left;
+    }
+    .lang{
+      float: right;
+      span{
+        float: left;
+        &:first-child{
+          font-size: $font_size_18px;
+          color: $color_333;
+          margin-right: 10px;
+          cursor: pointer;
+        }
+        &:nth-child(2){
+          font-size: $font_size_18px;
+          color: $color_3F3F3F;
+          margin-right: 10px;
+        }
+        &:last-child{
+          font-size: $font_size_14px;
+          color: $color_3F3F3F;
+          cursor: pointer;
+        }
+      }
+    }
+  }
   .login{
     min-height: 100%;
     width: $content_min_width;
     margin: 0 auto;
     position: relative;
-    .header{
-      @include clearfix;
-      padding: 40px 80px;
-      height: 53px;
-      line-height: 53px;
-      box-sizing: content-box;
-      .logo{
-        float: left;
-      }
-      .lang{
-        float: right;
-        span{
-          float: left;
-          &:first-child{
-            font-size: $font_size_18px;
-            color: $color_333;
-            margin-right: 10px;
-            cursor: pointer;
-          }
-          &:nth-child(2){
-            font-size: $font_size_18px;
-            color: $color_3F3F3F;
-            margin-right: 10px;
-          }
-          &:last-child{
-            font-size: $font_size_14px;
-            color: $color_3F3F3F;
-            cursor: pointer;
-          }
-        }
-      }
-    }
     .content{
       min-height: 600px;
+      img{
+        margin-top: 100px;
+      }
     }
     .form-content{
       position: relative;
       width: 368px;
       margin-top: 100px;
-      margin-right: 100px;
       float: right;
       h1{
         font-size: $font_size_24px;

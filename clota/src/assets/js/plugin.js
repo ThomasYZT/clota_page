@@ -3,7 +3,7 @@
  * Created by Sasha on 2018/6/1.
  */
 import iView from 'iview'
-import {Table, TableColumn, Scrollbar} from 'element-ui'
+import {Table, TableColumn, Scrollbar,Pagination} from 'element-ui'
 
 // // 引入 ECharts 主模块
 // import ECharts from '@/components/vueEcharts/ECharts.vue'
@@ -33,6 +33,7 @@ plugin.install = function(Vue, options){
     Vue.use(Table);
     Vue.use(TableColumn);
     Vue.use(Scrollbar);
+    Vue.use(Pagination);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
