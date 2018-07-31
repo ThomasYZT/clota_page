@@ -1,0 +1,17 @@
+@radio-prefix-cls: ~"@{css-prefix}radio";
+@radio-group-prefix-cls: ~"@{radio-prefix-cls}-group";
+@radio-inner-prefix-cls: ~"@{radio-prefix-cls}-inner";
+@radio-group-button-prefix-cls: ~"@{radio-group-prefix-cls}-button";
+
+
+
+.@{radio-prefix-cls}-disabled {
+
+    .@{radio-inner-prefix-cls} {
+        border-color: #C5C5C5;
+        &:after {
+            background-color: #C5C5C5;
+        }
+    }
+
+}

@@ -1,0 +1,54 @@
+@form-prefix-cls: ~"@{css-prefix}form";
+@form-item-prefix-cls: ~"@{form-prefix-cls}-item";
+
+.@{form-prefix-cls} {
+
+    .@{form-item-prefix-cls}-label {
+        color: #666666;
+    }
+
+}
+
+.@{form-item-prefix-cls} {
+
+    /*解决360浏览器表单未对齐*/
+    &-content {
+        .ivu-btn,
+        .ivu-input-wrapper,
+        .ivu-input,
+        .ivu-select,
+        .ivu-date-picker{
+            vertical-align: top;
+        }
+    }
+
+    &-error-tip{
+        font-size: 12px;
+        padding-top: 5px;
+    }
+
+    &-required {
+        .@{form-item-prefix-cls}-label{
+            position: relative;
+            font-size: 12px;
+            color: #666666;
+            letter-spacing: 1px;
+        }
+
+        .@{form-item-prefix-cls}-label:before {
+            content: none;
+            font-family: inherit;
+        }
+        .@{form-item-prefix-cls}-label:after {
+            position: absolute;
+            content: '*';
+            display: inline-block;
+            margin-left: 4px;
+            line-height: 1;
+            vertical-align: text-top;
+            font-family: SimSun;
+            font-size: @font-size-small;
+            color: @error-color;
+        }
+    }
+}

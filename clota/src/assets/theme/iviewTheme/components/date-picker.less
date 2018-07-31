@@ -1,0 +1,22 @@
+@date-picker-prefix-cls: ~"@{css-prefix}date-picker";
+@picker-prefix-cls: ~"@{css-prefix}picker";
+
+.@{date-picker-prefix-cls} {
+    &-with-range{
+        .@{picker-prefix-cls}-panel{
+            &-body{
+                font-size: 12px;
+            }
+        }
+
+    }
+}
+
+.@{picker-prefix-cls} {
+    &-panel{
+        &-body{
+            float: left;
+            font-size: 12px;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+@btn-prefix-cls: ~"@{css-prefix}btn";
+
+.@{btn-prefix-cls} {
+    &:focus{
+        box-shadow: none !important;
+    }
+
+    &-ghost {
+        .btn-ghost;
+        border-color: #D8D8D8;
+    }
+
+    &-confirm,
+    &-cancel{
+        width: 90px;
+        padding: 0;
+        line-height: 28px;
+        font-size: 12px;
+    }
+
+    &-confirm {
+        .btn-color(@primary-color);
+    }
+
+    &-cancel {
+        .button-variant(@btn-ghost-color, @btn-ghost-bg, @btn-ghost-border);
+
+        &:hover
+            //&:focus
+        {
+            .button-color(tint(@primary-color, 20%); @btn-ghost-bg; tint(@primary-color, 20%));
+        }
+        &:active,
+        &.active {
+            .button-color(shade(@primary-color, 5%); @btn-ghost-bg; shade(@primary-color, 5%));
+        }
+    }
+}

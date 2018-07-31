@@ -1,0 +1,59 @@
+@modal-prefix-cls: ~"@{css-prefix}modal";
+@confirm-prefix-cls: ~"@{css-prefix}modal-confirm";
+
+.@{modal-prefix-cls} {
+
+    &-wrap {
+        &.vertical-center-modal{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .ivu-modal{
+                top: 0;
+                margin: inherit;
+            }
+        }
+    }
+    &-mask {
+        background-color: rgba(0,0,0,0.7);
+    }
+    &-content {
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+        border-radius: 4px;
+    }
+    &-header {
+        border-bottom: 1px solid rgba(216,216,216,0.3);
+        padding: 18px 30px 19px;
+
+        &-inner {
+            font-weight: normal;
+            font-size: 18px;
+            color: #354052;
+            letter-spacing: 1px;
+        }
+    }
+    &-close{
+        top: 12px;
+        right: 25px;
+    }
+    &-body {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #666666;
+    }
+    &-footer {
+        padding: 17px 20px;
+        text-align: center;
+        background-color: #F0F3F8;
+        box-shadow: 0 -1px 0 0 #E6EAEE;
+        border-top: none;
+        button{
+            min-width: 114px;
+        }
+        button + button {
+            margin-left: 10px;
+            margin-bottom: 0;
+        }
+    }
+}
