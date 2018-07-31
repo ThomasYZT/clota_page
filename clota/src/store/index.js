@@ -8,6 +8,7 @@ import Vuex from 'vuex';
 import _ from 'lodash';
 import { Message } from 'iview';
 import ajaxList from '@/api/ajaxList'
+import i18n from '../assets/js/lang.config';
 
 Vue.use(Vuex);
 
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     state: {
         //左侧菜单是否收起
         menuIsPackUp : false,
+        //当前选择的语言
+        lang : i18n.locale,
+      
         userInfo: null,
         // 组织架构树
         orgTree: {},
@@ -42,18 +46,24 @@ export default new Vuex.Store({
         //左侧菜单是否收起
         menuIsPackUp : state => {
             return state.menuIsPackUp;
+        },
+        //当前语言状态
+        lang : state => {
+            let lang = localStorage.getItem('lang');
+            state.lang = lang ? lang : state.lang;
+            return state.lang;
         }
 
     },
     mutations: {
-        // // 更新用户信息
-        // updateUserInfo( state, payload){
-        //     localStorage.setItem('userInfo', JSON.stringify(payload));
-        //     state.userInfo = payload;
-        // },
         //更新左侧菜单是否收起
         updateMenuIsPackUp( state,payload ){
           state.menuIsPackUp = payload;
+        },
+        //设置语言
+        setLang (state,lang) {
+          localStorage.setItem('lang',lang);
+          i18n.locale = state.lang = lang;
         }
     },
     actions: {

@@ -2,7 +2,7 @@
 
 <template>
   <div class="frame-header">
-    <div class="company-log">
+    <div class="company-log" :class="{'pack-up' : menuIsPackUp}">
       clot 的logo
     </div>
     <div class="shrink">
@@ -99,9 +99,9 @@
       </li>
     </ul>
     <div class="lang-change">
-      <span class="active lang">中文</span>
+      <span class="lang" :class="{'active' : lang === 'zh-CN'}" @click="setLang('zh-CN')">中文</span>
       <span class="xg">/</span>
-      <span class="lang">En</span>
+      <span class="lang" :class="{'active' : lang === 'en'}" @click="setLang('en')">En</span>
     </div>
   </div>
 </template>
@@ -118,11 +118,19 @@
            */
           shrinkMenu () {
             this.$store.commit('updateMenuIsPackUp', !this.menuIsPackUp);
+          },
+          /**
+           * 设置语言
+           * @param lang
+           */
+          setLang (lang) {
+            this.$store.commit('setLang', lang);
           }
         },
         computed : {
           ...mapGetters({
             menuIsPackUp: 'menuIsPackUp',
+            lang: 'lang',
           }),
         }
     }
@@ -139,6 +147,12 @@
       color: $color_fff;
       text-align: center;
       float: left;
+      transition: all 0.3s;
+
+      &.pack-up{
+        width: 45px!important;
+        transition: all 0.3s;
+      }
     }
 
     .shrink{

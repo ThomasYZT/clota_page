@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
-
+const lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'zh-CN';
 export default new VueI18n({
-  locale : 'zh-CN',
+  locale : lang,
   messages : {
     'zh-CN' : {
       'project-title':'银科环企Clota云平台',
@@ -17,6 +17,14 @@ export default new VueI18n({
       'formValidate':'表单验证失败',
       'autoLogin':'自动登录',
       'copyright':'Copyright 2009-2020 © Galasys Global (SuZhou) Co.,Ltd All rights reserved.',
+      'menuList' : {
+          'org' : '组织架构'
+      },
+    },
+    'en' : {
+      'menuList' : {
+        'org' : 'organization'
+      },
     }
   }
 })
