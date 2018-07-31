@@ -9,6 +9,8 @@ import _ from 'lodash';
 import { Message } from 'iview';
 import ajaxList from '@/api/ajaxList'
 import i18n from '../assets/js/lang.config';
+import routerClect from '../router/routerClect';
+import router from '../router/index';
 
 Vue.use(Vuex);
 
@@ -64,83 +66,49 @@ export default new Vuex.Store({
         setLang (state,lang) {
           localStorage.setItem('lang',lang);
           i18n.locale = state.lang = lang;
+        },
+        //设置用户权限
+        updateUserRight(state,data) {
+            let routers = [];
+            // for(let item in data){
+            //     if(item in routerTest){
+            //         routers.push(routerTest[item]);
+            //     }
+            // }
+            for(let item in routerClect){
+              routers.push(routerClect[item]);
+            }
+            router.addRoutes(routers);
         }
     },
     actions: {
-        // 更新用户信息
-        getCurUsrInfo( {commit} ) {
-            return ajaxList.getCurUsrInfo( param ).then( res => {
-                if( res.success ){
-                    commit( 'updateUserInfo', res.data );
-                }else{
-                    console.error('getCurUsrInfo: 获取用户信息失败 ', res);
-                }
-                return res
+        // // 更新用户信息
+        // getCurUsrInfo( {commit} ) {
+        //     return ajaxList.getCurUsrInfo( param ).then( res => {
+        //         if( res.success ){
+        //             commit( 'updateUserInfo', res.data );
+        //         }else{
+        //             console.error('getCurUsrInfo: 获取用户信息失败 ', res);
+        //         }
+        //         return res
+        //     });
+        // },
+        //获取用户权限信息
+        getUserRight ({commit}) {
+            commit('updateUserRight',{
+              'partner' : 'allow'
             });
-        },
-
-        // 更新组织架构树
-        getOrgTree( {commit} ){
-            return ajaxList.org.getOrgTree( ).then( res => {
-                if( res.success ){
-                    commit( 'updateOrgTree', res.data || {} );
-                }else{
-                    console.error('getOrgTree: 获取组织树失败 ', res);
-                }
-                return res;
-            });
-        },
-
-        // 更新员工列表
-        queryEmployeeList( {commit} ){
-            return ajaxList.emp.queryEmployeeList( ).then( res => {
-                if( res.success ){
-                    commit( 'updateEmployeeList', res.data.modelList || [] );
-                }else{
-                    console.error('queryEmployeeList: 获取员工列表失败 ', res);
-                }
-                return res;
-            });
-        },
-
-        // 更新职位列表
-        queryPostList( {commit} ){
-            return ajaxList.org.queryPostList( ).then( res => {
-                if( res.success ){
-                    commit( 'updatePostList', res.data.modelList || [] );
-                }else{
-                    console.error('queryPostList: 获取员工列表失败 ', res);
-                }
-                return res;
-            });
-        },
-
-        // 更新未读消息数目
-        queryNoticeUnreadNum( {commit} ){
-            return ajaxList.kpi.getNoticeUnreadNum( ).then( res => {
-                if( res.success ){
-                    commit( 'updateNoticeUnreadNum', res.data || 0 );
-                }else{
-                    console.error('queryNoticeUnreadNum: 获取未读消息数目失败 ', res);
-                }
-                return res;
-            });
-        },
-
-        // 更新系统消息列表
-        querySystemNoticeList( {commit} ){
-            return ajaxList.kpi.querySystemNotice( ).then( res => {
-                if( res.success ){
-                    commit( 'updateSystemNoticeList', res.data.list || [] );
-                }else{
-                    console.error('querySystemNoticeList: 获取系统消息列表失败 ', res);
-                }
-                return res;
-            });
+            // return ajaxList.getUserRight(param).then(res => {
+            //   if(res.success) {
+            //     commit('updateUserRight',res.data);
+            //   }else{
+            //     console.error('getUserRight：获取用户信息失败')
+            //   }
+            // });
         }
 
     },
     modules: {
-
+    
     }
 });

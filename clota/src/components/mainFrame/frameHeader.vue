@@ -12,6 +12,9 @@
     </div>
     <!--导航区域-->
     <div class="navigation-wrap">
+      <div class="navigate_before">
+        <i  class="ivu-icon ivu-icon-ios-arrow-forward"></i>
+      </div>
       <ul class="navigation">
         <li class="sub-menu active">
           工作台
@@ -66,6 +69,9 @@
           <span class="bar"></span>
         </li>
       </ul>
+      <div class="navigate_next">
+        <i  class="ivu-icon ivu-icon-ios-arrow-forward"></i>
+      </div>
     </div>
     <div class="menu-li">
       <Menu mode="horizontal" active-name="1">
@@ -73,17 +79,11 @@
           <template slot="title">
             <Icon type="ios-stats" />
             <div class="avator"></div>
-            统计分析
+            Admin
           </template>
-          <MenuGroup title="使用">
-            <MenuItem name="3-1">新增和启动</MenuItem>
-            <MenuItem name="3-2">活跃分析</MenuItem>
-            <MenuItem name="3-3">时段分析</MenuItem>
-          </MenuGroup>
-          <MenuGroup title="留存">
-            <MenuItem name="3-4">用户留存</MenuItem>
-            <MenuItem name="3-5">流失用户</MenuItem>
-          </MenuGroup>
+          <MenuItem name="3-1">新增和启动</MenuItem>
+          <MenuItem name="3-2">活跃分析</MenuItem>
+          <MenuItem name="3-3">时段分析</MenuItem>
         </Submenu>
       </Menu>
     </div>
@@ -167,13 +167,40 @@
     }
 
     .navigation-wrap{
+      display: flex;
       flex: 1;
       overflow: hidden;
 
+      .navigate_next{
+        @include block_outline($width : 77px);
+        border-left: 1px solid rgba(255,255,255,0.10);
+        box-shadow: -1px 0 2px 0 rgba(255,255,255,0.20);
+
+        .ivu-icon{
+          font-size: 30px;
+          margin:16px 0 0 10px;
+          color: rgba($color_fff,0.2);
+        }
+      }
+
+      .navigate_before{
+        @include block_outline($width : 30px);
+        border-right: 1px solid rgba(255,255,255,0.10);
+        box-shadow: 1px 0 2px 0 rgba(255,255,255,0.20);
+
+        .ivu-icon{
+          font-size: 30px;
+          margin:16px 0 0 10px;
+          color: rgba($color_fff,0.2);
+        }
+      }
+
       .navigation{
+        padding-left: 10px;
         white-space: nowrap;
         overflow-x:auto;
-        @include block_outline($height : 70px);
+        flex: 1;
+        height: 70px;
 
         .sub-menu{
           display: inline-block;

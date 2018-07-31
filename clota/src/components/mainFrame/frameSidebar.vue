@@ -3,22 +3,34 @@
 <template>
   <div class="frame-slidbar" :class="{'width-is-zero' : menuIsPackUp}">
     <div class="menu-list">
-      <Menu  active-name="1">
-        <MenuItem name="1">
+      <Menu  active-name="login" @on-select="selectMenu">
+        <MenuItem name="login">
           <span class="iconfont"></span>
           <span class="menu-name">{{$t('menuList.org')}}</span>
         </MenuItem>
         <MenuItem name="2">
           <span class="iconfont"></span>
-          <span class="menu-name">文章管理文章管理文章管理文章管理</span>
+          <span class="menu-name">{{$t('menuList.employee')}}</span>
         </MenuItem>
         <MenuItem name="3">
           <span class="iconfont"></span>
-          <span class="menu-name">文章管理</span>
+          <span class="menu-name">{{$t('menuList.rolePermission')}}</span>
         </MenuItem>
         <MenuItem name="4">
           <span class="iconfont"></span>
-          <span class="menu-name">文章管理</span>
+          <span class="menu-name">{{$t('menuList.partner')}}</span>
+        </MenuItem>
+        <MenuItem name="5">
+          <span class="iconfont"></span>
+          <span class="menu-name">{{$t('menuList.channels')}}</span>
+        </MenuItem>
+        <MenuItem name="6">
+          <span class="iconfont"></span>
+          <span class="menu-name">{{$t('menuList.saleChannelsGroup')}}</span>
+        </MenuItem>
+        <MenuItem name="6">
+          <span class="iconfont"></span>
+          <span class="menu-name">{{$t('menuList.verificateGroup')}}</span>
         </MenuItem>
       </Menu>
     </div>
@@ -31,7 +43,13 @@
         data() {
             return {}
         },
-        methods: {},
+        methods: {
+          selectMenu(name){
+            this.$router.push({
+              name : name
+            });
+          }
+        },
         computed :{
           ...mapGetters({
             menuIsPackUp: 'menuIsPackUp',

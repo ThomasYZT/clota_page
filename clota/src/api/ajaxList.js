@@ -12,6 +12,10 @@ export default {
   login (param = {}) {
       return axios.post('login', param);
   },
+  //获取用户权限信息
+  getUserRight (param = {}) {
+    return axios.post('getUserRight', param);
+  },
 
   /*****************组织管理****************/
     ...orgApilist

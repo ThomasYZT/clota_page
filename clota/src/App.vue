@@ -2,8 +2,9 @@
 
 <template>
   <div id="app">
-    <router-view v-if="noFrame"/>
-    <main-frame v-else>
+    <!--<router-view v-if="noFrame"/>-->
+    <!--<main-frame v-else>-->
+    <main-frame >
       <router-view>
       </router-view>
     </main-frame>
@@ -19,12 +20,34 @@
       data() {
           return {}
       },
-      methods: {},
+      methods: {
+        /**
+         * 获取用户权限
+         * @param commit
+         */
+        getUserRight ({commit}) {
+          setTimeout(() => {
+            commit('updateUserRight',{
+              'partner' : 'allow'
+            });
+          },5000);
+          // return ajaxList.getUserRight(param).then(res => {
+          //   if(res.success) {
+          //     commit('updateUserRight',res.data);
+          //   }else{
+          //     console.error('getUserRight：获取用户信息失败')
+          //   }
+          // });
+        },
+      },
       computed: {
         noFrame(){
           // 解决刷新页面未拿到正确路由meta信息时noFrame初始值默认为false触发了mainFrame的created事件(根据$route.name来判断当前是否能拿到meta信息)
           return this.$route.name ? !!this.$route.meta.noFrame : true;
         }
+      },
+      created () {
+        this.$store.dispatch('getUserRight');
       }
     }
 </script>
