@@ -10,25 +10,25 @@
     display: block;
   }
   width : $width;
-  height : $width;
+  height : $height;
 }
 /**
   设置定位
  */
-@mixin absolute_pos($position,$top,$right,$bottom,$left){
+@mixin absolute_pos($position : null,$top : null,$right : null,$bottom : null,$left : null){
   @if $position {
     position: $position;
   }
-  @if $top {
+  @if $top != null {
     top : $top;
   }
-  @if $right {
+  @if $right != null {
     right : $right;
   }
-  @if $bottom {
+  @if $bottom != null {
     bottom : $bottom;
   }
-  @if $left {
+  @if $left != null {
     left : $left;
   }
 }
