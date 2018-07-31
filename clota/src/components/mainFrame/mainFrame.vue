@@ -8,7 +8,7 @@
       <frame-sidebar>
       </frame-sidebar>
       <div class="router-con">
-
+        <slot></slot>
       </div>
     </div>
   </div>
