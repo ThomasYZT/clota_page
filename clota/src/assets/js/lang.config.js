@@ -6,7 +6,8 @@ export default new VueI18n({
   locale : 'zh-CN',
   messages : {
     'zh-CN' : {
-      hello : "hello world"
+      hello : "hello world",
+      'project-title':'银科环企Clota云平台',
     }
   }
 })
