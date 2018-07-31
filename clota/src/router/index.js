@@ -11,7 +11,9 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
+      component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),meta: {
+        noFrame: true
+      }
     },
 
     //组织机构模块路由
