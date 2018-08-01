@@ -10,7 +10,7 @@
       <Select style="width: 180px;float: left;margin-right:10px">
         <Option value="132">全部角色名称</Option>
       </Select>
-      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">查 询</Button>
+      <Button type="primary"  style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">查 询</Button>
       <Button type="ghost" style="float: left" size="default">重 置</Button>
     </div>
     <div>

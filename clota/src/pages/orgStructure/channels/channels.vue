@@ -1,7 +1,7 @@
 <template>
   <div class="partner">
     <div class="orgHeader">
-      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" size="default"  @click="addSelfSupportBtn" >新增自营渠道</Button>
+      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" size="default"  @click="addSelfSupportBtn" ><span class="add-icon">+</span>新增自营渠道</Button>
       <Button style="float: left" type="ghost" size="default">批量操作</Button>
       <div class="search">
         <Input suffix="ios-search" placeholder="请输入任意信息进行查询" />

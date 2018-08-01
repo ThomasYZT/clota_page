@@ -12,7 +12,8 @@
     </div>
     <!--内容区域-->
     <div class="content">
-      <div class="text">
+      <div class="delete-icon">?</div>
+        <div class="text">
         <span>您正在删除合作伙伴：</span>
         <span class="name">{{pattnerName}}</span>
       </div>
@@ -84,16 +85,21 @@
   @import '~@/assets/scss/base';
   /deep/.deletePartner{
     .ivu-modal-body{
-      padding-top: 54px;
-      padding-bottom: 62px;
+      padding-top: 43px;
+      padding-bottom: 50px;
       padding-left: 81px;
       padding-right: 54px;
     }
   }
   .deletePartner{
     .content{
+      position: relative;
+      .delete-icon{
+        @include draw_circle(14px,14px,$color_red,$color_fff,$font_size_12px);
+        @include absolute_pos(absolute,$top:5px,$left:-20px);
+      }
       .text{
-        font-size: $font_size_12px;
+        font-size: $font_size_14px;
         color: #333333;
         line-height: 24px;
         .name{

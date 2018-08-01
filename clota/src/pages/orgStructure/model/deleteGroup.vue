@@ -12,6 +12,7 @@
     </div>
     <!--内容区域-->
     <div class="content">
+      <div class="delete-icon">?</div>
       <div class="text">
         <span>您正在删除合作伙伴：</span>
         <span class="name">{{pattnerName}}</span>
@@ -93,6 +94,11 @@
   }
   .deleteGroup{
     .content{
+      position: relative;
+      .delete-icon{
+        @include draw_circle(14px,14px,$color_red,$color_fff,$font_size_12px);
+        @include absolute_pos(absolute,$top:5px,$left:-20px);
+      }
       .text{
         font-size: $font_size_14px;
         color: #333333;

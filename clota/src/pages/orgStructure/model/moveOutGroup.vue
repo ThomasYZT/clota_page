@@ -12,6 +12,7 @@
     </div>
     <!--内容区域-->
     <div class="content">
+      <div class="move-icon">!</div>
       将所选{{moveName}}从本分组移出后，将列入未分组中。
      </div>
     <!--自定义页脚-->
@@ -79,14 +80,19 @@
     .ivu-modal-body{
       padding-top: 54px;
       padding-bottom: 61px;
-      padding-left: 80px;
-      padding-right: 120px;
+      padding-left: 110px;
+      padding-right: 90px;
     }
   }
   .moveOutGroup{
     .content{
-      font-size: $font_size_12px;
-      color: #333333;
+      font-size: $font_size_14px;
+      color: $color_333;
+      position: relative;
+      .move-icon{
+        @include draw_circle(14px,14px,$color_yellow,$color_fff,$font_size_12px);
+        @include absolute_pos(absolute,$top:5px,$left:-20px);
+      }
     }
   }
 </style>

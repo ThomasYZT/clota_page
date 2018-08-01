@@ -1,7 +1,7 @@
 <template>
   <div class="verificateGroup">
     <div class="orgHeader">
-      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addGroup" size="default">新增分组</Button>
+      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addGroup" size="default"><span class="add-icon">+</span>新增分组</Button>
       <Button style="float: left" type="ghost" size="default" @click="modifyVerificateBtn">批量操作</Button>
       <div class="search">
         <Input suffix="ios-search" placeholder="全部分组" />

@@ -1,7 +1,7 @@
 <template>
   <div class="partner">
     <div class="orgHeader">
-      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">新增合作伙伴</Button>
+      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default"><span class="add-icon">+</span>新增合作伙伴</Button>
       <Button type="ghost" style="float: left" size="default">批量操作</Button>
       <div class="search">
         <Input suffix="ios-search" placeholder="请输入任意信息进行查询" />

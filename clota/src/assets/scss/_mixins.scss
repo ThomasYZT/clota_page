@@ -320,3 +320,24 @@
   clear: both;
   overflow: hidden;
 }
+
+/**
+  画圆
+ */
+@mixin draw_circle ($width,$height,$background:null,$color:null,$fontsize:null) {
+  width: $width;
+  height: $height;
+  overflow: hidden;
+  border-radius: 50%;
+  line-height: $height;
+  text-align: center;
+  @if $background != null {
+    background-color : $background;
+  }
+  @if $color != null {
+    color : $color;
+  }
+  @if $fontsize != null {
+    font-size : $fontsize;
+  }
+}
