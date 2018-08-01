@@ -1,5 +1,5 @@
 
-@import '//at.alicdn.com/t/font_772944_jwjd9whum5.css';
+@import '//at.alicdn.com/t/font_772944_9f31vipj5yr.css';
 .iconfont {
   font-family:"iconfont" !important;
   font-size:16px;
@@ -35,4 +35,8 @@
 .icon-avator:before { content: "\e616"; }
 
 .icon-person:before { content: "\e617"; }
+
+.icon-icon-pack-up:before { content: "\e618"; }
+
+.icon-icon-unfold:before { content: "\e619"; }
 

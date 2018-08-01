@@ -8,6 +8,7 @@
     <div class="shrink">
       <span
         class="iconfont"
+        :class="{'icon-icon-unfold' : !menuIsPackUp,'icon-icon-pack-up' : menuIsPackUp}"
         @click="shrinkMenu"></span>
     </div>
     <!--导航区域-->
@@ -35,8 +36,9 @@
       <Menu mode="horizontal">
         <Submenu name="1">
           <template slot="title">
-            <Icon type="ios-stats" />
-            <div class="avator"></div>
+            <div class="avator">
+              <img class="avator-class" src="../../assets/images/icon-avator.png" alt="">
+            </div>
             Admin
           </template>
           <MenuItem name="3-1">新增和启动</MenuItem>
@@ -126,6 +128,10 @@
       &.pack-up{
         width: 45px!important;
         transition: all 0.3s;
+
+        .logo-img{
+          display: none!important;
+        }
       }
 
       .logo-img{
@@ -138,10 +144,15 @@
       @include block_outline(50px);
 
       .iconfont{
-        margin-top: 25px;
+        margin-top: 20px;
         @include block_outline(20px,13px,false);
-        background: red;
         cursor: pointer;
+        color: $color_fff;
+        font-size: $font_size_15px;
+
+        &.icon-icon-unfold{
+          transition: all 0.5s;
+        }
       }
     }
 
@@ -227,10 +238,9 @@
       .avator{
         @include block_outline(30px,30px);
         @include absolute_pos(absolute,17px,$left :-30px);
-        background: red;
         border-radius: 30px;
 
-        img{
+        .avator-class{
           @include block_outline($is_block : false);
           border-radius: 30px;
         }
@@ -246,6 +256,7 @@
 
         .ivu-menu-submenu-title{
           margin-top: 3px;
+          margin-left: 10px;
         }
       }
 
