@@ -3,10 +3,16 @@
 <template>
   <div class="frame-slidbar" :class="{'width-is-zero' : menuIsPackUp}">
     <div class="menu-list">
-      <Menu  :active-name="activeMenu" @on-select="selectMenu" v-if="subMenuList.length > 0">
-        <MenuItem :name="item.meta._name" v-for="item in subMenuList" :key="item.name">
+      <Menu  :active-name="activeMenu"
+             @on-select="selectMenu"
+             width="auto"
+             ref="menu"
+             v-if="subMenuList.length > 0">
+        <MenuItem :name="item.meta._name"
+                  v-for="item in subMenuList"
+                  :key="item.name">
           <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t(`menuList.${item.meta.menuName}`)}}</span>
+          <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>
         </MenuItem>
       </Menu>
     </div>
@@ -60,7 +66,15 @@
               return '';
             }
           }
-        }
+        },
+      watch : {
+          //监听路由变化，更新激活菜单
+          '$route' (oldVal,newVal){
+            this.$nextTick(() => {
+              this.$refs.menu.updateActiveName(this.activeMenu);
+            });
+          }
+      }
     }
 </script>
 

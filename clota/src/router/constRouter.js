@@ -18,4 +18,17 @@ export const  getFourRoute = ({menuName,lightMenu,_name}) => {
       hidden : true
     },
   }
-}
+};
+//没有二级菜单的提示页面
+export const getNoSubMenuRoute = ({menuName,lightMenu,_name}) => {
+  return {
+    path : '',
+    component: () => import(/* webpackChunkName: "login" */ '../pages/withoutSubMenu/index.vue'),
+    meta : {
+      menuName : menuName,
+      lightMenu : lightMenu,
+      _name : _name,
+      hidden : true
+    },
+  }
+};

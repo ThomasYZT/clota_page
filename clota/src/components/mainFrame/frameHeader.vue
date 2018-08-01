@@ -15,10 +15,14 @@
       <div class="navigate_before">
         <i  class="ivu-icon ivu-icon-ios-arrow-forward"></i>
       </div>
+      <!--一级菜单-->
       <div class="nav-scroll">
-        <div class="navigation" v-for="(item,index) in permissionInfo" :key="index">
-          <div class="sub-menu" :class="{'active' : activeMenu === item.meta._name}">
-            {{$t(`menuList.${item.meta.menuName}`)}}
+        <div class="navigation" >
+          <div class="sub-menu"
+               :class="{'active' : activeMenu === item.meta._name}"
+               v-for="(item,index) in permissionInfo" :key="index"
+               @click="toTopMenu(item)">
+            {{$t(`${item.meta.menuName}`)}}
             <span class="bar"></span>
           </div>
         </div>
@@ -79,6 +83,13 @@
            */
           setLang (lang) {
             this.$store.commit('setLang', lang);
+          },
+          /**
+           * 跳转到对应的一级菜单
+           * @param data
+           */
+          toTopMenu(data) {
+            this.$router.push({path : data.path});
           }
         },
         computed : {

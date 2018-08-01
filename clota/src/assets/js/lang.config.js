@@ -25,6 +25,8 @@ export default new VueI18n({
           'channels' : '自营渠道',
           'saleChannelsGroup' : '销售渠道分组',
           'verificateGroup' : '核销设备分组',
+          'memberManage' : '会员管理',
+          'test' : '测试菜单',
       },
     },
     'en' : {
@@ -47,6 +49,8 @@ export default new VueI18n({
         'channels' : '自营渠道',
         'saleChannelsGroup' : '销售渠道分组',
         'verificateGroup' : '核销设备分组',
+        'memberManage' : '会员管理',
+        'test' : '测试菜单',
       },
     }
   }

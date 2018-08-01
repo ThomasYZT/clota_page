@@ -14,9 +14,5 @@ export default new Router({
         noFrame: true
       }
     },
-    // {
-    //   path : '*',
-    //   redirect : 'login'
-    // },
   ]
 })

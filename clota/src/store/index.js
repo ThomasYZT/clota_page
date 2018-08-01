@@ -11,7 +11,7 @@ import ajaxList from '@/api/ajaxList'
 import i18n from '../assets/js/lang.config';
 import routerClect from '../router/routerClect';
 import router from '../router/index';
-import {getFourRoute} from '../router/constRouter';
+import {getFourRoute,getNoSubMenuRoute} from '../router/constRouter';
 
 Vue.use(Vuex);
 
@@ -35,8 +35,10 @@ const childDeepClone = (childrenList,data) => {
               });
               router['children'] = children;
             }else{
-              router['children'] = [];
+              router['children'] = [getNoSubMenuRoute({menuName : 'noSubMenu',lightMenu : router.meta._name,_name : router.meta._name})];
             }
+          }else if(!router.children && !router.name){
+            router['children'] = [getNoSubMenuRoute({menuName : 'noSubMenu',lightMenu : router.meta._name,_name : router.meta._name})];
           }
           children.push(router);
         }
@@ -140,6 +142,8 @@ export default new Vuex.Store({
               'channels' : 'allow',
               'saleChannelsGroup':'allow',
               'verificateGroup':'allow',
+              'memberManage' : 'allow',
+              'test' : 'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {
