@@ -11,6 +11,7 @@ import ajaxList from '@/api/ajaxList'
 import i18n from '../assets/js/lang.config';
 import routerClect from '../router/routerClect';
 import router from '../router/index';
+import {getFourRoute} from '../router/constRouter';
 
 Vue.use(Vuex);
 
@@ -24,6 +25,8 @@ const childDeepClone = (childrenList,data) => {
           || (router.meta && router.meta._name && router.meta._name in  data)){
           if(router.children){
             let children = childDeepClone(router.children,data);
+            //配置没有匹配到路由的重定向页面
+            children.push(getFourRoute({menuName : '404',lightMenu : router.meta._name,_name : router.meta._name}));
             if(children.length > 0){
               //静态路由当中没有保存重定向路由，所以需要给父路由添加重定向路由
               children.push({

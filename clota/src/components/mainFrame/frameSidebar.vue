@@ -38,7 +38,7 @@
               for(let i = 0,j = this.permissionInfo.length;i < j;i++){
                 if(this.permissionInfo[i].meta._name === activeTopMenu){
                   return this.permissionInfo[i]['children'].filter(item => {
-                    return item.meta && item.meta.menuName;
+                    return item.meta && item.meta.menuName && !item.meta.hidden;
                   });
                 }
               }
