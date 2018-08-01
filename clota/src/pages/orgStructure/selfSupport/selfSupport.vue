@@ -18,42 +18,42 @@
         </el-table-column>
         <el-table-column
           prop="date"
-          label="合作伙伴编码">
+          label="自营渠道编码">
           <template slot-scope="scope">
             <div class="cellText"><span class="code">309287482</span></div>
           </template>
         </el-table-column>
         <el-table-column
           prop="date"
-          label="合作伙伴名称">
+          label="自营渠道名称">
           <template slot-scope="scope">
             <div>星火旅行社1</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="date"
-          label="合作伙伴名称">
+          label="销售渠道分组">
           <template slot-scope="scope">
             <div>A级销售渠道</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="date"
-          label="合作协议起始日期">
+          label="自营渠道类型">
           <template slot-scope="scope">
             <div>2018-10-09</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="date"
-          label="合作协议结束日期">
+          label="URL/IP">
           <template slot-scope="scope">
             <div>2018-10-09</div>
           </template>
         </el-table-column>
         <el-table-column
           prop="date"
-          label="协议状态"
+          label="状态"
           :render-header="renderHeader">
           <template slot-scope="scope">
             <div class="cellText">
@@ -67,7 +67,7 @@
           prop="date"
           label="备注">
           <template slot-scope="scope">
-            <div>这是动物园门票，这是动物园门票，</div>
+            <div>备注</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -91,7 +91,6 @@
         </el-pagination>
       </div>
     </div>
-    <edit-dropdown></edit-dropdown>
   </div>
 </template>
 
@@ -100,10 +99,8 @@
 <script>
   import ajax from '@/api/ajaxList'
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
-  import editDropdown from '../../../components/editDropdown/editDropdown.vue'
   export default {
     components: {
-      editDropdown,
       filterDrop
     },
     data() {
