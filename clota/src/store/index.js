@@ -12,15 +12,30 @@ import i18n from '../assets/js/lang.config';
 import routerClect from '../router/routerClect';
 import router from '../router/index';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 //子路由深度复制
-const childDeepClone = (childrenList) => {
+const childDeepClone = (childrenList,data) => {
     let children = [];
     for(let child in childrenList){
-        children.push(childrenList[child]);
-        if(childrenList[child].children){
-            children['children'] = childDeepClone(childrenList[child].children);
+        let router = childrenList[child];
+        //判断路由的名称是否存在于权限接口当中，部分父路由没有直接指定名称，所以需要判断meta信息里面的_name对应的权限是否存在
+        if((router.name && router.name in  data)
+          || (router.meta && router.meta._name && router.meta._name in  data)){
+          if(router.children){
+            let children = childDeepClone(router.children,data);
+            if(children.length > 0){
+              //静态路由当中没有保存重定向路由，所以需要给父路由添加重定向路由
+              children.push({
+                path : '',
+                redirect : children[0].name ? children[0].name : children[0].meat._name
+              });
+              router['children'] = children;
+            }else{
+              router['children'] = [];
+            }
+          }
+          children.push(router);
         }
     }
     return children;
@@ -32,6 +47,8 @@ export default new Vuex.Store({
         menuIsPackUp : false,
         //当前选择的语言
         lang : i18n.locale,
+        //权限信息
+        permissionInfo : [],
 
         userInfo: null,
         // 组织架构树
@@ -70,6 +87,10 @@ export default new Vuex.Store({
             let lang = localStorage.getItem('lang');
             state.lang = lang ? lang : state.lang;
             return state.lang;
+        },
+        //一级菜单权限信息
+        permissionInfo : state => {
+            return state.permissionInfo;
         }
 
     },
@@ -87,23 +108,11 @@ export default new Vuex.Store({
           i18n.locale = state.lang = lang;
         },
         //设置用户权限
-        updateUserRight(state,data) {
-            let routers = [];
-            // for(let item in data){
-            //     if(item in routerTest){
-            //         routers.push(routerTest[item]);
-            //     }
-            // }
-            for(let item in routerClect){
-                let createRouter = defaultsDeep({},routerClect[item]);
-                if(routerClect[item].children){
-                    createRouter['children'] = childDeepClone(routerClect[item].children);
-                }
-                routers.push(createRouter);
-            }
-            console.log(routers)
+        updatePermissionInfo(state,data) {
+            let routers = childDeepClone(routerClect,data);
             router.addRoutes(routers);
-        }
+            state.permissionInfo = JSON.parse(JSON.stringify(routers));
+        },
     },
     actions: {
         // // 更新用户信息
@@ -119,8 +128,10 @@ export default new Vuex.Store({
         // },
         //获取用户权限信息
         getUserRight ({commit}) {
-            commit('updateUserRight',{
-              'partner' : 'allow'
+            commit('updatePermissionInfo',{
+              'partner' : 'allow',
+              'orgManage' : 'allow',
+              'selfSupport' : 'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {
