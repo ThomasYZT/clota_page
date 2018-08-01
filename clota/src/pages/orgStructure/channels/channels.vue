@@ -7,7 +7,7 @@
         <Input suffix="ios-search" placeholder="请输入任意信息进行查询" />
       </div>
     </div>
-    <div>
+    <div class="selectionTable">
       <el-table
         :data="tableData3"
         :border="true"
@@ -76,8 +76,8 @@
           <template slot-scope="scope">
             <div class="operation">
               <span>修改</span>
-              <span class="disable">禁用</span>
-              <span class="delete" @click="deleteSelfSupportBtn">删除</span>
+              <span class="span-yellow">禁用</span>
+              <span class="span-gray" @click="deleteSelfSupportBtn">删除</span>
             </div>
           </template>
         </el-table-column>

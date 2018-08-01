@@ -7,7 +7,7 @@
         <Input suffix="ios-search" placeholder="全部分组"/>
       </div>
     </div>
-    <div>
+    <div class="selectionTable">
       <el-table
         :data="tableData3"
         :border="true"
@@ -43,7 +43,7 @@
           <template slot-scope="scope">
             <div class="operation">
               <span class="move" @click="moveInGroupBtn">移动到</span>
-              <span class="moveGroup" @click="moveOutGroupBtn">移出分组</span>
+              <span class="span-blue" @click="moveOutGroupBtn">移出分组</span>
             </div>
           </template>
         </el-table-column>
@@ -77,7 +77,7 @@
       </div>
     </kw-popover>
     <!-- 移动分组 -->
-    <kw-popover ref="movePopover" :el="popoverEl" placement="right" align="top">
+    <kw-popover ref="movePopover" :el="popoverEl" placement="left" align="top">
       <div class="add-group-popover">
         <div class="popover-content">
           <p>将所选销售渠道移至分组</p>
@@ -169,7 +169,7 @@
     .popover-content{
       width: 240px;
       p{
-        font-size: 12px;
+        font-size: $font_size_12px;
         color: #666666;
         line-height: 16px;
         margin-bottom: 10px;

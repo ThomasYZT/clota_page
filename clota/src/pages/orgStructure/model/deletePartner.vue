@@ -93,7 +93,7 @@
   .deletePartner{
     .content{
       .text{
-        font-size: 14px;
+        font-size: $font_size_12px;
         color: #333333;
         line-height: 24px;
         .name{

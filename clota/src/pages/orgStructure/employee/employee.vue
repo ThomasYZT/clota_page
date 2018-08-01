@@ -1,18 +1,138 @@
-<!---->
-
 <template>
-
+  <div class="partner">
+    <div class="orgHeader">
+      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">新增员工</Button>
+      <div class="search">
+        <Input suffix="ios-search" placeholder="请输入任意信息进行查询" />
+      </div>
+    </div>
+    <div>
+      <el-table
+        :data="tableData3"
+        :border="true"
+        style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="员工ID">
+          <template slot-scope="scope">
+            <div class="cellText">309287482</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="登录名">
+          <template slot-scope="scope">
+            <div>adminclota01</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="姓名">
+          <template slot-scope="scope">
+            <div>张贝贝</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="企业/景区名称">
+          <template slot-scope="scope">
+            <div>银科环企有限公司</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="部门名称">
+          <template slot-scope="scope">
+            <div>销售部门</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="角色权限">
+          <template slot-scope="scope">
+            <div>长隆欢乐园管理员、深圳…</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="电话">
+          <template slot-scope="scope">
+            <div>1722727378</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="操作">
+          <template slot-scope="scope">
+            <div class="operation">
+              <span>修改</span>
+              <span>删除</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination">
+        <el-pagination
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
+
+
 <script>
+  import ajax from '@/api/ajaxList'
+  //弹窗
   export default {
-    data () {
-      return {}
+    components: {
     },
-    methods: {}
+    data() {
+      return {
+        tableData3: [{
+          date: '2016-05-03',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }],
+        listFilters: {
+          stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
+          alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
+            name: '正常',
+            alert: 'normal'
+          }],
+        },
+        enableValue:true,
+        pattnerName:'售票处终端001',
+      }
+    },
+    methods: {
+      //新增合作伙伴
+      addPartnerBtn(){
+      },
+      //删除合作伙伴
+      deletePartnerBtn(){
+      },
+      init(){
+
+      }
+    },
+    computed: {
+    },
+    created () {
+    },
   }
 </script>
 
-<style lang="scss" scoped>
-    @import '~@/assets/scss/base';
+<style lang="scss">
+  @import '~@/assets/scss/base';
+  .partner{
+
+  }
 </style>

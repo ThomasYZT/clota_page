@@ -94,7 +94,7 @@
   .deleteGroup{
     .content{
       .text{
-        font-size: 14px;
+        font-size: $font_size_14px;
         color: #333333;
         line-height: 24px;
         .name{

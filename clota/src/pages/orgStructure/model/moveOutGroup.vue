@@ -85,7 +85,7 @@
   }
   .moveOutGroup{
     .content{
-      font-size: 14px;
+      font-size: $font_size_12px;
       color: #333333;
     }
   }

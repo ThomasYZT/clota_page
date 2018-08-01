@@ -1,18 +1,45 @@
 .ivu-btn-default{
   padding: 6px 20px 5px;
 }
-.el-table{
-  th{
-    background: $color_F5F7FA;
-    &:first-child{
+.selectionTable{
+  .el-table{
+    th{
+      background: $color_F5F7FA;
+      &:first-child{
+        .cell{
+          text-align: center;
+          padding-left: 14px;
+        }
+      }
+    }
+    td:first-child{
       .cell{
         text-align: center;
+        padding-left: 14px;
       }
     }
   }
-  td:first-child{
+}
+.el-table{
+  th{
+    background: $color_F5F7FA;
     .cell{
-      text-align: center;
+      padding-left: 20px;
+    }
+    &:first-child{
+      .cell{
+        padding-left: 40px;
+      }
+    }
+  }
+  td{
+    .cell{
+      padding-left: 20px;
+    }
+    &:first-child{
+      .cell{
+        padding-left: 40px;
+      }
     }
   }
   th>.cell{
@@ -57,7 +84,7 @@
     background: #F5F7FA;
     border-radius: 8px 8px 0 0;
     .ivu-modal-header-inner{
-      font-size: 16px;
+      font-size: $font_size_16px;
     }
   }
   .ivu-form-item-content{
@@ -82,8 +109,8 @@
   .ivu-form-item-label{
     min-width: inherit;
     padding: 10px 10px 10px 12px;
-    font-size: 14px;
-    color: #585858;
+    font-size: $font_size_14px;
+    color: $color_585858;
     &:after{
       margin-left: 0;
       left: 4px;
@@ -92,8 +119,8 @@
   }
   .ivu-radio-group-item{
     margin-top: -2px;
-    font-size: 14px;
-    color: #333333;
+    font-size: $font_size_14px;
+    color: $color_333;
   }
 }
 .operation{
@@ -110,14 +137,14 @@
       color: $color_red;
     }
   }
-  .disable{
+  .span-yellow{
     color: $color_yellow;
   }
-  .delete{
+  .span-gray{
     color: $color_gray!important;
     cursor: not-allowed;
   }
-  .moveGroup{
+  .span-blue{
     color: $color_blue!important;
   }
 }
