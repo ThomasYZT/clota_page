@@ -2,9 +2,8 @@
 
 <template>
   <div id="app">
-    <!--<router-view v-if="noFrame"/>-->
-    <!--<main-frame v-else>-->
-    <main-frame >
+    <router-view v-if="noFrame"/>
+    <main-frame v-else>
       <router-view>
       </router-view>
     </main-frame>
