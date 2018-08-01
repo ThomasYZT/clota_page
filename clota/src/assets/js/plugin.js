@@ -60,6 +60,14 @@ plugin.install = function(Vue, options){
                 }else{
                     return value
                 }
+            },
+            //内容过滤器，如果内容为空或null，返回-
+            contentFilter(content) {
+              if(content === '' || content === null || content === undefined) {
+                return '-';
+              }else{
+                return content;
+              }
             }
         },
         data() {

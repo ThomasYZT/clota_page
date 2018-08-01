@@ -28,6 +28,8 @@ export default new VueI18n({
           'memberManage' : '会员管理',
           'test' : '测试菜单',
       },
+      'backUp' : '收起',
+      'upLoad' : '展开'
     },
     'en' : {
       'project-title':'银科环企Clota云平台',
@@ -52,6 +54,8 @@ export default new VueI18n({
         'memberManage' : '会员管理',
         'test' : '测试菜单',
       },
+      'backUp' : '收起',
+      'upLoad' : '展开'
     }
   }
 })

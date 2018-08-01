@@ -94,18 +94,42 @@
         </ul>
         <table-com
           :column-data="dredgeColumnData"
+          :is-pack-up="true"
+          :table-data="tableData"
+          title="已开通服务">
+        </table-com>
+        <table-com
+          :table-data="tableData"
+          :column-data="region"
           title="下属景区">
         </table-com>
         <table-com
-          :column-data="dredgeColumnData"
+          :column-data="companies"
+          :table-data="tableData"
+          title="下属公司">
+        </table-com>
+        <table-com
+          :column-data="partMentHead"
+          :table-data="tableData"
           title="下属部门">
         </table-com>
         <table-com
-          :column-data="dredgeColumnData"
+          :column-data="partner"
+          :table-data="tableData"
           title="合作伙伴">
         </table-com>
         <table-com
+          :table-data="tableData"
+          :column-data="employee"
+          title="员工账号">
+          <div class="employee-account">
+            员工账号数：2
+          </div>
+        </table-com>
+        <table-com
           :column-data="dredgeColumnData"
+          :table-data="tableData"
+          :column-check="true"
           title="已开通服务">
           <div class="open-service">
             <Button type="primary" size="small">添加服务</Button>
@@ -117,7 +141,7 @@
 
 <script>
     import tableCom from './tableCom';
-    import {dredegHead} from './tableConfig';
+    import {dredegHead,partMentHead,region,partner,employee,companies} from './tableConfig';
     export default {
         components : {
           tableCom
@@ -125,7 +149,23 @@
         data() {
             return {
               //已开通表头数据
-              dredgeColumnData : dredegHead
+              dredgeColumnData : dredegHead,
+              //下属部门表头
+              partMentHead : partMentHead,
+              //下属景区表头
+              region : region,
+              //合作伙伴
+              partner : partner,
+              //员工账号表头
+              employee : employee,
+              //下属公司
+              companies : companies,
+              tableData : [{
+                aa: '2016-05-03',
+                realName: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+              }
+              ]
             }
         },
         methods: {}
@@ -224,6 +264,14 @@
       /deep/ .ivu-btn-primary{
         margin-right: 7px;
       }
+    }
+
+    .employee-account{
+      @include block_outline($height : 30px);
+      line-height: 20px;
+      padding-bottom: 10px;
+      font-size: $font_size_14px;
+      color: $color_606266;
     }
   }
 </style>
