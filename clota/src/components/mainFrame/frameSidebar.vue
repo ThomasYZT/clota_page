@@ -71,7 +71,10 @@
           //监听路由变化，更新激活菜单
           '$route' (oldVal,newVal){
             this.$nextTick(() => {
-              this.$refs.menu.updateActiveName(this.activeMenu);
+              let menu = this.$refs.menu;
+              if(menu){
+                menu.updateActiveName(this.activeMenu);
+              }
             });
           }
       }

@@ -13,19 +13,6 @@ export default {
       _name : 'memberManage',
       menuName : 'menuList.memberManage',
       lightMenu : 'memberManage',
-    },
-    children : {
-      test :  {
-        //组织架构--合作伙伴
-        path : 'test',
-        name : 'test',
-        component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/menuTest/index.vue'),
-        meta : {
-          menuName : 'menuList.test',
-          lightMenu : 'memberManage',
-          _name : 'test',
-        },
-      },
     }
   }
 }

@@ -27,8 +27,8 @@ const childDeepClone = (childrenList,data) => {
             let children = childDeepClone(router.children,data);
             //配置没有匹配到路由的重定向页面
             children.push(getFourRoute({menuName : '404',lightMenu : router.meta._name,_name : router.meta._name}));
-            if(children.length > 0){
-              //静态路由当中没有保存重定向路由，所以需要给父路由添加重定向路由
+            if(children.length > 1){
+              //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
               children.push({
                 path : '',
                 redirect : children[0].name ? children[0].name : children[0].meat._name
@@ -143,7 +143,6 @@ export default new Vuex.Store({
               'saleChannelsGroup':'allow',
               'verificateGroup':'allow',
               'memberManage' : 'allow',
-              'test' : 'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {
