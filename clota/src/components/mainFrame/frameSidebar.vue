@@ -31,13 +31,18 @@
             menuIsPackUp: 'menuIsPackUp',
             permissionInfo : 'permissionInfo'
           }),
-          //二级菜单列表
+          /**
+           * 二级菜单列表
+           * 二级菜单列表排除了路径为空的重定向路由和没有匹配到路由的重定向路由
+           * @returns {Array}
+           */
           subMenuList () {
             if(this.$route && this.$route.meta){
               let activeTopMenu = this.$route.meta.lightMenu;
               for(let i = 0,j = this.permissionInfo.length;i < j;i++){
                 if(this.permissionInfo[i].meta._name === activeTopMenu){
                   return this.permissionInfo[i]['children'].filter(item => {
+                    //排除重定向路由
                     return item.meta && item.meta.menuName && !item.meta.hidden;
                   });
                 }
