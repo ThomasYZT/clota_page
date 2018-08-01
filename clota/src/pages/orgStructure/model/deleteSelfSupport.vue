@@ -42,20 +42,6 @@
         visible: false,
         readonly: false,
         loading: false,
-        addPartner: {
-          name: '',
-        },
-        ruleValidate: {
-          name: [
-            {required: true, message: '请输入小组名称', trigger: 'blur'},
-          ],
-        },
-        cityList: [
-          {
-            value: 'New York',
-            label: 'New York'
-          },
-        ],
       }
     },
     computed: {

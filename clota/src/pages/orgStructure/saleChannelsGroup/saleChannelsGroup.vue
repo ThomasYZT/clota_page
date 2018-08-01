@@ -1,10 +1,10 @@
 <template>
-  <div class="disChannel">
-    <div class="header">
-      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">新增分组</Button>
-      <Button style="float: left" class="ivu-btn-cancel" size="default">批量操作</Button>
+  <div class="saleChannelsGroup">
+    <div class="orgHeader">
+      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addGroup" size="default">新增分组</Button>
+      <Button type="ghost"  style="float: left" size="default">批量操作</Button>
       <div class="search">
-        <Input suffix="ios-search" placeholder="全部分组" />
+        <Input suffix="ios-search" placeholder="全部分组"/>
       </div>
     </div>
     <div>
@@ -42,9 +42,8 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operation">
-              <span>修改</span>
-              <span class="disable">移动到</span>
-              <span class="delete" @click="deletePartnerBtn">移出分组</span>
+              <span class="move" @click="moveInGroupBtn">移动到</span>
+              <span class="moveGroup" @click="moveOutGroupBtn">移出分组</span>
             </div>
           </template>
         </el-table-column>
@@ -57,8 +56,41 @@
           :total="400">
         </el-pagination>
       </div>
+      <Button @click="deleteGroupBtn">删除分组</Button>
     </div>
     <edit-dropdown></edit-dropdown>
+    <!-- 移动分组弹窗 -->
+    <move-out-group ref="moveOutGroupModal" @upDataList='init' :moveName="moveName"></move-out-group>
+    <!-- 删除分组弹窗 -->
+    <delete-group ref="deleteGroupModal" @upDataList='init' :pattnerName="pattnerName"></delete-group>
+    <!-- 新增分组 -->
+    <kw-popover ref="addPopover" :el="popoverEl" placement="bottom" align="left" :offset="offset">
+      <div class="add-group-popover">
+        <div class="popover-content">
+          <p>新增分组名称</p>
+          <Input  placeholder="请输入" />
+        </div>
+        <div class="popover-footer">
+          <Button type="primary" size="small" >保存</Button>
+          <Button type="ghost" size="small" >取消</Button>
+        </div>
+      </div>
+    </kw-popover>
+    <!-- 移动分组 -->
+    <kw-popover ref="movePopover" :el="popoverEl" placement="right" align="top">
+      <div class="add-group-popover">
+        <div class="popover-content">
+          <p>将所选销售渠道移至分组</p>
+          <Select >
+            <Option value="132">123</Option>
+          </Select>
+        </div>
+        <div class="popover-footer">
+          <Button type="primary" size="small" >保存</Button>
+          <Button type="ghost" size="small" >取消</Button>
+        </div>
+      </div>
+    </kw-popover>
   </div>
 </template>
 
@@ -68,9 +100,15 @@
   import ajax from '@/api/ajaxList'
   import editDropdown from '../../../components/editDropdown/editDropdown.vue';
   //弹窗
+  import moveOutGroup from '../model/moveOutGroup.vue';
+  import deleteGroup from  '../model/deleteGroup.vue';
+  import kwPopover from '../../../components/popover/popover.vue';
   export default {
     components: {
       editDropdown,
+      moveOutGroup,
+      deleteGroup,
+      kwPopover
     },
     data() {
       return {
@@ -90,10 +128,32 @@
           }],
         },
         enableValue:true,
-        pattnerName:'售票处终端001',
+        moveName:'销售渠道',
+        pattnerName:'A级销售渠道',
+        popoverEl:'',
+        offset:{
+          top:8,
+        }
       }
     },
     methods: {
+      addGroup(event){
+        this.popoverEl = event.currentTarget;
+        this.$refs.addPopover.show();
+      },
+      moveInGroupBtn(event){
+        this.popoverEl = event.currentTarget;
+        this.$refs.movePopover.show();
+      },
+      moveOutGroupBtn(){
+        this.$refs.moveOutGroupModal.show();
+      },
+      deleteGroupBtn(){
+        this.$refs.deleteGroupModal.show();
+      },
+      init(){
+
+      },
     },
     computed: {
     },
@@ -104,14 +164,26 @@
 
 <style lang="scss">
   @import '~@/assets/scss/base';
-  .disChannel{
-    .header{
-      @include clearfix;
-      padding: 14px 30px;
-      .search{
-        width: 353px;
-        float: right;
+  .add-group-popover{
+    padding: 17px 20px;
+    .popover-content{
+      width: 240px;
+      p{
+        font-size: 12px;
+        color: #666666;
+        line-height: 16px;
+        margin-bottom: 10px;
       }
     }
+    .popover-footer{
+      margin-top: 30px;
+      text-align: right;
+      button:first-child{
+        margin-right: 10px;
+      }
+    }
+  }
+  .saleChannelsGroup{
+
   }
 </style>

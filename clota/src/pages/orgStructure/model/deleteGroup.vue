@@ -1,14 +1,14 @@
 <template>
   <Modal
     v-model="visible"
-    class="deletePartner"
+    class="deleteGroup"
     class-name="vertical-center-modal"
     :mask-closable="false"
     :width="420"
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>删除合作伙伴</span>
+      <span>删除分组</span>
     </div>
     <!--内容区域-->
     <div class="content">
@@ -16,6 +16,7 @@
         <span>您正在删除合作伙伴：</span>
         <span class="name">{{pattnerName}}</span>
       </div>
+      <div class="text">本组的渠道将被全部移至‘未分组’，</div>
       <div class="text">
         <span class="tips">本操作不可撤销，</span>
         <span>是否确认删除？</span>
@@ -82,15 +83,15 @@
 </script>
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
-  /deep/.deletePartner{
+  /deep/.deleteGroup{
     .ivu-modal-body{
-      padding-top: 54px;
-      padding-bottom: 62px;
+      padding-top: 43px;
+      padding-bottom: 50px;
       padding-left: 81px;
       padding-right: 54px;
     }
   }
-  .deletePartner{
+  .deleteGroup{
     .content{
       .text{
         font-size: 14px;

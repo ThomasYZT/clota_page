@@ -13,7 +13,7 @@
     </div>
     <div class="login">
       <div class="content">
-        <img src="../../assets/images/loginImg.svg" alt="">
+        <img src="../../assets/images/login-img.svg" alt="">
         <div class="form-content">
           <h1>{{ $t("project-title") }}</h1>
           <Form ref="formInline" :model="formInline" :rules="ruleInline" >
@@ -107,7 +107,7 @@
   .loginPage{
     height: 100%;
     background-color: #fff;
-    background-image: get_url('loginBG.png');
+    background-image: get_url('login-bg.png');
     background-position: center;
     background-size: cover;
   }

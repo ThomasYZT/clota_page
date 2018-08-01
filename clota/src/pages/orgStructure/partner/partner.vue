@@ -1,8 +1,8 @@
 <template>
   <div class="partner">
-    <div class="header">
+    <div class="orgHeader">
       <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">新增合作伙伴</Button>
-      <Button style="float: left" class="ivu-btn-cancel" size="default">批量操作</Button>
+      <Button type="ghost" style="float: left" size="default">批量操作</Button>
       <div class="search">
         <Input suffix="ios-search" placeholder="请输入任意信息进行查询" />
       </div>
@@ -180,40 +180,7 @@
 
 <style lang="scss">
   @import '~@/assets/scss/base';
-  .operation{
-    @include clearfix;
-    span{
-      color: $color_blue;
-      padding-right: 9px;
-      padding-left: 9px;
-      border-right: 1px solid #E1E1E1;
-      cursor: pointer;
-      float: left;
-      &:last-child{
-        border-right: none;
-        color: $color_red;
-      }
-    }
-    .disable{
-      color: $color_yellow;
-    }
-    .delete{
-      color: $color_gray!important;
-      cursor: not-allowed;
-    }
-  }
-  .pagination{
-    margin:30px auto;
-    text-align: center;
-  }
   .partner{
-    .header{
-      @include clearfix;
-      padding: 14px 30px;
-      .search{
-        width: 353px;
-        float: right;
-      }
-    }
+
   }
 </style>

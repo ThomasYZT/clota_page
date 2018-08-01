@@ -1,16 +1,19 @@
 .ivu-btn-default{
   padding: 6px 20px 5px;
 }
-.ivu-btn-cancel{
-  background: #fff;
-  line-height: 21px;
-  &:hover{
-    background: #fff;
-  }
-}
 .el-table{
   th{
     background: $color_F5F7FA;
+    &:first-child{
+      .cell{
+        text-align: center;
+      }
+    }
+  }
+  td:first-child{
+    .cell{
+      text-align: center;
+    }
   }
   th>.cell{
     color: $color_303133;
@@ -58,7 +61,8 @@
     }
   }
   .ivu-form-item-content{
-    margin-left: 112px;
+    width: 280px;
+    float: right;
   }
   .ivu-modal-footer{
     padding: 13px;
@@ -71,8 +75,12 @@
   .ivu-btn{
     height: 32px;
   }
+  .ivu-form-item{
+    display: flex;
+    justify-content: flex-end;
+  }
   .ivu-form-item-label{
-    min-width: 112px;
+    min-width: inherit;
     padding: 10px 10px 10px 12px;
     font-size: 14px;
     color: #585858;
@@ -88,7 +96,39 @@
     color: #333333;
   }
 }
-
+.operation{
+  @include clearfix;
+  span{
+    color: $color_blue;
+    padding-right: 9px;
+    padding-left: 9px;
+    border-right: 1px solid #E1E1E1;
+    cursor: pointer;
+    float: left;
+    &:last-child{
+      border-right: none;
+      color: $color_red;
+    }
+  }
+  .disable{
+    color: $color_yellow;
+  }
+  .delete{
+    color: $color_gray!important;
+    cursor: not-allowed;
+  }
+  .moveGroup{
+    color: $color_blue!important;
+  }
+}
+.orgHeader{
+  @include clearfix;
+  padding: 14px 30px;
+  .search{
+    width: 353px;
+    float: right;
+  }
+}
 .pagination{
   margin:30px auto;
   text-align: center;

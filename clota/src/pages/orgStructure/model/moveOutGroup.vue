@@ -1,30 +1,23 @@
 <template>
   <Modal
     v-model="visible"
-    class="deletePartner"
+    class="moveOutGroup"
     class-name="vertical-center-modal"
     :mask-closable="false"
     :width="420"
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>删除合作伙伴</span>
+      <span>移出分组</span>
     </div>
     <!--内容区域-->
     <div class="content">
-      <div class="text">
-        <span>您正在删除合作伙伴：</span>
-        <span class="name">{{pattnerName}}</span>
-      </div>
-      <div class="text">
-        <span class="tips">本操作不可撤销，</span>
-        <span>是否确认删除？</span>
-      </div>
-    </div>
+      将所选{{moveName}}从本分组移出后，将列入未分组中。
+     </div>
     <!--自定义页脚-->
     <div slot="footer">
       <template >
-        <i-button  class="ivu-btn-error" size="small" type="primary">确认</i-button>
+        <i-button   size="small" type="primary">移出</i-button>
         <i-button  class="ivu-btn-cancel" size="small" @click="hide">取消</i-button>
       </template>
     </div>
@@ -36,7 +29,7 @@
 <script type="text/ecmascript-6">
   export default {
     components: {},
-    props:['pattnerName'],
+    props:['moveName'],
     data () {
       return {
         visible: false,
@@ -82,27 +75,18 @@
 </script>
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
-  /deep/.deletePartner{
+  /deep/.moveOutGroup{
     .ivu-modal-body{
       padding-top: 54px;
-      padding-bottom: 62px;
-      padding-left: 81px;
-      padding-right: 54px;
+      padding-bottom: 61px;
+      padding-left: 80px;
+      padding-right: 120px;
     }
   }
-  .deletePartner{
+  .moveOutGroup{
     .content{
-      .text{
-        font-size: 14px;
-        color: #333333;
-        line-height: 24px;
-        .name{
-          color: $color_yellow;
-        }
-        .tips{
-          color: $color_red;
-        }
-      }
+      font-size: 14px;
+      color: #333333;
     }
   }
 </style>
