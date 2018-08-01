@@ -12,7 +12,19 @@ import i18n from '../assets/js/lang.config';
 import routerClect from '../router/routerClect';
 import router from '../router/index';
 
-Vue.use(Vuex);
+Vue.use(Vuex)
+
+//子路由深度复制
+const childDeepClone = (childrenList) => {
+    let children = [];
+    for(let child in childrenList){
+        children.push(childrenList[child]);
+        if(childrenList[child].children){
+            children['children'] = childDeepClone(childrenList[child].children);
+        }
+    }
+    return children;
+};
 
 export default new Vuex.Store({
     state: {
@@ -85,20 +97,13 @@ export default new Vuex.Store({
             for(let item in routerClect){
                 let createRouter = defaultsDeep({},routerClect[item]);
                 if(routerClect[item].children){
-                    let children = [];
-                    for(let child in routerClect[item].children){
-                        children.push(routerClect[item].children[child]);
-                    }
-                    if(children.length > 0){
-                        createRouter['children'] = children;
-                    }
+                    createRouter['children'] = childDeepClone(routerClect[item].children);
                 }
                 routers.push(createRouter);
             }
             console.log(routers)
             router.addRoutes(routers);
-        },
-
+        }
     },
     actions: {
         // // 更新用户信息
