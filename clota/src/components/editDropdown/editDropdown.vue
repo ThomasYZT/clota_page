@@ -1,10 +1,10 @@
 <template>
   <div class="editDropdown">
-    <div class="header">
+    <div class="header" @click="showList">
       <span>全部分组</span>
       <span class="icon"></span>
     </div>
-    <ul>
+    <ul v-show='showListValue'>
       <li>
         <div class="editInput">
           <div class="input">
@@ -16,8 +16,8 @@
         <div class="edutText"><span>B级销售渠道</span></div>
         <div class="edutTextHover">
           <span class="text">B级销售渠道</span>
-          <span class="delete"></span>
-          <span class="edit"></span>
+          <span class="delete">d</span>
+          <span class="edit">e</span>
         </div>
       </li>
     </ul>
@@ -34,9 +34,13 @@
     data() {
       return {
         value:'',
+        showListValue:false
       }
     },
     methods: {
+      showList(){
+        this.showListValue = !this.showListValue;
+      },
     },
     computed: {
     },
@@ -98,7 +102,7 @@
           clear: both;
           overflow: hidden;
           line-height: 32px;
-          padding: 0 19px;
+          padding: 0 10px 0 19px;
           background: #EFF1F3;
           .text{
             font-size: 14px;
@@ -107,10 +111,18 @@
             float: left;
           }
           .delete{
-
+            width: 23px;
+            height: 100%;
+            float: right;
+            cursor: pointer;
+            background:#EB6751;
           }
           .edit{
-
+            width: 23px;
+            height: 100%;
+            float: right;
+            cursor: pointer;
+            background:#2F70DF;
           }
         }
       }

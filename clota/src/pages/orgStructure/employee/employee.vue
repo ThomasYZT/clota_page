@@ -66,7 +66,7 @@
           <template slot-scope="scope">
             <div class="operation">
               <span>修改</span>
-              <span>删除</span>
+              <span @click="deleteEmployeeBtn">删除</span>
             </div>
           </template>
         </el-table-column>
@@ -80,6 +80,7 @@
         </el-pagination>
       </div>
     </div>
+    <delete-employee  ref="deleteEmployeeModal" @upDataList='init' :pattnerName="pattnerName"></delete-employee>
   </div>
 </template>
 
@@ -88,8 +89,10 @@
 <script>
   import ajax from '@/api/ajaxList'
   //弹窗
+  import deleteEmployee from '../model/deleteEmployee.vue'
   export default {
     components: {
+      deleteEmployee,
     },
     data() {
       return {
@@ -113,11 +116,12 @@
       }
     },
     methods: {
-      //新增合作伙伴
+      //新增员工
       addPartnerBtn(){
       },
-      //删除合作伙伴
-      deletePartnerBtn(){
+      //删除员工
+      deleteEmployeeBtn(){
+        this.$refs.deleteEmployeeModal.show();
       },
       init(){
 

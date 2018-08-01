@@ -171,6 +171,6 @@
   }
 </script>
 
-<style lang="scss"  scoped>
+<style lang="scss">
   @import '~@/assets/scss/base';
 </style>

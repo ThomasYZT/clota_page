@@ -91,7 +91,6 @@
         </el-pagination>
       </div>
     </div>
-    <edit-dropdown></edit-dropdown>
     <add-partner ref="addPartnerModal" @upDataList='init'></add-partner>
     <delete-partner ref="deletePartnerModal" @upDataList='init' :pattnerName="pattnerName"></delete-partner>
   </div>
@@ -102,13 +101,11 @@
 <script>
   import ajax from '@/api/ajaxList'
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
-  import editDropdown from '../../../components/editDropdown/editDropdown.vue';
   //弹窗
   import addPartner from  '../model/addPartner.vue'
   import deletePartner from '../model/deletePartner.vue'
   export default {
     components: {
-      editDropdown,
       filterDrop,
       addPartner,
       deletePartner,

@@ -85,8 +85,8 @@
   @import '~@/assets/scss/base';
   /deep/.deletePartner{
     .ivu-modal-body{
-      padding-top: 43px;
-      padding-bottom: 50px;
+      padding-top: 58px;
+      padding-bottom: 58px;
       padding-left: 81px;
       padding-right: 54px;
     }
