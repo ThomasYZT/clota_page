@@ -3,34 +3,10 @@
 <template>
   <div class="frame-slidbar" :class="{'width-is-zero' : menuIsPackUp}">
     <div class="menu-list">
-      <Menu  active-name="login" @on-select="selectMenu">
-        <MenuItem name="login">
+      <Menu  :active-name="activeMenu" @on-select="selectMenu" v-if="subMenuList.length > 0">
+        <MenuItem :name="item.meta._name" v-for="item in subMenuList" :key="item.name">
           <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.org')}}</span>
-        </MenuItem>
-        <MenuItem name="2">
-          <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.employee')}}</span>
-        </MenuItem>
-        <MenuItem name="3">
-          <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.rolePermission')}}</span>
-        </MenuItem>
-        <MenuItem name="4">
-          <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.partner')}}</span>
-        </MenuItem>
-        <MenuItem name="5">
-          <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.channels')}}</span>
-        </MenuItem>
-        <MenuItem name="6">
-          <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.saleChannelsGroup')}}</span>
-        </MenuItem>
-        <MenuItem name="6">
-          <Icon type="grid" class="iconfont"></Icon>
-          <span class="menu-name">{{$t('menuList.verificateGroup')}}</span>
+          <span class="menu-name">{{$t(`menuList.${item.meta.menuName}`)}}</span>
         </MenuItem>
       </Menu>
     </div>
@@ -53,7 +29,32 @@
         computed :{
           ...mapGetters({
             menuIsPackUp: 'menuIsPackUp',
+            permissionInfo : 'permissionInfo'
           }),
+          //二级菜单列表
+          subMenuList () {
+            if(this.$route && this.$route.meta){
+              let activeTopMenu = this.$route.meta.lightMenu;
+              for(let i = 0,j = this.permissionInfo.length;i < j;i++){
+                if(this.permissionInfo[i].meta._name === activeTopMenu){
+                  return this.permissionInfo[i]['children'].filter(item => {
+                    return item.meta && item.meta.menuName;
+                  });
+                }
+              }
+              return [];
+            }else{
+              return [];
+            }
+          },
+          //当前高亮的二级菜单
+          activeMenu () {
+            if(this.$route && this.$route.meta){
+              return this.$route.meta._name;
+            }else{
+              return '';
+            }
+          }
         }
     }
 </script>

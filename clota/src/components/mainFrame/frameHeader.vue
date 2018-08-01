@@ -16,57 +16,9 @@
         <i  class="ivu-icon ivu-icon-ios-arrow-forward"></i>
       </div>
       <div class="nav-scroll">
-        <div class="navigation">
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
-            <span class="bar"></span>
-          </div>
-          <div class="sub-menu active">
-            工作台
+        <div class="navigation" v-for="(item,index) in permissionInfo" :key="index">
+          <div class="sub-menu" :class="{'active' : activeMenu === item.meta._name}">
+            {{$t(`menuList.${item.meta.menuName}`)}}
             <span class="bar"></span>
           </div>
         </div>
@@ -133,7 +85,16 @@
           ...mapGetters({
             menuIsPackUp: 'menuIsPackUp',
             lang: 'lang',
+            permissionInfo : 'permissionInfo'
           }),
+          //当前激活的菜单
+          activeMenu () {
+              if(this.$route && this.$route.meta){
+                return this.$route.meta.lightMenu;
+              }else{
+                return '';
+              }
+          }
         }
     }
 </script>
