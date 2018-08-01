@@ -1,8 +1,8 @@
 <template>
   <div class="partner">
     <div class="header">
-      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px">新增合作伙伴</Button>
-      <Button style="float: left">批量操作</Button>
+      <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" size="default"  @click="addSelfSupportBtn" >新增自营渠道</Button>
+      <Button style="float: left" class="ivu-btn-cancel" size="default">批量操作</Button>
       <div class="search">
         <Input suffix="ios-search" placeholder="请输入任意信息进行查询" />
       </div>
@@ -77,7 +77,7 @@
             <div class="operation">
               <span>修改</span>
               <span class="disable">禁用</span>
-              <span class="delete">删除</span>
+              <span class="delete" @click="deleteSelfSupportBtn">删除</span>
             </div>
           </template>
         </el-table-column>
@@ -91,6 +91,8 @@
         </el-pagination>
       </div>
     </div>
+    <add-self-support ref="addSelfSupport" @upDataList='init'></add-self-support>
+    <delete-self-support ref="deleteSelfSupport" @upDataList='init' :selfSupportName="selfSupportName"></delete-self-support>
   </div>
 </template>
 
@@ -99,9 +101,13 @@
 <script>
   import ajax from '@/api/ajaxList'
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
+  import addSelfSupport from '../model/addSelfSupport.vue'
+  import deleteSelfSupport from '../model/deleteSelfSupport.vue'
   export default {
     components: {
-      filterDrop
+      filterDrop,
+      addSelfSupport,
+      deleteSelfSupport,
     },
     data() {
       return {
@@ -121,6 +127,7 @@
           }],
         },
         enableValue:true,
+        selfSupportName:'售票处终端001',
       }
     },
     methods: {
@@ -147,6 +154,15 @@
           this.$Message.warning('您已禁用合作伙伴：星火旅社1');
         }
       },
+      addSelfSupportBtn(){
+        this.$refs.addSelfSupport.show();
+      },
+      deleteSelfSupportBtn(){
+        this.$refs.deleteSelfSupport.show();
+      },
+      init(){
+
+      },
     },
     computed: {
     },
@@ -157,48 +173,6 @@
 
 <style lang="scss"  scoped>
   @import '~@/assets/scss/base';
-  /deep/.partner{
-    .ivu-btn{
-      padding: 6px 20px 5px!important;
-    }
-    .el-table th{
-      background: $color_F5F7FA;
-    }
-    .el-table th>.cell{
-      color: $color_303133;
-      font-weight: normal;
-    }
-    .el-pager li{
-      color: $color_606266;
-      font-weight: normal;
-    }
-    .el-pager li.active{
-      color: $color_6666FF;
-    }
-  }
-  .cellText{
-    .code{
-      color: $color_333;
-    }
-    .icon_enable{
-      width: 6px;
-      height: 6px;
-      display: inline-block;
-      border-radius: 50%;
-      margin-right: 8px;
-      overflow: hidden;
-      background: $color_green;
-    }
-    .icon_notEnable{
-      width: 6px;
-      height: 6px;
-      display: inline-block;
-      border-radius: 50%;
-      margin-right: 8px;
-      overflow: hidden;
-      background: $color_BBC5D5;
-    }
-  }
   .operation{
     @include clearfix;
     span{
@@ -220,10 +194,6 @@
       color: $color_gray!important;
       cursor: not-allowed;
     }
-  }
-  .pagination{
-    margin:30px auto;
-    text-align: center;
   }
   .partner{
     .header{

@@ -77,7 +77,7 @@
             <div class="operation">
               <span>修改</span>
               <span class="disable">禁用</span>
-              <span class="delete">删除</span>
+              <span class="delete" @click="deletePartnerBtn">删除</span>
             </div>
           </template>
         </el-table-column>
@@ -93,6 +93,7 @@
     </div>
     <edit-dropdown></edit-dropdown>
     <add-partner ref="addPartnerModal" @upDataList='init'></add-partner>
+    <delete-partner ref="deletePartnerModal" @upDataList='init' :pattnerName="pattnerName"></delete-partner>
   </div>
 </template>
 
@@ -104,11 +105,13 @@
   import editDropdown from '../../../components/editDropdown/editDropdown.vue';
   //弹窗
   import addPartner from  '../model/addPartner.vue'
+  import deletePartner from '../model/deletePartner.vue'
   export default {
     components: {
       editDropdown,
       filterDrop,
-      addPartner
+      addPartner,
+      deletePartner,
     },
     data() {
       return {
@@ -128,6 +131,7 @@
           }],
         },
         enableValue:true,
+        pattnerName:'售票处终端001',
       }
     },
     methods: {
@@ -155,9 +159,13 @@
             this.$Message.warning('您已禁用合作伙伴：星火旅社1');
           }
       },
-      //新增
+      //新增合作伙伴
       addPartnerBtn(){
         this.$refs.addPartnerModal.show();
+      },
+      //删除合作伙伴
+      deletePartnerBtn(){
+        this.$refs.deletePartnerModal.show();
       },
       init(){
 

@@ -132,9 +132,14 @@ export default new Vuex.Store({
         //获取用户权限信息
         getUserRight ({commit}) {
             commit('updatePermissionInfo',{
-              'partner' : 'allow',
               'orgManage' : 'allow',
-              'selfSupport' : 'allow',
+              'organization':'allow',
+              'employee':'allow',
+              'rolePermission':'allow',
+              'partner' : 'allow',
+              'channels' : 'allow',
+              'saleChannelsGroup':'allow',
+              'verificateGroup':'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {

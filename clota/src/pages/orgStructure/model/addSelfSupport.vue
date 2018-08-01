@@ -8,35 +8,23 @@
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>新增合作伙伴</span>
+      <span>新增自营渠道</span>
     </div>
     <!--内容区域-->
     <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" label-position="right" >
-      <Form-item label="合作伙伴名称" prop="name">
-        <Select v-model="addPartner.name">
-          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
+      <Form-item label="自营渠道名称" prop="name">
+        <Input v-model="addPartner.name" placeholder="Enter something..." />
       </Form-item>
 
-      <Form-item label="协议起止日期" prop="name">
-        <DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 100%"></DatePicker>
-      </Form-item>
-
-      <Form-item label="销售渠道分组">
-        <Select v-model="addPartner.name">
-          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
-      </Form-item>
-
-      <Form-item label="备注">
-        <Input v-model="addPartner.name" type="textarea" :rows="4" placeholder="Enter something..." />
-      </Form-item>
-
-      <Form-item label="是否启用协议">
+      <Form-item label="自营渠道类型">
         <RadioGroup v-model="addPartner.name">
-          <Radio label="ok"><span>启用</span></Radio>
-          <Radio label="no"><span>暂不启用</span></Radio>
+          <Radio label="ok"><span>线上</span></Radio>
+          <Radio label="no"><span>线下</span></Radio>
         </RadioGroup>
+      </Form-item>
+
+      <Form-item label="URL" >
+        <Input v-model="addPartner.name" placeholder="Enter something..." />
       </Form-item>
 
     </Form>
@@ -117,7 +105,7 @@
   @import '~@/assets/scss/base';
   /deep/.addPartner{
     .ivu-modal-body{
-        padding: 42px 90px 40px 66px;
+      padding: 42px 90px 40px 66px;
     }
   }
 </style>
