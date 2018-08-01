@@ -14,6 +14,7 @@ import i18n from './assets/js/lang.config';
 import './assets/theme/iviewTheme/index.less';
 import 'klwk-ui/src/lib/css/index.scss';
 import 'element-ui/lib/theme-chalk/index.css';
+import './assets/css/iconfont.css';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'

@@ -3,7 +3,7 @@
 <template>
   <div class="frame-header">
     <div class="company-log" :class="{'pack-up' : menuIsPackUp}">
-      clot 的logo
+      <img src="../../assets/images/icon-logo-small.svg" class="logo-img" alt="">
     </div>
     <div class="shrink">
       <span
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="menu-li">
-      <Menu mode="horizontal" active-name="1">
+      <Menu mode="horizontal">
         <Submenu name="1">
           <template slot="title">
             <Icon type="ios-stats" />
@@ -47,13 +47,13 @@
     </div>
     <ul class="icon-li">
       <li class="icon">
-        <i  class="ivu-icon ivu-icon-logo-apple" ></i>
+        <span class="iconfont icon-notification-w"></span>
       </li>
       <li class="icon">
-        <i  class="ivu-icon ivu-icon-logo-apple" ></i>
+        <span class="iconfont icon-help"></span>
       </li>
       <li class="icon">
-        <i  class="ivu-icon ivu-icon-logo-apple" ></i>
+        <span class="iconfont icon-theme"></span>
       </li>
     </ul>
     <div class="lang-change">
@@ -126,6 +126,11 @@
       &.pack-up{
         width: 45px!important;
         transition: all 0.3s;
+      }
+
+      .logo-img{
+        @include block_outline(140px,26px,false);
+        margin: 18px 0 0 34px;
       }
     }
 
@@ -251,18 +256,21 @@
 
     .icon-li{
       overflow: hidden;
-      padding: 23px 20px 23px 0;
+      padding: 18px 20px 23px 0;
       display: inline-block;
       @include block_outline(auto,100%);
 
       .icon{
         float: left;
         @include block_outline(18px,16px);
-        background: red;
         margin: 0 9px;
 
         &:nth-of-type(1){
           margin-left: 0;
+        }
+
+        .iconfont{
+          color: $color_fff;
         }
       }
     }

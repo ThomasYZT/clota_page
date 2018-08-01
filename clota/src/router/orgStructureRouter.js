@@ -4,6 +4,7 @@
  *  _name用来判断路由的权限
  * menuName 对应的语言配置文件当中的键值
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
+ * iconClass 图标类名
  */
 export default {
   orgStructure:{
@@ -17,7 +18,7 @@ export default {
     },
     children:{
       organization:{
-        //组织架构--员工
+        //组织架构--组织架构
         path : 'organization',
         name : 'organization',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/organization/organization.vue'),
@@ -25,6 +26,7 @@ export default {
           menuName : 'menuList.org', //lang.config.js 里面的语言健
           lightMenu : 'orgManage',//高亮
           _name : 'organization', //
+          iconClass : 'icon-person'
         },
       },
       employee:{
@@ -36,6 +38,7 @@ export default {
           menuName : 'menuList.employee', //lang.config.js 里面的语言健
           lightMenu : 'orgManage',//高亮
           _name : 'employee', //
+          iconClass : 'icon-orgaization'
         },
       },
       rolePermission: {
@@ -47,6 +50,7 @@ export default {
           menuName : 'menuList.rolePermission', //lang.config.js 里面的语言健
           lightMenu : 'orgManage',//高亮
           _name : 'rolePermission', //
+          iconClass : 'icon-role-permission'
         },
       },
       partner :  {
@@ -58,6 +62,7 @@ export default {
           menuName : 'menuList.partner', //lang.config.js 里面的语言健
           lightMenu : 'orgManage',//高亮
           _name : 'partner', //
+          iconClass : 'icon-partner'
         },
       },
       channels:{
@@ -69,6 +74,7 @@ export default {
           menuName : 'menuList.channels',
           lightMenu : 'orgManage',
           _name : 'channels',
+          iconClass : 'icon-market-channel'
         },
       },
       saleChannelsGroup:{
@@ -80,6 +86,7 @@ export default {
           menuName : 'menuList.saleChannelsGroup',
           lightMenu : 'orgManage',
           _name : 'saleChannelsGroup',
+          iconClass : 'icon-trade-channel'
         },
       },
       verificateGroup:{
@@ -91,6 +98,7 @@ export default {
           menuName : 'menuList.verificateGroup',
           lightMenu : 'orgManage',
           _name : 'verificateGroup',
+          iconClass : 'icon-partner'
         },
       },
     }

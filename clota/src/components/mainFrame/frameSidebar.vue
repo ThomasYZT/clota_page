@@ -11,7 +11,9 @@
         <MenuItem :name="item.meta._name"
                   v-for="item in subMenuList"
                   :key="item.name">
-          <Icon type="grid" class="iconfont"></Icon>
+          <span v-if="item.meta.iconClass"
+                class="iconfont"
+                :class="[item.meta.iconClass]"></span>
           <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>
         </MenuItem>
       </Menu>
@@ -104,6 +106,7 @@
 
     .menu-list{
       @include block_outline($width : 220px);
+      padding-top: 30px;
       overflow: auto;
     }
 
@@ -115,7 +118,7 @@
           display: flex;
           flex-direction: row;
           padding: 10px 25px 10px 17px;
-          color: rgba($color_fff,0.7);
+          color: rgba($color_fff,1);
           font-size: $font_size_14px;
           @include block_outline($height : 42px);
           border-bottom:  1px solid rgba($color_fff,0.1);
@@ -129,9 +132,10 @@
           width: 15px;
           margin-right: 15px;
           display: inline-block;
-          font-size: 17px;
+          font-size: 13px;
           vertical-align: middle;
-          padding-top: 3px;
+          padding-top: 2px;
+          color: $color_fff;
         }
 
         .menu-name{
