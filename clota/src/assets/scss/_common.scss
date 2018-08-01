@@ -1,6 +1,7 @@
 .ivu-btn-default{
   padding: 6px 20px 5px;
 }
+
 .selectionTable{
   .el-table{
     th{
@@ -149,7 +150,8 @@
   }
 }
 .orgHeader{
-  @include clearfix;
+  height: 34px;
+  box-sizing: content-box;
   padding: 14px 30px;
   .search{
     width: 353px;

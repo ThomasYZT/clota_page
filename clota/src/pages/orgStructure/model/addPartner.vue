@@ -8,7 +8,7 @@
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>新增合作伙伴</span>
+      <span><span class="add-icon">+</span>新增合作伙伴</span>
     </div>
     <!--内容区域-->
     <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" label-position="right" >

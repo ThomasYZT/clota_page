@@ -4,7 +4,7 @@
       <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addGroup" size="default"><span class="add-icon">+</span>新增分组</Button>
       <Button style="float: left" type="ghost" size="default" @click="modifyVerificateBtn">批量操作</Button>
       <div class="search">
-        <Input suffix="ios-search" placeholder="全部分组" />
+        <edit-dropdown :dataList="dataList" @deleteList="deleteList" @saveList="saveList"></edit-dropdown>
       </div>
     </div>
     <div class="selectionTable">
@@ -132,6 +132,16 @@
             alert: 'normal'
           }],
         },
+        dataList:[{
+          name:'A级销售渠道',
+          id:1,
+        },{
+          name:'B级销售渠道',
+          id:2,
+        },{
+          name:'C级销售渠道',
+          id:3,
+        }],
         enableValue:true,
         moveName:'核销设备',
         popoverEl:'',
@@ -154,6 +164,12 @@
       },
       moveGroup(){
         this.$refs.moveOutGroupModal.show();
+      },
+      deleteList(){
+        this.$refs.deleteGroupModal.show();
+      },
+      saveList(value){
+        console.log(value)
       },
       init(){
 
