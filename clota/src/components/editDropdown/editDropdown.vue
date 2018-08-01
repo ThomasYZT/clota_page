@@ -33,6 +33,7 @@
     },
     data() {
       return {
+        value:'',
       }
     },
     methods: {

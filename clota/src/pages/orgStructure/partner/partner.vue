@@ -99,8 +99,8 @@
 
 <script>
   import ajax from '@/api/ajaxList'
-  import filterDrop from  '../../components/filterDrop/filterDrop.vue';
-  import editDropdown from '../../components/editDropdown/editDropdown.vue'
+  import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
+  import editDropdown from '../../../components/editDropdown/editDropdown.vue'
   export default {
     components: {
       editDropdown,
