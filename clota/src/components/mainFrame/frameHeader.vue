@@ -15,60 +15,62 @@
       <div class="navigate_before">
         <i  class="ivu-icon ivu-icon-ios-arrow-forward"></i>
       </div>
-      <ul class="navigation">
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-        <li class="sub-menu active">
-          工作台
-          <span class="bar"></span>
-        </li>
-      </ul>
+      <div class="nav-scroll">
+        <div class="navigation">
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+          <div class="sub-menu active">
+            工作台
+            <span class="bar"></span>
+          </div>
+        </div>
+      </div>
       <div class="navigate_next">
         <i  class="ivu-icon ivu-icon-ios-arrow-forward"></i>
       </div>
@@ -156,7 +158,7 @@
     }
 
     .shrink{
-      @include block_outline(100px);
+      @include block_outline(50px);
 
       .iconfont{
         margin-top: 25px;
@@ -195,41 +197,47 @@
         }
       }
 
-      .navigation{
+      .nav-scroll{
+        position: relative;
         padding-left: 10px;
-        white-space: nowrap;
-        overflow-x:auto;
         flex: 1;
-        height: 70px;
+        overflow: hidden;
 
-        .sub-menu{
-          display: inline-block;
-          @include block_outline(auto);
-          font-size: $font_size_16px;
-          color: rgba($color_fff,0.6);
-          line-height: 60px;
-          margin: 0 20px;
-          cursor: pointer;
+        .navigation{
+          white-space: nowrap;
+          overflow-x:auto;
+          height: 70px;
+          position: absolute;
 
-          .bar{
-            display: none;
-          }
-
-          &.active{
-            color: $color_fff;
-            position: relative;
+          .sub-menu{
+            display: inline-block;
+            @include block_outline(auto);
+            font-size: $font_size_16px;
+            color: rgba($color_fff,0.6);
+            line-height: 60px;
+            margin: 0 20px;
+            cursor: pointer;
 
             .bar{
-              display: inline-block;
-              @include block_outline($height : 4px);
-              border-radius: 2px;
-              background: $color_fff;
-              @include absolute_pos(absolute,$top : 46px,$left : 0);
+              display: none;
             }
-          }
 
-          &:nth-of-type(1){
-            margin-left: 0;
+            &.active{
+              color: $color_fff;
+              position: relative;
+
+              .bar{
+                display: inline-block;
+                @include block_outline($height : 4px);
+                border-radius: 2px;
+                background: $color_fff;
+                @include absolute_pos(absolute,$top : 46px,$left : 0);
+              }
+            }
+
+            &:nth-of-type(1){
+              margin-left: 0;
+            }
           }
         }
       }

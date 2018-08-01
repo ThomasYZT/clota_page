@@ -21,24 +21,6 @@
           return {}
       },
       methods: {
-        /**
-         * 获取用户权限
-         * @param commit
-         */
-        getUserRight ({commit}) {
-          setTimeout(() => {
-            commit('updateUserRight',{
-              'partner' : 'allow'
-            });
-          },5000);
-          // return ajaxList.getUserRight(param).then(res => {
-          //   if(res.success) {
-          //     commit('updateUserRight',res.data);
-          //   }else{
-          //     console.error('getUserRight：获取用户信息失败')
-          //   }
-          // });
-        },
       },
       computed: {
         noFrame(){

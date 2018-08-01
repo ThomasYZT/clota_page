@@ -28,8 +28,25 @@ export default new VueI18n({
       },
     },
     'en' : {
+      'project-title':'银科环企Clota云平台',
+      'userName':'账户',
+      'password':'密码',
+      'login':'登 录',
+      'uesrNameText':'请输入你的账号',
+      'passwordText':'请输入你的密码',
+      'loginSuccess':'登录成功',
+      'loginError':'登录失败',
+      'formValidate':'表单验证失败',
+      'autoLogin':'自动登录',
+      'copyright':'Copyright 2009-2020 © Galasys Global (SuZhou) Co.,Ltd All rights reserved.',
       'menuList' : {
-        'org' : 'organization'
+        'org' : 'organsition',
+        'employee' : '员工',
+        'rolePermission' : '角色权限',
+        'partner' : '合作伙伴',
+        'channels' : '自营渠道',
+        'saleChannelsGroup' : '销售渠道分组',
+        'verificateGroup' : '核销设备分组',
       },
     }
   }

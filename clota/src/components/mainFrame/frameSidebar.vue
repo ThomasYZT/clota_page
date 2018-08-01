@@ -5,31 +5,31 @@
     <div class="menu-list">
       <Menu  active-name="login" @on-select="selectMenu">
         <MenuItem name="login">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.org')}}</span>
         </MenuItem>
         <MenuItem name="2">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.employee')}}</span>
         </MenuItem>
         <MenuItem name="3">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.rolePermission')}}</span>
         </MenuItem>
         <MenuItem name="4">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.partner')}}</span>
         </MenuItem>
         <MenuItem name="5">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.channels')}}</span>
         </MenuItem>
         <MenuItem name="6">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.saleChannelsGroup')}}</span>
         </MenuItem>
         <MenuItem name="6">
-          <span class="iconfont"></span>
+          <Icon type="grid" class="iconfont"></Icon>
           <span class="menu-name">{{$t('menuList.verificateGroup')}}</span>
         </MenuItem>
       </Menu>
@@ -104,10 +104,11 @@
 
         /deep/ .iconfont{
           width: 15px;
-          height: 2px;
-          color: red;
           margin-right: 15px;
           display: inline-block;
+          font-size: 17px;
+          vertical-align: middle;
+          padding-top: 3px;
         }
 
         .menu-name{
