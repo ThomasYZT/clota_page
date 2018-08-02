@@ -28,7 +28,7 @@
       }
     },
     created () {
-      // this.$store.dispatch('getUserRight');
+      this.$store.dispatch('getUserRight');
     }
   }
 </script>
@@ -39,11 +39,7 @@
   #app{
     @include block_outline();
     min-width: $window_min_width;
+    min-height : $window_min_height;
     background-size: 100% 100%;
-  }
-</style>
-<style>
-  .w-title{
-    display: none;
   }
 </style>

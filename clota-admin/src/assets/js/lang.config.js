@@ -18,7 +18,13 @@ export default new VueI18n({
       },
       companyName : '银科环企Clota运营平台',
       autoLogin : '自动登录',
-      login : '登录'
+      login : '登录',
+      index : '首页',
+      todayLogin : '今日登陆',
+      travelOrder : '旅游产品订单',
+      tenementCount : '租户累计',
+      serverCount : '服务器数量',
+      circleName : '同比上周'
     },
     'en' : {
     }

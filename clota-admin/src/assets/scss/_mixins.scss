@@ -66,6 +66,13 @@
   }
 }
 
+@mixin card (){
+  background: $color_fff;
+  border: 1px solid $color_DFE2E5;
+  box-shadow: 0 2px 8px 0 rgba($color_000,0.10);
+  border-radius: 4px;
+}
+
 
 // Argument mixin
 //////////////////

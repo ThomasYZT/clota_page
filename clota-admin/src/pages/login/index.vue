@@ -3,7 +3,7 @@
 <template>
   <div class="login">
     <div class="company-logo">
-      <img src="../../assets/images/icon-login.svg" alt="" class="logo">
+      <img src="../../assets/images/icon-logo.svg" alt="" class="logo">
     </div>
     <div class="input-form">
       <div class="com-title">{{$t('companyName')}}</div>
@@ -23,8 +23,8 @@
                  style="width: 368px"
                  :placeholder="$t('password')"/>
         </FormItem>
-        <FormItem  prop="verifyCode" class="password input-with-icon">
-          <span class="iconfont icon-person"></span>
+        <FormItem  prop="verifyCode" class="password input-with-icon verify-code">
+          <span class="iconfont icon-person "></span>
           <Input v-model="formData.verifyCode"
                  style="width: 368px"
                  :placeholder="$t('verifyCode')"/>
@@ -94,8 +94,8 @@
     @include block_outline();
 
     .company-logo{
-      @include block_outline($height : 53px);
-      margin-top: 40px;
+      @include block_outline($height : 93px);
+      padding-top: 40px;
 
       .logo{
         margin-left: 80px;
@@ -104,11 +104,15 @@
     }
 
     .input-form{
-      @include block_outline(368px);
+      @include block_outline(368px,auto);
       margin: 154px auto 0 auto;
 
       .input-with-icon{
         position: relative;
+
+        &.verify-code /deep/ .ivu-input{
+          padding-right: 100px;
+        }
 
         .iconfont{
           z-index: 10;
@@ -122,6 +126,7 @@
           @include block_outline(73px,30px);
         }
       }
+
 
       .com-title{
         font-size: $font_size_24px;

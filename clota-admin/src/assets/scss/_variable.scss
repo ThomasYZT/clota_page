@@ -32,6 +32,14 @@ $color_22BB5F : #22BB5F;
 $color_000_065:rgba(0,0,0,0.65);
 $color_err : #ed3f14;
 $color_e6 : #e6e6e6;
+$color_B3D5EB: #B3D5EB;
+$color_DFE2E5: #DFE2E5;
+$color_f4f6f9: #f4f6f9;
+$color_353B5E: #353B5E;
+$color_E8E8E:  #E8E8E8;
+$color_E6EAEE:  #E6EAEE;
+$color_0082D5:  #0082D5;
+$color_1890FF:  #1890FF;
 /**
   字体大小配置
  */
@@ -41,12 +49,14 @@ $font_size_15px : 15px !default;
 $font_size_16px : 16px !default;
 $font_size_18px : 18px !default;
 $font_size_20px : 20px !default;
+$font_size_22px : 22px !default;
 $font_size_24px : 24px !default;
 
 /**
   位置大小配置
  */
 $window_min_width : 1280px;
+$window_min_height : 650px;
 $content_min_width : 1000px;
 
 /**

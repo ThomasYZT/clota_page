@@ -18,7 +18,7 @@ Vue.use(Vuex);
 const childDeepClone = (childrenList,data) => {
     let children = [];
     for(let child in childrenList){
-        let router = childrenList[child];
+        let router = defaultsDeep({},childrenList[child]);
         //判断路由的名称是否存在于权限接口当中，部分父路由没有直接指定名称，所以需要判断meta信息里面的_name对应的权限是否存在
         if((router.name && router.name in  data)
           || (router.meta && router.meta._name && router.meta._name in  data)){
