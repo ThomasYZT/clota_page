@@ -9,6 +9,16 @@ export default new VueI18n({
       account : '账户',
       password : '密码',
       verifyCode : '验证码',
+      accountInputError : '请输入账号',
+      passwordInputError : '请输入密码',
+      verifyCodedInputError : '请输入验证码',
+      loginError : {
+        accountError : '密码或账号错误',
+        verifyCodeError : '验证码错误'
+      },
+      companyName : '银科环企Clota运营平台',
+      autoLogin : '自动登录',
+      login : '登录'
     },
     'en' : {
     }

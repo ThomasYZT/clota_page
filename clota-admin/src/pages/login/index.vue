@@ -6,31 +6,40 @@
       <img src="../../assets/images/icon-login.svg" alt="" class="logo">
     </div>
     <div class="input-form">
-      <div class="com-title">银科环企Clota运营平台</div>
+      <div class="com-title">{{$t('companyName')}}</div>
       <Form ref="formValidate"
             :model="formData"
             :rules="rules"
             :label-width="0">
-        <FormItem  prop="account">
+        <FormItem  prop="account" class="input-with-icon">
+          <span class="iconfont icon-person"></span>
           <Input v-model="formData.account"
                  style="width: 368px;height: 40px;"
                  :placeholder="$t('account')"/>
         </FormItem>
-        <FormItem  prop="password">
+        <FormItem  prop="password" class="input-with-icon">
+          <span class="iconfont icon-person"></span>
           <Input v-model="formData.password"
                  style="width: 368px"
                  :placeholder="$t('password')"/>
         </FormItem>
-        <FormItem  prop="password" class="password">
+        <FormItem  prop="verifyCode" class="password input-with-icon">
+          <span class="iconfont icon-person"></span>
           <Input v-model="formData.verifyCode"
                  style="width: 368px"
                  :placeholder="$t('verifyCode')"/>
+          <img class="verify-img" src="../../assets/images/test.jpg" alt="">
         </FormItem>
-        <FormItem  prop="password" class="auto-login">
-          <Checkbox label="Eat">自动登录</Checkbox>
+        <FormItem  class="auto-login">
+          <Checkbox label="Eat">{{$t('autoLogin')}}</Checkbox>
         </FormItem>
+        <div class="err-message">
+          <span v-if="showErrMessage">{{$t('loginError.accountError')}}</span>
+        </div>
         <FormItem>
-          <Button type="primary" class="login-btn" >登录</Button>
+          <Button type="primary"
+                  class="login-btn"
+                  @click="login">{{$t('login')}}</Button>
         </FormItem>
       </Form>
     </div>
@@ -42,7 +51,17 @@
         data() {
             return {
               //表单校验规则
-              rules : [],
+              rules : {
+                account : [
+                  {required : true,message : this.$t('accountInputError'),trigger : 'blur'}
+                ],
+                password : [
+                  {required : true,message : this.$t('passwordInputError'),trigger : 'blur'}
+                ],
+                verifyCode : [
+                  {required : true,message : this.$t('verifyCodedInputError'),trigger : 'blur'}
+                ]
+              },
               //表单数据
               formData : {
                 //账户
@@ -51,10 +70,21 @@
                 password : '',
                 //验证码
                 verifyCode : ''
-              }
+              },
+              //是否显示错误信息
+              showErrMessage : false
             }
         },
-        methods: {}
+        methods: {
+          /**
+           * 登录
+           */
+          login () {
+            this.$refs.formValidate.validate(valid => {
+              console.log(valid)
+            });
+          }
+        }
     }
 </script>
 
@@ -75,11 +105,27 @@
 
     .input-form{
       @include block_outline(368px);
-      font-size: $font_size_24px;
-      color: $color_333;
       margin: 154px auto 0 auto;
 
+      .input-with-icon{
+        position: relative;
+
+        .iconfont{
+          z-index: 10;
+          @include absolute_pos(absolute,$top : 4px,$left : 15px);
+          font-size: $font_size_14px;
+          color: $color_e6;
+        }
+
+        .verify-img{
+          @include absolute_pos(absolute,$top : 5px,$right : 11px);
+          @include block_outline(73px,30px);
+        }
+      }
+
       .com-title{
+        font-size: $font_size_24px;
+        color: $color_333;
         text-align: center;
       }
 
@@ -88,7 +134,7 @@
       }
 
       .auto-login{
-        margin-bottom: 50px!important;
+        margin-bottom: 20px!important;
       }
 
       .login-btn{
@@ -100,6 +146,15 @@
         color: $color_fff;
         letter-spacing: 6px;
         line-height: 28px;
+      }
+
+      .err-message{
+        @include block_outline($height : 18px);
+        line-height: 18px;
+        color: $color_err;
+        font-size: $font_size_12px;
+        text-align: center;
+        margin-bottom: 12px;
       }
 
       /deep/ .ivu-input{
