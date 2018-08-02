@@ -1,6 +1,6 @@
 <template>
   <div class="loginPage">
-
+    <!-- 页面头部 -->
     <div class="header">
       <div class="logo">
         <img src="../../assets/images/logo.svg" alt="">
@@ -11,6 +11,7 @@
         <span @click="changeLang">English</span>
       </div>
     </div>
+    <!-- 登录模块 -->
     <div class="login">
       <div class="content">
         <img src="../../assets/images/login-img.svg" alt="">
@@ -40,7 +41,6 @@
               <div class="submit" @click="handleSubmit('formInline')">{{ $t("login") }}</div>
             </Form-item>
           </Form>
-
         </div>
       </div>
       <div class="copyright">{{ $t("copyright") }}</div>
@@ -58,8 +58,8 @@
     data () {
       return {
         formInline: {
-          user: '',
-          password: ''
+          user: '', //登录账号
+          password: '' //登录密码
         },
         ruleInline: {
           user: [
@@ -72,10 +72,11 @@
       }
     },
     methods: {
-        //
+      //改变语言
       changeLang(){
         this.$store.commit('setLang', 'lang');
       },
+      //登录提交表单
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {

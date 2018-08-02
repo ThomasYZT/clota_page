@@ -1,4 +1,5 @@
 <template>
+  <!-- 合作伙伴 -->
   <div class="partner">
     <div class="orgHeader">
       <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default"><span class="add-icon">+</span>新增合作伙伴</Button>
@@ -100,9 +101,11 @@
 
 <script>
   import ajax from '@/api/ajaxList'
+  // 表格筛选下拉模块
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
-  //弹窗
+  //新增合作伙伴弹窗
   import addPartner from  '../model/addPartner.vue';
+  // 删除合作伙伴弹窗
   import deleteList from '../model/deleteList.vue';
   export default {
     components: {
@@ -112,14 +115,11 @@
     },
     data() {
       return {
+        // 表格数据
         tableData3: [{
           date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
         }],
+        // 表格筛选下拉菜单
         listFilters: {
           stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
           alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
@@ -127,12 +127,13 @@
             alert: 'normal'
           }],
         },
-        enableValue:true,
-        name:'售票处终端001',
-        deleteName:'删除合作伙伴',
+        enableValue:true,  //启用，未启用变量
+        name:'售票处终端001', //删除弹窗名字
+        deleteName:'删除合作伙伴', //删除内容名字
       }
     },
     methods: {
+      // 筛选下拉组件
       renderHeader(h, params) {
         return h(filterDrop, {
           props: {
@@ -145,6 +146,7 @@
           }
         });
       },
+      // 筛选点击事件
       handleAlertFilter(){
 
       },
@@ -176,8 +178,9 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   .partner{
 
   }

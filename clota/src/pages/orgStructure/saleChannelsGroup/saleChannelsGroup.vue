@@ -1,4 +1,5 @@
 <template>
+  <!-- 销售渠道分组 -->
   <div class="saleChannelsGroup">
     <div class="orgHeader">
       <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addGroup" size="default"><span class="add-icon">+</span>新增分组</Button>
@@ -95,11 +96,14 @@
 
 
 <script>
-  import ajax from '@/api/ajaxList'
+  import ajax from '@/api/ajaxList';
+  // 下拉编辑组件
   import editDropdown from '../../../components/editDropdown/editDropdown.vue';
-  //弹窗
+  // 移动分组弹窗
   import moveOutGroup from '../model/moveOutGroup.vue';
+  // 删除分组弹窗
   import deleteGroup from  '../model/deleteGroup.vue';
+  // 移动分组下拉
   import kwPopover from '../../../components/popover/popover.vue';
   export default {
     components: {
@@ -110,21 +114,11 @@
     },
     data() {
       return {
+        //表单数据
         tableData3: [{
           date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
         }],
-        listFilters: {
-          stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-          alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-            name: '正常',
-            alert: 'normal'
-          }],
-        },
+        //下拉列表数据
         dataList:[{
           name:'A级销售渠道',
           id:1,
@@ -135,33 +129,39 @@
           name:'C级销售渠道',
           id:3,
         }],
-        enableValue:true,
-        moveName:'销售渠道',
-        pattnerName:'A级销售渠道',
-        popoverEl:'',
+        moveName:'销售渠道', //移出名称
+        pattnerName:'A级销售渠道', //删除分组名称
+        popoverEl:'', //移动分组下拉变量
+        // 下拉组件位置定义
         offset:{
           top:8,
         }
       }
     },
     methods: {
+      // 新增分组
       addGroup(event){
         this.popoverEl = event.currentTarget;
         this.$refs.addPopover.show();
       },
+      // 移动列表
       moveInGroupBtn(event){
         this.popoverEl = event.currentTarget;
         this.$refs.movePopover.show();
       },
+      // 移出分组
       moveOutGroupBtn(){
         this.$refs.moveOutGroupModal.show();
       },
+      // 删除列表
       deleteList(){
         this.$refs.deleteGroupModal.show();
       },
+      // 保存列表
       saveList(value){
         console.log(value)
       },
+      //初始化
       init(){
 
       },
@@ -175,6 +175,7 @@
 
 <style lang="scss">
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   .add-group-popover{
     padding: 17px 20px;
     .popover-content{

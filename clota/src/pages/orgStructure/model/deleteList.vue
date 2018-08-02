@@ -25,7 +25,7 @@
     <!--自定义页脚-->
     <div slot="footer">
       <template >
-        <i-button  class="ivu-btn-error" size="small" type="primary">确认</i-button>
+        <i-button  class="ivu-btn-error" size="small" type="primary" @click="submit">确认</i-button>
         <i-button  class="ivu-btn-cancel" size="small" @click="hide">取消</i-button>
       </template>
     </div>
@@ -71,12 +71,8 @@
        * 创建自定义指标表单校验
        */
       submit(){
-        this.$refs.formValidate.validate((valid) => {
-          if ( valid ) {
-
-          }else{
-          }
-        });
+        this.$emit('deletions')
+        this.visible = false;
       },
     }
   }

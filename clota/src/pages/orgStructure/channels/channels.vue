@@ -1,4 +1,5 @@
 <template>
+  <!--  自营渠道页面 -->
   <div class="partner">
     <div class="orgHeader">
       <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" size="default"  @click="addSelfSupportBtn" ><span class="add-icon">+</span>新增自营渠道</Button>
@@ -100,8 +101,11 @@
 
 <script>
   import ajax from '@/api/ajaxList'
+  // 表格筛选下拉模块
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
+  // 新增自营渠道弹窗
   import addSelfSupport from '../model/addSelfSupport.vue';
+  // 删除自营渠道弹窗
   import deleteList from '../model/deleteList.vue';
   export default {
     components: {
@@ -111,14 +115,11 @@
     },
     data() {
       return {
+        // 表格数据
         tableData3: [{
           date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
         }],
+        // 表格筛选下拉菜单
         listFilters: {
           stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
           alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
@@ -126,12 +127,13 @@
             alert: 'normal'
           }],
         },
-        enableValue:true,
-        name:'售票处终端001',
-        deleteName:'删除渠道',
+        enableValue:true,  //启用，未启用变量
+        name:'售票处终端001', //删除弹窗名字
+        deleteName:'删除渠道', //删除内容名字
       }
     },
     methods: {
+      // 筛选下拉组件
       renderHeader(h, params) {
         return h(filterDrop, {
           props: {
@@ -144,9 +146,11 @@
           }
         });
       },
+      // 筛选点击事件
       handleAlertFilter(){
 
       },
+      // 点击启用，未启用事件
       enable () {
         this.enableValue = !this.enableValue;
         if(this.enableValue){
@@ -155,12 +159,15 @@
           this.$Message.warning('您已禁用合作伙伴：星火旅社1');
         }
       },
+      // 新增自营渠道事件
       addSelfSupportBtn(){
         this.$refs.addSelfSupport.show();
       },
+      // 删除自营渠道事件
       deleteSelfSupportBtn(){
         this.$refs.delListModal.show();
       },
+      // 初始化加载数据
       init(){
 
       },
@@ -172,6 +179,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
 </style>

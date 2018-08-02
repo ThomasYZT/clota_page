@@ -46,9 +46,8 @@
     props:[],
     data () {
       return {
-        visible: false,
-        readonly: false,
-        loading: false,
+        visible: false, //显示模态框变量
+        // 表单变量
         addPartner: {
           name: '',
         },
@@ -57,6 +56,7 @@
             {required: true, message: '请输入小组名称', trigger: 'blur'},
           ],
         },
+        //下拉菜单
         cityList: [
           {
             value: 'New York',

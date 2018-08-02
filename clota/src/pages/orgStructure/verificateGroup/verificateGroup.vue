@@ -66,6 +66,7 @@
     </div>
     <!-- 编辑核销 -->
     <modify-verificate  ref="modifyVerificateModal" @upDataList='init' ></modify-verificate>
+    <!-- 移出分组 -->
     <move-out-group ref="moveOutGroupModal" @upDataList='init' :moveName="moveName"></move-out-group>
     <!-- 新增分组 -->
     <kw-popover ref="addPopover" :el="popoverEl" placement="bottom" align="left" :offset="offset">
@@ -103,9 +104,11 @@
 <script>
   import ajax from '@/api/ajaxList'
   import editDropdown from '../../../components/editDropdown/editDropdown.vue';
-  //弹窗
+  // 编辑核销弹窗
   import modifyVerificate from  '../model/modifyVerificate.vue';
+  // 移出分组弹窗
   import moveOutGroup from '../model/moveOutGroup.vue';
+  // 移动分组下拉
   import kwPopover from '../../../components/popover/popover.vue';
   export default {
     components: {
@@ -116,21 +119,11 @@
     },
     data() {
       return {
+        // 表单数据
         tableData3: [{
           date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
         }],
-        listFilters: {
-          stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-          alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-            name: '正常',
-            alert: 'normal'
-          }],
-        },
+        // 下拉列表数据
         dataList:[{
           name:'A级销售渠道',
           id:1,
@@ -141,35 +134,42 @@
           name:'C级销售渠道',
           id:3,
         }],
-        enableValue:true,
-        moveName:'核销设备',
-        popoverEl:'',
+        moveName:'核销设备', // 移出弹窗名字
+        popoverEl:'', //移动分组变量
+        // 移动分组位置变量
         offset:{
           top:8,
         }
       }
     },
     methods: {
+      // 编辑核销
       modifyVerificateBtn(){
         this.$refs.modifyVerificateModal.show();
       },
+      // 新增分组
       addGroup(event){
         this.popoverEl = event.currentTarget;
         this.$refs.addPopover.show();
       },
+      // 移动分组
       moveInGroupBtn(event){
         this.popoverEl = event.currentTarget;
         this.$refs.movePopover.show();
       },
+      //  移出分组
       moveGroup(){
         this.$refs.moveOutGroupModal.show();
       },
+      // 删除分组
       deleteList(){
         this.$refs.deleteGroupModal.show();
       },
+       // 保存分组
       saveList(value){
         console.log(value)
       },
+      // 初始化
       init(){
 
       },
@@ -183,6 +183,7 @@
 
 <style lang="scss">
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   .verificateGroup{
 
   }

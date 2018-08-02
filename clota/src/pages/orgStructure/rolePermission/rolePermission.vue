@@ -1,4 +1,5 @@
 <template>
+  <!-- 角色权限 -->
   <div class="partner">
     <div class="orgHeader">
       <Select style="width: 180px;float: left;margin-right:10px">
@@ -10,8 +11,8 @@
       <Select style="width: 180px;float: left;margin-right:10px">
         <Option value="132">全部角色名称</Option>
       </Select>
-      <Button type="primary"  style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default">查 询</Button>
-      <Button type="ghost" style="float: left" size="default">重 置</Button>
+      <Button type="primary"  style="float: left;margin-right: 10px"  size="default" @click="search">查 询</Button>
+      <Button type="ghost" style="float: left" size="default" @click="reset">重 置</Button>
     </div>
     <div>
       <el-table
@@ -51,7 +52,7 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operation">
-              <span class="span-blue">查看详情</span>
+              <span class="span-blue" @click="listDetail">查看详情</span>
             </div>
           </template>
         </el-table-column>
@@ -78,31 +79,24 @@
     },
     data() {
       return {
+        //重置
+        reset(){
+
+        },
+        //查询
+        search(){
+
+        },
+        // 表单数据
         tableData3: [{
           date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
         }],
-        listFilters: {
-          stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-          alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-            name: '正常',
-            alert: 'normal'
-          }],
-        },
-        enableValue:true,
-        pattnerName:'售票处终端001',
       }
     },
     methods: {
-      //新增合作伙伴
-      addPartnerBtn(){
-      },
-      //删除合作伙伴
-      deletePartnerBtn(){
+      //查看详情
+      listDetail(){
+
       },
       init(){
 
@@ -117,6 +111,7 @@
 
 <style lang="scss">
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   .partner{
 
   }

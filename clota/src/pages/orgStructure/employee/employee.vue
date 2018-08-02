@@ -1,4 +1,5 @@
 <template>
+  <!-- 新增员工页面 -->
   <div class="partner">
     <div class="orgHeader">
       <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="addPartnerBtn" size="default"><span class="add-icon">+</span>新增员工</Button>
@@ -88,7 +89,7 @@
 
 <script>
   import ajax from '@/api/ajaxList';
-  //弹窗
+  //删除列表弹窗
   import deleteList from '../model/deleteList.vue';
   export default {
     components: {
@@ -96,6 +97,7 @@
     },
     data() {
       return {
+        //表单数据
         tableData3: [{
           date: '2016-05-03',
           name: '王小虎',
@@ -104,16 +106,8 @@
           address: '上海市普陀区金沙江路 1518 弄',
           zip: 200333
         }],
-        listFilters: {
-          stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-          alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-            name: '正常',
-            alert: 'normal'
-          }],
-        },
-        enableValue:true,
-        deleteName:'删除员工',
-        name:'售票处终端001',
+        deleteName:'删除员工',  //删除内容名字
+        name:'售票处终端001', //删除弹窗名字
       }
     },
     methods: {
@@ -124,6 +118,7 @@
       deleteEmployeeBtn(){
         this.$refs.delListModal.show();
       },
+      // 初始化加载数据
       init(){
 
       }
@@ -135,8 +130,9 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   .partner{
 
   }
