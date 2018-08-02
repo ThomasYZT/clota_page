@@ -23,7 +23,7 @@ export default {
         name : 'organization',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/organization/organization.vue'),
         meta : {
-          menuName : 'menuList.org', //lang.config.js 里面的语言健
+          menuName : 'menuList.org', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮
           _name : 'organization', //
           iconClass : 'icon-person'
@@ -35,7 +35,7 @@ export default {
         name : 'employee',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/employee/employee.vue'),
         meta : {
-          menuName : 'menuList.employee', //lang.config.js 里面的语言健
+          menuName : 'menuList.employee', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮
           _name : 'employee', //
           iconClass : 'icon-orgaization'
@@ -47,7 +47,7 @@ export default {
         name : 'rolePermission',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/rolePermission.vue'),
         meta : {
-          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言健
+          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮
           _name : 'rolePermission', //
           iconClass : 'icon-role-permission'
@@ -59,7 +59,7 @@ export default {
         name : 'roleSceneryDetail',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/child/roleSceneryDetail.vue'),
         meta : {
-          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言健
+          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮
           _name : 'rolePermission', //
           iconClass : 'icon-role-permission'
@@ -71,7 +71,7 @@ export default {
         name : 'roleCompanyDetail',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/child/roleCompanyDetail.vue'),
         meta : {
-          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言健
+          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮
           _name : 'rolePermission', //
           iconClass : 'icon-role-permission'
@@ -83,7 +83,7 @@ export default {
         name : 'partner',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/partner/partner.vue'),
         meta : {
-          menuName : 'menuList.partner', //lang.config.js 里面的语言健
+          menuName : 'menuList.partner', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮
           _name : 'partner', //
           iconClass : 'icon-partner'

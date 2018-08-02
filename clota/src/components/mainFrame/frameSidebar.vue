@@ -42,6 +42,7 @@
           /**
            * 二级菜单列表
            * 二级菜单列表排除了路径为空的重定向路由和没有匹配到路由的重定向路由
+           * 如果菜单的name属性和meta下的_name属性的值不同，说明这个菜单权限是挂靠在name为meta._name下的菜单，这里也需要排除
            * @returns {Array}
            */
           subMenuList () {
@@ -50,8 +51,8 @@
               for(let i = 0,j = this.permissionInfo.length;i < j;i++){
                 if(this.permissionInfo[i].meta._name === activeTopMenu){
                   return this.permissionInfo[i]['children'].filter(item => {
-                    //排除重定向路由
-                    return item.meta && item.meta.menuName && !item.meta.hidden;
+                    //排除重定向路由和权限挂在其它路由下的路由
+                    return item.meta && item.meta.menuName && !item.meta.hidden && item.name === item.meta._name;
                   });
                 }
               }
