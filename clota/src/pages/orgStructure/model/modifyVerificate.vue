@@ -47,7 +47,7 @@
     <div slot="footer">
       <template >
         <i-button  size="small" type="primary">确认</i-button>
-        <i-button  class="ivu-btn-cancel" size="small" @click="hide">取消</i-button>
+        <i-button  type="ghost" size="small" @click="hide">取消</i-button>
       </template>
     </div>
 

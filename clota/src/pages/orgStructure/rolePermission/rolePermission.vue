@@ -52,7 +52,8 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operation">
-              <span class="span-blue" @click="listDetail">查看详情</span>
+              <span class="span-blue" @click="listDetail">查看详情(风景)</span>
+              <span  @click="listDetail2">查看详情(公司)</span>
             </div>
           </template>
         </el-table-column>
@@ -88,7 +89,10 @@
     methods: {
       //查看详情
       listDetail(){
-        this.$router.replace({'name':'roleSceneryDetail'})
+        this.$router.replace({'name':'roleDetail',query:{'detailType':'scenery'}})
+      },
+      listDetail2(){
+        this.$router.replace({'name':'roleDetail',query:{'detailType':'company'}})
       },
       //重置
       reset(){

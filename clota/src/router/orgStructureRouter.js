@@ -54,22 +54,10 @@ export default {
         },
       },
       roleSceneryDetail: {
-        //组织架构--角色权限--角色景区详情
-        path : 'rolePermission/roleSceneryDetail',
-        name : 'roleSceneryDetail',
-        component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/child/roleSceneryDetail.vue'),
-        meta : {
-          menuName : 'menuList.rolePermission', //lang.config.js 里面的语言键值
-          lightMenu : 'orgManage',//高亮
-          _name : 'rolePermission', //
-          iconClass : 'icon-role-permission'
-        },
-      },
-      roleCompanyDetail: {
-        //组织架构--角色权限--角色景区详情
-        path : 'rolePermission/roleCompanyDetail',
-        name : 'roleCompanyDetail',
-        component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/child/roleCompanyDetail.vue'),
+        //组织架构--角色权限--角色详情
+        path : 'rolePermission/roleDetail',
+        name : 'roleDetail',
+        component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/child/roleDetail.vue'),
         meta : {
           menuName : 'menuList.rolePermission', //lang.config.js 里面的语言键值
           lightMenu : 'orgManage',//高亮

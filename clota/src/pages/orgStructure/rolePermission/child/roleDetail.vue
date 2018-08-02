@@ -1,5 +1,5 @@
 <template>
-  <!-- 角色权限 -->
+  <!-- 角色权限详情（风景） -->
   <div class="partner">
     <div class="breadcrumb-box">
       <Breadcrumb separator=">">
@@ -76,6 +76,7 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operation">
+              <span v-if="detailType == 'company'" @click="modify">修改</span>
               <span class="span-red" @click="deleteListBtn">删除</span>
             </div>
           </template>
@@ -90,7 +91,8 @@
         </el-pagination>
       </div>
     </div>
-    <add-scenery-employee ref="addEmployeeModal" @upDataList='init'></add-scenery-employee>
+    <add-scenery-employee ref="addScEmModal" @upDataList='init'></add-scenery-employee>
+    <add-company-employee ref="addCoEmModal" @upDataList='init'></add-company-employee>
   </div>
 </template>
 
@@ -100,9 +102,12 @@
   import ajax from '@/api/ajaxList'
   //新增员工（风景角色）
   import addSceneryEmployee from '../../model/addSceneryEmployee.vue'
+  //新增员工（公司角色）
+  import addCompanyEmployee from '../../model/addCompanyEmployee.vue'
   export default {
     components: {
-      addSceneryEmployee
+      addSceneryEmployee,
+      addCompanyEmployee
     },
     data() {
       return {
@@ -110,24 +115,37 @@
         tableData: [{
           date: '2016-05-03',
         }],
+        //当前详情类型变量
+        detailType:'',
       }
     },
     methods: {
       //新增员工
       addEmployee(){
-        this.$refs.addEmployeeModal.show();
+        if (this.detailType == 'scenery'){
+          this.$refs.addScEmModal.show();
+        }else{
+          this.$refs.addCoEmModal.show();
+        }
+      },
+      // 修改
+      modify(){
+
       },
       //删除
       deleteListBtn(){
 
       },
       init(){
-
+        if(this.$route.query&&this.$route.query.detailType){
+          this.detailType = this.$route.query.detailType;
+        }
       }
     },
     computed: {
     },
     created () {
+      this.init();
     },
   }
 </script>

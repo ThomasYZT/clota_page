@@ -1,23 +1,25 @@
 <template>
+  <!-- 添加员工（风景） -->
   <Modal
     v-model="visible"
-    class="addPartner"
+    class="addSceneryEmployee"
     class-name="vertical-center-modal"
     :mask-closable="false"
-    :width="560"
+    :width="600"
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>新增合作伙伴</span>
+      <span>新增员工</span>
     </div>
     <!--内容区域-->
-    <div>
-      <p>已选：6人</p>
+    <div class="content">
+      <p>已选：{{checkedNum}}人</p>
       <div class="selectionTable">
         <el-table
           :data="tableData"
           :border="true"
-          style="width: 100%">
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
           <el-table-column
             type="selection"
             width="55">
@@ -58,7 +60,7 @@
     <div slot="footer">
       <template >
         <i-button  size="small" type="primary">保存</i-button>
-        <i-button  class="ivu-btn-cancel" size="small" @click="hide">取消</i-button>
+        <i-button  type="ghost" size="small" @click="hide">取消</i-button>
       </template>
     </div>
 
@@ -73,7 +75,41 @@
     data () {
       return {
         visible: false,
-        tableData:[],
+        // 表单数据
+        tableData: [{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },{
+          date: '2016-05-03',
+        },],
+        checkedNum:0
       }
     },
     computed: {
@@ -84,7 +120,12 @@
 
     },
     methods: {
-
+      //表格选中的数据
+      handleSelectionChange(data){
+        if(data){
+          this.checkedNum = data.length;
+        }
+      },
       /**
        * 显示模态框
        * @param data {data有值表示查看，反之新增}
@@ -115,9 +156,23 @@
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
   @import '../commonFile/common';
-  /deep/.addPartner{
+  /deep/.addSceneryEmployee{
     .ivu-modal-body{
-      padding: 42px 90px 40px 66px;
+      padding: 0 15px;
+    }
+    .el-table{
+      height: 488px;
+      overflow: auto;
+    }
+  }
+  .addSceneryEmployee{
+    .content{
+      p{
+        font-size: $font_size_14px;
+        color: $color_606266;
+        line-height: 41px;
+        padding: 0 20px;
+      }
     }
   }
 </style>
