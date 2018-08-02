@@ -92,7 +92,7 @@
       </div>
     </div>
     <add-partner ref="addPartnerModal" @upDataList='init'></add-partner>
-    <delete-partner ref="deletePartnerModal" @upDataList='init' :pattnerName="pattnerName"></delete-partner>
+    <delete-list ref="delListModal" @upDataList='init' :deleteName="deleteName" :name="name"></delete-list>
   </div>
 </template>
 
@@ -102,13 +102,13 @@
   import ajax from '@/api/ajaxList'
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
   //弹窗
-  import addPartner from  '../model/addPartner.vue'
-  import deletePartner from '../model/deletePartner.vue'
+  import addPartner from  '../model/addPartner.vue';
+  import deleteList from '../model/deleteList.vue';
   export default {
     components: {
       filterDrop,
       addPartner,
-      deletePartner,
+      deleteList,
     },
     data() {
       return {
@@ -128,7 +128,8 @@
           }],
         },
         enableValue:true,
-        pattnerName:'售票处终端001',
+        name:'售票处终端001',
+        deleteName:'删除合作伙伴',
       }
     },
     methods: {
@@ -162,7 +163,7 @@
       },
       //删除合作伙伴
       deletePartnerBtn(){
-        this.$refs.deletePartnerModal.show();
+        this.$refs.delListModal.show();
       },
       init(){
 

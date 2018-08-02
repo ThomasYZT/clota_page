@@ -80,19 +80,19 @@
         </el-pagination>
       </div>
     </div>
-    <delete-employee  ref="deleteEmployeeModal" @upDataList='init' :pattnerName="pattnerName"></delete-employee>
+    <delete-list ref="delListModal" @upDataList='init' :deleteName="deleteName" :name="name"></delete-list>
   </div>
 </template>
 
 
 
 <script>
-  import ajax from '@/api/ajaxList'
+  import ajax from '@/api/ajaxList';
   //弹窗
-  import deleteEmployee from '../model/deleteEmployee.vue'
+  import deleteList from '../model/deleteList.vue';
   export default {
     components: {
-      deleteEmployee,
+      deleteList,
     },
     data() {
       return {
@@ -112,7 +112,8 @@
           }],
         },
         enableValue:true,
-        pattnerName:'售票处终端001',
+        deleteName:'删除员工',
+        name:'售票处终端001',
       }
     },
     methods: {
@@ -121,7 +122,7 @@
       },
       //删除员工
       deleteEmployeeBtn(){
-        this.$refs.deleteEmployeeModal.show();
+        this.$refs.delListModal.show();
       },
       init(){
 

@@ -1,21 +1,21 @@
 <template>
   <Modal
     v-model="visible"
-    class="deleteGroup"
+    class="deleteList"
     class-name="vertical-center-modal"
     :mask-closable="false"
     :width="420"
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>删除员工</span>
+      <span>{{deleteName}}</span>
     </div>
     <!--内容区域-->
     <div class="content">
       <div class="delete-icon">?</div>
       <div class="text">
-        <span>您正在删除员工：</span>
-        <span class="name">{{pattnerName}}</span>
+        <span>您正在{{deleteName}}：</span>
+        <span class="name">{{name}}</span>
       </div>
       <div class="text">
         <span class="tips">本操作不可撤销，</span>
@@ -37,7 +37,7 @@
 <script type="text/ecmascript-6">
   export default {
     components: {},
-    props:['pattnerName'],
+    props:['deleteName','name'],
     data () {
       return {
         visible: false,
@@ -83,7 +83,7 @@
 </script>
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
-  /deep/.deleteGroup{
+  /deep/.deleteList{
     .ivu-modal-body{
       padding-top: 58px;
       padding-bottom: 58px;
@@ -91,7 +91,7 @@
       padding-right: 54px;
     }
   }
-  .deleteGroup{
+  .deleteList{
     .content{
       position: relative;
       .delete-icon{

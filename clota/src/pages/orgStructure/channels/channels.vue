@@ -92,7 +92,7 @@
       </div>
     </div>
     <add-self-support ref="addSelfSupport" @upDataList='init'></add-self-support>
-    <delete-self-support ref="deleteSelfSupport" @upDataList='init' :selfSupportName="selfSupportName"></delete-self-support>
+    <delete-list ref="delListModal" @upDataList='init' :deleteName="deleteName" :name="name"></delete-list>
   </div>
 </template>
 
@@ -101,13 +101,13 @@
 <script>
   import ajax from '@/api/ajaxList'
   import filterDrop from  '../../../components/filterDrop/filterDrop.vue';
-  import addSelfSupport from '../model/addSelfSupport.vue'
-  import deleteSelfSupport from '../model/deleteSelfSupport.vue'
+  import addSelfSupport from '../model/addSelfSupport.vue';
+  import deleteList from '../model/deleteList.vue';
   export default {
     components: {
       filterDrop,
       addSelfSupport,
-      deleteSelfSupport,
+      deleteList,
     },
     data() {
       return {
@@ -127,7 +127,8 @@
           }],
         },
         enableValue:true,
-        selfSupportName:'售票处终端001',
+        name:'售票处终端001',
+        deleteName:'删除渠道',
       }
     },
     methods: {
@@ -158,7 +159,7 @@
         this.$refs.addSelfSupport.show();
       },
       deleteSelfSupportBtn(){
-        this.$refs.deleteSelfSupport.show();
+        this.$refs.delListModal.show();
       },
       init(){
 

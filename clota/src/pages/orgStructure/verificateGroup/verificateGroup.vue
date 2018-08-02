@@ -64,7 +64,6 @@
         </el-pagination>
       </div>
     </div>
-    <edit-dropdown></edit-dropdown>
     <!-- 编辑核销 -->
     <modify-verificate  ref="modifyVerificateModal" @upDataList='init' ></modify-verificate>
     <move-out-group ref="moveOutGroupModal" @upDataList='init' :moveName="moveName"></move-out-group>

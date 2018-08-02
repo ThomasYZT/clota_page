@@ -14,7 +14,7 @@
     <div class="content">
       <div class="delete-icon">?</div>
       <div class="text">
-        <span>您正在删除合作伙伴：</span>
+        <span>您正在删除分组：</span>
         <span class="name">{{pattnerName}}</span>
       </div>
       <div class="text">本组的渠道将被全部移至‘未分组’，</div>
