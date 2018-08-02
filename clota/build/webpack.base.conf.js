@@ -4,7 +4,6 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf');
 const AutoDllPlugin = require('autodll-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 
 function resolve (dir) {
@@ -115,6 +114,5 @@ module.exports = {
         }),
       ]
     }),
-    // new HardSourceWebpackPlugin()
   ]
 }

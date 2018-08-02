@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 
@@ -142,6 +143,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ]),
+    new HardSourceWebpackPlugin()
     // new webpack.DllReferencePlugin({
     //   manifest: require('../vueFamily-manifest.json')
     // }),

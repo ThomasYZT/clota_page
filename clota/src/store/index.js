@@ -2,7 +2,6 @@
  * Created by Sasha on 2018/6/1.
  */
 
-const webpackConfig = require('../../config');
 import Vue from 'vue';
 import Vuex from 'vuex';
 import {defaultsDeep} from 'lodash';
@@ -70,11 +69,6 @@ export default new Vuex.Store({
         systemNoticeList: [],
     },
     getters: {
-        // 部署到线上的相对根路径
-        rootPath: state => {
-            let nodeEnv = process.env.NODE_ENV === 'production' ? 'build' : 'dev';
-            return webpackConfig[nodeEnv].assetsPublicPath + webpackConfig[nodeEnv].assetsSubDirectory
-        },
         // 用户信息（包含账号信息 + 公司信息）
         userInfo: state => {
             return _.defaultsDeep({}, state.userInfo );
