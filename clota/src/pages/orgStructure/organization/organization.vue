@@ -122,7 +122,7 @@
           }
 
           /deep/ .ivu-tree ul li{
-            margin: 4px 0;
+            margin: 0;
             /*position: relative;*/
           }
 
