@@ -98,7 +98,7 @@ module.exports = {
       path: './static/dll',
       entry: {
         vueFamily: ['vue', 'vue-router'],
-        plugins : ['iview','element-ui']
+        plugins : ['iview']
       },
       plugins: [
         // new webpack.optimize.UglifyJsPlugin()

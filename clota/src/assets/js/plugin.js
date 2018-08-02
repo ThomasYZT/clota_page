@@ -3,8 +3,7 @@
  * Created by Sasha on 2018/6/1.
  */
 import iView from 'iview'
-import {Table, TableColumn, Scrollbar,Pagination,Dropdown,DropdownMenu,
-  DropdownItem,} from 'element-ui'
+import {Table, TableColumn, Scrollbar,Pagination,Dropdown,DropdownMenu,DropdownItem,} from 'element-ui'
 
 // // 引入 ECharts 主模块
 // import ECharts from '@/components/vueEcharts/ECharts.vue'
@@ -18,7 +17,6 @@ import {Table, TableColumn, Scrollbar,Pagination,Dropdown,DropdownMenu,
 
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
-
 
 
 // ajax作为全局变量引入
@@ -35,9 +33,9 @@ plugin.install = function(Vue, options){
     Vue.use(TableColumn);
     Vue.use(Scrollbar);
     Vue.use(Pagination);
-  Vue.use(Dropdown);
-  Vue.use(DropdownMenu);
-  Vue.use(DropdownItem);
+    Vue.use(Dropdown);
+    Vue.use(DropdownMenu);
+    Vue.use(DropdownItem);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);

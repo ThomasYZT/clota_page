@@ -129,7 +129,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import '~@/assets/scss/base';
   .table-com{
     .table-name{
