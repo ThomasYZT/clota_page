@@ -16,7 +16,7 @@
     </div>
     <div>
       <el-table
-        :data="tableData3"
+        :data="tableData"
         :border="true"
         style="width: 100%">
         <el-table-column
@@ -79,16 +79,8 @@
     },
     data() {
       return {
-        //重置
-        reset(){
-
-        },
-        //查询
-        search(){
-
-        },
         // 表单数据
-        tableData3: [{
+        tableData: [{
           date: '2016-05-03',
         }],
       }
@@ -96,6 +88,14 @@
     methods: {
       //查看详情
       listDetail(){
+        this.$router.replace({'name':'roleSceneryDetail'})
+      },
+      //重置
+      reset(){
+
+      },
+      //查询
+      search(){
 
       },
       init(){

@@ -8,30 +8,56 @@
     @on-cancel="hide">
     <!--自定义页头-->
     <div slot="header" class="ivu-modal-header-inner">
-      <span>新增自营渠道</span>
+      <span>新增合作伙伴</span>
     </div>
     <!--内容区域-->
-    <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" label-position="right" >
-      <Form-item label="自营渠道名称" prop="name">
-        <Input v-model="addPartner.name" placeholder="Enter something..." />
-      </Form-item>
+    <div>
+      <p>已选：6人</p>
+      <div class="selectionTable">
+        <el-table
+          :data="tableData"
+          :border="true"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            label="员工姓名">
+            <template slot-scope="scope">
+              <div class="cellText">张小床</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            label="员工账号">
+            <template slot-scope="scope">
+              <div>zhangxiaoc</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            label="部门">
+            <template slot-scope="scope">
+              <div>采购部</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            label="管理景区">
+            <template slot-scope="scope">
+              <div>长隆欢乐世界</div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
 
-      <Form-item label="自营渠道类型">
-        <RadioGroup v-model="addPartner.name">
-          <Radio label="ok"><span>线上</span></Radio>
-          <Radio label="no"><span>线下</span></Radio>
-        </RadioGroup>
-      </Form-item>
-
-      <Form-item label="URL" >
-        <Input v-model="addPartner.name" placeholder="Enter something..." />
-      </Form-item>
-
-    </Form>
     <!--自定义页脚-->
     <div slot="footer">
       <template >
-        <i-button  size="small" type="primary">确认</i-button>
+        <i-button  size="small" type="primary">保存</i-button>
         <i-button  class="ivu-btn-cancel" size="small" @click="hide">取消</i-button>
       </template>
     </div>
@@ -46,23 +72,8 @@
     props:[],
     data () {
       return {
-        visible: false, //显示模态框变量
-        // 表单变量
-        addPartner: {
-          name: '',
-        },
-        ruleValidate: {
-          name: [
-            {required: true, message: '请输入小组名称', trigger: 'blur'},
-          ],
-        },
-        //下拉菜单
-        cityList: [
-          {
-            value: 'New York',
-            label: 'New York'
-          },
-        ],
+        visible: false,
+        tableData:[],
       }
     },
     computed: {

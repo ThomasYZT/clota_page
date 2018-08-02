@@ -76,6 +76,7 @@
 </script>
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   /deep/.moveOutGroup{
     .ivu-modal-body{
       padding-top: 54px;

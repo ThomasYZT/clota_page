@@ -10,7 +10,7 @@
     </div>
     <div class="selectionTable">
       <el-table
-        :data="tableData3"
+        :data="tableData"
         :border="true"
         style="width: 100%">
         <el-table-column
@@ -115,7 +115,7 @@
     data() {
       return {
         //表单数据
-        tableData3: [{
+        tableData: [{
           date: '2016-05-03',
         }],
         //下拉列表数据

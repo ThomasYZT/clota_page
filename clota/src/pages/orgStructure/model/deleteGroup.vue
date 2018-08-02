@@ -84,6 +84,7 @@
 </script>
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   /deep/.deleteGroup{
     .ivu-modal-body{
       padding-top: 43px;

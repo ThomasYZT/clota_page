@@ -10,7 +10,7 @@
     </div>
     <div class="selectionTable">
       <el-table
-        :data="tableData3"
+        :data="tableData"
         :border="true"
         style="width: 100%">
         <el-table-column
@@ -93,7 +93,10 @@
       </div>
     </div>
     <add-partner ref="addPartnerModal" @upDataList='init'></add-partner>
-    <delete-list ref="delListModal" @upDataList='init' :deleteName="deleteName" :name="name"></delete-list>
+    <delete-list ref="delListModal"
+                 @deletions="deletions"
+                 :deleteName="deleteName"
+                 :name="name"></delete-list>
   </div>
 </template>
 
@@ -116,7 +119,7 @@
     data() {
       return {
         // 表格数据
-        tableData3: [{
+        tableData: [{
           date: '2016-05-03',
         }],
         // 表格筛选下拉菜单
@@ -166,6 +169,9 @@
       //删除合作伙伴
       deletePartnerBtn(){
         this.$refs.delListModal.show();
+      },
+      //确认删除
+      deletions(){
       },
       init(){
 

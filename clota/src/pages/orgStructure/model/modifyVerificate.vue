@@ -118,6 +118,7 @@
 </script>
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
+  @import '../commonFile/common';
   /deep/.addPartner{
     .ivu-modal-body{
       padding: 42px 70px 40px 66px;

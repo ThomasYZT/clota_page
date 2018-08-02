@@ -132,6 +132,7 @@ export default new Vuex.Store({
               'organization':'allow',
               'employee':'allow',
               'rolePermission':'allow',
+              'roleDetail':'allow',
               'partner' : 'allow',
               'channels' : 'allow',
               'saleChannelsGroup':'allow',

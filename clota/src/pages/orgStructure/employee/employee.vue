@@ -9,7 +9,7 @@
     </div>
     <div>
       <el-table
-        :data="tableData3"
+        :data="tableData"
         :border="true"
         style="width: 100%">
         <el-table-column
@@ -81,7 +81,7 @@
         </el-pagination>
       </div>
     </div>
-    <delete-list ref="delListModal" @upDataList='init' :deleteName="deleteName" :name="name"></delete-list>
+    <delete-list ref="delListModal"  @deletions="deletions" :deleteName="deleteName" :name="name"></delete-list>
   </div>
 </template>
 
@@ -98,7 +98,7 @@
     data() {
       return {
         //表单数据
-        tableData3: [{
+        tableData: [{
           date: '2016-05-03',
           name: '王小虎',
           province: '上海',
@@ -117,6 +117,10 @@
       //删除员工
       deleteEmployeeBtn(){
         this.$refs.delListModal.show();
+      },
+      //确认删除
+      deletions(){
+
       },
       // 初始化加载数据
       init(){
