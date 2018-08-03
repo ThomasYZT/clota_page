@@ -66,6 +66,9 @@
   }
 }
 
+/**
+  卡片样式
+ */
 @mixin card (){
   background: $color_fff;
   border: 1px solid $color_DFE2E5;

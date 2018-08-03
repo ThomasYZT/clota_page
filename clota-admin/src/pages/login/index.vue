@@ -90,8 +90,10 @@
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
+  $img_base_url : '../../assets/images/';
   .login{
     @include block_outline();
+    background: get_url('icon-login-background.png') 100%/100%;
 
     .company-logo{
       @include block_outline($height : 93px);

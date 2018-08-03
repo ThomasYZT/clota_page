@@ -5,11 +5,11 @@
 import iView from 'iview'
 import {Table, TableColumn, Scrollbar,Pagination,Dropdown,DropdownMenu,DropdownItem,} from 'element-ui'
 
-// // 引入 ECharts 主模块
+// 引入 ECharts 主模块
 // import ECharts from '@/components/vueEcharts/ECharts.vue'
 // // 按需引入 Echarts 图表
 // require('echarts/lib/chart/bar');
-// require('echarts/lib/chart/pie');
+require('echarts/lib/chart/pie');
 // require('echarts/lib/component/title');
 // require('echarts/lib/component/tooltip');
 // require('echarts/lib/component/legendScroll');
