@@ -7,7 +7,7 @@
       </div>
       <div class="menu-info">
         <ul class="menu-list">
-          <li class="menu" v-for="item in permissionInfo">
+          <li class="menu" v-for="item in menuList">
             <span class="menu-span"
                   :class="{'active' : item.meta.lightMenu === activeMenu}"
                   @click="toTopMenu(item)">
@@ -65,6 +65,17 @@
             }else{
               return '';
             }
+          },
+          //菜单列表，排除挂靠在其它路由下的路由
+          menuList () {
+            return this.permissionInfo.filter(item => {
+              //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
+              if(item.name){
+                return item.name === item.meta._name;
+              }else{//没有路由名字的都是一级路由，需要显示菜单
+                return true;
+              }
+            })
           }
         }
     }

@@ -5,8 +5,11 @@
 import orgStructureRouter from './modules/indexRoute';
 //租户路由
 import lesseeRoute from './modules/lesseeRoute';
+//服务器
+import serverRoute from './modules/serverRoute';
 
 export default {
   ...orgStructureRouter,
-  ...lesseeRoute
+  ...lesseeRoute,
+  ...serverRoute
 }

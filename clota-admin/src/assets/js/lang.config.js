@@ -21,6 +21,7 @@ export default new VueI18n({
       login : '登录',
       index : '首页',
       lessee : '租户',
+      server : '服务器',
       todayLogin : '今日登陆',
       travelOrder : '旅游产品订单',
       tenementCount : '租户累计',
@@ -44,7 +45,9 @@ export default new VueI18n({
         phoneError1 : '请输入联系电话',
         phoneError2 : '联系电话格式错误',
         emailError1 : '请输入电子邮箱',
-        emailError2 : '邮箱格式错误!'
+        emailError2 : '邮箱格式错误!',
+        serverNameError : '请输入服务器名称',
+        IPnameError : '请输入ip地址',
       }
     },
   }

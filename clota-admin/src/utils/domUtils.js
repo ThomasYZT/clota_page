@@ -165,7 +165,53 @@ var utils = {
         // 执行
         upQuery(el);
         return arr;
-    }
+    },
+
+    /**
+     * 切换类
+     * @param {HTMLElement} el 元素
+     * @param {string} name 类名
+     * @param {boolean} state 状态开关
+     */
+    toggleClass: function(el, name, state) {
+		if (el) {
+			if (el.classList) {
+				el.classList[state ? 'add' : 'remove'](name);
+			} else {
+				var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
+				el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
+			}
+		}
+    },
+    
+    /**
+     * 设置css样式
+     * @param {HTMLElement} el
+     * @param {string} prop 
+     * @param {string} val 
+     */
+    css: function(el, prop, val) {
+		var style = el && el.style;
+
+		if (style) {
+			if (val === void 0) {
+				if (document.defaultView && document.defaultView.getComputedStyle) {
+					val = document.defaultView.getComputedStyle(el, '');
+				}
+				else if (el.currentStyle) {
+					val = el.currentStyle;
+				}
+
+				return prop === void 0 ? val : val[prop];
+			} else {
+				if (!(prop in style)) {
+					prop = '-webkit-' + prop;
+				}
+
+				style[prop] = val + (typeof val === 'string' ? '' : 'px');
+			}
+		}
+	}
 }
 
 export default utils
