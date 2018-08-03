@@ -113,6 +113,7 @@ const pieBaseConfig = {
       selectedMode: 'single',
       color: [
         '#0071BC',
+        '#55C6C5',
         '#F8AAC4',
         '#FDB252',
         '#F6857E',

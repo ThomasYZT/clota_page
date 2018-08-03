@@ -8,6 +8,7 @@ import router from '../router/index';
 import routerClect from '../router/activeRoutes';
 import {getFourRoute,getNoSubMenuRoute} from '../router/constRouter';
 Vue.use(Vuex);
+console.log(routerClect)
 
 //子路由深度复制
 const childDeepClone = (childrenList,data) => {
@@ -72,6 +73,8 @@ export default new Vuex.Store({
     getUserRight ({commit}) {
       commit('updatePermissionInfo',{
         'index' : 'allow',
+        'lessee' : 'allow',
+        'ISPinternet' : 'allow',
       });
       // return ajaxList.getUserRight(param).then(res => {
       //   if(res.success) {

@@ -20,13 +20,32 @@ export default new VueI18n({
       autoLogin : '自动登录',
       login : '登录',
       index : '首页',
+      lessee : '租户',
       todayLogin : '今日登陆',
       travelOrder : '旅游产品订单',
       tenementCount : '租户累计',
       serverCount : '服务器数量',
-      circleName : '同比上周'
+      circleName : '同比上周',
+      ISPinternet : '服务提供商',
+      cooperaChannelOrg : '合作渠道(机构)',
+      cooperaChannelPer : '合作渠道（个人）',
+      readyDeal : '待处理',
+      auditTrue : '审核通过',
+      auditFalse : '审核不通过',
+      lessPlaceholder : '输入任意信息进行查询',
+      auditStatus : {
+        waitAudit : '待审核',
+        audited : '已审核',
+        rejected : '已驳回'
+      },
+      validateError : {
+        lesseeCompanyErr : '请输入租户公司名称',
+        personError : '请输入联系人',
+        phoneError1 : '请输入联系电话',
+        phoneError2 : '联系电话格式错误',
+        emailError1 : '请输入电子邮箱',
+        emailError2 : '邮箱格式错误!'
+      }
     },
-    'en' : {
-    }
   }
 })

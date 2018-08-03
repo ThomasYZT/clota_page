@@ -76,6 +76,20 @@
   border-radius: 4px;
 }
 
+/**
+    没数据的样式
+ */
+@mixin no_data($top : 50px) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: $top;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 // Argument mixin
 //////////////////

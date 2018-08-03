@@ -7,8 +7,12 @@
       </div>
       <div class="menu-info">
         <ul class="menu-list">
-          <li class="menu" v-for="item in menuList">
-            <span class="menu-span" :class="{'active' : item.active}">{{item.label}}</span>
+          <li class="menu" v-for="item in permissionInfo">
+            <span class="menu-span"
+                  :class="{'active' : item.meta.lightMenu === activeMenu}"
+                  @click="toTopMenu(item)">
+              {{$t(item.meta.menuName)}}
+            </span>
           </li>
         </ul>
       </div>
@@ -34,40 +38,33 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
     export default {
         data() {
             return {
 
             }
         },
-        methods: {},
+        methods: {
+          /**
+           * 跳转到对应的菜单
+           * @param data
+           */
+          toTopMenu(data) {
+            this.$router.push({path : data.path});
+          }
+        },
         computed : {
-          //菜单列表
-          menuList () {
-            return [
-              {
-                label : '首页',
-                active : true
-              },
-              {
-                label : '服务器'
-              },
-              {
-                label : '租户'
-              },
-              {
-                label : '订单'
-              },
-              {
-                label : '服务'
-              },
-              {
-                label : '系统'
-              },
-              {
-                label : '日志'
-              }
-            ];
+          ...mapGetters({
+            permissionInfo : 'permissionInfo'
+          }),
+          //当前激活的菜单
+          activeMenu () {
+            if(this.$route && this.$route.meta){
+              return this.$route.meta.lightMenu;
+            }else{
+              return '';
+            }
           }
         }
     }
@@ -112,6 +109,7 @@
 
           .menu-span{
             @include block_outline($is_block : false);
+            cursor: pointer;
 
             &.active{
               background: rgba($color_000,0.20);

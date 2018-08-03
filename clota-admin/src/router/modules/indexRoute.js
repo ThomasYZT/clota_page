@@ -6,7 +6,7 @@
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
  */
 export default {
-  memberMange : {
+  index : {
     path : '/index',
     name : 'index',
     component: () => import(/* webpackChunkName: "index" */ '../../pages/index/index.vue'),
