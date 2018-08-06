@@ -4,7 +4,7 @@
   <div class="isp-internet">
     <div class="create-lessee">
       <Button type="primary">
-        <span @click="addModalShow = true">新建租户</span>
+        <span @click="addLess">新建租户</span>
       </Button>
       <div class="search">
         <Input type="text" style="width: 200px" :placeholder="$t('lessPlaceholder')"/>
@@ -31,9 +31,6 @@
     </no-data>
     <loading :visible="isLoading">
     </loading>
-    <!--新增租户-->
-    <add-less v-model="addModalShow">
-    </add-less>
   </div>
 </template>
 
@@ -43,24 +40,28 @@
     import noData from '@/components/noDataTip/noData-tip.vue';
     import loading from '@/components/loading/loading.vue';
     import tableMixins from '../tableMixins';
-    import addLess from './ISPinternetChild/addLess';
     export default {
         mixins : [tableMixins],
         components : {
           tableCom,
           noData,
           loading,
-          addLess
         },
         data() {
             return {
               //表头数据
               columnData : columns,
-              //新增用户模态框是否显示
-              addModalShow : false
             }
         },
         methods: {
+          /**
+           * 新增租户
+           */
+          addLess () {
+            this.$router.push({
+              name : 'addLess'
+            });
+          }
         },
         computed : {
         }

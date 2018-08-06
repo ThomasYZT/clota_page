@@ -32,6 +32,7 @@
 
     .main-content{
       @include block_outline($height : unquote('calc(100% - 56px)'));
+      background: $color_f4f6f9;
     }
   }
 </style>

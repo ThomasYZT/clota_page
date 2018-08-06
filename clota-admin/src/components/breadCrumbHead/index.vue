@@ -3,15 +3,33 @@
 <template>
   <div class="bread-crumb-head">
     <Breadcrumb>
-      <BreadcrumbItem to="/">Home</BreadcrumbItem>
-      <BreadcrumbItem to="/components/breadcrumb">Components</BreadcrumbItem>
-      <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+      <BreadcrumbItem
+        :to="item.router"
+        v-for="(item,index) in beforeRouterList"
+        :key="index">
+        {{item.name}}
+      </BreadcrumbItem>
+      <BreadcrumbItem>{{localeRouter}}</BreadcrumbItem>
     </Breadcrumb>
   </div>
 </template>
 
 <script>
     export default {
+        props : {
+          //上级路由列表
+          'before-router-list' : {
+            type : Array,
+            default () {
+              return []
+            }
+          },
+          //当前路由名称
+          'locale-router' : {
+            type : String,
+            default : ''
+          }
+        },
         data() {
             return {}
         },
@@ -25,5 +43,17 @@
     @include block_outline($height : 54px);
     padding: 16px 32px;
     background: $color_fff;
+
+    /deep/ a.ivu-breadcrumb-item-link{
+      color: rgba($color_000,0.45);
+
+      &:hover{
+        color: $color_blue;
+      }
+    }
+
+    /deep/ .ivu-breadcrumb-item-link{
+      color: rgba($color_000,0.65);
+    }
   }
 </style>

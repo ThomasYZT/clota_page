@@ -50,5 +50,16 @@ export default {
         },
       },
     }
-  }
+  },
+  //新增租户
+  addLess : {
+    path : 'ISPinternet/addLess',
+    name : 'addLess',
+    component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/addLess.vue'),
+    meta : {
+      _name : 'lessee',
+      menuName : 'lessee',
+      lightMenu : 'lessee',
+    },
+  },
 }

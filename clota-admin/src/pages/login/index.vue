@@ -81,7 +81,7 @@
            */
           login () {
             this.$refs.formValidate.validate(valid => {
-              console.log(valid)
+              this.$store.dispatch('getUserRight');
             });
           }
         }
@@ -92,6 +92,7 @@
 	@import '~@/assets/scss/base';
   $img_base_url : '../../assets/images/';
   .login{
+    position: relative;
     @include block_outline();
     background: get_url('icon-login-background.png') 100%/100%;
 
@@ -106,8 +107,8 @@
     }
 
     .input-form{
-      @include block_outline(368px,auto);
-      margin: 154px auto 0 auto;
+      @include center_center();
+      /*margin: 154px auto 0 auto;*/
 
       .input-with-icon{
         position: relative;

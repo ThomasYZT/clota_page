@@ -65,6 +65,12 @@ export default new Vuex.Store({
       let routers = childDeepClone(routerClect,data);
       router.addRoutes(routers);
       state.permissionInfo = JSON.parse(JSON.stringify(routers));
+      //如果有权限，则跳转到有权限的第一页面
+      if(routers.length > 0){
+        router.push({
+          path : routers[0]['path']
+        });
+      }
     },
   },
   actions : {

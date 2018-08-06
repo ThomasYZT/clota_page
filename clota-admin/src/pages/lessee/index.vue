@@ -71,6 +71,7 @@
   .lessee{
     @include block_outline();
     overflow: auto;
+    background: $color_fff;
 
     .table-content{
       @include block_outline();

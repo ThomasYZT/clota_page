@@ -16,10 +16,21 @@ export default {
       lightMenu : 'server',
     }
   },
+  //服务器详情
   serverDetail : {
     path : '/server/detail',
     name : 'serverDetail',
     component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/deviceInfo.vue'),
+    meta : {
+      _name : 'server',
+      menuName : 'server',
+      lightMenu : 'server',
+    },
+  },
+  addServer : {
+    path : '/server/addServer',
+    name : 'addServer',
+    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/_addServer.vue'),
     meta : {
       _name : 'server',
       menuName : 'server',

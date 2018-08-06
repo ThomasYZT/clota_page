@@ -3,7 +3,8 @@
 <template>
   <div class="server-info">
     <div class="tab-list">
-        <Button type="primary" @click="addServerModalShow = true">添加服务器</Button>
+        <!--<Button type="primary" @click="addServerModalShow = true">添加服务器</Button>-->
+        <Button type="primary" @click="addServer">添加服务器</Button>
     </div>
     <table-com
       :table-data="tableData"
@@ -64,6 +65,14 @@
           toDetail () {
             this.$router.push({
               name : 'serverDetail'
+            });
+          },
+          /**
+           * 添加服务器
+           */
+          addServer () {
+            this.$router.push({
+              name : 'addServer'
             });
           }
         }

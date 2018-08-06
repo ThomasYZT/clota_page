@@ -17,6 +17,10 @@ export default new Router({
       meta: {
         noFrame: true
       }
+    },
+    {
+      path  : '',
+      redirect : 'login'
     }
   ]
 })

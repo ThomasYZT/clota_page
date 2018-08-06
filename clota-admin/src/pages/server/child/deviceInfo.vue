@@ -2,7 +2,9 @@
 
 <template>
   <div class="device-info">
-    <bread-crumb-head>
+    <bread-crumb-head
+      :locale-router="$t('deviceInfo')"
+      :before-router-list="beforeRouterList">
     </bread-crumb-head>
     <div class="device-detail">
       <div class="device-name">
@@ -63,21 +65,34 @@
           </li>
         </ul>
       </div>
-      <div class="serve-depart">
 
-      </div>
+      <!--设备在不同时间段的情况-->
+      <time-along>
+      </time-along>
     </div>
   </div>
 </template>
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import timeAlong from './deviceInfoChild/timeAlong';
     export default {
         components : {
-          breadCrumbHead
+          breadCrumbHead,
+          timeAlong
         },
         data() {
-            return {}
+            return {
+              //上级路由列表
+              beforeRouterList : [
+                {
+                  name : this.$t('serverList'),
+                  router : {
+                    name : 'server'
+                  }
+                }
+              ],
+            }
         },
         methods: {}
     }
@@ -185,12 +200,7 @@
         }
       }
 
-      .serve-depart{
-        @include block_outline($height : auto);
-        background: $color_fff;
-        border: 1px solid $color_DFE2E5;
-        border-radius: 4px;
-      }
+
     }
   }
 </style>
