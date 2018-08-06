@@ -1,4 +1,4 @@
-<!--新增公司节点-->
+<!--新增景区节点-->
 
 <template>
   <Modal
@@ -7,7 +7,7 @@
     :value="value"
     @input="changeValue"
     @on-visible-change="visibleChange"
-    class="add-company"
+    class="add-scene"
     class-name="vertical-center-modal">
     <div slot="header" class="target-class">
       <span class="title" v-w-title="addedNodeDetail.nodeName">{{addedNodeDetail.nodeName}}</span>
@@ -31,6 +31,15 @@
         </FormItem>
         <FormItem :label="$t('controlAccount')" prop="controlAccount">
           <Input v-model="formData.controlAccount" style="width: 280px"/>
+        </FormItem>
+        <FormItem :label="$t('openedServices')"  prop="openedServices">
+          <Select v-model="formData.smsProvider" multiple style="width:280px">
+            <Option v-for="item in smsProviderList"
+                    :value="item.value"
+                    :key="item.value">
+              {{ item.label }}
+            </Option>
+          </Select>
         </FormItem>
         <FormItem :label="$t('email')" prop="mail">
           <Input v-model="formData.mail" style="width: 280px"/>
@@ -147,6 +156,8 @@
           phone : '',
           //财务上级
           fianceSuperior : '',
+          //开通的服务
+          openedServices : [],
           //传真
           fax : '',
           //公司编码
@@ -255,7 +266,7 @@
 
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
-  .add-company{
+  .add-scene{
 
     & /deep/ .ivu-modal{
       width: 560px!important;

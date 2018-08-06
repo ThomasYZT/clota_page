@@ -95,9 +95,16 @@ export default new VueI18n({
       department : '部门',
       scene : '景区',
       cashier : '核销/销售款台',
+      cashierType : '款台类型',
       companyCode : '公司编码',
       offlineVerify : '线下核销',
-      location : '所在地'
+      location : '所在地',
+      openedServices : '开通服务',
+      cashierTypeGroup : '所属核销设备分组',
+      saleTypeGroup : '所属销售渠道分组',
+      verifyCashierType : '核销款台',
+      verifySaleType : '销售款台',
+      verifySaleAndCashierType : '核销/销售一体款台',
     },
   }
 })

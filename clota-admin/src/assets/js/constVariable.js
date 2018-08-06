@@ -69,3 +69,19 @@ export const nodeList  = [
     value : 'cashier'
   }
 ];
+
+//款台类型
+export const cashierType = [
+  {
+    label : 'verifyCashierType',
+    value : 'company'
+  },
+  {
+    label : 'verifySaleType',
+    value : 'department'
+  },
+  {
+    label : 'verifySaleAndCashierType',
+    value : 'scene'
+  },
+];

@@ -1,4 +1,4 @@
-<!--新增公司节点-->
+<!--新增款台节点-->
 
 <template>
   <Modal
@@ -7,7 +7,7 @@
     :value="value"
     @input="changeValue"
     @on-visible-change="visibleChange"
-    class="add-company"
+    class="add-cashier"
     class-name="vertical-center-modal">
     <div slot="header" class="target-class">
       <span class="title" v-w-title="addedNodeDetail.nodeName">{{addedNodeDetail.nodeName}}</span>
@@ -17,49 +17,35 @@
             :model="formData"
             :rules="ruleValidate"
             :label-width="0">
-        <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
-          <Select v-model="formData.fianceSuperior" style="width:280px">
-            <Option v-for="item in smsProviderList"
+        <FormItem :label="$t('serverName')" prop="serverName">
+          <Input v-model="formData.serverName" style="width: 280px"/>
+        </FormItem>
+        <FormItem :label="$t('cashierType')" prop="cashierType">
+          <Select v-model="formData.cashierType" style="width:280px">
+            <Option v-for="item in cashierTypeList"
+                    :value="item.value"
+                    :key="item.value">
+              {{ $t(item.label) }}
+            </Option>
+          </Select>
+        </FormItem>
+        <FormItem :label="$t('cashierTypeGroup')"  prop="cashierTypeGroup">
+          <Select v-model="formData.cashierTypeGroup"  style="width:280px">
+            <Option v-for="item in cashierTypeGroupList"
+                    :value="item.value"
+                    :key="item.value">
+              {{ $t(item.label) }}
+            </Option>
+          </Select>
+        </FormItem>
+        <FormItem :label="$t('saleTypeGroup')"  prop="saleTypeGroup">
+          <Select v-model="formData.saleTypeGroup" style="width:280px">
+            <Option v-for="item in saleTypeGroupList"
                     :value="item.value"
                     :key="item.value">
               {{ item.label }}
             </Option>
           </Select>
-        </FormItem>
-        <FormItem :label="$t('manageSuperior')" prop="manageSuperior">
-          <Input v-model="formData.manageSuperior" disabled style="width: 280px"/>
-        </FormItem>
-        <FormItem :label="$t('controlAccount')" prop="controlAccount">
-          <Input v-model="formData.controlAccount" style="width: 280px"/>
-        </FormItem>
-        <FormItem :label="$t('email')" prop="mail">
-          <Input v-model="formData.mail" style="width: 280px"/>
-        </FormItem>
-        <FormItem :label="$t('smsProvider')" prop="smsProvider">
-          <Select v-model="formData.smsProvider" style="width:280px">
-            <Option v-for="item in smsProviderList"
-                    :value="item.value"
-                    :key="item.value">
-              {{ item.label }}
-            </Option>
-          </Select>
-        </FormItem>
-        <FormItem :label="$t('phone')" prop="phone">
-          <Input v-model="formData.phone" style="width: 280px"/>
-        </FormItem>
-        <FormItem :label="$t('fax')" prop="fax">
-          <Input v-model="formData.fax" style="width: 280px"/>
-        </FormItem>
-        <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'">
-          <Input v-model="formData.companyCode" style="width: 280px"/>
-        </FormItem>
-        <div class="hint">用于与线下系统对接</div>
-        <FormItem :label="$t('location')">
-          <city-plugin @select="formData.place = $event">
-          </city-plugin>
-        </FormItem>
-        <FormItem :label="$t('address')">
-          <Input v-model="formData.address" type="textarea" style="width: 280px"/>
         </FormItem>
       </Form>
     </div>
@@ -72,6 +58,7 @@
 <script>
   import {validator} from 'klwk-ui';
   import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+  import {cashierType} from '@/assets/js/constVariable.js';
   export default {
     components : {
       cityPlugin
@@ -98,101 +85,42 @@
       }
     },
     data() {
-      //校验管理账号
-      const validateControlAccount = (rule,value,callback) => {
+      //校验服务器名称
+      const validateServerName = (rule,value,callback) => {
         callback();
-      };
-      //校验电子邮箱
-      const validateMail = (rule,value,callback) => {
-        if(value){
-          if(validator.isEmail(value)){
-            callback();
-          }else{
-            callback(this.$t('validateError.emailError'));
-          }
-        }else{
-          callback(this.$t('validateError.pleaseInput',{msg : this.$t('email')}));
-        }
-      };
-      //校验联系电话
-      const validatePhone = (rule,value,callback ) => {
-        if(value){
-          if(validator.isMobile(value) || validator.isTelephone(value)){
-            callback();
-          }else{
-            callback(this.$t('validateError.phoneError'));
-          }
-        }else{
-          callback();
-        }
-      };
-      //校验传真
-      const validateFax = (rule,value,callback) => {
-        if(value){
-          if(validator.isMobile(value) || validator.isTelephone(value)){
-            callback();
-          }else{
-            callback(this.$t('validateError.formatError',{field : this.$t('fax')}));
-          }
-        }else{
-          callback();
-        }
       };
       return {
         //表单数据
         formData : {
-          //经营上级
-          manageSuperior : '',
-          //联系电话
-          phone : '',
-          //财务上级
-          fianceSuperior : '',
-          //传真
-          fax : '',
-          //公司编码
-          companyCode : '',
-          //管理账号
-          controlAccount : '',
-          //电子邮箱
-          mail : '',
+          //款台类型
+          cashierType : '',
+          //所属核销设备分组
+          cashierTypeGroup : [],
+          //服务器名称
+          serverName : '',
           //短信供应商
           smsProvider : '',
-          //详细地址
-          address : '',
-          //地点
-          place : '',
+          //所属销售渠道分组
+          saleTypeGroup : '',
         },
         //表单校验规则
         ruleValidate : {
-          phone : [
-            {validator : validatePhone,trigger : 'blur'},
-          ],
-          fax : [
-            {validator : validateFax,trigger : 'blur'},
-          ],
-          fianceSuperior : [
+          cashierType : [
             {required : true,message : this.$t('validateError.pleaseSelect',{msg : this.$t('fianceSuperior')}),trigger : 'change'},
           ],
-          manageSuperior : [
-            {required : true,message : this.$t('validateError.pleaseSelect',{msg : this.$t('manageSuperior')}),trigger : 'change'},
-          ],
-          controlAccount : [
-            {required : true,validator : validateControlAccount,trigger : 'blur'},
-          ],
-          mail : [
-            {required : true,validator : validateMail,trigger : 'blur'},
+          serverName : [
+            {required : true,validator : validateServerName,trigger : 'blur'},
           ],
           smsProvider : [
             {required : true,message : this.$t('validateError.pleaseSelect',{msg : this.$t('smsProvider')}),trigger : 'change'},
           ]
         },
-        //短信供应商列表
-        smsProviderList : [
-          {
-            value: 'New York',
-            label: 'New York'
-          },
-        ],
+        //款台类型
+        cashierTypeList : cashierType,
+        //所属核销设备分组列表
+        cashierTypeGroupList : [],
+        //所属销售渠道分组
+        saleTypeGroupList : [],
       }
     },
     watch : {
@@ -200,7 +128,6 @@
       'chosedNodeDetail' : {
         handler (newVal,oldVal) {
           if(newVal && Object.keys(newVal).length > 0){
-            this.formData.manageSuperior = newVal.title;
             this.formData.fianceSuperior = newVal.title;
           }
         },
@@ -255,11 +182,11 @@
 
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
-  .add-company{
+  .add-cashier{
 
     & /deep/ .ivu-modal{
       width: 560px!important;
-      height: 615px;
+      height: 410px;
     }
 
     .target-class{
@@ -289,18 +216,10 @@
       padding: 0;
     }
 
-    .hint{
-      text-indent: 180px;
-      margin-top: -12px;
-      margin-bottom: 10px;
-      font-size: $font_size_14px;
-      color: $color_999;
-    }
-
     .target-body{
       width: 100%;
-      height: 497px;
-      padding: 20px 0 5px 0;
+      height: 290px;
+      padding: 55px 0 5px 0;
       overflow: auto;
 
       /deep/ .ivu-form{

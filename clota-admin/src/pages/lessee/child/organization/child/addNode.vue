@@ -103,7 +103,13 @@
       confirm () {
         this.$refs.formValidate.validate(valid => {
           if(valid) {
-            this.$emit('add-com-modal-show',JSON.parse(JSON.stringify(this.formData)));
+            if(this.formData.nodeType === 'company'){
+              this.$emit('add-com-modal-show',JSON.parse(JSON.stringify(this.formData)));
+            }else if(this.formData.nodeType === 'scene'){
+              this.$emit('add-scene-modal-show',JSON.parse(JSON.stringify(this.formData)));
+            }else if(this.formData.nodeType === 'cashier'){
+              this.$emit('add-cashier-modal-show',JSON.parse(JSON.stringify(this.formData)));
+            }
             this.$emit('input',false);
           }
         });

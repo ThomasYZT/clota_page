@@ -35,7 +35,9 @@
       <!--新增节点模态框-->
       <add-modal v-model="addModalShow"
                  :node-detail="currentNode"
-                 @add-com-modal-show="addCompanyShow">
+                 @add-com-modal-show="addCompanyShow"
+                 @add-scene-modal-show="addScene"
+                 @add-cashier-modal-show="addCashier">
       </add-modal>
       <!--新增公司模态框-->
       <add-company v-model="addCompanyModalShow"
@@ -43,6 +45,18 @@
                    :added-node-detail="addNodeDetail"
                    @fresh-structure-data="getStructureData">
       </add-company>
+      <!--新增景区模态框-->
+      <add-scene v-model="addSceneModalShow"
+                   :chosed-node-detail="currentNode"
+                   :added-node-detail="addNodeDetail"
+                   @fresh-structure-data="getStructureData">
+      </add-scene>
+      <!--新增核销/销售款台模态框-->
+      <add-cashier v-model="addCashierModalShow"
+                 :chosed-node-detail="currentNode"
+                 :added-node-detail="addNodeDetail"
+                 @fresh-structure-data="getStructureData">
+      </add-cashier>
     </div>
 </template>
 
@@ -50,6 +64,8 @@
     import delModal from './child/delModal';
     import addModal from './child/addNode';
     import addCompany from './child/addCompany';
+    import addScene from './child/addScene';
+    import addCashier from './child/addCashier';
     export default {
         props : {
           //组织结构数据
@@ -63,7 +79,9 @@
         components : {
           delModal,
           addModal,
-          addCompany
+          addCompany,
+          addScene,
+          addCashier
         },
         data() {
             return {
@@ -79,6 +97,10 @@
               currentNode : {},
               //是否显示添加公司的模态框
               addCompanyModalShow : false,
+              //是否显示添加景区的模态框
+              addSceneModalShow : false,
+              //是否显示添加款台的模态框
+              addCashierModalShow  : false,
               //新增的节点信息
               addNodeDetail : {}
             }
@@ -136,7 +158,7 @@
             this.activeTap = tap;
           },
           /**
-           * 打开填写新增公司的信息
+           * 打开填写新增公司的信息的模态框
            * @param data
            */
           addCompanyShow (data) {
@@ -148,6 +170,22 @@
            */
           getStructureData () {
 
+          },
+          /**
+           * 打开填写新增景区的信息的模态框
+           * @param data
+           */
+          addScene (data) {
+            this.addNodeDetail =  data;
+            this.addSceneModalShow = true;
+          },
+          /**
+           * 打开填写新增款台的信息的模态框
+           * @param data
+           */
+          addCashier (data) {
+            this.addNodeDetail =  data;
+            this.addCashierModalShow = true;
           }
         }
     }
