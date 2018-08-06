@@ -28,10 +28,28 @@
                 :render="renderContent">
           </Tree>
         </div>
+      <!--删除节点模态框-->
+      <del-modal v-model="delModalShow"
+                 :node-detail="currentNode">
+      </del-modal>
+      <!--新增节点模态框-->
+      <add-modal v-model="addModalShow"
+                 :node-detail="currentNode"
+                 @add-com-modal-show="addCompanyShow">
+      </add-modal>
+      <!--新增公司模态框-->
+      <add-company v-model="addCompanyModalShow"
+                   :chosed-node-detail="currentNode"
+                   :added-node-detail="addNodeDetail"
+                   @fresh-structure-data="getStructureData">
+      </add-company>
     </div>
 </template>
 
 <script>
+    import delModal from './child/delModal';
+    import addModal from './child/addNode';
+    import addCompany from './child/addCompany';
     export default {
         props : {
           //组织结构数据
@@ -42,12 +60,27 @@
             }
           }
         },
+        components : {
+          delModal,
+          addModal,
+          addCompany
+        },
         data() {
             return {
               //搜索关键字
               keyWord : '',
               //当前记过菜单
-              activeTap : 'fiance'
+              activeTap : 'fiance',
+              //删除节点模态框是否显示
+              delModalShow : false,
+              //添加节点模态框是否显示
+              addModalShow : false,
+              //当前操作的节点
+              currentNode : {},
+              //是否显示添加公司的模态框
+              addCompanyModalShow : false,
+              //新增的节点信息
+              addNodeDetail : {}
             }
         },
         methods: {
@@ -73,12 +106,24 @@
                 class : {
                   iconfont : 'true',
                   'icon-person' : true
+                },
+                on : {
+                  click : () =>  {
+                    this.currentNode = data;
+                    this.delModalShow = true;
+                  }
                 }
               }),
               h('span',{
                 class : {
                   iconfont : 'true',
                   'icon-person' : true
+                },
+                on : {
+                  click : () =>  {
+                    this.currentNode = data;
+                    this.addModalShow = true;
+                  }
                 }
               })
             ])
@@ -89,6 +134,20 @@
            */
           switchTap (tap) {
             this.activeTap = tap;
+          },
+          /**
+           * 打开填写新增公司的信息
+           * @param data
+           */
+          addCompanyShow (data) {
+            this.addNodeDetail =  data;
+            this.addCompanyModalShow = true;
+          },
+          /**
+           * 获取组织结构数据
+           */
+          getStructureData () {
+
           }
         }
     }

@@ -49,3 +49,23 @@ export const systemTypeList = [
     value : 64,
   }
 ];
+
+//节点类型
+export const nodeList  = [
+  {
+    label : 'company',
+    value : 'company'
+  },
+  {
+    label : 'department',
+    value : 'department'
+  },
+  {
+    label : 'scene',
+    value : 'scene'
+  },
+  {
+    label : 'cashier',
+    value : 'cashier'
+  }
+];
