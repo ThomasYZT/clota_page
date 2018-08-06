@@ -16,7 +16,7 @@ export default {
       lightMenu : 'lessee',
     },
     children : {
-      //服务提供商商
+      //服务提供商
       ISPinternet : {
         path : 'ISPinternet',
         name : 'ISPinternet',
@@ -56,6 +56,17 @@ export default {
     path : 'ISPinternet/addLess',
     name : 'addLess',
     component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/addLess.vue'),
+    meta : {
+      _name : 'lessee',
+      menuName : 'lessee',
+      lightMenu : 'lessee',
+    },
+  },
+  //服务提供商详情
+  ISPinternet : {
+    path : 'ISPinternet/detail',
+    name : 'ISPinternetDetail',
+    component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
     meta : {
       _name : 'lessee',
       menuName : 'lessee',

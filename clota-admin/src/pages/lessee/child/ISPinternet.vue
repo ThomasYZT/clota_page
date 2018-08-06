@@ -16,6 +16,16 @@
       :table-height="tableHeight"
       :column-data="columnData"
       :row-click="false">
+      <el-table-column
+        label="操作"
+        :width="120">
+        <template slot-scope="scoped">
+          <ul class="operate-info">
+            <li class="operate-list" @click="toISPinternetDetail">查看</li>
+            <li class="operate-list disabled">禁用</li>
+          </ul>
+        </template>
+      </el-table-column>
     </table-com>
     <div class="page-area" v-if="tableData.length > 0">
       <el-pagination
@@ -61,6 +71,14 @@
             this.$router.push({
               name : 'addLess'
             });
+          },
+          /**
+           * 查看服务提供商详情
+           */
+          toISPinternetDetail () {
+            this.$router.push({
+              name : 'ISPinternetDetail'
+            });
           }
         },
         computed : {
@@ -82,6 +100,14 @@
         @include block_outline(262px);
         float: right;
         overflow: hidden;
+      }
+    }
+
+    .operate-info{
+      @include table_operate();
+
+      .disabled{
+        color: $color_yellow;
       }
     }
 

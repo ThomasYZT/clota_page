@@ -51,7 +51,10 @@
         </ul>
       </div>
       <div class="system-alarm">
-        <div class="name">系统报警</div>
+        <div class="name">
+          系统报警
+          <span class="more" @click="toSystemAlarmDetail">查看更多</span>
+        </div>
         <ul class="alarm">
           <li class="detail">
             <div class="alarm-name">服务器无响应</div>
@@ -94,7 +97,16 @@
               ],
             }
         },
-        methods: {}
+        methods: {
+          /**
+           * 查看系统报警详情
+           */
+          toSystemAlarmDetail () {
+            this.$router.push({
+              name : 'systemAlarm'
+            });
+          }
+        }
     }
 </script>
 
@@ -161,6 +173,13 @@
           line-height: 24px;
           font-size: $font_size_16px;
           color: $color_333;
+
+          .more{
+            font-size: $font_size_12px;
+            color: $color_blue;
+            margin-left: 10px;
+            cursor: pointer;
+          }
         }
 
         .alarm{

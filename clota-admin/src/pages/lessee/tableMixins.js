@@ -54,7 +54,9 @@ export default {
       //当前页码
       pageNo : 1,
       //查询关键字
-      keyWord : ''
+      keyWord : '',
+      //容器去除不包含表格的高度
+      spaceOffset : 119
     }
   },
   methods :{
@@ -77,8 +79,8 @@ export default {
       let content = this.$el;
       if(content){
         let height = this.tableData.length * 48 + 48;
-        if(height > content.offsetHeight - 119){
-          this.tableHeight = content.offsetHeight - 119 + 'px';
+        if(height > content.offsetHeight - this.spaceOffset){
+          this.tableHeight = content.offsetHeight - this.spaceOffset + 'px';
         }else{
           this.tableHeight = height + 'px';
         }

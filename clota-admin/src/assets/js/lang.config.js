@@ -21,6 +21,7 @@ export default new VueI18n({
       login : '登录',
       index : '首页',
       lessee : '租户',
+      lesseeDetail : '租户详情',
       server : '服务器',
       todayLogin : '今日登陆',
       travelOrder : '旅游产品订单',
@@ -76,6 +77,11 @@ export default new VueI18n({
       passedSevenDays : '过去7天',
       passedThirtyDays : '过去30天',
       addServer : '新增服务器',
+      minute : '分钟',
+      systemTypeInfo : '{bit}位',
+      systemAlarm : '系统报警',
+      backUp : '收起',
+      upLoad : '展开',
     },
   }
 })

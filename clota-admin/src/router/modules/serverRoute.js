@@ -27,10 +27,22 @@ export default {
       lightMenu : 'server',
     },
   },
+  //服务器详情
+  systemAlarmDetail : {
+    path : '/server/detail/systemAlarm',
+    name : 'systemAlarm',
+    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/systemAlarmDetail.vue'),
+    meta : {
+      _name : 'server',
+      menuName : 'server',
+      lightMenu : 'server',
+    },
+  },
+  //新增服务器
   addServer : {
     path : '/server/addServer',
     name : 'addServer',
-    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/_addServer.vue'),
+    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/addServer.vue'),
     meta : {
       _name : 'server',
       menuName : 'server',

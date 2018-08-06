@@ -3,7 +3,6 @@
 <template>
   <div class="server-info">
     <div class="tab-list">
-        <!--<Button type="primary" @click="addServerModalShow = true">添加服务器</Button>-->
         <Button type="primary" @click="addServer">添加服务器</Button>
     </div>
     <table-com
@@ -32,8 +31,6 @@
     </no-data>
     <loading :visible="isLoading">
     </loading>
-    <add-server v-model="addServerModalShow">
-    </add-server>
   </div>
 </template>
 
@@ -42,22 +39,18 @@
     import noData from '@/components/noDataTip/noData-tip.vue';
     import loading from '@/components/loading/loading.vue';
     import tableMixins from '../lessee/tableMixins';
-    import addServer from  './child/addServer';
     import {columns} from './serverConfig';
     export default {
         mixins : [tableMixins],
         components : {
           tableCom,
           noData,
-          loading,
-          addServer
+          loading
         },
         data() {
             return {
               //表头配置
               columnData : columns,
-              //新增服务器的模态框是否显示
-              addServerModalShow : false
             }
         },
         methods: {
@@ -86,6 +79,7 @@
     padding: 0 30px 0 30px;
     @include block_outline($height : unquote('calc(100% - 20px)'));
     @include padding_place();
+    background: $color_fff;
 
     .tab-list{
       @include block_outline($height : 62px);
@@ -94,6 +88,7 @@
 
     .watch{
       color: $color_blue;
+      cursor: pointer;
     }
 
     /deep/ .el-table td,

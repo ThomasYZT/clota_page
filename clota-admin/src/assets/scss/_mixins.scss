@@ -65,6 +65,7 @@
     content : '';
     display: block;
     @include block_outline($width : $width,$height : $height);
+    background: $color_fff;
   }
 }
 
@@ -91,6 +92,35 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+
+/**
+  表格最右侧操作列样式
+ */
+@mixin table_operate($color : $color_blue) {
+  overflow: auto;
+
+  li{
+    float: left;
+    margin: 0 10px;
+    position: relative;
+
+    &:nth-of-type(1){
+      margin-left: 0;
+    }
+    &:nth-last-of-type(1){
+      margin-right: 0;
+    }
+
+    &:after{
+      content : '';
+      display: block;
+      @include absolute_pos(absolute,4px,37px);
+      @include block_outline(1px ,15px);
+      background: $color_gray;
+    }
+  }
 }
 
 // Argument mixin
