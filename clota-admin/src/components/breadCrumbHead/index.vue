@@ -1,34 +1,34 @@
 <!--面包屑导航条-->
 
 <template>
-  <div class="bread-crumb-head">
-    <Breadcrumb>
-      <BreadcrumbItem
-        :to="item.router"
-        v-for="(item,index) in beforeRouterList"
-        :key="index">
-        {{item.name}}
-      </BreadcrumbItem>
-      <BreadcrumbItem>{{localeRouter}}</BreadcrumbItem>
-    </Breadcrumb>
-  </div>
+    <div class="bread-crumb-head">
+        <Breadcrumb>
+            <BreadcrumbItem
+                :to="item.router"
+                v-for="(item,index) in beforeRouterList"
+                :key="index">
+                {{item.name}}
+            </BreadcrumbItem>
+            <BreadcrumbItem>{{localeRouter}}</BreadcrumbItem>
+        </Breadcrumb>
+    </div>
 </template>
 
 <script>
     export default {
-        props : {
-          //上级路由列表
-          'before-router-list' : {
-            type : Array,
-            default () {
-              return []
+        props: {
+            //上级路由列表
+            'before-router-list': {
+                type: Array,
+                default() {
+                    return []
+                }
+            },
+            //当前路由名称
+            'locale-router': {
+                type: String,
+                default: ''
             }
-          },
-          //当前路由名称
-          'locale-router' : {
-            type : String,
-            default : ''
-          }
         },
         data() {
             return {}
@@ -38,22 +38,23 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
-  .bread-crumb-head{
-    @include block_outline($height : 54px);
-    padding: 16px 32px;
-    background: $color_fff;
+    @import '~@/assets/scss/base';
 
-    /deep/ a.ivu-breadcrumb-item-link{
-      color: rgba($color_000,0.45);
+    .bread-crumb-head {
+        @include block_outline($height: 54px);
+        padding: 16px 32px;
+        background: $color_fff;
 
-      &:hover{
-        color: $color_blue;
-      }
+        /deep/ a.ivu-breadcrumb-item-link {
+            color: rgba($color_000, 0.45);
+
+            &:hover {
+                color: $color_blue;
+            }
+        }
+
+        /deep/ .ivu-breadcrumb-item-link {
+            color: rgba($color_000, 0.65);
+        }
     }
-
-    /deep/ .ivu-breadcrumb-item-link{
-      color: rgba($color_000,0.65);
-    }
-  }
 </style>

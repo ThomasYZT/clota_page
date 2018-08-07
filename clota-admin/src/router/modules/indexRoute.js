@@ -6,14 +6,14 @@
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
  */
 export default {
-  index : {
-    path : '/index',
-    name : 'index',
-    component: () => import(/* webpackChunkName: "index" */ '../../pages/index/index.vue'),
-    meta : {
-      _name : 'index',
-      menuName : 'index',
-      lightMenu : 'index',
+    index: {
+        path: '/index',
+        name: 'index',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/index/index.vue'),
+        meta: {
+            _name: 'index',
+            menuName: 'index',
+            lightMenu: 'index',
+        }
     }
-  }
 }

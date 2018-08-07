@@ -6,47 +6,47 @@
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
  */
 export default {
-  server : {
-    path : '/server',
-    name : 'server',
-    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/index.vue'),
-    meta : {
-      _name : 'server',
-      menuName : 'server',
-      lightMenu : 'server',
+    server: {
+        path: '/server',
+        name: 'server',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/index.vue'),
+        meta: {
+            _name: 'server',
+            menuName: 'server',
+            lightMenu: 'server',
+        }
+    },
+    //服务器详情
+    serverDetail: {
+        path: '/server/detail',
+        name: 'serverDetail',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/deviceInfo.vue'),
+        meta: {
+            _name: 'server',
+            menuName: 'server',
+            lightMenu: 'server',
+        },
+    },
+    //服务器详情
+    systemAlarmDetail: {
+        path: '/server/detail/systemAlarm',
+        name: 'systemAlarm',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/systemAlarmDetail.vue'),
+        meta: {
+            _name: 'server',
+            menuName: 'server',
+            lightMenu: 'server',
+        },
+    },
+    //新增服务器
+    addServer: {
+        path: '/server/addServer',
+        name: 'addServer',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/addServer.vue'),
+        meta: {
+            _name: 'server',
+            menuName: 'server',
+            lightMenu: 'server',
+        },
     }
-  },
-  //服务器详情
-  serverDetail : {
-    path : '/server/detail',
-    name : 'serverDetail',
-    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/deviceInfo.vue'),
-    meta : {
-      _name : 'server',
-      menuName : 'server',
-      lightMenu : 'server',
-    },
-  },
-  //服务器详情
-  systemAlarmDetail : {
-    path : '/server/detail/systemAlarm',
-    name : 'systemAlarm',
-    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/systemAlarmDetail.vue'),
-    meta : {
-      _name : 'server',
-      menuName : 'server',
-      lightMenu : 'server',
-    },
-  },
-  //新增服务器
-  addServer : {
-    path : '/server/addServer',
-    name : 'addServer',
-    component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/addServer.vue'),
-    meta : {
-      _name : 'server',
-      menuName : 'server',
-      lightMenu : 'server',
-    },
-  }
 }

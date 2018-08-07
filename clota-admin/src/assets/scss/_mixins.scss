@@ -6,191 +6,189 @@
   设置宽高属性,如果是块状元素可以只设置第一个和第二个参数，如果不是块状元素，需要设置第三个参数为true
  */
 @mixin block_outline($width : 100%,$height : 100%,$is_block : true) {
-  @if $is_block != true {
-    display: block;
-  }
-  width : $width;
-  height : $height;
+    @if $is_block != true {
+        display: block;
+    }
+    width: $width;
+    height: $height;
 }
+
 /**
   设置定位
  */
-@mixin absolute_pos($position : null,$top : null,$right : null,$bottom : null,$left : null){
-  @if $position {
-    position: $position;
-  }
-  @if $top != null {
-    top : $top;
-  }
-  @if $right != null {
-    right : $right;
-  }
-  @if $bottom != null {
-    bottom : $bottom;
-  }
-  @if $left != null {
-    left : $left;
-  }
+@mixin absolute_pos($position : null,$top : null,$right : null,$bottom : null,$left : null) {
+    @if $position {
+        position: $position;
+    }
+    @if $top != null {
+        top: $top;
+    }
+    @if $right != null {
+        right: $right;
+    }
+    @if $bottom != null {
+        bottom: $bottom;
+    }
+    @if $left != null {
+        left: $left;
+    }
 }
 
 /**
   设置元素上下、左右居中，但是父元素必须是相对定位
  */
-@mixin center_center () {
-  @include absolute_pos(absolute,0,0,0,0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+@mixin center_center() {
+    @include absolute_pos(absolute, 0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 /**
   文本溢出隐藏
  */
-@mixin overflow_tip ($width : null,$height : null) {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  @if $width != null and $height != null{
-    @include block_outline($height : $height,$width : $width);
-  }
+@mixin overflow_tip($width : null,$height : null) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    @if $width != null and $height != null {
+        @include block_outline($height: $height, $width: $width);
+    }
 }
-
 
 /**
   给元素末尾添加一个占位元素，这是了兼容一些浏览器对于padding的计算方法
  */
-@mixin padding_place ($width : 100%,$height : 20px){
-  &::after{
-    content : '';
-    display: block;
-    @include block_outline($width : $width,$height : $height);
-    background: $color_fff;
-  }
+@mixin padding_place($width : 100%,$height : 20px) {
+    &::after {
+        content: '';
+        display: block;
+        @include block_outline($width: $width, $height: $height);
+        background: $color_fff;
+    }
 }
 
 /**
   卡片样式
  */
-@mixin card (){
-  background: $color_fff;
-  border: 1px solid $color_DFE2E5;
-  box-shadow: 0 2px 8px 0 rgba($color_000,0.10);
-  border-radius: 4px;
+@mixin card() {
+    background: $color_fff;
+    border: 1px solid $color_DFE2E5;
+    box-shadow: 0 2px 8px 0 rgba($color_000, 0.10);
+    border-radius: 4px;
 }
 
 /**
     没数据的样式
  */
 @mixin no_data($top : 50px) {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: $top;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: $top;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
-
 
 /**
   表格最右侧操作列样式
  */
 @mixin table_operate($color : $color_blue) {
-  overflow: auto;
+    overflow: auto;
 
-  li{
-    float: left;
-    margin: 0 10px;
-    position: relative;
+    li {
+        float: left;
+        margin: 0 10px;
+        position: relative;
 
-    &:nth-of-type(1){
-      margin-left: 0;
-    }
-    &:nth-last-of-type(1){
-      margin-right: 0;
-    }
+        &:nth-of-type(1) {
+            margin-left: 0;
+        }
+        &:nth-last-of-type(1) {
+            margin-right: 0;
+        }
 
-    &:after{
-      content : '';
-      display: block;
-      @include absolute_pos(absolute,4px,37px);
-      @include block_outline(1px ,15px);
-      background: $color_gray;
+        &:after {
+            content: '';
+            display: block;
+            @include absolute_pos(absolute, 4px, 37px);
+            @include block_outline(1px, 15px);
+            background: $color_gray;
+        }
     }
-  }
 }
 
 // Argument mixin
 //////////////////
 @mixin first($num) {
 
-  @if $num == 1 {
-    &:first-child {
-      @content;
+    @if $num == 1 {
+        &:first-child {
+            @content;
+        }
+    } @else {
+        &:nth-child(-n + #{$num}) {
+            @content;
+        }
     }
-  }
-
-  @else {
-    &:nth-child(-n + #{$num}) {
-      @content;
-    }
-  }
 }
 
 @mixin last($num) {
-  &:nth-last-child(-n + #{$num}) {
-    @content;
-  }
+    &:nth-last-child(-n + #{$num}) {
+        @content;
+    }
 }
 
 @mixin after-first($num) {
-  &:nth-child(n+#{$num + 1}) {
-    @content
-  }
+    &:nth-child(n+#{$num + 1}) {
+        @content
+    }
 }
 
 @mixin from-end($num) {
-  &:nth-last-child(#{$num}) {
-    @content
-  }
+    &:nth-last-child(#{$num}) {
+        @content
+    }
 }
 
 @mixin between($first,$last) {
-  &:nth-child(n+#{$first}):nth-child(-n+#{$last}) {
-    @content
-  }
+    &:nth-child(n+#{$first}):nth-child(-n+#{$last}) {
+        @content
+    }
 }
 
 @mixin even-between($first,$last) {
-  &:nth-child(even):nth-child(n + #{$first}):nth-child(-n + #{$last}) {
-    @content
-  }
-}
-@mixin odd-between($first,$last) {
-  &:nth-child(odd):nth-child(n + #{$first}):nth-child(-n + #{$last}) {
-    @content
-  }
-}
-@mixin n-between($num,$first,$last) {
-  &:nth-child(#{$num}n):nth-child(n + #{$first}):nth-child(-n + #{$last}) {
-    @content
-  }
+    &:nth-child(even):nth-child(n + #{$first}):nth-child(-n + #{$last}) {
+        @content
+    }
 }
 
+@mixin odd-between($first,$last) {
+    &:nth-child(odd):nth-child(n + #{$first}):nth-child(-n + #{$last}) {
+        @content
+    }
+}
+
+@mixin n-between($num,$first,$last) {
+    &:nth-child(#{$num}n):nth-child(n + #{$first}):nth-child(-n + #{$last}) {
+        @content
+    }
+}
 
 @mixin all-but($num) {
-  &:not(:nth-child(#{$num})) {
-    @content
-  }
+    &:not(:nth-child(#{$num})) {
+        @content
+    }
 }
 
 @mixin each($num) {
-  &:nth-child(#{$num}n) {
-    @content
-  }
+    &:nth-child(#{$num}n) {
+        @content
+    }
 }
 
 // This mixin is commented because of a bug
@@ -205,195 +203,190 @@
 
 // Alias of each()
 @mixin every($num) {
-  @include each($num) {
-    @content
-  }
+    @include each($num) {
+        @content
+    }
 }
 
 @mixin from-first-last($num) {
-  &:nth-child(#{$num}),
-  &:nth-last-child(#{$num}) {
-    @content
-  }
+    &:nth-child(#{$num}),
+    &:nth-last-child(#{$num}) {
+        @content
+    }
 }
-
 
 // impair only
 @mixin middle($num) {
-  &:nth-child(#{round($num/2)}){
-    @content
-  }
+    &:nth-child(#{round($num/2)}) {
+        @content
+    }
 }
 
-
 @mixin all-but-first-last($num) {
-  &:nth-child(n+#{$num}):nth-last-child(n+#{$num}){
-    @content
-  }
+    &:nth-child(n+#{$num}):nth-last-child(n+#{$num}) {
+        @content
+    }
 }
 
 // Quantity Queries
 //////////////////
 
 @mixin first-of($limit) {
-  &:nth-last-child(#{$limit}):first-child {
-    @content
-  }
+    &:nth-last-child(#{$limit}):first-child {
+        @content
+    }
 }
 
 @mixin last-of($limit) {
-  &:nth-of-type(#{$limit}):nth-last-of-type(1){
-    @content
-  }
+    &:nth-of-type(#{$limit}):nth-last-of-type(1) {
+        @content
+    }
 }
 
 @mixin at-least($num) {
-  $selector: &;
-  $child: nth(nth($selector, -1), -1);
-  &:nth-last-child(n + #{$num}),
-  &:nth-last-child(n + #{$num}) ~ #{$child} {
-    @content;
-  }
+    $selector: &;
+    $child: nth(nth($selector, -1), -1);
+    &:nth-last-child(n + #{$num}),
+    &:nth-last-child(n + #{$num}) ~ #{$child} {
+        @content;
+    }
 }
 
 @mixin at-most($num) {
-  $selector: &;
-  $child: nth(nth($selector, -1), -1);
-  &:nth-last-child(-n + #{$num}):first-child,
-  &:nth-last-child(-n + #{$num}):first-child ~ #{$child} {
-    @content;
-  }
+    $selector: &;
+    $child: nth(nth($selector, -1), -1);
+    &:nth-last-child(-n + #{$num}):first-child,
+    &:nth-last-child(-n + #{$num}):first-child ~ #{$child} {
+        @content;
+    }
 }
 
 @mixin in-between($min, $max) {
-  $selector: &;
-  $child: nth(nth($selector, -1), -1);
-  &:nth-last-child(n + #{$min}):nth-last-child(-n + #{$max}):first-child,
-  &:nth-last-child(n + #{$min}):nth-last-child(-n + #{$max}):first-child ~ #{$child} {
-    @content;
-  }
+    $selector: &;
+    $child: nth(nth($selector, -1), -1);
+    &:nth-last-child(n + #{$min}):nth-last-child(-n + #{$max}):first-child,
+    &:nth-last-child(n + #{$min}):nth-last-child(-n + #{$max}):first-child ~ #{$child} {
+        @content;
+    }
 }
 
 // without arguments
 //////////////////
 
 @mixin first-child() {
-  &:first-of-type {
-    @content
-  }
+    &:first-of-type {
+        @content
+    }
 }
 
 @mixin last-child() {
-  &:last-of-type {
-    @content
-  }
-}
-@mixin even(){
-  &:nth-child(even) {
-    @content
-  }
+    &:last-of-type {
+        @content
+    }
 }
 
-@mixin odd(){
-  &:nth-child(odd) {
-    @content
-  }
+@mixin even() {
+    &:nth-child(even) {
+        @content
+    }
+}
+
+@mixin odd() {
+    &:nth-child(odd) {
+        @content
+    }
 }
 
 @mixin first-last() {
-  &:first-child,
-  &:last-child {
-    @content
-  }
+    &:first-child,
+    &:last-child {
+        @content
+    }
 }
 
 @mixin unique() {
-  &:only-child {
-    @content
-  }
+    &:only-child {
+        @content
+    }
 }
 
 @mixin not-unique() {
-  &:not(:only-child) {
-    @content
-  }
-}
-// Alias of unique()
-@mixin only() {
-  @include unique(){
-    @content
-  }
+    &:not(:only-child) {
+        @content
+    }
 }
 
+// Alias of unique()
+@mixin only() {
+    @include unique() {
+        @content
+    }
+}
 
 // Using functions
 @mixin child-index($num, $direction: 'forward', $index: 0) {
-  @for $i from 1 through $num {
-    @if $direction == 'forward' {
-      &:nth-child(#{$i}) {
-        z-index: orderIndex($i, $index, $direction);
-        @content;
-      }
+    @for $i from 1 through $num {
+        @if $direction == 'forward' {
+            &:nth-child(#{$i}) {
+                z-index: orderIndex($i, $index, $direction);
+                @content;
+            }
 
+        }
+        @if $direction == 'backward' {
+            &:nth-last-child(#{$i}) {
+                z-index: orderIndex($i, $index, $direction);
+                @content;
+            }
+        }
     }
-    @if $direction == 'backward' {
-      &:nth-last-child(#{$i}) {
-        z-index: orderIndex($i, $index, $direction);
-        @content;
-      }
-    }
-  }
 }
-
-
 
 // Functions
-@function orderIndex($i, $index, $direction){
-  @if $direction == 'forward' {
-    $i:$index + $i;
-  }
-  @else {
-    $i:$index - $i;
-  }
-  @return $i
+@function orderIndex($i, $index, $direction) {
+    @if $direction == 'forward' {
+        $i: $index + $i;
+    } @else {
+        $i: $index - $i;
+    }
+    @return $i
 }
-
 
 /**
   未知宽高居中
  */
-@mixin div_center(){
-  position: absolute;
-  top:50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+@mixin div_center() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /**
   清除浮动
  */
-@mixin clearfix(){
-  clear: both;
-  overflow: hidden;
+@mixin clearfix() {
+    clear: both;
+    overflow: hidden;
 }
 
 /**
   画圆
  */
-@mixin draw_circle ($width,$height,$background:null,$color:null,$fontsize:null) {
-  width: $width;
-  height: $height;
-  overflow: hidden;
-  border-radius: 50%;
-  line-height: $height;
-  text-align: center;
-  @if $background != null {
-    background-color : $background;
-  }
-  @if $color != null {
-    color : $color;
-  }
-  @if $fontsize != null {
-    font-size : $fontsize;
-  }
+@mixin draw_circle($width,$height,$background:null,$color:null,$fontsize:null) {
+    width: $width;
+    height: $height;
+    overflow: hidden;
+    border-radius: 50%;
+    line-height: $height;
+    text-align: center;
+    @if $background != null {
+        background-color: $background;
+    }
+    @if $color != null {
+        color: $color;
+    }
+    @if $fontsize != null {
+        font-size: $fontsize;
+    }
 }

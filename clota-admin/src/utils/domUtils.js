@@ -10,25 +10,25 @@ var utils = {
      */
     matchesSelector: function (element, selector) {
         if (element) {
-            if ( element.matches ) {
+            if (element.matches) {
                 return element.matches(selector);
-            } else if ( element.matchesSelector ) {
+            } else if (element.matchesSelector) {
                 return element.matchesSelector(selector);
-            } else if ( element.webkitMatchesSelector ) {
+            } else if (element.webkitMatchesSelector) {
                 return element.webkitMatchesSelector(selector);
-            } else if ( element.msMatchesSelector ) {
+            } else if (element.msMatchesSelector) {
                 return element.msMatchesSelector(selector);
-            } else if ( element.mozMatchesSelector ) {
+            } else if (element.mozMatchesSelector) {
                 return element.mozMatchesSelector(selector);
-            } else if ( element.oMatchesSelector ) {
+            } else if (element.oMatchesSelector) {
                 return element.oMatchesSelector(selector);
-            } else if ( element.querySelectorAll ) {
+            } else if (element.querySelectorAll) {
                 var matches = (element.document || element.ownerDocument).querySelectorAll(selector);
                 var i = 0;
 
-                while ( matches[i] && matches[i] !== element ) i++;
+                while (matches[i] && matches[i] !== element) i++;
 
-                return matches[i] ? true: false;
+                return matches[i] ? true : false;
             }
 
             throw new Error('您的浏览器版本太旧了');
@@ -38,39 +38,39 @@ var utils = {
      * 原生Ele获取真实offsetTop
      * @param ele {Object} 原生元素
      */
-    getOffsetTop: function ( ele, selector ) {
+    getOffsetTop: function (ele, selector) {
         if (!ele) {
             return 0
         }
-        if ( utils.matchesSelector( ele, selector ) ) {
+        if (utils.matchesSelector(ele, selector)) {
             return 0;
         }
-        return ( ele.offsetTop + utils.getOffsetTop( ele.offsetParent, selector ) );
+        return (ele.offsetTop + utils.getOffsetTop(ele.offsetParent, selector));
     },
     /**
      * 原生Ele获取真实offsetLeft
      * @param ele {Object} 原生元素
      */
-    getOffsetLeft: function ( ele, selector ) {
+    getOffsetLeft: function (ele, selector) {
         if (!ele) {
             return 0
         }
-        if ( utils.matchesSelector( ele, selector ) ) {
+        if (utils.matchesSelector(ele, selector)) {
             return 0;
         }
-        return ( ele.offsetLeft + utils.getOffsetLeft( ele.offsetParent, selector ) );
+        return (ele.offsetLeft + utils.getOffsetLeft(ele.offsetParent, selector));
     },
 
     /**
      * 原生Ele获取真实offsetTop和offsetLeft，需要通过call调用传入DOM元素
      * @param ele {Object} 原生元素
      */
-    getOffset: function ( ele, selector ) {
+    getOffset: function (ele, selector) {
         var _self = this
         if (ele) {
             return {
-                top: _self.getOffsetTop( ele, selector ),
-                left: _self.getOffsetLeft( ele, selector )
+                top: _self.getOffsetTop(ele, selector),
+                left: _self.getOffsetLeft(ele, selector)
             }
         } else {
             return null
@@ -81,10 +81,10 @@ var utils = {
      * 获取真实的dom样式
      * @param {Object} el 元素
      */
-    getStyle: function(el) {
+    getStyle: function (el) {
         return (window.getComputedStyle
-        ? window.getComputedStyle(el, null)
-        : el.currentStyle)
+            ? window.getComputedStyle(el, null)
+            : el.currentStyle)
     },
 
     /**
@@ -92,7 +92,7 @@ var utils = {
      * @param {Object} el 元素
      * @param {Object} selector 选择器
      */
-    closest: function(el, selector) {
+    closest: function (el, selector) {
         if (utils.matchesSelector(el, 'body')) {
             // 如果最终和指定选择器不符则返回null
             if (selector !== undefined && selector !== 'body') {
@@ -113,7 +113,7 @@ var utils = {
      * 获取最近一个定位父元素
      * @param {Object} el dom元素
      */
-    getHasPosParentEl: function(el) {
+    getHasPosParentEl: function (el) {
         if (utils.matchesSelector(el, 'body')) {
             return el
         }
@@ -128,7 +128,7 @@ var utils = {
      * 获取最近一个滚动父元素
      * @param {Object} el dom元素
      */
-    getHasScrollParentEl: function(el) {
+    getHasScrollParentEl: function (el) {
         if (utils.matchesSelector(el, 'body')) {
             return el
         }
@@ -148,9 +148,10 @@ var utils = {
      * 获取所有的滚动父元素数组
      * @param {Object} el dom元素
      */
-    getAllHasScrollParentEls: function(el) {
+    getAllHasScrollParentEls: function (el) {
         const self = this;
         let arr = [];
+
         // 递归向上查找
         function upQuery(tmp) {
             const pEl = self.getHasScrollParentEl(tmp);
@@ -162,6 +163,7 @@ var utils = {
                 upQuery(pEl);
             }
         }
+
         // 执行
         upQuery(el);
         return arr;
@@ -173,45 +175,45 @@ var utils = {
      * @param {string} name 类名
      * @param {boolean} state 状态开关
      */
-    toggleClass: function(el, name, state) {
-		if (el) {
-			if (el.classList) {
-				el.classList[state ? 'add' : 'remove'](name);
-			} else {
-				var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
-				el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
-			}
-		}
+    toggleClass: function (el, name, state) {
+        if (el) {
+            if (el.classList) {
+                el.classList[state ? 'add' : 'remove'](name);
+            } else {
+                var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
+                el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
+            }
+        }
     },
-    
+
     /**
      * 设置css样式
      * @param {HTMLElement} el
-     * @param {string} prop 
-     * @param {string} val 
+     * @param {string} prop
+     * @param {string} val
      */
-    css: function(el, prop, val) {
-		var style = el && el.style;
+    css: function (el, prop, val) {
+        var style = el && el.style;
 
-		if (style) {
-			if (val === void 0) {
-				if (document.defaultView && document.defaultView.getComputedStyle) {
-					val = document.defaultView.getComputedStyle(el, '');
-				}
-				else if (el.currentStyle) {
-					val = el.currentStyle;
-				}
+        if (style) {
+            if (val === void 0) {
+                if (document.defaultView && document.defaultView.getComputedStyle) {
+                    val = document.defaultView.getComputedStyle(el, '');
+                }
+                else if (el.currentStyle) {
+                    val = el.currentStyle;
+                }
 
-				return prop === void 0 ? val : val[prop];
-			} else {
-				if (!(prop in style)) {
-					prop = '-webkit-' + prop;
-				}
+                return prop === void 0 ? val : val[prop];
+            } else {
+                if (!(prop in style)) {
+                    prop = '-webkit-' + prop;
+                }
 
-				style[prop] = val + (typeof val === 'string' ? '' : 'px');
-			}
-		}
-	}
+                style[prop] = val + (typeof val === 'string' ? '' : 'px');
+            }
+        }
+    }
 }
 
 export default utils

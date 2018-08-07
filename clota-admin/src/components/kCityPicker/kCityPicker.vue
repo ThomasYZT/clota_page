@@ -2,61 +2,63 @@
     <div class="klwk-city-select">
         <!-- 触发器 -->
         <div ref="Input"
-            class="klwk-city-select-input"
-            :class="{
+             class="klwk-city-select-input"
+             :class="{
                 disabled: disabled
             }"
-            @mouseenter="hovering = true"
-            @mouseleave="hovering = false"
-            @mousedown.stop="()=>{}"
-            @click="onClickInput($event)">
+             @mouseenter="hovering = true"
+             @mouseleave="hovering = false"
+             @mousedown.stop="()=>{}"
+             @click="onClickInput($event)">
             <input v-model="curVal"
-                type="text"
-                readonly
-                :placeholder="placeholder">
+                   type="text"
+                   readonly
+                   :placeholder="placeholder">
             <!-- 尾部图标 -->
             <div class="suffix"
-                @click="onClickSuffix($event)">
+                 @click="onClickSuffix($event)">
                 <!-- 清除 -->
                 <span class="icon-clear el-icon-circle-close"
-                    v-if="iconClearShow">
+                      v-if="iconClearShow">
                 </span>
                 <!-- 箭头 -->
                 <span class="icon-arrow-down el-icon-arrow-down"
-                    :class="{
+                      :class="{
                         'visible': visible
                     }"
-                    v-else>
+                      v-else>
                 </span>
             </div>
         </div>
         <!-- dropdown -->
         <transition name="klwk-dropdown">
             <div ref="Drop"
-                class="klwk-cityselect-dropdown"
-                :style="style"
-                :data-transfer="transfer"
-                v-transfer-dom
-                v-show="visible"
-                @mousedown.stop="()=>{}">
+                 class="klwk-cityselect-dropdown"
+                 :style="style"
+                 :data-transfer="transfer"
+                 v-transfer-dom
+                 v-show="visible"
+                 @mousedown.stop="()=>{}">
                 <div class="data-tabs clearfix">
                     <div class="tab" :class="{active: view === 'p'}" @click="view = 'p'">省份</div>
-                    <div class="tab" :class="{active: view === 'c'}" v-if="'a,c'.includes(type)" @click="view = 'c'">城市</div>
+                    <div class="tab" :class="{active: view === 'c'}" v-if="'a,c'.includes(type)" @click="view = 'c'">
+                        城市
+                    </div>
                     <div class="tab" :class="{active: view === 'a'}" v-if="type === 'a'" @click="view = 'a'">区域</div>
                 </div>
                 <div class="data-container clearfix"
-                    :class="{[view]: true}">
+                     :class="{[view]: true}">
                     <!-- 省 -->
                     <div class="p-section"
-                        :key="key"
-                        v-show="view === 'p'"
-                        v-for="(arr, key) in provinces">
+                         :key="key"
+                         v-show="view === 'p'"
+                         v-for="(arr, key) in provinces">
                         <div class="p-key">{{key}}</div>
                         <div class="p-container clearfix">
                             <div class="select-item"
-                                :key="i + key"
-                                v-for="(item, i) in arr"
-                                @click="onClickItem(item)">
+                                 :key="i + key"
+                                 v-for="(item, i) in arr"
+                                 @click="onClickItem(item)">
                                 <div :class="{
                                     active: select.province && select.province.name === item.name
                                 }">
@@ -67,10 +69,10 @@
                     </div>
                     <!-- 市 -->
                     <div class="select-item c"
-                        :key="i + 'c'"
-                        v-show="view === 'c'"
-                        v-for="(item, i) in citys"
-                        @click="onClickItem(item)">
+                         :key="i + 'c'"
+                         v-show="view === 'c'"
+                         v-for="(item, i) in citys"
+                         @click="onClickItem(item)">
                         <div
                             :class="{
                                 active: select.city && select.city.name === item.name
@@ -81,10 +83,10 @@
                     </div>
                     <!-- 区 -->
                     <div class="select-item a"
-                        :key="i + 'a'"
-                        v-show="view === 'a'"
-                        v-for="(item, i) in areas"
-                        @click="onClickItem(item)">
+                         :key="i + 'a'"
+                         v-show="view === 'a'"
+                         v-for="(item, i) in areas"
+                         @click="onClickItem(item)">
                         <div
                             :class="{
                                 active: select.area && select.area.name === item.name
@@ -100,357 +102,357 @@
 </template>
 
 <script>
-import dom from '@/utils/domUtils';
-import provinces from './dicts/provinces';
-import citys from './dicts/citys';
-import areas from './dicts/areas';
-import {commonFunc} from 'klwk-ui'
+    import dom from '@/utils/domUtils';
+    import provinces from './dicts/provinces';
+    import citys from './dicts/citys';
+    import areas from './dicts/areas';
+    import {commonFunc} from 'klwk-ui'
 
-export default {
-    name: 'KCityPicker',
-    props: {
-        // 类型 {string} 只选到省、市、区，分别传'p' 'c' 'a'，默认：'a'
-        type: {
-            type: String,
-            default: 'a'
-        },
-        // 是否将弹层放置在 body 内 {boolean} 默认：true
-        transfer: {
-            type: Boolean,
-            default: true
-        },
-        // 是否禁用组件 {boolean} 默认：false
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        // 占位文本
-        placeholder: {
-            type: String,
-            default: '请选择'
-        }
-    },
-    data() {
-        return {
-            // 当前显示内容
-            curVal: '',
-            // 是否可见dropdown
-            visible: false,
-            // dropdown样式
-            style: null,
-            // 是否是hover状态
-            hovering: false,
-            // 当前所在视图 'p'：省，'c'：市，'a'：区
-            view: 'p',
-            // 展示数据
-            provinces: {
-                'A-G': [],
-                'H-K': [],
-                'L-S': [],
-                'T-Z': []
+    export default {
+        name: 'KCityPicker',
+        props: {
+            // 类型 {string} 只选到省、市、区，分别传'p' 'c' 'a'，默认：'a'
+            type: {
+                type: String,
+                default: 'a'
             },
-            citys: [],
-            areas: [],
-            // 选择结果
-            select: {
-                province: null,
-                city: null,
-                area: null,
-                value: ''
-            }
-        }
-    },
-    computed: {
-        // 清除图标可见
-        iconClearShow() {
-            return !this.disabled && this.hovering && this.curVal
-        }
-    },
-    methods: {
-        /**
-         * 图标点击
-         */
-        onClickSuffix(ev) {
-            if (this.iconClearShow) {
-                this.select.province = this.select.city = this.select.area = null
-                this.callback()
-
-                ev.stopPropagation()
+            // 是否将弹层放置在 body 内 {boolean} 默认：true
+            transfer: {
+                type: Boolean,
+                default: true
+            },
+            // 是否禁用组件 {boolean} 默认：false
+            disabled: {
+                type: Boolean,
+                default: false
+            },
+            // 占位文本
+            placeholder: {
+                type: String,
+                default: '请选择'
             }
         },
-        /**
-         * 点击触发器
-         */
-        onClickInput(ev) {
-            if (this.disabled) return
-
-            if (this.visible) {
-                this.hide()
-            } else {
-                this.show()
+        data() {
+            return {
+                // 当前显示内容
+                curVal: '',
+                // 是否可见dropdown
+                visible: false,
+                // dropdown样式
+                style: null,
+                // 是否是hover状态
+                hovering: false,
+                // 当前所在视图 'p'：省，'c'：市，'a'：区
+                view: 'p',
+                // 展示数据
+                provinces: {
+                    'A-G': [],
+                    'H-K': [],
+                    'L-S': [],
+                    'T-Z': []
+                },
+                citys: [],
+                areas: [],
+                // 选择结果
+                select: {
+                    province: null,
+                    city: null,
+                    area: null,
+                    value: ''
+                }
             }
         },
-        /**
-         * 点击选项
-         */
-        onClickItem(data) {
-            // 根据不同视图存储不同数据
-            switch (this.view) {
-                case 'p':
-                    this.select.province = data
-                    // 如果类型只选到省则直接回调
-                    if (this.type === 'p') {
-                        this.callback()
-                        this.hide()
-                    } else {
-                        // 加载对应省下的市数据
-                        this.init('c')
+        computed: {
+            // 清除图标可见
+            iconClearShow() {
+                return !this.disabled && this.hovering && this.curVal
+            }
+        },
+        methods: {
+            /**
+             * 图标点击
+             */
+            onClickSuffix(ev) {
+                if (this.iconClearShow) {
+                    this.select.province = this.select.city = this.select.area = null
+                    this.callback()
 
-                        // 如果没有市数据则选择本身，且清空下级数据
-                        if (!this.citys.length) {
-                            this.select.city = this.select.area = null
+                    ev.stopPropagation()
+                }
+            },
+            /**
+             * 点击触发器
+             */
+            onClickInput(ev) {
+                if (this.disabled) return
+
+                if (this.visible) {
+                    this.hide()
+                } else {
+                    this.show()
+                }
+            },
+            /**
+             * 点击选项
+             */
+            onClickItem(data) {
+                // 根据不同视图存储不同数据
+                switch (this.view) {
+                    case 'p':
+                        this.select.province = data
+                        // 如果类型只选到省则直接回调
+                        if (this.type === 'p') {
                             this.callback()
                             this.hide()
                         } else {
-                            this.view = 'c'
+                            // 加载对应省下的市数据
+                            this.init('c')
+
+                            // 如果没有市数据则选择本身，且清空下级数据
+                            if (!this.citys.length) {
+                                this.select.city = this.select.area = null
+                                this.callback()
+                                this.hide()
+                            } else {
+                                this.view = 'c'
+                            }
                         }
-                    }
-                    break
-                case 'c':
-                    this.select.city = data
-                    // 如果类型只选到省则直接回调
-                    if (this.type === 'c') {
-                        this.callback()
-                        this.hide()
-                    } else {
-                        // 加载对应省下的市数据
-                        this.init('a')
-
-                        // 如果没有区数据则选择本身，且清空下级数据
-                        if (!this.areas.length) {
-                            this.select.area = null
-                            this.callback()
-                            this.hide()
-                        } else {
-                            this.view = 'a'
-                        }
-                    }
-                    break
-                case 'a':
-                    this.select.area = data
-                    if (this.type === 'a') {
-                        this.callback()
-                        this.hide()
-                    }
-                    break
-            }
-        },
-        /**
-         * 回调数据
-         */
-        callback() {
-            // 合理清空数据
-            switch (this.type) {
-                case 'p':
-                    this.select.city = this.select.area = null
-                    break
-                case 'c':
-                    this.select.area = null
-                    break
-                case 'a':
-                    break
-            }
-
-            this.curVal = this.select.value = (this.select.province && this.select.province.name || '')
-                + (this.select.city && (`-${this.select.city.name}`) || '')
-                + (this.select.area && (`-${this.select.area.name}`) || '')
-            this.$emit('select', this.select);
-        },
-        /**
-         * 选择选项
-         * @param {object} 选项 {province:'', city:'', area: '', value}
-         */
-        setSelect(option) {
-            if (option) {
-                // 如果参数value则按 value
-                if (option.value) {
-                    this.curVal = this.select.value = option.value
-                } else {
-                    // 根据 code 选中对应的数据
-                    if (option.province) {
-                        this.select.province = provinces.find(item => item.code === option.province)
-                    }
-
-                    if (option.city) {
-                        this.select.city = citys.find(item => item.code === option.city)
-                    }
-
-                    if (option.area) {
-                        this.select.area = areas.find(item => item.code === option.area)
-                    }
-
-                    this.curVal = this.select.value = (this.select.province && this.select.province.name || '')
-                        + (this.select.city && this.select.city.name || '')
-                        + (this.select.area && this.select.area.name || '')
-                }
-            } else {
-                this.select.province = null
-                this.select.city = null
-                this.select.area = null
-                this.curVal = ''
-            }
-        },
-        /**
-         * 直接设置文本
-         */
-        setValue(value) {
-            this.setSelect({value});
-        },
-        show() {
-            if (this.visible) return
-
-            // 初始化
-            this.view = 'p'
-
-            this.$nextTick(() => {
-                this.visible = true
-                this.setPos()
-            })
-        },
-        /**
-         * 定位
-         */
-        setPos() {
-            if (!this.visible) return
-
-            this.style = null
-
-            this.$nextTick(() => {
-                const input = this.$refs.Input
-                const inputRc = input.getBoundingClientRect()
-                const dropdown = this.$refs.Drop
-
-                let style = {}
-
-                // 如果弹层在body内定位
-                if (this.transfer) {
-                    style.left = `${inputRc.left}px`
-                    // 如果弹层超出底线则显示在上方
-                    if (inputRc.bottom + dropdown.offsetHeight + 5 >= window.innerHeight) {
-                        const newTop = inputRc.top - dropdown.offsetHeight - 10
-                        // 如果新位置小于顶部则继续显示在底部
-                        if (newTop < 0) {
-                            style.top = `${inputRc.bottom}px`
-                        } else {
-                            style.top = `${newTop}px`
-                        }
-                    } else {
-                        style.top = `${inputRc.bottom}px`
-                    }
-                } else {
-                    style = {
-                        left: 0,
-                        top: `${inputRc.height}px`
-                    }
-                }
-
-                this.style = style
-            })
-        },
-        hide() {
-            if (!this.visible) return
-            this.visible = false
-        },
-        /**
-         * 初始化数据
-         * @param
-         */
-        init(type) {
-            if (type) {
-                let pCode = ''
-                switch (type) {
+                        break
                     case 'c':
-                        pCode = this.select.province.code
-                        this.citys = citys.filter(city => {
-                            city.name = city.name.split('市')[0]
-                            city.name = city.name.split('市')[0]
-                            city.name = city.name.split('县')[0]
-                            return city.provinceCode === pCode && city.name
-                        })
+                        this.select.city = data
+                        // 如果类型只选到省则直接回调
+                        if (this.type === 'c') {
+                            this.callback()
+                            this.hide()
+                        } else {
+                            // 加载对应省下的市数据
+                            this.init('a')
+
+                            // 如果没有区数据则选择本身，且清空下级数据
+                            if (!this.areas.length) {
+                                this.select.area = null
+                                this.callback()
+                                this.hide()
+                            } else {
+                                this.view = 'a'
+                            }
+                        }
                         break
                     case 'a':
-                        pCode = this.select.city.code
-                        this.areas = areas.filter(area => {
-                            return area.cityCode === pCode && area.name
-                        })
+                        this.select.area = data
+                        if (this.type === 'a') {
+                            this.callback()
+                            this.hide()
+                        }
                         break
                 }
-            } else {
-                // 先排序再初始化数据
-                provinces.sort((a, b) => {
-                    let pinyin = commonFunc.getNamePinYin(a.name)
-                    let pinyin1 = commonFunc.getNamePinYin(b.name)
-                    if (a.name.includes('重庆')) pinyin = 'chongqingshi'
-                    if (b.name.includes('重庆')) pinyin1 = 'chongqingshi'
+            },
+            /**
+             * 回调数据
+             */
+            callback() {
+                // 合理清空数据
+                switch (this.type) {
+                    case 'p':
+                        this.select.city = this.select.area = null
+                        break
+                    case 'c':
+                        this.select.area = null
+                        break
+                    case 'a':
+                        break
+                }
 
-                    a.fstCh = pinyin[0]
-                    b.fstCh = pinyin1[0]
+                this.curVal = this.select.value = (this.select.province && this.select.province.name || '')
+                    + (this.select.city && (`-${this.select.city.name}`) || '')
+                    + (this.select.area && (`-${this.select.area.name}`) || '')
+                this.$emit('select', this.select);
+            },
+            /**
+             * 选择选项
+             * @param {object} 选项 {province:'', city:'', area: '', value}
+             */
+            setSelect(option) {
+                if (option) {
+                    // 如果参数value则按 value
+                    if (option.value) {
+                        this.curVal = this.select.value = option.value
+                    } else {
+                        // 根据 code 选中对应的数据
+                        if (option.province) {
+                            this.select.province = provinces.find(item => item.code === option.province)
+                        }
 
-                    return pinyin > pinyin1 ? 1 : -1
-                }).forEach(province => {
-                    // 整改文案
-                    province.name = province.name.split('省')[0]
-                    province.name = province.name.split('市')[0]
-                    province.name = province.name.split('自治区')[0]
-                    province.name = province.name.split('壮族')[0]
-                    province.name = province.name.split('回族')[0]
-                    province.name = province.name.split('维吾尔')[0]
+                        if (option.city) {
+                            this.select.city = citys.find(item => item.code === option.city)
+                        }
 
-                    if (province.fstCh >= 'a' && province.fstCh <= 'g') {
-                        this.provinces['A-G'].push(province)
+                        if (option.area) {
+                            this.select.area = areas.find(item => item.code === option.area)
+                        }
+
+                        this.curVal = this.select.value = (this.select.province && this.select.province.name || '')
+                            + (this.select.city && this.select.city.name || '')
+                            + (this.select.area && this.select.area.name || '')
                     }
-                    if (province.fstCh >= 'h' && province.fstCh <= 'k') {
-                        this.provinces['H-K'].push(province)
+                } else {
+                    this.select.province = null
+                    this.select.city = null
+                    this.select.area = null
+                    this.curVal = ''
+                }
+            },
+            /**
+             * 直接设置文本
+             */
+            setValue(value) {
+                this.setSelect({value});
+            },
+            show() {
+                if (this.visible) return
+
+                // 初始化
+                this.view = 'p'
+
+                this.$nextTick(() => {
+                    this.visible = true
+                    this.setPos()
+                })
+            },
+            /**
+             * 定位
+             */
+            setPos() {
+                if (!this.visible) return
+
+                this.style = null
+
+                this.$nextTick(() => {
+                    const input = this.$refs.Input
+                    const inputRc = input.getBoundingClientRect()
+                    const dropdown = this.$refs.Drop
+
+                    let style = {}
+
+                    // 如果弹层在body内定位
+                    if (this.transfer) {
+                        style.left = `${inputRc.left}px`
+                        // 如果弹层超出底线则显示在上方
+                        if (inputRc.bottom + dropdown.offsetHeight + 5 >= window.innerHeight) {
+                            const newTop = inputRc.top - dropdown.offsetHeight - 10
+                            // 如果新位置小于顶部则继续显示在底部
+                            if (newTop < 0) {
+                                style.top = `${inputRc.bottom}px`
+                            } else {
+                                style.top = `${newTop}px`
+                            }
+                        } else {
+                            style.top = `${inputRc.bottom}px`
+                        }
+                    } else {
+                        style = {
+                            left: 0,
+                            top: `${inputRc.height}px`
+                        }
                     }
-                    if (province.fstCh >= 'l' && province.fstCh <= 's') {
-                        this.provinces['L-S'].push(province)
+
+                    this.style = style
+                })
+            },
+            hide() {
+                if (!this.visible) return
+                this.visible = false
+            },
+            /**
+             * 初始化数据
+             * @param
+             */
+            init(type) {
+                if (type) {
+                    let pCode = ''
+                    switch (type) {
+                        case 'c':
+                            pCode = this.select.province.code
+                            this.citys = citys.filter(city => {
+                                city.name = city.name.split('市')[0]
+                                city.name = city.name.split('市')[0]
+                                city.name = city.name.split('县')[0]
+                                return city.provinceCode === pCode && city.name
+                            })
+                            break
+                        case 'a':
+                            pCode = this.select.city.code
+                            this.areas = areas.filter(area => {
+                                return area.cityCode === pCode && area.name
+                            })
+                            break
                     }
-                    if (province.fstCh >= 't' && province.fstCh <= 'z') {
-                        this.provinces['T-Z'].push(province)
+                } else {
+                    // 先排序再初始化数据
+                    provinces.sort((a, b) => {
+                        let pinyin = commonFunc.getNamePinYin(a.name)
+                        let pinyin1 = commonFunc.getNamePinYin(b.name)
+                        if (a.name.includes('重庆')) pinyin = 'chongqingshi'
+                        if (b.name.includes('重庆')) pinyin1 = 'chongqingshi'
+
+                        a.fstCh = pinyin[0]
+                        b.fstCh = pinyin1[0]
+
+                        return pinyin > pinyin1 ? 1 : -1
+                    }).forEach(province => {
+                        // 整改文案
+                        province.name = province.name.split('省')[0]
+                        province.name = province.name.split('市')[0]
+                        province.name = province.name.split('自治区')[0]
+                        province.name = province.name.split('壮族')[0]
+                        province.name = province.name.split('回族')[0]
+                        province.name = province.name.split('维吾尔')[0]
+
+                        if (province.fstCh >= 'a' && province.fstCh <= 'g') {
+                            this.provinces['A-G'].push(province)
+                        }
+                        if (province.fstCh >= 'h' && province.fstCh <= 'k') {
+                            this.provinces['H-K'].push(province)
+                        }
+                        if (province.fstCh >= 'l' && province.fstCh <= 's') {
+                            this.provinces['L-S'].push(province)
+                        }
+                        if (province.fstCh >= 't' && province.fstCh <= 'z') {
+                            this.provinces['T-Z'].push(province)
+                        }
+                    })
+                }
+            }
+        },
+        mounted() {
+            const mousedown = document.onmousedown
+            document.onmousedown = (ev) => {
+                if (mousedown) mousedown(ev)
+                // 点击外部隐藏
+                this.hide()
+            }
+
+            // 如果弹层放置在body中，则跟随滚动
+            const resizeFunc = window.onresize
+            window.onresize = (ev) => {
+                if (resizeFunc) resizeFunc(ev)
+                this.setPos()
+            }
+
+            if (this.transfer) {
+                const scrollEls = dom.getAllHasScrollParentEls(this.$refs.Input)
+                scrollEls.forEach(el => {
+                    const scrollFunc = el.onscroll
+                    el.onscroll = (ev) => {
+                        if (scrollFunc) scrollFunc(ev)
+                        this.setPos()
                     }
                 })
             }
-        }
-    },
-    mounted() {
-        const mousedown = document.onmousedown
-        document.onmousedown = (ev) => {
-            if (mousedown) mousedown(ev)
-            // 点击外部隐藏
-            this.hide()
-        }
 
-        // 如果弹层放置在body中，则跟随滚动
-        const resizeFunc = window.onresize
-        window.onresize = (ev) => {
-            if (resizeFunc) resizeFunc(ev)
-            this.setPos()
+            this.init()
         }
-
-        if (this.transfer) {
-            const scrollEls = dom.getAllHasScrollParentEls(this.$refs.Input)
-            scrollEls.forEach(el => {
-                const scrollFunc = el.onscroll
-                el.onscroll = (ev) => {
-                    if (scrollFunc) scrollFunc(ev)
-                    this.setPos()
-                }
-            })
-        }
-
-        this.init()
     }
-}
 </script>
 
 <style lang="scss">
@@ -461,6 +463,7 @@ export default {
     .klwk-dropdown-leave-active {
         transition: all .2s ease-in-out;
     }
+
     .klwk-dropdown-enter,
     .klwk-dropdown-leave-to {
         transform: translateY(6px);
@@ -545,7 +548,7 @@ export default {
         margin: 2px 0;
         background-color: #fff;
         border-radius: 4px;
-        box-shadow: 0 1px 6px rgba(0,0,0,.2);
+        box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
         z-index: 2230;
 
         .clearfix {

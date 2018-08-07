@@ -9,7 +9,7 @@ import lesseeRoute from './modules/lesseeRoute';
 import serverRoute from './modules/serverRoute';
 
 export default {
-  ...orgStructureRouter,
-  ...lesseeRoute,
-  ...serverRoute
+    ...orgStructureRouter,
+    ...lesseeRoute,
+    ...serverRoute
 }

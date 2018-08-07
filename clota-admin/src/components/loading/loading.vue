@@ -16,7 +16,7 @@
                         src = require('./icon-loading-normal.gif')
                         break
                     case 'table':
-                    default: 
+                    default:
                         src = require('./icon-loading-list.gif')
                         break
                 }

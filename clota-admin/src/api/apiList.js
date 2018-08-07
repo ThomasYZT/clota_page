@@ -7,7 +7,7 @@ const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
     // 登录
-    login : '/account/login',
+    login: '/account/login',
 };
 
 export default apiList;

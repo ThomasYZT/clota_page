@@ -23,7 +23,7 @@ const instance = axios.create({
 
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
-    if(response.data.message === '请先登录!'){
+    if (response.data.message === '请先登录!') {
         common.loginOut();
     }
     return response;
@@ -37,7 +37,7 @@ export default {
     /**
      * 获取token参数
      */
-    getToken () {
+    getToken() {
         return localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).token : '';
     },
     /**
@@ -54,7 +54,7 @@ export default {
             }
         };
         return instance.get(api[urlKey], myConfig).then(res => {
-            if (!res.data&&typeof res.data === 'object' && !res.data.success) {
+            if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
             return res.data
@@ -115,8 +115,8 @@ export default {
      * 处理并发请求的助手函数
      * @param iterable  是一个可以迭代的参数如数组等
      */
-    all( iterable ) {
-        return axios.all( iterable ).then(
+    all(iterable) {
+        return axios.all(iterable).then(
             axios.spread((...res) => {
                 return res
             })
@@ -139,14 +139,14 @@ export default {
      * @param paramObj
      * @returns {*|promise}
      */
-    uploadFile : function (urlKey,paramObj) {
+    uploadFile: function (urlKey, paramObj) {
         let myConfig = {
             cancelToken: new axios.CancelToken(function (cancel) {
                 cancelTokenCollection[urlKey] = cancel;
             }),
-            headers : {
+            headers: {
                 token: this.getToken(),
-                'Content-type' : 'multipart/form-data'
+                'Content-type': 'multipart/form-data'
             }
         };
         return instance.post(api[urlKey], paramObj, myConfig).then(res => {
