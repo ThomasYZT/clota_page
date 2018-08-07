@@ -22,7 +22,7 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <li class="operate-list" @click="toISPinternetDetail">查看</li>
-                        <li class="operate-list disabled">禁用</li>
+                        <li class="operate-list disabled" @click="disabledLess(scoped.row)">禁用</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -41,6 +41,10 @@
         </no-data>
         <loading :visible="isLoading">
         </loading>
+        <disabled-less v-model="disabledLessModalShow"
+                       :less-detail="currentRow"
+                       @confirm-disabled="confirmDisabled">
+        </disabled-less>
     </div>
 </template>
 
@@ -50,6 +54,7 @@
     import noData from '@/components/noDataTip/noData-tip.vue';
     import loading from '@/components/loading/loading.vue';
     import tableMixins from '../tableMixins';
+    import disabledLess from './ISPinternetChild/disabledLess';
 
     export default {
         mixins: [tableMixins],
@@ -57,11 +62,16 @@
             tableCom,
             noData,
             loading,
+            disabledLess
         },
         data() {
             return {
                 //表头数据
                 columnData: columns,
+                //是否显示
+                disabledLessModalShow : false,
+                //当前操作的租户数据
+                currentRow : {}
             }
         },
         methods: {
@@ -80,6 +90,20 @@
                 this.$router.push({
                     name: 'ISPinternetDetail'
                 });
+            },
+            /**
+             * 禁用租户
+             * @param rowData 租户的数据
+             */
+            disabledLess (rowData) {
+                this.disabledLessModalShow = true;
+                this.currentRow = rowData;
+            },
+            /**
+             * 确认禁用租户
+             */
+            confirmDisabled () {
+
             }
         },
         computed: {}

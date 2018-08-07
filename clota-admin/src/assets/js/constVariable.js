@@ -52,19 +52,19 @@ export const systemTypeList = [
 //节点类型
 export const nodeList = [
     {
-        label: 'company',
+        label: 'company',//公司
         value: 'company'
     },
     {
-        label: 'department',
+        label: 'department',//部门
         value: 'department'
     },
     {
-        label: 'scene',
+        label: 'scene',//景区
         value: 'scene'
     },
     {
-        label: 'cashier',
+        label: 'cashier',//款台
         value: 'cashier'
     }
 ];
@@ -72,15 +72,15 @@ export const nodeList = [
 //款台类型
 export const cashierType = [
     {
-        label: 'verifyCashierType',
-        value: 'company'
+        label: 'verifyCashierType',//核销款台
+        value: 'verifyCashierType'
     },
     {
-        label: 'verifySaleType',
-        value: 'department'
+        label: 'verifySaleType',//销售款台
+        value: 'verifySaleType'
     },
     {
-        label: 'verifySaleAndCashierType',
-        value: 'scene'
+        label: 'verifySaleAndCashierType',//核销/销售一体款台
+        value: 'verifySaleAndCashierType'
     },
 ];

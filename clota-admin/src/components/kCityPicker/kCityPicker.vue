@@ -332,7 +332,7 @@
                     const inputRc = input.getBoundingClientRect()
                     const dropdown = this.$refs.Drop
 
-                    let style = {}
+                    let style = {bottom:''};
 
                     // 如果弹层在body内定位
                     if (this.transfer) {
@@ -345,6 +345,7 @@
                                 style.top = `${inputRc.bottom}px`
                             } else {
                                 style.top = `${newTop}px`
+                                style.bottom = `${window.innerHeight - inputRc.top}px`
                             }
                         } else {
                             style.top = `${inputRc.bottom}px`

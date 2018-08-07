@@ -118,6 +118,8 @@
                             this.$emit('add-scene-modal-show', JSON.parse(JSON.stringify(this.formData)));
                         } else if (this.formData.nodeType === 'cashier') {
                             this.$emit('add-cashier-modal-show', JSON.parse(JSON.stringify(this.formData)));
+                        }else if(this.formData.nodeType === 'department'){
+                            //新增了部门
                         }
                         this.$emit('input', false);
                     }

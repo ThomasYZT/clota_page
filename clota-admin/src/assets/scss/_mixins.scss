@@ -104,18 +104,23 @@
         float: left;
         margin: 0 10px;
         position: relative;
+        cursor : pointer;
 
         &:nth-of-type(1) {
             margin-left: 0;
         }
         &:nth-last-of-type(1) {
             margin-right: 0;
+
+            &:after{
+                display: none;
+            }
         }
 
         &:after {
             content: '';
             display: block;
-            @include absolute_pos(absolute, 4px, 37px);
+            @include absolute_pos(absolute, 4px, -10px);
             @include block_outline(1px, 15px);
             background: $color_gray;
         }

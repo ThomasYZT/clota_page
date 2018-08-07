@@ -3,7 +3,7 @@ export const columns = [
     {
         title: 'ID',
         minWidth: 45,
-        field: 'index',
+        field: 'name',
         ableClick: true
     },
     {

@@ -8,11 +8,14 @@
         </bread-crumb-head>
         <div class="less-company-detail">
             <div class="structure">
-                <structure-tree :tree-data="structureData">
+                <structure-tree :tree-data="structureData"
+                                v-model="componentName">
                 </structure-tree>
             </div>
-            <company-detail>
-            </company-detail>
+            <!--<company-detail>-->
+            <!--</company-detail>-->
+            <component :is="componentSelect">
+            </component>
         </div>
     </div>
 </template>
@@ -22,13 +25,15 @@
     import organization from '../organization/organization';
     import structureTree from '../organization/structureHead';
     import companyDetail from './ISPinternetDetailChild/companyDetail';
+    import departmentDetail from './ISPinternetDetailChild/departmentDetail';
 
     export default {
         components: {
             breadCrumbHead,
             organization,
             structureTree,
-            companyDetail
+            companyDetail,
+            departmentDetail
         },
         data() {
             return {
@@ -44,39 +49,47 @@
                 //组织结构数据
                 structureData: [
                     {
-                        title: '长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团长隆旅游集团',
+                        title: '公司',
+                        type : 'company',
                         expand: true,
                         children: [
                             {
                                 title: '长隆旅游集团',
                                 expand: true,
+                                type : 'company',
                                 children: [
                                     {
-                                        title: '长隆旅游集团'
+                                        title: '部门',
+                                        type : 'department'
                                     },
                                     {
-                                        title: '长隆旅游集团'
-                                    }
-                                ]
-                            },
-                            {
-                                title: '长隆旅游集团',
-                                expand: true,
-                                children: [
-                                    {
-                                        title: '长隆旅游集团'
-                                    },
-                                    {
-                                        title: '长隆旅游集团'
+                                        title: '核销款台',
+                                        type : 'cashier'
                                     }
                                 ]
                             }
                         ]
                     }
-                ]
+                ],
+                //详情路由
+                componentName : ''
             }
         },
-        methods: {}
+        methods: {},
+        computed : {
+            /**
+             * 右侧引入的组件
+             */
+            componentSelect () {
+                if(this.componentName === 'company') {
+                    return 'companyDetail'
+                }else if(this.componentName === 'department'){
+                    return 'departmentDetail'
+                }else{
+                    return  '';
+                }
+            }
+        }
     }
 </script>
 

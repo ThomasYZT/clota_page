@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import i18n from '../assets/js/lang.config';
+import i18n from '../assets/lang/lang.config';
 import {defaultsDeep} from 'lodash';
 import router from '../router/index';
 import routerClect from '../router/activeRoutes';

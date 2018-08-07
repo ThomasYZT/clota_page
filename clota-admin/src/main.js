@@ -10,7 +10,7 @@ import ajax from '@/api/index.js';
 import 'core-js/es6';
 
 //引入多语言配置文件
-import i18n from './assets/js/lang.config';
+import i18n from './assets/lang/lang.config';
 // 样式文件
 import './assets/theme/iviewTheme/index.less';
 import 'klwk-ui/src/lib/css/index.scss';

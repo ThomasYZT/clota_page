@@ -90,6 +90,10 @@
         @include padding_place();
         overflow: auto;
 
+        &:after{
+            background: $color_f4f6f9;
+        }
+
         .time-chose {
             .ivu-select {
                 margin-right: 17px;

@@ -21,7 +21,7 @@
                 v-model.trim="keyWord"
                 placeholder="请输入查找内容"
                 icon="ios-search"
-                style="width: 360px"></Input>
+                style="width: 360px"/>
         </div>
         <div class="tree-plugin">
             <Tree :data="treeData"
@@ -75,6 +75,11 @@
                 default() {
                     return [];
                 }
+            },
+            //当前选中的结构类型
+            value : {
+                type : String,
+                default : ''
             }
         },
         components: {
@@ -103,7 +108,9 @@
                 //是否显示添加款台的模态框
                 addCashierModalShow: false,
                 //新增的节点信息
-                addNodeDetail: {}
+                addNodeDetail: {},
+                //当前激活的节点
+                activeNode : ''
             }
         },
         methods: {
@@ -117,7 +124,14 @@
                         width: 'calc(100% - 20px)'
                     },
                     class: {
-                        'title-wrap': true
+                        'title-wrap': true,
+                        'active-node' : data === this.activeNode
+                    },
+                    on : {
+                        click : () => {
+                            this.activeNode = data;
+                            this.$emit('input',data.type);
+                        }
                     }
                 }, [
                     h('span', {
@@ -275,6 +289,14 @@
 
                     .iconfont {
                         display: inline-block;
+                    }
+                }
+
+                &.active-node{
+                    background: $color_fafa;
+
+                    .title-class {
+                        color: $color_blue;
                     }
                 }
 

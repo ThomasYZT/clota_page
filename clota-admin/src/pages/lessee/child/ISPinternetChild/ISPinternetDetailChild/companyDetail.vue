@@ -129,14 +129,6 @@
             title="合作伙伴">
         </table-com>
         <table-com
-            :table-data="tableData"
-            :column-data="employee"
-            title="员工账号">
-            <div class="employee-account">
-                员工账号数：2
-            </div>
-        </table-com>
-        <table-com
             :column-data="dredgeColumnData"
             :table-data="tableData"
             :column-check="true"
@@ -151,7 +143,7 @@
 
 <script>
     import tableCom from '../../organization/tableCom';
-    import {dredegHead, partMentHead, region, partner, employee, companies} from './tableConfig';
+    import {dredegHead, partMentHead, region, partner, companies} from './companyDetailConfig';
 
     export default {
         components: {
@@ -167,8 +159,6 @@
                 region: region,
                 //合作伙伴
                 partner: partner,
-                //员工账号表头
-                employee: employee,
                 //下属公司
                 companies: companies,
                 tableData: [{

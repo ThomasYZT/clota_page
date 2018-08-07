@@ -17,11 +17,15 @@
                   :model="formData"
                   :rules="ruleValidate"
                   :label-width="0">
+                <!--服务器名称-->
                 <FormItem :label="$t('serverName')" prop="serverName">
                     <Input v-model="formData.serverName" style="width: 280px"/>
                 </FormItem>
+                <!--款台类型-->
                 <FormItem :label="$t('cashierType')" prop="cashierType">
-                    <Select v-model="formData.cashierType" style="width:280px">
+                    <Select v-model="formData.cashierType"
+                            style="width:280px"
+                            @on-change="cashierTypeChange">
                         <Option v-for="item in cashierTypeList"
                                 :value="item.value"
                                 :key="item.value">
@@ -29,7 +33,10 @@
                         </Option>
                     </Select>
                 </FormItem>
-                <FormItem :label="$t('cashierTypeGroup')" prop="cashierTypeGroup">
+                <!--所属核销设备分组-->
+                <FormItem :label="$t('cashierTypeGroup')"
+                          prop="cashierTypeGroup"
+                          v-if="showCashierTypeGroup">
                     <Select v-model="formData.cashierTypeGroup" style="width:280px">
                         <Option v-for="item in cashierTypeGroupList"
                                 :value="item.value"
@@ -38,7 +45,10 @@
                         </Option>
                     </Select>
                 </FormItem>
-                <FormItem :label="$t('saleTypeGroup')" prop="saleTypeGroup">
+                <!--所属销售渠道分组-->
+                <FormItem :label="$t('saleTypeGroup')"
+                          prop="saleTypeGroup"
+                          v-if="showSaleTypeGroup">
                     <Select v-model="formData.saleTypeGroup" style="width:280px">
                         <Option v-for="item in saleTypeGroupList"
                                 :value="item.value"
@@ -50,7 +60,9 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="save">保存</Button>
+            <Button type="primary"
+                    class="ivu-btn-90px"
+                    @click="save">保存</Button>
         </div>
     </Modal>
 </template>
@@ -184,6 +196,31 @@
             addCompany() {
                 this.$emit('fresh-structure-data');
                 this.$emit('input', false);
+            },
+            /**
+             * 选择款台类型之后
+             * @param data
+             */
+            cashierTypeChange (data) {
+                console.log(data)
+            }
+        },
+        computed : {
+            //是否显示所属核销设备分组
+            showCashierTypeGroup () {
+                if(this.formData.cashierType){
+                    return this.formData.cashierType === 'verifyCashierType' || this.formData.cashierType === 'verifySaleAndCashierType';
+                }else{
+                    return true;
+                }
+            },
+            //是否显示所属销售渠道分组
+            showSaleTypeGroup () {
+                if(this.formData.cashierType){
+                    return this.formData.cashierType === 'verifySaleType' || this.formData.cashierType === 'verifySaleAndCashierType';
+                }else{
+                    return true;
+                }
             }
         }
     }
