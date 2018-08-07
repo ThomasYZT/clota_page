@@ -1,7 +1,7 @@
-<!--部门详情-->
+<!--款台信息-->
 
 <template>
-    <div class="department-deail">
+    <div class="cashier-detail">
         <div class="com-name">
           <span class="name"
                 v-w-title="'广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团'">
@@ -10,38 +10,62 @@
             <span class="started">已启用</span>
             <span class="edit">修改</span>
         </div>
-        <ul class="department-info">
+        <ul class="company-info">
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">部门ID：</span>
+                    <span class="info-key">款台名称：</span>
                     <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                </div>
+                <div class="info-list2">
+                    <span class="info-key">款台ID：</span>
+                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                </div>
+            </li>
+            <li class="list">
+                <div class="info-list1">
+                    <span class="info-key">
+                        服务器名称
+                        <Tooltip placement="bottom">
+                             <div slot="content" class="tips-content">
+                               {{$t('serverNameTips')}}
+                            </div>
+                            <Icon type="information-circled"></Icon>
+                        </Tooltip>：
+                    </span>
+                    <span class="info-val">23</span>
+                </div>
+                <div class="info-list2">
+                    <span class="info-key">款台类型：</span>
+                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                </div>
+            </li>
+            <li class="list">
+                <div class="info-list1">
+                    <span class="info-key">所属核销设备分组：</span>
+                    <span class="info-val">268326828@163.com</span>
+                </div>
+                <div class="info-list2">
+                    <span class="info-key">所属销售渠道分组：</span>
+                    <span class="info-val">23232323232323232323232323232323232323232</span>
                 </div>
             </li>
         </ul>
-        <employee-table>
-        </employee-table>
     </div>
 </template>
 
 <script>
-    import employeeTable from './components/employeeTable';
     export default {
-        components : {
-            employeeTable
-        },
         data() {
-            return {
-
-            }
+            return {}
         },
-        methods: {
-        }
+        methods: {}
     }
 </script>
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
-    .department-deail{
+
+    .cashier-detail{
         @include block_outline($width: unquote('calc(100% - 400px)'));
         padding: 11px 35px;
         float: right;
@@ -81,7 +105,7 @@
             }
         }
 
-        .department-info {
+        .company-info {
             @include block_outline($height: auto);
             padding-bottom: 21px;
             border-bottom: 1px dashed $color_E1E1E1;
@@ -92,18 +116,38 @@
                 line-height: 22px;
 
                 .info-list1 {
-                    @include block_outline(100%, auto);
+                    @include block_outline(40%, auto);
                 }
 
-                .info-list1{
+                .info-list2 {
+                    @include block_outline(60%, auto);
+                }
+
+                .info-list1,
+                .info-list2 {
                     display: flex;
                     flex-direction: row;
                     float: left;
                     font-size: $font_size_14px;
 
+                    &:nth-last-of-type(1) {
+                        padding-left: 15px;
+                    }
+
                     .info-key {
                         @include block_outline(auto, 100%);
                         color: $color_333;
+
+                        .ivu-icon-information-circled{
+                            font-size: $font_size_15px;
+                            margin-left: 5px;
+                            color: $color_gray;
+                            vertical-align: unset;
+                        }
+
+                        .tips-content{
+                            white-space: normal;
+                        }
                     }
 
                     .info-val {
@@ -114,7 +158,5 @@
                 }
             }
         }
-
-
     }
 </style>

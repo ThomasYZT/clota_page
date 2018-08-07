@@ -105,4 +105,5 @@ export default {
     disabled: '禁用',
     affirm: '确认',
     operate: '操作',
+    serverNameTips: '服务器名称可以是景区编码+款台编号，也可以输入内网IP地址。不可重复。',
 }

@@ -109,45 +109,54 @@
             title="已开通服务">
         </table-com>
         <table-com
-            :table-data="tableData"
-            :column-data="region"
-            title="下属景区">
-        </table-com>
-        <table-com
             :column-data="companies"
             :table-data="tableData"
             title="下属公司">
+        </table-com>
+        <table-com
+            :table-data="tableData"
+            :column-data="region"
+            title="下属景区">
         </table-com>
         <table-com
             :column-data="partMentHead"
             :table-data="tableData"
             title="下属部门">
         </table-com>
-        <table-com
-            :column-data="partner"
-            :table-data="tableData"
-            title="合作伙伴">
-        </table-com>
-        <table-com
-            :column-data="dredgeColumnData"
-            :table-data="tableData"
-            :column-check="true"
-            title="已开通服务">
-            <div class="open-service">
-                <Button type="primary" size="small">添加服务</Button>
-                <Button type="error" size="small">添加服务</Button>
-            </div>
-        </table-com>
+        <employee-table>
+        </employee-table>
+        <!--短信-->
+        <note-table>
+        </note-table>
+        <!--<table-com-->
+            <!--:column-data="partner"-->
+            <!--:table-data="tableData"-->
+            <!--title="合作伙伴">-->
+        <!--</table-com>-->
+        <!--<table-com-->
+            <!--:column-data="dredgeColumnData"-->
+            <!--:table-data="tableData"-->
+            <!--:column-check="true"-->
+            <!--title="已开通服务">-->
+            <!--<div class="open-service">-->
+                <!--<Button type="primary" size="small">添加服务</Button>-->
+                <!--<Button type="error" size="small">添加服务</Button>-->
+            <!--</div>-->
+        <!--</table-com>-->
     </div>
 </template>
 
 <script>
     import tableCom from '../../organization/tableCom';
     import {dredegHead, partMentHead, region, partner, companies} from './companyDetailConfig';
+    import employeeTable from './components/employeeTable';
+    import noteTable from './components/noteTable';
 
     export default {
         components: {
-            tableCom
+            tableCom,
+            employeeTable,
+            noteTable
         },
         data() {
             return {

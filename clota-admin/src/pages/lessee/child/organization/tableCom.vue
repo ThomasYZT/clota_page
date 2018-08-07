@@ -2,16 +2,16 @@
 
 <template>
     <div class="table-com">
-        <div class="table-name">
+        <div class="table-name" v-if="title">
             <span class="label">{{title}}</span>
             <span class="back-up"
                   @click="isPackUpLoad = !isPackUpLoad">
-        {{$t(isPackUpLoad ? 'backUp' : 'upLoad')}}
-      </span>
+            {{$t(isPackUpLoad ? 'backUp' : 'upLoad')}}
+          </span>
         </div>
         <transition name="fade">
             <div v-if="isPackUpLoad">
-                <div class="table-bar"></div>
+                <div class="table-bar" v-if="showTableBar"></div>
                 <slot name="table-title"></slot>
                 <el-table :data="tableData"
                           style="width: 100%"
@@ -132,6 +132,11 @@
             'total' : {
                 type : Number,
                 default : 0
+            },
+            //是否显示占位符
+            'show-table-bar' : {
+                type: Boolean,
+                default: true
             }
         },
         data() {

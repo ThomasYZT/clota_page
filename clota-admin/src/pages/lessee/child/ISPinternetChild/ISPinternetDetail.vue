@@ -12,8 +12,6 @@
                                 v-model="componentName">
                 </structure-tree>
             </div>
-            <!--<company-detail>-->
-            <!--</company-detail>-->
             <component :is="componentSelect">
             </component>
         </div>
@@ -26,6 +24,7 @@
     import structureTree from '../organization/structureHead';
     import companyDetail from './ISPinternetDetailChild/companyDetail';
     import departmentDetail from './ISPinternetDetailChild/departmentDetail';
+    import cashierDetail from './ISPinternetDetailChild/cashierDetail';
 
     export default {
         components: {
@@ -33,7 +32,8 @@
             organization,
             structureTree,
             companyDetail,
-            departmentDetail
+            departmentDetail,
+            cashierDetail
         },
         data() {
             return {
@@ -65,6 +65,10 @@
                                     {
                                         title: '核销款台',
                                         type : 'cashier'
+                                    },
+                                    {
+                                        title: '景区',
+                                        type : 'scene'
                                     }
                                 ]
                             }
@@ -85,6 +89,8 @@
                     return 'companyDetail'
                 }else if(this.componentName === 'department'){
                     return 'departmentDetail'
+                }else if(this.componentName === 'cashier'){
+                    return 'cashierDetail';
                 }else{
                     return  '';
                 }
