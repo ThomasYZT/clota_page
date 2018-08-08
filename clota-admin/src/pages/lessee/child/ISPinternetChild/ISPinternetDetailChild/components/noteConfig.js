@@ -36,6 +36,7 @@ export const buyColumns = [
         minWidth: 130,
         field: 'examScore'
     },
+    {}
 ];
 //短信发送表头配置
 export const sendColumns = [

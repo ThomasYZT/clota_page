@@ -182,12 +182,17 @@
              * @param pageNo
              */
             pageNoChange (pageNo) {
-                console.log(1)
                 this.$emit('get-new-data',{
                     pageSize : this.pageSize,
                     pageNo : this.pageNo,
                 });
             }
+        },
+        created () {
+            this.$emit('get-new-data',{
+                pageSize : this.pageSize,
+                pageNo : this.pageNo,
+            });
         }
     }
 </script>

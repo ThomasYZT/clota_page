@@ -25,6 +25,16 @@
                             <span class="note-tips">共发送短信数量：<span class="icon-weight">1280条</span></span>
                         </div>
                     </div>
+                    <el-table-column
+                        slot="column7"
+                        :label="$t('operate')"
+                        width="70px">
+                        <template slot-scope="scoped">
+                            <ul class="operate-info">
+                                <li class="custome" @click="watchNoteDetail(scoped.row)">查看</li>
+                            </ul>
+                        </template>
+                    </el-table-column>
                 </table-com>
                 <table-com
                     :table-data="tableData"
@@ -45,15 +55,20 @@
                 </table-com>
             </div>
         </transition>
+        <!--短信发送记录-->
+        <note-detail v-model="noteDetailShow" :currentRow="currentRow">
+        </note-detail>
     </div>
 </template>
 
 <script>
     import tableCom from '../../../organization/tableCom';
     import {buyColumns,sendColumns} from './noteConfig';
+    import noteDetail from './noteDetail';
     export default {
         components : {
             tableCom,
+            noteDetail
         },
         data() {
             return {
@@ -77,7 +92,11 @@
                 //员工总数
                 totalCount : 100,
                 //是否展开表格
-                isPackUpLoad : false
+                isPackUpLoad : false,
+                //短信记录模态框是否显示
+                noteDetailShow : false,
+                //当前操作的短信条
+                currentRow : {}
             }
         },
         methods: {
@@ -88,6 +107,14 @@
             getNoteData (data) {
                 console.log(data)
             },
+            /**
+             * 查看短信发送记录
+             * @param data
+             */
+            watchNoteDetail (data) {
+                this.noteDetailShow = true;
+                this.currentRow = data;
+            }
         }
     }
 </script>
@@ -158,6 +185,13 @@
                         color: $color_000;
                     }
                 }
+            }
+        }
+        .operate-info{
+            @include table_operate();
+
+            .custome{
+                color: $color_blue;
             }
         }
     }

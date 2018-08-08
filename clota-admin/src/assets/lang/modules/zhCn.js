@@ -108,5 +108,13 @@ export default {
     serverNameTips: '服务器名称可以是景区编码+款台编号，也可以输入内网IP地址。不可重复。',
     openedService : '已开通服务',
     serverTime : '服务期限',
+    delayTime : '延期期限',
     save : '保存',
+    noteSendDetail : '短信发送详情',
+    close : '关闭',
+    subCompany : '下属公司',
+    subScene : '下属景区',
+    subDepartment : '下属部门',
+    changeDepName : '修改部门名称',
+    serviceDelay : '服务延期',
 }

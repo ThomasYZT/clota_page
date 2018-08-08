@@ -15,8 +15,8 @@
         </div>
         <div class="warn-info">
             <Form :model="formData" ref="formRef" label-position="top" :rules="ruleValidate" :label-width="0">
-                <FormItem :label="$t('changePass')" prop="passWord">
-                    <Input v-model="formData.passWord"/>
+                <FormItem :label="title" prop="passWord">
+                    <Input v-model="formData.passWord" style="width: 280px"/>
                 </FormItem>
             </Form>
         </div>
@@ -48,7 +48,7 @@
                 //校验规则
                 ruleValidate : {
                     passWord : [
-                        {required : true,message : this.$t('validateError.pleaseInput',{msg : this.$t('password')}),trigger : 'blur'}
+                        {required : true,message : this.$t('validateError.pleaseInput',{msg : this.title}),trigger : 'blur'}
                     ]
                 }
             }

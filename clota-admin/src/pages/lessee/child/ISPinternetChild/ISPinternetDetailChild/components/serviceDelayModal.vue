@@ -10,35 +10,19 @@
         class="open-service-modal"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('openedServices')}}</span>
+            <span class="title">{{$t('serviceDelay')}}</span>
         </div>
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
               :label-width="120">
-            <FormItem label="选择套餐" prop="package">
-                <RadioGroup v-model="formData.packageName">
-                    <Radio :label="item.name"
-                           v-for="(item,index) in packageList"
-                           :key="index">{{item.name}}</Radio>
-                </RadioGroup>
+            <FormItem label="已选服务" prop="package">
+                <ul class="service-list">
+                    <li class="service-name">经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务</li>
+                    <li class="service-name">经典业态服务</li>
+                </ul>
             </FormItem>
-            <FormItem label="选择服务" prop="service">
-                <CheckboxGroup v-model="formData.servers">
-                    <Checkbox :label="item.name"
-                              v-for="(item,index) in serverList"
-                              :key="index"></Checkbox>
-                </CheckboxGroup>
-            </FormItem>
-            <FormItem label="设置服务开始时间" prop="startTime">
-                <DatePicker type="date"
-                            v-model="formData.startTime"
-                            :editable="false"
-                            :clearable="false"
-                            style="width:280px">
-                </DatePicker>
-            </FormItem>
-            <FormItem :label="$t('serverTime') + '（月）'" prop="serverTime">
+            <FormItem :label="$t('delayTime') + '（月）'" prop="serverTime">
                 <Select v-model="formData.serverTime" style="width:280px">
                     <Option v-for="item in monthEnum"
                             :value="item.value"
@@ -48,7 +32,10 @@
                 </Select>
             </FormItem>
             <FormItem label="预计服务结束时间">
-                {{serverEndTime}}
+                <ul class="service-list">
+                    <li class="service-name">22</li>
+                    <li class="service-name">经典业态服务</li>
+                </ul>
             </FormItem>
         </Form>
         <div slot="footer">
@@ -70,6 +57,13 @@
             value : {
                 type : Boolean,
                 default : false
+            },
+            //当前操作的服务列表
+            'service-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
             }
         },
         data() {
@@ -154,6 +148,7 @@
              */
             openServer () {
                 this.$emit('fresh-data');
+                console.log(this.serviceList)
             },
             /**
              * 获取套餐列表
@@ -193,7 +188,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .open-service-modal {
 
         & /deep/ .ivu-modal {
@@ -216,6 +211,15 @@
             }
         }
 
+        .service-list{
+            overflow: auto;
+
+            .service-name{
+                @include overflow_tip();
+                @include block_outline($height : 25px);
+            }
+        }
+
         & /deep/ .ivu-modal-header {
             padding: 17px 30px;
         }
@@ -228,37 +232,6 @@
             padding: 20px 30px 0 30px;
         }
 
-        .target-body {
-            width: 100%;
-            height: 290px;
-            padding: 55px 0 5px 0;
-            overflow: auto;
-
-            /deep/ .ivu-form {
-
-                .ivu-form-item {
-                    margin-bottom: 15px;
-                    padding-right: 110px;
-                    position: relative;
-
-                    .ivu-form-item-error-tip {
-                        width: 110px;
-                        position: absolute;
-                        top: 7px;
-                        right: -110px;
-                        left: auto;
-                        line-height: 1;
-                        padding: 6px 0 0 5px;
-                        color: #ed3f14;
-                    }
-                }
-
-                .ivu-form-item-label {
-                    font-size: $font_size_14px;
-                    color: $color_6c6c6c;
-                }
-            }
-        }
         & /deep/ .ivu-modal-footer {
             text-align: center;
         }

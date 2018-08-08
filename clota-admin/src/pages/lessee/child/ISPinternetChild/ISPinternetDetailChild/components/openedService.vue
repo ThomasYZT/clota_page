@@ -18,12 +18,15 @@
             </el-table-column>
             <div class="service-operation" slot="table-title">
                 <Button type="primary"
-                        :disabled="!canRecoverService">恢复</Button>
+                        :disabled="!canRecoverService"
+                        @click="recoverService(selectedService)">恢复</Button>
                 <Button type="primary"
-                        :disabled="!canPauseService">暂停</Button>
+                        :disabled="!canPauseService"
+                        @click="paushService([scoped.row])">暂停</Button>
                 <Button type="primary"
-                        :disabled="!canDelayService">延期</Button>
-                <Button type="primary" @click="openService">开通服务</Button>
+                        :disabled="!canDelayService"
+                        @click="delayService(selectedService)">延期</Button>
+                <Button type="primary" @click="addService">开通服务</Button>
             </div>
             <el-table-column
                 slot="column4"
@@ -32,16 +35,16 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <li class="custome"
-                            @click="delayService(scoped.row)"
+                            @click="delayService([scoped.row])"
                             v-if="scoped.row.status === 'open'">延期</li>
                         <li class="custome"
-                            @click="paushService(scoped.row)"
+                            @click="paushService([scoped.row])"
                             v-if="scoped.row.status === 'open'">暂停</li>
                         <li class="custome"
                             @click="openService(scoped.row)"
                             v-if="scoped.row.status === 'close'">开通服务</li>
                         <li class="custome"
-                            @click="recoverService(scoped.row)"
+                            @click="recoverService([scoped.row])"
                             v-if="scoped.row.status === 'pause'">恢复</li>
                     </ul>
                 </template>
@@ -51,6 +54,11 @@
             v-model="openServiceModalShow"
             @fresh-data="getOpenedService">
         </open-service-modal>
+        <!--服务延期模态框-->
+        <service-delay-modal
+            v-model="serviceDelayModalShow"
+            :service-list="operateServiceList">
+        </service-delay-modal>
     </div>
 </template>
 
@@ -58,10 +66,12 @@
     import {openedServiceHead} from './openedServiceConfig';
     import tableCom from '../../../organization/tableCom';
     import openServiceModal from './openServiceModal';
+    import serviceDelayModal from './serviceDelayModal.vue';
     export default {
         components : {
             tableCom,
-            openServiceModal
+            openServiceModal,
+            serviceDelayModal
         },
         data() {
             return {
@@ -87,7 +97,11 @@
                 //员工总数
                 totalCount : 100,
                 //是否显示开通服务的模态框
-                openServiceModalShow : false
+                openServiceModalShow : false,
+                //是否显示延期服务模态框
+                serviceDelayModalShow : false,
+                //当前操作的服务里列表
+                operateServiceList : []
             }
         },
         methods: {
@@ -110,8 +124,8 @@
              * @param data
              */
             delayService (data) {
-                console.log(data);
-                this.$Message.success('延期成功');
+                this.operateServiceList = data;
+                this.serviceDelayModalShow = true;
             },
             /**
              * 暂停服务
@@ -133,6 +147,12 @@
              * 开通服务
              */
             openService () {
+                this.$Message.success('开通成功');
+            },
+            /**
+             * 新增服务
+             */
+            addService () {
                 this.openServiceModalShow = true;
             }
         },

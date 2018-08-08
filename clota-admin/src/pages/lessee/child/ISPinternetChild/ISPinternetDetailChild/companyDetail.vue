@@ -103,76 +103,47 @@
             </li>
         </ul>
         <!--已开通服务-->
-        <!--<table-com-->
-            <!--:column-data="dredgeColumnData"-->
-            <!--:is-pack-up="true"-->
-            <!--:table-data="tableData"-->
-            <!--:title="$t('openedService')">-->
-        <!--</table-com>-->
         <opened-service>
         </opened-service>
-        <table-com
-            :column-data="companies"
-            :table-data="tableData"
-            title="下属公司">
-        </table-com>
-        <table-com
-            :table-data="tableData"
-            :column-data="region"
-            title="下属景区">
-        </table-com>
-        <table-com
-            :column-data="partMentHead"
-            :table-data="tableData"
-            title="下属部门">
-        </table-com>
+        <!--下属公司-->
+        <sub-company>
+        </sub-company>
+        <!--下属景区-->
+        <sub-scene>
+        </sub-scene>
+        <!--下属部门-->
+        <sub-department>
+        </sub-department>
+        <!--员工-->
         <employee-table>
         </employee-table>
         <!--短信-->
         <note-table>
         </note-table>
-        <!--<table-com-->
-            <!--:column-data="partner"-->
-            <!--:table-data="tableData"-->
-            <!--title="合作伙伴">-->
-        <!--</table-com>-->
-        <!--<table-com-->
-            <!--:column-data="dredgeColumnData"-->
-            <!--:table-data="tableData"-->
-            <!--:column-check="true"-->
-            <!--title="已开通服务">-->
-            <!--<div class="open-service">-->
-                <!--<Button type="primary" size="small">添加服务</Button>-->
-                <!--<Button type="error" size="small">添加服务</Button>-->
-            <!--</div>-->
-        <!--</table-com>-->
     </div>
 </template>
 
 <script>
     import tableCom from '../../organization/tableCom';
-    import { partMentHead, region, partner, companies} from './companyDetailConfig';
     import employeeTable from './components/employeeTable';
     import noteTable from './components/noteTable';
     import openedService from './components/openedService';
+    import subCompany from './components/subCompany';
+    import subScene from './components/subScene';
+    import subDepartment from './components/subDepartment';
 
     export default {
         components: {
             tableCom,
             employeeTable,
             noteTable,
-            openedService
+            openedService,
+            subCompany,
+            subScene,
+            subDepartment
         },
         data() {
             return {
-                //下属部门表头
-                partMentHead: partMentHead,
-                //下属景区表头
-                region: region,
-                //合作伙伴
-                partner: partner,
-                //下属公司
-                companies: companies,
                 tableData: [{
                     aa: '2016-05-03',
                     realName: '王小虎',
