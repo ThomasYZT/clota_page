@@ -3,7 +3,14 @@
  * Created by Sasha on 2018/6/1.
  */
 import iView from 'iview'
-import {Table, TableColumn, Scrollbar, Pagination, Dropdown, DropdownMenu, DropdownItem,} from 'element-ui'
+// import {TableColumn, Scrollbar, Pagination, Dropdown, DropdownMenu, DropdownItem} from 'element-ui'
+import Table from 'element-ui/lib/table';
+import TableColumn from 'element-ui/lib/table-column';
+import Scrollbar from 'element-ui/lib/scrollbar';
+import Pagination from 'element-ui/lib/pagination';
+import Dropdown from 'element-ui/lib/dropdown';
+import DropdownMenu from 'element-ui/lib/dropdown-menu';
+import DropdownItem from 'element-ui/lib/dropdown-item';
 
 // 引入 ECharts 主模块
 // import ECharts from '@/components/vueEcharts/ECharts.vue'
@@ -29,13 +36,20 @@ plugin.install = function (Vue, options) {
     Vue.use(iView);
 
     // element-ui按需引入(Table)
-    Vue.use(Table);
-    Vue.use(TableColumn);
-    Vue.use(Scrollbar);
-    Vue.use(Pagination);
-    Vue.use(Dropdown);
-    Vue.use(DropdownMenu);
-    Vue.use(DropdownItem);
+    // Vue.use(Table);
+    // Vue.use(TableColumn);
+    // Vue.use(Scrollbar);
+    // Vue.use(Pagination);
+    // Vue.use(Dropdown);
+    // Vue.use(DropdownMenu);
+    // Vue.use(DropdownItem);
+    Vue.component(Table.name,Table);
+    Vue.component(TableColumn.name,TableColumn);
+    Vue.component(Scrollbar.name,Scrollbar);
+    Vue.component(Pagination.name,Pagination);
+    Vue.component(Dropdown.name,Dropdown);
+    Vue.component(DropdownMenu.name,DropdownMenu);
+    Vue.component(DropdownItem.name,DropdownItem);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
