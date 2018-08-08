@@ -381,7 +381,8 @@
                 color: $color_000_085;
                 vertical-align: middle;
                 display: inline-block;
-                @include overflow_tip($width: unquote('calc(100% - 127px)'), $height: 100%);
+                @include overflow_tip($width: auto, $height: 100%);
+                max-width: calc(100% - 127px);
             }
 
             .started,
@@ -428,6 +429,8 @@
             border-bottom: 1px dashed $color_E1E1E1;
 
             .list {
+                display: flex;
+                align-items: center;
                 @include block_outline(auto);
                 min-height: 30px;
                 overflow: auto;

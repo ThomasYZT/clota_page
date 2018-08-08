@@ -178,7 +178,8 @@
                 color: $color_000_085;
                 vertical-align: middle;
                 display: inline-block;
-                @include overflow_tip($width: unquote('calc(100% - 127px)'), $height: 100%);
+                @include overflow_tip($width: auto, $height: 100%);
+                max-width: calc(100% - 127px);
             }
 
             .edit {
@@ -213,6 +214,8 @@
             }
 
             .list {
+                display: flex;
+                align-items: center;
                 @include block_outline($height: auto);
                 min-height: 30px;
                 padding: 4px 0;
