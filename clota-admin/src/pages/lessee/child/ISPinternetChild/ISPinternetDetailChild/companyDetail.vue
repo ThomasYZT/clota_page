@@ -3,12 +3,24 @@
 <template>
     <div class="company-detail">
         <div class="com-name">
-          <span class="name"
-                v-w-title="'广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团'">
-            广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团
-          </span>
-            <span class="started">已启用</span>
-            <span class="edit">修改</span>
+            <template v-if="type === 'edit'">
+                <Input v-model="formDataCopy.companyName" style="width : 280px"/>
+                <i-switch v-model="formDataCopy.isStart"></i-switch>
+            </template>
+            <template v-if="type === 'watch'">
+                <span class="name"
+                     v-if="type === 'watch'"
+                     v-w-title="formData.companyName">
+                    {{formData.companyName}}
+                </span>
+                <span class="edit"
+                  @click="edit">{{$t('edit')}}</span>
+            </template>
+            <span :class="{'started'
+                :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
+                {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+            </span>
+
         </div>
         <ul class="company-info">
             <li class="list">
@@ -23,18 +35,39 @@
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">线下核销编码：</span>
-                    <span class="info-val">23</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">线下核销编码：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.cashierCode" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.cashierCode}}
+                    </span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key">全民分销邀请码：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">全民分销邀请码：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.inviteCode" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.inviteCode}}
+                    </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">短信供应商：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">短信供应商：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                          <Select v-model="formDataCopy.smsSuppiler" style="width:280px">
+                            <Option v-for="item in smsSuppilerList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ item.label }}
+                            </Option>
+                        </Select>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.smsSuppiler}}
+                    </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">管理账号：</span>
@@ -43,42 +76,116 @@
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">电子邮箱：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">电子邮箱：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.email" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.email}}
+                    </span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key">受理客服：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">联系人：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.contactor" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.contactor}}
+                    </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">所在地：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">所在地：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <city-plugin @select="formDataCopy.place = $event" style="width: 280px;">
+                        </city-plugin>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.place}}
+                    </span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key">详细地址：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">详细地址：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.address" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.address}}
+                    </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">电话：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">电话：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.phone" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.phone}}
+                    </span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key">传真：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">传真：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.fax" style="width : 280px"/>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.fax}}
+                    </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">管理上级：</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">管理上级：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                          <Select v-model="formDataCopy.superior" style="width:280px">
+                            <Option v-for="item in superiorList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ item.label }}
+                            </Option>
+                        </Select>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.superior}}
+                    </span>
+                </div>
+                <div class="info-list2">
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                          <Select v-model="formDataCopy.fianceSuperior" style="width:280px">
+                            <Option v-for="item in fianceSuperiorList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ item.label }}
+                            </Option>
+                        </Select>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.fianceSuperior}}
+                    </span>
+                </div>
+            </li>
+            <li class="list">
+                <div class="info-list1">
+                    <span class="info-key">短信余量/累计购买：</span>
                     <span class="info-val">268326828@163.com</span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key">财务上级：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                          <Select v-model="formDataCopy.serviceStaff" style="width:280px">
+                            <Option v-for="item in serviceStaffList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ item.label }}
+                            </Option>
+                        </Select>
+                    </span>
+                    <span class="info-val" v-else>
+                        {{formData.serviceStaff}}
+                    </span>
                 </div>
             </li>
             <li class="list">
@@ -101,7 +208,17 @@
                     <span class="info-val">云南省曲靖市马龙县因下路464号</span>
                 </div>
             </li>
+            <li class="btn-area" v-if="type === 'edit'">
+                <Button type="primary"
+                        class="ivu-btn-90px"
+                        @click="saveEdit">{{$t('save')}}</Button>
+                <Button type="ghost"
+                        class="ivu-btn-90px"
+                        @click="cancel">{{$t('cancel')}}</Button>
+            </li>
         </ul>
+
+
         <!--已开通服务-->
         <opened-service>
         </opened-service>
@@ -131,6 +248,8 @@
     import subCompany from './components/subCompany';
     import subScene from './components/subScene';
     import subDepartment from './components/subDepartment';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
 
     export default {
         components: {
@@ -140,7 +259,8 @@
             openedService,
             subCompany,
             subScene,
-            subDepartment
+            subDepartment,
+            cityPlugin
         },
         data() {
             return {
@@ -149,10 +269,92 @@
                     realName: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄'
                 }
+                ],
+                //表单数据
+                formData : {
+                    //公司名称
+                    companyName : '广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团',
+                    //是否开启
+                    isStart : false,
+                    //线下核销编码
+                    cashierCode : '2323',
+                    //全民分销邀请码
+                    inviteCode : '2323',
+                    //短信供应商
+                    smsSuppiler : '1',
+                    //电子邮箱
+                    email : '1',
+                    //联系人
+                    contactor : '',
+                    //详细地址
+                    address : '沙发斯蒂芬',
+                    //电话
+                    phone : '2323',
+                    //传真
+                    fax : '2323',
+                    //管理上级
+                    superior : '上级',
+                    //授理客服
+                    serviceStaff : '上级',
+                    //所在地
+                    place : '上级',
+                },
+                //复制的表单数据
+                formDataCopy : {},
+                //当前状态
+                type : 'watch',
+                //短信供应商列表
+                smsSuppilerList : [
+                    {
+                        label : '1',
+                        value : '1'
+                    }
+                ],
+                //管理上级列表
+                superiorList : [
+                    {
+                        label : '上级',
+                        value : '1'
+                    }
+                ],
+                //财务上级列表
+                fianceSuperiorList : [
+                    {
+                        label : '上级',
+                        value : '1'
+                    }
+                ],
+                //受理客服列表
+                serviceStaffList : [
+                    {
+                        label : '客服',
+                        value : '1'
+                    }
                 ]
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 取消编辑
+             */
+            cancel () {
+                this.type = 'watch';
+            },
+            /**
+             * 保存编辑的信息
+             */
+            saveEdit () {
+                this.type = 'watch';
+                this.formData = defaultsDeep({} , this.formDataCopy);
+            },
+            /**
+             * 开始编辑
+             */
+            edit () {
+                this.type = 'edit';
+                this.formDataCopy = defaultsDeep({} , this.formData);
+            }
+        }
     }
 </script>
 
@@ -169,6 +371,10 @@
             @include overflow_tip(100%, 56px);
             padding: 14px 0;
 
+            /deep/ .ivu-switch{
+                margin-left: 20px;
+            }
+
             .name {
                 line-height: 28px;
                 font-size: $font_size_20px;
@@ -179,6 +385,7 @@
             }
 
             .started,
+            .not-started,
             .edit {
                 @include block_outline(60px);
                 display: inline-block;
@@ -192,10 +399,26 @@
                 color: $color_22BB5F;
             }
 
+            .not-started{
+                padding-left: 10px;
+                color: $color_yellow;
+            }
+
             .edit {
                 float: right;
                 color: $color_blue;
                 text-align: right;
+                cursor: pointer;
+            }
+        }
+
+        .btn-area{
+            @include block_outline($height : 72px);
+            text-align: center;
+            padding: 20px 0;
+
+            /deep/ .ivu-btn-primary{
+                margin-right: 8px;
             }
         }
 
@@ -205,7 +428,9 @@
             border-bottom: 1px dashed $color_E1E1E1;
 
             .list {
-                @include block_outline($height: 30px);
+                @include block_outline(auto);
+                min-height: 30px;
+                overflow: auto;
                 padding: 4px 0;
                 line-height: 22px;
 
@@ -215,6 +440,7 @@
 
                 .info-list2 {
                     @include block_outline(60%, auto);
+                    padding-left: 15px;
                 }
 
                 .info-list1,
@@ -223,14 +449,16 @@
                     flex-direction: row;
                     float: left;
                     font-size: $font_size_14px;
-
-                    &:nth-last-of-type(1) {
-                        padding-left: 15px;
-                    }
+                    align-items: center;
 
                     .info-key {
-                        @include block_outline(auto, 100%);
+                        @include block_outline(auto, 100%,false);
                         color: $color_333;
+
+                        &.fix-key{
+                            width: 120px;
+                            text-align: left;
+                        }
                     }
 
                     .info-val {

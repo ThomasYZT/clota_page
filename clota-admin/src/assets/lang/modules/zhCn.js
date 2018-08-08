@@ -118,4 +118,7 @@ export default {
     changeDepName : '修改部门名称',
     serviceDelay : '服务延期',
     partner : '合作伙伴',
+    hasStart : '已启用',
+    hasNotStart : '未启用',
+    edit : '修改',
 }
