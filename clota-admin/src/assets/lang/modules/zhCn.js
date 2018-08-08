@@ -121,4 +121,5 @@ export default {
     hasStart : '已启用',
     hasNotStart : '未启用',
     edit : '修改',
+    resetPass : '重置密码',
 }

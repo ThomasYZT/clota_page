@@ -71,7 +71,10 @@
                 </div>
                 <div class="info-list2">
                     <span class="info-key">管理账号：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-val">
+                        23232323232323232323232323232323232323232
+                        <span class="reset-pass" @click="resetPass">重置密码</span>
+                    </span>
                 </div>
             </li>
             <li class="list">
@@ -220,7 +223,7 @@
 
 
         <!--已开通服务-->
-        <opened-service>
+        <opened-service :is-pack-up="true">
         </opened-service>
         <!--下属公司-->
         <sub-company>
@@ -237,6 +240,9 @@
         <!--短信-->
         <note-table>
         </note-table>
+        <!--重置密码模态框-->
+        <edit-modal ref="editModal">
+        </edit-modal>
     </div>
 </template>
 
@@ -250,6 +256,7 @@
     import subDepartment from './components/subDepartment';
     import defaultsDeep from 'lodash/defaultsDeep';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import editModal from '@/components/editModal/index.vue';
 
     export default {
         components: {
@@ -260,7 +267,8 @@
             subCompany,
             subScene,
             subDepartment,
-            cityPlugin
+            cityPlugin,
+            editModal
         },
         data() {
             return {
@@ -353,6 +361,24 @@
             edit () {
                 this.type = 'edit';
                 this.formDataCopy = defaultsDeep({} , this.formData);
+            },
+            /**
+             * 重置密码
+             */
+            resetPass () {
+                this.$refs.editModal.show({
+                    title : this.$t('resetPass'),
+                    confirmCallback : (pass) => {
+                        this.confimChangePass(pass);
+                    }
+                });
+            },
+            /**
+             * 确认重置密码
+             * @param pass
+             */
+            confimChangePass (pass){
+                alert('重置密码成功')
             }
         }
     }
@@ -468,6 +494,14 @@
                         flex: 1;
                         @include overflow_tip(auto, auto);
                         color: $color_666;
+
+                        .reset-pass{
+                            color: $color_blue;
+                            font-size: $font_size_12px;
+                            margin-left: 10px;
+                            display: inline-block;
+                            cursor: pointer;
+                        }
                     }
                 }
             }

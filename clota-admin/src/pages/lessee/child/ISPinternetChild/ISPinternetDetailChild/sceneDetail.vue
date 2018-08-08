@@ -56,7 +56,10 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">管理账号：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val">
+                        268326828@163.com
+                        <span class="reset-pass" @click="resetPass">重置密码</span>
+                    </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电子邮箱：</span>
@@ -213,6 +216,9 @@
         <!--合作伙伴-->
         <partner>
         </partner>
+        <!--重置密码模态框-->
+        <edit-modal ref="editModal">
+        </edit-modal>
     </div>
 </template>
 
@@ -225,6 +231,7 @@
     import partner from './components/partner';
     import defaultsDeep from 'lodash/defaultsDeep';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import editModal from '@/components/editModal/index.vue';
 
     export default {
         components: {
@@ -234,7 +241,8 @@
             subScene,
             subDepartment,
             partner,
-            cityPlugin
+            cityPlugin,
+            editModal
         },
         data() {
             return {
@@ -319,7 +327,25 @@
             edit () {
                 this.type = 'edit';
                 this.formDataCopy = defaultsDeep({} , this.formData);
-            }
+            },
+            /**
+             * 确认重置密码
+             * @param pass
+             */
+            confimChangePass (pass){
+                alert('重置密码成功')
+            },
+            /**
+             * 重置密码
+             */
+            resetPass () {
+                this.$refs.editModal.show({
+                    title : this.$t('resetPass'),
+                    confirmCallback : (pass) => {
+                        this.confimChangePass(pass);
+                    }
+                });
+            },
         }
     }
 </script>
@@ -434,6 +460,14 @@
                         flex: 1;
                         @include overflow_tip(auto, auto);
                         color: $color_666;
+
+                        .reset-pass{
+                            color: $color_blue;
+                            font-size: $font_size_12px;
+                            margin-left: 10px;
+                            display: inline-block;
+                            cursor: pointer;
+                        }
                     }
                 }
             }
