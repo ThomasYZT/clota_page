@@ -115,6 +115,7 @@
         methods: {
             //新增员工
             addPartnerBtn() {
+                this.$router.replace({'name': 'addEmployee', query: {'type': 'add'}})
             },
             //删除员工
             deleteEmployeeBtn() {

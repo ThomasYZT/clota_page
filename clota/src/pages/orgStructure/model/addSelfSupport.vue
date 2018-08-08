@@ -11,7 +11,7 @@
             <span>新增自营渠道</span>
         </div>
         <!--内容区域-->
-        <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" label-position="right">
+        <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="120">
             <Form-item label="自营渠道名称" prop="name">
                 <Input v-model="addPartner.name" placeholder="Enter something..."/>
             </Form-item>

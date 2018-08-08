@@ -146,6 +146,12 @@ export default new Vuex.Store({
                 'saleChannelsGroup': 'allow',
                 'verificateGroup': 'allow',
                 'memberManage': 'allow',
+                'memberHome': 'allow',
+                'memberInfo': 'allow',
+                'integration': 'allow',
+                'card': 'allow',
+                'fund': 'allow',
+                'memberSetting': 'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {

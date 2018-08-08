@@ -41,6 +41,18 @@ export default {
                     iconClass: 'icon-orgaization'
                 },
             },
+            addEmployee: {
+                //组织架构--员工--新增员工
+                path: 'addEmployee',
+                name: 'addEmployee',
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/employee/child/addEmployee.vue'),
+                meta: {
+                    menuName: 'menuList.employee', //lang.config.js 里面的语言键值
+                    lightMenu: 'orgManage',//高亮
+                    _name: 'employee', //
+                    iconClass: 'icon-orgaization'
+                },
+            },
             rolePermission: {
                 //组织架构--角色权限
                 path: 'rolePermission',

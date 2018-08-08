@@ -11,7 +11,7 @@
             <span>新增合作伙伴</span>
         </div>
         <!--内容区域-->
-        <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" label-position="right">
+        <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="120">
             <Form-item label="合作伙伴名称" prop="name">
                 <Select v-model="addPartner.name">
                     <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>

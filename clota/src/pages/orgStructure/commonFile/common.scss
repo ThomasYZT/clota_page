@@ -78,52 +78,6 @@
     }
 }
 
-.ivu-modal {
-    .ivu-modal-header {
-        background: #F5F7FA;
-        border-radius: 8px 8px 0 0;
-        .ivu-modal-header-inner {
-            font-size: 16px;
-        }
-    }
-    .ivu-form-item-content {
-        width: 280px;
-        float: right;
-    }
-    .ivu-modal-footer {
-        padding: 13px;
-        text-align: center;
-        border-radius: 0 0 8px 8px;
-    }
-    .ivu-btn-small {
-        min-width: 90px;
-        padding: 1px 0;
-    }
-    .ivu-btn {
-        height: 32px;
-    }
-    .ivu-form-item {
-        display: flex;
-        justify-content: flex-end;
-    }
-    .ivu-form-item-label {
-        min-width: inherit;
-        padding: 10px 10px 10px 12px;
-        font-size: 14px;
-        color: #585858;
-        &:after {
-            margin-left: 0;
-            left: 4px;
-            top: 12px;
-        }
-    }
-    .ivu-radio-group-item {
-        margin-top: -2px;
-        font-size: 14px;
-        color: #333333;
-    }
-}
-
 .breadcrumb-box {
     background: $color_F4F6F8;
     height: 50px;
