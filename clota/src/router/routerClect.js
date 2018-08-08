@@ -1,5 +1,3 @@
-
-
 /**
  * 获取所有的路由集合
  */
@@ -9,6 +7,6 @@ import memberManageRouter from './memberManage';
 
 
 export default {
-  ...orgStructureRouter,
-  ...memberManageRouter
+    ...orgStructureRouter,
+    ...memberManageRouter
 }

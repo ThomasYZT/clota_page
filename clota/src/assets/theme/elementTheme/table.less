@@ -1,56 +1,57 @@
-
 @import (inline) '~element-ui/lib/theme-chalk/table-column.css';
 @import (inline) '~element-ui/lib/theme-chalk/pagination.css';
-.ivu-btn-default{
-  padding: 6px 20px 5px;
+
+.ivu-btn-default {
+    padding: 6px 20px 5px;
 }
-.el-table{
-  th{
-    background: #F5F7FA;
-    .cell{
-      padding-left: 20px;
+
+.el-table {
+    th {
+        background: #F5F7FA;
+        .cell {
+            padding-left: 20px;
+        }
+        &:first-child {
+            .cell {
+                padding-left: 40px;
+            }
+        }
     }
-    &:first-child{
-      .cell{
-        padding-left: 40px;
-      }
+    td {
+        .cell {
+            padding-left: 20px;
+        }
+        &:first-child {
+            .cell {
+                padding-left: 40px;
+            }
+        }
     }
-  }
-  td{
-    .cell{
-      padding-left: 20px;
+    th > .cell {
+        color: #303133;
+        font-weight: normal;
     }
-    &:first-child{
-      .cell{
-        padding-left: 40px;
-      }
+    .cellText {
+        .code {
+            color: #333333;
+        }
+        .icon_enable {
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 8px;
+            overflow: hidden;
+            background: #22BB5F;
+        }
+        .icon_notEnable {
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 8px;
+            overflow: hidden;
+            background: #BBC5D5;
+        }
     }
-  }
-  th>.cell{
-    color: #303133;
-    font-weight: normal;
-  }
-  .cellText{
-    .code{
-      color: #333333;
-    }
-    .icon_enable{
-      width: 6px;
-      height: 6px;
-      display: inline-block;
-      border-radius: 50%;
-      margin-right: 8px;
-      overflow: hidden;
-      background: #22BB5F;
-    }
-    .icon_notEnable{
-      width: 6px;
-      height: 6px;
-      display: inline-block;
-      border-radius: 50%;
-      margin-right: 8px;
-      overflow: hidden;
-      background: #BBC5D5;
-    }
-  }
 }

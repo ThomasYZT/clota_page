@@ -1,47 +1,47 @@
 <!---->
 
 <template>
-  <div id="app">
-    <router-view v-if="noFrame"/>
-    <main-frame v-else>
-      <transition name="fade">
-        <router-view>
-        </router-view>
-      </transition>
-    </main-frame>
-  </div>
+    <div id="app">
+        <router-view v-if="noFrame"/>
+        <main-frame v-else>
+            <transition name="fade">
+                <router-view>
+                </router-view>
+            </transition>
+        </main-frame>
+    </div>
 </template>
 
 <script>
     import mainFrame from '@/components/mainFrame/mainFrame';
+
     export default {
-      components : {
-        mainFrame
-      },
-      data() {
-          return {}
-      },
-      methods: {
-      },
-      computed: {
-        noFrame(){
-          // 解决刷新页面未拿到正确路由meta信息时noFrame初始值默认为false触发了mainFrame的created事件(根据$route.name来判断当前是否能拿到meta信息)
-          return this.$route.name ? !!this.$route.meta.noFrame : false;
+        components: {
+            mainFrame
+        },
+        data() {
+            return {}
+        },
+        methods: {},
+        computed: {
+            noFrame() {
+                // 解决刷新页面未拿到正确路由meta信息时noFrame初始值默认为false触发了mainFrame的created事件(根据$route.name来判断当前是否能拿到meta信息)
+                return this.$route.name ? !!this.$route.meta.noFrame : false;
+            }
+        },
+        created() {
+            this.$store.dispatch('getUserRight');
         }
-      },
-      created () {
-        this.$store.dispatch('getUserRight');
-      }
     }
 </script>
 
 <style lang="scss" scoped>
-  @import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
 
-  #app{
-    @include block_outline();
-    background: get_url('icon-background.png');
-    min-width: $window_min_width;
-    background-size: 100% 100%;
-  }
+    #app {
+        @include block_outline();
+        background: get_url('icon-background.png');
+        min-width: $window_min_width;
+        background-size: 100% 100%;
+    }
 </style>

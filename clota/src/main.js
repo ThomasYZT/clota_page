@@ -18,15 +18,16 @@ import './assets/css/iconfont.css';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
+
 Vue.use(plugin);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  render: (h) => h(App),
-  router,
-  i18n,
-  store,
-  components: { App },
+    el: '#app',
+    render: (h) => h(App),
+    router,
+    i18n,
+    store,
+    components: {App},
 })

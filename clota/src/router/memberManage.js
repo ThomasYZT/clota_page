@@ -6,13 +6,13 @@
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
  */
 export default {
-  memberMange : {
-    path : '/memberManage',
-    component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/index.vue'),
-    meta : {
-      _name : 'memberManage',
-      menuName : 'menuList.memberManage',
-      lightMenu : 'memberManage',
+    memberMange: {
+        path: '/memberManage',
+        component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/index.vue'),
+        meta: {
+            _name: 'memberManage',
+            menuName: 'menuList.memberManage',
+            lightMenu: 'memberManage',
+        }
     }
-  }
 }

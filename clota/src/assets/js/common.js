@@ -5,7 +5,7 @@
 
 import router from '../../router'
 
-export default{
+export default {
 
     /**
      * 退出登录(清空本地记录)
@@ -20,11 +20,13 @@ export default{
     /**
      * 获取用户信息
      */
-    getUserInfo () {
+    getUserInfo() {
         let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         let empInfo = userInfo && userInfo.empInfo ? userInfo.empInfo : {};
         let roleType = userInfo && userInfo.roleType ? userInfo.roleType : 'perf_subordinate';
-        let defaultCompany = userInfo && userInfo.companys ? userInfo.companys.find( attr => { return attr.id == userInfo.empInfo.companyId}) : '';
+        let defaultCompany = userInfo && userInfo.companys ? userInfo.companys.find(attr => {
+            return attr.id == userInfo.empInfo.companyId
+        }) : '';
         return {
             userInfo,
             empInfo,
@@ -46,9 +48,9 @@ export default{
      * @param fileName
      * @returns {*}
      */
-    getFileType (fileName) {
+    getFileType(fileName) {
         var extName = fileName.substr(fileName.lastIndexOf(".") + 1);
-        switch(extName){
+        switch (extName) {
             case "txt":
                 return 'txt';
             case "rar":
@@ -83,8 +85,8 @@ export default{
      * @param fileName
      * @returns {*}
      */
-    getFileTypeIcon ( fileName ) {
-        var fileType = this.getFileType( fileName );
+    getFileTypeIcon(fileName) {
+        var fileType = this.getFileType(fileName);
         var fileTypeIcon = {
             txt: 'icon-txt',
             rar: 'icon-rar',

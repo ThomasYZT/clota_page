@@ -1,8 +1,8 @@
 <!--会员管理主路由-->
 
 <template>
-  <router-view>
-  </router-view>
+    <router-view>
+    </router-view>
 </template>
 
 <script>

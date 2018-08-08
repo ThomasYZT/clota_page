@@ -5,41 +5,49 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import {defaultsDeep} from 'lodash';
-import { Message } from 'iview';
+import {Message} from 'iview';
 import ajaxList from '@/api/ajaxList'
 import i18n from '../assets/js/lang.config';
 import routerClect from '../router/routerClect';
 import router from '../router/index';
-import {getFourRoute,getNoSubMenuRoute} from '../router/constRouter';
+import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
 
 Vue.use(Vuex);
 
 //子路由深度复制
-const childDeepClone = (childrenList,data) => {
+const childDeepClone = (childrenList, data) => {
     let children = [];
-    for(let child in childrenList){
-        let router = defaultsDeep({},childrenList[child]);
+    for (let child in childrenList) {
+        let router = defaultsDeep({}, childrenList[child]);
         //判断路由的名称是否存在于权限接口当中，部分父路由没有直接指定名称，所以需要判断meta信息里面的_name对应的权限是否存在
-        if((router.name && router.name in  data)
-          || (router.meta && router.meta._name && router.meta._name in  data)){
-          if(router.children){
-            let children = childDeepClone(router.children,data);
-            //配置没有匹配到路由的重定向页面
-            children.push(getFourRoute({menuName : '404',lightMenu : router.meta._name,_name : router.meta._name}));
-            if(children.length > 1){
-              //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
-              children.push({
-                path : '',
-                redirect : children[0].name ? children[0].name : children[0].meat._name
-              });
-              router['children'] = children;
-            }else{
-              router['children'] = [getNoSubMenuRoute({menuName : 'noSubMenu',lightMenu : router.meta._name,_name : router.meta._name})];
+        if ((router.name && router.name in data)
+            || (router.meta && router.meta._name && router.meta._name in data)) {
+            if (router.children) {
+                let children = childDeepClone(router.children, data);
+                //配置没有匹配到路由的重定向页面
+                children.push(getFourRoute({menuName: '404', lightMenu: router.meta._name, _name: router.meta._name}));
+                if (children.length > 1) {
+                    //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
+                    children.push({
+                        path: '',
+                        redirect: children[0].name ? children[0].name : children[0].meat._name
+                    });
+                    router['children'] = children;
+                } else {
+                    router['children'] = [getNoSubMenuRoute({
+                        menuName: 'noSubMenu',
+                        lightMenu: router.meta._name,
+                        _name: router.meta._name
+                    })];
+                }
+            } else if (!router.children && !router.name) {
+                router['children'] = [getNoSubMenuRoute({
+                    menuName: 'noSubMenu',
+                    lightMenu: router.meta._name,
+                    _name: router.meta._name
+                })];
             }
-          }else if(!router.children && !router.name){
-            router['children'] = [getNoSubMenuRoute({menuName : 'noSubMenu',lightMenu : router.meta._name,_name : router.meta._name})];
-          }
-          children.push(router);
+            children.push(router);
         }
     }
     return children;
@@ -48,11 +56,11 @@ const childDeepClone = (childrenList,data) => {
 export default new Vuex.Store({
     state: {
         //左侧菜单是否收起
-        menuIsPackUp : false,
+        menuIsPackUp: false,
         //当前选择的语言
-        lang : i18n.locale,
+        lang: i18n.locale,
         //权限信息
-        permissionInfo : [],
+        permissionInfo: [],
 
         userInfo: null,
         // 组织架构树
@@ -71,44 +79,44 @@ export default new Vuex.Store({
     getters: {
         // 用户信息（包含账号信息 + 公司信息）
         userInfo: state => {
-            return _.defaultsDeep({}, state.userInfo );
+            return _.defaultsDeep({}, state.userInfo);
         },
         //左侧菜单是否收起
-        menuIsPackUp : state => {
+        menuIsPackUp: state => {
             let menuIsPackUp = localStorage.getItem('menuIsPackUp');
-            if(menuIsPackUp){
-              state.menuIsPackUp = (menuIsPackUp === 'true');
+            if (menuIsPackUp) {
+                state.menuIsPackUp = (menuIsPackUp === 'true');
             }
             return state.menuIsPackUp;
         },
         //当前语言状态
-        lang : state => {
+        lang: state => {
             let lang = localStorage.getItem('lang');
             state.lang = lang ? lang : state.lang;
             return state.lang;
         },
         //一级菜单权限信息
-        permissionInfo : state => {
+        permissionInfo: state => {
             return state.permissionInfo;
         }
 
     },
     mutations: {
         //更新左侧菜单是否收起
-        updateMenuIsPackUp( state,payload ){
-          //保存当前菜单的展开收起状态
-          localStorage.setItem('menuIsPackUp',payload);
-          state.menuIsPackUp = payload;
+        updateMenuIsPackUp(state, payload) {
+            //保存当前菜单的展开收起状态
+            localStorage.setItem('menuIsPackUp', payload);
+            state.menuIsPackUp = payload;
         },
         //设置语言
-        setLang (state,lang) {
-          //保存当前的语言状态
-          localStorage.setItem('lang',lang);
-          i18n.locale = state.lang = lang;
+        setLang(state, lang) {
+            //保存当前的语言状态
+            localStorage.setItem('lang', lang);
+            i18n.locale = state.lang = lang;
         },
         //设置用户权限
-        updatePermissionInfo(state,data) {
-            let routers = childDeepClone(routerClect,data);
+        updatePermissionInfo(state, data) {
+            let routers = childDeepClone(routerClect, data);
             router.addRoutes(routers);
             state.permissionInfo = JSON.parse(JSON.stringify(routers));
         },
@@ -126,18 +134,18 @@ export default new Vuex.Store({
         //     });
         // },
         //获取用户权限信息
-        getUserRight ({commit}) {
-            commit('updatePermissionInfo',{
-              'orgManage' : 'allow',
-              'organization':'allow',
-              'employee':'allow',
-              'rolePermission':'allow',
-              'roleDetail':'allow',
-              'partner' : 'allow',
-              'channels' : 'allow',
-              'saleChannelsGroup':'allow',
-              'verificateGroup':'allow',
-              'memberManage' : 'allow',
+        getUserRight({commit}) {
+            commit('updatePermissionInfo', {
+                'orgManage': 'allow',
+                'organization': 'allow',
+                'employee': 'allow',
+                'rolePermission': 'allow',
+                'roleDetail': 'allow',
+                'partner': 'allow',
+                'channels': 'allow',
+                'saleChannelsGroup': 'allow',
+                'verificateGroup': 'allow',
+                'memberManage': 'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {
@@ -149,7 +157,5 @@ export default new Vuex.Store({
         }
 
     },
-    modules: {
-
-    }
+    modules: {}
 });

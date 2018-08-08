@@ -3,57 +3,56 @@
 /**
   颜色配置
  */
-$color_000 : #000000 !default;
-$color_333 : #333333 !default;
-$color_666 : #666666 !default;
-$color_999 : #999999 !default;
-$color_696969:#696969;
-$color_3F3F3F:#3F3F3F;
-$color_303133:#303133;
-$color_606266:#606266;
-$color_fff : #ffffff !default;
-$color_lang_color : rgba(125,169,219,1);
+$color_000: #000000 !default;
+$color_333: #333333 !default;
+$color_666: #666666 !default;
+$color_999: #999999 !default;
+$color_696969: #696969;
+$color_3F3F3F: #3F3F3F;
+$color_303133: #303133;
+$color_606266: #606266;
+$color_fff: #ffffff !default;
+$color_lang_color: rgba(125, 169, 219, 1);
 $color_blue: #2F70DF;
-$color_6666FF:#6666FF;
+$color_6666FF: #6666FF;
 $color_green: #22BB5F;
 $color_red: #EB6751;
-$color_yellow:#F7981C;
-$color_669ad5 : #669ad5;
-$color_transparent :transparent;
-$color_F5F7FA:#F5F7FA;
-$color_gray:#C5C5C5;
-$color_BBC5D5:#BBC5D5;
-$color_585858:#585858;
-$color_E1E1E1:#E1E1E1;
-$color_A8ACB4:#A8ACB4;
-$color_fafa:#fafafa;
-$color_000_085 : rgba(0,0,0,0.85);
-$color_22BB5F : #22BB5F;
-$color_F4F6F8 : #F4F6F8;
+$color_yellow: #F7981C;
+$color_669ad5: #669ad5;
+$color_transparent: transparent;
+$color_F5F7FA: #F5F7FA;
+$color_gray: #C5C5C5;
+$color_BBC5D5: #BBC5D5;
+$color_585858: #585858;
+$color_E1E1E1: #E1E1E1;
+$color_A8ACB4: #A8ACB4;
+$color_fafa: #fafafa;
+$color_000_085: rgba(0, 0, 0, 0.85);
+$color_22BB5F: #22BB5F;
+$color_F4F6F8: #F4F6F8;
 /**
   字体大小配置
  */
-$font_size_12px : 12px !default;
-$font_size_14px : 14px !default;
-$font_size_15px : 15px !default;
-$font_size_16px : 16px !default;
-$font_size_18px : 18px !default;
-$font_size_20px : 20px !default;
-$font_size_24px : 24px !default;
+$font_size_12px: 12px !default;
+$font_size_14px: 14px !default;
+$font_size_15px: 15px !default;
+$font_size_16px: 16px !default;
+$font_size_18px: 18px !default;
+$font_size_20px: 20px !default;
+$font_size_24px: 24px !default;
 
 /**
   位置大小配置
  */
-$window_min_width : 1280px;
-$content_min_width : 1000px;
+$window_min_width: 1280px;
+$content_min_width: 1000px;
 
 /**
   iview样式重新定义
  */
 
-
 /**
   图片文件夹根路径
  */
-$img_base_url : './assets/images/'!default;
+$img_base_url: './assets/images/' !default;
 

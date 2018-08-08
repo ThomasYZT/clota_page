@@ -1,131 +1,134 @@
-.selectionTable{
-  .el-table{
-    th{
-      background: #F5F7FA;
-      &:first-child{
-        .cell{
-          text-align: center;
-          padding-left: 14px;
+.selectionTable {
+    .el-table {
+        th {
+            background: #F5F7FA;
+            &:first-child {
+                .cell {
+                    text-align: center;
+                    padding-left: 14px;
+                }
+            }
         }
-      }
+        td:first-child {
+            .cell {
+                text-align: center;
+                padding-left: 14px;
+            }
+        }
     }
-    td:first-child{
-      .cell{
-        text-align: center;
-        padding-left: 14px;
-      }
-    }
-  }
-}
-.clearfix{
-  clear: both;
-  overflow: hidden;
-}
-.operation{
-  @include clearfix;
-  span{
-    color: #2F70DF;
-    padding-right: 9px;
-    padding-left: 9px;
-    border-right: 1px solid #E1E1E1;
-    cursor: pointer;
-    float: left;
-    &:last-child{
-      border-right: none;
-      color: #EB6751;
-    }
-  }
-  .span-yellow{
-    color: #F7981C;
-  }
-  .span-gray{
-    color: #C5C5C5!important;
-    cursor: not-allowed;
-  }
-  .span-blue{
-    color: #2F70DF!important;
-  }
 }
 
-.orgHeader{
-  height: 34px;
-  box-sizing: content-box;
-  padding: 14px 30px;
-  .search{
-    width: 353px;
-    float: right;
-  }
-  .add-icon{
-    margin-left: -10px;
-    margin-right: 6px;
-  }
+.clearfix {
+    clear: both;
+    overflow: hidden;
 }
-.pagination{
-  margin:30px auto;
-  text-align: center;
+
+.operation {
+    @include clearfix;
+    span {
+        color: #2F70DF;
+        padding-right: 9px;
+        padding-left: 9px;
+        border-right: 1px solid #E1E1E1;
+        cursor: pointer;
+        float: left;
+        &:last-child {
+            border-right: none;
+            color: #EB6751;
+        }
+    }
+    .span-yellow {
+        color: #F7981C;
+    }
+    .span-gray {
+        color: #C5C5C5 !important;
+        cursor: not-allowed;
+    }
+    .span-blue {
+        color: #2F70DF !important;
+    }
+}
+
+.orgHeader {
+    height: 34px;
+    box-sizing: content-box;
+    padding: 14px 30px;
+    .search {
+        width: 353px;
+        float: right;
+    }
+    .add-icon {
+        margin-left: -10px;
+        margin-right: 6px;
+    }
+}
+
+.pagination {
+    margin: 30px auto;
+    text-align: center;
 }
 
 .el-pager {
-  li{
-    color: #606266;
-    font-weight: normal;
-  }
-  li.active{
-    color: #6666FF;
-  }
+    li {
+        color: #606266;
+        font-weight: normal;
+    }
+    li.active {
+        color: #6666FF;
+    }
 }
 
-.ivu-modal{
-  .ivu-modal-header{
-    background: #F5F7FA;
-    border-radius: 8px 8px 0 0;
-    .ivu-modal-header-inner{
-      font-size: 16px;
+.ivu-modal {
+    .ivu-modal-header {
+        background: #F5F7FA;
+        border-radius: 8px 8px 0 0;
+        .ivu-modal-header-inner {
+            font-size: 16px;
+        }
     }
-  }
-  .ivu-form-item-content{
-    width: 280px;
-    float: right;
-  }
-  .ivu-modal-footer{
-    padding: 13px;
-    text-align: center;
-    border-radius: 0 0 8px 8px;
-  }
-  .ivu-btn-small{
-    min-width: 90px;
-    padding: 1px 0;
-  }
-  .ivu-btn{
-    height: 32px;
-  }
-  .ivu-form-item{
-    display: flex;
-    justify-content: flex-end;
-  }
-  .ivu-form-item-label{
-    min-width: inherit;
-    padding: 10px 10px 10px 12px;
-    font-size: 14px;
-    color: #585858;
-    &:after{
-      margin-left: 0;
-      left: 4px;
-      top: 12px;
+    .ivu-form-item-content {
+        width: 280px;
+        float: right;
     }
-  }
-  .ivu-radio-group-item{
-    margin-top: -2px;
-    font-size: 14px;
-    color: #333333;
-  }
+    .ivu-modal-footer {
+        padding: 13px;
+        text-align: center;
+        border-radius: 0 0 8px 8px;
+    }
+    .ivu-btn-small {
+        min-width: 90px;
+        padding: 1px 0;
+    }
+    .ivu-btn {
+        height: 32px;
+    }
+    .ivu-form-item {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .ivu-form-item-label {
+        min-width: inherit;
+        padding: 10px 10px 10px 12px;
+        font-size: 14px;
+        color: #585858;
+        &:after {
+            margin-left: 0;
+            left: 4px;
+            top: 12px;
+        }
+    }
+    .ivu-radio-group-item {
+        margin-top: -2px;
+        font-size: 14px;
+        color: #333333;
+    }
 }
 
-.breadcrumb-box{
-  background: $color_F4F6F8;
-  height: 50px;
-  padding: 10px 30px;
-  .ivu-breadcrumb{
-    line-height: 30px;
-  }
+.breadcrumb-box {
+    background: $color_F4F6F8;
+    height: 50px;
+    padding: 10px 30px;
+    .ivu-breadcrumb {
+        line-height: 30px;
+    }
 }
