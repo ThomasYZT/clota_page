@@ -1,4 +1,4 @@
-import {defaultsDeep} from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 
 //饼图配置信息
 // export default {
