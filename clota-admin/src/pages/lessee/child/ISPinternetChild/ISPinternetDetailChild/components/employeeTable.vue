@@ -6,6 +6,7 @@
             :table-data="tableData"
             :column-data="employeeColumn"
             title="员工账号"
+            :is-pack-up="isPackUp"
             :show-page="true"
             :total="totalCount"
             @selection-change="handleSelectionChange"
@@ -49,6 +50,13 @@
     import delModal from '@/components/delModal/index.vue';
     import changePass from '@/components/editModal/index.vue';
     export default {
+        props : {
+            //是否展开默认值
+            'is-pack-up': {
+                type: Boolean,
+                default: false
+            },
+        },
         components : {
             tableCom,
             delModal,

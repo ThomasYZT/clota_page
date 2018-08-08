@@ -7,6 +7,7 @@
             :column-data="partMentHead"
             :title="$t('subDepartment')"
             :show-page="true"
+            :is-pack-up="isPackUp"
             :show-table-bar="false"
             :total="totalCount"
             @selection-change="handleSelectionChange"
@@ -49,6 +50,13 @@
     import delModal from '@/components/delModal/index.vue';
     import editModal from '@/components/editModal/index.vue';
     export default {
+        props : {
+            //是否展开默认值
+            'is-pack-up': {
+                type: Boolean,
+                default: false
+            },
+        },
         components : {
             tableCom,
             delModal,

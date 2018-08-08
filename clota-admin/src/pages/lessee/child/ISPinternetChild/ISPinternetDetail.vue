@@ -25,6 +25,7 @@
     import companyDetail from './ISPinternetDetailChild/companyDetail';
     import departmentDetail from './ISPinternetDetailChild/departmentDetail';
     import cashierDetail from './ISPinternetDetailChild/cashierDetail';
+    import sceneDetail from './ISPinternetDetailChild/sceneDetail'
 
     export default {
         components: {
@@ -33,7 +34,8 @@
             structureTree,
             companyDetail,
             departmentDetail,
-            cashierDetail
+            cashierDetail,
+            sceneDetail
         },
         data() {
             return {
@@ -91,6 +93,8 @@
                     return 'departmentDetail'
                 }else if(this.componentName === 'cashier'){
                     return 'cashierDetail';
+                }else if(this.componentName === 'scene'){
+                    return 'sceneDetail';
                 }else{
                     return  '';
                 }

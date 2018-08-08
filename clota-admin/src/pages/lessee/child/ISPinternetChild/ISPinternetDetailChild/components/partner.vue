@@ -1,12 +1,11 @@
-<!--下属公司-->
+<!--合作伙伴-->
 
 <template>
-    <div class="sub-company">
+    <div class="partner">
         <table-com
             :table-data="tableData"
-            :column-data="companies"
-            :is-pack-up="true"
-            :title="$t('subCompany')"
+            :column-data="paratner"
+            :title="$t('partner')"
             :show-page="true"
             :total="totalCount"
             @get-new-data="getSubCompany">
@@ -15,7 +14,7 @@
 </template>
 
 <script>
-    import {companies} from './subCompanyConfig';
+    import {paratner} from './partnerConfig';
     import tableCom from '../../../organization/tableCom';
     export default {
         components : {
@@ -23,8 +22,8 @@
         },
         data() {
             return {
-                //下属公司表头配置
-                companies : companies,
+                //合作伙伴表头配置
+                paratner : paratner,
                 //表格数据
                 tableData : [
                     {
@@ -40,13 +39,13 @@
                         status : 'pause'
                     }
                 ],
-                //下属公司总数
+                //合作伙伴总数
                 totalCount : 100,
             }
         },
         methods: {
             /**
-             * 获取下属公司信息
+             * 获取合作伙伴信息
              */
             getSubCompany () {
 
@@ -60,7 +59,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .sub-company{
+    .partner{
         @include block_outline($height : auto);
 
         .operate-info{

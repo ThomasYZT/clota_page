@@ -18,7 +18,8 @@
                 </div>
             </li>
         </ul>
-        <employee-table>
+        <!--员工-->
+        <employee-table :is-pack-up="true">
         </employee-table>
     </div>
 </template>

@@ -7,6 +7,7 @@
             :column-data="openedServiceHead"
             :title="$t('openedService')"
             :show-page="true"
+            :is-pack-up="isPackUp"
             :show-table-bar="false"
             :total="totalCount"
             @selection-change="handleSelectionChange"
@@ -68,6 +69,13 @@
     import openServiceModal from './openServiceModal';
     import serviceDelayModal from './serviceDelayModal.vue';
     export default {
+        props : {
+            //是否展开默认值
+            'is-pack-up': {
+                type: Boolean,
+                default: false
+            },
+        },
         components : {
             tableCom,
             openServiceModal,

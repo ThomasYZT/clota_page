@@ -117,4 +117,5 @@ export default {
     subDepartment : '下属部门',
     changeDepName : '修改部门名称',
     serviceDelay : '服务延期',
+    partner : '合作伙伴',
 }

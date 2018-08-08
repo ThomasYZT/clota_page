@@ -5,6 +5,7 @@
         <table-com
             :table-data="tableData"
             :column-data="region"
+            :is-pack-up="true"
             :title="$t('subScene')"
             :show-page="true"
             :total="totalCount"
