@@ -76,7 +76,8 @@
                 sendColumns : sendColumns,
                 //员工总数
                 totalCount : 100,
-                isPackUpLoad : true
+                //是否展开表格
+                isPackUpLoad : false
             }
         },
         methods: {

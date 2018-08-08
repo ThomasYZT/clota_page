@@ -67,7 +67,6 @@
             },
             //菜单列表，排除挂靠在其它路由下的路由
             menuList() {
-                console.log(this.routerInfo)
                 if (this.routerInfo) {
                     return this.routerInfo.filter(item => {
                         //有路由名字需要判断路由名字和meta信息里面的_name是否相同，

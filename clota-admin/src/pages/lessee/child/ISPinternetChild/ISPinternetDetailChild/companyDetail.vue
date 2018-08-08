@@ -102,12 +102,15 @@
                 </div>
             </li>
         </ul>
-        <table-com
-            :column-data="dredgeColumnData"
-            :is-pack-up="true"
-            :table-data="tableData"
-            title="已开通服务">
-        </table-com>
+        <!--已开通服务-->
+        <!--<table-com-->
+            <!--:column-data="dredgeColumnData"-->
+            <!--:is-pack-up="true"-->
+            <!--:table-data="tableData"-->
+            <!--:title="$t('openedService')">-->
+        <!--</table-com>-->
+        <opened-service>
+        </opened-service>
         <table-com
             :column-data="companies"
             :table-data="tableData"
@@ -148,20 +151,20 @@
 
 <script>
     import tableCom from '../../organization/tableCom';
-    import {dredegHead, partMentHead, region, partner, companies} from './companyDetailConfig';
+    import { partMentHead, region, partner, companies} from './companyDetailConfig';
     import employeeTable from './components/employeeTable';
     import noteTable from './components/noteTable';
+    import openedService from './components/openedService';
 
     export default {
         components: {
             tableCom,
             employeeTable,
-            noteTable
+            noteTable,
+            openedService
         },
         data() {
             return {
-                //已开通表头数据
-                dredgeColumnData: dredegHead,
                 //下属部门表头
                 partMentHead: partMentHead,
                 //下属景区表头

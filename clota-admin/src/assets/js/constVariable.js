@@ -84,3 +84,54 @@ export const cashierType = [
         value: 'verifySaleAndCashierType'
     },
 ];
+//月份枚举
+export const monthEnum = [
+    {
+        lable : 'month',
+        value : 1
+    },
+    {
+        lable : 'month',
+        value : 2
+    },
+    {
+        lable : 'month',
+        value : 3
+    },
+    {
+        lable : 'month',
+        value : 4
+    },
+    {
+        lable : 'month',
+        value : 5
+    },
+    {
+        lable : 'month',
+        value : 6
+    },
+    {
+        lable : 'month',
+        value : 7
+    },
+    {
+        lable : 'month',
+        value : 8
+    },
+    {
+        lable : 'month',
+        value : 9
+    },
+    {
+        lable : 'month',
+        value : 10
+    },
+    {
+        lable : 'month',
+        value : 11
+    },
+    {
+        lable : 'month',
+        value : 12
+    }
+];
