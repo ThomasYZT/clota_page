@@ -1,8 +1,26 @@
-@import (inline) '~element-ui/lib/theme-chalk/table-column.css';
-@import (inline) '~element-ui/lib/theme-chalk/pagination.css';
 
 .ivu-btn-default {
     padding: 6px 20px 5px;
+}
+
+.selectionTable {
+    .el-table {
+        th {
+            background: #F5F7FA;
+            &:first-child {
+                .cell {
+                    text-align: center;
+                    padding-left: 14px;
+                }
+            }
+        }
+        td:first-child {
+            .cell {
+                text-align: center;
+                padding-left: 14px;
+            }
+        }
+    }
 }
 
 .el-table {
@@ -54,4 +72,85 @@
             background: #BBC5D5;
         }
     }
+}
+
+.el-pager {
+    li {
+        color: #606266;
+        font-weight: normal;
+    }
+    li.active {
+        color: #6666FF;
+    }
+}
+
+.ivu-modal {
+    .ivu-modal-header {
+        background: #F5F7FA;
+        border-radius: 8px 8px 0 0;
+        .ivu-modal-header-inner {
+            font-size: 16px;
+        }
+    }
+    .ivu-modal-footer {
+        padding: 13px;
+        border-radius: 0 0 8px 8px;
+    }
+    .ivu-btn-small {
+        min-width: 90px;
+        padding: 1px 0;
+    }
+    .ivu-btn {
+        height: 32px;
+    }
+    .ivu-radio-group-item {
+        margin-top: -2px;
+        font-size: 14px;
+        color: #333333;
+    }
+}
+
+.operation {
+@include clearfix;
+    span {
+        color: #2F70DF;
+        padding-right: 9px;
+        padding-left: 9px;
+        border-right: 1px solid #E1E1E1;
+        cursor: pointer;
+        float: left;
+        &:last-child {
+            border-right: none;
+            color: #EB6751;
+        }
+    }
+    .span-yellow {
+        color: #F7981C;
+    }
+    .span-gray {
+        color: #C5C5C5 !important;
+        cursor: not-allowed;
+    }
+    .span-blue {
+        color: #2F70DF !important;
+    }
+}
+
+.orgHeader {
+    height: 34px;
+    box-sizing: content-box;
+    padding: 14px 30px;
+    .search {
+        width: 353px;
+        float: right;
+    }
+    .add-icon {
+        margin-left: -10px;
+        margin-right: 6px;
+    }
+}
+
+.pagination {
+    margin: 30px auto;
+    text-align: center;
 }
