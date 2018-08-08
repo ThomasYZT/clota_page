@@ -4,8 +4,10 @@
   <div id="app">
     <router-view v-if="noFrame"/>
     <main-frame v-else>
-      <router-view>
-      </router-view>
+      <transition name="fade">
+        <router-view>
+        </router-view>
+      </transition>
     </main-frame>
   </div>
 </template>

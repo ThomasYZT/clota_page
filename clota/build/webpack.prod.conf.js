@@ -91,15 +91,15 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
-      dll: (function () {
-        let dlls = ['vueFamily','plugins'];
-        let res = {};
-        for(let i = 0,j = dlls.length;i < j;i++){
-          let dll = require(path.resolve(__dirname, `../${dlls[i]}-manifest.json`)).name.split('_');
-          res[i] = `/static/dll/${dll[0]}.${dll[1]}.dll.js`;
-        }
-        return res
-      })()
+      // dll: (function () {
+      //   let dlls = ['vueFamily','plugins'];
+      //   let res = {};
+      //   for(let i = 0,j = dlls.length;i < j;i++){
+      //     let dll = require(path.resolve(__dirname, `../${dlls[i]}-manifest.json`)).name.split('_');
+      //     res[i] = `/static/dll/${dll[0]}.${dll[1]}.dll.js`;
+      //   }
+      //   return res
+      // })()
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
