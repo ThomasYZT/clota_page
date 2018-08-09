@@ -7,9 +7,12 @@ import orgStructureRouter from './modules/indexRoute';
 import lesseeRoute from './modules/lesseeRoute';
 //服务器
 import serverRoute from './modules/serverRoute';
+//订单
+import orderRoute from './modules/orderRoute';
 
 export default {
     ...orgStructureRouter,
     ...lesseeRoute,
-    ...serverRoute
+    ...serverRoute,
+    ...orderRoute
 }

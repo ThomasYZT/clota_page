@@ -87,51 +87,200 @@ export const cashierType = [
 //月份枚举
 export const monthEnum = [
     {
-        lable : 'month',
+        label : 'month',
         value : 1
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 2
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 3
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 4
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 5
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 6
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 7
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 8
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 9
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 10
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 11
     },
     {
-        lable : 'month',
+        label : 'month',
         value : 12
     }
 ];
+//订单类型
+export const orderType = [
+    {
+        label : 'FIT',//散客
+        value : 'FIT'
+    },
+    {
+        label : 'team',//团队
+        value : 'team'
+    },
+    {
+        label : 'customer',//大客户
+        value : 'customer'
+    },
+    {
+        label : 'all',//全部
+        value : 'all'
+    }
+];
+//审核状态
+export const auditStatus = [
+    {
+        label : 'audited',//已审核
+        value : 'audited'
+    },
+    {
+        label : 'notAudit',//未审核
+        value : 'notAudit'
+    },
+    {
+        label : 'all',//全部
+        value : 'all'
+    }
+];
+//支付状态
+export const payStatus = [
+    {
+        label : 'prepaid',//已支付
+        value : 'prepaid'
+    },
+    {
+        label : 'unpaid',//未支付
+        value : 'unpaid'
+    },
+    {
+        label : 'all',//全部
+        value : 'all'
+    }
+];
+//核销状态
+export const cashierStatus = [
+    {
+        label : 'cashiered',//已核销
+        value : 'cashiered'
+    },
+    {
+        label : 'unCashiered',//未核销
+        value : 'unCashiered'
+    },
+    {
+        label : 'all',//全部
+        value : 'all'
+    }
+];
+
+//退款状态
+export const refundStatus = [
+    {
+        label : 'refunded',//已退
+        value : 'refunded'
+    },
+    {
+        label : 'waitAudit',//待审
+        value : 'waitAudit'
+    },
+    {
+        label : 'apply',//申请
+        value : 'apply'
+    },
+    {
+        label : 'all',//全部
+        value : 'all'
+    }
+];
+
+//是否同步
+export const synchronizationStatus = [
+    {
+        label : 'synchronized',//已退
+        value : 'synchronized'
+    },
+    {
+        label : 'unsynchronize',//待审
+        value : 'unsynchronize'
+    },
+    {
+        label : 'all',//全部
+        value : 'all'
+    }
+];
+
+//下单渠道
+export const orderChannels = [
+    {
+        label : 'all',//全部
+        value : 'all'
+    },
+    {
+        label : 'OTA',//OTA
+        value : 'OTA'
+    },
+    {
+        label : 'scene',//景区
+        value : 'scene'
+    },
+    {
+        label : 'distributor',//分销商
+        value : 'distributor'
+    },
+    {
+        label : 'custome',//自定义
+        value : 'custome'
+    },
+    {
+        label : 'travel',//旅行社
+        value : 'travel'
+    }
+];
+
+//业态类型
+export const formatsStatus = [
+    {
+        label : 'ticket',//票类
+        value : 'ticket'
+    },
+    {
+        label : 'hotel',//酒店
+        value : 'hotel'
+    },
+    {
+        label : 'theater',//剧院
+        value : 'theater'
+    },
+    {
+        label : 'ticketPack',//套票
+        value : 'ticketPack'
+    }
+];
+

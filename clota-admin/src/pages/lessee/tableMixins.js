@@ -49,14 +49,14 @@ export default {
         setTableHeight() {
             let content = this.$el;
             if (content) {
-                let height = this.tableData.length * 48 + 48;
+                let height = this.tableData.length * 48 + 49;
                 if (height > content.offsetHeight - this.spaceOffset) {
                     this.tableHeight = content.offsetHeight - this.spaceOffset + 'px';
                 } else {
                     this.tableHeight = height + 'px';
                 }
             } else {
-                this.tableHeight = 48 + 'px';
+                this.tableHeight = 49 + 'px';
             }
         },
     },

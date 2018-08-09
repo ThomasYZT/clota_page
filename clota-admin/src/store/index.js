@@ -96,6 +96,7 @@ export default new Vuex.Store({
                     'lessee': 'allow',
                     'ISPinternet': 'allow',
                     'server': 'allow',
+                    'order': 'allow',
                 };
                 let routers = childDeepClone(routerClect, data);
                 routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));

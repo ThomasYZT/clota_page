@@ -29,7 +29,7 @@
                             <span class="info-val">{{item[1].value}}</span>
                         </div>
                         <div class="info-list3">
-                            <span class="info-key">{{item[1].label}}：</span>
+                            <span class="info-key">{{item[2].label}}：</span>
                             <span class="info-val">{{item[2].value}}</span>
                         </div>
                     </li>
