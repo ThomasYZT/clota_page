@@ -63,7 +63,7 @@ export const columns = {
         },
         {
             title: '身份证号',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
         {
@@ -78,12 +78,12 @@ export const columns = {
         },
         {
             title: '注册时间',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
         {
             title: '受理客服',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
     ],
@@ -106,7 +106,7 @@ export const columns = {
         },
         {
             title: '身份证号',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
         {
@@ -121,22 +121,22 @@ export const columns = {
         },
         {
             title: '注册时间',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
         {
             title: '受理客服',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
         {
             title: '驳回原因',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
         {
             title: '驳回时间',
-            minWidth: 70,
+            minWidth: 100,
             field: 'rate'
         },
     ]

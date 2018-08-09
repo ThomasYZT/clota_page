@@ -99,6 +99,7 @@
  */
 @mixin table_operate($color : $color_blue) {
     overflow: auto;
+    float: left;
 
     li {
         float: left;

@@ -23,8 +23,8 @@
             </slot>
         </div>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
-            <Button class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
+            <Button type="primary" class="ivu-btn-90px" @click="confirm">{{confirmBtn}}</Button>
+            <Button class="ivu-btn-90px" @click="cancel">{{cancelBtn}}</Button>
         </div>
     </Modal>
 </template>
@@ -52,7 +52,11 @@
                     passWord : [
                         {required : true,message : this.$t('validateError.pleaseInput',{msg : this.title}),trigger : 'blur'}
                     ]
-                }
+                },
+                //确认文本
+                confirmBtn : '',
+                //取消文本
+                cancelBtn : '',
             }
         },
         methods: {
@@ -94,9 +98,11 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({title,confirmCallback = null,cancelCallback}) {
+            show ({title,confirmCallback = null,cancelCallback,confirmBtn = this.$t('confirm'),cancelBtn = this.$t('cancel')}) {
                 this.modalShow = true;
                 this.title = title;
+                this.confirmBtn = confirmBtn;
+                this.cancelBtn = cancelBtn;
                 if(confirmCallback && typeof confirmCallback == 'function'){
                     this.confirmCallback = confirmCallback;
                 }

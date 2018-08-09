@@ -136,11 +136,6 @@
             }
         }
 
-        /deep/ .el-table td,
-        /deep/ .el-table th {
-            padding: 11px 0 !important;
-        }
-
         /deep/ .el-table::before {
             display: none;
         }

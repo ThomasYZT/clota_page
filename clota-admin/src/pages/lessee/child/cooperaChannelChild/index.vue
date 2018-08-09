@@ -9,7 +9,7 @@
         <div class="lessee-per-detail">
             <div class="less-content">
                 <div class="less-name">
-                    <span class="name">{{cooperaDetail.name}}</span>
+                    <span class="name">{{cooperaPerDetail.name}}</span>
                     <span class="status">待审核</span>
                 </div>
                 <div class="audit-area">
@@ -18,70 +18,98 @@
                 </div>
             </div>
             <ul class="cooper-detail">
-                <li class="list">
-                    <div class="info-list1">
-                        <span class="info-key">身份证号：</span>
-                        <span class="info-val">王老板</span>
-                    </div>
-                    <div class="info-list2">
-                        <span class="info-key">联系方式：</span>
-                        <span class="info-val">15867868623</span>
-                    </div>
-                    <div class="info-list3">
-                        <span class="info-key">管理账号：</span>
-                        <span class="info-val">Ashkjhk22</span>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="info-list1">
-                        <span class="info-key">电子邮箱：</span>
-                        <span class="info-val">00291389323</span>
-                    </div>
-                    <div class="info-list2">
-                        <span class="info-key">所在地：</span>
-                        <span class="info-val">云南省 曲靖市 马龙县</span>
-                    </div>
-                    <div class="info-list3">
-                        <span class="info-key">详细地址：</span>
-                        <span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="info-list1">
-                        <span class="info-key">上次修改时间：</span>
-                        <span class="info-val">176786699@163.com</span>
-                    </div>
-                    <div class="info-list2">
-                        <span class="info-key">注册审核时间：</span>
-                        <span class="info-val">云南省 曲靖市 马龙县</span>
-                    </div>
-                    <div class="info-list3">
-                        <span class="info-key">上次修改人：</span>
-                        <span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="info-list1">
-                        <span class="info-key">受理客服：</span>
-                        <span class="info-val">云南省 曲靖市 马龙县</span>
-                    </div>
-                    <div class="info-list2">
-                        <span class="info-key">账号申请时间：</span>
-                        <span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>
-                    </div>
-                    <div class="info-list3">
-                        <span class="info-key">身份证：</span>
-                        <span class="info-val">
-                            <img src="../../../../assets/images/icon-no-data.png" alt="">
-                        </span>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="info-list4">
-                        <span class="info-key">个人说明：</span>
-                        <span class="info-val">个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明</span>
-                    </div>
-                </li>
+                <template v-for="item in cooperaPerDetail.info">
+                    <li class="list" v-if="item.length === 3">
+                        <div class="info-list1">
+                            <span class="info-key">{{item[0].label}}：</span>
+                            <span class="info-val">{{item[0].value}}</span>
+                        </div>
+                        <div class="info-list2">
+                            <span class="info-key">{{item[1].label}}：</span>
+                            <span class="info-val">{{item[1].value}}</span>
+                        </div>
+                        <div class="info-list3">
+                            <span class="info-key">{{item[1].label}}：</span>
+                            <span class="info-val">{{item[2].value}}</span>
+                        </div>
+                    </li>
+                    <li class="list" v-if="item.length === 2">
+                        <div class="info-list4">
+                            <span class="info-key">{{item[0].label}}：</span>
+                            <span class="info-val">{{item[0].value}}</span>
+                        </div>
+                        <div class="info-list5">
+                            <span class="info-key">{{item[1].label}}：</span>
+                                <span class="info-val">
+                                <img src="../../../../assets/images/icon-no-data.png" alt="">
+                            </span>
+                        </div>
+                    </li>
+                </template>
+                <!--<li class="list">-->
+                    <!--<div class="info-list1">-->
+                        <!--<span class="info-key">身份证号：</span>-->
+                        <!--<span class="info-val">王老板</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list2">-->
+                        <!--<span class="info-key">联系方式：</span>-->
+                        <!--<span class="info-val">15867868623</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list3">-->
+                        <!--<span class="info-key">管理账号：</span>-->
+                        <!--<span class="info-val">Ashkjhk22</span>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list">-->
+                    <!--<div class="info-list1">-->
+                        <!--<span class="info-key">电子邮箱：</span>-->
+                        <!--<span class="info-val">00291389323</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list2">-->
+                        <!--<span class="info-key">所在地：</span>-->
+                        <!--<span class="info-val">云南省 曲靖市 马龙县</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list3">-->
+                        <!--<span class="info-key">详细地址：</span>-->
+                        <!--<span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list">-->
+                    <!--<div class="info-list1">-->
+                        <!--<span class="info-key">上次修改时间：</span>-->
+                        <!--<span class="info-val">176786699@163.com</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list2">-->
+                        <!--<span class="info-key">注册审核时间：</span>-->
+                        <!--<span class="info-val">云南省 曲靖市 马龙县</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list3">-->
+                        <!--<span class="info-key">上次修改人：</span>-->
+                        <!--<span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list">-->
+                    <!--<div class="info-list1">-->
+                        <!--<span class="info-key">受理客服：</span>-->
+                        <!--<span class="info-val">云南省 曲靖市 马龙县</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list2">-->
+                        <!--<span class="info-key">账号申请时间：</span>-->
+                        <!--<span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list">-->
+                    <!--<div class="info-list4">-->
+                        <!--<span class="info-key">个人说明：</span>-->
+                        <!--<span class="info-val">个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明</span>-->
+                    <!--</div>-->
+                    <!--<div class="info-list5">-->
+                        <!--<span class="info-key">身份证：</span>-->
+                        <!--<span class="info-val">-->
+                            <!--<img src="../../../../assets/images/icon-no-data.png" alt="">-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--</li>-->
             </ul>
             <div class="partner-area">
                 <div class="partner-name">合作伙伴</div>
@@ -137,6 +165,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import tableCom from '../organization/tableCom';
     import editModal from '@/components/editModal/index.vue';
+    import getFiledData from './channelConfig';
     export default {
         components : {
             breadCrumbHead,
@@ -149,18 +178,6 @@
                 beforeRouterList: [],
                 //表格数据
                 tableData : [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
                     {},
                     {},
                 ],
@@ -198,9 +215,10 @@
                 totalCount : 10,
                 //渠道类型
                 channelType : '',
-                //租户详情信息
-                cooperaDetail : {
-                    name :'租户：广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社'
+                //个人渠道详情信息
+                cooperaPerDetail : {
+                    name :'租户：广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社',
+                    info : []
                 }
             }
         },
@@ -211,6 +229,7 @@
             auditPass () {
                 this.$refs.passModal.show({
                     title : '注册申请审核通过',
+                    confirmBtn : '审核通过',
                     confirmCallback : () => {
                         this.$refs.passForm.validate(valid => {
                             if(valid){
@@ -229,6 +248,7 @@
             reject () {
                 this.$refs.rejectModal.show({
                     title : '驳回注册申请',
+                    confirmBtn : '驳回',
                     confirmCallback : (pass) => {
                         this.$refs.rejectForm.validate(valid => {
                             if(valid){
@@ -287,7 +307,14 @@
                         ]
                     }
                 }
+                this.getChannelData();
                 this.getPartnerData();
+            },
+            /**
+             * 获取渠道详情
+             */
+            getChannelData () {
+                this.cooperaPerDetail.info = getFiledData(this.channelType,1,2,3,3,3,33,3,3,3,33,3,3,3,3,3,3,3,3,3,3,3,3,3);
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -309,7 +336,7 @@
             margin-top: 20px;
             background: $color_fff;
             @include padding_place();
-            padding: 12px 40px;
+            padding: 12px 40px 0 40px;
 
             .less-content{
                 padding: 10px 0;
@@ -365,6 +392,7 @@
                     .info-list1,
                     .info-list3,
                     .info-list4,
+                    .info-list5,
                     .info-list2 {
                         display: flex;
                         flex-direction: row;
@@ -408,19 +436,21 @@
                         padding-left: 15px;
                     }
 
-                    .info-list3 {
+                    .info-list3,
+                    .info-list5{
                         @include block_outline(40%, auto);
                         padding-left: 15px;
                     }
 
                     .info-list4{
-                        @include block_outline(100%, auto);
+                        @include block_outline(60%, auto);
 
                         .info-val{
                             overflow: auto;
                             white-space: normal;
                         }
                     }
+
                 }
             }
 
