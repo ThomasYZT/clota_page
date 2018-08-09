@@ -23,13 +23,15 @@
             :table-data="tableData"
             :table-height="tableHeight"
             :column-data="columnDataInfo">
-            <!--<el-table-column-->
-            <!--label="操作"-->
-            <!--:width="60">-->
-            <!--<template slot-scope="scoped">-->
-            <!--<span>查看</span>-->
-            <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                label="操作"
+                :width="80">
+                <template slot-scope="scoped">
+                    <ul class="operate-info">
+                        <li class="operate-list" @click="toDetail(scoped.row)">查看</li>
+                    </ul>
+                </template>
+            </el-table-column>
         </table-com>
         <div class="page-area" v-if="tableData.length > 0">
             <el-pagination
@@ -98,6 +100,18 @@
              */
             filterTable(value) {
                 this.filterType = value;
+            },
+            /**
+             * 跳转到详情
+             * @param data
+             */
+            toDetail(data) {
+                this.$router.push({
+                    name : 'cooperaChannelPerDetail',
+                    params : {
+                        type : 'per'
+                    }
+                });
             }
         },
         computed: {
@@ -124,6 +138,14 @@
                 @include block_outline(262px);
                 float: right;
                 overflow: hidden;
+            }
+        }
+
+        .operate-info {
+            @include table_operate();
+
+            .disabled {
+                color: $color_yellow;
             }
         }
 

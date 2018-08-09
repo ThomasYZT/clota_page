@@ -122,4 +122,6 @@ export default {
     hasNotStart : '未启用',
     edit : '修改',
     resetPass : '重置密码',
+    individual : '个人',
+    organization  : '机构',
 }

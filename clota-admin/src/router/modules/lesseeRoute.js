@@ -73,4 +73,15 @@ export default {
             lightMenu: 'lessee',
         },
     },
+    //合作渠道（个人）详情
+    cooperaChannelPerDetail: {
+        path: '/cooperaChannelPer/detail',
+        name: 'cooperaChannelPerDetail',
+        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelChild/index.vue'),
+        meta: {
+            _name: 'lessee',
+            menuName: 'lessee',
+            lightMenu: 'lessee',
+        },
+    },
 }

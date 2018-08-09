@@ -28,7 +28,9 @@
                 label="操作"
                 :width="60">
                 <template slot-scope="scoped">
-                    <span>查看</span>
+                    <ul class="operate-info">
+                        <li class="operate-list" @click="toDetail(scoped.row)">查看</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -93,6 +95,18 @@
              */
             filterTable(value) {
                 this.filterType = value;
+            },
+            /**
+             * 跳转到详情
+             * @param data
+             */
+            toDetail(data) {
+                this.$router.push({
+                    name : 'cooperaChannelPerDetail',
+                    params : {
+                        type : 'org'
+                    }
+                });
             }
         }
     }
@@ -123,6 +137,14 @@
 
         /deep/ .el-table::before {
             display: none;
+        }
+
+        .operate-info {
+            @include table_operate();
+
+            .disabled {
+                color: $color_yellow;
+            }
         }
 
         .page-area {

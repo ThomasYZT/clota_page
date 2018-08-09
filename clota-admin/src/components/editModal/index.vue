@@ -14,11 +14,13 @@
             </span>
         </div>
         <div class="warn-info">
-            <Form :model="formData" ref="formRef" label-position="top" :rules="ruleValidate" :label-width="0">
-                <FormItem :label="title" prop="passWord">
-                    <Input v-model="formData.passWord" style="width: 280px"/>
-                </FormItem>
-            </Form>
+            <slot>
+                <Form :model="formData" ref="formRef" label-position="top" :rules="ruleValidate" :label-width="0">
+                    <FormItem :label="title" prop="passWord">
+                        <Input v-model="formData.passWord" style="width: 280px"/>
+                    </FormItem>
+                </Form>
+            </slot>
         </div>
         <div slot="footer">
             <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
@@ -60,31 +62,31 @@
              */
             visibleChange(type) {
                 if(type === false){
-                    this.$refs.formRef.resetFields();
-                    this.formData.passWord = '';
+                    // this.$refs.formRef.resetFields();
+                    // this.formData.passWord = '';
                 }
             },
             /**
              * 取消删除
              */
             cancel() {
-                this.modalShow = false;
-                if(this.cancelCallback){
-                    this.cancelCallback();
-                }
+                this.hide();
             },
             /**
              * 确认删除
              */
             confirm() {
-                this.$refs.formRef.validate(valid => {
-                    if(valid) {
-                        this.modalShow = false;
-                        if(this.confirmCallback){
-                            this.confirmCallback(this.formData.passWord);
-                        }
-                    }
-                });
+                // this.$refs.formRef.validate(valid => {
+                //     if(valid) {
+                //         this.modalShow = false;
+                //         if(this.confirmCallback){
+                //             this.confirmCallback(this.formData.passWord);
+                //         }
+                //     }
+                // });
+                if(this.confirmCallback){
+                    this.confirmCallback();
+                }
             },
             /**
              * 显示 模态框
@@ -100,6 +102,15 @@
                 }
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
+                }
+            },
+            /**
+             * 隐藏模态框
+             */
+            hide () {
+                this.modalShow = false;
+                if(this.cancelCallback){
+                    this.cancelCallback();
                 }
             }
         }

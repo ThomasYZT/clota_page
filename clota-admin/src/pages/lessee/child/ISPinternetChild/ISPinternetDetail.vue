@@ -20,7 +20,6 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import organization from '../organization/organization';
     import structureTree from '../organization/structureHead';
     import companyDetail from './ISPinternetDetailChild/companyDetail';
     import departmentDetail from './ISPinternetDetailChild/departmentDetail';
@@ -30,7 +29,6 @@
     export default {
         components: {
             breadCrumbHead,
-            organization,
             structureTree,
             companyDetail,
             departmentDetail,
