@@ -59,12 +59,10 @@
                     <li class="detail">
                         <div class="alarm-name">服务器无响应</div>
                         <div class="time">2016-09-09 08:00</div>
-                        <div class="operate">查看</div>
                     </li>
                     <li class="detail">
                         <div class="alarm-name">服务器无响应</div>
                         <div class="time">2016-09-09 08:00</div>
-                        <div class="operate">查看</div>
                     </li>
                 </ul>
             </div>
@@ -209,13 +207,6 @@
                         .time {
                             @include block_outline(160px);
                             color: $color_666;
-                        }
-
-                        .operate {
-                            @include block_outline(50px);
-                            font-size: $font_size_12px;
-                            color: $color_blue;
-                            cursor: pointer;
                         }
                     }
                 }

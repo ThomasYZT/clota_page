@@ -77,14 +77,7 @@
                         color: ['#55C6C5', '#f3f3f8'],
                     }],
                     title: {
-                        show: true,
-                        text: '通过率',
-                        bottom: 0,
-                        left: 'center',
-                        textStyle: {
-                            color: '#999999',
-                            fontSize: 12
-                        }
+                        show: false,
                     }
                 }
             }

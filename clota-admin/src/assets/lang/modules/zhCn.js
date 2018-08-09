@@ -124,4 +124,7 @@ export default {
     resetPass : '重置密码',
     individual : '个人',
     organization  : '机构',
+    machineSituation  : '机器使用情况',
+    diskSpace  : '{msg}磁盘空间监控',
+    logFile  : '{msg}日志文件',
 }

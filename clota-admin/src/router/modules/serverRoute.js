@@ -48,5 +48,29 @@ export default {
             menuName: 'server',
             lightMenu: 'server',
         },
+    },
+
+    //日志记录详情
+    logDetail: {
+        path: '/server/logDetail',
+        name: 'logDetail',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/logDetail.vue'),
+        meta: {
+            _name: 'server',
+            menuName: 'server',
+            lightMenu: 'server',
+        },
+    },
+
+    //磁盘情况监督
+    diskDetail: {
+        path: '/server/diskDetail',
+        name: 'diskDetail',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/diskDetail.vue'),
+        meta: {
+            _name: 'server',
+            menuName: 'server',
+            lightMenu: 'server',
+        },
     }
 }

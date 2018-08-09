@@ -25,14 +25,14 @@
             <div class="chart-circle">
                 <annlar :rate="10"></annlar>
                 <div class="chart-name">磁盘空间</div>
-                <div class="detail">查看</div>
+                <div class="detail" @click="toDiskDetail">查看</div>
             </div>
             <div class="chart-circle">
                 <div class="title-analysis">
                     <span class="log-name">10</span>
                 </div>
-                <div class="chart-name">磁盘空间</div>
-                <div class="detail">查看</div>
+                <div class="chart-name">日志文件</div>
+                <div class="detail" @click="toLogDetail">查看</div>
             </div>
         </div>
     </div>
@@ -58,6 +58,22 @@
              */
             choseDay(dayType) {
                 this.activeTap = dayType;
+            },
+            /**
+             * 跳转的日志文件详情
+             */
+            toLogDetail () {
+                this.$router.push({
+                    name : 'logDetail'
+                });
+            },
+            /**
+             * 跳转到磁盘监控详情
+             */
+            toDiskDetail () {
+                this.$router.push({
+                    name : 'diskDetail'
+                });
             }
         }
     }
@@ -98,6 +114,7 @@
                     color: $color_0082D5;
                     text-align: center;
                     margin-top: 5px;
+                    cursor: pointer;
                 }
 
                 .title-analysis {
