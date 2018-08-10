@@ -153,6 +153,9 @@
                     transition: all 0.5s;
 
                    &.with-sub-menu{
+                       min-width: 100px;
+                       width: max-content;
+                       transition: all 0.5s;
 
                        &:hover{
                            background: $color_004B88;
@@ -180,16 +183,19 @@
                     }
 
                     &:hover .sub-menu{
-                        height: auto;
+                        display: block;
                         transition: all 0.3s;
                     }
 
                     .sub-menu{
+                        display: none;
                         z-index: 99;
-                        @include block_outline(max-content,$height : 0);
+                        @include block_outline(max-content,auto);
                         @include absolute_pos(relative,$top : 12px);
                         background: $color_004B88;
                         transition: all 0.3s;
+                        padding: 12px 0 22px 0;
+                        border-radius: 0 0 4px 4px;
 
                         .sub-menu-list{
                             @include block_outline($height : 35px);
