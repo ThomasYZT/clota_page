@@ -9,10 +9,13 @@ import lesseeRoute from './modules/lesseeRoute';
 import serverRoute from './modules/serverRoute';
 //订单
 import orderRoute from './modules/orderRoute';
+//日志
+import logRoute from './modules/logRoute';
 
 export default {
     ...orgStructureRouter,
     ...lesseeRoute,
     ...serverRoute,
-    ...orderRoute
+    ...orderRoute,
+    ...logRoute
 }

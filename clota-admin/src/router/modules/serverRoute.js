@@ -4,12 +4,13 @@
  *  _name用来判断路由的权限
  * menuName 对应的语言配置文件当中的键值
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
+ * showInMenu 作为一级菜单的下拉二级菜单显示
  */
 export default {
     server: {
         path: '/server',
         name: 'server',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/index.vue'),
+        component: () => import(/* webpackChunkName: "server" */ '../../pages/server/index.vue'),
         meta: {
             _name: 'server',
             menuName: 'server',
@@ -20,7 +21,7 @@ export default {
     serverDetail: {
         path: '/server/detail',
         name: 'serverDetail',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/deviceInfo.vue'),
+        component: () => import(/* webpackChunkName: "server" */ '../../pages/server/child/deviceInfo.vue'),
         meta: {
             _name: 'server',
             menuName: 'server',
@@ -31,7 +32,7 @@ export default {
     systemAlarmDetail: {
         path: '/server/detail/systemAlarm',
         name: 'systemAlarm',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/systemAlarmDetail.vue'),
+        component: () => import(/* webpackChunkName: "server" */ '../../pages/server/child/systemAlarmDetail.vue'),
         meta: {
             _name: 'server',
             menuName: 'server',
@@ -42,7 +43,7 @@ export default {
     addServer: {
         path: '/server/addServer',
         name: 'addServer',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/addServer.vue'),
+        component: () => import(/* webpackChunkName: "server" */ '../../pages/server/child/addServer.vue'),
         meta: {
             _name: 'server',
             menuName: 'server',
@@ -54,7 +55,7 @@ export default {
     logDetail: {
         path: '/server/logDetail',
         name: 'logDetail',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/logDetail.vue'),
+        component: () => import(/* webpackChunkName: "server" */ '../../pages/server/child/logDetail.vue'),
         meta: {
             _name: 'server',
             menuName: 'server',
@@ -66,7 +67,7 @@ export default {
     diskDetail: {
         path: '/server/diskDetail',
         name: 'diskDetail',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/server/child/diskDetail.vue'),
+        component: () => import(/* webpackChunkName: "server" */ '../../pages/server/child/diskDetail.vue'),
         meta: {
             _name: 'server',
             menuName: 'server',

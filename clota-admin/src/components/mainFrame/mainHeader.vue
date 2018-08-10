@@ -7,12 +7,23 @@
         </div>
         <div class="menu-info">
             <ul class="menu-list">
-                <li class="menu" v-for="item in menuList">
-            <span class="menu-span"
-                  :class="{'active' : item.meta.lightMenu === activeMenu}"
-                  @click="toTopMenu(item)">
-              {{$t(item.meta.menuName)}}
-            </span>
+                <li class="menu"
+                    v-for="(item,i) in menuList"
+                    :key="i"
+                    :class="{'with-sub-menu' : item.children && item.children.length > 0}">
+                    <span class="menu-span"
+                          :class="{'active' : item.meta.lightMenu === activeMenu}"
+                          @click="toTopMenu(item)">
+                      {{$t(item.meta.menuName)}}
+                    </span>
+                    <ul class="sub-menu" v-if="item.children && item.children.length > 0">
+                        <li class="sub-menu-list"
+                            v-for="(list,k) in item.children"
+                            :key="k"
+                            @click="toSubMenu(list)">
+                            {{$t(list.name)}}
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -38,7 +49,8 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex';
+    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         data() {
@@ -50,6 +62,14 @@
              * @param data
              */
             toTopMenu(data) {
+                if(data.children) return false;
+                this.$router.push({path: data.path});
+            },
+            /**
+             * 跳转到对应的二级菜单
+             * @param data
+             */
+            toSubMenu (data) {
                 this.$router.push({path: data.path});
             }
         },
@@ -67,15 +87,23 @@
             },
             //菜单列表，排除挂靠在其它路由下的路由
             menuList() {
-                if (this.routerInfo) {
-                    return this.routerInfo.filter(item => {
+                let routerInfo = defaultsDeep([],this.routerInfo);
+                if (routerInfo) {
+                    return routerInfo.filter(item => {
+                        //判断是否需要显示二级菜单
+                        if(item.children && item.children.length > 0){
+                            let children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
+                            console.log(children)
+                            item.children = children;
+                        }else{
+                            item.children = [];
+                        }
                         //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
                         if (item.name) {
                             return item.name === item.meta._name;
-                        }else if(item.path === '*'){
-                            return false;
-                        } else {//没有路由名字的都是一级路由，需要显示菜单
-                            return true;
+                        }else{
+                            //没有路由名字的都是一级路由，需要显示菜单
+                            return  item.path !== '*'
                         }
                     })
                 } else {
@@ -123,6 +151,24 @@
                     color: rgba($color_fff, 0.6);
                     text-align: center;
                     list-style: none;
+                    transition: all 0.5s;
+
+                   &.with-sub-menu{
+
+                       &:hover{
+                           background: $color_004B88;
+
+                           .menu-span{
+                               background: transparent!important;
+                           }
+                       }
+                   }
+
+                    &:hover .menu-span{
+                        background: rgba($color_000, 0.20);
+                        border-radius: 100px;
+                        transition: all 0.5s;
+                    }
 
                     .menu-span {
                         @include block_outline($is_block: false);
@@ -131,6 +177,34 @@
                         &.active {
                             background: rgba($color_000, 0.20);
                             border-radius: 100px;
+                        }
+                    }
+
+                    &:hover .sub-menu{
+                        height: auto;
+                        transition: all 0.3s;
+                    }
+
+                    .sub-menu{
+                        z-index: 99;
+                        @include block_outline(max-content,$height : 0);
+                        @include absolute_pos(relative,$top : 12px);
+                        background: $color_004B88;
+                        transition: all 0.3s;
+
+                        .sub-menu-list{
+                            @include block_outline($height : 35px);
+                            line-height: 20px;
+                            padding: 7.5px;
+                            font-size: $font_size_12px;
+                            color: rgba($color_fff,0.5);
+                            text-align: center;
+                            cursor: pointer;
+
+                            &.active,
+                            &:hover{
+                                color: $color_fff;
+                            }
                         }
                     }
                 }

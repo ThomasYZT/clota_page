@@ -4,6 +4,7 @@
  *  _name用来判断路由的权限
  * menuName 对应的语言配置文件当中的键值
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
+ * showInMenu 作为一级菜单的下拉二级菜单显示
  */
 export default {
     //租户菜单
@@ -63,16 +64,16 @@ export default {
         },
     },
     //服务提供商详情
-    // ISPinternet: {
-    //     path: '/ISPinternet/detail',
-    //     name: 'ISPinternetDetail',
-    //     component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
-    //     meta: {
-    //         _name: 'lessee',
-    //         menuName: 'lessee',
-    //         lightMenu: 'lessee',
-    //     },
-    // },
+    ISPinternet: {
+        path: '/ISPinternet/detail',
+        name: 'ISPinternetDetail',
+        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
+        meta: {
+            _name: 'lessee',
+            menuName: 'lessee',
+            lightMenu: 'lessee',
+        },
+    },
     // //合作渠道（个人）详情
     cooperaChannelPerDetail: {
         path: '/cooperaChannelPer/detail',

@@ -152,4 +152,7 @@ export default {
     theater : '剧院',
     ticketPack : '套票',
     orderDetail : '订单详情',
+    log : '日志',
+    operationLog : '运维后台操作日志',
+    sassLog : 'SaaS平台操作日志',
 }
