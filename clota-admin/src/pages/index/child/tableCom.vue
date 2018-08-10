@@ -7,7 +7,7 @@
               class="table-wrap"
               :class="{'row-click' : rowClick}"
               @row-click="classDetailLink"
-              :height="tableHeight">
+              :height="autoHeight ? 'auto' : tableHeight">
         <template
             v-for="(item,index) in columnDataCs">
             <slot :name="'column' + index"
@@ -102,6 +102,11 @@
             'row-click': {
                 type: Boolean,
                 default: false
+            },
+            //不固定表格高度
+            'auto-height' : {
+                type : Boolean,
+                default : false
             }
         },
         data() {

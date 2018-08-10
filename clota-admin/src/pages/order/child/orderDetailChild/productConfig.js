@@ -3,8 +3,7 @@ export const productHead = [
     {
         title: '产品名称',
         minWidth: 120,
-        field: 'realName',
-        ableClick: true
+        field: 'realName'
     },
     {
         title: '销售政策',
@@ -26,4 +25,9 @@ export const productHead = [
         minWidth: 130,
         field: 'examScore'
     },
+    {
+        title : '操作',
+        minWidth: 230,
+        field: ''
+    }
 ];

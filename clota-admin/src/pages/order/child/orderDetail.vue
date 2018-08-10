@@ -70,7 +70,7 @@
             background: $color_fff;
             @include padding_place();
             overflow: auto;
-            padding: 20px 50px;
+            padding: 20px 50px 0 50px;
         }
     }
 </style>

@@ -185,8 +185,9 @@
                 width: 40px;
                 font-size: $font_size_18px;
                 color: $color_B3D5EB;
-                margin-top: 15px;
+                margin-top: 17px;
                 border-right: 0;
+                float: left;
             }
         }
     }

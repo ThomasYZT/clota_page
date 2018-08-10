@@ -135,11 +135,11 @@
                     <span>张大发</span>
                 </FormItem>
                 <FormItem label="驳回原因：" prop="passReason">
-                    <Input v-model="formData.passReason"
-                           placeholder="请填写驳回原因，不超过20个字符"
-                           :maxlength="20"
-                           type="textarea"
-                           style="width: 280px"/>
+                    <!--<Input v-model="formData.passReason"-->
+                           <!--placeholder="请填写驳回原因，不超过20个字符"-->
+                           <!--:maxlength="20"-->
+                           <!--type="textarea"-->
+                           <!--style="width: 280px"/>-->
                 </FormItem>
             </Form>
         </edit-modal>

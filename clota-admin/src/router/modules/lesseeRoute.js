@@ -63,17 +63,17 @@ export default {
         },
     },
     //服务提供商详情
-    ISPinternet: {
-        path: '/ISPinternet/detail',
-        name: 'ISPinternetDetail',
-        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
-        meta: {
-            _name: 'lessee',
-            menuName: 'lessee',
-            lightMenu: 'lessee',
-        },
-    },
-    //合作渠道（个人）详情
+    // ISPinternet: {
+    //     path: '/ISPinternet/detail',
+    //     name: 'ISPinternetDetail',
+    //     component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
+    //     meta: {
+    //         _name: 'lessee',
+    //         menuName: 'lessee',
+    //         lightMenu: 'lessee',
+    //     },
+    // },
+    // //合作渠道（个人）详情
     cooperaChannelPerDetail: {
         path: '/cooperaChannelPer/detail',
         name: 'cooperaChannelPerDetail',

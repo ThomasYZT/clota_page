@@ -15,6 +15,7 @@
                 :table-data="tableData"
                 :table-height="tableHeight"
                 :column-data="orderHead"
+                :auto-height="true"
                 :row-click="true"
                 @row-click="toOrderDetail">
                 <el-table-column
@@ -138,7 +139,11 @@
         data() {
             return {
                 //订单列表表头
-                orderHead : orderHead
+                orderHead : orderHead,
+                tableData : [
+                    {},
+                    {},
+                ]
             }
         },
         methods: {

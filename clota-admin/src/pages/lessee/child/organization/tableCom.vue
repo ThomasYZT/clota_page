@@ -24,7 +24,12 @@
                     </el-table-column>
                     <template
                         v-for="(item,index) in columnData">
-                        <slot :name="'column' + index">
+                        <slot :name="'column' + index"
+                              :width="item.width"
+                              :minWidth="item.minWidth"
+                              :index="index"
+                              :field="item.field"
+                              :title="item.title">
                             <el-table-column
                                 v-if="item.ableClick"
                                 :label="item.title"

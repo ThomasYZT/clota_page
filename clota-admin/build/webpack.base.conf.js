@@ -98,6 +98,7 @@ module.exports = {
       entry: {
         vueFamily: ['vue', 'vue-router'],
         plugins : [
+            'iview',
             // 'iview/src/components/button/index.js',
             // 'iview/src/components/button-group/index.js',
             // // 'iview/src/components/menu-group/index.js',

@@ -3,184 +3,186 @@
 
 <template>
     <div class="filter-head" >
-        <Form :model="formData" label-position="right" :label-width="100" v-if="!isPackUp">
-            <Row>
-                <Col span="6">
-                <FormItem label="订单编号">
-                    <Input v-model="formData.code" ></Input>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="串码">
-                    <Input v-model="formData.code" ></Input>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="产品名称">
-                    <Input v-model="formData.code" placeholder="请输入产品名称" ></Input>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem >
-                    <Checkbox >仅显示异常订单</Checkbox>
-                </FormItem>
-                </Col>
-            </Row>
-        </Form>
-        <Form :model="formData" label-position="right" :label-width="100" v-else >
-            <Row>
-                <Col span="6">
-                <FormItem label="订单编号">
-                    <Input v-model="formData.code" ></Input>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="串码">
-                    <Input v-model="formData.code" ></Input>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="产品名称">
-                    <Input v-model="formData.code" placeholder="请输入产品名称" ></Input>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem >
-                    <Checkbox >仅显示异常订单</Checkbox>
-                </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="6">
-                <FormItem label="租户">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in lessesList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="下单企业">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in orderCompany"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="业态类型">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in formatsStatus"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="订单类型">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in orderType"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="6">
-                <FormItem label="审核状态">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in auditStatus"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="支付状态">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in payStatus"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="核销状态">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in cashierStatus"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="退款状态">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in refundStatus"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="6">
-                <FormItem label="同步状态">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in synchronizationStatus"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="下单日期">
-                    <DatePicker type="date"
-                                :transfer="true"
-                                v-model="formData.code" ></DatePicker>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="游玩日期">
-                    <DatePicker type="date"
-                                :transfer="true"
-                                v-model="formData.code" ></DatePicker>
-                </FormItem>
-                </Col>
-                <Col span="6">
-                <FormItem label="下单渠道">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in orderChannels"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-            </Row>
-        </Form>
+        <transition name="fade">
+            <Form :model="formData" label-position="right" :label-width="100" v-if="!isPackUp">
+                <Row>
+                    <Col span="6">
+                    <FormItem label="订单编号">
+                        <Input v-model="formData.code" ></Input>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="串码">
+                        <Input v-model="formData.code" ></Input>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="产品名称">
+                        <Input v-model="formData.code" placeholder="请输入产品名称" ></Input>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem >
+                        <Checkbox >仅显示异常订单</Checkbox>
+                    </FormItem>
+                    </Col>
+                </Row>
+            </Form>
+            <Form :model="formData" label-position="right" :label-width="100" v-else >
+                <Row>
+                    <Col span="6">
+                    <FormItem label="订单编号">
+                        <Input v-model="formData.code" ></Input>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="串码">
+                        <Input v-model="formData.code" ></Input>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="产品名称">
+                        <Input v-model="formData.code" placeholder="请输入产品名称" ></Input>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem >
+                        <Checkbox >仅显示异常订单</Checkbox>
+                    </FormItem>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="6">
+                    <FormItem label="租户">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in lessesList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="下单企业">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in orderCompany"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="业态类型">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in formatsStatus"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="订单类型">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in orderType"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="6">
+                    <FormItem label="审核状态">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in auditStatus"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="支付状态">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in payStatus"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="核销状态">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in cashierStatus"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="退款状态">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in refundStatus"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="6">
+                    <FormItem label="同步状态">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in synchronizationStatus"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="下单日期">
+                        <DatePicker type="date"
+                                    :transfer="true"
+                                    v-model="formData.code" ></DatePicker>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="游玩日期">
+                        <DatePicker type="date"
+                                    :transfer="true"
+                                    v-model="formData.code" ></DatePicker>
+                    </FormItem>
+                    </Col>
+                    <Col span="6">
+                    <FormItem label="下单渠道">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in orderChannels"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                </Row>
+            </Form>
+        </transition>
 
         <div class="btn-area">
             <div class="pack-up-filters" @click="isPackUp = !isPackUp">收起筛选条件</div>
