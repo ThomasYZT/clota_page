@@ -4,8 +4,8 @@
 
         <div class="breadcrumb-box">
             <Breadcrumb separator=">">
-                <BreadcrumbItem to="/orgManage/rolePermission">员工</BreadcrumbItem>
-                <BreadcrumbItem>{{ type === 'add' ? '新增员工' : '修改员工信息'}}</BreadcrumbItem>
+                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
+                <BreadcrumbItem>{{ type === 'add' ? '新增会员' : '修改会员信息'}}</BreadcrumbItem>
             </Breadcrumb>
         </div>
 
