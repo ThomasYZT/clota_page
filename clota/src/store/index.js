@@ -148,6 +148,7 @@ export default new Vuex.Store({
                 'memberManage': 'allow',
                 'memberHome': 'allow',
                 'memberInfo': 'allow',
+                'memberCount': 'allow',
                 'integration': 'allow',
                 'card': 'allow',
                 'fund': 'allow',

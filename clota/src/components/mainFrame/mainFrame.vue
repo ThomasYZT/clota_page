@@ -49,7 +49,7 @@
             .router-con {
                 @include block_outline(unquote('calc(100% - 210px)'));
                 float: left;
-                background: $color_fff;
+                /*<!--background: $color_fff;-->*/
                 border-radius: 5px 5px 0 0;
                 transition: all 0.3s;
 

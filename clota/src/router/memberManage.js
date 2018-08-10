@@ -40,6 +40,30 @@ export default {
                     iconClass: 'icon-person'
                 },
             },
+            addMember: {
+                //会员管理--会员信息--新增会员
+                path: 'addMember',
+                name: 'addMember',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/addMember.vue'),
+                meta: {
+                    menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
+                    lightMenu: 'memberManage',//高亮
+                    _name: 'memberInfo',
+                    iconClass: 'icon-person'
+                },
+            },
+            memberCount: {
+                //会员管理--会员统计
+                path: 'memberCount',
+                name: 'memberCount',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/count.vue'),
+                meta: {
+                    menuName: 'menuList.memberCount', //lang.config.js 里面的语言键值
+                    lightMenu: 'memberManage',//高亮
+                    _name: 'memberCount',
+                    iconClass: 'icon-person'
+                },
+            },
             integration: {
                 //会员管理--会员积分
                 path: 'integration',

@@ -9,9 +9,11 @@ import {Table, TableColumn, Scrollbar, Pagination, Dropdown, DropdownMenu, Dropd
 // import ECharts from '@/components/vueEcharts/ECharts.vue'
 // // 按需引入 Echarts 图表
 // require('echarts/lib/chart/bar');
-// require('echarts/lib/chart/pie');
+require('echarts/lib/chart/pie');
+require('echarts/lib/chart/line');
 // require('echarts/lib/component/title');
-// require('echarts/lib/component/tooltip');
+require('echarts/lib/component/tooltip');
+require('echarts/lib/component/legend');
 // require('echarts/lib/component/legendScroll');
 
 
