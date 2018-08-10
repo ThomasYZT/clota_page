@@ -10,18 +10,21 @@
                 <li class="menu"
                     v-for="(item,i) in menuList"
                     :key="i"
-                    :class="{'with-sub-menu' : item.children && item.children.length > 0}">
+                    :class="{'with-sub-menu' : item.children && item.children.length > 0}"
+                    @mouseover="showMenu(i)"
+                    @mouseout="hideMenu(i)">
                     <span class="menu-span"
                           :class="{'active' : item.meta.lightMenu === activeMenu}"
                           @click="toTopMenu(item)">
                       {{$t(item.meta.menuName)}}
                     </span>
-                    <ul class="sub-menu" v-if="item.children && item.children.length > 0">
+                    <ul class="sub-menu"  v-if="menuShowList[i] && item.children && item.children.length > 0">
                         <li class="sub-menu-list"
                             v-for="(list,k) in item.children"
                             :key="k"
-                            @click="toSubMenu(list)">
-                            {{$t(list.name)}}
+                            :class="{'active' : $route.meta.subMenuType === list.meta.subMenuType}"
+                            @click="toSubMenu(list,i)">
+                            {{$t(list.meta.menuName)}}
                         </li>
                     </ul>
                 </li>
@@ -54,7 +57,10 @@
 
     export default {
         data() {
-            return {}
+            return {
+                //二级菜单是否显示标志结合
+                menuShowList : []
+            }
         },
         methods: {
             /**
@@ -69,8 +75,23 @@
              * 跳转到对应的二级菜单
              * @param data
              */
-            toSubMenu (data) {
+            toSubMenu (data,i) {
                 this.$router.push({path: data.path});
+                this.$set(this.menuShowList,i,false);
+            },
+            /**
+             * 显示菜单
+             * @param i
+             */
+            showMenu(i) {
+                this.$set(this.menuShowList,i,true);
+            },
+            /**
+             * 隐藏菜单
+             * @param i
+             */
+            hideMenu (i) {
+                this.$set(this.menuShowList,i,false);
             }
         },
         computed: {
@@ -97,6 +118,7 @@
                         }else{
                             item.children = [];
                         }
+                        item.showSubMenu = false;
                         //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
                         if (item.name) {
                             return item.name === item.meta._name;
@@ -188,7 +210,7 @@
                     }
 
                     .sub-menu{
-                        display: none;
+                        /*display: none;*/
                         z-index: 99;
                         @include block_outline(max-content,auto);
                         @include absolute_pos(relative,$top : 12px);
