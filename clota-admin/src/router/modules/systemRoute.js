@@ -44,9 +44,21 @@ export default {
                     subMenuType : 'notice'
                 },
             },
-            //新增账号
+            //系统公告
+            editSystemNotice : {
+                path: '/system/notice/edit',
+                name: 'editSystemNotice',
+                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/editSystemNotice.vue'),
+                meta: {
+                    _name: 'system',
+                    menuName: 'editSystemNotice',
+                    lightMenu: 'system',
+                    showInMenu : false,
+                },
+            },
+            //新增/编辑账号
             addAccount : {
-                path: '/system/account/add',
+                path: '/system/account/edit',
                 name: 'addAccount',
                 component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/addAccount.vue'),
                 meta: {

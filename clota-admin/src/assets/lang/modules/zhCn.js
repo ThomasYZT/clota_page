@@ -166,9 +166,14 @@ export default {
     addAccount : '新增账号',
     editAccount : '编辑账号',
     systemNotice : '系统公告',
+    addSystemNotice : '新增公告',
+    editSystemNotice : '编辑公告',
+    noticeName : '公告名称',
     name : '姓名',
     mobile : '电话',
     mail : '邮箱',
     role : '角色',
-    accountName : '账号'
+    accountName : '账号',
+    desc :'描述',
+    noticeContent :'公告内容',
 }

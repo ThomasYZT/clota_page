@@ -99,7 +99,7 @@
             },
             /**
              * 编辑账号
-             * @param data 
+             * @param data
              */
             editAccount (data) {
                   this.$router.push({
