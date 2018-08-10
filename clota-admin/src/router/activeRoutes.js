@@ -11,11 +11,14 @@ import serverRoute from './modules/serverRoute';
 import orderRoute from './modules/orderRoute';
 //日志
 import logRoute from './modules/logRoute';
+//系统
+import systemRoute from './modules/systemRoute';
 
 export default {
     ...orgStructureRouter,
     ...lesseeRoute,
     ...serverRoute,
     ...orderRoute,
-    ...logRoute
+    ...logRoute,
+    ...systemRoute
 }

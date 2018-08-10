@@ -5,6 +5,7 @@
  * menuName 对应的语言配置文件当中的键值
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
  * showInMenu 作为一级菜单的下拉二级菜单显示
+ * subMenuType 二级菜单标志，值唯一，标识为二级菜单
  */
 export default {
     //订单列表

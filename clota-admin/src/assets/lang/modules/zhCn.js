@@ -71,6 +71,7 @@ export default {
     changeLess: '修改租户',
     less: '租户',
     addNew: '确定新增',
+    confirmEdit: '确定编辑',
     confirm: '确定',
     cancel: '取消',
     serverList: '服务器',
@@ -162,4 +163,12 @@ export default {
     addStaffAccount : '新增客服账号',
     modifyStaffAccount : '修改客服账号',
     delStaffAccount : '删除客服账号',
+    addAccount : '新增账号',
+    editAccount : '编辑账号',
+    systemNotice : '系统公告',
+    name : '姓名',
+    mobile : '电话',
+    mail : '邮箱',
+    role : '角色',
+    accountName : '账号'
 }

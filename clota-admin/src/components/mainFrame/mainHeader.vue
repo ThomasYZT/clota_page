@@ -18,6 +18,7 @@
                           @click="toTopMenu(item)">
                       {{$t(item.meta.menuName)}}
                     </span>
+                    <!--二级菜单-->
                     <ul class="sub-menu"  v-if="menuShowList[i] && item.children && item.children.length > 0">
                         <li class="sub-menu-list"
                             v-for="(list,k) in item.children"
@@ -210,6 +211,7 @@
                     }
 
                     .sub-menu{
+                        min-width: 100%;
                         /*display: none;*/
                         z-index: 99;
                         @include block_outline(max-content,auto);

@@ -14,7 +14,9 @@
             </span>
         </div>
         <div class="warn-info">
-            {{msg}}
+            <slot>
+                {{msg}}
+            </slot>
         </div>
         <div slot="footer">
             <Button type="error" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
