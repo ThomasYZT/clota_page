@@ -7,7 +7,7 @@
               class="table-wrap"
               :class="{'row-click' : rowClick}"
               @row-click="classDetailLink"
-              :height="autoHeight ? 'auto' : tableHeight">
+              :height="autoHeight ? 'max-content' : tableHeight">
         <template
             v-for="(item,index) in columnDataCs">
             <slot :name="'column' + index"

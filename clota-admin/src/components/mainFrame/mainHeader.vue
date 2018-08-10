@@ -62,7 +62,7 @@
              * @param data
              */
             toTopMenu(data) {
-                if(data.children) return false;
+                if(data.children && data.children.length > 0) return false;
                 this.$router.push({path: data.path});
             },
             /**
@@ -93,7 +93,6 @@
                         //判断是否需要显示二级菜单
                         if(item.children && item.children.length > 0){
                             let children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
-                            console.log(children)
                             item.children = children;
                         }else{
                             item.children = [];

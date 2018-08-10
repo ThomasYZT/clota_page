@@ -19,7 +19,7 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .log{
-        @include block_outline($height : auto);
+        @include block_outline();
         min-height: 100%;
         background: $color_fff;
         overflow: auto;

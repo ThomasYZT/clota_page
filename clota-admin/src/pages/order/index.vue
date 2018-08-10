@@ -126,7 +126,6 @@
 
 <script>
     import filterHead from './child/filterHead';
-
     import tableCom from '../index/child/tableCom';
     import tableMixins from '../lessee/tableMixins';
     import {orderHead} from './orderConfig';

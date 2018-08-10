@@ -284,3 +284,55 @@ export const formatsStatus = [
     }
 ];
 
+//操作类型
+export const operateType = [
+    {
+        label : 'login',//登录
+        value : 'login'
+    },
+    {
+        label : 'changePass',//修改密码
+        value : 'changePass'
+    },
+    {
+        label : 'resetPass',//重置密码
+        value : 'resetPass'
+    },
+    {
+        label : 'addLess',//新增租户
+        value : 'addLess'
+    },
+    {
+        label : 'changeLess',//修改租户
+        value : 'changeLess'
+    },
+    {
+        label : 'openedServices',//开通服务
+        value : 'openedServices'
+    },
+    {
+        label : 'changeServices',//修改服务
+        value : 'changeServices'
+    },
+    {
+        label : 'pauseServices',//暂停服务
+        value : 'pauseServices'
+    },
+    {
+        label : 'delayServices',//延期服务
+        value : 'delayServices'
+    },
+    {
+        label : 'addStaffAccount',//新增客服账号
+        value : 'addStaffAccount'
+    },
+    {
+        label : 'modifyStaffAccount',//修改客服账号
+        value : 'modifyStaffAccount'
+    },
+    {
+        label : 'delStaffAccount',//删除客服账号
+        value : 'delStaffAccount'
+    }
+];
+

@@ -26,19 +26,21 @@ export default {
                     _name: 'log',
                     menuName: 'log',
                     lightMenu: 'log',
-                    showInMenu : true
+                    showInMenu : true,
+                    logType : 'operate'
                 },
             },
             //sass平台操作日志
             sassLog : {
                 path: '/log/sassLog',
                 name: 'sassLog',
-                component: () => import(/* webpackChunkName: "log" */ '../../pages/log/child/sassLog.vue'),
+                component: () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
                 meta: {
                     _name: 'log',
                     menuName: 'log',
                     lightMenu: 'log',
-                    showInMenu : true
+                    showInMenu : true,
+                    logType : 'sass'
                 },
             }
         }
