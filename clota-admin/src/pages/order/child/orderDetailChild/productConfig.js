@@ -11,6 +11,11 @@ export const productHead = [
         field: 'examName'
     },
     {
+        title: '结算价',
+        minWidth: 150,
+        field: 'examName'
+    },
+    {
         title: '购买数量',
         minWidth: 150,
         field: 'examName'
@@ -24,10 +29,5 @@ export const productHead = [
         title: '取票数量',
         minWidth: 130,
         field: 'examScore'
-    },
-    {
-        title : '操作',
-        minWidth: 230,
-        field: ''
     }
 ];

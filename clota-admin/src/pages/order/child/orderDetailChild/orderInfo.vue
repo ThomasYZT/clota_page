@@ -29,9 +29,16 @@
 
 <script>
     export default {
+        props : {
+            //订单类型
+            'order-type' : {
+                type : String,
+                default : ''
+            }
+        },
         data() {
             return {
-                orderHeadDetail : []
+                // orderHeadDetail : []
             }
         },
         methods: {
@@ -40,65 +47,129 @@
              * @returns {*[]}
              */
             getOrderDetail (...rest) {
-                return [
-                    [
-                        {
-                            label :'订单编号',
-                            value : rest[0]
-                        },
-                        {
-                            label :'订单类型',
-                            value : rest[1]
-                        },
-                        {
-                            label :'下单时间',
-                            value : rest[2]
-                        }
-                    ],
-                    [
-                        {
-                            label :'所属景区',
-                            value : rest[3]
-                        },
-                        {
-                            label :'发售机构',
-                            value : rest[4]
-                        },
-                        {
-                            label :'下单渠道',
-                            value : rest[5]
-                        }
-                    ],
-                    [
-                        {
-                            label :'下单企业',
-                            value : rest[6]
-                        },
-                        {
-                            label :'游玩日期',
-                            value : rest[7]
-                        },
-                        {
-                            label :'订单金额',
-                            value : rest[8]
-                        }
-                    ],
-                    [
-                        {
-                            label :'购买数量',
-                            value : rest[9]
-                        },
-                        {
-                            label :'取票数量',
-                            value : rest[10]
-                        }
+                if(this.orderType === 'custom'){
+                    return [
+                        [
+                            {
+                                label :'订单编号',
+                                value : rest[0]
+                            },
+                            {
+                                label :'订单类型',
+                                value : rest[1]
+                            },
+                            {
+                                label :'下单时间',
+                                value : rest[2]
+                            }
+                        ],
+                        [
+                            {
+                                label :'所属景区',
+                                value : rest[3]
+                            },
+                            {
+                                label :'发售机构',
+                                value : rest[4]
+                            },
+                            {
+                                label :'下单渠道',
+                                value : rest[5]
+                            }
+                        ],
+                        [
+                            {
+                                label :'下单企业',
+                                value : rest[6]
+                            },
+                            {
+                                label :'游玩日期',
+                                value : rest[7]
+                            },
+                            {
+                                label :'订单金额',
+                                value : rest[8]
+                            }
+                        ],
+                        [
+                            {
+                                label :'购买数量',
+                                value : rest[9]
+                            },
+                            {
+                                label :'取票数量',
+                                value : rest[10]
+                            }
+                        ]
                     ]
-                ]
+                }else if(this.orderType === 'team'){
+                    return  [
+                        [
+                            {
+                                label :'订单编号',
+                                value : rest[0]
+                            },
+                            {
+                                label :'串码',
+                                value : rest[1]
+                            },
+                            {
+                                label :'订单类型',
+                                value : rest[2]
+                            }
+                        ],
+                        [
+                            {
+                                label :'审核状态',
+                                value : rest[3]
+                            },
+                            {
+                                label :'所属景区',
+                                value : rest[4]
+                            },
+                            {
+                                label :'发售机构',
+                                value : rest[5]
+                            }
+                        ],
+                        [
+                            {
+                                label :'下单渠道',
+                                value : rest[6]
+                            },
+                            {
+                                label :'下单企业',
+                                value : rest[7]
+                            },
+                            {
+                                label :'游玩日期',
+                                value : rest[8]
+                            }
+                        ],
+                        [
+                            {
+                                label :'订单金额',
+                                value : rest[9]
+                            },
+                            {
+                                label :'购买数量',
+                                value : rest[10]
+                            },
+                            {
+                                label :'取票数量',
+                                value : rest[10]
+                            }
+                        ]
+                    ]
+                }else{
+                    return [];
+                }
             }
         },
-        created () {
-            this.orderHeadDetail = this.getOrderDetail(1,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3);
-            console.log(this.orderHeadDetail)
+        computed : {
+            orderHeadDetail () {
+                return this.getOrderDetail(1,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3)
+            }
         }
     }
 </script>

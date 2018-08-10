@@ -27,5 +27,11 @@ export default new Router({
             path: '/',
             redirect: 'login'
         },
-    ]
+    ],
+    scrollBehaviorHandler (to,from,savedPosition) {
+        return {
+            x : 0,
+            y : 0
+        }
+    }
 })

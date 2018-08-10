@@ -33,7 +33,8 @@
                 :data="tableData"
                 style="width: 100%">
                 <el-table-column
-                    v-for="item in columnData"
+                    v-for="(item,i) in columnData"
+                    :key="i"
                     :prop="item.field"
                     :label="item.title"
                     :min-width="item.minWidth">

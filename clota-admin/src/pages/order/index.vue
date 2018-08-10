@@ -141,8 +141,12 @@
                 //订单列表表头
                 orderHead : orderHead,
                 tableData : [
-                    {},
-                    {},
+                    {
+                        orderType : 'team'
+                    },
+                    {
+                        orderType : 'custom'
+                    },
                 ]
             }
         },
@@ -153,7 +157,10 @@
              */
             toOrderDetail (data) {
                 this.$router.push({
-                    name : 'orderDetail'
+                    name : 'orderDetail',
+                    params : {
+                        orderType : data.orderType
+                    }
                 });
             }
         }

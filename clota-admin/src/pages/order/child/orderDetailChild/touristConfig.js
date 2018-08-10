@@ -12,7 +12,12 @@ export const touristHead = [
         field: 'examName'
     },
     {
-        title: '身份证号',
+        title: '证件类型',
+        minWidth: 150,
+        field: 'examName'
+    },
+    {
+        title: '证件号码',
         minWidth: 150,
         field: 'examName'
     },
@@ -51,5 +56,9 @@ export const touristHead = [
         minWidth: 130,
         field: 'examScore'
     },
-    {}
+    {
+        title : '操作',
+        minWidth: 160,
+        field: ''
+    }
 ];
