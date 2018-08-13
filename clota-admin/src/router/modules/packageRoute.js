@@ -41,6 +41,32 @@ export default {
                     menuName: 'serverPackage',
                     lightMenu: 'package',
                     showInMenu : false,
+                    subMenuType : 'packageList'
+                },
+            },
+            //短信套餐列表
+            notePackageInfo : {
+                path: '/notePackage/list',
+                name: 'notePackageInfo',
+                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/notePackageInfo.vue'),
+                meta: {
+                    _name: 'package',
+                    menuName: 'notePackage',
+                    lightMenu: 'package',
+                    showInMenu : true,
+                    subMenuType : 'notePackage'
+                },
+            },
+            //新建/编辑短信套餐
+            editNotePackageInfo : {
+                path: '/notePackage/edit',
+                name: 'editnotePackage',
+                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editNotePackage.vue'),
+                meta: {
+                    _name: 'package',
+                    lightMenu: 'package',
+                    showInMenu : false,
+                    subMenuType : 'notePackage'
                 },
             },
         }

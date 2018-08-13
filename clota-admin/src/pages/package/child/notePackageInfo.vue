@@ -1,10 +1,10 @@
-<!--套餐列表-->
+<!--短信套餐列表-->
 
 <template>
     <div class="package">
         <div class="create-package">
             <Button type="primary">
-                <span @click="addPackage">添加套餐</span>
+                <span @click="addPackage">新建套餐</span>
             </Button>
         </div>
         <table-com
@@ -13,7 +13,7 @@
             :column-data="packageHead"
             :auto-height="true">
             <el-table-column
-                slot="column5"
+                slot="column7"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -22,9 +22,7 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="operate-list" @click="watchPackage(scoped.row)">查看</li>
-                        <li class="operate-list" @click="editPackage(scoped.row)">编辑</li>
-                        <li class="operate-list del" @click="delPackage(scoped.row)">删除</li>
+                        <li class="operate-list" @click="editPackage(scoped.row)">修改</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -38,11 +36,6 @@
                 :total="totalCount">
             </el-pagination>
         </div>
-        <!--删除套餐模态框-->
-        <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除套餐：Server2012Server2012Server2012Server2012Server2012</span>
-            <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
-        </del-modal>
     </div>
 </template>
 
@@ -50,14 +43,12 @@
 
     import tableCom from '../../index/child/tableCom';
     import tableMixins from '../../lessee/tableMixins';
-    import {packageHead} from './packageInfoConfig';
-    import delModal from '@/components/delModal/index.vue';
+    import {packageHead} from './notePackageConfig';
 
     export default {
         mixins :[tableMixins],
         components : {
             tableCom,
-            delModal
         },
         data() {
             return {
@@ -72,48 +63,24 @@
              */
             addPackage () {
                 this.$router.push({
-                    name : 'editPackage',
+                    name : 'editnotePackage',
                     params : {
                         type : 'add'
                     }
                 });
             },
             /**
-             * 编辑套餐
+             * 修改套餐
              * @param data
              */
             editPackage (data) {
                 this.$router.push({
-                    name : 'editPackage',
+                    name : 'editnotePackage',
                     params : {
                         type : 'edit'
                     }
                 });
             },
-            /**
-             * 删除套餐
-             * @param data
-             */
-            delPackage (data) {
-                this.$refs.delModal.show({
-                    title : '删除套餐',
-                    confirmCallback : () => {
-                        // this.confirmDelete(data);
-                    }
-                });
-            },
-            /**
-             * 查看套餐
-             * @param data
-             */
-            watchPackage (data) {
-                this.$router.push({
-                    name : 'addpackage',
-                    params : {
-                        type : 'watch'
-                    }
-                });
-            }
         }
     }
 </script>

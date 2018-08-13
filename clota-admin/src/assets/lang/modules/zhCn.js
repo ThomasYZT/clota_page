@@ -184,5 +184,12 @@ export default {
     editPackakge :'编辑套餐',
     packageName :'套餐名称',
     choseService :'选择服务',
-    servicesChosed : '已选服务'
+    servicesChosed : '已选服务',
+    notePackage : '短信套餐',
+    addNotePackage : '新建套餐',
+    editNotePackage : '编辑套餐',
+    price : '价格',
+    number : '数量',
+    yuan : '元',
+    strip : '条',
 }
