@@ -159,14 +159,18 @@
                     <FormItem label="下单日期">
                         <DatePicker type="date"
                                     :transfer="true"
-                                    v-model="formData.code" ></DatePicker>
+                                    v-model="formData.code"
+                                    style="width: 100%;">
+                        </DatePicker>
                     </FormItem>
                     </Col>
                     <Col span="6">
                     <FormItem label="游玩日期">
                         <DatePicker type="date"
                                     :transfer="true"
-                                    v-model="formData.code" ></DatePicker>
+                                    v-model="formData.code"
+                                    style="width: 100%;">
+                        </DatePicker>
                     </FormItem>
                     </Col>
                     <Col span="6">

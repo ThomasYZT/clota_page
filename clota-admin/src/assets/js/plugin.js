@@ -38,7 +38,63 @@ import DropdownItem from 'element-ui/lib/dropdown-item';
 // import Tooltip  from 'iview/src/components/tooltip/index.js';
 // import Message  from 'iview/src/components/message/index.js';
 
-import iView from 'iview'
+import {
+    Button,
+    Input,
+    Menu,
+    Select,
+    OptionGroup,
+    Modal,
+    Tree,
+    breadcrumb,
+    Icon,
+    Radio,
+    Switch,
+    Checkbox,
+    DatePicker,
+    Form,
+    TimePicker,
+    Row,
+    Col,
+    Option,
+    Tooltip,
+    Message,
+} from 'iview';
+Vue.component('Button',Button);
+Vue.component('Input',Input);
+Vue.component('iInput',Input);
+Vue.component('ButtonGroup',Button.Group);
+Vue.component('MenuGroup',Menu.Group);
+Vue.component('MenuItem',Menu.Item);
+Vue.component('iMenu',Menu);
+Vue.component('Menu',Menu);
+Vue.component('Submenu',Menu.Sub);
+Vue.component('Select',Select);
+Vue.component('OptionGroup',OptionGroup);
+Vue.component('Modal',Modal);
+Vue.component('Tree',Tree);
+Vue.component('Breadcrumb',breadcrumb);
+Vue.component('BreadcrumbItem',breadcrumb.Item);
+Vue.component('Icon',Icon);
+Vue.component('Radio',Radio);
+Vue.component('RadioGroup',Radio.Group);
+Vue.component('Switch',Switch);
+Vue.component('iSwitch',Switch);
+Vue.component('Checkbox',Checkbox);
+Vue.component('CheckboxGroup',Checkbox.Group);
+Vue.component('DatePicker',DatePicker);
+Vue.component('TimePicker',TimePicker );
+Vue.component('Form',Form );
+Vue.component('iForm',Form );
+Vue.component('FormItem',Form.Item );
+Vue.component('TimePicker',TimePicker );
+Vue.component('Row',Row );
+Vue.component('Col',Col );
+Vue.component('Option',Option );
+Vue.component('Tooltip',Tooltip );
+Vue.component('Message',Message );
+Vue.prototype.$Message = Message;
+
 
 // 引入 ECharts 主模块
 // import ECharts from '@/components/vueEcharts/ECharts.vue'
@@ -61,7 +117,7 @@ import ajax from '@/api/ajaxList'
 let plugin = {};
 plugin.install = function (Vue, options) {
     // 引入iView
-    Vue.use(iView);
+    // Vue.use(iView);
 
     // element-ui按需引入(Table)
     // Vue.use(Table);

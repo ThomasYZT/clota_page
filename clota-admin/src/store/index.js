@@ -84,7 +84,7 @@ export default new Vuex.Store({
             //     path : routers[0]['path']
             //   });
             // }
-            console.log(a)
+            // console.log(a)
         },
     },
     actions: {

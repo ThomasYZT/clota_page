@@ -82,6 +82,9 @@
              */
             login() {
                 this.$refs.formValidate.validate(valid => {
+                    localStorage.setItem('userInfo',JSON.stringify({
+                        token : 'aa'
+                    }))
                     this.$store.dispatch('getUserRight').then(route => {
                         this.$router.push({
                             name: route.name
