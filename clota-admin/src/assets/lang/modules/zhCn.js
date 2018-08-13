@@ -211,4 +211,13 @@ export default {
     fail : '失败',
     smsDetail : '短信详情',
     smsContent : '短信内容',
+    setting : '设置',
+    customeSetting : '通用设置',
+    regionInfo : '地区信息',
+    measureUnit : '计量单位',
+    holidayInfo : '节假日信息',
+    channelInfo : '渠道信息',
+    smsSetting : '短信',
+    notice : '通知',
+    alarm : '报警',
 }

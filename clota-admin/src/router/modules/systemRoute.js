@@ -68,6 +68,31 @@ export default {
                     subMenuType : 'account'
                 },
             },
+            //设置
+            setting : {
+                path: '/system/setting',
+                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/setting.vue'),
+                meta: {
+                    _name: 'system',
+                    menuName: 'setting',
+                    lightMenu: 'system',
+                    showInMenu : true,
+                    subMenuType : 'setting'
+                },
+                children : {
+                    //通用设置
+                    customeSetting : {
+                        path: '/system/setting/customeSetting',
+                        name: 'customeSetting',
+                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/customSetting.vue'),
+                        meta: {
+                            _name: 'system',
+                            menuName: 'setting',
+                            lightMenu: 'system',
+                        },
+                    },
+                }
+            },
         }
     },
 }

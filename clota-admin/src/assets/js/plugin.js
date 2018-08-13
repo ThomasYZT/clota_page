@@ -34,6 +34,7 @@ import {
     Option,
     Tooltip,
     Message,
+    InputNumber
 } from 'iview';
 
 
@@ -101,6 +102,7 @@ plugin.install = function (Vue, options) {
     Vue.component('Option',Option );
     Vue.component('Tooltip',Tooltip );
     Vue.component('Message',Message );
+    Vue.component('InputNumber',InputNumber );
     Vue.prototype.$Message = Message;
 
     // 公用样式，指令及方法
