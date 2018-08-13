@@ -224,7 +224,7 @@
 
 <script>
     import tableCom from '../../organization/tableCom';
-    import employeeTable from './components/employeeTable';;
+    import employeeTable from './components/employeeTable';
     import openedService from './components/openedService';
     import subScene from './components/subScene';
     import subDepartment from './components/subDepartment';

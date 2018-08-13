@@ -13,6 +13,8 @@ import orderRoute from './modules/orderRoute';
 import logRoute from './modules/logRoute';
 //系统
 import systemRoute from './modules/systemRoute';
+//服务
+import packageRoute from './modules/packageRoute';
 
 export default {
     ...orgStructureRouter,
@@ -20,5 +22,6 @@ export default {
     ...serverRoute,
     ...orderRoute,
     ...logRoute,
-    ...systemRoute
+    ...systemRoute,
+    ...packageRoute
 }

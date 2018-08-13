@@ -176,4 +176,13 @@ export default {
     accountName : '账号',
     desc :'描述',
     noticeContent :'公告内容',
+    package :'套餐',
+    packageDetail :'套餐详情',
+    serve :'服务',
+    serverPackage :'服务套餐',
+    addPackakge :'新增套餐',
+    editPackakge :'编辑套餐',
+    packageName :'套餐名称',
+    choseService :'选择服务',
+    servicesChosed : '已选服务'
 }

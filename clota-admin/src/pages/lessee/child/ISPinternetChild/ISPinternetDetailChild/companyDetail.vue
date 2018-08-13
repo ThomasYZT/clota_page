@@ -5,7 +5,7 @@
         <div class="com-name">
             <template v-if="type === 'edit'">
                 <Input v-model="formDataCopy.companyName" style="width : 280px"/>
-                <i-switch v-model="formDataCopy.isStart"></i-switch>
+                <Switch v-model="formDataCopy.isStart"></Switch>
             </template>
             <template v-if="type === 'watch'">
                 <span class="name"
