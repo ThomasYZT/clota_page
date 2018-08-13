@@ -46,7 +46,7 @@
                             }
                         },
                         formatter: (params) => {
-//                            let tooltip = constVariable.evaluateStatus[params.name] + ':&nbsp;&nbsp;' +  params.value +'人&nbsp;&nbsp;' + params.percent + '%';
+                            /*let tooltip = constVariable.evaluateStatus[params.name] + ':&nbsp;&nbsp;' +  params.value +'人&nbsp;&nbsp;' + params.percent + '%';*/
                             return "38.88%";
                         },
                         backgroundColor: 'rgba(0,0,0,0.70)',
@@ -80,8 +80,8 @@
                         },
                         formatter: name => {
                             return name
-                            let status = constVariable.vipStatus[name];
-                            status = status.length > 6 ? status.substr(0, 5) + '...' : status;
+                            /*let status = constVariable.vipStatus[name];
+                            status = status.length > 6 ? status.substr(0, 5) + '...' : status;*/
                             return 'name | 48.88% 3992'
                         },
                         data: legendData
