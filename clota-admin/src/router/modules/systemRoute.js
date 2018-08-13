@@ -91,6 +91,17 @@ export default {
                             lightMenu: 'system',
                         },
                     },
+                    //计量单位
+                    measureUnit : {
+                        path: '/system/setting/measureUnit',
+                        name: 'measureUnit',
+                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/measureUnit.vue'),
+                        meta: {
+                            _name: 'system',
+                            menuName: 'setting',
+                            lightMenu: 'system',
+                        },
+                    },
                 }
             },
         }

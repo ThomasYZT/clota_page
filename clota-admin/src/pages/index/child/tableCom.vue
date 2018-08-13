@@ -7,7 +7,13 @@
               class="table-wrap"
               :class="{'row-click' : rowClick}"
               @row-click="classDetailLink"
+              @selection-change="handleSelectionChange"
               :height="autoHeight ? 'max-content' : tableHeight">
+            <el-table-column
+                v-if="columnCheck"
+                type="selection"
+                width="55">
+            </el-table-column>
         <template
             v-for="(item,index) in columnDataCs">
             <slot :name="'column' + index"
@@ -107,6 +113,11 @@
             'auto-height' : {
                 type : Boolean,
                 default : false
+            },
+            //是否开启第一列选择
+            'column-check' : {
+                type : Boolean,
+                default : false
             }
         },
         data() {
@@ -119,7 +130,14 @@
              */
             classDetailLink(data) {
                 this.$emit('row-click', data);
-            }
+            },
+            /**
+             * 多选框选中状态改变
+             * @param data
+             */
+            handleSelectionChange (data) {
+                this.$emit('selection-change',data);
+            },
         },
         computed: {
             //表头配置
