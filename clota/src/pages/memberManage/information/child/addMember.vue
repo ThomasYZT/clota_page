@@ -1,5 +1,5 @@
 <template>
-    <!--新增/修改员工信息-->
+    <!--新增/修改会员信息-->
     <div class="add-member">
 
         <div class="breadcrumb-box">
@@ -98,7 +98,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="会员类型" prop="type">
+                        <Form-item label="证件类型" prop="type">
                             <Select v-model="member.type" placeholder="请选择会员类型">
                                 <Option v-for="item in enumData.type" :key="item.name" :value="item.name">{{item.desc}}</Option>
                             </Select>
@@ -128,7 +128,7 @@
 
             <div class="content-footer">
                 <i-button type="primary" :loading="loading" @click="formValidateFunc">确定新增</i-button>
-                <router-link :to="{name: 'staffList'}">
+                <router-link :to="{name: 'memberInfo'}">
                     <i-button type="ghost">取消</i-button>
                 </router-link>
             </div>

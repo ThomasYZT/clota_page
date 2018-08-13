@@ -33,7 +33,8 @@
                 :border="true"
                 max-height="450"
                 style="width: 100%"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @row-click="viewDetail">
                 <el-table-column
                     type="selection"
                     width="55">
@@ -90,8 +91,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="date"
-                    label="操作"
-                    width="130">
+                    label="操作">
                     <template slot-scope="scope">
                         <div class="operation">
                             <span class="span-blue" @click="modifyData(scope)">修改</span>
@@ -198,8 +198,14 @@
                 this.multipleSelection = val;
             },
 
+            viewDetail ( data ) {
+                console.log(data)
+                this.$router.push({ name: 'infoDetail' });
+            },
+
             modifyData ( data ) {
                 console.log(data)
+                this.$router.push({ name: 'addMember', query: { type: 'modify' }});
             },
 
             deleteData ( data ) {
