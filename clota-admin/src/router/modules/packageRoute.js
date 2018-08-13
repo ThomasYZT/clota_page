@@ -70,7 +70,7 @@ export default {
                 },
             },
             //服务开通记录
-            smsOpenedRecord : {
+            serviceOpenedRecord : {
                 path: '/service/opendRecord',
                 name: 'serviceOpendRecord',
                 component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/serviceOpenedRecord.vue'),
@@ -80,6 +80,19 @@ export default {
                     lightMenu: 'package',
                     showInMenu : true,
                     subMenuType : 'serviceOpendRecord'
+                },
+            },
+            //短信购买记录
+            smsBuyRecord : {
+                path: '/service/smsBuyRecord',
+                name: 'smsBuyRecord',
+                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsBuyRecord.vue'),
+                meta: {
+                    _name: 'package',
+                    menuName: 'smsBuyRecord',
+                    lightMenu: 'package',
+                    showInMenu : true,
+                    subMenuType : 'smsBuyRecord'
                 },
             },
         }

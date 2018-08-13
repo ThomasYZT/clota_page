@@ -199,4 +199,6 @@ export default {
     recover : '恢复 ',
     serviceName : '服务名称',
     operateTime : '操作时间',
+    smsBuyRecord : '短信购买记录',
+    buyTime : '购买时间',
 }
