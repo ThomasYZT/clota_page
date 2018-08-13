@@ -1,50 +1,50 @@
 
 
-//短信购买记录表土
-export const smsBuyHead = [
+//短信发送记录表头
+export const smsSendRecord = [
     {
-        title: '租户名称',
+        title: '订单编号',
         minWidth: 120,
         field: 'rate'
     },
     {
-        title: '短信套餐名称',
+        title: '租户名称',
         minWidth: 200,
         field: 'rate'
     },
     {
-        title: '服务商',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '套餐单价',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '套餐短息数量',
+        title: '手机号',
         minWidth: 120,
         field: 'rate'
     },
     {
-        title: '购买数量',
+        title: '条数',
         minWidth: 100,
         field: 'rate'
     },
     {
-        title: '购买短信总数',
+        title: '发送时间',
+        minWidth: 150,
+        field: 'rate'
+    },
+    {
+        title: '触发',
+        minWidth: 100,
+        field: 'rate'
+    },
+    {
+        title: '服务商',
         minWidth: 130,
         field: 'rate'
     },
     {
-        title: '总价',
-        minWidth: 120,
+        title: '发送状态',
+        minWidth: 100,
         field: 'rate'
     },
     {
-        title: '购买时间',
-        minWidth: 150,
+        title: '操作',
+        minWidth: 80,
         field: 'time'
     },
 ];

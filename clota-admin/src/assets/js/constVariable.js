@@ -356,3 +356,14 @@ export const serviceOperateType = [
     }
 ];
 
+//发送状态
+export const sendStatusList = [
+    {
+        label : 'success',//成功
+        value : 'success'
+    },
+    {
+        label : 'fail',//失败
+        value : 'fail'
+    },
+];

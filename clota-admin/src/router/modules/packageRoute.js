@@ -95,6 +95,32 @@ export default {
                     subMenuType : 'smsBuyRecord'
                 },
             },
+            //短信发送记录
+            smsSendRecord : {
+                path: '/service/smsSendRecord',
+                name: 'smsSendRecord',
+                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendRecord.vue'),
+                meta: {
+                    _name: 'package',
+                    menuName: 'smsSendRecord',
+                    lightMenu: 'package',
+                    showInMenu : true,
+                    subMenuType : 'smsSendRecord'
+                },
+            },
+            //短信发送详情
+            smsSendDetail : {
+                path: '/service/smsSendRecord/detail',
+                name: 'smsSendRecordDetail',
+                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendDetail.vue'),
+                meta: {
+                    _name: 'package',
+                    menuName: '',
+                    lightMenu: 'package',
+                    showInMenu : false,
+                    subMenuType : 'smsSendRecord'
+                },
+            },
         }
     },
 }

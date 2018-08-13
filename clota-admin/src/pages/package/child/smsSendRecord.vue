@@ -1,4 +1,4 @@
-<!--短信购买记录-->
+<!--短信发送记录-->
 
 <template>
     <div class="operation-log">
@@ -8,13 +8,27 @@
         <div class="table-area">
             <div class="order-info">
                 <Icon type="ios-help"></Icon>
-                <span class="note-tips">共购买：<span class="icon-weight">1280条</span></span>
+                <span class="note-tips">共发送：<span class="icon-weight">1280条</span></span>
             </div>
             <table-com
                 :table-data="tableData"
                 :table-height="tableHeight"
-                :column-data="smsBuyHead"
+                :column-data="smsSendRecord"
                 :auto-height="true">
+                <el-table-column
+                    slot="column8"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                        <ul class="operate-info">
+                            <li class="operate-list" @click="watchDetail(scoped.row)">查看</li>
+                        </ul>
+                    </template>
+                </el-table-column>
             </table-com>
             <div class="page-area" v-if="tableData.length > 0">
                 <el-pagination
@@ -30,10 +44,10 @@
 </template>
 
 <script>
-    import filterHead from './smsBuyRecordChild/filterHead';
+    import filterHead from './smsSendRecordChild/filterHead';
     import tableCom from '../../index/child/tableCom';
     import tableMixins from '../../lessee/tableMixins';
-    import {smsBuyHead} from './smsBuyRecordChild/smsBuyRecordConfig';
+    import {smsSendRecord} from './smsSendRecordChild/smsSendRecordConfig';
     export default {
         mixins :[tableMixins],
         components : {
@@ -43,7 +57,7 @@
         data() {
             return {
                 //表头配置
-                smsBuyHead : smsBuyHead,
+                smsSendRecord : smsSendRecord,
                 //表格数据
                 tableData : [
                     {
@@ -64,6 +78,15 @@
             }
         },
         methods: {
+            /**
+             * 查看发送短信详情
+             * @param data
+             */
+            watchDetail(data) {
+                this.$router.push({
+                    name : 'smsSendRecordDetail'
+                });
+            }
         },
     }
 </script>
