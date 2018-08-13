@@ -336,3 +336,23 @@ export const operateType = [
     }
 ];
 
+//服务操作类型
+export const serviceOperateType = [
+    {
+        label : 'open',//开通
+        value : 'open'
+    },
+    {
+        label : 'renew',//续订
+        value : 'renew'
+    },
+    {
+        label : 'pause',//暂停
+        value : 'pause'
+    },
+    {
+        label : 'recover',//恢复
+        value : 'recover'
+    }
+];
+

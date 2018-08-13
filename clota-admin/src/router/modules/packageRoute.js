@@ -10,7 +10,7 @@
 export default {
     //服务菜单主页
     packageIndex: {
-        path: '/package',
+        path: '/service',
         component: () => import(/* webpackChunkName: "package" */ '../../pages/package/index.vue'),
         meta: {
             _name: 'package',
@@ -20,7 +20,7 @@ export default {
         children : {
             //服务套餐
             packageList : {
-                path: '/package/list',
+                path: '/service/list',
                 name: 'packageList',
                 component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/packageInfo.vue'),
                 meta: {
@@ -33,7 +33,7 @@ export default {
             },
             //新增/编辑账号
             editPackage : {
-                path: '/package/edit',
+                path: '/service/edit',
                 name: 'editPackage',
                 component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editPackage.vue'),
                 meta: {
@@ -46,7 +46,7 @@ export default {
             },
             //短信套餐列表
             notePackageInfo : {
-                path: '/notePackage/list',
+                path: '/service/notePackage/list',
                 name: 'notePackageInfo',
                 component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/notePackageInfo.vue'),
                 meta: {
@@ -59,7 +59,7 @@ export default {
             },
             //新建/编辑短信套餐
             editNotePackageInfo : {
-                path: '/notePackage/edit',
+                path: '/service/notePackage/edit',
                 name: 'editnotePackage',
                 component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editNotePackage.vue'),
                 meta: {
@@ -67,6 +67,19 @@ export default {
                     lightMenu: 'package',
                     showInMenu : false,
                     subMenuType : 'notePackage'
+                },
+            },
+            //服务开通记录
+            smsOpenedRecord : {
+                path: '/service/opendRecord',
+                name: 'serviceOpendRecord',
+                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/serviceOpenedRecord.vue'),
+                meta: {
+                    _name: 'package',
+                    menuName: 'serviceOpenRecord',
+                    lightMenu: 'package',
+                    showInMenu : true,
+                    subMenuType : 'serviceOpendRecord'
                 },
             },
         }

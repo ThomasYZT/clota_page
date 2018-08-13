@@ -192,4 +192,11 @@ export default {
     number : '数量',
     yuan : '元',
     strip : '条',
+    serviceOpenRecord : '服务开通记录',
+    open : '开通',
+    renew : '续订',
+    pause : '暂停',
+    recover : '恢复 ',
+    serviceName : '服务名称',
+    operateTime : '操作时间',
 }
