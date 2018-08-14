@@ -45,7 +45,7 @@
                         label: this.$t('holidayInfo')
                     },
                     {
-                        name: 'cooperaChannelPer',
+                        name: 'channel',
                         label: this.$t('channelInfo')
                     }
                 ]

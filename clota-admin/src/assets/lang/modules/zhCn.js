@@ -229,4 +229,8 @@ export default {
     editHoliday : '编辑节假日',
     holidayName : '节假日名称',
     holidayTime : '假期时间',
+    addChannel : '新增渠道',
+    editChannel : '编辑渠道',
+    channelName : '渠道名称',
+    channelCode : '渠道编码',
 }

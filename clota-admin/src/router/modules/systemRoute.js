@@ -112,6 +112,17 @@ export default {
                             menuName: 'setting',
                             lightMenu: 'system',
                         },
+                    },
+                    //渠道信息
+                    channel : {
+                        path: '/system/setting/channel',
+                        name: 'channel',
+                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/channel.vue'),
+                        meta: {
+                            _name: 'system',
+                            menuName: 'setting',
+                            lightMenu: 'system',
+                        },
                     }
                 }
             },
@@ -131,6 +142,17 @@ export default {
                 path: '/setting/holiday/edit',
                 name: 'editHoliday',
                 component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editHoliday.vue'),
+                meta: {
+                    _name: 'system',
+                    menuName: 'setting',
+                    lightMenu: 'system',
+                },
+            },
+            //新增/编辑渠道信息
+            editChannel : {
+                path: '/setting/channel/edit',
+                name: 'editChannel',
+                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editChannel.vue'),
                 meta: {
                     _name: 'system',
                     menuName: 'setting',

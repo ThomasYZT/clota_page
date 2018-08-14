@@ -1,4 +1,4 @@
-<!--节假日信息-->
+<!--渠道信息-->
 
 <template>
     <div class="list-info">
@@ -6,7 +6,7 @@
             <div class="search-by-word">
                 <Input v-model="keyword"
                        style="width : 280px"
-                       placeholder="输入节假日名称"/>
+                       placeholder="请输入渠道名称"/>
                 <Button type="primary"
                         class="ivu-btn-90px"
                         @click="getTableData">查询</Button>
@@ -21,12 +21,12 @@
         <table-com
             :table-data="tableData"
             :table-height="tableHeight"
-            :column-data="holidayHead"
+            :column-data="channelHead"
             :auto-height="true"
             :column-check="true"
             @selection-change="handleSelectionChange">
             <el-table-column
-                slot="column4"
+                slot="column3"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -35,6 +35,7 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
+                        <li class="operate-list disabled" @click="disabled(scoped.row)">禁用</li>
                         <li class="operate-list" @click="del(scoped.row)">删除</li>
                         <li class="operate-list delete" @click="edit(scoped.row)">修改</li>
                     </ul>
@@ -53,7 +54,7 @@
 
         <!--删除模态框-->
         <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除节假日：{{delUnits}}</span>
+            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除渠道：{{delUnits}}</span>
             <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
         </del-modal>
     </div>
@@ -63,7 +64,7 @@
     import tableCom from '../../../index/child/tableCom';
     import tableMixins from '../../../lessee/tableMixins';
     import delModal from '@/components/delModal/index.vue';
-    import {holidayHead} from './holidayConfig';
+    import {channelHead} from './channelConfig';
     export default {
         mixins :[tableMixins],
         components : {
@@ -76,7 +77,7 @@
                 keyword : '',
                 rowSelect : [],
                 //表头配置
-                holidayHead : holidayHead,
+                channelHead : channelHead,
                 //删除的信息
                 delUnits : '',
                 //总条数
@@ -89,7 +90,7 @@
              */
             add () {
                 this.$router.push({
-                    name : 'editHoliday',
+                    name : 'editChannel',
                     params :{
                         type :'add'
                     }
@@ -101,7 +102,7 @@
             bitchDel () {
                 this.delUnits = this.rowSelect.map(item => item.name).join(',');
                 this.$refs.delModal.show({
-                    title : '删除节假日',
+                    title : '删除渠道',
                     confirmCallback : () => {
                         this.$Message.success('删除成功');
                     }
@@ -121,7 +122,7 @@
             del(data) {
                 this.delUnits = data.name;
                 this.$refs.delModal.show({
-                    title : '删除节假日',
+                    title : '删除渠道',
                     confirmCallback : () => {
                         this.$Message.success('删除成功');
                     }
@@ -133,7 +134,7 @@
              */
             edit (data) {
                 this.$router.push({
-                    name : 'editHoliday',
+                    name : 'editChannel',
                     params :{
                         type :'edit'
                     }
@@ -144,13 +145,20 @@
              */
             getTableData () {
                 alert('aa')
+            },
+            /**
+             * 禁用成功
+             * @param data
+             */
+            disabled (data) {
+                this.$Message.success('禁用成功');
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .list-info{
         padding: 0 30px 0 30px;
         @include block_outline();
