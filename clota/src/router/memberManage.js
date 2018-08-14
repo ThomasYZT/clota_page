@@ -196,6 +196,18 @@ export default {
                     iconClass: 'icon-person'
                 },
             },
+            addCard: {
+                //会员管理--会员卡券--新增卡劵
+                path: 'addCard',
+                name: 'addCard',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/card/addCard.vue'),
+                meta: {
+                    menuName: 'menuList.card', //lang.config.js 里面的语言键值
+                    lightMenu: 'memberManage',//高亮
+                    _name: 'card',
+                    iconClass: 'icon-person'
+                },
+            },
             fund: {
                 //会员管理--储值管理--储值账户
                 path: 'fund',

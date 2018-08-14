@@ -141,13 +141,7 @@
 
     export default {
         components: { },
-        data () {
-            return {
-                loading: false,
-            }
-        },
         data() {
-
             var validateMethod = {
 
                 mobile :  (rule, value, callback) => {
@@ -167,10 +161,6 @@
                 }
             };
             return {
-                // 表单数据
-                formData: [{
-                    date: '2016-05-03',
-                }],
                 //新增/修改
                 type: 'add',
                 loading: false,
@@ -205,6 +195,7 @@
                         }
                     ],
                 },
+                // 表单数据
                 member: {
                     name: '',
                     mobile: '',
