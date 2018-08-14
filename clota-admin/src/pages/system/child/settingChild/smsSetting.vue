@@ -23,10 +23,7 @@
             </el-table-column>
         </el-table>
         <div class="btn-area">
-            <Button type="primary"
-                    class="ivu-btn-90px"
-                    @click="save">{{$t('save')}}</Button>
-            <Button type="ghost" class="ivu-btn-90px">{{$t('cancel')}}</Button>
+            <slot name="footer" :rowData="tableData"></slot>
         </div>
     </div>
 </template>
@@ -46,12 +43,9 @@
             }
         },
         methods: {
-            /**
-             * 保存设置
-             */
-            save () {
-                this.$Message.success('保存成功');
-            }
+
+        },
+        computed : {
         }
     }
 </script>

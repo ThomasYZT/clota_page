@@ -22,10 +22,7 @@
             &nbsp;%
         </div>
         <div class="btn-area">
-            <Button type="primary"
-                    class="ivu-btn-90px"
-                    @click="save">{{$t('save')}}</Button>
-            <Button type="ghost" class="ivu-btn-90px">{{$t('cancel')}}</Button>
+            <slot name="footer"></slot>
         </div>
     </div>
 </template>
@@ -36,12 +33,6 @@
             return {}
         },
         methods: {
-            /**
-             * 保存设置
-             */
-            save () {
-                this.$Message.success('保存成功');
-            }
         }
     }
 </script>

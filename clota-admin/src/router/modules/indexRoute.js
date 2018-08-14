@@ -17,5 +17,15 @@ export default {
             menuName: 'index',
             lightMenu: 'index',
         }
+    },
+    rankDetail: {
+        path: '/index/rankDetail',
+        name: 'rankDetail',
+        component: () => import(/* webpackChunkName: "index" */ '../../pages/index/child/rankList/index.vue'),
+        meta: {
+            _name: 'index',
+            menuName: 'index',
+            lightMenu: 'index',
+        }
     }
 }

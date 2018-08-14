@@ -25,10 +25,7 @@
             </Radio>
         </RadioGroup>
         <div class="btn-area">
-            <Button type="primary"
-                    class="ivu-btn-90px"
-                    @click="save">{{$t('save')}}</Button>
-            <Button type="ghost" class="ivu-btn-90px">{{$t('cancel')}}</Button>
+            <slot name="footer"></slot>
         </div>
     </div>
 </template>
@@ -44,12 +41,6 @@
             }
         },
         methods: {
-            /**
-             * 保存设置
-             */
-            save () {
-                this.$Message.success('保存成功');
-            }
         }
     }
 </script>
@@ -57,6 +48,7 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .notice-setting{
+        position: relative;
         @include block_outline();
 
         .sms-label-title{

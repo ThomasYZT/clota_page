@@ -7,58 +7,26 @@
             <ul class="event-list">
                 <li class="event">
                     <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
+                        <li class="event-name">服务器</li>
                         <li class="server-name">Service-01</li>
                         <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
+                        <li class="watch" @click="toDetail('serverDetail')">查看</li>
                     </ul>
                 </li>
                 <li class="event">
                     <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
+                        <li class="event-name">租户服务到期</li>
                         <li class="server-name">Service-01</li>
                         <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
+                        <li class="watch" @click="toDetail('ISPinternetDetail')">查看</li>
                     </ul>
                 </li>
                 <li class="event">
                     <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
+                        <li class="event-name">票类服务已经到期</li>
                         <li class="server-name">Service-01</li>
                         <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
-                    </ul>
-                </li>
-                <li class="event">
-                    <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
-                    </ul>
-                </li>
-                <li class="event">
-                    <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
-                    </ul>
-                </li>
-                <li class="event">
-                    <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
-                    </ul>
-                </li>
-                <li class="event">
-                    <ul class="event-info">
-                        <li class="event-name">服务器无响应</li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch">查看</li>
+                        <li class="watch" @click="toDetail('orderDetail')">查看</li>
                     </ul>
                 </li>
             </ul>
@@ -89,7 +57,20 @@
                 pageNo: 1
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 跳转详情
+             * @param data
+             */
+            toDetail (data) {
+                this.$router.push({
+                    name : data,
+                    params : {
+                        orderType :"team"
+                    }
+                });
+            }
+        }
     }
 </script>
 

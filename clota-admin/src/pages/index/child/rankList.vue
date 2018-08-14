@@ -4,7 +4,7 @@
     <div class="rank-list">
         <div class="title">
             排行榜
-            <span class="server-care">更多</span>
+            <span class="server-care" @click="toDetail">更多</span>
         </div>
         <div class="rank-list-detail">
 
@@ -56,7 +56,16 @@
                 }],
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 跳转到排行榜详情
+             */
+            toDetail () {
+                this.$router.push({
+                    name : 'rankDetail'
+                });
+            }
+        }
     }
 </script>
 

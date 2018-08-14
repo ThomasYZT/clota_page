@@ -26,13 +26,14 @@
                 </Row>
                 <Row>
                     <Col span="11">
-                        <FormItem :label="$t('holidayTime')" prop="holidayTime">
+                        <FormItem :label="$t('holidayTime')" prop="time">
                             <DatePicker
-                                v-model="time"
+                                v-model="formData.time"
                                 type="daterange"
                                 placement="bottom-end"
                                 placeholder="请选择假期时间"
-                                style="width: 280px;" ></DatePicker>
+                                style="width: 280px;" >
+                            </DatePicker>
                         </FormItem>
                     </Col>
                 </Row>
@@ -62,6 +63,14 @@
             breadCrumbHead,
         },
         data() {
+            //校验假期时间
+            const validateTime = (rule,value,callback) => {
+              if(value && value.length === 2 && value[0] && value[1]){
+                  callback();
+              }else{
+                  callback(this.$t('validateError.pleaseSelect', {'msg': this.$t('holidayTime')}))
+              }
+            };
             return {
                 //上级路由列表
                 beforeRouterList: [
@@ -86,8 +95,8 @@
                     name : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('holidayName')}), trigger: 'blur'},
                     ],
-                    holidayTime : [
-                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('holidayTime')}), trigger: 'blur'},
+                    time : [
+                        {required: true, validator : validateTime, trigger: 'change'},
                     ]
                 },
                 //是否正在添加中

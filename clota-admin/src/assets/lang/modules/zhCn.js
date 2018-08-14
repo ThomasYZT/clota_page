@@ -238,4 +238,5 @@ export default {
     province : '省',
     city : '市',
     county : '县/区',
+    rankDetail : '排行榜详情',
 }

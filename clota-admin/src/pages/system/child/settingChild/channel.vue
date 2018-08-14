@@ -36,8 +36,8 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <li class="operate-list disabled" @click="disabled(scoped.row)">禁用</li>
-                        <li class="operate-list" @click="del(scoped.row)">删除</li>
-                        <li class="operate-list delete" @click="edit(scoped.row)">修改</li>
+                        <li class="operate-list delete" @click="del(scoped.row)">删除</li>
+                        <li class="operate-list" @click="edit(scoped.row)">修改</li>
                     </ul>
                 </template>
             </el-table-column>

@@ -12,7 +12,14 @@
             </MenuItem>
         </Menu>
         <div class="custom-content">
-            <component :is="tabComponent"></component>
+            <component :is="tabComponent">
+                <template slot="footer" slot-scope="scoped">
+                    <Button type="primary"
+                            class="ivu-btn-90px"
+                            @click="save(scoped.rowData)">{{$t('save')}}</Button>
+                    <Button type="ghost" class="ivu-btn-90px">{{$t('cancel')}}</Button>
+                </template>
+            </component>
         </div>
     </div>
 </template>
@@ -55,6 +62,12 @@
              */
             menuSelect(name) {
                 this.tabComponent = name;
+            },
+            /**
+             * 保存设置
+             */
+            save () {
+                this.$Message.success('保存成功');
             }
         }
     }

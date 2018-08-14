@@ -34,14 +34,18 @@
             </top-data>
         </div>
         <div class="abnormal">
+            <!--异常事件报警-->
             <abnormal-warn>
             </abnormal-warn>
+            <!--租户所在地饼图-->
             <lessee-place>
             </lessee-place>
         </div>
         <div class="server-info">
+            <!--服务器列表-->
             <server-list>
             </server-list>
+            <!--排行榜-->
             <rank-list>
             </rank-list>
         </div>
