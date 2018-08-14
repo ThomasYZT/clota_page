@@ -41,7 +41,7 @@
                         label: this.$t('measureUnit')
                     },
                     {
-                        name: 'cooperaChannelPer',
+                        name: 'holiday',
                         label: this.$t('holidayInfo')
                     },
                     {

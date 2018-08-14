@@ -225,4 +225,8 @@ export default {
     nameG : '名称',
     isUsing : '是否启用',
     remark : '备注',
+    addHoliday : '新增节假日',
+    editHoliday : '编辑节假日',
+    holidayName : '节假日名称',
+    holidayTime : '假期时间',
 }

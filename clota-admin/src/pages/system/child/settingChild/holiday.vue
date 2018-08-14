@@ -1,11 +1,17 @@
-<!--计量单位-->
+<!--节假日信息-->
 
 <template>
-    <div class="measure-unit">
+    <div class="list-info">
         <div class="btn-area">
+            <div class="search-by-word">
+                <Input v-model="keyword" style="width : 280px" />
+                <Button type="primary"
+                        class="ivu-btn-90px"
+                        @click="getTableData">查询</Button>
+            </div>
             <Button type="primary"
                     class="ivu-btn-90px"
-                    @click="addUnit">新增</Button>
+                    @click="add">新增</Button>
             <Button type="ghost"
                     :disabled="rowSelect.length < 1"
                     @click="bitchDel">批量删除</Button>
@@ -13,12 +19,12 @@
         <table-com
             :table-data="tableData"
             :table-height="tableHeight"
-            :column-data="unitHead"
+            :column-data="holidayHead"
             :auto-height="true"
             :column-check="true"
             @selection-change="handleSelectionChange">
             <el-table-column
-                slot="column3"
+                slot="column4"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -27,9 +33,8 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="operate-list disabled" @click="disabledUnit(scoped.row)">禁用</li>
-                        <li class="operate-list" @click="delUnit(scoped.row)">删除</li>
-                        <li class="operate-list delete" @click="editUnit(scoped.row)">修改</li>
+                        <li class="operate-list" @click="del(scoped.row)">删除</li>
+                        <li class="operate-list delete" @click="edit(scoped.row)">修改</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -43,9 +48,10 @@
                 :total="totalCount">
             </el-pagination>
         </div>
+
         <!--删除模态框-->
         <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除单位：{{delUnits}}</span>
+            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除节假日：{{delUnits}}</span>
             <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
         </del-modal>
     </div>
@@ -54,8 +60,8 @@
 <script>
     import tableCom from '../../../index/child/tableCom';
     import tableMixins from '../../../lessee/tableMixins';
-    import {unitHead} from './measureUnitConfig';
     import delModal from '@/components/delModal/index.vue';
+    import {holidayHead} from './holidayConfig';
     export default {
         mixins :[tableMixins],
         components : {
@@ -64,93 +70,78 @@
         },
         data() {
             return {
-                //表格数据
-                tableData : [
-                    {
-                        name : '元'
-                    },
-                    {
-                        name : '元'
-                    },
-                    {
-                        name : '元'
-                    },
-                    {
-                        name : '元'
-                    },
-                ],
-                //表头配置
-                unitHead : unitHead,
-                //总共条数
-                totalCount :100,
-                //当前选中的行数据
+                //搜索的关键字
+                keyword : '',
                 rowSelect : [],
-                //删除的单位
-                delUnits : ''
+                //表头配置
+                holidayHead : holidayHead,
+                //删除的信息
+                delUnits : '',
+                //总条数
+                totalCount : 10
             }
         },
         methods: {
             /**
-             * 更改选中的状态
-             * @param data
+             * 新增
              */
-            handleSelectionChange (data) {
-                this.rowSelect = data;
-            },
-            /**
-             * 禁用单位
-             * @param data
-             */
-            disabledUnit(data){
-                this.$Message.success('禁用成功');
-            },
-            /**
-             * 删除单位
-             * @param data
-             */
-            delUnit (data) {
-                this.delUnits = data.name;
-                this.$refs.delModal.show({
-                    title : '删除单位',
-                    confirmCallback : () => {
-                        this.$Message.success('删除成功');
+            add () {
+                this.$router.push({
+                    name : 'editHoliday',
+                    params :{
+                        type :'add'
                     }
                 });
             },
             /**
-             * 批量删除单位
+             * 批量删除
              */
             bitchDel () {
                 this.delUnits = this.rowSelect.map(item => item.name).join(',');
                 this.$refs.delModal.show({
-                    title : '删除单位',
+                    title : '删除节假日',
                     confirmCallback : () => {
                         this.$Message.success('删除成功');
                     }
                 });
             },
             /**
-             * 新增单位拟
+             * 触发选择行
+             * @param data
              */
-            addUnit() {
-                this.$router.push({
-                    name : 'editMeasureUnit',
-                    params : {
-                        type : 'add'
+            handleSelectionChange(data) {
+                this.rowSelect = data;
+            },
+            /**
+             * 删除行
+             * @param data
+             */
+            del(data) {
+                this.delUnits = data.name;
+                this.$refs.delModal.show({
+                    title : '删除节假日',
+                    confirmCallback : () => {
+                        this.$Message.success('删除成功');
                     }
                 });
             },
             /**
-             * 编辑账号
+             * 修改行
              * @param data
              */
-            editUnit(data) {
+            edit (data) {
                 this.$router.push({
-                    name : 'editMeasureUnit',
-                    params : {
-                        type : 'edit'
+                    name : 'editHoliday',
+                    params :{
+                        type :'edit'
                     }
                 });
+            },
+            /**
+             * 获取表格数据
+             */
+            getTableData () {
+                alert('aa')
             }
         }
     }
@@ -158,8 +149,7 @@
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
-
-    .measure-unit{
+    .list-info{
         padding: 0 30px 0 30px;
         @include block_outline();
 
@@ -171,15 +161,9 @@
             .ivu-btn-90px{
                 margin-right: 10px;
             }
-        }
 
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
-
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
+            .search-by-word{
+                float: left;
             }
         }
 
@@ -192,6 +176,16 @@
 
             .delete{
                 color: $color_err;
+            }
+        }
+
+        .page-area {
+            @include block_outline($height: 57px);
+            text-align: right;
+
+            /deep/ .el-pagination {
+                display: inline-block;
+                padding-top: 15px;
             }
         }
     }

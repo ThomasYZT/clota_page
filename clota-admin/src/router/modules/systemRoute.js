@@ -101,12 +101,23 @@ export default {
                             menuName: 'setting',
                             lightMenu: 'system',
                         },
+                    },
+                    //节假日信息
+                    holiday : {
+                        path: '/system/setting/holiday',
+                        name: 'holiday',
+                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/holiday.vue'),
+                        meta: {
+                            _name: 'system',
+                            menuName: 'setting',
+                            lightMenu: 'system',
+                        },
                     }
                 }
             },
             //新增/编辑计量单位
             editMeasureUnit : {
-                path: '/system/setting/measureUnit/edit',
+                path: '/setting/measureUnit/edit',
                 name: 'editMeasureUnit',
                 component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editMeasureUnit.vue'),
                 meta: {
@@ -115,6 +126,17 @@ export default {
                     lightMenu: 'system',
                 },
             },
+            //新增/编辑节假日信息
+            editHoliday : {
+                path: '/setting/holiday/edit',
+                name: 'editHoliday',
+                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editHoliday.vue'),
+                meta: {
+                    _name: 'system',
+                    menuName: 'setting',
+                    lightMenu: 'system',
+                },
+            }
         }
     },
 }
