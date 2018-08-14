@@ -82,7 +82,7 @@
 
 <script>
 
-    import modifyDetailModal from '../components/viewModify.vue'
+    import modifyDetailModal from '../components/viewModifyModal.vue'
 
     export default {
         components: {
@@ -142,6 +142,7 @@
 
     .member-integration-detail{
         @include block_outline();
+        min-width: $content_min_width;
         overflow: auto;
         @include padding_place();
         background: $color-fff;

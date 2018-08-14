@@ -1,31 +1,18 @@
 <template>
-    <!--个人资金交易明细-->
-    <div class="member-fund-detail">
+    <!--会员管理--会员积分--特殊会员权益管理--关联会员信息-->
+    <div class="integration-link-member-info">
 
         <div class="breadcrumb-box">
             <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
-                <BreadcrumbItem to="/memberManage/infoDetail">会员详情</BreadcrumbItem>
-                <BreadcrumbItem>个人资金交易明细</BreadcrumbItem>
+                <BreadcrumbItem to="/memberManage/integration">特殊会员权益管理</BreadcrumbItem>
+                <BreadcrumbItem>关联会员信息</BreadcrumbItem>
             </Breadcrumb>
         </div>
 
-        <div class="fund-detail-content">
+        <div class="rate-content">
+            <div class="title-wrap">员工分类：{{ info.type }}</div>
             <div class="filter-wrap">
-                <Select v-model="queryParams.type" style="width:200px">
-                    <Option value="''">全部交易类型</Option>
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
-                </Select>
-                <Date-picker
-                    type="date"
-                    v-model="queryParams.startTime"
-                    placeholder="请选择开始日期">
-                </Date-picker>
-                <Date-picker
-                    type="date"
-                    v-model="queryParams.endTime"
-                    placeholder="请选择结束日期">
-                </Date-picker>
+                <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
                 <Button type="primary">查 询</Button>
                 <Button type="ghost">重 置</Button>
             </div>
@@ -33,31 +20,31 @@
                 <el-table
                     :data="tableData"
                     :border="true"
-                    @row-click="viewDetail"
+                    max-height="450"
                     style="width: 100%">
                     <el-table-column
                         prop="name"
-                        label="本次交易积分">
+                        label="姓名"
+                        width="220">
                     </el-table-column>
                     <el-table-column
                         prop="mobile"
-                        label="交易类型">
+                        label="手机号"
+                        width="200">
                     </el-table-column>
                     <el-table-column
                         prop="idNum"
-                        label="交易编码">
+                        label="身份证号"
+                        width="200">
                     </el-table-column>
                     <el-table-column
-                        prop="sex"
-                        label="交易信息">
-                    </el-table-column>
-                    <el-table-column
-                        prop="belongTo"
-                        label="交易后账户积分">
-                    </el-table-column>
-                    <el-table-column
-                        prop="time"
-                        label="交易时间">
+                        prop=""
+                        label="操作">
+                        <template slot-scope="scope">
+                            <div class="operation">
+                                <span class="span-blue" @click="showLinkModal(scope)">关联所属类别</span>
+                            </div>
+                        </template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -74,56 +61,60 @@
             </div>
         </div>
 
-        <!--储值账户修改信息modal-->
-        <modify-detail-modal ref="modifyDetail"></modify-detail-modal>
+        <!--总体积分率折扣率设置modal-->
+        <link-belong-modal ref="linkBelong"></link-belong-modal>
 
     </div>
 </template>
 
 <script>
 
-    import modifyDetailModal from '../components/viewModifyModal.vue'
+    import linkBelongModal from '../components/linkBelongModal.vue'
 
     export default {
         components: {
-            modifyDetailModal,
+            linkBelongModal,
         },
         data () {
             return {
+                //跳转信息
+                info: {},
                 // 查询数据
                 queryParams: {
-                    type: '',
-                    startTime: '',
-                    endTime: '',
+                    keyword: '',
                     pageNo: '1',
                     pageSize: '10',
                 },
-                // 枚举数据
-                type: [
-                    {
-                        name: '北京欢乐谷',
-                        value: '0',
-                    }
-                ],
                 // 表格数据
                 tableData: [
                     {
                         name: '张三',
-                        mobile: '16876868839',
-                        idNum: '4307283898172933',
-                        sex: '男',
-                        belongTo: '北京欢乐谷',
-                        time: '2018.07.09 08:00:11',
-                    }
+                        mobile: '15322222222',
+                        idNum: '222212121212121212',
+                    },
+                    {
+                        name: '张三',
+                        mobile: '15322222222',
+                        idNum: '222212121212121212',
+                    },
                 ],
                 total: 50,
             }
         },
+        created() {
+            this.init();
+        },
         methods: {
 
-            viewDetail ( data ) {
-                console.log(data)
-                this.$refs.modifyDetail.show('fund');
+            init() {
+                if (this.$route.query && this.$route.query.info) {
+                    this.info = this.$route.query.info;
+                }
+            },
+
+            showLinkModal ( data ) {
+                console.log(data);
+                this.$refs.linkBelong.show();
             },
 
             handleSizeChange(val) {
@@ -140,28 +131,32 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .member-fund-detail{
+    .integration-link-member-info {
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
         @include padding_place();
         background: $color-fff;
         border-radius: 4px;
-        position: relative;
 
-        .breadcrumb-box{
+        .breadcrumb-box {
             height: 50px;
             line-height: 50px;
             padding: 0 30px;
             background: $color_F4F6F8;
         }
 
-        .fund-detail-content{
+        .rate-content{
+            padding: 20px 30px;
+
+            .title-wrap{
+                font-size: $font_size_18px;
+                color: $color_333;
+                margin-bottom: 10px;
+            }
 
             .filter-wrap{
-                height: 60px;
-                line-height: 60px;
-                padding: 0 30px;
+                margin-bottom: 10px;
             }
 
             .table-wrap{
@@ -175,5 +170,5 @@
         }
 
     }
-</style>
 
+</style>

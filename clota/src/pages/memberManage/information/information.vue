@@ -223,11 +223,12 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
     .member-information {
         @include block_outline();
+        min-width: $content_min_width;
         overflow: auto;
         @include padding_place();
         background: $color-fff;

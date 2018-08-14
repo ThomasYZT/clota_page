@@ -179,13 +179,13 @@
                             <el-table-column
                                 prop=""
                                 label="当前会员卡身份"
-                                width="180">
+                                width="160">
                                 <template slot-scope="scope">母卡</template>
                             </el-table-column>
                             <el-table-column
                                 prop=""
                                 label="母卡信息"
-                                width="280">
+                                width="260">
                                 <template slot-scope="scope">张三，27838383939</template>
                             </el-table-column>
                         </el-table>
@@ -198,13 +198,13 @@
                             <el-table-column
                                 prop=""
                                 label="当前会员卡身份"
-                                width="180">
+                                width="160">
                                 <template slot-scope="scope">子卡</template>
                             </el-table-column>
                             <el-table-column
                                 prop=""
                                 label="子卡信息"
-                                width="280">
+                                width="260">
                                 <template slot-scope="scope">张三，27838383939</template>
                             </el-table-column>
                         </el-table>
@@ -221,8 +221,8 @@
                 <div class="content-info">
                     <div class="title">修改储值、积分数值</div>
                     <div class="operate">
-                        <div @click="showAssetModal">修改该会员储值账户余额</div>
-                        <div @click="showIntegModal">修改该会员积分账户余额</div>
+                        <div><span @click="showAssetModal">修改该会员储值账户余额</span></div>
+                        <div><span @click="showIntegModal">修改该会员积分账户余额</span></div>
                     </div>
 
                 </div>
@@ -259,12 +259,12 @@
 
 <script>
 
-    import addAccountModal from '../components/addAccount.vue'
-    import addFundModal  from '../components/addFund.vue'
-    import toCashModal  from '../components/taCash.vue'
-    import modifyBalanceModal  from '../components/modifyBalance.vue'
-    import useRangeModal  from '../components/useRange.vue'
-    import viewMoreCouponModal  from '../components/viewMoreCoupon.vue'
+    import addAccountModal from '../components/addAccountModal.vue'
+    import addFundModal  from '../components/addFundModal.vue'
+    import toCashModal  from '../components/taCashModal.vue'
+    import modifyBalanceModal  from '../components/modifyBalanceModal.vue'
+    import useRangeModal  from '../components/useRangeModal.vue'
+    import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue'
 
     export default {
         components: {
@@ -397,11 +397,11 @@
 
     .member-info-detail{
         @include block_outline();
+        position: relative;
+        min-width: $content_min_width;
         overflow: auto;
-//        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
-        position: relative;
 
         .breadcrumb-box{
             height: 50px;
@@ -545,7 +545,9 @@
                         margin-top: 10px;
                         font-size: $font_size_14px;
                         color: $color-blue;
-                        cursor: pointer;
+                        span{
+                            cursor: pointer;
+                        }
                     }
 
                     .switch-wrap{

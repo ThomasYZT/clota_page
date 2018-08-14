@@ -150,9 +150,17 @@ export default new Vuex.Store({
                 'memberInfo': 'allow',
                 'memberCount': 'allow',
                 'integration': 'allow',
+                'specialMember': 'allow',
                 'card': 'allow',
                 'fund': 'allow',
+                'fundDetail': 'allow',
+                'financialManagement': 'allow',
                 'memberSetting': 'allow',
+                'channelSetting': 'allow',
+                'levelSetting': 'allow',
+                'growthSetting': 'allow',
+                'fundSetting': 'allow',
+                'consumeSetting': 'allow',
             });
             // return ajaxList.getUserRight(param).then(res => {
             //   if(res.success) {
