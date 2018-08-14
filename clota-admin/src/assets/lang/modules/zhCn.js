@@ -233,4 +233,9 @@ export default {
     editChannel : '编辑渠道',
     channelName : '渠道名称',
     channelCode : '渠道编码',
+    addRegion : '新增地区信息',
+    editRegion : '编辑地区信息',
+    province : '省',
+    city : '市',
+    county : '县/区',
 }

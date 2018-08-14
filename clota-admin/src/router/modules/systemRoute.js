@@ -123,6 +123,17 @@ export default {
                             menuName: 'setting',
                             lightMenu: 'system',
                         },
+                    },
+                    //地区信息
+                    region : {
+                        path: '/system/setting/region',
+                        name: 'region',
+                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/region.vue'),
+                        meta: {
+                            _name: 'system',
+                            menuName: 'setting',
+                            lightMenu: 'system',
+                        },
                     }
                 }
             },
@@ -153,6 +164,17 @@ export default {
                 path: '/setting/channel/edit',
                 name: 'editChannel',
                 component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editChannel.vue'),
+                meta: {
+                    _name: 'system',
+                    menuName: 'setting',
+                    lightMenu: 'system',
+                },
+            },
+            //新增/编辑地区信息
+            editRegion : {
+                path: '/setting/region/edit',
+                name: 'editRegion',
+                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editRegion.vue'),
                 meta: {
                     _name: 'system',
                     menuName: 'setting',

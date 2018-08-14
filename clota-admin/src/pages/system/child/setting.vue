@@ -33,7 +33,7 @@
                         label: this.$t('customeSetting')
                     },
                     {
-                        name: 'cooperaChannelOrg',
+                        name: 'region',
                         label: this.$t('regionInfo')
                     },
                     {
