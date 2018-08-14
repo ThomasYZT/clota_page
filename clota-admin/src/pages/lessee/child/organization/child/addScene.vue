@@ -16,10 +16,10 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="0">
+                  :label-width="150">
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
-                        <Option v-for="item in smsProviderList"
+                        <Option v-for="item in fianceSuperiorList"
                                 :value="item.value"
                                 :key="item.value">
                             {{ item.label }}
@@ -29,29 +29,24 @@
                 <FormItem :label="$t('manageSuperior')" prop="manageSuperior">
                     <Input v-model="formData.manageSuperior" disabled style="width: 280px"/>
                 </FormItem>
-                <FormItem :label="$t('controlAccount')" prop="controlAccount">
-                    <Input v-model="formData.controlAccount" style="width: 280px"/>
-                </FormItem>
                 <FormItem :label="$t('openedServices')" prop="openedServices">
-                    <Select v-model="formData.smsProvider" multiple style="width:280px">
-                        <Option v-for="item in smsProviderList"
+                    <Select v-model="formData.openedServices" multiple style="width:280px">
+                        <Option v-for="item in fianceSuperiorList"
                                 :value="item.value"
                                 :key="item.value">
                             {{ item.label }}
                         </Option>
                     </Select>
+                </FormItem>
+                <div class="hint">如需开通更多服务，请先为上级公司开通相应服务。</div>
+                <FormItem :label="$t('controlAccount')" prop="controlAccount">
+                    <Input v-model="formData.controlAccount" style="width: 280px"/>
                 </FormItem>
                 <FormItem :label="$t('email')" prop="mail">
                     <Input v-model="formData.mail" style="width: 280px"/>
                 </FormItem>
-                <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                    <Select v-model="formData.smsProvider" style="width:280px">
-                        <Option v-for="item in smsProviderList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
-                        </Option>
-                    </Select>
+                <FormItem :label="$t('person')" prop="person">
+                    <Input v-model="formData.person" style="width: 280px"/>
                 </FormItem>
                 <FormItem :label="$t('phone')" prop="phone">
                     <Input v-model="formData.phone" style="width: 280px"/>
@@ -64,7 +59,7 @@
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="formData.place = $event">
+                    <city-plugin @select="formData.place = $event" style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <FormItem :label="$t('address')">
@@ -73,7 +68,12 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="save">保存</Button>
+            <Button type="ghost" 
+                class="ivu-btn-90px"
+                @click="cancel">取消</Button>
+            <Button type="primary" 
+                class="ivu-btn-90px" 
+                @click="save">保存</Button>
         </div>
     </Modal>
 </template>
@@ -167,12 +167,12 @@
                     controlAccount: '',
                     //电子邮箱
                     mail: '',
-                    //短信供应商
-                    smsProvider: '',
                     //详细地址
                     address: '',
                     //地点
                     place: '',
+                    //联系人
+                    person : ''
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -202,21 +202,12 @@
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
                     ],
-                    smsProvider: [
-                        {
-                            required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('smsProvider')}),
-                            trigger: 'change'
-                        },
-                    ]
+                    person: [
+                        {required: true,message: this.$t('validateError.pleaseInput', {msg: this.$t('person')}), trigger: 'blur'},
+                    ],
                 },
-                //短信供应商列表
-                smsProviderList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                //财务上级列表
+                fianceSuperiorList : []
             }
         },
         watch: {
@@ -272,6 +263,12 @@
             addCompany() {
                 this.$emit('fresh-structure-data');
                 this.$emit('input', false);
+            },
+            /**
+             * 取消新增
+             */
+            cancel () {
+                this.$emit('input', false);
             }
         }
     }
@@ -315,7 +312,7 @@
         }
 
         .hint {
-            text-indent: 180px;
+            text-indent: 150px;
             margin-top: -12px;
             margin-bottom: 10px;
             font-size: $font_size_14px;
@@ -350,6 +347,10 @@
                 .ivu-form-item-label {
                     font-size: $font_size_14px;
                     color: $color_6c6c6c;
+                }
+
+                textarea.ivu-input{
+                    height: 70px;
                 }
             }
         }

@@ -42,9 +42,9 @@ export const buyColumns = [
 export const sendColumns = [
     {
         title: '短信套餐名称',
-        minWidth: 120,
+        minWidth: 130,
         field: 'realName',
-        ableClick: true
+        filters: true
     },
     {
         title: '套餐单价',
@@ -53,8 +53,9 @@ export const sendColumns = [
     },
     {
         title: '套餐短息数量',
-        minWidth: 130,
-        field: 'examScore'
+        minWidth: 140,
+        field: 'examScore',
+        filters: true
     },
     {
         title: '购买数量',
@@ -73,7 +74,8 @@ export const sendColumns = [
     },
     {
         title: '购买时间',
-        minWidth: 130,
-        field: 'examScore'
+        minWidth: 150,
+        field: 'examScore',
+        filters: true
     },
 ];

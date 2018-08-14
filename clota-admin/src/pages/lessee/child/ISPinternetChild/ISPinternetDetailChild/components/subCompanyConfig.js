@@ -12,7 +12,7 @@ export const companies = [
         field: 'examName'
     },
     {
-        title: '管理员',
+        title: '联系人',
         minWidth: 130,
         field: 'examScore'
     },

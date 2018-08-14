@@ -10,7 +10,7 @@
             <div class="tab-list">
                 <DatePicker
                     v-model="selectDate"
-                    type="date"
+                    type="daterange"
                     placeholder="Select date"
                     style="width: 280px">
                 </DatePicker>
@@ -64,7 +64,7 @@
         data() {
             return {
                 //查询的日期
-                selectDate : new Date(),
+                selectDate : [new Date(),new Date()],
                 //表头配置
                 columns :columns,
                 //总共条数

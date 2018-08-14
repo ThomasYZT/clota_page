@@ -16,6 +16,7 @@
                 <el-table :data="tableData"
                           style="width: 100%"
                           @row-click="classDetailLink"
+                          @filter-change="filterHandler"
                           @selection-change="handleSelectionChange">
                     <el-table-column
                         v-if="columnCheck"
@@ -54,10 +55,10 @@
                                 :width="item.width"
                                 :min-width="item.minWidth">
                                 <template slot-scope="scoped">
-                    <span
-                        class="operate-info"
-                        v-for="list in item.operateList"
-                        @click="list['click']">{{list['name']}}</span>
+                                    <span
+                                        class="operate-info"
+                                        v-for="list in item.operateList"
+                                        @click="list['click']">{{list['name']}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -65,13 +66,15 @@
                                 :label="item.title"
                                 :prop="item.field"
                                 :key="index"
+                                :filters="getFilters(item)"
                                 :width="item.width"
+                                :filter-multiple="false"
                                 :min-width="item.minWidth">
                                 <template slot-scope="scoped">
-                        <span
-                            v-w-title="scoped.row[item.field]" v-if="item.type === 'time'">
-                            {{scoped.row[item.field] | timeFormat('yyyy-MM-dd HH:mm')   | contentFilter}}
-                        </span>
+                                    <span
+                                        v-w-title="scoped.row[item.field]" v-if="item.type === 'time'">
+                                        {{scoped.row[item.field] | timeFormat('yyyy-MM-dd HH:mm')   | contentFilter}}
+                                    </span>
                                     <span
                                         v-w-title="scoped.row[item.field]" v-else>{{scoped.row[item.field]  | contentFilter}}</span>
                                 </template>
@@ -191,6 +194,33 @@
                     pageSize : this.pageSize,
                     pageNo : this.pageNo,
                 });
+            },
+            /**
+             * 筛选函数
+             * @param filters
+             */
+            filterHandler (filters) {
+                this.$emit('filter-method',filters);
+            },
+            /**
+             * 获取下拉筛选条件,排除重复选项
+             * @param item
+             */
+            getFilters(item) {
+                let filters = [];
+                if(item.filters){
+                    for(let i = 0,j = this.tableData.length;i < j;i++){
+                        if(!filters.some(list => list.value ===  this.tableData[i][item.field])){
+                            filters.push({
+                                text : this.tableData[i][item.field],
+                                value : this.tableData[i][item.field],
+                            });
+                        }
+                    }
+                    return filters;
+                }else{
+                    return [];
+                }
             }
         },
         created () {
@@ -244,6 +274,13 @@
 
         .table-bar {
             margin-top: 16px;
+        }
+
+
+        /deep/ .el-icon-arrow-down::before{
+            content : "\E60B"!important;
+            font-size: 20px;
+            vertical-align: middle;
         }
     }
 </style>

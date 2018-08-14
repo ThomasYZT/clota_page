@@ -15,12 +15,14 @@
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="0">
+              :label-width="100">
             <FormItem :label="$t('nodeName')" prop="nodeName">
-                <Input v-model="formData.nodeName"/>
+                <Input v-model="formData.nodeName" style="width: 280px"/>
             </FormItem>
-            <FormItem :label="$t('nodeType')" prop="nodeType">
-                <Select v-model="formData.nodeType">
+            <FormItem :label="$t('nodeType')"
+                      prop="nodeType" >
+                <Select v-model="formData.nodeType"
+                        style="width: 280px">
                     <Option :value="item.value"
                             v-for="item in nodeListCanChose"
                             :key="item.value">
@@ -136,8 +138,19 @@
         },
         computed: {
             //可以选择的节点类型
+            //公司或集团可以建立公司、景区、部门的子节点
+            //景区可以建立景区、部门、和款台的子节点
+            //部门和款台可以不可创建子节点
             nodeListCanChose() {
-                return this.nodeList
+                if(this.nodeDetail.type === 'company'){
+                    return this.nodeList.filter(item => item.label !== 'cashier');
+                }else if(this.nodeDetail.type === 'scene' ){
+                    return this.nodeList.filter(item => item.label !== 'company');
+                }else if(this.nodeDetail.type === 'scene' ){
+                    return this.nodeList.filter(item => item.label !== 'company');
+                }else{
+                    return [];
+                }
             }
         }
     }
@@ -183,11 +196,11 @@
             text-align: center;
         }
 
-        /deep/ .ivu-form-item {
-            justify-content: center;
-        }
+        /*/deep/ .ivu-form-item {*/
+            /*justify-content: center;*/
+        /*}*/
 
-        /deep/ .ivu-form {
+        /deep/ .ivu-form{
             @include center_center();
         }
 

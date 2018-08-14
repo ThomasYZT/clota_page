@@ -16,11 +16,12 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="0">
+                  :label-width="160">
                 <!--服务器名称-->
                 <FormItem :label="$t('serverName')" prop="serverName">
                     <Input v-model="formData.serverName" style="width: 280px"/>
                 </FormItem>
+                <div class="hint">服务器名称为景区编码+设备编码或内网IP地址，不可重复</div>
                 <!--款台类型-->
                 <FormItem :label="$t('cashierType')" prop="cashierType">
                     <Select v-model="formData.cashierType"
@@ -60,6 +61,9 @@
             </Form>
         </div>
         <div slot="footer">
+            <Button type="ghost" 
+                class="ivu-btn-90px"
+                @click="cancel">取消</Button>
             <Button type="primary"
                     class="ivu-btn-90px"
                     @click="save">保存</Button>
@@ -203,6 +207,12 @@
              */
             cashierTypeChange (data) {
                 console.log(data)
+            },
+            /**
+             * 取消新增
+             */
+            cancel () {
+                this.$emit('input', false);
             }
         },
         computed : {
@@ -296,6 +306,14 @@
         }
         & /deep/ .ivu-modal-footer {
             text-align: center;
+        }
+
+         .hint {
+            text-indent: 160px;
+            margin-top: -12px;
+            margin-bottom: 10px;
+            font-size: $font_size_14px;
+            color: $color_999;
         }
     }
 </style>

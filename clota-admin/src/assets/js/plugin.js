@@ -11,6 +11,7 @@ import Pagination from 'element-ui/lib/pagination';
 import Dropdown from 'element-ui/lib/dropdown';
 import DropdownMenu from 'element-ui/lib/dropdown-menu';
 import DropdownItem from 'element-ui/lib/dropdown-item';
+import scrollbar from 'element-ui/lib/scrollbar';
 
 //按需引入iview组件
 import {
@@ -60,13 +61,21 @@ let plugin = {};
 plugin.install = function (Vue, options) {
 
     // element-ui按需引入
-    Vue.component(Table.name,Table);
-    Vue.component(TableColumn.name,TableColumn);
-    Vue.component(Scrollbar.name,Scrollbar);
-    Vue.component(Pagination.name,Pagination);
-    Vue.component(Dropdown.name,Dropdown);
-    Vue.component(DropdownMenu.name,DropdownMenu);
-    Vue.component(DropdownItem.name,DropdownItem);
+    Vue.use(scrollbar);
+    Vue.use(Table);
+    Vue.use(TableColumn);
+    Vue.use(Scrollbar);
+    Vue.use(Pagination);
+    Vue.use(Dropdown);
+    Vue.use(DropdownMenu);
+    Vue.use(DropdownItem);
+    // Vue.component(TableColumn.name,TableColumn);
+    // Vue.component(Scrollbar.name,Scrollbar);
+    // Vue.component(Pagination.name,Pagination);
+    // Vue.component(Dropdown.name,Dropdown);
+    // Vue.component(DropdownMenu.name,DropdownMenu);
+    // Vue.component(DropdownItem.name,DropdownItem);
+    // Vue.component('ElScrollbar',scrollbar);
 
     //iview按需引入
     Vue.component('Button',Button);
@@ -98,7 +107,9 @@ plugin.install = function (Vue, options) {
     Vue.component('FormItem',Form.Item );
     Vue.component('TimePicker',TimePicker );
     Vue.component('Row',Row );
+    Vue.component('i-row',Row );
     Vue.component('Col',Col );
+    Vue.component('i-col',Col );
     Vue.component('Option',Option );
     Vue.component('Tooltip',Tooltip );
     Vue.component('Message',Message );

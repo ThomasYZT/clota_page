@@ -18,36 +18,53 @@
                 width="55">
             </el-table-column>
             <div class="service-operation" slot="table-title">
-                <Button type="primary"
-                        :disabled="!canRecoverService"
-                        @click="recoverService(selectedService)">恢复</Button>
-                <Button type="primary"
-                        :disabled="!canPauseService"
-                        @click="paushService([scoped.row])">暂停</Button>
-                <Button type="primary"
-                        :disabled="!canDelayService"
-                        @click="delayService(selectedService)">延期</Button>
-                <Button type="primary" @click="addService">开通服务</Button>
+                <template v-if="type === 'company'">
+                    <Button type="primary"
+                            :disabled="!canRecoverService"
+                            @click="recoverService(selectedService)">恢复</Button>
+                    <Button type="primary"
+                            :disabled="!canPauseService"
+                            @click="paushService(selectedService)">暂停</Button>
+                    <Button type="primary"
+                            :disabled="!canDelayService"
+                            @click="delayService(selectedService)">延期</Button>
+                    <Button type="primary" @click="addService">开通服务</Button>
+                </template>
+                <template v-else-if="type === 'scene'">
+                    <Button type="primary"
+                            :disabled="!canDelService"
+                            @click="delService(selectedService)">删除服务</Button>
+                    <Button type="primary"
+                            @click="addService">添加服务</Button>
+                </template>
             </div>
             <el-table-column
-                slot="column4"
+                slot="column5"
                 :label="$t('operate')"
                 width="145">
                 <template slot-scope="scoped">
-                    <ul class="operate-info">
-                        <li class="custome"
-                            @click="delayService([scoped.row])"
-                            v-if="scoped.row.status === 'open'">延期</li>
-                        <li class="custome"
-                            @click="paushService([scoped.row])"
-                            v-if="scoped.row.status === 'open'">暂停</li>
-                        <li class="custome"
-                            @click="openService(scoped.row)"
-                            v-if="scoped.row.status === 'close'">开通服务</li>
-                        <li class="custome"
-                            @click="recoverService([scoped.row])"
-                            v-if="scoped.row.status === 'pause'">恢复</li>
-                    </ul>
+                    <template v-if="type === 'company'">
+                        <ul class="operate-info">
+                            <li class="custome"
+                                @click="delayService([scoped.row])"
+                                v-if="scoped.row.status === 'open'">延期</li>
+                            <li class="custome"
+                                @click="paushService([scoped.row])"
+                                v-if="scoped.row.status === 'open'">暂停</li>
+                            <li class="custome"
+                                @click="openService(scoped.row)"
+                                v-if="scoped.row.status === 'close'">开通服务</li>
+                            <li class="custome"
+                                @click="recoverService([scoped.row])"
+                                v-if="scoped.row.status === 'pause'">恢复</li>
+                        </ul>
+                    </template>
+                    <template v-if="type === 'scene'">
+                        <ul class="operate-info">
+                            <li class="custome"
+                                @click="delService([scoped.row])">删除</li>
+                        </ul>
+                    </template>
                 </template>
             </el-table-column>
         </table-com>
@@ -60,6 +77,14 @@
             v-model="serviceDelayModalShow"
             :service-list="operateServiceList">
         </service-delay-modal>
+        <!--删除服务模态框-->
+        <del-modal ref="delModal">
+            <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>
+            <span>请及时保存。</span>
+        </del-modal>
+        <!--添加服务模态框-->
+        <add-service ref="addService">
+        </add-service>
     </div>
 </template>
 
@@ -68,6 +93,8 @@
     import tableCom from '../../../organization/tableCom';
     import openServiceModal from './openServiceModal';
     import serviceDelayModal from './serviceDelayModal.vue';
+    import delModal from '@/components/delModal/index.vue';
+    import addService from './addService';
     export default {
         props : {
             //是否展开默认值
@@ -75,11 +102,18 @@
                 type: Boolean,
                 default: false
             },
+            //当前查看已开通服务的结构类型，可以为景区和公司，默认为公司
+            type : {
+                type : String,
+                default: 'company'
+            }
         },
         components : {
             tableCom,
             openServiceModal,
-            serviceDelayModal
+            serviceDelayModal,
+            delModal,
+            addService
         },
         data() {
             return {
@@ -162,6 +196,28 @@
              */
             addService () {
                 this.openServiceModalShow = true;
+            },
+            /**
+             * 删除服务
+             * @param data
+             */
+            delService (data) {
+                this.$refs.delModal.show({
+                    title : `删除服务`,
+                    confirmCallback : () => {
+                        // this.confirmDelete(data);
+                    }
+                });
+            },
+            /**
+             * 添加服务
+             */
+            addService () {
+                this.$refs.addService.show({
+                    confirmCallback (data) {
+                        console.log(data)
+                    }
+                });
             }
         },
         computed : {
@@ -176,6 +232,10 @@
             //可以延期服务
             canDelayService () {
                 return this.selectedService.length > 0 && this.selectedService.every(item => item.status === 'open');
+            },
+            //是否可以批量删除服务
+            canDelService () {
+                return this.selectedService.length > 0;
             }
         }
     }
@@ -205,6 +265,15 @@
             .custome{
                 color: $color_blue;
             }
+        }
+
+        @at-root .red-bale{
+            padding: 0 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width : 100%;
+            color:#ed3f14;
         }
     }
 </style>

@@ -8,10 +8,12 @@
         </bread-crumb-head>
         <div class="less-company-detail">
             <div class="structure">
+                <!--组织结构图-->
                 <structure-tree :tree-data="structureData"
                                 v-model="componentName">
                 </structure-tree>
             </div>
+            <!--组织架构不同的节点对应不同的组件-->
             <component :is="componentSelect">
             </component>
         </div>

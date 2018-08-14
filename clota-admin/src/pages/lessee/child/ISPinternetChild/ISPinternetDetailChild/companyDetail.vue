@@ -5,7 +5,7 @@
         <div class="com-name">
             <template v-if="type === 'edit'">
                 <Input v-model="formDataCopy.companyName" style="width : 280px"/>
-                <Switch v-model="formDataCopy.isStart"></Switch>
+                <i-switch v-model="formDataCopy.isStart"></i-switch>
             </template>
             <template v-if="type === 'watch'">
                 <span class="name"
@@ -35,9 +35,9 @@
             </li>
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">线下核销编码：</span>
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">企业编码(线下核销)：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.cashierCode" style="width : 280px"/>
+                        <Input v-model="formDataCopy.cashierCode"/>
                     </span>
                     <span class="info-val" v-else>
                         {{formData.cashierCode}}
@@ -46,7 +46,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">全民分销邀请码：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.inviteCode" style="width : 280px"/>
+                        <Input v-model="formDataCopy.inviteCode"/>
                     </span>
                     <span class="info-val" v-else>
                         {{formData.inviteCode}}
@@ -57,7 +57,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">短信供应商：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.smsSuppiler" style="width:280px">
+                          <Select v-model="formDataCopy.smsSuppiler" >
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.value"
                                     :key="item.value">
@@ -81,7 +81,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电子邮箱：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.email" style="width : 280px"/>
+                        <Input v-model="formDataCopy.email" />
                     </span>
                     <span class="info-val" v-else>
                         {{formData.email}}
@@ -90,7 +90,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">联系人：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.contactor" style="width : 280px"/>
+                        <Input v-model="formDataCopy.contactor" />
                     </span>
                     <span class="info-val" v-else>
                         {{formData.contactor}}
@@ -101,7 +101,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">所在地：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <city-plugin @select="formDataCopy.place = $event" style="width: 280px;">
+                        <city-plugin @select="formDataCopy.place = $event" >
                         </city-plugin>
                     </span>
                     <span class="info-val" v-else>
@@ -111,7 +111,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">详细地址：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.address" style="width : 280px"/>
+                        <Input v-model="formDataCopy.address" />
                     </span>
                     <span class="info-val" v-else>
                         {{formData.address}}
@@ -122,7 +122,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电话：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.phone" style="width : 280px"/>
+                        <Input v-model="formDataCopy.phone" />
                     </span>
                     <span class="info-val" v-else>
                         {{formData.phone}}
@@ -131,7 +131,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">传真：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.fax" style="width : 280px"/>
+                        <Input v-model="formDataCopy.fax" />
                     </span>
                     <span class="info-val" v-else>
                         {{formData.fax}}
@@ -142,7 +142,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">管理上级：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.superior" style="width:280px">
+                          <Select v-model="formDataCopy.superior" >
                             <Option v-for="item in superiorList"
                                     :value="item.value"
                                     :key="item.value">
@@ -157,7 +157,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.fianceSuperior" style="width:280px">
+                          <Select v-model="formDataCopy.fianceSuperior" >
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.value"
                                     :key="item.value">
@@ -178,7 +178,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.serviceStaff" style="width:280px">
+                          <Select v-model="formDataCopy.serviceStaff" >
                             <Option v-for="item in serviceStaffList"
                                     :value="item.value"
                                     :key="item.value">

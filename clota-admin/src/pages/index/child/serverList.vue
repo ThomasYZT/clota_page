@@ -4,7 +4,7 @@
     <div class="server-list">
         <div class="title">
             服务器列表
-            <span class="server-care" @click="toServer">服务器维护</span>
+            <span class="server-care" @click="toServer">更多</span>
         </div>
         <div class="table-list">
             <table-com

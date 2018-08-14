@@ -38,7 +38,8 @@
             </li>
         </ul>
         <!--员工-->
-        <employee-table :is-pack-up="true">
+        <employee-table :is-pack-up="true"
+                        type="department">
         </employee-table>
     </div>
 </template>

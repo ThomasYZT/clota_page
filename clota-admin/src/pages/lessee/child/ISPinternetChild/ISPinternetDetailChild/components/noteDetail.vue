@@ -124,7 +124,7 @@
 
         & /deep/ .ivu-modal {
             width: 560px !important;
-            height: 410px;
+            min-height: 350px;
         }
 
         .company-info {

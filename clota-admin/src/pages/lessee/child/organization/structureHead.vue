@@ -4,16 +4,16 @@
     <div class="structure-tree">
         <ul class="head">
             <li class="tree-title"
-                :class="{'active' : activeTap === 'fiance'}"
-                @click="switchTap('fiance')">
-                <span class="iconfont icon-help"></span>
-                财务管理
-            </li>
-            <li class="tree-title"
                 :class="{'active' : activeTap === 'management'}"
                 @click="switchTap('management')">
                 <span class="iconfont icon-help"></span>
                 经营管理
+            </li>
+            <li class="tree-title"
+                :class="{'active' : activeTap === 'fiance'}"
+                @click="switchTap('fiance')">
+                <span class="iconfont icon-help"></span>
+                财务管理
             </li>
         </ul>
         <div class="search-input">
@@ -29,8 +29,9 @@
             </Tree>
         </div>
         <!--删除节点模态框-->
-        <del-modal v-model="delModalShow"
-                   :node-detail="currentNode">
+        <del-modal ref="delModal">
+            <span style="" class="red-bale">本操作将同步删除本节点的全部下级节点，并不可撤销，</span>
+            <span>是否继续删除？</span>
         </del-modal>
         <!--新增节点模态框-->
         <add-modal v-model="addModalShow"
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-    import delModal from './child/delModal';
+    import delModal from '@/components/delModal/index.vue';
     import addModal from './child/addNode';
     import addCompany from './child/addCompany';
     import addScene from './child/addScene';
@@ -93,10 +94,8 @@
             return {
                 //搜索关键字
                 keyWord: '',
-                //当前记过菜单
-                activeTap: 'fiance',
-                //删除节点模态框是否显示
-                delModalShow: false,
+                //当前激活菜单
+                activeTap: 'management',
                 //添加节点模态框是否显示
                 addModalShow: false,
                 //当前操作的节点
@@ -142,22 +141,34 @@
                     h('span', {
                         class: {
                             iconfont: 'true',
-                            'icon-person': true
+                            'icon-person': true,
+                            //财务管理不允许删除节点
+                            'hidden' : this.activeTap === 'fiance'
                         },
                         on: {
-                            click: () => {
+                            click: (e) => {
+                                e.stopPropagation();
                                 this.currentNode = data;
-                                this.delModalShow = true;
+                                this.$refs.delModal.show({
+                                    title : `删除${data.title}`,
+                                    confirmCallback : () => {
+                                        // this.confirmDelete(data);
+                                    }
+                                });
                             }
                         }
                     }),
                     h('span', {
                         class: {
                             iconfont: 'true',
-                            'icon-person': true
+                            'icon-person': true,
+                            //财务管理不允许添加节点
+                            //核销款台或部门下不可以新建节点
+                            'hidden' : this.activeTap === 'fiance' || data.type === 'department' || data.type === 'cashier'
                         },
                         on: {
-                            click: () => {
+                            click: (e) => {
+                                e.stopPropagation();
                                 this.currentNode = data;
                                 this.addModalShow = true;
                             }
@@ -287,7 +298,7 @@
                         color: $color_blue;
                     }
 
-                    .iconfont {
+                    .iconfont:not(.hidden) {
                         display: inline-block;
                     }
                 }
@@ -323,6 +334,15 @@
                     }
                 }
             }
+        }
+
+        .red-bale{
+            padding: 0 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width : 100%;
+            color:#ed3f14;
         }
     }
 </style>

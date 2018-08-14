@@ -14,7 +14,8 @@ export const partMentHead = [
     {
         title: '部门名称',
         minWidth: 150,
-        field: 'examName'
+        field: 'depName',
+        filters : true
     },
     {
         title: '是否启用',

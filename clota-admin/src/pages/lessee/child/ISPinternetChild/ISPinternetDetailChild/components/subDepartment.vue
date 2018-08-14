@@ -11,7 +11,8 @@
             :show-table-bar="false"
             :total="totalCount"
             @selection-change="handleSelectionChange"
-            @get-new-data="getSubCompany">
+            @get-new-data="getSubCompany"
+            @filter-method="handleFilter">
             <el-table-column
                 slot="column0"
                 type="selection"
@@ -70,14 +71,42 @@
                 tableData : [
                     {
                         examName : 'examName',
+                        depName : '部门1',
                         status : 'open'
                     },
                     {
                         examName : 'examName',
+                        depName : '部门2',
                         status : 'close'
                     },
                     {
                         examName : 'examName',
+                        depName : '部门3',
+                        status : 'pause'
+                    },
+                    {
+                        examName : 'examName',
+                        depName : '部门3',
+                        status : 'pause'
+                    },
+                    {
+                        examName : 'examName',
+                        depName : '部门3',
+                        status : 'pause'
+                    },
+                    {
+                        examName : 'examName',
+                        depName : '部门3',
+                        status : 'pause'
+                    },
+                    {
+                        examName : 'examName',
+                        depName : '部门3',
+                        status : 'pause'
+                    },
+                    {
+                        examName : 'examName',
+                        depName : '部门3',
                         status : 'pause'
                     }
                 ],
@@ -146,6 +175,13 @@
              */
             confirmChangeDep (name,rowData) {
                 console.log(name,rowData)
+            },
+            /**
+             * 根据筛选条件过滤数据
+             * @param filters
+             */
+            handleFilter (filters) {
+                this.tableData = this.tableData.slice(0,2)
             }
         },
         created () {

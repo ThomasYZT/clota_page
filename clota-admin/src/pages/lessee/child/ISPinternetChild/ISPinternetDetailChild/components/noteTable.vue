@@ -23,6 +23,7 @@
                         <div class="note-sended">
                             <Icon type="ios-help"></Icon>
                             <span class="note-tips">共发送短信数量：<span class="icon-weight">1280条</span></span>
+                            <span class="note-tips">剩余短信数量：<span class="icon-weight">1280条</span></span>
                         </div>
                     </div>
                     <el-table-column
@@ -49,7 +50,6 @@
                         <div class="note-sended">
                             <Icon type="ios-help"></Icon>
                             <span class="note-tips">共购买短信数量：<span class="icon-weight">1280条</span></span>
-                            <span class="note-tips">剩余短信数量：<span class="icon-weight">1280条</span></span>
                         </div>
                     </div>
                 </table-com>

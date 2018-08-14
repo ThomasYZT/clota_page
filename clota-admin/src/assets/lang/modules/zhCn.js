@@ -95,6 +95,7 @@ export default {
     scene: '景区',
     cashier: '核销/销售款台',
     cashierType: '款台类型',
+    enterpriseCode: '企业编码',
     companyCode: '公司编码',
     offlineVerify: '线下核销',
     location: '所在地',

@@ -17,7 +17,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">款台名称：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.cashierName" style="width : 280px"/>
+                        <Input v-model="formDataCopy.cashierName"/>
                     </span>
                     <span class="info-val" v-else>
                         {{formData.cashierName}}
@@ -40,7 +40,7 @@
                         </Tooltip>：
                     </span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.serverName" style="width : 280px"/>
+                        <Input v-model="formDataCopy.serverName"/>
                     </span>
                     <span class="info-val" v-else>
                         {{formData.serverName}}
@@ -55,7 +55,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">所属核销设备分组：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.verifyCashierTypeGroup" style="width:280px">
+                          <Select v-model="formDataCopy.verifyCashierTypeGroup">
                             <Option v-for="item in verifyCashierTypeGroupList"
                                     :value="item.value"
                                     :key="item.value">
@@ -70,7 +70,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">所属销售渠道分组：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.verifySaleTypeGroup" style="width:280px">
+                          <Select v-model="formDataCopy.verifySaleTypeGroup">
                             <Option v-for="item in verifySaleTypeGroupList"
                                     :value="item.value"
                                     :key="item.value">

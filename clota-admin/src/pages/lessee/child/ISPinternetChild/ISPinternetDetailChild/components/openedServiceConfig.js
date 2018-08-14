@@ -20,5 +20,10 @@ export const openedServiceHead = [
         title: '服务状态',
         minWidth: 100,
         field: 'examScore'
+    },
+    {
+        title: '服务状态',
+        minWidth: 100,
+        field: 'examScore'
     }
 ];

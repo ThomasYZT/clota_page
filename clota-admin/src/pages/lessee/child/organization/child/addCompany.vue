@@ -16,7 +16,7 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="0">
+                  :label-width="150">
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
                         <Option v-for="item in smsProviderList"
@@ -44,18 +44,21 @@
                         </Option>
                     </Select>
                 </FormItem>
+                <FormItem :label="$t('person')" prop="person">
+                    <Input v-model="formData.person" style="width: 280px"/>
+                </FormItem>
                 <FormItem :label="$t('phone')" prop="phone">
                     <Input v-model="formData.phone" style="width: 280px"/>
                 </FormItem>
                 <FormItem :label="$t('fax')" prop="fax">
                     <Input v-model="formData.fax" style="width: 280px"/>
                 </FormItem>
-                <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'">
+                <FormItem :label="$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'">
                     <Input v-model="formData.companyCode" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="formData.place = $event">
+                    <city-plugin @select="formData.place = $event" style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <FormItem :label="$t('address')">
@@ -64,7 +67,12 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="save">保存</Button>
+            <Button type="ghost" 
+                class="ivu-btn-90px" 
+                @click="cancel">取消</Button>
+            <Button type="primary" 
+                class="ivu-btn-90px" 
+                @click="save">保存</Button>
         </div>
     </Modal>
 </template>
@@ -162,6 +170,8 @@
                     address: '',
                     //地点
                     place: '',
+                    //联系人
+                    person: '',
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -197,6 +207,9 @@
                             message: this.$t('validateError.pleaseSelect', {msg: this.$t('smsProvider')}),
                             trigger: 'change'
                         },
+                    ],
+                    person : [
+                        {required :true,message : this.$t('validateError.pleaseInput',{msg : this.$t('person')})}
                     ]
                 },
                 //短信供应商列表
@@ -261,6 +274,12 @@
             addCompany() {
                 this.$emit('fresh-structure-data');
                 this.$emit('input', false);
+            },
+            /**
+             * 取消新增
+             */
+            cancel () {
+                this.$emit('input', false);
             }
         }
     }
@@ -304,7 +323,7 @@
         }
 
         .hint {
-            text-indent: 180px;
+            text-indent: 150px;
             margin-top: -12px;
             margin-bottom: 10px;
             font-size: $font_size_14px;
@@ -339,6 +358,10 @@
                 .ivu-form-item-label {
                     font-size: $font_size_14px;
                     color: $color_6c6c6c;
+                }
+
+                textarea.ivu-input{
+                    height: 70px;
                 }
             }
         }

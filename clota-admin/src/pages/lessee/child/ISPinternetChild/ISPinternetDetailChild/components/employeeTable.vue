@@ -22,11 +22,25 @@
                         :disabled="selectedEmployee.length < 1"
                         @click="resetPassSelectEmployee">重置密码</Button>
                 <Button type="error"
+                        class="ivu-btn-90px"
                         :disabled="selectedEmployee.length < 1"
                         @click="deleteSelectEmployee">删除</Button>
             </div>
             <el-table-column
-                slot="column5"
+                v-if="type === 'department'"
+                slot="column6"
+                :label="$t('operate')"
+                width="145">
+                <template slot-scope="scoped">
+                    <ul class="operate-info">
+                        <li class="delete" @click="delElement(scoped.row)">删除</li>
+                        <li class="reset-pass " @click="resetPass(scoped.row)">重置密码</li>
+                    </ul>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-else
+                slot="column4"
                 :label="$t('operate')"
                 width="145">
                 <template slot-scope="scoped">
@@ -46,7 +60,7 @@
 
 <script>
     import tableCom from '../../../organization/tableCom';
-    import {employee} from '../departmentConfig';
+    import {employee,depEmployee} from '../departmentConfig';
     import delModal from '@/components/delModal/index.vue';
     import changePass from '@/components/editModal/index.vue';
     export default {
@@ -56,6 +70,11 @@
                 type: Boolean,
                 default: false
             },
+            //当前查看员工数据的结构类型，分为部门和非部门，默认为非部门
+            'type' : {
+                type : String,
+                default : 'noDepartment'
+            }
         },
         components : {
             tableCom,
@@ -78,7 +97,7 @@
                     }
                 ],
                 //表头数据
-                employeeColumn : employee,
+                employeeColumn : this.type === 'department' ?  depEmployee : employee ,
                 //选中的员工
                 selectedEmployee : [],
                 //员工总数
