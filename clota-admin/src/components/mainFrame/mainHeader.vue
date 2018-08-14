@@ -206,6 +206,8 @@
                     }
 
                     &:hover .sub-menu{
+                        position: relative;
+                        z-index: 9999;
                         display: block;
                         transition: all 0.3s;
                     }

@@ -89,6 +89,7 @@ export default {
                             _name: 'system',
                             menuName: 'setting',
                             lightMenu: 'system',
+                            subMenuType : 'setting'
                         },
                     },
                     //计量单位
@@ -100,6 +101,7 @@ export default {
                             _name: 'system',
                             menuName: 'setting',
                             lightMenu: 'system',
+                            subMenuType : 'setting'
                         },
                     },
                     //节假日信息
@@ -111,6 +113,7 @@ export default {
                             _name: 'system',
                             menuName: 'setting',
                             lightMenu: 'system',
+                            subMenuType : 'setting'
                         },
                     },
                     //渠道信息
@@ -122,6 +125,7 @@ export default {
                             _name: 'system',
                             menuName: 'setting',
                             lightMenu: 'system',
+                            subMenuType : 'setting'
                         },
                     },
                     //地区信息
@@ -133,6 +137,7 @@ export default {
                             _name: 'system',
                             menuName: 'setting',
                             lightMenu: 'system',
+                            subMenuType : 'setting'
                         },
                     }
                 }
@@ -146,6 +151,7 @@ export default {
                     _name: 'system',
                     menuName: 'setting',
                     lightMenu: 'system',
+                    subMenuType : 'setting'
                 },
             },
             //新增/编辑节假日信息
@@ -157,6 +163,7 @@ export default {
                     _name: 'system',
                     menuName: 'setting',
                     lightMenu: 'system',
+                    subMenuType : 'setting'
                 },
             },
             //新增/编辑渠道信息
@@ -168,6 +175,7 @@ export default {
                     _name: 'system',
                     menuName: 'setting',
                     lightMenu: 'system',
+                    subMenuType : 'setting'
                 },
             },
             //新增/编辑地区信息
@@ -179,6 +187,7 @@ export default {
                     _name: 'system',
                     menuName: 'setting',
                     lightMenu: 'system',
+                    subMenuType : 'setting'
                 },
             }
         }
