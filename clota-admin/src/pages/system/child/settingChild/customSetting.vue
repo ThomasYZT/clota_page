@@ -63,6 +63,7 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .custome-setting{
+        padding: 0 30px 0 30px;
         position: relative;
         @include block_outline();
 

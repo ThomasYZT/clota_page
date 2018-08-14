@@ -101,8 +101,19 @@ export default {
                             menuName: 'setting',
                             lightMenu: 'system',
                         },
-                    },
+                    }
                 }
+            },
+            //新增/编辑计量单位
+            editMeasureUnit : {
+                path: '/system/setting/measureUnit/edit',
+                name: 'editMeasureUnit',
+                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editMeasureUnit.vue'),
+                meta: {
+                    _name: 'system',
+                    menuName: 'setting',
+                    lightMenu: 'system',
+                },
             },
         }
     },

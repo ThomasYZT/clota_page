@@ -220,4 +220,9 @@ export default {
     smsSetting : '短信',
     notice : '通知',
     alarm : '报警',
+    addUnit : '新增计量单位',
+    editUnit : '编辑计量单位',
+    nameG : '名称',
+    isUsing : '是否启用',
+    remark : '备注',
 }

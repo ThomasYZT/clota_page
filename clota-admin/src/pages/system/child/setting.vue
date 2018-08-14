@@ -94,7 +94,6 @@
 
         .table-info {
             float: left;
-            padding: 0 30px 0 30px;
             @include block_outline(unquote('calc(100% - #{$tap_width})'), unquote('calc(100% - 20px)'));
             @include padding_place();
         }

@@ -3,7 +3,9 @@
 <template>
     <div class="measure-unit">
         <div class="btn-area">
-            <Button type="primary" class="ivu-btn-90px">新增</Button>
+            <Button type="primary"
+                    class="ivu-btn-90px"
+                    @click="addUnit">新增</Button>
             <Button type="ghost"
                     :disabled="rowSelect.length < 1"
                     @click="bitchDel">批量删除</Button>
@@ -27,7 +29,7 @@
                     <ul class="operate-info">
                         <li class="operate-list disabled" @click="disabledUnit(scoped.row)">禁用</li>
                         <li class="operate-list" @click="delUnit(scoped.row)">删除</li>
-                        <li class="operate-list delete" @click="watchDetail(scoped.row)">修改</li>
+                        <li class="operate-list delete" @click="editUnit(scoped.row)">修改</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -126,6 +128,29 @@
                         this.$Message.success('删除成功');
                     }
                 });
+            },
+            /**
+             * 新增单位拟
+             */
+            addUnit() {
+                this.$router.push({
+                    name : 'editMeasureUnit',
+                    params : {
+                        type : 'add'
+                    }
+                });
+            },
+            /**
+             * 编辑账号
+             * @param data
+             */
+            editUnit(data) {
+                this.$router.push({
+                    name : 'editMeasureUnit',
+                    params : {
+                        type : 'edit'
+                    }
+                });
             }
         }
     }
@@ -135,6 +160,7 @@
 	@import '~@/assets/scss/base';
 
     .measure-unit{
+        padding: 0 30px 0 30px;
         @include block_outline();
 
         .btn-area{
