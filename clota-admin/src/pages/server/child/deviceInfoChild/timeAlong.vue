@@ -25,14 +25,20 @@
             <div class="chart-circle">
                 <annlar :rate="10"></annlar>
                 <div class="chart-name">磁盘空间</div>
-                <div class="detail" @click="toDiskDetail">查看</div>
+                <div class="detail" @click="toDiskDetail">
+                    查看
+                    <span class="iconfont icon-pull-down"></span>
+                </div>
             </div>
             <div class="chart-circle">
                 <div class="title-analysis">
                     <span class="log-name">10</span>
                 </div>
                 <div class="chart-name">日志文件</div>
-                <div class="detail" @click="toLogDetail">查看</div>
+                <div class="detail" @click="toLogDetail">
+                    查看
+                    <span class="iconfont icon-pull-down"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -94,6 +100,12 @@
             padding: 15px 16px 0 16px;
         }
 
+        .icon-pull-down::before{
+            display: inline-block;
+            color: $color_blue;
+            transform: rotate(-90deg) scale(0.8);
+        }
+
         .device-detail {
             @include block_outline($height: 278px);
 
@@ -110,11 +122,12 @@
                 }
 
                 .detail {
+                    width: 60px;
                     font-size: $font_size_12px;
                     color: $color_0082D5;
                     text-align: center;
-                    margin-top: 5px;
                     cursor: pointer;
+                    margin: 5px auto 0 auto;
                 }
 
                 .title-analysis {

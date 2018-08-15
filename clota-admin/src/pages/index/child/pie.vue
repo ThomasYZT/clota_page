@@ -23,13 +23,13 @@
         computed: {
             //饼图配置
             pieOptions() {
-                return getPieConfig(['a', 'b'], [
+                return getPieConfig(['广州', '北京'], [
                     {
-                        name: 'a',
+                        name: '广州',
                         value: 1
                     },
                     {
-                        name: 'b',
+                        name: '北京',
                         value: 11
                     }
                 ]);

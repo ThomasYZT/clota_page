@@ -2,14 +2,19 @@
 
 <template>
     <div class="index-template">
-        <img src="../../../assets/images/icon-logo.svg" class="label-img" alt="">
+        <img :src="icon" class="label-img" alt="">
         <div class="detail-info">
             <span class="label-name">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
             <span class="circle-rate">
-        <span class="rate">{{labelRate}}%</span>
-        <span class="desc">{{$t('circleName')}}</span>
-      </span>
+            <span class="rate">
+                <span class="iconfont"
+                      :class="{'icon-arrow-up' : labelCurve === 'up', 'icon-arrow-down' : labelCurve === 'down'}">
+                </span>
+                {{labelRate}}%
+            </span>
+            <span class="desc">{{$t('circleName')}}</span>
+          </span>
         </div>
     </div>
 </template>
@@ -31,6 +36,18 @@
             'label-rate': {
                 type: [String, Number],
                 default: ''
+            },
+            //配图
+            'icon' : {
+                type : [Object,String],
+                default () {
+                    return {};
+                }
+            },
+            //当前指标是上升，还是下降
+            'label-curve' : {
+                type : String,
+                default : ''
             }
         },
         data() {
@@ -59,7 +76,6 @@
             @include block_outline(52px, 52px, false);
             margin-top: 13px;
             border-radius: 26px;
-            border: 1px solid red;
         }
 
         .detail-info {
@@ -93,6 +109,17 @@
 
                 .rate {
                     color: $color_353B5E;
+
+                    .icon-arrow-up{
+                        display: inline-block;
+                        font-size: 12px;
+                        transform: scale(0.8);
+                        vertical-align: middle;
+                    }
+
+                    .icon-arrow-down::before{
+                        color: $color_err;
+                    }
                 }
 
                 .desc {

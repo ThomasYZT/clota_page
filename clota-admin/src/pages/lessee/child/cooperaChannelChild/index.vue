@@ -28,7 +28,7 @@
                             <span class="info-key">{{item[1].label}}：</span>
                             <span class="info-val">{{item[1].value}}</span>
                         </div>
-                        <div class="info-list3">
+                        <div class="info-list3" v-if="item[2].label">
                             <span class="info-key">{{item[2].label}}：</span>
                             <span class="info-val">{{item[2].value}}</span>
                         </div>
@@ -46,70 +46,6 @@
                         </div>
                     </li>
                 </template>
-                <!--<li class="list">-->
-                    <!--<div class="info-list1">-->
-                        <!--<span class="info-key">身份证号：</span>-->
-                        <!--<span class="info-val">王老板</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list2">-->
-                        <!--<span class="info-key">联系方式：</span>-->
-                        <!--<span class="info-val">15867868623</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list3">-->
-                        <!--<span class="info-key">管理账号：</span>-->
-                        <!--<span class="info-val">Ashkjhk22</span>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li class="list">-->
-                    <!--<div class="info-list1">-->
-                        <!--<span class="info-key">电子邮箱：</span>-->
-                        <!--<span class="info-val">00291389323</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list2">-->
-                        <!--<span class="info-key">所在地：</span>-->
-                        <!--<span class="info-val">云南省 曲靖市 马龙县</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list3">-->
-                        <!--<span class="info-key">详细地址：</span>-->
-                        <!--<span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li class="list">-->
-                    <!--<div class="info-list1">-->
-                        <!--<span class="info-key">上次修改时间：</span>-->
-                        <!--<span class="info-val">176786699@163.com</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list2">-->
-                        <!--<span class="info-key">注册审核时间：</span>-->
-                        <!--<span class="info-val">云南省 曲靖市 马龙县</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list3">-->
-                        <!--<span class="info-key">上次修改人：</span>-->
-                        <!--<span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li class="list">-->
-                    <!--<div class="info-list1">-->
-                        <!--<span class="info-key">受理客服：</span>-->
-                        <!--<span class="info-val">云南省 曲靖市 马龙县</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list2">-->
-                        <!--<span class="info-key">账号申请时间：</span>-->
-                        <!--<span class="info-val">广东省 广州市 某某区 时代峰峻可视对讲路108号</span>-->
-                    <!--</div>-->
-                <!--</li>-->
-                <!--<li class="list">-->
-                    <!--<div class="info-list4">-->
-                        <!--<span class="info-key">个人说明：</span>-->
-                        <!--<span class="info-val">个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明个人说明</span>-->
-                    <!--</div>-->
-                    <!--<div class="info-list5">-->
-                        <!--<span class="info-key">身份证：</span>-->
-                        <!--<span class="info-val">-->
-                            <!--<img src="../../../../assets/images/icon-no-data.png" alt="">-->
-                        <!--</span>-->
-                    <!--</div>-->
-                <!--</li>-->
             </ul>
             <div class="partner-area">
                 <div class="partner-name">合作伙伴</div>
@@ -135,11 +71,11 @@
                     <span>张大发</span>
                 </FormItem>
                 <FormItem label="驳回原因：" prop="passReason">
-                    <!--<Input v-model="formData.passReason"-->
-                           <!--placeholder="请填写驳回原因，不超过20个字符"-->
-                           <!--:maxlength="20"-->
-                           <!--type="textarea"-->
-                           <!--style="width: 280px"/>-->
+                    <Input v-model="formData.passReason"
+                           placeholder="请填写驳回原因，不超过20个字符"
+                           :maxlength="20"
+                           type="textarea"
+                           style="width: 280px"/>
                 </FormItem>
             </Form>
         </edit-modal>

@@ -123,7 +123,7 @@
             display: block;
             @include absolute_pos(absolute, 4px, -10px);
             @include block_outline(1px, 15px);
-            background: $color_gray;
+            background: $color_E1E1E1;
         }
     }
 }

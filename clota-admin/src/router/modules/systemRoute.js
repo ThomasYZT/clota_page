@@ -44,7 +44,7 @@ export default {
                     subMenuType : 'notice'
                 },
             },
-            //系统公告
+            //新增/编辑系统公告
             editSystemNotice : {
                 path: '/system/notice/edit',
                 name: 'editSystemNotice',
@@ -54,6 +54,7 @@ export default {
                     menuName: 'editSystemNotice',
                     lightMenu: 'system',
                     showInMenu : false,
+                    subMenuType : 'notice'
                 },
             },
             //新增/编辑账号

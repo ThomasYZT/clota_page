@@ -4,7 +4,7 @@
     <div class="coopera-channel-per">
         <div class="tab-list">
             <ButtonGroup>
-                <Button :type="filterType === item.value ? 'primary' : 'ghost'"
+                <Button :class="{'ivu-active-tap' : filterType === item.value , 'ivu-default-tap' : filterType !== item.value}"
                         @click="filterTable(item.value)"
                         :key="index"
                         v-for="(item,index) in filterList">

@@ -103,23 +103,19 @@ export default function (type,...rest) {
             ],
             [
                 {
-                    label :'电子邮箱',
-                    value : rest[6]
-                },
-                {
                     label :'受理客服',
                     value : rest[7]
                 },
                 {
                     label :'账号申请时间',
                     value : rest[8]
-                }
-            ],
-            [
+                },
                 {
                     label :'上次修改时间',
                     value : rest[9]
                 },
+            ],
+            [
                 {
                     label :'注册审核时间',
                     value : rest[10]
@@ -127,7 +123,8 @@ export default function (type,...rest) {
                 {
                     label :'上次修改人',
                     value : rest[11]
-                }
+                },
+                {}
             ],
             [
                 {

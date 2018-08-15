@@ -41,7 +41,7 @@
             <el-table-column
                 slot="column5"
                 :label="$t('operate')"
-                width="145">
+                :width="type === 'company' ? 145 : 90">
                 <template slot-scope="scoped">
                     <template v-if="type === 'company'">
                         <ul class="operate-info">

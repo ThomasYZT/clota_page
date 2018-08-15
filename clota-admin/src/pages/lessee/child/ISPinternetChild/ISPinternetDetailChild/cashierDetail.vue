@@ -9,7 +9,10 @@
             </span>
             <template v-if="type === 'watch'">
                 <span class="edit"
-                      @click="edit">{{$t('edit')}}</span>
+                      @click="edit">
+                    <span class="iconfont icon-modify"></span>
+                    {{$t('edit')}}
+                </span>
             </template>
         </div>
         <ul class="company-info">
@@ -171,6 +174,9 @@
             @include overflow_tip(100%, 56px);
             padding: 14px 0;
 
+            .iconfont{
+                vertical-align: middle;
+            }
 
             .name {
                 line-height: 28px;

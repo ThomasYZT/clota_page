@@ -9,7 +9,7 @@
             <div class="order-info">
                 <Icon type="ios-help"></Icon>
                 <span class="note-tips">共计订单数：<span class="icon-weight">1280条</span></span>
-                <span class="note-tips">共计金额：<span class="icon-weight">1280条</span></span>
+                <span class="note-tips">共计金额：<span class="icon-weight">1280元</span></span>
             </div>
             <table-com
                 :table-data="tableData"

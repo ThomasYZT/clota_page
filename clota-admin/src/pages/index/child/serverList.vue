@@ -4,7 +4,10 @@
     <div class="server-list">
         <div class="title">
             服务器列表
-            <span class="server-care" @click="toServer">更多</span>
+            <span class="server-care" @click="toServer">
+                更多
+                <span class="iconfont icon-pull-down"></span>
+            </span>
         </div>
         <div class="table-list">
             <table-com
@@ -91,6 +94,12 @@
             /deep/ .el-table th {
                 padding: 8px 0 !important;
             }
+        }
+
+        .icon-pull-down::before{
+            display: inline-block;
+            color: $color_blue;
+            transform: rotate(-90deg) scale(0.8);
         }
     }
 </style>

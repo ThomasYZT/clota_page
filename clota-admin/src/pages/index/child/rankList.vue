@@ -4,7 +4,10 @@
     <div class="rank-list">
         <div class="title">
             排行榜
-            <span class="server-care" @click="toDetail">更多</span>
+            <span class="server-care" @click="toDetail">
+                更多
+                <span class="iconfont icon-pull-down"></span>
+            </span>
         </div>
         <div class="rank-list-detail">
 
@@ -131,6 +134,12 @@
                 line-height: 20px;
                 color: $color_fff;
             }
+        }
+
+        .icon-pull-down::before{
+            display: inline-block;
+            color: $color_blue;
+            transform: rotate(-90deg) scale(0.8);
         }
     }
 </style>

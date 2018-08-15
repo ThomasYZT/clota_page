@@ -5,7 +5,8 @@ export const smsBuyHead = [
     {
         title: '租户名称',
         minWidth: 120,
-        field: 'rate'
+        field: 'rate',
+        filters : true
     },
     {
         title: '短信套餐名称',

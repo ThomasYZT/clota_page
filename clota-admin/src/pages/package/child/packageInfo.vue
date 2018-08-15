@@ -108,7 +108,7 @@
              */
             watchPackage (data) {
                 this.$router.push({
-                    name : 'addpackage',
+                    name : 'editPackage',
                     params : {
                         type : 'watch'
                     }

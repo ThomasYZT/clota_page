@@ -18,7 +18,7 @@ export const packageHead = [
         field: 'rate'
     },
     {
-        title: '穿甲人',
+        title: '创建人',
         minWidth: 100,
         field: 'rate'
     },

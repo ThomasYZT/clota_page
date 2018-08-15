@@ -6,13 +6,13 @@
             <li class="tree-title"
                 :class="{'active' : activeTap === 'management'}"
                 @click="switchTap('management')">
-                <span class="iconfont icon-help"></span>
+                <span class="iconfont icon-fiance"></span>
                 经营管理
             </li>
             <li class="tree-title"
                 :class="{'active' : activeTap === 'fiance'}"
                 @click="switchTap('fiance')">
-                <span class="iconfont icon-help"></span>
+                <span class="iconfont icon-management"></span>
                 财务管理
             </li>
         </ul>
@@ -141,7 +141,7 @@
                     h('span', {
                         class: {
                             iconfont: 'true',
-                            'icon-person': true,
+                            'icon-delete': true,
                             //财务管理不允许删除节点
                             'hidden' : this.activeTap === 'fiance'
                         },
@@ -161,7 +161,7 @@
                     h('span', {
                         class: {
                             iconfont: 'true',
-                            'icon-person': true,
+                            'icon-add': true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'fiance' || data.type === 'department' || data.type === 'cashier'
@@ -326,7 +326,7 @@
                     color: $color_blue;
                     font-size: 14px;
                     float: right;
-                    margin-top: 8px;
+                    margin-top: 12px;
                     cursor: pointer;
 
                     &:nth-last-of-type(2) {

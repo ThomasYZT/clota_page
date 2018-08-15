@@ -23,7 +23,6 @@
                     <Col span="11">
                     <FormItem :label="$t('noticeContent')">
                         <Upload
-                            :before-upload="handleUpload"
                             action="//jsonplaceholder.typicode.com/posts/"
                             style="display: inline-block;width:58px;">
                             <div class="upload-btn">
@@ -160,7 +159,7 @@
                     this.type = params.type;
                 }else{
                     this.$router.push({
-                        name : 'notice'
+                        name : 'systemNotice'
                     });
                 }
             }
@@ -207,9 +206,10 @@
             width: 58px;
             height:58px;
             line-height: 58px;
-            border: 1px dashed $color_999;
+            border: 1px dashed  $color_DCE0E6;
             text-align: center;
             cursor: pointer;
+            border-radius: 4px;
         }
     }
 </style>

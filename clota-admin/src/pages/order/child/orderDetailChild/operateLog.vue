@@ -7,6 +7,7 @@
             <span class="back-up"
                 @click="isPackUpLoad = !isPackUpLoad">
                 {{$t(isPackUpLoad ? 'backUp' : 'upLoad')}}
+                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUpLoad}"></span>
             </span>
         </div>
         <transition name="fade">
@@ -34,12 +35,12 @@
                     {
                         label : '退票审核通过',
                         time : '2015-09-07 08：45',
-                        color : 'green'
+                        color : 'blue'
                     },
                     {
                         label : '游客发起退票申请',
                         time : '2015-09-07 08：45',
-                        color : 'green'
+                        color : 'blue'
                     },
                     {
                         label : '核销状态同步至OTA失败',
@@ -92,10 +93,10 @@
             }
         }
 
-        /deep/ .ivu-timeline-item-tail{
-            left : 151px;
-            top : 3px;
-        }
+        /*/deep/ .ivu-timeline-item-tail{*/
+            /*left : 151px;*/
+            /*top : 3px;*/
+        /*}*/
 
         /deep/ .ivu-timeline-item{
             padding-left: 145px;
@@ -118,6 +119,31 @@
         /deep/ .ivu-timeline-item-head-red + .ivu-timeline-item-content .log,
         /deep/ .ivu-timeline-item-head-red + .ivu-timeline-item-content .time{
             color: $color_err
+        }
+
+        .back-up {
+            font-size: $font_size_14px;
+            color: $color_blue;
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+            cursor: pointer;
+
+            .icon-pull-down{
+                display: inline-block;
+                transition: all 0.5s;
+
+                &::before{
+                    color: $color_blue;
+                    font-size: 12px;
+                }
+
+                &.icon-reverse{
+                    transform: rotate(180deg);
+                    transition: all 0.5s;
+                }
+
+            }
         }
     }
 </style>

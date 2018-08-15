@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="登录页、首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" fill="#F372AB">
+            <path d="M27,50 C39.7025492,50 50,39.7025492 50,27 C50,14.2974508 39.7025492,4 27,4 C14.2974508,4 4,14.2974508 4,27 C4,39.7025492 14.2974508,50 27,50 Z M20,37 L22,37 L22,33 L20,33 L20,37 Z M24,37 L26,37 L26,29 L24,29 L24,37 Z M32,37 L34,37 L34,17 L32,17 L32,37 Z M28,37 L30,37 L30,23 L28,23 L28,37 Z M27,53.5 C12.3644541,53.5 0.5,41.6355459 0.5,27 C0.5,12.3644541 12.3644541,0.5 27,0.5 C41.6355459,0.5 53.5,12.3644541 53.5,27 C53.5,41.6355459 41.6355459,53.5 27,53.5 Z M27,52.5 C41.0832611,52.5 52.5,41.0832611 52.5,27 C52.5,12.9167389 41.0832611,1.5 27,1.5 C12.9167389,1.5 1.5,12.9167389 1.5,27 C1.5,41.0832611 12.9167389,52.5 27,52.5 Z" id="Icon"></path>
+        </g>
+    </g>
+</svg>

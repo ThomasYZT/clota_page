@@ -14,7 +14,10 @@
                     {{formData.companyName}}
                 </span>
                 <span class="edit"
-                      @click="edit">{{$t('edit')}}</span>
+                      @click="edit">
+                    <span class="iconfont icon-modify"></span>
+                    {{$t('edit')}}
+                </span>
             </template>
             <span :class="{'started'
                 :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
@@ -366,6 +369,10 @@
 
             /deep/ .ivu-switch{
                 margin-left: 20px;
+            }
+
+            .iconfont{
+                vertical-align: middle;
             }
 
             .name {

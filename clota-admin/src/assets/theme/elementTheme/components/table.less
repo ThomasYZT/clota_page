@@ -7,6 +7,36 @@
     overflow: auto;
 }
 
+.el-table--fit{
+    border-top: 1px solid #E6EAEE;
+}
+.el-table-filter__list-item{
+    min-width: 200px;
+    color: #333333;
+
+    &.is-active{
+        background: #F1F4F8;
+        color: #0082D5;
+        display: inline-block;
+        font-family: element-icons!important;
+        speak: none;
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        text-transform: none;
+        vertical-align: baseline;
+        display: inline-block;
+        -webkit-font-smoothing: antialiased;
+
+        &::after{
+            display: inline-block;
+            content: "\E611";
+            float: right;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
+}
 .el-table {
     th {
         background: #F5F7FA;
@@ -33,29 +63,6 @@
         color: #303133;
         font-weight: normal;
     }
-    //.cellText {
-    //    .code {
-    //        color: #333333;
-    //    }
-    //    .icon_enable {
-    //        width: 6px;
-    //        height: 6px;
-    //        display: inline-block;
-    //        border-radius: 50%;
-    //        margin-right: 8px;
-    //        overflow: hidden;
-    //        background: #22BB5F;
-    //    }
-    //    .icon_notEnable {
-    //        width: 6px;
-    //        height: 6px;
-    //        display: inline-block;
-    //        border-radius: 50%;
-    //        margin-right: 8px;
-    //        overflow: hidden;
-    //        background: #BBC5D5;
-    //    }
-    //}
 }
 
 

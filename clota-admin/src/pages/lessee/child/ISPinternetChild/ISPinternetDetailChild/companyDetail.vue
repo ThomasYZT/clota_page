@@ -14,7 +14,10 @@
                     {{formData.companyName}}
                 </span>
                 <span class="edit"
-                  @click="edit">{{$t('edit')}}</span>
+                  @click="edit">
+                    <span class="iconfont icon-modify"></span>
+                    {{$t('edit')}}
+                </span>
             </template>
             <span :class="{'started'
                 :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
@@ -433,9 +436,13 @@
 
             .edit {
                 float: right;
-                color: $color_blue;
+                color: $color_0082D5;
                 text-align: right;
                 cursor: pointer;
+
+                .iconfont{
+                    vertical-align: middle;
+                }
             }
         }
 
@@ -496,7 +503,7 @@
                         color: $color_666;
 
                         .reset-pass{
-                            color: $color_blue;
+                            color: $color_0082D5;
                             font-size: $font_size_12px;
                             margin-left: 10px;
                             display: inline-block;

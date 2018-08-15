@@ -7,7 +7,10 @@
             <ul class="event-list">
                 <li class="event">
                     <ul class="event-info">
-                        <li class="event-name">服务器</li>
+                        <li class="event-name">
+                            <span class="iconfont icon-warn"></span>
+                            服务器
+                        </li>
                         <li class="server-name">Service-01</li>
                         <li class="event-time">2016-09-09 08:00</li>
                         <li class="watch" @click="toDetail('serverDetail')">查看</li>
@@ -15,7 +18,10 @@
                 </li>
                 <li class="event">
                     <ul class="event-info">
-                        <li class="event-name">租户服务到期</li>
+                        <li class="event-name">
+                            <span class="iconfont icon-error"></span>
+                            租户服务到期
+                        </li>
                         <li class="server-name">Service-01</li>
                         <li class="event-time">2016-09-09 08:00</li>
                         <li class="watch" @click="toDetail('ISPinternetDetail')">查看</li>
@@ -23,7 +29,10 @@
                 </li>
                 <li class="event">
                     <ul class="event-info">
-                        <li class="event-name">票类服务已经到期</li>
+                        <li class="event-name">
+                            <span class="iconfont icon-mind"></span>
+                            票类服务已经到期
+                        </li>
                         <li class="server-name">Service-01</li>
                         <li class="event-time">2016-09-09 08:00</li>
                         <li class="watch" @click="toDetail('orderDetail')">查看</li>
@@ -119,6 +128,11 @@
 
                         .event-name {
                             padding-left: 20px;
+
+
+                            .iconfont{
+                                margin-right: 10px;
+                            }
                         }
 
                         .watch {

@@ -185,11 +185,27 @@
                     </FormItem>
                     </Col>
                 </Row>
+                <Row>
+                    <Col span="6">
+                    <FormItem label="发售机构">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in orderChannels"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    </Col>
+                </Row>
             </Form>
         </transition>
 
         <div class="btn-area">
-            <div class="pack-up-filters" @click="isPackUp = !isPackUp">收起筛选条件</div>
+            <div class="pack-up-filters" @click="isPackUp = !isPackUp">
+                收起筛选条件
+                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+            </div>
             <div class="con-area">
                 <Button type="primary" class="ivu-btn-90px">搜索</Button>
                 <Button type="ghost" class="ivu-btn-90px">重置</Button>
@@ -292,6 +308,22 @@
                 padding-right: 34px;
                 margin-top: 20px;
                 user-select: none;
+
+                .icon-pull-down{
+                    display: inline-block;
+                    transition: all 0.5s;
+
+                    &::before{
+                        color: $color_blue;
+                        font-size: 12px;
+                    }
+
+                    &.icon-reverse{
+                        transform: rotate(180deg);
+                        transition: all 0.5s;
+                    }
+
+                }
             }
 
             .con-area{

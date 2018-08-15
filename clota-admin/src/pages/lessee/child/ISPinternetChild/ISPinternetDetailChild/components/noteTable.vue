@@ -7,6 +7,7 @@
             <span class="back-up"
                   @click="isPackUpLoad = !isPackUpLoad">
             {{$t(isPackUpLoad ? 'backUp' : 'upLoad')}}
+                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUpLoad}"></span>
           </span>
         </div>
         <transition name="fade">
@@ -142,6 +143,22 @@
                 margin-left: 10px;
                 vertical-align: middle;
                 cursor: pointer;
+
+                .icon-pull-down{
+                    display: inline-block;
+                    transition: all 0.5s;
+
+                    &::before{
+                        color: $color_blue;
+                        font-size: 12px;
+                    }
+
+                    &.icon-reverse{
+                        transform: rotate(180deg);
+                        transition: all 0.5s;
+                    }
+
+                }
             }
         }
 

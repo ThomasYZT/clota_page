@@ -53,15 +53,24 @@
             <div class="system-alarm">
                 <div class="name">
                     系统报警
-                    <span class="more" @click="toSystemAlarmDetail">查看更多</span>
+                    <span class="more" @click="toSystemAlarmDetail">
+                        查看更多
+                        <span class="iconfont icon-pull-down"></span>
+                    </span>
                 </div>
                 <ul class="alarm">
                     <li class="detail">
-                        <div class="alarm-name">服务器无响应</div>
+                        <div class="alarm-name">
+                            <span class="iconfont icon-warn"></span>
+                            服务器无响应
+                        </div>
                         <div class="time">2016-09-09 08:00</div>
                     </li>
                     <li class="detail">
-                        <div class="alarm-name">服务器无响应</div>
+                        <div class="alarm-name">
+                            <span class="iconfont icon-error"></span>
+                            服务器无响应
+                        </div>
                         <div class="time">2016-09-09 08:00</div>
                     </li>
                 </ul>
@@ -202,6 +211,10 @@
                             flex: 1;
                             @include overflow_tip();
                             color: $color_666;
+
+                            .iconfont{
+                                margin-right: 10px;
+                            }
                         }
 
                         .time {
@@ -212,6 +225,12 @@
                 }
             }
 
+        }
+
+        .icon-pull-down::before{
+            display: inline-block;
+            color: $color_blue;
+            transform: rotate(-90deg) scale(0.8);
         }
     }
 </style>

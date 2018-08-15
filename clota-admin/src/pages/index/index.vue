@@ -16,21 +16,33 @@
             </DatePicker>
         </div>
         <div class="top-data">
+            <!--今日登陆-->
             <top-data :label-name="$t('todayLogin')"
                       :label-rate="23"
-                      :label-num="100">
+                      :label-num="100"
+                      :icon="require('../../assets/images/icon-login-count.svg')"
+                      label-curve="up">
             </top-data>
+            <!--旅游产品订单-->
             <top-data :label-name="$t('travelOrder')"
                       :label-rate="23"
-                      :label-num="100">
+                      :label-num="100"
+                      :icon="require('../../assets/images/icon-travel-order.svg')"
+                      label-curve="up">
             </top-data>
+            <!--交易金额-->
             <top-data :label-name="$t('tenementCount')"
                       :label-rate="23"
-                      :label-num="100">
+                      :label-num="100"
+                      :icon="require('../../assets/images/icon-trade-money.svg')"
+                      label-curve="up">
             </top-data>
+            <!--租户累计-->
             <top-data :label-name="$t('serverCount')"
                       :label-rate="23"
-                      :label-num="100">
+                      :label-num="100"
+                      :icon="require('../../assets/images/icon-lessee-count.svg')"
+                      label-curve="down">
             </top-data>
         </div>
         <div class="abnormal">
