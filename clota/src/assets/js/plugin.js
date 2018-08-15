@@ -2,11 +2,44 @@
  * 项目公用插件
  * Created by Sasha on 2018/6/1.
  */
-import iView from 'iview'
-import {Table, TableColumn, Scrollbar, Pagination, Dropdown, DropdownMenu, DropdownItem,} from 'element-ui'
+//按需引入iview组件
+import {
+    Button,
+    Input,
+    Menu,
+    Select,
+    OptionGroup,
+    Modal,
+    Tree,
+    breadcrumb,
+    Icon,
+    Radio,
+    Switch,
+    Checkbox,
+    DatePicker,
+    Form,
+    TimePicker,
+    Row,
+    Col,
+    Option,
+    Tooltip,
+    Message,
+    InputNumber,
+    Timeline,
+    TimelineItem,
+    Upload
+} from 'iview';
+//按需引入element-ui组件
+import Table from 'element-ui/lib/table';
+import TableColumn from 'element-ui/lib/table-column';
+import Scrollbar from 'element-ui/lib/scrollbar';
+import Pagination from 'element-ui/lib/pagination';
+import Dropdown from 'element-ui/lib/dropdown';
+import DropdownMenu from 'element-ui/lib/dropdown-menu';
+import DropdownItem from 'element-ui/lib/dropdown-item';
+import scrollbar from 'element-ui/lib/scrollbar';
 
-// // 引入 ECharts 主模块
-// import ECharts from '@/components/vueEcharts/ECharts.vue'
+
 // // 按需引入 Echarts 图表
 // require('echarts/lib/chart/bar');
 require('echarts/lib/chart/pie');
@@ -28,9 +61,10 @@ import ajax from '@/api/ajaxList'
 let plugin = {};
 plugin.install = function (Vue, options) {
     // 引入iView
-    Vue.use(iView);
+    // Vue.use(iView);
 
-    // element-ui按需引入(Table)
+    // element-ui按需引入
+    Vue.use(scrollbar);
     Vue.use(Table);
     Vue.use(TableColumn);
     Vue.use(Scrollbar);
@@ -38,6 +72,47 @@ plugin.install = function (Vue, options) {
     Vue.use(Dropdown);
     Vue.use(DropdownMenu);
     Vue.use(DropdownItem);
+
+    //iview按需引入
+    Vue.component('Button',Button);
+    Vue.component('Input',Input);
+    Vue.component('iInput',Input);
+    Vue.component('ButtonGroup',Button.Group);
+    Vue.component('MenuGroup',Menu.Group);
+    Vue.component('MenuItem',Menu.Item);
+    Vue.component('iMenu',Menu);
+    Vue.component('Menu',Menu);
+    Vue.component('Submenu',Menu.Sub);
+    Vue.component('Select',Select);
+    Vue.component('OptionGroup',OptionGroup);
+    Vue.component('Modal',Modal);
+    Vue.component('Tree',Tree);
+    Vue.component('Breadcrumb',breadcrumb);
+    Vue.component('BreadcrumbItem',breadcrumb.Item);
+    Vue.component('Icon',Icon);
+    Vue.component('Radio',Radio);
+    Vue.component('RadioGroup',Radio.Group);
+    Vue.component('iSwitch',Switch);
+    Vue.component('Checkbox',Checkbox);
+    Vue.component('CheckboxGroup',Checkbox.Group);
+    Vue.component('DatePicker',DatePicker);
+    Vue.component('TimePicker',TimePicker );
+    Vue.component('Form',Form );
+    Vue.component('iForm',Form );
+    Vue.component('FormItem',Form.Item );
+    Vue.component('TimePicker',TimePicker );
+    Vue.component('Row',Row );
+    Vue.component('i-row',Row );
+    Vue.component('Col',Col );
+    Vue.component('i-col',Col );
+    Vue.component('Option',Option );
+    Vue.component('Tooltip',Tooltip );
+    Vue.component('Message',Message );
+    Vue.component('InputNumber',InputNumber );
+    Vue.component('Timeline',Timeline );
+    Vue.component('TimelineItem',TimelineItem);
+    Vue.component('Upload',Upload);
+    Vue.prototype.$Message = Message;
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);

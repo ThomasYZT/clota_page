@@ -40,7 +40,7 @@
 
     #app {
         @include block_outline();
-        background: get_url('icon-background.png');
+        background-image: linear-gradient(180deg, #0055B8 0%, #00C2CD 100%);
         min-width: $window_min_width;
         background-size: 100% 100%;
     }

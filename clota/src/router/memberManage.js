@@ -121,7 +121,7 @@ export default {
                     menuName: 'menuList.memberCount', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberCount',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-person',
                 },
             },
             integration: {

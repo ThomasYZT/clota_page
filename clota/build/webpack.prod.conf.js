@@ -30,7 +30,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     output: {
         path: config.build.assetsRoot,
         filename: utils.assetsPath('js/[name].[chunkhash].js'),
-        chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+        chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
     },
     plugins: [
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -132,7 +132,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             name: 'app',
             async: 'vendor-async',
             children: true,
-            minChunks: 3
+            minChunks: 2
         }),
 
         // copy custom static assets
@@ -143,7 +143,7 @@ const webpackConfig = merge(baseWebpackConfig, {
                 ignore: ['.*']
             }
         ]),
-        new HardSourceWebpackPlugin()
+        // new HardSourceWebpackPlugin()
         // new webpack.DllReferencePlugin({
         //   manifest: require('../vueFamily-manifest.json')
         // }),

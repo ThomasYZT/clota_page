@@ -5,6 +5,9 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf');
 const AutoDllPlugin = require('autodll-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+const HappyPack = require('happypack')
+const os = require('os')
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -49,8 +52,8 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
-                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+                loader: 'happypack/loader?id=happy-babel-js',
+                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/iview/src')]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -96,8 +99,16 @@ module.exports = {
             filename: '[name].[hash].js',
             path: './static/dll',
             entry: {
-                vueFamily: ['vue', 'vue-router'],
-                plugins: ['iview']
+                vueFamily: ['vue', 'vue-router','vuex'],
+                plugins: [
+                    'element-ui/lib/table.js',
+                    'element-ui/lib/table-column.js',
+                    'element-ui/lib/scrollbar.js',
+                    'element-ui/lib/pagination.js',
+                    'element-ui/lib/dropdown.js',
+                    'element-ui/lib/dropdown-menu.js',
+                    'element-ui/lib/dropdown-item.js',
+                ]
             },
             plugins: [
                 // new webpack.optimize.UglifyJsPlugin()
@@ -114,5 +125,10 @@ module.exports = {
                 }),
             ]
         }),
+        new HappyPack({
+            id: 'happy-babel-js',
+            loaders: ['babel-loader?cacheDirectory=true'],
+            threadPool: happyThreadPool,
+        })
     ]
 }

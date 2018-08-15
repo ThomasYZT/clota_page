@@ -4,7 +4,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {defaultsDeep} from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 import {Message} from 'iview';
 import ajaxList from '@/api/ajaxList'
 import i18n from '../assets/js/lang.config';
@@ -79,7 +79,7 @@ export default new Vuex.Store({
     getters: {
         // 用户信息（包含账号信息 + 公司信息）
         userInfo: state => {
-            return _.defaultsDeep({}, state.userInfo);
+            return defaultsDeep({}, state.userInfo);
         },
         //左侧菜单是否收起
         menuIsPackUp: state => {
