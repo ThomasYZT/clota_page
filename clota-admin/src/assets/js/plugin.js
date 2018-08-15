@@ -72,13 +72,6 @@ plugin.install = function (Vue, options) {
     Vue.use(Dropdown);
     Vue.use(DropdownMenu);
     Vue.use(DropdownItem);
-    // Vue.component(TableColumn.name,TableColumn);
-    // Vue.component(Scrollbar.name,Scrollbar);
-    // Vue.component(Pagination.name,Pagination);
-    // Vue.component(Dropdown.name,Dropdown);
-    // Vue.component(DropdownMenu.name,DropdownMenu);
-    // Vue.component(DropdownItem.name,DropdownItem);
-    // Vue.component('ElScrollbar',scrollbar);
 
     //iview按需引入
     Vue.component('Button',Button);
@@ -99,7 +92,6 @@ plugin.install = function (Vue, options) {
     Vue.component('Icon',Icon);
     Vue.component('Radio',Radio);
     Vue.component('RadioGroup',Radio.Group);
-    Vue.component('Switch',Switch);
     Vue.component('iSwitch',Switch);
     Vue.component('Checkbox',Checkbox);
     Vue.component('CheckboxGroup',Checkbox.Group);

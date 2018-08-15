@@ -2,7 +2,8 @@
 
 <template>
     <div id="app">
-        <router-view v-if="noFrame"/>
+        <router-view v-if="noFrame">
+        </router-view>
         <main-frame v-else>
             <router-view>
             </router-view>
@@ -23,12 +24,8 @@
         methods: {},
         computed: {
             noFrame() {
-                if(this.$route){
-                    // 解决刷新页面未拿到正确路由meta信息时noFrame初始值默认为false触发了mainFrame的created事件(根据$route.name来判断当前是否能拿到meta信息)
-                    return this.$route.name ? !!this.$route.meta.noFrame : false;
-                }else{
-                    return true;
-                }
+                // 解决刷新页面未拿到正确路由meta信息时noFrame初始值默认为false触发了mainFrame的created事件(根据$route.name来判断当前是否能拿到meta信息)
+                return this.$route.name ? !!this.$route.meta.noFrame : true;
             }
         }
     }

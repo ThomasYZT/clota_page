@@ -18,7 +18,7 @@
                            :placeholder="$t('account')"/>
                 </FormItem>
                 <FormItem prop="password" class="input-with-icon">
-                    <span class="iconfont icon-person"></span>
+                    <span class="iconfont icon-reset-pass"></span>
                     <Input v-model="formData.password"
                            style="width: 368px"
                            :placeholder="$t('password')"/>
@@ -128,9 +128,12 @@
 
                 .iconfont {
                     z-index: 10;
-                    @include absolute_pos(absolute, $top: 4px, $left: 15px);
-                    font-size: $font_size_14px;
-                    color: $color_e6;
+                    @include absolute_pos(absolute, $top: 13px, $left: 15px);
+                    font-size: $font_size_15px;
+
+                    &:before{
+                        color: $color_e6;
+                    }
                 }
 
                 .verify-img {
