@@ -1,49 +1,38 @@
 <template>
-    <!--新增储值-->
+    <!--转账-->
     <Modal
         v-model="visible"
-        title="新增账户"
-        class-name="add-fund-modal vertical-center-modal"
+        title="转账"
+        class-name="transfer-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
+            <div class="form-item-wrap"><label>转出账户：</label><span>北京欢乐谷景区</span></div>
+            <div class="form-item-wrap"><label>账户可用余额：</label><span class="num">3728.28</span> 元</div>
+
             <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="用户姓名：">
-                       <span>刘木子</span>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="手机号：">
-                      <span>17527571287</span>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="身份证号：">
-                        <span>1011227979987298739</span>
-                    </Form-item>
-                </div>
-
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="增加储值金额：" prop="fund">
-                        <Input v-model="data.fund" placeholder="请输入" style="width: 100px" />
-                        <span>实际增加</span>
-                        <Input v-model="data.add" placeholder="请输入" style="width: 100px" />
-                        <span>元</span>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="收款方式：" prop="type">
-                        <Select v-model="data.type" placeholder="请选择">
+                    <Form-item label="转入账户选择" prop="fund">
+                        <Select v-model="data.type" placeholder="请选择" style="width: 240px;">
                             <Option value="">账户</Option>
                         </Select>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
+                    <Form-item label="转出金额" prop="type">
+                        <Input v-model="data.fund" placeholder="请输入" style="width: 240px" /><span style="padding-left: 10px;">元</span>
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item label="手续费" prop="type">
+                        <Input disabled v-model="data.fund" placeholder="请输入" style="width: 240px" />
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model="data.remark" type="textarea" placeholder="请输入" style="width: 280px" />
+                        <Input v-model="data.remark" type="textarea" placeholder="请输入" style="width: 240px" />
                     </Form-item>
                 </div>
             </Form>
@@ -70,11 +59,14 @@
                     remark: '',
                 },
                 ruleValidate: {
-                    fund: [
+                    num: [
                         { required: true, message: '储值金额不能为空', trigger: 'blur' },
                     ],
+                    fund: [
+                        { message: '储值金额不能为空', trigger: 'blur' },
+                    ],
                     type: [
-                        { required: true, message: '收款方式不能为空', trigger: 'change' },
+                        { message: '收款方式不能为空', trigger: 'change' },
                     ],
                 }
             }
@@ -106,5 +98,27 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .transfer-modal{
+        .form-item-wrap{
+            width: 100%;
+            float: left;
+            margin-right: 10px;
+            height: 30px;
+            line-height: 30px;
+            font-size: $font_size_14px;
+            color: $color-666;
+            >label{
+                width: 130px;
+                display: inline-block;
+                text-align: right;
+                padding-right: 10px;
+                color: $color-333;
+            }
+            .num{
+                font-size: $font_size_18px;
+                color: $color_yellow;
+            }
+        }
+    }
 </style>
 

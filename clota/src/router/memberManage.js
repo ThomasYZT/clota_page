@@ -244,6 +244,30 @@ export default {
                     iconClass: 'icon-person'
                 },
             },
+            transferRecord: {
+                //会员管理--储值管理--财务管理--转账记录
+                path: 'transferRecord',
+                name: 'transferRecord',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/child/transferRecord.vue'),
+                meta: {
+                    menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
+                    lightMenu: 'memberManage',//高亮
+                    _name: 'financialManagement',
+                    iconClass: 'icon-person'
+                },
+            },
+            juniorDetail: {
+                //会员管理--储值管理--财务管理--下级单位储值账户信息详情
+                path: 'juniorDetail',
+                name: 'juniorDetail',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/child/juniorDetail.vue'),
+                meta: {
+                    menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
+                    lightMenu: 'memberManage',//高亮
+                    _name: 'financialManagement',
+                    iconClass: 'icon-person'
+                },
+            },
             memberSetting: {
                 //会员管理--基础设置
                 path: 'memberSetting',

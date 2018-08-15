@@ -260,7 +260,7 @@
 <script>
 
     import addAccountModal from '../components/addAccountModal.vue'
-    import addFundModal  from '../components/addFundModal.vue'
+    import addFundModal  from '../../components/addFundModal.vue'
     import toCashModal  from '../components/taCashModal.vue'
     import modifyBalanceModal  from '../components/modifyBalanceModal.vue'
     import useRangeModal  from '../components/useRangeModal.vue'
