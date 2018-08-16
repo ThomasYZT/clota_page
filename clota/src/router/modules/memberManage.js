@@ -9,7 +9,7 @@
 export default {
     memberMange: {
         path: '/memberManage',
-        component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/index.vue'),
+        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/index.vue'),
         meta: {
             _name: 'memberManage',
             menuName: 'menuList.memberHome',
@@ -20,7 +20,7 @@ export default {
                 //会员管理--会员主页
                 path: 'memberHome',
                 name: 'memberHome',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/home/home.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/home/home.vue'),
                 meta: {
                     menuName: 'menuList.memberHome', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -32,7 +32,7 @@ export default {
                 //会员管理--会员信息
                 path: 'memberInfo',
                 name: 'memberInfo',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/information.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/information.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -44,7 +44,7 @@ export default {
                 //会员管理--会员信息--新增会员
                 path: 'addMember',
                 name: 'addMember',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/child/addMember.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/addMember.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -56,7 +56,7 @@ export default {
                 //会员管理--会员信息--会员详情
                 path: 'infoDetail',
                 name: 'infoDetail',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/child/detail.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/detail.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -68,7 +68,7 @@ export default {
                 //会员管理--会员信息--会员卡包
                 path: 'infoCard',
                 name: 'infoCard',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/child/card.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/card.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -80,7 +80,7 @@ export default {
                 //会员管理--会员信息--个人积分交易明细
                 path: 'infoInteg',
                 name: 'infoInteg',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/child/integDetail.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/integDetail.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -92,7 +92,7 @@ export default {
                 //会员管理--会员信息--个人资金交易明细
                 path: 'infoFund',
                 name: 'infoFund',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/child/fundDetail.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/fundDetail.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -104,7 +104,7 @@ export default {
                 //会员管理--会员信息--享受积分、折扣率信息
                 path: 'infoRate',
                 name: 'infoRate',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/child/rate.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/rate.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -116,7 +116,7 @@ export default {
                 //会员管理--会员统计
                 path: 'memberCount',
                 name: 'memberCount',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/information/count.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
                 meta: {
                     menuName: 'menuList.memberCount', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -128,7 +128,7 @@ export default {
                 //会员管理--会员积分-- 积分、折扣率设置
                 path: 'integration',
                 name: 'integration',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/integration/integration.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/integration.vue'),
                 meta: {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -140,7 +140,7 @@ export default {
                 //会员管理--会员积分--设置积分、折扣率
                 path: 'setRate',
                 name: 'setRate',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/integration/child/setRate.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
                 meta: {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -152,7 +152,7 @@ export default {
                 //会员管理--会员积分--设置积分、折扣率--按类型/产品
                 path: 'setProductRate',
                 name: 'setProductRate',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/integration/child/setProductRate.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
                 meta: {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -164,7 +164,7 @@ export default {
                 //会员管理--会员积分--特殊会员权益管理
                 path: 'specialMember',
                 name: 'specialMember',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/integration/specialMember.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/specialMember.vue'),
                 meta: {
                     menuName: 'menuList.specialMember', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -176,7 +176,7 @@ export default {
                 //会员管理--会员积分--特殊会员权益管理--关联会员信息
                 path: 'linkSpeMember',
                 name: 'linkSpeMember',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/integration/child/linkSpeMember.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/linkSpeMember.vue'),
                 meta: {
                     menuName: 'menuList.specialMember', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -188,7 +188,7 @@ export default {
                 //会员管理--会员卡券
                 path: 'card',
                 name: 'card',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/card/card.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/card.vue'),
                 meta: {
                     menuName: 'menuList.card', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -200,7 +200,7 @@ export default {
                 //会员管理--会员卡券--新增卡劵
                 path: 'addCard',
                 name: 'addCard',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/card/addCard.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/addCard.vue'),
                 meta: {
                     menuName: 'menuList.card', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -212,7 +212,7 @@ export default {
                 //会员管理--储值管理--储值账户
                 path: 'fund',
                 name: 'fund',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/fund.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fund.vue'),
                 meta: {
                     menuName: 'menuList.fund', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -224,7 +224,7 @@ export default {
                 //会员管理--储值管理--资金明细
                 path: 'fundDetail',
                 name: 'fundDetail',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/fundDetail.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                 meta: {
                     menuName: 'menuList.fundDetail', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -236,7 +236,7 @@ export default {
                 //会员管理--储值管理--财务管理
                 path: 'financialManagement',
                 name: 'financialManagement',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/financialManagement.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
                 meta: {
                     menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -248,7 +248,7 @@ export default {
                 //会员管理--储值管理--财务管理--转账记录
                 path: 'transferRecord',
                 name: 'transferRecord',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/child/transferRecord.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/transferRecord.vue'),
                 meta: {
                     menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -260,7 +260,7 @@ export default {
                 //会员管理--储值管理--财务管理--下级单位储值账户信息详情
                 path: 'juniorDetail',
                 name: 'juniorDetail',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/fund/child/juniorDetail.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/juniorDetail.vue'),
                 meta: {
                     menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -272,7 +272,7 @@ export default {
                 //会员管理--基础设置
                 path: 'memberSetting',
                 name: 'memberSetting',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../pages/memberManage/setting/setting.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/setting/setting.vue'),
                 meta: {
                     menuName: 'menuList.memberSetting', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮

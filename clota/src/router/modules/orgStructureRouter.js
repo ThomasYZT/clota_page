@@ -10,7 +10,7 @@ export default {
     orgStructure: {
         //组织架构
         path: '/orgManage',
-        component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/index.vue'),
+        component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/index.vue'),
         meta: {
             _name: 'orgManage',
             menuName: 'menuList.org',
@@ -21,7 +21,7 @@ export default {
                 //组织架构--组织架构
                 path: 'organization',
                 name: 'organization',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/organization/organization.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/organization.vue'),
                 meta: {
                     menuName: 'menuList.org', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
@@ -33,7 +33,7 @@ export default {
                 //组织架构--员工
                 path: 'employee',
                 name: 'employee',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/employee/employee.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                 meta: {
                     menuName: 'menuList.employee', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
@@ -45,7 +45,7 @@ export default {
                 //组织架构--员工--新增员工
                 path: 'addEmployee',
                 name: 'addEmployee',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/employee/child/addEmployee.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                 meta: {
                     menuName: 'menuList.employee', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
@@ -57,7 +57,7 @@ export default {
                 //组织架构--角色权限
                 path: 'rolePermission',
                 name: 'rolePermission',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/rolePermission.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/rolePermission.vue'),
                 meta: {
                     menuName: 'menuList.rolePermission', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
@@ -69,7 +69,7 @@ export default {
                 //组织架构--角色权限--角色详情
                 path: 'rolePermission/roleDetail',
                 name: 'roleDetail',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/rolePermission/child/roleDetail.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/roleDetail.vue'),
                 meta: {
                     menuName: 'menuList.rolePermission', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
@@ -81,7 +81,7 @@ export default {
                 //组织架构--合作伙伴
                 path: 'partner',
                 name: 'partner',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/partner/partner.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/partner/partner.vue'),
                 meta: {
                     menuName: 'menuList.partner', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
@@ -93,7 +93,7 @@ export default {
                 //组织架构--自营渠道
                 path: 'channels',
                 name: 'channels',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/channels/channels.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/channels/channels.vue'),
                 meta: {
                     menuName: 'menuList.channels',
                     lightMenu: 'orgManage',
@@ -105,7 +105,7 @@ export default {
                 //组织架构--销售渠道分组
                 path: 'saleChannelsGroup',
                 name: 'saleChannelsGroup',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/saleChannelsGroup/saleChannelsGroup.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/saleChannelsGroup/saleChannelsGroup.vue'),
                 meta: {
                     menuName: 'menuList.saleChannelsGroup',
                     lightMenu: 'orgManage',
@@ -117,7 +117,7 @@ export default {
                 //组织架构--核销设备分组
                 path: 'verificateGroup',
                 name: 'verificateGroup',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../pages/orgStructure/verificateGroup/verificateGroup.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/verificateGroup.vue'),
                 meta: {
                     menuName: 'menuList.verificateGroup',
                     lightMenu: 'orgManage',
