@@ -75,6 +75,7 @@ plugin.install = function (Vue, options) {
 
     //iview按需引入
     Vue.component('Button',Button);
+    Vue.component('iButton',Button);
     Vue.component('Input',Input);
     Vue.component('iInput',Input);
     Vue.component('ButtonGroup',Button.Group);

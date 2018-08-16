@@ -48,13 +48,14 @@
 /**
   文本溢出隐藏
  */
-@mixin overflow_tip($width,$height) {
+@mixin overflow_tip($width : null,$height : null) {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    @include block_outline($height: $height, $width: $width);
+    @if $width != null and $height != null {
+        @include block_outline($height: $height, $width: $width);
+    }
 }
-
 /**
   给元素末尾添加一个占位元素，这是了兼容一些浏览器对于padding的计算方法
  */

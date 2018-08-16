@@ -3,19 +3,40 @@
 <template>
     <div class="frame-slidbar" :class="{'width-is-zero' : menuIsPackUp}">
         <div class="menu-list">
+            <!--<Menu :active-name="activeMenu"-->
+                  <!--@on-select="selectMenu"-->
+                  <!--width="auto"-->
+                  <!--ref="menu"-->
+                  <!--v-if="subMenuList.length > 0">-->
+                <!--<MenuItem :name="item.meta._name"-->
+                          <!--v-for="item in subMenuList"-->
+                          <!--:key="item.name">-->
+                        <!--<span v-if="item.meta.iconClass"-->
+                            <!--class="iconfont"-->
+                            <!--:class="[item.meta.iconClass]"></span>-->
+                        <!--<span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>-->
+                <!--</MenuItem>-->
+            <!--</Menu>-->
             <Menu :active-name="activeMenu"
                   @on-select="selectMenu"
                   width="auto"
                   ref="menu"
                   v-if="subMenuList.length > 0">
-                <MenuItem :name="item.meta._name"
-                          v-for="item in subMenuList"
-                          :key="item.name">
-          <span v-if="item.meta.iconClass"
-                class="iconfont"
-                :class="[item.meta.iconClass]"></span>
-                    <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>
-                </MenuItem>
+                <template v-for="item in subMenuList">
+                    <menu-com
+                        :menu-info="item"
+                        :children-menu="item.children"
+                        v-if="item.children && item.children.length > 2">
+                    </menu-com>
+                    <MenuItem :name="item.meta._name"
+                              v-else
+                              :key="item.name">
+                        <span v-if="item.meta.iconClass"
+                              class="iconfont"
+                              :class="[item.meta.iconClass]"></span>
+                        <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>
+                    </MenuItem>
+                </template>
             </Menu>
         </div>
     </div>
@@ -23,12 +44,20 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    import menuCom from './menuCom';
 
     export default {
+        components : {
+            menuCom
+        },
         data() {
             return {}
         },
         methods: {
+            /**
+             * 更改选择的菜单
+             * @param name 菜单名字
+             */
             selectMenu(name) {
                 this.$router.push({
                     name: name
@@ -53,7 +82,8 @@
                         if (this.permissionInfo[i].meta._name === activeTopMenu) {
                             return this.permissionInfo[i]['children'].filter(item => {
                                 //排除重定向路由和权限挂在其它路由下的路由
-                                return item.meta && item.meta.menuName && !item.meta.hidden && item.name === item.meta._name;
+                                //children大于2的表示它有下级菜单，不可以排除
+                                return item.meta && item.meta.menuName && !item.meta.hidden && (item.name === item.meta._name || item.children && item.children.length > 2);
                             });
                         }
                     }
@@ -63,9 +93,16 @@
                 }
             },
             //当前高亮的二级菜单
+            //通过name或meta下的_name来标识激活菜单名字
             activeMenu() {
                 if (this.$route && this.$route.meta) {
-                    return this.$route.meta._name;
+                    if(this.$route.name){
+                        return this.$route.name;
+                    }else if(this.$route.meta._name){
+                        return this.$route.meta._name;
+                    }else{
+                        return '';
+                    }
                 } else {
                     return '';
                 }
@@ -116,7 +153,19 @@
             width: 100% !important;
             background: $color_transparent;
 
-            .ivu-menu-item {
+
+            .ivu-menu-submenu-title{
+                padding: 10px 25px 10px 17px;
+                color: rgba($color_fff, 1);
+                border-bottom: 1px solid rgba($color_fff, 0.1);
+                font-size: $font_size_14px;
+
+                &:hover{
+                    background: rgba($color_fff, 0.1) !important;
+                }
+            }
+
+            .ivu-menu-item{
                 display: flex;
                 flex-direction: row;
                 padding: 10px 25px 10px 17px;
