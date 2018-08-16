@@ -190,6 +190,7 @@
     @import '../commonFile/common';
 
     .partner {
-
+        @include block_outline();
+        background: $color_fff;
     }
 </style>

@@ -21,7 +21,7 @@
                 <div class="navigation">
                     <div class="sub-menu"
                          :class="{'active' : activeMenu === item.meta._name}"
-                         v-for="(item,index) in permissionInfo" :key="index"
+                         v-for="(item,index) in menuList" :key="index"
                          @click="toTopMenu(item)">
                         {{$t(`${item.meta.menuName}`)}}
                         <span class="bar"></span>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="menu-li">
-            <Menu mode="horizontal">
+            <Menu mode="horizontal" @on-select="menuChange">>
                 <Submenu name="1">
                     <template slot="title">
                         <div class="avator">
@@ -41,9 +41,9 @@
                         </div>
                         Admin
                     </template>
-                    <MenuItem name="3-1">新增和启动</MenuItem>
-                    <MenuItem name="3-2">活跃分析</MenuItem>
-                    <MenuItem name="3-3">时段分析</MenuItem>
+                    <MenuItem v-for="(item,i) in accountOperations"
+                              :name="item.name"
+                              :key="i">{{item.label}}</MenuItem>
                 </Submenu>
             </Menu>
         </div>
@@ -68,10 +68,20 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import common from '@/assets/js/common.js';
 
     export default {
         data() {
-            return {}
+            return {
+                //账户操作列表
+                accountOperations : [
+                    {
+                        name : 'logout',
+                        label : this.$t('logout')
+                    }
+                ]
+            }
         },
         methods: {
             /**
@@ -93,13 +103,32 @@
              */
             toTopMenu(data) {
                 this.$router.push({path: data.path});
+            },
+            /**
+             * 当个人的账号操作改变时
+             * @param name
+             */
+            menuChange (name) {
+                if(name === 'logout'){
+                    this.logOut();
+                }else if(name === 'personalCenter'){
+                    this.$router.push({
+                        name : 'person'
+                    });
+                }
+            },
+            /**
+             * 退出登录
+             */
+            logOut () {
+                common.loginOut();
             }
         },
         computed: {
             ...mapGetters({
                 menuIsPackUp: 'menuIsPackUp',
                 lang: 'lang',
-                permissionInfo: 'permissionInfo'
+                routerInfo: 'routerInfo'
             }),
             //当前激活的菜单
             activeMenu() {
@@ -107,6 +136,31 @@
                     return this.$route.meta.lightMenu;
                 } else {
                     return '';
+                }
+            },
+            //菜单列表
+            menuList () {
+                let routerInfo = defaultsDeep([],this.routerInfo);
+                if (routerInfo) {
+                    return routerInfo.filter(item => {
+                        //判断是否需要显示二级菜单
+                        if(item.children && item.children.length > 0){
+                            let children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
+                            item.children = children;
+                        }else{
+                            item.children = [];
+                        }
+                        item.showSubMenu = false;
+                        //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
+                        if (item.name) {
+                            return item.name === item.meta._name;
+                        }else{
+                            //没有路由名字的都是一级路由，需要显示菜单
+                            return  item.path !== '*'
+                        }
+                    })
+                } else {
+                    return [];
                 }
             }
         }

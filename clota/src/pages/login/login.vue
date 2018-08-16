@@ -79,13 +79,19 @@
             handleSubmit(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        ajax.login({}).then((res) => {
-                            if (res.success) {
-                                this.$Message.success(this.$t("loginSuccess") + '!');
-                            } else {
-                                this.$Message.error(this.$t("loginError") + '!');
-                            }
+                        localStorage.setItem('token','token');
+                        this.$store.dispatch('getUserInfo').then(route => {
+                            this.$router.push({
+                                path: route.path
+                            });
                         });
+                        // ajax.login({}).then((res) => {
+                        //     if (res.success) {
+                        //         this.$Message.success(this.$t("loginSuccess") + '!');
+                        //     } else {
+                        //         this.$Message.error(this.$t("loginError") + '!');
+                        //     }
+                        // });
                     } else {
                         this.$Message.error(this.$t("formValidate") + '!');
                     }

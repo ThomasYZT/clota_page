@@ -101,6 +101,7 @@
 
     .organization {
         @include block_outline();
+        background: $color_fff;
 
         .structure {
             float: left;

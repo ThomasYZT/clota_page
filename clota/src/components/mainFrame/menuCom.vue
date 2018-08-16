@@ -107,8 +107,9 @@
                 user-select: none;
             }
 
+            &:hover .menu-name,
             &.ivu-menu-item-active .menu-name{
-                color: $color_fff;
+                color: $color_fff!important;
             }
         }
 
@@ -118,6 +119,11 @@
 
         &.ivu-menu-opened .ivu-menu-submenu-title-icon {
             transform: rotate(90deg) !important;
+        }
+
+        /deep/ .ivu-icon{
+            @include block_outline(14px,14px);
+            margin-right: 0!important;
         }
     }
 

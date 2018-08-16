@@ -180,6 +180,7 @@
 
     .add-group-popover {
         padding: 17px 20px;
+
         .popover-content {
             width: 240px;
             p {
@@ -199,6 +200,7 @@
     }
 
     .saleChannelsGroup {
-
+        @include block_outline();
+        background: $color_fff;
     }
 </style>

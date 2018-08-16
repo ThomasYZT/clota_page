@@ -3,7 +3,8 @@
  * 项目内公用方法
  */
 
-import router from '../../router'
+import router from '../../router';
+import store from '../../store/index';
 
 export default {
 
@@ -11,10 +12,13 @@ export default {
      * 退出登录(清空本地记录)
      */
     loginOut() {
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('pass');
-        localStorage.removeItem('loginTime');
-        router.push({name: 'login'});
+        localStorage.removeItem('token');
+        store.commit('updatePermissionInfo',null);
+        store.commit('updateUserInfo',{});
+        store.commit('updateRouteInfo',null);
+        router.push({
+            name : 'login'
+        });
     },
 
     /**

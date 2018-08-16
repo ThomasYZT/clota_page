@@ -67,7 +67,7 @@
         computed: {
             ...mapGetters({
                 menuIsPackUp: 'menuIsPackUp',
-                permissionInfo: 'permissionInfo'
+                routerInfo: 'routerInfo'
             }),
             /**
              * 二级菜单列表
@@ -76,11 +76,11 @@
              * @returns {Array}
              */
             subMenuList() {
-                if (this.$route && this.$route.meta) {
+                if (this.$route && this.$route.meta && this.routerInfo && this.routerInfo.length > 0) {
                     let activeTopMenu = this.$route.meta.lightMenu;
-                    for (let i = 0, j = this.permissionInfo.length; i < j; i++) {
-                        if (this.permissionInfo[i].meta._name === activeTopMenu) {
-                            return this.permissionInfo[i]['children'].filter(item => {
+                    for (let i = 0, j = this.routerInfo.length; i < j; i++) {
+                        if (this.routerInfo[i].meta._name === activeTopMenu) {
+                            return this.routerInfo[i]['children'].filter(item => {
                                 //排除重定向路由和权限挂在其它路由下的路由
                                 //children大于2的表示它有下级菜单，不可以排除
                                 return item.meta && item.meta.menuName && !item.meta.hidden && (item.name === item.meta._name || item.children && item.children.length > 2);
@@ -146,7 +146,8 @@
         .menu-list {
             @include block_outline($width: 220px);
             padding-top: 30px;
-            overflow: auto;
+            overflow-x: auto;
+            overflow-y: scroll;
         }
 
         /deep/ .ivu-menu {

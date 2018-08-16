@@ -187,6 +187,7 @@
     @import '../commonFile/common';
 
     .verificateGroup {
-
+        @include block_outline();
+        background: $color_fff;
     }
 </style>
