@@ -3,8 +3,10 @@
 //中文配置
 
 export default {
+    new : '新',
+    now : '当前',
     account: '账户',
-    password: '密码',
+    password: '{msg}密码',
     verifyCode: '验证码',
     accountInputError: '请输入账号',
     passwordInputError: '请输入密码',
@@ -66,6 +68,7 @@ export default {
         phoneError: '联系电话格式错误',
         emailError: '邮箱格式错误',
         serverNameError: '请输入服务器名称',
+        lengthError : '{name}最多输入{length}个字符'
     },
     addLess: '新增租户',
     changeLess: '修改租户',
@@ -240,4 +243,10 @@ export default {
     city : '市',
     county : '县/区',
     rankDetail : '排行榜详情',
+    personalCenter : '个人中心',
+    logout : '退出系统',
+    baseInfo : '基本信息',
+    passwordError :'密码必须为6～20位，须同时含有字母和数字',
+    passwordAgainInput :'请再次输入新密码',
+    newPassError : '两次输入密码不一致'
 }

@@ -82,14 +82,14 @@
              */
             login() {
                 this.$refs.formValidate.validate(valid => {
-                    localStorage.setItem('userInfo',JSON.stringify({
-                        token : 'aa'
-                    }))
-                    this.$store.dispatch('getUserRight').then(route => {
-                        this.$router.push({
-                            name: route.name
+                    if(valid){
+                        localStorage.setItem('token','token');
+                        this.$store.dispatch('getUserInfo').then(route => {
+                            this.$router.push({
+                                name: route.name
+                            });
                         });
-                    });
+                    }
                 });
             }
         }

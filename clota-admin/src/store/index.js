@@ -2,8 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
 import defaultsDeep from 'lodash/defaultsDeep';
-import router from '../router/index';
+import router,{resetRouter} from '../router/index';
 import routerClect from '../router/activeRoutes';
+import ajax from '@/api/index.js';
 import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
 
 Vue.use(Vuex);
@@ -23,7 +24,9 @@ const childDeepClone = (childrenList, data) => {
                     //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
                     children.push({
                         path: '',
-                        redirect: children[0].name ? children[0].name : children[0].meat._name
+                        redirect: {
+                            name : children[0].name ? children[0].name : children[0].meat._name
+                        }
                     });
                     router['children'] = children;
                 } else {
@@ -53,7 +56,9 @@ export default new Vuex.Store({
         //权限信息
         permissionInfo: null,
         //生成的路由信息
-        routerInfo: null
+        routerInfo: null,
+        //用户信息
+        userInfo : {}
     },
     getters: {
         //当前语言状态
@@ -69,23 +74,25 @@ export default new Vuex.Store({
         //生成的路由信息
         routerInfo: state => {
             return state.routerInfo;
+        },
+        //用户信息
+        userInfo : state => {
+            return state.userInfo;
         }
     },
     mutations: {
         //设置用户权限
-        updatePermissionInfo(state, data, a) {
-            let routers = childDeepClone(routerClect, data);
-            router.addRoutes(routers);
+        updatePermissionInfo(state, data) {
             state.permissionInfo = data;
-            state.routerInfo = routers;
-            //如果有权限，则跳转到有权限的第一个页面
-            // if(routers.length > 0){
-            //   router.push({
-            //     path : routers[0]['path']
-            //   });
-            // }
-            // console.log(a)
         },
+        //设置用户信息
+        updateUserInfo (state,data) {
+            state.userInfo = data;
+        },
+        //更新路由信息
+        updateRouteInfo (state,routerInfo) {
+            state.routerInfo = routerInfo;
+        }
     },
     actions: {
         //获取用户权限信息
@@ -103,16 +110,13 @@ export default new Vuex.Store({
                 };
                 let routers = childDeepClone(routerClect, data);
                 routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
-                router.addRoutes(routers);
-                store.state.permissionInfo = data;
-                store.state.routerInfo = routers;
-                if (route) {
-                    resolve(route);
-                } else {
-                    // 如果有权限，则跳转到有权限的第一个页面
-                    if (routers.length > 0) {
-                        resolve(routers[0]);
-                    }
+                //重新设置路由信息
+                resetRouter(routers);
+                store.commit('updatePermissionInfo',data);
+                store.commit('updateRouteInfo',routers);
+                // 如果有权限，则跳转到有权限的第一个页面
+                if (routers.length > 0) {
+                    resolve(routers[0]);
                 }
             });
 
@@ -130,6 +134,22 @@ export default new Vuex.Store({
             //     console.error('getUserRight：获取用户信息失败')
             //   }
             // });
+        },
+        //获取用户信息
+        getUserInfo (store,userInfo) {
+            return new Promise((resolve,reject) => {
+                if(ajax.getToken()){
+                    let data = {
+                        name : 'test'
+                    };
+                    store.commit('updateUserInfo',data);
+                    resolve(data);
+                }else{
+                    reject();
+                }
+            }).then((data) => {
+                return store.dispatch('getUserRight');
+            });
         }
     }
 });

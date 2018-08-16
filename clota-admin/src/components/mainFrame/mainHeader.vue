@@ -34,17 +34,17 @@
         <div class="operation">
             <span class="iconfont icon-help"></span>
             <div class="menu-li">
-                <Menu mode="horizontal">
+                <Menu mode="horizontal" @on-select="menuChange">
                     <Submenu name="1">
                         <template slot="title">
                             <div class="avator">
                                 <img class="avator-class" src="../../assets/images/icon-avator.png" alt="">
                             </div>
-                            Admin
+                            {{userInfo.name}}
                         </template>
-                        <MenuItem name="3-1">新增和启动</MenuItem>
-                        <MenuItem name="3-2">活跃分析</MenuItem>
-                        <MenuItem name="3-3">时段分析</MenuItem>
+                        <MenuItem v-for="(item,i) in accountOperations"
+                                  :name="item.name"
+                                  :key="i">{{item.label}}</MenuItem>
                     </Submenu>
                 </Menu>
             </div>
@@ -55,12 +55,24 @@
 <script>
     import {mapGetters} from 'vuex';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import common from '@/assets/js/common.js';
 
     export default {
         data() {
             return {
                 //二级菜单是否显示标志结合
-                menuShowList : []
+                menuShowList : [],
+                //账户操作列表
+                accountOperations : [
+                    {
+                        name : 'personalCenter',
+                        label : this.$t('personalCenter')
+                    },
+                    {
+                        name : 'logout',
+                        label : this.$t('logout')
+                    }
+                ]
             }
         },
         methods: {
@@ -93,11 +105,31 @@
              */
             hideMenu (i) {
                 this.$set(this.menuShowList,i,false);
+            },
+            /**
+             * 退出登录
+             */
+            logOut () {
+                common.loginOut();
+            },
+            /**
+             * 当个人的账号操作改变时
+             * @param name
+             */
+            menuChange (name) {
+                if(name === 'logout'){
+                    this.logOut();
+                }else if(name === 'personalCenter'){
+                    this.$router.push({
+                        name : 'person'
+                    });
+                }
             }
         },
         computed: {
             ...mapGetters({
-                routerInfo: 'routerInfo'
+                routerInfo: 'routerInfo',
+                userInfo : 'userInfo'
             }),
             //当前激活的菜单
             activeMenu() {

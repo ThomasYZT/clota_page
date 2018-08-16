@@ -28,14 +28,14 @@ router.beforeEach((to, from, next) => {
     if (to.name === 'login') {
         next();
     } else {
-        //判断是否有token，如果有进行权限判断，没有token则进入登录页面
-        if (ajax.getToken() !== '') {
+        //判断是否已经获取用户信息
+        if (Object.keys(store.getters.userInfo).length > 0 ) {
             //判断是否已经保存权限信息，如果permissionInfo不为null表示已经获取过权限
+            //这里判断了如果有保存的权限信息，就不再继续判断是否有路由的权限，因为如果没有这个权限会跳转到无权限的页面
             if (store.getters.permissionInfo !== null) {
                 next();
             } else {
                 store.dispatch('getUserRight', to).then((router) => {
-                    // next(router);
                     next({ ...to, replace: true })
                 }).catch(() => {
                     next({
@@ -44,9 +44,18 @@ router.beforeEach((to, from, next) => {
                 });
             }
         } else {
-            next({
-                name: 'login'
-            });
+            //判断是否本地有存储token，有的话，直接重新获取用户信息
+            if(ajax.getToken()){
+                store.dispatch('getUserInfo').then(route => {
+                    next({
+                        name: route.name
+                    });
+                });
+            }else{
+                next({
+                    name: 'login'
+                });
+            }
         }
     }
 });
