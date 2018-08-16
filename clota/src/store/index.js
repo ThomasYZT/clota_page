@@ -63,26 +63,26 @@ export default new Vuex.Store({
         lang: i18n.locale,
         //权限信息
         permissionInfo: [],
-
-        userInfo: null,
-        // 组织架构树
-        orgTree: {},
-        // 员工列表
-        employeeList: [],
-        // 职位列表
-        postList: [],
-        // 通知列表
-        bootList: [],
-        // 未读消息数目
-        noticeUnreadNum: 0,
-        // 系统消息列表
-        systemNoticeList: [],
+        //
+        // userInfo: null,
+        // // 组织架构树
+        // orgTree: {},
+        // // 员工列表
+        // employeeList: [],
+        // // 职位列表
+        // postList: [],
+        // // 通知列表
+        // bootList: [],
+        // // 未读消息数目
+        // noticeUnreadNum: 0,
+        // // 系统消息列表
+        // systemNoticeList: [],
     },
     getters: {
-        // 用户信息（包含账号信息 + 公司信息）
-        userInfo: state => {
-            return defaultsDeep({}, state.userInfo);
-        },
+        // // 用户信息（包含账号信息 + 公司信息）
+        // userInfo: state => {
+        //     return defaultsDeep({}, state.userInfo);
+        // },
         //左侧菜单是否收起
         menuIsPackUp: state => {
             let menuIsPackUp = localStorage.getItem('menuIsPackUp');

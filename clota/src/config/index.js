@@ -1,5 +1,6 @@
 /**
  * Created by Sasha on 2018/6/1.
+ * 接口请求地址配置
  */
 
 const dev = process.env.NODE_ENV === 'development';

@@ -111,5 +111,14 @@
                 color: $color_fff;
             }
         }
+
+        /deep/ .ivu-icon-ios-arrow-down:before{
+            content : "\F10A"!important;
+        }
+
+        &.ivu-menu-opened .ivu-menu-submenu-title-icon {
+            transform: rotate(90deg) !important;
+        }
     }
+
 </style>
