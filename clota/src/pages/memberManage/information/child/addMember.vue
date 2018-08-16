@@ -318,7 +318,7 @@
 
                 .ivu-form-item{
                     width: 395px;
-                    margin: 0 auto 20px;
+                    margin: 0 auto 18px;
                     text-align: left;
 
                     .ivu-date-picker {

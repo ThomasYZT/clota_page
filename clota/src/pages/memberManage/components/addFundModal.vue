@@ -110,12 +110,6 @@
                 padding-right: 10px;
                 color: $color-333;
             }
-            .red{
-                color: $color_red;
-            }
-            .green{
-                color: $color_green;
-            }
         }
     }
 </style>

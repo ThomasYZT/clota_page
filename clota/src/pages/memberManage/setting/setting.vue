@@ -131,8 +131,6 @@
                 </div>
             </div>
 
-
-
             <Form ref="formDynamic" :model="formDynamic" :label-width="20" style="width: 600px">
 
                 <div class="content-item">
@@ -155,10 +153,10 @@
                                 label=""
                                 :prop="'items.' + index + '.value'"
                                 :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入" style="width: 220px;"/>
-                                <span class="red-color" v-if="item.disabled" @click="handleRemove(index)">删除</span>
+                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入"/>
+                                <span class="red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
                                 <span class="blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="blue-color" v-if="!item.disabled" @click="handleReset('formDynamic')">取消</span>
+                                <span class="grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
                             </FormItem>
                         </div>
 
@@ -166,7 +164,7 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">证件类型设置   <span class="blue-color" @click="handleAdd">+ 新增证据类型</span></div>
+                    <div class="title">证件类型设置   <span class="blue-color" @click="handleAdd">+ 新增证件类型</span></div>
                     <div class="main">
 
                         <div class="ivu-form-item-wrap">
@@ -177,10 +175,10 @@
                                 label=""
                                 :prop="'items.' + index + '.value'"
                                 :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入" style="width: 220px;"/>
-                                <span class="red-color" v-if="item.disabled" @click="handleRemove(index)">删除</span>
+                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入"/>
+                                <span class="red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
                                 <span class="blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="blue-color" v-if="!item.disabled" @click="handleReset('formDynamic')">取消</span>
+                                <span class="grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
                             </FormItem>
                         </div>
 
@@ -237,8 +235,9 @@
                     }
                 })
             },
-            handleReset (name) {
+            handleReset (name,index) {
                 this.$refs[name].resetFields();
+                this.formDynamic.items[index].status = 0;
             },
             handleAdd () {
                 this.index++;
@@ -273,7 +272,7 @@
             .content-item{
                 margin-bottom: 30px;
 
-                .ivu-form-item-wrap{
+                /deep/ .ivu-form-item-wrap{
                     position: relative;
                     display: inline-block;
                     min-width: 495px;
@@ -283,8 +282,16 @@
                     vertical-align: middle;
                 }
 
+                /deep/ .ivu-form-item-content{
+                    width: 100%;
+                }
+
+                /deep/ .ivu-input-wrapper{
+                    width: 80%;
+                }
+
                 .ivu-form-item{
-                    width: 395px;
+                    width: 480px;
                     margin: 0 auto 20px;
                     text-align: left;
 
@@ -312,12 +319,15 @@
 
             .blue-color{
                 color: $color_blue;
+                cursor: pointer;
             }
             .red-color{
                 color: $color_red;
+                cursor: pointer;
             }
             .grey-color{
                 color: $color-3F3F3F;
+                cursor: pointer;
             }
 
         }
