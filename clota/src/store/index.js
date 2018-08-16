@@ -189,7 +189,6 @@ export default new Vuex.Store({
                     reject();
                 }
             }).then((data) => {
-                console.log(data)
                 return store.dispatch('getUserRight');
             }).catch(err => {
                 console.log(err)

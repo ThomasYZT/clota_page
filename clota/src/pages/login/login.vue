@@ -57,8 +57,8 @@
         data() {
             return {
                 formInline: {
-                    user: '', //登录账号
-                    password: '' //登录密码
+                    user: 'admin', //登录账号
+                    password: 'admin' //登录密码
                 },
                 ruleInline: {
                     user: [
