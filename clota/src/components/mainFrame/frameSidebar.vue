@@ -138,8 +138,9 @@
             width: 45px !important;
             transition: all 0.3s;
 
-            /deep/ .menu-name {
-                display: none;
+            /deep/ .menu-name,
+            /deep/ .ivu-icon-ios-arrow-down{
+                display: none!important;
             }
         }
 
