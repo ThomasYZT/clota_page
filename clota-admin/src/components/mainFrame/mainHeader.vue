@@ -32,7 +32,6 @@
             </ul>
         </div>
         <div class="operation">
-            <span class="iconfont icon-help"></span>
             <div class="menu-li">
                 <Menu mode="horizontal" @on-select="menuChange">
                     <Submenu name="1">
@@ -188,7 +187,7 @@
 
         .menu-info {
             float: left;
-            @include block_outline(unquote('calc(100% - 400px)'));
+            @include block_outline(unquote('calc(100% - 360px)'));
             text-align: center;
 
             .menu-list {
@@ -276,7 +275,7 @@
 
         .operation {
             float: left;
-            @include block_outline(200px);
+            @include block_outline(160px);
 
             .menu-li {
                 display: inline-block;
