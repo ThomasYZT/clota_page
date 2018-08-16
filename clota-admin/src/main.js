@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
             if(ajax.getToken()){
                 store.dispatch('getUserInfo').then(route => {
                     next({
-                        name: route.name
+                        path: to.path
                     });
                 });
             }else{

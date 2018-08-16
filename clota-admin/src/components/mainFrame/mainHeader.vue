@@ -322,7 +322,7 @@
                 width: 40px;
                 font-size: $font_size_18px;
                 color: $color_B3D5EB;
-                margin-top: 17px;
+                margin-top: 20px;
                 border-right: 0;
                 float: left;
             }
