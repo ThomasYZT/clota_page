@@ -7,7 +7,7 @@ import Vuex from 'vuex';
 import defaultsDeep from 'lodash/defaultsDeep';
 import {Message} from 'iview';
 import ajaxList from '@/api/ajaxList'
-import i18n from '../assets/js/lang.config';
+import i18n from '../assets/lang/lang.config';
 import routerClect from '../router/routerClect';
 import router from '../router/index';
 import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
