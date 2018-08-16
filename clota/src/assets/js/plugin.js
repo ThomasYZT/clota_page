@@ -27,7 +27,8 @@ import {
     InputNumber,
     Timeline,
     TimelineItem,
-    Upload
+    Upload,
+    Tabs
 } from 'iview';
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
@@ -113,6 +114,8 @@ plugin.install = function (Vue, options) {
     Vue.component('Timeline',Timeline );
     Vue.component('TimelineItem',TimelineItem);
     Vue.component('Upload',Upload);
+    Vue.component('Tabs',Tabs);
+    Vue.component('TabPane',Tabs.Pane);
     Vue.prototype.$Message = Message;
 
     // 公用样式，指令及方法

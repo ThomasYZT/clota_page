@@ -3,7 +3,7 @@
     <div class="member-card">
 
         <div class="tabs-wrap">
-            <Tabs :animated="false" value="created" @on-click="changeTab">
+            <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
                 <TabPane label="已创建" name="created"></TabPane>
                 <TabPane label="已作废" name="cancellation"></TabPane>
             </Tabs>
@@ -81,7 +81,6 @@
                 :total="parseInt(total)">
             </el-pagination>
         </div>
-
 
         <!--删除卡劵modal-->
         <Modal
@@ -228,8 +227,8 @@
         border-radius: 4px;
 
         .tabs-wrap{
-            .ivu-tabs-nav{
-                margin-left: 30px !important;
+            /deep/ .ivu-tabs-nav{
+                margin-left: 30px;
             }
         }
 

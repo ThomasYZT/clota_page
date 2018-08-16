@@ -18,7 +18,7 @@ export default {
         children: {
             memberHome: {
                 //会员管理--会员主页
-                path: 'memberHome',
+                path: '/memberManage/home',
                 name: 'memberHome',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/home/home.vue'),
                 meta: {
@@ -29,58 +29,78 @@ export default {
                 },
             },
             memberInfo: {
-                //会员管理--会员信息
-                path: 'memberInfo',
-                name: 'memberInfo',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/information.vue'),
+                //会员管理--会员信息--三级菜单
+                path: '/memberManage/info',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/index.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
                     iconClass: 'icon-person'
                 },
+                children: {
+                    info: {
+                        //会员管理--会员信息
+                        path: '/memberManage/info/list',
+                        name: 'memberInfo',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/information.vue'),
+                        meta: {
+                            menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberInfo',
+                        },
+                    },
+                    memberCount: {
+                        //会员管理--会员统计
+                        path: '/memberManage/info/count',
+                        name: 'memberCount',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
+                        meta: {
+                            menuName: 'menuList.memberCount', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberInfo',
+                        },
+                    },
+                }
             },
             addMember: {
                 //会员管理--会员信息--新增会员
-                path: 'addMember',
+                path: '/memberManage/info/add',
                 name: 'addMember',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/addMember.vue'),
+                component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/addMember.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
                 },
             },
             infoDetail: {
                 //会员管理--会员信息--会员详情
-                path: 'infoDetail',
+                path: '/memberManage/info/detail',
                 name: 'infoDetail',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/detail.vue'),
+                component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/detail.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
                 },
             },
             infoCard: {
                 //会员管理--会员信息--会员卡包
-                path: 'infoCard',
+                path: '/memberManage/info/card',
                 name: 'infoCard',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/card.vue'),
+                component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/card.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
                 },
             },
             infoInteg: {
                 //会员管理--会员信息--个人积分交易明细
-                path: 'infoInteg',
+                path: '/memberManage/info/integ',
                 name: 'infoInteg',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/integDetail.vue'),
+                component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/integDetail.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -90,21 +110,20 @@ export default {
             },
             infoFund: {
                 //会员管理--会员信息--个人资金交易明细
-                path: 'infoFund',
+                path: '/memberManage/info/fund',
                 name: 'infoFund',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/fundDetail.vue'),
+                component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/fundDetail.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
                 },
             },
             infoRate: {
                 //会员管理--会员信息--享受积分、折扣率信息
-                path: 'infoRate',
+                path: '/memberManage/info/rate',
                 name: 'infoRate',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/child/rate.vue'),
+                component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/rate.vue'),
                 meta: {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
@@ -112,81 +131,77 @@ export default {
                     iconClass: 'icon-person'
                 },
             },
-            memberCount: {
-                //会员管理--会员统计
-                path: 'memberCount',
-                name: 'memberCount',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
-                meta: {
-                    menuName: 'menuList.memberCount', //lang.config.js 里面的语言键值
-                    lightMenu: 'memberManage',//高亮
-                    _name: 'memberCount',
-                    iconClass: 'icon-person',
-                },
-            },
             integration: {
-                //会员管理--会员积分-- 积分、折扣率设置
-                path: 'integration',
-                name: 'integration',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/integration.vue'),
+                //会员管理--会员积分--三级菜单
+                path: '/memberManage/integ',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/index.vue'),
                 meta: {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'integration',
                     iconClass: 'icon-person'
                 },
+                children: {
+                    integ: {
+                        //会员管理--会员积分--积分、折扣率设置
+                        path: '/memberManage/integ/list',
+                        name: 'integration',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/integration.vue'),
+                        meta: {
+                            menuName: 'menuList.integration', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'integration',
+                        },
+                    },
+                    specialMember: {
+                        //会员管理--会员积分--特殊会员权益管理
+                        path: '/memberManage/integ/special',
+                        name: 'specialMember',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/specialMember.vue'),
+                        meta: {
+                            menuName: 'menuList.specialMember', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'integration',
+                        },
+                    },
+                }
             },
             setRate: {
                 //会员管理--会员积分--设置积分、折扣率
-                path: 'setRate',
+                path: '/memberManage/integ/setRate',
                 name: 'setRate',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
                 meta: {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'integration',
-                    iconClass: 'icon-person'
                 },
             },
             setProductRate: {
                 //会员管理--会员积分--设置积分、折扣率--按类型/产品
-                path: 'setProductRate',
+                path: '/memberManage/integ/proRate',
                 name: 'setProductRate',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
                 meta: {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'integration',
-                    iconClass: 'icon-person'
-                },
-            },
-            specialMember: {
-                //会员管理--会员积分--特殊会员权益管理
-                path: 'specialMember',
-                name: 'specialMember',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/specialMember.vue'),
-                meta: {
-                    menuName: 'menuList.specialMember', //lang.config.js 里面的语言键值
-                    lightMenu: 'memberManage',//高亮
-                    _name: 'specialMember',
-                    iconClass: 'icon-person'
                 },
             },
             linkSpeMember: {
                 //会员管理--会员积分--特殊会员权益管理--关联会员信息
-                path: 'linkSpeMember',
+                path: '/memberManage/integ/link',
                 name: 'linkSpeMember',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/linkSpeMember.vue'),
                 meta: {
                     menuName: 'menuList.specialMember', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
-                    _name: 'specialMember',
-                    iconClass: 'icon-person'
+                    _name: 'integration',
                 },
             },
             card: {
                 //会员管理--会员卡券
-                path: 'card',
+                path: '/memberManage/card',
                 name: 'card',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/card.vue'),
                 meta: {
@@ -198,87 +213,161 @@ export default {
             },
             addCard: {
                 //会员管理--会员卡券--新增卡劵
-                path: 'addCard',
+                path: '/memberManage/card/add',
                 name: 'addCard',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/addCard.vue'),
                 meta: {
                     menuName: 'menuList.card', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'card',
-                    iconClass: 'icon-person'
                 },
             },
             fund: {
-                //会员管理--储值管理--储值账户
-                path: 'fund',
-                name: 'fund',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fund.vue'),
+                //会员管理--储值管理--三级菜单
+                path: '/memberManage/fund',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/index.vue'),
                 meta: {
                     menuName: 'menuList.fund', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'fund',
                     iconClass: 'icon-person'
                 },
-            },
-            fundDetail: {
-                //会员管理--储值管理--资金明细
-                path: 'fundDetail',
-                name: 'fundDetail',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
-                meta: {
-                    menuName: 'menuList.fundDetail', //lang.config.js 里面的语言键值
-                    lightMenu: 'memberManage',//高亮
-                    _name: 'fundDetail',
-                    iconClass: 'icon-person'
-                },
-            },
-            financialManagement: {
-                //会员管理--储值管理--财务管理
-                path: 'financialManagement',
-                name: 'financialManagement',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
-                meta: {
-                    menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
-                    lightMenu: 'memberManage',//高亮
-                    _name: 'financialManagement',
-                    iconClass: 'icon-person'
-                },
+                children: {
+                    funds: {
+                        //会员管理--储值管理--储值账户
+                        path: '/memberManage/fund/list',
+                        name: 'fund',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fund.vue'),
+                        meta: {
+                            menuName: 'menuList.fund', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'fund',
+                        },
+                    },
+                    fundDetail: {
+                        //会员管理--储值管理--资金明细
+                        path: '/memberManage/fund/detail',
+                        name: 'fundDetail',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
+                        meta: {
+                            menuName: 'menuList.fundDetail', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'fund',
+                        },
+                    },
+                    financialManagement: {
+                        //会员管理--储值管理--财务管理
+                        path: '/memberManage/fund/financial',
+                        name: 'financialManagement',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
+                        meta: {
+                            menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'fund',
+                        },
+                    },
+                }
             },
             transferRecord: {
                 //会员管理--储值管理--财务管理--转账记录
-                path: 'transferRecord',
+                path: '/memberManage/fund/transfer',
                 name: 'transferRecord',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/transferRecord.vue'),
                 meta: {
                     menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
-                    _name: 'financialManagement',
-                    iconClass: 'icon-person'
+                    _name: 'fund',
                 },
             },
             juniorDetail: {
                 //会员管理--储值管理--财务管理--下级单位储值账户信息详情
-                path: 'juniorDetail',
+                path: '/memberManage/fund/junior',
                 name: 'juniorDetail',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/juniorDetail.vue'),
                 meta: {
                     menuName: 'menuList.financialManagement', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
-                    _name: 'financialManagement',
-                    iconClass: 'icon-person'
+                    _name: 'fund',
                 },
             },
             memberSetting: {
                 //会员管理--基础设置
-                path: 'memberSetting',
-                name: 'memberSetting',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/setting/setting.vue'),
+                path: '/memberManage/setting',
+                component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/index.vue'),
                 meta: {
                     menuName: 'menuList.memberSetting', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberSetting',
                     iconClass: 'icon-person'
                 },
+                children: {
+                    basicSetting: {
+                        //会员管理--基础设置
+                        path: '/memberManage/setting/basic',
+                        name: 'memberSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/setting.vue'),
+                        meta: {
+                            menuName: 'menuList.memberSetting', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberSetting',
+                        },
+                    },
+                    channelSetting: {
+                        //会员管理--渠道设置
+                        path: '/memberManage/setting/channel',
+                        name: 'channelSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/channelSetting.vue'),
+                        meta: {
+                            menuName: 'menuList.channelSetting', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberSetting',
+                        },
+                    },
+                    levelSetting: {
+                        //会员管理--会员级别
+                        path: '/memberManage/setting/level',
+                        name: 'levelSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/levelSetting.vue'),
+                        meta: {
+                            menuName: 'menuList.levelSetting', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberSetting',
+                        },
+                    },
+                    growthSetting: {
+                        //会员管理--成长值设置
+                        path: '/memberManage/setting/growth',
+                        name: 'growthSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/growthSetting.vue'),
+                        meta: {
+                            menuName: 'menuList.growthSetting', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberSetting',
+                        },
+                    },
+                    fundSetting: {
+                        //会员管理--储值设置
+                        path: '/memberManage/setting/fund',
+                        name: 'fundSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/fundSetting.vue'),
+                        meta: {
+                            menuName: 'menuList.fundSetting', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberSetting',
+                        },
+                    },
+                    consumeSetting: {
+                        //会员管理--积分消费管理
+                        path: '/memberManage/setting/consume',
+                        name: 'consumeSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/consumeSetting.vue'),
+                        meta: {
+                            menuName: 'menuList.consumeSetting', //lang.config.js 里面的语言键值
+                            lightMenu: 'memberManage',//高亮
+                            _name: 'memberSetting',
+                        },
+                    },
+                }
             },
         }
     }

@@ -14,7 +14,7 @@
             <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="115">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="卡券名称" prop="name">
-                        <Input v-model.trim="data.name" placeholder="请输入"></Input>
+                        <Input v-model.trim="data.name" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">

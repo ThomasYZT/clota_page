@@ -314,17 +314,6 @@
                     width: 40%;
                     text-align: center;
                     vertical-align: middle;
-
-                    .btn-add-dept,
-                    .btn-add-position{
-                        position: absolute;
-                        left: calc(50% + 185px);
-                        top: 5px;
-                        font-size: 12px;
-                        color: #1875F0;
-                        letter-spacing: 0.75px;
-                        cursor: pointer;
-                    }
                 }
 
                 .ivu-form-item{
