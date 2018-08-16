@@ -21,7 +21,7 @@
                     <span class="iconfont icon-reset-pass"></span>
                     <Input v-model="formData.password"
                            style="width: 368px"
-                           :placeholder="$t('password')"/>
+                           :placeholder="$t('password',{msg : ''})"/>
                 </FormItem>
                 <FormItem prop="verifyCode" class="password input-with-icon verify-code">
                     <span class="iconfont icon-person "></span>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
         data() {
             return {
@@ -83,15 +84,22 @@
             login() {
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
-                        localStorage.setItem('token','token');
-                        this.$store.dispatch('getUserInfo').then(route => {
-                            this.$router.push({
-                                name: route.name
+                            localStorage.setItem('token','token');
+                            this.$store.dispatch('getUserInfo').then(route => {
+                                this.$router.push({
+                                    name: route.name
+                                });
                             });
-                        });
                     }
                 });
             }
+        },
+        created () {
+            ajax.post('login',{
+                name : '1'
+            }).then(res => {
+                console.log(res)
+            })
         }
     }
 </script>

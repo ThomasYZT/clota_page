@@ -13,11 +13,12 @@ export default {
      */
     loginOut() {
         localStorage.removeItem('token');
-        store.commit('updatePermissionInfo',null);
-        store.commit('updateUserInfo',{});
-        store.commit('updateRouteInfo',null);
         router.push({
             name : 'login'
+        },() => {
+            store.commit('updatePermissionInfo',null);
+            store.commit('updateUserInfo',{});
+            store.commit('updateRouteInfo',null);
         });
     },
 
