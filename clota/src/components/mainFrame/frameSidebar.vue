@@ -179,7 +179,7 @@
                     border-top: 1px solid rgba($color_fff, 0.1);
                 }
 
-                /deep/ .iconfont {
+                .iconfont {
                     width: 15px;
                     margin-right: 15px;
                     display: inline-block;

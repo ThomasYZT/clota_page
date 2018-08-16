@@ -30,7 +30,9 @@ const childDeepClone = (childrenList, data ) => {
                     //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
                     childrenRouter.push({
                         path: '',
-                        redirect: childrenRouter[0].name ? childrenRouter[0].name : childrenRouter[0].meat._name
+                        redirect: {
+                            name : childrenRouter[0].name ? childrenRouter[0].name : childrenRouter[0].meat._name
+                        }
                     });
                     router['children'] = childrenRouter;
                 } else {
