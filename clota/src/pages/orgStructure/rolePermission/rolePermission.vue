@@ -72,7 +72,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList'
     //弹窗
     export default {
         components: {},

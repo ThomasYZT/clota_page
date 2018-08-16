@@ -99,7 +99,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList'
     //新增员工（风景角色）
     import addSceneryEmployee from '../../model/addSceneryEmployee.vue'
     //新增员工（公司角色）

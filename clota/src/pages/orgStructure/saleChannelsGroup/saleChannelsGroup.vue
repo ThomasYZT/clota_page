@@ -97,7 +97,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList';
     // 下拉编辑组件
     import editDropdown from '../../../components/editDropdown/editDropdown.vue';
     // 移动分组弹窗

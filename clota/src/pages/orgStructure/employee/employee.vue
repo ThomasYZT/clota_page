@@ -89,7 +89,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList';
     //删除列表弹窗
     import deleteList from '../model/deleteList.vue';
 

@@ -55,11 +55,6 @@ require('echarts/lib/component/legend');
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
 
-
-// ajax作为全局变量引入
-import ajax from '@/api/ajaxList'
-
-
 let plugin = {};
 plugin.install = function (Vue, options) {
     // 引入iView
@@ -149,12 +144,6 @@ plugin.install = function (Vue, options) {
                 } else {
                     return content;
                 }
-            }
-        },
-        data() {
-            return {
-                // ajax作为全局变量引入
-                ajax
             }
         },
         created() {

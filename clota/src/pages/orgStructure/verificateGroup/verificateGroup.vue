@@ -103,7 +103,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList'
     import editDropdown from '../../../components/editDropdown/editDropdown.vue';
     // 编辑核销弹窗
     import modifyVerificate from '../model/modifyVerificate.vue';

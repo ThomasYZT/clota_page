@@ -23,7 +23,7 @@
                                 <Input type="text"
                                        prefix="ios-contact"
                                        v-model="formInline.user"
-                                       :placeholder="$t('userName')"/></Input>
+                                       :placeholder="$t('userName')"/>
                                 <span class="icon"></span>
                             </div>
                         </Form-item>
@@ -31,8 +31,7 @@
                             <Input type="password"
                                    prefix="logo-usd"
                                    v-model="formInline.password"
-                                   :placeholder="$t('password')">
-                            </Input>
+                                   :placeholder="$t('password')"/>
                         </Form-item>
                         <Form-item>
                             <Checkbox>{{ $t("autoLogin") }}</Checkbox>
@@ -50,7 +49,7 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList'
+    import ajax from '@/api/index'
 
     export default {
         components: {},

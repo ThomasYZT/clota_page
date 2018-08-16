@@ -104,7 +104,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList'
     // 表格筛选下拉模块
     import filterDrop from '../../../components/filterDrop/filterDrop.vue';
     // 新增自营渠道弹窗

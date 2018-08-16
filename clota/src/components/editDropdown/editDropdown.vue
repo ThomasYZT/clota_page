@@ -25,7 +25,6 @@
 
 
 <script>
-    import ajax from '@/api/ajaxList'
 
     export default {
         props: ['dataList'],
