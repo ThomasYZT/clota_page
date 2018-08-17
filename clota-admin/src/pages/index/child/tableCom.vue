@@ -9,6 +9,10 @@
               @row-click="classDetailLink"
               @selection-change="handleSelectionChange"
               :height="autoHeight ? 'max-content' : tableHeight">
+                <template slot="empty">
+                    <no-data>
+                    </no-data>
+                </template>
             <el-table-column
                 v-if="columnCheck"
                 type="selection"
@@ -77,8 +81,12 @@
 
 <script>
     import {validator} from 'klwk-ui';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
+        components : {
+            noData,
+        },
         props: {
             //表格数据
             'table-data': {
@@ -147,7 +155,7 @@
                 } else {
                     return this.columnData;
                 }
-            }
+            },
         },
         filters: {
             // 时间格式化过滤器

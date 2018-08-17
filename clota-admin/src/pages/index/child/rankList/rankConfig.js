@@ -9,16 +9,16 @@ export const columns = [
     {
         title: '名称',
         minWidth: 120,
-        field: 'name'
+        field: 'orgName'
     },
     {
         title: '订单量',
         minWidth: 120,
-        field: 'name'
+        field: 'count'
     },
     {
         title: '占比',
         minWidth: 45,
-        field: 'rate'
+        field: 'proportion'
     },
 ];

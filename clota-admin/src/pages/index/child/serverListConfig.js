@@ -3,32 +3,36 @@ export const columns = [
     {
         title: '服务器名称',
         minWidth: 120,
-        field: 'realName',
-        ableClick: true
+        field: 'serverName'
     },
     {
         title: 'IP地址',
         minWidth: 120,
-        field: 'examName'
+        field: 'ip'
     },
     {
         title: '应用服务',
         minWidth: 100,
-        field: 'examScore'
+        field: 'serviceName'
     },
     {
         title: '系统',
         minWidth: 130,
-        field: 'examScore'
+        field: 'opSystme'
+    },
+    {
+        title: '系统类型',
+        minWidth: 130,
+        field: 'systmeBit'
     },
     {
         title: '监控频率',
         minWidth: 90,
-        field: 'examScore'
+        field: 'monitoringFrequencc'
     },
     {
         title: '运行状态',
         minWidth: 90,
-        field: 'examScore'
+        field: 'runState'
     },
 ];

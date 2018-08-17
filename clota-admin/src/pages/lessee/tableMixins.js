@@ -7,13 +7,7 @@ export default {
     data() {
         return {
             //表格数据
-            tableData: [
-                {name: 1},
-                {name: 1},
-                {name: 1},
-                {name: 1},
-                {name: 1},
-            ],
+            tableData: [],
             //表格高度
             tableHeight: '0px',
             //是否在加载中
@@ -49,11 +43,15 @@ export default {
         setTableHeight() {
             let content = this.$el;
             if (content) {
-                let height = this.tableData.length * 48 + 49;
-                if (height > content.offsetHeight - this.spaceOffset) {
+                if(this.tableData.length === 0){
                     this.tableHeight = content.offsetHeight - this.spaceOffset + 'px';
-                } else {
-                    this.tableHeight = height + 'px';
+                }else{
+                    let height = this.tableData.length * 49 + 49;
+                    if (height > content.offsetHeight - this.spaceOffset) {
+                        this.tableHeight = content.offsetHeight - this.spaceOffset + 'px';
+                    } else {
+                        this.tableHeight = height + 'px';
+                    }
                 }
             } else {
                 this.tableHeight = 49 + 'px';

@@ -253,4 +253,7 @@ export default {
     newPassError : '两次输入密码不一致',
     warnAlarm : '异常事件报警',
     logoutError : '退出登录失败',
+    serveList : '服务器列表',
+    more : '更多',
+    bit : '{length}位',
 }

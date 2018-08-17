@@ -3,9 +3,9 @@
 <template>
     <div class="server-list">
         <div class="title">
-            服务器列表
+            {{$t('serveList')}}
             <span class="server-care" @click="toServer">
-                更多
+                {{$t('more')}}
                 <span class="iconfont icon-pull-down"></span>
             </span>
         </div>
@@ -14,6 +14,28 @@
                 :table-data="tableData"
                 table-height="268px"
                 :column-data="columnData">
+                <!--系统类型-->
+                <el-table-column
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scoped">
+                        {{$t('bit',{length : scoped.row.systmeBit})}}
+                    </template>
+                </el-table-column>
+                <!--监控频率-->
+                <el-table-column
+                    slot="column5"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scoped">
+                        {{scoped.row.monitoringFrequencc}}{{$t('minute')}}
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
     </div>
@@ -22,6 +44,7 @@
 <script>
     import tableCom from './tableCom';
     import {columns} from './serverListConfig';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -29,23 +52,8 @@
         },
         data() {
             return {
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1516 弄'
-                }],
+                //表格数据
+                tableData: [],
                 //表头配置
                 columnData: columns
             }
@@ -58,7 +66,27 @@
                 this.$router.push({
                     name : 'server'
                 });
+            },
+            /**
+             * 查询服务器
+             */
+            queryAllServerMsg () {
+                ajax.post('queryAllServerMsg',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list ? res.data.list : [];
+                    }else{
+                        this.tableData = [];
+                    }
+                }).catch(() => {
+                    this.tableData = [];
+                });
             }
+        },
+        created () {
+            this.queryAllServerMsg();
         }
     }
 </script>

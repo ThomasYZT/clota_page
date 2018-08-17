@@ -15,4 +15,6 @@ export default {
     'tenantRegion' : 'tenant/tenantRegion.json',
     //查询订单排行
     'orderRankingList' : 'order/orderRankingList.json',
+    //查询服务器信息
+    'queryAllServerMsg' : 'servers/queryAllServerMsg.json',
 }
