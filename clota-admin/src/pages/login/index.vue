@@ -11,35 +11,46 @@
                   :model="formData"
                   :rules="rules"
                   :label-width="0">
+                <!--账号-->
                 <FormItem prop="account" class="input-with-icon">
                     <span class="iconfont icon-person"></span>
                     <Input v-model="formData.account"
                            style="width: 368px;height: 40px;"
                            :placeholder="$t('account')"/>
                 </FormItem>
+                <!--密码-->
                 <FormItem prop="password" class="input-with-icon">
                     <span class="iconfont icon-reset-pass"></span>
                     <Input v-model="formData.password"
+                           type="password"
                            style="width: 368px"
                            :placeholder="$t('password',{msg : ''})"/>
                 </FormItem>
+                <!--验证码-->
                 <FormItem prop="verifyCode" class="password input-with-icon verify-code">
                     <span class="iconfont icon-person "></span>
                     <Input v-model="formData.verifyCode"
                            style="width: 368px"
                            :placeholder="$t('verifyCode')"/>
-                    <img class="verify-img" src="../../assets/images/test.jpg" alt="">
+                    <img class="verify-img"
+                         src="../../assets/images/test.jpg"
+                         alt=""
+                         @click="changeCode">
                 </FormItem>
+                <!--自动登录-->
                 <FormItem class="auto-login">
-                    <Checkbox label="Eat">{{$t('autoLogin')}}</Checkbox>
+                    <Checkbox label="Eat" v-model="rememberAccount">{{$t('rememberAccount')}}</Checkbox>
                 </FormItem>
                 <div class="err-message">
-                    <span v-if="showErrMessage">{{$t('loginError.accountError')}}</span>
+                    <transition name="fade">
+                        <span v-if="showErrMessage">{{$t(errMessage)}}</span>
+                    </transition>
                 </div>
                 <FormItem>
                     <Button type="primary"
+                            :loading="logging"
                             class="login-btn"
-                            @click="login">{{$t('login')}}
+                            @click="login">{{$t(logging ? 'logining' : 'login')}}
                     </Button>
                 </FormItem>
             </Form>
@@ -69,12 +80,18 @@
                     //账户
                     account: 'test',
                     //密码
-                    password: '900150983cd24fb0d6963f7d28e17f72',
+                    password: 'abc',
                     //验证码
-                    verifyCode: 'test'
+                    verifyCode: 'abc'
                 },
                 //是否显示错误信息
-                showErrMessage: false
+                showErrMessage: false,
+                //错误信息
+                errMessage : '',
+                //登陆中
+                logging : false,
+                //记住账号
+                rememberAccount : false
             }
         },
         methods: {
@@ -82,21 +99,52 @@
              * 登录
              */
             login() {
+                this.logging = true;
+                this.showErrMessage = false;
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
+                        this.saveAccount();
                         ajax.post('login',{
-                            name : this.formData.account,
+                            loginName : this.formData.account,
                             password : this.formData.password,
                         }).then(res => {
-                            localStorage.setItem('token','token');
-                            this.$store.dispatch('getUserInfo').then(route => {
-                                this.$router.push({
-                                    name: route.name
+                            // debugger
+                            if(res.status === 200){
+                                localStorage.setItem('token',res.data.token);
+                                this.$store.dispatch('getUserInfo').then(route => {
+                                    this.$router.push({
+                                        name: route.name
+                                    });
                                 });
-                            });
-                        })
+                            }else{
+                                this.errMessage = 'loginError.accountError';
+                                this.showErrMessage = true;
+                            }
+                        }).catch(err => {
+                            this.errMessage = 'loginError.serverError';
+                            this.showErrMessage = true;
+                        }).finally(() =>{
+                            this.logging = false;
+                        });
                     }
                 });
+            },
+            /**
+             * 更改验证码
+             */
+            changeCode () {
+
+            },
+            /**
+             * 记住账号
+             */
+            saveAccount () {
+                localStorage.setItem('account',this.formData.account);
+            }
+        },
+        created () {
+            if(localStorage.getItem('account')){
+                this.formData.account = localStorage.getItem('account');
             }
         }
     }
@@ -145,6 +193,7 @@
                 .verify-img {
                     @include absolute_pos(absolute, $top: 5px, $right: 11px);
                     @include block_outline(73px, 30px);
+                    cursor: pointer;
                 }
             }
 

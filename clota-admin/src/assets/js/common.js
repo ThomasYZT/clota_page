@@ -5,6 +5,9 @@
 
 import router from '../../router';
 import store from '../../store/index';
+import ajax from '../../api/index';
+import Vue from 'vue';
+import i18n from '../lang/lang.config';
 
 export default {
 
@@ -12,13 +15,19 @@ export default {
      * 退出登录(清空本地记录)
      */
     loginOut() {
-        localStorage.removeItem('token');
-        router.push({
-            name : 'login'
-        },() => {
-            store.commit('updatePermissionInfo',null);
-            store.commit('updateUserInfo',{});
-            store.commit('updateRouteInfo',null);
+        ajax.post('logout').then(res => {
+            if(res.status === 200){
+                localStorage.removeItem('token');
+                router.push({
+                    name : 'login'
+                },() => {
+                    store.commit('updatePermissionInfo',null);
+                    store.commit('updateUserInfo',{});
+                    store.commit('updateRouteInfo',null);
+                });
+            }else{
+                Vue.prototype.$Message.error(i18n.messages[i18n.locale]['logoutError']);
+            }
         });
     },
 

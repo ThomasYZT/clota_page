@@ -13,11 +13,13 @@ export default {
     verifyCodedInputError: '请输入验证码',
     loginError: {
         accountError: '密码或账号错误',
-        verifyCodeError: '验证码错误'
+        verifyCodeError: '验证码错误',
+        serverError : '链接服务器失败'
     },
     companyName: '银科环企Clota运营平台',
-    autoLogin: '自动登录',
+    rememberAccount: '记住账号',
     login: '登录',
+    logining: '登录中',
     index: '首页',
     lessee: '租户',
     lesseeDetail: '租户详情',
@@ -248,5 +250,7 @@ export default {
     baseInfo : '基本信息',
     passwordError :'密码必须为6～20位，须同时含有字母和数字',
     passwordAgainInput :'请再次输入新密码',
-    newPassError : '两次输入密码不一致'
+    newPassError : '两次输入密码不一致',
+    warnAlarm : '异常事件报警',
+    logoutError : '退出登录失败',
 }

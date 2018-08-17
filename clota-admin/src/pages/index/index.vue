@@ -3,44 +3,38 @@
 <template>
     <div class="index-page">
         <div class="time-chose">
-            <Select v-model="dataType" style="width:224px">
-                <Option v-for="item in dataList"
-                        :value="item.value"
-                        :key="item.value">
-                    {{ item.label }}
-                </Option>
-            </Select>
-            <DatePicker type="daterange"
+            <DatePicker type="date"
+                        v-model="date"
                         placement="bottom-end"
-                        style="width: 224px">
+                        style="width: 224px"
+                        @on-change="dateChange">
             </DatePicker>
         </div>
         <div class="top-data">
             <!--今日登陆-->
             <top-data :label-name="$t('todayLogin')"
-                      :label-rate="23"
-                      :label-num="100"
+                      :label-rate="logCountData.contrastWithYesterday"
+                      :label-num="logCountData.loginCount"
                       :icon="require('../../assets/images/icon-login-count.svg')"
                       label-curve="up">
             </top-data>
             <!--旅游产品订单-->
             <top-data :label-name="$t('travelOrder')"
-                      :label-rate="23"
-                      :label-num="100"
+                      :label-rate="travelOrderData.contrastWithYesterday"
+                      :label-num="travelOrderData.orderCount"
                       :icon="require('../../assets/images/icon-travel-order.svg')"
                       label-curve="up">
             </top-data>
-            <!--交易金额-->
+            <!--租户累计-->
             <top-data :label-name="$t('tenementCount')"
-                      :label-rate="23"
-                      :label-num="100"
+                      :label-rate="tenantCountData.contrastWithYesterday"
+                      :label-num="tenantCountData.tenantCount"
                       :icon="require('../../assets/images/icon-trade-money.svg')"
                       label-curve="up">
             </top-data>
-            <!--租户累计-->
+            <!--服务器数量-->
             <top-data :label-name="$t('serverCount')"
-                      :label-rate="23"
-                      :label-num="100"
+                      :label-num="serverCountData.serverCount"
                       :icon="require('../../assets/images/icon-lessee-count.svg')"
                       label-curve="down">
             </top-data>
@@ -70,6 +64,7 @@
     import lesseePlace from './child/lesseePlace';
     import serverList from './child/serverList';
     import rankList from './child/rankList';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -81,18 +76,127 @@
         },
         data() {
             return {
-                //数据类型
-                dataType: '',
-                //类型列表
-                dataList: [
-                    {
-                        label: '运营数据大盘',
-                        value: ''
-                    }
-                ]
+                //数据统计时间
+                date : new Date(),
+                //登录统计数据
+                logCountData : {
+                    //同比上周
+                    contrastWithYesterday : 0,
+                    //今日登录
+                    loginCount : 0
+                },
+                //旅游产品订单数据
+                travelOrderData : {
+                    //同比上周
+                    contrastWithYesterday : 0,
+                    //旅游产品订单
+                    orderCount : 0
+                },
+                //租户累计数据
+                tenantCountData : {
+                    //同比上周
+                    contrastWithYesterday : 0,
+                    //租户累计数
+                    tenantCount : 0,
+                },
+                //服务器数据
+                serverCountData : {
+                    //同比上周
+                    contrastWithYesterday : 0,
+                    //服务器数量
+                    serverCount : 0,
+                }
             }
         },
-        methods: {},
+        methods: {
+            /**
+             * 获取当前登录的用户数
+             */
+            getLoginCount () {
+                ajax.get('loginCount',{
+                    date : this.date.format('yyyy-MM-dd')
+                }).then(res => {
+                    if(res.status === 200){
+                        this.logCountData = res.data;
+                    }else{
+                        this.logCountData.contrastWithYesterday = '-';
+                        this.logCountData.loginCount = '-';
+                    }
+                }).catch(err => {
+                    this.logCountData.contrastWithYesterday = '-';
+                    this.logCountData.loginCount = '-';
+                });
+            },
+            /**
+             * 获取旅游产品订单数
+             */
+            getOrderCount () {
+                ajax.get('orderCount',{
+                    date : this.date.format('yyyy-MM-dd')
+                }).then(res => {
+                    if(res.status === 200){
+                        this.travelOrderData = res.data;
+                    }else{
+                        this.logCountData.contrastWithYesterday = '-';
+                        this.logCountData.orderCount = '-';
+                    }
+                }).catch(err => {
+                    this.logCountData.contrastWithYesterday = '-';
+                    this.logCountData.orderCount = '-';
+                });
+            },
+            /**
+             * 获取租户累计数据
+             */
+            getTenantCount () {
+                ajax.get('tenantCount',{
+                    date : this.date.format('yyyy-MM-dd')
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tenantCountData = res.data;
+                    }else{
+                        this.tenantCountData.contrastWithYesterday = '-';
+                        this.tenantCountData.tenantCount = '-';
+                    }
+                }).catch(err => {
+                    this.tenantCountData.contrastWithYesterday = '-';
+                    this.tenantCountData.tenantCount = '-';
+                });
+            },
+            /**
+             * 获取服务器数据
+             */
+            getServerCount () {
+                ajax.get('serverCount',{
+                    date : this.date.format('yyyy-MM-dd')
+                }).then(res => {
+                    if(res.status === 200){
+                        this.serverCountData = res.data;
+                    }else{
+                        this.serverCountData.contrastWithYesterday = '-';
+                        this.serverCountData.serverCount = '-';
+                    }
+                }).catch(err => {
+                    this.serverCountData.contrastWithYesterday = '-';
+                    this.serverCountData.serverCount = '-';
+                });
+            },
+            /**
+             * 日期改变，重新获取数据
+             */
+            dateChange () {
+                this.getLoginCount();
+                this.getOrderCount();
+                this.getTenantCount();
+                this.getServerCount();
+            }
+        },
+        created () {
+            this.getLoginCount();
+            this.getOrderCount();
+            this.getTenantCount();
+            this.getServerCount();
+        }
     }
 </script>
 

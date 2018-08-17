@@ -12,7 +12,15 @@
     import vueEcharts from '@/components/vueEcharts/ECharts.vue';
 
     export default {
-        props: {},
+        props: {
+            //饼图数据
+            'pie-data' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         components: {
             vueEcharts
         },
@@ -23,16 +31,7 @@
         computed: {
             //饼图配置
             pieOptions() {
-                return getPieConfig(['广州', '北京'], [
-                    {
-                        name: '广州',
-                        value: 1
-                    },
-                    {
-                        name: '北京',
-                        value: 11
-                    }
-                ]);
+                return getPieConfig(this.pieData.legend, this.pieData.data);
             }
         }
     }

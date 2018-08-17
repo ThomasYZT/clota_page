@@ -51,7 +51,7 @@ export default function (legendData, seriesData) {
             name: seriesData[i].name,
             label: {
                 normal: {
-                    formatter: '{b|{b}}\n{per|{d}%}  ',
+                    formatter: '{b|{b}}{per|{d}%}  ',
                     rich: {
                         b: {
                             color: '#666666',

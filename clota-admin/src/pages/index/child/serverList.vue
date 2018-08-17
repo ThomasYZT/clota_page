@@ -73,7 +73,6 @@
 
         .title {
             @include block_outline($height: 45px);
-            border-bottom: 1px solid $color_E8E8E;
             line-height: 45px;
             padding: 0 20px;
             font-size: $font_size_16px;

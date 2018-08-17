@@ -24,10 +24,18 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    label="占比"
+                    slot="column2"
+                    width="70">
+                    <template slot-scope="scoped">
+                        <span>{{getIndex(scoped.row.proportion)}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     width="100">
                     <template slot-scope="scoped">
                         <div class="bar-warp">
-                            <div class="bar"></div>
+                            <div class="bar" :style="{width : (scoped.row.proportion ? scoped.row.proportion * 100 : 0) + '%'}"></div>s
                         </div>
                     </template>
                 </el-table-column>
@@ -39,6 +47,8 @@
 <script>
     import tableCom from './tableCom';
     import {columns} from './rankListConfig';
+    import ajax from '@/api/index.js';
+    import {validator} from 'klwk-ui';
 
     export default {
         components: {
@@ -48,15 +58,8 @@
             return {
                 //表头配置
                 columnData: columns,
-                tableData: [{
-                    index: '1',
-                    name: '王小虎',
-                    rate: '100%'
-                }, {
-                    index: '2',
-                    name: '王小虎',
-                    rate: '1%'
-                }],
+                //表格数据
+                tableData: [],
             }
         },
         methods: {
@@ -67,7 +70,38 @@
                 this.$router.push({
                     name : 'rankDetail'
                 });
+            },
+            /**
+             * 获取排行榜
+             */
+            getOrderRankingList () {
+                ajax.get('orderRankingList',{
+                    page : 1,
+                    pageSize : 5
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list ? res.data.list : [];
+                    }else{
+                        this.tableData =  [];
+                    }
+                }).catch(err => {
+                    this.tableData =  [];
+                });
+            },
+            /**
+             * 获取占比
+             * @param rate
+             */
+            getIndex (rate) {
+                if(validator.isNumber(rate)){
+                    return Number(rate).toFixed(2) + '%';
+                }else{
+                    return '-';
+                }
             }
+        },
+        created () {
+            this.getOrderRankingList();
         }
     }
 </script>
@@ -83,7 +117,6 @@
 
         .title {
             @include block_outline($height: 45px);
-            border-bottom: 1px solid $color_E8E8E;
             line-height: 45px;
             padding: 0 20px;
             font-size: $font_size_16px;
@@ -121,7 +154,7 @@
                 @include block_outline(67px, 8px);
 
                 .bar {
-                    @include block_outline(20%);
+                    height: 100%;
                     background: rgba(73, 169, 238, 1);
                 }
             }

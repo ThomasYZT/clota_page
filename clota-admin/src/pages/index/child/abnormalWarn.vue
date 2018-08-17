@@ -2,51 +2,39 @@
 
 <template>
     <div class="abnormal-warn">
-        <div class="title">异常事件报警</div>
+        <div class="title">{{$t('warnAlarm')}}</div>
         <div class="table-list-area">
-            <ul class="event-list">
-                <li class="event">
+            <ul class="event-list" v-if="totalCount > 0">
+                <li class="event"
+                    v-for="(item,i) in warningList"
+                    :key="i">
                     <ul class="event-info">
                         <li class="event-name">
-                            <span class="iconfont icon-warn"></span>
-                            服务器
+                            <span class="iconfont"
+                                  :class="{'icon-warn' : item.warningLevel === '2',
+                                  'icon-error' : item.warningLevel === '1',
+                                  'icon-mind' : item.warningLevel === '3'}"></span>
+                            {{item.message}}
                         </li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
+                        <li class="server-name">{{item.serverName}}</li>
+                        <li class="event-time">{{item.ctime}}</li>
                         <li class="watch" @click="toDetail('serverDetail')">查看</li>
                     </ul>
                 </li>
-                <li class="event">
-                    <ul class="event-info">
-                        <li class="event-name">
-                            <span class="iconfont icon-error"></span>
-                            租户服务到期
-                        </li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch" @click="toDetail('ISPinternetDetail')">查看</li>
-                    </ul>
-                </li>
-                <li class="event">
-                    <ul class="event-info">
-                        <li class="event-name">
-                            <span class="iconfont icon-mind"></span>
-                            票类服务已经到期
-                        </li>
-                        <li class="server-name">Service-01</li>
-                        <li class="event-time">2016-09-09 08:00</li>
-                        <li class="watch" @click="toDetail('orderDetail')">查看</li>
-                    </ul>
-                </li>
             </ul>
+            <!--无数据-->
+            <no-data v-if="totalCount < 1">
+            </no-data>
         </div>
-        <div class="page-area">
+        <div class="page-area" v-if="totalCount > 0">
             <el-pagination
                 :current-page="pageNo"
                 :page-sizes="pageSizeConfig"
                 :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
+                :total="totalCount"
+                @size-change="sizeChange"
+                @current-change="pageNoChange">
             </el-pagination>
         </div>
     </div>
@@ -54,16 +42,25 @@
 
 <script>
     import {configVariable} from '../../../assets/js/constVariable';
+    import ajax from '@/api/index.js';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
+        components :{
+            noData
+        },
         data() {
             return {
+                //总共条数
+                totalCount : 0,
+                //事件
+                warningList : [],
                 //每页大小配置
                 pageSizeConfig: configVariable.pageSizeConfig,
                 //每页大小
                 pageSize: configVariable.pageDefaultSize,
                 //当前页码
-                pageNo: 1
+                pageNo: 1,
             }
         },
         methods: {
@@ -78,7 +75,47 @@
                         orderType :"team"
                     }
                 });
+            },
+            /**
+             * 获取异常事件报警
+             */
+            getExceptionAlarm () {
+                ajax.get('exceptionAlarm',{
+                    page : this.pageNo,
+                    pageSize : this.pageSize,
+                    warningType : '0'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.totalCount = res.data.totalRecord;
+                        this.warningList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.totalCount = 0;
+                        this.warningList = [];
+                    }
+                }).catch(err => {
+                    this.totalCount = 0;
+                    this.warningList = [];
+                });
+            },
+            /**
+             * 改变每页的条数
+             * @param pageSize
+             */
+            sizeChange (pageSize) {
+                this.pageSize = pageSize;
+                this.getExceptionAlarm();
+            },
+            /**
+             * 页码改变
+             * @param pageNo
+             */
+            pageNoChange (pageNo) {
+                this.pageNo = pageNo;
+                this.getExceptionAlarm();
             }
+        },
+        created () {
+            this.getExceptionAlarm();
         }
     }
 </script>
@@ -87,6 +124,7 @@
     @import '~@/assets/scss/base';
 
     .abnormal-warn {
+        position: relative;
         float: left;
         @include block_outline($width: unquote('calc(100% - 425px)'), $height: 309px);
         @include card();

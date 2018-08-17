@@ -13,7 +13,9 @@ module.exports = {
     proxyTable: {
         '/clota_dev/*': {
             target: 'http://47.100.221.254:9999',
-            changeOrigin : true
+            changeOrigin : true,
+            pathRewrite: {"^/clota_dev" : ""},
+            cookieDomainRewrite: ""
         },
         // router: function(req) {
         //     console.log(req)
@@ -22,7 +24,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

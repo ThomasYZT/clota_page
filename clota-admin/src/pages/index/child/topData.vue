@@ -7,13 +7,13 @@
             <span class="label-name">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
             <span class="circle-rate">
-            <span class="rate">
+            <span class="rate" v-if="labelRate !== ''">
                 <span class="iconfont"
                       :class="{'icon-arrow-up' : labelCurve === 'up', 'icon-arrow-down' : labelCurve === 'down'}">
                 </span>
                 {{labelRate}}%
             </span>
-            <span class="desc">{{$t('circleName')}}</span>
+            <span class="desc" v-if="labelRate !== ''">{{$t('circleName')}}</span>
           </span>
         </div>
     </div>
@@ -44,16 +44,27 @@
                     return {};
                 }
             },
-            //当前指标是上升，还是下降
-            'label-curve' : {
-                type : String,
-                default : ''
-            }
         },
         data() {
             return {}
         },
-        methods: {}
+        methods: {},
+        computed : {
+            //同比上周，当前指标是上升，还是下降
+            labelCurve () {
+                if(this.labelRate === '-'){
+                    return '-';
+                }else{
+                    if(this.labelRate > 1){
+                        return  'up';
+                    }else if(this.labelRate < 1){
+                        return 'down';
+                    }else{
+                        return '';
+                    }
+                }
+            }
+        }
     }
 </script>
 

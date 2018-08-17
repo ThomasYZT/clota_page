@@ -3,17 +3,17 @@ export const columns = [
     {
         title: '排名',
         minWidth: 45,
-        field: 'index',
+        field: 'orgName',
         ableClick: true
     },
     {
         title: '名称',
         minWidth: 120,
-        field: 'name'
+        field: 'orgName'
     },
     {
         title: '占比',
         minWidth: 45,
-        field: 'rate'
+        field: 'proportion'
     },
 ];

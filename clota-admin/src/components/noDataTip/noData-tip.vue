@@ -23,7 +23,9 @@
 </script>
 
 <style lang="scss">
+    @import '~@/assets/scss/base';
     .component-noData-tip {
         text-align: center;
+        @include center_center();
     }
 </style>
