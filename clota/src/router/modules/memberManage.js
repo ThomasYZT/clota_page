@@ -25,7 +25,7 @@ export default {
                     menuName: 'menuList.memberHome', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberHome',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-home'
                 },
             },
             memberInfo: {
@@ -36,7 +36,7 @@ export default {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-people'
                 },
                 children: {
                     info: {
@@ -105,7 +105,6 @@ export default {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
                 },
             },
             infoFund: {
@@ -128,7 +127,6 @@ export default {
                     menuName: 'menuList.memberInfo', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberInfo',
-                    iconClass: 'icon-person'
                 },
             },
             integration: {
@@ -139,7 +137,7 @@ export default {
                     menuName: 'menuList.integration', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'integration',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-diamond'
                 },
                 children: {
                     integ: {
@@ -208,7 +206,7 @@ export default {
                     menuName: 'menuList.card', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'card',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-card'
                 },
             },
             addCard: {
@@ -230,7 +228,7 @@ export default {
                     menuName: 'menuList.fund', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'fund',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-print'
                 },
                 children: {
                     funds: {
@@ -298,7 +296,7 @@ export default {
                     menuName: 'menuList.memberSetting', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'memberSetting',
-                    iconClass: 'icon-person'
+                    iconClass: 'icon-setting'
                 },
                 children: {
                     basicSetting: {

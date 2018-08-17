@@ -9,22 +9,16 @@
         @on-cancel="hide">
 
         <div class="modal-body">
+
+            <div class="form-item-wrap"><label>用户姓名：</label><span>刘木子</span></div>
+            <div class="form-item-wrap"><label>当前储值账户余额：</label><span class="yellow-color">3728.28</span>元</div>
+
             <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="150">
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="用户姓名：">
-                        <span>刘木子</span>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="当前储值账户余额：">
-                        <span class="num">3728.28</span> 元
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
+                <div class="ivu-form-item-wrap double-input">
                     <Form-item label="账户余额调整：" prop="num">
                         <RadioGroup v-model="data.fund">
-                            <Radio label="add">增加 <Input v-model="data.num" :disabled="data.fund === 'reduce'" placeholder="请输入" style="width: 170px" />{{type === 'fund'?'元':'积分'}}</Radio>
-                            <Radio label="reduce">减少 <Input v-model="data.num" :disabled="data.fund === 'add'" placeholder="请输入" style="width: 170px" />{{type === 'fund'?'元':'积分'}}</Radio>
+                            <Radio label="add">增加 <Input v-model="data.num" :disabled="data.fund === 'reduce'" placeholder="请输入"/>{{type === 'fund'?'元':'积分'}}</Radio>
+                            <Radio label="reduce">减少 <Input v-model="data.num" :disabled="data.fund === 'add'" placeholder="请输入"/>{{type === 'fund'?'元':'积分'}}</Radio>
                         </RadioGroup>
                     </Form-item>
                 </div>
@@ -37,7 +31,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model="data.remark" type="textarea" placeholder="请输入" style="width: 280px" />
+                        <Input v-model="data.remark" type="textarea" placeholder="请输入" />
                     </Form-item>
                 </div>
             </Form>
@@ -109,9 +103,60 @@
 
     .modify-balance-modal{
 
-        .num{
+        .yellow-color{
             font-size: $font_size_18px;
             color: $color_yellow;
+        }
+
+        .modal-body{
+            padding: 20px 30px;
+        }
+
+        .form-item-wrap{
+            width: 100%;
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            height: 30px;
+            line-height: 30px;
+            font-size: $font_size_14px;
+            color: $color-666;
+            >label{
+                width: 150px;
+                display: inline-block;
+                text-align: right;
+                padding-right: 10px;
+                color: $color-333;
+            }
+        }
+
+        .ivu-form-item-wrap{
+
+            /deep/ .ivu-select{
+                width: 260px;
+            }
+
+            /deep/ .ivu-input-wrapper{
+                width: 260px;
+            }
+
+            &.double-input{
+                /deep/ .ivu-input-wrapper{
+                    width: 170px;
+                    margin-right: 10px;
+                    margin-left: 6px;
+                }
+            }
+
+            /deep/ .ivu-radio-wrapper{
+                margin-top: 5px;
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
         }
     }
 </style>

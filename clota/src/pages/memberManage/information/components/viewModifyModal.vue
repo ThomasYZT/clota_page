@@ -58,7 +58,6 @@
 
         .modal-body{
             padding: 20px 0 50px 100px;
-            height: 230px;
 
             .form-item-wrap{
                 width: 100%;

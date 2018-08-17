@@ -105,7 +105,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="身份证号" prop="idNum">
+                        <Form-item label="证件编号" prop="idNum">
                             <Input v-model.trim="member.idNum" placeholder="请输入"></Input>
                         </Form-item>
                     </div>
@@ -116,12 +116,11 @@
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap single">
                         <Form-item label="地址" prop="address">
                             <Input v-model.trim="member.address" placeholder="请输入家庭地址"></Input>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap"></div>
 
                 </Form>
             </div>
@@ -311,29 +310,40 @@
                     display: inline-block;
                     min-width: 495px;
                     padding-right: 55px;
-                    width: 40%;
-                    text-align: center;
-                    vertical-align: middle;
-                }
-
-                .ivu-form-item{
-                    width: 395px;
-                    margin: 0 auto 18px;
+                    /*width: 40%;*/
+                    width: 49%;
+                    /*text-align: center;*/
                     text-align: left;
+                    vertical-align: middle;
 
-                    .ivu-date-picker {
-                        display: block;
+                    .ivu-form-item{
+                        width: 395px;
+                        margin: 0 auto 18px;
+                        text-align: left;
+
+                        .ivu-date-picker {
+                            display: block;
+                        }
+
+                        .ivu-select-selected-value,
+                        .ivu-input{
+                            font-size: 14px;
+                        }
+
+                        .ivu-select-item{
+                            font-size: 14px !important;
+                        }
                     }
 
-                    .ivu-select-selected-value,
-                    .ivu-input{
-                        font-size: 14px;
-                    }
-
-                    .ivu-select-item{
-                        font-size: 14px !important;
+                    &.single{
+                        width: calc(49% + 455px);
+                        .ivu-form-item{
+                            width: 100%;
+                        }
                     }
                 }
+
+
 
                 .register-info-footer{
                     padding: 30px 20px;

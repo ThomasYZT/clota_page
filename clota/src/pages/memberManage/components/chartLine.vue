@@ -6,7 +6,7 @@
                 <div class="chart-title">{{data.label1}}</div>
                 <div class="chart-num">{{data.total1}}</div>
                 <div class="chart-label">
-                    <span class="iconfont icon-down"></span>
+                    <span class="iconfont icon-down red-color"></span>
                     <span>{{data.rate1}}</span>
                     <span>同比上周</span>
                 </div>
@@ -16,7 +16,7 @@
                 <div class="chart-title">{{data.label2}}</div>
                 <div class="chart-num">{{data.total2}}</div>
                 <div class="chart-label">
-                    <span class="iconfont icon-up"></span>
+                    <span class="iconfont icon-up green-color"></span>
                     <span>{{data.rate2}}</span>
                     <span>同比上周</span>
                 </div>
@@ -28,7 +28,15 @@
                 <span :class="{'active': data.type === 'week'}">本周</span>
                 <span :class="{'active': data.type === 'month'}">本月</span>
                 <span :class="{'active': data.type === 'year'}">本年</span>
-                <DatePicker type="datetimerange" placement="bottom-end" format="yyyy-MM-dd HH:mm" placeholder="请选择" style="width: 320px"></DatePicker>
+                <div class="date-range-filter">
+                    <div class="double-date-container" :class="{'ivu-form-item-error' : validateError.entryDate}">
+                        <Date-picker class="double-date" v-model="startTime" type="date" placement="bottom-end" :editable="false" placeholder="开始时间"></Date-picker>
+                        <span>至</span>
+                        <Date-picker class="double-date" v-model="endTime" type="date" placement="bottom-end" :editable="false" placeholder="结束时间"></Date-picker>
+                        <span class="iconfont icon-date-picker"></span>
+                    </div>
+                    <div v-show="validateError" class="ivu-form-item-error-tip">{{validateError.entryDate}}</div>
+                </div>
             </div>
             <div class="line-content">
                 <div class="label">单位：万元</div>
@@ -50,6 +58,9 @@
         },
         data () {
             return {
+                startTime: '',
+                endTime: '',
+                validateError: '',
                 seriesData: [
                     { name: '03-02周六', value: 6},
                     { name: '03-03周天', value: 5},
@@ -198,6 +209,14 @@
         height: 100%;
         @include clearfix();
 
+        .red-color{
+            color: $color_red;
+        }
+
+        .green-color{
+            color: $color_green;
+        }
+
         .chart-left{
             height: 100%;
             width: 230px;
@@ -247,6 +266,54 @@
                     cursor: pointer;
                     &.active{
                         color: $color_blue;
+                    }
+                }
+
+                .date-range-filter{
+                    position: relative;
+                    width: 320px;
+                    display: inline-block;
+                    height: 30px;
+                    .ivu-icon-ios-calendar-outline{  display: none;}
+                    .double-date-container{
+                        background: $color_fff;
+                        border: 1px solid $color_D8D8D8;
+                        border-radius: 4px;
+                        height: 30px;
+                        line-height: 20px;
+                        vertical-align: middle;
+                        .double-date{
+                            width: 130px;
+                            display: inline-block;
+                            /deep/ .ivu-icon-ios-calendar-outline{  display: none !important;}
+                            /deep/ .ivu-icon-ios-close{  display: inline-block;left: 90px;}
+
+                            /deep/ .ivu-input{
+                                font-size: $font_size_14px;
+                                height: 28px;
+                                border: none;
+                                border-width: 0;
+                                padding-right: 0;
+                                text-indent: 10px;
+                            }
+                            /deep/ .ivu-input:focus{
+                                border-width: 0;
+                                box-shadow: none;
+                            }
+                        }
+                        .iconfont{
+                            color: $color_CED0DA;
+                            font-size: $font_size_18px;
+                            vertical-align: middle;
+                            margin-right: 5px
+                        }
+                        /deep/ &.ivu-form-item-error{
+                            border:1px solid $color_red;
+                        }
+                    }
+                    .double-date-container:hover {
+                        background-color: transparent;
+                        border-color: $color_blue;
                     }
                 }
             }

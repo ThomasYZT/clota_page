@@ -95,5 +95,29 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .to-cash-modal{
 
+        .modal-body{
+            padding: 50px 70px;
+        }
+
+        .ivu-form-item-wrap{
+
+            /deep/ .ivu-select{
+                width: 260px;
+            }
+
+            /deep/ .ivu-input-wrapper{
+                width: 260px;
+            }
+
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+
+    }
 </style>

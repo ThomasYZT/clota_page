@@ -28,7 +28,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="hide" >返回</Button>
+            <Button type="ghost" @click="hide" >返回</Button>
         </div>
 
     </Modal>
@@ -69,5 +69,12 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .use-range-modal{
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
 
+    }
 </style>

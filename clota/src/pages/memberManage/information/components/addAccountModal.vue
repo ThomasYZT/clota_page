@@ -82,4 +82,17 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .add-account-modal{
+
+        .modal-body{
+            padding: 60px 85px;
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+
+    }
 </style>

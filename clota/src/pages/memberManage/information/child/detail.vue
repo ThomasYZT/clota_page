@@ -17,7 +17,7 @@
                     <div class="title">会员个人信息<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>修改</span></div>
                     <div class="basic-wrap">
                         <div class="person-left">
-                            <img src="@/assets/images/icon-avator.png" alt="">
+                            <img src="@/assets/images/square-avatar.svg" alt="">
                         </div>
                         <div class="person-right">
                             <div>
@@ -117,45 +117,7 @@
 
                 <div class="content-info">
                     <div class="title">优惠券信息</div>
-                    <div class="tabs-wrap">
-                        <ButtonGroup>
-                            <Button type="primary">未过期</Button>
-                            <Button type="ghost">已使用</Button>
-                            <Button type="ghost">已过期</Button>
-                        </ButtonGroup>
-                        <span class="more" @click="showCouponModal">查看更多</span>
-                    </div>
-                    <div class="table-wrap">
-                        <el-table
-                            :data="tableData"
-                            :border="false"
-                            style="width: 100%">
-                            <el-table-column
-                                prop="id"
-                                label="会员编码"
-                                width="120">
-                            </el-table-column>
-                            <el-table-column
-                                prop="name"
-                                label="卡券名称"
-                                width="220">
-                            </el-table-column>
-                            <el-table-column
-                                prop="content"
-                                label="使用条件">
-                            </el-table-column>
-                            <el-table-column
-                                prop="type"
-                                label="类别"
-                                width="100">
-                            </el-table-column>
-                            <el-table-column
-                                prop="time"
-                                label="有效期"
-                                width="200">
-                            </el-table-column>
-                        </el-table>
-                    </div>
+                    <more-card type="view" :table-data="tableData" @view-more="showCouponModal"></more-card>
                 </div>
 
                 <div class="content-info">
@@ -252,7 +214,7 @@
         <use-range-modal ref="useRange"></use-range-modal>
 
         <!--优惠券信息--查看更多modal-->
-        <view-more-coupon-modal ref="viewMoreCoupon"></view-more-coupon-modal>
+        <view-more-coupon-modal :table-data="tableData" ref="viewMoreCoupon"></view-more-coupon-modal>
 
     </div>
 </template>
@@ -265,6 +227,7 @@
     import modifyBalanceModal  from '../components/modifyBalanceModal.vue'
     import useRangeModal  from '../components/useRangeModal.vue'
     import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue'
+    import moreCard  from '../components/moreCard.vue'
 
     export default {
         components: {
@@ -274,6 +237,7 @@
             modifyBalanceModal,
             useRangeModal,
             viewMoreCouponModal,
+            moreCard,
         },
         data () {
             return {
@@ -341,7 +305,9 @@
 
             showCouponModal () {
                 console.log('Coupon');
-                this.$refs.viewMoreCoupon.show();
+                if(this.$refs.viewMoreCoupon){
+                    this.$refs.viewMoreCoupon.show();
+                }
             },
 
             viewIntegration  () {
@@ -436,13 +402,16 @@
                             float: right;
                             color: $color-blue;
                             cursor: pointer;
-                            display: none;
+                            transform: scale(0);
+                            .iconfont{
+                                margin-right: 5px;
+                            }
                         }
                     }
 
                     &:hover{
                         .edit{
-                            display: inline-block;
+                            transform: scale(1);
                         }
                     }
 

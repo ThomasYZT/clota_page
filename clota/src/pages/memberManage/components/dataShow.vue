@@ -11,7 +11,7 @@
 
         <div class="data-content">
             <div class="total">
-                <span class="img"></span>
+                <span class="img"><img src="@/assets/images/crown.svg"/></span>
                 <span class="total-label">会员总数</span>
                 <span>{{dataCount.total}}</span>
             </div>
@@ -87,14 +87,13 @@
                 margin-bottom: 25px;
 
                 .img{
-                    width: 50px;
-                    height: 50px;
-                    background-color: #F7C002;
-                    margin-right: 10px;
+                    width: 52px;
+                    height: 52px;
+                    margin-right: 5px;
                     display: inline-block;
                 }
                 .total-label{
-                    margin-right: 20px;
+                    margin-right: 15px;
                     font-size: $font_size_18px;
                 }
             }

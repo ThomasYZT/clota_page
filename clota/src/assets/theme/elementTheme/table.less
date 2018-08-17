@@ -27,6 +27,7 @@
     th {
         background: #F5F7FA;
         .cell {
+            font-size: 14px;
             padding-left: 20px;
         }
         &:first-child {
@@ -37,6 +38,7 @@
     }
     td {
         .cell {
+            font-size: 14px;
             padding-left: 20px;
         }
         &:first-child {
@@ -72,6 +74,37 @@
             background: #BBC5D5;
         }
     }
+
+    &.el-table--border{
+        border-left: none;
+        border-right: none;
+        ::after{
+            display: none;
+            width: 0px;
+        }
+    }
+}
+
+&.el-table--border{
+    border-left: none;
+    border-right: none;
+    ::after{
+        display: none;
+        width: 0px;
+    }
+}
+.el-table--border::after, .el-table--group::after{
+    display: none;
+    width: 0;
+}
+
+.el-table--border {
+    td,th{
+        border-right: 1px solid #ebeef5;
+    }
+    td:last-child, th:last-child{
+        border-right: none !important;
+    }
 }
 
 .el-pager {
@@ -84,38 +117,11 @@
     }
 }
 
-.ivu-modal {
-    .ivu-modal-header {
-        background: #F5F7FA;
-        border-radius: 8px 8px 0 0;
-        .ivu-modal-header-inner {
-            font-size: 16px;
-        }
-    }
-    .ivu-modal-footer {
-        padding: 13px;
-        border-radius: 0 0 8px 8px;
-    }
-    .ivu-btn-small {
-        min-width: 90px;
-        padding: 1px 0;
-    }
-    .ivu-btn {
-        height: 32px;
-    }
-    .ivu-radio-group-item {
-        margin-top: -2px;
-        font-size: 14px;
-        color: #333333;
-    }
-}
-
 .operation {
 @include clearfix;
     span {
         color: #2F70DF;
         padding-right: 9px;
-        padding-left: 9px;
         border-right: 1px solid #E1E1E1;
         cursor: pointer;
         float: left;
@@ -123,6 +129,9 @@
             border-right: none;
             color: #EB6751;
         }
+    }
+    span + span{
+        padding-left: 9px;
     }
     .span-yellow {
         color: #F7981C;
@@ -134,23 +143,4 @@
     .span-blue {
         color: #2F70DF !important;
     }
-}
-
-.orgHeader {
-    height: 34px;
-    box-sizing: content-box;
-    padding: 14px 30px;
-    .search {
-        width: 353px;
-        float: right;
-    }
-    .add-icon {
-        margin-left: -10px;
-        margin-right: 6px;
-    }
-}
-
-.pagination {
-    margin: 30px auto;
-    text-align: center;
 }

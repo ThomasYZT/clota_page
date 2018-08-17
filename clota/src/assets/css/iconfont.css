@@ -1,4 +1,5 @@
-@import '//at.alicdn.com/t/font_772944_9f31vipj5yr.css';
+/*@import '//at.alicdn.com/t/font_772944_80hqjuy3fme.css';*/
+@import '//at.alicdn.com/t/font_772944_yualeeoemel.css';
 
 .iconfont {
     font-family: "iconfont" !important;
@@ -8,67 +9,71 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-arrow-bottom:before {
-    content: "\e60a";
+.ivu-input {
+    font-size: 14px;
 }
 
-.icon-help:before {
-    content: "\e60b";
-}
+/*.icon-arrow-bottom:before {*/
+    /*content: "\e60a";*/
+/*}*/
 
-.icon-partner:before {
-    content: "\e60c";
-}
+/*.icon-help:before {*/
+    /*content: "\e60b";*/
+/*}*/
 
-.icon-verify:before {
-    content: "\e60d";
-}
+/*.icon-partner:before {*/
+    /*content: "\e60c";*/
+/*}*/
 
-.icon-fold:before {
-    content: "\e60e";
-}
+/*.icon-verify:before {*/
+    /*content: "\e60d";*/
+/*}*/
 
-.icon-notification:before {
-    content: "\e60f";
-}
+/*.icon-fold:before {*/
+    /*content: "\e60e";*/
+/*}*/
 
-.icon-market-channel:before {
-    content: "\e610";
-}
+/*.icon-notification:before {*/
+    /*content: "\e60f";*/
+/*}*/
 
-.icon-orgaization:before {
-    content: "\e611";
-}
+/*.icon-market-channel:before {*/
+    /*content: "\e610";*/
+/*}*/
 
-.icon-role-permission:before {
-    content: "\e612";
-}
+/*.icon-orgaization:before {*/
+    /*content: "\e611";*/
+/*}*/
 
-.icon-notification-w:before {
-    content: "\e613";
-}
+/*.icon-role-permission:before {*/
+    /*content: "\e612";*/
+/*}*/
 
-.icon-trade-channel:before {
-    content: "\e614";
-}
+/*.icon-notification-w:before {*/
+    /*content: "\e613";*/
+/*}*/
 
-.icon-theme:before {
-    content: "\e615";
-}
+/*.icon-trade-channel:before {*/
+    /*content: "\e614";*/
+/*}*/
 
-.icon-avator:before {
-    content: "\e616";
-}
+/*.icon-theme:before {*/
+    /*content: "\e615";*/
+/*}*/
 
-.icon-person:before {
-    content: "\e617";
-}
+/*.icon-avator:before {*/
+    /*content: "\e616";*/
+/*}*/
 
-.icon-icon-pack-up:before {
-    content: "\e618";
-}
+/*.icon-person:before {*/
+    /*content: "\e617";*/
+/*}*/
 
-.icon-icon-unfold:before {
-    content: "\e619";
-}
+/*.icon-icon-pack-up:before {*/
+    /*content: "\e618";*/
+/*}*/
+
+/*.icon-icon-unfold:before {*/
+    /*content: "\e619";*/
+/*}*/
 

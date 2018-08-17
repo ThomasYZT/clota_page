@@ -3,7 +3,7 @@
         <div class="data-header">
             <div class="title">会员分布数据</div>
             <div class="filter">
-                <DatePicker type="month" placeholder="请选择" v-model="dataPie.time" style="width: 140px"></DatePicker>
+                <DatePicker type="month" placeholder="请选择" placement="bottom-end" v-model="dataPie.time" style="width: 140px"></DatePicker>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
                     legendData.push({ name: key, icon: 'circle'});
                     seriesData.push({ name: key, value: 0});
                 }
-                let totalCount = 100;
+                let totalCount = 7392;
                 return {
                     tooltip: {
                         show: true,
@@ -79,10 +79,7 @@
                             }
                         },
                         formatter: name => {
-                            return name
-                            /*let status = constVariable.vipStatus[name];
-                            status = status.length > 6 ? status.substr(0, 5) + '...' : status;*/
-                            return 'name | 48.88% 3992'
+                            return name +' | 48.88%   3992'
                         },
                         data: legendData
                     },
@@ -110,8 +107,8 @@
                                         return totalCount;
                                     },
                                     textStyle: {
-                                        fontSize: 24,
-                                        color: '#999999'
+                                        fontSize: 26,
+                                        color: 'rgba(0,0,0,0.85'
                                     }
                                 }
                             },
