@@ -126,6 +126,8 @@
                         }).finally(() =>{
                             this.logging = false;
                         });
+                    }else{
+                        this.logging = false;
                     }
                 });
             },
@@ -133,7 +135,9 @@
              * 更改验证码
              */
             changeCode () {
+                ajax.get('getValidateCode').then(res => {
 
+                });
             },
             /**
              * 记住账号
@@ -146,6 +150,11 @@
             if(localStorage.getItem('account')){
                 this.formData.account = localStorage.getItem('account');
             }
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm=> {
+                vm.changeCode();
+            });
         }
     }
 </script>

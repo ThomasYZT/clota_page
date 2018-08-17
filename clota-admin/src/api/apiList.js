@@ -13,6 +13,10 @@ const apiList = {
     login: 'user/login.json',
     //登出
     logout : 'user/logout.json',
+    //获取验证码
+    getValidateCode : 'user/getValidateCode.json',
+    //获取权限接口
+    getPrivileges : 'user/getPrivileges.json',
     //首页接口
     ...index,
     //日志接口

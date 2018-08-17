@@ -101,30 +101,11 @@ export default new Vuex.Store({
                 let data = {
                     'index': 'allow',
                     'lessee': 'allow',
-                    // 'ISPinternet': 'allow',
                     'server': 'allow',
                     'order': 'allow',
                     'system': 'allow',
                     'package': 'allow',
                     'log': 'allow',
-
-                    // 'index':首页,
-                    // 'lessee': 租户
-                    // 'service': 服务
-                    // 'service_package': 服务套餐
-                    // 'service_note_package': 短信套餐
-                    // 'service_open_record': 服务开通记录
-                    // 'service_note_buy_record': 短信购买记录
-                    // 'service_node_send_record': 短信发送记录
-                    // 'order': 订单
-                    // 'system': 系统,
-                    // 'system_account': 系统账号,
-                    // 'system_notice': 系统公告,
-                    // 'system_setting': 系统设置,
-                    // 'server': 服务器,
-                    // 'log': 日志,
-                    // 'log_operation': 运维平台操作日志,
-                    // 'log_sass': sass平台操作日志,
                 };
                 let routers = childDeepClone(routerClect, data);
                 routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
@@ -138,7 +119,13 @@ export default new Vuex.Store({
                 }
             });
 
-
+            // ajax.get('getPrivileges').then(res => {
+            //
+            // }).catch(err => {
+            //     router.replace({
+            //         name : 'login'
+            //     });
+            // });
             // commit('updatePermissionInfo',{
             //   'index' : 'allow',
             //   'lessee' : 'allow',
@@ -154,12 +141,10 @@ export default new Vuex.Store({
             // });
         },
         //获取用户信息
-        getUserInfo (store,userInfo) {
+        getUserInfo (store) {
             return new Promise((resolve,reject) => {
                 if(ajax.getToken()){
-                    let data = {
-                        name : 'test'
-                    };
+                    let data = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
                     store.commit('updateUserInfo',data);
                     resolve(data);
                 }else{
@@ -167,6 +152,10 @@ export default new Vuex.Store({
                 }
             }).then((data) => {
                 return store.dispatch('getUserRight');
+            }).catch(err => {
+                router.replace({
+                    name : 'login'
+                });
             });
         }
     }

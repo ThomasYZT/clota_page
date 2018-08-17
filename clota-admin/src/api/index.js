@@ -84,8 +84,8 @@ export default {
             })
         };
 
-        // 如果是登录，则不需要传递token
-        if (urlKey !== 'login') {
+        // 如果是登录或是获取验证码，则不需要传递token
+        if (urlKey !== 'login' || urlKey !== 'getValidateCode') {
             myConfig.headers = {
                 token: this.getToken()
             }
