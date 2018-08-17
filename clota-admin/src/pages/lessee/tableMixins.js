@@ -14,6 +14,8 @@ export default {
             isLoading: false,
             //每页大小配置
             pageSizeConfig: configVariable.pageSizeConfig,
+            //分页功能配置
+            pageLayout: configVariable.pageLayout,
             //每页大小
             pageSize: configVariable.pageDefaultSize,
             //当前页码

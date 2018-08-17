@@ -11,6 +11,8 @@
                 <DatePicker
                     v-model="selectDate"
                     type="date"
+                    :clearable="false"
+                    :editable="false"
                     placeholder="Select date"
                     style="width: 280px"
                     @on-change="getOrderRankingList">
@@ -48,7 +50,7 @@
                     :current-page="pageNo"
                     :page-sizes="pageSizeConfig"
                     :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
+                    :layout="pageLayout"
                     :total="totalCount"
                     @size-change="pageSizeChange"
                     @current-change="pageNoChange">

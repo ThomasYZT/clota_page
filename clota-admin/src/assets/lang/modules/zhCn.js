@@ -256,4 +256,5 @@ export default {
     serveList : '服务器列表',
     more : '更多',
     bit : '{length}位',
+    dataError : '数据获取失败',
 }

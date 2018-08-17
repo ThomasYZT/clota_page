@@ -11,7 +11,7 @@ import Pagination from 'element-ui/lib/pagination';
 import Dropdown from 'element-ui/lib/dropdown';
 import DropdownMenu from 'element-ui/lib/dropdown-menu';
 import DropdownItem from 'element-ui/lib/dropdown-item';
-import scrollbar from 'element-ui/lib/scrollbar';
+import tooltip from 'element-ui/lib/tooltip';
 
 //按需引入iview组件
 import {
@@ -59,14 +59,14 @@ let plugin = {};
 plugin.install = function (Vue, options) {
 
     // element-ui按需引入
-    Vue.use(scrollbar);
+    Vue.use(Scrollbar);
     Vue.use(Table);
     Vue.use(TableColumn);
-    Vue.use(Scrollbar);
     Vue.use(Pagination);
     Vue.use(Dropdown);
     Vue.use(DropdownMenu);
     Vue.use(DropdownItem);
+    Vue.use(tooltip);
 
     //iview按需引入
     Vue.component('Button',Button);

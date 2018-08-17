@@ -4,27 +4,55 @@
 export const operationLogHead = [
     {
         title: '操作时间',
-        minWidth: 100,
-        field: 'time'
+        minWidth: 110,
+        field: 'sysCreatedTime'
     },
     {
         title: '账号',
         minWidth: 100,
-        field: 'rate'
+        field: 'loginName'
     },
     {
         title: '操作类型',
         minWidth: 100,
-        field: 'rate'
+        field: 'sysOperationScene'
     },
     {
         title: '操作对象',
         minWidth: 100,
-        field: 'rate'
+        field: 'sysTargetName'
     },
     {
         title: '操作内容',
         minWidth: 300,
-        field: 'rate'
+        field: 'sysContents'
+    },
+];
+//saas操作日志表头
+export const saasLogHead = [
+    {
+        title: '操作时间',
+        minWidth: 110,
+        field: 'createdTime'
+    },
+    {
+        title: '账号',
+        minWidth: 100,
+        field: 'loginName'
+    },
+    {
+        title: '操作类型',
+        minWidth: 100,
+        field: 'operationScene'
+    },
+    {
+        title: '操作对象',
+        minWidth: 100,
+        field: 'targetName'
+    },
+    {
+        title: '操作内容',
+        minWidth: 300,
+        field: 'contents'
     },
 ];

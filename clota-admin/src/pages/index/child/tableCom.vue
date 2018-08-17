@@ -5,6 +5,7 @@
               v-if="parseInt(tableHeight) > 0"
               style="width: 100%"
               class="table-wrap"
+
               :class="{'row-click' : rowClick}"
               @row-click="classDetailLink"
               @selection-change="handleSelectionChange"
@@ -28,6 +29,7 @@
                   :title="item.title">
                 <el-table-column
                     v-if="item.ableClick"
+                    :show-overflow-tooltip="true"
                     class-name="column-emp"
                     :label="item.title"
                     :prop="item.field"
@@ -45,6 +47,7 @@
                 </el-table-column>
                 <el-table-column
                     v-else-if="item.fixed"
+                    :show-overflow-tooltip="true"
                     :label="item.title"
                     :prop="item.field"
                     :key="index"
@@ -59,6 +62,7 @@
                 </el-table-column>
                 <el-table-column
                     v-else
+                    :show-overflow-tooltip="true"
                     :label="item.title"
                     :prop="item.field"
                     :key="index"

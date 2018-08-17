@@ -4,6 +4,8 @@
 
 //首页接口
 import index from './modules/index';
+//日志接口
+import log from './modules/log';
 const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
@@ -12,7 +14,9 @@ const apiList = {
     //登出
     logout : 'user/logout.json',
     //首页接口
-    ...index
+    ...index,
+    //日志接口
+    ...log
 };
 
 export default apiList;

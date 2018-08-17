@@ -7,7 +7,8 @@ export const configVariable = {
     pageSizeConfig: [10, 20, 50],
     //默认每页大小
     pageDefaultSize: 10,
-
+    //分页功能配置
+    pageLayout : 'total, sizes, prev, pager, next, jumper'
 };
 //监控频率
 //label对应的是语言配置文件的键值

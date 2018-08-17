@@ -3,7 +3,8 @@ import defaultsDeep from 'lodash/defaultsDeep';
 const pieBaseConfig = {
     tooltip: {
         trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        formatter: "{b} : {c} ({d}%)",
+        extraCssText:  'background : #ffffff;border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10);color:rgb(51, 51, 51);'
     },
     legend: {
         bottom: 10,
