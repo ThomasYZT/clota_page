@@ -10,7 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+        '/clota_dev/*': {
+            target: 'http://47.100.221.254:9999',
+            changeOrigin : true
+        },
+        // router: function(req) {
+        //     console.log(req)
+        //     return 'http://47.100.221.254:9999';
+        // }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

@@ -67,11 +67,11 @@
                 //表单数据
                 formData: {
                     //账户
-                    account: '',
+                    account: 'test',
                     //密码
-                    password: '',
+                    password: '900150983cd24fb0d6963f7d28e17f72',
                     //验证码
-                    verifyCode: ''
+                    verifyCode: 'test'
                 },
                 //是否显示错误信息
                 showErrMessage: false
@@ -84,22 +84,20 @@
             login() {
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
+                        ajax.post('login',{
+                            name : this.formData.account,
+                            password : this.formData.password,
+                        }).then(res => {
                             localStorage.setItem('token','token');
                             this.$store.dispatch('getUserInfo').then(route => {
                                 this.$router.push({
                                     name: route.name
                                 });
                             });
+                        })
                     }
                 });
             }
-        },
-        created () {
-            ajax.post('login',{
-                name : '1'
-            }).then(res => {
-                console.log(res)
-            })
         }
     }
 </script>

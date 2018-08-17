@@ -93,11 +93,6 @@
             }
         },
         methods: {},
-        created () {
-            this.ajax.post('login').then(res => {
-                console.log(res);
-            })
-        }
     }
 </script>
 

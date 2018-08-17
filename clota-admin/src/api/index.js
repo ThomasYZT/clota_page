@@ -5,9 +5,16 @@ import api from './apiList';
 import axios from 'axios';
 import querystring from 'querystring';
 import config from '../config/index.js'
-import common from '../assets/js/common'
+import common from '../assets/js/common';
 
+let baseUrl = '';
 let cancelTokenCollection = {};
+//如果是开发环境则打开代理
+if(process.env.NODE_ENV === 'development'){
+    baseUrl = '/clota_dev/'
+}else{
+    baseUrl = '';
+}
 
 const instance = axios.create({
     baseURL: config.HOST,
@@ -17,7 +24,7 @@ const instance = axios.create({
     headers: {
         // 跨域请求 这个配置不能少
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        'Accept': 'application/json'
+        'Accept': 'application/json',
     }
 });
 
@@ -53,7 +60,7 @@ export default {
                 token: this.getToken()
             }
         };
-        return instance.get(api[urlKey], myConfig).then(res => {
+        return instance.get(baseUrl + api[urlKey], myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
@@ -90,7 +97,7 @@ export default {
             }
         }
 
-        return instance.post(api[urlKey], querystring.stringify(paramObj), myConfig).then(res => {
+        return instance.post(baseUrl + api[urlKey], querystring.stringify(paramObj), myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
@@ -108,7 +115,7 @@ export default {
      */
     export(urlKey, paramObj) {
         let token = this.getToken();
-        return config.HOST + api[urlKey] + '?token=' + token + (paramObj ? '&' + querystring.stringify(paramObj) : '')
+        return config.HOST + baseUrl + api[urlKey] + '?token=' + token + (paramObj ? '&' + querystring.stringify(paramObj) : '')
     },
 
     /**
@@ -149,7 +156,7 @@ export default {
                 'Content-type': 'multipart/form-data'
             }
         };
-        return instance.post(api[urlKey], paramObj, myConfig).then(res => {
+        return instance.post(baseUrl + api[urlKey], paramObj, myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
