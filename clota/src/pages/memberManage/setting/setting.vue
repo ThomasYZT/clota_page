@@ -199,6 +199,7 @@
 
 <script>
 
+    import ajax from '@/api/index'
     import headerTabs from './components/headerTabs.vue'
 
     export default {
@@ -207,6 +208,12 @@
         },
         data () {
             return {
+                //会员卡是否开启积分、储值功能
+                IsScoreValidRule: {
+                    isIntegral: true,//是否积分
+                    isStore: true,//是否积分
+
+                },
                 routerName: 'memberSetting',
                 openInteg: true,
                 openFunds: true,
@@ -225,7 +232,24 @@
                 }
             }
         },
+        created() {
+            this.findBasicSet();
+        },
         methods: {
+
+            /**
+             * 查询会员基础设置
+             */
+            findBasicSet () {
+                ajax.post('findBasicSet',{}).then(res => {
+
+                }).catch(err => {
+
+                }).finally(() =>{
+
+                });
+            },
+
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {

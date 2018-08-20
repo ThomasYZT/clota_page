@@ -69,4 +69,23 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+
+    .add-special-type-modal{
+
+        .modal-body{
+            padding: 60px 45px;
+
+            /deep/ .ivu-input-wrapper{
+                width: 280px;
+                margin-right: 5px;
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+    }
+
 </style>

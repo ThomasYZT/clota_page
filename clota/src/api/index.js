@@ -12,7 +12,7 @@ let baseUrl = '';
 
 //如果是开发环境则打开代理
 if(process.env.NODE_ENV === 'development'){
-    baseUrl = '/clota_dev/'
+    baseUrl = ''
 }else{
     baseUrl = '';
 }
@@ -78,7 +78,6 @@ export default {
      * @returns {promise} 返回promise对象
      */
     post(urlKey, paramObj, config = null) {
-
         let myConfig = {
             cancelToken: new axios.CancelToken(function (cancel) {
                 cancelTokenCollection[urlKey] = cancel;

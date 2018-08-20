@@ -2,12 +2,7 @@
     <!--新增/修改会员信息-->
     <div class="add-member">
 
-        <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
-                <BreadcrumbItem>{{ type === 'add' ? '新增会员' : '修改会员信息'}}</BreadcrumbItem>
-            </Breadcrumb>
-        </div>
+        <bread-crumb-head :before-router-list="beforeRouterList" :locale-router="localeRouter"></bread-crumb-head>
 
         <div class="add-member-content">
 
@@ -15,110 +10,113 @@
             <div class="form-container">
                 <Form ref="formValidate" :model="member" :rules="ruleValidate" :label-width="115">
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="姓名" prop="name">
-                            <Input v-model.trim="member.name" placeholder="请输入"></Input>
+                        <Form-item label="姓名" prop="custName">
+                            <Input v-model.trim="member.custName" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="手机号" prop="mobile">
-                            <Input v-model.trim="member.mobile" placeholder="请输入"></Input>
+                        <Form-item label="手机号" prop="phoneNum">
+                            <Input v-model.trim="member.phoneNum" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="E-mall" prop="emall">
-                            <Input v-model.trim="member.emall" placeholder="请输入"></Input>
+                        <Form-item label="E-mall" prop="emailAddr">
+                            <Input v-model.trim="member.emailAddr" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="生日" prop="birthday">
+                        <Form-item label="生日" prop="birthDay">
                             <Date-picker
                                 type="date"
-                                v-model="member.birthday"
+                                v-model="member.birthDay"
                                 :options="dateOption"
                                 placeholder="请选择"
-                                @on-change="customValid($event, 'birthday')">
+                                @on-change="customValid($event, 'birthDay')">
                             </Date-picker>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label=" 性别" prop="sex">
-                            <Select v-model="member.sex" placeholder="请选择">
-                                <Option value="male">男</Option>
-                                <Option value="female">女</Option>
+                        <Form-item label=" 性别" prop="gender">
+                            <Select v-model="member.gender" placeholder="请选择">
+                                <Option v-for="(item,index) in enumData.genderEnum"
+                                        :key="index"
+                                        :value="item.name">
+                                    {{item.desc}}
+                                </Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="QQ" prop="qq">
-                            <Input v-model.trim="member.qq" placeholder="请输入"></Input>
+                            <Input v-model.trim="member.qq" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="微信" prop="wechat">
-                            <Input v-model.trim="member.wechat" placeholder="请输入"></Input>
+                        <Form-item label="微信" prop="wechatAcct">
+                            <Input v-model.trim="member.wechatAcct" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="支付宝" prop="alipay">
-                            <Input v-model.trim="member.alipay" placeholder="请输入"></Input>
+                        <Form-item label="支付宝" prop="alipayAcct">
+                            <Input v-model.trim="member.alipayAcct" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="会员级别" prop="level">
-                            <Select v-model="member.level" placeholder="请选择会员初始级别">
+                        <Form-item label="会员级别" prop="levelId">
+                            <Select v-model="member.levelId" placeholder="请选择会员初始级别">
                                 <Option v-for="item in enumData.level" :key="item.name" :value="item.name">{{item.desc}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="会员渠道" prop="channel">
-                            <Select v-model="member.channel" placeholder="请选择会员来源渠道">
+                        <Form-item label="会员渠道" prop="channelId">
+                            <Select v-model="member.channelId" placeholder="请选择会员来源渠道">
                                 <Option v-for="item in enumData.channel" :key="item.name" :value="item.name">{{item.desc}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="国家代码" prop="nation">
-                            <Input v-model.trim="member.nation" placeholder="请输入"></Input>
+                        <Form-item label="国家代码" prop="stateCode">
+                            <Input v-model.trim="member.stateCode" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="城市代码" prop="city">
-                            <Input v-model.trim="member.city" placeholder="请输入"></Input>
+                        <Form-item label="城市代码" prop="cityCode">
+                            <Input v-model.trim="member.cityCode" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="第三方卡号" prop="card">
-                            <Input v-model.trim="member.card" placeholder="请输入"></Input>
+                        <Form-item label="第三方卡号" prop="tpNo">
+                            <Input v-model.trim="member.tpNo" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="第三方卡面号" prop="cardNum">
-                            <Input v-model.trim="member.cardNum" placeholder="请输入"></Input>
+                        <Form-item label="第三方卡面号" prop="tpCardNo">
+                            <Input v-model.trim="member.tpCardNo" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="证件类型" prop="type">
-                            <Select v-model="member.type" placeholder="请选择会员类型">
+                        <Form-item label="证件类型" prop="certificationType">
+                            <Select v-model="member.certificationType" placeholder="请选择会员类型">
                                 <Option v-for="item in enumData.type" :key="item.name" :value="item.name">{{item.desc}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="证件编号" prop="idNum">
-                            <Input v-model.trim="member.idNum" placeholder="请输入"></Input>
+                        <Form-item label="证件编号" prop="idCardNumber">
+                            <Input v-model.trim="member.idCardNumber" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="个人兴趣" prop="hobby">
-                            <Input v-model.trim="member.hobby" placeholder="请输入"></Input>
+                            <Input v-model.trim="member.hobby" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item label="地址" prop="address">
-                            <Input v-model.trim="member.address" placeholder="请输入家庭地址"></Input>
+                        <Form-item label="地址" prop="homeAddr">
+                            <Input v-model.trim="member.homeAddr" placeholder="请输入家庭地址"/>
                         </Form-item>
                     </div>
 
@@ -126,9 +124,14 @@
             </div>
 
             <div class="content-footer">
-                <i-button type="primary" :loading="loading" @click="formValidateFunc">确定新增</i-button>
+                <template v-if="type === 'add'">
+                    <Button type="primary" :loading="loading" @click="formValidateFunc">确定新增</Button>
+                </template>
+                <template v-if="type === 'modify'">
+                    <Button type="primary" :loading="loading" @click="formValidateFunc">确定</Button>
+                </template>
                 <router-link :to="{name: 'memberInfo'}">
-                    <i-button type="ghost">取消</i-button>
+                    <Button type="ghost">取消</Button>
                 </router-link>
             </div>
 
@@ -138,17 +141,25 @@
 
 <script>
 
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
+    import { genderEnum } from '@/assets/js/constVariable';
+    import pick from 'lodash/pick';
+    import { validator } from 'klwk-ui';
+    import ajax from '@/api/index'
+
     export default {
-        components: { },
+        components: {
+            breadCrumbHead
+        },
         data() {
             var validateMethod = {
 
                 mobile :  (rule, value, callback) => {
-                    /*if (!validator.isMobile(value)) {
-                     callback(new Error('请输入正确的手机号码'));
-                     } else {
-                     callback();
-                     }*/
+                    if (!validator.isMobile(value)) {
+                        callback(new Error('请输入正确的手机号码'));
+                    } else {
+                        callback();
+                    }
                 },
 
                 emoji :  (rule, value, callback) => {
@@ -158,8 +169,15 @@
                         callback();
                     }
                 }
+
             };
             return {
+                beforeRouterList: [
+                    {
+                        name: '会员信息',
+                        router: 'memberInfo',
+                    }
+                ],
                 //新增/修改
                 type: 'add',
                 loading: false,
@@ -193,58 +211,73 @@
                             name: '全部会员状态',
                         }
                     ],
+                    genderEnum: genderEnum
                 },
-                // 表单数据
+                //表单数据-会员信息+卡信息
                 member: {
-                    name: '',
-                    mobile: '',
-                    emall: '',
-                    birthday: '',
-                    sex: '',
-                    qq: '',
-                    wechat: '',
-                    alipay: '',
-                    level: '',
-                    channel: '',
-                    nation: '',
-                    city: '',
-                    card: '',
-                    cardNum: '',
-                    type: '',
-                    idNum: '',
-                    hobby: '',
-                    address: '',
+                    //会员信息
+                    "custName":"",//姓名
+                    "phoneNum":"",//手机号
+                    "emailAddr":"",//E-mall
+                    "birthDay":"",//生日
+                    "gender":"",// 性别
+                    "qq":"",//QQ
+                    "wechatAcct":"",//微信
+                    "alipayAcct":"",//支付宝
+                    "cityCode":"",//城市代码
+                    "stateCode":"",//国家代码
+                    "hobby":"",//个人兴趣
+                    "certificationType":"",//证件类型
+                    "idCardNumber":"",//证件号码
+                    "homeAddr":"",//家庭地址
+                    "status":"active",//默认正式会员
+                    //卡信息
+                    "levelId":"",//会员级别
+                    "channelId":"",//会员渠道
+                    "tpNo":"",//第三方卡号
+                    "tpCardNo":"",//第三方卡面号
                 },
                 ruleValidate: {
-                    name: [
+                    custName: [
                         { required: true, message: '姓名不能为空', trigger: 'blur' },
                         { type: 'string', max: 20, message: '姓名不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    mobile: [
+                    phoneNum: [
                         { required: true, message: '手机号不能为空', trigger: 'blur' },
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
-                    sex: [
+                    gender: [
                         { required: true, message: '性别不能为空', trigger: 'change' },
                     ],
-                }
+                },
+                //编辑原数据
+                info: {},
             }
         },
-        computed: {},
+        computed: {
+            localeRouter () {
+                return this.type === 'add' ? '新增会员' : '修改会员信息'
+            },
+        },
         created() {
+            // 初始化
             this.init();
         },
 
         methods: {
 
+            //页面初始化，区分新增与修改
             init() {
                 if (this.$route.query && this.$route.query.type) {
                     this.type = this.$route.query.type;
+                    this.info = this.$route.query.info;
+                    // 编辑页面时给表单赋值
+
                 }
             },
 
-            // 手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
+            //手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
             customValid(data, field){
                 this.$nextTick(()=>{
                     this.$refs.formValidate.validateField( field );
@@ -255,14 +288,49 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        this.saveMember( param );
+                        var params = {
+                            memberInfo: pick(this.member, ['custName', 'phoneNum','emailAddr','birthDay',
+                                'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
+                                'certificationType','idCardNumber','homeAddr','status']),
+                            memberCard: pick(this.member, ['levelId', 'channelId','tpNo','tpCardNo']),
+                        };
+                        params.memberInfo.birthDay = params.memberInfo.birthDay ?
+                            new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
+                        //区分新增与修改
+                        if( this.type === 'add' ){
+                            this.saveAndEditMember( 'saveNewMemberInfo', params);
+                        }
+                        if( this.type === 'modify' ){
+                            params.memberInfo.id = this.info.id;
+                            params.memberCard.id = this.info.cardId;
+                            this.saveAndEditMember( 'editMemberInfo', params);
+                        }
                     }
                 })
             },
 
-            //新增会员接口
-            saveMember( param ){
-
+            //新增/编辑会员接口
+            saveAndEditMember( url, params ){
+                console.log(url)
+                console.log(params)
+                ajax.post(url, {
+                    memberInfo: JSON.stringify(params.memberInfo),
+                    memberCard: JSON.stringify(params.memberCard),
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('新增会员成功！');
+                        //区分新增与修改
+                        if(this.type === 'add'){
+                            this.$router.push({ name: 'memberInfo'});
+                        }
+                        if(this.type === 'modify'){
+                            this.$router.push(-1);
+                        }
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(url+' 失败！')
+                    }
+                })
             },
 
         },
@@ -300,8 +368,7 @@
                 }
 
                 .ivu-form{
-                    padding-top: 5%;
-                    padding-bottom: 5%;
+                    padding: 60px  0;
                     text-align: center;
                 }
 
@@ -343,33 +410,18 @@
                     }
                 }
 
-
-
-                .register-info-footer{
-                    padding: 30px 20px;
-                    text-align: center;
-
-                    .ivu-btn{
-                        width: 90px;
-                        height: 30px;
-                        padding: 4px 12px 3px;
-                        font-size: 12px;
-                        letter-spacing: 1.33px;
-                    }
-
-                    &.edit-footer .ivu-btn{
-                        width: 90px;
-                    }
-
-                    .ivu-btn-ghost{
-                        margin-left: 20px;
-                        color: #666666;
-                    }
-                }
             }
 
             .content-footer{
                 text-align: center;
+
+                /deep/ .ivu-btn{
+                    width: 108px;
+                    &:nth-child(1){
+                        margin-right: 20px;
+                    }
+                }
+
             }
 
         }

@@ -4,7 +4,7 @@
         v-model="visible"
         :title="title"
         class-name="set-rate-modal vertical-center-modal"
-        width="560"
+        width="600"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -12,20 +12,20 @@
             <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="80">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="积分率" prop="integRate">
-                        <Input v-model="baseNum" placeholder="请输入" style="width: 100px" />
-                        <span>元  =</span>
-                        <Input v-model="data.integRate" placeholder="请输入" style="width: 100px" />
+                        <Input v-model="baseNum" placeholder="请输入"/>
+                        <span class="font">元  <span class="equil">=</span></span>
+                        <Input v-model="data.integRate" placeholder="请输入"/>
                         <span>积分</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="折扣率" prop="discountRate">
-                        <Input v-model="data.discountRate" placeholder="请输入" style="width: 160px" />
+                        <Input v-model="data.discountRate" placeholder="请输入"/>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap">
+                <div class="ivu-form-item-wrap textarea-wrap">
                     <Form-item label="备注" prop="remark">
-                        <Input v-model="data.remark" type="textarea" placeholder="请输入" style="width: 280px" />
+                        <Input v-model="data.remark" type="textarea" placeholder="请输入"/>
                     </Form-item>
                 </div>
             </Form>
@@ -89,5 +89,33 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .set-rate-modal{
 
+        .modal-body{
+            padding: 64px 25px;
+
+            /deep/ .ivu-input-wrapper{
+                width: 160px;
+                margin-right: 5px;
+            }
+            .font{
+                margin-right: 15px;
+            }
+            .equil{
+                margin-left: 10px;
+            }
+
+            .textarea-wrap{
+                /deep/ .ivu-input-wrapper{
+                    width: 390px;
+                }
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+    }
 </style>

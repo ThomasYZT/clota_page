@@ -2,17 +2,11 @@
     <!--个人资金交易明细-->
     <div class="member-fund-detail">
 
-        <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
-                <BreadcrumbItem to="/memberManage/infoDetail">会员详情</BreadcrumbItem>
-                <BreadcrumbItem>个人资金交易明细</BreadcrumbItem>
-            </Breadcrumb>
-        </div>
+        <bread-crumb-head :before-router-list="beforeRouterList" :locale-router="localeRouter"></bread-crumb-head>
 
         <div class="fund-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.type" style="width:200px">
+                <Select v-model="queryParams.type">
                     <Option value="''">全部交易类型</Option>
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
@@ -26,8 +20,10 @@
                     v-model="queryParams.endTime"
                     placeholder="请选择结束日期">
                 </Date-picker>
-                <Button type="primary">查 询</Button>
-                <Button type="ghost">重 置</Button>
+                <div class="btn-wrap">
+                    <Button type="primary">查 询</Button>
+                    <Button type="ghost">重 置</Button>
+                </div>
             </div>
             <div class="table-wrap">
                 <el-table
@@ -82,14 +78,27 @@
 
 <script>
 
+    import breadCrumbHead from '@/components/breadCrumbHead/index'
     import modifyDetailModal from '../components/viewModifyModal.vue'
 
     export default {
         components: {
+            breadCrumbHead,
             modifyDetailModal,
         },
         data () {
             return {
+                beforeRouterList: [
+                    {
+                        name: '会员信息',
+                        router: 'memberInfo',
+                    },
+                    {
+                        name: '会员详情',
+                        router: 'infoDetail',
+                    },
+                ],
+                localeRouter: '个人资金交易明细',
                 // 查询数据
                 queryParams: {
                     type: '',
@@ -149,19 +158,30 @@
         border-radius: 4px;
         position: relative;
 
-        .breadcrumb-box{
-            height: 50px;
-            line-height: 50px;
-            padding: 0 30px;
-            background: $color_F4F6F8;
-        }
-
         .fund-detail-content{
 
             .filter-wrap{
                 height: 60px;
                 line-height: 60px;
                 padding: 0 30px;
+                /deep/ .ivu-select{
+                    width: 180px;
+                    margin-right: 5px;
+                }
+
+                /deep/ .ivu-date-picker{
+                    width: 180px;
+                    margin-right: 5px;
+                }
+
+                /deep/ .ivu-btn{
+                    margin-right: 5px;
+                }
+            }
+
+            .btn-wrap{
+                display: inline-block;
+                margin-left: 15px;
             }
 
             .table-wrap{

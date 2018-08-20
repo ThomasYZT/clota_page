@@ -210,6 +210,13 @@
 
                 .filter-wrap{
                     margin-bottom: 10px;
+                    /deep/ .ivu-input-wrapper{
+                        width: 240px;
+                        margin-right: 20px;
+                    }
+                    /deep/ .ivu-btn{
+                        margin-right: 5px;
+                    }
                 }
 
                 .table-wrap{

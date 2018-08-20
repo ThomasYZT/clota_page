@@ -15,14 +15,14 @@
             <div class="form-item-wrap"><label>身份证号</label><span>653616565656565656</span></div>
             <div class="form-item-wrap">
                 <label>关联所属类别</label>
-                <Select v-model="scene" style="width:280px">
+                <Select v-model="scene">
                     <Option value="''">www</Option>
                 </Select>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save">保存</Button>
+            <Button type="primary" :disabled="scene ? false : true" @click="save">保存</Button>
             <Button type="ghost" @click="hide">取消</Button>
         </div>
 
@@ -35,7 +35,7 @@
         data () {
             return {
                 visible: false,
-                scene: 100,
+                scene: '',
             }
         },
         methods: {
@@ -81,12 +81,15 @@
                     margin-right: 10px;
                     color: $color-333;
                 }
-                .red{
-                    color: $color_red;
+                /deep/ .ivu-select{
+                    width: 280px;
                 }
-                .green{
-                    color: $color_green;
-                }
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
             }
         }
 

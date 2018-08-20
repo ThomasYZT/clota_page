@@ -118,66 +118,6 @@
                     </el-table>
                 </div>
             </div>
-            <div class="content-info">
-                <div class="title">年卡信息</div>
-                <div class="form-wrap">
-                    <div class="form-item-wrap"><label>年卡编号：</label><span>22866882</span></div>
-                    <div class="form-item-wrap"><label>年卡名称：</label><span>欢乐谷年卡</span></div>
-                    <div class="form-item-wrap"><label>物理卡号：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>是否指纹注册：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>有效开始日期：</label><span>2017-08-08 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>有效开结束日期：</label><span>2017-08-08 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>销售日期：</label><span>2017-03-03 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>开卡单位：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>年卡状态：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>年卡备注：</label><span>-</span></div>
-                </div>
-                <div class="label"></div>
-                <div class="table-wrap">
-                    <el-table
-                        :data="cardData"
-                        :border="false"
-                        style="width: 100%">
-                        <el-table-column
-                            prop="id"
-                            label="成员序号">
-                        </el-table-column>
-                        <el-table-column
-                            prop="name"
-                            label="姓名">
-                        </el-table-column>
-                        <el-table-column
-                            prop="idNum"
-                            label="身份证号">
-                        </el-table-column>
-                        <el-table-column
-                            prop="mobile"
-                            label="手机号">
-                        </el-table-column>
-                        <el-table-column
-                            prop="sex"
-                            label="性别">
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <div class="label range"></div>
-                <div class="table-wrap" style="width: 810px;">
-                    <el-table
-                        :width="810"
-                        :data="cashData"
-                        :border="false"
-                        style="width: 100%">
-                        <el-table-column
-                            prop="money"
-                            label="本金">
-                        </el-table-column>
-                        <el-table-column
-                            prop="send"
-                            label="赠送金额">
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </div>
 
             <div class="content-info">
                 <div class="title">次卡信息</div>
@@ -302,7 +242,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
         position: relative;
@@ -329,6 +268,12 @@
                 .tabs-wrap{
                     margin-top: 15px;
                     margin-bottom: 10px;
+                    /deep/ .ivu-btn-group{
+                        .ivu-btn{
+                            width: 124px;
+                            padding: 3px 15px
+                        }
+                    }
                 }
 
                 .form-wrap{

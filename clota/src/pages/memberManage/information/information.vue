@@ -3,28 +3,34 @@
     <div class="member-information">
 
         <div class="filter-wrap">
-            <Select v-model="queryParams.level">
+            <Select v-model="queryParams.levelId" @on-change="queryList">
                 <Option value="">全部会员等级</Option>
-                <Option v-for="item in level" :value="item.value" :key="item.value">{{ item.name }}</Option>
             </Select>
-            <Select v-model="queryParams.channel">
+            <Select v-model="queryParams.channelId" @on-change="queryList">
                 <Option value="">全部会员渠道</Option>
-                <Option v-for="item in channel" :value="item.value" :key="item.value">{{ item.name }}</Option>
             </Select>
-            <Select v-model="queryParams.type">
+            <Select v-model="queryParams.vipStatus" @on-change="queryList">
                 <Option value="">全部会员类型</Option>
-                <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                <Option v-for="(item,index) in enumData.vipStatusEnum"
+                        :key="index"
+                        :value="item.name">
+                    {{item.desc}}
+                </Option>
             </Select>
-            <Select v-model="queryParams.status">
+            <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option value="">全部会员状态</Option>
-                <Option v-for="item in status" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                <Option v-for="(item,index) in enumData.cardStatusEnum"
+                        :key="index"
+                        :value="item.name">
+                    {{item.desc}}
+                </Option>
             </Select>
         </div>
 
         <div class="search-wrap">
-            <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号"/>
-            <Button :disabled="queryParams.keyword ? false : true" type="primary">查 询</Button>
-            <Button :disabled="queryParams.keyword ? false : true" type="ghost">重 置</Button>
+            <Input v-model="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
+            <Button :disabled="queryParams.keyWord ? false : true" type="primary" @click="queryList">查 询</Button>
+            <Button :disabled="queryParams.keyWord ? false : true" type="ghost" @click="reset">重 置</Button>
         </div>
 
         <div class="btn-wrap">
@@ -32,88 +38,83 @@
         </div>
 
         <div class="table-wrap">
-            <el-table
-                :data="tableData"
+            <table-com
+                :table-data="tableData"
+                :table-height="tableHeight"
+                :column-data="infoListHead"
                 :border="true"
-                max-height="450"
-                style="width: 100%"
+                :auto-height="true"
+                :row-click="true"
                 @selection-change="handleSelectionChange"
                 @row-click="viewDetail">
                 <el-table-column
+                    slot="column0"
                     type="selection"
                     width="55">
                 </el-table-column>
                 <el-table-column
-                    prop="id"
-                    label="会员编码"
-                    min-width="150">
+                    slot="column1"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                        <span>{{ scoped.row.cardCode }}</span>
+                        <span class="red-color" v-if="scoped.row.cardStatus ==='frozen'">已冻结</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
-                    label="会员姓名"
-                    min-width="100">
+                    slot="column4"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                       <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="mobile"
-                    label="手机号"
-                    min-width="130">
+                    slot="column6"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                        <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.status) }}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="sex"
-                    label="性别"
-                    min-width="70">
-                </el-table-column>
-                <el-table-column
-                    prop="level"
-                    label="会员级别"
-                    min-width="100">
-                </el-table-column>
-                <el-table-column
-                    prop="type"
-                    label="会员类型"
-                    min-width="170">
-                </el-table-column>
-                <el-table-column
-                    prop="integ"
-                    label="可用积分"
-                    min-width="100">
-                </el-table-column>
-                <el-table-column
-                    prop="balance"
-                    label="账户余额"
-                    min-width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="balance"
-                    label="虚拟账户余额"
-                    min-width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="create_time"
-                    label="注册时间"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="操作"
-                    width="140">
-                    <template slot-scope="scope">
+                    slot="column11"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    fixed="right"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
                         <div class="operation">
-                            <span class="span-blue" @click="modifyData(scope)">修改</span>
-                            <span @click="deleteData(scope)">删除</span>
+                            <span class="span-blue" @click="modifyData($event,scoped.row)">修改</span>
+                            <span @click="deleteMemberInfo($event,scoped.row)">删除</span>
                         </div>
                     </template>
                 </el-table-column>
-            </el-table>
+            </table-com>
         </div>
 
         <div class="page-wrap" v-if="tableData.length > 0">
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="parseInt(queryParams.pageNo)"
+                :current-page="parseInt(pageNo)"
                 :page-sizes="[10, 20, 50, 100]"
-                :page-size="parseInt(queryParams.pageSize)"
+                :page-size="parseInt(pageSize)"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="parseInt(total)">
             </el-pagination>
@@ -123,87 +124,129 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index'
+    import tableCom from '@/pages/memberManage/components/tableCom';
+    import tableMixins from '@/mixins/tableMixins';
+    import {infoListHead} from './infoListConfig';
+    import { vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
+
     export default {
-        components: {},
+        mixins : [tableMixins],
+        components: { tableCom },
         data () {
             return {
-                // 查询数据
+                // 查询数据 keyWord-搜索关键字，levelId-会员级别Id，channelId-会员渠道Id，vipStatus-会员类型，cardStatus-会员状态
                 queryParams: {
-                    keyword: '',
-                    level: '',
-                    channel: '',
-                    type: '',
-                    status: '',
-                    pageNo: '1',
-                    pageSize: '10',
+                    keyWord: '',
+                    levelId: '',
+                    channelId: '',
+                    vipStatus: '',
+                    cardStatus: '',
                 },
-                // 枚举数据
-                level: [],
-                channel: [],
-                type: [],
-                status: [],
-                // 表格数据
-                tableData: [
-                    {
-                        disabled: 'false',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: '1999',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                    },
-                    {
-                        disabled: 'true',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: '1999',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                    }
-                ],
-                total: 50,
+                //枚举数据
+                enumData: {
+                    //会员级别
+                    level: [],
+                    //会员渠道
+                    channel: [],
+                    //会员类型
+                    vipStatusEnum: vipStatusEnum,
+                    //会员状态
+                    cardStatusEnum: cardStatusEnum,
+                    //性别
+                    genderEnum: genderEnum,
+                },
+                //列表表头
+                infoListHead : infoListHead,
+                //列表数据(表格数据取统一字段名)
+                tableData : [],
+                //列表总条数
+                total: 0,
+                //列表多选list
                 multipleSelection: [],
             }
         },
+        created(){
+            this.queryList();
+        },
         methods: {
 
+            //新增会员
             add () {
                 this.$router.push({ name: 'addMember', query: { type: 'add' }});
             },
 
+            //编辑会员
+            modifyData ( event, data ) {
+                event.stopPropagation();
+                this.$router.push({ name: 'addMember', query: { type: 'modify', info: data }});
+            },
+
+            //表格勾选回调
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
 
+            //查询列表(查询表格取统一的方法名)
+            queryList () {
+                ajax.post('queryMemberPage', {
+                    keyWord: this.queryParams.keyWord,
+                    levelId: this.queryParams.levelId,
+                    channelId: this.queryParams.channelId,
+                    vipStatus: this.queryParams.vipStatus,
+                    cardStatus: this.queryParams.cardStatus,
+                    pageNo: this.pageNo,
+                    pageSize: this.pageSize,
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data || [];
+                        this.total = res.data.totalRow || 0;
+                        this.setTableHeight();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryMemberPage 查询失败！');
+                    }
+                })
+            },
+
+            //点击表格行常看详情
             viewDetail ( data ) {
-                console.log(data)
-                this.$router.push({ name: 'infoDetail' });
+                if(data.cardStatus !=='frozen'){
+                    this.$router.push({ name: 'infoDetail' });
+                }
             },
 
-            modifyData ( data ) {
-                console.log(data)
-                this.$router.push({ name: 'addMember', query: { type: 'modify' }});
+            //删除表格数据
+            deleteMemberInfo ( event, data ) {
+                event.stopPropagation();
+                ajax.post('deleteMemberInfo', {
+                    memberId: data.id,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除成功！');
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('deleteMemberInfo 删除失败！');
+                    }
+                });
             },
 
-            deleteData ( data ) {
-                console.log(data)
+            /**
+             * 获取枚举数据展示字段
+             * @param name String 枚举字段名
+             * @param val String 值
+             */
+            getEnumFieldShow ( name, val ) {
+                var obj = this.enumData[name].find((item) => val === item.name);
+                return obj.desc
             },
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+            //重置查询数据
+            reset () {
+                this.queryParams.keyWord = "";
+                this.queryList();
             },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            }
-
         }
     }
 </script>
@@ -236,6 +279,11 @@
                 width: 240px;
                 margin-right: 15px;
             }
+
+            /deep/ .ivu-btn{
+                margin-right: 5px;
+            }
+
         }
 
         .btn-wrap{
@@ -244,7 +292,12 @@
         }
 
         .table-wrap{
+            height: calc(100% - 200px);
 
+            .red-color{
+                font-size: $font_size_12px;
+                color: $color_red;
+            }
         }
 
         .page-wrap{

@@ -12,7 +12,7 @@
         <div class="rate-content">
             <div class="title-wrap">员工分类：{{ info.type }}</div>
             <div class="filter-wrap">
-                <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
+                <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号"/>
                 <Button type="primary">查 询</Button>
                 <Button type="ghost">重 置</Button>
             </div>
@@ -157,6 +157,13 @@
 
             .filter-wrap{
                 margin-bottom: 10px;
+                /deep/ .ivu-input-wrapper{
+                    width: 240px;
+                    margin-right: 15px;
+                }
+                /deep/ .ivu-btn{
+                    margin-right: 5px;
+                }
             }
 
             .table-wrap{
