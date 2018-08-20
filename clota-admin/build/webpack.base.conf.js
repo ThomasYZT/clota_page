@@ -54,7 +54,7 @@ module.exports = {
                 test: /\.js$/,
                 // loader: 'babel-loader',
                 loader: 'happypack/loader?id=happy-babel-js',
-                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/_iview@2.14.3@iview/src')]
+                include: [resolve('src'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/_iview@2.14.3@iview/src')]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -100,8 +100,16 @@ module.exports = {
             filename: '[name].[hash].js',
             path: './static/dll',
             entry: {
-                vueFamily: ['vue', 'vue-router', 'vuex'],
+                vueFamily: ['vue', 'vue-router', 'vuex','vue-i18n'],
                 plugins: [
+                    'axios',
+                    'klwk-ui',
+                    'iview',
+                    'echarts/lib/echarts',
+                    './src/components/kCityPicker/dicts/areas.json',
+                    './src/components/kCityPicker/dicts/citys.json',
+                    './src/components/kCityPicker/dicts/provinces.json',
+                    'babel-polyfill',
                     'element-ui/lib/table.js',
                     'element-ui/lib/table-column.js',
                     'element-ui/lib/scrollbar.js',
@@ -109,7 +117,7 @@ module.exports = {
                     'element-ui/lib/dropdown.js',
                     'element-ui/lib/dropdown-menu.js',
                     'element-ui/lib/dropdown-item.js',
-                    'element-ui/lib/tooltip',
+                    'element-ui/lib/tooltip'
                 ]
             },
             plugins: [

@@ -33,8 +33,7 @@
                            style="width: 368px"
                            :placeholder="$t('verifyCode')"/>
                     <img class="verify-img"
-                         src="../../assets/images/test.jpg"
-                         alt=""
+                         src="http://47.100.221.254:9999/user/getValidateCode.json"
                          @click="changeCode">
                 </FormItem>
                 <!--自动登录-->
@@ -82,7 +81,7 @@
                     //密码
                     password: 'abc',
                     //验证码
-                    verifyCode: 'abc'
+                    verifyCode: ''
                 },
                 //是否显示错误信息
                 showErrMessage: false,
@@ -91,7 +90,9 @@
                 //登陆中
                 logging : false,
                 //记住账号
-                rememberAccount : false
+                rememberAccount : false,
+                //验证码地址
+                verifyCode : ''
             }
         },
         methods: {
@@ -107,10 +108,13 @@
                         ajax.post('login',{
                             loginName : this.formData.account,
                             password : this.formData.password,
+                            validateCode : this.formData.verifyCode,
                         }).then(res => {
-                            // debugger
                             if(res.status === 200){
                                 localStorage.setItem('token',res.data.token);
+                                localStorage.setItem('userInfo',JSON.stringify({
+                                    name : this.formData.account
+                                }));
                                 this.$store.dispatch('getUserInfo').then(route => {
                                     this.$router.push({
                                         name: route.name
