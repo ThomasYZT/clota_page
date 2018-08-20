@@ -23,7 +23,9 @@ export default {
             //查询关键字
             keyWord: '',
             //容器去除不包含表格的高度
-            spaceOffset: 119
+            spaceOffset: 119,
+            //总共条数
+            totalCount : 0
         }
     },
     methods: {

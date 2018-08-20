@@ -24,9 +24,9 @@
         <div class="device-detail">
             <div class="chart-circle">
                 <annlar :rate="10"></annlar>
-                <div class="chart-name">磁盘空间</div>
+                <div class="chart-name">{{$t('diskSpaceInfo')}}</div>
                 <div class="detail" @click="toDiskDetail">
-                    查看
+                    {{$t('look')}}
                     <span class="iconfont icon-pull-down"></span>
                 </div>
             </div>
@@ -34,9 +34,9 @@
                 <div class="title-analysis">
                     <span class="log-name">10</span>
                 </div>
-                <div class="chart-name">日志文件</div>
+                <div class="chart-name">{{$t('logFile',{msg : ''})}}</div>
                 <div class="detail" @click="toLogDetail">
-                    查看
+                    {{$t('look')}}
                     <span class="iconfont icon-pull-down"></span>
                 </div>
             </div>

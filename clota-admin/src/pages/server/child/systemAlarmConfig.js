@@ -3,12 +3,12 @@ export const columns = [
     {
         title: '描述',
         minWidth: 120,
-        field: 'realName',
+        field: 'message',
         ableClick: true
     },
     {
         title: '时间',
-        minWidth: 120,
-        field: 'examName'
+        width: 170,
+        field: 'ctime'
     }
 ];

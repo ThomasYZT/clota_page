@@ -3,42 +3,42 @@ export const columns = [
     {
         title: '服务器名称',
         minWidth: 100,
-        field: 'index',
+        field: 'serverName',
         ableClick: true
     },
     {
         title: 'IP地址',
         minWidth: 100,
-        field: 'name'
+        field: 'ip'
     },
     {
         title: '应用服务',
         minWidth: 70,
-        field: 'rate'
+        field: 'serverName'
     },
     {
         title: '系统',
         minWidth: 70,
-        field: 'rate'
+        field: 'opSystme'
     },
     {
         title: '系统类型',
         minWidth: 100,
-        field: 'rate'
+        field: 'systmeBit'
     },
     {
         title: '监控频率',
         minWidth: 100,
-        field: 'rate'
+        field: 'monitoringFrequencc'
     },
     {
         title: '系统描述',
         minWidth: 70,
-        field: 'rate'
+        field: 'description'
     },
     {
         title: '运行状态',
         minWidth: 70,
-        field: 'rate'
+        field: 'runState'
     },
 ];

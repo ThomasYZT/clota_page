@@ -15,38 +15,38 @@ export const configVariable = {
 export const listenRateEnum = [
     {
         label: 'minute',
-        value: 5,
+        value: '5',
     },
     {
         label: 'minute',
-        value: 10,
+        value: '10',
     },
     {
         label: 'minute',
-        value: 15,
+        value: '15',
     },
     {
         label: 'minute',
-        value: 20,
+        value: '20',
     },
     {
         label: 'minute',
-        value: 30,
+        value: '30',
     },
     {
         label: 'minute',
-        value: 60,
+        value: '60',
     }
 ];
 //系统类型
 export const systemTypeList = [
     {
         label: 'systemTypeInfo',
-        value: 32,
+        value: '32',
     },
     {
         label: 'systemTypeInfo',
-        value: 64,
+        value: '64',
     }
 ];
 
@@ -368,3 +368,13 @@ export const sendStatusList = [
         value : 'fail'
     },
 ];
+//校验是否是ipv4地址
+export const isIpv4 = function (val) {
+    let reg = /(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))/;
+    return reg.test(val);
+};
+//校验是否为ipv6地址
+export const isIpv6 = function (val) {
+    let reg = /^([\\da-fA-F]{1,4}:){7}([\\da-fA-F]{1,4})$/;
+    return reg.test(val);
+};

@@ -3,32 +3,38 @@
 <template>
     <div class="server-info">
         <div class="tab-list">
-            <Button type="primary" @click="addServer">添加服务器</Button>
+            <Button type="primary"
+                    @click="addServer">{{$t('addServer')}}</Button>
         </div>
         <table-com
             :table-data="tableData"
             :table-height="tableHeight"
             :column-data="columnData">
             <el-table-column
-                label="操作"
+                :label="$t('operate')"
                 :width="60">
                 <template slot-scope="scoped">
-                    <span class="watch" @click="toDetail">查看</span>
+                    <span class="watch"
+                          @click="toDetail(scoped.row)">{{$t('look')}}</span>
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
+        <div class="page-area" v-if="totalCount > 0">
             <el-pagination
                 :current-page="pageNo"
                 :page-sizes="pageSizeConfig"
                 :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
+                :layout="pageLayout"
+                :total="totalCount"
+                @size-change="sizeChange"
+                @current-change="pageNoChange">
             </el-pagination>
         </div>
+        <!--无数据-->
         <no-data class="no-data"
-                 v-if="tableData.length < 1">
+                 v-if="totalCount < 1">
         </no-data>
+        <!--加载中-->
         <loading :visible="isLoading">
         </loading>
     </div>
@@ -40,6 +46,7 @@
     import loading from '@/components/loading/loading.vue';
     import tableMixins from '../lessee/tableMixins';
     import {columns} from './serverConfig';
+    import ajax from '@/api/index.js';
 
     export default {
         mixins: [tableMixins],
@@ -55,10 +62,17 @@
             }
         },
         methods: {
-            //查看设备详情
-            toDetail() {
+            /**
+             * 查看设备详情
+             * @param rowData 行数据
+             */
+            toDetail(rowData) {
                 this.$router.push({
-                    name: 'serverDetail'
+                    name: 'serverDetail',
+                    params : {
+                        id : rowData.id,
+                        ip : rowData.ip,
+                    }
                 });
             },
             /**
@@ -68,7 +82,57 @@
                 this.$router.push({
                     name: 'addServer'
                 });
+            },
+            /**
+             * 查询服务器
+             */
+            queryAllServerMsg () {
+                ajax.post('queryAllServerMsg',{
+                    page : this.pageNo,
+                    pageSize : this.pageSize
+                }).then(res => {
+                    if(res.status === 200){
+                        this.totalCount = res.data.totalRecord;
+                        this.tableData = res.data.list ? res.data.list : [];
+                    }else{
+                        this.totalCount = 0;
+                        this.tableData = [];
+                    }
+                }).catch(() => {
+                    this.totalCount = 0;
+                    this.tableData = [];
+                }).finally(() => {
+                    this.setTableHeight();
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams(params) {
+                this.queryAllServerMsg();
+            },
+            /**
+             * 每页条数改变
+             * @param pageSize
+             */
+            sizeChange (pageSize) {
+                this.pageSize = pageSize;
+                this.queryAllServerMsg();
+            },
+            /**
+             * 每页大小改变
+             * @param pageNo
+             */
+            pageNoChange(pageNo) {
+                this.pageNo = pageNo;
+                this.queryAllServerMsg();
             }
+        },
+        beforeRouteEnter(to,from,next) {
+            next(vm => {
+                vm.getParams(to.params);
+            });
         }
     }
 </script>
@@ -79,7 +143,7 @@
     .server-info {
         position: relative;
         padding: 0 30px 0 30px;
-        @include block_outline($height: unquote('calc(100% - 20px)'));
+        @include block_outline();
         @include padding_place();
         background: $color_fff;
 
@@ -95,7 +159,7 @@
 
         /deep/ .el-table td,
         /deep/ .el-table th {
-            padding: 11px 0 !important;
+            padding: 12px 0 !important;
         }
 
         /deep/ .el-table::before {

@@ -8,70 +8,62 @@
         </bread-crumb-head>
         <div class="device-detail">
             <div class="device-name">
-                MSSql-01设备信息
+                {{$t('serverListMsg',{msg : serverDetail.serverName})}}
             </div>
             <div class="de-li">
                 <ul class="detail-list">
                     <li class="arg-list">
-                        <span class="key">设备名称：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
+                        <span class="key">{{$t('deviceName')}}：</span>
+                        <span class="val">{{serverDetail.serverName}}</span>
                     </li>
                     <li class="arg-list">
-                        <span class="key">系统：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
+                        <span class="key">{{$t('system')}}：</span>
+                        <span class="val">{{serverDetail.opSystme}}</span>
                     </li>
                     <li class="arg-list">
-                        <span class="key">系统描述：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
-                    </li>
-                </ul>
-                <ul class="detail-list">
-                    <li class="arg-list">
-                        <span class="key">IP地址：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
-                    </li>
-                    <li class="arg-list">
-                        <span class="key">系统类型：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
-                    </li>
-                    <li class="arg-list">
-                        <span class="key">密码：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
+                        <span class="key">{{$t('systemDesc')}}：</span>
+                        <span class="val">{{serverDetail.description}}</span>
                     </li>
                 </ul>
                 <ul class="detail-list">
                     <li class="arg-list">
-                        <span class="key">应用服务：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
+                        <span class="key">{{$t('ipAddress')}}：</span>
+                        <span class="val">{{serverDetail.ip}}</span>
                     </li>
                     <li class="arg-list">
-                        <span class="key">监控频率：</span>
-                        <span class="val">MSSqlMSSqlMSSqlMSSqlMSSqlMSSql-01</span>
+                        <span class="key">{{$t('systemType')}}：</span>
+                        <span class="val">{{$t('bit',{length : serverDetail.systmeBit})}}</span>
+                    </li>
+                </ul>
+                <ul class="detail-list">
+                    <li class="arg-list">
+                        <span class="key">{{$t('usingService')}}：</span>
+                        <span class="val">{{serverDetail.serviceName}}</span>
+                    </li>
+                    <li class="arg-list">
+                        <span class="key">{{$t('listenRate')}}：</span>
+                        <span class="val">{{serverDetail.monitoringFrequencc}}{{$t('minute')}}</span>
                     </li>
                 </ul>
             </div>
             <div class="system-alarm">
                 <div class="name">
-                    系统报警
+                    {{$t('systemAlarm')}}
                     <span class="more" @click="toSystemAlarmDetail">
-                        查看更多
+                        {{$t('forMore')}}
                         <span class="iconfont icon-pull-down"></span>
                     </span>
                 </div>
                 <ul class="alarm">
-                    <li class="detail">
+                    <li class="detail" v-for="item in warnInfoList">
                         <div class="alarm-name">
-                            <span class="iconfont icon-warn"></span>
-                            服务器无响应
+                            <span class="iconfont"
+                                  :class="{'icon-warn' : item.warningLevel === '2',
+                                  'icon-error' : item.warningLevel === '1',
+                                  'icon-mind' : item.warningLevel === '3'}"></span>
+                            {{item.message}}
                         </div>
-                        <div class="time">2016-09-09 08:00</div>
-                    </li>
-                    <li class="detail">
-                        <div class="alarm-name">
-                            <span class="iconfont icon-error"></span>
-                            服务器无响应
-                        </div>
-                        <div class="time">2016-09-09 08:00</div>
+                        <div class="time">{{item.ctime}}</div>
                     </li>
                 </ul>
             </div>
@@ -86,6 +78,7 @@
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import timeAlong from './deviceInfoChild/timeAlong';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -103,6 +96,14 @@
                         }
                     }
                 ],
+                //服务器id
+                serverId : '',
+                //服务器ip
+                serverIp : '',
+                //服务器详情
+                serverDetail : {},
+                //报警事件列表
+                warnInfoList : []
             }
         },
         methods: {
@@ -111,9 +112,63 @@
              */
             toSystemAlarmDetail() {
                 this.$router.push({
-                    name: 'systemAlarm'
+                    name: 'systemAlarm',
+                    params : {
+                        ip : this.serverIp
+                    }
+                });
+            },
+            /**
+             * 获取路由信息
+             * @param params
+             */
+            getParams(params) {
+                if(params.id){
+                    this.serverId = params.id;
+                    this.serverIp = params.ip;
+                    this.queryServerwarningData();
+                    this.queryMoreWarningData();
+                }
+            },
+            /**
+             * 获取服务器详情
+             */
+            queryServerwarningData () {
+                ajax.post('queryServerwarningData',{
+                    id : this.serverId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.serverDetail  = res.data;
+                    }else{
+                        this.serverDetail = {};
+                    }
+                }).catch(err => {
+                    this.serverDetail = {};
+                });
+            },
+            /**
+             * 查询系统报警事件
+             */
+            queryMoreWarningData () {
+                ajax.post('queryMoreWarningData',{
+                    ip : this.serverIp,
+                    pageSize : 10,
+                    page : 1,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.warnInfoList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.warnInfoList = [];
+                    }
+                }).catch(err => {
+                    this.warnInfoList = [];
                 });
             }
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.getParams(to.params);
+            });
         }
     }
 </script>
