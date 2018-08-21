@@ -3,8 +3,7 @@ export const columns = [
     {
         title: '服务器名称',
         minWidth: 100,
-        field: 'serverName',
-        ableClick: true
+        field: 'serverName'
     },
     {
         title: 'IP地址',

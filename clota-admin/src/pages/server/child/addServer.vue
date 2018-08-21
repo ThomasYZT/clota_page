@@ -113,10 +113,42 @@
             const validateIp = (rule,value,callback) => {
                 if(value){
                     if(isIpv4(value) || isIpv6(value)){
-                        callback();
+                        ajax.post('queryServerByIp',{
+                            ip : value
+                        }).then(res => {
+                            if(res.status === 200){
+                                if(!res.data){
+                                    callback();
+                                }else{
+                                    callback(this.$t('fieldExist',{filed : this.$t('ipAddress')}));
+                                }
+                            }else{
+                                callback(this.$t('checkFail',{filed : this.$t('ipAddress')}) );
+                            }
+                        })
                     }else{
                         callback(this.$t('validateError.formatError', {field: this.$t('ipAddress')}));
                     }
+                }else{
+                    callback(this.$t('validateError.pleaseInput', {msg: this.$t('serverName')}));
+                }
+            };
+            //校验服务器名称是否重复
+            const validateServerName = (rule,value,callback) => {
+                if(value){
+                    ajax.post('queryServerByServerName',{
+                        serverName : value
+                    }).then(res => {
+                        if(res.status === 200){
+                            if(!res.data){
+                                callback();
+                            }else{
+                                    callback(this.$t('fieldExist',{filed : this.$t('serverName')}));
+                            }
+                        }else{
+                            callback(this.$t('checkFail',{filed : this.$t('serverName')}) );
+                        }
+                    });
                 }else{
                     callback(this.$t('validateError.pleaseInput', {msg: this.$t('serverName')}));
                 }
@@ -153,7 +185,7 @@
                     serverName: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseInput', {msg: this.$t('serverName')}),
+                            validator : validateServerName,
                             trigger: 'blur'
                         },
                     ],
@@ -231,7 +263,7 @@
                 }).finally(() =>{
                     this.addLoading = false;
                 });
-            }
+            },
         }
     }
 </script>

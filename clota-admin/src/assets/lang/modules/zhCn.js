@@ -14,7 +14,9 @@ export default {
     loginError: {
         accountError: '密码或账号错误',
         verifyCodeError: '验证码错误',
-        serverError : '链接服务器失败'
+        serverError : '链接服务器失败',
+        hasLogined : '账户已登录',
+        verifyCodeError : '验证码错误'
     },
     companyName: '银科环企Clota运营平台',
     rememberAccount: '记住账号',
@@ -264,4 +266,6 @@ export default {
     addSuccess : '新增成功',
     deviceName : '设备名称',
     diskSpaceInfo : '磁盘空间',
+    fieldExist : '{field}已存在',
+    checkFail : '{filed}校验失败'
 }

@@ -33,7 +33,7 @@
                            style="width: 368px"
                            :placeholder="$t('verifyCode')"/>
                     <img class="verify-img"
-                         src="http://47.100.221.254:9999/user/getValidateCode.json"
+                         :src="verifyCode"
                          @click="changeCode">
                 </FormItem>
                 <!--自动登录-->
@@ -120,9 +120,18 @@
                                         name: route.name
                                     });
                                 });
+                            }else if(res.message === 'User is already login!'){
+                                this.errMessage = 'loginError.hasLogined';
+                                this.showErrMessage = true;
+                                this.changeCode();
+                            }else if(res.message === 'Validate code error!'){
+                                this.errMessage = 'loginError.verifyCodeError';
+                                this.showErrMessage = true;
+                                this.changeCode();
                             }else{
                                 this.errMessage = 'loginError.accountError';
                                 this.showErrMessage = true;
+                                this.changeCode();
                             }
                         }).catch(err => {
                             this.errMessage = 'loginError.serverError';
@@ -140,7 +149,7 @@
              */
             changeCode () {
                 ajax.get('getValidateCode').then(res => {
-
+                    this.verifyCode = 'data:image/jpeg;base64,' + res;
                 });
             },
             /**
