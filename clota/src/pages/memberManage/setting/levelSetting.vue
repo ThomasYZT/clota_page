@@ -12,69 +12,80 @@
                 <Button type="primary" @click="showRuleModal">晋级设置</Button>
             </div>
             <div class="table-wrap">
-                <el-table
-                    :data="tableData"
-                    :border="true"
-                    max-height="450"
-                    style="width: 100%">
+                <table-com
+                    ref="multipleTable"
+                    :table-data="tableData"
+                    :table-height="tableHeight"
+                    :column-data="levelListHead"
+                    :border="true">
                     <el-table-column
-                        prop="id"
-                        label="等级编码">
-                    </el-table-column>
-                    <el-table-column
-                        prop="level"
-                        label="会员级别">
-                    </el-table-column>
-                    <el-table-column
-                        prop="fund"
-                        label="是否储值">
-                        <template slot-scope="scope">
-                            <Icon type="checkmark-round" v-if="scope.row.fund === 'true'"></Icon>
+                        slot="column2"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <Icon type="checkmark-round" v-if="scoped.row.isRecharge === 'true'"></Icon>
                             <Icon type="close-round" v-else></Icon>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="integ"
-                        label="是否积分">
-                        <template slot-scope="scope">
-                            <Icon type="checkmark-round" v-if="scope.row.integ === 'true'"></Icon>
+                        slot="column3"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <Icon type="checkmark-round" v-if="scoped.row.isScore === 'true'"></Icon>
                             <Icon type="close-round" v-else></Icon>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="range"
-                        label="成长值范围">
-                    </el-table-column>
-                    <el-table-column
-                        prop="ramark"
-                        label="备注">
-                        <template slot-scope="scope">
-                            <div>{{scope.row.ramark || '-'}}</div>
+                        slot="column4"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                           <span>{{scoped.row.lowerGrowthValue}} - {{scoped.row.highestGrowthValue}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="date"
-                        label="操作">
-                        <template slot-scope="scope">
+                        slot="column6"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        fixed="right"
+                        slot-scope="row">
+                        <template slot-scope="scoped">
                             <div class="operation">
-                                <span class="span-blue" @click="showAddMemberModal(scope)">修改</span>
-                                <span @click="deleteChannel(scope)">删除</span>
+                                <span class="span-blue" @click="showAddMemberModal($event,scoped.row)">修改</span>
+                                <span @click="deleteChannel($event,scoped.row)">删除</span>
                             </div>
                         </template>
                     </el-table-column>
-                </el-table>
+                </table-com>
             </div>
-            <div class="page-wrap" v-if="tableData.length > 0">
+
+            <!--<div class="page-wrap" v-if="tableData.length > 0">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="parseInt(queryParams.pageNo)"
+                    :current-page="pageNo"
                     :page-sizes="[10, 20, 50, 100]"
-                    :page-size="parseInt(queryParams.pageSize)"
+                    :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="parseInt(total)">
                 </el-pagination>
-            </div>
+            </div>-->
 
         </div>
 
@@ -89,68 +100,38 @@
 
 <script>
 
+    import ajax from '@/api/index'
+    import tableCom from '@/pages/memberManage/components/tableCom';
+    import tableMixins from '@/mixins/tableMixins';
+    import {levelListHead} from './levelConfig';
     import headerTabs from './components/headerTabs.vue'
     import addMemberModal  from '../components/addMemberModal.vue'
     import memberRuleModal  from '../components/memberRuleModal.vue'
 
     export default {
+        mixins : [tableMixins],
         components: {
             headerTabs,
             addMemberModal,
             memberRuleModal,
+            tableCom,
         },
         data () {
             return {
+                //当前页面路由名称
                 routerName: 'levelSetting',
-                // 查询数据
-                queryParams: {
-                    pageNo: '1',
-                    pageSize: '10',
-                },
+                //列表表头
+                levelListHead : levelListHead,
                 // 表格数据
-                tableData: [
-                    {
-                        disabled: 'false',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: 'false',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                        fund: 'true',
-                        range: '0-999',
-                        ramark: '是备注',
-                    },
-                    {
-                        disabled: 'true',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: 'true',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                        fund: 'true',
-                        range: '3000-不限',
-                        ramark: '',
-                    }
-                ],
-                total: 50,
+                tableData: [],
+                total: 0,
             }
         },
+        created(){
+            //查询列表
+            this.queryList();
+        },
         methods: {
-
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
 
             showAddMemberModal ( data ) {
                 console.log(data)
@@ -162,9 +143,65 @@
                 this.$refs.memberRule.show();
             },
 
-            deleteChannel ( data ) {
-                console.log(data)
+            //查询列表(查询表格取统一的方法名)
+            queryList () {
+                var list = [
+                    {
+                        channelName: "饿了吗2",
+                        companyId: 1,
+                        createUser: 123,
+                        createdTime: "2018-08-15 11:20:17",
+                        id: 1,
+                        isDeleted: "false",
+                        remark: "222",
+                        status: "1",
+                        updateUser: 456,
+                        updatedTime: "2018-08-20 16:56:19",
+                    },
+                ];
+                ajax.post('queryMemberLevels', {
+                    pageNo: 1,
+                    pageSize: 99999,
+                    companyId: '1',
+                    orgId: '101',
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data || [];
+                        this.total = res.data.totalRow || 0;
+                        this.setTableHeight();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                })
             },
+
+            //增加/修改渠道
+            showChannelModal ( event, data ) {
+                console.log(data)
+                this.$refs.addChannel.show(data);
+            },
+
+            //删除数据
+            deleteLevelInfo ( event, data ) {
+                console.log(data)
+                ajax.post('queryMemberLevels', {
+                    companyId: '',
+                    orgId: '',
+                    id: data.id,
+                    isDeleted: 'true',
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除成功！');
+                        //查询列表
+                        this.queryList();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryMemberLevels 删除失败！');
+                    }
+                })
+            },
+
 
 
         }
@@ -188,10 +225,18 @@
             .btn-wrap{
                 height: 60px;
                 line-height: 60px;
+                /deep/ .ivu-btn{
+                    width: 108px;
+                    margin-right: 15px;
+                }
             }
 
             .table-wrap{
+                max-height: calc(100% - 70px);
 
+                .ivu-icon-checkmark-round, .ivu-icon-close-round{
+                    color: $color_C0CDDF;
+                }
             }
 
             .page-wrap{

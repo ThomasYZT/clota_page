@@ -7,27 +7,40 @@
 
         <div class="content">
 
-
             <div class="content-item">
                 <div class="title">成长值设置</div>
                 <div class="main">
-                    <span class="text">消费 <Input value="2" type="text" placeholder="请输入" style="width: 100px;" /> 元获取
-                        <Input value="2" type="text" placeholder="请输入" style="width: 100px;" />成长值</span>
+                    <span class="text">消费
+                        <Input v-model="growthRateWhileConsume.growthSet"
+                           type="text"
+                           class="single-input"
+                           placeholder="请输入"/>
+                        元获取
+                        <Input v-model="growthRateWhileConsume.growthSetValue"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/>
+                        成长值</span>
                 </div>
             </div>
 
             <div class="content-item">
                 <div class="title">成长值生效设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="growthEffectiveMode.growthType" vertical>
+                        <Radio label="immediately">
                             <span>付款成功后立即生效</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="checkout">
                             <span>消费、核销成功后立即生效</span>
                         </Radio>
-                        <Radio label="three">
-                            <span>消费、核销成功后 <Input value="24" disabled type="text" placeholder="请输入" style="width: 100px;" /> 小时后生效</span>
+                        <Radio label="checkout_after">
+                            <span>消费、核销成功后
+                            <Input v-model="growthEffectiveMode.growthTime"
+                                   type="text"
+                                   class="single-input"
+                                   placeholder="请输入"/>
+                                小时后生效</span>
                         </Radio>
                     </RadioGroup>
                 </div>
@@ -36,11 +49,11 @@
             <div class="content-item">
                 <div class="title">子母卡成长值归属设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="growthFromFamilies" vertical>
+                        <Radio label="true">
                             <span>子卡产生的成长值累加在母卡上</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="false">
                             <span>子卡产生的成长值不累加在母卡上，累加在子卡上，子卡可单独升级</span>
                         </Radio>
                     </RadioGroup>
@@ -67,8 +80,20 @@
         },
         data () {
             return {
+                //当前页面路由名称
                 routerName: 'growthSetting',
-                effect: 'one',
+                //成长值设置
+                growthRateWhileConsume: {
+                    growthSet: '1',
+                    growthSetValue: '1',
+                },
+                //成长值生效设置
+                growthEffectiveMode: {
+                    growthType: 'checkout',
+                    growthTime: '24',
+                },
+                //子母卡成长值归属设置
+                growthFromFamilies: 'false',
             }
         }
     }
@@ -82,6 +107,14 @@
         @include padding_place();
         background: $color-fff;
         border-radius: 4px;
+
+        /deep/ .ivu-input-wrapper{
+            vertical-align: sub;
+            &.single-input{
+                margin: 0 10px;
+                width: 100px !important;
+            }
+        }
 
         .content{
             padding: 30px 60px;
@@ -112,6 +145,14 @@
             line-height: 56px;
             text-align: center;
             background: #FFFFFF;
+
+            /deep/ .ivu-btn{
+                width: 108px;
+                padding: 5px 30px;
+            }
+            .ivu-btn + .ivu-btn{
+                margin-left: 20px;
+            }
         }
 
     }

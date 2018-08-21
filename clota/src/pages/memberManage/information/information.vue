@@ -39,21 +39,15 @@
 
         <div class="table-wrap">
             <table-com
+                ref="multipleTable"
                 :table-data="tableData"
                 :table-height="tableHeight"
                 :column-data="infoListHead"
                 :border="true"
-                :auto-height="true"
                 :row-click="true"
-                @selection-change="handleSelectionChange"
                 @row-click="viewDetail">
                 <el-table-column
                     slot="column0"
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    slot="column1"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -66,7 +60,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column4"
+                    slot="column3"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -78,7 +72,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column6"
+                    slot="column5"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -90,7 +84,19 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column11"
+                    slot="column9"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                        <span>{{ scoped.row.updatedTime ? new Date(scoped.row.updatedTime).format('yyyy-mm-dd') : '-' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column10"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -112,9 +118,9 @@
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="parseInt(pageNo)"
+                :current-page="pageNo"
                 :page-sizes="[10, 20, 50, 100]"
-                :page-size="parseInt(pageSize)"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="parseInt(total)">
             </el-pagination>
@@ -168,6 +174,9 @@
             }
         },
         created(){
+            //清空选择数据
+            this.multipleSelection = [];
+            //查询列表
             this.queryList();
         },
         methods: {
@@ -185,11 +194,80 @@
 
             //表格勾选回调
             handleSelectionChange(val) {
-                this.multipleSelection = val;
+                this.multipleSelection[this.pageNo] = val;
             },
 
             //查询列表(查询表格取统一的方法名)
             queryList () {
+                var list = [
+                    {
+                        age: null,
+                        alipayAcct: "alipay",
+                        birthDay: "1994-01-01 00:00:00",
+                        cardCode: "1031487745190662145",
+                        cardId: 1031487745190662100,
+                        cardStatus: "active",
+                        certificationType: 1,
+                        cityCode: "001001",
+                        companyId: null,
+                        createUser: 1,
+                        createdTime: "2018-08-20 18:26:57",
+                        custName: "李四",
+                        emailAddr: "111@qq.com",
+                        gender: "male",
+                        hobby: "吃",
+                        homeAddr: "长沙",
+                        id: 1031487743789764600,
+                        idCardNumber: "1132123141342342",
+                        memberCardVos: [
+                            {
+                                cardCode: "1031487745190662145",
+                                channelId: null,
+                                childCard: null,
+                                companyId: 1,
+                                createUser: 1,
+                                createdTime: "2018-08-20 18:26:57",
+                                effDate: "2018-08-20 18:26:57",
+                                effectiveSet: "perpetual",
+                                effectiveTimes: null,
+                                expDate: "2024-05-18 18:26:57",
+                                id: 1031487745190662100,
+                                isDeleted: "false",
+                                isMotherCard: null,
+                                lastActiveDate: null,
+                                levelId: null,
+                                memberAccountVos: [],
+                                memberCardCouponModels: null,
+                                memberDiscountOfMemberModels: null,
+                                memberId: 1031487743789764600,
+                                motherCard: null,
+                                orgId: 101,
+                                parentId: null,
+                                passwd: null,
+                                staffTypeId: null,
+                                status: "active",
+                                tpCardNo: "",
+                                tpNo: "",
+                                updateUser: null,
+                                updatedTime: "2018-08-20 18:26:57",
+                            }
+                        ],
+                        moneyBalance: null,
+                        phoneNum: "15548752104",
+                        pointBalance: null,
+                        portrait: null,
+                        qq: "12313",
+                        stateCode: "001",
+                        status: "active",
+                        updateUser: null,
+                        updatedTime: "2018-08-20 18:26:57",
+                        wechatAcct: "wechat",
+                    }
+                ];
+                this.multipleSelection[1] = list;
+                this.tableData = list;
+                this.total = 1;
+                this.setTableHeight();
                 ajax.post('queryMemberPage', {
                     keyWord: this.queryParams.keyWord,
                     levelId: this.queryParams.levelId,
@@ -203,6 +281,18 @@
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
                         this.setTableHeight();
+                        this.$nextTick( () => {
+                            console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
+                            this.multipleSelection.forEach(item => {
+                                if(item && item.length > 0){
+                                    item.forEach(row => {
+                                        console.log(row)
+                                        console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
+                                        this.$refs.multipleTable.$children[0].setCurrentRow(row);
+                                    })
+                                }
+                            })
+                        })
                     } else {
                         console.log(res);
                         this.$Message.warning('queryMemberPage 查询失败！');
@@ -292,7 +382,7 @@
         }
 
         .table-wrap{
-            height: calc(100% - 200px);
+            max-height: calc(100% - 200px);
 
             .red-color{
                 font-size: $font_size_12px;

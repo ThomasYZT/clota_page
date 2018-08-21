@@ -8,25 +8,22 @@
         <div class="content">
 
             <div class="content-item">
-                <div class="title">会员卡是否开启积分、储值功能</div>
-                <div class="main">
-                    <div><i-switch v-model="openInteg"></i-switch><span class="text">开启积分功能</span></div>
-                    <div><i-switch v-model="openFunds"></i-switch><span class="text">开启储值功能</span></div>
-                </div>
-            </div>
-
-            <div class="content-item">
                 <div class="title">会员积分生效设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="scoreEffectiveMode.isIntegralType" vertical>
+                        <Radio label="immediately">
                             <span>付款成功后立即生效</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="checkout">
                             <span>消费、核销成功后立即生效</span>
                         </Radio>
-                        <Radio label="three">
-                            <span>消费、核销成功后 <Input value="100" type="text" placeholder="请输入" style="width: 100px;" /> 时后生效</span>
+                        <Radio label="checkout_after">
+                            <span>消费、核销成功后
+                                <Input v-model="scoreEffectiveMode.isNoIntegralTime"
+                                       type="text"
+                                       placeholder="请输入"
+                                       class="single-input"/>
+                                时后生效</span>
                         </Radio>
                     </RadioGroup>
                  </div>
@@ -35,44 +32,74 @@
             <div class="content-item">
                 <div class="title">会员生日积分多倍积分</div>
                 <div class="main">
-                    <i-switch v-model="openInteg"></i-switch>
-                    <span class="text">会员生日当天消费可获得 <Input value="2" type="text" placeholder="请输入" style="width: 100px;" /> 倍积分</span>
+                    <i-switch v-model="scoreMultipleOnBirthday.hasMultiple"></i-switch>
+                    <span class="text">会员生日当天消费可获得
+                        <Input v-model="scoreMultipleOnBirthday.isTime"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/>
+                        倍积分</span>
                 </div>
             </div>
 
             <div class="content-item">
                 <div class="title">会员积分有效期设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="scoreValidityPeriod.validityType" vertical>
+                        <Radio label="perpetual ">
                             <span>永久有效</span>
                         </Radio>
-                        <Radio label="three">
-                            <span>获得积分 <Input value="100" type="text" placeholder="请输入" style="width: 100px;" /> 个月后失效，清除</span>
+                        <Radio label="months_effective ">
+                            <span>获得积分
+                                <Input v-model="scoreValidityPeriod.validityTime"
+                                       type="text"
+                                       class="single-input"
+                                       placeholder="请输入"/>
+                                个月后失效，清除</span>
                         </Radio>
                     </RadioGroup>
-                    <div>
-                        <Checkbox v-model="check"></Checkbox>清除积分前
-                                <Input value="60" type="text" placeholder="请输入" style="width: 100px;" />天短信提醒，<span class="blue-color">短信设置</span>
+                    <div class="check-group-wrap">
+                        <Checkbox v-model="scoreValidityPeriod.checked"></Checkbox>清除积分前
+                        <Input v-model="scoreValidityPeriod.remind"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/>
+                        天短信提醒，
+                        <span class="blue-color">短信设置</span>
                     </div>
                 </div>
             </div>
 
             <div class="content-item">
                 <div class="title">会员卡有效期设置</div>
-                <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                <div class="main margin-radio-group">
+                    <RadioGroup v-model="memberValidPeriod.Type" vertical>
+                        <Radio label="perpetual">
                             <span>永久有效</span>
                         </Radio>
-                        <Radio label="two">
-                            <span>最后一次消费 <Input value="365" type="text" placeholder="请输入" style="width: 100px;" /> 天后如未使用，冻结该会员卡</span>
+                        <Radio label="vipValidityTime">
+                            <span>最后一次消费
+                             <Input v-model="memberValidPeriod.vipValidityTime"
+                                    type="text"
+                                    class="single-input"
+                                    placeholder="请输入"/>
+                                天后如未使用，冻结该会员卡</span>
                         </Radio>
-                        <Radio label="three">
-                            <span>开卡 <Input value="365" type="text" placeholder="请输入" style="width: 100px;" /> 天后冻结该会员卡</span>
+                        <Radio label="vipValidity">
+                            <span>开卡
+                             <Input v-model="memberValidPeriod.vipValidityType"
+                                    type="text"
+                                    class="single-input"
+                                    placeholder="请输入"/>
+                                天后冻结该会员卡</span>
                         </Radio>
-                        <Radio label="four">
-                            <span>会员卡使用 <Input value="10" type="text" placeholder="请输入" style="width: 100px;" /> 天后冻结该会员卡</span>
+                        <Radio label="vipNumber">
+                            <span>会员卡使用
+                             <Input v-model="memberValidPeriod.vipNumber"
+                                    type="text"
+                                    class="single-input"
+                                    placeholder="请输入"/>
+                                天后冻结该会员卡</span>
                         </Radio>
                     </RadioGroup>
                 </div>
@@ -81,9 +108,12 @@
             <div class="content-item">
                 <div class="title">卡券过期提醒设置</div>
                 <div class="main">
-                    <i-switch v-model="openInteg"></i-switch>
+                    <i-switch v-model="notificationBeforeCouponExpire.isSwitch"></i-switch>
                     <span class="text">卡券过期前
-                        <Input value="2" type="text" placeholder="请输入" style="width: 100px;" /> 天短信提醒，
+                        <Input v-model="notificationBeforeCouponExpire.expireTime"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/> 天短信提醒，
                         <span class="blue-color">短信设置</span>
                     </span>
                 </div>
@@ -92,11 +122,11 @@
             <div class="content-item">
                 <div class="title">用户退款时积分是否退还用户</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="handingWithScoreGrowthWhileRefund.score" vertical>
+                        <Radio label="true">
                             <span>用户退款时积分不退</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="false">
                             <span>用户退款时积分退回用户积分账户中</span>
                         </Radio>
                     </RadioGroup>
@@ -106,32 +136,18 @@
             <div class="content-item">
                 <div class="title">用户退款时卡券是否退还用户</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="handingWithScoreGrowthWhileRefund.coupon" vertical>
+                        <Radio label="true">
                             <span>用户退款时卡券不退</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="false">
                             <span>用户退款时卡券退回用户会员卡中</span>
                         </Radio>
                     </RadioGroup>
                 </div>
             </div>
 
-            <div class="content-item">
-                <div class="title">是否允许下级单位设置积分率</div>
-                <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
-                            <span>允许</span>
-                        </Radio>
-                        <Radio label="two">
-                            <span>禁止下级设置积分率</span>
-                        </Radio>
-                    </RadioGroup>
-                </div>
-            </div>
-
-            <Form ref="formDynamic" :model="formDynamic" :label-width="20" style="width: 600px">
+            <Form ref="formDynamic" :model="formDynamic" :label-width="50" style="width: 600px">
 
                 <div class="content-item">
                     <div class="title">修改会员储值、积分、虚拟账户余额设置</div>
@@ -141,7 +157,7 @@
                                 <span>不允许修改会员的储值、积分、虚拟账户</span>
                             </Radio>
                             <Radio label="two">
-                                <span>允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因  <span class="blue-color" @click="handleAdd">+ 新增修改原因</span></span>
+                                <span>允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因  <span class="add-span blue-color" @click="handleAdd">+ 新增修改原因</span></span>
                             </Radio>
                         </RadioGroup>
 
@@ -154,9 +170,9 @@
                                 :prop="'items.' + index + '.value'"
                                 :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
                                 <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入"/>
-                                <span class="red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
+                                <span class="span-bottom red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
+                                <span class="span-bottom blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
+                                <span class="span-bottom grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
                             </FormItem>
                         </div>
 
@@ -164,21 +180,21 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">证件类型设置   <span class="blue-color" @click="handleAdd">+ 新增证件类型</span></div>
+                    <div class="title">证件类型设置   <span class="blue-color add-span" @click="handleAddIdType">+ 新增证件类型</span></div>
                     <div class="main">
 
-                        <div class="ivu-form-item-wrap">
+                        <div class="ivu-form-item-wrap short-wrap">
                             <FormItem
-                                v-for="(item, index) in formDynamic.items"
+                                v-for="(item, index) in formDynamic.idType"
                                 v-if="item.status"
                                 :key="index"
                                 label=""
                                 :prop="'items.' + index + '.value'"
                                 :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
                                 <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入"/>
-                                <span class="red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
+                                <span class="span-bottom red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
+                                <span class="span-bottom blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
+                                <span class="span-bottom grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
                             </FormItem>
                         </div>
 
@@ -208,31 +224,72 @@
         },
         data () {
             return {
-                //会员卡是否开启积分、储值功能
-                IsScoreValidRule: {
-                    isIntegral: true,//是否积分
-                    isStore: true,//是否积分
-
-                },
+                //当前页面路由名称
                 routerName: 'memberSetting',
+                //积分生效设置
+                scoreEffectiveMode: {
+                    isIntegralType: 'checkout',
+                    isNoIntegralTime: '24'
+                },
+                //会员生日积分多倍积分 --
+                scoreMultipleOnBirthday: {
+                    hasMultiple: true,
+                    isTime: '2',
+                },
+                //会员积分有效期设置 --
+                scoreValidityPeriod: {
+                    validityType: 'months_effective',
+                    validityTime: '24',
+                    checked: true,
+                    remind: '60',
+                },
+                //会员卡有效期设置
+                memberValidPeriod: {
+                    Type: 'vipValidityTime',//类型
+                    perpetual: '',//是否永久
+                    vipValidityType: '365',
+                    vipValidityTime: '365',
+                    vipNumber: '365',
+                },
+                //卡券过期提醒设置 --
+                notificationBeforeCouponExpire: {
+                    isSwitch: true,
+                    expireTime: '60',
+                },
+                //用户退款时积分是否退还用户
+                handingWithScoreGrowthWhileRefund: {
+                    score: 'false',
+                    coupon: 'false',
+                },
+
                 openInteg: true,
                 openFunds: true,
                 effect: 'one',
                 check: true,
                 index: 1,
+                idTypeIndex: 1,
                 formDynamic: {
                     items: [
                         {
-                            value: '新建的修改原因',
+                            value: '系统更新时，用户进行消费，消费信息未同步',
                             index: 1,
                             status: 1,
                             disabled: true,
-                        }
-                    ]
+                        },
+                    ],
+                    idType: [
+                        {
+                            value: '身份证',
+                            index: 1,
+                            status: 1,
+                            disabled: true,
+                        },
+                    ],
                 }
             }
         },
         created() {
+            //查询会员基础设置
             this.findBasicSet();
         },
         methods: {
@@ -262,6 +319,15 @@
             handleReset (name,index) {
                 this.$refs[name].resetFields();
                 this.formDynamic.items[index].status = 0;
+            },
+            handleAddIdType() {
+                this.idTypeIndex++;
+                this.formDynamic.idType.push({
+                    value: '',
+                    index: this.idTypeIndex,
+                    status: 1,
+                    disabled: false,
+                });
             },
             handleAdd () {
                 this.index++;
@@ -304,6 +370,18 @@
                     width: 40%;
                     text-align: center;
                     vertical-align: middle;
+
+                    .ivu-form-item{
+                        width: 520px;
+                        text-align: left;
+                    }
+
+                    &.short-wrap{
+                        min-width: 360px;
+                        .ivu-form-item{
+                            width: 360px;
+                        }
+                    }
                 }
 
                 /deep/ .ivu-form-item-content{
@@ -311,21 +389,9 @@
                 }
 
                 /deep/ .ivu-input-wrapper{
+                    margin-bottom: 0px !important;
+                    margin-right: 5px;
                     width: 80%;
-                }
-
-                .ivu-form-item{
-                    width: 480px;
-                    margin: 0 auto 20px;
-                    text-align: left;
-
-                    .ivu-input{
-                        font-size: 14px;
-                    }
-
-                    .ivu-select-item{
-                        font-size: 14px !important;
-                    }
                 }
 
                 .title{
@@ -338,22 +404,51 @@
                     div{
                         margin-bottom: 10px;
                     }
+                    &.margin-radio-group{
+                        /deep/ .ivu-radio-wrapper{
+                           margin-bottom: 10px;
+                        }
+                    }
                 }
             }
 
+            .add-span{
+                font-size: $font_size_14px;
+                margin-left: 20px;
+            }
+
             .blue-color{
+                font-size: $font_size_14px;
                 color: $color_blue;
                 cursor: pointer;
             }
             .red-color{
+                font-size: $font_size_14px;
                 color: $color_red;
                 cursor: pointer;
             }
             .grey-color{
+                font-size: $font_size_14px;
                 color: $color-3F3F3F;
                 cursor: pointer;
             }
+            .span-bottom{
+                vertical-align: bottom;
+            }
 
+        }
+
+        /deep/ .ivu-input-wrapper{
+            vertical-align: sub;
+
+            &.single-input{
+                margin: 0 10px;
+                width: 100px !important;
+            }
+        }
+
+        .check-group-wrap{
+            padding-left: 50px;
         }
 
         .btn-wrap{
@@ -363,6 +458,14 @@
             text-align: center;
             background: #FFFFFF;
             box-shadow: 0 -5px 3px 0 rgba(0,0,0,0.03);
+
+            /deep/ .ivu-btn{
+                width: 108px;
+                padding: 5px 30px;
+            }
+            .ivu-btn + .ivu-btn{
+                margin-left: 20px;
+            }
         }
 
     }

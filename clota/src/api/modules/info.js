@@ -1,6 +1,7 @@
 
 //会员信息接口
 export default {
+
     //会员信息-分页查询
     'queryMemberPage' : '/member/queryMemberPage',
     //会员信息-删除会员

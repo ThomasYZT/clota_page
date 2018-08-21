@@ -10,17 +10,26 @@
             <div class="content-item">
                 <div class="title">会员积分交易抵扣规则设置</div>
                 <div class="main">
-                    <div><i-switch v-model="openInteg"></i-switch><span class="text">允许积分交易时抵现使用</span></div>
-                    <div>
-                        <Checkbox v-model="openInteg">交易时，积分可抵扣订单金额，每</Checkbox>
-                        <Input value="2" type="text" placeholder="请输入" style="width: 100px;" />
+                    <div><i-switch v-model="scoreOffsetInConsumption.type"></i-switch><span class="text">允许积分交易时抵现使用</span></div>
+                    <div class="check-group-wrap">
+                        <Checkbox v-model="scoreOffsetInConsumption.columns.integrateToMoney">交易时，积分可抵扣订单金额，每</Checkbox>
+                        <Input v-model="scoreOffsetInConsumption.columns.integrate"
+                               type="text"
+                               placeholder="请输入"
+                               class="single-input"/>
                         <span>积分抵扣</span>
-                        <Input value="2" type="text" placeholder="请输入" style="width: 100px;" />
+                        <Input v-model="scoreOffsetInConsumption.columns.money"
+                               type="text"
+                               placeholder="请输入"
+                               class="single-input"/>
                         <span>元，抵扣比例最多是此订单的</span>
-                        <Input value="2" type="text" placeholder="请输入" style="width: 100px;" />%
+                        <Input v-model="scoreOffsetInConsumption.columns.highProportion"
+                               type="text"
+                               placeholder="请输入"
+                               class="single-input"/> %
                     </div>
-                    <div>
-                        <Checkbox v-model="openInteg">消费时可和优惠券同时使用</Checkbox>
+                    <div class="check-group-wrap">
+                        <Checkbox v-model="scoreOffsetInConsumption.meanwhile">消费时可和优惠券同时使用</Checkbox>
                     </div>
                 </div>
             </div>
@@ -28,11 +37,18 @@
             <div class="content-item">
                 <div class="title">是否允许积分兑换成为储值账户金额</div>
                 <div class="main">
-                    <div><i-switch v-model="openInteg"></i-switch><span class="text">允许积分兑换储值账户金额</span></div>
-                    <div>
+                    <div><i-switch v-model="scoreExToCharge.donateType"></i-switch><span class="text">允许积分兑换储值账户金额</span></div>
+                    <div class="check-group-wrap">
                         请设置兑换比例：
-                         <Input value="2" type="text" placeholder="请输入" style="width: 100px;" />
-                        积分<Input value="2" type="text" placeholder="请输入" style="width: 100px;" />
+                        <Input v-model="scoreExToCharge.donateIntegrate"
+                               type="text"
+                               placeholder="请输入"
+                               class="single-input"/>
+                        积分
+                        <Input v-model="scoreExToCharge.donateMoney"
+                               type="text"
+                               placeholder="请输入"
+                               class="single-input"/>
                         元
                     </div>
                 </div>
@@ -41,7 +57,7 @@
             <div class="content-item">
                 <div class="title">退款时积分退回设置</div>
                 <div class="main">
-                    <i-switch v-model="openInteg"></i-switch><span class="text">当用户退款时积分同步扣除，如账户剩余积分不足以扣除，用户系统发出提示</span>
+                    <i-switch v-model="scoreInsufficientNotification"></i-switch><span class="text">当用户退款时积分同步扣除，如账户剩余积分不足以扣除，用户系统发出提示</span>
                 </div>
             </div>
 
@@ -65,9 +81,27 @@
         },
         data () {
             return {
+                //当前页面路由名称
                 routerName: 'consumeSetting',
-                openInteg:true,
-                effect: 'one',
+                //积分交易抵扣规则
+                scoreOffsetInConsumption: {
+                    type: true,
+                    columns: {
+                        integrateToMoney: true,
+                        integrate: 100,//多少积分
+                        money: 5,//多少金额
+                        highProportion: 0.1,//最多能抵多少
+                    },
+                    meanwhile: true,
+                },
+                //是否允许积分兑换成为储值账户金额
+                scoreExToCharge: {
+                    donateType: true,
+                    donateIntegrate: '',
+                    donateMoney: '',
+                },
+                //退款时积分退回设置
+                scoreInsufficientNotification: true,
             }
         }
     }
@@ -105,12 +139,44 @@
 
         }
 
+        /deep/ .ivu-input-wrapper{
+            vertical-align: inherit;
+            &.single-input{
+                margin: 0 10px;
+                width: 100px !important;
+            }
+        }
+
+        .check-group-wrap{
+            padding-left: 50px;
+            margin-bottom: 0 !important;
+            &:nth-child(1){
+                margin-top: 10px;
+            }
+
+            /deep/ .ivu-checkbox-wrapper{
+                margin-right: 0px;
+            }
+
+            /deep/ .ivu-checkbox{
+                margin-right: 5px;
+            }
+        }
+
         .btn-wrap{
             height: 56px;
             width: 100%;
             line-height: 56px;
             text-align: center;
             background: #FFFFFF;
+
+            /deep/ .ivu-btn{
+                width: 108px;
+                padding: 5px 30px;
+            }
+            .ivu-btn + .ivu-btn{
+                margin-left: 20px;
+            }
         }
 
     }

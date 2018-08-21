@@ -2,7 +2,7 @@
     <!--新增账户-->
     <Modal
         v-model="visible"
-        title="新增账户"
+        title="新增账户级别"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"

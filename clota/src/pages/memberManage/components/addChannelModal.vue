@@ -2,7 +2,7 @@
     <!--新增渠道-->
     <Modal
         v-model="visible"
-        title="新增渠道"
+        :title="title"
         class-name="add-channel-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -10,15 +10,15 @@
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="渠道名称：" prop="name">
-                        <Input v-model="data.name" placeholder="请输入" style="width: 280px" />
+                    <Form-item label="渠道名称：" prop="channelName">
+                        <Input v-model="formData.channelName" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model="data.remark" type="textarea" placeholder="请输入" style="width: 280px" />
+                        <Input v-model="formData.remark" type="textarea" placeholder="请输入"/>
                     </Form-item>
                 </div>
             </Form>
@@ -33,17 +33,25 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+
     export default {
         components: {},
         data () {
             return {
                 visible: false,
-                data: {
-                    name: '',
+                //标题
+                title: '新增渠道',
+                //表单数据
+                formData: {
+                    channelName: '',
                     remark: '',
                 },
+                // 表单校验
                 ruleValidate: {
-                    name: [
+                    channelName: [
                         { required: true, message: '渠道名称不能为空', trigger: 'blur' },
                     ],
                     type: [
@@ -54,7 +62,12 @@
         },
         methods: {
 
-            show () {
+            //显示
+            show ( data ) {
+                if(data){
+                    this.title = '修改渠道';
+                    this.formData = defaultsDeep({}, data);
+                }
                 this.visible = true;
             },
 
@@ -63,6 +76,32 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         console.log(true)
+                        console.log(this.formData)
+                        var params = {
+                            channelName: this.formData.channelName,
+                            remark: this.formData.remark,
+                        };
+                        //区分新增/编辑
+                        if(this.title === '修改渠道'){
+                            params.id = this.formData.id;
+                            this.updateChannelSet(params);
+                        }else{
+                            this.updateChannelSet(params);
+                        }
+                    }
+                })
+            },
+
+            //增加/修改渠道
+            updateChannelSet ( params ) {
+                ajax.post('updateChannelSet', params).then(res => {
+                    if(res.success){
+                        this.$Message.success(this.title+'成功！');
+                        this.hide();
+                        this.$emit('close-modal');
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryChannelSet 删除失败！');
                     }
                 })
             },
@@ -71,6 +110,7 @@
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
+                this.formData = { channelName: '', remark: '' };
             },
 
         },
@@ -80,6 +120,20 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .add-channel-modal{
+
+        .modal-body{
+            padding: 50px 40px;
+
+            /deep/ .ivu-input-wrapper{
+                width: 280px;
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
     }
 </style>
 

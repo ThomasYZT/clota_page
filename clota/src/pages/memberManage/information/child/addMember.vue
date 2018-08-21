@@ -144,6 +144,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import { genderEnum } from '@/assets/js/constVariable';
     import pick from 'lodash/pick';
+    import defaultsDeep from 'lodash/defaultsDeep';
     import { validator } from 'klwk-ui';
     import ajax from '@/api/index'
 
@@ -271,9 +272,19 @@
             init() {
                 if (this.$route.query && this.$route.query.type) {
                     this.type = this.$route.query.type;
-                    this.info = this.$route.query.info;
-                    // 编辑页面时给表单赋值
 
+                    // 编辑页面时给表单赋值
+                    if(this.$route.query.info){
+                        this.info = this.$route.query.info;
+                        var memberInfo = pick(this.$route.query.info, ['custName', 'phoneNum','emailAddr','birthDay',
+                            'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
+                            'certificationType','idCardNumber','homeAddr','status']);
+                        var memberCard = this.$route.query.info.memberCardVos && this.$route.query.info.memberCardVos.length >0 ?
+                            pick(this.$route.query.info.memberCardVos[0], ['levelId', 'channelId','tpNo','tpCardNo']) : {
+                                levelId: '',channelId: '',tpNo: '',tpCardNo: '',
+                            };
+                        this.member = defaultsDeep(memberInfo, memberCard);
+                    }
                 }
             },
 
@@ -311,19 +322,18 @@
 
             //新增/编辑会员接口
             saveAndEditMember( url, params ){
-                console.log(url)
-                console.log(params)
                 ajax.post(url, {
                     memberInfo: JSON.stringify(params.memberInfo),
                     memberCard: JSON.stringify(params.memberCard),
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('新增会员成功！');
                         //区分新增与修改
                         if(this.type === 'add'){
+                            this.$Message.success('新增会员成功！');
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
+                            this.$Message.success('修改会员成功！');
                             this.$router.push(-1);
                         }
                     } else {

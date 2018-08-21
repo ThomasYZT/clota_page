@@ -41,7 +41,7 @@ export default {
                 children: {
                     info: {
                         //会员管理--会员信息
-                        path: '/memberManage/info/list',
+                        path: '/memberManage/info',
                         name: 'memberInfo',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/information.vue'),
                         meta: {
@@ -52,7 +52,7 @@ export default {
                     },
                     memberCount: {
                         //会员管理--会员统计
-                        path: '/memberManage/info/count',
+                        path: '/memberManage/count',
                         name: 'memberCount',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
                         meta: {
@@ -65,7 +65,7 @@ export default {
             },
             addMember: {
                 //会员管理--会员信息--新增会员
-                path: '/memberManage/info/add',
+                path: '/memberManage/add',
                 name: 'addMember',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/addMember.vue'),
                 meta: {
@@ -76,7 +76,7 @@ export default {
             },
             infoDetail: {
                 //会员管理--会员信息--会员详情
-                path: '/memberManage/info/detail',
+                path: '/memberManage/detail',
                 name: 'infoDetail',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/detail.vue'),
                 meta: {
@@ -87,7 +87,7 @@ export default {
             },
             infoCard: {
                 //会员管理--会员信息--会员卡包
-                path: '/memberManage/info/card',
+                path: '/memberManage/card',
                 name: 'infoCard',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/card.vue'),
                 meta: {
@@ -98,7 +98,7 @@ export default {
             },
             infoInteg: {
                 //会员管理--会员信息--个人积分交易明细
-                path: '/memberManage/info/integ',
+                path: '/memberManage/integ',
                 name: 'infoInteg',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/integDetail.vue'),
                 meta: {
@@ -109,7 +109,7 @@ export default {
             },
             infoFund: {
                 //会员管理--会员信息--个人资金交易明细
-                path: '/memberManage/info/fund',
+                path: '/memberManage/fund',
                 name: 'infoFund',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/fundDetail.vue'),
                 meta: {
@@ -120,7 +120,7 @@ export default {
             },
             infoRate: {
                 //会员管理--会员信息--享受积分、折扣率信息
-                path: '/memberManage/info/rate',
+                path: '/memberManage/rate',
                 name: 'infoRate',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/rate.vue'),
                 meta: {
@@ -142,7 +142,7 @@ export default {
                 children: {
                     integ: {
                         //会员管理--会员积分--积分、折扣率设置
-                        path: '/memberManage/integ/list',
+                        path: '/memberManage/integ',
                         name: 'integration',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/integration.vue'),
                         meta: {
@@ -153,7 +153,7 @@ export default {
                     },
                     specialMember: {
                         //会员管理--会员积分--特殊会员权益管理
-                        path: '/memberManage/integ/special',
+                        path: '/memberManage/special',
                         name: 'specialMember',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/specialMember.vue'),
                         meta: {
@@ -166,7 +166,7 @@ export default {
             },
             setRate: {
                 //会员管理--会员积分--设置积分、折扣率
-                path: '/memberManage/integ/setRate',
+                path: '/memberManage/setRate',
                 name: 'setRate',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
                 meta: {
@@ -177,7 +177,7 @@ export default {
             },
             setProductRate: {
                 //会员管理--会员积分--设置积分、折扣率--按类型/产品
-                path: '/memberManage/integ/proRate',
+                path: '/memberManage/proRate',
                 name: 'setProductRate',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
                 meta: {
@@ -188,7 +188,7 @@ export default {
             },
             linkSpeMember: {
                 //会员管理--会员积分--特殊会员权益管理--关联会员信息
-                path: '/memberManage/integ/link',
+                path: '/memberManage/link',
                 name: 'linkSpeMember',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/linkSpeMember.vue'),
                 meta: {
@@ -211,7 +211,7 @@ export default {
             },
             addCard: {
                 //会员管理--会员卡券--新增卡劵
-                path: '/memberManage/card/add',
+                path: '/memberManage/add',
                 name: 'addCard',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/addCard.vue'),
                 meta: {
@@ -233,7 +233,7 @@ export default {
                 children: {
                     funds: {
                         //会员管理--储值管理--储值账户
-                        path: '/memberManage/fund/list',
+                        path: '/memberManage/fund',
                         name: 'fund',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fund.vue'),
                         meta: {
@@ -244,7 +244,7 @@ export default {
                     },
                     fundDetail: {
                         //会员管理--储值管理--资金明细
-                        path: '/memberManage/fund/detail',
+                        path: '/memberManage/fundDetail',
                         name: 'fundDetail',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                         meta: {
@@ -255,7 +255,7 @@ export default {
                     },
                     financialManagement: {
                         //会员管理--储值管理--财务管理
-                        path: '/memberManage/fund/financial',
+                        path: '/memberManage/financial',
                         name: 'financialManagement',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
                         meta: {
@@ -268,7 +268,7 @@ export default {
             },
             transferRecord: {
                 //会员管理--储值管理--财务管理--转账记录
-                path: '/memberManage/fund/transfer',
+                path: '/memberManage/transfer',
                 name: 'transferRecord',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/transferRecord.vue'),
                 meta: {
@@ -290,7 +290,7 @@ export default {
             },
             memberSetting: {
                 //会员管理--基础设置
-                path: '/memberManage/setting',
+                path: '/memberManage/basic',
                 component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/index.vue'),
                 meta: {
                     menuName: 'menuList.memberSetting', //lang.config.js 里面的语言键值
@@ -301,7 +301,7 @@ export default {
                 children: {
                     basicSetting: {
                         //会员管理--基础设置
-                        path: '/memberManage/setting/basic',
+                        path: '/memberManage/basic',
                         name: 'memberSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/setting.vue'),
                         meta: {
@@ -312,7 +312,7 @@ export default {
                     },
                     channelSetting: {
                         //会员管理--渠道设置
-                        path: '/memberManage/setting/channel',
+                        path: '/memberManage/channel',
                         name: 'channelSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/channelSetting.vue'),
                         meta: {
@@ -323,7 +323,7 @@ export default {
                     },
                     levelSetting: {
                         //会员管理--会员级别
-                        path: '/memberManage/setting/level',
+                        path: '/memberManage/level',
                         name: 'levelSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/levelSetting.vue'),
                         meta: {
@@ -334,7 +334,7 @@ export default {
                     },
                     growthSetting: {
                         //会员管理--成长值设置
-                        path: '/memberManage/setting/growth',
+                        path: '/memberManage/growth',
                         name: 'growthSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/growthSetting.vue'),
                         meta: {
@@ -356,7 +356,7 @@ export default {
                     },
                     consumeSetting: {
                         //会员管理--积分消费管理
-                        path: '/memberManage/setting/consume',
+                        path: '/memberManage/consume',
                         name: 'consumeSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/consumeSetting.vue'),
                         meta: {

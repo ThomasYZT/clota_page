@@ -5,10 +5,11 @@
               v-if="parseInt(tableHeight) > 0"
               style="width: 100%"
               class="table-wrap"
+              :border="border"
               :class="{'row-click' : rowClick}"
               @row-click="classDetailLink"
               @selection-change="handleSelectionChange"
-              :height="autoHeight ? 'max-content' : tableHeight">
+              :height="tableHeight">
                 <template slot="empty">
                     <no-data>
                     </no-data>
@@ -120,16 +121,16 @@
                 type: Boolean,
                 default: false
             },
-            //不固定表格高度
-            'auto-height' : {
-                type : Boolean,
-                default : false
-            },
             //是否开启第一列选择
             'column-check' : {
                 type : Boolean,
                 default : false
-            }
+            },
+            //是否有边框
+            'border' : {
+                type : Boolean,
+                default : false
+            },
         },
         data() {
             return {}

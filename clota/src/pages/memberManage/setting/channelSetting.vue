@@ -8,122 +8,145 @@
         <div class="content">
 
             <div class="btn-wrap">
-                <Button type="primary" @click="showChannelModal">+ 新增渠道</Button>
+                <Button type="primary" @click="showChannelModal($event)">+ 新增渠道</Button>
             </div>
             <div class="table-wrap">
-                <el-table
-                    :data="tableData"
-                    :border="true"
-                    max-height="450"
-                    style="width: 100%">
+                <table-com
+                    ref="multipleTable"
+                    :table-data="tableData"
+                    :table-height="tableHeight"
+                    :column-data="channelListHead"
+                    :border="true">
                     <el-table-column
-                        prop="id"
-                        label="编码">
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="渠道名称">
-                    </el-table-column>
-                    <el-table-column
-                        prop="mobile"
-                        label="备注">
-                    </el-table-column>
-                    <el-table-column
-                        prop="date"
-                        label="操作">
-                        <template slot-scope="scope">
+                        slot="column3"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        fixed="right"
+                        slot-scope="row">
+                        <template slot-scope="scoped">
                             <div class="operation">
-                                <span class="span-blue" @click="showChannelModal(scope)">修改</span>
-                                <span @click="deleteChannel(scope)">删除</span>
+                                <span class="span-blue" @click="showChannelModal($event,scoped.row)">修改</span>
+                                <span @click="deleteChannel($event,scoped.row)">删除</span>
                             </div>
                         </template>
                     </el-table-column>
-                </el-table>
+                </table-com>
             </div>
-            <div class="page-wrap" v-if="tableData.length > 0">
+
+            <!--<div class="page-wrap" v-if="tableData.length > 0">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="parseInt(queryParams.pageNo)"
+                    :current-page="pageNo"
                     :page-sizes="[10, 20, 50, 100]"
-                    :page-size="parseInt(queryParams.pageSize)"
+                    :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="parseInt(total)">
                 </el-pagination>
-            </div>
+            </div>-->
 
         </div>
 
         <!--新增渠道modal-->
-        <add-channel-modal ref="addChannel"></add-channel-modal>
+        <add-channel-modal ref="addChannel" @close-modal="queryList"></add-channel-modal>
 
     </div>
 </template>
 
 <script>
 
-    import headerTabs from './components/headerTabs.vue'
-    import addChannelModal  from '../components/addChannelModal.vue'
+    import ajax from '@/api/index'
+    import tableCom from '@/pages/memberManage/components/tableCom';
+    import tableMixins from '@/mixins/tableMixins';
+    import {channelListHead} from './channelConfig';
+    import headerTabs from './components/headerTabs.vue';
+    import addChannelModal  from '../components/addChannelModal.vue';
 
     export default {
+        mixins : [tableMixins],
         components: {
             headerTabs,
             addChannelModal,
+            tableCom,
         },
         data () {
             return {
+                //当前页面路由名称
                 routerName: 'channelSetting',
-                // 查询数据
-                queryParams: {
-                    pageNo: '1',
-                    pageSize: '10',
-                },
+                //列表表头
+                channelListHead : channelListHead,
                 // 表格数据
-                tableData: [
-                    {
-                        disabled: 'false',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: '1999',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                    },
-                    {
-                        disabled: 'true',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: '1999',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                    }
-                ],
-                total: 50,
+                tableData: [],
+                total: 0,
             }
+        },
+        created(){
+            //查询列表
+            this.queryList();
         },
         methods: {
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+            //查询列表(查询表格取统一的方法名)
+            queryList () {
+                var list = [
+                    {
+                        channelName: "饿了吗2",
+                        companyId: 1,
+                        createUser: 123,
+                        createdTime: "2018-08-15 11:20:17",
+                        id: 1,
+                        isDeleted: "false",
+                        remark: "222",
+                        status: "1",
+                        updateUser: 456,
+                        updatedTime: "2018-08-20 16:56:19",
+                    },
+                ];
+                this.tableData = list;
+                this.total = 1;
+                this.setTableHeight();
+                ajax.post('queryChannelSet', {
+                    companyId: '',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data || [];
+                        this.total = res.data.totalRow || 0;
+                        this.setTableHeight();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                })
             },
 
-            showChannelModal ( data ) {
+            //增加/修改渠道
+            showChannelModal ( event, data ) {
                 console.log(data)
-                this.$refs.addChannel.show();
+                this.$refs.addChannel.show(data);
             },
 
-            deleteChannel ( data ) {
+            //删除数据
+            deleteChannel ( event, data ) {
                 console.log(data)
+                ajax.post('queryChannelSet', {
+                    companyId: '',
+                    id: data.id,
+                    isDeleted: 'true',
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除成功！');
+                        //查询列表
+                        this.queryList();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryChannelSet 删除失败！');
+                    }
+                })
             },
 
         }
@@ -150,7 +173,7 @@
             }
 
             .table-wrap{
-
+                max-height: calc(100% - 70px);
             }
 
             .page-wrap{

@@ -2,13 +2,8 @@
 
 export const infoListHead = [
     {
-        title: '多选',
-        minWidth: 55,
-        field: 'select'
-    },
-    {
         title: '会员编码',
-        minWidth: 150,
+        minWidth: 200,
         field: 'cardCode'
     },
     {

@@ -10,11 +10,11 @@
             <div class="content-item">
                 <div class="title">储值密码设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="passwdForRechargeAccount" vertical>
+                        <Radio label="false">
                             <span>消费时无需要密码验证，提供个人信息等</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="true">
                             <span>消费时需要密码验证</span>
                             <span class="yellow-color">（刷二维码即可或其他短信发送随机密码）</span>
                         </Radio>
@@ -22,25 +22,36 @@
                 </div>
             </div>
 
-
             <div class="content-item">
                 <div class="title">储值积分、成长值比例设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="scoreGrowthFromCharging.storedAndGrowthType" vertical>
+                        <Radio label="true">
                             <span>储值时不获得积分、成长值，消费时获取</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="false">
                             <span>储值时获得积分、成长值，消费时不重复获得积分、成长值</span>
                         </Radio>
                     </RadioGroup>
-                    <div>储值
-                        <Input value="60" type="text" placeholder="请输入" style="width: 100px;"/> 元获取
-                        <Input value="60" type="text" placeholder="请输入" style="width: 100px;"/>积分
+                    <div class="check-group-wrap">储值
+                        <Input v-model.trim="scoreGrowthFromCharging.moneyToIntegrate"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/> 元获取
+                        <Input v-model="scoreGrowthFromCharging.integrate"
+                                type="text"
+                                class="single-input"
+                                placeholder="请输入"/>积分
                     </div>
-                    <div>储值
-                         <Input value="60" type="text" placeholder="请输入" style="width: 100px;"/> 元获取
-                         <Input value="60" type="text" placeholder="请输入" style="width: 100px;"/>成长值
+                    <div class="check-group-wrap">储值
+                        <Input v-model="scoreGrowthFromCharging.moneyToGgowth"
+                            type="text"
+                            class="single-input"
+                            placeholder="请输入"/> 元获取
+                        <Input v-model="scoreGrowthFromCharging.growth"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/>成长值
                     </div>
                 </div>
             </div>
@@ -48,38 +59,50 @@
             <div class="content-item">
                 <div class="title">储值获得积分、成长值生效设置</div>
                 <div class="main">
-                    <RadioGroup v-model="effect" vertical>
-                        <Radio label="one">
+                    <RadioGroup v-model="scoreGrowthEffModeWhileCharging.storedType" vertical>
+                        <Radio label="immediately">
                             <span>值成功后立即生效</span>
                         </Radio>
-                        <Radio label="two">
+                        <Radio label="checkout_after">
                             <span>储值成功后</span>
-                            <Input value="60" type="text" placeholder="请输入" style="width: 100px;" />
+                            <Input v-model.trim="scoreGrowthEffModeWhileCharging.storedTime"
+                                   type="text"
+                                   class="single-input"
+                                   placeholder="请输入"/>
                             <span>个小时后失效</span>
                         </Radio>
                     </RadioGroup>
                 </div>
             </div>
 
-            <Form ref="formDynamic" :model="formDynamic" :label-width="20" style="width: 600px">
+            <Form ref="formDynamic" :model="formDynamic" :label-width="20">
 
                 <div class="content-item">
-                    <div class="title">储值赠送金额比例设置 <span class="blue-color" @click="handleAdd">+ 新增</span></div>
+                    <div class="title">储值赠送金额比例设置 <span class="add-span blue-color" @click="handleAddDonateWhileRecharge">+ 新增</span></div>
                     <div class="main">
                         <div class="ivu-form-item-wrap">
                             <FormItem
-                                v-for="(item, index) in formDynamic.items"
+                                v-for="(item, index) in donateWhileRecharge"
                                 v-if="item.status"
                                 :key="index"
                                 label=""
                                 :prop="'items.' + index + '.value'"
                                 :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
                                 储值：
-                                <Input type="text" v-model="item.value" placeholder="请输入" style="width: 100px;"/> —
-                                <Input type="text" v-model="item.value" placeholder="请输入" style="width: 100px;"/> 赠送
-                                <Input type="text" v-model="item.value" placeholder="请输入" style="width: 100px;"/> 元
-                                <span class="red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">应用范围</span>
+                                <Input type="text"
+                                       v-model="item.lowerValue"
+                                       placeholder="请输入"
+                                       class="single-input"/> —
+                                <Input type="text"
+                                       v-model="item.topValue"
+                                       placeholder="请输入"
+                                       class="single-input"/> 赠送
+                                <Input type="text"
+                                       v-model="item.gift"
+                                       placeholder="请输入"
+                                       class="single-input"/> 元
+                                <span class="add-span red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
+                                <span class="add-span blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">应用范围</span>
                             </FormItem>
                         </div>
                     </div>
@@ -88,13 +111,15 @@
                 <div class="content-item">
                     <div class="title">转账手续费扣除比例设置</div>
                     <div class="main">
-                        <Input value="60" type="text" placeholder="请输入" style="width: 100px;" />%
+                        <Input v-model.trim="commissionOfTransfermation"
+                            type="text"
+                            class="single-input"
+                            placeholder="请输入"/>%
                     </div>
                 </div>
 
-
                 <div class="content-item">
-                    <div class="title">收款方式设置   <span class="blue-color" @click="handleAdd">+ 新增收款方式</span></div>
+                    <div class="title">收款方式设置   <span class="add-span blue-color" @click="handleAdd">+ 新增收款方式</span></div>
                     <div class="main">
                         <div class="ivu-form-item-wrap">
                             <FormItem
@@ -114,7 +139,7 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">储值账户设置   <span class="blue-color" @click="showAddAccountModal">+ 新增账户</span></div>
+                    <div class="title">储值账户设置   <span class="add-span blue-color" @click="showAddAccountModal">+ 新增账户</span></div>
                     <div class="main">
                         <div class="table-wrap">
                             <el-table
@@ -188,11 +213,43 @@
         },
         data () {
             return {
+                //当前页面路由名称
                 routerName: 'fundSetting',
-                openInteg: true,
-                openFunds: true,
-                effect: 'one',
-                check: true,
+                //储值密码设置
+                passwdForRechargeAccount: 'true',
+                //储值积分、成长值比例设置
+                scoreGrowthFromCharging: {
+                    storedAndGrowthType: 'true',
+                    moneyToIntegrate: '1',//储值额-积分
+                    integrate: '1',//积分
+                    moneyToGgowth: '1',//储值额-成长值
+                    growth: '1',//成长值
+                },
+                //储值获得积分、成长值生效设置
+                scoreGrowthEffModeWhileCharging: {
+                    storedType: 'immediately',
+                    storedTime: '24',
+                },
+                //转账扣除手续费比例
+                commissionOfTransfermation: '2',
+                //储值赠送金额比例设置
+                donateIndex: 1,
+                donateWhileRecharge: [
+                    {
+                        lowerValue: 100,
+                        topValue: 199,
+                        gift: 5,
+                        scope: '可用账号id',
+                        index: 1,
+                        status: 1,
+                        disabled: true,
+                    },
+                ],
+                //收款方式设置
+
+                //储值账户设置
+
+
                 index: 1,
                 // 表单数据
                 formDynamic: {
@@ -230,6 +287,19 @@
             handleReset (name,index) {
                 this.$refs[name].resetFields();
                 this.formDynamic.items[index].status = 0;
+            },
+            //储值赠送金额比例设置
+            handleAddDonateWhileRecharge () {
+                this.donateIndex++;
+                this.donateWhileRecharge.push({
+                    lowerValue: 0,
+                    topValue: 0,
+                    gift: 0,
+                    scope: '0',
+                    index: this.donateIndex,
+                    status: 1,
+                    disabled: false,
+                });
             },
             handleAdd () {
                 this.index++;
@@ -280,7 +350,7 @@
                 /deep/ .ivu-form-item-wrap{
                     position: relative;
                     display: inline-block;
-                    min-width: 495px;
+                    min-width: 650px;
                     padding-right: 55px;
                     width: 40%;
                     text-align: center;
@@ -296,17 +366,8 @@
                 }
 
                 .ivu-form-item{
-                    width: 480px;
-                    margin: 0 auto 20px;
+                    width: 650px;
                     text-align: left;
-
-                    .ivu-input{
-                        font-size: 14px;
-                    }
-
-                    .ivu-select-item{
-                        font-size: 14px !important;
-                    }
                 }
 
                 .title{
@@ -322,9 +383,15 @@
                 }
             }
 
+            .add-span{
+                margin-left: 10px;
+            }
             .blue-color{
                 color: $color_blue;
                 cursor: pointer;
+            }
+            .yellow-color{
+                color: $color_yellow;
             }
             .red-color{
                 color: $color_red;
@@ -337,6 +404,19 @@
 
         }
 
+        /deep/ .ivu-input-wrapper{
+            /*vertical-align: sub;*/
+
+            &.single-input{
+                margin: 0 10px;
+                width: 100px !important;
+            }
+        }
+
+        .check-group-wrap{
+            padding-left: 50px;
+        }
+
         .btn-wrap{
             height: 56px;
             width: 100%;
@@ -344,6 +424,14 @@
             text-align: center;
             background: #FFFFFF;
             box-shadow: 0 -5px 3px 0 rgba(0,0,0,0.03);
+
+            /deep/ .ivu-btn{
+                width: 108px;
+                padding: 5px 30px;
+            }
+            .ivu-btn + .ivu-btn{
+                margin-left: 20px;
+            }
         }
 
     }
