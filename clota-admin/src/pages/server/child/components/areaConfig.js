@@ -9,7 +9,7 @@ const areaConfig = {
         type: 'value'
     },
     grid: {
-        left: 20,
+        left: 30,
         right: 20,
         bottom: 0,
         top : 40,

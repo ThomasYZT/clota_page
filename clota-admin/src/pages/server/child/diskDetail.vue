@@ -11,18 +11,18 @@
                 <DatePicker type="daterange"
                             placement="bottom-end"
                             style="width: 280px"
-                            v-model="logDate" 
+                            v-model="logDate"
                             @on-change="queryMoreDiskSpaceDate">
                 </DatePicker>
             </div>
             <!-- 磁盘空间面积图 -->
-            <area-com y-yxis-name="磁盘已用空间"  
-                      :disk-info="diskInfo"
-                      v-if="diskInfo.length > 0"
+            <area-com y-yxis-name="磁盘已用空间"
+                      :series-data="diskInfo.data"
+                      :legend-data="diskInfo.legend"
                       key="disk">
             </area-com>
         </div>
-        <no-data v-if="diskInfo.length < 1">
+        <no-data v-if="diskInfo.data.length < 1">
         </no-data>
     </div>
 
@@ -63,7 +63,10 @@
                 //服务器名称
                 serverName : '',
                 //磁盘数据
-                diskInfo : []
+                diskInfo : {
+                    data : [],
+                    legend : []
+                }
             }
         },
         methods: {
@@ -80,15 +83,26 @@
                 }).then(res => {
                     if(res.status === 200){
                         if(res.data.list && res.data.list.length > 0){
-                            this.diskInfo = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
+                            let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
+                            this.diskInfo.data = legendData.map(item => item.totalSpace - item.freeSpace);
+                            this.diskInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
                         }else{
-                            this.diskInfo = [];
+                            this.diskInfo = {
+                                data : [],
+                                legend : []
+                            };
                         }
                     }else{
-                        this.diskInfo = [];
+                        this.diskInfo = {
+                            data : [],
+                            legend : []
+                        };
                     }
                 }).catch(err => {
-                    this.diskInfo = [];
+                    this.diskInfo = {
+                        data : [],
+                        legend : []
+                    };
                 });
             },
             /**

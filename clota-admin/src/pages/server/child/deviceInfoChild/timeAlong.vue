@@ -39,12 +39,20 @@
                 </template>
             </div>
             <div class="chart-circle">
-                <no-data v-if="logSize === '-'"></no-data>
+                <no-data v-if="logInfo.data.length < 1"></no-data>
                 <template v-else>
-                    <div class="title-analysis">
-                        <span class="log-name">{{logSize}}</span>
+                    <!--<div class="title-analysis">-->
+                        <!--<span class="log-name">{{logSize}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="chart-name">{{$t('logFile',{msg : ''})}}</div>-->
+                    <div class="area-map">
+                        <!-- 日志文件面积图 -->
+                        <area-com :y-yxis-name="$t('fileSize')"
+                                  :series-data="logInfo.data"
+                                  :legend-data="logInfo.legend"
+                                  key="disk">
+                        </area-com>
                     </div>
-                    <div class="chart-name">{{$t('logFile',{msg : ''})}}</div>
                     <div class="detail" @click="toLogDetail">
                         {{$t('look')}}
                         <span class="iconfont icon-pull-down"></span>
@@ -57,6 +65,7 @@
 
 <script>
     import annlar from './annular';
+    import areaCom from '../components/area';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
 
@@ -75,7 +84,8 @@
         },
         components: {
             annlar,
-            noData
+            noData,
+            areaCom
         },
         data() {
             return {
@@ -83,8 +93,11 @@
                 activeTap: 'today',
                 //磁盘空间使用百分比
                 diskUsePer : '-',
-                //日志文件的大小
-                logSize : '-'
+                //日志信息
+                logInfo : {
+                    data : [],
+                    legend : []
+                }
             }
         },
         methods: {
@@ -101,7 +114,11 @@
              */
             toLogDetail () {
                 this.$router.push({
-                    name : 'logDetail'
+                    name : 'logDetail',
+                       params : {
+                        ip : this.serverIp,
+                        serverName : this.serverName
+                    }
                 });
             },
             /**
@@ -185,20 +202,31 @@
                     ip : this.serverIp,
                     // startTime : date.startTime,
                     // endTime : date.endTime,
-                    pageSize : 10,
+                    pageSize : 7,
                     page : 1
                 }).then(res => {
                     if(res.status === 200){
                         if(res.data.list && res.data.list.length > 0){
-                            this.logSize = res.data.list[0]['logSize'];
+                            let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
+                            this.logInfo.data = legendData.map(item => item.logSize);
+                            this.logInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
                         }else{
-                            this.logSize = '-';
+                            this.logInfo = {
+                                data : [],
+                                legend : []
+                            };
                         }
                     }else{
-                        this.logSize = '-';
+                        this.logInfo = {
+                            data : [],
+                            legend : []
+                        };
                     }
                 }).catch(err => {
-                        this.logSize = '-';
+                    this.logInfo = {
+                        data : [],
+                        legend : []
+                    };
                 });
             }
         },
@@ -268,6 +296,14 @@
                         color: $color_353B5E;
                         text-align: center;
                         padding-top: 80px;
+                    }
+                }
+
+                .area-map{
+                    @include block_outline($height : 230px);
+
+                    .echarts{
+                        @include block_outline();
                     }
                 }
             }

@@ -267,5 +267,6 @@ export default {
     deviceName : '设备名称',
     diskSpaceInfo : '磁盘空间',
     fieldExist : '{field}已存在',
-    checkFail : '{filed}校验失败'
+    checkFail : '{filed}校验失败',
+    fileSize : '文件大小',
 }

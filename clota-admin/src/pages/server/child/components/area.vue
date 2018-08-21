@@ -27,8 +27,15 @@
                 type : String,
                 default : ''
             },
-             //磁盘信息
-            'disk-info' : {
+            //数据
+            'series-data' : {
+                type : Array,
+                default () {
+                    return []
+                }
+            },
+            //图标和数据
+            'legend-data' : {
                 type : Array,
                 default () {
                     return []
@@ -40,14 +47,14 @@
             //面积图配置
             areaOptions() {
                 if(this.timer){
-                    console.log('time')
                     clearTimeout(this.timer);
                 }
                 this.timer = setTimeout(() => {
                     this.$refs.area.refresh();
                     clearTimeout(this.timer);
                 },300);
-                return getPieConfig( this.diskInfo.map(item => new Date(item.ctime).format('MM.dd')),this.diskInfo.map(item => item.totalSpace - item.freeSpace),this.yYxisName);
+                // return getPieConfig( this.diskInfo.map(item => new Date(item.ctime).format('MM.dd')),this.diskInfo.map(item => item.totalSpace - item.freeSpace),this.yYxisName);
+                return getPieConfig( this.legendData,this.seriesData,this.yYxisName);
             }
         }
     }
