@@ -12,34 +12,41 @@
             </div>
             <div class="de-li">
                 <ul class="detail-list">
+                    <!-- 设备名称 -->
                     <li class="arg-list">
                         <span class="key">{{$t('deviceName')}}：</span>
                         <span class="val">{{serverDetail.serverName}}</span>
                     </li>
+                    <!-- 系统 -->
                     <li class="arg-list">
                         <span class="key">{{$t('system')}}：</span>
                         <span class="val">{{serverDetail.opSystme}}</span>
                     </li>
+                    <!-- 系统描述 -->
                     <li class="arg-list">
                         <span class="key">{{$t('systemDesc')}}：</span>
                         <span class="val">{{serverDetail.description}}</span>
                     </li>
                 </ul>
                 <ul class="detail-list">
+                    <!-- ip地址 -->
                     <li class="arg-list">
                         <span class="key">{{$t('ipAddress')}}：</span>
                         <span class="val">{{serverDetail.ip}}</span>
                     </li>
+                    <!-- 系统类型 -->
                     <li class="arg-list">
                         <span class="key">{{$t('systemType')}}：</span>
                         <span class="val">{{$t('bit',{length : serverDetail.systmeBit})}}</span>
                     </li>
                 </ul>
                 <ul class="detail-list">
+                    <!-- 应用服务 -->
                     <li class="arg-list">
                         <span class="key">{{$t('usingService')}}：</span>
                         <span class="val">{{serverDetail.serviceName}}</span>
                     </li>
+                    <!-- 监听评率 -->
                     <li class="arg-list">
                         <span class="key">{{$t('listenRate')}}：</span>
                         <span class="val">{{serverDetail.monitoringFrequencc}}{{$t('minute')}}</span>
@@ -55,7 +62,9 @@
                     </span>
                 </div>
                 <ul class="alarm">
-                    <li class="detail" v-for="item in warnInfoList">
+                    <li class="detail" 
+                        v-for="(item,i) in warnInfoList" 
+                        :key="i">
                         <div class="alarm-name">
                             <span class="iconfont"
                                   :class="{'icon-warn' : item.warningLevel === '2',
@@ -69,7 +78,9 @@
             </div>
 
             <!--设备在不同时间段的情况-->
-            <time-along>
+            <time-along :server-ip="serverIp" 
+                        :server-name="serverDetail.serverName" 
+                        v-if='serverIp'>
             </time-along>
         </div>
     </div>
@@ -185,7 +196,7 @@
             margin-top: 20px;
             background: $color_fff;
             @include padding_place();
-            padding: 26px 60px;
+            padding: 26px 60px 0 60px;
             overflow: auto;
 
             .device-name {

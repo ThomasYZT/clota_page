@@ -32,6 +32,20 @@ export default {
     },
 
     /**
+     * 退出登录（只是清空登录数据，并不请求退出登录接口）
+     */
+    logOutClearData () {
+        localStorage.removeItem('token');
+        router.push({
+            name : 'login'
+        },() => {
+            store.commit('updatePermissionInfo',null);
+            store.commit('updateUserInfo',{});
+            store.commit('updateRouteInfo',null);
+        });
+    },
+
+    /**
      * 获取用户信息
      */
     getUserInfo() {

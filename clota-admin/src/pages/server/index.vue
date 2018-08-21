@@ -30,10 +30,6 @@
                 @current-change="pageNoChange">
             </el-pagination>
         </div>
-        <!--无数据-->
-        <no-data class="no-data"
-                 v-if="totalCount < 1">
-        </no-data>
         <!--加载中-->
         <loading :visible="isLoading">
         </loading>
@@ -42,7 +38,6 @@
 
 <script>
     import tableCom from '../index/child/tableCom';
-    import noData from '@/components/noDataTip/noData-tip.vue';
     import loading from '@/components/loading/loading.vue';
     import tableMixins from '../lessee/tableMixins';
     import {columns} from './serverConfig';
@@ -52,7 +47,6 @@
         mixins: [tableMixins],
         components: {
             tableCom,
-            noData,
             loading
         },
         data() {

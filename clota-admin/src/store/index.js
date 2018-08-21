@@ -97,6 +97,15 @@ export default new Vuex.Store({
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
+            ajax.get('getPrivileges').then(res => {
+                if(res.status === 200){
+                    
+                }else{
+
+                }
+            }).catch(err => {
+                this.$Message.error(this.$t('interfaceError'));
+            });
             return new Promise((resolve, reject) => {
                 let data = {
                     'index': 'allow',

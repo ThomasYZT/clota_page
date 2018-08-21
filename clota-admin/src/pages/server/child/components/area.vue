@@ -1,7 +1,8 @@
-<!---->
+<!--磁盘使用情况面积图-->
 
 <template>
     <vue-echarts
+        ref="area"
         :options="areaOptions"
         auto-resize>
     </vue-echarts>
@@ -15,20 +16,38 @@
             vueEcharts
         },
         data() {
-            return {}
+            return {
+                //重置面积图定时器
+                timer : ''
+            }
         },
         props : {
             //y轴名称
             'y-yxis-name' : {
                 type : String,
                 default : ''
+            },
+             //磁盘信息
+            'disk-info' : {
+                type : Array,
+                default () {
+                    return []
+                }
             }
         },
         methods: {},
         computed: {
             //面积图配置
             areaOptions() {
-                return getPieConfig(['2.4', '5.6','7.9'], [22,12,40],this.yYxisName);
+                if(this.timer){
+                    console.log('time')
+                    clearTimeout(this.timer);
+                }
+                this.timer = setTimeout(() => {
+                    this.$refs.area.refresh();
+                    clearTimeout(this.timer);
+                },300);
+                return getPieConfig( this.diskInfo.map(item => new Date(item.ctime).format('MM.dd')),this.diskInfo.map(item => item.totalSpace - item.freeSpace),this.yYxisName);
             }
         }
     }

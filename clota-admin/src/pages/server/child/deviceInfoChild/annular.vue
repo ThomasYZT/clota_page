@@ -2,7 +2,10 @@
 
 <template>
     <div class="circle-chart">
+        <no-data v-if='rate === "-"'>
+        </no-data>
         <vue-echarts
+            v-else
             ref="echarts"
             :options="options"
             auto-resize>
@@ -12,15 +15,17 @@
 
 <script>
     import vueEcharts from '@/components/vueEcharts/ECharts.vue';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components: {
-            vueEcharts
+            vueEcharts,
+            noData
         },
         props: {
             //率
             'rate': {
-                type: Number,
+                type: [Number,String],
                 default: 0
             }
         },
@@ -89,6 +94,7 @@
     @import '~@/assets/scss/base';
 
     .circle-chart {
+        position: relative;
         float: left;
         @include block_outline($height: 195px);
 

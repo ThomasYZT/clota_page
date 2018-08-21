@@ -3,7 +3,7 @@
 <template>
     <div class="disk-detail">
         <bread-crumb-head
-            :locale-router="$t('diskSpace',{msg : 'server-01'})"
+            :locale-router="$t('diskSpace',{msg : serverName})"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
@@ -11,12 +11,19 @@
                 <DatePicker type="daterange"
                             placement="bottom-end"
                             style="width: 280px"
-                            v-model="logDate">
+                            v-model="logDate" 
+                            @on-change="queryMoreDiskSpaceDate">
                 </DatePicker>
             </div>
-            <area-com y-yxis-name="磁盘已用空间"  key="disk">
+            <!-- 磁盘空间面积图 -->
+            <area-com y-yxis-name="磁盘已用空间"  
+                      :disk-info="diskInfo"
+                      v-if="diskInfo.length > 0"
+                      key="disk">
             </area-com>
         </div>
+        <no-data v-if="diskInfo.length < 1">
+        </no-data>
     </div>
 
 </template>
@@ -24,10 +31,13 @@
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import areaCom from './components/area';
+    import ajax from '@/api/index.js';
+    import noData from '@/components/noDataTip/noData-tip.vue';
     export default {
         components : {
             areaCom,
-            breadCrumbHead
+            breadCrumbHead,
+            noData
         },
         data() {
             return {
@@ -46,10 +56,58 @@
                         }
                     }
                 ],
-                logDate : [new Date(),new Date()]
+                //查询日期
+                logDate : [],
+                //服务器ip
+                serverIp : '',
+                //服务器名称
+                serverName : '',
+                //磁盘数据
+                diskInfo : []
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 查询磁盘空间信息
+             */
+            queryMoreDiskSpaceDate () {
+                ajax.post('queryMoreDiskSpaceDate',{
+                    ip : this.serverIp,
+                    startTime : this.logDate[0].format('yyyy-MM-dd'),
+                    endTime : this.logDate[1].format('yyyy-MM-dd'),
+                    pageSize : 99999,
+                    page : 1
+                }).then(res => {
+                    if(res.status === 200){
+                        if(res.data.list && res.data.list.length > 0){
+                            this.diskInfo = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
+                        }else{
+                            this.diskInfo = [];
+                        }
+                    }else{
+                        this.diskInfo = [];
+                    }
+                }).catch(err => {
+                    this.diskInfo = [];
+                });
+            },
+            /**
+             * 获取路由数据
+             */
+            getParams(params) {
+                if(params.ip){
+                    this.serverIp = params.ip;
+                    this.logDate = [params.startTime,params.endTime];
+                    this.serverName = params.serverName;
+                    this.queryMoreDiskSpaceDate();
+                }
+            }
+        },
+        beforeRouteEnter(to,from,next) {
+            next(vm => {
+                vm.getParams(to.params);
+            });
+        }
     }
 </script>
 
@@ -88,6 +146,11 @@
             /deep/ .echarts{
                 @include block_outline(100%,400px);
             }
+        }
+
+        /deep/ .component-noData-tip{
+            @include block_outline(120px,120px);
+            margin: auto;
         }
     }
 </style>

@@ -3,8 +3,7 @@ import defaultsDeep from 'lodash/defaultsDeep';
 const areaConfig = {
     xAxis: {
         type: 'category',
-        boundaryGap: false,
-        data: []
+        boundaryGap: false
     },
     yAxis: {
         type: 'value'
@@ -26,7 +25,6 @@ const areaConfig = {
         extraCssText:  'background : #ffffff;border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10);color:rgb(51, 51, 51);'
     },
     series: [{
-        data: [],
         type: 'line',
         areaStyle: {
             color :'#dbeefc'
@@ -37,8 +35,7 @@ const areaConfig = {
 };
 
 export default function (xAxisData, seriesData,yAxisName) {
-    console.log(yAxisName)
-    return defaultsDeep(areaConfig, {
+    let areaData =  defaultsDeep({
         xAxis: {
             data: xAxisData
         },
@@ -50,5 +47,6 @@ export default function (xAxisData, seriesData,yAxisName) {
         yAxis : {
             name : yAxisName
         }
-    });
+    },areaConfig);
+    return areaData;
 }

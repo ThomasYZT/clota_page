@@ -6,6 +6,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 import config from '../config/index.js'
 import common from '../assets/js/common';
+import Vue from 'vue';
 
 let baseUrl = '';
 let cancelTokenCollection = {};
@@ -30,8 +31,9 @@ const instance = axios.create({
 
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
-    if (response.data.message === '请先登录!') {
-        common.loginOut();
+    if (response.data.message === 'Not Login!') {
+        Vue.$Message.error('登录超时，请重新登录');
+        common.logOutClearData();
     }
     return response;
 }, function (error) {

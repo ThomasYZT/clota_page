@@ -11,4 +11,8 @@ export default {
     'queryServerByIp' : 'servers/queryServerByIp.json',
     //校验服务器名称是否重复
     'queryServerByServerName' : 'servers/queryServerByServerName.json',
+    //查询磁盘空间信息
+    'queryMoreDiskSpaceDate' : 'servers/queryMoreDiskSpaceDate.json',
+    //查询日志文件信息
+    'queryLog' : 'servers/queryLog.json',
 }
