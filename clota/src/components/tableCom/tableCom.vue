@@ -4,7 +4,7 @@
     <div class="table-com">
         <el-table :data="tableData"
                   style="width: 100%"
-                  :max-height="tableMaxHeight"
+                  :border="border"
                   @row-click="classDetailLink">
             <el-table-column
                 v-if="columnCheck"
@@ -52,7 +52,7 @@
                 </slot>
             </template>
         </el-table>
-        <div class="pagination" v-if="showPagination">
+        <div class="pagination" v-if="showPagination && tableData.length > 0">
             <el-pagination
                 :page-sizes="pageSizeConfig"
                 :page-size="pageSize"
@@ -62,14 +62,21 @@
                 @current-change="handleCurrentChange">
             </el-pagination>
         </div>
+        <!--无数据组件-->
+        <no-data v-if="tableData.length < 1">
+        </no-data>
     </div>
 </template>
 
 <script>
     import {configVariable} from '@/assets/js/constVariable.js';
     import tableMixins from '@/mixins/tableMixins.js';
+    import noData from '@/components/noDataTip/noData-tip.vue';
     export default {
         mixins : [tableMixins],
+        components : {
+            noData
+        },
         props: {
             //表格数据
             'table-data': {
@@ -78,6 +85,7 @@
                     return [];
                 }
             },
+            //表头配置
             'column-data': {
                 type: [Object, Array],
                 default() {
@@ -108,6 +116,11 @@
             'total-count' : {
                 type : Number,
                 default : 0
+            },
+            //表格距离顶部距离
+            'ofset-height' : {
+                type : Number,
+                default : 0
             }
         },
         data() {
@@ -115,7 +128,7 @@
                 //分页配置
                 pageConfig : configVariable,
                 //表格最大高度
-                tableMaxHeight : '0',
+                tableMaxHeight : '100%',
             }
         },
         methods: {
@@ -125,8 +138,30 @@
              */
             classDetailLink(data) {
                 this.$emit('row-click', data);
+            },
+            /**
+             * 设置表头的最大高度
+             */
+            setTableMaxHeight () {
+                let rootEl = this.$root.$el;
+                if(rootEl){
+                    this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight;
+                }
+            },
+            /**
+             * 触发查询数据的方法
+             */
+            queryList () {
+                this.$emit('query-data',{
+                    pageNo : this.pageNo,
+                    pageSize : this.showPagination ? this.pageSize : this.maxPageSize
+                });
             }
+        },
+        created () {
+            this.queryList();
         }
+
     }
 </script>
 
@@ -134,6 +169,9 @@
     @import '~@/assets/scss/base';
 
     .table-com {
+        position: relative;
+        width: 100%;
+        min-height: 100%;
 
         /deep/ .el-table th:first-child .cell,
         /deep/ .el-table td:first-child .cell {
@@ -142,6 +180,11 @@
 
         .table-bar {
             margin-top: 16px;
+        }
+
+        .pagination {
+            margin: 30px auto;
+            text-align: center;
         }
     }
 </style>

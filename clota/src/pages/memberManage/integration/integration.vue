@@ -2,109 +2,118 @@
     <!--会员管理--会员积分--积分、折扣率设置-->
     <div class="member-integration">
 
-        <div class="table-wrap">
-            <el-table
-                :data="tableData"
-                :border="true"
-                max-height="450"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    prop="level"
-                    label="会员级别"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    prop="integRate"
-                    label="积分率"
-                    width="200">
-                </el-table-column>
-                <el-table-column
-                    prop="discountRate"
-                    label="折扣率"
-                    width="200">
-                </el-table-column>
-                <el-table-column
-                    prop=""
-                    label="操作">
-                    <template slot-scope="scope">
-                        <div class="operation">
-                            <span class="span-blue" v-if="scope.row.level === '普通会员'" @click="showModifyModal(scope)">设置积分、折扣率</span>
-                            <span class="span-blue" v-else @click="showModifyModal(scope)">修改积分、折扣率</span>
-                            <span class="span-blue" @click="setRateToStore(scope)">按店铺设置积分、折扣率</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
+        <table-com
+            :column-data="columnData"
+            :table-data="tableData"
+            :border="true"
+            @query-data="queryList">
+            <el-table-column
+                slot="column3"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <div class="operation">
+                        <span class="span-blue"
+                              v-if="isEmpty(scope.row.scoreRate) && isEmpty(scope.row.discountRate)"
+                              @click="showModifyModal(scope.row)">
+                            设置积分、折扣率
+                        </span>
+                        <span class="span-blue"
+                              v-else
+                              @click="showModifyModal(scope.row)">
+                            修改积分、折扣率
+                        </span>
+                        <span class="span-blue"
+                              @click="setRateToStore(scope)">
+                            按店铺设置积分、折扣率
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
+        </table-com>
 
         <!--总体积分率折扣率设置modal-->
-        <modify-rate-modal ref="modifyRate" title="总体积分率折扣率设置"></modify-rate-modal>
+        <modify-rate-modal
+            ref="modifyRate"
+            title="总体积分率折扣率设置"
+            @fresh-data="queryList">
+        </modify-rate-modal>
 
     </div>
 </template>
 
 <script>
 
-    import modifyRateModal from './components/modifyRateModal.vue'
+    import modifyRateModal from './components/modifyRateModal.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {columnData} from './integrationConfig';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
             modifyRateModal,
+            tableCom
         },
         data () {
             return {
+                //表头配置
+                columnData : columnData,
                 // 表格数据
-                tableData: [
-                    {
-                        level: '普通会员',
-                        integRate: '-',
-                        discountRate: '-',
-                    },
-                    {
-                        level: '黄金会员',
-                        integRate: '0.5',
-                        discountRate: '0.95',
-                    },
-                    {
-                        level: '铂金会员',
-                        integRate: '1',
-                        discountRate: '0.8',
-                    },
-                    {
-                        level: '钻石会员',
-                        integRate: '2',
-                        discountRate: '0.6',
-                    },
-                ],
-                multipleSelection: [],
+                tableData: [],
+                //总条数
+                totalCount : 0,
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10
             }
         },
         methods: {
 
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-
+            /**
+             * 显示设置积分、折扣率的模态框
+             * @param data
+             */
             showModifyModal ( data ) {
-                console.log(data);
-                this.$refs.modifyRate.show();
+                this.$refs.modifyRate.show(data.levelId);
             },
 
+            /**
+             * 跳转到按店铺设置积分、折扣率页面
+             * @param data
+             */
             setRateToStore ( data ) {
-                console.log(data);
                 this.$router.push({ name: 'setRate', query: { info: data.row }});
             },
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+            /**
+             * 查询会员积分和折扣率数据
+             */
+            queryList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+                ajax.post('memberDiscountOfMemberList',{
+                    pageNo,
+                    pageSize
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
+                    }else{
+                        this.tableData =  [];
+                        this.totalCount = 0;
+                    }
+                }).catch(err => {
+                    this.tableData =  [];
+                    this.totalCount = 0;
+                });
             },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+            /**
+             * 判断val是否为空
+             * @param val
+             */
+            isEmpty(val) {
+                return val !== null && val !== '' && val !== undefined;
             }
 
         }
@@ -118,13 +127,8 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
-
-        .table-wrap{
-
-        }
     }
 </style>
 

@@ -10,5 +10,8 @@ export default {
     'saveNewMemberInfo' : '/member/saveNewMemberInfo',
     //会员信息-修改会员信息
     'editMemberInfo' : '/member/editMemberInfo',
-
+    //会员积分、折扣率查询
+    'memberDiscountOfMemberList' : '/members/memberDiscountOfMemberList',
+    //设置会员积分、折扣率查询
+    'setMemberDiscountOfMember' : '/members/setMemberDiscountOfMember'
 }

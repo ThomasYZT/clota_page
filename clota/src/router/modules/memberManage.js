@@ -98,7 +98,7 @@ export default {
             },
             infoInteg: {
                 //会员管理--会员信息--个人积分交易明细
-                path: '/memberManage/integ',
+                path: '/memberManage/intega',
                 name: 'infoInteg',
                 component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/integDetail.vue'),
                 meta: {

@@ -22,6 +22,7 @@
 
     .permission-not {
         position: relative;
+        background: #ffffff;
         @include block_outline();
 
         .wrap {
