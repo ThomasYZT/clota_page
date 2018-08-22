@@ -11,155 +11,175 @@
         </div>
 
         <div class="rate-content">
-            <div class="title-wrap">店铺：{{ info.name }}</div>
+            <div class="title-wrap">店铺：{{ memberInfo.orgName }}</div>
             <div class="filter-wrap">
-                <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
-                <Button type="primary">查 询</Button>
-                <Button type="ghost">重 置</Button>
+                <Input v-model.trim="queryParams.keyword"
+                       placeholder="请输入产品名称"
+                       style="width: 240px" />
+                <Button type="primary" @click="queryList">查 询</Button>
+                <Button type="ghost" @click="reset">重 置</Button>
             </div>
             <div class="table-wrap">
-                <el-table
-                    :data="tableData"
+                <table-com
+                    v-if="tableCanMount"
+                    :column-data="columnData"
+                    :table-data="tableData"
                     :border="true"
-                    max-height="450"
-                    style="width: 100%">
+                    @query-data="queryList">
                     <el-table-column
-                        prop="id"
-                        label="产品编码"
-                        width="180">
-                    </el-table-column>
-                    <el-table-column
-                        prop="name"
-                        label="店铺名称"
-                        width="200">
-                    </el-table-column>
-                    <el-table-column
-                        prop="type"
-                        label="类型"
-                        width="120"
-                        :filters="[{ text: '主食', value: '主食' }, { text: '酒水', value: '酒水' }]"
-                        :filter-method="filterTag"
-                        filter-placement="bottom-end">
-                    </el-table-column>
-                    <el-table-column
-                        prop="integRate"
-                        label="积分率"
-                        width="150">
-                    </el-table-column>
-                    <el-table-column
-                        prop="discountRate"
-                        label="折扣率"
-                        width="150">
-                    </el-table-column>
-                    <el-table-column
-                        prop=""
-                        label="操作">
+                        slot="column4"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <div class="operation">
-                                <span class="span-blue" @click="showModifyModal(scope)">设置积分、折扣率</span>
+                                <span class="span-blue"
+                                      @click="showModifyModal(scope.row)"
+                                      v-if="('prodDiscountRate' in scope.row) && ('prodScoreRate' in scope.row)">修改积分、折扣率</span>
+                                <span class="span-blue"
+                                      @click="showModifyModal(scope.row)"
+                                      v-else>设置积分、折扣率</span>
                             </div>
                         </template>
                     </el-table-column>
-                </el-table>
-            </div>
-            <div class="page-wrap" v-if="tableData.length > 0">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="parseInt(queryParams.pageNo)"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="parseInt(queryParams.pageSize)"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="parseInt(total)">
-                </el-pagination>
+                </table-com>
             </div>
         </div>
 
         <!--总体积分率折扣率设置modal-->
-        <modify-rate-modal ref="modifyRate" title="设置积分、折扣率"></modify-rate-modal>
+        <modify-rate-modal
+            ref="modifyRate"
+            title="设置卡级店铺消费积分和折扣权益"
+            :confirm-operate="setStoreDiscount">
+        </modify-rate-modal>
 
     </div>
 </template>
 
 <script>
 
-    import modifyRateModal from '../components/modifyRateModal.vue'
+    import modifyRateModal from '../components/modifyRateModal.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {columnData} from './setProductRateConfig';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
             modifyRateModal,
+            tableCom
         },
         data () {
             return {
                 //跳转信息
-                info: {},
+                memberInfo: {},
                 // 查询数据
                 queryParams: {
                     keyword: '',
-                    pageNo: '1',
-                    pageSize: '10',
                 },
                 // 表格数据
-                tableData: [
-                    {
-                        id: '0029179379281379',
-                        type: '主食',
-                        name: '西红柿鸡蛋面',
-                        integRate: '-',
-                        discountRate: '-',
-                    },
-                    {
-                        id: '0029179379281379',
-                        type: '主食',
-                        name: '酸菜鱼',
-                        integRate: '0.5',
-                        discountRate: '0.95',
-                    },
-                    {
-                        id: '0029179379281379',
-                        type: '酒水',
-                        name: '红牛饮料',
-                        integRate: '1',
-                        discountRate: '0.8',
-                    },
-                    {
-                        id: '0029179379281379',
-                        type: '主食',
-                        name: '雪花肥牛',
-                        integRate: '2',
-                        discountRate: '0.6',
-                    },
-                ],
+                tableData: [],
+                //总条数
                 total: 50,
+                //表头配置
+                columnData : columnData,
+                //总条数
+                totalCount : 0,
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10,
+                //当前操作的行数据
+                currentData : {}
             }
         },
-        created() {
-            this.init();
-        },
         methods: {
-
-            init() {
-                if (this.$route.query && this.$route.query.info) {
-                    this.info = this.$route.query.info;
-                }
-            },
-
-            filterTag(value, row) {
-                return row.type === value;
-            },
-
+            /**
+             * 显示设置店铺折扣率模态框
+             * @param data
+             */
             showModifyModal ( data ) {
-                console.log(data);
+                this.currentData = data;
                 this.$refs.modifyRate.show();
             },
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+            /**
+             * 查询店铺信息
+             * @param pageNo
+             * @param pageSize
+             */
+            queryList ({pageNo = this.pageNo,pageSize = this.pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+                this.pageNo = pageNo;
+                this.pageSize = pageSize;
+                ajax.post('memberDiscountOfProductList',{
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize,
+                    deptDiscountId : this.memberInfo.levelId,
+                    productName : this.queryParams.keyword,
+                    orgId : this.memberInfo.orgId,
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
+                    }else{
+                        this.tableData =  [];
+                        this.totalCount = 0;
+                    }
+                }).catch(err => {
+                    this.tableData =  [];
+                    this.totalCount = 0;
+                });
             },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams(params){
+                if(params.memberInfo && Object.keys(params.memberInfo).length > 0){
+                    this.memberInfo = params.memberInfo;
+                }
+            },
+            /**
+             * 重置查询条件
+             */
+            reset () {
+                this.queryParams.keyword = '';
+                this.queryList();
+            },
+            /**
+             * 设置产品折扣率
+             * @param formData 表单数据
+             * @param callback 新增完成回调
+             */
+            setStoreDiscount (formData,callback) {
+                ajax.post('setMemberDiscountOfProduct',{
+                    deptDiscountId : this.memberInfo.levelId,
+                    orgIds : this.memberInfo.orgId,
+                    discountRate : formData.discountRate,
+                    scoreRate : formData.scoreRate,
+                    productIds : this.currentData.productId,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('设置成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('设置失败');
+                    }
+                }).finally(() => {
+                    callback();
+                });
             }
-
+        },
+        beforeRouteEnter(to,from,next) {
+            next(vm => {
+                vm.getParams(to.params);
+            });
+        },
+        computed : {
+            //表格是否需要显示
+            tableCanMount () {
+                return this.memberInfo && !!this.memberInfo.levelId;
+            }
         }
     }
 </script>
@@ -183,7 +203,8 @@
         }
 
         .rate-content{
-            padding: 20px 30px;
+            @include block_outline($height : unquote('calc(100% - 70px)'));
+            padding: 20px 30px 0 30px;
 
             .title-wrap{
                 font-size: $font_size_18px;
@@ -196,7 +217,7 @@
             }
 
             .table-wrap{
-
+                height: calc(100% - 100px);
             }
 
             .page-wrap{
@@ -208,4 +229,3 @@
     }
 
 </style>
-

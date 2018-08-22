@@ -18,4 +18,8 @@ export default {
     'memberDiscountOfStoreList' : '/members/memberDiscountOfStoreList',
     //设置店铺折扣率
     'setMemberDiscountOfStore' : '/members/setMemberDiscountOfStore',
+    //获取产品折扣率
+    'memberDiscountOfProductList' : '/members/memberDiscountOfProductList',
+    //设置产品折扣率
+    'setMemberDiscountOfProduct' : '/members/setMemberDiscountOfProduct',
 }

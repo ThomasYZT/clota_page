@@ -105,7 +105,15 @@
              * @param data
              */
             setProductRate ( data ) {
-                this.$router.push({ name: 'setProductRate', query: { info: data.row }});
+                this.$router.push({
+                    name: 'setProductRate',
+                    params : {
+                        memberInfo : Object.assign({
+                            levelId : this.memberInfo.levelId,
+                            productName : data.productName
+                        },data)
+                    }
+                });
             },
 
             /**
@@ -119,7 +127,7 @@
                 ajax.post('memberDiscountOfStoreList',{
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
-                    levelDiscountId : this.levelDiscountId,
+                    levelDiscountId : this.memberInfo.levelId,
                     orgName : this.queryParams.keyword,
                 }).then(res => {
                     if(res.success){
@@ -182,7 +190,7 @@
         computed : {
             //表格是否需要显示
             tableCanMount () {
-                return !!this.levelDiscountId;
+                return this.memberInfo && !!this.memberInfo.levelId;
             }
         }
     }
