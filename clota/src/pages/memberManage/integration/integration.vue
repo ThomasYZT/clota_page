@@ -6,6 +6,7 @@
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
+            :total-count="totalCount"
             @query-data="queryList">
             <el-table-column
                 slot="column3"
@@ -26,7 +27,7 @@
                             修改积分、折扣率
                         </span>
                         <span class="span-blue"
-                              @click="setRateToStore(scope)">
+                              @click="setRateToStore(scope.row)">
                             按店铺设置积分、折扣率
                         </span>
                     </div>
@@ -38,7 +39,7 @@
         <modify-rate-modal
             ref="modifyRate"
             title="总体积分率折扣率设置"
-            @fresh-data="queryList">
+            :confirm-operate="setMemberDiscountOfMember">
         </modify-rate-modal>
 
     </div>
@@ -85,7 +86,12 @@
              * @param data
              */
             setRateToStore ( data ) {
-                this.$router.push({ name: 'setRate', query: { info: data.row }});
+                this.$router.push({
+                    name: 'setRate',
+                    params : {
+                         memberInfo : data
+                    }
+                });
             },
 
             /**
@@ -114,7 +120,26 @@
              */
             isEmpty(val) {
                 return val !== null && val !== '' && val !== undefined;
-            }
+            },
+            /**
+             * 设置会员积分、折扣率
+             */
+            setMemberDiscountOfMember(formData,callback) {
+                ajax.post('setMemberDiscountOfMember',{
+                    levelIds : this.levelIds,
+                    discountRate : formData.discountRate,
+                    scoreRate : formData.scoreRate,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('设置成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('设置失败');
+                    }
+                }).finally(() => {
+                    callback();
+                });
+            },
 
         }
     }

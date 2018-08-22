@@ -134,7 +134,7 @@ export default {
                 path: '/memberManage/integ',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/index.vue'),
                 meta: {
-                    menuName: 'menuList.integration', //lang.config.js 里面的语言键值
+                    menuName: 'menuList.memberPoints', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'integration',
                     iconClass: 'icon-diamond'
@@ -192,7 +192,7 @@ export default {
                 name: 'linkSpeMember',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/linkSpeMember.vue'),
                 meta: {
-                    menuName: 'menuList.specialMember', //lang.config.js 里面的语言键值
+                    menuName: 'menuList.memberPoints', //lang.config.js 里面的语言键值
                     lightMenu: 'memberManage',//高亮
                     _name: 'integration',
                 },

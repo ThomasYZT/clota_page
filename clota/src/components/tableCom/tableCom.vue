@@ -186,5 +186,9 @@
             margin: 30px auto;
             text-align: center;
         }
+
+        /deep/ .el-table__empty-block{
+            display: none;
+        }
     }
 </style>

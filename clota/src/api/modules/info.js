@@ -13,5 +13,9 @@ export default {
     //会员积分、折扣率查询
     'memberDiscountOfMemberList' : '/members/memberDiscountOfMemberList',
     //设置会员积分、折扣率查询
-    'setMemberDiscountOfMember' : '/members/setMemberDiscountOfMember'
+    'setMemberDiscountOfMember' : '/members/setMemberDiscountOfMember',
+    //店铺会员折扣查询
+    'memberDiscountOfStoreList' : '/members/memberDiscountOfStoreList',
+    //设置店铺折扣率
+    'setMemberDiscountOfStore' : '/members/setMemberDiscountOfStore',
 }

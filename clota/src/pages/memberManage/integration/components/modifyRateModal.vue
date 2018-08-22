@@ -59,7 +59,18 @@
     import {validator} from 'klwk-ui';
 
     export default {
-        props: ['title'],
+        props : {
+            //成功回调函数
+            'confirm-operate' : {
+                type : Function,
+                default : new Function ()
+            },
+            //标题
+            'title' : {
+                type : String,
+                default : ''
+            }
+        },
         components: {},
         data () {
             //校验兑换积分数是否合法
@@ -159,8 +170,18 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        this.btnLoading = true;
-                        this.setMemberDiscountOfMember();
+                        if(this.confirmOperate){
+                            this.btnLoading = true;
+                            this.confirmOperate({
+                                levelIds : this.levelIds,
+                                discountRate : this.formData.discountRate,
+                                scoreRate : this.scoreRate,
+                            },() => {
+                                this.btnLoading = false;
+                                this.hide();
+                            });
+                        }
+                        // this.setMemberDiscountOfMember();
                     }
                 })
             },
@@ -173,26 +194,7 @@
                 this.$refs.formValidate.resetFields();
             },
 
-            /**
-             * 设置会员积分、折扣率
-             */
-            setMemberDiscountOfMember() {
-                ajax.post('setMemberDiscountOfMember',{
-                    levelIds : this.levelIds,
-                    discountRate : this.formData.discountRate,
-                    scoreRate : this.scoreRate,
-                }).then(res => {
-                    if(res.success){
-                        this.$Message.success('设置成功');
-                        this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error('设置失败');
-                    }
-                }).finally(() => {
-                    this.hide();
-                    this.btnLoading = false;
-                });
-            },
+
             /**
              * 判断val是否为空
              * @param val
