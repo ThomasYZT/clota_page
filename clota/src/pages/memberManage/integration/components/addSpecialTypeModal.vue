@@ -9,10 +9,10 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="120">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="员工分类名称" prop="name">
-                        <Input v-model.trim="data.name" placeholder="请输入"></Input>
+                        <Input v-model.trim="formData.name" placeholder="请输入"/>
                     </Form-item>
                 </div>
             </Form>
@@ -27,14 +27,18 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
         components: {},
         data () {
             return {
+                //模态框是否显示
                 visible: false,
-                data: {
+                //表单数据
+                formData: {
                     name: '',
                 },
+                //表单校验规则
                 ruleValidate: {
                     name: [
                         { required: true, message: '员工分类名称不能为空', trigger: 'blur' },
@@ -44,25 +48,47 @@
         },
         methods: {
 
+            /**
+             * 模态框显示
+             */
             show () {
                 this.visible = true;
             },
 
-            //表单校验
+            /**
+             * 表单校验
+             */
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true)
+                        this.addMemberStaffType();
                     }
                 })
             },
 
-            //关闭模态框
+            /**
+             * 关闭模态框
+             */
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
             },
-
+            /**
+             * 新增特殊会员类别
+             */
+            addMemberStaffType () {
+                ajax.post('addMemberStaffType',{
+                    typeName : this.formData.name
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('新增成功');
+                    }else{
+                        this.$Message.error('新增失败');
+                    }
+                }).finally(() => {
+                    this.hide();
+                });
+            }
         },
     }
 </script>

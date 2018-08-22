@@ -1,7 +1,7 @@
 <!--公用table组件-->
 
 <template>
-    <div class="table-com">
+    <div class="table-com" :style="{'min-height' : minHeight}">
         <el-table :data="tableData"
                   style="width: 100%"
                   :border="border"
@@ -62,9 +62,11 @@
                 @current-change="handleCurrentChange">
             </el-pagination>
         </div>
-        <!--无数据组件-->
-        <no-data v-if="tableData.length < 1">
-        </no-data>
+        <div class="no-data-wrap">
+            <!--无数据组件-->
+            <no-data v-if="tableData.length < 1">
+            </no-data>
+        </div>
     </div>
 </template>
 
@@ -160,6 +162,18 @@
         },
         created () {
             this.queryList();
+        },
+        mounted () {
+        },
+        computed : {
+            //最小高度
+            minHeight () {
+                if(this.tableData && this.tableData.length === 0){
+                    return '250px';
+                }else{
+                    return 'auto';
+                }
+            }
         }
 
     }
@@ -189,6 +203,10 @@
 
         /deep/ .el-table__empty-block{
             display: none;
+        }
+
+        .no-data-wrap{
+            @include absolute_pos(absolute,48px,0,0,0);
         }
     }
 </style>
