@@ -10,7 +10,7 @@
             <div class="content-item">
                 <div class="title">会员积分生效设置</div>
                 <div class="main">
-                    <RadioGroup v-model="scoreEffectiveMode.isIntegralType" vertical>
+                    <RadioGroup v-model="settingData.scoreEffectiveMode.isIntegralType" vertical>
                         <Radio label="immediately">
                             <span>付款成功后立即生效</span>
                         </Radio>
@@ -19,7 +19,8 @@
                         </Radio>
                         <Radio label="checkout_after">
                             <span>消费、核销成功后
-                                <Input v-model="scoreEffectiveMode.isNoIntegralTime"
+                                <Input v-model.trim="settingData.scoreEffectiveMode.isNoIntegralTime"
+                                       :disabled="settingData.scoreEffectiveMode.isIntegralType !== 'checkout_after' ? true : false"
                                        type="text"
                                        placeholder="请输入"
                                        class="single-input"/>
@@ -32,9 +33,10 @@
             <div class="content-item">
                 <div class="title">会员生日积分多倍积分</div>
                 <div class="main">
-                    <i-switch v-model="scoreMultipleOnBirthday.hasMultiple"></i-switch>
+                    <i-switch v-model="settingData.scoreMultipleOnBirthday.isSwitch"></i-switch>
                     <span class="text">会员生日当天消费可获得
-                        <Input v-model="scoreMultipleOnBirthday.isTime"
+                        <Input v-model.trim="settingData.scoreMultipleOnBirthday.multiple"
+                               :disabled="!settingData.scoreMultipleOnBirthday.isSwitch"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>
@@ -45,13 +47,14 @@
             <div class="content-item">
                 <div class="title">会员积分有效期设置</div>
                 <div class="main">
-                    <RadioGroup v-model="scoreValidityPeriod.validityType" vertical>
-                        <Radio label="perpetual ">
+                    <RadioGroup v-model="settingData.scoreValidityPeriod.validityType" vertical>
+                        <Radio label="perpetual">
                             <span>永久有效</span>
                         </Radio>
-                        <Radio label="months_effective ">
+                        <Radio label="months_effective">
                             <span>获得积分
-                                <Input v-model="scoreValidityPeriod.validityTime"
+                                <Input v-model.trim="settingData.scoreValidityPeriod.validityTime"
+                                       :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false"
                                        type="text"
                                        class="single-input"
                                        placeholder="请输入"/>
@@ -59,8 +62,11 @@
                         </Radio>
                     </RadioGroup>
                     <div class="check-group-wrap">
-                        <Checkbox v-model="scoreValidityPeriod.checked"></Checkbox>清除积分前
-                        <Input v-model="scoreValidityPeriod.remind"
+                        <Checkbox v-model="settingData.scoreValidityPeriod.checked"
+                                  :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false">
+                        </Checkbox>清除积分前
+                        <Input v-model.trim="settingData.scoreValidityPeriod.remind"
+                               :disabled="!settingData.scoreValidityPeriod.checked"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>
@@ -73,13 +79,14 @@
             <div class="content-item">
                 <div class="title">会员卡有效期设置</div>
                 <div class="main margin-radio-group">
-                    <RadioGroup v-model="memberValidPeriod.Type" vertical>
+                    <RadioGroup v-model="settingData.memberValidPeriod.Type" vertical>
                         <Radio label="perpetual">
                             <span>永久有效</span>
                         </Radio>
                         <Radio label="vipValidityTime">
                             <span>最后一次消费
-                             <Input v-model="memberValidPeriod.vipValidityTime"
+                             <Input v-model.trim="settingData.memberValidPeriod.vipValidityTime"
+                                    :disabled="settingData.memberValidPeriod.Type !== 'vipValidityTime' ? true : false"
                                     type="text"
                                     class="single-input"
                                     placeholder="请输入"/>
@@ -87,7 +94,8 @@
                         </Radio>
                         <Radio label="vipValidity">
                             <span>开卡
-                             <Input v-model="memberValidPeriod.vipValidityType"
+                             <Input v-model.trim="settingData.memberValidPeriod.vipValidityType"
+                                    :disabled="settingData.memberValidPeriod.Type !== 'vipValidity' ? true : false"
                                     type="text"
                                     class="single-input"
                                     placeholder="请输入"/>
@@ -95,7 +103,8 @@
                         </Radio>
                         <Radio label="vipNumber">
                             <span>会员卡使用
-                             <Input v-model="memberValidPeriod.vipNumber"
+                             <Input v-model.trim="settingData.memberValidPeriod.vipNumber"
+                                    :disabled="settingData.memberValidPeriod.Type !== 'vipNumber' ? true : false"
                                     type="text"
                                     class="single-input"
                                     placeholder="请输入"/>
@@ -108,9 +117,10 @@
             <div class="content-item">
                 <div class="title">卡券过期提醒设置</div>
                 <div class="main">
-                    <i-switch v-model="notificationBeforeCouponExpire.isSwitch"></i-switch>
+                    <i-switch v-model="settingData.notificationBeforeCouponExpire.isSwitch"></i-switch>
                     <span class="text">卡券过期前
-                        <Input v-model="notificationBeforeCouponExpire.expireTime"
+                        <Input v-model.trim="settingData.notificationBeforeCouponExpire.day"
+                               :disabled="!settingData.notificationBeforeCouponExpire.isSwitch"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/> 天短信提醒，
@@ -122,7 +132,7 @@
             <div class="content-item">
                 <div class="title">用户退款时积分是否退还用户</div>
                 <div class="main">
-                    <RadioGroup v-model="handingWithScoreGrowthWhileRefund.score" vertical>
+                    <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.score" vertical>
                         <Radio label="true">
                             <span>用户退款时积分不退</span>
                         </Radio>
@@ -136,7 +146,7 @@
             <div class="content-item">
                 <div class="title">用户退款时卡券是否退还用户</div>
                 <div class="main">
-                    <RadioGroup v-model="handingWithScoreGrowthWhileRefund.coupon" vertical>
+                    <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>
                         <Radio label="true">
                             <span>用户退款时卡券不退</span>
                         </Radio>
@@ -147,32 +157,35 @@
                 </div>
             </div>
 
-            <Form ref="formDynamic" :model="formDynamic" :label-width="50" style="width: 600px">
+            <Form ref="formDynamic" :model="formDynamic" :label-width="50">
 
                 <div class="content-item">
                     <div class="title">修改会员储值、积分、虚拟账户余额设置</div>
                     <div class="main">
-                        <RadioGroup v-model="effect" vertical>
-                            <Radio label="one">
+                        <RadioGroup v-model="settingData.allowAdjustAccount" vertical>
+                            <Radio label="false">
                                 <span>不允许修改会员的储值、积分、虚拟账户</span>
                             </Radio>
-                            <Radio label="two">
-                                <span>允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因  <span class="add-span blue-color" @click="handleAdd">+ 新增修改原因</span></span>
+                            <Radio label="true">
+                                <span>允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因
+                                    <span class="add-span blue-color"
+                                          v-if="settingData.allowAdjustAccount === 'true'"
+                                          @click="handleAddReason">+ 新增修改原因</span>
+                                </span>
                             </Radio>
                         </RadioGroup>
-
-                        <div class="ivu-form-item-wrap">
+                        <div class="ivu-form-item-wrap"  v-show="settingData.allowAdjustAccount === 'true' ? true : false" >
                             <FormItem
-                                v-for="(item, index) in formDynamic.items"
-                                v-if="item.status"
+                                v-for="(item, index) in formDynamic.reason"
+                                v-if="item._status"
                                 :key="index"
                                 label=""
-                                :prop="'items.' + index + '.value'"
-                                :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入"/>
-                                <span class="span-bottom red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="span-bottom blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="span-bottom grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
+                                :prop="'reason.' + index + '.reason'"
+                                :rules="{required: true, message: '修改原因不能为空', trigger: 'blur'}">
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" placeholder="请输入"/>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">删除</span>
+                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">保存</span>
+                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetReason(item,index)">取消</span>
                             </FormItem>
                         </div>
 
@@ -186,15 +199,15 @@
                         <div class="ivu-form-item-wrap short-wrap">
                             <FormItem
                                 v-for="(item, index) in formDynamic.idType"
-                                v-if="item.status"
+                                v-if="item._status"
                                 :key="index"
                                 label=""
-                                :prop="'items.' + index + '.value'"
-                                :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入"/>
-                                <span class="span-bottom red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="span-bottom blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="span-bottom grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
+                                :prop="'idType.' + index + '.name'"
+                                :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.name" placeholder="请输入"/>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">删除</span>
+                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">保存</span>
+                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetDocument(item,index)">取消</span>
                             </FormItem>
                         </div>
 
@@ -206,8 +219,8 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary">保存</Button>
-            <Button type="ghost">取消</Button>
+            <Button type="primary" @click="basicSet">保存</Button>
+            <Button type="ghost" @click="resetFieldFunc">取消</Button>
         </div>
 
     </div>
@@ -215,8 +228,9 @@
 
 <script>
 
-    import ajax from '@/api/index'
-    import headerTabs from './components/headerTabs.vue'
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import headerTabs from './components/headerTabs.vue';
 
     export default {
         components: {
@@ -224,123 +238,300 @@
         },
         data () {
             return {
+                //用于动态表单校验(特殊字符)
+                emoji : (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+                //用于动态表单校验(选项点去重)
+                /*itemRepeat: (rule, value, callback) => {
+                    let desc = [];
+                    let index = Number(rule.field.split('.')[1]);
+                    this.formDynamic.options.forEach(function (item) {
+                        if(item.desc){
+                            desc.push(item.desc);
+                        }
+                    })
+                    if (value && desc.length > 0 && desc.indexOf(value) > -1 && (desc.indexOf(value) !== index) ) {
+                        callback(new Error('该选项已存在'));
+                    } else {
+                        callback();
+                    }
+                },*/
+                //设置id
+                id:'',
                 //当前页面路由名称
                 routerName: 'memberSetting',
-                //积分生效设置
-                scoreEffectiveMode: {
-                    isIntegralType: 'checkout',
-                    isNoIntegralTime: '24'
+                //设置数据
+                settingData: {
+                    //积分生效设置
+                    scoreEffectiveMode: {
+                        isIntegralType: 'checkout',
+                        isNoIntegralTime: '24'
+                    },
+                    //会员生日积分多倍积分
+                    scoreMultipleOnBirthday: {
+                        isSwitch: true,
+                        multiple: '2',
+                    },
+                    //会员积分有效期设置
+                    scoreValidityPeriod: {
+                        validityType: 'months_effective',
+                        validityTime: '24',
+                        checked: true,
+                        remind: '60',
+                    },
+                    //会员卡有效期设置
+                    memberValidPeriod: {
+                        Type: 'vipValidityTime',//类型
+                        perpetual: '',//是否永久
+                        vipValidityType: '365',
+                        vipValidityTime: '365',
+                        vipNumber: '10',
+                    },
+                    //卡券过期提醒设置
+                    notificationBeforeCouponExpire: {
+                        isSwitch: true,
+                        day: '60',
+                    },
+                    //用户退款时积分是否退还用户
+                    handingWithScoreGrowthWhileRefund: {
+                        score: 'false',
+                        coupon: 'false',
+                    },
+                    //修改会员储值、积分、虚拟账户余额设置
+                    allowAdjustAccount: 'true',
                 },
-                //会员生日积分多倍积分 --
-                scoreMultipleOnBirthday: {
-                    hasMultiple: true,
-                    isTime: '2',
-                },
-                //会员积分有效期设置 --
-                scoreValidityPeriod: {
-                    validityType: 'months_effective',
-                    validityTime: '24',
-                    checked: true,
-                    remind: '60',
-                },
-                //会员卡有效期设置
-                memberValidPeriod: {
-                    Type: 'vipValidityTime',//类型
-                    perpetual: '',//是否永久
-                    vipValidityType: '365',
-                    vipValidityTime: '365',
-                    vipNumber: '365',
-                },
-                //卡券过期提醒设置 --
-                notificationBeforeCouponExpire: {
-                    isSwitch: true,
-                    expireTime: '60',
-                },
-                //用户退款时积分是否退还用户
-                handingWithScoreGrowthWhileRefund: {
-                    score: 'false',
-                    coupon: 'false',
-                },
-
-                openInteg: true,
-                openFunds: true,
-                effect: 'one',
-                check: true,
-                index: 1,
+                //copy数据，用于数据重置
+                copySetData: {},
+                //动态表单数据
+                reasonIndex: 1,
                 idTypeIndex: 1,
                 formDynamic: {
-                    items: [
-                        {
-                            value: '系统更新时，用户进行消费，消费信息未同步',
-                            index: 1,
-                            status: 1,
-                            disabled: true,
-                        },
-                    ],
-                    idType: [
-                        {
-                            value: '身份证',
-                            index: 1,
-                            status: 1,
-                            disabled: true,
-                        },
-                    ],
+                    reason: [],
+                    idType: [],
+                },
+            }
+        },
+        watch: {
+            //会员积分有效期设置
+            'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
+                if(newVal === 'perpetual'){
+                    this.settingData.scoreValidityPeriod.checked = false;
+                }
+                if(newVal === 'months_effective'){
+                    this.settingData.scoreValidityPeriod.checked = true;
                 }
             }
         },
         created() {
             //查询会员基础设置
             this.findBasicSet();
+            //查询证件类型
+            this.queryDocument();
+            //查询修改原因
+            this.listAdjustReason();
         },
         methods: {
 
-            /**
-             * 查询会员基础设置
-             */
+            //查询会员基础设置
             findBasicSet () {
-                ajax.post('findBasicSet',{}).then(res => {
-
-                }).catch(err => {
-
-                }).finally(() =>{
-
-                });
-            },
-
-            handleSubmit (name) {
-                this.$refs[name].validate((valid) => {
-                    if (valid) {
-                        this.$Message.success('Success!');
-                    } else {
-                        this.$Message.error('Fail!');
+                ajax.post('findBasicSet', {
+                    companyId: 1,
+                    orgId: 101,
+                } ).then(res => {
+                    if( res.success){
+                        if(res.data){
+                            this.id = res.data.id;
+                            if(res.data.allowAdjustAccount){
+                                //处理数据
+                                let params = {
+                                    scoreEffectiveMode: JSON.parse(res.data.scoreEffectiveMode),
+                                    scoreMultipleOnBirthday: JSON.parse(res.data.scoreMultipleOnBirthday),
+                                    scoreValidityPeriod: JSON.parse(res.data.scoreValidityPeriod),
+                                    memberValidPeriod: JSON.parse(res.data.memberValidPeriod),
+                                    notificationBeforeCouponExpire: JSON.parse(res.data.notificationBeforeCouponExpire),
+                                    handingWithScoreGrowthWhileRefund: JSON.parse(res.data.handingWithScoreGrowthWhileRefund),
+                                    allowAdjustAccount: res.data.allowAdjustAccount,
+                                };
+                                this.settingData = params;
+                                //复制数据
+                                this.copySetData = defaultsDeep({}, params);
+                            } else {
+                                this.copySetData = defaultsDeep({}, this.settingData);
+                            }
+                        } else {
+                            this.copySetData = defaultsDeep({}, this.settingData);
+                        }
                     }
                 })
             },
-            handleReset (name,index) {
-                this.$refs[name].resetFields();
-                this.formDynamic.items[index].status = 0;
+            //会员基础设置-保存/修改
+            basicSet () {
+                ajax.post('basicSet', {
+                    id: this.id,
+                    scoreEffectiveMode: JSON.stringify(this.settingData.scoreEffectiveMode),
+                    scoreMultipleOnBirthday: JSON.stringify(this.settingData.scoreMultipleOnBirthday),
+                    scoreValidityPeriod: JSON.stringify(this.settingData.scoreValidityPeriod),
+                    memberValidPeriod: JSON.stringify(this.settingData.memberValidPeriod),
+                    notificationBeforeCouponExpire: JSON.stringify(this.settingData.notificationBeforeCouponExpire),
+                    handingWithScoreGrowthWhileRefund: JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
+                    allowAdjustAccount:this.settingData.allowAdjustAccount,
+                }).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存基础设置成功!');
+                        this.findBasicSet();
+                    }
+                })
             },
+            //点击取消重置数据
+            resetFieldFunc () {
+                if(this.copySetData !== {}){
+                    this.settingData = defaultsDeep({}, this.copySetData);
+                }
+            },
+
+
+            //查询证件类型
+            queryDocument () {
+                this.formDynamic.idType = [];
+                ajax.post('queryDocument',{
+                    orgId: '',
+                    companyId: '',
+                    isDeleted: 'false',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        if(res.data.data && res.data.data.length > 0){
+                            res.data.data.forEach( (item, index) => {
+                                item.index = index;
+                                item._status = 1;
+                                item.active = true;
+                                item.disabled = true;
+                                this.formDynamic.idType.push(item);
+                            })
+                        }
+                    }
+                })
+            },
+            //增加/修改证件
+            updateDocument ( data, index ) {
+                ajax.post('updateDocument',{
+                    orgId: '101',
+                    companyId: '1',
+                    name: data.name,
+                }).then(res => {
+                    if(res.success){
+                        this.formDynamic.idType[index].disabled = true;
+                        this.formDynamic.idType[index].active = true;
+                        this.$Message.success('新增证件类型成功!');
+                    }
+                })
+            },
+            //删除证件类型
+            deleteDocument ( data, index ) {
+                ajax.post('updateDocument',{
+                    id: data.id,
+                    isDeleted: 'true',
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除证件类型成功!');
+                        this.formDynamic.idType[index]._status = 0;
+                    }
+                })
+            },
+            //新增证件类型
             handleAddIdType() {
                 this.idTypeIndex++;
                 this.formDynamic.idType.push({
-                    value: '',
+                    name: '',
                     index: this.idTypeIndex,
-                    status: 1,
+                    _status: 1,
                     disabled: false,
                 });
             },
-            handleAdd () {
-                this.index++;
-                this.formDynamic.items.push({
-                    value: '',
-                    index: this.index,
-                    status: 1,
+            //证件类型校验
+            handleSubmitForIdType ( data, index ) {
+                this.$refs.formDynamic.validateField( 'idType.' + index + '.name',  (valid) => {
+                    if (valid === '') {
+                        this.updateDocument(data, index);
+                    }
+                } );
+            },
+            //取消证件类型校验
+            handleResetDocument (data, index) {
+                this.$refs.formDynamic.resetFields('idType.' + index + '.name' );
+                this.formDynamic.idType[index]._status = 0;
+            },
+
+
+            //查询修改原因
+            listAdjustReason () {
+                ajax.post('listAdjustReason',{}).then(res => {
+                    if(res.success){
+                        if(res.data && res.data.length > 0){
+                            res.data.forEach( (item, index) => {
+                                item.index = index;
+                                item._status = 1;
+                                item.active = true;
+                                item.disabled = true;
+                                this.formDynamic.reason.push(item);
+                            })
+                        }
+                    }
+                })
+            },
+            //增加/修改原因
+            updateReason ( data, index ) {
+                ajax.post('addAdjustReason',{
+                    reason: data.reason,
+                }).then(res => {
+                    if(res.success){
+                        this.formDynamic.reason[index].disabled = true;
+                        this.formDynamic.reason[index].active = true;
+                        this.$Message.success('新增原因成功!');
+                    }
+                })
+            },
+            //删除原因
+            deleteReason ( data, index ) {
+                ajax.post('deleteAdjustReason',{
+                    reasonId: data.id,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除原因成功!');
+                        this.formDynamic.reason[index]._status = 0;
+                    }
+                })
+            },
+            //新增修改原因
+            handleAddReason () {
+                this.reasonIndex++;
+                this.formDynamic.reason.push({
+                    reason: '',
+                    index: this.reasonIndex,
+                    _status: 1,
                     disabled: false,
                 });
             },
-            handleRemove (index) {
-                this.formDynamic.items[index].status = 0;
-            }
+            //修改原因表单校验
+            handleSubmitForReason ( data, index ) {
+                this.$refs.formDynamic.validateField( 'reason.' + index + '.reason', (valid) => {
+                    if (valid === '') {
+                        this.updateReason(data, index);
+                    }
+                });
+            },
+            //取消证件类型校验
+            handleResetReason (data, index) {
+                this.$refs.formDynamic.resetFields('reason.' + index + '.reason' );
+                this.formDynamic.reason[index]._status = 0;
+            },
+
         },
     }
 </script>

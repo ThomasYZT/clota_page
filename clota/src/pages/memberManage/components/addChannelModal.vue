@@ -13,12 +13,12 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="渠道名称：" prop="channelName">
-                        <Input v-model="formData.channelName" placeholder="请输入"/>
+                        <Input v-model.trim="formData.channelName" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model="formData.remark" type="textarea" placeholder="请输入"/>
+                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入"/>
                     </Form-item>
                 </div>
             </Form>
@@ -75,8 +75,6 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true)
-                        console.log(this.formData)
                         var params = {
                             channelName: this.formData.channelName,
                             remark: this.formData.remark,

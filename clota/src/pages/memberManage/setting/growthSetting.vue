@@ -11,12 +11,12 @@
                 <div class="title">成长值设置</div>
                 <div class="main">
                     <span class="text">消费
-                        <Input v-model="growthRateWhileConsume.growthSet"
-                           type="text"
-                           class="single-input"
-                           placeholder="请输入"/>
+                        <Input v-model.trim="settingData.growthRateWhileConsume.growthSet"
+                               type="text"
+                               class="single-input"
+                               placeholder="请输入"/>
                         元获取
-                        <Input v-model="growthRateWhileConsume.growthSetValue"
+                        <Input v-model.trim="settingData.growthRateWhileConsume.growthSetValue"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>
@@ -27,7 +27,7 @@
             <div class="content-item">
                 <div class="title">成长值生效设置</div>
                 <div class="main">
-                    <RadioGroup v-model="growthEffectiveMode.growthType" vertical>
+                    <RadioGroup v-model="settingData.growthEffectiveMode.growthType" vertical>
                         <Radio label="immediately">
                             <span>付款成功后立即生效</span>
                         </Radio>
@@ -36,7 +36,8 @@
                         </Radio>
                         <Radio label="checkout_after">
                             <span>消费、核销成功后
-                            <Input v-model="growthEffectiveMode.growthTime"
+                            <Input v-model.trim="settingData.growthEffectiveMode.growthTime"
+                                   :disabled="settingData.growthEffectiveMode.growthType !== 'checkout_after' ? true : false"
                                    type="text"
                                    class="single-input"
                                    placeholder="请输入"/>
@@ -49,7 +50,7 @@
             <div class="content-item">
                 <div class="title">子母卡成长值归属设置</div>
                 <div class="main">
-                    <RadioGroup v-model="growthFromFamilies" vertical>
+                    <RadioGroup v-model="settingData.growthFromFamilies" vertical>
                         <Radio label="true">
                             <span>子卡产生的成长值累加在母卡上</span>
                         </Radio>
@@ -63,8 +64,8 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary">保存</Button>
-            <Button type="ghost">取消</Button>
+            <Button type="primary" @click="basicSet">保存</Button>
+            <Button type="ghost" @click="resetFieldFunc">取消</Button>
         </div>
 
     </div>
@@ -72,7 +73,9 @@
 
 <script>
 
-    import headerTabs from './components/headerTabs.vue'
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import headerTabs from './components/headerTabs.vue';
 
     export default {
         components: {
@@ -80,22 +83,85 @@
         },
         data () {
             return {
+                //设置id
+                id:'',
                 //当前页面路由名称
                 routerName: 'growthSetting',
-                //成长值设置
-                growthRateWhileConsume: {
-                    growthSet: '1',
-                    growthSetValue: '1',
+                //设置数据
+                settingData: {
+                    //成长值设置
+                    growthRateWhileConsume: {
+                        growthSet: '1',
+                        growthSetValue: '1',
+                    },
+                    //成长值生效设置
+                    growthEffectiveMode: {
+                        growthType: 'checkout',
+                        growthTime: '24',
+                    },
+                    //子母卡成长值归属设置
+                    growthFromFamilies: 'false',
                 },
-                //成长值生效设置
-                growthEffectiveMode: {
-                    growthType: 'checkout',
-                    growthTime: '24',
-                },
-                //子母卡成长值归属设置
-                growthFromFamilies: 'false',
+                //copy数据，用于数据重置
+                copySetData: {},
             }
-        }
+        },
+        created() {
+            //查询会员基础设置
+            this.findBasicSet();
+        },
+        methods: {
+
+            //查询会员基础设置
+            findBasicSet () {
+                ajax.post('findBasicSet', {
+                    companyId: 1,
+                    orgId: 101,
+                } ).then(res => {
+                    if( res.success){
+                        if(res.data){
+                            this.id = res.data.id;
+                            if(res.data.growthFromFamilies){
+                                //处理数据
+                                let params = {
+                                    growthRateWhileConsume: JSON.parse(res.data.growthRateWhileConsume),
+                                    growthEffectiveMode: JSON.parse(res.data.growthEffectiveMode),
+                                    growthFromFamilies: res.data.growthFromFamilies,
+                                };
+                                this.settingData = params;
+                                //复制数据
+                                this.copySetData = defaultsDeep({}, params);
+                            } else {
+                                this.copySetData = defaultsDeep({}, this.settingData);
+                            }
+                        } else {
+                            this.copySetData = defaultsDeep({}, this.settingData);
+                        }
+                    }
+                })
+            },
+            //会员基础设置-保存/修改
+            basicSet () {
+                ajax.post('basicSet', {
+                    id: this.id,
+                    growthRateWhileConsume: JSON.stringify(this.settingData.growthRateWhileConsume),
+                    growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
+                    growthFromFamilies:this.settingData.growthFromFamilies,
+                }).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存成长值设置成功!');
+                        this.findBasicSet();
+                    }
+                })
+            },
+            //点击取消重置数据
+            resetFieldFunc () {
+                if(this.copySetData !== {}){
+                    this.settingData = defaultsDeep({}, this.copySetData);
+                }
+            },
+
+        },
     }
 </script>
 

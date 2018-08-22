@@ -58,7 +58,7 @@
 
 <script>
 
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
     import tableCom from '@/pages/memberManage/components/tableCom';
     import tableMixins from '@/mixins/tableMixins';
     import {channelListHead} from './channelConfig';
@@ -112,6 +112,7 @@
                     companyId: '',
                     pageNo: 1,
                     pageSize: 99999,
+                    isDeleted: 'false',
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data || [];
@@ -133,8 +134,7 @@
             //删除数据
             deleteChannel ( event, data ) {
                 console.log(data)
-                ajax.post('queryChannelSet', {
-                    companyId: '',
+                ajax.post('updateChannelSet', {
                     id: data.id,
                     isDeleted: 'true',
                 }).then(res => {

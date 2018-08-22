@@ -100,13 +100,13 @@
 
 <script>
 
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
     import tableCom from '@/pages/memberManage/components/tableCom';
     import tableMixins from '@/mixins/tableMixins';
     import {levelListHead} from './levelConfig';
-    import headerTabs from './components/headerTabs.vue'
-    import addMemberModal  from '../components/addMemberModal.vue'
-    import memberRuleModal  from '../components/memberRuleModal.vue'
+    import headerTabs from './components/headerTabs.vue';
+    import addMemberModal  from '../components/addMemberModal.vue';
+    import memberRuleModal  from '../components/memberRuleModal.vue';
 
     export default {
         mixins : [tableMixins],
@@ -164,6 +164,7 @@
                     pageSize: 99999,
                     companyId: '1',
                     orgId: '101',
+                    isDeleted: 'false',
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data || [];
@@ -185,9 +186,7 @@
             //删除数据
             deleteLevelInfo ( event, data ) {
                 console.log(data)
-                ajax.post('queryMemberLevels', {
-                    companyId: '',
-                    orgId: '',
+                ajax.post('updateMemberLevel', {
                     id: data.id,
                     isDeleted: 'true',
                 }).then(res => {

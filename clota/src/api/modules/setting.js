@@ -11,6 +11,12 @@ export default {
     'queryDocument' : '/member/memberBasicSet/queryDocument',
     //增加/修改证件
     'updateDocument' : '/member/memberBasicSet/updateDocument',
+    //查询调账原因
+    'listAdjustReason' : '/member/memberBasicSet/listAdjustReason',
+    //删除调账原因
+    'deleteAdjustReason' : '/member/memberBasicSet/deleteAdjustReason',
+    //增加调账原因
+    'addAdjustReason' : '/member/memberBasicSet/addAdjustReason',
 
     /*---------------------------------渠道设置-------------------------------*/
     //会员渠道-查询
@@ -33,5 +39,7 @@ export default {
     'queryMemberAccountDefine' : '/member/memberBasicSet/queryMemberAccountDefine',
     //保存/更改储值账户设置
     'updateMemberAccountDefine' : '/member/memberBasicSet/updateMemberAccountDefine',
+    //获取储值赠送金额应用范围
+    'listAccount' : '/member/memberAccount/listAccount',
 
 }

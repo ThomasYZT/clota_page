@@ -10,7 +10,7 @@
             <div class="content-item">
                 <div class="title">储值密码设置</div>
                 <div class="main">
-                    <RadioGroup v-model="passwdForRechargeAccount" vertical>
+                    <RadioGroup v-model="settingData.passwdForRechargeAccount" vertical>
                         <Radio label="false">
                             <span>消费时无需要密码验证，提供个人信息等</span>
                         </Radio>
@@ -25,7 +25,7 @@
             <div class="content-item">
                 <div class="title">储值积分、成长值比例设置</div>
                 <div class="main">
-                    <RadioGroup v-model="scoreGrowthFromCharging.storedAndGrowthType" vertical>
+                    <RadioGroup v-model="settingData.scoreGrowthFromCharging.storedAndGrowthType" vertical>
                         <Radio label="true">
                             <span>储值时不获得积分、成长值，消费时获取</span>
                         </Radio>
@@ -34,21 +34,25 @@
                         </Radio>
                     </RadioGroup>
                     <div class="check-group-wrap">储值
-                        <Input v-model.trim="scoreGrowthFromCharging.moneyToIntegrate"
+                        <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToIntegrate"
+                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/> 元获取
-                        <Input v-model="scoreGrowthFromCharging.integrate"
+                        <Input v-model.trim="settingData.scoreGrowthFromCharging.integrate"
+                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
                                 type="text"
                                 class="single-input"
                                 placeholder="请输入"/>积分
                     </div>
                     <div class="check-group-wrap">储值
-                        <Input v-model="scoreGrowthFromCharging.moneyToGgowth"
-                            type="text"
-                            class="single-input"
-                            placeholder="请输入"/> 元获取
-                        <Input v-model="scoreGrowthFromCharging.growth"
+                        <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGgowth"
+                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                type="text"
+                                class="single-input"
+                                placeholder="请输入"/> 元获取
+                        <Input v-model.trim="settingData.scoreGrowthFromCharging.growth"
+                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>成长值
@@ -59,13 +63,14 @@
             <div class="content-item">
                 <div class="title">储值获得积分、成长值生效设置</div>
                 <div class="main">
-                    <RadioGroup v-model="scoreGrowthEffModeWhileCharging.storedType" vertical>
+                    <RadioGroup v-model="settingData.scoreGrowthEffModeWhileCharging.storedType" vertical>
                         <Radio label="immediately">
                             <span>值成功后立即生效</span>
                         </Radio>
                         <Radio label="checkout_after">
                             <span>储值成功后</span>
-                            <Input v-model.trim="scoreGrowthEffModeWhileCharging.storedTime"
+                            <Input v-model.trim="settingData.scoreGrowthEffModeWhileCharging.storedTime"
+                                   :disabled="settingData.scoreGrowthEffModeWhileCharging.storedType !== 'checkout_after' ? true : false"
                                    type="text"
                                    class="single-input"
                                    placeholder="请输入"/>
@@ -78,31 +83,32 @@
             <Form ref="formDynamic" :model="formDynamic" :label-width="20">
 
                 <div class="content-item">
-                    <div class="title">储值赠送金额比例设置 <span class="add-span blue-color" @click="handleAddDonateWhileRecharge">+ 新增</span></div>
+                    <div class="title">储值赠送金额比例设置 <span class="add-span blue-color" @click="addSendRate">+ 新增</span></div>
                     <div class="main">
                         <div class="ivu-form-item-wrap">
                             <FormItem
                                 v-for="(item, index) in donateWhileRecharge"
-                                v-if="item.status"
+                                v-if="item._status"
                                 :key="index"
-                                label=""
-                                :prop="'items.' + index + '.value'"
-                                :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
+                                label="">
                                 储值：
                                 <Input type="text"
-                                       v-model="item.lowerValue"
+                                       :value="item.lowerValue"
+                                       disabled
                                        placeholder="请输入"
-                                       class="single-input"/> —
+                                       class="single-input"/> –
                                 <Input type="text"
-                                       v-model="item.topValue"
+                                       :value="item.topValue"
+                                       disabled
                                        placeholder="请输入"
                                        class="single-input"/> 赠送
                                 <Input type="text"
-                                       v-model="item.gift"
+                                       :value="item.gift"
+                                       disabled
                                        placeholder="请输入"
                                        class="single-input"/> 元
-                                <span class="add-span red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="add-span blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">应用范围</span>
+                                <span class="add-span red-color" v-if="item.disabled && index > 0" @click="handleRemoveSendRate(item,index)">删除</span>
+                                <span class="add-span blue-color" v-if="!item.disabled" @click="showSendRateModal(item,index)">应用范围</span>
                             </FormItem>
                         </div>
                     </div>
@@ -111,7 +117,7 @@
                 <div class="content-item">
                     <div class="title">转账手续费扣除比例设置</div>
                     <div class="main">
-                        <Input v-model.trim="commissionOfTransfermation"
+                        <Input v-model.trim="settingData.commissionOfTransfermation"
                             type="text"
                             class="single-input"
                             placeholder="请输入"/>%
@@ -119,20 +125,20 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">收款方式设置   <span class="add-span blue-color" @click="handleAdd">+ 新增收款方式</span></div>
+                    <div class="title">收款方式设置   <span class="blue-color add-span" @click="handleAddPay">+ 新增收款方式</span></div>
                     <div class="main">
-                        <div class="ivu-form-item-wrap">
+                        <div class="ivu-form-item-wrap short-wrap">
                             <FormItem
-                                v-for="(item, index) in formDynamic.items"
-                                v-if="item.status"
+                                v-for="(item, index) in formDynamic.pay"
+                                v-if="item._status"
                                 :key="index"
                                 label=""
-                                :prop="'items.' + index + '.value'"
-                                :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model="item.value" placeholder="请输入" style="width: 280px;"/>
-                                <span class="red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>
-                                <span class="blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">保存</span>
-                                <span class="grey-color" v-if="!item.disabled" @click="handleReset('formDynamic',index)">取消</span>
+                                :prop="'pay.' + index + '.payment'"
+                                :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" placeholder="请输入"/>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">删除</span>
+                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">保存</span>
+                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">取消</span>
                             </FormItem>
                         </div>
                     </div>
@@ -147,25 +153,25 @@
                                 :border="false"
                                 style="width: 100%">
                                 <el-table-column
-                                    prop="name"
+                                    prop="accountName"
                                     label="账户名称">
                                 </el-table-column>
                                 <el-table-column
-                                    prop="mobile"
+                                    prop="id"
                                     label="本金">
                                     <template slot-scope="scope">
                                         <span class="blue-color" @click="showRangeModal(scope.row)">应用设置</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
-                                    prop="idNum"
+                                    prop="id"
                                     label="赠送金额">
                                     <template slot-scope="scope">
                                         <span class="blue-color" @click="showRangeModal(scope.row)">应用设置</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
-                                    prop="date"
+                                    prop="id"
                                     label="操作">
                                     <template slot-scope="scope">
                                         <span class="blue-color" @click="showModifyAcocuntModal(scope.row)">编辑账户</span>
@@ -181,8 +187,8 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary">保存</Button>
-            <Button type="ghost">取消</Button>
+            <Button type="primary" @click="basicSet">保存</Button>
+            <Button type="ghost" @click="resetFieldFunc">取消</Button>
         </div>
 
         <!--新增账户modal-->
@@ -194,15 +200,21 @@
         <!--默认账户本金/赠送金额可使用范围设置modal-->
         <modify-range-modal ref="modifyRange"></modify-range-modal>
 
+        <!--储值赠送金额比例设置modal-->
+        <send-rate-modal ref="sendRate"></send-rate-modal>
+
     </div>
 </template>
 
 <script>
 
-    import headerTabs from './components/headerTabs.vue'
-    import addAccountModal from './components/addAccountModal.vue'
-    import modifyAccountModal from './components/modifyAccountModal.vue'
-    import modifyRangeModal from './components/modifyRangeModal.vue'
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import headerTabs from './components/headerTabs.vue';
+    import addAccountModal from './components/addAccountModal.vue';
+    import modifyAccountModal from './components/modifyAccountModal.vue';
+    import modifyRangeModal from './components/modifyRangeModal.vue';
+    import sendRateModal from './components/addSendRateModal.vue'
 
     export default {
         components: {
@@ -210,30 +222,42 @@
             addAccountModal,
             modifyAccountModal,
             modifyRangeModal,
+            sendRateModal,
         },
         data () {
             return {
+                //设置id
+                id:'',
                 //当前页面路由名称
                 routerName: 'fundSetting',
-                //储值密码设置
-                passwdForRechargeAccount: 'true',
-                //储值积分、成长值比例设置
-                scoreGrowthFromCharging: {
-                    storedAndGrowthType: 'true',
-                    moneyToIntegrate: '1',//储值额-积分
-                    integrate: '1',//积分
-                    moneyToGgowth: '1',//储值额-成长值
-                    growth: '1',//成长值
+                //设置数据
+                settingData: {
+                    //储值密码设置
+                    passwdForRechargeAccount: 'true',
+                    //储值积分、成长值比例设置
+                    scoreGrowthFromCharging: {
+                        storedAndGrowthType: 'true',
+                        moneyToIntegrate: '1',//储值额-积分
+                        integrate: '1',//积分
+                        moneyToGgowth: '1',//储值额-成长值
+                        growth: '1',//成长值
+                    },
+                    //储值获得积分、成长值生效设置
+                    scoreGrowthEffModeWhileCharging: {
+                        storedType: 'immediately',
+                        storedTime: '24',
+                    },
+                    //转账扣除手续费比例
+                    commissionOfTransfermation: '2',
+                    //储值赠送金额比例设置
+                    donateWhileRecharge: [],
                 },
-                //储值获得积分、成长值生效设置
-                scoreGrowthEffModeWhileCharging: {
-                    storedType: 'immediately',
-                    storedTime: '24',
-                },
-                //转账扣除手续费比例
-                commissionOfTransfermation: '2',
+                //copy数据，用于数据重置
+                copySetData: {},
                 //储值赠送金额比例设置
                 donateIndex: 1,
+                //储值赠送金额应用范围
+                listAccount: [],
                 donateWhileRecharge: [
                     {
                         lowerValue: 100,
@@ -241,87 +265,237 @@
                         gift: 5,
                         scope: '可用账号id',
                         index: 1,
-                        status: 1,
+                        _status: 1,
                         disabled: true,
                     },
                 ],
                 //收款方式设置
-
-                //储值账户设置
-
-
-                index: 1,
+                payIndex: 1,
                 // 表单数据
                 formDynamic: {
-                    items: [
-                        {
-                            value: '新建的修改原因',
-                            index: 1,
-                            status: 1,
-                            disabled: true,
-                        }
-                    ]
+                    pay: [],
                 },
                 // 表格数据
                 tableData: [
                     {
-                        name: '张三',
-                        mobile: '16876868839',
-                        idNum: '4307283898172933',
-                        sex: '男',
-                        belongTo: '北京欢乐谷',
+                        accountName: "本金账户",
+                        accountType: "charging",
+                        companyId: "1",
+                        createUser: "1",
+                        createdTime: 1534313030000,
+                        defaultAccount: "true",
+                        id: "1",
+                        isDeleted: "false",
+                        rate: 1,
+                        unit: "1",
                     }
                 ],
             }
         },
+        created() {
+            //查询会员基础设置
+            this.findBasicSet();
+            //查询收款方式
+            this.queryPaymentType();
+            //查询储值账户
+            this.queryMemberAccountDefine();
+            //获取储值赠送金额应用范围
+            this.listAccount();
+        },
         methods: {
-            handleSubmit (name) {
-                this.$refs[name].validate((valid) => {
-                    if (valid) {
-                        this.$Message.success('Success!');
-                    } else {
-                        this.$Message.error('Fail!');
+
+            //获取储值赠送金额应用范围
+            listAccount () {
+                ajax.post('listAccount', {}).then(res => {
+                    if( res.success ) {
+                        this.listAccount = res.data || [];
                     }
                 })
             },
-            handleReset (name,index) {
-                this.$refs[name].resetFields();
-                this.formDynamic.items[index].status = 0;
+
+            //查询会员基础设置
+            findBasicSet () {
+                ajax.post('findBasicSet', {
+                    companyId: 1,
+                    orgId: 101,
+                } ).then(res => {
+                    if( res.success){
+                        if(res.data){
+                            this.id = res.data.id;
+                            if(res.data.passwdForRechargeAccount){
+                                //处理数据
+                                let params = {
+                                    passwdForRechargeAccount: res.data.passwdForRechargeAccount,
+                                    scoreGrowthFromCharging: JSON.parse(res.data.scoreGrowthFromCharging),
+                                    scoreGrowthEffModeWhileCharging: JSON.parse(res.data.scoreGrowthEffModeWhileCharging),
+                                    commissionOfTransfermation: res.data.commissionOfTransfermation,
+                                    donateWhileRecharge: JSON.parse(res.data.donateWhileRecharge),
+                                };
+                                this.settingData = params;
+                                //复制数据
+                                this.copySetData = defaultsDeep({}, params);
+                            } else {
+                                this.copySetData = defaultsDeep({}, this.settingData);
+                            }
+                        } else {
+                            this.copySetData = defaultsDeep({}, this.settingData);
+                        }
+                    }
+                })
             },
-            //储值赠送金额比例设置
-            handleAddDonateWhileRecharge () {
-                this.donateIndex++;
-                this.donateWhileRecharge.push({
+            //会员基础设置-保存/修改
+            basicSet () {
+                console.log({
+                    passwdForRechargeAccount: this.settingData.passwdForRechargeAccount,
+                    scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
+                    scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
+                    commissionOfTransfermation: this.settingData.commissionOfTransfermation,
+                    donateWhileRecharge: JSON.stringify(this.settingData.donateWhileRecharge),
+                });
+                /*ajax.post('basicSet', {
+                    id: this.id,
+                    passwdForRechargeAccount: this.settingData.scoreEffectiveMode,
+                    scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
+                    scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
+                    commissionOfTransfermation: this.settingData.commissionOfTransfermation,
+                    donateWhileRecharge: JSON.stringify(this.settingData.donateWhileRecharge),
+                }).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存储值设置成功!');
+                        this.findBasicSet();
+                    }
+                })*/
+            },
+            //点击取消重置数据
+            resetFieldFunc () {
+                if(this.copySetData !== {}){
+                    this.settingData = defaultsDeep({}, this.copySetData);
+                }
+            },
+
+            //查询收款方式
+            queryPaymentType () {
+                this.formDynamic.pay = [];
+                ajax.post('queryPaymentType',{
+                    orgId: '',
+                    companyId: '',
+                    isDeleted: 'false',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        if(res.data && res.data.length > 0){
+                            res.data.forEach( (item, index) => {
+                                item.index = index;
+                                item._status = 1;
+                                item.active = true;
+                                item.disabled = true;
+                                this.formDynamic.pay.push(item);
+                            })
+                        }
+                    }
+                })
+            },
+            //增加/修改收款方式
+            updatePaymentType ( data, index ) {
+                ajax.post('updatePaymentType',{
+                    orgId: '101',
+                    companyId: '1',
+                    payment: data.payment,
+                }).then(res => {
+                    if(res.success){
+                        this.formDynamic.pay[index].disabled = true;
+                        this.formDynamic.pay[index].active = true;
+                        this.$Message.success('新增收款方式成功!');
+                    }
+                })
+            },
+            //删除收款方式
+            deletePay ( data, index ) {
+                ajax.post('updatePaymentType',{
+                    id: data.id,
+                    isDeleted: 'true',
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除收款方式成功!');
+                        this.formDynamic.pay[index]._status = 0;
+                    }
+                })
+            },
+            //新增收款方式
+            handleAddPay() {
+                this.payIndex++;
+                this.formDynamic.pay.push({
+                    payment: '',
+                    index: this.payIndex,
+                    _status: 1,
+                    disabled: false,
+                });
+            },
+            //收款方式校验
+            handleSubmitForPay ( data, index ) {
+                this.$refs.formDynamic.validateField( 'pay.' + index + '.payment',  (valid) => {
+                    if (valid === '') {
+                        this.updatePaymentType(data, index);
+                    }
+                } );
+            },
+            //取消收款方式校验
+            handleResetPay (data, index) {
+                this.$refs.formDynamic.resetFields('pay.' + index + '.payment' );
+                this.formDynamic.pay[index]._status = 0;
+            },
+
+            //删除储值赠送金额比例
+            handleRemoveSendRate ( data, index ) {
+                his.$Message.success('删除成功!');
+                this.donateWhileRecharge[index]._status = 0;
+            },
+            //新增显示储值赠送金额比例
+            addSendRate () {
+                let item = {
                     lowerValue: 0,
                     topValue: 0,
                     gift: 0,
-                    scope: '0',
+                    scope: '可用账号id',
                     index: this.donateIndex,
-                    status: 1,
-                    disabled: false,
-                });
+                    _status: 1,
+                    disabled: true,
+                };
+                let index = this.donateIndex;
+                this.$refs.sendRate.show({ item, index}, 'add');
             },
-            handleAdd () {
-                this.index++;
-                this.formDynamic.items.push({
-                    value: '',
-                    index: this.index,
-                    status: 1,
-                    disabled: false,
-                });
-            },
-            handleRemove (index) {
-                this.formDynamic.items[index].status = 0;
+            //点击‘应用范围’与‘修改’，显示储值赠送金额比例
+            showSendRateModal ( item, index ) {
+                this.$refs.sendRate.show({ item, index}, 'modify');
             },
 
-            showAddAccountModal(){
+            //查询储值账户
+            queryMemberAccountDefine () {
+                ajax.post('queryMemberAccountDefine',{
+                    orgId: '101',
+                    companyId: '1',
+                    accountType: 'charging',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data || [];
+                    }
+                })
+            },
+
+            //点击新增储值账户，显示新增弹窗
+            showAddAccountModal() {
                 this.$refs.addAccount.show();
             },
 
+            //点击储值账户的应用设置，显示应用设置弹窗
             showRangeModal () {
                 this.$refs.modifyRange.show();
             },
 
+            //点击储值账户的编辑账户，显示编辑账户弹窗
             showModifyAcocuntModal () {
                 this.$refs.modifyAccount.show();
             },
@@ -355,6 +529,18 @@
                     width: 40%;
                     text-align: center;
                     vertical-align: middle;
+
+                    .ivu-form-item{
+                        width: 650px;
+                        text-align: left;
+                    }
+
+                    &.short-wrap{
+                        min-width: 360px;
+                        .ivu-form-item{
+                            width: 360px;
+                        }
+                    }
                 }
 
                 /deep/ .ivu-form-item-content{
@@ -362,12 +548,9 @@
                 }
 
                 /deep/ .ivu-input-wrapper{
+                    margin-bottom: 0px !important;
+                    margin-right: 5px;
                     width: 80%;
-                }
-
-                .ivu-form-item{
-                    width: 650px;
-                    text-align: left;
                 }
 
                 .title{
