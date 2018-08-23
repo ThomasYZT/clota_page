@@ -5,16 +5,17 @@
         <div class="filter-wrap">
             <Select v-model="queryParams.levelId" @on-change="queryList">
                 <Option v-for="(level, index) in enumData.level" :key="index"
-                        :value="level.id">{{level.levelDesc}}</Option>
+                        :value="level.id">{{level.levelDesc}}
+                </Option>
             </Select>
             <Select v-model="queryParams.channelId" @on-change="queryList">
-                <Option value="">全部会员渠道</Option>
+                <Option v-for="(channel, index) in enumData.channel" :key="index"
+                        :value="channel.id">{{channel.channelName}}
+                </Option>
             </Select>
             <Select v-model="queryParams.vipStatus" @on-change="queryList">
-                <Option v-for="(item,index) in enumData.vipStatusEnum"
-                        :key="index"
-                        :value="item.name">
-                    {{item.desc}}
+                <Option v-for="(item,index) in enumData.vipStatusEnum" :key="index"
+                        :value="item.name">{{item.desc}}
                 </Option>
             </Select>
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
@@ -154,7 +155,7 @@
                     //会员级别
                     level: [{'id': 'null', 'levelDesc': '全部会员等级'}],
                     //会员渠道
-                    channel: [],
+                    channel: [{'id': 'null', 'channelName': '全部会员渠道'}],
                     //会员类型
                     vipStatusEnum: vipStatusEnum,
                     //会员状态
@@ -178,6 +179,7 @@
             //查询列表
             this.queryList();
             this.getLevelList();
+            this.getChannelList();
         },
         methods: {
             // 获取会员级别列表
@@ -197,6 +199,21 @@
                 })
             },
 
+            // 获取会员渠道列表
+            getChannelList() {
+                ajax.post('queryChannelSet', {
+                    companyId: '',
+                    pageNo: 1,
+                    pageSize: 99999,
+                    isDeleted: 'false',
+                }).then(res => {
+                    if(res.success){
+                        this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
+                    } else {
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                })
+            },
 
             //新增会员
             add () {
