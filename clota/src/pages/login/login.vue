@@ -40,7 +40,11 @@
                             {{errMsg}}
                         </div>
                         <Form-item>
-                            <div class="submit" @click="handleSubmit('formInline')">{{ $t("login") }}</div>
+                            <div class="submit"
+                                 :class="{'is-loging' : isLoging}"
+                                 @click="handleSubmit('formInline')">
+                                {{ isLoging ? $t('loging') : $t("login") }}
+                            </div>
                         </Form-item>
                     </Form>
                 </div>
@@ -72,7 +76,9 @@
                     ]
                 },
                 //错误提示信息
-                errMsg : ''
+                errMsg : '',
+                //是否在登录中
+                isLoging : false
             }
         },
         methods: {
@@ -85,12 +91,14 @@
                 this.errMsg = '';
                 this.$refs[name].validate((valid) => {
                     if (valid) {
+                        this.isLoging = true;
                         ajax.post('login',{
                             loginName : this.formInline.user,
                             password : MD5(this.formInline.password).toString(),
                         }).then((res) => {
                             if (res.success) {
-                                localStorage.setItem('userInfo',JSON.stringify(res.data));
+                                sessionStorage.setItem('userInfo',JSON.stringify(res.data));
+                                this.setOrgIndex();
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
                                     this.$router.push({
                                         path: route.path
@@ -101,9 +109,22 @@
                             }
                         }).catch(err => {
                             this.errMsg = this.$t('loginErr');
+                        }).finally(() => {
+                            setTimeout(() => {
+                                this.isLoging = false;
+                            },500);
                         });
                     }
                 })
+            },
+            /**
+             * 判断是否有存储所在机构的索引，如果没有则默认存储第一个
+             */
+            setOrgIndex () {
+                let orgIndex = sessionStorage.getItem('orgIndex');
+                if(orgIndex === '' || orgIndex === null){
+                    sessionStorage.setItem('orgIndex',0);
+                }
             }
         },
         computed: {},
@@ -189,6 +210,10 @@
                 text-align: center;
                 cursor: pointer;
                 margin-top: 10px;
+
+                &.is-loging{
+                    opacity: 0.5;
+                }
             }
 
             .error-area{

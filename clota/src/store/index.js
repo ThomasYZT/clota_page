@@ -119,68 +119,63 @@ export default new Vuex.Store({
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
-            // console.log(store);return;
-            // ajax.post('getPrivilege',{
-            //     orgId :
-            // })
-            return new Promise((resolve, reject) => {
-                let data = {
-                    'orgManage': 'allow',
-                    'organization': 'allow',
-                    'employee': 'allow',
-                    'rolePermission': 'allow',
-                    'roleDetail': 'allow',
-                    'partner': 'allow',
-                    'channels': 'allow',
-                    'saleChannelsGroup': 'allow',
-                    'verificateGroup': 'allow',
-                    'memberManage': 'allow',
-                    'memberHome': 'allow',
-                    'memberInfo': 'allow',
-                    'memberCount': 'allow',
-                    'integration': 'allow',
-                    'specialMember': 'allow',
-                    'card': 'allow',
-                    'fund': 'allow',
-                    'fundDetail': 'allow',
-                    'financialManagement': 'allow',
-                    'memberSetting': 'allow',
-                    'channelSetting': 'allow',
-                    'levelSetting': 'allow',
-                    'growthSetting': 'allow',
-                    'fundSetting': 'allow',
-                    'consumeSetting': 'allow',
-                };
-                let routers = childDeepClone(routerClect, data);
-                routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
-                //重新设置路由信息
-                resetRouter(routers);
-                store.commit('updatePermissionInfo',data);
-                store.commit('updateRouteInfo',routers);
-                // 如果有权限，则跳转到有权限的第一个页面
-                if (routers.length > 0) {
-                    resolve(routers[0]);
+            let index = sessionStorage.getItem('orgIndex') ? sessionStorage.getItem('orgIndex') : 0;
+            return ajax.post('getPrivilege',{
+                orgId : store.getters.userInfo.manageOrgs[index].id
+            }).then(res =>{
+                if(res.success){
+                    return new Promise((resolve, reject) => {
+                        // let privCode = {};
+                        // for(let i = 0,j = res.data.length;i < j;i++){
+                        //     privCode[res.data[i]['privCode']] = 'allow';
+                        // }
+                        let privCode = {
+                            // 'orgManage': 'allow',
+                            // 'organization': 'allow',
+                            // 'employee': 'allow',
+                            // 'rolePermission': 'allow',
+                            // 'roleDetail': 'allow',
+                            // 'partner': 'allow',
+                            // 'channels': 'allow',
+                            // 'saleChannelsGroup': 'allow',
+                            // 'verificateGroup': 'allow',
+                            'memberManage': 'allow',
+                            'memberHome': 'allow',
+                            'members': 'allow',
+                            'memberCount': 'allow',
+                            'integration': 'allow',
+                            'specialMember': 'allow',
+                            'card': 'allow',
+                            'fund': 'allow',
+                            'fundDetail': 'allow',
+                            'financialManagement': 'allow',
+                            'memberSetting': 'allow',
+                            'channelSetting': 'allow',
+                            'levelSetting': 'allow',
+                            'growthSetting': 'allow',
+                            'fundSetting': 'allow',
+                            'consumeSetting': 'allow',
+                        };
+                        let routers = childDeepClone(routerClect, privCode);
+                        routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
+                        //重新设置路由信息
+                        resetRouter(routers);
+                        store.commit('updatePermissionInfo',privCode);
+                        store.commit('updateRouteInfo',routers);
+                        // 如果有权限，则跳转到有权限的第一个页面
+                        if (routers.length > 0) {
+                            resolve(routers[0]);
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    });
+                }else{
+                    Vue.prototype.$Message.error(this.$t('rightGetError'));
+                    return new Promise().reject();
                 }
-            }).catch(err => {
-                console.log(err)
+            }).catch(() => {
+                Vue.prototype.$Message.error(this.$t('rightGetError'));
             });
-
-
-
-
-            // commit('updatePermissionInfo',{
-            //   'index' : 'allow',
-            //   'lessee' : 'allow',
-            //   'ISPinternet' : 'allow',
-            //   'server' : 'allow',
-            // },1);
-            // return ajaxList.getUserRight(param).then(res => {
-            //   if(res.success) {
-            //     commit('updateUserRight',res.data);
-            //   }else{
-            //     console.error('getUserRight：获取用户信息失败')
-            //   }
-            // });
         },
         //获取用户信息
         getUserInfo (store,userInfo) {

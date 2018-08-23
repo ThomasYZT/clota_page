@@ -14,7 +14,7 @@ export default {
         path: '/memberManage',
         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/index.vue'),
         meta: {
-            _name: 'memberManage',
+            _name: 'members',
             menuName: 'memberHome',
             rightPath : 'memberHome',
             isMenu : true
@@ -27,7 +27,7 @@ export default {
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/home/home.vue'),
                 meta: {
                     menuName: 'memberHome', //lang.config.js 里面的语言键值
-                    _name: 'memberHome',
+                    _name: 'members',
                     iconClass: 'icon-home',
                     rightPath : topMenuName + '.' + 'memberHome',
                     isMenu : true

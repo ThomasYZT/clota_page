@@ -46,7 +46,7 @@ export default {
      * 获取token参数
      */
     getToken() {
-        return localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).token : '';
+        return sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).token : '';
     },
     /**
      * get 请求

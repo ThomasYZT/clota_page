@@ -34,7 +34,7 @@ const webSocket = {
         if ('WebSocket' in window) {
             let baseUrl = process.env.NODE_ENV === 'development' ? config.HOST : window.location.origin;
             baseUrl = baseUrl.replace('http', 'ws');
-            let token = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).token : '';
+            let token = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).token : '';
             this.websocket = new WebSocket(baseUrl + "/v3/websocket?token=" + token);
         } else {
             alert('Not support websocket')

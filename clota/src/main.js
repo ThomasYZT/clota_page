@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
         } else {
             //判断是否本地有存储token，有的话，直接重新获取用户信息
             if(ajax.getToken()){
-                let userInfo  = JSON.parse(localStorage.getItem('userInfo'));
+                let userInfo  = JSON.parse(sessionStorage.getItem('userInfo'));
                 store.dispatch('getUserInfo',userInfo).then(route => {
                     next({
                         path: to.path

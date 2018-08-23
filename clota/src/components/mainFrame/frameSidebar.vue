@@ -29,7 +29,7 @@
                         :children-menu="item.children"
                         v-if="item.children && item.children.length > 2">
                     </menu-com>
-                    <MenuItem :name="item.meta._name"
+                    <MenuItem :name="item.name"
                               v-else
                               :key="item.name">
                         <span v-if="item.meta.iconClass"

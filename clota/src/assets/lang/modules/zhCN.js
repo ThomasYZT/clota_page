@@ -5,6 +5,7 @@ export default {
     'userName': '账户',
     'password': '密码',
     'login': '登 录',
+    'loging': '登录中...',
     'uesrNameText': '请输入你的账号',
     'passwordText': '请输入你的密码',
     'loginSuccess': '登录成功',
@@ -55,4 +56,5 @@ export default {
     'discountError': '折扣率必须大于0且小于1',
     'accoutOrPassErr': '账号或密码错误',
     'loginErr': '登录失败',
+    'rightGetError': '获取权限失败',
 }

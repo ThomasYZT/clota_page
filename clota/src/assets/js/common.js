@@ -12,7 +12,7 @@ export default {
      * 退出登录(清空本地记录)
      */
     loginOut() {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('userInfo');
         router.push({
             name : 'login'
         },() => {
@@ -26,7 +26,7 @@ export default {
      * 获取用户信息
      */
     getUserInfo() {
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        let userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
         let empInfo = userInfo && userInfo.empInfo ? userInfo.empInfo : {};
         let roleType = userInfo && userInfo.roleType ? userInfo.roleType : 'perf_subordinate';
         let defaultCompany = userInfo && userInfo.companys ? userInfo.companys.find(attr => {
