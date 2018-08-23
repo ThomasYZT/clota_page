@@ -1,174 +1,179 @@
 <template>
     <!--会员管理--储值管理--储值账户-->
-    <div class="member-fund-account">
+    <div class="funds">
 
-        <div class="fund-account-header">
-            <Select v-model="queryParams.level" style="width:200px">
-                <Option v-for="item in level" :value="item.value" :key="item.value">{{ item.name }}</Option>
+        <div class="header-wrap">
+            <Select v-model="queryParams.levelId" @on-change="queryList">
+                <Option value="">全部会员等级</Option>
+                <Option v-for="(item, index) in enumData.level"
+                        :value="item.id"
+                        :key="index">
+                    {{ item.levelDesc }}
+                </Option>
             </Select>
-            <Select v-model="queryParams.status" style="width:200px">
-                <Option v-for="item in status" :value="item.value" :key="item.value">{{ item.name }}</Option>
+            <Select v-model="queryParams.channelId" @on-change="queryList">
+                <Option value="">全部会员渠道</Option>
+                <Option v-for="(item,index) in enumData.channel"
+                        :value="item.id"
+                        :key="index">
+                    {{ item.channelName }}
+                </Option>
             </Select>
-            <Select v-model="queryParams.channel" style="width:200px">
-                <Option v-for="item in channel" :value="item.value" :key="item.value">{{ item.name }}</Option>
+            <Select v-model="queryParams.cardStatus" @on-change="queryList">
+                <Option value="">全部会员状态</Option>
+                <Option v-for="(item,index) in enumData.cardStatusEnum"
+                        :key="index"
+                        :value="item.name">
+                    {{item.desc}}
+                </Option>
             </Select>
-            <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
-            <Button type="primary">查 询</Button>
-            <Button type="ghost">重 置</Button>
-        </div>
-        <div class="table-wrap">
-            <el-table
-                :data="tableData"
-                :border="true"
-                max-height="450"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    prop="id"
-                    label="会员编码">
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="会员姓名">
-                </el-table-column>
-                <el-table-column
-                    prop="mobile"
-                    label="手机号">
-                </el-table-column>
-                <el-table-column
-                    prop="sex"
-                    label="性别">
-                </el-table-column>
-                <el-table-column
-                    prop="level"
-                    label="会员级别">
-                </el-table-column>
-                <el-table-column
-                    prop="balance"
-                    label="账户余额">
-                </el-table-column>
-                <el-table-column
-                    prop="balance"
-                    label="虚拟账户余额">
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="操作">
-                    <template slot-scope="scope">
-                        <div class="operation">
-                            <span class="span-blue" @click="addFund(scope)">新增储值</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-        <div class="page-wrap" v-if="tableData.length > 0">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="parseInt(queryParams.pageNo)"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="parseInt(queryParams.pageSize)"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="parseInt(total)">
-            </el-pagination>
+            <Input v-model="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
+            <Button :disabled="queryParams.keyWord ? false : true" type="primary" @click="queryList">查 询</Button>
+            <Button :disabled="queryParams.keyWord ? false : true" type="ghost" @click="reset">重 置</Button>
         </div>
 
-        <!--新增储值modal-->
-        <add-fund-modal ref="addFund"></add-fund-modal>
+        <table-com
+            :column-data="columnData"
+            :table-data="tableData"
+            :border="true"
+            :total-count="totalCount"
+            :ofset-height="60"
+            @query-data="queryList">
+            <el-table-column
+                slot="column3"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
+                </template>
+            </el-table-column>
+        </table-com>
 
     </div>
 </template>
 
 <script>
 
-    import addFundModal  from '../components/addFundModal.vue'
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {columnData} from './fundConfig';
+    import ajax from '@/api/index.js';
+    import { cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
         components: {
-            addFundModal,
+            tableCom,
         },
         data () {
             return {
                 // 查询数据
                 queryParams: {
-                    keyword: '',
-                    level: '',
-                    status: '',
-                    channel: '',
-                    pageNo: '1',
-                    pageSize: '10',
+                    keyWord: '',
+                    levelId: '',
+                    channelId: '',
+                    cardStatus: '',
                 },
-                // 枚举数据
-                level: [
-                    {
-                        name: '北京欢乐谷',
-                        value: '0',
-                    }
-                ],
-                status: [
-                    {
-                        name: '全部店铺',
-                        value: '0',
-                    }
-                ],
-                channel: [
-                    {
-                        name: '全部店铺',
-                        value: '0',
-                    }
-                ],
+                //枚举数据
+                enumData: {
+                    //会员级别
+                    level: [],
+                    //会员渠道
+                    channel: [],
+                    //会员状态
+                    cardStatusEnum: cardStatusEnum,
+                    //性别
+                    genderEnum: genderEnum,
+                },
+                //表头配置
+                columnData : columnData,
                 // 表格数据
-                tableData: [
-                    {
-                        disabled: 'false',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: '1999',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                    },
-                    {
-                        disabled: 'true',
-                        id: '309287482',
-                        name: '张三',
-                        mobile: '16876868839',
-                        sex: '男',
-                        level: '黄金会员',
-                        type: '正式会员',
-                        integ: '1999',
-                        balance: '737.00',
-                        create_time: '2015-01-01',
-                    }
-                ],
-                total: 50,
-                multipleSelection: [],
+                tableData: [],
+                //总条数
+                totalCount : 0,
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10
             }
+        },
+        created() {
+            //查询会员级别
+            this.queryMemberLevels();
+            //查询渠道列表
+            this.queryChannelSet();
         },
         methods: {
 
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
+            //查询会员级别
+            queryMemberLevels () {
+                ajax.post('queryMemberLevels', {
+                    pageNo: 1,
+                    pageSize: 99999,
+                    isDeleted: 'false',
+                }).then(res => {
+                    if(res.success){
+                        this.enumData.level = res.data.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'queryMemberLevels 查询失败！');
+                    }
+                })
             },
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+            //查询渠道列表
+            queryChannelSet () {
+                ajax.post('queryChannelSet', {
+                    pageNo: 1,
+                    pageSize: 99999,
+                    isDeleted: 'false',
+                }).then(res => {
+                    if(res.success){
+                        this.enumData.channel = res.data.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                })
             },
 
-            addFund ( data ) {
-                console.log(data)
-                this.$refs.addFund.show();
+            /**
+             * 储值账户列表
+             */
+            queryList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+                ajax.post('queryMemberPage',{
+                    pageNo,
+                    pageSize
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
+                    }else{
+                        this.tableData =  [];
+                        this.totalCount = 0;
+                    }
+                }).catch(err => {
+                    this.tableData =  [];
+                    this.totalCount = 0;
+                });
+            },
+
+            /**
+             * 获取枚举数据展示字段
+             * @param name String 枚举字段名
+             * @param val String 值
+             */
+            getEnumFieldShow ( name, val ) {
+                var obj = this.enumData[name].find((item) => val === item.name);
+                return obj.desc
+            },
+
+            //重置查询数据
+            reset () {
+                this.queryParams.keyWord = "";
+                this.queryList();
             },
 
         }
@@ -177,7 +182,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .member-fund-account{
+    .funds{
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
@@ -185,21 +190,27 @@
         background: $color-fff;
         border-radius: 4px;
 
-        .fund-account-header{
+        .header-wrap{
             height: 50px;
             line-height: 50px;
             padding: 0 20px;
-            background: $color_F4F6F8;
+
+            /deep/ .ivu-select{
+                width: 180px;
+                margin-right: 5px;
+            }
+
+            /deep/ .ivu-input-wrapper{
+                width: 240px;
+                margin-right: 15px;
+            }
+
+            .ivu-btn + .ivu-btn{
+                margin-left: 5px;
+            }
+
         }
 
-        .table-wrap{
-
-        }
-
-        .page-wrap{
-            margin-top: 30px;
-            text-align: center;
-        }
     }
 
 </style>
