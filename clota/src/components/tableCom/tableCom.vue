@@ -3,8 +3,10 @@
 <template>
     <div class="table-com" :style="{'min-height' : minHeight}">
         <el-table :data="tableData"
+                  v-if="tableMaxHeight !== null"
                   style="width: 100%"
                   :border="border"
+                  :max-height="parseInt(tableMaxHeight)"
                   @row-click="classDetailLink">
             <el-table-column
                 v-if="columnCheck"
@@ -62,9 +64,9 @@
                 @current-change="handleCurrentChange">
             </el-pagination>
         </div>
-        <div class="no-data-wrap">
+        <div class="no-data-wrap" v-if="tableData.length < 1">
             <!--无数据组件-->
-            <no-data v-if="tableData.length < 1">
+            <no-data >
             </no-data>
         </div>
     </div>
@@ -123,6 +125,11 @@
             'ofset-height' : {
                 type : Number,
                 default : 0
+            },
+            //没数据时表格table-com类的最小高度
+            'table-com-min-height' : {
+                type : Number,
+                default : 0
             }
         },
         data() {
@@ -130,7 +137,7 @@
                 //分页配置
                 pageConfig : configVariable,
                 //表格最大高度
-                tableMaxHeight : '100%',
+                tableMaxHeight : null,
             }
         },
         methods: {
@@ -147,7 +154,7 @@
             setTableMaxHeight () {
                 let rootEl = this.$root.$el;
                 if(rootEl){
-                    this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight;
+                    this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
                 }
             },
             /**
@@ -164,12 +171,16 @@
             this.queryList();
         },
         mounted () {
+            this.setTableMaxHeight();
         },
         computed : {
-            //最小高度
             minHeight () {
                 if(this.tableData && this.tableData.length === 0){
-                    return '250px';
+                    if(this.tableComMinHeight !== 0){
+                        return this.tableComMinHeight + 'px';
+                    }else{
+                        return this.tableMaxHeight;
+                    }
                 }else{
                     return 'auto';
                 }
@@ -185,7 +196,6 @@
     .table-com {
         position: relative;
         width: 100%;
-        min-height: 100%;
 
         /deep/ .el-table th:first-child .cell,
         /deep/ .el-table td:first-child .cell {

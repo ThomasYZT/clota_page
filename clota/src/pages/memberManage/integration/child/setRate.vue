@@ -21,6 +21,7 @@
             <div class="table-wrap">
                 <table-com
                     v-if="tableCanMount"
+                    :ofsetHeight="220"
                     :column-data="columnData"
                     :table-data="tableData"
                     :border="true"

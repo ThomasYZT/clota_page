@@ -23,9 +23,11 @@ export default {
     //设置产品折扣率
     'setMemberDiscountOfProduct' : '/members/setMemberDiscountOfProduct',
     //新增特殊会员类别
-    'addMemberStaffType' : '/members/addMemberStaffType',
+    'setMemberStaffType' : '/members/setMemberStaffType',
     //查询特殊会员类别
     'memberStaffTypeList' : '/members/memberStaffTypeList',
     //查询特殊会员与普通会员对照表
     'specialMemberDiscountOfMemberList' : '/members/specialMemberDiscountOfMemberList',
+    //设置特殊会员折扣率
+    'setSpecialMemberDiscountOfMember' : '/members/setSpecialMemberDiscountOfMember',
 }

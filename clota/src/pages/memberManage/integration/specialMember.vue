@@ -10,8 +10,9 @@
             <div class="table-wrap">
                 <table-com
                     :column-data="specialEmployeeHead"
-                    :table-data="specialMemberData"
+                    :table-data="tableData"
                     :border="true"
+                    :table-com-min-height="250"
                     :total-count="specialMemberDataCount"
                     @query-data="memberStaffTypeList">
                     <el-table-column
@@ -23,7 +24,7 @@
                         <template slot-scope="scope">
                             <div class="operation">
                                 <span class="span-blue"
-                                    @click="cotactMemberInfo(scope.row)">
+                                    @click="linkToMember(scope.row)">
                                     关联会员信息
                                 </span>
                             </div>
@@ -38,9 +39,10 @@
             <div class="table-wrap">
                    <table-com
                     :column-data="employeeTrustHead"
-                    :table-data="specialMemberBylyData"
+                    :table-data="tableData"
                     :border="true"
                     :total-count="specialMemberDataCount"
+                    :table-com-min-height="250"
                     @query-data="specialMemberDiscountOfMemberList">
                     <el-table-column
                         slot="column2"
@@ -58,28 +60,6 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <!-- <el-table
-                    :data="tableData"
-                    :border="false"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="level"
-                        label="会员级别">
-                    </el-table-column>
-                    <el-table-column
-                        prop="type"
-                        label="类别">
-                    </el-table-column>
-                    <el-table-column
-                        prop=""
-                        label="操作">
-                        <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue"  @click="showModifyModal(scope)">修改积分、折扣率</span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table> -->
             </div>
         </div>
 
@@ -87,7 +67,11 @@
         <add-special-type-modal ref="addSpecialType"></add-special-type-modal>
 
         <!--总体积分率折扣率设置modal-->
-        <modify-rate-modal ref="modifyRate" title="修改积分折扣率"></modify-rate-modal>
+        <modify-rate-modal
+            ref="modifyRate"
+            title="修改积分折扣率"
+            :confirm-operate="setStoreDiscount">
+        </modify-rate-modal>
 
     </div>
 </template>
@@ -111,20 +95,21 @@
                 // 表格数据
                 tableData: [
                     {
-                        level: '普通会员',
-                        type: '普通员工',
-                    },
-                    {
-                        level: '黄金会员',
-                        type: '经理级',
-                    },
-                    {
-                        level: '铂金会员',
-                        type: '项目老总',
-                    },
-                    {
-                        level: '钻石会员',
-                        type: '董事长',
+                        "companyId": null,
+                        "createUser": null,
+                        "createdTime": null,
+                        "discountRate": null,
+                        "id": null,
+                        "isDeleted": null,
+                        "levelId": 4,
+                        "levelName": "普通会员",
+                        "parentOrgId": null,
+                        "scoreRate": null,
+                        "staffTypeId": 1,
+                        "staffTypeName": "普通员工",
+                        "status": null,
+                        "updateUser": null,
+                        "updatedTime": null
                     },
                 ],
                 //特殊会员分类表头
@@ -139,22 +124,29 @@
                 specialMemberBylyData : [],
                 //特殊会员与普通会员对照表总条数
                 specialMemberBylyDataCount : 0,
+                //当前操作数据
+                currentData : {}
             }
         },
         methods: {
 
+            /**
+             * 新增特殊会员类别
+             */
             showAddTypeModal () {
                 this.$refs.addSpecialType.show();
             },
 
-            linkTo ( data ) {
-                console.log(data);
-                this.$router.push({ name: 'linkSpeMember', query: { info: data.row }});
-            },
-
-            showModifyModal ( data ) {
-                console.log(data);
-                this.$refs.modifyRate.show();
+            /**
+             * 跳转到关联会员信息
+             */
+            linkToMember (rowData) {
+                this.$router.push({
+                    name : 'linkSpeMember',
+                    params : {
+                        memberInfo : rowData
+                    }
+                });
             },
 
             /**
@@ -186,6 +178,8 @@
              * @param rowData 特殊会员信息
              */
             cotactMemberInfo (rowData) {
+                this.currentData = rowData;
+                this.$refs.modifyRate.show();
             },
              /**
              * 查询所有特殊会员类别与普通会员的对照表
@@ -211,7 +205,28 @@
                     this.specialMemberBylyDataCount = 0;
                 });
             },
-
+            /**
+             * 设置特殊会员折扣率
+             * @param formData 表单数据
+             * @param callback 新增完成回调
+             */
+            setStoreDiscount (formData,callback) {
+                ajax.post('setSpecialMemberDiscountOfMember',{
+                    levelId : this.currentData.levelId,
+                    staffTypeId : this.currentData.staffTypeId,
+                    discountRate : formData.discountRate,
+                    scoreRate : formData.scoreRate,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('设置成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('设置失败');
+                    }
+                }).finally(() => {
+                    callback();
+                });
+            }
         },
     }
 </script>

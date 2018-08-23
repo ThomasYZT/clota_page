@@ -141,7 +141,7 @@ export default new Vuex.Store({
                             // 'verificateGroup': 'allow',
                             'memberManage': 'allow',
                             'memberHome': 'allow',
-                            'members': 'allow',
+                            'memberInfo': 'allow',
                             'memberCount': 'allow',
                             'integration': 'allow',
                             'specialMember': 'allow',

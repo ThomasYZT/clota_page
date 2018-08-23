@@ -77,7 +77,7 @@
              * 新增特殊会员类别
              */
             addMemberStaffType () {
-                ajax.post('addMemberStaffType',{
+                ajax.post('setMemberStaffType',{
                     typeName : this.formData.name
                 }).then(res => {
                     if(res.success){
@@ -93,25 +93,34 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import '~@/assets/scss/base';
 
     .add-special-type-modal{
 
+        .ivu-modal-body{
+            min-height: 200px;
+        }
+
         .modal-body{
             padding: 60px 45px;
 
-            /deep/ .ivu-input-wrapper{
+             .ivu-input-wrapper{
                 width: 280px;
                 margin-right: 5px;
+            }
+
+            .ivu-form-item{
+                margin-bottom: 0;
             }
         }
 
         .modal-footer{
-            /deep/ .ivu-btn{
+             .ivu-btn{
                 padding: 5px 30px;
             }
         }
+
     }
 
 </style>
