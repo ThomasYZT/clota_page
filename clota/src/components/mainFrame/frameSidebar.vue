@@ -25,6 +25,7 @@
                 <template v-for="item in subMenuList">
                     <menu-com
                         :menu-info="item"
+                        :menu-deep="2"
                         :children-menu="item.children"
                         v-if="item.children && item.children.length > 2">
                     </menu-com>
@@ -77,13 +78,14 @@
              */
             subMenuList() {
                 if (this.$route && this.$route.meta && this.routerInfo && this.routerInfo.length > 0) {
-                    let activeTopMenu = this.$route.meta.lightMenu;
+                    let activeTopMenu = this.$route.meta.rightPath ? this.$route.meta.rightPath.split('.')[0] : '';
                     for (let i = 0, j = this.routerInfo.length; i < j; i++) {
-                        if (this.routerInfo[i].meta._name === activeTopMenu) {
+                        if ( (this.routerInfo[i].meta.rightPath ? this.routerInfo[i].meta.rightPath.split('.')[0] : '') === activeTopMenu) {
                             return this.routerInfo[i]['children'].filter(item => {
                                 //排除重定向路由和权限挂在其它路由下的路由
                                 //children大于2的表示它有下级菜单，不可以排除
-                                return item.meta && item.meta.menuName && !item.meta.hidden && (item.name === item.meta._name || item.children && item.children.length > 2);
+                                // return item.meta && item.meta.menuName && !item.meta.hidden && (item.name === item.meta._name || item.children && item.children.length > 2);
+                                return item.meta && item.meta.isMenu;
                             });
                         }
                     }
@@ -95,17 +97,23 @@
             //当前高亮的二级菜单
             //通过name或meta下的_name来标识激活菜单名字
             activeMenu() {
-                if (this.$route && this.$route.meta) {
-                    if(this.$route.name){
-                        return this.$route.name;
-                    }else if(this.$route.meta._name){
-                        return this.$route.meta._name;
-                    }else{
-                        return '';
-                    }
-                } else {
+                if(this.$route && this.$route.meta && this.$route.meta.rightPath){
+                    let path = this.$route.meta.rightPath.split('.');
+                    return path[path.length - 1];
+                }else{
                     return '';
                 }
+                // if (this.$route && this.$route.meta) {
+                //     if(this.$route.meta._name){
+                //         return this.$route.meta._name;
+                //     }else if(this.$route.name){
+                //         return this.$route.name;
+                //     } else{
+                //         return '';
+                //     }
+                // } else {
+                //     return '';
+                // }
             }
         },
         watch: {

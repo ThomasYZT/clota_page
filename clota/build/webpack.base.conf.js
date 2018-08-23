@@ -37,12 +37,14 @@ module.exports = {
             : config.dev.assetsPublicPath
     },
     resolve: {
-        extensions: ['.js', '.vue', '.json'],
+        extensions: ['.vue', '.js', '.json'],
         alias: {
             '@': resolve('src'),
-        }
+        },
+        modules: [path.resolve(__dirname, "src"), "node_modules"],
     },
     module: {
+        noParse: /node_modules\/(element-ui\.js)/,
         rules: [
             ...(config.dev.useEslint ? [createLintingRule()] : []),
             {
@@ -129,6 +131,6 @@ module.exports = {
             id: 'happy-babel-js',
             loaders: ['babel-loader?cacheDirectory=true'],
             threadPool: happyThreadPool,
-        })
+        }),
     ]
 }

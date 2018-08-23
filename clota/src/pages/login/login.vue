@@ -22,7 +22,7 @@
                             <div>
                                 <Input type="text"
                                        prefix="ios-contact"
-                                       v-model="formInline.user"
+                                       v-model.trim="formInline.user"
                                        :placeholder="$t('userName')"/>
                                 <span class="icon"></span>
                             </div>
@@ -30,12 +30,15 @@
                         <Form-item prop="password">
                             <Input type="password"
                                    prefix="logo-usd"
-                                   v-model="formInline.password"
+                                   v-model.trim="formInline.password"
                                    :placeholder="$t('password')"/>
                         </Form-item>
-                        <Form-item>
+                        <Form-item class="auto-reme">
                             <Checkbox>{{ $t("autoLogin") }}</Checkbox>
                         </Form-item>
+                        <div class="error-area">
+                            {{errMsg}}
+                        </div>
                         <Form-item>
                             <div class="submit" @click="handleSubmit('formInline')">{{ $t("login") }}</div>
                         </Form-item>
@@ -49,15 +52,16 @@
 
 
 <script>
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
+    import MD5 from 'crypto-js/md5';
 
     export default {
         components: {},
         data() {
             return {
                 formInline: {
-                    user: 'admin', //登录账号
-                    password: 'admin' //登录密码
+                    user: 'zhanzhan', //登录账号
+                    password: '123456' //登录密码
                 },
                 ruleInline: {
                     user: [
@@ -66,7 +70,9 @@
                     password: [
                         {required: true, message: this.$t("passwordText"), trigger: 'blur'},
                     ]
-                }
+                },
+                //错误提示信息
+                errMsg : ''
             }
         },
         methods: {
@@ -76,23 +82,26 @@
             },
             //登录提交表单
             handleSubmit(name) {
+                this.errMsg = '';
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        localStorage.setItem('token','token');
-                        this.$store.dispatch('getUserInfo').then(route => {
-                            this.$router.push({
-                                path: route.path
-                            });
+                        ajax.post('login',{
+                            loginName : this.formInline.user,
+                            password : MD5(this.formInline.password).toString(),
+                        }).then((res) => {
+                            if (res.success) {
+                                localStorage.setItem('userInfo',JSON.stringify(res.data));
+                                this.$store.dispatch('getUserInfo',res.data).then(route => {
+                                    this.$router.push({
+                                        path: route.path
+                                    });
+                                });
+                            } else {
+                                this.errMsg = this.$t('accoutOrPassErr');
+                            }
+                        }).catch(err => {
+                            this.errMsg = this.$t('loginErr');
                         });
-                        // ajax.login({}).then((res) => {
-                        //     if (res.success) {
-                        //         this.$Message.success(this.$t("loginSuccess") + '!');
-                        //     } else {
-                        //         this.$Message.error(this.$t("loginError") + '!');
-                        //     }
-                        // });
-                    } else {
-                        this.$Message.error(this.$t("formValidate") + '!');
                     }
                 })
             }
@@ -177,10 +186,22 @@
                 font-size: $font_size_16px;
                 color: $color_fff;
                 line-height: 40px;
-                margin-top: 25px;
                 text-align: center;
                 cursor: pointer;
+                margin-top: 10px;
             }
+
+            .error-area{
+                @include block_outline($height : 25px);
+                line-height: 25px;
+                text-align: center;
+                color: $color_red;
+            }
+
+            .auto-reme{
+                margin-bottom: 10px;
+            }
+
         }
         .copyright {
             font-size: $font_size_12px;
@@ -190,5 +211,6 @@
             width: 100%;
             @include absolute_pos(absolute, $bottom: 40px)
         }
+
     }
 </style>

@@ -186,7 +186,6 @@
              * @param rowData 特殊会员信息
              */
             cotactMemberInfo (rowData) {
-
             },
              /**
              * 查询所有特殊会员类别与普通会员的对照表

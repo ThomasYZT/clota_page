@@ -10,6 +10,7 @@
         </template>
         <template v-for="(item,i) in subMenuList">
             <menu-com
+                :menu-deep="menuDeep + 1"
                 :menu-info="item"
                 :children-menu="item.children"
                 v-if="item.children && item.children.length > 2">
@@ -44,6 +45,11 @@
                 default () {
                     return [];
                 }
+            },
+            //菜单层级
+            'menu-deep' : {
+                type : Number,
+                default : 3
             }
         },
         data() {
@@ -56,7 +62,7 @@
              * @returns {Array}
              */
             subMenuList() {
-                return this.childrenMenu.filter(item => item.name)
+                return this.childrenMenu.filter(item => item.meta && item.meta.isMenu);
             }
         },
     }

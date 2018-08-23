@@ -14,7 +14,9 @@ const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
     // 登录
-    login: 'user/login.json',
+    login: '/account/login',
+    //获取菜单权限
+    getPrivilege: '/account/getPrivilege',
     //首页接口
     ...index,
     //会员信息接口

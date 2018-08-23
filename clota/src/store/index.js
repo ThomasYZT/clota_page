@@ -119,6 +119,10 @@ export default new Vuex.Store({
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
+            // console.log(store);return;
+            // ajax.post('getPrivilege',{
+            //     orgId :
+            // })
             return new Promise((resolve, reject) => {
                 let data = {
                     'orgManage': 'allow',
@@ -162,6 +166,8 @@ export default new Vuex.Store({
             });
 
 
+
+
             // commit('updatePermissionInfo',{
             //   'index' : 'allow',
             //   'lessee' : 'allow',
@@ -179,16 +185,13 @@ export default new Vuex.Store({
         //获取用户信息
         getUserInfo (store,userInfo) {
             return new Promise((resolve,reject) => {
-                if(ajax.getToken()){
-                    let data = {
-                        name : 'test'
-                    };
-                    store.commit('updateUserInfo',data);
-                    resolve(data);
+                if(userInfo.token){
+                    store.commit('updateUserInfo',userInfo);
+                    resolve(userInfo);
                 }else{
                     reject();
                 }
-            }).then((data) => {
+            }).then(() => {
                 return store.dispatch('getUserRight');
             }).catch(err => {
                 console.log(err)

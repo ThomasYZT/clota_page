@@ -20,7 +20,7 @@
             <div class="nav-scroll">
                 <div class="navigation">
                     <div class="sub-menu"
-                         :class="{'active' : activeMenu === item.meta._name}"
+                         :class="{'active' : activeMenu === item.meta.menuName}"
                          v-for="(item,index) in menuList" :key="index"
                          @click="toTopMenu(item)">
                         {{$t(`${item.meta.menuName}`)}}
@@ -132,11 +132,16 @@
             }),
             //当前激活的菜单
             activeMenu() {
-                if (this.$route && this.$route.meta) {
-                    return this.$route.meta.lightMenu;
-                } else {
+                if(this.$route && this.$route.meta && this.$route.meta.rightPath){
+                    return this.$route.meta.rightPath.split('.')[0];
+                }else{
                     return '';
                 }
+                // if (this.$route && this.$route.meta) {
+                //     return this.$route.meta.lightMenu;
+                // } else {
+                //     return '';
+                // }
             },
             //菜单列表
             menuList () {
@@ -145,8 +150,7 @@
                     return routerInfo.filter(item => {
                         //判断是否需要显示二级菜单
                         if(item.children && item.children.length > 0){
-                            let children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
-                            item.children = children;
+                            item.children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
                         }else{
                             item.children = [];
                         }

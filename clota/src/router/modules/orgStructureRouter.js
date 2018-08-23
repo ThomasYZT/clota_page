@@ -13,7 +13,7 @@ export default {
         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/index.vue'),
         meta: {
             _name: 'orgManage',
-            menuName: 'menuList.org',
+            menuName: 'org',
             lightMenu: 'orgManage',
         },
         children: {
@@ -23,7 +23,7 @@ export default {
                 name: 'organization',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/organization.vue'),
                 meta: {
-                    menuName: 'menuList.org', //lang.config.js 里面的语言键值
+                    menuName: 'org', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
                     _name: 'organization', //
                     iconClass: 'icon-person'
@@ -35,7 +35,7 @@ export default {
                 name: 'employee',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                 meta: {
-                    menuName: 'menuList.employee', //lang.config.js 里面的语言键值
+                    menuName: 'employee', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
                     _name: 'employee', //
                     iconClass: 'icon-orgaization'
@@ -47,7 +47,7 @@ export default {
                 name: 'addEmployee',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                 meta: {
-                    menuName: 'menuList.employee', //lang.config.js 里面的语言键值
+                    menuName: 'employee', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
                     _name: 'employee', //
                     iconClass: 'icon-orgaization'
@@ -59,7 +59,7 @@ export default {
                 name: 'rolePermission',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/rolePermission.vue'),
                 meta: {
-                    menuName: 'menuList.rolePermission', //lang.config.js 里面的语言键值
+                    menuName: 'rolePermission', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
                     _name: 'rolePermission', //
                     iconClass: 'icon-role-permission'
@@ -71,7 +71,7 @@ export default {
                 name: 'roleDetail',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/roleDetail.vue'),
                 meta: {
-                    menuName: 'menuList.rolePermission', //lang.config.js 里面的语言键值
+                    menuName: 'rolePermission', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
                     _name: 'rolePermission', //
                     iconClass: 'icon-role-permission'
@@ -83,7 +83,7 @@ export default {
                 name: 'partner',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/partner/partner.vue'),
                 meta: {
-                    menuName: 'menuList.partner', //lang.config.js 里面的语言键值
+                    menuName: 'partner', //lang.config.js 里面的语言键值
                     lightMenu: 'orgManage',//高亮
                     _name: 'partner', //
                     iconClass: 'icon-partner'
@@ -95,7 +95,7 @@ export default {
                 name: 'channels',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/channels/channels.vue'),
                 meta: {
-                    menuName: 'menuList.channels',
+                    menuName: 'channels',
                     lightMenu: 'orgManage',
                     _name: 'channels',
                     iconClass: 'icon-market-channel'
@@ -107,7 +107,7 @@ export default {
                 name: 'saleChannelsGroup',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/saleChannelsGroup/saleChannelsGroup.vue'),
                 meta: {
-                    menuName: 'menuList.saleChannelsGroup',
+                    menuName: 'saleChannelsGroup',
                     lightMenu: 'orgManage',
                     _name: 'saleChannelsGroup',
                     iconClass: 'icon-trade-channel'
@@ -119,7 +119,7 @@ export default {
                 name: 'verificateGroup',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/verificateGroup.vue'),
                 meta: {
-                    menuName: 'menuList.verificateGroup',
+                    menuName: 'verificateGroup',
                     lightMenu: 'orgManage',
                     _name: 'verificateGroup',
                     iconClass: 'icon-partner'

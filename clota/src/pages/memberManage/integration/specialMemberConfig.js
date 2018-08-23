@@ -27,6 +27,6 @@ export const employeeTrustHead = [
     },
     {
         title: '操作',
-        width: 250,
+        width: 180,
     }
 ];
