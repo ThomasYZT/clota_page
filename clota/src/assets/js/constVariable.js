@@ -20,12 +20,14 @@ export const genderEnum = [
 
 //会员类型
 export const vipStatusEnum = [
+    { name: 'null', desc: '全部会员类型' },
     { name: 'active', desc: '正式会员' },
     { name: 'potential', desc: '潜在会员' },
 ];
 
 //会员状态
 export const cardStatusEnum = [
+    { name: 'null', desc: '全部会员状态' },
     { name: 'frozen', desc: '已冻结' },
     { name: 'active', desc: '正常使用' },
 ];
