@@ -13,10 +13,14 @@
                     <span class="text">消费
                         <Input v-model.trim="settingData.growthRateWhileConsume.growthSet"
                                type="text"
+                               :maxlength="10"
+                               @on-blur="validateInput(settingData.growthRateWhileConsume.growthSet)"
                                class="single-input"
                                placeholder="请输入"/>
                         元获取
                         <Input v-model.trim="settingData.growthRateWhileConsume.growthSetValue"
+                               :maxlength="10"
+                               @on-blur="validateInput(settingData.growthRateWhileConsume.growthSetValue)"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>
@@ -38,6 +42,8 @@
                             <span>消费、核销成功后
                             <Input v-model.trim="settingData.growthEffectiveMode.growthTime"
                                    :disabled="settingData.growthEffectiveMode.growthType !== 'checkout_after' ? true : false"
+                                   :maxlength="10"
+                                   @on-blur="validateInput(settingData.growthEffectiveMode.growthTime)"
                                    type="text"
                                    class="single-input"
                                    placeholder="请输入"/>
@@ -142,22 +148,57 @@
             },
             //会员基础设置-保存/修改
             basicSet () {
-                ajax.post('basicSet', {
-                    id: this.id,
-                    growthRateWhileConsume: JSON.stringify(this.settingData.growthRateWhileConsume),
-                    growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
-                    growthFromFamilies:this.settingData.growthFromFamilies,
-                }).then(res => {
-                    if( res.success){
-                        this.$Message.success('保存成长值设置成功!');
-                        this.findBasicSet();
-                    }
-                })
+                if(this.checkInputFunc()){
+                    ajax.post('basicSet', {
+                        id: this.id,
+                        growthRateWhileConsume: JSON.stringify(this.settingData.growthRateWhileConsume),
+                        growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
+                        growthFromFamilies:this.settingData.growthFromFamilies,
+                    }).then(res => {
+                        if( res.success){
+                            this.$Message.success('保存成长值设置成功!');
+                            this.findBasicSet();
+                        }
+                    })
+                } else {
+                    this.$Message.warning("输入框不能为空");
+                }
             },
             //点击取消重置数据
             resetFieldFunc () {
                 if(this.copySetData !== {}){
                     this.settingData = defaultsDeep({}, this.copySetData);
+                }
+            },
+            //校验选项勾选是输入框是否填写，返回true/false
+            checkInputFunc () {
+                if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSet)){
+                    return false
+                }
+
+                if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSetValue)){
+                    return false
+                }
+
+                if(this.settingData.growthEffectiveMode.growthType === 'checkout_after' && !this.validateInput(this.settingData.growthEffectiveMode.growthTime)){
+                    return false
+                }
+
+                return true
+            },
+            //校验input输入
+            validateInput ( value ) {
+                if( value === '' || value === 'null' || value == 0 || !value){
+                    this.$Message.warning("输入框不能为空");
+                    return false
+                } else if( value && value.length > 10){
+                    this.$Message.warning("当前输入字符不能超过10个");
+                    return false
+                } else if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
+                    this.$Message.warning("当前输入只能是非负整数");
+                    return false
+                } else {
+                    return true
                 }
             },
 

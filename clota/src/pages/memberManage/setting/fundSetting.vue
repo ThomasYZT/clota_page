@@ -80,18 +80,13 @@
                 </div>
             </div>
 
-            <Form ref="formDynamic" :model="formDynamic" :label-width="20">
-
-                <div class="content-item">
-                    <div class="title">储值赠送金额比例设置 <span class="add-span blue-color" @click="addSendRate">+ 新增</span></div>
-                    <div class="main">
-                        <div class="ivu-form-item-wrap">
-                            <FormItem
-                                v-for="(item, index) in donateWhileRecharge"
-                                v-if="item._status"
-                                :key="index"
-                                label="">
-                                储值：
+            <div class="content-item">
+                <div class="title">储值赠送金额比例设置 <span class="add-span blue-color" @click="addSendRate">+ 新增</span></div>
+                <div class="main" v-if="settingData.donateWhileRecharge.length > 0">
+                    <div class="ivu-form-item-wrap">
+                        <template v-for="(item, index) in settingData.donateWhileRecharge">
+                            <div :key="index" class="send-money-wrap" v-if="item._status">
+                                <span class="label">储值：</span>
                                 <Input type="text"
                                        :value="item.lowerValue"
                                        disabled
@@ -107,26 +102,32 @@
                                        disabled
                                        placeholder="请输入"
                                        class="single-input"/> 元
-                                <span class="add-span red-color" v-if="item.disabled && index > 0" @click="handleRemoveSendRate(item,index)">删除</span>
-                                <span class="add-span blue-color" v-if="!item.disabled" @click="showSendRateModal(item,index)">应用范围</span>
-                            </FormItem>
-                        </div>
+                                <span class="add-span blue-color"
+                                      @click="showSendRateModal(item,index)">应用范围</span>
+                                <span class="add-span blue-color"
+                                      @click="showSendRateModal(item,index)">修改</span>
+                                <span class="add-span red-color"
+                                      @click="handleRemoveSendRate(item,index)">删除</span>
+                            </div>
+                        </template>
                     </div>
                 </div>
+            </div>
 
-                <div class="content-item">
-                    <div class="title">转账手续费扣除比例设置</div>
-                    <div class="main">
-                        <Input v-model.trim="settingData.commissionOfTransfermation"
+            <div class="content-item">
+                <div class="title">转账手续费扣除比例设置</div>
+                <div class="main">
+                    <Input  v-model.trim="settingData.commissionOfTransfermation"
                             type="text"
                             class="single-input"
                             placeholder="请输入"/>%
                     </div>
-                </div>
+            </div>
 
-                <div class="content-item">
-                    <div class="title">收款方式设置   <span class="blue-color add-span" @click="handleAddPay">+ 新增收款方式</span></div>
-                    <div class="main">
+            <div class="content-item">
+                <div class="title">收款方式设置   <span class="blue-color add-span" @click="handleAddPay">+ 新增收款方式</span></div>
+                <div class="main">
+                    <Form ref="formDynamic" :model="formDynamic" :label-width="20">
                         <div class="ivu-form-item-wrap short-wrap">
                             <FormItem
                                 v-for="(item, index) in formDynamic.pay"
@@ -141,48 +142,47 @@
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">取消</span>
                             </FormItem>
                         </div>
+                    </Form>
+                </div>
+            </div>
+
+            <div class="content-item">
+                <div class="title">储值账户设置   <span class="add-span blue-color" @click="AddAccount">+ 新增账户</span></div>
+                <div class="main">
+                    <div class="table-wrap" style="width: 480px;">
+                        <el-table
+                            :data="tableData"
+                            :border="false"
+                            style="width: 100%">
+                            <el-table-column
+                                prop="accountName"
+                                label="账户名称">
+                            </el-table-column>
+                            <el-table-column
+                                prop="id"
+                                label="本金">
+                                <template slot-scope="scope">
+                                    <span class="blue-color" @click="showRangeModal(scope.row, scope.index, 'money')">应用设置</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="id"
+                                label="赠送金额">
+                                <template slot-scope="scope">
+                                    <span class="blue-color" @click="showRangeModal(scope.row, scope.index, 'send')">应用设置</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="id"
+                                label="操作">
+                                <template slot-scope="scope">
+                                    <span class="blue-color" @click="showModifyAcocuntModal(scope.row, scope.index)">编辑账户</span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
                     </div>
                 </div>
-
-                <div class="content-item">
-                    <div class="title">储值账户设置   <span class="add-span blue-color" @click="showAddAccountModal">+ 新增账户</span></div>
-                    <div class="main">
-                        <div class="table-wrap">
-                            <el-table
-                                :data="tableData"
-                                :border="false"
-                                style="width: 100%">
-                                <el-table-column
-                                    prop="accountName"
-                                    label="账户名称">
-                                </el-table-column>
-                                <el-table-column
-                                    prop="id"
-                                    label="本金">
-                                    <template slot-scope="scope">
-                                        <span class="blue-color" @click="showRangeModal(scope.row)">应用设置</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    prop="id"
-                                    label="赠送金额">
-                                    <template slot-scope="scope">
-                                        <span class="blue-color" @click="showRangeModal(scope.row)">应用设置</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    prop="id"
-                                    label="操作">
-                                    <template slot-scope="scope">
-                                        <span class="blue-color" @click="showModifyAcocuntModal(scope.row)">编辑账户</span>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
-                </div>
-
-            </Form>
+            </div>
 
         </div>
 
@@ -192,16 +192,28 @@
         </div>
 
         <!--新增账户modal-->
-        <add-account-modal ref="addAccount"></add-account-modal>
+        <add-account-modal ref="addAccount"
+                           :length="tableData.length"
+                           :table-data="listAmountRangeTable"
+                           @updata-list="submitFundsAccount"></add-account-modal>
 
         <!--编辑账户modal-->
-        <modify-account-modal ref="modifyAccount"></modify-account-modal>
+        <modify-account-modal ref="modifyAccount"
+                              :length="tableData.length"
+                              :table-data="listAmountRangeTable"
+                              @updata-list="submitFundsAccount"></modify-account-modal>
 
         <!--默认账户本金/赠送金额可使用范围设置modal-->
-        <modify-range-modal ref="modifyRange"></modify-range-modal>
+        <modify-range-modal ref="modifyRange"
+                            :length="tableData.length"
+                            :table-data="listAmountRangeTable"
+                            @updata-list="submitFundsAccount"></modify-range-modal>
 
         <!--储值赠送金额比例设置modal-->
-        <send-rate-modal ref="sendRate"></send-rate-modal>
+        <send-rate-modal ref="sendRate"
+                         :length="settingData.donateWhileRecharge.length"
+                         :table-data="listAccountTable"
+                         @submit-date="submitAddSend"></send-rate-modal>
 
     </div>
 </template>
@@ -214,7 +226,7 @@
     import addAccountModal from './components/addAccountModal.vue';
     import modifyAccountModal from './components/modifyAccountModal.vue';
     import modifyRangeModal from './components/modifyRangeModal.vue';
-    import sendRateModal from './components/addSendRateModal.vue'
+    import sendRateModal from './components/addSendRateModal.vue';
 
     export default {
         components: {
@@ -254,28 +266,15 @@
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
-                //储值赠送金额比例设置
-                donateIndex: 1,
                 //储值赠送金额应用范围
-                listAccount: [],
-                donateWhileRecharge: [
-                    {
-                        lowerValue: 100,
-                        topValue: 199,
-                        gift: 5,
-                        scope: '可用账号id',
-                        index: 1,
-                        _status: 1,
-                        disabled: true,
-                    },
-                ],
+                listAccountTable: [],
                 //收款方式设置
                 payIndex: 1,
-                // 表单数据
+                //表单数据
                 formDynamic: {
                     pay: [],
                 },
-                // 表格数据
+                //表格数据--储值账户列表
                 tableData: [
                     {
                         accountName: "本金账户",
@@ -290,6 +289,8 @@
                         unit: "1",
                     }
                 ],
+                //获取储值账户-(本金/赠送金额)应用范围
+                listAmountRangeTable: [],
             }
         },
         created() {
@@ -301,6 +302,8 @@
             this.queryMemberAccountDefine();
             //获取储值赠送金额应用范围
             this.listAccount();
+            //获取储值账户-(本金/赠送金额)应用范围
+            this.listAmountRange();
         },
         methods: {
 
@@ -308,7 +311,15 @@
             listAccount () {
                 ajax.post('listAccount', {}).then(res => {
                     if( res.success ) {
-                        this.listAccount = res.data || [];
+                        this.listAccountTable = res.data || [];
+                    }
+                })
+            },
+            //获取储值账户-(本金/赠送金额)应用范围
+            listAmountRange () {
+                ajax.post('listAmountRange', {}).then(res => {
+                    if( res.success ) {
+                        this.listAmountRangeTable = res.data || [];
                     }
                 })
             },
@@ -322,15 +333,16 @@
                     if( res.success){
                         if(res.data){
                             this.id = res.data.id;
-                            if(res.data.passwdForRechargeAccount){
+                            if(res.data.id){
                                 //处理数据
                                 let params = {
-                                    passwdForRechargeAccount: res.data.passwdForRechargeAccount,
-                                    scoreGrowthFromCharging: JSON.parse(res.data.scoreGrowthFromCharging),
-                                    scoreGrowthEffModeWhileCharging: JSON.parse(res.data.scoreGrowthEffModeWhileCharging),
+                                    passwdForRechargeAccount: res.data.passwdForRechargeAccount || 'true',
+                                    scoreGrowthFromCharging: res.data.scoreGrowthFromCharging ? JSON.parse(res.data.scoreGrowthFromCharging) : '',
+                                    scoreGrowthEffModeWhileCharging: res.data.scoreGrowthEffModeWhileCharging ? JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : '',
                                     commissionOfTransfermation: res.data.commissionOfTransfermation,
-                                    donateWhileRecharge: JSON.parse(res.data.donateWhileRecharge),
+                                    donateWhileRecharge: res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 };
+                                console.log(params)
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -350,21 +362,23 @@
                     scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
                     scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
                     commissionOfTransfermation: this.settingData.commissionOfTransfermation,
-                    donateWhileRecharge: JSON.stringify(this.settingData.donateWhileRecharge),
+                    donateWhileRecharge: this.settingData.donateWhileRecharge.length > 0 ?
+                        JSON.stringify(this.settingData.donateWhileRecharge) : '',
                 });
-                /*ajax.post('basicSet', {
+                ajax.post('basicSet', {
                     id: this.id,
                     passwdForRechargeAccount: this.settingData.scoreEffectiveMode,
                     scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
                     scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
                     commissionOfTransfermation: this.settingData.commissionOfTransfermation,
-                    donateWhileRecharge: JSON.stringify(this.settingData.donateWhileRecharge),
+                    donateWhileRecharge: this.settingData.donateWhileRecharge.length > 0 ?
+                        JSON.stringify(this.settingData.donateWhileRecharge) : '',
                 }).then(res => {
                     if( res.success){
                         this.$Message.success('保存储值设置成功!');
                         this.findBasicSet();
                     }
-                })*/
+                })
             },
             //点击取消重置数据
             resetFieldFunc () {
@@ -448,8 +462,8 @@
 
             //删除储值赠送金额比例
             handleRemoveSendRate ( data, index ) {
-                his.$Message.success('删除成功!');
-                this.donateWhileRecharge[index]._status = 0;
+                this.$Message.success('删除成功!');
+                this.settingData.donateWhileRecharge.splice(index, 1);
             },
             //新增显示储值赠送金额比例
             addSendRate () {
@@ -457,13 +471,16 @@
                     lowerValue: 0,
                     topValue: 0,
                     gift: 0,
-                    scope: '可用账号id',
-                    index: this.donateIndex,
+                    scope: '',
                     _status: 1,
-                    disabled: true,
                 };
-                let index = this.donateIndex;
+                let index = this.settingData.donateWhileRecharge.length;
                 this.$refs.sendRate.show({ item, index}, 'add');
+            },
+            //保存后回调传参
+            submitAddSend (data) {
+                console.log(data)
+                this.$set(this.settingData.donateWhileRecharge,data.index, data.item);
             },
             //点击‘应用范围’与‘修改’，显示储值赠送金额比例
             showSendRateModal ( item, index ) {
@@ -481,23 +498,40 @@
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'queryMemberAccountDefine 查询失败！');
                     }
                 })
             },
-
-            //点击新增储值账户，显示新增弹窗
-            showAddAccountModal() {
-                this.$refs.addAccount.show();
+            //新增显示储值赠送金额比例
+            AddAccount () {
+                let item = {
+                    account: '',
+                    accountName: '',
+                    unit: '',
+                    rate: '',
+                    start: 1,
+                    end: 1,
+                    exchangeToCash: 'true',
+                    corpusAppliedOrgId: [],
+                    donateAppliedOrgId: [],
+                };
+                let index = this.tableData.length;
+                this.$refs.addAccount.show({ item, index});
             },
-
+            //保存后回调传参
+            submitFundsAccount (data) {
+                console.log(data)
+                this.$set(this.tableData,data.index, data.item);
+            },
             //点击储值账户的应用设置，显示应用设置弹窗
-            showRangeModal () {
-                this.$refs.modifyRange.show();
+            showRangeModal ( item, index, type ) {
+                this.$refs.modifyRange.show({ item, index}, type);
             },
-
             //点击储值账户的编辑账户，显示编辑账户弹窗
-            showModifyAcocuntModal () {
-                this.$refs.modifyAccount.show();
+            showModifyAcocuntModal ( item, index ) {
+                this.$refs.modifyAccount.show({ item, index});
             },
 
         },
@@ -524,14 +558,14 @@
                 /deep/ .ivu-form-item-wrap{
                     position: relative;
                     display: inline-block;
-                    min-width: 650px;
+                    min-width: 690px;
                     padding-right: 55px;
                     width: 40%;
                     text-align: center;
                     vertical-align: middle;
 
                     .ivu-form-item{
-                        width: 650px;
+                        width: 700px;
                         text-align: left;
                     }
 
@@ -561,6 +595,10 @@
                 }
                 .main{
                     >div{
+                        margin-bottom: 10px;
+                    }
+                    .send-money-wrap{
+                        text-align: left;
                         margin-bottom: 10px;
                     }
                 }

@@ -37,6 +37,8 @@
                     <span class="text">会员生日当天消费可获得
                         <Input v-model.trim="settingData.scoreMultipleOnBirthday.multiple"
                                :disabled="!settingData.scoreMultipleOnBirthday.isSwitch"
+                               :maxlength="10"
+                               @on-blur="validateInput(settingData.scoreMultipleOnBirthday.multiple)"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>
@@ -55,6 +57,8 @@
                             <span>获得积分
                                 <Input v-model.trim="settingData.scoreValidityPeriod.validityTime"
                                        :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false"
+                                       :maxlength="10"
+                                       @on-blur="validateInput(settingData.scoreValidityPeriod.validityTime)"
                                        type="text"
                                        class="single-input"
                                        placeholder="请输入"/>
@@ -67,6 +71,8 @@
                         </Checkbox>清除积分前
                         <Input v-model.trim="settingData.scoreValidityPeriod.remind"
                                :disabled="!settingData.scoreValidityPeriod.checked"
+                               :maxlength="10"
+                               @on-blur="validateInput(settingData.scoreValidityPeriod.remind)"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/>
@@ -87,6 +93,8 @@
                             <span>最后一次消费
                              <Input v-model.trim="settingData.memberValidPeriod.vipValidityTime"
                                     :disabled="settingData.memberValidPeriod.Type !== 'vipValidityTime' ? true : false"
+                                    :maxlength="10"
+                                    @on-blur="validateInput(settingData.memberValidPeriod.vipValidityTime)"
                                     type="text"
                                     class="single-input"
                                     placeholder="请输入"/>
@@ -96,6 +104,8 @@
                             <span>开卡
                              <Input v-model.trim="settingData.memberValidPeriod.vipValidityType"
                                     :disabled="settingData.memberValidPeriod.Type !== 'vipValidity' ? true : false"
+                                    :maxlength="10"
+                                    @on-blur="validateInput(settingData.memberValidPeriod.vipValidityType)"
                                     type="text"
                                     class="single-input"
                                     placeholder="请输入"/>
@@ -105,6 +115,8 @@
                             <span>会员卡使用
                              <Input v-model.trim="settingData.memberValidPeriod.vipNumber"
                                     :disabled="settingData.memberValidPeriod.Type !== 'vipNumber' ? true : false"
+                                    :maxlength="10"
+                                    @on-blur="validateInput(settingData.memberValidPeriod.vipNumber)"
                                     type="text"
                                     class="single-input"
                                     placeholder="请输入"/>
@@ -121,6 +133,8 @@
                     <span class="text">卡券过期前
                         <Input v-model.trim="settingData.notificationBeforeCouponExpire.day"
                                :disabled="!settingData.notificationBeforeCouponExpire.isSwitch"
+                               :maxlength="10"
+                               @on-blur="validateInput(settingData.notificationBeforeCouponExpire.day)"
                                type="text"
                                class="single-input"
                                placeholder="请输入"/> 天短信提醒，
@@ -182,7 +196,7 @@
                                 label=""
                                 :prop="'reason.' + index + '.reason'"
                                 :rules="{required: true, message: '修改原因不能为空', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" placeholder="请输入"/>
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100" placeholder="请输入"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">保存</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetReason(item,index)">取消</span>
@@ -204,7 +218,7 @@
                                 label=""
                                 :prop="'idType.' + index + '.name'"
                                 :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.name" placeholder="请输入"/>
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.name" :maxlength="10" placeholder="请输入"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">保存</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetDocument(item,index)">取消</span>
@@ -371,26 +385,81 @@
             },
             //会员基础设置-保存/修改
             basicSet () {
-                ajax.post('basicSet', {
-                    id: this.id,
-                    scoreEffectiveMode: JSON.stringify(this.settingData.scoreEffectiveMode),
-                    scoreMultipleOnBirthday: JSON.stringify(this.settingData.scoreMultipleOnBirthday),
-                    scoreValidityPeriod: JSON.stringify(this.settingData.scoreValidityPeriod),
-                    memberValidPeriod: JSON.stringify(this.settingData.memberValidPeriod),
-                    notificationBeforeCouponExpire: JSON.stringify(this.settingData.notificationBeforeCouponExpire),
-                    handingWithScoreGrowthWhileRefund: JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
-                    allowAdjustAccount:this.settingData.allowAdjustAccount,
-                }).then(res => {
-                    if( res.success){
-                        this.$Message.success('保存基础设置成功!');
-                        this.findBasicSet();
-                    }
-                })
+                if(this.checkInputFunc()){
+                    ajax.post('basicSet', {
+                        id: this.id,
+                        scoreEffectiveMode: JSON.stringify(this.settingData.scoreEffectiveMode),
+                        scoreMultipleOnBirthday: JSON.stringify(this.settingData.scoreMultipleOnBirthday),
+                        scoreValidityPeriod: JSON.stringify(this.settingData.scoreValidityPeriod),
+                        memberValidPeriod: JSON.stringify(this.settingData.memberValidPeriod),
+                        notificationBeforeCouponExpire: JSON.stringify(this.settingData.notificationBeforeCouponExpire),
+                        handingWithScoreGrowthWhileRefund: JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
+                        allowAdjustAccount:this.settingData.allowAdjustAccount,
+                    }).then(res => {
+                        if( res.success){
+                            this.$Message.success('保存基础设置成功!');
+                            this.findBasicSet();
+                        }
+                    })
+                } else {
+                    this.$Message.warning("输入框不能为空");
+                }
             },
             //点击取消重置数据
             resetFieldFunc () {
                 if(this.copySetData !== {}){
                     this.settingData = defaultsDeep({}, this.copySetData);
+                }
+            },
+            //校验选项勾选是输入框是否填写，返回true/false
+            checkInputFunc () {
+                if(this.settingData.scoreEffectiveMode.isIntegralType === 'checkout_after' && !this.validateInput(this.settingData.scoreEffectiveMode.isNoIntegralTime)){
+                    return false
+                }
+
+                if(this.settingData.scoreMultipleOnBirthday.isSwitch && !this.validateInput(this.settingData.scoreMultipleOnBirthday.multiple)){
+                    return false
+                }
+
+                if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' && !this.validateInput(this.settingData.scoreValidityPeriod.validityTime)){
+                    return false
+                }
+
+                if(this.settingData.scoreValidityPeriod.checked && !this.validateInput(this.settingData.scoreValidityPeriod.validityTime)){
+                    return false
+                }
+
+                if(this.settingData.memberValidPeriod.Type === 'vipValidityType' && !this.validateInput(this.settingData.memberValidPeriod.vipValidityType)){
+                    return false
+                }
+
+                if(this.settingData.memberValidPeriod.Type === 'vipValidityTime' && !this.validateInput(this.settingData.memberValidPeriod.vipValidityTime)){
+                    return false
+                }
+
+                if(this.settingData.memberValidPeriod.Type === 'vipNumber' && !this.validateInput(this.settingData.memberValidPeriod.vipNumber)){
+                    return false
+                }
+
+                if(this.settingData.notificationBeforeCouponExpire.isSwitch && !this.validateInput(this.settingData.notificationBeforeCouponExpire.day)){
+                    return false
+                }
+
+                return true
+            },
+            //校验input输入
+            validateInput ( value ) {
+                if( value === '' || value === 'null' || value == 0 || !value){
+                    this.$Message.warning("输入框不能为空");
+                    return false
+                } else if( value && value.length > 10){
+                    this.$Message.warning("当前输入字符不能超过10个");
+                    return false
+                } else if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
+                    this.$Message.warning("当前输入只能是非负整数");
+                    return false
+                } else {
+                    return true
                 }
             },
 
@@ -555,7 +624,7 @@
 
                 /deep/ .ivu-form-item-wrap{
                     position: relative;
-                    display: inline-block;
+                    /*display: inline-block;*/
                     min-width: 495px;
                     padding-right: 55px;
                     width: 40%;

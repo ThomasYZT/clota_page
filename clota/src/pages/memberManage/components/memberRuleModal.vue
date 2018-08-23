@@ -9,34 +9,29 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="170">
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="普通会员成长值范围：" prop="fund">
-                        <Input v-model="data.fund" placeholder="请输入" style="width: 100px" />
-                        <span>——</span>
-                        <Input v-model="data.add" placeholder="请输入" style="width: 100px" />
-                    </Form-item>
-                    <Form-item label="黄金会员成长值范围：" prop="fund">
-                        <Input v-model="data.fund" placeholder="请输入" style="width: 100px" />
-                        <span>——</span>
-                        <Input v-model="data.add" placeholder="请输入" style="width: 100px" />
-                    </Form-item>
-                    <Form-item label="铂金会员成长值范围：" prop="fund">
-                        <Input v-model="data.fund" placeholder="请输入" style="width: 100px" />
-                        <span>——</span>
-                        <Input v-model="data.add" placeholder="请输入" style="width: 100px" />
-                    </Form-item>
-                    <Form-item label="钻石会员成长值范围：" prop="fund">
-                        <Input v-model="data.fund" placeholder="请输入" style="width: 100px" />
-                        <span>——</span>
-                        <Input v-model="data.add" placeholder="请输入" style="width: 100px" />
+            <Form ref="formValidate" :model="formData" :label-width="170">
+                <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
+                    <!--:prop="'item.'+index+'highestGrowthValue'"-->
+                    <!--:rules="{validator: isNumber, trigger: 'blur'}"-->
+                    <Form-item :label="item.levelDesc+'成长值范围：'"
+                               :key="index">
+                        <Input v-model.trim="item.lowerGrowthValue"
+                               placeholder="请输入"
+                               :maxlength="10"
+                               class="single-input"/>
+                        <span class="split-line">–</span>
+                        <Input v-model.trim="item.highestGrowthValue"
+                               :maxlength="10"
+                               placeholder="请输入"
+                               class="single-input"/>
                     </Form-item>
                 </div>
+
             </Form>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
+            <Button type="primary" @click="save" >保存</Button>
             <Button type="ghost" @click="hide" >取消</Button>
         </div>
 
@@ -44,27 +39,65 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+
     export default {
         components: {},
         data () {
             return {
-                visible: false,
-                data: {
-                    fund: 0,
-                    add: 5,
-                    remark: '',
+                //校验数字
+                isNumber : (rule, value, callback) => {
+                    if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
+                        callback( new Error( '当前输入只能是非负整数') );
+                    } else {
+                        callback();
+                    }
                 },
-                ruleValidate: {
-                    fund: [
-                        { required: true, message: '储值金额不能为空', trigger: 'blur' },
-                    ],
-                }
+                visible: false,
+                //表单数据
+                formData: {
+                    tableData: [],
+                },
             }
         },
         methods: {
 
-            show () {
+            show ( data ) {
+                if(data && data.length > 0){
+                    this.formData.tableData = defaultsDeep([], data);
+                }
                 this.visible = true;
+            },
+
+            save () {
+                var params = [];
+                this.formData.tableData.forEach( item => {
+                    var list = {
+                        id: item.id,
+                        lowerGrowthValue: item.lowerGrowthValue,
+                        highestGrowthValue: item.highestGrowthValue,
+                    };
+                    params.push(list);
+                })
+                this.batchUpdateMemberLevels(params);
+            },
+
+            //会员等级晋升规则设置
+            batchUpdateMemberLevels ( data ) {
+                console.log(data)
+                console.log(JSON.stringify(data))
+                ajax.post('batchUpdateMemberLevels', { models: JSON.stringify(data) }).then(res => {
+                    if(res.success){
+                        this.$Message.success('操作成功！');
+                        this.$emit('modify-success');
+                        this.hide();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'batchUpdateMemberLevels 操作失败！');
+                    }
+                })
             },
 
             //表单校验
@@ -89,7 +122,29 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .member-rule-modal{
+        .modal-body{
+            padding: 15px 20px 0;
 
+            /deep/ .ivu-input-wrapper{
+                /*width: 280px;*/
+
+                &.single-input{
+                    width: 120px !important;
+                }
+            }
+
+            .split-line{
+                margin: 0 12px;
+                color: $color_585858;
+            }
+
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
     }
 </style>
 

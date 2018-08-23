@@ -8,7 +8,7 @@
         <div class="content">
 
             <div class="btn-wrap">
-                <Button type="primary" @click="showAddMemberModal">+ 新增会员</Button>
+                <Button type="primary" @click="showAddMemberModal">+ 新增会员级别</Button>
                 <Button type="primary" @click="showRuleModal">晋级设置</Button>
             </div>
             <div class="table-wrap">
@@ -19,33 +19,7 @@
                     :column-data="levelListHead"
                     :border="true">
                     <el-table-column
-                        slot="column2"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <Icon type="checkmark-round" v-if="scoped.row.isRecharge === 'true'"></Icon>
-                            <Icon type="close-round" v-else></Icon>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
                         slot="column3"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <Icon type="checkmark-round" v-if="scoped.row.isScore === 'true'"></Icon>
-                            <Icon type="close-round" v-else></Icon>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column4"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -57,7 +31,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column6"
+                        slot="column5"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -68,7 +42,7 @@
                         <template slot-scope="scoped">
                             <div class="operation">
                                 <span class="span-blue" @click="showAddMemberModal($event,scoped.row)">修改</span>
-                                <span @click="deleteChannel($event,scoped.row)">删除</span>
+                                <span @click="deleteLevelInfo($event,scoped.row)">删除</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -90,10 +64,10 @@
         </div>
 
         <!--新增会员modal-->
-        <add-member-modal ref="addMember"></add-member-modal>
+        <add-member-modal ref="addMember" @modify-success="queryList"></add-member-modal>
 
         <!--会员等级晋升规则设置modal-->
-        <member-rule-modal ref="memberRule"></member-rule-modal>
+        <member-rule-modal ref="memberRule" @modify-success="queryList"></member-rule-modal>
 
     </div>
 </template>
@@ -133,14 +107,13 @@
         },
         methods: {
 
-            showAddMemberModal ( data ) {
+            showAddMemberModal ( event, data ) {
                 console.log(data)
-                this.$refs.addMember.show();
+                this.$refs.addMember.show( data || null );
             },
 
-            showRuleModal ( data ) {
-                console.log(data)
-                this.$refs.memberRule.show();
+            showRuleModal () {
+                this.$refs.memberRule.show( this.tableData );
             },
 
             //查询列表(查询表格取统一的方法名)
@@ -172,12 +145,12 @@
                         this.setTableHeight();
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning(res.message || 'queryMemberLevels 查询失败！');
                     }
                 })
             },
 
-            //增加/修改渠道
+            //增加/修改会员级别
             showChannelModal ( event, data ) {
                 console.log(data)
                 this.$refs.addChannel.show(data);
@@ -186,7 +159,7 @@
             //删除数据
             deleteLevelInfo ( event, data ) {
                 console.log(data)
-                ajax.post('updateMemberLevel', {
+                ajax.post('deleteMemberLevel', {
                     id: data.id,
                     isDeleted: 'true',
                 }).then(res => {
@@ -196,7 +169,7 @@
                         this.queryList();
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryMemberLevels 删除失败！');
+                        this.$Message.warning(res.message || 'deleteMemberLevel 删除失败！');
                     }
                 })
             },
@@ -225,7 +198,7 @@
                 height: 60px;
                 line-height: 60px;
                 /deep/ .ivu-btn{
-                    width: 108px;
+                    min-width: 108px;
                     margin-right: 15px;
                 }
             }

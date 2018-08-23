@@ -4,44 +4,39 @@
         v-model="visible"
         :title="title"
         class-name="add-account-modal vertical-center-modal"
-        width="560"
+        width="650"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="donateWhileRecharge" :rules="ruleValidate" :label-width="130">
-                <div class="ivu-form-item-wrap">
-                    <!--<FormItem-->
-                        <!--label=""-->
-                        <!--:prop="'items.' + index + '.value'"-->
-                        <!--:rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">-->
-                        <!--储值：-->
-                        <!--<Input type="text"-->
-                                       <!--v-model.trim="item.lowerValue"-->
-                                       <!--disabled-->
-                                       <!--placeholder="请输入"-->
-                                       <!--class="single-input"/> –-->
-                                <!--<Input type="text"-->
-                                       <!--v-model.trim="item.topValue"-->
-                                       <!--disabled-->
-                                       <!--placeholder="请输入"-->
-                                       <!--class="single-input"/> 赠送-->
-                                <!--<Input type="text"-->
-                                       <!--v-model.trim="item.gift"-->
-                                       <!--disabled-->
-                                       <!--placeholder="请输入"-->
-                                       <!--class="single-input"/> 元-->
-                                <!--<span class="add-span red-color" v-if="item.disabled && index > 0" @click="handleRemove(index)">删除</span>-->
-                        <!--<span class="add-span blue-color" v-if="!item.disabled" @click="handleSubmit('formDynamic')">应用范围</span>-->
-                    <!--</FormItem>-->
+            <div class="ivu-form-item-wrap">
+                <div class="send-money-wrap">
+                    <span class="label">储值：</span>
+                    <Input type="text"
+                           v-model.trim="formData.lowerValue"
+                           @on-blur="validateInput(formData.lowerValue)"
+                           placeholder="请输入"
+                           class="single-input"/> –
+                    <Input type="text"
+                           v-model.trim="formData.topValue"
+                           @on-blur="validateInput(formData.topValue)"
+                           placeholder="请输入"
+                           class="single-input"/> 赠送
+                    <Input type="text"
+                           v-model.trim="formData.gift"
+                           @on-blur="validateInput(formData.gift)"
+                           placeholder="请输入"
+                           class="single-input"/> 元
+                   <div class="ivu-form-item-error-tip" v-if="error">{{error}}</div>
                 </div>
-            </Form>
-
+            </div>
+            <div class="title">该规则应用范围：</div>
             <div class="table-wrap">
                 <el-table
                     :data="tableData"
                     :border="false"
+                    :height="tableData.length > 5 ? 320 : 'auto'"
                     @selection-change="handleSelectionChange"
                     style="width: 100%">
                     <el-table-column
@@ -49,7 +44,7 @@
                         width="55">
                     </el-table-column>
                     <el-table-column
-                        prop="name"
+                        prop="accountName"
                         label="本金可使用范围设置">
                     </el-table-column>
                 </el-table>
@@ -64,8 +59,10 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary"
+                    :disabled="!(formData.lowerValue && formData.topValue && formData.gift && multipleSelection.length > 0)"
+                    @click="save" >保存</Button>
+            <Button type="ghost" @click="hide">取消</Button>
         </div>
 
     </Modal>
@@ -73,60 +70,68 @@
 
 <script>
     export default {
+        props: ['length','table-data'],
         components: {},
         data () {
             return {
                 visible: false,
                 title: '新增储值赠送金额比例',
-                //储值赠送金额比例设置
+                //表单数据--储值赠送金额比例设置
                 index: null,
-                donateWhileRecharge: [
-                    {
-                        lowerValue: 100,
-                        topValue: 199,
-                        gift: 5,
-                        scope: '可用账号id',
-                        index: 1,
-                        status: 1,
-                        disabled: true,
-                    },
-                ],
-                ruleValidate: {
-                    account: [
-                        { required: true, message: '兑现数量不能为空', trigger: 'change' },
-                    ],
-                    channel: [
-                        { required: true, message: '充值渠道不能为空', trigger: 'change' },
-                    ],
+                formData:  {
+                    lowerValue: 100,
+                    topValue: 199,
+                    gift: 5,
+                    scope: '',
+                    _status: 1,
                 },
-                tableData: [
-                    { name: '温泉酒店A' },
-                    { name: '温泉酒店B' },
-                    { name: '温泉酒店C' },
-                ],
+                //表格多选列表
                 multipleSelection: [],
+                //表单报错内容
+                error: '',
             }
         },
         methods: {
 
             show ( data, type) {
+                console.log(data)
+                console.log(type)
                 if(type && type !== 'add'){
-                    this.title = '修改储值赠送金额比例'
+                    this.title = '修改储值赠送金额比例';
+                    this.index = this.length;
                 }
                 if( data ){
-                    this.donateWhileRecharge = data.item;
+                    this.formData = data.item;
                     this.index = data.index;
                 }
                 this.visible = true;
             },
 
-            //表单校验
-            formValidateFunc () {
-                this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-                        this.$emit('submit-date', { data: this.donateWhileRecharge, index: this.index});
-                    }
-                })
+            //校验input输入
+            validateInput ( value ) {
+                if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
+                    this.error = '当前输入只能是非负整数';
+                    return false
+                } else {
+                    this.error = '';
+                    return true
+                }
+            },
+
+            //保存
+            save () {
+                if( this.validateInput(this.formData.lowerValue) &&
+                    this.validateInput(this.formData.topValue) &&
+                    this.validateInput(this.formData.gift) ){
+                    let list = [];
+                    this.multipleSelection.forEach( (item, index) => {
+                        list.push({ id: item.id });
+                    });
+                    this.formData.scope = JSON.stringify(list);
+                    console.log(this.formData)
+                    this.$emit('submit-date', { item: this.formData, index: this.index});
+                    this.hide();
+                }
             },
 
             handleSelectionChange(val) {
@@ -136,7 +141,16 @@
             //关闭模态框
             hide(){
                 this.visible = false;
-                this.$refs.formValidate.resetFields();
+                this.formData = {
+                    lowerValue: 0,
+                    topValue: 0,
+                    gift: 0,
+                    scope: '',
+                    _status: 1,
+                };
+                this.multipleSelection = [];
+                this.index = null;
+                this.error = '';
             },
 
         },
@@ -148,24 +162,46 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 14px;
+            padding: 0 44px;
             height: 450px;
 
-            .steps-wrap{
-                padding-top: 5px;
-                margin-left: 100px;
-                margin-bottom: 18px;
+            /deep/ .ivu-form-item-wrap{
+                position: relative;
+                display: inline-block;
+                width: 580px;
+                padding-right: 55px;
+                text-align: left;
+                vertical-align: middle;
+                margin: 5px 0 15px;
 
-                /deep/ .ivu-steps .ivu-steps-head-inner > .ivu-steps-icon.ivu-icon {
-                    font-size: 12px;
-                    transform: scale(0.7);
+                /deep/ .ivu-input-wrapper{
+                    width: 120px;
+                    margin: 0 10px;
                 }
-                /deep/ .ivu-steps .ivu-steps-tail > i{
-                    height: 2px;
-                    border-radius: 2px;
-                }
+
             }
 
+            /deep/ .ivu-form-item-error-tip{
+                left: 50px;
+                padding-top: 2px;
+            }
+
+            .title{
+                font-size: $font_size_14px;
+                color: $color_333;
+                margin-bottom: 5px;
+            }
+
+            .page-wrap{
+                margin-top: 10px;
+            }
         }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+
     }
 </style>

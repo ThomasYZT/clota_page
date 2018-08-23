@@ -20,38 +20,42 @@
 
             <!--step 1-->
             <template v-if="step === 0">
-                <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="130">
+                <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                     <div class="ivu-form-item-wrap">
                         <Form-item label="账户归属" prop="account">
-                            <Select v-model="data.account" placeholder="请选择">
+                            <Select v-model="formData.account" placeholder="请选择">
                                 <Option value="sss">账户</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <FormItem label="账户类型" prop="channel">
-                            <RadioGroup v-model="data.channel">
-                                <Radio label="cash">人民币账户</Radio>
-                                <Radio label="account">虚拟账户</Radio>
-                            </RadioGroup>
-                        </FormItem>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item label="账户名称" prop="num">
-                            <Input v-model.trim="data.num" placeholder="请输入"/>
+                        <Form-item label="账户名称" prop="accountName">
+                            <Input v-model.trim="formData.accountName" placeholder="请输入"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item label="单位" prop="afterNum">
-                            <Input v-model.trim="data.afterNum" placeholder="请输入"/>
+                    <div class="ivu-form-item-wrap" prop="unit">
+                        <Form-item label="单位" prop="unit">
+                            <Input v-model.trim="formData.unit" placeholder="请输入"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="储值比率">
-                            <Input v-model.trim="data.num" placeholder="请输入" style="width: 130px;"/>
+                            <Input v-model.trim="formData.start"
+                                   placeholder="请输入"
+                                    class="single-input"/>
                             <span style="padding: 0 5px;">:</span>
-                            <Input v-model.trim="data.num" placeholder="请输入" style="width: 130px;"/>
+                            <Input v-model.trim="formData.start"
+                                   placeholder="请输入"
+                                   class="single-input"/>
                         </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <FormItem label="是否允许兑现">
+                            <RadioGroup v-model="formData.exchangeToCash">
+                                <Radio label="true">允许兑现</Radio>
+                                <Radio label="false">不允许兑现</Radio>
+                            </RadioGroup>
+                        </FormItem>
                     </div>
                 </Form>
             </template>
@@ -62,14 +66,14 @@
                     <el-table
                         :data="tableData"
                         :border="false"
-                        @selection-change="handleSelectionChange"
+                        @selection-change="handleSelectionChangeToMoney"
                         style="width: 100%">
                         <el-table-column
                             type="selection"
                             width="55">
                         </el-table-column>
                         <el-table-column
-                            prop="name"
+                            prop="orgName"
                             label="本金可使用范围设置">
                         </el-table-column>
                     </el-table>
@@ -88,14 +92,14 @@
                     <el-table
                         :data="tableData"
                         :border="false"
-                        @selection-change="handleSelectionChange"
+                        @selection-change="handleSelectionChangeToSend"
                         style="width: 100%">
                         <el-table-column
                             type="selection"
                             width="55">
                         </el-table-column>
                         <el-table-column
-                            prop="name"
+                            prop="orgName"
                             label="赠送金额可使用范围设置">
                         </el-table-column>
                     </el-table>
@@ -129,37 +133,51 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+
     export default {
+        props: ['length','table-data'],
         components: {},
         data () {
             return {
                 visible: false,
+                //步骤
                 step: 0,
-                data: {
-                    num: '',
-                    afterNum: '20',
-                    channel: 'cash',
+                //表单数据
+                index: null,
+                formData: {
                     account: '',
+                    accountName: '',
+                    unit: '',
+                    rate: '',
+                    start: 1,
+                    end: 1,
+                    exchangeToCash: 'true',
+                    corpusAppliedOrgId: [],
+                    donateAppliedOrgId: [],
                 },
+                //校验规则
                 ruleValidate: {
                     account: [
-                        { required: true, message: '兑现数量不能为空', trigger: 'change' },
-                    ],
-                    channel: [
-                        { required: true, message: '充值渠道不能为空', trigger: 'change' },
+                        { required: true, message: '账户归属不能为空', trigger: 'change' },
                     ],
                 },
-                tableData: [
-                    { name: '温泉酒店A' },
-                    { name: '温泉酒店B' },
-                    { name: '温泉酒店C' },
-                ],
-                multipleSelection: [],
+                //多选列表
+                multipleSelectionToMoney: [],
+                multipleSelectionToSend: [],
             }
         },
         methods: {
 
-            show () {
+            show ( data ) {
+                console.log(data)
+                this.index = this.length;
+                if( data ){
+                    this.formData = data.item;
+                    this.index = data.index;
+                }
                 this.visible = true;
             },
 
@@ -172,16 +190,26 @@
                 })
             },
 
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
+            //多选
+            handleSelectionChangeToMoney(val) {
+                this.multipleSelectionToMoney = val;
+            },
+            handleSelectionChangeToSend(val) {
+                this.multipleSelectionToSend = val;
             },
 
             //关闭模态框
             hide(){
                 this.visible = false;
-                this.$refs.formValidate.resetFields();
+                if(this.step === 0){
+                    this.$refs.formValidate.resetFields();
+                }
+                this.formData = {};
+                this.multipleSelection = [];
+                this.index = null;
             },
 
+            //下一步
             nextStep ( data ) {
                 if(data){
                     this.formValidateFunc();
@@ -189,13 +217,48 @@
                     this.step ++;
                 }
             },
-
+            //下一步
             prevStep () {
                 this.step --;
             },
 
+            //保存
             save () {
+                this.formData.corpusAppliedOrgId = [];
+                this.formData.donateAppliedOrgId = [];
+                this.multipleSelectionToMoney.forEach( (item, index) => {
+                    this.formData.corpusAppliedOrgId.push(item.id);
+                });
+                this.multipleSelectionToSend.forEach( (item, index) => {
+                    this.formData.donateAppliedOrgId.push(item.id);
+                });
+                console.log(this.formData)
+                let params = {
+                    account: this.formData.account,
+                    accountName: this.formData.accountName,
+                    unit: this.formData.unit,
+                    rate: this.formData.start/this.formData.end,
+                    exchangeToCash: this.formData.exchangeToCash,
+                    corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
+                    donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
+                };
+                console.log(params)
+                this.hide();
+                this.$emit('updata-list', { item: this.formData, index: this.index});
+//                this.updateMemberAccountDefine(params);
+            },
 
+            //保存/更改/储值账户设置
+            updateMemberAccountDefine ( params ) {
+                ajax.post('updateMemberAccountDefine', params).then(res => {
+                    if( res.success ) {
+                        this.$Message.success('新增成功！');
+                        this.hide();
+                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                    } else {
+                        this.$Message.warning(res.message || 'updateMemberAccountDefine 新增失败！');
+                    }
+                })
             },
 
         },
@@ -225,6 +288,28 @@
                 }
             }
 
+            /deep/ .ivu-from{
+                padding-top: 15px;
+            }
+
+            /deep/ .ivu-select{
+                width: 280px;
+            }
+
+            /deep/ .ivu-input-wrapper{
+                width: 280px;
+                &.single-input{
+                    width: 130px !important;
+                }
+            }
+
         }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+
     }
 </style>
