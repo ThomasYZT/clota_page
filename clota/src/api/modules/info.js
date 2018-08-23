@@ -10,6 +10,8 @@ export default {
     'saveNewMemberInfo' : '/member/saveNewMemberInfo',
     //会员信息-修改会员信息
     'editMemberInfo' : '/member/editMemberInfo',
+
+    /***********************************会员积分***********************************/
     //会员积分、折扣率查询
     'memberDiscountOfMemberList' : '/members/memberDiscountOfMemberList',
     //设置会员积分、折扣率查询
@@ -30,4 +32,12 @@ export default {
     'specialMemberDiscountOfMemberList' : '/members/specialMemberDiscountOfMemberList',
     //设置特殊会员折扣率
     'setSpecialMemberDiscountOfMember' : '/members/setSpecialMemberDiscountOfMember',
+
+    /***********************************会员卡券***********************************/
+    //设置特殊会员折扣率
+    'queryCoupons' : '/member/memberCoupon/queryCoupons',
+    //新增或修改卡券
+    'updateCoupon' : '/member/memberCoupon/updateCoupon',
+    //查询所有店铺信息
+    'listAmountRange' : '/member/memberBasicSet/listAmountRange',
 }

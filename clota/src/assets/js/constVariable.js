@@ -31,3 +31,19 @@ export const cardStatusEnum = [
     { name: 'frozen', desc: '已冻结' },
     { name: 'active', desc: '正常使用' },
 ];
+
+//卡券类别
+export const couponTypeList = [
+    {
+        label : '代金券',
+        value : 'cashCoupon',
+    },
+    {
+        label : '兑换券',
+        value : 'coinCoupon',
+    },
+    {
+        label : '折扣券',
+        value : 'discountCoupon',
+    }
+];

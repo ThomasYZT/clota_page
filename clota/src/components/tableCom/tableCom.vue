@@ -154,7 +154,11 @@
             setTableMaxHeight () {
                 let rootEl = this.$root.$el;
                 if(rootEl){
-                    this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
+                    if(this.showPagination){
+                        this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight - 92 + 'px';
+                    }else{
+                        this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
+                    }
                 }
             },
             /**
@@ -207,7 +211,7 @@
         }
 
         .pagination {
-            margin: 30px auto;
+            padding: 30px 0;
             text-align: center;
         }
 

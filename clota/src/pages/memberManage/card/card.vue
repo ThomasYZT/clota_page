@@ -9,147 +9,133 @@
             </Tabs>
         </div>
 
-        <div class="btn-wrap">
-            <template v-if="tabsName === 'created'"> <Button type="primary" @click="add">+ 新增卡券</Button></template>
-            <template v-else><Button type="error" @click="showDeleteModal">批量删除</Button></template>
+        <div class="btn-wrap"v-if="tabsName === 'created'">
+            <Button type="primary" @click="add">+ 新增卡券</Button>
         </div>
-
-        <div class="table-wrap">
-            <el-table
-                :data="createdData"
-                :border="true"
-                max-height="450"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    prop="no"
-                    label="卡券串码"
-                    width="150">
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="卡券名称"
-                    width="100">
-                </el-table-column>
-                <el-table-column
-                    prop="type"
-                    label="类别"
-                    width="90">
-                </el-table-column>
-                <el-table-column
-                    prop="condition"
-                    label="使用条件"
-                    width="180">
-                </el-table-column>
-                <el-table-column
-                    prop="range"
-                    label="有效期"
-                    width="320">
-                </el-table-column>
-                <el-table-column
-                    prop=""
-                    label="操作">
-                    <template slot-scope="scope">
-                        <div class="operation">
-                            <template v-if="tabsName === 'created'">
-                                <span class="span-blue" @click="modifyFunc(scope)">修改</span>
-                                <span class="span-blue" @click="cancelFunc(scope)">作废</span>
-                            </template>
-                            <template v-else>
-                                <span class="span-blue" @click="reOpen(scope)">重新启用</span>
-                            </template>
-
-                            <span @click="showModal(scope)">删除</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-
-        <div class="page-wrap" v-if="createdData.length > 0">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="parseInt(queryParams.pageNo)"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="parseInt(queryParams.pageSize)"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="parseInt(total)">
-            </el-pagination>
-        </div>
-
-        <!--删除卡劵modal-->
-        <Modal
-            v-model="visible"
-            title="删除卡券"
-            class-name="delete-card-modal vertical-center-modal"
-            width="420"
-            :mask-closable="false"
-            @on-cancel="hide">
-            <div class="modal-body">
-                <div class="left"><span class="iconfont icon-question"></span></div>
-                <div class="right">
-                    您正在删除卡券：<span class="name">代金券100元</span><br>
-                    <span class="notice">本操作不可撤销，</span>是否确认删除？
+        <!--已创建的卡券信息-->
+        <table-com
+            v-if="tabsName === 'created'"
+            key="created"
+            :column-data="columnData"
+            :table-data="tableData"
+            :border="true"
+            :show-pagination="true"
+            :total-count="totalCount"
+            :ofset-height="170"
+            @query-data="queryList">
+            <el-table-column
+                slot="column3"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getUseCondition(scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column4"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.effectiveTime}}-{{scope.row.expireTime}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <div class="operation">
+                        <span class="span-blue"
+                              @click="modifyFunc(scope.row)">
+                            修改
+                        </span>
+                        <span class="span-blue"
+                              @click="obsoloteCoupon(scope.row)">
+                            作废
+                        </span>
+                        <span class="span-blue"
+                              @click="showModal(scope.row)">
+                            删除
+                        </span>
                     </div>
-            </div>
-            <div slot="footer" class="modal-footer">
-                <Button type="error" @click="deleteCardFunc" >确定</Button>
-                <Button type="ghost" @click="hide" >取消</Button>
-            </div>
+                </template>
+            </el-table-column>
+        </table-com>
+        <!--已作废的卡券信息-->
+        <table-com
+            v-if="tabsName === 'cancellation'"
+            key="cancellation"
+            :column-data="columnData"
+            :table-data="tableData"
+            :border="true"
+            :show-pagination="true"
+            :total-count="totalCount"
+            :ofset-height="138"
+            @query-data="queryList">
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                :width="200">
+                <template slot-scope="scope">
+                    <div class="operation">
+                        <span class="span-blue"
+                              @click="modifyFunc(scope.row)">
+                            修改
+                        </span>
+                        <span class="span-blue"
+                              @click="reloadCoupon(scope.row)">
+                            重新启用
+                        </span>
+                        <span class="span-blue"
+                              @click="showModal(scope.row)">
+                            删除
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
+        </table-com>
 
-        </Modal>
+        <!--删除模态框-->
+        <del-modal v-model="visible"
+                   @confirm-del="deleteCardFunc"
+                   :coupon-data="currentData">
+        </del-modal>
 
     </div>
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {columnData} from './cardConfig';
+    import delModal from './delModal';
+
     export default {
-        components: {},
+        components : {
+            tableCom,
+            delModal
+        },
         data () {
             return {
+                //当前tap值
                 tabsName: 'created',
-                createdData: [
-                    {
-                        no: '0083928399273',
-                        name: '100元',
-                        type: '代金券',
-                        condition: '满300可用',
-                        range: '2018.09.01 12:00:00-2018.09.08 22:00:00',
-                    },
-                    {
-                        no: '0083928399273',
-                        name: '九五折',
-                        type: '折扣券',
-                        condition: '满100可用',
-                        range: '2018.09.01 12:00:00-2018.09.08 22:00:00',
-                    },
-                    {
-                        no: '0083928399273',
-                        name: '套餐一份',
-                        type: '兑换券',
-                        condition: '仅限张记手擀面使用',
-                        range: '2018.09.01 12:00:00-2018.09.08 22:00:00',
-                    },
-                    {
-                        no: '0083928399273',
-                        name: '九三折',
-                        type: '折扣券',
-                        condition: '满100可用',
-                        range: '2018.09.01 12:00:00-2018.09.08 22:00:00',
-                    },
-                ],
-                total: 50,
-                queryParams: {
-                    pageNo: '1',
-                    pageSize: '10',
-                },
-                multipleSelection: [],
+                //表格数据
+                tableData: [],
+                //删除模态框是否显示
                 visible: false,
+                //表头配置
+                columnData : columnData,
+                //表格数据总条数
+                totalCount : 0,
+                //当前操作的行数据
+                currentData : {}
             }
         },
         methods: {
@@ -162,55 +148,170 @@
                 this.tabsName = name;
             },
 
+            /**
+             * 新增卡券
+             */
             add () {
                 this.$router.push({ name: 'addCard', query: { type: 'add' }});
             },
 
-            showDeleteModal () {
-
-            },
-
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-
+            /**
+             * 修改券
+             * @param data
+             */
             modifyFunc ( data ) {
-                console.log(data);
-                this.$router.push({ name: 'addCard', query: { type: 'modify' }});
+                console.log(this.getUpdateCouponParams(data))
+                this.$router.push({
+                    name: 'addCard',
+                    query: { type: 'modify' },
+                    params : this.getUpdateCouponParams(data)
+                });
             },
 
-            reOpen ( data ) {
-                console.log(data);
-                this.$router.push({ name: 'addCard', query: { type: 'modify' }});
+            /**
+             * 作废券
+             * @param data 券数据
+             */
+            obsoloteCoupon ( data ) {
+                let params = this.getUpdateCouponParams(data);
+                ajax.post('updateCoupon',Object.assign({
+                    status : 'invalid'
+                },params)).then(res => {
+                    if(res.success){
+                        this.$Message.success("作废成功！");
+                        this.queryList();
+                    }else{
+                        this.$Message.error('作废失败！');
+                    }
+                });
             },
 
-            cancelFunc ( data ) {
-                console.log(data);
-                this.$Message.success("作废成功！");
+            /**
+             * 重新启用券
+             * @param data 券数据
+             */
+            reloadCoupon (data) {
+                console.log(data)
+                let params = this.getUpdateCouponParams(data);
+                ajax.post('updateCoupon',Object.assign({
+                    status : 'valid'
+                },params)).then(res => {
+                    if(res.success){
+                        this.$Message.success("启用成功！");
+                        this.queryList();
+                    }else{
+                        this.$Message.error('启用失败！');
+                    }
+                });
             },
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
-
-
-            showModal () {
+            /**
+             * 显示删除的模态框
+             * @param data
+             */
+            showModal (data) {
                 this.visible = true;
+                this.currentData = data;
             },
 
-            //关闭模态框
-            hide(){
-                this.visible = false;
-            },
-
+            /**
+             * 删除券
+             */
             deleteCardFunc () {
-                console.log('删除')
+                let params = this.getUpdateCouponParams(this.currentData);
+                ajax.post('updateCoupon',Object.assign({
+                    isDeleted : 'true'
+                },params)).then(res => {
+                    if(res.success){
+                        this.$Message.success("删除成功！");
+                        this.queryList();
+                    }else{
+                        this.$Message.error('删除失败！');
+                    }
+                });
             },
 
-
+            /**
+             * 查询新建的会员卡券信息
+             */
+            queryList () {
+                ajax.post('queryCoupons',{
+                    isDeleted : false,
+                    status : this.tabsName === 'created' ? 'valid' : 'invalid',
+                    pageNo : 1,
+                    pageSize : 10
+                }).then(res => {
+                   if(res.success){
+                       this.tableData = res.data.data ? res.data.data : [];
+                       this.totalCount = res.data.totalRow;
+                   }else{
+                       this.tableData = [];
+                       this.totalCount = 0;
+                   }
+                }).catch(() => {
+                    this.tableData = [];
+                    this.totalCount = 0;
+                });
+            },
+            /**
+             * 获取卡券使用条件
+             * @param rowData
+             */
+            getUseCondition(rowData) {
+                if(rowData.couponType === 'discountCoupon'){//折扣券
+                    return `最低可使用金额${rowData.conditionLowerLimtation}元最高使用金额${rowData.conditionUpperLimtation}元`
+                }else if(rowData.couponType === 'coinCoupon'){//兑换券
+                    return `仅限张记手擀面`;
+                }else if(rowData.couponType === 'cashCoupon'){//代金券
+                    return `满${rowData.nominalValue}可用`
+                }
+            },
+            /**
+             * 获取编辑卡券的参数
+             */
+            getUpdateCouponParams (data) {
+                if(data.couponType === 'cashCoupon'){//代金券
+                    return {
+                        id : data.id,
+                        couponName : data.couponName,
+                        couponType : data.couponType,
+                        nominalValue : data.nominalValue,
+                        conditionLowerLimtation : data.conditionLowerLimtation,
+                        effectiveTime : new Date(data.effectiveTime).format('yyyy/MM/dd HH:mm:ss'),
+                        expireTime : new Date(data.expireTime).format('yyyy/MM/dd HH:mm:ss'),
+                        isDiscountCoexist : data.isDiscountCoexist,
+                        isEffectBeforeDiscount : data.isEffectBeforeDiscount,
+                        conditionChannelId : data.conditionChannelId,
+                        conditionOrgId : data.conditionOrgId,
+                    }
+                }else if(data.couponType === 'coinCoupon'){//兑换券
+                    return {
+                        id : data.id,
+                        couponName : data.couponName,
+                        couponType : data.couponType,
+                        effectiveTime : new Date(data.effectiveTime).format('yyyy/MM/dd HH:mm:ss'),
+                        expireTime : new Date(data.expireTime).format('yyyy/MM/dd HH:mm:ss'),
+                        store : data.store,
+                        integCanSelected : data.store,
+                        conditionChannelId : data.conditionChannelId,
+                        conditionProductId : data.conditionProductId,
+                    }
+                }else if(data.couponType === 'discountCoupon'){//折扣券
+                    return {
+                        id : data.id,
+                        couponName : data.couponName,
+                        couponType : data.couponType,
+                        nominalValue : data.nominalValue,
+                        conditionLowerLimtation : data.conditionLowerLimtation,
+                        conditionUpperLimtation : data.conditionUpperLimtation,
+                        effectiveTime : new Date(data.effectiveTime).format('yyyy/MM/dd HH:mm:ss'),
+                        expireTime : new Date(data.expireTime).format('yyyy/MM/dd HH:mm:ss'),
+                        integCanSelected : data.integCanSelected,
+                        storeCanUseId : data.storeCanUseId,
+                        conditionChannelId : data.conditionChannelId,
+                    }
+                }
+            },
         }
     }
 </script>
@@ -222,7 +323,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
 
@@ -237,49 +337,6 @@
             line-height: 56px;
             padding: 0 30px;
         }
-
-        .table-wrap{
-
-        }
-
-        .page-wrap{
-            margin-top: 30px;
-            text-align: center;
-        }
     }
 
-    .delete-card-modal{
-        .modal-body{
-            padding: 45px 60px;
-            text-align: left;
-            @include clearfix();
-            .left{
-                float: left;
-                width: 14px;
-                text-align: right;
-                span{
-                    display: inline-block;
-                    width: 14px;
-                    height: 14px;
-                    background-color: pink;
-                    vertical-align: middle;
-                }
-            }
-            .right{
-                float: right;
-                width: calc(100% - 14px);
-                font-size: $font_size_14px;
-                color: $color_333;
-                letter-spacing: 1px;
-                line-height: 24px;
-                padding-left: 10px;
-                .name{
-                    color: $color_yellow;
-                }
-                .notice{
-                    color: $color_red;
-                }
-            }
-        }
-    }
 </style>

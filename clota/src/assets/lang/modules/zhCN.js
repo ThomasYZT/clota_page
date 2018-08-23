@@ -57,4 +57,5 @@ export default {
     'accoutOrPassErr': '账号或密码错误',
     'loginErr': '登录失败',
     'rightGetError': '获取权限失败',
+    'confirm': '确定',
 }

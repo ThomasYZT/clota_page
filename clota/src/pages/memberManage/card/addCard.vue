@@ -11,109 +11,168 @@
 
         <div class="form-container">
 
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="115">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="220">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="卡券名称" prop="name">
-                        <Input v-model.trim="data.name" placeholder="请输入"/>
+                    <!--卡券名称-->
+                    <Form-item label="卡券名称" prop="couponName">
+                        <Input v-model.trim="formData.couponName"
+                               placeholder="请输入"
+                               maxlength="30"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
+                    <!--卡券类别-->
                     <Form-item label="卡券类别" prop="type">
-                        <Select v-model="data.type" placeholder="请选择">
-                            <Option v-for="(item,index) in enumData.typeEnum" :key="index" :value="item.value">{{item.name}}</Option>
+                        <Select v-model.trim="formData.couponType" placeholder="请选择">
+                            <Option v-for="(item,index) in couponTypeList"
+                                    :key="index"
+                                    :value="item.value">
+                                {{item.label}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '代金券' || data.type === '折扣券'">
-                    <Form-item label="卡券面值" prop="num">
-                        <Input v-model.trim="data.num" placeholder="请输入"></Input>
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cashCoupon' || formData.couponType === 'discountCoupon'">
+                    <Form-item label="卡券面值" prop="nominalValue">
+                        <Input v-model.trim="formData.nominalValue" placeholder="请输入"/>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '代金券'">
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cashCoupon'">
+                    <!--消费满-->
                     <Form-item label="消费满" prop="enough">
-                        <Input v-model.trim="data.enough" placeholder="请输入" style="width: 240px;"></Input><span style="padding-left: 10px;">可用</span>
+                        <Input v-model.trim="formData.enough"
+                               placeholder="请输入"/>
+                        <span class="label-used">可用</span>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '折扣券'">
-                    <Form-item label="最低消费金额" prop="low">
-                        <Input v-model.trim="data.low" placeholder="请输入" style="width: 240px;"></Input><span style="padding-left: 10px;">可用</span>
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discountCoupon'">
+                    <!--最低消费金额-->
+                    <Form-item label="最低消费金额" prop="conditionLowerLimtation">
+                        <Input v-model.trim="formData.conditionLowerLimtation"
+                               placeholder="请输入"/>
+                        <span class="label-used">可用</span>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '折扣券'">
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discountCoupon'">
+                    <!--最高消费金额-->
                     <Form-item label="最高消费金额" prop="high">
-                        <Input v-model.trim="data.high" placeholder="请输入" style="width: 240px;"></Input><span style="padding-left: 10px;">可用</span>
+                        <Input v-model.trim="formData.high"
+                               placeholder="请输入"/>
+                        <span class="label-used">可用</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="有效开始日期" prop="beginTime">
+                    <!--有效开始日期-->
+                    <Form-item label="有效开始日期" prop="effectiveTime">
                         <Date-picker
                             type="datetime"
-                            v-model="data.beginTime"
+                            v-model.trim="formData.effectiveTime"
                             placeholder="请选择">
                         </Date-picker>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="有效结束日期" prop="endTime">
+                    <!--有效结束日期-->
+                    <Form-item label="有效结束日期" prop="expireTime">
                         <Date-picker
                             type="datetime"
-                            v-model="data.endTime"
+                            v-model.trim="formData.expireTime"
                             placeholder="请选择">
                         </Date-picker>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '兑换券'">
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'coinCoupon'">
+                    <!--选择店铺-->
                     <Form-item label="选择店铺" prop="store">
-                        <Select v-model="data.store" placeholder="请选择">
-
+                        <Select v-model="formData.store" placeholder="请选择">
+                            <Option v-for="(item,index) in listAmountRange"
+                                    :key="index"
+                                    :value="item.id">
+                                {{item.orgName}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="可兑换积分为" prop="integ">
-                        <Input v-model.trim="data.integ" placeholder="请输入"></Input>
+                    <!--可兑换积分为-->
+                    <Form-item label="可兑换积分为" prop="integCanSelected">
+                        <Input v-model="formData.integCanSelected" placeholder="请输入" />
+                    </Form-item>
+                </div>
+
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cashCoupon'">
+                    <!--可用渠道-->
+                    <Form-item label="能否和会员折扣权益同时使用" prop="conditionChannelId">
+                        <RadioGroup v-model="formData.isDiscountCoexist">
+                            <Radio label="true">可同时使用</Radio>
+                            <Radio label="false">不可同时使用</Radio>
+                        </RadioGroup>
+                    </Form-item>
+                </div>
+
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cashCoupon'">
+                    <!--代金券在折扣前后使用设置-->
+                    <Form-item label="代金券在折扣前后使用设置" prop="conditionChannelId">
+                        <RadioGroup v-model="formData.isEffectBeforeDiscount">
+                            <Radio label="true">折扣前可用</Radio>
+                            <Radio label="false">折扣后可用</Radio>
+                        </RadioGroup>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="可用渠道" prop="channel">
-                        <Select v-model="data.channel" placeholder="请选择">
-
+                    <!--可用渠道-->
+                    <Form-item label="可用渠道" prop="conditionChannelId">
+                        <Select v-model.trim="formData.conditionChannelId" placeholder="请选择">
+                            <Option v-for="(item,index) in channelSetList"
+                                    :key="index"
+                                    :value="item.id">
+                                {{item.channelName}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '代金券' || data.type === '折扣券'">
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cashCoupon' || formData.couponType === 'discountCoupon'">
+                    <!--可用店铺-->
                     <Form-item label="可用店铺" prop="useStore">
-                        <Select v-model="data.useStore" placeholder="请选择">
-
+                        <Select v-model.trim="formData.storeCanUseId" placeholder="请选择">
+                            <Option v-for="(item,index) in listAmountRange"
+                                    :key="index"
+                                    :value="item.id">
+                                {{item.orgName}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '兑换券'">
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'coinCoupon'">
+                    <!--选择商品-->
                     <Form-item label="选择商品" prop="commodity">
-                        <Select v-model="data.commodity" placeholder="请选择">
-
+                        <Select v-model.trim="formData.commodity" placeholder="请选择">
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.type === '代金券'"></div>
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cashCoupon'"></div>
 
             </Form>
 
             <div class="content-footer">
-                <i-button type="primary" :loading="loading" @click="formValidateFunc">确定</i-button>
+                <i-button type="primary"
+                          :loading="loading"
+                          @click="formValidateFunc">{{$t('confirm')}}</i-button>
                 <router-link :to="{name: 'card'}">
-                    <i-button type="ghost">取消</i-button>
+                    <i-button type="ghost">{{$t('cancel')}}</i-button>
                 </router-link>
             </div>
         </div>
-
-
 
     </div>
 </template>
 
 <script>
-
+    import ajax from '@/api/index.js';
+    import {couponTypeList} from '@/assets/js/constVariable.js';
     export default {
         components: { },
         data() {
@@ -132,43 +191,60 @@
                 //新增/修改
                 type: 'add',
                 loading: false,
-                enumData: {
-                    typeEnum: [
-                        { name: '代金券', value: '代金券' },
-                        { name: '兑换券', value: '兑换券' },
-                        { name: '折扣券', value: '折扣券' },
-                    ],
-                },
+                //卡券类别列表
+                couponTypeList : couponTypeList,
+                //渠道列表
+                channelSetList : [],
+                //可用店铺列表
+                listAmountRange : [],
                 // 表单数据
-                data: {
-                    name: '',
-                    type: '代金券',
-                    num: '',
-                    low: '',
+                formData: {
+                    //卡券名称
+                    couponName: '',
+                    //卡券类别
+                    couponType: 'discountCoupon',
+                    //卡券面值
+                    nominalValue: '',
+                    //最低消费金额后可用
+                    conditionLowerLimtation: '',
+                    // 最高消费金额内可用
                     high: '',
+                    //可兑换积分数
+                    integCanSelected : '',
                     enough: '',
-                    beginTime: '',
-                    endTime: '',
+                    // 有效开始时间
+                    effectiveTime: '',
+                    //有效结束时间
+                    expireTime: '',
+                    //可用店铺id
+                    storeCanUseId : '',
                     store: '',
                     integ: '',
-                    channel: '',
+                    //可用渠道id
+                    conditionChannelId: '',
                     chooseStore: '',
+                    //商品
                     commodity: '',
+                    //是否与会员折扣权益同时使用
+                    isDiscountCoexist : 'false',
+                    //代金券在折扣前后使用设置
+                    isEffectBeforeDiscount : 'false'
                 },
+                //校验规则
                 ruleValidate: {
-                    name: [
+                    couponName: [
                         { required: true, message: '卡券名称不能为空', trigger: 'blur' },
                         { type: 'string', max: 20, message: '卡券名称不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    type: [
+                    couponType: [
                         { required: true, message: '卡券类别不能为空', trigger: 'change' },
                     ],
-                    num: [
+                    nominalValue: [
                         { required: true, message: '卡券面值不能为空', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    low: [
+                    conditionLowerLimtation: [
                         { required: true, message: '最低消费金额不能为空', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
@@ -180,20 +256,20 @@
                         { required: true, message: '消费值不能为空', trigger: 'blur' },
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
-                    beginTime: [
-                        { required: true, message: '有效开始日期不能为空', trigger: 'change' },
+                    effectiveTime: [
+                        // { required: true, message: '有效开始日期不能为空', trigger: 'change' },
                     ],
-                    endTime: [
-                        { required: true, message: '有效结束日期不能为空', trigger: 'change' },
+                    expireTime: [
+                        // { required: true, message: '有效结束日期不能为空', trigger: 'change' },
                     ],
                     store: [
                         { required: true, message: '店铺不能为空', trigger: 'change' },
                     ],
-                    integ: [
+                    integCanSelected: [
                         { required: true, message: '可兑换积分为不能为空', trigger: 'blur' },
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
-                    channel: [
+                    conditionChannelId: [
                         { required: true, message: '可用渠道不能为空', trigger: 'change' },
                     ],
                 }
@@ -218,16 +294,130 @@
                 })
             },
 
-            //表单校验
+            /**
+             * 表单校验
+             */
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                       console.log(true)
+                       this.updateCoupon();
                     }
                 })
             },
+            /**
+             * 新增或编辑卡券
+             */
+            updateCoupon () {
+                let params = this.getAddCouponParams();
+                ajax.post('updateCoupon',params).then(res => {
+                    if(res.success){
+                        this.$Message.success('新增成功');
+                    }else{
+                        this.$Message.error('新增失败');
+                    }
+                });
+            },
+            /**
+             * 查询渠道
+             */
+            queryChannelSet () {
+                ajax.post('queryChannelSet',{
+                    isDeleted : 'false',
+                    pageNo : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.success){
+                        this.channelSetList = res.data.data ? res.data.data : [];
+                    }else{
+                        this.channelSetList =  [];
+                    }
+                }).catch(() => {
+                    this.channelSetList =  [];
+                });
+            },
+            /**
+             * 查询所有店铺信息
+             */
+            queryListAmountRange () {
+                ajax.post('listAmountRange').then(res => {
+                    if(res.success){
+                        this.listAmountRange = res.data ? res.data : [];
+                    }else{
+                        this.listAmountRange =  [];
+                    }
+                }).catch(() => {
+                    this.listAmountRange =  [];
+                });
+            },
+            /**
+             * 获取新增卡券的参数
+             */
+            getAddCouponParams () {
+                if(this.formData.couponType === 'cashCoupon'){//新增代金券
+                    return {
+                        couponName : this.formData.couponName,
+                        couponType : this.formData.couponType,
+                        nominalValue : this.formData.nominalValue,
+                        conditionLowerLimtation : this.formData.conditionLowerLimtation,
+                        effectiveTime : this.formData.effectiveTime.format('yyyy/MM/dd HH:mm:ss'),
+                        expireTime : this.formData.expireTime.format('yyyy/MM/dd HH:mm:ss'),
+                        isDiscountCoexist : this.formData.isDiscountCoexist,
+                        isEffectBeforeDiscount : this.formData.isEffectBeforeDiscount,
+                        conditionChannelId : this.formData.conditionChannelId,
+                        conditionOrgId : this.formData.conditionChannelId,
+                        isDeleted : 'false'
+                    }
+                }else if(this.formData.couponType === 'coinCoupon'){//新增兑换券
+                    return {
+                        couponName : this.formData.couponName,
+                        couponType : this.formData.couponType,
+                        effectiveTime : this.formData.effectiveTime.format('yyyy/MM/dd HH:mm:ss'),
+                        expireTime : this.formData.expireTime.format('yyyy/MM/dd HH:mm:ss'),
+                        store : this.formData.store,
+                        integCanSelected : this.formData.integCanSelected,
+                        conditionChannelId : this.formData.conditionChannelId,
+                        conditionProductId : this.formData.commodity,
+                        isDeleted : 'false'
+                    }
+                }else if(this.formData.couponType === 'discountCoupon'){//新增折扣券
+                    return {
+                        couponName : this.formData.couponName,
+                        couponType : this.formData.couponType,
+                        nominalValue : this.formData.nominalValue,
+                        conditionLowerLimtation : this.formData.conditionLowerLimtation,
+                        conditionUpperLimtation : this.formData.high,
+                        effectiveTime : this.formData.effectiveTime.format('yyyy/MM/dd HH:mm:ss'),
+                        expireTime : this.formData.expireTime.format('yyyy/MM/dd HH:mm:ss'),
+                        integCanSelected : this.formData.integCanSelected,
+                        storeCanUseId : this.formData.conditionOrgId,
+                        conditionChannelId : this.formData.conditionChannelId,
+                        isDeleted : 'false'
+                    }
+                }
+            },
+            /**
+             *
+             */
+            memberDiscountOfProductList () {
 
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                console.log(params)
+            }
         },
+        created () {
+            this.queryChannelSet();
+            this.queryListAmountRange();
+        },
+        beforeRouteEnter(to,from,next) {
+            next(vm => {
+                vm.getParams(to.params);
+            });
+        }
     }
 </script>
 
@@ -259,7 +449,7 @@
             }
 
             .ivu-form{
-                padding: 40px 0;
+                padding: 40px 50px 40px 0;
                 text-align: center;
             }
 
@@ -267,8 +457,8 @@
                 position: relative;
                 display: inline-block;
                 min-width: 495px;
-                padding-right: 55px;
-                width: 40%;
+                padding-right: 20px;
+                width: 49%;
                 text-align: center;
                 vertical-align: middle;
 
@@ -285,8 +475,8 @@
             }
 
             .ivu-form-item{
-                width: 395px;
-                margin: 0 auto 20px;
+                /*width: 395px;*/
+                /*margin: 0 auto 20px;*/
                 text-align: left;
 
                 .ivu-date-picker {
@@ -300,6 +490,11 @@
 
                 .ivu-select-item{
                     font-size: 14px !important;
+                }
+
+                .label-used{
+                    position: absolute;
+                    @include absolute_pos(absolute,$right : -35px,$top : 2px);
                 }
             }
 
