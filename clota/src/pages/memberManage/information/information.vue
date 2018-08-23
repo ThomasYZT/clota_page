@@ -4,13 +4,13 @@
 
         <div class="filter-wrap">
             <Select v-model="queryParams.levelId" @on-change="queryList">
-                <Option value="">全部会员等级</Option>
+                <Option v-for="(level, index) in enumData.level" :key="index"
+                        :value="level.id">{{level.levelDesc}}</Option>
             </Select>
             <Select v-model="queryParams.channelId" @on-change="queryList">
                 <Option value="">全部会员渠道</Option>
             </Select>
             <Select v-model="queryParams.vipStatus" @on-change="queryList">
-                <Option value="">全部会员类型</Option>
                 <Option v-for="(item,index) in enumData.vipStatusEnum"
                         :key="index"
                         :value="item.name">
@@ -18,7 +18,6 @@
                 </Option>
             </Select>
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
-                <Option value="">全部会员状态</Option>
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
                         :value="item.name">
@@ -145,15 +144,15 @@
                 // 查询数据 keyWord-搜索关键字，levelId-会员级别Id，channelId-会员渠道Id，vipStatus-会员类型，cardStatus-会员状态
                 queryParams: {
                     keyWord: '',
-                    levelId: '',
-                    channelId: '',
-                    vipStatus: '',
-                    cardStatus: '',
+                    levelId: 'null',
+                    channelId: 'null',
+                    vipStatus: 'null',
+                    cardStatus: 'null',
                 },
                 //枚举数据
                 enumData: {
                     //会员级别
-                    level: [],
+                    level: [{'id': 'null', 'levelDesc': '全部会员等级'}],
                     //会员渠道
                     channel: [],
                     //会员类型
@@ -178,8 +177,26 @@
             this.multipleSelection = [];
             //查询列表
             this.queryList();
+            this.getLevelList();
         },
         methods: {
+            // 获取会员级别列表
+            getLevelList() {
+                ajax.post('queryMemberLevels', {
+                    pageNo: 1,
+                    pageSize: 99999,
+                    companyId: '1',
+                    orgId: '101',
+                    isDeleted: 'false',
+                }).then(res => {
+                    if(res.success){
+                        this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
+                    } else {
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                })
+            },
+
 
             //新增会员
             add () {
@@ -270,10 +287,10 @@
                 this.setTableHeight();
                 ajax.post('queryMemberPage', {
                     keyWord: this.queryParams.keyWord,
-                    levelId: this.queryParams.levelId,
-                    channelId: this.queryParams.channelId,
-                    vipStatus: this.queryParams.vipStatus,
-                    cardStatus: this.queryParams.cardStatus,
+                    levelId: this.queryParams.levelId == 'null' ? null : this.queryParams.levelId,
+                    channelId: this.queryParams.channelId == 'null' ? null : this.queryParams.channelId,
+                    vipStatus: this.queryParams.vipStatus == 'null' ? null : this.queryParams.vipStatus,
+                    cardStatus: this.queryParams.cardStatus == 'null' ? null : this.queryParams.cardStatus,
                     pageNo: this.pageNo,
                     pageSize: this.pageSize,
                 }).then(res => {
