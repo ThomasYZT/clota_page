@@ -19,8 +19,7 @@
                     <!--卡券名称-->
                     <Form-item label="卡券名称" prop="couponName">
                         <Input v-model.trim="formData.couponName"
-                               placeholder="请输入"
-                               maxlength="30"/>
+                               placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -199,6 +198,7 @@
                 listAmountRange : [],
                 // 表单数据
                 formData: {
+                    id : '',
                     //卡券名称
                     couponName: '',
                     //卡券类别
@@ -355,6 +355,7 @@
             getAddCouponParams () {
                 if(this.formData.couponType === 'cashCoupon'){//新增代金券
                     return {
+                        id : this.formData.id,
                         couponName : this.formData.couponName,
                         couponType : this.formData.couponType,
                         nominalValue : this.formData.nominalValue,
@@ -369,6 +370,7 @@
                     }
                 }else if(this.formData.couponType === 'coinCoupon'){//新增兑换券
                     return {
+                        id : this.formData.id,
                         couponName : this.formData.couponName,
                         couponType : this.formData.couponType,
                         effectiveTime : this.formData.effectiveTime.format('yyyy/MM/dd HH:mm:ss'),
@@ -381,6 +383,7 @@
                     }
                 }else if(this.formData.couponType === 'discountCoupon'){//新增折扣券
                     return {
+                        id : this.formData.id,
                         couponName : this.formData.couponName,
                         couponType : this.formData.couponType,
                         nominalValue : this.formData.nominalValue,
@@ -406,7 +409,13 @@
              * @param params
              */
             getParams (params) {
-                console.log(params)
+                if(params && Object.keys(params).length > 0){
+                    for(let item in params){
+                        if(item in this.formData){
+                            this.formData[item] = params[item];
+                        }
+                    }
+                }
             }
         },
         created () {

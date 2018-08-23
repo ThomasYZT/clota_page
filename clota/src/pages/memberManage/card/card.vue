@@ -160,6 +160,7 @@
              * @param data
              */
             modifyFunc ( data ) {
+                console.log(data)
                 console.log(this.getUpdateCouponParams(data))
                 this.$router.push({
                     name: 'addCard',
@@ -191,7 +192,6 @@
              * @param data 券数据
              */
             reloadCoupon (data) {
-                console.log(data)
                 let params = this.getUpdateCouponParams(data);
                 ajax.post('updateCoupon',Object.assign({
                     status : 'valid'
