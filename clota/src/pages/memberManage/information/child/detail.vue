@@ -245,7 +245,7 @@
 </template>
 
 <script>
-
+    import breadCrumbHead from '@/components/breadCrumbHead/index'
     import ajax from '@/api/index';
     import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal  from '../../components/addFundModal.vue';
@@ -260,6 +260,7 @@
     export default {
         mixins : [lifeCycleMixins],
         components: {
+            breadCrumbHead,
             addAccountModal,
             addFundModal,
             toCashModal,
@@ -332,7 +333,7 @@
 
             //查询自定义账户
             queryDefineAccountType () {
-                ajax.post('queryDefineAccountType', {}).then(res => {
+                ajax.post('queryDefineAccountType').then(res => {
                     if(res.success){
                         this.defineAccount = res.data || [];
                     } else {
@@ -374,7 +375,6 @@
                     if(res.success){
                         this.accountData = res.data || [];
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message || 'listCardAccountInfo 失败！');
                     }
                 });

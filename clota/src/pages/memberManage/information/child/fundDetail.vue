@@ -2,7 +2,10 @@
     <!--个人资金交易明细-->
     <div class="member-fund-detail">
 
-        <bread-crumb-head :before-router-list="beforeRouterList" :locale-router="localeRouter"></bread-crumb-head>
+        <bread-crumb-head style="padding: 0 30px;"
+                          :before-router-list="beforeRouterList"
+                          :locale-router="localeRouter">
+        </bread-crumb-head>
 
         <div class="fund-detail-content">
             <div class="filter-wrap">
@@ -91,11 +94,11 @@
                 beforeRouterList: [
                     {
                         name: '会员信息',
-                        router: 'memberInfo',
+                        router: 'info',
                     },
                     {
                         name: '会员详情',
-                        router: 'infoDetail',
+                        router: 'detail',
                     },
                 ],
                 localeRouter: '个人资金交易明细',

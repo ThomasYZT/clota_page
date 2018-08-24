@@ -3,11 +3,10 @@
     <div class="member-rate">
 
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
-                <BreadcrumbItem to="/memberManage/infoDetail">会员详情</BreadcrumbItem>
-                <BreadcrumbItem>享受积分、折扣率信息</BreadcrumbItem>
-            </Breadcrumb>
+            <bread-crumb-head
+                :before-router-list="beforeRouterList"
+                :locale-router="localeRouter">
+            </bread-crumb-head>
         </div>
 
         <div class="rate-content">
@@ -41,10 +40,24 @@
 </template>
 
 <script>
+    import breadCrumbHead from '@/components/breadCrumbHead/index'
+
     export default {
-        components: {},
+        components: {breadCrumbHead},
         data () {
             return {
+                beforeRouterList: [
+                    {
+                        name: '会员信息',
+                        router: 'info',
+                    },
+                    {
+                        name: '会员详情',
+                        router: 'detail',
+                    },
+                ],
+                localeRouter: '享受积分、折扣率信息',
+
                 // 表格数据
                 tableData: [
                     {

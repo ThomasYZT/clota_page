@@ -240,7 +240,14 @@
                 },
                 //编辑原数据
                 info: {},
+                // 路由from参数
+                routerFrom: {}
             }
+        },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.routerFrom = from;
+            });
         },
         computed: {
             localeRouter () {
@@ -378,7 +385,7 @@
                         }
                         if(this.type === 'modify'){
                             this.$Message.success('修改会员成功！');
-                            this.$router.push(-1);
+                            this.$router.push({name: this.routerFrom.name});
                         }
                     } else {
                         console.log(res);

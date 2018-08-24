@@ -3,11 +3,10 @@
     <div class="member-info-card">
 
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
-                <BreadcrumbItem to="/memberManage/infoDetail">会员详情</BreadcrumbItem>
-                <BreadcrumbItem>会员卡包</BreadcrumbItem>
-            </Breadcrumb>
+            <bread-crumb-head
+                :before-router-list="breadRouterList"
+                :locale-router="'会员卡包'">
+            </bread-crumb-head>
         </div>
 
         <div class="card-content">
@@ -188,10 +187,14 @@
 </template>
 
 <script>
+    import breadCrumbHead from '@/components/breadCrumbHead/index'
+
     export default {
-        components: {},
+        components: {breadCrumbHead},
         data () {
             return {
+                // 面包屑路由列表
+                breadRouterList: [{name: '会员信息', router: 'info'}, {name: '会员详情', router: 'detail'}],
                 // 表格数据
                 tableData: [
                     {
