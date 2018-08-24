@@ -42,7 +42,6 @@
 
     .bread-crumb-head {
         @include block_outline($height: 50px);
-        padding: 14px 32px;
         background: $color_F4F6F8;
 
         /deep/ a.ivu-breadcrumb-item-link {

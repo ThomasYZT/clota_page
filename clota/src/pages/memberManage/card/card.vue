@@ -24,7 +24,17 @@
             :ofset-height="170"
             @query-data="queryList">
             <el-table-column
-                slot="column3"
+                slot="column1"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row['couponType'])}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column2"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -34,7 +44,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column4"
+                slot="column3"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -44,7 +54,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column5"
+                slot="column4"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -76,19 +86,45 @@
             :border="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="138"
+            :ofset-height="110"
             @query-data="queryList">
             <el-table-column
-                slot="column5"
+                slot="column1"
                 slot-scope="row"
                 :label="row.title"
-                :width="200">
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row['couponType'])}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column2"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getUseCondition(scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column3"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.effectiveTime}}-{{scope.row.expireTime}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column4"
+                slot-scope="row"
+                :label="row.title"
+                :width="150">
                 <template slot-scope="scope">
                     <div class="operation">
-                        <span class="span-blue"
-                              @click="modifyFunc(scope.row)">
-                            修改
-                        </span>
                         <span class="span-blue"
                               @click="reloadCoupon(scope.row)">
                             重新启用
@@ -116,6 +152,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './cardConfig';
     import delModal from './delModal';
+    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         components : {
@@ -135,7 +172,9 @@
                 //表格数据总条数
                 totalCount : 0,
                 //当前操作的行数据
-                currentData : {}
+                currentData : {},
+                pageSize : 10,
+                pageNo :1
             }
         },
         methods: {
@@ -160,8 +199,6 @@
              * @param data
              */
             modifyFunc ( data ) {
-                console.log(data)
-                console.log(this.getUpdateCouponParams(data))
                 this.$router.push({
                     name: 'addCard',
                     query: { type: 'modify' },
@@ -175,7 +212,7 @@
              */
             obsoloteCoupon ( data ) {
                 let params = this.getUpdateCouponParams(data);
-                ajax.post('updateCoupon',Object.assign({
+                ajax.post('updateCoupon',defaultsDeep({
                     status : 'invalid'
                 },params)).then(res => {
                     if(res.success){
@@ -192,16 +229,12 @@
              * @param data 券数据
              */
             reloadCoupon (data) {
-                let params = this.getUpdateCouponParams(data);
-                ajax.post('updateCoupon',Object.assign({
-                    status : 'valid'
-                },params)).then(res => {
-                    if(res.success){
-                        this.$Message.success("启用成功！");
-                        this.queryList();
-                    }else{
-                        this.$Message.error('启用失败！');
-                    }
+                this.$router.push({
+                    name: 'addCard',
+                    query: { type: 'reLoad' },
+                    params : this.getUpdateCouponParams(Object.assign({
+                        status :'valid'
+                    },data))
                 });
             },
 
@@ -234,12 +267,14 @@
             /**
              * 查询新建的会员卡券信息
              */
-            queryList () {
+            queryList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+                this.pageNo = pageNo;
+                this.pageSize = pageSize;
                 ajax.post('queryCoupons',{
                     isDeleted : false,
                     status : this.tabsName === 'created' ? 'valid' : 'invalid',
-                    pageNo : 1,
-                    pageSize : 10
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                    if(res.success){
                        this.tableData = res.data.data ? res.data.data : [];
@@ -261,9 +296,9 @@
                 if(rowData.couponType === 'discount_coupon'){//折扣券
                     return `最低可使用金额${rowData.conditionLowerLimtation}元最高使用金额${rowData.conditionUpperLimtation}元`
                 }else if(rowData.couponType === 'exchange_coupon'){//兑换券
-                    return `仅限张记手擀面`;
+                    return `仅限${rowData.remark}`;
                 }else if(rowData.couponType === 'cash_coupon'){//代金券
-                    return `满${rowData.nominalValue}可用`
+                    return `满${rowData.conditionLowerLimtation}可用`
                 }
             },
             /**
@@ -275,10 +310,11 @@
                         id : data.id,
                         couponName : data.couponName,
                         couponType : data.couponType,
-                        nominalValue : data.nominalValue,
-                        conditionLowerLimtation : data.conditionLowerLimtation,
-                        effectiveTime : new Date(data.effectiveTime).format('yyyy/MM/dd HH:mm:ss'),
-                        expireTime : new Date(data.expireTime).format('yyyy/MM/dd HH:mm:ss'),
+                        nominalValue : String(data.nominalValue),
+                        conditionLowerLimtation : String(data.conditionLowerLimtation),
+                        effectiveTime : new Date(data.effectiveTime),
+                        expireTime : new Date(data.expireTime),
+                        price : String(data.price),
                         isDiscountCoexist : data.isDiscountCoexist,
                         isEffectBeforeDiscount : data.isEffectBeforeDiscount,
                         conditionChannelId : data.conditionChannelId,
@@ -289,25 +325,25 @@
                         id : data.id,
                         couponName : data.couponName,
                         couponType : data.couponType,
-                        effectiveTime : new Date(data.effectiveTime).format('yyyy/MM/dd HH:mm:ss'),
-                        expireTime : new Date(data.expireTime).format('yyyy/MM/dd HH:mm:ss'),
-                        store : data.store,
-                        integCanSelected : data.store,
+                        effectiveTime : new Date(data.effectiveTime),
+                        expireTime : new Date(data.expireTime),
+                        price : String(data.price),
                         conditionChannelId : data.conditionChannelId,
                         conditionProductId : data.conditionProductId,
+                        conditionOrgId : data.conditionOrgId,
                     }
                 }else if(data.couponType === 'discount_coupon'){//折扣券
                     return {
                         id : data.id,
                         couponName : data.couponName,
                         couponType : data.couponType,
-                        nominalValue : data.nominalValue,
-                        conditionLowerLimtation : data.conditionLowerLimtation,
+                        nominalValue : String(data.nominalValue),
+                        conditionLowerLimtation : String(data.conditionLowerLimtation),
                         conditionUpperLimtation : data.conditionUpperLimtation,
-                        effectiveTime : new Date(data.effectiveTime).format('yyyy/MM/dd HH:mm:ss'),
-                        expireTime : new Date(data.expireTime).format('yyyy/MM/dd HH:mm:ss'),
-                        integCanSelected : data.integCanSelected,
-                        storeCanUseId : data.storeCanUseId,
+                        effectiveTime : new Date(data.effectiveTime),
+                        expireTime : new Date(data.expireTime),
+                        price : String(data.price),
+                        conditionOrgId : data.conditionOrgId,
                         conditionChannelId : data.conditionChannelId,
                     }
                 }

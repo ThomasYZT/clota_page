@@ -58,4 +58,7 @@ export default {
     'loginErr': '登录失败',
     'rightGetError': '获取权限失败',
     'confirm': '确定',
+    'cash_coupon': '代金券',
+    'exchange_coupon': '兑换券',
+    'discount_coupon': '折扣券',
 }

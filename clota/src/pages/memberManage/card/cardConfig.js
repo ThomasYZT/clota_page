@@ -2,18 +2,13 @@
 //表头配置
 export const columnData = [
     {
-        title: '卡券串码',
-        minWidth: 160,
-        field: 'id'
-    },
-    {
         title: '卡券名称',
         minWidth: 100,
         field: 'couponName'
     },
     {
         title: '类别',
-        minWidth: 100,
+        width: 100,
         field: 'couponType'
     },
     {

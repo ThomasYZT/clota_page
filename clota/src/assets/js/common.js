@@ -125,28 +125,30 @@ export default {
      */
     validateMoney (value,reg = '',minLength = 1,maxLength = 10) {
         return new Promise((resolve,reject) => {
-            //使用自定义正则表达式，校验金额
-            if(reg){
-                if(reg.test(value)){
-                    resolve();
-                }else{
-                    reject('1006');
-                }
-            }else if(this.isNotEmpty(value) && validator.isNumber(value)){
+            if(this.isNotEmpty(value) && validator.isNumber(value)){
                 let  numStr = String(value);
                 //有小数
                 if(numStr.indexOf('.') !== -1){
                     let numSplit = numStr.split('.');
                     //小数位位数为0
                     if(numSplit[1].length === 0){
-                       reject('1001');
+                        reject('1001');
                     }else if(numSplit[1].length > 2){//小数位数字大于2
-                       reject('1002');
+                        reject('1002');
                     }else{
                         if(numSplit[0].length > maxLength){
                             reject('1003');
                         }else{
-                            resolve();
+                            //使用自定义正则表达式，校验金额
+                            if(reg){
+                                if(reg.test(value)){
+                                    resolve();
+                                }else{
+                                    reject('1006');
+                                }
+                            }else{
+                                resolve();
+                            }
                         }
                     }
                 }else{
@@ -156,11 +158,56 @@ export default {
                     }else if(numStr.length < minLength){
                         reject('1004');
                     }else{
-                        resolve();
+                        //使用自定义正则表达式，校验金额
+                        if(reg){
+                            if(reg.test(value)){
+                                resolve();
+                            }else{
+                                reject('1006');
+                            }
+                        }else{
+                            resolve();
+                        }
                     }
                 }
             }else{
-               reject('1005');
+                reject('1005');
+            }
+        });
+    },
+    /**
+     * 校验value是否为正整数
+     * @param value
+     * @param reg
+     * @param minLength
+     * @param maxLength
+     */
+    validateInteger (value,reg,minLength = 1,maxLength = 10){
+        return new Promise((resolve,reject) => {
+            if(this.isNotEmpty(value) && validator.isNumber(value)){
+                let  numStr = String(value);
+                if(numStr.length < minLength){
+                    reject('小于最小长度');
+                }else if(numStr.length > maxLength){
+                    reject('大于最大长度');
+                }else{
+                    if(Number.parseInt(value) === Number.parseFloat(value)){
+                        //使用自定义正则表达式
+                        if(reg){
+                            if(reg.test(value)){
+                                resolve();
+                            }else{
+                                reject('1006');
+                            }
+                        }else{
+                            resolve();
+                        }
+                    }else{
+                        reject('请输入正整数');
+                    }
+                }
+            }else{
+                reject('非数字');
             }
         });
     }
