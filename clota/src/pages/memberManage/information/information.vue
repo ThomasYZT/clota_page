@@ -28,7 +28,7 @@
         </div>
 
         <div class="search-wrap">
-            <Input v-model="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
+            <Input v-model.trim="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
             <Button type="primary" @click="queryList">查 询</Button>
             <Button type="ghost" @click="reset">重 置</Button>
         </div>
@@ -363,7 +363,7 @@
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
-                this.levelId = this.channelId = this.vipStatus = this.cardStatus = 'null';
+                this.queryParams.levelId = this.queryParams.channelId = this.queryParams.vipStatus = this.queryParams.cardStatus = 'null';
                 this.queryList();
             },
         }
