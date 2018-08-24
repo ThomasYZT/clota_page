@@ -427,18 +427,6 @@
         created () {
             this.queryChannelSet();
             this.queryListAmountRange();
-        },
-        beforeRouteEnter(to,from,next) {
-            next(vm => {
-                if(to.params && Object.keys(to.params).length > 0){
-                    vm.getParams(to.params);
-                }else if(sessionStorage.getItem(to.name)){
-                    let saveParams = sessionStorage.getItem(to.name);
-                    vm.getParams(JSON.parse(saveParams));
-                }else{
-                    vm.getParams({});
-                }
-            });
         }
     }
 </script>
