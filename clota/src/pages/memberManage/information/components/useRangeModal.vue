@@ -12,15 +12,16 @@
             <div class="table-wrap">
                 <el-table
                     :width="810"
-                    :data="cashData"
+                    :data="rangeData"
                     :border="false"
+                    height="260"
                     style="width: 100%">
                     <el-table-column
-                        prop="money"
+                        prop="corpusRanges"
                         label="本金">
                     </el-table-column>
                     <el-table-column
-                        prop="send"
+                        prop="donateRanges"
                         label="赠送金额">
                     </el-table-column>
                 </el-table>
@@ -43,37 +44,41 @@
         data () {
             return {
                 visible: false,
-                cashData: [
-                {
-                    money: '温泉酒店',
-                    send: '景区自营票购买',
-                },
-                {
-                    money: '张记手擀面',
-                    send: '温泉酒店',
-                },
-            ]
+                //会员信息的账户数据
+                accountInfo: {},
+                //应用范围列表
+                rangeData: [],
             }
         },
         methods: {
 
             show ( data ) {
-                this.visible = true;
                 if( data ){
-
+                    this.accountInfo = data;
+                    //获取账户应用范围
+                    this.listAccountDetailRange();
                 }
+                this.visible = true;
             },
 
             //获取账户应用范围
             listAccountDetailRange () {
                 ajax.post('listAccountDetailRange', {
-
+                    accountId: this.accountInfo.id
                 }).then(res => {
                     if(res.success){
-                        this.defineAccount = res.data || [];
+                        if(res.data.corpusRanges.length > 0){
+                            res.data.corpusRanges.forEach( (item,index) => {
+                                this.rangeData.push(
+                                    {
+                                        corpusRanges: res.data.corpusRanges[index],
+                                        donateRanges: res.data.donateRanges[index],
+                                    })
+                            })
+                        }
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryDefineAccountType 失败！');
+                        this.$Message.warning(res.message || 'listAccountDetailRange 失败！');
                     }
                 });
             },

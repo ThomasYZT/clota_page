@@ -9,29 +9,50 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap"><label>用户姓名：</label><span>刘木子</span></div>
-            <div class="form-item-wrap"><label>手机号：</label><span>17527571287</span></div>
-            <div class="form-item-wrap"><label>身份证号：</label><span>1011227979987298739</span></div>
+            <div class="form-item-wrap">
+                <label>用户姓名：</label>
+                <span>{{detail.custName || '-'}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>储值账户名称：</label>
+                <span>{{accountInfo.accountName || '-'}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>本金账户余额：</label>
+                <span>
+                    <span class="yellow-color">
+                        {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
+                    </span>{{accountInfo.unit || ''}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>赠送账户余额：</label>
+                <span>
+                    <span class="yellow-color">
+                        {{accountInfo.donateBalance ? accountInfo.donateBalance.toCurrency() : '0'}}
+                    </span>{{accountInfo.unit || ''}}</span>
+            </div>
 
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="增加储值金额：" prop="fund">
-                        <Input v-model="data.fund" placeholder="请输入"/>
+                    <Form-item label="增加储值金额：" prop="actAmount">
+                        <Input v-model="formData.actAmount" placeholder="请输入" :maxlength="10"/>
                         <span class="font">实际增加</span>
-                        <Input v-model="data.add" placeholder="请输入"/>
+                        <Input v-model="formData.totalAmount" placeholder="请输入" :maxlength="10"/>
                         <span>元</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="收款方式：" prop="type">
-                        <Select v-model="data.type" placeholder="请选择">
-                            <Option value="">账户</Option>
+                    <Form-item label="收款方式：" prop="paymentTypeId">
+                        <Select v-model="formData.paymentTypeId" placeholder="请选择">
+                            <Option v-for="(item,index) in paymentList" :key="index" :value="item.id">
+                                {{item.payment}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model="data.remark" type="textarea" placeholder="请输入"/>
+                        <Input v-model="formData.remark" type="textarea" placeholder="请输入" :maxlength="100"/>
                     </Form-item>
                 </div>
             </Form>
@@ -46,30 +67,41 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+
     export default {
+        props: ['payment-list','detail'],
         components: {},
         data () {
             return {
                 visible: false,
-                data: {
-                    fund: '',
-                    add: 5,
-                    type: '',
+                //会员信息的账户数据
+                accountInfo: {},
+                //表单数据
+                formData: {
+                    actAmount: '',//储值金额
+                    totalAmount: '',//实际金额
+                    paymentTypeId: '',//支付方式
                     remark: '',
                 },
+                //表单校验
                 ruleValidate: {
-                    fund: [
+                    actAmount: [
                         { required: true, message: '储值金额不能为空', trigger: 'blur' },
                     ],
-                    type: [
+                    paymentTypeId: [
                         { required: true, message: '收款方式不能为空', trigger: 'change' },
                     ],
-                }
+                },
             }
         },
         methods: {
 
-            show () {
+            show ( data ) {
+                if( data ){
+                    this.accountInfo = data;
+                }
                 this.visible = true;
             },
 
@@ -77,7 +109,31 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true)
+                        console.log(true);
+                        let params = {
+                            memberId: this.detail.id,
+                            cardId: this.detail.cardId,
+                            accounId: this.accountInfo.id,
+                            actAmount: this.formData.actAmount,
+                            totalAmount: this.formData.totalAmount,
+                            paymentTypeId: this.formData.paymentTypeId,
+                            remark: this.formData.remark,
+                        };
+                        console.log(params)
+                        this.addAmount(params);
+                    }
+                })
+            },
+
+            //新增储值
+            addAmount ( params ) {
+                ajax.post('addAmount', params).then(res => {
+                    if( res.success ) {
+                        this.$Message.success('新增储值成功！');
+                        this.$emit('add-success');
+                        this.hide();
+                    } else {
+                        this.$Message.warning(res.message|| 'addAmount 失败！');
                     }
                 })
             },
@@ -86,6 +142,13 @@
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
+                this.accountInfo = {};
+                this.formData = {
+                    actAmount: '',
+                    totalAmount: '',
+                    paymentTypeId: '',
+                    remark: '',
+                };
             },
 
         },
@@ -137,6 +200,12 @@
                     margin-right: 5px;
                 }
             }
+        }
+
+        .yellow-color{
+            color: $color_yellow;
+            font-size: $font_size_18px;
+            margin-right: 5px;
         }
 
         .modal-footer{

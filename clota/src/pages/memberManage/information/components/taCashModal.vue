@@ -21,7 +21,7 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <FormItem label="充值渠道：" prop="channel">
+                    <FormItem label=" " prop="channel">
                         <RadioGroup v-model="data.channel">
                             <Radio label="cash">转化为现金</Radio>
                             <Radio label="account">转化至账户</Radio>
@@ -29,8 +29,8 @@
                     </FormItem>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="data.channel === 'account'">
-                    <Form-item label="转入账户：" prop="account">
-                        <Select v-model="data.account" placeholder="请选择">
+                    <Form-item label="转入账户：" prop="toAccountId">
+                        <Select v-model="data.toAccountId" placeholder="请选择">
                             <Option value="">账户</Option>
                         </Select>
                     </Form-item>
@@ -47,6 +47,9 @@
 </template>
 
 <script>
+
+
+
     export default {
         components: {},
         data () {
@@ -57,6 +60,10 @@
                     afterNum: '20',
                     channel: 'cash',
                     account: '',
+
+                    fromAccountId: '',//调出账户
+                    amount: '',//兑现数量
+                    toAccountId: '',//转入账户
                 },
                 ruleValidate: {
                     num: [

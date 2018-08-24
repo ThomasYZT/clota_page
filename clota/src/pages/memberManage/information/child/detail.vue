@@ -89,15 +89,20 @@
                         <div class="body-wrap">
                             <div class="coast">
                                 <span>
-                                    <span v-if="item.accountType === 'charging'">本金：</span>
-                                    <span v-if="item.accountType === 'score'">可用积分：</span>
-                                    <span class="num">{{item.accountBalance.toCurrency()}}</span>
-                                    <span v-if="item.accountType === 'charging'">元</span>
+                                    <template v-if="item.accountType === 'charging'">
+                                        <span>本金：</span>
+                                        <span class="num">{{item.corpusBalance.toCurrency()}}</span>
+                                        <span>{{item.unit || ''}}</span>
+                                    </template>
+                                    <template v-if="item.accountType === 'score'">
+                                        <span>可用积分：</span>
+                                        <span class="num">{{item.accountBalance}}</span>
+                                    </template>
                                 </span>
                                 <span v-if="item.accountType === 'charging'">
                                     赠送金额：
                                     <span class="num">{{item.donateBalance.toCurrency()}}</span>
-                                    <span v-if="item.accountType === 'charging'">元</span>
+                                    <span v-if="item.accountType === 'charging'">{{item.unit || ''}}</span>
                                 </span>
                             </div>
                             <div class="operate-right">
@@ -107,6 +112,10 @@
                                     <span @click="showAddSaveModal(item)">新增储值</span>
                                     <span class="split-line"></span>
                                     <span @click="showRangeModal(item)">应用范围</span>
+                                    <template v-if="item.exchangeToCash === 'true'">
+                                        <span class="split-line"></span>
+                                        <span @click="showCashModal(item)">兑现</span>
+                                    </template>
                                 </template>
                                 <template v-if="item.accountType === 'score'">
                                     <span @click="viewIntegration">积分明细</span>
@@ -137,7 +146,7 @@
 
                 <div class="content-info card-temp">
                     <div class="title">子母卡信息</div>
-                    <div class="son-card card-wrap">
+                    <div class="son-card card-wrap" v-if="childOrMotherCard.isMotherCard === 'true'">
                         <el-table
                             :data="motherCard"
                             :border="true"
@@ -157,7 +166,8 @@
                             </el-table-column>
                         </el-table>
                     </div>
-                    <div class="mother-card card-wrap">
+
+                    <div class="mother-card card-wrap" v-if="childOrMotherCard.isMotherCard === 'false'">
                         <el-table
                             :data="sonCard"
                             :border="true"
@@ -172,7 +182,7 @@
                                 prop=""
                                 label="子卡信息"
                                 width="260">
-                                <template slot-scope="scope">张三，27838383939</template>
+                                <template slot-scope="scope">{{childOrMotherCard.motherCard}}</template>
                             </el-table-column>
                         </el-table>
                     </div>
@@ -181,7 +191,9 @@
                 <div class="content-info">
                     <div class="title">安全设置</div>
                     <div class="switch-wrap">
-                        <i-switch v-model="open"></i-switch><span class="text">冻结该会员账户</span>
+                        <i-switch :value="detail.cardStatus ==='active' ? true : false"
+                                  @on-change="changeCardStatus"></i-switch>
+                        <span class="text">冻结该会员卡</span>
                     </div>
                 </div>
 
@@ -210,25 +222,30 @@
                            @add-success="listCardAccountInfo(detail)"></add-account-modal>
 
         <!--新增储值modal-->
-        <add-fund-modal ref="addFund"></add-fund-modal>
-
-        <!--兑现modal-->
-        <to-cash-modal ref="toCash"></to-cash-modal>
+        <add-fund-modal ref="addFund"
+                        :payment-list="paymentData"
+                        :detail="detail"
+                        @add-success="listCardAccountInfo(detail)"></add-fund-modal>
 
         <!--会员储值账户余额修改/会员积分账户修改modal-->
         <modify-balance-modal ref="modifyBalance"></modify-balance-modal>
+
+        <!--兑现modal-->
+        <to-cash-modal ref="toCash"></to-cash-modal>
 
         <!--应用范围modal-->
         <use-range-modal ref="useRange"></use-range-modal>
 
         <!--优惠券信息--查看更多modal-->
-        <view-more-coupon-modal :status="status" :table-data="couponData" ref="viewMoreCoupon"></view-more-coupon-modal>
+        <view-more-coupon-modal :status="status"
+                                :table-data="couponData"
+                                ref="viewMoreCoupon"></view-more-coupon-modal>
 
     </div>
 </template>
 
 <script>
-    import breadCrumbHead from '@/components/breadCrumbHead/index'
+
     import ajax from '@/api/index';
     import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal  from '../../components/addFundModal.vue';
@@ -243,7 +260,6 @@
     export default {
         mixins : [lifeCycleMixins],
         components: {
-            breadCrumbHead,
             addAccountModal,
             addFundModal,
             toCashModal,
@@ -263,13 +279,24 @@
                 },
                 //账户信息列表（本金/积分）
                 accountData: [],
+                //收款方式数据
+                paymentData: [],
                 //自定义账户--用于新增账户
                 defineAccount: [],
                 //优惠券状态 已使用-used 未过期-noOverdue 已过期-overdue
                 status: 'used',
                 //优惠券信息列表,包括分页信息
                 couponData: [],
-
+                //字母卡信息
+                childOrMotherCard: {},
+                // 字母卡表格数据
+                motherCard: [
+                    { id: '309287481' },
+                    { id: '309287482' }
+                ],
+                sonCard: [
+                    { id: '309287480' },
+                ],
 
 
                 // 表格数据
@@ -289,14 +316,7 @@
                         time: '20180.09.09-2020.02.09',
                     },
                 ],
-                // 字母卡表格数据
-                motherCard: [
-                    { id: '309287481' },
-                    { id: '309287482' }
-                ],
-                sonCard: [
-                    { id: '309287480' },
-                ],
+
                 // 冻结该会员账户
                 open: false,
                 scene: '',
@@ -305,6 +325,8 @@
         created() {
             //查询自定义账户
             this.queryDefineAccountType();
+            //查询收款方式
+            this.queryPaymentType();
         },
         methods: {
 
@@ -318,6 +340,19 @@
                         this.$Message.warning(res.message || 'queryDefineAccountType 失败！');
                     }
                 });
+            },
+
+            //查询收款方式
+            queryPaymentType () {
+                ajax.post('queryPaymentType',{
+                    isDeleted: 'false',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        this.paymentData = res.data || [];
+                    }
+                })
             },
 
             /**
@@ -367,7 +402,6 @@
                     }
                 });
             },
-
             //切换优惠券状态查询
             changeStatus ( val ) {
                 if(val){
@@ -380,6 +414,55 @@
                 if(this.$refs.viewMoreCoupon){
                     this.$refs.viewMoreCoupon.show();
                 }
+            },
+
+            //点击新增储值，显示新增储值弹窗
+            showAddSaveModal ( data ) {
+                this.$refs.addFund.show(data);
+            },
+
+            //监听开关组件改变
+            changeCardStatus ( bool ){
+                if (bool) {
+                    this.detail.cardStatus = 'active';
+                } else {
+                    this.detail.cardStatus = 'frozen';
+                }
+                this.updateMemberCard();
+            },
+            //更新会员卡信息
+            updateMemberCard (  ) {
+                ajax.post('updateMemberCard', {
+                    id: this.detail.cardId,
+                    status: this.detail.cardStatus,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('更新会员卡信息成功！');
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'updateMemberCard 失败！');
+                    }
+                });
+            },
+
+            //获取子母卡
+            queryChildOrMotherCard ( data ) {
+                ajax.post('queryChildOrMotherCard', {
+                    cardId: data.cardId,
+                }).then(res => {
+                    if(res.success){
+                        this.childOrMotherCard = res.data || {};
+                        //区分字母卡
+//                        if(res.data.isMotherCard === 'true'){
+//                            this.
+//                        } else {
+//
+//                        }
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'queryChildOrMotherCard 失败！');
+                    }
+                });
             },
 
 
@@ -402,10 +485,7 @@
                 this.$router.push({ name: 'infoFund' });
             },
 
-            showAddSaveModal () {
-                console.log('save');
-                this.$refs.addFund.show();
-            },
+
 
             showCashModal () {
                 console.log('cash');
@@ -469,6 +549,8 @@
                     this.listCardAccountInfo(params.detail);
                     //获取更多优惠券
                     this.listCouponsByStatus(params.detail);
+                    //字母卡列合并
+                    this.queryChildOrMotherCard(params.detail);
                 }else{
                     this.$router.push({
                         name : 'memberInfo'

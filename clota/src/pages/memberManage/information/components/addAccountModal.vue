@@ -42,9 +42,11 @@
         data () {
             return {
                 visible: false,
+                //表单数据
                 data: {
                     accountTypeId: '',
                 },
+                //表单校验
                 ruleValidate: {
                     accountTypeId: [
                         { required: true, message: '账户不能为空', trigger: 'change' },

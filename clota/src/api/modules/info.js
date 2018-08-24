@@ -25,6 +25,11 @@ export default {
     'addAmount' : '/member/memberAccount/addAmount',
     //会员信息详情-获取账户应用范围
     'listAccountDetailRange' : '/member/memberAccount/listAccountRange',
+    //更新会员卡信息
+    'updateMemberCard' : '/member/updateMemberCard',
+    //获取母卡或子卡
+    'queryChildOrMotherCard' : 'member/queryChildOrMotherCard',
+
 
 
     /***********************************会员积分***********************************/
