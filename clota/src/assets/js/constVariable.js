@@ -36,14 +36,14 @@ export const cardStatusEnum = [
 export const couponTypeList = [
     {
         label : '代金券',
-        value : 'cashCoupon',
+        value : 'cash_coupon',
     },
     {
         label : '兑换券',
-        value : 'coinCoupon',
+        value : 'exchange_coupon',
     },
     {
         label : '折扣券',
-        value : 'discountCoupon',
+        value : 'discount_coupon',
     }
 ];

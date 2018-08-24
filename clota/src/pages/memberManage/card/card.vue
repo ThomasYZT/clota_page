@@ -258,11 +258,11 @@
              * @param rowData
              */
             getUseCondition(rowData) {
-                if(rowData.couponType === 'discountCoupon'){//折扣券
+                if(rowData.couponType === 'discount_coupon'){//折扣券
                     return `最低可使用金额${rowData.conditionLowerLimtation}元最高使用金额${rowData.conditionUpperLimtation}元`
-                }else if(rowData.couponType === 'coinCoupon'){//兑换券
+                }else if(rowData.couponType === 'exchange_coupon'){//兑换券
                     return `仅限张记手擀面`;
-                }else if(rowData.couponType === 'cashCoupon'){//代金券
+                }else if(rowData.couponType === 'cash_coupon'){//代金券
                     return `满${rowData.nominalValue}可用`
                 }
             },
@@ -270,7 +270,7 @@
              * 获取编辑卡券的参数
              */
             getUpdateCouponParams (data) {
-                if(data.couponType === 'cashCoupon'){//代金券
+                if(data.couponType === 'cash_coupon'){//代金券
                     return {
                         id : data.id,
                         couponName : data.couponName,
@@ -284,7 +284,7 @@
                         conditionChannelId : data.conditionChannelId,
                         conditionOrgId : data.conditionOrgId,
                     }
-                }else if(data.couponType === 'coinCoupon'){//兑换券
+                }else if(data.couponType === 'exchange_coupon'){//兑换券
                     return {
                         id : data.id,
                         couponName : data.couponName,
@@ -296,7 +296,7 @@
                         conditionChannelId : data.conditionChannelId,
                         conditionProductId : data.conditionProductId,
                     }
-                }else if(data.couponType === 'discountCoupon'){//折扣券
+                }else if(data.couponType === 'discount_coupon'){//折扣券
                     return {
                         id : data.id,
                         couponName : data.couponName,

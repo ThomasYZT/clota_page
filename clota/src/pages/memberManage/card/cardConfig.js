@@ -3,7 +3,7 @@
 export const columnData = [
     {
         title: '卡券串码',
-        minWidth: 130,
+        minWidth: 160,
         field: 'id'
     },
     {
@@ -23,7 +23,7 @@ export const columnData = [
     },
     {
         title: '有效期',
-        width: 200,
+        width: 320,
         field: 'discountRate'
     },
     {
