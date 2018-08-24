@@ -151,7 +151,7 @@
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择商品-->
-                    <Form-item label="选择商品" prop="commodity">
+                    <Form-item label="选择商品">
                         <Select v-model.trim="formData.commodity" placeholder="请选择">
                         </Select>
                     </Form-item>
@@ -449,7 +449,7 @@
              * 查询所有店铺信息
              */
             queryListAmountRange () {
-                ajax.post('listAmountRange').then(res => {
+                ajax.post('listAllSubStore').then(res => {
                     if(res.success){
                         this.listAmountRange = res.data ? res.data : [];
                     }else{

@@ -39,5 +39,5 @@ export default {
     //新增或修改卡券
     'updateCoupon' : '/member/memberCoupon/updateCoupon',
     //查询所有店铺信息
-    'listAmountRange' : '/member/memberBasicSet/listAmountRange',
+    'listAllSubStore' : '/member/memberBasicSet/listAllSubStore',
 }
