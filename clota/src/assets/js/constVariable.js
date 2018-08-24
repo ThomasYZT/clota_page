@@ -18,6 +18,16 @@ export const genderEnum = [
     { name: 'female', desc: '女' },
 ];
 
+//会员级别
+export const vipLevel = [
+    {'id': 'null', 'levelDesc': '全部会员等级'}
+];
+
+//会员渠道
+export const vipChannel = [
+    {'id': 'null', 'channelName': '全部会员渠道'}
+];
+
 //会员类型
 export const vipStatusEnum = [
     { name: 'null', desc: '全部会员类型' },

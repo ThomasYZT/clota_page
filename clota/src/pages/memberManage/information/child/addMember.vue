@@ -64,14 +64,14 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item label="会员级别" prop="levelId">
                             <Select v-model="member.levelId" placeholder="请选择会员初始级别">
-                                <Option v-for="item in enumData.level" :key="item.name" :value="item.name">{{item.desc}}</Option>
+                                <Option v-for="item in enumData.level" :key="item.id" :value="item.id">{{item.levelDesc}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="会员渠道" prop="channelId">
                             <Select v-model="member.channelId" placeholder="请选择会员来源渠道">
-                                <Option v-for="item in enumData.channel" :key="item.name" :value="item.name">{{item.desc}}</Option>
+                                <Option v-for="item in enumData.channel" :key="item.id" :value="item.id">{{item.channelName}}</Option>
                             </Select>
                         </Form-item>
                     </div>
@@ -97,8 +97,8 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="证件类型" prop="certificationType">
-                            <Select v-model="member.certificationType" placeholder="请选择会员类型">
-                                <Option v-for="item in enumData.type" :key="item.name" :value="item.name">{{item.desc}}</Option>
+                            <Select v-model="member.certificationType" placeholder="请选择证件类型">
+                                <Option v-for="item in enumData.idType" :key="item.id" :value="item.id">{{item.name}}</Option>
                             </Select>
                         </Form-item>
                     </div>
@@ -142,11 +142,12 @@
 <script>
 
     import breadCrumbHead from '@/components/breadCrumbHead/index';
-    import { genderEnum } from '@/assets/js/constVariable';
+    import { genderEnum, vipLevel, vipChannel } from '@/assets/js/constVariable';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
     import { validator } from 'klwk-ui';
     import ajax from '@/api/index'
+    import minBy from 'lodash/minBy'
 
     export default {
         components: {
@@ -176,7 +177,7 @@
                 beforeRouterList: [
                     {
                         name: '会员信息',
-                        router: 'memberInfo',
+                        router: 'info',
                     }
                 ],
                 //新增/修改
@@ -188,24 +189,9 @@
                     }
                 },
                 enumData: {
-                    level: [
-                        {
-                            desc: '全部会员等级',
-                            name: '全部会员等级',
-                        }
-                    ],
-                    channel: [
-                        {
-                            desc: '全部会员渠道',
-                            name: '全部会员渠道',
-                        }
-                    ],
-                    type: [
-                        {
-                            desc: '全部会员类型',
-                            name: '全部会员类型',
-                        }
-                    ],
+                    level: vipLevel.slice(1),
+                    channel: vipChannel.slice(1),
+                    idType: [],
                     status: [
                         {
                             desc: '全部会员状态',
@@ -260,6 +246,9 @@
             localeRouter () {
                 return this.type === 'add' ? '新增会员' : '修改会员信息'
             },
+            isEdit() {
+                return this.$route.query.info;
+            },
         },
         created() {
             // 初始化
@@ -269,22 +258,33 @@
         methods: {
 
             //页面初始化，区分新增与修改
-            init() {
-                if (this.$route.query && this.$route.query.type) {
-                    this.type = this.$route.query.type;
+            async init() {
+                try {
+                    this.getChannelList();
+                    this.queryDocument();
+//                    await Promise.all([this.getLevelList(), this.getChannelList(), this.queryDocument()]);
+                    await this.getLevelList();
 
-                    // 编辑页面时给表单赋值
-                    if(this.$route.query.info){
-                        this.info = this.$route.query.info;
-                        var memberInfo = pick(this.$route.query.info, ['custName', 'phoneNum','emailAddr','birthDay',
-                            'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
-                            'certificationType','idCardNumber','homeAddr','status']);
-                        var memberCard = this.$route.query.info.memberCardVos && this.$route.query.info.memberCardVos.length >0 ?
-                            pick(this.$route.query.info.memberCardVos[0], ['levelId', 'channelId','tpNo','tpCardNo']) : {
-                                levelId: '',channelId: '',tpNo: '',tpCardNo: '',
-                            };
-                        this.member = defaultsDeep(memberInfo, memberCard);
+                    if (this.$route.query && this.$route.query.type) {
+                        this.type = this.$route.query.type;
+
+                        // 编辑页面时给表单赋值
+                        if(this.isEdit){
+                            this.info = this.$route.query.info;
+                            var memberInfo = pick(this.$route.query.info, ['custName', 'phoneNum','emailAddr','birthDay',
+                                'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
+                                'certificationType','idCardNumber','homeAddr','status']);
+                            var memberCard = this.$route.query.info.memberCardVos && this.$route.query.info.memberCardVos.length >0 ?
+                                pick(this.$route.query.info.memberCardVos[0], ['levelId', 'channelId','tpNo','tpCardNo']) : {
+                                    levelId: '',channelId: '',tpNo: '',tpCardNo: '',
+                                };
+                            this.member = defaultsDeep(memberInfo, memberCard);
+                        } else {
+                            this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
+                        }
                     }
+                } catch (err) {
+                    console.warn(err);
                 }
             },
 
@@ -316,6 +316,50 @@
                             params.memberCard.id = this.info.cardId;
                             this.saveAndEditMember( 'editMemberInfo', params);
                         }
+                    }
+                })
+            },
+
+            // 获取会员级别列表
+            getLevelList() {
+                return ajax.post('queryMemberLevels', {
+                    pageNo: 1,
+                    pageSize: 99999,
+                    isDeleted: 'false',
+                }).then(res => {
+                    if(res.success){
+                        this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
+                    } else {
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                    return res;
+                })
+            },
+
+            // 获取会员渠道列表
+            getChannelList() {
+                ajax.post('queryChannelSet', {
+                    pageNo: 1,
+                    pageSize: 99999,
+                    isDeleted: 'false',
+                }).then(res => {
+                    if(res.success){
+                        this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
+                    } else {
+                        this.$Message.warning('queryChannelSet 查询失败！');
+                    }
+                })
+            },
+
+            //查询证件类型
+            queryDocument () {
+                ajax.post('queryDocument',{
+                    isDeleted: 'false',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        this.enumData.idType = res.data.data || [];
                     }
                 })
             },

@@ -3,10 +3,10 @@
     <div class="member-info-detail">
 
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/memberInfo">会员信息</BreadcrumbItem>
-                <BreadcrumbItem>会员详情</BreadcrumbItem>
-            </Breadcrumb>
+            <bread-crumb-head
+                :before-router-list="[{name: '会员信息', router: 'info'}]"
+                :locale-router="'会员详情'">
+            </bread-crumb-head>
         </div>
 
         <div class="info-detail">
@@ -228,7 +228,7 @@
 </template>
 
 <script>
-
+    import breadCrumbHead from '@/components/breadCrumbHead/index'
     import ajax from '@/api/index';
     import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal  from '../../components/addFundModal.vue';
@@ -243,6 +243,7 @@
     export default {
         mixins : [lifeCycleMixins],
         components: {
+            breadCrumbHead,
             addAccountModal,
             addFundModal,
             toCashModal,

@@ -24,7 +24,7 @@ export const infoListHead = [
     {
         title: '会员级别',
         minWidth: 100,
-        field: 'rate'
+        field: 'levelDesc'
     },
     {
         title: '会员类型',

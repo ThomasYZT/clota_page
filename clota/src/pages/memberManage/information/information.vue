@@ -29,8 +29,8 @@
 
         <div class="search-wrap">
             <Input v-model="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
-            <Button :disabled="queryParams.keyWord ? false : true" type="primary" @click="queryList">查 询</Button>
-            <Button :disabled="queryParams.keyWord ? false : true" type="ghost" @click="reset">重 置</Button>
+            <Button type="primary" @click="queryList">查 询</Button>
+            <Button type="ghost" @click="reset">重 置</Button>
         </div>
 
         <div class="btn-wrap">
@@ -92,7 +92,7 @@
                     :min-width="row.minWidth"
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ scoped.row.updatedTime ? new Date(scoped.row.updatedTime).format('yyyy-mm-dd') : '-' }}</span>
+                        <span>{{ scoped.row.createdTime ? new Date(scoped.row.createdTime).format('yyyy-MM-dd') : '-' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -135,7 +135,7 @@
     import tableCom from '@/pages/memberManage/components/tableCom';
     import tableMixins from '@/mixins/tableMixins';
     import {infoListHead} from './infoListConfig';
-    import { vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
+    import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
         mixins : [tableMixins],
@@ -153,9 +153,9 @@
                 //枚举数据
                 enumData: {
                     //会员级别
-                    level: [{'id': 'null', 'levelDesc': '全部会员等级'}],
+                    level: vipLevel,
                     //会员渠道
-                    channel: [{'id': 'null', 'channelName': '全部会员渠道'}],
+                    channel: vipChannel,
                     //会员类型
                     vipStatusEnum: vipStatusEnum,
                     //会员状态
@@ -187,8 +187,6 @@
                 ajax.post('queryMemberLevels', {
                     pageNo: 1,
                     pageSize: 99999,
-                    companyId: '1',
-                    orgId: '101',
                     isDeleted: 'false',
                 }).then(res => {
                     if(res.success){
@@ -233,7 +231,7 @@
 
             //查询列表(查询表格取统一的方法名)
             queryList () {
-                var list = [
+                /*var list = [
                     {
                         age: null,
                         alipayAcct: "alipay",
@@ -283,7 +281,7 @@
                                 tpCardNo: "",
                                 tpNo: "",
                                 updateUser: null,
-                                updatedTime: "2018-08-20 18:26:57",
+                                createdTime: "2018-08-20 18:26:57",
                             }
                         ],
                         moneyBalance: null,
@@ -294,14 +292,14 @@
                         stateCode: "001",
                         status: "active",
                         updateUser: null,
-                        updatedTime: "2018-08-20 18:26:57",
+                        createdTime: "2018-08-20 18:26:57",
                         wechatAcct: "wechat",
                     }
                 ];
                 this.multipleSelection[1] = list;
                 this.tableData = list;
                 this.total = 1;
-                this.setTableHeight();
+                this.setTableHeight();*/
                 ajax.post('queryMemberPage', {
                     keyWord: this.queryParams.keyWord,
                     levelId: this.queryParams.levelId == 'null' ? null : this.queryParams.levelId,
@@ -316,19 +314,18 @@
                         this.total = res.data.totalRow || 0;
                         this.setTableHeight();
                         this.$nextTick( () => {
-                            console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
+//                            console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
                             this.multipleSelection.forEach(item => {
                                 if(item && item.length > 0){
                                     item.forEach(row => {
-                                        console.log(row)
-                                        console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
+//                                        console.log(row)
+//                                        console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
                                         this.$refs.multipleTable.$children[0].setCurrentRow(row);
                                     })
                                 }
                             })
                         })
                     } else {
-                        console.log(res);
                         this.$Message.warning('queryMemberPage 查询失败！');
                     }
                 })
@@ -336,9 +333,7 @@
 
             //点击表格行常看详情
             viewDetail ( data ) {
-                if(data.cardStatus !=='frozen'){
-                    this.$router.push({ name: 'infoDetail' });
-                }
+                this.$router.push({ name: 'infoDetail', params: { detail: data } });
             },
 
             //删除表格数据
@@ -350,7 +345,6 @@
                     if(res.success){
                         this.$Message.success('删除成功！');
                     } else {
-                        console.log(res);
                         this.$Message.warning('deleteMemberInfo 删除失败！');
                     }
                 });
@@ -369,6 +363,7 @@
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
+                this.levelId = this.channelId = this.vipStatus = this.cardStatus = 'null';
                 this.queryList();
             },
         }
