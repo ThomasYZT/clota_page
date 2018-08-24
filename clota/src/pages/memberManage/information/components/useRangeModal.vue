@@ -35,6 +35,9 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+
     export default {
         components: {},
         data () {
@@ -54,8 +57,25 @@
         },
         methods: {
 
-            show () {
+            show ( data ) {
                 this.visible = true;
+                if( data ){
+
+                }
+            },
+
+            //获取账户应用范围
+            listAccountDetailRange () {
+                ajax.post('listAccountDetailRange', {
+
+                }).then(res => {
+                    if(res.success){
+                        this.defineAccount = res.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'queryDefineAccountType 失败！');
+                    }
+                });
             },
 
             //关闭模态框

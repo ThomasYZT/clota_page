@@ -9,18 +9,15 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="90">
+            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="100">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="账户归属" prop="place">
-                        <Select v-model="data.place" placeholder="请选择">
-                            <Option value="">账户归属</Option>
-                        </Select>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="账户" prop="account">
-                        <Select v-model="data.account" placeholder="请选择">
-                            <Option value="">账户</Option>
+                    <Form-item label="请选择账户" prop="accountTypeId">
+                        <Select v-model="data.accountTypeId" placeholder="请选择">
+                            <Option v-for="(item,index) in store"
+                                    :key="index"
+                                    :value="item.id">
+                                {{item.accountName}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
@@ -36,20 +33,20 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+
     export default {
+        props: ['store','detail'],
         components: {},
         data () {
             return {
                 visible: false,
                 data: {
-                    place: '',
-                    account: '',
+                    accountTypeId: '',
                 },
                 ruleValidate: {
-                    place: [
-                        { required: true, message: '账户归属不能为空', trigger: 'change' },
-                    ],
-                    account: [
+                    accountTypeId: [
                         { required: true, message: '账户不能为空', trigger: 'change' },
                     ],
                 }
@@ -65,15 +62,34 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                       console.log(true)
+                        this.addAccountInfo();
                     }
                 })
+            },
+
+            //新增账户
+            addAccountInfo () {
+                ajax.post('addAccountInfo', {
+                    accountTypeId: this.data.accountTypeId,
+                    memberId: this.detail.id,
+                    cardId: this.detail.cardId,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('新增账号成功！');
+                        this.$emit('add-success');
+                        this.hide();
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'addAccountInfo 失败！');
+                    }
+                });
             },
 
             //关闭模态框
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
+                this.data.accountTypeId = '';
             },
 
         },
@@ -85,7 +101,7 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 60px 85px;
+            padding: 90px 85px;
         }
 
         .modal-footer{

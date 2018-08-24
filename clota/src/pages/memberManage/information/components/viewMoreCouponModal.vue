@@ -10,7 +10,7 @@
 
         <div class="modal-body">
 
-            <more-card :table-data="tableData"></more-card>
+            <more-card :status="status" :table-data="tableData"></more-card>
 
         </div>
 
@@ -26,7 +26,7 @@
     import moreCard  from './moreCard.vue'
 
     export default {
-        props: ['table-data'],
+        props: ['status','table-data'],
         components: {
             moreCard,
         },

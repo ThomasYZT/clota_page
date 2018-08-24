@@ -275,20 +275,7 @@
                     pay: [],
                 },
                 //表格数据--储值账户列表
-                tableData: [
-                    {
-                        accountName: "本金账户",
-                        accountType: "charging",
-                        companyId: "1",
-                        createUser: "1",
-                        createdTime: 1534313030000,
-                        defaultAccount: "true",
-                        id: "1",
-                        isDeleted: "false",
-                        rate: 1,
-                        unit: "1",
-                    }
-                ],
+                tableData: [],
                 //获取储值账户-(本金/赠送金额)应用范围
                 listAmountRangeTable: [],
             }
@@ -303,7 +290,7 @@
             //获取储值赠送金额应用范围
             this.listAccount();
             //获取储值账户-(本金/赠送金额)应用范围
-            this.listAmountRange();
+            this.listAllSubStore();
         },
         methods: {
 
@@ -316,8 +303,8 @@
                 })
             },
             //获取储值账户-(本金/赠送金额)应用范围
-            listAmountRange () {
-                ajax.post('listAmountRange', {}).then(res => {
+            listAllSubStore () {
+                ajax.post('listAllSubStore', {}).then(res => {
                     if( res.success ) {
                         this.listAmountRangeTable = res.data || [];
                     }
@@ -326,10 +313,7 @@
 
             //查询会员基础设置
             findBasicSet () {
-                ajax.post('findBasicSet', {
-                    companyId: 1,
-                    orgId: 101,
-                } ).then(res => {
+                ajax.post('findBasicSet', {}).then(res => {
                     if( res.success){
                         if(res.data){
                             this.id = res.data.id;
@@ -391,8 +375,6 @@
             queryPaymentType () {
                 this.formDynamic.pay = [];
                 ajax.post('queryPaymentType',{
-                    orgId: '',
-                    companyId: '',
                     isDeleted: 'false',
                     pageNo: 1,
                     pageSize: 99999,
@@ -413,8 +395,6 @@
             //增加/修改收款方式
             updatePaymentType ( data, index ) {
                 ajax.post('updatePaymentType',{
-                    orgId: '101',
-                    companyId: '1',
                     payment: data.payment,
                 }).then(res => {
                     if(res.success){
@@ -490,8 +470,6 @@
             //查询储值账户
             queryMemberAccountDefine () {
                 ajax.post('queryMemberAccountDefine',{
-                    orgId: '101',
-                    companyId: '1',
                     accountType: 'charging',
                     pageNo: 1,
                     pageSize: 99999,
@@ -523,7 +501,8 @@
             //保存后回调传参
             submitFundsAccount (data) {
                 console.log(data)
-                this.$set(this.tableData,data.index, data.item);
+//                this.$set(this.tableData,data.index, data.item);
+                this.queryMemberAccountDefine();
             },
             //点击储值账户的应用设置，显示应用设置弹窗
             showRangeModal ( item, index, type ) {

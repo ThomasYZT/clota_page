@@ -20,7 +20,6 @@
                 </Option>
             </Select>
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
-                <Option value="">全部会员状态</Option>
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
                         :value="item.name">

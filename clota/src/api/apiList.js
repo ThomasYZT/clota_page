@@ -7,9 +7,6 @@ import index from './modules/index';
 //会员信息接口
 import info from './modules/info';
 
-//会员初始化置接口
-import setting from './modules/setting';
-
 const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
@@ -21,8 +18,7 @@ const apiList = {
     ...index,
     //会员信息接口
     ...info,
-    //会员初始化置接口
-    ...setting,
+
 };
 
 export default apiList;

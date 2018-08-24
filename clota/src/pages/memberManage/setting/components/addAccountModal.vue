@@ -22,9 +22,13 @@
             <template v-if="step === 0">
                 <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="账户归属" prop="account">
-                            <Select v-model="formData.account" placeholder="请选择">
-                                <Option value="sss">账户</Option>
+                        <Form-item label="账户归属" prop="accountBelonging">
+                            <Select v-model="formData.accountBelonging">
+                                <Option v-for="(item, index) in tableData"
+                                        :value="item.id"
+                                        :key="index">
+                                    {{ item.orgName }}
+                                </Option>
                             </Select>
                         </Form-item>
                     </div>
@@ -78,12 +82,12 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <div class="page-wrap" v-if="tableData.length > 0">
-                    <el-pagination
-                        layout="prev, pager, next"
-                        :total="50">
-                    </el-pagination>
-                </div>
+                <!--<div class="page-wrap" v-if="tableData.length > 0">-->
+                    <!--<el-pagination-->
+                        <!--layout="prev, pager, next"-->
+                        <!--:total="50">-->
+                    <!--</el-pagination>-->
+                <!--</div>-->
             </template>
 
             <!--step 3-->
@@ -104,12 +108,12 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <div class="page-wrap" v-if="tableData.length > 0">
-                    <el-pagination
-                        layout="prev, pager, next"
-                        :total="50">
-                    </el-pagination>
-                </div>
+                <!--<div class="page-wrap" v-if="tableData.length > 0">-->
+                    <!--<el-pagination-->
+                        <!--layout="prev, pager, next"-->
+                        <!--:total="50">-->
+                    <!--</el-pagination>-->
+                <!--</div>-->
             </template>
 
         </div>
@@ -148,7 +152,7 @@
                 //表单数据
                 index: null,
                 formData: {
-                    account: '',
+                    accountBelonging: '',
                     accountName: '',
                     unit: '',
                     rate: '',
@@ -160,7 +164,7 @@
                 },
                 //校验规则
                 ruleValidate: {
-                    account: [
+                    accountBelonging: [
                         { required: true, message: '账户归属不能为空', trigger: 'change' },
                     ],
                 },
@@ -232,9 +236,8 @@
                 this.multipleSelectionToSend.forEach( (item, index) => {
                     this.formData.donateAppliedOrgId.push(item.id);
                 });
-                console.log(this.formData)
                 let params = {
-                    account: this.formData.account,
+                    accountBelonging: this.formData.accountBelonging,
                     accountName: this.formData.accountName,
                     unit: this.formData.unit,
                     rate: this.formData.start/this.formData.end,
@@ -243,9 +246,7 @@
                     donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
                 };
                 console.log(params)
-                this.hide();
-                this.$emit('updata-list', { item: this.formData, index: this.index});
-//                this.updateMemberAccountDefine(params);
+                this.updateMemberAccountDefine(params);
             },
 
             //保存/更改/储值账户设置

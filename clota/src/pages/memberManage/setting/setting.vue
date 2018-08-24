@@ -353,10 +353,7 @@
 
             //查询会员基础设置
             findBasicSet () {
-                ajax.post('findBasicSet', {
-                    companyId: 1,
-                    orgId: 101,
-                } ).then(res => {
+                ajax.post('findBasicSet', {}).then(res => {
                     if( res.success){
                         if(res.data){
                             this.id = res.data.id;
@@ -468,8 +465,6 @@
             queryDocument () {
                 this.formDynamic.idType = [];
                 ajax.post('queryDocument',{
-                    orgId: '',
-                    companyId: '',
                     isDeleted: 'false',
                     pageNo: 1,
                     pageSize: 99999,
@@ -490,8 +485,6 @@
             //增加/修改证件
             updateDocument ( data, index ) {
                 ajax.post('updateDocument',{
-                    orgId: '101',
-                    companyId: '1',
                     name: data.name,
                 }).then(res => {
                     if(res.success){
@@ -595,7 +588,7 @@
                     }
                 });
             },
-            //取消证件类型校验
+            //取消原因表单校验
             handleResetReason (data, index) {
                 this.$refs.formDynamic.resetFields('reason.' + index + '.reason' );
                 this.formDynamic.reason[index]._status = 0;

@@ -4,16 +4,16 @@
 
         <div class="tabs-wrap">
             <ButtonGroup>
-                <Button type="primary">未过期</Button>
-                <Button type="ghost">已使用</Button>
-                <Button type="ghost">已过期</Button>
+                <Button :type="status === 'used' ? 'primary' : 'ghost'" @click="changeStatus('used')">未过期</Button>
+                <Button :type="status === 'noOverdue' ? 'primary' : 'ghost'" @click="changeStatus('noOverdue')">已使用</Button>
+                <Button :type="status === 'overdue' ? 'primary' : 'ghost'" @click="changeStatus('overdue')">已过期</Button>
             </ButtonGroup>
-            <span v-if="type && type === 'view'" class="more" @click="showCouponModal">查看更多</span>
+            <span v-if="type && type === 'view' && tableData.totalRow > 5" class="more" @click="showCouponModal">查看更多</span>
         </div>
 
         <div class="table-wrap">
             <el-table
-                :data="tableData"
+                :data="tableData.data"
                 :border="false"
                 style="width: 100%">
                 <el-table-column
@@ -49,7 +49,7 @@
 <script>
 
     export default {
-        props: ['table-data','type'],
+        props: ['status','table-data','type'],
         components: {},
         data () {
             return {}
@@ -58,7 +58,12 @@
 
             showCouponModal () {
                 this.$emit('view-more');
-            }
+            },
+
+            //切换优惠券状态查询
+            changeStatus ( val ) {
+                this.$emit('change-status', val);
+            },
 
         }
     }

@@ -91,25 +91,7 @@
 
             //查询列表(查询表格取统一的方法名)
             queryList () {
-                var list = [
-                    {
-                        channelName: "饿了吗2",
-                        companyId: 1,
-                        createUser: 123,
-                        createdTime: "2018-08-15 11:20:17",
-                        id: 1,
-                        isDeleted: "false",
-                        remark: "222",
-                        status: "1",
-                        updateUser: 456,
-                        updatedTime: "2018-08-20 16:56:19",
-                    },
-                ];
-                this.tableData = list;
-                this.total = 1;
-                this.setTableHeight();
                 ajax.post('queryChannelSet', {
-                    companyId: '',
                     pageNo: 1,
                     pageSize: 99999,
                     isDeleted: 'false',

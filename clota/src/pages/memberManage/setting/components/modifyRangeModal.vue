@@ -26,12 +26,12 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <div class="page-wrap" v-if="tableData.length > 0">
-                <el-pagination
-                    layout="prev, pager, next"
-                    :total="50">
-                </el-pagination>
-            </div>
+            <!--<div class="page-wrap" v-if="tableData.length > 0">-->
+                <!--<el-pagination-->
+                    <!--layout="prev, pager, next"-->
+                    <!--:total="50">-->
+                <!--</el-pagination>-->
+            <!--</div>-->
         </div>
 
         <div slot="footer" class="modal-footer">
@@ -90,7 +90,6 @@
                         this.formData.donateAppliedOrgId.push({ id: item.id });
                     });
                 }
-                console.log(this.formData)
                 let params = {
                     account: this.formData.account,
                     accountName: this.formData.accountName,
@@ -100,8 +99,7 @@
                     corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
                     donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
                 };
-                console.log(params)
-//                this.updateMemberAccountDefine(params);
+                this.updateMemberAccountDefine(params);
             },
 
             //保存/更改/储值账户设置

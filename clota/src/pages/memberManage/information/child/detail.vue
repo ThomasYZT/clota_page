@@ -17,99 +17,100 @@
                     <div class="title">会员个人信息<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>修改</span></div>
                     <div class="basic-wrap">
                         <div class="person-left">
-                            <img src="@/assets/images/square-avatar.svg" alt="">
+                            <template v-if="detail.portrait">
+                                <img :src="detail.portrait" alt=""/>
+                            </template>
+                            <template v-else>
+                                <img src="@/assets/images/square-avatar.svg" alt=""/>
+                            </template>
                         </div>
                         <div class="person-right">
                             <div>
-                                <span class="name">刘木子</span>
-                                <span>男</span>
-                                <span>23岁</span>
+                                <span class="name">{{detail.custName || '-'}}</span>
+                                <span>{{ getEnumFieldShow('genderEnum', detail.gender) }}</span>
+                                <span>{{ detail.age ? detail.age+'岁' : '-' }}</span>
                             </div>
                             <div class="form-show">
-                                <span class="form-item-wrap"><label>手机号：</label>1862866882</span>
-                                <span class="form-item-wrap"><label>生日：</label>1995.09.07</span>
+                                <span class="form-item-wrap"><label>手机号：</label>{{detail.phoneNum || '-'}}</span>
+                                <span class="form-item-wrap"><label>生日：</label>
+                                    {{detail.birthDay ? new Date(detail.birthDay).format('yyyy-MM-dd') : '-'}}</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>微信号：</label><span>22866882</span></div>
-                        <div class="form-item-wrap"><label>支付宝账号：</label><span>--</span></div>
-                        <div class="form-item-wrap"><label>E-mail：</label><span>--</span></div>
-                        <div class="form-item-wrap"><label>国家代码：</label><span>--</span></div>
-                        <div class="form-item-wrap"><label>城市代码：</label><span>--</span></div>
-                        <div class="form-item-wrap"><label>QQ号：</label><span>--</span></div>
-                        <div class="form-item-wrap"><label>证件类型：</label><span>身份证</span></div>
-                        <div class="form-item-wrap"><label>身份证号：</label><span>-</span></div>
-                        <div class="form-item-wrap"><label>个人兴趣：</label><span>-</span></div>
-                        <div class="form-item-wrap"><label>家庭住址：</label><span>湖南省长沙市雨花区核能与花公关</span></div>
+                        <div class="form-item-wrap"><label>微信号：</label><span>{{detail.wechatAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>支付宝账号：</label><span>{{detail.alipayAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>E-mail：</label><span>{{detail.emailAddr || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>国家代码：</label><span>{{detail.stateCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>城市代码：</label><span>{{detail.cityCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>QQ号：</label><span>{{detail.qq || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>证件类型：</label><span>{{detail.certificationType || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>身份证号：</label><span>{{detail.idCardNumber || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>个人兴趣：</label><span>{{detail.hobby || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>家庭住址：</label><span>{{detail.homeAddr || '-'}}</span></div>
                     </div>
                 </div>
 
                 <div class="content-info">
                     <div class="title">
                         <span>会员卡归属选择 </span>
-                        <Select v-model="scene" style="width:180px;margin-left: 20px;">
-                            <Option value="''">全部交易类型</Option>
-                        </Select>
                         <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>修改</span>
                     </div>
-                    <div class="form-wrap">
-                        <div class="form-item-wrap"><label>会员编号：</label><span>22866882</span></div>
-                        <div class="form-item-wrap"><label>发卡单位：</label><span>深圳方特世界乐园</span></div>
-                        <div class="form-item-wrap"><label>注册渠道：</label><span>官网</span></div>
-                        <div class="form-item-wrap"><label>会员类别：</label><span>正式会员</span></div>
-                        <div class="form-item-wrap"><label>会员级别：</label><span>黄金会员</span></div>
-                        <div class="form-item-wrap"><label>密码：</label><span>********</span></div>
-                        <div class="form-item-wrap"><label>第三方卡面号：</label><span>--</span></div>
-                        <div class="form-item-wrap"><label>第三方卡号：</label><span>0279327092</span></div>
+                    <div class="form-wrap" v-if="detail.memberCardVos && detail.memberCardVos[0]">
+                        <div class="form-item-wrap"><label>会员编号：</label><span>
+                            {{detail.memberCardVos[0].cardCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>发卡单位：</label><span>
+                            {{detail.memberCardVos[0].orgId || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>注册渠道：</label><span>
+                            {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>会员类别：</label><span>
+                            {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>会员级别：</label><span>
+                            {{detail.memberCardVos[0].levelDesc || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>密码：</label><span>
+                            {{detail.memberCardVos[0].passwd || '********'}}</span></div>
+                        <div class="form-item-wrap"><label>第三方卡面号：</label><span>
+                            {{detail.memberCardVos[0].tpCardNo || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>第三方卡号：</label><span>
+                            {{detail.memberCardVos[0].tpNo || '-'}}</span></div>
                     </div>
                 </div>
 
-                <div class="content-info">
-                    <div class="title">默认储值账户信息 <span class="add" @click="addAccount">+ 新增账户</span></div>
+                <div class="content-info" v-for="(item, index) in accountData">
+                    <div class="title">
+                        {{item.defaultAccount === 'true' ? '默认储值账户' : item.accountName }}信息
+                        <span v-if="item.accountType === 'charging'" class="add" @click="addAccount">+ 新增账户</span>
+                    </div>
                     <div class="content">
-                        <div class="header-wrap">默认储值账户信息</div>
-                        <div class="body-wrap">
-                            <div class="coast"><span>本金：<span class="num">3728.28</span>元</span><span>赠送金额：<span class="num">128.28</span>元</span></div>
-                            <div class="operate-right">
-                                <span @click="viewDeal">交易明细</span>
-                                <span class="split-line"></span>
-                                <span @click="showAddSaveModal">新增储值</span>
-                                <span class="split-line"></span>
-                                <span @click="showRangeModal">应用范围</span>
-                            </div>
+                        <div class="header-wrap" v-if="item.accountType === 'charging'">
+                            {{item.defaultAccount === 'true' ? '默认储值账户' : item.accountName }}信息
                         </div>
-                    </div>
-                </div>
-
-                <div class="content-info">
-                    <div class="title">虚拟账户信息</div>
-                    <div class="content">
-                        <div class="header-wrap">默认储值账户信息</div>
+                        <div class="header-wrap" v-if="item.accountType === 'score'">积分</div>
                         <div class="body-wrap">
-                            <div class="coast"><span>本金：<span class="num">3728.28</span>金币</span><span>赠送金额：<span class="num">128.28</span>金币</span></div>
-                            <div class="operate-right">
-                                <span @click="viewDeal">交易明细</span>
-                                <span class="split-line"></span>
-                                <span @click="showAddSaveModal">新增储值</span>
-                                <span class="split-line"></span>
-                                <span @click="showRangeModal">应用范围</span>
-                                <span class="split-line"></span>
-                                <span @click="showCashModal">兑现</span>
+                            <div class="coast">
+                                <span>
+                                    <span v-if="item.accountType === 'charging'">本金：</span>
+                                    <span v-if="item.accountType === 'score'">可用积分：</span>
+                                    <span class="num">{{item.accountBalance.toCurrency()}}</span>
+                                    <span v-if="item.accountType === 'charging'">元</span>
+                                </span>
+                                <span v-if="item.accountType === 'charging'">
+                                    赠送金额：
+                                    <span class="num">{{item.donateBalance.toCurrency()}}</span>
+                                    <span v-if="item.accountType === 'charging'">元</span>
+                                </span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-info">
-                    <div class="title">积分账户信息</div>
-                    <div class="content">
-                        <div class="header-wrap">积分</div>
-                        <div class="body-wrap">
-                            <div class="coast"><span>可用积分：<span class="num">3728.28</span></span></div>
                             <div class="operate-right">
-                                <span @click="viewIntegration">积分明细</span>
+                                <template v-if="item.accountType === 'charging'">
+                                    <span @click="viewDeal(item)">交易明细</span>
+                                    <span class="split-line"></span>
+                                    <span @click="showAddSaveModal(item)">新增储值</span>
+                                    <span class="split-line"></span>
+                                    <span @click="showRangeModal(item)">应用范围</span>
+                                </template>
+                                <template v-if="item.accountType === 'score'">
+                                    <span @click="viewIntegration">积分明细</span>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -117,17 +118,21 @@
 
                 <div class="content-info">
                     <div class="title">优惠券信息</div>
-                    <more-card type="view" :table-data="tableData" @view-more="showCouponModal"></more-card>
+                    <more-card type="view"
+                               :status="status"
+                               :table-data="couponData"
+                               @view-more="showCouponModal"
+                               @change-status="changeStatus"></more-card>
                 </div>
 
                 <div class="content-info">
                     <div class="title">卡包信息</div>
-                    <div class="operate" @click="viewCardDetail">查看卡包信息</div>
+                    <div class="operate" @click="viewCardDetail"><span class="pointer">查看卡包信息</span></div>
                 </div>
 
                 <div class="content-info">
                     <div class="title">享受积分、折扣率信息</div>
-                    <div class="operate" @click="viewCardRateDetail">查看享受积分、折扣率信息</div>
+                    <div class="operate" @click="viewCardRateDetail"><span class="pointer">查看享受积分、折扣率信息</span></div>
                 </div>
 
                 <div class="content-info card-temp">
@@ -199,7 +204,10 @@
         </div>
 
         <!--新增账户modal-->
-        <add-account-modal ref="addAccount"></add-account-modal>
+        <add-account-modal ref="addAccount"
+                           :store="defineAccount"
+                           :detail="detail"
+                           @add-success="listCardAccountInfo(detail)"></add-account-modal>
 
         <!--新增储值modal-->
         <add-fund-modal ref="addFund"></add-fund-modal>
@@ -214,22 +222,26 @@
         <use-range-modal ref="useRange"></use-range-modal>
 
         <!--优惠券信息--查看更多modal-->
-        <view-more-coupon-modal :table-data="tableData" ref="viewMoreCoupon"></view-more-coupon-modal>
+        <view-more-coupon-modal :status="status" :table-data="couponData" ref="viewMoreCoupon"></view-more-coupon-modal>
 
     </div>
 </template>
 
 <script>
 
-    import addAccountModal from '../components/addAccountModal.vue'
-    import addFundModal  from '../../components/addFundModal.vue'
-    import toCashModal  from '../components/taCashModal.vue'
-    import modifyBalanceModal  from '../components/modifyBalanceModal.vue'
-    import useRangeModal  from '../components/useRangeModal.vue'
-    import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue'
-    import moreCard  from '../components/moreCard.vue'
+    import ajax from '@/api/index';
+    import addAccountModal from '../components/addAccountModal.vue';
+    import addFundModal  from '../../components/addFundModal.vue';
+    import toCashModal  from '../components/taCashModal.vue';
+    import modifyBalanceModal  from '../components/modifyBalanceModal.vue';
+    import useRangeModal  from '../components/useRangeModal.vue';
+    import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue';
+    import moreCard  from '../components/moreCard.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { genderEnum } from '@/assets/js/constVariable';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             addAccountModal,
             addFundModal,
@@ -241,7 +253,24 @@
         },
         data () {
             return {
+                //会员获取会员信息和会员卡信息
                 detail: {},
+                //枚举数据
+                enumData: {
+                    //性别
+                    genderEnum: genderEnum,
+                },
+                //账户信息列表（本金/积分）
+                accountData: [],
+                //自定义账户--用于新增账户
+                defineAccount: [],
+                //优惠券状态 已使用-used 未过期-noOverdue 已过期-overdue
+                status: 'used',
+                //优惠券信息列表,包括分页信息
+                couponData: [],
+
+
+
                 // 表格数据
                 tableData: [
                     {
@@ -272,7 +301,91 @@
                 scene: '',
             }
         },
+        created() {
+            //查询自定义账户
+            this.queryDefineAccountType();
+        },
         methods: {
+
+            //查询自定义账户
+            queryDefineAccountType () {
+                ajax.post('queryDefineAccountType', {}).then(res => {
+                    if(res.success){
+                        this.defineAccount = res.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'queryDefineAccountType 失败！');
+                    }
+                });
+            },
+
+            /**
+             * 获取枚举数据展示字段
+             * @param name String 枚举字段名
+             * @param val String 值
+             */
+            getEnumFieldShow ( name, val ) {
+                var obj = this.enumData[name].find((item) => val === item.name);
+                return obj ? obj.desc : '-'
+            },
+
+            //根据会员卡获取账户信息
+            listCardAccountInfo ( params ) {
+                ajax.post('listCardAccountInfo', {
+                    cardId: params.cardId,
+                    memberId: params.id,
+                }).then(res => {
+                    if(res.success){
+                        this.accountData = res.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'listCardAccountInfo 失败！');
+                    }
+                });
+            },
+            //点击账号信息，显示该账号信息的应用范围（店铺）
+            showRangeModal ( data ) {
+                this.$refs.useRange.show( data );
+            },
+
+            //获取更多优惠券
+            listCouponsByStatus ( params ) {
+                ajax.post('listCouponsByStatus', {
+                    cardId: params.cardId,
+                    memberId: params.id,
+                    couponType: '',
+                    status: this.status,
+                    pageNo: 1,
+                    pageSize: 10,
+                }).then(res => {
+                    if(res.success){
+                        this.couponData = res.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message ||'listCouponsByStatus 失败！');
+                    }
+                });
+            },
+
+            //切换优惠券状态查询
+            changeStatus ( val ) {
+                if(val){
+                    this.status = val;
+                    this.listCouponsByStatus( this.detail );
+                }
+            },
+            //点击查看更多显示卡劵所有列表弹窗
+            showCouponModal () {
+                if(this.$refs.viewMoreCoupon){
+                    this.$refs.viewMoreCoupon.show();
+                }
+            },
+
+
+
+
+
+
 
             addAccount () {
                 console.log('add');
@@ -293,21 +406,9 @@
                 this.$refs.addFund.show();
             },
 
-            showRangeModal () {
-                console.log('range');
-                this.$refs.useRange.show();
-            },
-
             showCashModal () {
                 console.log('cash');
                 this.$refs.toCash.show();
-            },
-
-            showCouponModal () {
-                console.log('Coupon');
-                if(this.$refs.viewMoreCoupon){
-                    this.$refs.viewMoreCoupon.show();
-                }
             },
 
             viewIntegration  () {
@@ -352,6 +453,26 @@
             showIntegModal () {
                 console.log('积分');
                 this.$refs.modifyBalance.show('integration');
+            },
+
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    for(let item in params){
+                        this[item] = params[item];
+                    }
+                    //根据会员卡获取账户信息
+                    this.listCardAccountInfo(params.detail);
+                    //获取更多优惠券
+                    this.listCouponsByStatus(params.detail);
+                }else{
+                    this.$router.push({
+                        name : 'memberInfo'
+                    });
+                }
             },
 
         }
@@ -595,5 +716,10 @@
             }
 
         }
+
+        .pointer{
+            cursor: pointer;
+        }
+
     }
 </style>

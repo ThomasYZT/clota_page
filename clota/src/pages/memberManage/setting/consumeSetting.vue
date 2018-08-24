@@ -145,10 +145,7 @@
 
             //查询会员基础设置
             findBasicSet () {
-                ajax.post('findBasicSet', {
-                    companyId: 1,
-                    orgId: 101,
-                } ).then(res => {
+                ajax.post('findBasicSet', {}).then(res => {
                     if( res.success){
                         if(res.data){
                             this.id = res.data.id;

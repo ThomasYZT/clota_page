@@ -13,8 +13,12 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="账户归属" prop="account">
-                        <Select v-model="formData.account" placeholder="请选择">
-                            <Option value="sss">账户</Option>
+                        <Select v-model="formData.account">
+                            <Option v-for="(item, index) in tableData"
+                                    :value="item.id"
+                                    :key="index">
+                                {{ item.orgName }}
+                                </Option>
                         </Select>
                     </Form-item>
                 </div>
@@ -103,7 +107,6 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if(valid){
-                        console.log(this.formData)
                         let params = {
                             account: this.formData.account,
                             accountName: this.formData.accountName,
@@ -114,9 +117,7 @@
                             donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
                         };
                         console.log(params)
-                        this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
-//                this.updateMemberAccountDefine(params);
+                        this.updateMemberAccountDefine(params);
                     }
                 })
             },

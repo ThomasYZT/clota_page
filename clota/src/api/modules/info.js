@@ -2,14 +2,30 @@
 //会员信息接口
 export default {
 
-    //会员信息-分页查询
+    /***********************************会员信息***********************************/
+    //分页查询
     'queryMemberPage' : '/member/queryMemberPage',
-    //会员信息-删除会员
+    //删除会员
     'deleteMemberInfo' : '/member/deleteMemberInfo',
-    //会员信息-新增会员
+    //新增会员
     'saveNewMemberInfo' : '/member/saveNewMemberInfo',
-    //会员信息-修改会员信息
+    //修改会员信息
     'editMemberInfo' : '/member/editMemberInfo',
+    //根据会员获取会员信息和会员卡信息
+    'showMemberDetail' : '/member/showMemberDetail',
+    //根据会员卡获取账户信息
+    'listCardAccountInfo' : '/member/memberAccount/listCardAccountInfo',
+    //获取更多优惠券
+    'listCouponsByStatus' : '/member/memberCoupon/listCouponsByStatus',
+    //查询自定义账户
+    'queryDefineAccountType' : '/member/memberAccount/queryDefineAccountType',
+    //新增账户
+    'addAccountInfo' : '/member/memberAccount/addAccountInfo',
+    //新增储值
+    'addAmount' : '/member/memberAccount/addAmount',
+    //会员信息详情-获取账户应用范围
+    'listAccountDetailRange' : '/member/memberAccount/listAccountRange',
+
 
     /***********************************会员积分***********************************/
     //会员积分、折扣率查询
@@ -40,4 +56,47 @@ export default {
     'updateCoupon' : '/member/memberCoupon/updateCoupon',
     //查询所有店铺信息
     'listAllSubStore' : '/member/memberBasicSet/listAllSubStore',
+
+
+    /***********************************初始化设置***********************************/
+    //基础设置-会员基础设置-查询
+    'findBasicSet' : '/member/memberBasicSet/findBasicSet',
+    //基础设置-会员基础设置-保存/修改
+    'basicSet' : '/member/memberBasicSet/basicSet',
+    //基础设置-查询证件
+    'queryDocument' : '/member/memberBasicSet/queryDocument',
+    //基础设置-增加/修改/删除证件
+    'updateDocument' : '/member/memberBasicSet/updateDocument',
+    //基础设置-查询调账原因
+    'listAdjustReason' : '/member/memberBasicSet/listAdjustReason',
+    //基础设置-删除调账原因
+    'deleteAdjustReason' : '/member/memberBasicSet/deleteAdjustReason',
+    //基础设置-增加调账原因
+    'addAdjustReason' : '/member/memberBasicSet/addAdjustReason',
+
+    //渠道设置-会员渠道-查询
+    'queryChannelSet' : '/member/channelSet/queryChannelSet',
+    //渠道设置-会员渠道-增加/修改/删除
+    'updateChannelSet' : '/member/channelSet/updateChannelSet',
+
+    //会员级别-查询
+    'queryMemberLevels' : '/member/memberLevel/queryMemberLevels',
+    //会员级别-增加/修改
+    'updateMemberLevel' : '/member/memberLevel/updateMemberLevel',
+    //会员级别-删除会员级别
+    'deleteMemberLevel' : '/member/memberLevel/deleteMemberLevel',
+    //会员级别-批量设置会员等级晋升规则
+    'batchUpdateMemberLevels' : '/member/memberLevel/batchUpdateMemberLevels',
+
+    //储值设置-查询收款方式
+    'queryPaymentType' : '/member/memberBasicSet/queryPaymentType',
+    //储值设置-新增/修改/删除收款方式
+    'updatePaymentType' : '/member/memberBasicSet/updatePaymentType',
+    //储值设置-查询储值账户
+    'queryMemberAccountDefine' : '/member/memberBasicSet/queryMemberAccountDefine',
+    //储值设置-保存/更改/删除储值账户设置
+    'updateMemberAccountDefine' : '/member/memberBasicSet/updateMemberAccountDefine',
+    //储值设置-获取储值赠送金额应用范围
+    'listAccount' : '/member/memberAccount/listAccount',
+
 }
