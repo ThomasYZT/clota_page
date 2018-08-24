@@ -9,20 +9,26 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap"><label>用户姓名</label><span>刘木子</span></div>
-            <div class="form-item-wrap"><label>手机号</label><span>15622221221</span></div>
-            <div class="form-item-wrap"><label>会员编号</label><span>0000000108</span></div>
-            <div class="form-item-wrap"><label>身份证号</label><span>653616565656565656</span></div>
+            <div class="form-item-wrap"><label>用户姓名</label><span>{{memberInfo.custName}}</span></div>
+            <div class="form-item-wrap"><label>手机号</label><span>{{memberInfo.phoneNum}}</span></div>
+            <div class="form-item-wrap"><label>会员编号</label><span>{{memberInfo.cardCode}}</span></div>
+            <div class="form-item-wrap"><label>身份证号</label><span>{{memberInfo.cardCode}}</span></div>
             <div class="form-item-wrap">
                 <label>关联所属类别</label>
-                <Select v-model="scene">
-                    <Option value="''">www</Option>
+                <Select v-model="staffTypeId">
+                    <Option :value="item.id"
+                            v-for="(item,i) in specialMemberData"
+                            :key="i">
+                        {{item.staffDesc}}
+                    </Option>
                 </Select>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" :disabled="scene ? false : true" @click="save">保存</Button>
+            <Button type="primary"
+                    :disabled="staffTypeId ? false : true"
+                    @click="save">保存</Button>
             <Button type="ghost" @click="hide">取消</Button>
         </div>
 
@@ -30,31 +36,92 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
+        props : {
+            //会员信息
+            'member-info' :{
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+        },
         components: {},
         data () {
             return {
+                //模态框是否显示
                 visible: false,
-                scene: '',
+                //员工分类
+                specialMemberData : [],
+                //员工分类id
+                staffTypeId : ''
             }
         },
         methods: {
 
+            /**
+             * 显示模态框
+             */
             show () {
                 this.visible = true;
             },
 
-            //保存
+            /**
+             * 保存
+             */
             save () {
-                console.log(true)
+                ajax.post('editMemberInfo',{
+                    memberCard : JSON.stringify({
+                        id : this.memberInfo.cardId,
+                        staffTypeId : this.staffTypeId,
+                    })
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('关联成功');
+                    }else{
+                        this.$Message.error('关联失败');
+                    }
+                }).finally(() => {
+                    this.hide();
+                });
             },
 
             //关闭模态框
             hide(){
                 this.visible = false;
             },
-
+            /**
+             * 查询所有特殊会员类别
+             */
+            memberStaffTypeList () {
+                ajax.post('memberStaffTypeList',{
+                    pageNo : 1,
+                    pageSize : 99999,
+                }).then(res => {
+                    if(res.success){
+                        this.specialMemberData = res.data.data ? res.data.data : [];
+                    }else{
+                        this.specialMemberData =  [];
+                    }
+                }).catch(err => {
+                    this.specialMemberData =  [];
+                });
+            },
         },
+        created () {
+            this.memberStaffTypeList();
+        },
+        watch : {
+            'memberInfo' :{
+                handler (newVal,oldVal) {
+                    if(newVal && Object.keys(newVal).length > 0){
+                        this.staffTypeId = newVal.memberCardVos[0].staffTypeId;
+                    }
+                },
+                deep :true
+            }
+        }
     }
 </script>
 

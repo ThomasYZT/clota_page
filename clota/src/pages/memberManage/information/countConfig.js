@@ -2,88 +2,33 @@
 
 export const countHead = [
     {
-        title: '订单号',
+        title: '会员姓名',
+        minWidth: 100,
+        field: 'custName'
+    },
+    {
+        title: '手机号',
+        minWidth: 100,
+        field: 'phoneNum'
+    },
+    {
+        title: '身份证号',
+        width: 190,
+        field: 'cardId'
+    },
+    {
+        title: '性别',
+        width: 80,
+        field: 'gender'
+    },
+    {
+        title: '会员归属',
         minWidth: 100,
         field: 'rate'
     },
     {
-        title: '游玩日期',
-        minWidth: 100,
+        title: '操作',
+        width: 80,
         field: 'rate'
-    },
-    {
-        title: '下单日期',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '产品信息',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '购买数量',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '订单金额',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '所属景区',
-        minWidth: 200,
-        field: 'rate'
-    },
-    {
-        title: '发售机构',
-        minWidth: 200,
-        field: 'rate'
-    },
-    {
-        title: '下单企业',
-        minWidth: 200,
-        field: 'rate'
-    },
-    {
-        title: '下单渠道',
-        minWidth: 200,
-        field: 'rate'
-    },
-    {
-        title: '订单类型',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '审核状态',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '支付状态',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '支付状态',
-        minWidth: 100,
-        field: 'rate'
-    },
-    {
-        title: '核销状态',
-        minWidth: 190,
-        field: 'rate'
-    },
-    {
-        title: '退票状态',
-        minWidth: 190,
-        field: 'rate'
-    },
-    {
-        title: '同步状态',
-        minWidth: 100,
-        field: 'rate',
-    },
+    }
 ];

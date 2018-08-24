@@ -4,17 +4,17 @@ export const columnData = [
     {
         title: '姓名',
         minWidth: 100,
-        field: 'productId'
+        field: 'custName'
     },
     {
         title: '手机号',
         minWidth: 100,
-        field: 'productName'
+        field: 'phoneNum'
     },
     {
         title: '证件编号',
         minWidth: 120,
-        field: 'prodScoreRate'
+        field: 'cardCode'
     },
     {
         title: '操作',

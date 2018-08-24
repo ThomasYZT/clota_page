@@ -10,7 +10,7 @@
             <div class="table-wrap">
                 <table-com
                     :column-data="specialEmployeeHead"
-                    :table-data="tableData"
+                    :table-data="specialMemberData"
                     :border="true"
                     :table-com-min-height="250"
                     :total-count="specialMemberDataCount"
@@ -39,11 +39,11 @@
             <div class="table-wrap">
                    <table-com
                     :column-data="employeeTrustHead"
-                    :table-data="tableData"
+                    :table-data="specialMemberBylyData"
                     :border="true"
                     :total-count="specialMemberDataCount"
                     :table-com-min-height="250"
-                    @query-data="specialMemberDiscountOfMemberList">
+                    @query-data="getStaffLevelInfo">
                     <el-table-column
                         slot="column2"
                         slot-scope="row"
@@ -83,6 +83,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {specialEmployeeHead,employeeTrustHead} from './specialMemberConfig';
     import ajax from '@/api/index.js';
+    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         components: {
@@ -179,22 +180,36 @@
              */
             cotactMemberInfo (rowData) {
                 this.currentData = rowData;
-                this.$refs.modifyRate.show();
+                this.getSpecialMemberDiscount(rowData);
             },
              /**
              * 查询所有特殊会员类别与普通会员的对照表
              * @param pageNo
              * @param pageSize
              */
-            specialMemberDiscountOfMemberList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+            getStaffLevelInfo ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
                 this.pageNo = pageNo;
                 this.pageSize = pageSize;
-                ajax.post('specialMemberDiscountOfMemberList',{
+                ajax.post('getStaffLevelInfo',{
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
                     if(res.success){
-                        this.specialMemberBylyData = res.data.data ? res.data.data : [];
+                        this.specialMemberBylyData = [];
+                        if(res.data){
+                            res.data.forEach(item => {
+                                if(item.staff){
+                                    item.staff.forEach(list => {
+                                        this.specialMemberBylyData.push ({
+                                            ...list,
+                                            levelDesc : item.level.levelDesc,
+                                            orgId : item.orgId,
+                                            levelId : item.level.id
+                                        });
+                                    });
+                                }
+                            });
+                        }
                         this.specialMemberBylyDataCount = res.data.totalRow;
                     }else{
                         this.specialMemberBylyData =  [];
@@ -211,9 +226,9 @@
              * @param callback 新增完成回调
              */
             setStoreDiscount (formData,callback) {
-                ajax.post('setSpecialMemberDiscountOfMember',{
+                ajax.post('setMemberDiscountOfMember',{
                     levelId : this.currentData.levelId,
-                    staffTypeId : this.currentData.staffTypeId,
+                    staffTypeId : this.currentData.id,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
                 }).then(res => {
@@ -226,6 +241,20 @@
                 }).finally(() => {
                     callback();
                 });
+            },
+            /**
+             * 获取特殊会员的积分率和折扣率
+             * @param data
+             */
+            getSpecialMemberDiscount (data){
+                ajax.post('getSpecialMemberDiscount',{
+                    levelId : data.levelId,//等级id
+                    staffTypeId : data.id,//员工类型id
+                }).then(res => {
+                    if(res.success){
+                        this.$refs.modifyRate.show();
+                    }
+                })
             }
         },
     }

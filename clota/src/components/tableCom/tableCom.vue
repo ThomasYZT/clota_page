@@ -6,7 +6,7 @@
                   v-if="tableMaxHeight !== null"
                   style="width: 100%"
                   :border="border"
-                  :max-height="parseInt(tableMaxHeight)"
+                  :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   @row-click="classDetailLink">
             <el-table-column
                 v-if="columnCheck"
@@ -130,6 +130,21 @@
             'table-com-min-height' : {
                 type : Number,
                 default : 0
+            },
+            //页码
+            'page-no-d' : {
+                type : Number,
+                default : 1
+            },
+            //每页条数
+            'page-size-d' : {
+                type : Number,
+                default : 10
+            },
+            //高度不限制，自由撑高
+            'auto-height' : {
+                type : Boolean,
+                default : false
             }
         },
         data() {
@@ -152,12 +167,16 @@
              * 设置表头的最大高度
              */
             setTableMaxHeight () {
-                let rootEl = this.$root.$el;
-                if(rootEl){
-                    if(this.showPagination){
-                        this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight - 92 + 'px';
-                    }else{
-                        this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
+                if(this.autoHeight){
+                    this.tableMaxHeight = 'auto';
+                }else{
+                    let rootEl = this.$root.$el;
+                    if(rootEl){
+                        if(this.showPagination){
+                            this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight - 92 + 'px';
+                        }else{
+                            this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
+                        }
                     }
                 }
             },

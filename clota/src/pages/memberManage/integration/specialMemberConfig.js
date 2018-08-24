@@ -18,12 +18,12 @@ export const employeeTrustHead = [
     {
         title: '会员级别',
         minWidth: 150,
-        field: 'levelName'
+        field: 'levelDesc'
     },
     {
         title: '类别',
         minWidth: 150,
-        field: 'staffTypeName'
+        field: 'staffDesc'
     },
     {
         title: '操作',

@@ -61,4 +61,6 @@ export default {
     'cash_coupon': '代金券',
     'exchange_coupon': '兑换券',
     'discount_coupon': '折扣券',
+    'female': '女',
+    'male': '男',
 }

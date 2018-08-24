@@ -4,9 +4,9 @@
 
         <div class="data-header">
             <div class="title">会员数据概览</div>
-            <div class="filter">
-                <DatePicker type="month" placeholder="请选择" v-model="dataCount.time" style="width: 140px"></DatePicker>
-            </div>
+            <!--<div class="filter">-->
+                <!--<DatePicker type="month" placeholder="请选择" v-model="dataCount.time" style="width: 140px"></DatePicker>-->
+            <!--</div>-->
         </div>
 
         <div class="data-content">
@@ -38,11 +38,25 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
         props: ['data-count'],
         components: {},
         data () {
             return {}
+        },
+        methods : {
+            /**
+             * 获取会员总量信息
+             */
+            getMemberSumCount () {
+                ajax.post('getMemberSumCount').then(res => {
+                   console.log(res);
+                });
+            }
+        },
+        created () {
+            this.getMemberSumCount();
         }
     }
 </script>

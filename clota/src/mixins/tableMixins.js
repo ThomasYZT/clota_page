@@ -67,13 +67,13 @@ export default {
 
         handleSizeChange(val) {
             this.pageSize = val;
-            console.log(`每页 ${val} 条`);
+            this.$emit('update:pageSizeD',val);
             this.queryList();
         },
         handleCurrentChange(val) {
             this.pageNo = val;
+            this.$emit('update:pageNoD',val);
             this.queryList();
-            console.log(`当前页: ${val}`);
         }
     },
     mounted() {

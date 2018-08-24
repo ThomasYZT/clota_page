@@ -52,10 +52,8 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './integrationConfig';
     import ajax from '@/api/index.js';
-    import lifeCycle from '@/mixins/lifeCycleMixins.js';
 
     export default {
-        mixins : [lifeCycle],
         components: {
             modifyRateModal,
             tableCom

@@ -35,6 +35,8 @@ export default {
     /***********************************会员积分***********************************/
     //会员积分、折扣率查询
     'memberDiscountOfMemberList' : '/members/memberDiscountOfMemberList',
+    //获取特殊会员的折扣率和积分率
+    'getSpecialMemberDiscount' : '/members/getSpecialMemberDiscount',
     //设置会员积分、折扣率查询
     'setMemberDiscountOfMember' : '/members/setMemberDiscountOfMember',
     //店铺会员折扣查询
@@ -50,7 +52,7 @@ export default {
     //查询特殊会员类别
     'memberStaffTypeList' : '/members/memberStaffTypeList',
     //查询特殊会员与普通会员对照表
-    'specialMemberDiscountOfMemberList' : '/members/specialMemberDiscountOfMemberList',
+    'getStaffLevelInfo' : '/members/getStaffLevelInfo',
     //设置特殊会员折扣率
     'setSpecialMemberDiscountOfMember' : '/members/setSpecialMemberDiscountOfMember',
 
@@ -103,5 +105,9 @@ export default {
     'updateMemberAccountDefine' : '/member/memberBasicSet/updateMemberAccountDefine',
     //储值设置-获取储值赠送金额应用范围
     'listAccount' : '/member/memberAccount/listAccount',
+
+    /***********************************会员统计***********************************/
+    //获取会员总量
+    'getMemberSumCount' : '/member/getMemberSumCount'
 
 }

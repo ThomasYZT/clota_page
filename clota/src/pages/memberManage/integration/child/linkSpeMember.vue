@@ -3,27 +3,30 @@
     <div class="integration-set-rate">
 
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/integration">积分、折扣率设置</BreadcrumbItem>
-                <BreadcrumbItem>{{ memberInfo.levelName }}积分、折扣率设置</BreadcrumbItem>
-            </Breadcrumb>
+            <bread-crumb-head
+                :locale-router="$t('specialMember')"
+                :before-router-list="beforeRouterList">
+            </bread-crumb-head>
         </div>
 
         <div class="rate-content">
-            <div class="title-wrap">会员：{{ memberInfo.levelName }}</div>
+            <!--<div class="title-wrap">会员：{{ memberInfo.levelName }}</div>-->
             <div class="filter-wrap">
-                <Input v-model.trim="queryParams.keyword"
-                       placeholder="请输入店铺名称"
+                <Input v-model.trim="keyword"
+                       placeholder="请输入会员姓名、电话"
                        style="width: 240px" />
                 <Button type="primary" @click="queryList">查 询</Button>
                 <Button type="ghost" @click="reset">重 置</Button>
             </div>
             <div class="table-wrap">
                 <table-com
-                    v-if="tableCanMount"
-                    :ofsetHeight="220"
+                    :ofsetHeight="170"
+                    :show-pagination="true"
                     :column-data="columnData"
                     :table-data="tableData"
+                    :total-count="totalCount"
+                    :page-no-d.sync="pageNo"
+                    :page-size-d.sync="pageSize"
                     :border="true"
                     @query-data="queryList">
                     <el-table-column
@@ -50,7 +53,9 @@
         </modify-rate-modal>
 
         <!--总体积分率折扣率设置modal-->
-        <link-belong-modal ref="linkBelong"></link-belong-modal>
+        <link-belong-modal ref="linkBelong"
+                           :member-info="currentData">
+        </link-belong-modal>
 
     </div>
 </template>
@@ -62,12 +67,14 @@
     import {columnData} from './linkSpeMemberConfig';
     import ajax from '@/api/index.js';
     import linkBelongModal from '../components/linkBelongModal.vue';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
 
     export default {
         components: {
             modifyRateModal,
             tableCom,
-            linkBelongModal
+            linkBelongModal,
+            breadCrumbHead
         },
         data () {
             return {
@@ -77,6 +84,8 @@
                 queryParams: {
                     keyword: '',
                 },
+                //关键字
+                keyword : '',
                 // 表格数据
                 tableData: [],
                 //总条数
@@ -92,7 +101,16 @@
                 //每页条数
                 pageSize : 10,
                 //当前操作的行数据
-                currentData : {}
+                currentData : {},
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: this.$t('card'),
+                        router: {
+                            name: 'specialMember'
+                        }
+                    }
+                ],
             }
         },
         methods: {
@@ -120,33 +138,6 @@
                     }
                 });
             },
-
-            /**
-             * 查询店铺信息
-             * @param pageNo
-             * @param pageSize
-             */
-            queryList ({pageNo = this.pageNo,pageSize = this.pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
-                this.pageNo = pageNo;
-                this.pageSize = pageSize;
-                ajax.post('memberDiscountOfStoreList',{
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize,
-                    levelDiscountId : this.memberInfo.levelId,
-                    orgName : this.queryParams.keyword,
-                }).then(res => {
-                    if(res.success){
-                        this.tableData = res.data.data ? res.data.data : [];
-                        this.totalCount = res.data.totalRow;
-                    }else{
-                        this.tableData =  [];
-                        this.totalCount = 0;
-                    }
-                }).catch(err => {
-                    this.tableData =  [];
-                    this.totalCount = 0;
-                });
-            },
             /**
              * 获取路由参数
              * @param params
@@ -161,7 +152,7 @@
              * 重置查询条件
              */
             reset () {
-                this.queryParams.keyword = '';
+                this.keyword = '';
                 this.queryList();
             },
             /**
@@ -170,7 +161,7 @@
              * @param callback 新增完成回调
              */
             setStoreDiscount (formData,callback) {
-                ajax.post('setMemberDiscountOfStore',{
+                ajax.post('setMemberDiscountOfMember',{
                     levelDiscountId : this.memberInfo.levelId,
                     orgIds : this.currentData.orgId,
                     discountRate : formData.discountRate,
@@ -189,8 +180,27 @@
             /**
              * 关联类别模态框显示
              */
-            contactType () {
+            contactType (data) {
+                this.currentData = data;
                 this.$refs.linkBelong.show();
+            },
+            /**
+             * 获取所有员工信息
+             */
+            queryList () {
+                ajax.post('queryMemberPage',{
+                    keyWord : this.keyword,
+                    pageSize : this.pageSize,
+                    pageNo : this.pageNo,
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
+                    }else{
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
             }
         },
         beforeRouteEnter(to,from,next) {
@@ -199,10 +209,6 @@
             });
         },
         computed : {
-            //表格是否需要显示
-            tableCanMount () {
-                return this.memberInfo && !!this.memberInfo.levelId;
-            }
         }
     }
 </script>
@@ -214,7 +220,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
 
@@ -226,7 +231,7 @@
         }
 
         .rate-content{
-            @include block_outline($height : unquote('calc(100% - 70px)'));
+            @include block_outline($height : unquote('calc(100% - 50px)'));
             padding: 20px 30px 0 30px;
 
             .title-wrap{

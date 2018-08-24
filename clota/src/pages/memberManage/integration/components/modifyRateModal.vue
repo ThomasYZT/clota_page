@@ -22,10 +22,9 @@
                             </Form-item>
                         </i-col>
                         <i-col span="10">
-                            <Form-item prop="integRate" :label-width="10">
-                                <Input v-model.trim="formData.integRate" :placeholder="$t('inputPlaceholder')"/>
-                                <span class="font">{{$t('integral')}}</span>
-                            </Form-item>
+                            <div class="integral-rate">
+                                <span class="font">{{formData.integRate}}{{$t('integral')}}</span>
+                            </div>
                         </i-col>
                     </i-row>
                 </div>
@@ -129,7 +128,7 @@
                     //消费
                     consumption : '',
                     //兑换积分
-                    integRate: '',
+                    integRate: '1',
                     //折扣率
                     discountRate: '',
                     //备注
@@ -219,6 +218,12 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .set-rate-modal{
+
+        .integral-rate{
+            height: 32px;
+            line-height: 32px;
+            font-size: 14px;
+        }
 
         .modal-body{
             padding: 64px 25px;
