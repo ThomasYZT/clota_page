@@ -213,7 +213,7 @@ export default {
 
             card: {
                 //会员管理--会员卡券
-                path: '/memberManage/card',
+                path: '/memberManage/coupon/card',
                 name: 'card',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/card.vue'),
                 meta: {
@@ -226,7 +226,7 @@ export default {
             },
             addCard: {
                 //会员管理--会员卡券--新增卡劵
-                path: '/memberManage/add',
+                path: '/memberManage/coupon/add',
                 name: 'addCard',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/addCard.vue'),
                 meta: {

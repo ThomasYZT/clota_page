@@ -152,7 +152,7 @@
              * 新增卡券
              */
             add () {
-                this.$router.push({ name: 'addCard', query: { type: 'add' }});
+                this.$router.push({ name: 'addCard', query: { type: 'add' },params : {name : 1}});
             },
 
             /**

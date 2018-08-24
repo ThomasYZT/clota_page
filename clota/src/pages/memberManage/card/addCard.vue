@@ -172,7 +172,9 @@
 <script>
     import ajax from '@/api/index.js';
     import {couponTypeList} from '@/assets/js/constVariable.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         components: { },
         data() {
 
@@ -202,7 +204,7 @@
                     //卡券名称
                     couponName: '',
                     //卡券类别
-                    couponType: 'discountCoupon',
+                    couponType: 'cashCoupon',
                     //卡券面值
                     nominalValue: '',
                     //最低消费金额后可用
@@ -415,6 +417,10 @@
                             this.formData[item] = params[item];
                         }
                     }
+                }else{
+                    this.$router.push({
+                        name : 'card'
+                    });
                 }
             }
         },
@@ -424,7 +430,14 @@
         },
         beforeRouteEnter(to,from,next) {
             next(vm => {
-                vm.getParams(to.params);
+                if(to.params && Object.keys(to.params).length > 0){
+                    vm.getParams(to.params);
+                }else if(sessionStorage.getItem(to.name)){
+                    let saveParams = sessionStorage.getItem(to.name);
+                    vm.getParams(JSON.parse(saveParams));
+                }else{
+                    vm.getParams({});
+                }
             });
         }
     }
