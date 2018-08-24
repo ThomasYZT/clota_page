@@ -253,6 +253,32 @@
                 }
             };
 
+            //校验最低消费金额
+            const validateLowerMon = (rule,value,callback) => {
+                common.validateMoney(value).then(() => {
+                    if(common.isNotEmpty(this.formData.conditionUpperLimtation) && value > this.formData.conditionUpperLimtation){
+                        callback('最低消费金额不可超过最高消费金额');
+                    }else{
+                        callback();
+                    }
+                }).catch(err => {
+                    callback(this.$t(err,{field : rule.field}));
+                });
+            };
+
+            //校验最高消费金额
+            const validateUpperMon = (rule,value,callback) => {
+                common.validateMoney(value).then(() => {
+                    if(common.isNotEmpty(this.formData.conditionLowerLimtation) && value < this.formData.conditionLowerLimtation){
+                        callback('最高消费金额不可低于最低消费金额');
+                    }else{
+                        callback();
+                    }
+                }).catch(err => {
+                    callback(this.$t(err,{field : rule.field}));
+                });
+            };
+
             return {
                 //上级路由列表
                 beforeRouterList: [
@@ -322,11 +348,12 @@
                     conditionLowerLimtation: [
                         { required: true, message: '最低消费金额不能为空', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' },
+                        { validator: validateLowerMon, trigger: 'blur' },
                     ],
                     conditionUpperLimtation: [
                         { required: true, message: '最高消费金额不能为空', trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateUpperMon, trigger: 'blur' },
                     ],
                     effectiveTime: [
                         { required: true, validator : validateStartTime, trigger: 'change' },
