@@ -33,15 +33,16 @@
             }
         },
         computed: {
+            //环形图参数
             options(){
                 let colorList = ['#0055B8', '#33C0BF', '#FD8CB1', '#FBC826'];
                 let legendData = [], seriesData = [];
                 for(let item of this.memberLevelData){
                     //格式化图例数据
-                    legendData.push(`${item.label} | ${Number(item.value  * 100 / this.memberCount).toFixed(2)}%  ${item.value}`);
+                    legendData.push(`${item.label}|${Number(item.value  * 100 / this.memberCount).toFixed(2)}%|${item.value}`);
                     //设置环形图数据
                     seriesData.push(Object.assign({
-                        name : `${item.label} | ${Number(item.value  * 100 / this.memberCount).toFixed(2)}%  ${item.value}`
+                        name : `${item.label}|${Number(item.value  * 100 / this.memberCount).toFixed(2)}%|${item.value}`
                     },item));
                 }
                 return {
@@ -76,17 +77,26 @@
                             fontSize: 14,
                             rich: {
                                 name: {
-                                    width: 130,
                                     color: '#666666',
-                                    overflow: 'hidden'
                                 },
-                                number: {
-                                    color: '#333333'
+                                per: {
+                                    width : 60,
+                                    color: '#999999'
+                                },
+                                val : {
+                                    color : '#333333'
+                                },
+                                sg : {
+                                    color : '#d9d9d9',
+                                    padding : [0,10,0,10]
                                 }
                             }
                         },
-                        formatter: (name) => name,
-                        data: legendData
+                        formatter: (data) => {
+                            let dataArr = data.split('|');
+                            return `{name|${dataArr[0]}}{sg||}{per|${dataArr[1]}}{val|${dataArr[2]}}`;
+                        },
+                        data: legendData,
                     },
                     series: [
                         {
