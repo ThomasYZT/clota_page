@@ -52,6 +52,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         {{ scope.row.operationType | transOperation }}
+                        <!--<span @click="viewDetail(scope.row)">弹弹</span>-->
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -67,8 +68,8 @@
             </table-com>
         </div>
 
-        <!--储值账户修改信息modal-->
-        <modify-detail-modal ref="modifyDetail"></modify-detail-modal>
+        <!--查看手动修改账户的资金交易明细，信息modal-->
+        <modify-detail-modal ref="modifyDetail" :manual-data="currManualData"></modify-detail-modal>
 
     </div>
 </template>
@@ -115,30 +116,26 @@
                 // 表格数据
                 tableData: [],
                 //总条数
-                totalCount: 50,
+                totalCount: 0,
                 //表头配置
                 columnData : fundDetailHead,
                 //会员详情账户数据
                 fundDetail: {},
+                //当前手动修改的交易数据
+                currManualData: {},
             }
         },
         filters: {
             transOperation(val) {
-                let optType = '';
-                switch (val) {
-                    case 'recharge' :
-                        optType = '储值';
-                        break;
-                    case 'consume' :
-                        optType = '消费';
-                        break;
-                }
-                return optType;
+                let optType = dealType.find((item, i) => {
+                    return item.value === val;
+                });
+                return optType ? optType.name : val;
             },
         },
         methods: {
             /**
-             * 查询交易明细
+             * 查询资金交易明细
              */
             queryList () {
                 let param = {};
@@ -157,8 +154,12 @@
                 });
             },
 
-            viewDetail ( data ) {
+            /**
+             * 手动修改的交易数据，弹窗
+             */
+            viewDetail ( scopeRow ) {
                 this.$refs.modifyDetail.show('fund');
+                this.currManualData = scopeRow;
             },
 
             /**

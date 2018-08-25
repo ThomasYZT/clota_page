@@ -547,9 +547,8 @@
                 this.$refs.toCash.show();
             },
 
-            viewIntegration  () {
-                this.$router.push({ name: 'infoInteg' });
-                console.log('Integration')
+            viewIntegration  (integraData) {
+                this.$router.push({ name: 'infoInteg', params: {integraDetail: integraData} });
             },
 
             viewCardDetail () {

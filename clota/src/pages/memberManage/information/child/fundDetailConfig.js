@@ -47,4 +47,8 @@ export const dealType = [
         name: '储值',
         value: 'recharge',
     },
+    {
+        name: '手动改资金账户',
+        value: 'manual',
+    },
 ];

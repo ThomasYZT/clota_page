@@ -2,19 +2,25 @@
     <!--积分修改信息/储值账户修改信息-->
     <Modal
         v-model="visible"
-        :title="type === 'fund' ? '会员储值账户余额修改' : '会员积分账户修改' "
+        :title="type === 'fund' ? '储值账户余额修改' : '积分账户修改' "
         class-name="view-modify-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap"><label>本次修改金额：</label><span :class="{'red': num < 0, 'green': num > -1 }">{{num}}</span></div>
-            <div class="form-item-wrap"><label>修改后账户余额为：</label><span>1999元</span></div>
-            <div class="form-item-wrap"><label>操作人：</label><span>赵丽颖</span></div>
-            <div class="form-item-wrap"><label>修改时间：</label><span>2018-01-01 08:00:00</span></div>
-            <div class="form-item-wrap"><label>备注：</label><span>系统更新时，用户进行消费，消费信息未同步</span></div>
-            <div class="form-item-wrap"><label>修改原因：</label><span>积分账户错误，手动新增金额200元</span></div>
+            <div class="form-item-wrap">
+                <label>本次修改金额：</label>
+                <span :class="{'red': manualData.amount < 0, 'green': manualData.amount > -1 }">{{manualData.amount}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>修改后账户余额为：</label>
+                <span>{{manualData.endingBalance | contentFilter}}元</span>
+            </div>
+            <div class="form-item-wrap"><label>操作人：</label><span>{{manualData.custName | contentFilter}}</span></div>
+            <div class="form-item-wrap"><label>修改时间：</label><span>{{manualData.createdTime}}</span></div>
+            <div class="form-item-wrap"><label>备注：</label><span>{{manualData.remark | contentFilter}}</span></div>
+            <div class="form-item-wrap"><label>修改原因：</label><span>{{manualData.reason | contentFilter}}</span></div>
         </div>
 
         <div slot="footer" class="modal-footer">
@@ -27,12 +33,14 @@
 <script>
     export default {
         components: {},
+        props: {
+            manualData: Object
+        },
         data () {
             return {
                 // 储值/积分 fund/integration
                 type: 'fund',
                 visible: false,
-                num: -1209,
             }
         },
         methods: {
