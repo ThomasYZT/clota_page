@@ -109,7 +109,6 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true);
                         let params = {
                             memberId: this.detail.id,
                             cardId: this.detail.cardId,

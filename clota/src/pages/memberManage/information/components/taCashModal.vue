@@ -11,13 +11,13 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="兑现数量：" prop="num">
-                        <Input v-model.trim="data.num" placeholder="请输入"></Input>
+                    <Form-item label="兑现数量：" prop="fromAmount">
+                        <Input v-model.trim="data.fromAmount" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="兑换后数量：" prop="afterNum">
-                        <Input v-model.trim="data.afterNum" disabled placeholder="请输入"></Input>
+                    <Form-item label="兑换后数量：" prop="toAmount">
+                        <Input v-model.trim="data.toAmount" disabled placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -31,7 +31,11 @@
                 <div class="ivu-form-item-wrap" v-if="data.channel === 'account'">
                     <Form-item label="转入账户：" prop="toAccountId">
                         <Select v-model="data.toAccountId" placeholder="请选择">
-                            <Option value="">账户</Option>
+                            <Option v-for="(item,index) in store"
+                                    :key="index"
+                                    :value="item.id">
+                                {{item.accountName}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
@@ -48,37 +52,84 @@
 
 <script>
 
-
+    import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
 
     export default {
+        props: ['store'],
         components: {},
         data () {
+
+            const validateMethod = {
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+            };
+
+            //校验正整数
+            const validateNumber = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    this.toAmountFunc();
+                    callback();
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
+            //校验转入账户
+            const validateToAccount = (rule,value,callback) => {
+                if(this.formData.channel === 'account' && value == ''){
+                    callback(new Error('请选择转入账户'));
+                } else {
+                    callback();
+                }
+            };
+
+
             return {
                 visible: false,
-                data: {
-                    num: '',
-                    afterNum: '20',
+                //会员信息的账户数据
+                accountInfo: {},
+                //表单数据
+                formData: {
                     channel: 'cash',
-                    account: '',
-
                     fromAccountId: '',//调出账户
-                    amount: '',//兑现数量
+                    fromAmount: '',//兑现数量
                     toAccountId: '',//转入账户
+                    toAmount: '',//兑换后数量
                 },
+                //表单校验
                 ruleValidate: {
-                    num: [
-                        { required: true, message: '兑现数量不能为空', trigger: 'change' },
+                    fromAmount: [
+                        {required: true, message: '兑现数量不能为空', trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
                     channel: [
-                        { required: true, message: '充值渠道不能为空', trigger: 'change' },
+                        {required: true},
                     ],
-                }
+                    toAccountId: [
+                        { validator: validateToAccount, trigger: 'change' },
+                    ],
+                },
             }
         },
         methods: {
 
-            show () {
+            show ( data ) {
+                if( data ){
+                    this.accountInfo = data;
+                }
                 this.visible = true;
+            },
+
+            //计算兑换后数量
+            toAmountFunc () {
+                this.formData.toAmount = Number(newVal)*this.accountInfo.rate;
             },
 
             //表单校验
@@ -86,6 +137,27 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         console.log(true)
+                        let params = {
+                            fromAccountId: this.accountInfo.id,
+                            fromAmount: this.formData.formData,
+                            toAccountId: this.formData.toAccountId,
+                            toAmount: this.formData.toAmount,
+                        };
+                        console.log(params)
+//                        this.transferAccountBalance(params);
+                    }
+                })
+            },
+
+            //兑现
+            transferAccountBalance ( params ) {
+                ajax.post('transferAccountBalance', params).then(res => {
+                    if( res.success ) {
+                        this.$Message.success('兑现成功！');
+                        this.$emit('add-success');
+                        this.hide();
+                    } else {
+                        this.$Message.warning(res.message|| 'transferAccountBalance 失败！');
                     }
                 })
             },
@@ -94,6 +166,14 @@
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
+                this.accountInfo = {};
+                this.formData = {
+                    channel: 'cash',
+                    fromAccountId: '',
+                    fromAmount: '',
+                    toAccountId: '',
+                    toAmount: '',
+                };
             },
 
         },

@@ -29,6 +29,12 @@ export default {
     'updateMemberCard' : '/member/updateMemberCard',
     //获取母卡或子卡
     'queryChildOrMotherCard' : 'member/queryChildOrMotherCard',
+    //兑现
+    'transferAccountBalance' : '/member/memberAccount/transferAccountBalance',
+    //调储值账户余额
+    'adjustScore' : '/member/memberAccount/adjustScore',
+    //调储值账户余额
+    'adjustAmount' : '/member/memberAccount/adjustAmount',
 
 
 

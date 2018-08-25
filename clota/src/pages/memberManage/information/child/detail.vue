@@ -118,7 +118,7 @@
                                     </template>
                                 </template>
                                 <template v-if="item.accountType === 'score'">
-                                    <span @click="viewIntegration">积分明细</span>
+                                    <span @click="viewIntegration(item)">积分明细</span>
                                 </template>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
 
                 <div class="content-info card-temp">
                     <div class="title">子母卡信息</div>
-                    <div class="son-card card-wrap" v-if="childOrMotherCard.isMotherCard === 'true'">
+                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true'">
                         <el-table
                             :data="motherCard"
                             :border="true"
@@ -162,12 +162,14 @@
                                 prop=""
                                 label="母卡信息"
                                 width="260">
-                                <template slot-scope="scope">张三，27838383939</template>
+                                <template slot-scope="scope">
+                                    {{ scope.row.custName ? scope.row.custName+','+scope.row.idCardNumber : '-' }}
+                                </template>
                             </el-table-column>
                         </el-table>
                     </div>
 
-                    <div class="mother-card card-wrap" v-if="childOrMotherCard.isMotherCard === 'false'">
+                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false'">
                         <el-table
                             :data="sonCard"
                             :border="true"
@@ -182,7 +184,9 @@
                                 prop=""
                                 label="子卡信息"
                                 width="260">
-                                <template slot-scope="scope">{{childOrMotherCard.motherCard}}</template>
+                                <template slot-scope="scope">
+                                    {{scope.row.custName ? scope.row.custName+','+scope.row.idCardNumber : '-'}}
+                                </template>
                             </el-table-column>
                         </el-table>
                     </div>
@@ -208,10 +212,10 @@
 
             </div>
 
-            <div class="btn-wrap">
-                <Button type="primary">保存</Button>
-                <Button type="ghost">取消</Button>
-            </div>
+            <!--<div class="btn-wrap">-->
+                <!--<Button type="primary">保存</Button>-->
+                <!--<Button type="ghost">取消</Button>-->
+            <!--</div>-->
 
         </div>
 
@@ -219,19 +223,20 @@
         <add-account-modal ref="addAccount"
                            :store="defineAccount"
                            :detail="detail"
-                           @add-success="listCardAccountInfo(detail)"></add-account-modal>
+                           @add-success="listCardAccountInfo(detail)">
+        </add-account-modal>
 
         <!--新增储值modal-->
         <add-fund-modal ref="addFund"
                         :payment-list="paymentData"
                         :detail="detail"
-                        @add-success="listCardAccountInfo(detail)"></add-fund-modal>
-
-        <!--会员储值账户余额修改/会员积分账户修改modal-->
-        <modify-balance-modal ref="modifyBalance"></modify-balance-modal>
+                        @add-success="listCardAccountInfo(detail)">
+        </add-fund-modal>
 
         <!--兑现modal-->
-        <to-cash-modal ref="toCash"></to-cash-modal>
+        <to-cash-modal ref="toCash"
+                       :store="defineAccount"
+                       @add-success="listCardAccountInfo(detail)"></to-cash-modal>
 
         <!--应用范围modal-->
         <use-range-modal ref="useRange"></use-range-modal>
@@ -239,14 +244,20 @@
         <!--优惠券信息--查看更多modal-->
         <view-more-coupon-modal :status="status"
                                 :table-data="couponData"
-                                ref="viewMoreCoupon"></view-more-coupon-modal>
+                                ref="viewMoreCoupon">
+        </view-more-coupon-modal>
+
+        <!--会员储值账户余额修改/会员积分账户修改modal-->
+        <modify-balance-modal ref="modifyBalance">
+        </modify-balance-modal>
 
     </div>
 </template>
 
 <script>
-    import breadCrumbHead from '@/components/breadCrumbHead/index'
+
     import ajax from '@/api/index';
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
     import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal  from '../../components/addFundModal.vue';
     import toCashModal  from '../components/taCashModal.vue';
@@ -288,39 +299,11 @@
                 status: 'used',
                 //优惠券信息列表,包括分页信息
                 couponData: [],
-                //字母卡信息
+                //子母卡信息
                 childOrMotherCard: {},
-                // 字母卡表格数据
-                motherCard: [
-                    { id: '309287481' },
-                    { id: '309287482' }
-                ],
-                sonCard: [
-                    { id: '309287480' },
-                ],
-
-
-                // 表格数据
-                tableData: [
-                    {
-                        id: '309287482',
-                        name: '张三',
-                        content: '店内总价不超过100元订单结算时使用',
-                        type: '折扣券',
-                        time: '20180.09.09-2020.02.09',
-                    },
-                    {
-                        id: '309287482',
-                        name: '张三',
-                        content: '店内总价不超过100元订单结算时使用',
-                        type: '折扣券',
-                        time: '20180.09.09-2020.02.09',
-                    },
-                ],
-
-                // 冻结该会员账户
-                open: false,
-                scene: '',
+                //子母卡表格数据
+                motherCard: [],
+                sonCard: [],
             }
         },
         created() {
@@ -333,7 +316,7 @@
 
             //查询自定义账户
             queryDefineAccountType () {
-                ajax.post('queryDefineAccountType').then(res => {
+                ajax.post('queryDefineAccountType', {}).then(res => {
                     if(res.success){
                         this.defineAccount = res.data || [];
                     } else {
@@ -366,6 +349,10 @@
                 return obj ? obj.desc : '-'
             },
 
+            //显示新增账号弹窗
+            addAccount () {
+                this.$refs.addAccount.show();
+            },
             //根据会员卡获取账户信息
             listCardAccountInfo ( params ) {
                 ajax.post('listCardAccountInfo', {
@@ -375,6 +362,7 @@
                     if(res.success){
                         this.accountData = res.data || [];
                     } else {
+                        console.log(res);
                         this.$Message.warning(res.message || 'listCardAccountInfo 失败！');
                     }
                 });
@@ -452,29 +440,43 @@
                 }).then(res => {
                     if(res.success){
                         this.childOrMotherCard = res.data || {};
-                        //区分字母卡
-//                        if(res.data.isMotherCard === 'true'){
-//                            this.
-//                        } else {
-//
-//                        }
+                        //区分子母卡
+                        if(res.data.isMotherCard === 'true'){
+                            if(res.data.childCard.length > 0){
+                                this.motherCard = res.data.childCard;
+                            } else {
+                                this.motherCard = [{ id: ''}];
+                            }
+                        } else {
+                            this.sonCard = res.motherCard || [{ id: ''}];
+                        }
                     } else {
                         console.log(res);
                         this.$Message.warning(res.message || 'queryChildOrMotherCard 失败！');
                     }
                 });
             },
-
-
-
-
-
-
-
-            addAccount () {
-                console.log('add');
-                this.$refs.addAccount.show();
+            // 子母卡列合并
+            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+                if (columnIndex === 0) {
+                    if (rowIndex % 2 === 0) {
+                        return {
+                            rowspan: 2,
+                            colspan: 1
+                        };
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        };
+                    }
+                }
             },
+
+
+
+
+
 
             modifyInfo () {
                 this.$router.push({ name: 'addMember', query: { type: 'modify'} });
@@ -505,23 +507,6 @@
             viewCardRateDetail () {
                 this.$router.push({ name: 'infoRate' });
                 console.log('cardRate')
-            },
-
-            // 字母卡列合并
-            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-                if (columnIndex === 0) {
-                    if (rowIndex % 2 === 0) {
-                        return {
-                            rowspan: 2,
-                            colspan: 1
-                        };
-                    } else {
-                        return {
-                            rowspan: 0,
-                            colspan: 0
-                        };
-                    }
-                }
             },
 
             // 修改该会员储值账户余额
@@ -703,14 +688,11 @@
 
                     &.card-temp{
                         height: 185px;
-                        @include clearfix();
+                        margin-bottom: 0;
+
                         .card-wrap{
                             margin-top: 15px;
                             display: inline-block;
-                            float: left;
-                            &.son-card{
-                                margin-right: 70px;
-                            }
                         }
                     }
 
