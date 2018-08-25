@@ -101,8 +101,15 @@ module.exports = {
             filename: '[name].[hash].js',
             path: './static/dll',
             entry: {
-                vueFamily: ['vue', 'vue-router','vuex'],
+                vueFamily: ['vue', 'vue-router','vuex','vue-i18n'],
                 plugins: [
+                    'echarts/lib/echarts',
+                    'core-js',
+                    'axios',
+                    'echarts/lib/chart/pie',
+                    'echarts/lib/chart/line',
+                    'echarts/lib/component/tooltip',
+                    'echarts/lib/component/legend',
                     'element-ui/lib/table.js',
                     'element-ui/lib/table-column.js',
                     'element-ui/lib/scrollbar.js',

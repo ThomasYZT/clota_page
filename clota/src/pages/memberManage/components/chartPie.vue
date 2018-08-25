@@ -1,41 +1,49 @@
+<!--会员分布数据-->
 <template>
     <div class="member-data-pie">
         <div class="data-header">
             <div class="title">会员分布数据</div>
-            <div class="filter">
-                <DatePicker type="month" placeholder="请选择" placement="bottom-end" v-model="dataPie.time" style="width: 140px"></DatePicker>
-            </div>
         </div>
 
         <div class="data-content">
-            <vue-echarts :options="options" auto-resize></vue-echarts>
+            <vue-echarts
+                ref="vueChart"
+                :options="options"
+                auto-resize>
+            </vue-echarts>
         </div>
     </div>
 </template>
 
 <script>
 
-    import constVariable from '@/assets/js/constVariable'
-    import vueEcharts from '@/components/vueEcharts/Echarts'
+    import vueEcharts from '@/components/vueEcharts/Echarts';
+    import ajax from '@/api/index.js';
 
     export default {
-        props: ['dataPie'],
         components: {
             vueEcharts
         },
         data () {
-            return {}
+            return {
+                //会员等级数据
+                memberLevelData : [],
+                //会员总数
+                memberCount : ''
+            }
         },
         computed: {
             options(){
                 let colorList = ['#0055B8', '#33C0BF', '#FD8CB1', '#FBC826'];
-                let legendList = ['V1', 'V2', 'V3', 'V4'];
                 let legendData = [], seriesData = [];
-                for(let key of legendList){
-                    legendData.push({ name: key, icon: 'circle'});
-                    seriesData.push({ name: key, value: 0});
+                for(let item of this.memberLevelData){
+                    //格式化图例数据
+                    legendData.push(`${item.label} | ${Number(item.value  * 100 / this.memberCount).toFixed(2)}%  ${item.value}`);
+                    //设置环形图数据
+                    seriesData.push(Object.assign({
+                        name : `${item.label} | ${Number(item.value  * 100 / this.memberCount).toFixed(2)}%  ${item.value}`
+                    },item));
                 }
-                let totalCount = 7392;
                 return {
                     tooltip: {
                         show: true,
@@ -46,8 +54,7 @@
                             }
                         },
                         formatter: (params) => {
-                            /*let tooltip = constVariable.evaluateStatus[params.name] + ':&nbsp;&nbsp;' +  params.value +'人&nbsp;&nbsp;' + params.percent + '%';*/
-                            return "38.88%";
+                            return `${params.data.label}\n${params.value}`;
                         },
                         backgroundColor: 'rgba(0,0,0,0.70)',
                         padding: [10, 15],
@@ -78,9 +85,7 @@
                                 }
                             }
                         },
-                        formatter: name => {
-                            return name +' | 48.88%   3992'
-                        },
+                        formatter: (name) => name,
                         data: legendData
                     },
                     series: [
@@ -104,7 +109,7 @@
                                     show: true,
                                     position: 'center',
                                     formatter: ( params )=>{
-                                        return totalCount;
+                                        return this.memberCount;
                                     },
                                     textStyle: {
                                         fontSize: 26,
@@ -125,7 +130,34 @@
             }
         },
         methods: {
-
+            /**
+             * 获取会员等级数量
+             */
+            getMemberLevelCount () {
+                this.memberCount = 0;
+                ajax.post('getMemberLevelCount').then(res => {
+                    if(res.success){
+                        this.memberLevelData = res.data ? res.data.map(item => {
+                            this.memberCount += item.levelCount;
+                            return {
+                                value : item.levelCount,
+                                label : item.levelName
+                            }
+                        }) : [];
+                    }else{
+                        this.memberLevelData = [];
+                    }
+                }).catch(err => {
+                    this.memberLevelData = [];
+                }).finally(() => {
+                    this.$nextTick(() => {
+                        this.$refs.vueChart.refresh();
+                    });
+                });
+            }
+        },
+        created () {
+            this.getMemberLevelCount();
         }
     }
 </script>
@@ -143,7 +175,7 @@
             height: 50px;
             line-height: 48px;
             padding: 0 20px;
-            border-bottom: 2px solid $color_E1E1E1;
+            border-bottom: 1px solid $color_E1E1E1;
             @include clearfix();
 
             .title{
@@ -152,10 +184,6 @@
                 font-size: $font_size_18px;
             }
 
-            .filter{
-                display: inline-block;
-                float: right;
-            }
         }
 
         .data-content {

@@ -91,6 +91,7 @@
                 this.errMsg = '';
                 this.$refs[name].validate((valid) => {
                     if (valid) {
+                        if(this.isLoging) return;
                         this.isLoging = true;
                         ajax.post('login',{
                             loginName : this.formInline.user,

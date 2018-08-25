@@ -16,7 +16,7 @@
             <div class="home-data-show">
                 <!--会员数据概览-->
                 <div class="data-show-left">
-                    <data-total :data-count="dataCount"></data-total>
+                    <data-total :member-sum-count="memberSumCount"></data-total>
                 </div>
                 <!--会员分布数据-->
                 <div class="data-show-right">
@@ -93,14 +93,6 @@
             return {
                 //关键字
                 keyword : '',
-                // 会员数据概览
-                dataCount: {
-                    time: '2017-07',
-                    total: '7392',
-                    todayAdd: '162',
-                    yestAdd: '220',
-                    monthAdd: '1928',
-                },
                 // 会员分布数据
                 dataPie: {
                     time: '2017-07',
@@ -112,7 +104,9 @@
                 pageSize : 10,
                 pageNo : 1,
                 //表头配置
-                columnData : countHead
+                columnData : countHead,
+                //会员总数
+                memberSumCount : ''
             }
         },
         methods: {
@@ -155,8 +149,24 @@
                         detail : data
                     }
                 });
+            },
+            /**
+             * 获取会员总量信息
+             */
+            getMemberSumCount () {
+                ajax.post('getMemberSumCount').then(res => {
+                    if(res.success){
+                        this.memberSumCount = res.data;
+                    }else{
+                        this.memberSumCount = '';
+                    }
+                }).catch(err => {
+                    this.memberSumCount = '';
+                });
             }
-
+        },
+        created () {
+            this.getMemberSumCount();
         }
     }
 </script>

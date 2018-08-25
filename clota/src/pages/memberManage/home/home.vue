@@ -6,12 +6,12 @@
 
             <!--会员数据概览-->
             <div class="data-show-left">
-                <data-total :data-count="dataCount"></data-total>
+                <data-total :member-sum-count="memberSumCount"></data-total>
             </div>
 
             <!--会员分布数据-->
             <div class="data-show-right">
-                <chart-pie :data-pie="dataPie"></chart-pie>
+                <chart-pie></chart-pie>
             </div>
 
         </div>
@@ -37,9 +37,10 @@
 
 <script>
 
-    import dataTotal from '../components/dataShow.vue'
-    import chartPie from '../components/chartPie.vue'
-    import chartLine from '../components/chartLine.vue'
+    import dataTotal from '../components/dataShow.vue';
+    import chartPie from '../components/chartPie.vue';
+    import chartLine from '../components/chartLine.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -49,18 +50,6 @@
         },
         data () {
             return {
-                // 会员数据概览
-                dataCount: {
-                    time: '2017-07',
-                    total: '7392',
-                    todayAdd: '162',
-                    yestAdd: '220',
-                    monthAdd: '1928',
-                },
-                // 会员分布数据
-                dataPie: {
-                    time: '2017-07',
-                },
                 // 会员分布数据
                 vipPlace: {
                     startTime: '',
@@ -84,8 +73,29 @@
                     total2: '21,278',
                     rate1: '2.90%',
                     rate2: '2.90%',
-                }
+                },
+                //会员总数数据
+                memberSumCount : ''
             }
+        },
+        methods : {
+            /**
+             * 获取会员总量信息
+             */
+            getMemberSumCount () {
+                ajax.post('getMemberSumCount').then(res => {
+                    if(res.success){
+                        this.memberSumCount = res.data;
+                    }else{
+                        this.memberSumCount = '';
+                    }
+                }).catch(err => {
+                    this.memberSumCount = '';
+                });
+            }
+        },
+        created() {
+            this.getMemberSumCount();
         }
     }
 </script>

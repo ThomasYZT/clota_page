@@ -4,31 +4,28 @@
 
         <div class="data-header">
             <div class="title">会员数据概览</div>
-            <!--<div class="filter">-->
-                <!--<DatePicker type="month" placeholder="请选择" v-model="dataCount.time" style="width: 140px"></DatePicker>-->
-            <!--</div>-->
         </div>
 
         <div class="data-content">
             <div class="total">
                 <span class="img"><img src="@/assets/images/crown.svg"/></span>
                 <span class="total-label">会员总数</span>
-                <span>{{dataCount.total}}</span>
+                <span>{{memberSumCount | contentFilter}}</span>
             </div>
 
             <div class="detail">
                 <div class="detail-item">
-                    <div>{{dataCount.todayAdd}}</div>
+                    <div>{{todayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">今日新增</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item">
-                    <div>{{dataCount.yestAdd}}</div>
+                    <div>{{yesterdayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">昨日新增</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item">
-                    <div>{{dataCount.monthAdd}}</div>
+                    <div>{{monthMemberIncreeaseCount | contentFilter}}</div>
                     <div class="detail-label">本月新增</div>
                 </div>
             </div>
@@ -40,23 +37,84 @@
 <script>
     import ajax from '@/api/index.js';
     export default {
-        props: ['data-count'],
+        props : {
+            //会员总数
+            'member-sum-count' : {
+                type : [String,Number],
+                default : ''
+            }
+        },
         components: {},
         data () {
-            return {}
+            return {
+                //会员今日增长数量
+                todayMemberIncreaseCount : '',
+                //会员昨日增长数量
+                yesterdayMemberIncreaseCount : '',
+                //获取本月新增数量
+                monthMemberIncreeaseCount : ''
+            }
         },
         methods : {
             /**
-             * 获取会员总量信息
+             * 获取今日增长数量
              */
-            getMemberSumCount () {
-                ajax.post('getMemberSumCount').then(res => {
-                   console.log(res);
+            getTodayIncreaseMemberCount () {
+                ajax.post('getIncreaseMemberCount',{
+                    startDate : new Date().format('yyyy-MM-dd'),
+                    endDate : new Date().format('yyyy-MM-dd'),
+                }).then(res => {
+                    if(res.success){
+                        this.todayMemberIncreaseCount = res.data;
+                    }else{
+                        this.todayMemberIncreaseCount = '';
+                    }
+                }).catch(err => {
+                    this.todayMemberIncreaseCount = '';
+                });
+            },
+            /**
+             * 获取昨日增长数量
+             */
+            getYesterdayIncreaseMemberCount () {
+                ajax.post('getIncreaseMemberCount',{
+                    startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                }).then(res => {
+                    if(res.success){
+                        this.yesterdayMemberIncreaseCount = res.data;
+                    }else{
+                        this.yesterdayMemberIncreaseCount = '';
+                    }
+                }).catch(err => {
+                    this.yesterdayMemberIncreaseCount = '';
+                });
+            },
+            /**
+             * 获取本月
+             */
+            getMonthIncreaseMemberCount () {
+                ajax.post('getIncreaseMemberCount',{
+                    startDate : new Date().addDays(-new Date().getDate() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(-new Date().getDate()).addMonths(1).format('yyyy-MM-dd'),
+                }).then(res => {
+                    if(res.success){
+                        this.monthMemberIncreeaseCount = res.data;
+                    }else{
+                        this.monthMemberIncreeaseCount = '';
+                    }
+                }).catch(err => {
+                    this.monthMemberIncreeaseCount = '';
                 });
             }
         },
         created () {
-            this.getMemberSumCount();
+            //获取今日增长数量
+            this.getTodayIncreaseMemberCount();
+            //获取昨日增长数量
+            this.getYesterdayIncreaseMemberCount();
+            //获取本月增长数量
+            this.getMonthIncreaseMemberCount();
         }
     }
 </script>
@@ -74,18 +132,13 @@
             height: 50px;
             line-height: 48px;
             padding: 0 20px;
-            border-bottom: 2px solid $color_E1E1E1;
+            border-bottom: 1px solid $color_E1E1E1;
             @include clearfix();
 
             .title{
                 display: inline-block;
                 color: $color_353B5E;
                 font-size: $font_size_18px;
-            }
-
-            .filter{
-                display: inline-block;
-                float: right;
             }
         }
 

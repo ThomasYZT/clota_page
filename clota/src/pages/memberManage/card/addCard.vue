@@ -99,7 +99,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--可兑换积分为-->
-                    <Form-item label="可兑换积分为" prop="price">
+                    <Form-item label="积分兑换数量" prop="price">
                         <Input v-model="formData.price"  placeholder="请输入" />
                     </Form-item>
                 </div>

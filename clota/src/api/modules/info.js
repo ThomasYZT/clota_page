@@ -108,6 +108,10 @@ export default {
 
     /***********************************会员统计***********************************/
     //获取会员总量
-    'getMemberSumCount' : '/member/getMemberSumCount'
+    'getMemberSumCount' : '/member/getMemberSumCount',
+    //获取会员增长数量
+    'getIncreaseMemberCount' : '/member/getIncreaseMemberCount',
+    //获取会员等级数量
+    'getMemberLevelCount' : '/member/getMemberLevelCount'
 
 }
