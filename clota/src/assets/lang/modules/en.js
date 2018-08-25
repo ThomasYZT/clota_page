@@ -39,5 +39,6 @@ export default {
         'test': '测试菜单',
     },
     'backUp': '收起',
-    'upLoad': '展开'
+    'upLoad': '展开',
+    'empType': 'empType'
 }

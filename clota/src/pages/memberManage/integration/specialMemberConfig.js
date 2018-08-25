@@ -6,10 +6,6 @@ export const specialEmployeeHead = [
         title: '员工分类',
         minWidth: 150,
         field: 'staffDesc'
-    },
-    {
-        title: '操作  ',
-        width: 150,
     }
 ];
 

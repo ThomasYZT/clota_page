@@ -63,4 +63,5 @@ export default {
     'discount_coupon': '折扣券',
     'female': '女',
     'male': '男',
+    'empType': '员工分类',
 }

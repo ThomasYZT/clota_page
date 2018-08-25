@@ -3,11 +3,10 @@
     <div class="integration-set-rate-for-product">
 
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/integration">积分、折扣率设置</BreadcrumbItem>
-                <BreadcrumbItem to="/memberManage/setRate">钻石会员积分、折扣率设置</BreadcrumbItem>
-                <BreadcrumbItem>按类别或产品设置积分、折扣率</BreadcrumbItem>
-            </Breadcrumb>
+            <bread-crumb-head
+                :locale-router="'按类别或产品设置积分、折扣率'"
+                :before-router-list="beforeRouterList">
+            </bread-crumb-head>
         </div>
 
         <div class="rate-content">
@@ -22,6 +21,9 @@
             <div class="table-wrap">
                 <table-com
                     v-if="tableCanMount"
+                    :ofsetHeight="220"
+                    :page-no-d.sync="pageNo"
+                    :page-size-d.sync="pageSize"
                     :column-data="columnData"
                     :table-data="tableData"
                     :border="true"
@@ -63,11 +65,15 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './setProductRateConfig';
     import ajax from '@/api/index.js';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             modifyRateModal,
-            tableCom
+            tableCom,
+            breadCrumbHead
         },
         data () {
             return {
@@ -90,7 +96,11 @@
                 //每页条数
                 pageSize : 10,
                 //当前操作的行数据
-                currentData : {}
+                currentData : {},
+                //上级路由列表
+                // beforeRouterList: ,
+                //会员卡级别名称
+                levelName : ''
             }
         },
         methods: {
@@ -105,12 +115,8 @@
 
             /**
              * 查询店铺信息
-             * @param pageNo
-             * @param pageSize
              */
-            queryList ({pageNo = this.pageNo,pageSize = this.pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
-                this.pageNo = pageNo;
-                this.pageSize = pageSize;
+            queryList () {
                 ajax.post('memberDiscountOfProductList',{
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
@@ -137,6 +143,11 @@
             getParams(params){
                 if(params.memberInfo && Object.keys(params.memberInfo).length > 0){
                     this.memberInfo = params.memberInfo;
+                    this.levelName = params.levelName;
+                }else{
+                    this.$router.push({
+                        name : 'integration'
+                    })
                 }
             },
             /**
@@ -170,15 +181,27 @@
                 });
             }
         },
-        beforeRouteEnter(to,from,next) {
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        },
         computed : {
             //表格是否需要显示
             tableCanMount () {
                 return this.memberInfo && !!this.memberInfo.levelId;
+            },
+            //面包屑路由信息
+            beforeRouterList () {
+                return [
+                    {
+                        name: this.$t('integration'),
+                        router: {
+                            name: 'integration'
+                        }
+                    },
+                    {
+                        name: this.levelName + this.$t('integration'),
+                        router: {
+                            name: 'setRate'
+                        }
+                    }
+                ]
             }
         }
     }

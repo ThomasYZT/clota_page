@@ -78,10 +78,11 @@
              */
             addMemberStaffType () {
                 ajax.post('setMemberStaffType',{
-                    typeName : this.formData.name
+                    staffDesc : this.formData.name
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('新增成功');
+                        this.$emit('fresh-data');
                     }else{
                         this.$Message.error('新增失败');
                     }

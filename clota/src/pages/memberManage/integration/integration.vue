@@ -6,6 +6,8 @@
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
+            :page-no-d.sync="pageNo"
+            :page-size-d.sync="pageSize"
             :total-count="totalCount"
             :ofset-height="60"
             @query-data="queryList">
@@ -98,10 +100,10 @@
             /**
              * 查询会员积分和折扣率数据
              */
-            queryList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+            queryList () {
                 ajax.post('memberDiscountOfMemberList',{
-                    pageNo,
-                    pageSize
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];

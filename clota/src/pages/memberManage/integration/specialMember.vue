@@ -6,30 +6,17 @@
             <div class="title-wrap">特殊会员权益管理</div>
             <div class="btn-wrap">
                 <Button type="primary" @click="showAddTypeModal">+ 新增特殊会员类别</Button>
+                <Button type="ghost" @click="linkToMember">关联特殊会员信息</Button>
             </div>
-            <div class="table-wrap">
+            <div class="table-wrap short-table">
                 <table-com
                     :column-data="specialEmployeeHead"
                     :table-data="specialMemberData"
                     :border="true"
                     :table-com-min-height="250"
+                    :auto-height="true"
                     :total-count="specialMemberDataCount"
                     @query-data="memberStaffTypeList">
-                    <el-table-column
-                        slot="column1"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue"
-                                    @click="linkToMember(scope.row)">
-                                    关联会员信息
-                                </span>
-                            </div>
-                        </template>
-                    </el-table-column>
                 </table-com>
             </div>
         </div>
@@ -42,6 +29,7 @@
                     :table-data="specialMemberBylyData"
                     :border="true"
                     :total-count="specialMemberDataCount"
+                    :auto-height="true"
                     :table-com-min-height="250"
                     @query-data="getStaffLevelInfo">
                     <el-table-column
@@ -64,7 +52,10 @@
         </div>
 
         <!--新增特殊会员类别-->
-        <add-special-type-modal ref="addSpecialType"></add-special-type-modal>
+        <add-special-type-modal
+            ref="addSpecialType"
+            @fresh-data="freshData">
+        </add-special-type-modal>
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
@@ -83,7 +74,6 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {specialEmployeeHead,employeeTrustHead} from './specialMemberConfig';
     import ajax from '@/api/index.js';
-    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         components: {
@@ -93,26 +83,6 @@
         },
         data () {
             return {
-                // 表格数据
-                tableData: [
-                    {
-                        "companyId": null,
-                        "createUser": null,
-                        "createdTime": null,
-                        "discountRate": null,
-                        "id": null,
-                        "isDeleted": null,
-                        "levelId": 4,
-                        "levelName": "普通会员",
-                        "parentOrgId": null,
-                        "scoreRate": null,
-                        "staffTypeId": 1,
-                        "staffTypeName": "普通员工",
-                        "status": null,
-                        "updateUser": null,
-                        "updatedTime": null
-                    },
-                ],
                 //特殊会员分类表头
                 specialEmployeeHead : specialEmployeeHead,
                 //普通会员与特殊会员分类表头
@@ -141,26 +111,19 @@
             /**
              * 跳转到关联会员信息
              */
-            linkToMember (rowData) {
+            linkToMember () {
                 this.$router.push({
-                    name : 'linkSpeMember',
-                    params : {
-                        memberInfo : rowData
-                    }
+                    name : 'linkSpeMember'
                 });
             },
 
             /**
              * 查询所有特殊会员类别
-             * @param pageNo
-             * @param pageSize
              */
-            memberStaffTypeList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
-                this.pageNo = pageNo;
-                this.pageSize = pageSize;
+            memberStaffTypeList () {
                 ajax.post('memberStaffTypeList',{
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize,
+                    pageNo : 1,
+                    pageSize : 9999,
                 }).then(res => {
                     if(res.success){
                         this.specialMemberData = res.data.data ? res.data.data : [];
@@ -184,15 +147,11 @@
             },
              /**
              * 查询所有特殊会员类别与普通会员的对照表
-             * @param pageNo
-             * @param pageSize
              */
-            getStaffLevelInfo ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
-                this.pageNo = pageNo;
-                this.pageSize = pageSize;
+            getStaffLevelInfo () {
                 ajax.post('getStaffLevelInfo',{
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize,
+                    pageNo : 1,
+                    pageSize : 9999,
                 }).then(res => {
                     if(res.success){
                         this.specialMemberBylyData = [];
@@ -255,6 +214,13 @@
                         this.$refs.modifyRate.show();
                     }
                 })
+            },
+            /**
+             * 刷新员工分类数据和按分类设置权益数据
+             */
+            freshData () {
+                this.getStaffLevelInfo();
+                this.memberStaffTypeList();
             }
         },
     }
@@ -286,6 +252,10 @@
 
             .btn-wrap{
                 margin-bottom: 10px;
+            }
+
+            .short-table{
+                width: 440px;
             }
         }
 

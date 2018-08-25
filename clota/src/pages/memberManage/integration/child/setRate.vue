@@ -3,10 +3,10 @@
     <div class="integration-set-rate">
 
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
-                <BreadcrumbItem to="/memberManage/integration">积分、折扣率设置</BreadcrumbItem>
-                <BreadcrumbItem>{{ memberInfo.levelName }}积分、折扣率设置</BreadcrumbItem>
-            </Breadcrumb>
+            <bread-crumb-head
+                :locale-router="memberInfo.levelName + '积分、折扣率设置'"
+                :before-router-list="beforeRouterList">
+            </bread-crumb-head>
         </div>
 
         <div class="rate-content">
@@ -21,6 +21,8 @@
             <div class="table-wrap">
                 <table-com
                     v-if="tableCanMount"
+                    :page-no-d.sync="pageNo"
+                    :page-size-d.sync="pageSize"
                     :ofsetHeight="220"
                     :column-data="columnData"
                     :table-data="tableData"
@@ -59,11 +61,15 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './setRateConfig';
     import ajax from '@/api/index.js';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             modifyRateModal,
-            tableCom
+            tableCom,
+            breadCrumbHead
         },
         data () {
             return {
@@ -74,7 +80,9 @@
                     keyword: '',
                 },
                 // 表格数据
-                tableData: [],
+                tableData: [
+                    {}
+                ],
                 //总条数
                 total: 50,
                 //会员级别id
@@ -88,7 +96,16 @@
                 //每页条数
                 pageSize : 10,
                 //当前操作的行数据
-                currentData : {}
+                currentData : {},
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: this.$t('integration'),
+                        router: {
+                            name: 'integration'
+                        }
+                    }
+                ],
             }
         },
         methods: {
@@ -112,19 +129,16 @@
                         memberInfo : Object.assign({
                             levelId : this.memberInfo.levelId,
                             productName : data.productName
-                        },data)
+                        },data),
+                        levelName : this.memberInfo.levelName
                     }
                 });
             },
 
             /**
              * 查询店铺信息
-             * @param pageNo
-             * @param pageSize
              */
-            queryList ({pageNo = this.pageNo,pageSize = this.pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
-                this.pageNo = pageNo;
-                this.pageSize = pageSize;
+            queryList () {
                 ajax.post('memberDiscountOfStoreList',{
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
@@ -132,7 +146,7 @@
                     orgName : this.queryParams.keyword,
                 }).then(res => {
                     if(res.success){
-                        this.tableData = res.data.data ? res.data.data : [];
+                        // this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     }else{
                         this.tableData =  [];
@@ -151,6 +165,10 @@
                 if(params.memberInfo && Object.keys(params.memberInfo).length > 0){
                     this.levelDiscountId = params.memberInfo.levelId;
                     this.memberInfo = params.memberInfo;
+                }else{
+                    this.$router.push({
+                        name : 'integration'
+                    })
                 }
             },
             /**
@@ -182,11 +200,6 @@
                     callback();
                 });
             }
-        },
-        beforeRouteEnter(to,from,next) {
-            next(vm => {
-                vm.getParams(to.params);
-            });
         },
         computed : {
             //表格是否需要显示
