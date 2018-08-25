@@ -9,7 +9,7 @@
 
         <div class="integration-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.type" style="width:200px">
+                <Select v-model="queryParams.type" style="width:200px" @on-change="filterDealList">
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
                 <Date-picker
@@ -17,14 +17,16 @@
                     v-model="queryParams.startDate"
                     format="yyyy-MM-dd HH:mm:ss"
                     placeholder="请选择开始日期"
-                    @on-change="changeStartDate">
+                    @on-change="changeStartDate"
+                    @on-ok="filterDealList()">
                 </Date-picker>
                 <Date-picker
                     type="datetime"
                     :value="queryParams.endDate"
                     format="yyyy-MM-dd HH:mm:ss"
                     placeholder="请选择结束日期"
-                    @on-change="changeEndDate">
+                    @on-change="changeEndDate"
+                    @on-ok="filterDealList()">
                 </Date-picker>
 
                 <div class="btn-wrap">
