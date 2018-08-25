@@ -95,6 +95,15 @@
                 });
             };
 
+            //校验实际增加金额
+            const validateToTotalAmount = (rule,value,callback) => {
+                if(this.formData.totalAmount === ''){
+                    callback(new Error('输入实际增加金额'));
+                } else {
+                    callback();
+                }
+            };
+
             return {
                 visible: false,
                 //会员信息的账户数据
@@ -102,7 +111,7 @@
                 //表单数据
                 formData: {
                     actAmount: '',//储值金额
-                    totalAmount: '',//实际金额
+                    totalAmount: '',//实际增加金额
                     paymentTypeId: '',//支付方式
                     remark: '',
                 },
@@ -112,6 +121,7 @@
                         { required: true, message: '储值金额不能为空', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateToTotalAmount, trigger: 'blur' },
                     ],
                     paymentTypeId: [
                         { required: true, message: '收款方式不能为空', trigger: 'change' },

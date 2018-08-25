@@ -195,7 +195,8 @@
                                 :key="index"
                                 label=""
                                 :prop="'reason.' + index + '.reason'"
-                                :rules="{required: true, message: '修改原因不能为空', trigger: 'blur'}">
+                                :rules="[{required: true, message: '修改原因不能为空', trigger: 'blur'},
+                                 { validator: emoji, trigger: 'blur' }]">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100" placeholder="请输入"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">保存</span>
@@ -217,7 +218,8 @@
                                 :key="index"
                                 label=""
                                 :prop="'idType.' + index + '.name'"
-                                :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
+                                :rules="[{required: true, message: '证件类型不能为空', trigger: 'blur'},
+                                        { validator: emoji, trigger: 'blur' }]">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.name" :maxlength="10" placeholder="请输入"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">保存</span>

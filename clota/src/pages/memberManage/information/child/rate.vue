@@ -80,11 +80,7 @@
                 //会员详情数据
                 detail: {},
                 //会员卡的积分折扣率
-                cardData: [
-                    {scoreRate: '1积分=1元',discountRate: '9.5折',},
-                    {scoreRate: '1积分=1元',discountRate: '9.5折',},
-                    {scoreRate: '1积分=1元',discountRate: '9.5折',},
-                ],
+                cardData: [],
                 cardColumnData: [
                     {
                         title: '积分率',
@@ -103,17 +99,17 @@
                     {
                         title: '店铺',
                         minWidth: 100,
-                        field: 'store'
+                        field: 'orgName'
                     },
                     {
                         title: '积分率',
                         minWidth: 100,
-                        field: 'scoreRate'
+                        field: 'deptScoreRate'
                     },
                     {
                         title: '折扣率',
                         minWidth: 100,
-                        field: 'discountRate'
+                        field: 'deptDiscountRate'
                     },
                 ],
                 //产品的积分折扣率
@@ -122,22 +118,22 @@
                     {
                         title: '店铺',
                         minWidth: 100,
-                        field: 'store'
+                        field: 'orgName'
                     },
                     {
                         title: '商品',
                         minWidth: 100,
-                        field: 'product'
+                        field: 'productName'
                     },
                     {
                         title: '积分率',
                         minWidth: 100,
-                        field: 'scoreRate'
+                        field: 'prodScoreRate'
                     },
                     {
                         title: '折扣率',
                         minWidth: 100,
-                        field: 'discountRate'
+                        field: 'prodDiscountRate'
                     },
                 ],
             }
@@ -150,7 +146,15 @@
                     cardId: params.cardId,
                 }).then(res => {
                     if(res.success){
-                        this.cardData = res.data || [];
+                        if(res.data){
+                            this.cardData = res.data.memberVos || [];
+                            this.storeData = res.data.storeVos || [];
+                            for(let key in res.data.productMap){
+                                res.data.productMap[key].forEach( item => {
+                                    this.productData.push(item);
+                                })
+                            }
+                        }
                     } else {
                         console.log(res);
                         this.$Message.warning(res.message || 'listMemberCardRate 失败！');
@@ -168,7 +172,7 @@
                         this[item] = params[item];
                     }
                     //根据会员卡id获取折扣率说明
-//                    this.queryList(params.detail);
+                    this.queryList(params.detail);
                 }else{
                     this.$router.push({
                         name : 'memberInfo'

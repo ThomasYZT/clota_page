@@ -153,7 +153,6 @@
                 });
             };
 
-
             //校验本金额不可大于总本金余额
             const validateMaxCorpus = (rule,value,callback) => {
                 if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.corpusBalance ){
@@ -231,8 +230,9 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
-                            accountId: this.detail.id,
-                            accountTypeId: this.accountInfo.id,
+                            cardId: this.detail.cardId,
+                            accountId: this.accountInfo.id,
+                            accountTypeId: this.accountInfo.accountDefineId,
                             corpusOptSign: this.formData.corpusOptSign,
                             corpusAmount: this.formData.corpusAmount,
                             donateOptSign: this.formData.donateOptSign,

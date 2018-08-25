@@ -195,6 +195,7 @@
         <add-account-modal ref="addAccount"
                            :length="tableData.length"
                            :table-data="listAmountRangeTable"
+                           :send-data="listAmountRangeTable"
                            @updata-list="submitFundsAccount"></add-account-modal>
 
         <!--编辑账户modal-->

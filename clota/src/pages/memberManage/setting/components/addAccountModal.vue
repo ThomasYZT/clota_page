@@ -42,13 +42,14 @@
                             <Input v-model.trim="formData.unit" placeholder="请输入"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap" props="rate">
                         <Form-item label="储值比率">
-                            <Input v-model.trim="formData.start"
+                            <Input value="1"
+                                   disabled
                                    placeholder="请输入"
                                     class="single-input"/>
                             <span style="padding: 0 5px;">:</span>
-                            <Input v-model.trim="formData.start"
+                            <Input v-model.trim="formData.rate"
                                    placeholder="请输入"
                                    class="single-input"/>
                         </Form-item>
@@ -94,7 +95,7 @@
             <template v-if="step === 2">
                 <div class="table-wrap">
                     <el-table
-                        :data="tableData"
+                        :data="sendData"
                         :border="false"
                         @selection-change="handleSelectionChangeToSend"
                         style="width: 100%">
@@ -142,9 +143,29 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['length','table-data'],
+        props: ['length','table-data','send-data'],
         components: {},
         data () {
+
+            const validateMethod = {
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+            };
+
+            //校验正整数
+            const validateNumber = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
             return {
                 visible: false,
                 //步骤
@@ -155,7 +176,7 @@
                     accountBelonging: '',
                     accountName: '',
                     unit: '',
-                    rate: '',
+                    rate: '1',
                     start: 1,
                     end: 1,
                     exchangeToCash: 'true',
@@ -166,6 +187,16 @@
                 ruleValidate: {
                     accountBelonging: [
                         { required: true, message: '账户归属不能为空', trigger: 'change' },
+                    ],
+                    accountName: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    ],
+                    unit: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    ],
+                    rate: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateMethod.validateNumber, trigger: 'blur' },
                     ],
                 },
                 //多选列表

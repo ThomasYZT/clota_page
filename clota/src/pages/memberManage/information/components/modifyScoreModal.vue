@@ -163,8 +163,9 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
-                            accountId: this.detail.id,
-                            accountTypeId: this.account.id,
+                            cardId: this.detail.cardId,
+                            accountId: this.account.id,
+                            accountTypeId: this.account.accountDefineId,
                             corpusOptSign: this.formData.corpusOptSign,
                             corpusAmount: this.formData.corpusAmount,
                             reasonId: this.formData.reasonId,
