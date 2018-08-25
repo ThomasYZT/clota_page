@@ -125,37 +125,12 @@ export default new Vuex.Store({
             }).then(res =>{
                 if(res.success){
                     return new Promise((resolve, reject) => {
-                        // let privCode = {};
-                        // for(let i = 0,j = res.data.length;i < j;i++){
-                        //     privCode[res.data[i]['privCode']] = 'allow';
-                        // }
-                        let privCode = {
-                            // 'orgManage': 'allow',
-                            // 'organization': 'allow',
-                            // 'employee': 'allow',
-                            // 'rolePermission': 'allow',
-                            // 'roleDetail': 'allow',
-                            // 'partner': 'allow',
-                            // 'channels': 'allow',
-                            // 'saleChannelsGroup': 'allow',
-                            // 'verificateGroup': 'allow',
-                            'memberManage': 'allow',
-                            'memberHome': 'allow',
-                            'memberInfo': 'allow',
-                            'memberCount': 'allow',
-                            'integration': 'allow',
-                            'specialMember': 'allow',
-                            'card': 'allow',
-                            'fund': 'allow',
-                            'fundDetail': 'allow',
-                            'financialManagement': 'allow',
-                            'memberSetting': 'allow',
-                            'channelSetting': 'allow',
-                            'levelSetting': 'allow',
-                            'growthSetting': 'allow',
-                            'fundSetting': 'allow',
-                            'consumeSetting': 'allow',
-                        };
+                        let privCode = {};
+                        let privateData = res.data.privileges;
+                        //获取账号的菜单权限
+                        for(let i = 0,j = privateData.length;i < j;i++){
+                            privCode[privateData[i]['privCode']] = 'allow';
+                        }
                         let routers = childDeepClone(routerClect, privCode);
                         routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
                         //重新设置路由信息
