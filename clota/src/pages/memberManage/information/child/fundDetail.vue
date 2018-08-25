@@ -10,67 +10,61 @@
         <div class="fund-detail-content">
             <div class="filter-wrap">
                 <Select v-model="queryParams.type">
-                    <Option value="''">全部交易类型</Option>
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
                 <Date-picker
-                    type="date"
-                    v-model="queryParams.startTime"
-                    placeholder="请选择开始日期">
+                    type="datetime"
+                    v-model="queryParams.startDate"
+                    format="yyyy-MM-dd HH:mm:ss"
+                    placeholder="请选择开始日期"
+                    @on-change="changeStartDate">
                 </Date-picker>
                 <Date-picker
-                    type="date"
-                    v-model="queryParams.endTime"
-                    placeholder="请选择结束日期">
+                    type="datetime"
+                    :value="queryParams.endDate"
+                    format="yyyy-MM-dd HH:mm:ss"
+                    placeholder="请选择结束日期"
+                    @on-change="changeEndDate">
                 </Date-picker>
                 <div class="btn-wrap">
-                    <Button type="primary">查 询</Button>
-                    <Button type="ghost">重 置</Button>
+                    <Button type="primary" @click="filterDealList()">查 询</Button>
+                    <Button type="ghost" @click="resetQueryParams()">重 置</Button>
                 </div>
             </div>
-            <div class="table-wrap">
-                <el-table
-                    :data="tableData"
-                    :border="true"
-                    @row-click="viewDetail"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="name"
-                        label="本次交易积分">
-                    </el-table-column>
-                    <el-table-column
-                        prop="mobile"
-                        label="交易类型">
-                    </el-table-column>
-                    <el-table-column
-                        prop="idNum"
-                        label="交易编码">
-                    </el-table-column>
-                    <el-table-column
-                        prop="sex"
-                        label="交易信息">
-                    </el-table-column>
-                    <el-table-column
-                        prop="belongTo"
-                        label="交易后账户积分">
-                    </el-table-column>
-                    <el-table-column
-                        prop="time"
-                        label="交易时间">
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div class="page-wrap" v-if="tableData.length > 0">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="parseInt(queryParams.pageNo)"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="parseInt(queryParams.pageSize)"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="parseInt(total)">
-                </el-pagination>
-            </div>
+            <table-com
+                v-if="queryParams.accountId"
+                :auto-height="true"
+                :table-com-min-height="300"
+                :ofsetHeight="170"
+                :show-pagination="true"
+                :column-data="columnData"
+                :table-data="tableData"
+                :total-count="totalCount"
+                :page-no-d.sync="queryParams.pageNo"
+                :page-size-d.sync="queryParams.pageSize"
+                :border="true"
+                @query-data="queryList">
+                <el-table-column
+                    slot="column1"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{ scope.row.operationType | transOperation }}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column5"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{ new Date(scope.row.createdTime).format('yyyy.MM.dd hh:mm:ss') }}
+                    </template>
+                </el-table-column>
+            </table-com>
         </div>
 
         <!--储值账户修改信息modal-->
@@ -80,14 +74,19 @@
 </template>
 
 <script>
-
-    import breadCrumbHead from '@/components/breadCrumbHead/index'
-    import modifyDetailModal from '../components/viewModifyModal.vue'
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
+    import modifyDetailModal from '../components/viewModifyModal.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {fundDetailHead, dealType} from './fundDetailConfig';
+    import ajax from '@/api/index.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
             modifyDetailModal,
+            tableCom
         },
         data () {
             return {
@@ -104,46 +103,111 @@
                 localeRouter: '个人资金交易明细',
                 // 查询数据
                 queryParams: {
-                    type: '',
-                    startTime: '',
-                    endTime: '',
-                    pageNo: '1',
-                    pageSize: '10',
+                    accountId: '',
+                    type: 'null',
+                    startDate: '',
+                    endDate: '',
+                    pageNo: 1,
+                    pageSize: 10,
                 },
                 // 枚举数据
-                type: [
-                    {
-                        name: '北京欢乐谷',
-                        value: '0',
-                    }
-                ],
+                type: dealType,
                 // 表格数据
-                tableData: [
-                    {
-                        name: '张三',
-                        mobile: '16876868839',
-                        idNum: '4307283898172933',
-                        sex: '男',
-                        belongTo: '北京欢乐谷',
-                        time: '2018.07.09 08:00:11',
-                    }
-                ],
-                total: 50,
+                tableData: [],
+                //总条数
+                totalCount: 50,
+                //表头配置
+                columnData : fundDetailHead,
+                //会员详情账户数据
+                fundDetail: {},
             }
         },
+        filters: {
+            transOperation(val) {
+                let optType = '';
+                switch (val) {
+                    case 'recharge' :
+                        optType = '储值';
+                        break;
+                    case 'consume' :
+                        optType = '消费';
+                        break;
+                }
+                return optType;
+            },
+        },
         methods: {
+            /**
+             * 查询交易明细
+             */
+            queryList () {
+                let param = {};
+                Object.assign(param, this.queryParams);
+                if (this.queryParams.type == 'null') {
+                    param.type = null;
+                }
+                ajax.post('queryAccountChange', param).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
+                    }else{
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
+            },
 
             viewDetail ( data ) {
-                console.log(data)
                 this.$refs.modifyDetail.show('fund');
             },
 
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    for(let item in params){
+                        this[item] = params[item];
+                    }
+
+                    this.queryParams.accountId = this.fundDetail.id;
+                    this.queryList();
+                }
             },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            }
+
+            /**
+             * 查询交易明细
+             */
+            filterDealList() {
+                Object.assign(this.queryParams, {
+                    pageNo: 1,
+                    pageSize: 10
+                });
+                this.queryList();
+            },
+
+            /**
+             * 重置查询条件
+             */
+            resetQueryParams() {
+                Object.assign(this.queryParams, {
+                    type: 'null',
+                    startDate: '',
+                    endDate: '',
+                    pageNo: 1,
+                    pageSize: 10,
+                });
+                this.queryList();
+            },
+
+            changeStartDate(datetime) {
+                this.queryParams.startDate = datetime;
+            },
+
+            changeEndDate(datetime) {
+                this.queryParams.endDate = datetime;
+            },
 
         }
     }

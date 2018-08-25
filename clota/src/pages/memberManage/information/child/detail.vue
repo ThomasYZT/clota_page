@@ -482,9 +482,8 @@
                 this.$router.push({ name: 'addMember', query: { type: 'modify'} });
             },
 
-            viewDeal () {
-                console.log('deal');
-                this.$router.push({ name: 'infoFund' });
+            viewDeal (dealData) {
+                this.$router.push({ name: 'infoFund', params: {fundDetail: dealData} });
             },
 
 
