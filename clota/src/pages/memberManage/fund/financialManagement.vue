@@ -7,7 +7,7 @@
             <div class="content">
                 <div class="header-wrap">本账户余额（元）</div>
                 <div class="body-wrap">
-                    <div class="coast">372,888,881.09</div>
+                    <div class="coast">{{moneyLeft | contentFilter}}</div>
                     <div class="operate-right">
                         <span @click="showTransferModal">转账</span>
                         <span class="split-line"></span>
@@ -16,54 +16,24 @@
                 </div>
             </div>
         </div>
-
-        <div class="content-item">
-            <div class="title-wrap">下级单位储值账户信息</div>
-            <div class="btn-wrap">
-                <!--搜索框-->
-                <Input v-model="keyword"
-                       placeholder="请输入查找内容"
-                       style="width: 360px"
-                       icon="ios-search-strong"
-                       @on-enter="queryList"
-                       @on-click="queryList" />
-            </div>
-            <div class="table-wrap">
-                <el-table
-                    :data="tableData"
-                    :border='true'
-                    style="width: 100%">
-                    <el-table-column
-                        prop="level"
-                        label="公司名称">
-                    </el-table-column>
-                    <el-table-column
-                        prop="type"
-                        label="账户余额（元）">
-                    </el-table-column>
-                    <el-table-column
-                        prop=""
-                        label="操作">
-                        <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue"  @click="viewFundDetail(scope)">资金明细</span>
-                                <span class="span-blue"  @click="viewDetail(scope)">详细信息</span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
+        <div class="tips">
+            提示：本账户余额为所有储值比率为1：1的本金账户的总和。
         </div>
-
         <!--转账modal-->
-        <transfer-modal ref="transfer"></transfer-modal>
+        <transfer-modal
+            ref="transfer"
+            :org-info="orgInfo"
+            @fresh-data="getOrgAccount">
+        </transfer-modal>
 
     </div>
 </template>
 
 <script>
 
-    import transferModal from  './components/transferModal.vue'
+    import transferModal from  './components/transferModal.vue';
+    import ajax from '@/api/index.js';
+    import common from '@/assets/js/common.js';
 
     export default {
         components: {
@@ -71,53 +41,50 @@
         },
         data () {
             return {
-                keyword: '',
-                // 表格数据
-                tableData: [
-                    {
-                        level: '普通会员',
-                        type: '普通员工',
-                    },
-                    {
-                        level: '黄金会员',
-                        type: '经理级',
-                    },
-                    {
-                        level: '铂金会员',
-                        type: '项目老总',
-                    },
-                    {
-                        level: '钻石会员',
-                        type: '董事长',
-                    },
-                ],
+                //账户余额
+                moneyLeft : '',
+                //账户信息
+                orgInfo : {}
             }
         },
         methods: {
 
+            /**
+             * 显示转账模态框
+             */
             showTransferModal () {
                 this.$refs.transfer.show();
             },
 
+            /**
+             * 跳转到转账记录详情表
+             */
             viewTransferRecord () {
                 this.$router.push({ name: 'transferRecord'});
             },
 
-            viewFundDetail ( data ) {
-                console.log(data);
-                this.$router.push({ name: 'fundDetail', query: { info: data.row }});
-            },
-
-            viewDetail ( data ) {
-                console.log(data);
-                this.$router.push({ name: 'juniorDetail', query: { info: data.row }});
-            },
-
-            queryList() {
-
-            },
+            /**
+             * 获取账户余额
+             */
+            getOrgAccount () {
+                ajax.post('getOrgAccount').then(res => {
+                   if(res.success){
+                        this.moneyLeft = common.isNotEmpty(res.data.balance) ? Number(res.data.balance).toCurrency() : '';
+                        this.orgInfo =  res.data;
+                   }else{
+                       this.moneyLeft = '';
+                   }
+                }).catch(err => {
+                    this.moneyLeft = '';
+                });
+            }
 
         },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.getOrgAccount();
+            });
+        }
     }
 </script>
 
@@ -132,14 +99,13 @@
         border-radius: 4px;
         padding: 20px 30px;
 
-        .content-item{
-            margin-bottom: 30px;
+        .tips{
+            font-size: 14px;
+            color: $color_yellow;
+        }
 
-            .title-wrap{
-                font-size: $font_size_16px;
-                color: $color_333;
-                margin-bottom: 15px;
-            }
+        .content-item{
+            margin-bottom: 15px;
 
             .content{
                 border: 1px solid $color_E9E9E9;
@@ -189,14 +155,6 @@
                     }
 
                 }
-            }
-
-            .btn-wrap{
-                margin-bottom: 10px;
-            }
-
-            .table-wrap{
-
             }
 
         }

@@ -64,4 +64,7 @@ export default {
     'female': '女',
     'male': '男',
     'empType': '员工分类',
+    'transfer': '转账',
+    'transfer_in': '收入',
+    'transfer_out': '支出',
 }

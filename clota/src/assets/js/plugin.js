@@ -144,6 +144,14 @@ plugin.install = function (Vue, options) {
                 } else {
                     return content;
                 }
+            },
+            //货比格式化
+            moneyFilter(content) {
+                if (content === '' || content === null || content === undefined) {
+                    return '-';
+                } else {
+                    return Number(content).toCurrency();
+                }
             }
         },
         created() {

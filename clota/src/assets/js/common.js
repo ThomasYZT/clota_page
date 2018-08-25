@@ -123,7 +123,7 @@ export default {
     /**
      * 校验是否是2位数的钱，默认位数为1到10位
      */
-    validateMoney (value,reg = '',minLength = 1,maxLength = 10) {
+    validateMoney (value,reg = '',minLength = 1,maxLength = 10,async = false) {
         return new Promise((resolve,reject) => {
             if(this.isNotEmpty(value) && validator.isNumber(value)){
                 let  numStr = String(value);

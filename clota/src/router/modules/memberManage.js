@@ -277,7 +277,7 @@ export default {
                         name: 'financialManagement',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
                         meta: {
-                            menuName: 'financialManagement', //lang.config.js 里面的语言键值
+                            menuName: 'transfer', //lang.config.js 里面的语言键值
                             _name: 'storage-manage',
                             rightPath : topMenuName + '.' + 'financialManagement',
                             isMenu : true

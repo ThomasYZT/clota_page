@@ -57,3 +57,35 @@ export const couponTypeList = [
         value : 'discount_coupon',
     }
 ];
+
+//交易类型
+export const tradeType = [
+    {
+        label : '全部交易类型',
+        value : 'all',
+    },
+    {
+        label : '支出',
+        value : 'transfer_out',
+    },
+    {
+        label : '收入',
+        value : 'transfer_in',
+    },
+];
+
+//交易类型1
+export const tradeType1 = [
+    {
+        label : '全部交易类型',
+        value : 'all',
+    },
+    {
+        label : '储值',
+        value : 'transfer_out',
+    },
+    {
+        label : '消费',
+        value : 'transfer_in',
+    },
+];

@@ -121,6 +121,16 @@ export default {
     //获取会员增长数量
     'getIncreaseMemberCount' : '/member/getIncreaseMemberCount',
     //获取会员等级数量
-    'getMemberLevelCount' : '/member/getMemberLevelCount'
+    'getMemberLevelCount' : '/member/getMemberLevelCount',
+
+    /***********************************财务管理***********************************/
+    //转账记录
+    'queryChangeList' : '/members/orgAccount/queryChangeList',
+    //获取账户余额
+    'getOrgAccount' : '/members/orgAccount/getOrgAccount',
+    //转账
+    'transfer' : '/members/orgAccount/transfer',
+    //获取资金交易明细
+    'queryOrgAccountChange' : '/member/memberAccount/queryOrgAccountChange'
 
 }
