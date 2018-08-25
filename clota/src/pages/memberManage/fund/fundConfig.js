@@ -3,7 +3,7 @@
 export const columnData = [
     {
         title: '编码',
-        minWidth: 200,
+        minWidth: 240,
         field: 'cardCode'
     },
     {
@@ -27,13 +27,23 @@ export const columnData = [
         field: 'levelDesc'
     },
     {
-        title: '可用余额',
+        title: '账户类型',
         minWidth: 120,
         field: 'moneyBalance'
     },
-    // {
-    //     title: '操作',
-    //     minWidth: 140,
-    //     field: ''
-    // },
+    {
+        title: '储值信息',
+        minWidth: 120,
+        field: 'moneyBalance'
+    },
+    {
+        title: '账户可用金额',
+        minWidth: 120,
+        field: 'moneyBalance'
+    },
+    {
+        title: '操作',
+        width: 100,
+        field: ''
+    },
 ];

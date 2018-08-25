@@ -28,6 +28,7 @@
             <Button type="ghost" @click="reset">重 置</Button>
         </div>
         <table-com
+            v-if="tableShow"
             :ofsetHeight="110"
             :show-pagination="true"
             :column-data="columnData"
@@ -141,8 +142,10 @@
     import {columnData} from './fundDetailConfig';
     import ajax from '@/api/index.js';
     import {tradeType1} from '@/assets/js/constVariable.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             tableCom
         },
@@ -236,17 +239,35 @@
                 }).then(res => {
                     if(res.success){
                         this.accountList = res.data.data ? res.data.data : [];
+                        if(this.accountList.length > 0){
+                            this.queryParams.accountTypeId = this.accountList[0].id;
+                        }
                     }else{
                         this.accountList = [];
                     }
                 }).catch(() => {
                     this.accountList = [];
                 })
+            },
+            /**
+             * 获取路由信息
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    this.queryParams.accountTypeId = params.id;
+                }
             }
 
         },
         created () {
             this.queryMemberAccountDefine();
+        },
+        computed : {
+            //表格是否显示
+            tableShow () {
+                return this.queryParams.accountTypeId;
+            }
         }
     }
 </script>

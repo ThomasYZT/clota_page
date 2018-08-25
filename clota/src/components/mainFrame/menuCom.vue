@@ -15,7 +15,7 @@
                 :children-menu="item.children"
                 v-if="item.children && item.children.length > 2">
             </menu-com>
-            <MenuItem :name="item.name"
+            <MenuItem :name="item.meta.menuName"
                       v-else
                       :key="item.name">
                         <span v-if="item.meta.iconClass"

@@ -2,42 +2,75 @@
     <!--会员管理--储值管理--储值账户-->
     <div class="funds">
 
+        <div class="breadcrumb-box">
+            <bread-crumb-head
+                locale-router="储值明细"
+                :before-router-list="beforeRouterList">
+            </bread-crumb-head>
+        </div>
         <div class="header-wrap">
-            <Select v-model="queryParams.levelId" @on-change="queryList">
-                <Option value="">全部会员等级</Option>
+            <Select v-model="queryParams.accountTypeId"
+                    style="width:180px"
+                    placeholder="请选择账户类型">
+                <Option
+                    v-for="item in accountList"
+                    :value="item.id"
+                    :key="item.id">
+                    {{ item.accountName }}
+                </Option>
+            </Select>
+            <Select v-model="queryParams.levelId">
+                <Option value="all">全部会员等级</Option>
                 <Option v-for="(item, index) in enumData.level"
                         :value="item.id"
                         :key="index">
                     {{ item.levelDesc }}
                 </Option>
             </Select>
-            <Select v-model="queryParams.channelId" @on-change="queryList">
-                <Option value="">全部会员渠道</Option>
+            <Select v-model="queryParams.channelId">
+                <Option value="all">全部会员渠道</Option>
                 <Option v-for="(item,index) in enumData.channel"
                         :value="item.id"
                         :key="index">
                     {{ item.channelName }}
                 </Option>
             </Select>
-            <Select v-model="queryParams.cardStatus" @on-change="queryList">
+            <Select v-model="queryParams.cardStatus">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
                         :value="item.name">
                     {{item.desc}}
                 </Option>
             </Select>
+            <br>
             <Input v-model="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
-            <Button :disabled="queryParams.keyWord ? false : true" type="primary" @click="queryList">查 询</Button>
-            <Button :disabled="queryParams.keyWord ? false : true" type="ghost" @click="reset">重 置</Button>
+            <Button type="primary" @click="queryList">查 询</Button>
+            <Button type="ghost" @click="reset">重 置</Button>
         </div>
 
         <table-com
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
+            :row-class-name="rowClassName"
+            :page-no-d.sync="pageNo"
+            :page-size-d.sync="pageSize"
             :total-count="totalCount"
-            :ofset-height="60"
+            :ofset-height="230"
             @query-data="queryList">
+            <el-table-column
+                slot="column0"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    {{scoped.row.cardCode}}
+                    <span class="frozen-cla">{{scoped.row.cardStatus === 'frozen' ? '已冻结' : ''}}</span>
+                </template>
+            </el-table-column>
             <el-table-column
                 slot="column3"
                 :label="row.title"
@@ -48,6 +81,18 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column8"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <span class="operate">详情</span>
                 </template>
             </el-table-column>
         </table-com>
@@ -61,19 +106,33 @@
     import {columnData} from './fundConfig';
     import ajax from '@/api/index.js';
     import { cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             tableCom,
+            breadCrumbHead
         },
         data () {
             return {
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: this.$t('fund'),
+                        router: {
+                            name: 'fundInfo'
+                        }
+                    }
+                ],
                 // 查询数据
                 queryParams: {
+                    accountTypeId : '',
                     keyWord: '',
-                    levelId: '',
-                    channelId: '',
-                    cardStatus: '',
+                    levelId: 'all',
+                    channelId: 'all',
+                    cardStatus: 'all',
                 },
                 //枚举数据
                 enumData: {
@@ -95,7 +154,9 @@
                 //页码
                 pageNo : 1,
                 //每页条数
-                pageSize : 10
+                pageSize : 10,
+                //账户列表
+                accountList : []
             }
         },
         created() {
@@ -141,10 +202,14 @@
             /**
              * 储值账户列表
              */
-            queryList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+            queryList () {
                 ajax.post('queryMemberPage',{
-                    pageNo,
-                    pageSize
+                    levelId : this.queryParams.levelId !== 'all' ? this.queryParams.levelId : '',
+                    channelId : this.queryParams.channelId !=='all' ? this.queryParams.channelId : '',
+                    cardStatus : this.queryParams.cardStatus !== 'all' ? this.queryParams.cardStatus : '',
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize,
+                    keyWord : this.queryParams.keyWord,
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
@@ -172,9 +237,63 @@
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
+                this.queryParams.accountTypeId = this.accountList.length > 0 ? this.accountList[0].id : '';
+                this.queryParams.levelId = "all";
+                this.queryParams.channelId = "all";
+                this.queryParams.cardStatus = "all";
                 this.queryList();
             },
 
+            /**
+             * 查询账户类型
+             */
+            queryMemberAccountDefine () {
+                ajax.post('queryMemberAccountDefine',{
+                    accountType: 'charging',
+                    pageNo: 1,
+                    pageSize: 99999
+                }).then(res => {
+                    if(res.success){
+                        this.accountList = res.data.data ? res.data.data : [];
+                        if(this.accountList.length > 0){
+                            this.queryParams.accountTypeId = this.accountList[0].id;
+                        }
+                    }else{
+                        this.accountList = [];
+                    }
+                }).catch(() => {
+                    this.accountList = [];
+                })
+            },
+            /**
+             * 获取路由信息
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    this.queryParams.accountTypeId = params.id;
+                }
+            },
+            /**
+             * 动态给行添加类名
+             * @param row
+             */
+            rowClassName (row){
+                if(row.row.cardStatus === "frozen"){
+                    return 'frozen-tr';
+                }
+            }
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.queryMemberAccountDefine();
+            });
+        },
+        computed : {
+            //表格是否显示
+            tableShow () {
+                return this.queryParams.accountTypeId;
+            }
         }
     }
 </script>
@@ -189,10 +308,17 @@
         background: $color-fff;
         border-radius: 4px;
 
-        .header-wrap{
+        .breadcrumb-box{
             height: 50px;
             line-height: 50px;
-            padding: 0 20px;
+            padding: 0 30px;
+            background: $color_F4F6F8;
+        }
+
+        .header-wrap{
+            height: 100px;
+            line-height: 40px;
+            padding: 10px 20px;
 
             /deep/ .ivu-select{
                 width: 180px;
@@ -208,6 +334,20 @@
                 margin-left: 5px;
             }
 
+        }
+
+        .frozen-cla{
+            font-size: $font_size_12px;
+            color: $color_red;
+        }
+
+        /deep/ .frozen-tr{
+            color: $color_gray;
+        }
+
+        .operate{
+            cursor: pointer;
+            color: $color_blue!important;
         }
 
     }

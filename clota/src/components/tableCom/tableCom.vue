@@ -7,6 +7,7 @@
                   style="width: 100%"
                   :border="border"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
+                  :row-class-name="rowClassName"
                   @row-click="classDetailLink">
             <el-table-column
                 v-if="columnCheck"
@@ -145,6 +146,11 @@
             'auto-height' : {
                 type : Boolean,
                 default : false
+            },
+            //动态添加行类名的方法
+            'row-class-name' : {
+                type : Function,
+                default : new Function()
             }
         },
         data() {

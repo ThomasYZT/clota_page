@@ -247,16 +247,27 @@ export default {
                     isMenu : true
                 },
                 children: {
+                    fundInfo: {
+                        //会员管理--储值管理--储值信息
+                        path: '/memberManage/fundInfo',
+                        name: 'fundInfo',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundInfo.vue'),
+                        meta: {
+                            menuName: 'fundInfo', //lang.config.js 里面的语言键值
+                            _name: 'storage-account',
+                            rightPath : topMenuName + '.' + 'fundInfo',
+                            isMenu : true
+                        },
+                    },
                     funds: {
-                        //会员管理--储值管理--储值账户
+                        //会员管理--储值管理--储值明细
                         path: '/memberManage/fund',
                         name: 'fund',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fund.vue'),
                         meta: {
                             menuName: 'fund', //lang.config.js 里面的语言键值
                             _name: 'storage-account',
-                            rightPath : topMenuName + '.' + 'fund',
-                            isMenu : true
+                            rightPath : topMenuName + '.' + 'fundInfo',
                         },
                     },
                     fundDetail: {
@@ -272,9 +283,9 @@ export default {
                         },
                     },
                     financialManagement: {
-                        //会员管理--储值管理--财务管理
+                        //会员管理--储值管理--转账
                         path: '/memberManage/financial',
-                        name: 'financialManagement',
+                        name: 'transfer',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
                         meta: {
                             menuName: 'transfer', //lang.config.js 里面的语言键值
