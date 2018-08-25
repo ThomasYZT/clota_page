@@ -235,10 +235,11 @@
 
             .navigate_before {
                 @include block_outline($width: 30px);
-                border-right: 1px solid rgba(255, 255, 255, 0.10);
-                box-shadow: 1px 0 2px 0 rgba(255, 255, 255, 0.20);
+                /*border-right: 1px solid rgba(255, 255, 255, 0.10);*/
+                /*box-shadow: 1px 0 2px 0 rgba(255, 255, 255, 0.20);*/
 
                 .ivu-icon {
+                    display: none;
                     font-size: 30px;
                     margin: 16px 0 0 10px;
                     color: rgba($color_fff, 0.2);

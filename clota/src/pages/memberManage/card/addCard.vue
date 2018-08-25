@@ -69,7 +69,8 @@
                     <!--有效开始日期-->
                     <Form-item label="有效开始日期" prop="effectiveTime">
                         <Date-picker
-                            type="datetime"
+                            type="date"
+                            :editable="false"
                             v-model.trim="formData.effectiveTime"
                             placeholder="请选择">
                         </Date-picker>
@@ -79,7 +80,8 @@
                     <!--有效结束日期-->
                     <Form-item label="有效结束日期" prop="expireTime">
                         <Date-picker
-                            type="datetime"
+                            type="date"
+                            :editable="false"
                             v-model.trim="formData.expireTime"
                             placeholder="请选择">
                         </Date-picker>

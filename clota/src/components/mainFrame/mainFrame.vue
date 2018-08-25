@@ -9,6 +9,11 @@
             </frame-sidebar>
             <div class="router-con" :class="{'pick-up' : menuIsPackUp}">
                 <slot></slot>
+                <!--加载中插件-->
+                <transition name="fade">
+                    <loading v-if="isLoading">
+                    </loading>
+                </transition>
             </div>
         </div>
     </div>
@@ -17,12 +22,14 @@
 <script>
     import frameHeader from './frameHeader';
     import frameSidebar from './frameSidebar';
-    import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex';
+    import loading from '../loading/loading';
 
     export default {
         components: {
             frameHeader,
-            frameSidebar
+            frameSidebar,
+            loading
         },
         data() {
             return {}
@@ -31,6 +38,7 @@
         computed: {
             ...mapGetters({
                 menuIsPackUp: 'menuIsPackUp',
+                isLoading : 'isLoading'
             }),
         }
     }
@@ -47,6 +55,7 @@
             @include block_outline($height: unquote('calc(100% - 60px)'));
 
             .router-con {
+                position: relative;
                 @include block_outline(unquote('calc(100% - 210px)'));
                 float: left;
                 /*<!--background: $color_fff;-->*/

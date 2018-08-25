@@ -221,7 +221,7 @@
             height: 100%;
             width: 230px;
             float: left;
-            border-right: 2px solid $color_E1E1E1;
+            border-right: 1px solid $color_E1E1E1;
             display: inline-block;
             text-align: center;
             padding: 16px 0;

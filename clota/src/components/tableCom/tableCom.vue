@@ -1,7 +1,7 @@
 <!--公用table组件-->
 
 <template>
-    <div class="table-com" :style="{'min-height' : minHeight}">
+    <div class="table-com" :style="{'min-height' : minHeight}" >
         <el-table :data="tableData"
                   v-if="tableMaxHeight !== null"
                   style="width: 100%"

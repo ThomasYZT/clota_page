@@ -140,7 +140,7 @@
                 height: 50px;
                 line-height: 48px;
                 padding: 0 20px;
-                border-bottom: 2px solid $color_E1E1E1;
+                border-bottom: 1px solid $color_E1E1E1;
                 color: $color_353B5E;
                 font-size: $font_size_18px;
             }
