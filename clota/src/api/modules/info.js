@@ -35,6 +35,8 @@ export default {
     'adjustScore' : '/member/memberAccount/adjustScore',
     //调储值账户余额
     'adjustAmount' : '/member/memberAccount/adjustAmount',
+    //查询账户明细
+    'queryAccountChange' : '/member/memberAccount/queryAccountChange',
 
 
 
