@@ -10,40 +10,60 @@
         </div>
 
         <div class="rate-content">
-            <div class="title-wrap">享受积分、折扣率信息</div>
-            <div class="table-wrap">
-                <el-table
-                    :data="tableData"
+
+            <div class="table-wrap width-500">
+                <div class="title-wrap">按会员级别享受积分、折扣率信息</div>
+                <table-com
+                    :column-data="cardColumnData"
+                    :table-data="cardData"
                     :border="false"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="name"
-                        label="店铺">
-                    </el-table-column>
-                    <el-table-column
-                        prop="type"
-                        label="类别">
-                    </el-table-column>
-                    <el-table-column
-                        prop="integ"
-                        label="积分率">
-                    </el-table-column>
-                    <el-table-column
-                        prop="rebate"
-                        label="折扣率">
-                    </el-table-column>
-                </el-table>
+                    :ofset-height="170">
+                </table-com>
             </div>
+
+            <div class="table-wrap width-660">
+                <div class="title-wrap">按店铺享受积分、折扣率信息</div>
+                <table-com
+                    :column-data="storeColumnData"
+                    :table-data="storeData"
+                    :border="false"
+                    :ofset-height="335">
+                </table-com>
+            </div>
+
+            <div class="table-wrap width-1100">
+                <div class="title-wrap">按产品享受积分、折扣率信息</div>
+                <table-com
+                    :column-data="productColumnData"
+                    :table-data="productData"
+                    :border="false"
+                    :ofset-height="545">
+                </table-com>
+            </div>
+
         </div>
 
     </div>
 </template>
 
 <script>
-    import breadCrumbHead from '@/components/breadCrumbHead/index'
+
+    import ajax from '@/api/index';
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
-        components: {breadCrumbHead},
+        mixins : [lifeCycleMixins],
+        components: {
+            breadCrumbHead,
+            tableCom,
+        },
+        computed: {
+            show () {
+               return false
+            },
+        },
         data () {
             return {
                 beforeRouterList: [
@@ -57,17 +77,105 @@
                     },
                 ],
                 localeRouter: '享受积分、折扣率信息',
-
-                // 表格数据
-                tableData: [
+                //会员详情数据
+                detail: {},
+                //会员卡的积分折扣率
+                cardData: [
+                    {scoreRate: '1积分=1元',discountRate: '9.5折',},
+                    {scoreRate: '1积分=1元',discountRate: '9.5折',},
+                    {scoreRate: '1积分=1元',discountRate: '9.5折',},
+                ],
+                cardColumnData: [
                     {
-                        name: '张记手擀面',
-                        type: '主食',
-                        integ: '1积分=1元',
-                        rebate: '9.5折',
-                    }
+                        title: '积分率',
+                        minWidth: 100,
+                        field: 'scoreRate'
+                    },
+                    {
+                        title: '折扣率',
+                        minWidth: 100,
+                        field: 'discountRate'
+                    },
+                ],
+                //店铺的积分折扣率
+                storeData: [],
+                storeColumnData: [
+                    {
+                        title: '店铺',
+                        minWidth: 100,
+                        field: 'store'
+                    },
+                    {
+                        title: '积分率',
+                        minWidth: 100,
+                        field: 'scoreRate'
+                    },
+                    {
+                        title: '折扣率',
+                        minWidth: 100,
+                        field: 'discountRate'
+                    },
+                ],
+                //产品的积分折扣率
+                productData: [],
+                productColumnData: [
+                    {
+                        title: '店铺',
+                        minWidth: 100,
+                        field: 'store'
+                    },
+                    {
+                        title: '商品',
+                        minWidth: 100,
+                        field: 'product'
+                    },
+                    {
+                        title: '积分率',
+                        minWidth: 100,
+                        field: 'scoreRate'
+                    },
+                    {
+                        title: '折扣率',
+                        minWidth: 100,
+                        field: 'discountRate'
+                    },
                 ],
             }
+        },
+        methods: {
+
+            //根据会员卡id获取折扣率说明
+            queryList ( params ) {
+                ajax.post('listMemberCardRate', {
+                    cardId: params.cardId,
+                }).then(res => {
+                    if(res.success){
+                        this.cardData = res.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'listMemberCardRate 失败！');
+                    }
+                });
+            },
+
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    for(let item in params){
+                        this[item] = params[item];
+                    }
+                    //根据会员卡id获取折扣率说明
+//                    this.queryList(params.detail);
+                }else{
+                    this.$router.push({
+                        name : 'memberInfo'
+                    });
+                }
+            },
+
         }
     }
 </script>
@@ -93,6 +201,19 @@
 
         .rate-content{
             padding: 20px 30px;
+
+            .table-wrap{
+                margin-bottom: 25px;
+                &.width-500{
+                    width: 500px;
+                }
+                &.width-660{
+                    width: 660px;
+                }
+                &.width-1100{
+                    max-width: 1100px;
+                }
+            }
 
             .title-wrap{
                 font-size: $font_size_16px;

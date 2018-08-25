@@ -28,16 +28,17 @@ export default {
     //更新会员卡信息
     'updateMemberCard' : '/member/updateMemberCard',
     //获取母卡或子卡
-    'queryChildOrMotherCard' : 'member/queryChildOrMotherCard',
+    'queryChildOrMotherCard' : '/member/queryChildOrMotherCard',
     //兑现
     'transferAccountBalance' : '/member/memberAccount/transferAccountBalance',
-    //调储值账户余额
+    //调储值账户积分
     'adjustScore' : '/member/memberAccount/adjustScore',
     //调储值账户余额
     'adjustAmount' : '/member/memberAccount/adjustAmount',
     //查询账户明细
     'queryAccountChange' : '/member/memberAccount/queryAccountChange',
-
+    //根据会员卡id获取折扣率说明
+    'listMemberCardRate' : '/members/listMemberCardRate',
 
 
     /***********************************会员积分***********************************/

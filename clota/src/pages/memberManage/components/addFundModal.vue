@@ -35,9 +35,9 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap double-input">
                     <Form-item label="增加储值金额：" prop="actAmount">
-                        <Input v-model="formData.actAmount" placeholder="请输入" :maxlength="10"/>
+                        <Input v-model.trim="formData.actAmount" placeholder="请输入" :maxlength="10"/>
                         <span class="font">实际增加</span>
-                        <Input v-model="formData.totalAmount" placeholder="请输入" :maxlength="10"/>
+                        <Input v-model.trim="formData.totalAmount" placeholder="请输入" :maxlength="10"/>
                         <span>元</span>
                     </Form-item>
                 </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model="formData.remark" type="textarea" placeholder="请输入" :maxlength="100"/>
+                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入" :maxlength="100"/>
                     </Form-item>
                 </div>
             </Form>
@@ -69,11 +69,32 @@
 <script>
 
     import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
 
     export default {
         props: ['payment-list','detail'],
         components: {},
         data () {
+
+            const validateMethod = {
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+            };
+
+            //校验正整数
+            const validateNumber = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
             return {
                 visible: false,
                 //会员信息的账户数据
@@ -89,9 +110,14 @@
                 ruleValidate: {
                     actAmount: [
                         { required: true, message: '储值金额不能为空', trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
                     paymentTypeId: [
                         { required: true, message: '收款方式不能为空', trigger: 'change' },
+                    ],
+                    remark: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },
             }

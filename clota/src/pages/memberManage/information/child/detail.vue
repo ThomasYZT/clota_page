@@ -205,7 +205,7 @@
                     <div class="title">修改储值、积分数值</div>
                     <div class="operate">
                         <div><span @click="showAssetModal">修改该会员储值账户余额</span></div>
-                        <div><span @click="showIntegModal">修改该会员积分账户余额</span></div>
+                        <div><span @click="showScoreModal">修改该会员积分账户余额</span></div>
                     </div>
 
                 </div>
@@ -247,9 +247,21 @@
                                 ref="viewMoreCoupon">
         </view-more-coupon-modal>
 
-        <!--会员储值账户余额修改/会员积分账户修改modal-->
-        <modify-balance-modal ref="modifyBalance">
+        <!--会员储值账户余额修改modal-->
+        <modify-balance-modal ref="modifyBalance"
+                              :store="charTableData"
+                              :reason="reasonData"
+                              :detail="detail"
+                              @add-success="listCardAccountInfo(detail)">
         </modify-balance-modal>
+
+        <!--会员积分账户修改modal-->
+        <modify-score-modal ref="modifyScore"
+                            :account="scoreData"
+                            :reason="reasonData"
+                            :detail="detail"
+                            @add-success="listCardAccountInfo(detail)">
+        </modify-score-modal>
 
     </div>
 </template>
@@ -262,6 +274,7 @@
     import addFundModal  from '../../components/addFundModal.vue';
     import toCashModal  from '../components/taCashModal.vue';
     import modifyBalanceModal  from '../components/modifyBalanceModal.vue';
+    import modifyScoreModal  from '../components/modifyScoreModal.vue';
     import useRangeModal  from '../components/useRangeModal.vue';
     import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue';
     import moreCard  from '../components/moreCard.vue';
@@ -276,6 +289,7 @@
             addFundModal,
             toCashModal,
             modifyBalanceModal,
+            modifyScoreModal,
             useRangeModal,
             viewMoreCouponModal,
             moreCard,
@@ -304,13 +318,21 @@
                 //子母卡表格数据
                 motherCard: [],
                 sonCard: [],
+                //修改原因
+                reasonData: [],
+                //储值账户信息--用于修改储值余额修改
+                charTableData: [],
+                //积分账户信息--用于修改积分余额修改
+                scoreData: {},
             }
         },
         created() {
-            //查询自定义账户
+            //查询自定义账户--用于新增账户
             this.queryDefineAccountType();
-            //查询收款方式
+            //查询收款方式--用于新增储值
             this.queryPaymentType();
+            //查询修改原因--用于会员储值账户余额修改
+            this.listAdjustReason();
         },
         methods: {
 
@@ -339,6 +361,15 @@
                 })
             },
 
+            //查询修改原因
+            listAdjustReason () {
+                ajax.post('listAdjustReason',{}).then(res => {
+                    if(res.success){
+                        this.reasonData = res.data || [];
+                    }
+                })
+            },
+
             /**
              * 获取枚举数据展示字段
              * @param name String 枚举字段名
@@ -361,6 +392,17 @@
                 }).then(res => {
                     if(res.success){
                         this.accountData = res.data || [];
+                        this.charTableData = [];
+                        this.scoreData = [];
+                        //区分账户类型数据
+                        res.data.forEach( item => {
+                            if(item.accountType === 'charging'){
+                                this.charTableData.push(item);
+                            }
+                            if(item.accountType === 'score'){
+                                this.scoreData = item;
+                            }
+                        })
                     } else {
                         console.log(res);
                         this.$Message.warning(res.message || 'listCardAccountInfo 失败！');
@@ -473,13 +515,25 @@
                 }
             },
 
+            //兑现
+            showCashModal ( data ) {
+                this.$refs.toCash.show( data );
+            },
+
+            // 修改该会员储值账户余额
+            showAssetModal () {
+                this.$refs.modifyBalance.show();
+            },
+            //修改该会员积分账户余额
+            showScoreModal () {
+                this.$refs.modifyScore.show();
+            },
 
 
 
-
-
+            //修改会员信息
             modifyInfo () {
-                this.$router.push({ name: 'addMember', query: { type: 'modify'} });
+                this.$router.push({ name: 'addMember', query: { type: 'modify', info: this.detail }});
             },
 
             viewDeal (dealData) {
@@ -503,21 +557,11 @@
                 console.log('Card')
             },
 
+
+
+            //查看享受积分、折扣率信息
             viewCardRateDetail () {
-                this.$router.push({ name: 'infoRate' });
-                console.log('cardRate')
-            },
-
-            // 修改该会员储值账户余额
-            showAssetModal () {
-                console.log('asset');
-                this.$refs.modifyBalance.show('fund');
-            },
-
-            // 修改该会员积分账户余额
-            showIntegModal () {
-                console.log('积分');
-                this.$refs.modifyBalance.show('integration');
+                this.$router.push({ name: 'infoRate' , params: { detail: this.detail} });
             },
 
             /**

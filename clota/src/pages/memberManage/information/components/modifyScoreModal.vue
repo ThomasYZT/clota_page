@@ -1,9 +1,9 @@
 <template>
-    <!--会员储值账户余额修改-->
+    <!--会员积分账户修改-->
     <Modal
         v-model="visible"
-        title="会员储值账户余额修改"
-        class-name="modify-balance-modal vertical-center-modal"
+        title="会员积分账户修改"
+        class-name="modify-score-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
         @on-cancel="hide">
@@ -17,37 +17,20 @@
                     <span>{{detail.custName || '-'}}</span>
                 </div>
 
-                <div class="ivu-form-item-wrap">
-                    <Form-item label="选择要修改的账户：" prop="accountTypeId">
-                        <Select v-model="formData.accountTypeId" placeholder="请选择" @on-change="changeAccount">
-                            <Option v-for="(item,index) in store"
-                                    :key="index"
-                                    :value="item.id">
-                                {{item.accountName}}
-                            </Option>
-                        </Select>
-                    </Form-item>
-                </div>
-
                 <div class="form-item-wrap">
-                    <label>本金账户余额：</label>
-                    <span class="yellow-color">{{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}</span>
-                    {{accountInfo.unit || ''}}
-                </div>
-                <div class="form-item-wrap">
-                    <label>赠送账户余额：</label>
-                    <span class="yellow-color">{{accountInfo.donateBalance ? accountInfo.donateBalance.toCurrency() : '0'}}</span>
-                    {{accountInfo.unit || ''}}
+                    <label>目前积分账户：</label>
+                    <span class="yellow-color">{{account.accountBalance ? account.accountBalance.toCurrency() : '0'}}</span>
+                    积分
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="本金账户余额调整：" prop="corpusAmount">
+                    <Form-item label=" 账户余额调整：" prop="corpusAmount">
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
                                 增加
                                 <template v-if="formData.corpusOptSign === 'sub'">
-                                    <Input placeholder=" " disabled/>
-                                </template>
+                                <Input placeholder=" " disabled/>
+                            </template>
                                 <template v-else>
                                     <Input v-model.trim="formData.corpusAmount" placeholder="请输入"/>
                                 </template>
@@ -56,38 +39,11 @@
                             <Radio label="sub">
                                 减少
                                 <template v-if="formData.corpusOptSign === 'add'">
-                                    <Input placeholder=" " disabled/>
-                                </template>
+                                <Input placeholder=" " disabled/>
+                            </template>
                                 <template v-else>
                                     <Input v-model.trim="formData.corpusAmount" placeholder="请输入"/>
                                 </template>
-                                {{accountInfo.unit || ''}}
-                            </Radio>
-                        </RadioGroup>
-                    </Form-item>
-                </div>
-
-                <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="赠送账户余额调整：" prop="donateAmount">
-                        <RadioGroup v-model="formData.donateOptSign">
-                            <Radio label="add">
-                                增加
-                                <template v-if="formData.donateOptSign === 'sub'">
-                                <Input placeholder=" " disabled/>
-                            </template>
-                            <template v-else>
-                                <Input v-model.trim="formData.donateAmount" placeholder="请输入"/>
-                            </template>
-                                {{accountInfo.unit || ''}}
-                            </Radio>
-                            <Radio label="sub">
-                                减少
-                                <template v-if="formData.donateOptSign === 'add'">
-                                <Input placeholder=" " disabled/>
-                            </template>
-                            <template v-else>
-                                <Input v-model.trim="formData.donateAmount" placeholder="请输入"/>
-                            </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
                         </RadioGroup>
@@ -130,7 +86,7 @@
     import common from '@/assets/js/common.js';
 
     export default {
-        props: ['store','reason','detail'],
+        props: ['account','reason','detail'],
         components: {},
         data () {
 
@@ -156,17 +112,8 @@
 
             //校验本金额不可大于总本金余额
             const validateMaxCorpus = (rule,value,callback) => {
-                if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.corpusBalance ){
+                if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.accountBalance ){
                     callback(new Error('本金额不可大于总本金余额'));
-                } else {
-                    callback();
-                }
-            };
-
-            //校验赠送金额不可大于总赠送金额
-            const validateMaxDonate = (rule,value,callback) => {
-                if(value && this.formData.donateOptSign === 'sub' && Number(value) > this.accountInfo.donateBalance ){
-                    callback(new Error('赠送金额不可大于总赠送金额'));
                 } else {
                     callback();
                 }
@@ -182,8 +129,6 @@
                     accountTypeId: '',//账户类型id
                     corpusOptSign: 'add',//本金操作类型 -add -sub
                     corpusAmount: '0',//本金金额
-                    donateOptSign: 'add',//赠送金额操作类型 -add -sub
-                    donateAmount: '0',//赠送金额
                     reasonId: '',//原因id
                     remark: '',
                 },
@@ -196,11 +141,6 @@
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxCorpus, trigger: 'blur' },
-                    ],
-                    donateAmount: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateMaxDonate, trigger: 'blur' },
                     ],
                     reasonId: [
                         { required: true, message: '修改原因不能为空', trigger: 'change' },
@@ -218,37 +158,27 @@
                 this.visible = true
             },
 
-            //要修改的账户--监听改变
-            changeAccount ( val ) {
-                if(val){
-                    this.accountInfo = this.store.find((item) => val === item.id);
-                    console.log(this.accountInfo)
-                }
-            },
-
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
                             accountId: this.detail.id,
-                            accountTypeId: this.accountInfo.id,
+                            accountTypeId: this.account.id,
                             corpusOptSign: this.formData.corpusOptSign,
                             corpusAmount: this.formData.corpusAmount,
-                            donateOptSign: this.formData.donateOptSign,
-                            donateAmount: this.formData.donateAmount,
                             reasonId: this.formData.reasonId,
                             remark: this.formData.remark,
                         };
                         console.log(params)
-                        this.adjustAmount(params);
+                        this.adjustScore(params);
                     }
                 })
             },
 
-            //调储值账户余额
-            adjustAmount ( params ) {
-                ajax.post('adjustAmount', params).then(res => {
+            //调积分账户余额
+            adjustScore ( params ) {
+                ajax.post('adjustScore', params).then(res => {
                     if( res.success ) {
                         this.$Message.success('操作成功！');
                         this.$emit('add-success');
@@ -269,8 +199,6 @@
                     accountTypeId: '',
                     corpusOptSign: 'add',
                     corpusAmount: '0',
-                    donateOptSign: 'add',
-                    donateAmount: '0',
                     reasonId: '',
                     remark: '',
                 };
@@ -283,7 +211,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .modify-balance-modal{
+    .modify-score-modal{
 
         .yellow-color{
             font-size: $font_size_18px;

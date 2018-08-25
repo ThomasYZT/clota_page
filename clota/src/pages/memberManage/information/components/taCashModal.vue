@@ -9,28 +9,28 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="110">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="兑现数量：" prop="fromAmount">
-                        <Input v-model.trim="data.fromAmount" placeholder="请输入"/>
+                        <Input v-model.trim="formData.fromAmount" :maxlength="30" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="兑换后数量：" prop="toAmount">
-                        <Input v-model.trim="data.toAmount" disabled placeholder="请输入"/>
+                        <Input v-model.trim="formData.toAmount" disabled placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <FormItem label=" " prop="channel">
-                        <RadioGroup v-model="data.channel">
+                        <RadioGroup v-model="formData.channel">
                             <Radio label="cash">转化为现金</Radio>
                             <Radio label="account">转化至账户</Radio>
                         </RadioGroup>
                     </FormItem>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="data.channel === 'account'">
+                <div class="ivu-form-item-wrap" v-if="formData.channel === 'account'">
                     <Form-item label="转入账户：" prop="toAccountId">
-                        <Select v-model="data.toAccountId" placeholder="请选择">
+                        <Select v-model="formData.toAccountId" placeholder="请选择">
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
@@ -80,6 +80,16 @@
                 });
             };
 
+
+            //校验兑换后数量不可大于本金余额
+            const validateMaxNum = (rule,value,callback) => {
+                if(value && Number(value) > this.accountInfo.corpusBalance ){
+                    callback(new Error('兑换后数量不可大于本金余额'));
+                } else {
+                    callback();
+                }
+            };
+
             //校验转入账户
             const validateToAccount = (rule,value,callback) => {
                 if(this.formData.channel === 'account' && value == ''){
@@ -112,6 +122,9 @@
                     channel: [
                         {required: true},
                     ],
+                    toAmount: [
+                        { validator: validateMaxNum, trigger: 'blur' },
+                    ],
                     toAccountId: [
                         { validator: validateToAccount, trigger: 'change' },
                     ],
@@ -129,22 +142,21 @@
 
             //计算兑换后数量
             toAmountFunc () {
-                this.formData.toAmount = Number(newVal)*this.accountInfo.rate;
+                this.formData.toAmount = Number(this.formData.fromAmount)*this.accountInfo.rate;
             },
 
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true)
                         let params = {
                             fromAccountId: this.accountInfo.id,
-                            fromAmount: this.formData.formData,
+                            fromAmount: this.formData.fromAmount,
                             toAccountId: this.formData.toAccountId,
                             toAmount: this.formData.toAmount,
                         };
                         console.log(params)
-//                        this.transferAccountBalance(params);
+                        this.transferAccountBalance(params);
                     }
                 })
             },
