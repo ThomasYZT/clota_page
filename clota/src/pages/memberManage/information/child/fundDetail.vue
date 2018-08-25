@@ -130,7 +130,7 @@
                 let optType = dealType.find((item, i) => {
                     return item.value === val;
                 });
-                return optType ? optType.name : val;
+                return optType ? optType.name : '-';
             },
         },
         methods: {
