@@ -49,7 +49,7 @@
 
 
     .loader span:nth-child(2){
-        background:#E84C3D;
+        background:#636363;
         -webkit-animation:kiri 1.2s infinite linear;
         -moz-animation:kiri 1.2s infinite linear;
         -o-animation:kiri 1.2s infinite linear;
@@ -60,7 +60,7 @@
         z-index:100;
     }
     .loader span:nth-child(4){
-        background:#2FCC71;
+        background:#EE4141;
         -webkit-animation:kanan 1.2s infinite linear;
         -moz-animation:kanan 1.2s infinite linear;
         -o-animation:kanan 1.2s infinite linear;
