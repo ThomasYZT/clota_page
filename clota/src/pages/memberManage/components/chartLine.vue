@@ -148,7 +148,9 @@
                     this.xAxis = [];
                     this.seriesData = [];
                 }).finally(() => {
-                    this.$refs.vueCharts.refresh();
+                    this.$nextTick(() => {
+                        this.$refs.vueCharts.refresh();
+                    });
                 });
             },
             /**

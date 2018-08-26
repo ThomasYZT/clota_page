@@ -150,7 +150,7 @@ plugin.install = function (Vue, options) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
-                    return Number(content).toCurrency();
+                    return content === 0 ? '0.00' : Number(content).toCurrency();
                 }
             }
         },

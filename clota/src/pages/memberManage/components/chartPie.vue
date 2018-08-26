@@ -55,16 +55,15 @@
                             }
                         },
                         formatter: (params) => {
-                            return `${params.data.label}\n${params.value}`;
+                            return `${params.data.label}:${params.value}`;
                         },
-                        backgroundColor: 'rgba(0,0,0,0.70)',
+                        backgroundColor: '#fff',
                         padding: [10, 15],
                         textStyle: {
-                            color: '#FFFFFF',
-                            align: 'left'
+                            color: '#333333',
                         },
                         confine: true,
-                        extraCssText:  'box-shadow: 0 2px 6px 0 rgba(0,0,0,0.70)'
+                        extraCssText: 'border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10)'
                     },
                     legend: {
                         orient: 'vertical',

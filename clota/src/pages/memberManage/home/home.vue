@@ -6,12 +6,14 @@
 
             <!--会员数据概览-->
             <div class="data-show-left">
-                <data-total :member-sum-count="memberSumCount"></data-total>
+                <data-total :member-sum-count="memberSumCount">
+                </data-total>
             </div>
 
             <!--会员分布数据-->
             <div class="data-show-right">
-                <chart-pie></chart-pie>
+                <chart-pie>
+                </chart-pie>
             </div>
 
         </div>
@@ -20,7 +22,8 @@
         <div class="home-chart">
             <div class="chart-header">会员分布数据</div>
             <div class="chart-content">
-                <chart-line :data="vipPlace" type="money"></chart-line>
+                <chart-line :data="vipPlace" type="money">
+                </chart-line>
             </div>
         </div>
 
@@ -28,7 +31,8 @@
         <div class="home-chart">
             <div class="chart-header">会员积分数据概览</div>
             <div class="chart-content">
-                <chart-line :data="integrationPlace" type="integra"></chart-line>
+                <chart-line :data="integrationPlace" type="integra">
+                </chart-line>
             </div>
         </div>
 
@@ -52,9 +56,6 @@
             return {
                 // 会员分布数据
                 vipPlace: {
-                    startTime: '',
-                    endTime: '',
-                    type: 'week',
                     label1: '本周会员消费总额(元)',
                     label2: '上周会员消费总额(元)',
                     total1: '',
@@ -62,9 +63,6 @@
                 },
                 // 会员积分数据
                 integrationPlace: {
-                    startTime: '',
-                    endTime: '',
-                    type: 'week',
                     label1: '本周发放积分总数',
                     label2: '本周消费积分总数',
                     total1: '',
