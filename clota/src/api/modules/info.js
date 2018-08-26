@@ -131,6 +131,14 @@ export default {
     //转账
     'transfer' : '/members/orgAccount/transfer',
     //获取资金交易明细
-    'queryOrgAccountChange' : '/member/memberAccount/queryOrgAccountChange'
+    'queryOrgAccountChange' : '/member/memberAccount/queryOrgAccountChange',
+
+    /***********************************首页***********************************/
+    //获取会员消费笔数
+    'getMemberConsumeCount' : '/member/getMemberConsumeCount',
+    //获取会员消费金额和和积分的信息
+    'getMemberConsumeSum' : '/member/getMemberConsumeSum',
+    //获取会员消费金额和积分的图表信息
+    'getMemberConsumeSumGroupBy' : '/member/getMemberConsumeSumGroupBy'
 
 }

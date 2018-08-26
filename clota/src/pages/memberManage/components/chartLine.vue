@@ -4,43 +4,51 @@
         <div class="chart-left">
             <div class="lagend-container">
                 <div class="chart-title">{{data.label1}}</div>
-                <div class="chart-num">{{data.total1}}</div>
-                <div class="chart-label">
-                    <span class="iconfont icon-down red-color"></span>
-                    <span>{{data.rate1}}</span>
-                    <span>同比上周</span>
-                </div>
+                <!--判断是否显示的是金额，如果是才对数值进行格式化-->
+                <div class="chart-num" v-if="type === 'money'">{{data.total1 | moneyFilter | contentFilter}}</div>
+                <div class="chart-num" v-else>{{data.total1 | contentFilter}}</div>
+                <div class="chart-label">(截至目前）</div>
             </div>
 
             <div class="lagend-container">
                 <div class="chart-title">{{data.label2}}</div>
-                <div class="chart-num">{{data.total2}}</div>
-                <div class="chart-label">
-                    <span class="iconfont icon-up green-color"></span>
-                    <span>{{data.rate2}}</span>
-                    <span>同比上周</span>
-                </div>
+                <!--判断是否显示的是金额，如果是才对数值进行格式化-->
+                <div class="chart-num"  v-if="type === 'money'">{{data.total2 | moneyFilter | contentFilter}}</div>
+                <div class="chart-num"  v-else>{{data.total2 | contentFilter}}</div>
+                <div class="chart-label" v-if="type === 'integra'">(截至目前）</div>
             </div>
 
         </div>
         <div class="chart-right">
             <div class="filter">
-                <span :class="{'active': data.type === 'week'}">本周</span>
-                <span :class="{'active': data.type === 'month'}">本月</span>
-                <span :class="{'active': data.type === 'year'}">本年</span>
+                <!--时间范围选择-->
+                <span :class="{'active': timeType === 'week'}"
+                      @click="changeTimeType('week')">近7天</span>
+                <span :class="{'active': timeType === 'month'}"
+                      @click="changeTimeType('month')">近30天</span>
+                <span :class="{'active': timeType === 'year'}"
+                      @click="changeTimeType('year')">本年</span>
                 <div class="date-range-filter">
-                    <div class="double-date-container" :class="{'ivu-form-item-error' : validateError.entryDate}">
-                        <Date-picker class="double-date" v-model="startTime" type="date" placement="bottom-end" :editable="false" placeholder="开始时间"></Date-picker>
-                        <span>至</span>
-                        <Date-picker class="double-date" v-model="endTime" type="date" placement="bottom-end" :editable="false" placeholder="结束时间"></Date-picker>
-                        <span class="iconfont icon-date-picker"></span>
-                    </div>
-                    <div v-show="validateError" class="ivu-form-item-error-tip">{{validateError.entryDate}}</div>
+                    <DatePicker v-model="autoDefTIme"
+                                format="yyyy-MM-dd"
+                                type="daterange"
+                                :clearable="false"
+                                :editable="false"
+                                transfer
+                                placement="bottom-end"
+                                style="width: 319px"
+                                @on-change="dateChange">
+                    </DatePicker>
                 </div>
             </div>
             <div class="line-content">
-                <div class="label">单位：万元</div>
-                <vue-echarts :options="options" auto-resize></vue-echarts>
+                <div class="label" v-if="type === 'money'">单位：万元</div>
+                <div class="label" v-else></div>
+                <vue-echarts
+                    :options="chartConfig"
+                    auto-resize
+                    ref="vueCharts">
+                </vue-echarts>
             </div>
         </div>
     </div>
@@ -48,158 +56,121 @@
 
 <script>
 
-    import echarts from 'echarts/lib/echarts'
-    import vueEcharts from '@/components/vueEcharts/Echarts'
+    import vueEcharts from '@/components/vueEcharts/Echarts';
+    import ajax from '@/api/index.js';
+    import {getConfig} from './chartLineConfig';
 
     export default {
-        props: ['data'],
+        props : {
+            //图表数据
+            data : {
+                type : Object,
+                default () {
+                    return {}
+                }
+            },
+            //当前类型
+            type : {
+                type : String,
+                default : ''
+            }
+        },
         components: {
             vueEcharts,
         },
         data () {
             return {
-                startTime: '',
-                endTime: '',
-                validateError: '',
-                seriesData: [
-                    { name: '03-02周六', value: 6},
-                    { name: '03-03周天', value: 5},
-                    { name: '03-04周一', value: 5},
-                    { name: '03-05周二', value: 8},
-                    { name: '03-06周三', value: 11},
-                    { name: '03-07周四', value: 12},
-                    { name: '03-08周五', value: 10},
-                ],
-                xAxis: ['03-02周六','03-03周天','03-04周一','03-05周二','03-06周三','03-07周四','03-08周五'],
+                //图表数据
+                seriesData: [],
+                //横坐标轴数据
+                xAxis: [],
+                //当前日期类型
+                timeType : 'week',
+                //自定义时间
+                autoDefTIme : []
             }
         },
         computed: {
-            options(){
-                return {
-                    tooltip: {
-                        trigger: 'axis',
-                        backgroundColor: '#fff',
-                        padding: [10, 15],
-                        formatter: function ( params ) {
-                            /*if(params.length > 0){
-                                var tooltip = '<span style="color: #666666;">' + params[0].name +'</span></br>'
-                                    + params[0].seriesName +'<span style="margin-left: 12px">' + (Number(params[0].value)*100).toFixed(2) + '%' + '</span>';
-                                return tooltip;
-                            }*/
-                            return '100';
-                        },
-                        textStyle: {
-                            color: '#333333',
-                        },
-                        confine: true,
-                        extraCssText: 'border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10)'
-                    },
-                    grid: {
-                        top: 20,
-                        left: 10,
-                        right: 30,
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                        //设置轴线的属性
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#F1F3FA',
-                                width: 2,
-                            }
-                        },
-                        //轴线单位坐标线对应的方向
-                        axisTick: {
-                            show: false
-                        },
-                        //刻度标签文字
-                        axisLabel: {
-                            color: '#666',
-                            margin: 10,
-                        },
-                        data: this.xAxis
-                    },
-                    yAxis: {
-                        //轴线单位坐标线对应的方向
-                        axisTick: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#F1F3FA',
-                                width: 2,
-                            }
-                        },
-                        //网格线
-                        splitLine: {
-                            show: true,
-                            lineStyle: {
-                                color: "#F1F3FA",
-                                type: "solid"
-                            }
-                        },
-                        //刻度标签文字
-                        axisLabel: {
-                            color: '#666',
-                            show: true,
-                        },
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            type: 'line',
-                            itemStyle: {
-                                normal: {
-                                    color: '#3071CE',
-                                },
-                                emphasis:{
-                                    color: '#3071CE',
-                                }
-                            },
-                            //面积样式
-                            areaStyle: {
-                                normal: {
-                                    color: new echarts.graphic.LinearGradient(
-                                        0, 0, 0, 1,
-                                        [
-                                            {offset: 0, color: '#D9E7FA'},
-                                            {offset: 1, color: '#F2F6FB'},
-                                        ]
-                                    )
-                                }
-                            },
-                            data: this.seriesData
-                        },
-                    ],
-                    //滑块
-                    dataZoom: {
-                        type: 'slider',
-                        xAxisIndex: [0],
-                        //组件高度
-                        height: 15,
-                        //下边的距离
-                        bottom: 20,
-                        //字体颜色
-                        textStyle: {
-                            color: '#000',
-                        },
-                        //背景块样式
-                        dataBackground: {
-                            lineStyle: {
-                                width: 0
-                            },
-                            areaStyle: {
-                                color: 'rgba(0,0,0,0.2)',
-                            }
-                        }
-                    },
+            //图表配置
+            chartConfig(){
+                return getConfig(this.xAxis,this.seriesData);
+            },
+            //获取日期信息
+            getDateInfo() {
+                if(this.timeType === 'week'){//近7天数据
+                    return {
+                        startDate : new Date().addDays(-7).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    }
+                }else if(this.timeType === 'month'){//近30天数据
+                    return {
+                        startDate : new Date().addDays(-30).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    }
+                }else if(this.timeType === 'year'){//本年数据
+                    let year = String(new Date().getFullYear());
+                    return {
+                        startDate : new Date(year).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    }
+                }else if(this.timeType === 'autoDefTIme'){//自定义时间范围
+                    return {
+                        startDate : this.autoDefTIme[0] ? this.autoDefTIme[0].format('yyyy-MM-dd') : '',
+                        endDate : this.autoDefTIme[1] ? this.autoDefTIme[1].format('yyyy-MM-dd') : '',
+                    }
                 }
             }
         },
+        methods : {
+            /**
+             * 获取消费图表数据
+             */
+            getMemberConsumeSumGroupBy () {
+                ajax.post('getMemberConsumeSumGroupBy',{
+                    startDate : this.getDateInfo.startDate,
+                    endDate : this.getDateInfo.endDate,
+                    accountType : this.type === 'money' ? '1' : '2',
+                }).then(res => {
+                    this.xAxis = [];
+                    this.seriesData = [];
+                    if(res.success){
+                        if(res.data && Object.keys(res.data).length > 0){
+                            for(let item in res.data){
+                                this.xAxis.push(item ? item.slice(5) : '');
+                                this.seriesData.push({
+                                    name : item ? item.slice(5) : '',
+                                    value : res.data[item]
+                                });
+                            }
+                        }
+                    }
+                }).catch(err => {
+                    this.xAxis = [];
+                    this.seriesData = [];
+                }).finally(() => {
+                    this.$refs.vueCharts.refresh();
+                });
+            },
+            /**
+             * 获取对应时间的消费数据
+             * @param timeType 时间类型
+             */
+            changeTimeType(timeType) {
+                this.autoDefTIme = [];
+                this.timeType = timeType;
+                this.getMemberConsumeSumGroupBy();
+            },
+            /**
+             * 自定义查看时间范围
+             */
+            dateChange () {
+                this.timeType = 'autoDefTIme';
+                this.getMemberConsumeSumGroupBy();
+            }
+        },
+        created () {
+            this.getMemberConsumeSumGroupBy();
+        }
     }
 </script>
 
@@ -209,14 +180,6 @@
         height: 100%;
         @include clearfix();
 
-        .red-color{
-            color: $color_red;
-        }
-
-        .green-color{
-            color: $color_green;
-        }
-
         .chart-left{
             height: 100%;
             width: 230px;
@@ -224,10 +187,10 @@
             border-right: 1px solid $color_E1E1E1;
             display: inline-block;
             text-align: center;
-            padding: 16px 0;
 
             .lagend-container{
-                padding: 16px 0;
+                padding: 35px 0 0 32px;
+                text-align: left;
 
                 .chart-title{
                     font-size: $font_size_14px;
@@ -259,6 +222,9 @@
                 text-align: right;
 
                 >span{
+                    display: inline-block;
+                    height: 30px;
+                    line-height: 30px;
                     font-size: $font_size_14px;
                     color: $color_7F8FA4;
                     letter-spacing: 1px;
@@ -270,51 +236,11 @@
                 }
 
                 .date-range-filter{
+                    vertical-align: middle;
                     position: relative;
                     width: 320px;
                     display: inline-block;
                     height: 30px;
-                    .ivu-icon-ios-calendar-outline{  display: none;}
-                    .double-date-container{
-                        background: $color_fff;
-                        border: 1px solid $color_D8D8D8;
-                        border-radius: 4px;
-                        height: 30px;
-                        line-height: 20px;
-                        vertical-align: middle;
-                        .double-date{
-                            width: 130px;
-                            display: inline-block;
-                            /deep/ .ivu-icon-ios-calendar-outline{  display: none !important;}
-                            /deep/ .ivu-icon-ios-close{  display: inline-block;left: 90px;}
-
-                            /deep/ .ivu-input{
-                                font-size: $font_size_14px;
-                                height: 28px;
-                                border: none;
-                                border-width: 0;
-                                padding-right: 0;
-                                text-indent: 10px;
-                            }
-                            /deep/ .ivu-input:focus{
-                                border-width: 0;
-                                box-shadow: none;
-                            }
-                        }
-                        .iconfont{
-                            color: $color_CED0DA;
-                            font-size: $font_size_18px;
-                            vertical-align: middle;
-                            margin-right: 5px
-                        }
-                        /deep/ &.ivu-form-item-error{
-                            border:1px solid $color_red;
-                        }
-                    }
-                    .double-date-container:hover {
-                        background-color: transparent;
-                        border-color: $color_blue;
-                    }
                 }
             }
 

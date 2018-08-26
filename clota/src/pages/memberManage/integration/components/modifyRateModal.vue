@@ -68,6 +68,13 @@
             'title' : {
                 type : String,
                 default : ''
+            },
+            //当前操作的积分、折扣率信息
+            'integra-data':{
+                type : Object,
+                default () {
+                    return {};
+                }
             }
         },
         components: {},
@@ -210,6 +217,25 @@
                 }else{
                     return '';
                 }
+            }
+        },
+        watch : {
+            //实时监测当前操作的积分率和折扣率信息，并且赋值给当前的组件
+            integraData (newVal,oldVal) {
+                if(newVal && Object.keys(newVal).length > 0){
+                    this.formData.discountRate = newVal.discountRate;
+                    this.formData.remark = newVal.remark;
+                }
+                // formData: {
+                //     //消费
+                //     consumption : '',
+                //         //兑换积分
+                //         integRate: '1',
+                //         //折扣率
+                //         discountRate: '',
+                //         //备注
+                //         remark: '',
+                // },
             }
         }
     }

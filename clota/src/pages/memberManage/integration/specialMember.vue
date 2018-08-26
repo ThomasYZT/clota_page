@@ -61,6 +61,7 @@
         <modify-rate-modal
             ref="modifyRate"
             title="修改积分折扣率"
+            :integra-data="empIntegraData"
             :confirm-operate="setStoreDiscount">
         </modify-rate-modal>
 
@@ -96,7 +97,9 @@
                 //特殊会员与普通会员对照表总条数
                 specialMemberBylyDataCount : 0,
                 //当前操作数据
-                currentData : {}
+                currentData : {},
+                //当前特殊会员的积分、折扣率信息
+                empIntegraData : {}
             }
         },
         methods: {
@@ -211,9 +214,14 @@
                     staffTypeId : data.id,//员工类型id
                 }).then(res => {
                     if(res.success){
+                        this.empIntegraData = res.data;
                         this.$refs.modifyRate.show();
+                    }else{
+                        this.empIntegraData = {};
                     }
-                })
+                }).catch(err => {
+                    this.empIntegraData = {};
+                });
             },
             /**
              * 刷新员工分类数据和按分类设置权益数据

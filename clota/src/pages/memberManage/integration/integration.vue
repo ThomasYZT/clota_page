@@ -40,6 +40,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
+            :integra-data="currentData"
             ref="modifyRate"
             title="总体积分率折扣率设置"
             :confirm-operate="setMemberDiscountOfMember">
@@ -71,7 +72,9 @@
                 //页码
                 pageNo : 1,
                 //每页条数
-                pageSize : 10
+                pageSize : 10,
+                //当前操作的
+                currentData : {}
             }
         },
         methods: {
@@ -82,6 +85,7 @@
              */
             showModifyModal ( data ) {
                 this.$refs.modifyRate.show(data.levelId);
+                this.currentData = data;
             },
 
             /**

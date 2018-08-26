@@ -20,7 +20,7 @@
         <div class="home-chart">
             <div class="chart-header">会员分布数据</div>
             <div class="chart-content">
-                <chart-line :data="vipPlace"></chart-line>
+                <chart-line :data="vipPlace" type="money"></chart-line>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
         <div class="home-chart">
             <div class="chart-header">会员积分数据概览</div>
             <div class="chart-content">
-                <chart-line :data="vipPlace"></chart-line>
+                <chart-line :data="integrationPlace" type="integra"></chart-line>
             </div>
         </div>
 
@@ -56,11 +56,9 @@
                     endTime: '',
                     type: 'week',
                     label1: '本周会员消费总额(元)',
-                    label2: '本周会员消费总比数',
-                    total1: '121,279.99',
-                    total2: '21,278',
-                    rate1: '2.90%',
-                    rate2: '2.90%',
+                    label2: '上周会员消费总额(元)',
+                    total1: '',
+                    total2: '',
                 },
                 // 会员积分数据
                 integrationPlace: {
@@ -69,10 +67,8 @@
                     type: 'week',
                     label1: '本周发放积分总数',
                     label2: '本周消费积分总数',
-                    total1: '121,279.99',
-                    total2: '21,278',
-                    rate1: '2.90%',
-                    rate2: '2.90%',
+                    total1: '',
+                    total2: '',
                 },
                 //会员总数数据
                 memberSumCount : ''
@@ -92,10 +88,67 @@
                 }).catch(err => {
                     this.memberSumCount = '';
                 });
-            }
+            },
+            /**
+             * 获取本周会员消费金额
+             */
+            getNowWeekMemberConsumeSum () {
+                ajax.post('getMemberConsumeSum',{
+                    startDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
+                    endDate : new Date().format('yyyy-MM-dd'),
+                    accountType : '1',
+                }).then(res => {
+                    if(res.success){
+                        this.vipPlace.total1 = res.data;
+                    }else{
+                        this.vipPlace.total1 = '';
+                    }
+                }).catch(err => {
+                    this.vipPlace.total1 = '';
+                });
+            },
+            /**
+             * 获取上周会员消费总金额
+             */
+            getLastWeekMemberConsumeSum () {
+                ajax.post('getMemberConsumeSum',{
+                    startDate : new Date().addDays(-new Date().getDay()).addDays(-7).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(-7).format('yyyy-MM-dd'),
+                    accountType : '1',
+                }).then(res => {
+                    if(res.success){
+                        this.vipPlace.total2 = res.data;
+                    }else{
+                        this.vipPlace.total2 = '';
+                    }
+                }).catch(err => {
+                    this.vipPlace.total2 = '';
+                });
+            },
+            /**
+             * 获取本周会员消费积分总数
+             */
+            getNowWeekMemberIntegraSum () {
+                ajax.post('getMemberConsumeSum',{
+                    startDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
+                    endDate : new Date().format('yyyy-MM-dd'),
+                    accountType : '2',
+                }).then(res => {
+                    if(res.success){
+                        this.integrationPlace.total2 = res.data;
+                    }else{
+                        this.integrationPlace.total2 = '';
+                    }
+                }).catch(err => {
+                    this.integrationPlace.total2 = '';
+                });
+            },
         },
         created() {
             this.getMemberSumCount();
+            this.getNowWeekMemberConsumeSum();
+            this.getLastWeekMemberConsumeSum();
+            this.getNowWeekMemberIntegraSum();
         }
     }
 </script>
