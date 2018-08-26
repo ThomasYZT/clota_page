@@ -226,11 +226,6 @@
         position: relative;
         width: 100%;
 
-        /deep/ .el-table th:first-child .cell,
-        /deep/ .el-table td:first-child .cell {
-            padding-left: 16px !important;
-        }
-
         .table-bar {
             margin-top: 16px;
         }

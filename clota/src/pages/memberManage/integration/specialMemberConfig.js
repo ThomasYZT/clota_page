@@ -22,6 +22,21 @@ export const employeeTrustHead = [
         field: 'staffDesc'
     },
     {
+        title: '积分比例（人民币：积分数）',
+        minWidth: 220,
+        field: 'staffDesc'
+    },
+    {
+        title: '折扣率',
+        minWidth: 150,
+        field: 'staffDesc'
+    },
+    {
+        title: '备注',
+        minWidth: 150,
+        field: 'staffDesc'
+    },
+    {
         title: '操作',
         width: 180,
     }

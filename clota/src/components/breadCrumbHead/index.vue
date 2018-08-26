@@ -42,6 +42,7 @@
 
     .bread-crumb-head {
         @include block_outline($height: 50px);
+        line-height: 50px;
         background: $color_F4F6F8;
 
         /deep/ a.ivu-breadcrumb-item-link {
@@ -54,6 +55,10 @@
 
         /deep/ .ivu-breadcrumb-item-link {
             color: $color_333;
+        }
+
+        /deep/ .ivu-breadcrumb-item-separator{
+            color: $color_999;
         }
     }
 </style>

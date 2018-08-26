@@ -116,7 +116,7 @@ export default {
 
                     infoFund: {
                         //会员管理--会员信息--个人资金交易明细
-                        path: '/memberManage/fund',
+                        path: '/memberManage/perFundDetail',
                         name: 'infoFund',
                         component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/fundDetail.vue'),
                         meta: {

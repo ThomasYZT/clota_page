@@ -107,6 +107,11 @@
         .content-item{
             margin-bottom: 15px;
 
+            .title{
+                font-size: $font_size_16px;
+                color : $color_333;
+            }
+
             .content{
                 border: 1px solid $color_E9E9E9;
                 border-radius: 4px 4px 0 0;

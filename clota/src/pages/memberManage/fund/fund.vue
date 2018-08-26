@@ -54,9 +54,10 @@
             :border="true"
             :row-class-name="rowClassName"
             :page-no-d.sync="pageNo"
+            :show-pagination="true"
             :page-size-d.sync="pageSize"
             :total-count="totalCount"
-            :ofset-height="230"
+            :ofset-height="210"
             @query-data="queryList">
             <el-table-column
                 slot="column0"
@@ -92,7 +93,9 @@
                 :min-width="row.minWidth"
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    <span class="operate">详情</span>
+                    <ul class="operate-list">
+                        <li @click="toDetail(scoped.row)">详情</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -282,6 +285,18 @@
                 if(row.row.cardStatus === "frozen"){
                     return 'frozen-tr';
                 }
+            },
+            /**
+             * 跳转到个人资金明细
+             * @param data
+             */
+            toDetail (data) {
+                this.$router.push({
+                    name : 'infoFund',
+                    params: {
+                        fundDetail : data
+                    }
+                });
             }
         },
         beforeRouteEnter(to,from,next){
@@ -304,7 +319,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
 
@@ -345,9 +359,8 @@
             color: $color_gray;
         }
 
-        .operate{
-            cursor: pointer;
-            color: $color_blue!important;
+        .operate-list{
+            @include table_operate();
         }
 
     }

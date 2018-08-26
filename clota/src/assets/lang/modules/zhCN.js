@@ -29,7 +29,7 @@ export default {
     'memberPoints': '会员积分',
     'card': '会员卡券',
     'fund': '储值记录',
-    'fundDetail': '资金明细',
+    'fundDetail': '资金交易明细',
     'financialManagement': '财务管理',
     'memberSetting': '基础设置',
     'channelSetting': '渠道设置',

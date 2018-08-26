@@ -4,7 +4,7 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="$t('specialMember')"
+                :locale-router="$t('关联会员信息')"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
@@ -13,7 +13,7 @@
             <div class="filter-wrap">
                 <Input v-model.trim="keyword"
                        placeholder="请输入会员姓名、电话"
-                       style="width: 240px" />
+                       style="width: 240px;margin-right: 15px;" />
                 <Button type="primary" @click="queryList">查 询</Button>
                 <Button type="ghost" @click="reset">重 置</Button>
             </div>
@@ -29,7 +29,7 @@
                     :border="true"
                     @query-data="queryList">
                     <el-table-column
-                        slot="column3"
+                        slot="column5"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -86,7 +86,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('card'),
+                        name: this.$t('specialMember'),
                         router: {
                             name: 'specialMember'
                         }
@@ -150,7 +150,7 @@
 
         .rate-content{
             @include block_outline($height : unquote('calc(100% - 50px)'));
-            padding: 20px 30px 0 30px;
+            padding: 10px 30px 0 30px;
 
             .filter-wrap{
                 margin-bottom: 10px;

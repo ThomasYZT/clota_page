@@ -9,7 +9,7 @@
             </Tabs>
         </div>
 
-        <div class="btn-wrap"v-if="tabsName === 'created'">
+        <div class="btn-wrap" v-if="tabsName === 'created'">
             <Button type="primary" @click="add">+ 新增卡券</Button>
         </div>
         <!--已创建的卡券信息-->
@@ -60,20 +60,11 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <div class="operation">
-                        <span class="span-blue"
-                              @click="modifyFunc(scope.row)">
-                            修改
-                        </span>
-                        <span class="span-blue"
-                              @click="obsoloteCoupon(scope.row)">
-                            作废
-                        </span>
-                        <span class="span-blue"
-                              @click="showModal(scope.row)">
-                            删除
-                        </span>
-                    </div>
+                    <ul class="operate-list">
+                        <li @click="modifyFunc(scope.row)">修改</li>
+                        <li @click="obsoloteCoupon(scope.row)">作废</li>
+                        <li class="red-label" @click="showModal(scope.row)">删除</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -124,16 +115,10 @@
                 :label="row.title"
                 :width="150">
                 <template slot-scope="scope">
-                    <div class="operation">
-                        <span class="span-blue"
-                              @click="reloadCoupon(scope.row)">
-                            重新启用
-                        </span>
-                        <span class="span-blue"
-                              @click="showModal(scope.row)">
-                            删除
-                        </span>
-                    </div>
+                    <ul class="operate-list">
+                        <li @click="reloadCoupon(scope.row)">重新启用</li>
+                        <li class="red-label" @click="showModal(scope.row)">删除</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -372,6 +357,17 @@
             height: 58px;
             line-height: 56px;
             padding: 0 30px;
+        }
+
+        /deep/ .el-table{
+            tr td:nth-of-type(1) .cell,
+            tr th:nth-of-type(1) .cell{
+                padding-left: 43px!important;
+            }
+        }
+
+        .operate-list{
+            @include table_operate();
         }
     }
 

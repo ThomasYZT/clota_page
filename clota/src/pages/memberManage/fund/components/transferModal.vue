@@ -9,13 +9,24 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap"><label>转出账户：</label><span>{{orgInfo.orgName}}</span></div>
-            <div class="form-item-wrap"><label>账户可用余额：</label><span class="num">{{orgInfo.balance}}</span> 元</div>
-
             <Form ref="formValidate"
                   :model="data"
                   :rules="ruleValidate"
-                  :label-width="130">
+                  :label-width="190">
+
+                <div class="ivu-form-item-wrap">
+                      <Form-item label="转出账户" class="no-marg-bottom" prop="toOrgId">
+                        <span style="color:#666666;">{{orgInfo.orgName}}</span>
+                    </Form-item>
+                </div>
+                  <div class="ivu-form-item-wrap">
+                      <Form-item label="账户可用余额"
+                                class="no-marg-bottom"
+                                style="margin-bottom:5px!important;"
+                                prop="toOrgId">
+                        <span class="num">{{orgInfo.balance | moneyFilter}}</span> 元
+                    </Form-item>
+                </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="转入账户选择" prop="toOrgId">
                         <Select v-model="data.toOrgId"
@@ -57,9 +68,12 @@
 
         <div slot="footer" class="modal-footer">
             <Button type="primary"
+                    class="ivu-btn-90px"
                     :loading="btnLoading"
                     @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="ghost"
+                    class="ivu-btn-90px"
+                    @click="hide" >取消</Button>
         </div>
 
     </Modal>
@@ -222,28 +236,17 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import '~@/assets/scss/base';
     .transfer-modal{
-        .form-item-wrap{
-            width: 100%;
-            float: left;
-            margin-right: 10px;
-            height: 30px;
-            line-height: 30px;
-            font-size: $font_size_14px;
-            color: $color-666;
-            >label{
-                width: 130px;
-                display: inline-block;
-                text-align: right;
-                padding-right: 10px;
-                color: $color-333;
-            }
-            .num{
-                font-size: $font_size_18px;
-                color: $color_yellow;
-            }
+
+        .num{
+            font-size: $font_size_18px;
+            color: $color_yellow;
+        }
+
+        .no-marg-bottom{
+            margin-bottom : 0!important;
         }
     }
 </style>

@@ -3,7 +3,9 @@
 <template>
     <div class="fund-info">
         <div class="title">储值信息</div>
-        <div class="account-info" v-for="item in accountList">
+        <div class="account-info" 
+            v-for="(item,i) in accountList" 
+            :key="i">
             <div class="account-detail">
                 <div class="img-area"></div>
                 <div class="fund-list">

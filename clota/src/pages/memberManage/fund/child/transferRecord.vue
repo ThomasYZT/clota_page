@@ -11,7 +11,7 @@
 
         <div class="transfer-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.tradeType" style="width:180px">
+                <Select v-model="queryParams.tradeType" style="width:180px;margin-right: 10px;">
                     <Option v-for="item in tradeType"
                             :value="item.value"
                             :key="item.value">
@@ -19,20 +19,20 @@
                     </Option>
                 </Select>
                 <Date-picker
-                    style="width:180px"
+                    style="width:180px;margin-right: 10px;"
                     type="date"
                     v-model="queryParams.startTime"
                     placeholder="请选择开始日期">
                 </Date-picker>
                 <Date-picker
-                    style="width:180px"
+                    style="width:180px;margin-right: 10px;"
                     type="date"
                     v-model="queryParams.endTime"
                     placeholder="请选择结束日期">
                 </Date-picker>
                 <Input v-model="queryParams.keyword"
                        placeholder="请输入单位名称"
-                       style="width: 240px" />
+                       style="width: 240px;margin-right: 10px;" />
                 <Button type="primary" @click="queryList">查 询</Button>
                 <Button type="ghost" @click="reset">重 置</Button>
             </div>
@@ -225,6 +225,11 @@
 
                 .red-color{
                     color: $color_red;
+                }
+
+                /deep/ .el-table th:first-child .cell,
+                /deep/ .el-table td:first-child .cell{
+                    padding-left: 30px!important;
                 }
 
             }

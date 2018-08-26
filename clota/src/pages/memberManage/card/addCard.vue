@@ -27,6 +27,7 @@
                     <Form-item label="卡券类别" prop="couponName">
                         <Select v-model.trim="formData.couponType"
                                 placeholder="请选择"
+                                :disabled="type === 'modify'"
                                 @on-change="typeChange">
                             <Option v-for="(item,index) in couponTypeList"
                                     :key="index"
@@ -87,10 +88,27 @@
                         </Date-picker>
                     </Form-item>
                 </div>
+                <!--兑换券店铺必须单选-->
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择店铺-->
-                    <Form-item label="选择店铺" prop="store">
-                        <Select v-model="formData.store" placeholder="请选择">
+                    <Form-item label="选择店铺" prop="conditionOrgId">
+                        <Select v-model="formData.conditionOrgId"
+                                placeholder="请选择">
+                            <Option v-for="(item,index) in listAmountRange"
+                                    :key="index"
+                                    :value="item.id">
+                                {{item.orgName}}
+                            </Option>
+                        </Select>
+                    </Form-item>
+                </div>
+                <!--折扣券和代金券店铺多选-->
+                <div class="ivu-form-item-wrap" v-else>
+                    <!--选择店铺-->
+                    <Form-item label="选择店铺" prop="conditionOrgId">
+                        <Select v-model="formData.conditionOrgId"
+                                :multiple="true"
+                                placeholder="请选择">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
                                     :value="item.id">
@@ -108,7 +126,7 @@
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">
                     <!--能否和会员折扣权益同时使用-->
                     <Form-item label="能否和会员折扣权益同时使用" prop="isDiscountCoexist">
-                        <RadioGroup v-model="formData.isDiscountCoexist">
+                        <RadioGroup v-model="formData.isDiscountCoexist" @on-change="discountTypeChange">
                             <Radio label="true">可同时使用</Radio>
                             <Radio label="false">不可同时使用</Radio>
                         </RadioGroup>
@@ -127,7 +145,7 @@
                     <!--可用渠道-->
                     <Form-item label="可用渠道" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
-                                multiple
+                                :multiple="true"
                                 placeholder="请选择">
                             <Option v-for="(item,index) in channelSetList"
                                     :key="index"
@@ -137,24 +155,27 @@
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon' || formData.couponType === 'discount_coupon'">
-                    <!--可用店铺-->
-                    <Form-item label="可用店铺" prop="useStore">
-                        <Select v-model.trim="formData.conditionOrgId"
-                                multiple
-                                placeholder="请选择">
-                            <Option v-for="(item,index) in listAmountRange"
-                                    :key="index"
-                                    :value="item.id">
-                                {{item.orgName}}
-                            </Option>
-                        </Select>
-                    </Form-item>
-                </div>
+                <!--<div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon' || formData.couponType === 'discount_coupon'">-->
+                    <!--&lt;!&ndash;可用店铺&ndash;&gt;-->
+                    <!--<Form-item label="可用店铺" prop="useStore">-->
+                        <!--<Select v-model.trim="formData.conditionOrgId"-->
+                                <!--:multiple="true"-->
+                                <!--placeholder="请选择">-->
+                            <!--<Option v-for="(item,index) in listAmountRange"-->
+                                    <!--:key="index"-->
+                                    <!--:value="item.id">-->
+                                <!--{{item.orgName}}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
+                    <!--</Form-item>-->
+                <!--</div>-->
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择商品-->
                     <Form-item label="选择商品">
-                        <Select v-model.trim="formData.commodity" placeholder="请选择">
+                        <Select v-model.trim="formData.conditionProductId" placeholder="请选择">
+                            <Option value="1">
+                                1
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
@@ -164,11 +185,14 @@
 
             <div class="content-footer">
                 <i-button type="primary"
+                          class="ivu-btn-108px"
                           :loading="loading"
                           @click="formValidateFunc">{{$t('confirm')}}</i-button>
-                <router-link :to="{name: 'card'}">
-                    <i-button type="ghost">{{$t('cancel')}}</i-button>
-                </router-link>
+                <i-button type="ghost"
+                          class="ivu-btn-108px"
+                          @click="cancelEdit">
+                    {{$t('cancel')}}
+                </i-button>
             </div>
         </div>
 
@@ -245,13 +269,34 @@
             //校验可用渠道
             const validateConditionChannelId = (rule,value,callback) => {
                 if(common.isNotEmpty(value)){
-                    if(value.length > 0){
+                    if(this.formData.conditionOrgId && this.formData.conditionOrgId.length > 0){
                         callback();
                     }else{
-                        callback('可用渠道不可为空');
+                        if(value.length > 0){
+                            callback();
+                        }else{
+                            callback('可用渠道不可为空');
+                        }
                     }
                 }else{
                     callback('可用渠道不可为空');
+                }
+            };
+
+            //校验可用店铺
+            const validateOrg = (rule,value,callback) => {
+                if(common.isNotEmpty(value)){
+                    if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                        callback();
+                    }else{
+                        if(value.length > 0){
+                            callback();
+                        }else{
+                            callback('可用店铺不可为空');
+                        }
+                    }
+                }else{
+                    callback('可用店铺不可为空');
                 }
             };
 
@@ -322,11 +367,10 @@
                     expireTime: '',
                     //可用店铺id
                     conditionOrgId : [],
-                    store: '',
                     //可用渠道id
                     conditionChannelId: [],
                     //商品
-                    commodity: '',
+                    conditionProductId: '',
                     //是否与会员折扣权益同时使用
                     isDiscountCoexist : 'false',
                     //代金券在折扣前后使用设置
@@ -363,8 +407,8 @@
                     expireTime: [
                         { required: true, validator : validateEndTime, trigger: 'change' },
                     ],
-                    store: [
-                        { required: true, message: '店铺不能为空', trigger: 'change' },
+                    conditionOrgId: [
+                        { required: true, validator : validateOrg, trigger: 'change' },
                     ],
                     price: [
                         { required: true, message: '可兑换积分为不能为空', trigger: 'blur' },
@@ -384,13 +428,6 @@
             }
         },
         methods: {
-
-            // 手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
-            customValid(data, field){
-                this.$nextTick(()=>{
-                    this.$refs.formValidate.validateField( field );
-                })
-            },
 
             /**
              * 表单校验
@@ -489,12 +526,11 @@
                         couponType : this.formData.couponType,
                         effectiveTime : this.formData.effectiveTime.format('yyyy-MM-dd'),
                         expireTime : this.formData.expireTime.format('yyyy-MM-dd'),
-                        store : this.formData.store,
                         price : this.formData.price,
                         conditionChannelId : this.formData.conditionChannelId.join(','),
-                        conditionProductId : this.formData.commodity,
+                        conditionProductId : this.formData.conditionProductId,
                         remark : this.getDiscountRemark(),
-                        conditionOrgId : this.formData.conditionOrgId.join(','),
+                        conditionOrgId : this.formData.conditionOrgId,
                     }
                 }else if(this.formData.couponType === 'discount_coupon'){//新增折扣券
                     return {
@@ -535,7 +571,9 @@
              * 卡券类别修改
              */
             typeChange () {
-                this.$refs.formValidate.resetFields();
+                this.$nextTick(() => {
+                    this.$refs.formValidate.resetFields();
+                });
             },
             /**
              * 获取兑换券的使用条件
@@ -548,6 +586,23 @@
                     }
                 });
                 return remark.join(',');
+            },
+            /**
+             * 能否和会员折扣权益同时使用修改,如果设置为不可同时使用，
+             * 那么代金券在折扣前后使用规则必须清除
+             */
+            discountTypeChange (data) {
+                if(data === 'false'){
+                    this.formData.isEffectBeforeDiscount = '';
+                }
+            },
+            /**
+             * 取消编辑
+             */
+            cancelEdit () {
+                this.$router.push({
+                    name : 'card'
+                });
             }
         },
         created () {
@@ -585,7 +640,7 @@
             }
 
             .ivu-form{
-                padding: 40px 50px 40px 0;
+                padding: 40px 90px 80px 0;
                 text-align: center;
             }
 
@@ -597,6 +652,11 @@
                 width: 49%;
                 text-align: center;
                 vertical-align: middle;
+
+
+                /deep/ .ivu-radio-group-item:nth-last-of-type(1){
+                    margin-right: 0;
+                }
 
                 .btn-add-dept,
                 .btn-add-position{
@@ -659,6 +719,10 @@
 
         .content-footer{
             text-align: center;
+
+            /deep/ .ivu-btn-ghost{
+                margin-left: 15px;;
+            }
         }
 
     }

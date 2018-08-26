@@ -21,7 +21,7 @@ import './assets/css/iconfont.css';
 import plugin from './assets/js/plugin'
 
 Vue.use(plugin);
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
     //如果是跳转到登录页面，不做任何权限判断

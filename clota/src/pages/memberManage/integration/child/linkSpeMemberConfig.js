@@ -17,6 +17,16 @@ export const columnData = [
         field: 'cardCode'
     },
     {
+        title: '会员级别',
+        minWidth: 120,
+        field: 'levelDesc'
+    },
+    {
+        title: '已关联特殊会员类别',
+        minWidth: 120,
+        field: 'levelDesc'
+    },
+    {
         title: '操作',
         width: 150,
     }

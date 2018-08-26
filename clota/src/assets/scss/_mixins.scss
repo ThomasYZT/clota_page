@@ -67,6 +67,45 @@
     }
 }
 
+/**
+  表格最右侧操作列样式
+ */
+@mixin table_operate($color : $color_blue) {
+    overflow: auto;
+    float: left;
+
+    li {
+        float: left;
+        margin: 0 10px;
+        position: relative;
+        cursor : pointer;
+        color: $color;
+
+        &.red-label{
+            color: $color_red;
+        }
+
+        &:nth-of-type(1) {
+            margin-left: 0;
+        }
+        &:nth-last-of-type(1) {
+            margin-right: 0;
+
+            &:after{
+                display: none;
+            }
+        }
+
+        &:after {
+            content: '';
+            display: block;
+            @include absolute_pos(absolute, 4px, -10px);
+            @include block_outline(1px, 15px);
+            background: $color_E1E1E1;
+        }
+    }
+}
+
 // Argument mixin
 //////////////////
 @mixin first($num) {

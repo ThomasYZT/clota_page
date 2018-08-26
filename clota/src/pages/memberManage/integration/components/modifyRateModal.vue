@@ -4,7 +4,7 @@
         v-model="visible"
         :title="title"
         class-name="set-rate-modal vertical-center-modal"
-        width="600"
+        width="520"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -12,16 +12,19 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="80">
+                  :label-width="110">
+                <slot></slot>
                 <div class="ivu-form-item-wrap">
                     <i-row>
-                        <i-col span="14">
+                        <i-col span="20">
                             <Form-item :label="$t('IntegralRate')" prop="consumption">
-                                <Input v-model.trim="formData.consumption" :placeholder="$t('inputPlaceholder')"/>
+                                <Input v-model.trim="formData.consumption"
+                                       style="width: 190px"
+                                       :placeholder="$t('inputPlaceholder')"/>
                                 <span class="font">{{$t('yuan')}}  <span class="equil">=</span></span>
                             </Form-item>
                         </i-col>
-                        <i-col span="10">
+                        <i-col span="2">
                             <div class="integral-rate">
                                 <span class="font">{{formData.integRate}}{{$t('integral')}}</span>
                             </div>
@@ -30,13 +33,16 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('discountRate')" prop="discountRate">
-                        <Input v-model.trim="formData.discountRate" :placeholder="$t('inputPlaceholder')"/>
+                        <Input v-model.trim="formData.discountRate"
+                               style="width: 320px;"
+                               :placeholder="$t('inputPlaceholder')"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap textarea-wrap">
                     <Form-item :label="$t('remark')" prop="remark">
                         <Input v-model.trim="formData.remark"
                                type="textarea"
+                               style="width: 320px;"
                                :placeholder="$t('inputPlaceholder')"/>
                     </Form-item>
                 </div>
@@ -252,7 +258,7 @@
         }
 
         .modal-body{
-            padding: 64px 25px;
+            padding: 20px 25px 0 25px;
 
             /deep/ .ivu-input-wrapper{
                 width: 160px;
@@ -264,7 +270,7 @@
 
             .textarea-wrap{
                 /deep/ .ivu-input-wrapper{
-                    width: 390px;
+                    width: 320px;
                 }
             }
         }

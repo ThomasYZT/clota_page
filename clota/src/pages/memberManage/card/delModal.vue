@@ -9,15 +9,19 @@
         :mask-closable="false"
         @on-cancel="hide">
         <div class="modal-body">
-            <div class="left"><span class="iconfont icon-question"></span></div>
+            <div class="left"><Icon type="help-circled"></Icon></div>
             <div class="right">
                 您正在删除卡券：<span class="name">{{couponData.couponName}}</span><br>
                 <span class="notice">本操作不可撤销，</span>是否确认删除？
             </div>
         </div>
         <div slot="footer" class="modal-footer">
-            <Button type="error" @click="deleteCardFunc" >确定</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button class="ivu-btn-90px" 
+                    type="error" 
+                    @click="deleteCardFunc" >确定</Button>
+            <Button class="ivu-btn-90px" 
+                    type="ghost" 
+                    @click="hide" >取消</Button>
         </div>
 
     </Modal>
@@ -77,6 +81,12 @@
                     height: 14px;
                     background-color: pink;
                     vertical-align: middle;
+                }
+
+                .ivu-icon{
+                    font-size: 17px;
+                    vertical-align: middle;
+                    color: #EB6751;
                 }
             }
             .right{

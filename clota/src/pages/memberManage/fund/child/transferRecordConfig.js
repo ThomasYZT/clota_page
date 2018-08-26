@@ -13,7 +13,7 @@ export const columnData = [
     },
     {
         title: '类型',
-        width: 120,
+        width: 80,
         field: 'operType'
     },
     {

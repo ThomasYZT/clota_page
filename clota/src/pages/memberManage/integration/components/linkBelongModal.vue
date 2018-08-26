@@ -4,7 +4,7 @@
         v-model="visible"
         title="会员信息关联分类"
         class-name="link-belong-modal vertical-center-modal"
-        width="560"
+        width="520"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -130,8 +130,8 @@
     .link-belong-modal{
 
         .modal-body{
-            padding: 20px 0 50px 70px;
-            height: 230px;
+            padding: 20px 0 20px 70px;
+            height: 200px;
 
             .form-item-wrap{
                 width: 100%;

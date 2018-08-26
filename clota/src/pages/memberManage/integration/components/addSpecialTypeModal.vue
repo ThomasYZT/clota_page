@@ -4,12 +4,15 @@
         v-model="visible"
         title="新增特殊会员类别"
         class-name="add-special-type-modal vertical-center-modal"
-        width="560"
+        width="520"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="140">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="员工分类名称" prop="name">
                         <Input v-model.trim="formData.name" placeholder="请输入"/>
@@ -100,11 +103,12 @@
     .add-special-type-modal{
 
         .ivu-modal-body{
-            min-height: 200px;
+            display: flex;
+            align-items: center;
+            min-height: 270px;
         }
 
         .modal-body{
-            padding: 60px 45px;
 
              .ivu-input-wrapper{
                 width: 280px;

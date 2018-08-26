@@ -33,7 +33,7 @@
                     :table-com-min-height="250"
                     @query-data="getStaffLevelInfo">
                     <el-table-column
-                        slot="column2"
+                        slot="column5"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -60,9 +60,16 @@
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
             ref="modifyRate"
-            title="修改积分折扣率"
+            title="特殊会员积分折扣率设置"
             :integra-data="empIntegraData"
             :confirm-operate="setStoreDiscount">
+            <div class="ivu-form-item-wrap">
+                <Form-item label="特殊会员类型" style="margin-bottom: 10px!important;">
+                    <span class="special-title">
+                        {{currentData.levelDesc}}-{{currentData.staffDesc}}
+                    </span>
+                </Form-item>
+            </div>
         </modify-rate-modal>
 
     </div>
@@ -260,11 +267,20 @@
 
             .btn-wrap{
                 margin-bottom: 10px;
+
+                /deep/ .ivu-btn-ghost{
+                    margin-left: 15px;
+                }
             }
 
             .short-table{
                 width: 440px;
             }
+        }
+
+        .special-title{
+            font-size: $font_size_14px;
+            color: $color_666;
         }
 
     }
