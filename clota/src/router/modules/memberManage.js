@@ -240,10 +240,10 @@ export default {
                 path: '/memberManage/fund',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/index.vue'),
                 meta: {
-                    menuName: 'fund', //lang.config.js 里面的语言键值
+                    menuName: 'financialManagement', //lang.config.js 里面的语言键值
                     _name: 'members-storage',
                     iconClass: 'icon-print',
-                    rightPath : topMenuName + '.' + 'fund',
+                    rightPath : topMenuName + '.' + 'financialManagement',
                     isMenu : true
                 },
                 children: {
