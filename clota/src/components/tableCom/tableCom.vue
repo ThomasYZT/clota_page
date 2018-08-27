@@ -4,6 +4,7 @@
     <div class="table-com" :style="{'min-height' : minHeight}" >
         <el-table :data="tableData"
                   v-if="tableMaxHeight !== null"
+                  :span-method="spanMethod"
                   style="width: 100%"
                   :border="border"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
@@ -149,6 +150,11 @@
             },
             //动态添加行类名的方法
             'row-class-name' : {
+                type : Function,
+                default : new Function()
+            },
+            // 单元格合并方法
+            'span-method' : {
                 type : Function,
                 default : new Function()
             }
