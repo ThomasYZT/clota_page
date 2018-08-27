@@ -53,7 +53,7 @@
                 <li class="icon">
                     <span class="iconfont icon-notification-w"></span>
                 </li>
-                <li class="icon">
+                <li class="icon" v-clickoutside="closeOperate">
                     <span class="iconfont icon-gengduo"
                           @click="toggleOperateLine"
                           :class="{'is-reverse' : operateLine}"></span>
@@ -111,7 +111,7 @@
              * 收起或展开左侧菜单
              */
             shrinkMenu() {
-                this.$store.commit('updateMenuIsPackUp', true);
+                this.$store.commit('updateMenuIsPackUp', !this.menuIsPackUp);
             },
             /**
              * 设置语言
@@ -163,6 +163,12 @@
              */
             toggleOperateLine () {
                 this.$store.commit('changeOperateLine',!this.operateLine);
+            },
+            /**
+             * 关闭右侧操作栏
+             */
+            closeOperate () {
+                this.$store.commit('changeOperateLine',false);
             }
 
         },
@@ -338,7 +344,7 @@
         }
 
         .menu-area{
-            @include block_outline(360px);
+            height: 100%;
 
             .org-info{
                 @include block_outline(150px,20px);

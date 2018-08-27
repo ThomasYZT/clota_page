@@ -65,6 +65,7 @@
                 });
                 //解决点击菜单组织树不收起来的问题
                 this.$el.click();
+                this.$store.commit('changeOperateLine',false);
             }
         },
         computed: {

@@ -8,21 +8,21 @@ export const columnData = [
     },
     {
         title: '积分比例（人民币：积分数）',
-        minWidth: 110,
+        minWidth: 130,
         field: 'scoreRate'
     },
     {
         title: '折扣率',
-        minWidth: 100,
+        width: 100,
         field: 'discountRate'
     },
     {
         title: '备注',
         minWidth: 100,
-        field: 'discountRate'
+        field: 'remark'
     },
     {
-        title: '操作  ',
-        width: 320,
+        title: '操作',
+        width: 340,
     }
 ];

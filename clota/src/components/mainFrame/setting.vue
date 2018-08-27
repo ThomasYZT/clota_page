@@ -1,7 +1,9 @@
 <!--系统设置-->
 
 <template>
-    <div class="system-setting" :style="{right : operateLine ? '-10px' : '-250px'}">
+    <div class="system-setting"
+         :style="{right : operateLine ? '-10px' : '-250px'}"
+         @click.stop="">
         <div class="img-area">
             <img src="../../assets/images/icon-no-data.png" alt="">
         </div>
@@ -59,6 +61,7 @@
              */
             logOut () {
                 common.loginOut();
+                this.$store.commit('changeOperateLine',false);
             }
         },
         computed : {

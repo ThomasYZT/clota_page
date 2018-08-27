@@ -12,6 +12,16 @@
             :ofset-height="60"
             @query-data="queryList">
             <el-table-column
+                slot="column1"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{(scope.row.scoreRate !== '' && scope.row.scoreRate !== null ? (scope.row.scoreRate + ':' + 1) : '') | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column4"
                 slot-scope="row"
                 :label="row.title"
@@ -20,7 +30,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li
-                            v-if="isEmpty(scope.row.scoreRate) && isEmpty(scope.row.discountRate)"
+                            v-if="!isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)"
                             @click="showModifyModal(scope.row)">设置积分、折扣率</li>
                         <li v-else @click="showModifyModal(scope.row)">修改积分、折扣率</li>
                         <li @click="setRateToStore(scope.row)">按店铺设置积分、折扣率</li>
@@ -116,7 +126,7 @@
              * 判断val是否为空
              * @param val
              */
-            isEmpty(val) {
+            isNotEmpty(val) {
                 return val !== null && val !== '' && val !== undefined;
             },
             /**
@@ -124,9 +134,10 @@
              */
             setMemberDiscountOfMember(formData,callback) {
                 ajax.post('setMemberDiscountOfMember',{
-                    levelIds : this.levelIds,
+                    id : this.currentData.id,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
+                    remark : formData.remark
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('设置成功');

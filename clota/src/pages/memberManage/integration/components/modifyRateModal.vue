@@ -17,8 +17,8 @@
                 <div class="ivu-form-item-wrap">
                     <i-row>
                         <i-col span="20">
-                            <Form-item :label="$t('IntegralRate')" prop="consumption">
-                                <Input v-model.trim="formData.consumption"
+                            <Form-item :label="$t('IntegralRate')" prop="scoreRate">
+                                <Input v-model.trim="formData.scoreRate"
                                        style="width: 190px"
                                        :placeholder="$t('inputPlaceholder')"/>
                                 <span class="font">{{$t('yuan')}}  <span class="equil">=</span></span>
@@ -62,6 +62,7 @@
 <script>
     import ajax from '@/api/index';
     import {validator} from 'klwk-ui';
+    import common from '@/assets/js/common';
 
     export default {
         props : {
@@ -103,19 +104,11 @@
             };
             //校验消费金额是否正确
             const validateConsumption = (rule,value,callback) =>{
-                if(this.notEmpty(value)){
-                    if(validator.isNumber(value)){
-                        if(value > 0){
-                            callback();
-                        }else{
-                            callback(this.$t('mustBigThenZero',{filed : this.$t('consumption')}));
-                        }
-                    }else{
-                        callback(this.$t('errorFormat',{filed : this.$t('consumption')}));
-                    }
-                }else{
-                    callback(this.$t('inputField',{filed : this.$t('integral')}));
-                }
+                common.validateMoney(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    callback(this.$t(err,{field : rule.field}));
+                });
             };
             //校验折扣率是否正确
             const validateDiscount = (rule,value,callback) => {
@@ -138,8 +131,8 @@
                 visible: false,
                 //表单数据
                 formData: {
-                    //消费
-                    consumption : '',
+                    //兑换1积分需要的钱
+                    scoreRate : '',
                     //兑换积分
                     integRate: '1',
                     //折扣率
@@ -155,7 +148,7 @@
                     discountRate: [
                         { required: true, validator : validateDiscount, trigger: 'blur' },
                     ],
-                    consumption : [
+                    scoreRate : [
                         {required : true, validator : validateConsumption,trigger : 'blur'}
                     ],
                 },
@@ -174,6 +167,9 @@
             show (levelIds) {
                 this.levelIds = levelIds;
                 this.visible = true;
+                this.formData.discountRate = this.integraData.discountRate;
+                this.formData.remark = this.integraData.remark;
+                this.formData.scoreRate = this.integraData.scoreRate;
             },
 
             /**
@@ -187,13 +183,13 @@
                             this.confirmOperate({
                                 levelIds : this.levelIds,
                                 discountRate : this.formData.discountRate,
-                                scoreRate : this.scoreRate,
+                                scoreRate : this.formData.scoreRate,
+                                remark : this.formData.remark,
                             },() => {
                                 this.btnLoading = false;
                                 this.hide();
                             });
                         }
-                        // this.setMemberDiscountOfMember();
                     }
                 })
             },
@@ -215,33 +211,14 @@
                 return val !== null && val !== '' && val !== undefined;
             }
         },
-        computed : {
-            //积分率
-            scoreRate () {
-                if(this.notEmpty(this.formData.integRate) && this.notEmpty(this.formData.consumption)){
-                    return Number.parseFloat(Number(this.formData.integRate / this.formData.consumption).toFixed(2));
-                }else{
-                    return '';
-                }
-            }
-        },
         watch : {
             //实时监测当前操作的积分率和折扣率信息，并且赋值给当前的组件
             integraData (newVal,oldVal) {
                 if(newVal && Object.keys(newVal).length > 0){
                     this.formData.discountRate = newVal.discountRate;
                     this.formData.remark = newVal.remark;
+                    this.formData.scoreRate = newVal.scoreRate;
                 }
-                // formData: {
-                //     //消费
-                //     consumption : '',
-                //         //兑换积分
-                //         integRate: '1',
-                //         //折扣率
-                //         discountRate: '',
-                //         //备注
-                //         remark: '',
-                // },
             }
         }
     }

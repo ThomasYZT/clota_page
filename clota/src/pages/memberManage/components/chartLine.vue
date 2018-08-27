@@ -130,6 +130,7 @@
                     startDate : this.getDateInfo.startDate,
                     endDate : this.getDateInfo.endDate,
                     accountType : this.type === 'money' ? '1' : '2',
+                    accOperType : 'consume',
                 }).then(res => {
                     this.xAxis = [];
                     this.seriesData = [];

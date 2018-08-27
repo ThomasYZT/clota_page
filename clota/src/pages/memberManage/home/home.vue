@@ -91,13 +91,17 @@
              * 获取本周会员消费金额
              */
             getNowWeekMemberConsumeSum () {
-                ajax.post('getMemberConsumeSum',{
-                    startDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
-                    endDate : new Date().format('yyyy-MM-dd'),
+                ajax.post('getMemberConsumeSumGroupBy',{
+                    startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountType : '1',
+                    accOperType : 'consume',
                 }).then(res => {
                     if(res.success){
-                        this.vipPlace.total1 = res.data;
+                        this.vipPlace.total1 = 0;
+                        for(let item in res.data){
+                            this.vipPlace.total1 += res.data[item];
+                        }
                     }else{
                         this.vipPlace.total1 = '';
                     }
@@ -109,13 +113,17 @@
              * 获取上周会员消费总金额
              */
             getLastWeekMemberConsumeSum () {
-                ajax.post('getMemberConsumeSum',{
-                    startDate : new Date().addDays(-new Date().getDay()).addDays(-7).format('yyyy-MM-dd'),
-                    endDate : new Date().addDays(-7).format('yyyy-MM-dd'),
+                ajax.post('getMemberConsumeSumGroupBy',{
+                    startDate : new Date().addDays(-new Date().getDay()).addDays(-6).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
                     accountType : '1',
+                    accOperType : 'consume',
                 }).then(res => {
                     if(res.success){
-                        this.vipPlace.total2 = res.data;
+                        this.vipPlace.total2 = 0;
+                        for(let item in res.data){
+                            this.vipPlace.total2 += res.data[item];
+                        }
                     }else{
                         this.vipPlace.total2 = '';
                     }
@@ -127,18 +135,44 @@
              * 获取本周会员消费积分总数
              */
             getNowWeekMemberIntegraSum () {
-                ajax.post('getMemberConsumeSum',{
-                    startDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
-                    endDate : new Date().format('yyyy-MM-dd'),
+                ajax.post('getMemberConsumeSumGroupBy',{
+                    startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountType : '2',
+                    accOperType : 'consume',
                 }).then(res => {
                     if(res.success){
-                        this.integrationPlace.total2 = res.data;
+                        this.integrationPlace.total2 = 0;
+                        for(let item in res.data){
+                            this.integrationPlace.total2 += res.data[item];
+                        }
                     }else{
                         this.integrationPlace.total2 = '';
                     }
                 }).catch(err => {
                     this.integrationPlace.total2 = '';
+                });
+            },
+            /**
+             * 获取上周发放积分总数
+             */
+            getLastWeekMemberSendIntegraSum () {
+                ajax.post('getMemberConsumeSumGroupBy',{
+                    startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
+                    accountType : '2',
+                    accOperType : 'donate',
+                }).then(res => {
+                    if(res.success){
+                        this.integrationPlace.total1 = 0;
+                        for(let item in res.data){
+                            this.integrationPlace.total1 += res.data[item];
+                        }
+                    }else{
+                        this.integrationPlace.total1 = '';
+                    }
+                }).catch(err => {
+                    this.integrationPlace.total1 = '';
                 });
             },
         },
@@ -147,6 +181,7 @@
             this.getNowWeekMemberConsumeSum();
             this.getLastWeekMemberConsumeSum();
             this.getNowWeekMemberIntegraSum();
+            this.getLastWeekMemberSendIntegraSum();
         }
     }
 </script>

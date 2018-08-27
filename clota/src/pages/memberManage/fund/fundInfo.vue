@@ -3,11 +3,14 @@
 <template>
     <div class="fund-info">
         <div class="title">储值信息</div>
-        <div class="account-info" 
-            v-for="(item,i) in accountList" 
+        <div class="account-info"
+            v-for="(item,i) in accountList"
             :key="i">
             <div class="account-detail">
-                <div class="img-area"></div>
+                <div class="img-area" >
+                    <img v-if="item.id === '1'" src="../../../assets/images/icon-default-account.svg" alt="">
+                    <img v-else src="../../../assets/images/icon-common-account.svg" alt="">
+                </div>
                 <div class="fund-list">
                     <div class="account-name">{{item.accountName}}储值总额</div>
                     <div class="account-money">126,231</div>
@@ -111,6 +114,10 @@
                     @include block_outline(78px);
                     padding: 30px 20px;
                     float: left;
+
+                    img{
+                        @include block_outline(38px,38px,false);
+                    }
                 }
 
                 .fund-list{
