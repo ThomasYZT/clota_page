@@ -111,6 +111,7 @@
                                 if(!localStorage.getItem('manageOrgs')){
                                     localStorage.setItem('manageOrgs',JSON.stringify(res.data.manageOrgs[0]));
                                 }
+                                this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
                                 this.setOrgIndex();
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
                                     this.$router.push({

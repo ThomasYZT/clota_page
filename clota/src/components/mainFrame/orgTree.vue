@@ -12,7 +12,8 @@
                 node-key="id"
                 ref="tree"
                 :filter-node-method="filterNode"
-                :data="treeData">
+                :data="treeData"
+                @node-click="orgChose">
             </el-tree>
         </div>
     </div>
@@ -64,6 +65,15 @@
              */
             getChoseOrg (){
                 return localStorage.getItem('manageOrgs') ? JSON.parse(localStorage.getItem('manageOrgs')) : {};
+            },
+            /**
+             * 更改组织结构
+             * @param data
+             * @param node
+             */
+            orgChose (data,node){
+                this.$store.commit('updateManageOrgs',data);
+                this.$emit('hide-tree');
             }
         },
         created () {

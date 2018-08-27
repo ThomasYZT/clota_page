@@ -66,7 +66,9 @@ export default new Vuex.Store({
         //当前正在加载中的接口个数
         promisings : 0,
         //右侧操作栏是否显示
-        operateLine : false
+        operateLine : false,
+        //组织信息
+        manageOrgs : {}
     },
     getters: {
         //左侧菜单是否收起
@@ -102,6 +104,10 @@ export default new Vuex.Store({
         //右侧操作栏是否显示
         operateLine : state => {
             return state.operateLine;
+        },
+        //当前选择的组织信息
+        manageOrgs : state => {
+            return state.manageOrgs;
         }
     },
     mutations: {
@@ -151,6 +157,11 @@ export default new Vuex.Store({
                     state.isLoading = false;
                 },200);
             }
+        },
+        //更改组织机构
+        updateManageOrgs(state,org) {
+            state.manageOrgs = org;
+            localStorage.setItem('manageOrgs',JSON.stringify(org));
         }
     },
     actions: {

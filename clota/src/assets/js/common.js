@@ -45,7 +45,7 @@ export default {
      * 获取组织树列表
      */
     getOrgTree () {
-        return sessionStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).manageOrgs : [];
+        return sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).manageOrgs : [];
     },
 
     /**

@@ -63,11 +63,11 @@
                 <!--</li>-->
             </ul>
             <div class="org-info" @click="toggleOrgStatus" v-clickoutside="closeTree">
-                <span class="org-name">{{orgName}}</span>
+                <span class="org-name">{{manageOrgs.orgName}}</span>
                 <span class="iconfont icon-down"></span>
             </div>
             <transition name="fade">
-                <org-tree v-if="orgTreeShow">
+                <org-tree v-if="orgTreeShow" @hide-tree="orgTreeShow = false">
                 </org-tree>
             </transition>
             <!--<div class="lang-change">-->
@@ -177,7 +177,8 @@
                 menuIsPackUp: 'menuIsPackUp',
                 lang: 'lang',
                 routerInfo: 'routerInfo',
-                operateLine : 'operateLine'
+                operateLine : 'operateLine',
+                manageOrgs : 'manageOrgs'
             }),
             //当前激活的菜单
             activeMenu() {
