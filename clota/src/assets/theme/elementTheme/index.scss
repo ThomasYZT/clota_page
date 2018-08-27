@@ -1,9 +1,4 @@
-
-
-/* 自定义样式（修改element）
--------------------------- */
 @import "./common/var";
-@import "./table";
 
 
 /* 如下，为按需引入的组件样式
@@ -12,3 +7,8 @@
 @import "~element-ui/packages/theme-chalk/src/table.scss";
 @import "~element-ui/packages/theme-chalk/src/table-column.scss";
 @import "~element-ui/packages/theme-chalk/src/pagination.scss";
+
+
+/* 自定义样式（修改element）
+-------------------------- */
+@import "./table";

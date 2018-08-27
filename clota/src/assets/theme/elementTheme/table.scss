@@ -3,20 +3,24 @@
 
 @include b(table) {
 
-    thead {
-        color: $--table-header-color;   //
-        font-weight: 500;
-    }
-
     th {
-        white-space: nowrap;
-        overflow: hidden;
-        user-select: none;
-        text-align: left;
-        background-color: $--table-header-background;   //
-
         > .cell {
             font-weight: normal;
+        }
+    }
+
+    .cell {
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 22px;
+    }
+
+    // table--border
+    @include m(border) {
+        th, td {
+            &:first-child .cell {
+                padding-left: 36px;
+            }
         }
     }
 
@@ -31,6 +35,12 @@
             }
         }
 
+    }
+
+    @include m(enable-row-hover) {
+        .el-table__body tr:hover > td {
+            background-color: $--table-row-hover-background;
+        }
     }
 
 }
