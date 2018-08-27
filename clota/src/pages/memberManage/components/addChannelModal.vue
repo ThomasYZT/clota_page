@@ -40,6 +40,17 @@
     export default {
         components: {},
         data () {
+
+            const validateMethod = {
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+            };
+
             return {
                 visible: false,
                 //标题
@@ -53,6 +64,10 @@
                 ruleValidate: {
                     channelName: [
                         { required: true, message: '渠道名称不能为空', trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    ],
+                    remark: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 }
             }

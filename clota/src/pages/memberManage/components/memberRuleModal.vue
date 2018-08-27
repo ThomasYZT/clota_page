@@ -11,10 +11,11 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :label-width="170">
                 <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
-                    <!--:prop="'item.'+index+'highestGrowthValue'"-->
-                    <!--:rules="{validator: isNumber, trigger: 'blur'}"-->
                     <Form-item :label="item.levelDesc+'成长值范围：'"
-                               :key="index">
+                               :key="index"
+                               :prop="'item.'+index+'highestGrowthValue'"
+                               :rules="[{ validator: emoji, trigger: 'blur' },
+                               { validator: validateNumber, trigger: 'blur' },]">
                         <Input v-model.trim="item.lowerGrowthValue"
                                placeholder="请输入"
                                :maxlength="10"
@@ -41,20 +42,31 @@
 <script>
 
     import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         components: {},
         data () {
             return {
-                //校验数字
-                isNumber : (rule, value, callback) => {
-                    if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
-                        callback( new Error( '当前输入只能是非负整数') );
+
+                //校验正整数
+                validateNumber : (rule,value,callback) => {
+                    common.validateInteger(value).then(() => {
+                        callback();
+                    }).catch(err => {
+                        callback(err);
+                    });
+                },
+
+                emoji : (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
                     } else {
                         callback();
                     }
                 },
+
                 visible: false,
                 //表单数据
                 formData: {

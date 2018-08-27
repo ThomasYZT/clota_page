@@ -322,8 +322,10 @@
                                 //处理数据
                                 let params = {
                                     passwdForRechargeAccount: res.data.passwdForRechargeAccount || 'true',
-                                    scoreGrowthFromCharging: res.data.scoreGrowthFromCharging ? JSON.parse(res.data.scoreGrowthFromCharging) : '',
-                                    scoreGrowthEffModeWhileCharging: res.data.scoreGrowthEffModeWhileCharging ? JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : '',
+                                    scoreGrowthFromCharging: res.data.scoreGrowthFromCharging ?
+                                        JSON.parse(res.data.scoreGrowthFromCharging) : this.settingData.scoreGrowthFromCharging,
+                                    scoreGrowthEffModeWhileCharging: res.data.scoreGrowthEffModeWhileCharging ?
+                                        JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
                                     commissionOfTransfermation: res.data.commissionOfTransfermation,
                                     donateWhileRecharge: res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 };

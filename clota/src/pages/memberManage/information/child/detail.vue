@@ -60,7 +60,7 @@
                         <div class="form-item-wrap"><label>会员编号：</label><span>
                             {{detail.memberCardVos[0].cardCode || '-'}}</span></div>
                         <div class="form-item-wrap"><label>发卡单位：</label><span>
-                            {{detail.memberCardVos[0].orgId || '-'}}</span></div>
+                            {{detail.memberCardVos[0].orgName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>注册渠道：</label><span>
                             {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
                         <div class="form-item-wrap"><label>会员类别：</label><span>
@@ -147,48 +147,69 @@
                 <div class="content-info card-temp">
                     <div class="title">子母卡信息</div>
                     <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true'">
-                        <el-table
-                            :data="motherCard"
-                            :border="true"
+                        <table-com
+                            :auto-height="true"
+                            :table-com-min-height="300"
+                            :ofsetHeight="170"
+                            :column-data="motherTableColumn"
+                            :table-data="motherCard"
                             :span-method="objectSpanMethod"
-                            style="width: 100%">
+                            :border="true">
                             <el-table-column
-                                prop=""
-                                label="当前会员卡身份"
-                                width="160">
-                                <template slot-scope="scope">母卡</template>
+                                slot="column0"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scoped">母卡</template>
                             </el-table-column>
                             <el-table-column
-                                prop=""
-                                label="母卡信息"
-                                width="260">
-                                <template slot-scope="scope">
-                                    {{ scope.row.custName ? scope.row.custName+','+scope.row.idCardNumber : '-' }}
+                                slot="column3"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scoped">
+                                    <span>{ {{ scoped.row.custName ? scoped.row.custName+','+scoped.row.idCardNumber : '-' }}</span>
                                 </template>
                             </el-table-column>
-                        </el-table>
+                        </table-com>
                     </div>
-
                     <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false'">
-                        <el-table
-                            :data="sonCard"
-                            :border="true"
-                            style="width: 100%">
+                        <table-com
+                            :auto-height="true"
+                            :table-com-min-height="300"
+                            :ofsetHeight="170"
+                            :column-data="sonTableColumn"
+                            :table-data="sonCard"
+                            :border="true">
                             <el-table-column
-                                prop=""
-                                label="当前会员卡身份"
-                                width="160">
-                                <template slot-scope="scope">子卡</template>
+                                slot="column0"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scoped">母卡</template>
                             </el-table-column>
                             <el-table-column
-                                prop=""
-                                label="子卡信息"
-                                width="260">
-                                <template slot-scope="scope">
-                                    {{scope.row.custName ? scope.row.custName+','+scope.row.idCardNumber : '-'}}
+                                slot="column3"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scoped">
+                                    <span>{ {{ scoped.row.custName ? scoped.row.custName+','+scoped.row.idCardNumber : '-' }}</span>
                                 </template>
                             </el-table-column>
-                        </el-table>
+                        </table-com>
                     </div>
                 </div>
 
@@ -211,11 +232,6 @@
                 </div>
 
             </div>
-
-            <!--<div class="btn-wrap">-->
-                <!--<Button type="primary">保存</Button>-->
-                <!--<Button type="ghost">取消</Button>-->
-            <!--</div>-->
 
         </div>
 
@@ -278,6 +294,7 @@
     import useRangeModal  from '../components/useRangeModal.vue';
     import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue';
     import moreCard  from '../components/moreCard.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { genderEnum } from '@/assets/js/constVariable';
 
@@ -293,6 +310,7 @@
             useRangeModal,
             viewMoreCouponModal,
             moreCard,
+            tableCom,
         },
         data () {
             return {
@@ -317,7 +335,31 @@
                 childOrMotherCard: {},
                 //子母卡表格数据
                 motherCard: [],
+                motherTableColumn: [
+                    {
+                        title: '当前会员卡身份',
+                        minWidth: 260,
+                        field: ''
+                    },
+                    {
+                        title: '母卡信息',
+                        minWidth: 260,
+                        field: ''
+                    },
+                ],
                 sonCard: [],
+                sonTableColumn: [
+                    {
+                        title: '当前会员卡身份',
+                        minWidth: 260,
+                        field: ''
+                    },
+                    {
+                        title: '子卡信息',
+                        minWidth: 260,
+                        field: ''
+                    },
+                ],
                 //修改原因
                 reasonData: [],
                 //储值账户信息--用于修改储值余额修改
@@ -610,7 +652,7 @@
         .info-detail{
 
             .content-wrap{
-                padding: 30px 50px;
+                padding: 25px 50px;
 
                 .content-info{
                     margin-bottom: 30px;
@@ -696,10 +738,13 @@
 
                                 &.form-show{
                                     font-size: $font_size_14px;
+                                    margin-top: 5px;
                                     span{
+                                        font-size: $font_size_14px;
                                         margin-right: 40px;
                                     }
                                     label{
+                                        font-size: $font_size_14px;
                                         color: $color_333;
                                     }
                                 }
@@ -711,7 +756,7 @@
 
                     .form-wrap{
                         width: 100%;
-                        margin-top: 10px;
+                        margin-top: 15px;
                         @include clearfix();
 
                         .form-item-wrap{

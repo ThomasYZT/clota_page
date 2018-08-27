@@ -21,8 +21,7 @@
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
-                        :value="item.name">
-                    {{item.desc}}
+                        :value="item.name">{{item.desc}}
                 </Option>
             </Select>
         </div>
@@ -39,12 +38,18 @@
 
         <div class="table-wrap">
             <table-com
-                ref="multipleTable"
-                :table-data="tableData"
-                :table-height="tableHeight"
+                :auto-height="true"
+                :table-com-min-height="300"
+                :ofsetHeight="170"
+                :show-pagination="true"
                 :column-data="infoListHead"
+                :table-data="tableData"
+                :total-count="total"
+                :page-no-d.sync="queryParams.pageNo"
+                :page-size-d.sync="queryParams.pageSize"
                 :border="true"
                 :row-click="true"
+                @query-data="queryList"
                 @row-click="viewDetail">
                 <el-table-column
                     slot="column0"
@@ -68,7 +73,7 @@
                     :min-width="row.minWidth"
                     slot-scope="row">
                     <template slot-scope="scoped">
-                       <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
+                        <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -84,7 +89,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column9"
+                    slot="column8"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -96,7 +101,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column10"
+                    slot="column9"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -105,25 +110,13 @@
                     fixed="right"
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <div class="operation">
-                            <span class="span-blue" @click="modifyData($event,scoped.row)">修改</span>
-                            <span @click="deleteMemberInfo($event,scoped.row)">删除</span>
-                        </div>
+                        <ul class="operate-list">
+                            <li class="blue-label" @click="modifyData($event,scoped.row)">修改</li>
+                            <li class="red-label" @click="deleteMemberInfo($event,scoped.row)">删除</li>
+                        </ul>
                     </template>
                 </el-table-column>
             </table-com>
-        </div>
-
-        <div class="page-wrap" v-if="tableData.length > 0">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="pageNo"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="parseInt(total)">
-            </el-pagination>
         </div>
 
     </div>
@@ -131,14 +124,12 @@
 
 <script>
 
-    import ajax from '@/api/index'
-    import tableCom from '@/pages/memberManage/components/tableCom';
-    import tableMixins from '@/mixins/tableMixins';
+    import ajax from '@/api/index';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {infoListHead} from './infoListConfig';
     import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
-        mixins : [tableMixins],
         components: { tableCom },
         data () {
             return {
@@ -149,6 +140,8 @@
                     channelId: 'null',
                     vipStatus: 'null',
                     cardStatus: 'null',
+                    pageNo: 1,
+                    pageSize: 10,
                 },
                 //枚举数据
                 enumData: {
@@ -169,13 +162,9 @@
                 tableData : [],
                 //列表总条数
                 total: 0,
-                //列表多选list
-                multipleSelection: [],
             }
         },
         created(){
-            //清空选择数据
-            this.multipleSelection = [];
             //查询列表
             this.queryList();
             this.getLevelList();
@@ -224,107 +213,20 @@
                 this.$router.push({ name: 'addMember', query: { type: 'modify', info: data }});
             },
 
-            //表格勾选回调
-            handleSelectionChange(val) {
-                this.multipleSelection[this.pageNo] = val;
-            },
-
             //查询列表(查询表格取统一的方法名)
             queryList () {
-                /*var list = [
-                    {
-                        age: null,
-                        alipayAcct: "alipay",
-                        birthDay: "1994-01-01 00:00:00",
-                        cardCode: "1031487745190662145",
-                        cardId: 1031487745190662100,
-                        cardStatus: "active",
-                        certificationType: 1,
-                        cityCode: "001001",
-                        companyId: null,
-                        createUser: 1,
-                        createdTime: "2018-08-20 18:26:57",
-                        custName: "李四",
-                        emailAddr: "111@qq.com",
-                        gender: "male",
-                        hobby: "吃",
-                        homeAddr: "长沙",
-                        id: 1031487743789764600,
-                        idCardNumber: "1132123141342342",
-                        memberCardVos: [
-                            {
-                                cardCode: "1031487745190662145",
-                                channelId: null,
-                                childCard: null,
-                                companyId: 1,
-                                createUser: 1,
-                                createdTime: "2018-08-20 18:26:57",
-                                effDate: "2018-08-20 18:26:57",
-                                effectiveSet: "perpetual",
-                                effectiveTimes: null,
-                                expDate: "2024-05-18 18:26:57",
-                                id: 1031487745190662100,
-                                isDeleted: "false",
-                                isMotherCard: null,
-                                lastActiveDate: null,
-                                levelId: null,
-                                memberAccountVos: [],
-                                memberCardCouponModels: null,
-                                memberDiscountOfMemberModels: null,
-                                memberId: 1031487743789764600,
-                                motherCard: null,
-                                orgId: 101,
-                                parentId: null,
-                                passwd: null,
-                                staffTypeId: null,
-                                status: "active",
-                                tpCardNo: "",
-                                tpNo: "",
-                                updateUser: null,
-                                createdTime: "2018-08-20 18:26:57",
-                            }
-                        ],
-                        moneyBalance: null,
-                        phoneNum: "15548752104",
-                        pointBalance: null,
-                        portrait: null,
-                        qq: "12313",
-                        stateCode: "001",
-                        status: "active",
-                        updateUser: null,
-                        createdTime: "2018-08-20 18:26:57",
-                        wechatAcct: "wechat",
-                    }
-                ];
-                this.multipleSelection[1] = list;
-                this.tableData = list;
-                this.total = 1;
-                this.setTableHeight();*/
                 ajax.post('queryMemberPage', {
                     keyWord: this.queryParams.keyWord,
-                    levelId: this.queryParams.levelId == 'null' ? null : this.queryParams.levelId,
-                    channelId: this.queryParams.channelId == 'null' ? null : this.queryParams.channelId,
-                    vipStatus: this.queryParams.vipStatus == 'null' ? null : this.queryParams.vipStatus,
-                    cardStatus: this.queryParams.cardStatus == 'null' ? null : this.queryParams.cardStatus,
-                    pageNo: this.pageNo,
-                    pageSize: this.pageSize,
+                    levelId: this.queryParams.levelId == 'null' ? "" : this.queryParams.levelId,
+                    channelId: this.queryParams.channelId == 'null' ? "" : this.queryParams.channelId,
+                    vipStatus: this.queryParams.vipStatus == 'null' ? "" : this.queryParams.vipStatus,
+                    cardStatus: this.queryParams.cardStatus == 'null' ? "" : this.queryParams.cardStatus,
+                    pageNo: this.queryParams.pageNo,
+                    pageSize: this.queryParams.pageSize,
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
-                        this.setTableHeight();
-                        this.$nextTick( () => {
-//                            console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
-                            this.multipleSelection.forEach(item => {
-                                if(item && item.length > 0){
-                                    item.forEach(row => {
-//                                        console.log(row)
-//                                        console.log(this.$refs.multipleTable.$children[0].setCurrentRow)
-                                        this.$refs.multipleTable.$children[0].setCurrentRow(row);
-                                    })
-                                }
-                            })
-                        })
                     } else {
                         this.$Message.warning('queryMemberPage 查询失败！');
                     }

@@ -9,7 +9,9 @@
 
             <div class="btn-wrap">
                 <Button type="primary" @click="showAddMemberModal">+ 新增会员级别</Button>
-                <Button type="primary" @click="showRuleModal">晋级设置</Button>
+                <Button type="primary"
+                        :disabled="tableData.length > 0 ? false : true"
+                        @click="showRuleModal">晋级设置</Button>
             </div>
             <div class="table-wrap">
                 <table-com

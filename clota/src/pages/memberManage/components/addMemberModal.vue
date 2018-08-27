@@ -66,20 +66,32 @@
 <script>
 
     import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         components: {},
         data () {
-            const validMethod = {
-                isNumber : (rule, value, callback) => {
-                    if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
-                        callback( new Error( '当前输入只能是非负整数') );
+
+            const validateMethod = {
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
                     } else {
                         callback();
                     }
                 },
             };
+
+            //校验正整数
+            const validateNumber = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
             return {
                 visible: false,
                 //表单数据
@@ -93,18 +105,20 @@
                 ruleValidate: {
                     levelNum: [
                         { required: true, message: '会员等级不能为空', trigger: 'blur' },
-                        { validator: validMethod.isNumber, trigger: 'blur' }
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
                     levelDesc: [
                         { required: true, message: '会员级别名称不能为空', trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     lowerGrowthValue: [
                         { required: true, message: '会员成长值不能为空', trigger: 'blur' },
-                        { validator: validMethod.isNumber, trigger: 'blur' }
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
                     highestGrowthValue: [
                         { required: true, message: '会员成长值不能为空', trigger: 'blur' },
-                        { validator: validMethod.isNumber, trigger: 'blur' }
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
                 }
             }

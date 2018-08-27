@@ -42,11 +42,6 @@ export const infoListHead = [
         field: 'moneyBalance'
     },
     {
-        title: '虚拟账户',
-        minWidth: 120,
-        field: 'rate'
-    },
-    {
         title: '注册时间',
         minWidth: 120,
         field: 'updatedTime'

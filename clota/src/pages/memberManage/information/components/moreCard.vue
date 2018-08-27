@@ -12,35 +12,14 @@
         </div>
 
         <div class="table-wrap">
-            <el-table
-                :data="tableData.data"
-                :border="false"
-                style="width: 100%">
-                <el-table-column
-                    prop="id"
-                    label="会员编码"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="卡券名称"
-                    width="220">
-                </el-table-column>
-                <el-table-column
-                    prop="content"
-                    label="使用条件">
-                </el-table-column>
-                <el-table-column
-                    prop="type"
-                    label="类别"
-                    width="100">
-                </el-table-column>
-                <el-table-column
-                    prop="time"
-                    label="有效期"
-                    width="200">
-                </el-table-column>
-            </el-table>
+            <table-com
+                :auto-height="true"
+                :table-com-min-height="300"
+                :ofsetHeight="170"
+                :column-data="columnData"
+                :table-data="tableData.data"
+                :border="true">
+            </table-com>
         </div>
 
     </div>
@@ -48,11 +27,44 @@
 
 <script>
 
+    import tableCom from '@/components/tableCom/tableCom.vue';
+
     export default {
         props: ['status','table-data','type'],
-        components: {},
+        components: {
+            tableCom,
+        },
         data () {
-            return {}
+            return {
+                //表头配置
+                columnData: [
+                    {
+                        title: '会员编码',
+                        minWidth: 120,
+                        field: 'id'
+                    },
+                    {
+                        title: '卡券名称',
+                        minWidth: 220,
+                        field: 'name'
+                    },
+                    {
+                        title: '使用条件',
+                        minWidth: 130,
+                        field: 'content'
+                    },
+                    {
+                        title: '类别',
+                        minWidth: 100,
+                        field: 'type'
+                    },
+                    {
+                        title: '有效期',
+                        minWidth: 200,
+                        field: 'time'
+                    },
+                ],
+            }
         },
         methods: {
 
