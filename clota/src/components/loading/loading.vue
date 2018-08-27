@@ -20,6 +20,7 @@
     .loader{
         @include absolute_pos(absolute,0,0,0,0);
         background: rgba($color_fff,0.6);
+        z-index: 9999;
 
         .container{
             @include center_center();
