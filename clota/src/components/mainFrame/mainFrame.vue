@@ -14,6 +14,9 @@
                     <loading v-if="isLoading">
                     </loading>
                 </transition>
+                <!--设置信息-->
+                <settting>
+                </settting>
             </div>
         </div>
     </div>
@@ -24,12 +27,14 @@
     import frameSidebar from './frameSidebar';
     import {mapGetters} from 'vuex';
     import loading from '../loading/loading';
+    import settting from './setting';
 
     export default {
         components: {
             frameHeader,
             frameSidebar,
-            loading
+            loading,
+            settting
         },
         data() {
             return {}

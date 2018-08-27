@@ -40,16 +40,14 @@ import Dropdown from 'element-ui/lib/dropdown';
 import DropdownMenu from 'element-ui/lib/dropdown-menu';
 import DropdownItem from 'element-ui/lib/dropdown-item';
 import scrollbar from 'element-ui/lib/scrollbar';
+import elTree from 'element-ui/lib/tree';
 
 
 // // 按需引入 Echarts 图表
-// require('echarts/lib/chart/bar');
 require('echarts/lib/chart/pie');
 require('echarts/lib/chart/line');
-// require('echarts/lib/component/title');
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/legend');
-// require('echarts/lib/component/legendScroll');
 
 
 // 引入公用样式，指令及方法等
@@ -69,6 +67,7 @@ plugin.install = function (Vue, options) {
     Vue.use(Dropdown);
     Vue.use(DropdownMenu);
     Vue.use(DropdownItem);
+    Vue.use(elTree);
 
     //iview按需引入
     Vue.component('Button',Button);

@@ -117,6 +117,7 @@ module.exports = {
                     'element-ui/lib/dropdown.js',
                     'element-ui/lib/dropdown-menu.js',
                     'element-ui/lib/dropdown-item.js',
+                    'element-ui/lib/tree',
                 ]
             },
             plugins: [

@@ -63,6 +63,8 @@
                 this.$router.push({
                     name: name
                 });
+                //解决点击菜单组织树不收起来的问题
+                this.$el.click();
             }
         },
         computed: {

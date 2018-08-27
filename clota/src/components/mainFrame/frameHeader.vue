@@ -32,36 +32,53 @@
                 <i class="ivu-icon ivu-icon-ios-arrow-forward"></i>
             </div>
         </div>
-        <div class="menu-li">
-            <Menu mode="horizontal" @on-select="menuChange">>
-                <Submenu name="1">
-                    <template slot="title">
-                        <div class="avator">
-                            <img class="avator-class" src="../../assets/images/icon-avator.png" alt="">
-                        </div>
-                        Admin
-                    </template>
-                    <MenuItem v-for="(item,i) in accountOperations"
-                              :name="item.name"
-                              :key="i">{{item.label}}</MenuItem>
-                </Submenu>
-            </Menu>
-        </div>
-        <ul class="icon-li">
-            <li class="icon">
-                <span class="iconfont icon-notification-w"></span>
-            </li>
-            <li class="icon">
-                <span class="iconfont icon-help"></span>
-            </li>
-            <li class="icon">
-                <span class="iconfont icon-theme"></span>
-            </li>
-        </ul>
-        <div class="lang-change">
-            <span class="lang" :class="{'active' : lang === 'zh-CN'}" @click="setLang('zh-CN')">中文</span>
-            <span class="xg">/</span>
-            <span class="lang" :class="{'active' : lang === 'en'}" @click="setLang('en')">En</span>
+        <div class="menu-area">
+            <!--<div class="menu-li">-->
+            <!--<Menu mode="horizontal" @on-select="menuChange">>-->
+            <!--<Submenu name="1">-->
+            <!--<template slot="title">-->
+            <!--<div class="avator">-->
+            <!--<img class="avator-class" src="../../assets/images/icon-avator.png" alt="">-->
+            <!--</div>-->
+            <!--Admin-->
+            <!--</template>-->
+            <!--<MenuItem v-for="(item,i) in accountOperations"-->
+            <!--:name="item.name"-->
+            <!--:key="i">{{item.label}}</MenuItem>-->
+            <!--</Submenu>-->
+            <!--</Menu>-->
+            <!--</div>-->
+
+            <ul class="icon-li">
+                <li class="icon">
+                    <span class="iconfont icon-notification-w"></span>
+                </li>
+                <li class="icon">
+                    <span class="iconfont icon-gengduo"
+                          @click="toggleOperateLine"
+                          :class="{'is-reverse' : operateLine}"></span>
+                </li>
+                <!--<li class="icon">-->
+                <!--<span class="iconfont icon-theme"></span>-->
+                <!--</li>-->
+            </ul>
+            <div class="org-info" @click="toggleOrgStatus" v-clickoutside="closeTree">
+                <span class="org-name">广州长隆欢乐世界</span>
+                <span class="iconfont icon-down"></span>
+            </div>
+            <transition name="fade">
+                <org-tree v-if="orgTreeShow">
+                </org-tree>
+            </transition>
+            <!--<div class="lang-change">-->
+            <!--<span class="lang"-->
+            <!--:class="{'active' : lang === 'zh-CN'}"-->
+            <!--@click="setLang('zh-CN')">中文</span>-->
+            <!--<span class="xg">/</span>-->
+            <!--<span class="lang"-->
+            <!--:class="{'active' : lang === 'en'}"-->
+            <!--@click="setLang('en')">En</span>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -70,8 +87,12 @@
     import {mapGetters} from 'vuex'
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
+    import orgTree from './orgTree';
 
     export default {
+        components : {
+            orgTree
+        },
         data() {
             return {
                 //账户操作列表
@@ -80,7 +101,9 @@
                         name : 'logout',
                         label : this.$t('logout')
                     }
-                ]
+                ],
+                //是否显示集团组织树
+                orgTreeShow : false
             }
         },
         methods: {
@@ -88,7 +111,7 @@
              * 收起或展开左侧菜单
              */
             shrinkMenu() {
-                this.$store.commit('updateMenuIsPackUp', !this.menuIsPackUp);
+                this.$store.commit('updateMenuIsPackUp', true);
             },
             /**
              * 设置语言
@@ -122,13 +145,33 @@
              */
             logOut () {
                 common.loginOut();
+            },
+            /**
+             * 切换组织树的显示状态
+             */
+            toggleOrgStatus () {
+                this.orgTreeShow = !this.orgTreeShow;
+            },
+            /**
+             * 关闭组织树
+             */
+            closeTree () {
+                this.orgTreeShow = false;
+            },
+            /**
+             * 切换右侧操作栏状态
+             */
+            toggleOperateLine () {
+                this.$store.commit('changeOperateLine',!this.operateLine);
             }
+
         },
         computed: {
             ...mapGetters({
                 menuIsPackUp: 'menuIsPackUp',
                 lang: 'lang',
-                routerInfo: 'routerInfo'
+                routerInfo: 'routerInfo',
+                operateLine : 'operateLine'
             }),
             //当前激活的菜单
             activeMenu() {
@@ -177,6 +220,8 @@
     .frame-header {
         display: flex;
         @include block_outline($height: 60px);
+        z-index: 99;
+        position: relative;
 
         .company-log {
             @include block_outline($width: 200px, $height: 60px);
@@ -292,85 +337,118 @@
             }
         }
 
-        .menu-li {
-            position: relative;
-            @include block_outline(auto, 100%);
+        .menu-area{
+            @include block_outline(360px);
 
-            .avator {
-                @include block_outline(30px, 30px);
-                @include absolute_pos(absolute, 17px, $left: -30px);
-                border-radius: 30px;
+            .org-info{
+                @include block_outline(150px,20px);
+                margin: 18px 0 0 0;
+                float: right;
+                color: $color_fff;
+                font-size: $font_size_14px;
+                cursor: pointer;
 
-                .avator-class {
-                    @include block_outline($is_block: false);
+                .org-name{
+                    display: inline-block;
+                    max-width: 130px;
+                    @include overflow_tip();
+                    vertical-align: middle;
+                }
+
+                .icon-down{
+                    vertical-align: middle;
+                }
+            }
+
+            .menu-li {
+                position: relative;
+                @include block_outline(auto, 100%);
+
+                .avator {
+                    @include block_outline(30px, 30px);
+                    @include absolute_pos(absolute, 17px, $left: -30px);
                     border-radius: 30px;
+
+                    .avator-class {
+                        @include block_outline($is_block: false);
+                        border-radius: 30px;
+                    }
+                }
+
+                /deep/ .ivu-menu {
+                    height: 100%;
+                    background: transparent;
+
+                    .ivu-menu-submenu {
+                        color: $color_fff;
+                    }
+
+                    .ivu-menu-submenu-title {
+                        margin-top: 3px;
+                        margin-left: 10px;
+                    }
+                }
+
+                /deep/ .ivu-menu-horizontal.ivu-menu-light:after {
+                    display: none;
                 }
             }
 
-            /deep/ .ivu-menu {
-                height: 100%;
-                background: transparent;
+            .icon-li {
+                float: right;
+                overflow: hidden;
+                padding: 18px 20px 23px 0;
+                display: inline-block;
+                @include block_outline(auto, 100%);
 
-                .ivu-menu-submenu {
-                    color: $color_fff;
+                .icon {
+                    float: left;
+                    @include block_outline(18px, 16px);
+                    margin: 0 9px;
+                    cursor: pointer;
+
+                    &:nth-of-type(1) {
+                        margin-left: 0;
+                    }
+
+                    .iconfont {
+                        display: inline-block;
+                        color: $color_fff;
+                        transition: all 0.5s;
+                    }
                 }
 
-                .ivu-menu-submenu-title {
-                    margin-top: 3px;
-                    margin-left: 10px;
+                .is-reverse{
+                    transform: rotate(90deg);
+                    transition: all 0.5s;
                 }
             }
 
-            /deep/ .ivu-menu-horizontal.ivu-menu-light:after {
-                display: none;
-            }
-        }
+            .lang-change {
+                position: relative;
+                @include block_outline($width: 118px);
+                padding: 18px 20px 20px 20px;
+                font-size: $font_size_16px;
+                color: $color_lang_color;
+                cursor: pointer;
 
-        .icon-li {
-            overflow: hidden;
-            padding: 18px 20px 23px 0;
-            display: inline-block;
-            @include block_outline(auto, 100%);
-
-            .icon {
-                float: left;
-                @include block_outline(18px, 16px);
-                margin: 0 9px;
-
-                &:nth-of-type(1) {
-                    margin-left: 0;
+                &::before {
+                    display: block;
+                    content: '';
+                    @include block_outline(2px, 20px);
+                    @include absolute_pos(absolute, 20px, auto, auto, 0);
+                    background: $color_669ad5;
                 }
 
-                .iconfont {
-                    color: $color_fff;
+                .xg {
+                    padding: 0 3px;
                 }
-            }
-        }
 
-        .lang-change {
-            position: relative;
-            @include block_outline($width: 118px);
-            padding: 18px 20px 20px 20px;
-            font-size: $font_size_16px;
-            color: $color_lang_color;
-            cursor: pointer;
+                .lang {
 
-            &::before {
-                display: block;
-                content: '';
-                @include block_outline(2px, 20px);
-                @include absolute_pos(absolute, 20px, auto, auto, 0);
-                background: $color_669ad5;
-            }
-
-            .xg {
-                padding: 0 3px;
-            }
-
-            .lang {
-
-                &.active {
-                    color: $color_fff;
+                    &.active {
+                        color: $color_fff;
+                    }
                 }
             }
         }

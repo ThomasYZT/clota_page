@@ -42,11 +42,10 @@ export default {
     },
 
     /**
-     * 无模块或菜单功能权限时默认跳转页面
+     * 获取组织树列表
      */
-    goToDefaultPage() {
-
-
+    getOrgTree () {
+        return sessionStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).manageOrgs : [];
     },
 
     /**

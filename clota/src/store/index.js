@@ -64,7 +64,9 @@ export default new Vuex.Store({
         //页面是否显示加载中
         isLoading : false,
         //当前正在加载中的接口个数
-        promisings : 0
+        promisings : 0,
+        //右侧操作栏是否显示
+        operateLine : false
     },
     getters: {
         //左侧菜单是否收起
@@ -96,6 +98,10 @@ export default new Vuex.Store({
         //是否显示页面加载中
         isLoading : state => {
             return state.isLoading;
+        },
+        //右侧操作栏是否显示
+        operateLine : state => {
+            return state.operateLine;
         }
     },
     mutations: {
@@ -110,6 +116,10 @@ export default new Vuex.Store({
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
             i18n.locale = state.lang = lang;
+        },
+        //改变操作栏状态
+        changeOperateLine (state,status) {
+            state.operateLine = status;
         },
         //设置用户权限
         updatePermissionInfo(state, data) {
