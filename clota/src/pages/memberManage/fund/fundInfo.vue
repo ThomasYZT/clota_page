@@ -13,7 +13,7 @@
                 </div>
                 <div class="fund-list">
                     <div class="account-name">{{item.accountName}}储值总额</div>
-                    <div class="account-money">126,231</div>
+                    <div class="account-money">{{item.amount | moneyFilter}}</div>
                 </div>
             </div>
             <ul class="account-operate">
@@ -38,13 +38,13 @@
              * 获取所欲的账户信息
              */
             queryMemberAccountDefine () {
-                ajax.post('queryMemberAccountDefine',{
+                ajax.post('queryChargingAccountInfo',{
                     accountType: 'charging',
                     pageNo: 1,
                     pageSize: 99999,
                 }).then(res => {
                    if(res.success){
-                        this.accountList = res.data.data ? res.data.data : [];
+                        this.accountList = res.data ? res.data : [];
                    }else{
                        this.accountList = [];
                    }

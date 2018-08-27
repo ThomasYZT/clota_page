@@ -3,7 +3,7 @@
 export const columnData = [
     {
         title: '交易编号',
-        minWidth: 200,
+        width: 220,
         field: 'id'
     },
     {

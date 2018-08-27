@@ -132,6 +132,8 @@ export default {
     'transfer' : '/members/orgAccount/transfer',
     //获取资金交易明细
     'queryOrgAccountChange' : '/member/memberAccount/queryOrgAccountChange',
+    //储值信息
+    'queryChargingAccountInfo' : '/member/memberAccount/queryChargingAccountInfo',
 
     /***********************************首页***********************************/
     //获取会员消费笔数
