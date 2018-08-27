@@ -135,7 +135,7 @@
                     keyWord: '',
                     levelId: 'all',
                     channelId: 'all',
-                    cardStatus: 'all',
+                    cardStatus: 'null',
                 },
                 //枚举数据
                 enumData: {
@@ -209,7 +209,7 @@
                 ajax.post('queryMemberPage',{
                     levelId : this.queryParams.levelId !== 'all' ? this.queryParams.levelId : '',
                     channelId : this.queryParams.channelId !=='all' ? this.queryParams.channelId : '',
-                    cardStatus : this.queryParams.cardStatus !== 'all' ? this.queryParams.cardStatus : '',
+                    cardStatus : this.queryParams.cardStatus !== 'null' ? this.queryParams.cardStatus : '',
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     keyWord : this.queryParams.keyWord,

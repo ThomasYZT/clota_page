@@ -37,7 +37,7 @@ export const vipStatusEnum = [
 
 //会员状态
 export const cardStatusEnum = [
-    { name: 'all', desc: '全部会员状态' },
+    { name: 'null', desc: '全部会员状态' },
     { name: 'frozen', desc: '已冻结' },
     { name: 'active', desc: '正常使用' },
 ];
