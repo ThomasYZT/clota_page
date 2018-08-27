@@ -3,17 +3,17 @@
 export const infoListHead = [
     {
         title: '会员编码',
-        minWidth: 250,
+        minWidth: 280,
         field: 'cardCode'
     },
     {
         title: '会员姓名',
-        minWidth: 100,
+        minWidth: 160,
         field: 'custName'
     },
     {
         title: '手机号',
-        minWidth: 130,
+        minWidth: 150,
         field: 'phoneNum'
     },
     {

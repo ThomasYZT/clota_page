@@ -35,9 +35,9 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap double-input">
                     <Form-item label="增加储值金额：" prop="actAmount">
-                        <Input v-model.trim="formData.actAmount" placeholder="请输入" :maxlength="10"/>
+                        <Input v-model.trim="formData.actAmount" placeholder="请输入"/>
                         <span class="font">实际增加</span>
-                        <Input v-model.trim="formData.totalAmount" placeholder="请输入" :maxlength="10"/>
+                        <Input v-model.trim="formData.totalAmount" placeholder="请输入"/>
                         <span>元</span>
                     </Form-item>
                 </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入" :maxlength="100"/>
+                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入"/>
                     </Form-item>
                 </div>
             </Form>
@@ -119,6 +119,7 @@
                 ruleValidate: {
                     actAmount: [
                         { required: true, message: '储值金额不能为空', trigger: 'blur' },
+                        { max: 10, message: '储值金额不能超过10字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateToTotalAmount, trigger: 'blur' },
@@ -127,6 +128,7 @@
                         { required: true, message: '收款方式不能为空', trigger: 'change' },
                     ],
                     remark: [
+                        { max: 100, message: '备注不能超过100字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },

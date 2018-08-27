@@ -99,7 +99,6 @@
                 }
             };
 
-
             return {
                 visible: false,
                 //会员信息的账户数据
@@ -115,7 +114,8 @@
                 //表单校验
                 ruleValidate: {
                     fromAmount: [
-                        {required: true, message: '兑现数量不能为空', trigger: 'blur'},
+                        { required: true, message: '兑现数量不能为空', trigger: 'blur'},
+                        { max: 30, message: '兑现数量不能超过30字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                     ],

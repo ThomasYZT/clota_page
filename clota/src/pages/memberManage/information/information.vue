@@ -38,8 +38,6 @@
 
         <div class="table-wrap">
             <table-com
-                :auto-height="true"
-                :table-com-min-height="300"
                 :ofsetHeight="170"
                 :show-pagination="true"
                 :column-data="infoListHead"

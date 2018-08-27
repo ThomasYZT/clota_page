@@ -13,9 +13,11 @@
                 <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
                     <Form-item :label="item.levelDesc+'成长值范围：'"
                                :key="index"
-                               :prop="'item.'+index+'highestGrowthValue'"
+                               :prop="'tableData.'+index+'highestGrowthValue'"
                                :rules="[{ validator: emoji, trigger: 'blur' },
-                               { validator: validateNumber, trigger: 'blur' },]">
+                               { validator: maxLength, trigger: 'blur' },
+                               { validator: validateNumber, trigger: 'blur' },
+                               { validator: validateHigh, trigger: 'blur' },]">
                         <Input v-model.trim="item.lowerGrowthValue"
                                placeholder="请输入"
                                :maxlength="10"
@@ -32,7 +34,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save" >保存</Button>
+            <Button type="primary" @click="formValidateFunc" >保存</Button>
             <Button type="ghost" @click="hide" >取消</Button>
         </div>
 
@@ -52,16 +54,39 @@
 
                 //校验正整数
                 validateNumber : (rule,value,callback) => {
-                    common.validateInteger(value).then(() => {
+                    common.validateInteger( Number(value) ).then(() => {
                         callback();
                     }).catch(err => {
                         callback(err);
                     });
                 },
 
+                //校验表情
                 emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
                         callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+
+                //校验最高值范围
+                 validateHigh : (rule,value,callback) => {
+                    common.validateInteger( Number(this.formData.lowerGrowthValue) ).then(() => {
+                        if(Number(this.formData.lowerGrowthValue) > Number(value)){
+                            callback(new Error('起始值不能大于最高值'));
+                        } else {
+                            callback();
+                        }
+                    }).catch(err => {
+                        callback(err);
+                    });
+                },
+
+                //校验长度
+                maxLength : (rule, value, callback) => {
+                    if (value && value.length > 10) {
+                        callback(new Error('长度不能大于10'));
                     } else {
                         callback();
                     }
@@ -116,7 +141,8 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true)
+                        console.log(true);
+                        this.save();
                     }
                 })
             },

@@ -140,6 +140,7 @@
 <script>
 
     import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
@@ -196,7 +197,7 @@
                     ],
                     rate: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMethod.validateNumber, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
                 },
                 //多选列表

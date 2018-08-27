@@ -64,7 +64,7 @@
 
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" type="textarea" :maxlength="100" placeholder="请输入" />
+                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入" />
                     </Form-item>
                 </div>
 
@@ -139,6 +139,7 @@
                     ],
                     corpusAmount: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '账户余额不能超过10字符', trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxCorpus, trigger: 'blur' },
                     ],
@@ -147,6 +148,7 @@
                     ],
                     remark: [
                         { required: true, message: '备注不能为空', trigger: 'blur' },
+                        { max: 100, message: '备注不能超过100字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 }

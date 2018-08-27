@@ -12,10 +12,9 @@
             </div>
             <div class="table-wrap">
                 <table-com
-                    ref="multipleTable"
-                    :table-data="tableData"
-                    :table-height="tableHeight"
+                    :ofsetHeight="180"
                     :column-data="channelListHead"
+                    :table-data="tableData"
                     :border="true">
                     <el-table-column
                         slot="column3"
@@ -27,26 +26,14 @@
                         fixed="right"
                         slot-scope="row">
                         <template slot-scope="scoped">
-                            <div class="operation">
-                                <span class="span-blue" @click="showChannelModal($event,scoped.row)">修改</span>
-                                <span @click="deleteChannel($event,scoped.row)">删除</span>
-                            </div>
+                            <ul class="operate-list">
+                                <li class="blue-label" @click="showChannelModal($event,scoped.row)">修改</li>
+                                <li class="red-label" @click="deleteChannel($event,scoped.row)">删除</li>
+                            </ul>
                         </template>
                     </el-table-column>
                 </table-com>
             </div>
-
-            <!--<div class="page-wrap" v-if="tableData.length > 0">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="pageNo"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="parseInt(total)">
-                </el-pagination>
-            </div>-->
 
         </div>
 
@@ -59,14 +46,12 @@
 <script>
 
     import ajax from '@/api/index';
-    import tableCom from '@/pages/memberManage/components/tableCom';
-    import tableMixins from '@/mixins/tableMixins';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {channelListHead} from './channelConfig';
     import headerTabs from './components/headerTabs.vue';
     import addChannelModal  from '../components/addChannelModal.vue';
 
     export default {
-        mixins : [tableMixins],
         components: {
             headerTabs,
             addChannelModal,
@@ -80,7 +65,6 @@
                 channelListHead : channelListHead,
                 // 表格数据
                 tableData: [],
-                total: 0,
             }
         },
         created(){
@@ -98,8 +82,6 @@
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data || [];
-                        this.total = res.data.totalRow || 0;
-                        this.setTableHeight();
                     } else {
                         console.log(res);
                         this.$Message.warning('queryChannelSet 查询失败！');

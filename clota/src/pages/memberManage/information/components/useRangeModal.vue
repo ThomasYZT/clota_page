@@ -10,21 +10,14 @@
 
         <div class="modal-body">
             <div class="table-wrap">
-                <el-table
-                    :width="810"
-                    :data="rangeData"
-                    :border="false"
-                    height="260"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="corpusRanges"
-                        label="本金">
-                    </el-table-column>
-                    <el-table-column
-                        prop="donateRanges"
-                        label="赠送金额">
-                    </el-table-column>
-                </el-table>
+
+                <table-com
+                    :table-com-min-height="400"
+                    :column-data="columnData"
+                    :table-data="rangeData"
+                    :border="false">
+                </table-com>
+
             </div>
         </div>
 
@@ -38,12 +31,28 @@
 <script>
 
     import ajax from '@/api/index';
+    import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        components: {},
+        components: {
+            tableCom,
+        },
         data () {
             return {
                 visible: false,
+                //表头数据
+                columnData: [
+                    {
+                        title: '本金',
+                        minWidth: 400,
+                        field: 'corpusRanges'
+                    },
+                    {
+                        title: '赠送金额',
+                        minWidth: 400,
+                        field: 'donateRanges'
+                    },
+                ],
                 //会员信息的账户数据
                 accountInfo: {},
                 //应用范围列表

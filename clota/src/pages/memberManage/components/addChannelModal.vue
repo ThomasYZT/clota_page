@@ -13,12 +13,12 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="渠道名称：" prop="channelName">
-                        <Input v-model.trim="formData.channelName" :maxlength="10" placeholder="请输入"/>
+                        <Input v-model.trim="formData.channelName" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" :maxlength="100" type="textarea" placeholder="请输入"/>
+                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入"/>
                     </Form-item>
                 </div>
             </Form>
@@ -65,9 +65,11 @@
                     channelName: [
                         { required: true, message: '渠道名称不能为空', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '渠道名称不能超过10字符', trigger: 'blur' },
                     ],
                     remark: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 100, message: '备注不能超过100字符', trigger: 'blur' },
                     ],
                 }
             }

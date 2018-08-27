@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <div class="content-item">
+            <!--<div class="content-item">
                 <div class="title">转账手续费扣除比例设置</div>
                 <div class="main">
                     <Input  v-model.trim="settingData.commissionOfTransfermation"
@@ -122,7 +122,7 @@
                             class="single-input"
                             placeholder="请输入"/>%
                     </div>
-            </div>
+            </div>-->
 
             <div class="content-item">
                 <div class="title">收款方式设置   <span class="blue-color add-span" @click="handleAddPay">+ 新增收款方式</span></div>

@@ -42,7 +42,7 @@
     @import '~@/assets/scss/base';
     .header{
         margin: 0 20px;
-        border-bottom: 2px solid $color_E1E1E1;
+        border-bottom: 1px solid $color_E1E1E1;
         height: 68px;
         line-height: 66px;
         @include clearfix();
@@ -65,7 +65,7 @@
             }
 
             .split-line{
-                width: 2px;
+                width: 1px;
                 height: 25px;
                 line-height: 25px;
                 display: inline-block;

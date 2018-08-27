@@ -15,7 +15,6 @@
                     <Form-item label="会员等级：" prop="levelNum">
                         <Input v-model.trim="formData.levelNum"
                                type="text"
-                               :maxlength="10"
                                placeholder="请输入会员等级"/>
                     </Form-item>
                 </div>
@@ -23,7 +22,6 @@
                     <Form-item label="等级名称：" prop="levelDesc">
                         <Input v-model.trim="formData.levelDesc"
                                type="text"
-                               :maxlength="10"
                                placeholder="请输入会员级别名称，例：黄金会员"/>
                     </Form-item>
                 </div>
@@ -34,12 +32,10 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="会员成长值范围：" prop="highestGrowthValue">
                         <Input v-model.trim="formData.lowerGrowthValue"
-                               :maxlength="10"
                                placeholder="请输入"
                                class="single-input"/>
                         <span class="split-line">–</span>
                         <Input v-model.trim="formData.highestGrowthValue"
-                               :maxlength="10"
                                placeholder="请输入"
                                class="single-input"/>
                     </Form-item>
@@ -47,7 +43,6 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="备注：" prop="remark">
                         <Input v-model.trim="formData.remark"
-                               :maxlength="20"
                                type="textarea"
                                placeholder="请输入"/>
                     </Form-item>
@@ -92,35 +87,62 @@
                 });
             };
 
+            //校验最高值范围
+            const validateHigh = (rule,value,callback) => {
+                common.validateInteger( this.formData.lowerGrowthValue).then(() => {
+                    if(Number(this.formData.lowerGrowthValue) > Number(value)){
+                        callback(new Error('起始值不能大于最高值'));
+                    } else {
+                        callback();
+                    }
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
             return {
                 visible: false,
                 //表单数据
                 formData: {
                     levelNum: '',
                     levelDesc: '',
-                    lowerGrowthValue: '0',
-                    highestGrowthValue: '999',
+                    lowerGrowthValue: '',
+                    highestGrowthValue: '',
                     remark: '',
                 },
                 ruleValidate: {
                     levelNum: [
                         { required: true, message: '会员等级不能为空', trigger: 'blur' },
+                        { max: 10, message: '会员等级不能超过10字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                     ],
                     levelDesc: [
                         { required: true, message: '会员级别名称不能为空', trigger: 'blur' },
+                        { max: 10, message: '会员级别不能超过10字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     lowerGrowthValue: [
                         { required: true, message: '会员成长值不能为空', trigger: 'blur' },
+                        { max: 10, message: '会员成长值不能超过10字符', trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                     ],
                     highestGrowthValue: [
                         { required: true, message: '会员成长值不能为空', trigger: 'blur' },
+                        { max: 10, message: '会员成长值不能超过10字符', trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateHigh, trigger: 'blur' },
+                    ],
+                    remark: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 20, message: '备注不能超过20字符', trigger: 'blur' },
                     ],
                 }
+            }
+        },
+        watch: {
+            'formData.lowerGrowthValue': function (newVal) {
+                this.$refs.formValidate.validateField('highestGrowthValue');
             }
         },
         methods: {
@@ -139,7 +161,6 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true)
                         this.updateMemberLevel(this.formData);
                     }
                 })
@@ -175,8 +196,8 @@
                 this.formData = {
                     levelNum: '',
                     levelDesc: '',
-                    lowerGrowthValue: '0',
-                    highestGrowthValue: '999',
+                    lowerGrowthValue: '',
+                    highestGrowthValue: '',
                     remark: '',
                 };
             },

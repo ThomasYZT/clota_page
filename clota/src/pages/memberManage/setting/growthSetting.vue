@@ -11,20 +11,27 @@
                 <div class="title">成长值设置</div>
                 <div class="main">
                     <span class="text">消费
-                        <Input v-model.trim="settingData.growthRateWhileConsume.growthSet"
-                               type="text"
-                               :maxlength="10"
-                               @on-blur="validateInput(settingData.growthRateWhileConsume.growthSet)"
-                               class="single-input"
-                               placeholder="请输入"/>
-                        元获取
-                        <Input v-model.trim="settingData.growthRateWhileConsume.growthSetValue"
-                               :maxlength="10"
-                               @on-blur="validateInput(settingData.growthRateWhileConsume.growthSetValue)"
-                               type="text"
-                               class="single-input"
-                               placeholder="请输入"/>
-                        成长值</span>
+                        <span :class="{'ivu-form-item-error': error.growthSetError}">
+                            <Input v-model.trim="settingData.growthRateWhileConsume.growthSet"
+                                 type="text"
+                                 @on-blur="checkInputBlurFunc(settingData.growthRateWhileConsume.growthSet,'growthSetError')"
+                                 class="single-input"
+                                 placeholder="请输入"/>元获取
+                            <span class="ivu-form-item-error-tip"
+                                style="left: 40px;"
+                                v-if="error.growthSetError">{{error.growthSetError}}</span>
+                        </span>
+                        <span :class="{'ivu-form-item-error': error.growthSetValueError}">
+                            <Input v-model.trim="settingData.growthRateWhileConsume.growthSetValue"
+                                   @on-blur="checkInputBlurFunc(settingData.growthRateWhileConsume.growthSetValue,'growthSetValueError')"
+                                   type="text"
+                                   class="single-input"
+                                   placeholder="请输入"/>成长值
+                            <span class="ivu-form-item-error-tip"
+                                 style="left: 207px;"
+                                 v-if="error.growthSetValueError">{{error.growthSetValueError}}</span>
+                        </span>
+                    </span>
                 </div>
             </div>
 
@@ -38,16 +45,18 @@
                         <Radio label="checkout">
                             <span>消费、核销成功后立即生效</span>
                         </Radio>
-                        <Radio label="checkout_after">
+                        <Radio label="checkout_after" :class="{'ivu-form-item-error': error.growthTimeError}">
                             <span>消费、核销成功后
                             <Input v-model.trim="settingData.growthEffectiveMode.growthTime"
                                    :disabled="settingData.growthEffectiveMode.growthType !== 'checkout_after' ? true : false"
-                                   :maxlength="10"
-                                   @on-blur="validateInput(settingData.growthEffectiveMode.growthTime)"
+                                   @on-blur="checkInputBlurFunc(settingData.growthEffectiveMode.growthTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
                                    placeholder="请输入"/>
                                 小时后生效</span>
+                            <span class="ivu-form-item-error-tip"
+                                  style="left: 153px;"
+                                  v-if="error.growthTimeError">{{error.growthTimeError}}</span>
                         </Radio>
                     </RadioGroup>
                 </div>
@@ -81,6 +90,7 @@
 
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
 
     export default {
@@ -110,7 +120,23 @@
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
+                //输入框校验错误显示
+                error: {
+                    growthSetError: '',//成长值设置--消费值
+                    growthSetValueError: '',//成长值设置--成长值
+                    growthTimeError: '',//成长值生效设置
+                },
             }
+        },
+        watch: {
+
+            //成长值生效设置
+            'settingData.growthEffectiveMode.growthType' : function (newVal, oldVal) {
+                if(newVal !== 'checkout_after'){
+                    this.error.growthTimeError = '';
+                }
+            },
+
         },
         created() {
             //查询会员基础设置
@@ -157,8 +183,6 @@
                             this.findBasicSet();
                         }
                     })
-                } else {
-                    this.$Message.warning("输入框不能为空");
                 }
             },
             //点击取消重置数据
@@ -167,36 +191,81 @@
                     this.settingData = defaultsDeep({}, this.copySetData);
                 }
             },
+
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
                 if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSet)){
+                    this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError');
                     return false
                 }
 
                 if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSetValue)){
+                    this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSetValue, 'growthSetValueError');
                     return false
                 }
 
                 if(this.settingData.growthEffectiveMode.growthType === 'checkout_after' && !this.validateInput(this.settingData.growthEffectiveMode.growthTime)){
+                    this.checkInputBlurFunc(this.settingData.growthEffectiveMode.growthTime, 'growthTimeError');
                     return false
                 }
 
                 return true
             },
+
             //校验input输入
             validateInput ( value ) {
-                if( value === '' || value === 'null' || value == 0 || !value){
-                    this.$Message.warning("输入框不能为空");
+                if( value === '' || value === 'null' || value == 0 || !value ){
                     return false
-                } else if( value && value.length > 10){
-                    this.$Message.warning("当前输入字符不能超过10个");
+                } else if( value && value.length > 10 ){
                     return false
-                } else if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
-                    this.$Message.warning("当前输入只能是非负整数");
+                } else if( value && value.isUtf16() ){
                     return false
                 } else {
                     return true
                 }
+            },
+
+            /**
+             * 输入框失焦校验
+             * @param val 值
+             * @param errorField 校验错误显示字段
+             */
+            checkInputBlurFunc ( val, errorField ) {
+
+                //为空校验
+                if( val === '' || val === 'null' || val == 0 || !val){
+                    this.error[errorField] = '不能为空';
+                    return
+                } else {
+                    this.error[errorField] = '';
+                }
+
+                //长度校验
+                if (val && val.length > 10) {
+                    this.error[errorField] = '不能超过10个';
+                    return
+                } else {
+                    this.error[errorField] = '';
+                }
+
+                //校验表情符号
+                if (val && val.isUtf16()) {
+                    this.error[errorField] = '输入内容不合规则';
+                    return
+                } else {
+                    this.error[errorField] = '';
+                }
+
+                //校验正整数
+                if(val){
+                    common.validateInteger(val).then(() => {
+                        this.error[errorField] = '';
+                    }).catch(err => {
+                        this.error[errorField] = err;
+                        return
+                    });
+                }
+
             },
 
         },
@@ -235,8 +304,9 @@
                     margin-bottom: 15px;
                 }
                 .main{
+                    position: relative;
                     div{
-                        margin-bottom: 10px;
+                        /*margin-bottom: 10px;*/
                     }
                 }
             }
