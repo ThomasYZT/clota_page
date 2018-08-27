@@ -144,7 +144,7 @@
         },
         computed: {},
         created() {
-            this.formInline.user =  localStorage.getItem('logName');
+            this.formInline.user =  localStorage.getItem('logName') ? localStorage.getItem('logName') : 'zhanzhan';
             this.rememberAccount =  !!localStorage.getItem('logName');
         },
     }
