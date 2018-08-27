@@ -15,9 +15,21 @@
         line-height: 22px;
     }
 
+    // 拥有多级表头
+    @include m((group, border)) {
+        // 表格右部伪 border
+        &::after {
+            width: 0;
+        }
+    }
+
     // table--border
     @include m(border) {
+        border-left: none;
+
         th, td {
+            border-right: none;
+
             &:first-child .cell {
                 padding-left: 36px;
             }
