@@ -151,6 +151,9 @@
                     scoreRate : [
                         {required : true, validator : validateConsumption,trigger : 'blur'}
                     ],
+                    remark : [
+                        {max : 100,message : '最多输入100字符',trigger : 'blur'}
+                    ]
                 },
                 //会员级别对应的id
                 levelIds : '',

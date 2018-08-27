@@ -15,15 +15,14 @@
                   :label-width="190">
 
                 <div class="ivu-form-item-wrap">
-                      <Form-item label="转出账户" class="no-marg-bottom" prop="toOrgId">
+                      <Form-item label="转出账户" class="no-marg-bottom">
                         <span style="color:#666666;">{{orgInfo.orgName}}</span>
                     </Form-item>
                 </div>
                   <div class="ivu-form-item-wrap">
                       <Form-item label="账户可用余额"
                                 class="no-marg-bottom"
-                                style="margin-bottom:5px!important;"
-                                prop="toOrgId">
+                                style="margin-bottom:5px!important;">
                         <span class="num">{{orgInfo.balance | moneyFilter}}</span> 元
                     </Form-item>
                 </div>
@@ -40,16 +39,14 @@
                     <Form-item label="转出金额" prop="amount">
                         <Input v-model="data.amount"
                                placeholder="请输入"
-                               style="width: 240px"
-                               @input.native="amountChange($event)"/>
+                               style="width: 240px"/>
                         <span style="padding-left: 10px;">元
                         </span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="手续费" prop="commission">
-                        <Input disabled
-                               v-model="data.commission"
+                        <Input v-model="data.commission"
                                placeholder="请输入"
                                style="width: 240px" />
                     </Form-item>
@@ -96,22 +93,24 @@
             //校验转出余额
             const validateeAmount = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    callback();
+                    if(value > this.orgInfo.balance){
+                        callback('转出金额不可大于可用余额');
+                    }else{
+                        callback();
+                    }
                 }).catch(err => {
                     callback(this.$t(err,{field : rule.field}));
                 });
             };
             //校验手续费是否正确
             const validateCommission = (rule,value,callback) => {
-                if(!common.isNotEmpty(this.commissionOfTransfermation)){
-                    callback('请先设置手续费率');
-                }else{
+                common.validateMoney(value).then(() => {
                     callback();
-                }
+                }).catch(err => {
+                    callback(this.$t(err,{field : rule.field}));
+                });
             };
             return {
-                //手续费
-                commissionOfTransfermation : '',
                 //模态框是否显示
                 visible: false,
                 //表单数据
@@ -131,10 +130,10 @@
                         {required : true,validator : validateeAmount,trigger : 'blur'}
                     ],
                     toOrgId : [
-                        {require : true,message : '请选择转入账户',trigger : 'change'}
+                        {required : true,message : '请选择转入账户',trigger : 'change'}
                     ],
                     commission : [
-                        {validator : validateCommission,trigger : 'change'}
+                        {required : true,validator : validateCommission,trigger : 'blur'}
                     ]
                 },
                 //btn是否在保存中
@@ -171,36 +170,6 @@
                 this.resetFormData();
             },
             /**
-             * 获取基础设置
-             */
-            findBasicSet () {
-                ajax.post('findBasicSet').then(res => {
-                    if(res.success){
-                        this.commissionOfTransfermation = res.data.commissionOfTransfermation;
-                    }else{
-                        this.commissionOfTransfermation = '';
-                    }
-                }).catch(err => {
-                    this.commissionOfTransfermation = '';
-                });
-            },
-            /**
-             * 转出金额计算手续费
-             * @param e
-             */
-            amountChange (e) {
-                let val = e.target.value;
-                if(common.isNotEmpty(this.commissionOfTransfermation)){
-                    common.validateMoney(this.data.amount).then(() => {
-                        this.data.commission = Number(val * this.commissionOfTransfermation / 100).toFixed(2);
-                    }).catch(err => {
-                        this.data.commission = '-';
-                    });
-                }else{
-                    this.data.commission = '-';
-                }
-            },
-            /**
              * 确认转账
              */
             transfer () {
@@ -230,9 +199,6 @@
             }
 
         },
-        created () {
-            this.findBasicSet();
-        }
     }
 </script>
 

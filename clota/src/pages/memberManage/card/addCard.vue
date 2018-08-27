@@ -72,6 +72,7 @@
                         <Date-picker
                             type="date"
                             :editable="false"
+                            :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             placeholder="请选择">
                         </Date-picker>
@@ -83,6 +84,7 @@
                         <Date-picker
                             type="date"
                             :editable="false"
+                            :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             placeholder="请选择">
                         </Date-picker>
@@ -424,6 +426,12 @@
                     isEffectBeforeDiscount : [
                         {required : true,message : '请选择代金券在折扣前后使用设置',trigger : 'change'}
                     ]
+                },
+                //日期插件配置
+                pickerOptions : {
+                    disabledDate(time) {
+                        return time.getTime() < new Date().addDays(-1).valueOf();
+                    },
                 }
             }
         },

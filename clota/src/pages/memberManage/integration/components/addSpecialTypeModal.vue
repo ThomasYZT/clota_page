@@ -45,6 +45,7 @@
                 ruleValidate: {
                     name: [
                         { required: true, message: '员工分类名称不能为空', trigger: 'blur' },
+                        {max : 15,message : '最多输入15个字符',trigger : 'blur'}
                     ],
                 }
             }

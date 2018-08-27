@@ -3,7 +3,7 @@
 export const columnData = [
     {
         title: '编码',
-        width: 190,
+        width: 220,
         field: 'id'
     },
     {
@@ -43,7 +43,7 @@ export const columnData = [
     },
     {
         title: '操作人员记录',
-        minWidth: 120,
+        width: 140,
         field: 'updateUser'
     }
 ];
