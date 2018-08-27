@@ -1,11 +1,12 @@
 /* Element Chalk Variables */
+@import "~element-ui/packages/theme-chalk/src/common/var";
 
 
 /* Colors
 -------------------------- */
 $--color-primary-light-10: #e6f7ff; /* E6F7FF */
 
-$--color-text-primary: #303133 !default;
+//$--color-text-primary: #303133 !default;
 
 /* Background
 -------------------------- */
@@ -27,4 +28,9 @@ $--table-current-row-background: $--color-primary-light-10;
 //$--table-header-background: $--color-white !default;
 $--table-header-background: $--background-color-base;
 
-@import "~element-ui/packages/theme-chalk/src/common/var";
+/* Pagination
+-------------------------- */
+$--pagination-font-size: 14px;
+$--pagination-color: $--color-text-regular;
+$--pagination-button-color: $--color-text-regular;
+

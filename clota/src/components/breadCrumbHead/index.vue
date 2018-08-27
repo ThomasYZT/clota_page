@@ -2,7 +2,7 @@
 
 <template>
     <div class="bread-crumb-head">
-        <Breadcrumb separator=">">
+        <Breadcrumb separator="<i class='el-icon-arrow-right'></i>">
             <BreadcrumbItem
                 :to="item.router"
                 v-for="(item,index) in beforeRouterList"
