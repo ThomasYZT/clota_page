@@ -128,7 +128,7 @@
                     {
                         name: this.$t('financialManagement'),
                         router: {
-                            name: 'financialManagement'
+                            name: 'transfer'
                         }
                     }
                 ],

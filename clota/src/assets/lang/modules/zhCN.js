@@ -12,6 +12,7 @@ export default {
     'loginError': '登录失败',
     'formValidate': '表单验证失败',
     'autoLogin': '自动登录',
+    'rememberAccount': '记住账号',
     'copyright': 'Copyright 2009-2020 © Galasys Global (SuZhou) Co.,Ltd All rights reserved.',
     'org': '组织架构',
     'employee': '员工',

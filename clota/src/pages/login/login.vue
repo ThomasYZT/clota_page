@@ -34,7 +34,7 @@
                                    :placeholder="$t('password')"/>
                         </Form-item>
                         <Form-item class="auto-reme">
-                            <Checkbox>{{ $t("autoLogin") }}</Checkbox>
+                            <Checkbox v-model="rememberAccount">{{ $t("rememberAccount") }}</Checkbox>
                         </Form-item>
                         <div class="error-area">
                             {{errMsg}}
@@ -78,7 +78,9 @@
                 //错误提示信息
                 errMsg : '',
                 //是否在登录中
-                isLoging : false
+                isLoging : false,
+                //是否记住密码
+                rememberAccount : false
             }
         },
         methods: {
@@ -89,6 +91,11 @@
             //登录提交表单
             handleSubmit(name) {
                 this.errMsg = '';
+                if(this.rememberAccount){
+                    localStorage.setItem('logName',this.formInline.user);
+                }else {
+                    localStorage.removeItem('logName');
+                }
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         if(this.isLoging) return;
@@ -99,6 +106,11 @@
                         }).then((res) => {
                             if (res.success) {
                                 sessionStorage.setItem('userInfo',JSON.stringify(res.data));
+                                sessionStorage.setItem('accountName',this.formInline.user);
+                                //保存当前选择的机构
+                                if(!localStorage.getItem('manageOrgs')){
+                                    localStorage.setItem('manageOrgs',JSON.stringify(res.data.manageOrgs[0]));
+                                }
                                 this.setOrgIndex();
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
                                     this.$router.push({
@@ -109,6 +121,7 @@
                                 this.errMsg = this.$t('accoutOrPassErr');
                             }
                         }).catch(err => {
+                            console.log(err)
                             this.errMsg = this.$t('loginErr');
                         }).finally(() => {
                             setTimeout(() => {
@@ -130,6 +143,8 @@
         },
         computed: {},
         created() {
+            this.formInline.user =  localStorage.getItem('logName');
+            this.rememberAccount =  !!localStorage.getItem('logName');
         },
     }
 </script>

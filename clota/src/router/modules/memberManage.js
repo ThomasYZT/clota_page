@@ -290,7 +290,7 @@ export default {
                         meta: {
                             menuName: 'transfer', //lang.config.js 里面的语言键值
                             _name: 'storage-manage',
-                            rightPath : topMenuName + '.' + 'financialManagement',
+                            rightPath : topMenuName + '.' + 'transfer',
                             isMenu : true
                         },
                     },
@@ -302,7 +302,7 @@ export default {
                         meta: {
                             menuName: 'financialManagement', //lang.config.js 里面的语言键值
                             _name: 'storage-manage',
-                            rightPath : topMenuName + '.' + 'financialManagement',
+                            rightPath : topMenuName + '.' + 'transfer',
                         },
                     },
                     juniorDetail: {

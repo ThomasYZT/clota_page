@@ -4,11 +4,12 @@
     <div class="org-tree-wrap" @click.stop="">
         <Input v-model="filterValue"
                placeholder="搜索"
-               style="width: 270px;margin-bottom:5px;"
+               style="width: 270px;margin-bottom:5px;margin-left: 15px;"
                @input="filter($event)"/>
         <div class="tree-list">
             <el-tree
                 :props="defaultProps"
+                node-key="id"
                 ref="tree"
                 :filter-node-method="filterNode"
                 :data="treeData">
@@ -56,10 +57,22 @@
              */
             getOrgTree() {
                 this.treeData = common.getOrgTree();
+            },
+            /**
+             * 获取选中的组织
+             * @returns {string | null}
+             */
+            getChoseOrg (){
+                return localStorage.getItem('manageOrgs') ? JSON.parse(localStorage.getItem('manageOrgs')) : {};
             }
         },
         created () {
             this.getOrgTree();
+        },
+        mounted () {
+            this.$nextTick(() =>{
+                this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
+            });
         }
     }
 </script>
@@ -68,7 +81,7 @@
 	@import '~@/assets/scss/base';
 
     .org-tree-wrap{
-        padding:5px 15px 10px 15px;
+        padding: 5px 0 10px 0;
         position: absolute;
         top : 46px;
         right : 55px;
@@ -95,6 +108,10 @@
         .tree-list{
             max-height: 330px;
             overflow: auto;
+
+            /deep/ .is-checked{
+                background: $color_fafa;
+            }
         }
     }
 </style>

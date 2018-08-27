@@ -63,7 +63,7 @@
                 <!--</li>-->
             </ul>
             <div class="org-info" @click="toggleOrgStatus" v-clickoutside="closeTree">
-                <span class="org-name">广州长隆欢乐世界</span>
+                <span class="org-name">{{orgName}}</span>
                 <span class="iconfont icon-down"></span>
             </div>
             <transition name="fade">
@@ -215,6 +215,10 @@
                 } else {
                     return [];
                 }
+            },
+            //当前选择的组织名称
+            orgName () {
+                return localStorage.getItem('manageOrgs') ? JSON.parse(localStorage.getItem('manageOrgs')).orgName : {};
             }
         }
     }
@@ -347,8 +351,9 @@
             height: 100%;
 
             .org-info{
-                @include block_outline(150px,20px);
+                @include block_outline(atuo,20px);
                 margin: 18px 0 0 0;
+                padding-right: 15px;
                 float: right;
                 color: $color_fff;
                 font-size: $font_size_14px;

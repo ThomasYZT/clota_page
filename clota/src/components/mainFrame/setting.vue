@@ -8,7 +8,7 @@
             <img src="../../assets/images/icon-no-data.png" alt="">
         </div>
         <div class="account-name">
-            admin
+            {{accountName}}
         </div>
         <div class="person-center">个人中心</div>
         <div class="lang-wrap">
@@ -69,6 +69,10 @@
                 lang: 'lang',
                 operateLine : 'operateLine'
             }),
+            //用户名
+            accountName () {
+                return localStorage.getItem('accountName');
+            }
         }
     }
 </script>
