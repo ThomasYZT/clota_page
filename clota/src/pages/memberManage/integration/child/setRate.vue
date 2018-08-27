@@ -14,7 +14,7 @@
             <div class="filter-wrap">
                 <Input v-model.trim="queryParams.keyword"
                        placeholder="请输入店铺名称"
-                       style="width: 240px" />
+                       style="width: 240px;margin-right: 15px;" />
                 <Button type="primary" @click="queryList">查 询</Button>
                 <Button type="ghost" @click="reset">重 置</Button>
             </div>
@@ -23,22 +23,23 @@
                     v-if="tableCanMount"
                     :page-no-d.sync="pageNo"
                     :page-size-d.sync="pageSize"
-                    :ofsetHeight="220"
+                    :ofsetHeight="215"
+                    :show-pagination="true"
                     :column-data="columnData"
                     :table-data="tableData"
                     :border="true"
                     @query-data="queryList">
                     <el-table-column
-                        slot="column3"
+                        slot="column4"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue" @click="showModifyModal(scope.row)">设置积分、折扣率</span>
-                                <span class="span-blue" @click="setProductRate(scope.row)">按产品设置积分、折扣率</span>
-                            </div>
+                            <ul class="operate-list">
+                                <li @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                                <li @click="setProductRate(scope.row)">按产品设置积分、折扣率</li>
+                            </ul>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -81,7 +82,33 @@
                 },
                 // 表格数据
                 tableData: [
-                    {}
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
                 ],
                 //总条数
                 total: 50,
@@ -217,7 +244,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
 
@@ -235,7 +261,7 @@
             .title-wrap{
                 font-size: $font_size_18px;
                 color: $color_333;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
 
             .filter-wrap{
@@ -250,6 +276,10 @@
                 margin-top: 30px;
                 text-align: center;
             }
+        }
+
+        .operate-list{
+            @include table_operate();
         }
 
     }

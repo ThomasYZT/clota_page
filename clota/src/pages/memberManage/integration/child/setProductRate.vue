@@ -14,14 +14,15 @@
             <div class="filter-wrap">
                 <Input v-model.trim="queryParams.keyword"
                        placeholder="请输入产品名称"
-                       style="width: 240px" />
+                       style="width: 240px;margin-right: 15px;" />
                 <Button type="primary" @click="queryList">查 询</Button>
                 <Button type="ghost" @click="reset">重 置</Button>
             </div>
             <div class="table-wrap">
                 <table-com
                     v-if="tableCanMount"
-                    :ofsetHeight="220"
+                    :ofsetHeight="215"
+                    :show-pagination="true"
                     :page-no-d.sync="pageNo"
                     :page-size-d.sync="pageSize"
                     :column-data="columnData"
@@ -35,14 +36,19 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue"
-                                      @click="showModifyModal(scope.row)"
-                                      v-if="('prodDiscountRate' in scope.row) && ('prodScoreRate' in scope.row)">修改积分、折扣率</span>
-                                <span class="span-blue"
-                                      @click="showModifyModal(scope.row)"
-                                      v-else>设置积分、折扣率</span>
-                            </div>
+                            <!--<div class="operation">-->
+                                <!--<span class="span-blue"-->
+                                      <!--@click="showModifyModal(scope.row)"-->
+                                      <!--v-if="('prodDiscountRate' in scope.row) && ('prodScoreRate' in scope.row)">修改积分、折扣率</span>-->
+                                <!--<span class="span-blue"-->
+                                      <!--@click="showModifyModal(scope.row)"-->
+                                      <!--v-else>设置积分、折扣率</span>-->
+                            <!--</div>-->
+                            <ul class="operate-list">
+                                <li v-if="('prodDiscountRate' in scope.row) && ('prodScoreRate' in scope.row)"
+                                    @click="showModifyModal(scope.row)">修改积分、折扣率</li>
+                                <li v-else @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                            </ul>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -84,7 +90,34 @@
                     keyword: '',
                 },
                 // 表格数据
-                tableData: [],
+                tableData: [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                ],
                 //总条数
                 total: 50,
                 //表头配置
@@ -125,10 +158,10 @@
                     orgId : this.memberInfo.orgId,
                 }).then(res => {
                     if(res.success){
-                        this.tableData = res.data.data ? res.data.data : [];
+                        // this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     }else{
-                        this.tableData =  [];
+                        // this.tableData =  [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
@@ -214,7 +247,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
 
@@ -232,7 +264,7 @@
             .title-wrap{
                 font-size: $font_size_18px;
                 color: $color_333;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
 
             .filter-wrap{
@@ -247,6 +279,10 @@
                 margin-top: 30px;
                 text-align: center;
             }
+        }
+
+        .operate-list{
+            @include table_operate();
         }
 
     }

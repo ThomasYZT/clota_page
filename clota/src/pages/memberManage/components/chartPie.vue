@@ -76,24 +76,29 @@
                             fontSize: 14,
                             rich: {
                                 name: {
+                                    width : 60,
                                     color: '#666666',
+                                    padding : [0,5,0,0]
                                 },
                                 per: {
                                     width : 60,
-                                    color: '#999999'
+                                    color: '#999999',
+                                    padding : [0,0,0,10]
                                 },
                                 val : {
                                     color : '#333333'
                                 },
                                 sg : {
-                                    color : '#d9d9d9',
-                                    padding : [0,10,0,10]
+                                    borderColor: '#aaa',
+                                    width: 1,
+                                    height: 12,
+                                    backgroundColor :'#D9D9D9'
                                 }
                             }
                         },
                         formatter: (data) => {
                             let dataArr = data.split('|');
-                            return `{name|${dataArr[0]}}{sg||}{per|${dataArr[1]}}{val|${dataArr[2]}}`;
+                            return `{name|${dataArr[0]}}{sg|}{per|${dataArr[1]}}{val|${dataArr[2]}}`;
                         },
                         data: legendData,
                     },
@@ -101,7 +106,7 @@
                         {
                             type:'pie',
                             center: ['22%', '50%'],
-                            radius: ['60%', '78%'],
+                            radius: ['55%', '73%'],
                             avoidLabelOverlap: false,
 //                            minAngle: 5, //最小的扇区角度（0 ~ 360），用于防止某个值过小导致扇区太小影响交互。
                             itemStyle: {

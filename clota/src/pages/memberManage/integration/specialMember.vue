@@ -39,12 +39,9 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue"
-                                    @click="cotactMemberInfo(scope.row)">
-                                    设置积分、折扣率
-                                </span>
-                            </div>
+                            <ul class="operate-list">
+                                <li @click="cotactMemberInfo(scope.row)">设置积分、折扣率</li>
+                            </ul>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -281,6 +278,10 @@
         .special-title{
             font-size: $font_size_14px;
             color: $color_666;
+        }
+
+        .operate-list{
+            @include table_operate();
         }
 
     }

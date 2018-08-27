@@ -230,7 +230,7 @@
                     font-size: $font_size_14px;
                     color: $color_7F8FA4;
                     letter-spacing: 1px;
-                    margin-right: 20px;
+                    margin-right: 10px;
                     cursor: pointer;
                     &.active{
                         color: $color_blue;
@@ -243,6 +243,10 @@
                     width: 320px;
                     display: inline-block;
                     height: 30px;
+
+                    /deep/ .ivu-input{
+                        cursor: pointer;
+                    }
                 }
             }
 
@@ -258,7 +262,7 @@
                 }
 
                 .echarts {
-                    @include block_outline(100%, 205px);
+                    @include block_outline(100%, 190px);
                     margin: 0 auto;
                 }
             }

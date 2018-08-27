@@ -259,6 +259,9 @@
 
         .modal-body{
             padding: 20px 25px 0 25px;
+            min-height: 260px;
+            display: flex;
+            align-items: center;
 
             /deep/ .ivu-input-wrapper{
                 width: 160px;
@@ -279,6 +282,12 @@
             /deep/ .ivu-btn{
                 padding: 5px 30px;
             }
+        }
+
+        /deep/ .ivu-modal-body{
+            min-height: 300px;
+            display: flex;
+            align-items: center;
         }
     }
 </style>

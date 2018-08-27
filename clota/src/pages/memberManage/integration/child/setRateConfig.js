@@ -7,14 +7,19 @@ export const columnData = [
         field: 'orgName'
     },
     {
-        title: '积分率',
-        width: 100,
+        title: '积分比例（人民币：积分数）',
+        width: 210,
         field: 'deptScoreRate'
     },
     {
         title: '折扣率',
         width: 100,
         field: 'deptDiscountRate'
+    },
+    {
+        title: '备注',
+        minWidth: 150,
+        field: 'remark'
     },
     {
         title: '操作  ',

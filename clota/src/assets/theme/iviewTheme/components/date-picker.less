@@ -10,6 +10,7 @@
     line-height: normal;
     &-rel{
         position: relative;
+        cursor: pointer;
     }
     .@{select-dropdown-prefix-cls} {
         width: auto;
@@ -139,6 +140,10 @@
                 }
             }
         }
+
+        .ivu-input{
+            cursor: pointer;
+        }
     }
 
     &-cells-show-week-numbers {
@@ -231,6 +236,7 @@
         z-index: @zindex-transfer;
         max-height: none;
         width: auto;
+        font-size: 12px;
     }
 
     &-focused input{

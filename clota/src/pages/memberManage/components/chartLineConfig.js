@@ -24,6 +24,7 @@ const baseConfig = {
         top: 20,
         left: 10,
         right: 30,
+        bottom : 22,
         containLabel: true
     },
     xAxis: {
@@ -33,47 +34,45 @@ const baseConfig = {
         axisLine: {
             show: true,
             lineStyle: {
-                color: '#F1F3FA',
-                width: 2,
-            }
+                color: '#B0BDC9'
+            },
+            z: 10
         },
         //轴线单位坐标线对应的方向
         axisTick: {
-            show: false
+            show: true
         },
         //刻度标签文字
         axisLabel: {
-            color: '#666',
+            show : true,
+            color: '#666666',
             margin: 10,
         },
         data: []
     },
     yAxis: {
-        //轴线单位坐标线对应的方向
-        axisTick: {
-            show: false
+        type: 'value',
+        splitNumber: 4,
+        axisLabel: {
+            show: true,
+            color: '#666666',
+            fontSize:12
         },
+        //设置轴线的属性
         axisLine: {
             show: true,
             lineStyle: {
-                color: '#F1F3FA',
-                width: 2,
-            }
+                color: '#B0BDC9'
+            },
+            z: 10
         },
         //网格线
         splitLine: {
             show: true,
             lineStyle: {
-                color: "#F1F3FA",
-                type: "solid"
+                color: '#F1F3FA'
             }
         },
-        //刻度标签文字
-        axisLabel: {
-            color: '#666',
-            show: true,
-        },
-        type: 'value'
     },
     series: [
         {

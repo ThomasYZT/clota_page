@@ -7,8 +7,8 @@ export const columnData = [
         field: 'levelName'
     },
     {
-        title: '积分率',
-        minWidth: 100,
+        title: '积分比例（人民币：积分数）',
+        minWidth: 110,
         field: 'scoreRate'
     },
     {
@@ -17,7 +17,12 @@ export const columnData = [
         field: 'discountRate'
     },
     {
+        title: '备注',
+        minWidth: 100,
+        field: 'discountRate'
+    },
+    {
         title: '操作  ',
-        minWidth: 150,
+        width: 320,
     }
 ];

@@ -15,7 +15,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .loader{
         @include absolute_pos(absolute,0,0,0,0);
@@ -64,70 +64,6 @@
         -webkit-animation:kanan 1.2s infinite linear;
         -moz-animation:kanan 1.2s infinite linear;
         -o-animation:kanan 1.2s infinite linear;
-    }
-
-
-    @-webkit-keyframes kanan {
-        0% {-webkit-transform:translateX(20px);
-        }
-
-        50%{-webkit-transform:translateX(-20px);
-        }
-
-        100%{-webkit-transform:translateX(20px);
-            z-index:200;
-        }
-    }
-    @-moz-keyframes kanan {
-        0% {-moz-transform:translateX(20px);
-        }
-
-        50%{-moz-transform:translateX(-20px);
-        }
-
-        100%{-moz-transform:translateX(20px);
-            z-index:200;
-        }
-    }
-    @-o-keyframes kanan {
-        0% {-o-transform:translateX(20px);
-        }
-
-        50%{-o-transform:translateX(-20px);
-        }
-
-        100%{-o-transform:translateX(20px);
-            z-index:200;
-        }
-    }
-
-    @-webkit-keyframes kiri {
-        0% {-webkit-transform:translateX(-20px);
-            z-index:200;
-        }
-        50%{-webkit-transform:translateX(20px);
-        }
-        100%{-webkit-transform:translateX(-20px);
-        }
-    }
-
-    @-moz-keyframes kiri {
-        0% {-moz-transform:translateX(-20px);
-            z-index:200;
-        }
-        50%{-moz-transform:translateX(20px);
-        }
-        100%{-moz-transform:translateX(-20px);
-        }
-    }
-    @-o-keyframes kiri {
-        0% {-o-transform:translateX(-20px);
-            z-index:200;
-        }
-        50%{-o-transform:translateX(20px);
-        }
-        100%{-o-transform:translateX(-20px);
-        }
     }
 
 </style>

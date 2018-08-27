@@ -20,7 +20,7 @@
 
         <!--会员消费数据概览-->
         <div class="home-chart">
-            <div class="chart-header">会员分布数据</div>
+            <div class="chart-header">会员消费数据概览</div>
             <div class="chart-content">
                 <chart-line :data="vipPlace" type="money">
                 </chart-line>

@@ -12,28 +12,19 @@
             :ofset-height="60"
             @query-data="queryList">
             <el-table-column
-                slot="column3"
+                slot="column4"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <div class="operation">
-                        <span class="span-blue"
-                              v-if="isEmpty(scope.row.scoreRate) && isEmpty(scope.row.discountRate)"
-                              @click="showModifyModal(scope.row)">
-                            设置积分、折扣率
-                        </span>
-                        <span class="span-blue"
-                              v-else
-                              @click="showModifyModal(scope.row)">
-                            修改积分、折扣率
-                        </span>
-                        <span class="span-blue"
-                              @click="setRateToStore(scope.row)">
-                            按店铺设置积分、折扣率
-                        </span>
-                    </div>
+                    <ul class="operate-list">
+                        <li
+                            v-if="isEmpty(scope.row.scoreRate) && isEmpty(scope.row.discountRate)"
+                            @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                        <li v-else @click="showModifyModal(scope.row)">修改积分、折扣率</li>
+                        <li @click="setRateToStore(scope.row)">按店铺设置积分、折扣率</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -161,6 +152,10 @@
         overflow: auto;
         background: $color-fff;
         border-radius: 4px;
+
+        .operate-list{
+            @include table_operate();
+        }
     }
 </style>
 
