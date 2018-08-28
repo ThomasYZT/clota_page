@@ -9,7 +9,8 @@
                   :border="border"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
-                  @row-click="classDetailLink">
+                  @row-click="classDetailLink"
+                  @selection-change="handleSelectionChange">
             <el-table-column
                 v-if="columnCheck"
                 type="selection"
@@ -193,6 +194,13 @@
                         }
                     }
                 }
+            },
+            /**
+             * 多选框选中状态改变
+             * @param data
+             */
+            handleSelectionChange (data) {
+                this.$emit('selection-change',data);
             },
             /**
              * 触发查询数据的方法

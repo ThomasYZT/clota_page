@@ -39,6 +39,8 @@ export default {
     'queryAccountChange' : '/member/memberAccount/queryAccountChange',
     //根据会员卡id获取折扣率说明
     'listMemberCardRate' : '/members/listMemberCardRate',
+    //充值时获取实际所得到的金额
+    'getRechargeActMoney' : '/member/memberAccount/getRechargeActMoney',
 
 
     /***********************************会员积分***********************************/

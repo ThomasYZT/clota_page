@@ -34,10 +34,12 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="增加储值金额：" prop="actAmount">
-                        <Input v-model.trim="formData.actAmount" placeholder="请输入"/>
+                    <Form-item label="增加储值金额：" prop="amount">
+                        <!--@on-blur="getTotalAmount"-->
+                       <Input v-model.trim="formData.amount"
+                               placeholder="请输入"/>
                         <span class="font">实际增加</span>
-                        <Input v-model.trim="formData.totalAmount" placeholder="请输入"/>
+                        <Input disabled :value="formData.totalAmount" placeholder="请输入"/>
                         <span>元</span>
                     </Form-item>
                 </div>
@@ -89,6 +91,7 @@
             //校验正整数
             const validateNumber = (rule,value,callback) => {
                 common.validateInteger(value).then(() => {
+                    this.getTotalAmount();
                     callback();
                 }).catch(err => {
                     callback(err);
@@ -110,19 +113,18 @@
                 accountInfo: {},
                 //表单数据
                 formData: {
-                    actAmount: '',//储值金额
+                    amount: '',//储值金额
                     totalAmount: '',//实际增加金额
                     paymentTypeId: '',//支付方式
                     remark: '',
                 },
                 //表单校验
                 ruleValidate: {
-                    actAmount: [
+                    amount: [
                         { required: true, message: '储值金额不能为空', trigger: 'blur' },
                         { max: 10, message: '储值金额不能超过10字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateToTotalAmount, trigger: 'blur' },
                     ],
                     paymentTypeId: [
                         { required: true, message: '收款方式不能为空', trigger: 'change' },
@@ -150,10 +152,9 @@
                         let params = {
                             memberId: this.detail.id,
                             cardId: this.detail.cardId,
-                            accounId: this.accountInfo.id,
-                            actAmount: this.formData.actAmount,
-                            totalAmount: this.formData.totalAmount,
+                            amount: this.formData.amount,
                             paymentTypeId: this.formData.paymentTypeId,
+                            accountTypeId: this.accountInfo.accountDefineId,
                             remark: this.formData.remark,
                         };
                         console.log(params)
@@ -175,13 +176,33 @@
                 })
             },
 
+            //失焦获取实际金额
+            getTotalAmount () {
+                let params = {
+                    accountTypeId: this.accountInfo.accountDefineId,
+                    amount: this.formData.amount,
+                };
+                this.getRechargeActMoney(params);
+            },
+
+            //充值时获取实际所得到的金额
+            getRechargeActMoney ( params ) {
+                ajax.post('getRechargeActMoney', params).then(res => {
+                    if( res.success ) {
+                       this.formData.totalAmount = res.data;
+                    } else {
+                        this.$Message.warning(res.message|| 'getRechargeActMoney 失败！');
+                    }
+                })
+            },
+
             //关闭模态框
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.accountInfo = {};
                 this.formData = {
-                    actAmount: '',
+                    amount: '',
                     totalAmount: '',
                     paymentTypeId: '',
                     remark: '',
