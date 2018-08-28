@@ -13,7 +13,7 @@ export const columnData = [
     },
     {
         title: '积分比例（人民币：积分数）',
-        width: 210,
+        width: 230,
         field: 'prodScoreRate'
     },
     {
@@ -28,6 +28,6 @@ export const columnData = [
     },
     {
         title: '操作',
-        width: 150,
+        width: 190,
     }
 ];

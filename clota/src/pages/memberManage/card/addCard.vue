@@ -650,6 +650,8 @@
             .ivu-form{
                 padding: 40px 90px 80px 0;
                 text-align: center;
+                width: 1090px;
+                margin: 0 auto;
             }
 
             .ivu-form-item-wrap{

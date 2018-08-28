@@ -10,7 +10,7 @@
         </div>
 
         <div class="rate-content">
-            <div class="title-wrap">店铺：{{ memberInfo.orgName }}</div>
+            <div class="title-wrap">店铺：{{ memberInfo.deptName }}</div>
             <div class="filter-wrap">
                 <Input v-model.trim="queryParams.keyword"
                        placeholder="请输入产品名称"
@@ -30,24 +30,17 @@
                     :border="true"
                     @query-data="queryList">
                     <el-table-column
-                        slot="column4"
+                        slot="column5"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <!--<div class="operation">-->
-                                <!--<span class="span-blue"-->
-                                      <!--@click="showModifyModal(scope.row)"-->
-                                      <!--v-if="('prodDiscountRate' in scope.row) && ('prodScoreRate' in scope.row)">修改积分、折扣率</span>-->
-                                <!--<span class="span-blue"-->
-                                      <!--@click="showModifyModal(scope.row)"-->
-                                      <!--v-else>设置积分、折扣率</span>-->
-                            <!--</div>-->
                             <ul class="operate-list">
-                                <li v-if="('prodDiscountRate' in scope.row) && ('prodScoreRate' in scope.row)"
-                                    @click="showModifyModal(scope.row)">修改积分、折扣率</li>
-                                <li v-else @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                                <li
+                                    v-if="!isNotEmpty(scope.row.prodScoreRate) || !isNotEmpty(scope.row.prodDiscountRate)"
+                                    @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                                <li v-else @click="showModifyModal(scope.row)">修改积分、折扣率</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -58,6 +51,7 @@
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
             ref="modifyRate"
+            :integra-data="integraData"
             title="设置卡级店铺消费积分和折扣权益"
             :confirm-operate="setStoreDiscount">
         </modify-rate-modal>
@@ -90,34 +84,7 @@
                     keyword: '',
                 },
                 // 表格数据
-                tableData: [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ],
+                tableData: [],
                 //总条数
                 total: 50,
                 //表头配置
@@ -147,21 +114,21 @@
             },
 
             /**
-             * 查询店铺信息
+             * 查询产品信息
              */
             queryList () {
                 ajax.post('memberDiscountOfProductList',{
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
-                    deptDiscountId : this.memberInfo.levelId,
+                    deptDiscountId : this.memberInfo.id,
                     productName : this.queryParams.keyword,
                     orgId : this.memberInfo.orgId,
                 }).then(res => {
                     if(res.success){
-                        // this.tableData = res.data.data ? res.data.data : [];
+                        this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     }else{
-                        // this.tableData =  [];
+                        this.tableData =  [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
@@ -197,11 +164,10 @@
              */
             setStoreDiscount (formData,callback) {
                 ajax.post('setMemberDiscountOfProduct',{
-                    deptDiscountId : this.memberInfo.levelId,
-                    orgIds : this.memberInfo.orgId,
-                    discountRate : formData.discountRate,
-                    scoreRate : formData.scoreRate,
-                    productIds : this.currentData.productId,
+                    id : this.currentData.id,
+                    prodDiscountRate : formData.discountRate,
+                    prodScoreRate : formData.scoreRate,
+                    remark : formData.remark
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('设置成功');
@@ -212,7 +178,14 @@
                 }).finally(() => {
                     callback();
                 });
-            }
+            },
+            /**
+             * 判断val是否为空
+             * @param val
+             */
+            isNotEmpty(val) {
+                return val !== null && val !== '' && val !== undefined;
+            },
         },
         computed : {
             //表格是否需要显示
@@ -235,6 +208,18 @@
                         }
                     }
                 ]
+            },
+            //传递给模态框的积分折扣率信息
+            integraData () {
+                if(this.currentData && Object.keys(this.currentData).length > 0){
+                    return {
+                        discountRate : this.currentData.prodDiscountRate,
+                        remark : this.currentData.remark,
+                        scoreRate : this.currentData.prodScoreRate,
+                    }
+                }else{
+                    return {};
+                }
             }
         }
     }

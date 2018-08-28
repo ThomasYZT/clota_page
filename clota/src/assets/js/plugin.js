@@ -128,7 +128,7 @@ plugin.install = function (Vue, options) {
                     return emptyVal;
                 } else if (value instanceof Date) {
                     return value.format(format);
-                } else if (validator.isNumber(value)) {
+                } else if (klwkUi.validator.isNumber(value)) {
                     return new Date(Number(value)).format(format);
                 } else if (typeof value === 'string') {
                     return value.toDate().format(format);

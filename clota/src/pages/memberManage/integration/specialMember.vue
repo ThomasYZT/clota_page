@@ -32,6 +32,16 @@
                     :auto-height="true"
                     :table-com-min-height="250"
                     @query-data="getStaffLevelInfo">
+                       <el-table-column
+                           slot="column2"
+                           slot-scope="row"
+                           :label="row.title"
+                           :width="row.width"
+                           :min-width="row.minWidth">
+                           <template slot-scope="scope">
+                               {{(scope.row.scoreRate !== '' && scope.row.scoreRate !== null ? (scope.row.scoreRate + ':' + 1) : '') | contentFilter}}
+                           </template>
+                       </el-table-column>
                     <el-table-column
                         slot="column5"
                         slot-scope="row"
@@ -58,7 +68,7 @@
         <modify-rate-modal
             ref="modifyRate"
             title="特殊会员积分折扣率设置"
-            :integra-data="empIntegraData"
+            :integra-data="currentData"
             :confirm-operate="setStoreDiscount">
             <div class="ivu-form-item-wrap">
                 <Form-item label="特殊会员类型" style="margin-bottom: 10px!important;">
@@ -150,7 +160,8 @@
              */
             cotactMemberInfo (rowData) {
                 this.currentData = rowData;
-                this.getSpecialMemberDiscount(rowData);
+                this.$refs.modifyRate.show();
+                // this.getSpecialMemberDiscount(rowData);
             },
              /**
              * 查询所有特殊会员类别与普通会员的对照表
@@ -193,8 +204,9 @@
              */
             setStoreDiscount (formData,callback) {
                 ajax.post('setMemberDiscountOfMember',{
-                    levelId : this.currentData.levelId,
-                    staffTypeId : this.currentData.id,
+                    // levelId : this.currentData.levelId,
+                    // staffTypeId : this.currentData.id,
+                    id : this.currentData.id,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
                 }).then(res => {

@@ -220,6 +220,14 @@
                     return 'auto';
                 }
             }
+        },
+        watch : {
+            //如果表格数据改变了，表格数据长度为0，但是不是在第一页，需要重新获取数据
+            tableData (newVal,oldVal) {
+                if(newVal && newVal.length === 0 && this.pageNo !== 1){
+                    this.handleCurrentChange(1);
+                }
+            }
         }
 
     }

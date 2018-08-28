@@ -27,8 +27,19 @@
                     :show-pagination="true"
                     :column-data="columnData"
                     :table-data="tableData"
+                    :total-count="totalCount"
                     :border="true"
                     @query-data="queryList">
+                    <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{(scope.row.deptScoreRate !== '' && scope.row.deptScoreRate !== null ? (scope.row.deptScoreRate + ':' + 1) : '') | contentFilter}}
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         slot="column4"
                         slot-scope="row"
@@ -37,7 +48,10 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <ul class="operate-list">
-                                <li @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                                <li
+                                    v-if="!isNotEmpty(scope.row.deptScoreRate) || !isNotEmpty(scope.row.deptDiscountRate)"
+                                    @click="showModifyModal(scope.row)">设置积分、折扣率</li>
+                                <li v-else @click="showModifyModal(scope.row)">修改积分、折扣率</li>
                                 <li @click="setProductRate(scope.row)">按产品设置积分、折扣率</li>
                             </ul>
                         </template>
@@ -48,6 +62,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
+            :integra-data="integraData"
             ref="modifyRate"
             title="设置卡级店铺消费积分和折扣权益"
             :confirm-operate="setStoreDiscount">
@@ -81,35 +96,7 @@
                     keyword: '',
                 },
                 // 表格数据
-                tableData: [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ],
+                tableData: [],
                 //总条数
                 total: 50,
                 //会员级别id
@@ -169,11 +156,11 @@
                 ajax.post('memberDiscountOfStoreList',{
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
-                    levelDiscountId : this.memberInfo.levelId,
+                    levelDiscountId : this.memberInfo.id,
                     orgName : this.queryParams.keyword,
                 }).then(res => {
                     if(res.success){
-                        // this.tableData = res.data.data ? res.data.data : [];
+                        this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     }else{
                         this.tableData =  [];
@@ -212,10 +199,12 @@
              */
             setStoreDiscount (formData,callback) {
                 ajax.post('setMemberDiscountOfStore',{
-                    levelDiscountId : this.memberInfo.levelId,
-                    orgIds : this.currentData.orgId,
-                    discountRate : formData.discountRate,
-                    scoreRate : formData.scoreRate,
+                    // levelDiscountId : this.memberInfo.levelId,
+                    id : this.currentData.id,
+                    // orgIds : this.currentData.orgId,
+                    deptDiscountRate : formData.discountRate,
+                    deptScoreRate : formData.scoreRate,
+                    remark : formData.remark
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('设置成功');
@@ -226,12 +215,31 @@
                 }).finally(() => {
                     callback();
                 });
-            }
+            },
+            /**
+             * 判断val是否为空
+             * @param val
+             */
+            isNotEmpty(val) {
+                return val !== null && val !== '' && val !== undefined;
+            },
         },
         computed : {
             //表格是否需要显示
             tableCanMount () {
                 return this.memberInfo && !!this.memberInfo.levelId;
+            },
+            //传递给模态框的积分折扣率信息
+            integraData () {
+                if(this.currentData && Object.keys(this.currentData).length > 0){
+                    return {
+                        discountRate : this.currentData.deptDiscountRate,
+                        remark : this.currentData.remark,
+                        scoreRate : this.currentData.deptScoreRate,
+                    }
+                }else{
+                    return {};
+                }
             }
         }
     }

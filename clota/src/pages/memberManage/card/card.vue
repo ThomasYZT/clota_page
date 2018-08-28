@@ -50,7 +50,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.effectiveTime}}-{{scope.row.expireTime}}
+                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}-{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
                 </template>
             </el-table-column>
             <el-table-column

@@ -4,11 +4,11 @@ export const columnData = [
     {
         title: '店铺名称',
         minWidth: 150,
-        field: 'orgName'
+        field: 'deptName'
     },
     {
         title: '积分比例（人民币：积分数）',
-        width: 210,
+        width: 230,
         field: 'deptScoreRate'
     },
     {

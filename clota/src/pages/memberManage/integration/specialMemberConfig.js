@@ -24,17 +24,17 @@ export const employeeTrustHead = [
     {
         title: '积分比例（人民币：积分数）',
         minWidth: 220,
-        field: 'staffDesc'
+        field: 'scoreRate'
     },
     {
         title: '折扣率',
         minWidth: 150,
-        field: 'staffDesc'
+        field: 'discountRate'
     },
     {
         title: '备注',
         minWidth: 150,
-        field: 'staffDesc'
+        field: 'remark'
     },
     {
         title: '操作',
