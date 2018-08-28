@@ -12,9 +12,6 @@
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
                     placeholder="请选择账户类型">
-                <Option value='all'>
-                    全部
-                </Option>
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -42,7 +39,7 @@
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
                         :value="item.name">
-                    {{item.desc}}
+                    {{$t(item.desc)}}
                 </Option>
             </Select>
             <br>
@@ -254,7 +251,7 @@
              */
             getEnumFieldShow ( name, val ) {
                 var obj = this.enumData[name].find((item) => val === item.name);
-                return obj.desc
+                return this.$t(obj.desc)
             },
 
             //重置查询数据
@@ -283,7 +280,12 @@
                     }
                 }).catch(() => {
                     this.accountList = [];
-                })
+                }).finally(() => {
+                    this.accountList.unshift({
+                        id : 'all',
+                        accountName : '全部'
+                    });
+                });
             },
             /**
              * 获取路由信息

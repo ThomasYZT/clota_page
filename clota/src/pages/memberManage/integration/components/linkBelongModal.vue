@@ -11,8 +11,8 @@
         <div class="modal-body">
             <div class="form-item-wrap"><label>用户姓名</label><span>{{memberInfo.custName}}</span></div>
             <div class="form-item-wrap"><label>手机号</label><span>{{memberInfo.phoneNum}}</span></div>
-            <div class="form-item-wrap"><label>会员编号</label><span>{{memberInfo.cardCode}}</span></div>
-            <div class="form-item-wrap"><label>身份证号</label><span>{{memberInfo.cardCode}}</span></div>
+            <div class="form-item-wrap"><label>会员编号</label><span>{{memberInfo.id}}</span></div>
+            <div class="form-item-wrap"><label>身份证号</label><span>{{memberInfo.idCardNumber}}</span></div>
             <div class="form-item-wrap">
                 <label>关联所属类别</label>
                 <Select v-model="staffTypeId">
@@ -79,6 +79,7 @@
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('关联成功');
+                        this.$emit('fresh-data');
                     }else{
                         this.$Message.error('关联失败');
                     }

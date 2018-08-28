@@ -47,7 +47,8 @@
 
         <!--总体积分率折扣率设置modal-->
         <link-belong-modal ref="linkBelong"
-                           :member-info="currentData">
+                           :member-info="currentData" 
+                           @fresh-data="queryList">
         </link-belong-modal>
 
     </div>
@@ -110,7 +111,7 @@
                 this.$refs.linkBelong.show();
             },
             /**
-             * 获取所有员工信息
+             * 获取所有会员信息
              */
             queryList () {
                 ajax.post('queryMemberPage',{

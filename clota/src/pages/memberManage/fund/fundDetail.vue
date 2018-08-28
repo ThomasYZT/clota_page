@@ -6,6 +6,7 @@
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
                     placeholder="请选择账户类型">
+                <!-- <Option value="all" key='all'>全部</Option> -->
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -83,7 +84,7 @@
                 // 查询数据
                 queryParams: {
                     //账户id
-                    accountTypeId : '',
+                    accountTypeId : 'all',
                     //关键字
                     keyword: '',
                     //交易类型
@@ -126,8 +127,8 @@
              */
             queryList () {
                 ajax.post('queryOrgAccountChange',{
-                    accountTypeId : this.queryParams.accountTypeId,
-                    operType : 'adjustment',
+                    accountTypeId : this.queryParams.accountTypeId === 'all' ? '' : this.queryParams.accountTypeId,
+                    operType : this.queryParams.tradeType === 'all' ? '' : this.queryParams.tradeType,
                     startDate : '',
                     endDate : '',
                     pageNo : this.pageNo,
@@ -166,15 +167,20 @@
                 }).then(res => {
                     if(res.success){
                         this.accountList = res.data.data ? res.data.data : [];
-                        if(this.accountList.length > 0){
-                            this.queryParams.accountTypeId = this.accountList[0].id;
-                        }
+                        // if(this.accountList.length > 0){
+                        //     this.queryParams.accountTypeId = this.accountList[0].id;
+                        // }
                     }else{
                         this.accountList = [];
                     }
                 }).catch(() => {
                     this.accountList = [];
-                })
+                }).finally(() => {
+                    this.accountList.unshift({
+                        id : 'all',
+                        accountName : '全部'
+                    });
+                });
             },
             /**
              * 获取路由信息
