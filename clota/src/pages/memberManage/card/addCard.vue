@@ -175,9 +175,13 @@
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择商品-->
                     <Form-item label="选择商品">
-                        <Select v-model.trim="formData.conditionProductId" placeholder="请选择">
-                            <Option value="1">
-                                1
+                        <Select v-model.trim="formData.conditionProductId" 
+                                :multiple="true" 
+                                placeholder="请选择">
+                            <Option :value="item.id" 
+                                    v-for="item in productList" 
+                                    :key="item.id" >
+                                {{item.productName}}
                             </Option>
                         </Select>
                     </Form-item>
@@ -348,6 +352,8 @@
                 channelSetList : [],
                 //可用店铺列表
                 listAmountRange : [],
+                //产品列表
+                productList : [],
                 // 表单数据
                 formData: {
                     id : '',
@@ -373,7 +379,7 @@
                     //可用渠道id
                     conditionChannelId: [],
                     //商品
-                    conditionProductId: '',
+                    conditionProductId: [],
                     //是否与会员折扣权益同时使用
                     isDiscountCoexist : 'false',
                     //代金券在折扣前后使用设置
@@ -539,7 +545,7 @@
                         expireTime : this.formData.expireTime.format('yyyy-MM-dd'),
                         price : this.formData.price,
                         conditionChannelId : this.formData.conditionChannelId.join(','),
-                        conditionProductId : this.formData.conditionProductId,
+                        conditionProductId : this.formData.conditionProductId.join(','),
                         remark : this.getDiscountRemark(),
                         conditionOrgId : this.formData.conditionOrgId,
                     }
@@ -568,7 +574,7 @@
                 if(params && Object.keys(params).length > 0){
                     for(let item in params){
                         if(item in this.formData){
-                            if(['conditionChannelId','conditionOrgId'].includes(item)){
+                            if(['conditionChannelId','conditionOrgId','conditionProductId'].includes(item)){
                                 this.formData[item] = params[item] ? params[item].split(',') : '';
                             }else{
                                 this.formData[item] = params[item];
@@ -624,8 +630,12 @@
                     orgId : orgId
                 }).then(res => {
                     if(res.success){
-
+                        this.productList = res.data.data ? res.data.data : [];
+                    }else{
+                        this.productList = [];
                     }
+                }).catch(err => {
+                    this.productList = [];
                 });
             },
             /**
