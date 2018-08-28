@@ -150,9 +150,9 @@
             show ( data ) {
                 if(data && data.id){
                     this.formData = defaultsDeep({}, data);
-                    this.formData.levelNum = this.formData.levelNum+'';
-                    this.formData.lowerGrowthValue = this.formData.lowerGrowthValue+'';
-                    this.formData.highestGrowthValue = this.formData.highestGrowthValue+'';
+                    this.formData.levelNum = this.formData.levelNum > -1 ? this.formData.levelNum+'' : '';
+                    this.formData.lowerGrowthValue = this.formData.lowerGrowthValue > -1 ? this.formData.lowerGrowthValue+'' : '';
+                    this.formData.highestGrowthValue = this.formData.highestGrowthValue > -1 ? this.formData.highestGrowthValue+'' : '';
                 }
                 this.visible = true;
             },

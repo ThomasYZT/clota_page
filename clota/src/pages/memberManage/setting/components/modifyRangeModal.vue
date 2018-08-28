@@ -14,6 +14,7 @@
 
                 <template v-if="type === 'money'">
                     <table-com
+                        ref="moneyMultiTablePlug"
                         :table-com-min-height="450"
                         :column-data="moneyColumnData"
                         :table-data="tableData"
@@ -34,6 +35,7 @@
 
                 <template v-if="type === 'send'">
                     <table-com
+                        ref="sendMultiTablePlug"
                         :table-com-min-height="450"
                         :column-data="sendColumnData"
                         :table-data="tableData"
@@ -125,6 +127,8 @@
                 }
                 if( data ){
                     this.formData = defaultsDeep({}, data.item);
+                    this.formData.corpusAppliedOrgId = data.item.corpusAppliedOrgId || [];
+                    this.formData.donateAppliedOrgId = data.item.donateAppliedOrgId || [];
                     this.index = data.index;
                 }
                 this.visible = true;
@@ -142,7 +146,7 @@
                     });
                 } else {
                     this.multipleSelection.forEach( (item, index) => {
-                        this.formData.donateAppliedOrgId.push({ id: item.id });
+                        this.formData.corpusAppliedOrgId.push({ id: item.id });
                     });
                 }
                 let params = {
@@ -176,6 +180,12 @@
                 this.title = '默认账户本金可使用范围设置';
                 this.formData = {};
                 this.multipleSelection = [];
+                if( this.$refs.moneyMultiTablePlug ){
+                    this.$refs.moneyMultiTablePlug.clearSelection();
+                }
+                if( this.$refs.sendMultiTablePlug ){
+                    this.$refs.sendMultiTablePlug.clearSelection();
+                }
                 this.index = null;
             },
 

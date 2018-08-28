@@ -6,6 +6,7 @@
                   v-if="tableMaxHeight !== null"
                   :span-method="spanMethod"
                   style="width: 100%"
+                  ref="multipleTable"
                   :border="border"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
@@ -210,7 +211,11 @@
                     pageNo : this.pageNo,
                     pageSize : this.showPagination ? this.pageSize : this.maxPageSize
                 });
-            }
+            },
+            //清空选择
+            clearSelection () {
+                this.$refs.multipleTable.clearSelection();
+            },
         },
         created () {
             this.queryList();

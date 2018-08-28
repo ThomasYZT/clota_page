@@ -87,6 +87,18 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    slot="column7"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                        <span>{{ scoped.row.moneyBalance ? scoped.row.moneyBalance.toCurrency()+'元' : '' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column8"
                     :label="row.title"
                     :prop="row.field"

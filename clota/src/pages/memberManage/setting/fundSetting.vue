@@ -45,17 +45,7 @@
                                    style="left: 92px;"
                                    v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
                         </span>
-                        <span :class="{'ivu-form-item-error': error.integrateError}">
-                             <Input v-model.trim="settingData.scoreGrowthFromCharging.integrate"
-                                    :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
-                                    @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.integrate,'integrateError')"
-                                    type="text"
-                                    class="single-input"
-                                    placeholder="请输入"/>积分
-                             <span class="ivu-form-item-error-tip"
-                                   style="left: 256px;"
-                                   v-if="error.integrateError">{{error.integrateError}}</span>
-                        </span>
+                        <span> 1 积分</span>
                     </div>
                     <div class="check-group-wrap">储值
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
@@ -69,17 +59,7 @@
                                    style="left: 92px;"
                                    v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
                         </span>
-                        <span :class="{'ivu-form-item-error': error.growthError}">
-                             <Input v-model.trim="settingData.scoreGrowthFromCharging.growth"
-                                    :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
-                                    @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.growth,'growthError')"
-                                    type="text"
-                                    class="single-input"
-                                    placeholder="请输入"/>成长值
-                             <span class="ivu-form-item-error-tip"
-                                   style="left: 256px;"
-                                   v-if="error.growthError">{{error.growthError}}</span>
-                        </span>
+                        <span> 1 成长值</span>
                     </div>
                 </div>
             </div>
@@ -354,9 +334,7 @@
                 //输入框校验错误显示
                 error: {
                     moneyToIntegrateError: '',//储值额-积分
-                    integrateError: '',//积分
                     moneyToGgowthError: '',//储值额--成长值
-                    growthError: '',//成长值
                     storedTimeError: '',//储值获得积分、成长值生效设置
                 },
             }
@@ -391,7 +369,7 @@
             //获取储值赠送金额应用范围
             this.listAccount();
             //获取储值账户-(本金/赠送金额)应用范围
-            this.listAllSubStore();
+            this.getSubNode();
         },
         methods: {
 
@@ -404,8 +382,10 @@
                 })
             },
             //获取储值账户-(本金/赠送金额)应用范围
-            listAllSubStore () {
-                ajax.post('listAllSubStore', {}).then(res => {
+            getSubNode () {
+                ajax.post('getSubNode', {
+                    orgType: 'scenic'
+                }).then(res => {
                     if( res.success ) {
                         this.listAmountRangeTable = res.data || [];
                     }
@@ -477,16 +457,14 @@
                     return false
                 }
 
-                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'false' && (
-                        !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToIntegrate) ||
-                        !this.validateInput(this.settingData.scoreGrowthFromCharging.integrate) ||
-                        !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToGgowth) ||
-                        !this.validateInput(this.settingData.scoreGrowthFromCharging.growth) )
-                    ){
+                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'false' &&
+                    !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToIntegrate) ){
                     this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToIntegrate, 'moneyToIntegrateError');
-                    this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.integrate, 'integrateError');
+                    return false
+                }
+                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'false' &&
+                    !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToGgowth) ){
                     this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGgowth, 'moneyToGgowthError');
-                    this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.growth, 'growthError');
                     return false
                 }
 
@@ -665,11 +643,11 @@
                 let item = {
                     accountBelonging: '',
                     accountName: '',
-                    unit: '',
-                    rate: '',
-                    rateNumerator: '',
-                    rateDenominator: '',
-                    exchangeToCash: 'true',
+                    unit: '元',
+                    rate: '1',
+                    rateNumerator: '1',
+                    rateDenominator: '1',
+                    exchangeToCash: 'false',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
                 };

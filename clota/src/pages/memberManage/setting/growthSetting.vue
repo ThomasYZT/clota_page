@@ -21,16 +21,7 @@
                                 style="left: 40px;"
                                 v-if="error.growthSetError">{{error.growthSetError}}</span>
                         </span>
-                        <span :class="{'ivu-form-item-error': error.growthSetValueError}">
-                            <Input v-model.trim="settingData.growthRateWhileConsume.growthSetValue"
-                                   @on-blur="checkInputBlurFunc(settingData.growthRateWhileConsume.growthSetValue,'growthSetValueError')"
-                                   type="text"
-                                   class="single-input"
-                                   placeholder="请输入"/>成长值
-                            <span class="ivu-form-item-error-tip"
-                                 style="left: 207px;"
-                                 v-if="error.growthSetValueError">{{error.growthSetValueError}}</span>
-                        </span>
+                        <span> 1 成长值</span>
                     </span>
                 </div>
             </div>
@@ -123,7 +114,6 @@
                 //输入框校验错误显示
                 error: {
                     growthSetError: '',//成长值设置--消费值
-                    growthSetValueError: '',//成长值设置--成长值
                     growthTimeError: '',//成长值生效设置
                 },
             }
@@ -196,11 +186,6 @@
             checkInputFunc () {
                 if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSet)){
                     this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError');
-                    return false
-                }
-
-                if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSetValue)){
-                    this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSetValue, 'growthSetValueError');
                     return false
                 }
 

@@ -154,7 +154,10 @@
             show ( data ) {
                 this.index = this.length;
                 if( data ){
-                    this.formData = defaultsDeep({}, data.item);
+                    let formData = defaultsDeep({}, data.item);
+                    formData.rateDenominator = formData.rateDenominator ? formData.rateDenominator+"" : "";
+                    formData.rateNumerator = formData.rateNumerator ? formData.rateNumerator+"" : "";
+                    this.formData = defaultsDeep({}, formData);
                     this.index = data.index;
                 }
                 this.visible = true;
@@ -168,10 +171,12 @@
                             accountBelonging: this.formData.accountBelonging,
                             accountName: this.formData.accountName,
                             unit: this.formData.unit,
-                            rate: toFixed(Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)),
+                            rateDenominator: this.formData.rateDenominator,
+                            rateNumerator: this.formData.rateNumerator,
+                            rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
                             exchangeToCash: this.formData.exchangeToCash,
-                            corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
-                            donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
+                            corpusAppliedOrgId: this.formData.corpusAppliedOrgId,
+                            donateAppliedOrgId: this.formData.donateAppliedOrgId,
                         };
                         console.log(params)
                         this.updateMemberAccountDefine(params);
@@ -184,11 +189,11 @@
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('新增成功！');
+                        this.$Message.success('修改成功！');
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.warning(res.message || 'updateMemberAccountDefine 新增失败！');
+                        this.$Message.warning(res.message || 'updateMemberAccountDefine 修改失败！');
                     }
                 })
             },

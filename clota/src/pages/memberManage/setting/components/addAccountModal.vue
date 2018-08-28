@@ -23,7 +23,7 @@
                 <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                     <div class="ivu-form-item-wrap">
                         <Form-item label="账户归属" prop="accountBelonging">
-                            <Select v-model="formData.accountBelonging">
+                            <Select v-model="formData.accountBelonging" @on-change="changeAccountBelonging">
                                 <Option v-for="(item, index) in tableData"
                                         :value="item.id"
                                         :key="index">
@@ -67,6 +67,7 @@
             <!--step 2-->
             <template v-if="step === 1">
                 <table-com
+                    ref="moneyMultiTablePlug"
                     :table-com-min-height="380"
                     :column-data="moneyColumnData"
                     :table-data="tableData"
@@ -88,6 +89,7 @@
             <!--step 3-->
             <template v-if="step === 2">
                 <table-com
+                    ref="sendMultiTablePlug"
                     :table-com-min-height="380"
                     :column-data="sendColumnData"
                     :table-data="sendData"
@@ -181,11 +183,11 @@
                 formData: {
                     accountBelonging: '',
                     accountName: '',
-                    unit: '',
-                    rate: '',
-                    rateNumerator: '',
-                    rateDenominator: '',
-                    exchangeToCash: 'true',
+                    unit: '元',
+                    rate: '1',
+                    rateNumerator: '1',
+                    rateDenominator: '1',
+                    exchangeToCash: 'false',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
                 },
@@ -255,6 +257,11 @@
                 this.visible = true;
             },
 
+            changeAccountBelonging (val) {
+                let obj = this.tableData.find( item => val === item.id );
+                this.formData.accountName = obj ? obj.orgName : '';
+            },
+
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
@@ -288,6 +295,12 @@
                 };
                 this.multipleSelection = [];
                 this.index = null;
+                if( this.$refs.moneyMultiTablePlug ){
+                    this.$refs.moneyMultiTablePlug.clearSelection();
+                }
+                if( this.$refs.sendMultiTablePlug ){
+                    this.$refs.sendMultiTablePlug.clearSelection();
+                }
                 if(this.step === 0){
                     this.$refs.formValidate.resetFields();
                 }
@@ -320,7 +333,9 @@
                     accountBelonging: this.formData.accountBelonging,
                     accountName: this.formData.accountName,
                     unit: this.formData.unit,
-                    rate: toFixed(Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)),
+                    rateDenominator: this.formData.rateDenominator,
+                    rateNumerator: this.formData.rateNumerator,
+                    rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
                     exchangeToCash: this.formData.exchangeToCash,
                     corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
                     donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),

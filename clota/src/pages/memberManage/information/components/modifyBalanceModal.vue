@@ -233,13 +233,12 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
+                            memberId: this.detail.id,
                             cardId: this.detail.cardId,
                             accountId: this.accountInfo.id,
                             accountTypeId: this.accountInfo.accountDefineId,
-                            corpusOptSign: this.formData.corpusOptSign,
-                            corpusAmount: this.formData.corpusAmount,
-                            donateOptSign: this.formData.donateOptSign,
-                            donateAmount: this.formData.donateAmount,
+                            amount: this.formData.corpusOptSign==='sub' ? '-'+this.formData.corpusAmount : this.formData.corpusAmount,
+                            donateAmount: this.formData.donateOptSign==='sub' ? '-'+this.formData.donateAmount : this.formData.donateAmount,
                             reasonId: this.formData.reasonId,
                             remark: this.formData.remark,
                         };

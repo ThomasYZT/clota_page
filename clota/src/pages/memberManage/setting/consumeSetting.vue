@@ -80,18 +80,7 @@
                                v-if="error.donateIntegrateError">{{error.donateIntegrateError}}</span>
                         </span>
                         积分
-                        <span :class="{'ivu-form-item-error': error.donateMoneyError}">
-                            <Input v-model.trim="settingData.scoreExToCharge.donateMoney"
-                                    :disabled="!settingData.scoreExToCharge.donateType"
-                                    @on-blur="checkInputBlurFunc(settingData.scoreExToCharge.donateMoney,'donateMoneyError')"
-                                    type="text"
-                                    placeholder="请输入"
-                                    class="single-input"/>
-                            <span class="ivu-form-item-error-tip"
-                               style="left: 332px;"
-                               v-if="error.donateMoneyError">{{error.donateMoneyError}}</span>
-                        </span>
-                        元
+                        <span> 1 元</span>
                     </div>
                 </div>
             </div>
@@ -147,7 +136,7 @@
                     scoreExToCharge: {
                         donateType: true,
                         donateIntegrate: '',
-                        donateMoney: '',
+                        donateMoney: '1',
                     },
                     //退款时积分退回设置
                     scoreInsufficientNotification: true,
@@ -160,7 +149,6 @@
                     moneyError: '',//积分交易抵扣规则--多少金额
                     highProportionError: '',//积分交易抵扣规则--最多能抵多少
                     donateIntegrateError: '',
-                    donateMoneyError: '',
                 },
             }
         },
@@ -255,27 +243,29 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
+
                 if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    (
-                        !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.integrate) ||
-                        !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.money) ||
-                        !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.highProportion)
-                    )
-                  ){
+                    !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.integrate)){
                     this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.integrate, 'integrateError');
+                    return false
+                }
+
+                if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
+                    !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.money)){
                     this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.money, 'moneyError');
+                    return false
+                }
+
+                if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
+                    !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.highProportion)){
                     this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.highProportion, 'highProportionError');
                     return false
                 }
 
                 if(this.settingData.scoreExToCharge.donateType &&
-                    (
-                        !this.validateInput(this.settingData.scoreExToCharge.donateIntegrate) ||
-                        !this.validateInput(this.settingData.scoreExToCharge.donateMoney)
-                    )
+                    !this.validateInput(this.settingData.scoreExToCharge.donateIntegrate)
                 ){
                     this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.donateIntegrate, 'donateIntegrateError');
-                    this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.donateMoney, 'donateMoneyError');
                     return false
                 }
 
