@@ -2,8 +2,8 @@
 
 export const columnData = [
     {
-        title: '编码',
-        minWidth: 240,
+        title: '会员编号',
+        minWidth: 260,
         field: 'cardCode'
     },
     {
@@ -13,7 +13,7 @@ export const columnData = [
     },
     {
         title: '手机号',
-        minWidth: 130,
+        minWidth: 140,
         field: 'phoneNum'
     },
     {
@@ -29,17 +29,12 @@ export const columnData = [
     {
         title: '账户类型',
         minWidth: 120,
-        field: 'moneyBalance'
-    },
-    {
-        title: '储值信息',
-        minWidth: 120,
-        field: 'moneyBalance'
+        field: 'accountTypeName'
     },
     {
         title: '账户可用金额',
-        minWidth: 120,
-        field: 'moneyBalance'
+        minWidth: 130,
+        field: 'endingBalance'
     },
     {
         title: '操作',

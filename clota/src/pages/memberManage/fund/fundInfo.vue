@@ -12,7 +12,9 @@
                     <img v-else src="../../../assets/images/icon-common-account.svg" alt="">
                 </div>
                 <div class="fund-list">
-                    <div class="account-name">{{item.accountName}}储值总额</div>
+                    <div class="account-name" v-w-title="item.accountName + '储值总额（' + item.unit +'）'">
+                        {{item.accountName}}储值总额（{{item.unit}}）
+                    </div>
                     <div class="account-money">{{item.amount | moneyFilter}}</div>
                 </div>
             </div>
@@ -103,12 +105,13 @@
             border-radius: 2px;
             margin-bottom: 30px;
 
-            &:nth-of-type(3){
+            &:nth-of-type(3n){
                 margin: 0 5%;
             }
 
             .account-detail{
                 @include block_outline($height : 138px);
+                padding-right: 10px;
 
                 .img-area{
                     @include block_outline(78px);
@@ -127,6 +130,7 @@
 
                     .account-name{
                         @include block_outline($height : 42px);
+                        @include overflow_tip();
                         line-height: 24px;
                         padding: 9px 0;
                         font-size: $font_size_18px;

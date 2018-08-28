@@ -48,90 +48,17 @@
                     {{$t(scope.row['gender'])}}
                 </template>
             </el-table-column>
-            <!--<el-table-column-->
-                <!--slot="column5"-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<div class="operation">-->
-                        <!--<span class="span-blue" @click="toDetail(scope.row)">详情</span>-->
-                    <!--</div>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                slot="column7"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.endingBalance}}{{unit}}
+                </template>
+            </el-table-column>
         </table-com>
-        <!--<div class="table-wrap">-->
-            <!--<el-table-->
-                <!--:data="tableData"-->
-                <!--:border="true"-->
-                <!--max-height="450"-->
-                <!--style="width: 100%">-->
-                <!--<el-table-column-->
-                    <!--prop="id"-->
-                    <!--label="会员编码">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="name"-->
-                    <!--label="会员姓名">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="mobile"-->
-                    <!--label="手机号">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="sex"-->
-                    <!--label="性别">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="level"-->
-                    <!--label="交易类型">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="balance"-->
-                    <!--label="本次交易金额"-->
-                    <!--width="150">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span :class="scope.row.balance && scope.row.balance > 0 ? 'green-color' : 'red-color'">{{showNumFunc(scope.row.balance)}}</span>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="send"-->
-                    <!--label="本次储值赠送金额"-->
-                    <!--width="150">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span :class="scope.row.send && scope.row.send > 0 ? 'green-color' : 'red-color'">{{showNumFunc(scope.row.send)}}</span>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="balance"-->
-                    <!--label="交易后账户余额 ">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="time"-->
-                    <!--label="交易时间">-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--prop="recorder"-->
-                    <!--label="操作人员记录">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{scope.row.recorder || '-'}}</span>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-            <!--</el-table>-->
-        <!--</div>-->
-        <!--<div class="page-wrap" v-if="tableData.length > 0">-->
-            <!--<el-pagination-->
-                <!--@size-change="handleSizeChange"-->
-                <!--@current-change="handleCurrentChange"-->
-                <!--:current-page="parseInt(queryParams.pageNo)"-->
-                <!--:page-sizes="[10, 20, 50, 100]"-->
-                <!--:page-size="parseInt(queryParams.pageSize)"-->
-                <!--layout="total, sizes, prev, pager, next, jumper"-->
-                <!--:total="parseInt(total)">-->
-            <!--</el-pagination>-->
-        <!--</div>-->
-
 
     </div>
 </template>
@@ -267,6 +194,15 @@
             //表格是否显示
             tableShow () {
                 return this.queryParams.accountTypeId;
+            },
+            //获取当前选择账户的
+            unit () {
+                for(let i = 0,j = this.accountList.length;i < j;i++){
+                    if(this.queryParams.accountTypeId === this.accountList[i].id){
+                        return this.accountList[i]['unit'];
+                    }
+                }
+                return '';
             }
         }
     }

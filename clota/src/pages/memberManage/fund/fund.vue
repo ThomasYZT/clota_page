@@ -12,6 +12,9 @@
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
                     placeholder="请选择账户类型">
+                <Option value='all'>
+                    全部
+                </Option>
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -85,7 +88,19 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column8"
+                slot="column6"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    {{scoped.row.moneyBalance}}{{scoped.row.unit}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column7"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -131,11 +146,15 @@
                 ],
                 // 查询数据
                 queryParams: {
-                    accountTypeId : '',
                     keyWord: '',
+                    //会员等级id
                     levelId: 'all',
+                    //渠道id
                     channelId: 'all',
+                    //会员卡状态
                     cardStatus: 'null',
+                    //账户类型
+                    accountTypeId : 'all'
                 },
                 //枚举数据
                 enumData: {
@@ -210,6 +229,7 @@
                     levelId : this.queryParams.levelId !== 'all' ? this.queryParams.levelId : '',
                     channelId : this.queryParams.channelId !=='all' ? this.queryParams.channelId : '',
                     cardStatus : this.queryParams.cardStatus !== 'null' ? this.queryParams.cardStatus : '',
+                    accountTypeId  : this.queryParams.accountTypeId !== 'all' ? this.queryParams.accountTypeId : '',
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     keyWord : this.queryParams.keyWord,
@@ -240,7 +260,7 @@
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
-                this.queryParams.accountTypeId = this.accountList.length > 0 ? this.accountList[0].id : '';
+                this.queryParams.accountTypeId = this.accountList.length > 0 ? this.accountList[0].id : 'all';
                 this.queryParams.levelId = "all";
                 this.queryParams.channelId = "all";
                 this.queryParams.cardStatus = "all";
@@ -258,9 +278,6 @@
                 }).then(res => {
                     if(res.success){
                         this.accountList = res.data.data ? res.data.data : [];
-                        if(this.accountList.length > 0){
-                            this.queryParams.accountTypeId = this.accountList[0].id;
-                        }
                     }else{
                         this.accountList = [];
                     }

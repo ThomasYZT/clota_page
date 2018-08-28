@@ -56,7 +56,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <span :class="scope.row['operType'] === 'transfer_in' ? 'green-color' : 'red-color'">
-                                {{scope.row['operType'] === 'transfer_in' ? '+' : '-'}}{{scope.row.amount | moneyFilter | contentFilter}}
+                                {{scope.row['operType'] === 'transfer_in' ? '+' : '-'}}{{scope.row.amount | moneyFilter | contentFilter}}元
                             </span>
                         </template>
                     </el-table-column>
@@ -79,7 +79,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row['fee']) | moneyFilter}}
+                            {{$t(scope.row['fee']) | moneyFilter}}元
                         </template>
                     </el-table-column>
                 </table-com>

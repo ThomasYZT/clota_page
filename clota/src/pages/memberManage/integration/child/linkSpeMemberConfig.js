@@ -24,10 +24,10 @@ export const columnData = [
     {
         title: '已关联特殊会员类别',
         minWidth: 120,
-        field: 'levelDesc'
+        field: 'staffDesc'
     },
     {
         title: '操作',
-        width: 150,
+        width: 170,
     }
 ];

@@ -3,9 +3,13 @@
 //特殊会员分类表头
 export const specialEmployeeHead = [
     {
-        title: '员工分类',
+        title: '特殊会员分类',
         minWidth: 150,
         field: 'staffDesc'
+    },
+    {
+        title: '操作',
+        width: 120,
     }
 ];
 
@@ -17,7 +21,7 @@ export const employeeTrustHead = [
         field: 'levelDesc'
     },
     {
-        title: '类别',
+        title: '特殊会员分类',
         minWidth: 150,
         field: 'staffDesc'
     },

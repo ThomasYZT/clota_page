@@ -3,7 +3,7 @@
     <div class="member-special">
 
         <div class="content-item">
-            <div class="title">会员储值账户信息</div>
+            <div class="title">景区账户余额</div>
             <div class="content">
                 <div class="header-wrap">本金账户余额（元）</div>
                 <div class="body-wrap">
@@ -34,6 +34,7 @@
     import transferModal from  './components/transferModal.vue';
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
+    
 
     export default {
         components: {

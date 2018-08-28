@@ -8,7 +8,7 @@ export const columnData = [
     },
     {
         title: '转账金额',
-        width: 100,
+        width: 120,
         field: 'amount'
     },
     {

@@ -2,7 +2,7 @@
     <!--会员管理--会员积分--特殊会员权益管理--会员信息关联分类-->
     <Modal
         v-model="visible"
-        title="会员信息关联分类"
+        title="关联特殊会员分类"
         class-name="link-belong-modal vertical-center-modal"
         width="520"
         :mask-closable="false"

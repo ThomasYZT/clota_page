@@ -17,6 +17,19 @@
                     :auto-height="true"
                     :total-count="specialMemberDataCount"
                     @query-data="memberStaffTypeList">
+                    <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                             <ul class="operate-list">
+                                <li @click="modifyEmployeeType(scope.row)">修改</li>
+                                <li class="red-label" @click="delEmployeeType(scope.row)">删除</li>
+                            </ul>
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
         </div>
@@ -64,6 +77,7 @@
         <!--新增特殊会员类别-->
         <add-special-type-modal
             ref="addSpecialType"
+            :employee-type-info='specialCurrentData'
             @fresh-data="freshData">
         </add-special-type-modal>
 
@@ -113,10 +127,10 @@
                 specialMemberBylyData : [],
                 //特殊会员与普通会员对照表总条数
                 specialMemberBylyDataCount : 0,
-                //当前操作数据
+                //当前操作的按分类设置权益信息
                 currentData : {},
-                //当前特殊会员的积分、折扣率信息
-                empIntegraData : {}
+                //当前操作的特殊会员分类信息
+                specialCurrentData : {}
             }
         },
         methods: {
@@ -125,6 +139,7 @@
              * 新增特殊会员类别
              */
             showAddTypeModal () {
+                this.specialCurrentData = {};
                 this.$refs.addSpecialType.show();
             },
 
@@ -235,6 +250,32 @@
             isNotEmpty(val) {
                 return val !== null && val !== '' && val !== undefined;
             },
+            /**
+             * 删除特殊会员分类
+             * @param data 特殊会员信息
+             */
+            delEmployeeType (data) {
+                ajax.post('setMemberStaffType',{
+                    id : data.id,
+                    isDeleted : 'true'
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('删除成功');
+                        this.memberStaffTypeList();
+                        this.getStaffLevelInfo();
+                    }else{
+                        this.$Message.error('删除失败');
+                    }
+                });
+            },
+            /**
+                修改特殊会员分类
+                @param data 
+             */
+            modifyEmployeeType (data) {
+                this.specialCurrentData = data;
+                this.$refs.addSpecialType.show();
+            }
         },
     }
 </script>

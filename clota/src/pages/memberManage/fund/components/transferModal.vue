@@ -53,6 +53,8 @@
                         <Input v-model="data.commission"
                                placeholder="请输入"
                                style="width: 240px" />
+                                <span style="padding-left: 10px;">元
+                                </span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">

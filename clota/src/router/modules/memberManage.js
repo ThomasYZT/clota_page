@@ -57,18 +57,19 @@ export default {
                             isMenu : true
                         },
                     },
-                    memberCount: {
-                        //会员管理--会员统计
-                        path: '/memberManage/count',
-                        name: 'memberCount',
-                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
-                        meta: {
-                            menuName: 'memberCount', //lang.config.js 里面的语言键值
-                            _name: 'members-stat',
-                            rightPath : topMenuName + '.' + 'memberCount',
-                            isMenu : true
-                        },
-                    },
+                    //会员统计暂时去掉
+                    // memberCount: {
+                    //     //会员管理--会员统计
+                    //     path: '/memberManage/count',
+                    //     name: 'memberCount',
+                    //     component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
+                    //     meta: {
+                    //         menuName: 'memberCount', //lang.config.js 里面的语言键值
+                    //         _name: 'members-stat',
+                    //         rightPath : topMenuName + '.' + 'memberCount',
+                    //         isMenu : true
+                    //     },
+                    // },
                     addMember: {
                         //会员管理--会员信息--新增会员
                         path: '/memberManage/add',

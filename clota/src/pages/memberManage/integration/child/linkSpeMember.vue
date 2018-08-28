@@ -4,7 +4,7 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="$t('关联会员信息')"
+                :locale-router="$t('关联特殊会员分类')"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
@@ -35,9 +35,9 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <div class="operation">
-                                <span class="span-blue" @click="contactType(scope.row)">关联所属类别</span>
-                            </div>
+                            <ul class="operate-list">
+                                <li @click="contactType(scope.row)">关联特殊会员分类</li>
+                            </ul>
                         </template>
                     </el-table-column>
                 </table-com>

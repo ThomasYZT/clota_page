@@ -32,7 +32,15 @@
 <script>
     import ajax from '@/api/index.js';
     export default {
-        components: {},
+        props : {
+            //当前操作的特殊会员分类信息
+            'employee-type-info':{
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         data () {
             return {
                 //模态框是否显示
@@ -47,7 +55,9 @@
                         { required: true, message: '员工分类名称不能为空', trigger: 'blur' },
                         {max : 15,message : '最多输入15个字符',trigger : 'blur'}
                     ],
-                }
+                },
+                //当前特殊会员分类的id
+                employeeTypeId : ''
             }
         },
         methods: {
@@ -82,6 +92,7 @@
              */
             addMemberStaffType () {
                 ajax.post('setMemberStaffType',{
+                    id : this.employeeTypeId,
                     staffDesc : this.formData.name
                 }).then(res => {
                     if(res.success){
@@ -95,6 +106,18 @@
                 });
             }
         },
+        watch : {
+            //如果特殊员工分类修改，则获取对应的id
+            'employeeTypeInfo' : {
+                deep : true,
+                handler (newVal,oldVal) {
+                    if(newVal && Object.keys(newVal).length > 0){
+                        this.employeeTypeId = newVal.id;
+                        this.formData.name = newVal.staffDesc;
+                    }
+                }
+            }
+        }
     }
 </script>
 

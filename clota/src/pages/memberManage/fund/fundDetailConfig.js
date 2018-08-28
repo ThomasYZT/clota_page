@@ -2,7 +2,7 @@
 //表头配置
 export const columnData = [
     {
-        title: '编码',
+        title: '会员编号',
         width: 220,
         field: 'id'
     },
@@ -25,6 +25,11 @@ export const columnData = [
         title: '交易类型',
         minWidth: 130,
         field: 'operationType'
+    },
+    {
+        title: '账户类型',
+        width: 120,
+        field: 'serverName'
     },
     {
         title: '本次交易金额',
