@@ -95,7 +95,8 @@
                     <!--选择店铺-->
                     <Form-item label="选择店铺" prop="conditionOrgId">
                         <Select v-model="formData.conditionOrgId"
-                                placeholder="请选择">
+                                placeholder="请选择"
+                                @on-change="storeChange">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
                                     :value="item.id">
@@ -496,7 +497,9 @@
              * 查询所有店铺信息
              */
             queryListAmountRange () {
-                ajax.post('listAllSubStore').then(res => {
+                ajax.post('getSubNode',{
+                    orgType : 'scenic'
+                }).then(res => {
                     if(res.success){
                         this.listAmountRange = res.data ? res.data : [];
                     }else{
@@ -611,6 +614,25 @@
                 this.$router.push({
                     name : 'card'
                 });
+            },
+            /**
+             * 查询商品信息
+             * @param orgId
+             */
+            queryProduct (orgId) {
+                ajax.post('queryProduct',{
+                    orgId : orgId
+                }).then(res => {
+                    if(res.success){
+
+                    }
+                });
+            },
+            /**
+             * 选择店铺
+             */
+            storeChange (data) {
+                this.queryProduct(data);
             }
         },
         created () {

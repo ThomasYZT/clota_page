@@ -74,6 +74,8 @@ export default {
     'updateCoupon' : '/member/memberCoupon/updateCoupon',
     //查询所有店铺信息
     'listAllSubStore' : '/member/memberBasicSet/listAllSubStore',
+    //查询店铺商品信息
+    'queryProduct' : '/product/queryProduct',
 
 
     /***********************************初始化设置***********************************/

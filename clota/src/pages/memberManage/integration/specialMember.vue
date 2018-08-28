@@ -50,7 +50,10 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <ul class="operate-list">
-                                <li @click="cotactMemberInfo(scope.row)">设置积分、折扣率</li>
+                                <li
+                                    v-if="!isNotEmpty(scope.row.discountRate) || !isNotEmpty(scope.row.scoreRate)"
+                                    @click="cotactMemberInfo(scope.row)">设置积分、折扣率</li>
+                                <li v-else @click="cotactMemberInfo(scope.row)">修改积分、折扣率</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -161,7 +164,6 @@
             cotactMemberInfo (rowData) {
                 this.currentData = rowData;
                 this.$refs.modifyRate.show();
-                // this.getSpecialMemberDiscount(rowData);
             },
              /**
              * 查询所有特殊会员类别与普通会员的对照表
@@ -204,15 +206,14 @@
              */
             setStoreDiscount (formData,callback) {
                 ajax.post('setMemberDiscountOfMember',{
-                    // levelId : this.currentData.levelId,
-                    // staffTypeId : this.currentData.id,
-                    id : this.currentData.id,
+                    id : this.currentData.memberDiscountId,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
+                    remark : formData.remark
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('设置成功');
-                        this.queryList();
+                        this.getStaffLevelInfo();
                     }else{
                         this.$Message.error('设置失败');
                     }
@@ -221,31 +222,19 @@
                 });
             },
             /**
-             * 获取特殊会员的积分率和折扣率
-             * @param data
-             */
-            getSpecialMemberDiscount (data){
-                ajax.post('getSpecialMemberDiscount',{
-                    levelId : data.levelId,//等级id
-                    staffTypeId : data.id,//员工类型id
-                }).then(res => {
-                    if(res.success){
-                        this.empIntegraData = res.data;
-                        this.$refs.modifyRate.show();
-                    }else{
-                        this.empIntegraData = {};
-                    }
-                }).catch(err => {
-                    this.empIntegraData = {};
-                });
-            },
-            /**
              * 刷新员工分类数据和按分类设置权益数据
              */
             freshData () {
                 this.getStaffLevelInfo();
                 this.memberStaffTypeList();
-            }
+            },
+            /**
+             * 判断val是否为空
+             * @param val
+             */
+            isNotEmpty(val) {
+                return val !== null && val !== '' && val !== undefined;
+            },
         },
     }
 </script>

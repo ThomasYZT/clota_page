@@ -102,7 +102,7 @@
                         callback('转出金额不可大于可用余额');
                     }else{
                         if(validator.isNumber(this.data.commission)){
-                            if(value + this.data.commission > this.orgInfo.balance){
+                            if(Number(value) + Number(this.data.commission) > this.orgInfo.balance){
                                 callback('转出金额加手续费不可大于可用余额');
                             }else{
                                 callback();
@@ -122,7 +122,7 @@
                         callback('手续费不可大于可用余额');
                     }else{
                         if(validator.isNumber(this.data.amount)){
-                            if(value + this.data.amount > this.orgInfo.balance){
+                            if(Number(value) + Number(this.data.amount) > this.orgInfo.balance){
                                 callback('转出金额加手续费不可大于可用余额');
                             }else{
                                 callback();

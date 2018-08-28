@@ -26,9 +26,20 @@
                     :page-no-d.sync="pageNo"
                     :page-size-d.sync="pageSize"
                     :column-data="columnData"
+                    :total-count="totalCount"
                     :table-data="tableData"
                     :border="true"
                     @query-data="queryList">
+                    <el-table-column
+                        slot="column2"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{(scope.row.prodScoreRate !== '' && scope.row.prodScoreRate !== null ? (scope.row.prodScoreRate + ':' + 1) : '') | contentFilter}}
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         slot="column5"
                         slot-scope="row"
@@ -165,8 +176,10 @@
             setStoreDiscount (formData,callback) {
                 ajax.post('setMemberDiscountOfProduct',{
                     id : this.currentData.id,
+                    storeDiscountId : this.memberInfo.id,
                     prodDiscountRate : formData.discountRate,
                     prodScoreRate : formData.scoreRate,
+                    productId : this.currentData.productId,
                     remark : formData.remark
                 }).then(res => {
                     if(res.success){
