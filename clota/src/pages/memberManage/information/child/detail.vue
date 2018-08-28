@@ -53,72 +53,74 @@
 
                 <div class="content-info">
                     <div class="title">
-                        <span>会员卡归属选择 </span>
-                        <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>修改</span>
+                        <span>{{$t("selectCardAttribution")}} </span>
+                        <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>
                     </div>
                     <div class="form-wrap" v-if="detail.memberCardVos && detail.memberCardVos[0]">
-                        <div class="form-item-wrap"><label>会员编号：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span>
                             {{detail.memberCardVos[0].cardCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>发卡单位：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span>
                             {{detail.memberCardVos[0].orgName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>注册渠道：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span>
                             {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>会员类别：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("memberKinds")}}：</label><span>
                             {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>会员级别：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span>
                             {{detail.memberCardVos[0].levelDesc || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>密码：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
                             {{detail.memberCardVos[0].passwd || '********'}}</span></div>
-                        <div class="form-item-wrap"><label>第三方卡面号：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span>
                             {{detail.memberCardVos[0].tpCardNo || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>第三方卡号：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span>
                             {{detail.memberCardVos[0].tpNo || '-'}}</span></div>
                     </div>
                 </div>
 
                 <div class="content-info" v-for="(item, index) in accountData">
                     <div class="title">
-                        {{item.defaultAccount === 'true' ? '默认储值账户' : item.accountName }}信息
-                        <span v-if="item.accountType === 'charging'" class="add" @click="addAccount">+ 新增账户</span>
+                        {{item.defaultAccount === 'true' ? $t("DefaultPrePaidAcc") : item.accountName }}
+                        <span>{{$t("information")}}</span>
+                        <span v-if="item.accountType === 'charging'" class="add" @click="addAccount">+ {{$t("newAccount")}}</span>
                     </div>
                     <div class="content">
                         <div class="header-wrap" v-if="item.accountType === 'charging'">
-                            {{item.defaultAccount === 'true' ? '默认储值账户' : item.accountName }}信息
+                            {{item.defaultAccount === 'true' ? $t("DefaultPrePaidAcc") : item.accountName }}
+                            <span>{{$t("information")}}</span>
                         </div>
-                        <div class="header-wrap" v-if="item.accountType === 'score'">积分</div>
+                        <div class="header-wrap" v-if="item.accountType === 'score'">{{$t("integral")}}</div>
                         <div class="body-wrap">
                             <div class="coast">
                                 <span>
                                     <template v-if="item.accountType === 'charging'">
-                                        <span>本金：</span>
+                                        <span>{{$t("principal")}}：</span>
                                         <span class="num">{{item.corpusBalance.toCurrency()}}</span>
                                         <span>{{item.unit || ''}}</span>
                                     </template>
                                     <template v-if="item.accountType === 'score'">
-                                        <span>可用积分：</span>
+                                        <span>{{$t("pointBalance")}}：</span>
                                         <span class="num">{{item.accountBalance}}</span>
                                     </template>
                                 </span>
                                 <span v-if="item.accountType === 'charging'">
-                                    赠送金额：
+                                    {{$t("giftSum")}}：
                                     <span class="num">{{item.donateBalance.toCurrency()}}</span>
                                     <span v-if="item.accountType === 'charging'">{{item.unit || ''}}</span>
                                 </span>
                             </div>
                             <div class="operate-right">
                                 <template v-if="item.accountType === 'charging'">
-                                    <span @click="viewDeal(item)">交易明细</span>
+                                    <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
                                     <span class="split-line"></span>
-                                    <span @click="showAddSaveModal(item)">新增储值</span>
+                                    <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
                                     <span class="split-line"></span>
-                                    <span @click="showRangeModal(item)">应用范围</span>
+                                    <span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>
                                     <template v-if="item.exchangeToCash === 'true'">
                                         <span class="split-line"></span>
-                                        <span @click="showCashModal(item)">兑现</span>
+                                        <span @click="showCashModal(item)">{{$t("cash")}}</span>
                                     </template>
                                 </template>
                                 <template v-if="item.accountType === 'score'">
-                                    <span @click="viewIntegration(item)">积分明细</span>
+                                    <span @click="viewIntegration(item)">{{$t("integralDetail")}}</span>
                                 </template>
                             </div>
                         </div>
@@ -126,7 +128,7 @@
                 </div>
 
                 <div class="content-info">
-                    <div class="title">优惠券信息</div>
+                    <div class="title">{{$t("integralDetail")}}</div>
                     <more-card type="view"
                                :status="status"
                                :table-data="couponData"
@@ -135,13 +137,13 @@
                 </div>
 
                 <div class="content-info">
-                    <div class="title">卡包信息</div>
-                    <div class="operate" @click="viewCardDetail"><span class="pointer">查看卡包信息</span></div>
+                    <div class="title">{{$t("cardPkgInfo")}}</div>
+                    <div class="operate" @click="viewCardDetail"><span class="pointer">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
                 </div>
 
                 <div class="content-info">
-                    <div class="title">享受积分、折扣率信息</div>
-                    <div class="operate" @click="viewCardRateDetail"><span class="pointer">查看享受积分、折扣率信息</span></div>
+                    <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
+                    <div class="operate" @click="viewCardRateDetail"><span class="pointer">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span></div>
                 </div>
 
                 <div class="content-info card-temp">

@@ -28,9 +28,9 @@
                     <!--ableClick表示点击某一列进入详情-->
                     <el-table-column
                         v-if="item.ableClick"
-                        :label="item.title"
+                        :label="$t(item.title)"
                         show-overflow-tooltip
-                        :prop="$t(item.field)"
+                        :prop="item.field"
                         :key="index"
                         :width="item.width"
                         :min-width="item.minWidth">
@@ -45,8 +45,8 @@
                     <!--普通列-->
                     <el-table-column
                         v-else
-                        :label="item.title"
-                        :prop="$t(item.field)"
+                        :label="$t(item.title)"
+                        :prop="item.field"
                         show-overflow-tooltip
                         :key="index"
                         :width="item.width"

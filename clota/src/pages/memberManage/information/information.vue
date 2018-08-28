@@ -51,7 +51,7 @@
                 @row-click="viewDetail">
                 <el-table-column
                     slot="column0"
-                    :label="$t(row.title)"
+                    :label="row.title"
                     :prop="row.field"
                     :key="row.index"
                     :width="row.width"
@@ -59,7 +59,7 @@
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <span>{{ scoped.row.cardCode }}</span>
-                        <span class="red-color" v-if="scoped.row.cardStatus ==='frozen'">已冻结</span>
+                        <span class="red-color" v-if="scoped.row.cardStatus ==='frozen'">{{$t("memberStatusFrozen")}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -95,7 +95,7 @@
                     :min-width="row.minWidth"
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ scoped.row.moneyBalance ? scoped.row.moneyBalance.toCurrency()+'元' : '' }}</span>
+                        <span>{{ scoped.row.moneyBalance ? scoped.row.moneyBalance.toCurrency()+$t("yuan") : '' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
