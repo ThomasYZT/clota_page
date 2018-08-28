@@ -37,19 +37,18 @@
                             <Input v-model.trim="formData.accountName" placeholder="请输入"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap" prop="unit">
+                    <div class="ivu-form-item-wrap">
                         <Form-item label="单位" prop="unit">
                             <Input v-model.trim="formData.unit" placeholder="请输入"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap" props="rate">
-                        <Form-item label="储值比率">
-                            <Input value="1"
-                                   disabled
+                    <div class="ivu-form-item-wrap" >
+                        <Form-item label="储值比率" prop="rateDenominator">
+                            <Input v-model.trim="formData.rateNumerator"
                                    placeholder="请输入"
-                                    class="single-input"/>
+                                   class="single-input"/>
                             <span style="padding: 0 5px;">:</span>
-                            <Input v-model.trim="formData.rate"
+                            <Input v-model.trim="formData.rateDenominator"
                                    placeholder="请输入"
                                    class="single-input"/>
                         </Form-item>
@@ -67,54 +66,44 @@
 
             <!--step 2-->
             <template v-if="step === 1">
-                <div class="table-wrap">
-                    <el-table
-                        :data="tableData"
-                        :border="false"
-                        @selection-change="handleSelectionChangeToMoney"
-                        style="width: 100%">
-                        <el-table-column
-                            type="selection"
-                            width="55">
-                        </el-table-column>
-                        <el-table-column
-                            prop="orgName"
-                            label="本金可使用范围设置">
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <!--<div class="page-wrap" v-if="tableData.length > 0">-->
-                    <!--<el-pagination-->
-                        <!--layout="prev, pager, next"-->
-                        <!--:total="50">-->
-                    <!--</el-pagination>-->
-                <!--</div>-->
+                <table-com
+                    :table-com-min-height="380"
+                    :column-data="moneyColumnData"
+                    :table-data="tableData"
+                    @selection-change="handleSelectionChangeToMoney"
+                    :border="false">
+                    <el-table-column
+                        slot="column0"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        type="selection"
+                        slot-scope="row">
+                    </el-table-column>
+                </table-com>
             </template>
 
             <!--step 3-->
             <template v-if="step === 2">
-                <div class="table-wrap">
-                    <el-table
-                        :data="sendData"
-                        :border="false"
-                        @selection-change="handleSelectionChangeToSend"
-                        style="width: 100%">
-                        <el-table-column
-                            type="selection"
-                            width="55">
-                        </el-table-column>
-                        <el-table-column
-                            prop="orgName"
-                            label="赠送金额可使用范围设置">
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <!--<div class="page-wrap" v-if="tableData.length > 0">-->
-                    <!--<el-pagination-->
-                        <!--layout="prev, pager, next"-->
-                        <!--:total="50">-->
-                    <!--</el-pagination>-->
-                <!--</div>-->
+                <table-com
+                    :table-com-min-height="380"
+                    :column-data="sendColumnData"
+                    :table-data="sendData"
+                    @selection-change="handleSelectionChangeToSend"
+                    :border="false">
+                    <el-table-column
+                        slot="column0"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        type="selection"
+                        slot-scope="row">
+                    </el-table-column>
+                </table-com>
             </template>
 
         </div>
@@ -142,10 +131,13 @@
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
         props: ['length','table-data','send-data'],
-        components: {},
+        components: {
+            tableCom,
+        },
         data () {
 
             const validateMethod = {
@@ -167,6 +159,19 @@
                 });
             };
 
+            //校验分子
+            const validateRateNumerator = (rule,value,callback) => {
+                common.validateInteger( this.formData.rateNumerator ).then(() => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
             return {
                 visible: false,
                 //步骤
@@ -177,9 +182,9 @@
                     accountBelonging: '',
                     accountName: '',
                     unit: '',
-                    rate: '1',
-                    start: 1,
-                    end: 1,
+                    rate: '',
+                    rateNumerator: '',
+                    rateDenominator: '',
                     exchangeToCash: 'true',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
@@ -191,27 +196,60 @@
                     ],
                     accountName: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '账户名称不能超过10字符', trigger: 'blur' },
                     ],
                     unit: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '单位不能超过10字符', trigger: 'blur' },
                     ],
-                    rate: [
+                    rateDenominator: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '储值比率不能超过10字符', trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateRateNumerator, trigger: 'blur' },
                     ],
                 },
                 //多选列表
                 multipleSelectionToMoney: [],
                 multipleSelectionToSend: [],
+                //表头信息
+                moneyColumnData: [
+                    {
+                        title: '',
+                        minWidth: 110,
+                        field: '',
+                    },
+                    {
+                        title: '本金可使用范围设置',
+                        minWidth: 400,
+                        field: 'orgName'
+                    },
+                ],
+                sendColumnData: [
+                    {
+                        title: '',
+                        minWidth: 110,
+                        field: '',
+                    },
+                    {
+                        title: '赠送金额可使用范围设置',
+                        minWidth: 400,
+                        field: 'orgName'
+                    },
+                ],
+            }
+        },
+        watch: {
+            'formData.rateNumerator': function (newVal) {
+                this.$refs.formValidate.validateField('rateDenominator');
             }
         },
         methods: {
 
             show ( data ) {
-                console.log(data)
                 this.index = this.length;
                 if( data ){
-                    this.formData = data.item;
+                    this.formData = defaultsDeep({}, data.item);
                     this.index = data.index;
                 }
                 this.visible = true;
@@ -237,12 +275,22 @@
             //关闭模态框
             hide(){
                 this.visible = false;
+                this.formData = {
+                    accountBelonging: '',
+                    accountName: '',
+                    unit: '',
+                    rate: '',
+                    rateNumerator: '',
+                    rateDenominator: '',
+                    exchangeToCash: 'true',
+                    corpusAppliedOrgId: [],
+                    donateAppliedOrgId: [],
+                };
+                this.multipleSelection = [];
+                this.index = null;
                 if(this.step === 0){
                     this.$refs.formValidate.resetFields();
                 }
-                this.formData = {};
-                this.multipleSelection = [];
-                this.index = null;
             },
 
             //下一步
@@ -272,7 +320,7 @@
                     accountBelonging: this.formData.accountBelonging,
                     accountName: this.formData.accountName,
                     unit: this.formData.unit,
-                    rate: this.formData.start/this.formData.end,
+                    rate: toFixed(Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)),
                     exchangeToCash: this.formData.exchangeToCash,
                     corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
                     donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
@@ -304,7 +352,7 @@
 
         .modal-body{
             padding: 0 14px;
-            height: 450px;
+            height: 430px;
 
             .steps-wrap{
                 padding-top: 5px;

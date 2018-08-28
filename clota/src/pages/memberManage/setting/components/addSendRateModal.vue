@@ -33,29 +33,24 @@
             </div>
             <div class="title">该规则应用范围：</div>
             <div class="table-wrap">
-                <el-table
-                    :data="tableData"
-                    :border="false"
-                    :height="tableData.length > 5 ? 320 : 'auto'"
+                <table-com
+                    :table-com-min-height="320"
+                    :column-data="columnData"
+                    :table-data="tableData"
                     @selection-change="handleSelectionChange"
-                    style="width: 100%">
+                    :border="false">
                     <el-table-column
+                        slot="column0"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
                         type="selection"
-                        width="55">
+                        slot-scope="row">
                     </el-table-column>
-                    <el-table-column
-                        prop="accountName"
-                        label="本金可使用范围设置">
-                    </el-table-column>
-                </el-table>
+                </table-com>
             </div>
-            <div class="page-wrap" v-if="tableData.length > 0">
-                <el-pagination
-                    layout="prev, pager, next"
-                    :total="50">
-                </el-pagination>
-            </div>
-
         </div>
 
         <div slot="footer" class="modal-footer">
@@ -69,9 +64,15 @@
 </template>
 
 <script>
+
+    import common from '@/assets/js/common.js';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+
     export default {
         props: ['length','table-data'],
-        components: {},
+        components: {
+            tableCom,
+        },
         data () {
             return {
                 visible: false,
@@ -89,13 +90,24 @@
                 multipleSelection: [],
                 //表单报错内容
                 error: '',
+                //表头信息
+                columnData: [
+                    {
+                        title: '',
+                        minWidth: 110,
+                        field: '',
+                    },
+                    {
+                        title: '本金可使用范围设置',
+                        minWidth: 400,
+                        field: 'accountName'
+                    },
+                ],
             }
         },
         methods: {
 
             show ( data, type) {
-                console.log(data)
-                console.log(type)
                 if(type && type !== 'add'){
                     this.title = '修改储值赠送金额比例';
                     this.index = this.length;
@@ -109,8 +121,14 @@
 
             //校验input输入
             validateInput ( value ) {
-                if ( value && ( parseInt(value) < 0 || parseInt(value) + '' !== value + '' ) ) {
-                    this.error = '当前输入只能是非负整数';
+                if( value === '' || value === 'null' || value == 0 || !value ){
+                    this.error = '不能为空';
+                    return false
+                } else if( value && value.length > 10 ){
+                    this.error = '长度不能超过10';
+                    return false
+                } else if( value && value.isUtf16() ){
+                    this.error = '输入内容不合规则';
                     return false
                 } else {
                     this.error = '';

@@ -12,8 +12,8 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="账户归属" prop="account">
-                        <Select v-model="formData.account">
+                    <Form-item label="账户归属" prop="accountBelonging">
+                        <Select v-model="formData.accountBelonging">
                             <Option v-for="(item, index) in tableData"
                                     :value="item.id"
                                     :key="index">
@@ -27,18 +27,18 @@
                         <Input v-model.trim="formData.accountName" placeholder="请输入"/>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" prop="unit">
+                <div class="ivu-form-item-wrap">
                     <Form-item label="单位" prop="unit">
                         <Input v-model.trim="formData.unit" placeholder="请输入"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="储值比率">
-                        <Input v-model.trim="formData.start"
+                    <Form-item label="储值比率" prop="rateDenominator">
+                        <Input v-model.trim="formData.rateNumerator"
                                placeholder="请输入"
                                class="single-input"/>
-                        <span style="padding: 0 5px;">:</span>
-                        <Input v-model.trim="formData.start"
+                        <span style="padding: 0 13px;">:</span>
+                        <Input v-model.trim="formData.rateDenominator"
                                placeholder="请输入"
                                class="single-input"/>
                     </Form-item>
@@ -64,29 +64,87 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
+    import defaultsDeep from 'lodash/defaultsDeep';
+
+
     export default {
         props: ['length','table-data'],
         components: {},
+        watch: {
+            'formData.rateNumerator': function (newVal) {
+                this.$refs.formValidate.validateField('rateDenominator');
+            }
+        },
         data () {
+
+            const validateMethod = {
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                },
+            };
+
+            //校验正整数
+            const validateNumber = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
+            //校验分子
+            const validateRateNumerator = (rule,value,callback) => {
+                common.validateInteger( this.formData.rateNumerator ).then(() => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error('输入内容不合规则'));
+                    } else {
+                        callback();
+                    }
+                }).catch(err => {
+                    callback(err);
+                });
+            };
+
             return {
                 visible: false,
                 //表单数据
                 index: null,
                 formData: {
-                    account: '',
+                    accountBelonging: '',
                     accountName: '',
                     unit: '',
                     rate: '',
-                    start: 1,
-                    end: 1,
-                    exchangeToCash: 'true',
+                    rateNumerator: '',
+                    rateDenominator: '',
+                    exchangeToCash: '',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
                 },
                 //校验规则
                 ruleValidate: {
-                    account: [
+                    accountBelonging: [
                         { required: true, message: '账户归属不能为空', trigger: 'change' },
+                    ],
+                    accountName: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '账户名称不能超过10字符', trigger: 'blur' },
+                    ],
+                    unit: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '单位不能超过10字符', trigger: 'blur' },
+                    ],
+                    rateDenominator: [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { max: 10, message: '储值比率不能超过10字符', trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateRateNumerator, trigger: 'blur' },
                     ],
                 },
             }
@@ -94,10 +152,9 @@
         methods: {
 
             show ( data ) {
-                console.log(data)
                 this.index = this.length;
                 if( data ){
-                    this.formData = data.item;
+                    this.formData = defaultsDeep({}, data.item);
                     this.index = data.index;
                 }
                 this.visible = true;
@@ -108,10 +165,10 @@
                 this.$refs.formValidate.validate((valid) => {
                     if(valid){
                         let params = {
-                            account: this.formData.account,
+                            accountBelonging: this.formData.accountBelonging,
                             accountName: this.formData.accountName,
                             unit: this.formData.unit,
-                            rate: this.formData.start/this.formData.end,
+                            rate: toFixed(Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)),
                             exchangeToCash: this.formData.exchangeToCash,
                             corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
                             donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
@@ -139,9 +196,18 @@
             //关闭模态框
             hide(){
                 this.visible = false;
-                this.$refs.formValidate.resetFields();
-                this.formData = {};
+                this.formData = {accountBelonging: '',
+                    accountName: '',
+                    unit: '',
+                    rate: '',
+                    rateNumerator: '',
+                    rateDenominator: '',
+                    exchangeToCash: '',
+                    corpusAppliedOrgId: [],
+                    donateAppliedOrgId: [],
+                };
                 this.index = null;
+                this.$refs.formValidate.resetFields();
             },
 
         },
@@ -150,11 +216,24 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .add-account-modal{
+    .modify-account-modal{
 
         .modal-body{
-            padding: 0 14px;
-            height: 450px;
+            padding: 40px 35px 20px;
+        }
+
+        .ivu-form-item-wrap{
+
+            /deep/ .ivu-select{
+                width: 260px;
+            }
+
+            /deep/ .ivu-input-wrapper{
+                width: 260px;
+                &.single-input{
+                    width: 110px;
+                }
+            }
 
         }
 
@@ -163,5 +242,6 @@
                 padding: 5px 30px;
             }
         }
+
     }
 </style>

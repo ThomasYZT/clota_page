@@ -11,27 +11,48 @@
         <div class="modal-body">
 
             <div class="table-wrap">
-                <el-table
-                    :data="tableData"
-                    :border="false"
-                    @selection-change="handleSelectionChange"
-                    style="width: 100%">
-                    <el-table-column
-                        type="selection"
-                        width="55">
-                    </el-table-column>
-                    <el-table-column
-                        prop="orgName"
-                        label="本金可使用范围设置">
-                    </el-table-column>
-                </el-table>
+
+                <template v-if="type === 'money'">
+                    <table-com
+                        :table-com-min-height="450"
+                        :column-data="moneyColumnData"
+                        :table-data="tableData"
+                        @selection-change="handleSelectionChange"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            type="selection"
+                            slot-scope="row">
+                        </el-table-column>
+                    </table-com>
+                </template>
+
+                <template v-if="type === 'send'">
+                    <table-com
+                        :table-com-min-height="450"
+                        :column-data="sendColumnData"
+                        :table-data="tableData"
+                        @selection-change="handleSelectionChange"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            type="selection"
+                            slot-scope="row">
+                        </el-table-column>
+                    </table-com>
+                </template>
             </div>
-            <!--<div class="page-wrap" v-if="tableData.length > 0">-->
-                <!--<el-pagination-->
-                    <!--layout="prev, pager, next"-->
-                    <!--:total="50">-->
-                <!--</el-pagination>-->
-            <!--</div>-->
+
         </div>
 
         <div slot="footer" class="modal-footer">
@@ -43,9 +64,17 @@
 </template>
 
 <script>
+
+    import ajax from '@/api/index';
+    import common from '@/assets/js/common.js';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+
     export default {
         props: ['length','table-data'],
-        components: {},
+        components: {
+            tableCom,
+        },
         data () {
             return {
                 visible: false,
@@ -57,19 +86,45 @@
                 //表单数据
                 formData: {},
                 index: null,
+                //表头信息
+                moneyColumnData: [
+                    {
+                        title: '',
+                        minWidth: 110,
+                        field: '',
+                    },
+                    {
+                        title: '本金可使用范围设置',
+                        minWidth: 400,
+                        field: 'orgName'
+                    },
+                ],
+                sendColumnData: [
+                    {
+                        title: '',
+                        minWidth: 110,
+                        field: '',
+                    },
+                    {
+                        title: '赠送金额可使用范围设置',
+                        minWidth: 400,
+                        field: 'orgName'
+                    },
+                ],
             }
         },
         methods: {
 
             show ( data, type) {
-                console.log(data)
-                console.log(type)
                 if(type && type !== 'money'){
                     this.title = '默认账户赠送金额可使用范围设置';
-                    this.index = this.length;
+                    this.type = 'send';
+                } else {
+                    this.title = '默认账户本金可使用范围设置';
+                    this.type = 'money';
                 }
                 if( data ){
-                    this.formData = data.item;
+                    this.formData = defaultsDeep({}, data.item);
                     this.index = data.index;
                 }
                 this.visible = true;
@@ -94,7 +149,7 @@
                     account: this.formData.account,
                     accountName: this.formData.accountName,
                     unit: this.formData.unit,
-                    rate: this.formData.start/this.formData.end,
+                    rate: this.rate,
                     exchangeToCash: this.formData.exchangeToCash,
                     corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
                     donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),

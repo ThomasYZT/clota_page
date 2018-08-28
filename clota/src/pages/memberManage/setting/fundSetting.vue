@@ -34,28 +34,52 @@
                         </Radio>
                     </RadioGroup>
                     <div class="check-group-wrap">储值
-                        <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToIntegrate"
-                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
-                               type="text"
-                               class="single-input"
-                               placeholder="请输入"/> 元获取
-                        <Input v-model.trim="settingData.scoreGrowthFromCharging.integrate"
-                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
-                                type="text"
-                                class="single-input"
-                                placeholder="请输入"/>积分
+                        <span :class="{'ivu-form-item-error': error.moneyToIntegrateError}">
+                            <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToIntegrate"
+                                 :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                 @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToIntegrate,'moneyToIntegrateError')"
+                                 type="text"
+                                 class="single-input"
+                                 placeholder="请输入"/> 元获取
+                            <span class="ivu-form-item-error-tip"
+                                   style="left: 92px;"
+                                   v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
+                        </span>
+                        <span :class="{'ivu-form-item-error': error.integrateError}">
+                             <Input v-model.trim="settingData.scoreGrowthFromCharging.integrate"
+                                    :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                    @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.integrate,'integrateError')"
+                                    type="text"
+                                    class="single-input"
+                                    placeholder="请输入"/>积分
+                             <span class="ivu-form-item-error-tip"
+                                   style="left: 256px;"
+                                   v-if="error.integrateError">{{error.integrateError}}</span>
+                        </span>
                     </div>
                     <div class="check-group-wrap">储值
-                        <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGgowth"
-                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
-                                type="text"
-                                class="single-input"
-                                placeholder="请输入"/> 元获取
-                        <Input v-model.trim="settingData.scoreGrowthFromCharging.growth"
-                               :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
-                               type="text"
-                               class="single-input"
-                               placeholder="请输入"/>成长值
+                        <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
+                              <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGgowth"
+                                     :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                     @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGgowth,'moneyToGgowthError')"
+                                     type="text"
+                                     class="single-input"
+                                     placeholder="请输入"/> 元获取
+                              <span class="ivu-form-item-error-tip"
+                                   style="left: 92px;"
+                                   v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
+                        </span>
+                        <span :class="{'ivu-form-item-error': error.growthError}">
+                             <Input v-model.trim="settingData.scoreGrowthFromCharging.growth"
+                                    :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                    @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.growth,'growthError')"
+                                    type="text"
+                                    class="single-input"
+                                    placeholder="请输入"/>成长值
+                             <span class="ivu-form-item-error-tip"
+                                   style="left: 256px;"
+                                   v-if="error.growthError">{{error.growthError}}</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -65,16 +89,20 @@
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreGrowthEffModeWhileCharging.storedType" vertical>
                         <Radio label="immediately">
-                            <span>值成功后立即生效</span>
+                            <span>储值成功后立即生效</span>
                         </Radio>
-                        <Radio label="checkout_after">
+                        <Radio label="checkout_after" :class="{'ivu-form-item-error': error.growthTimeError}">
                             <span>储值成功后</span>
                             <Input v-model.trim="settingData.scoreGrowthEffModeWhileCharging.storedTime"
                                    :disabled="settingData.scoreGrowthEffModeWhileCharging.storedType !== 'checkout_after' ? true : false"
+                                   @on-blur="checkInputBlurFunc(settingData.scoreGrowthEffModeWhileCharging.storedTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
                                    placeholder="请输入"/>
                             <span>个小时后失效</span>
+                            <span class="ivu-form-item-error-tip"
+                                  style="left: 113px;"
+                                  v-if="error.growthTimeError">{{error.growthTimeError}}</span>
                         </Radio>
                     </RadioGroup>
                 </div>
@@ -149,37 +177,55 @@
             <div class="content-item">
                 <div class="title">储值账户设置   <span class="add-span blue-color" @click="AddAccount">+ 新增账户</span></div>
                 <div class="main">
-                    <div class="table-wrap" style="width: 480px;">
-                        <el-table
-                            :data="tableData"
-                            :border="false"
-                            style="width: 100%">
+                    <div class="table-wrap">
+                        <table-com
+                            :table-com-min-height="320"
+                            :column-data="columnData"
+                            :table-data="tableData"
+                            :border="false">
                             <el-table-column
-                                prop="accountName"
-                                label="账户名称">
-                            </el-table-column>
-                            <el-table-column
-                                prop="id"
-                                label="本金">
+                                slot="column1"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
                                 <template slot-scope="scope">
-                                    <span class="blue-color" @click="showRangeModal(scope.row, scope.index, 'money')">应用设置</span>
+                                    <ul class="operate-list">
+                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">应用设置</li>
+                                    </ul>
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                prop="id"
-                                label="赠送金额">
+                                slot="column2"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
                                 <template slot-scope="scope">
-                                    <span class="blue-color" @click="showRangeModal(scope.row, scope.index, 'send')">应用设置</span>
+                                    <ul class="operate-list">
+                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">应用设置</li>
+                                    </ul>
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                prop="id"
-                                label="操作">
+                                slot="column3"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
                                 <template slot-scope="scope">
-                                    <span class="blue-color" @click="showModifyAcocuntModal(scope.row, scope.index)">编辑账户</span>
+                                    <ul class="operate-list">
+                                        <li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">编辑账户</li>
+                                    </ul>
                                 </template>
                             </el-table-column>
-                        </el-table>
+                        </table-com>
                     </div>
                 </div>
             </div>
@@ -223,11 +269,13 @@
 
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
     import addAccountModal from './components/addAccountModal.vue';
     import modifyAccountModal from './components/modifyAccountModal.vue';
     import modifyRangeModal from './components/modifyRangeModal.vue';
     import sendRateModal from './components/addSendRateModal.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
         components: {
@@ -236,6 +284,7 @@
             modifyAccountModal,
             modifyRangeModal,
             sendRateModal,
+            tableCom,
         },
         data () {
             return {
@@ -277,9 +326,60 @@
                 },
                 //表格数据--储值账户列表
                 tableData: [],
+                //表头数据
+                columnData: [
+                    {
+                        title: '账户名称',
+                        minWidth: 140,
+                        field: 'accountName',
+                    },
+                    {
+                        title: '本金',
+                        minWidth: 110,
+                        field: 'id'
+                    },
+                    {
+                        title: '赠送金额',
+                        minWidth: 110,
+                        field: 'id'
+                    },
+                    {
+                        title: '操作',
+                        minWidth: 110,
+                        field: 'id'
+                    },
+                ],
                 //获取储值账户-(本金/赠送金额)应用范围
                 listAmountRangeTable: [],
+                //输入框校验错误显示
+                error: {
+                    moneyToIntegrateError: '',//储值额-积分
+                    integrateError: '',//积分
+                    moneyToGgowthError: '',//储值额--成长值
+                    growthError: '',//成长值
+                    storedTimeError: '',//储值获得积分、成长值生效设置
+                },
             }
+        },
+        watch: {
+
+            //成长值生效设置
+            'settingData.scoreGrowthFromCharging.storedAndGrowthType' : function (newVal, oldVal) {
+                if(newVal !== 'false'){
+                    this.error.moneyToIntegrateError = '';
+                    this.error.integrateError = '';
+                    this.error.moneyToGgowthError = '';
+                    this.error.growthError = '';
+                }
+            },
+
+            //储值获得积分、成长值生效设置
+            'settingData.scoreGrowthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
+                if(newVal !== 'checkout_after'){
+                    this.error.storedTimeError = '';
+                }
+            },
+
         },
         created() {
             //查询会员基础设置
@@ -344,34 +444,109 @@
             },
             //会员基础设置-保存/修改
             basicSet () {
-                console.log({
-                    passwdForRechargeAccount: this.settingData.passwdForRechargeAccount,
-                    scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
-                    scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
-                    commissionOfTransfermation: this.settingData.commissionOfTransfermation,
-                    donateWhileRecharge: this.settingData.donateWhileRecharge.length > 0 ?
-                        JSON.stringify(this.settingData.donateWhileRecharge) : '',
-                });
-                ajax.post('basicSet', {
-                    id: this.id,
-                    passwdForRechargeAccount: this.settingData.scoreEffectiveMode,
-                    scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
-                    scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
-                    commissionOfTransfermation: this.settingData.commissionOfTransfermation,
-                    donateWhileRecharge: this.settingData.donateWhileRecharge.length > 0 ?
-                        JSON.stringify(this.settingData.donateWhileRecharge) : '',
-                }).then(res => {
-                    if( res.success){
-                        this.$Message.success('保存储值设置成功!');
-                        this.findBasicSet();
-                    }
-                })
+                if(this.checkInputFunc()){
+                    ajax.post('basicSet', {
+                        id: this.id,
+                        passwdForRechargeAccount: this.settingData.scoreEffectiveMode,
+                        scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
+                        scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
+//                    commissionOfTransfermation: this.settingData.commissionOfTransfermation,
+                        donateWhileRecharge: this.settingData.donateWhileRecharge.length > 0 ?
+                            JSON.stringify(this.settingData.donateWhileRecharge) : '',
+                    }).then(res => {
+                        if( res.success){
+                            this.$Message.success('保存储值设置成功!');
+                            this.findBasicSet();
+                        }
+                    })
+                }
             },
             //点击取消重置数据
             resetFieldFunc () {
                 if(this.copySetData !== {}){
                     this.settingData = defaultsDeep({}, this.copySetData);
                 }
+            },
+
+            //校验选项勾选是输入框是否填写，返回true/false
+            checkInputFunc () {
+
+                if(this.settingData.scoreGrowthEffModeWhileCharging.storedType === 'checkout_after' &&
+                    !this.validateInput(this.settingData.scoreGrowthEffModeWhileCharging.storedTime)){
+                    this.checkInputBlurFunc(this.settingData.scoreGrowthEffModeWhileCharging.storedTime, 'storedTimeError');
+                    return false
+                }
+
+                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'false' && (
+                        !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToIntegrate) ||
+                        !this.validateInput(this.settingData.scoreGrowthFromCharging.integrate) ||
+                        !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToGgowth) ||
+                        !this.validateInput(this.settingData.scoreGrowthFromCharging.growth) )
+                    ){
+                    this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToIntegrate, 'moneyToIntegrateError');
+                    this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.integrate, 'integrateError');
+                    this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGgowth, 'moneyToGgowthError');
+                    this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.growth, 'growthError');
+                    return false
+                }
+
+                return true
+            },
+
+            //校验input输入
+            validateInput ( value ) {
+                if( value === '' || value === 'null' || value == 0 || !value ){
+                    return false
+                } else if( value && value.length > 10 ){
+                    return false
+                } else if( value && value.isUtf16() ){
+                    return false
+                } else {
+                    return true
+                }
+            },
+
+            /**
+             * 输入框失焦校验
+             * @param val 值
+             * @param errorField 校验错误显示字段
+             */
+            checkInputBlurFunc ( val, errorField ) {
+
+                //为空校验
+                if( val === '' || val === 'null' || val == 0 || !val){
+                    this.error[errorField] = '不能为空';
+                    return
+                } else {
+                    this.error[errorField] = '';
+                }
+
+                //长度校验
+                if (val && val.length > 10) {
+                    this.error[errorField] = '不能超过10个';
+                    return
+                } else {
+                    this.error[errorField] = '';
+                }
+
+                //校验表情符号
+                if (val && val.isUtf16()) {
+                    this.error[errorField] = '输入内容不合规则';
+                    return
+                } else {
+                    this.error[errorField] = '';
+                }
+
+                //校验正整数
+                if(val){
+                    common.validateInteger(val).then(() => {
+                        this.error[errorField] = '';
+                    }).catch(err => {
+                        this.error[errorField] = err;
+                        return
+                    });
+                }
+
             },
 
             //查询收款方式
@@ -488,12 +663,12 @@
             //新增显示储值赠送金额比例
             AddAccount () {
                 let item = {
-                    account: '',
+                    accountBelonging: '',
                     accountName: '',
                     unit: '',
                     rate: '',
-                    start: 1,
-                    end: 1,
+                    rateNumerator: '',
+                    rateDenominator: '',
                     exchangeToCash: 'true',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
@@ -504,7 +679,6 @@
             //保存后回调传参
             submitFundsAccount (data) {
                 console.log(data)
-//                this.$set(this.tableData,data.index, data.item);
                 this.queryMemberAccountDefine();
             },
             //点击储值账户的应用设置，显示应用设置弹窗
@@ -512,7 +686,7 @@
                 this.$refs.modifyRange.show({ item, index}, type);
             },
             //点击储值账户的编辑账户，显示编辑账户弹窗
-            showModifyAcocuntModal ( item, index ) {
+            showModifyAccountModal ( item, index ) {
                 this.$refs.modifyAccount.show({ item, index});
             },
 
@@ -584,6 +758,9 @@
                         margin-bottom: 10px;
                     }
                 }
+                .table-wrap{
+                    width: 480px;
+                }
             }
 
             .add-span{
@@ -617,7 +794,9 @@
         }
 
         .check-group-wrap{
+            position: relative;
             padding-left: 50px;
+            padding-top: 8px;
         }
 
         .btn-wrap{

@@ -130,9 +130,7 @@
                 <template v-if="type === 'modify'">
                     <Button type="primary" :loading="loading" @click="formValidateFunc">确定</Button>
                 </template>
-                <router-link :to="{name: 'memberInfo'}">
-                    <Button type="ghost">取消</Button>
-                </router-link>
+                <Button type="ghost" @click="goBack">取消</Button>
             </div>
 
         </div>
@@ -392,6 +390,17 @@
                         this.$Message.warning(url+' 失败！')
                     }
                 })
+            },
+
+            //返回
+            goBack() {
+                //区分新增与修改
+                if( this.type === 'add' ){
+                    this.$router.push({ name: 'memberInfo'});
+                }
+                if( this.type === 'modify' ){
+                    this.$router.push({name: this.routerFrom.name});
+                }
             },
 
         },
