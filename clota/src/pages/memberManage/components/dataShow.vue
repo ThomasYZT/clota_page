@@ -3,30 +3,30 @@
     <div class="member-data-show">
 
         <div class="data-header">
-            <div class="title">会员数据概览</div>
+            <div class="title">{{$t("memberDataOverview")}}</div><!--会员数据概览-->
         </div>
 
         <div class="data-content">
             <div class="total">
                 <span class="img"><img src="@/assets/images/crown.svg"/></span>
-                <span class="total-label">会员总数</span>
+                <span class="total-label">{{$t("totalMembers")}}</span>
                 <span>{{memberSumCount | contentFilter}}</span>
             </div>
 
             <div class="detail">
                 <div class="detail-item">
                     <div>{{todayMemberIncreaseCount | contentFilter}}</div>
-                    <div class="detail-label">今日新增</div>
+                    <div class="detail-label">{{$t("increase_today")}}</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item">
                     <div>{{yesterdayMemberIncreaseCount | contentFilter}}</div>
-                    <div class="detail-label">昨日新增</div>
+                    <div class="detail-label">{{$t("increase_yesterday")}}</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item">
                     <div>{{monthMemberIncreeaseCount | contentFilter}}</div>
-                    <div class="detail-label">本月新增</div>
+                    <div class="detail-label">{{$t("increase_this_month")}}</div>
                 </div>
             </div>
         </div>

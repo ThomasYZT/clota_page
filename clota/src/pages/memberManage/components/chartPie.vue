@@ -2,7 +2,7 @@
 <template>
     <div class="member-data-pie">
         <div class="data-header">
-            <div class="title">会员分布数据</div>
+            <div class="title">{{$t("memberDistribute")}}</div>
         </div>
 
         <div class="data-content">

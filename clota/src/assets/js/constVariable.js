@@ -14,32 +14,32 @@ export const configVariable = {
 
 //性别
 export const genderEnum = [
-    { name: 'male', desc: '男' },
-    { name: 'female', desc: '女' },
+    { name: 'male', desc: 'male' },
+    { name: 'female', desc: 'female' },
 ];
 
 //会员级别
 export const vipLevel = [
-    {'id': 'null', 'levelDesc': '全部会员等级'}
+    {'id': 'null', 'levelDesc': 'memberLevelAll'}
 ];
 
 //会员渠道
 export const vipChannel = [
-    {'id': 'null', 'channelName': '全部会员渠道'}
+    {'id': 'null', 'channelName': 'memberChannelAll'}
 ];
 
 //会员类型
 export const vipStatusEnum = [
-    { name: 'null', desc: '全部会员类型' },
-    { name: 'active', desc: '正式会员' },
-    { name: 'potential', desc: '潜在会员' },
+    { name: 'null', desc: 'memberTypeAll' },
+    { name: 'active', desc: 'memberTypeOfficial' },
+    { name: 'potential', desc: 'memberTypePotential' },
 ];
 
 //会员状态
 export const cardStatusEnum = [
-    { name: 'null', desc: '全部会员状态' },
-    { name: 'frozen', desc: '已冻结' },
-    { name: 'active', desc: '正常使用' },
+    { name: 'null', desc: 'memberStatusAll' },
+    { name: 'frozen', desc: 'memberStatusFrozen' },
+    { name: 'active', desc: 'memberStatusActive' },
 ];
 
 //卡券类别

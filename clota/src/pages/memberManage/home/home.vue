@@ -20,7 +20,7 @@
 
         <!--会员消费数据概览-->
         <div class="home-chart">
-            <div class="chart-header">会员消费数据概览</div>
+            <div class="chart-header">{{$t("memberConsumptionOverview")}}</div>
             <div class="chart-content">
                 <chart-line :data="vipPlace" type="money">
                 </chart-line>
@@ -29,7 +29,7 @@
 
         <!--会员积分数据概览-->
         <div class="home-chart">
-            <div class="chart-header">会员积分数据概览</div>
+            <div class="chart-header">{{$t("memberIntergralOverview")}}</div>
             <div class="chart-content">
                 <chart-line :data="integrationPlace" type="integra">
                 </chart-line>
@@ -56,15 +56,15 @@
             return {
                 // 会员分布数据
                 vipPlace: {
-                    label1: '本周会员消费总额(元)',
-                    label2: '上周会员消费总额(元)',
+                    label1: "totalConsumption_thisWeek",
+                    label2: "totalConsumption_lastWeek",
                     total1: '',
                     total2: '',
                 },
                 // 会员积分数据
                 integrationPlace: {
-                    label1: '本周发放积分总数',
-                    label2: '本周消费积分总数',
+                    label1: 'sendIntegral_thisWeek',
+                    label2: 'consumeIntegral_thisWeek',
                     total1: '',
                     total2: '',
                 },

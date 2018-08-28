@@ -3,19 +3,19 @@
     <div class="member-chart-line">
         <div class="chart-left">
             <div class="lagend-container">
-                <div class="chart-title">{{data.label1}}</div>
+                <div class="chart-title">{{$t(data.label1)}}</div>
                 <!--判断是否显示的是金额，如果是才对数值进行格式化-->
                 <div class="chart-num" v-if="type === 'money'">{{data.total1 | moneyFilter | contentFilter}}</div>
                 <div class="chart-num" v-else>{{data.total1 | contentFilter}}</div>
-                <div class="chart-label">(截至目前）</div>
+                <div class="chart-label">({{$t("tillNow")}})</div>
             </div>
 
             <div class="lagend-container">
-                <div class="chart-title">{{data.label2}}</div>
+                <div class="chart-title">{{$t(data.label2)}}</div>
                 <!--判断是否显示的是金额，如果是才对数值进行格式化-->
                 <div class="chart-num"  v-if="type === 'money'">{{data.total2 | moneyFilter | contentFilter}}</div>
                 <div class="chart-num"  v-else>{{data.total2 | contentFilter}}</div>
-                <div class="chart-label" v-if="type === 'integra'">(截至目前）</div>
+                <div class="chart-label" v-if="type === 'integra'">({{$t("tillNow")}})</div>
             </div>
 
         </div>
@@ -23,11 +23,11 @@
             <div class="filter">
                 <!--时间范围选择-->
                 <span :class="{'active': timeType === 'week'}"
-                      @click="changeTimeType('week')">近7天</span>
+                      @click="changeTimeType('week')">{{$t("recent_days_7")}}</span>
                 <span :class="{'active': timeType === 'month'}"
-                      @click="changeTimeType('month')">近30天</span>
+                      @click="changeTimeType('month')">{{$t("recent_days_30")}}</span>
                 <span :class="{'active': timeType === 'year'}"
-                      @click="changeTimeType('year')">本年</span>
+                      @click="changeTimeType('year')">{{$t("thisYear")}}</span>
                 <div class="date-range-filter">
                     <DatePicker v-model="autoDefTIme"
                                 format="yyyy-MM-dd"
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="line-content">
-                <div class="label" v-if="type === 'money'">单位：万元</div>
+                <div class="label" v-if="type === 'money'">{{$t("unit")}}：{{$t("fundUnit")}}</div>
                 <div class="label" v-else></div>
                 <vue-echarts
                     :options="chartConfig"
