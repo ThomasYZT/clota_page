@@ -2,52 +2,52 @@
 
 export const infoListHead = [
     {
-        title: '会员编码',
+        title: 'memberCode',
         minWidth: 280,
         field: 'cardCode'
     },
     {
-        title: '会员姓名',
+        title: 'memberName',
         minWidth: 160,
         field: 'custName'
     },
     {
-        title: '手机号',
+        title: 'phoneNum',
         minWidth: 150,
         field: 'phoneNum'
     },
     {
-        title: '性别',
+        title: 'gender',
         minWidth: 70,
         field: 'gender'
     },
     {
-        title: '会员级别',
+        title: 'levelSetting',
         minWidth: 100,
         field: 'levelDesc'
     },
     {
-        title: '会员类型',
+        title: 'memberType',
         minWidth: 170,
         field: 'status'
     },
     {
-        title: '可用积分',
+        title: 'pointBalance',
         minWidth: 100,
         field: 'pointBalance'
     },
     {
-        title: '账户余额',
+        title: 'moneyBalance',
         minWidth: 120,
         field: 'moneyBalance'
     },
     {
-        title: '注册时间',
+        title: 'signTime',
         minWidth: 120,
         field: 'updatedTime'
     },
     {
-        title: '操作',
+        title: 'operate',
         minWidth: 140,
         field: ''
     },

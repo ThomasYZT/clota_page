@@ -5,35 +5,35 @@
         <div class="filter-wrap">
             <Select v-model="queryParams.levelId" @on-change="queryList">
                 <Option v-for="(level, index) in enumData.level" :key="index"
-                        :value="level.id">{{level.levelDesc}}
+                        :value="level.id">{{$t(level.levelDesc)}}
                 </Option>
             </Select>
             <Select v-model="queryParams.channelId" @on-change="queryList">
                 <Option v-for="(channel, index) in enumData.channel" :key="index"
-                        :value="channel.id">{{channel.channelName}}
+                        :value="channel.id">{{$t(channel.channelName)}}
                 </Option>
             </Select>
             <Select v-model="queryParams.vipStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.vipStatusEnum" :key="index"
-                        :value="item.name">{{item.desc}}
+                        :value="item.name">{{$t(item.desc)}}
                 </Option>
             </Select>
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
-                        :value="item.name">{{item.desc}}
+                        :value="item.name">{{$t(item.desc)}}
                 </Option>
             </Select>
         </div>
 
         <div class="search-wrap">
-            <Input v-model.trim="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
-            <Button type="primary" @click="queryList">查 询</Button>
-            <Button type="ghost" @click="reset">重 置</Button>
+            <Input v-model.trim="queryParams.keyWord" :placeholder="$t('memberPlaceholder')"/>
+            <Button type="primary" @click="queryList">{{$t("query")}}</Button>
+            <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="add">+ 新增会员</Button>
+            <Button type="primary" @click="add">+ {{$t("addMember")}}</Button>
         </div>
 
         <div class="table-wrap">
@@ -51,7 +51,7 @@
                 @row-click="viewDetail">
                 <el-table-column
                     slot="column0"
-                    :label="row.title"
+                    :label="$t(row.title)"
                     :prop="row.field"
                     :key="row.index"
                     :width="row.width"
@@ -109,8 +109,8 @@
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <ul class="operate-list">
-                            <li class="blue-label" @click="modifyData($event,scoped.row)">修改</li>
-                            <li class="red-label" @click="deleteMemberInfo($event,scoped.row)">删除</li>
+                            <li class="blue-label" @click="modifyData($event,scoped.row)">{{$t("modify")}}</li>
+                            <li class="red-label" @click="deleteMemberInfo($event,scoped.row)">{{$t("del")}}</li>
                         </ul>
                     </template>
                 </el-table-column>

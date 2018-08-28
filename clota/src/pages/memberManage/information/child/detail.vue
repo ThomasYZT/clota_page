@@ -4,8 +4,8 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :before-router-list="[{name: '会员信息', router: 'info'}]"
-                :locale-router="'会员详情'">
+                :before-router-list="[{name: $t('memberInfo'), router: 'info'}]"
+                :locale-router="$t('memberDetail')">
             </bread-crumb-head>
         </div>
 
@@ -14,7 +14,7 @@
             <div class="content-wrap">
 
                 <div class="content-info">
-                    <div class="title">会员个人信息<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>修改</span></div>
+                    <div class="title">{{$t("memberSelfInfo")}}<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span></div>
                     <div class="basic-wrap">
                         <div class="person-left">
                             <template v-if="detail.portrait">
@@ -28,26 +28,26 @@
                             <div>
                                 <span class="name">{{detail.custName || '-'}}</span>
                                 <span>{{ getEnumFieldShow('genderEnum', detail.gender) }}</span>
-                                <span>{{ detail.age ? detail.age+'岁' : '-' }}</span>
+                                <span>{{ detail.age ? detail.age+($store.state.lang=='en' ? '' : '岁') : '-' }}</span>
                             </div>
                             <div class="form-show">
-                                <span class="form-item-wrap"><label>手机号：</label>{{detail.phoneNum || '-'}}</span>
-                                <span class="form-item-wrap"><label>生日：</label>
+                                <span class="form-item-wrap"><label>{{$t("phoneNum")}}：</label>{{detail.phoneNum || '-'}}</span>
+                                <span class="form-item-wrap"><label>{{$t("birthday")}}：</label>
                                     {{detail.birthDay ? new Date(detail.birthDay).format('yyyy-MM-dd') : '-'}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>微信号：</label><span>{{detail.wechatAcct || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>支付宝账号：</label><span>{{detail.alipayAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span>{{detail.wechatAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span>{{detail.alipayAcct || '-'}}</span></div>
                         <div class="form-item-wrap"><label>E-mail：</label><span>{{detail.emailAddr || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>国家代码：</label><span>{{detail.stateCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>城市代码：</label><span>{{detail.cityCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>QQ号：</label><span>{{detail.qq || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>证件类型：</label><span>{{detail.certificationType || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>身份证号：</label><span>{{detail.idCardNumber || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>个人兴趣：</label><span>{{detail.hobby || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>家庭住址：</label><span>{{detail.homeAddr || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span>{{detail.stateCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span>{{detail.cityCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span>{{detail.qq || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span>{{detail.certificationType || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span>{{detail.idCardNumber || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span>{{detail.hobby || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span>{{detail.homeAddr || '-'}}</span></div>
                     </div>
                 </div>
 
