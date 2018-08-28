@@ -144,7 +144,7 @@ export default {
                 path: '/memberManage/integ',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/index.vue'),
                 meta: {
-                    menuName: 'memberPoints', //lang.config.js 里面的语言键值
+                    menuName: 'integration', //lang.config.js 里面的语言键值
                     _name: 'members-point',
                     iconClass: 'icon-diamond',
                     rightPath : topMenuName + '.' + 'memberPoints',
@@ -323,10 +323,10 @@ export default {
                 path: '/memberManage/basic',
                 component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/index.vue'),
                 meta: {
-                    menuName: 'memberSetting', //lang.config.js 里面的语言键值
+                    menuName: 'initializationSettings', //lang.config.js 里面的语言键值
                     _name: 'init-setting',
                     iconClass: 'icon-setting',
-                    rightPath : topMenuName + '.' + 'memberHome.memberSetting',
+                    rightPath : topMenuName + '.' + 'initializationSettings',
                     isMenu : true
                 },
                 children: {

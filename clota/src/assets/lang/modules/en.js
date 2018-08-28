@@ -33,6 +33,7 @@ export default {
     'fundDetail': 'Cash transaction details',
     'financialManagement': 'Financial Management',
     'memberSetting': 'Basic Settings',
+    'initializationSettings': 'Initialization Settings',
     'channelSetting': 'Channel Settings',
     'levelSetting': 'Member Level',
     'growthSetting': 'Growth Value Settings',
