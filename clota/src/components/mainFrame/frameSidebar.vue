@@ -3,20 +3,6 @@
 <template>
     <div class="frame-slidbar" :class="{'width-is-zero' : menuIsPackUp}">
         <div class="menu-list">
-            <!--<Menu :active-name="activeMenu"-->
-                  <!--@on-select="selectMenu"-->
-                  <!--width="auto"-->
-                  <!--ref="menu"-->
-                  <!--v-if="subMenuList.length > 0">-->
-                <!--<MenuItem :name="item.meta._name"-->
-                          <!--v-for="item in subMenuList"-->
-                          <!--:key="item.name">-->
-                        <!--<span v-if="item.meta.iconClass"-->
-                            <!--class="iconfont"-->
-                            <!--:class="[item.meta.iconClass]"></span>-->
-                        <!--<span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>-->
-                <!--</MenuItem>-->
-            <!--</Menu>-->
             <Menu :active-name="activeMenu"
                   @on-select="selectMenu"
                   width="auto"
@@ -31,8 +17,10 @@
                     </menu-com>
                     <MenuItem :name="item.name"
                               v-else
+
                               :key="item.name">
                         <span v-if="item.meta.iconClass"
+                              v-w-title="$t(`${item.meta.menuName}`)"
                               class="iconfont"
                               :class="[item.meta.iconClass]"></span>
                         <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>

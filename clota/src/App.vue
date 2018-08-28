@@ -16,6 +16,7 @@
     import mainFrame from '@/components/mainFrame/mainFrame';
 
     export default {
+        name : 'app',
         components: {
             mainFrame
         },

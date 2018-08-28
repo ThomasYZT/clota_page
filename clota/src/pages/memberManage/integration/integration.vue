@@ -13,6 +13,7 @@
             @query-data="queryList">
             <el-table-column
                 slot="column1"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -23,7 +24,9 @@
             </el-table-column>
             <el-table-column
                 slot="column4"
+                show-overflow-tooltip
                 slot-scope="row"
+                :resizable="false"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">

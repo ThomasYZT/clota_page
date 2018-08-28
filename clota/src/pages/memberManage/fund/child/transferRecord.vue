@@ -50,18 +50,20 @@
                     <el-table-column
                         slot="column1"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span :class="scope.row.amount && scope.row.amount > 0 ? 'green-color' : 'red-color'">
-                                {{showNumFunc(scope.row.amount)}}
+                            <span :class="scope.row['operType'] === 'transfer_in' ? 'green-color' : 'red-color'">
+                                {{scope.row['operType'] === 'transfer_in' ? '+' : '-'}}{{scope.row.amount | moneyFilter | contentFilter}}
                             </span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column2"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -71,6 +73,7 @@
                     </el-table-column>
                     <el-table-column
                         slot="column3"
+                        show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -135,23 +138,6 @@
             }
         },
         methods: {
-
-            /**
-             * 显示数值正负
-             * @param n
-             */
-            showNumFunc ( n ) {
-                let num = n ? parseFloat(n) : null;
-                if (num && num > 0) {
-                    return '+'+ Number(num).toCurrency();
-                } else if(num && num < 0) {
-                    return Number(num).toCurrency();
-                } else if(num === 0) {
-                    return '0.00';
-                } else {
-                    return '-';
-                }
-            },
 
             /**
              * 查询转账记录

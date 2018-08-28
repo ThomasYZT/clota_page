@@ -22,12 +22,13 @@
                       :minWidth="item.minWidth"
                       :index="index"
                       :field="item.field"
-                      :title="item.title">
+                      :title="$t(item.title)">
                     <!--ableClick表示点击某一列进入详情-->
                     <el-table-column
                         v-if="item.ableClick"
                         :label="item.title"
-                        :prop="item.field"
+                        show-overflow-tooltip
+                        :prop="$t(item.field)"
                         :key="index"
                         :width="item.width"
                         :min-width="item.minWidth">
@@ -43,7 +44,8 @@
                     <el-table-column
                         v-else
                         :label="item.title"
-                        :prop="item.field"
+                        :prop="$t(item.field)"
+                        show-overflow-tooltip
                         :key="index"
                         :width="item.width"
                         :min-width="item.minWidth">

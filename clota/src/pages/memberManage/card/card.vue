@@ -25,6 +25,7 @@
             @query-data="queryList">
             <el-table-column
                 slot="column1"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -35,6 +36,7 @@
             </el-table-column>
             <el-table-column
                 slot="column2"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -45,6 +47,7 @@
             </el-table-column>
             <el-table-column
                 slot="column3"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -56,6 +59,7 @@
             <el-table-column
                 slot="column4"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -81,6 +85,7 @@
             @query-data="queryList">
             <el-table-column
                 slot="column1"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -91,6 +96,7 @@
             </el-table-column>
             <el-table-column
                 slot="column2"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -101,16 +107,18 @@
             </el-table-column>
             <el-table-column
                 slot="column3"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.effectiveTime}}-{{scope.row.expireTime}}
+                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}-{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
                 </template>
             </el-table-column>
             <el-table-column
                 slot="column4"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="150">

@@ -33,6 +33,10 @@
             &:first-child .cell {
                 padding-left: 36px;
             }
+
+            &:last-child {
+                border-right: none;
+            }
         }
     }
 

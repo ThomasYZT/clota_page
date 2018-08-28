@@ -31,7 +31,11 @@
                         <Select v-model="data.toOrgId"
                                 placeholder="请选择"
                                 style="width: 240px;">
-                            <Option value="">账户</Option>
+                            <Option :value="item.id"
+                                    v-for="(item,i) in inOrgList"
+                                    :key="i">
+                                {{item.orgName}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
@@ -79,6 +83,7 @@
 <script>
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index.js';
+    import {validator} from 'klwk-ui';
     export default {
         props : {
             //账户信息
@@ -96,7 +101,15 @@
                     if(value > this.orgInfo.balance){
                         callback('转出金额不可大于可用余额');
                     }else{
-                        callback();
+                        if(validator.isNumber(this.data.commission)){
+                            if(value + this.data.commission > this.orgInfo.balance){
+                                callback('转出金额加手续费不可大于可用余额');
+                            }else{
+                                callback();
+                            }
+                        }else{
+                            callback();
+                        }
                     }
                 }).catch(err => {
                     callback(this.$t(err,{field : rule.field}));
@@ -105,7 +118,19 @@
             //校验手续费是否正确
             const validateCommission = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    callback();
+                    if(value > this.orgInfo.balance){
+                        callback('手续费不可大于可用余额');
+                    }else{
+                        if(validator.isNumber(this.data.amount)){
+                            if(value + this.data.amount > this.orgInfo.balance){
+                                callback('转出金额加手续费不可大于可用余额');
+                            }else{
+                                callback();
+                            }
+                        }else{
+                            callback();
+                        }
+                    }
                 }).catch(err => {
                     callback(this.$t(err,{field : rule.field}));
                 });
@@ -115,7 +140,7 @@
                 visible: false,
                 //表单数据
                 data: {
-                    //转入金额
+                    //转出金额
                     amount: '',
                     //备注
                     remark: '',
@@ -124,6 +149,8 @@
                     //手续费
                     commission : ''
                 },
+                //转入账户列表
+                inOrgList : [],
                 //校验方法
                 ruleValidate: {
                     amount : [
@@ -196,9 +223,26 @@
             resetFormData () {
                 this.data.remark = '';
                 this.data.amount = '';
+            },
+            /**
+             * 获取转入账户信息
+             */
+            getUpperlevelOrgList () {
+                ajax.post('getUpperlevelOrgList').then(res => {
+                   if(res.success){
+                       this.inOrgList = res.data ? res.data : [];
+                   }else{
+                       this.inOrgList = [];
+                   }
+                }).catch(err => {
+                    this.inOrgList = [];
+                });
             }
 
         },
+        created () {
+            this.getUpperlevelOrgList();
+        }
     }
 </script>
 

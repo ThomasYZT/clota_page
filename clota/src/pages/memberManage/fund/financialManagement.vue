@@ -5,7 +5,7 @@
         <div class="content-item">
             <div class="title">会员储值账户信息</div>
             <div class="content">
-                <div class="header-wrap">本账户余额（元）</div>
+                <div class="header-wrap">本金账户余额（元）</div>
                 <div class="body-wrap">
                     <div class="coast">{{moneyLeft | contentFilter}}</div>
                     <div class="operate-right">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="tips">
-            提示：本账户余额为所有储值比率为1：1的本金账户的总和。
+            提示：本金账户余额为所有储值比率为1：1的本金账户的总和。
         </div>
         <!--转账modal-->
         <transfer-modal

@@ -134,6 +134,8 @@ export default {
     'queryOrgAccountChange' : '/member/memberAccount/queryOrgAccountChange',
     //储值信息
     'queryChargingAccountInfo' : '/member/memberAccount/queryChargingAccountInfo',
+    //获取转入账户信息
+    'getUpperlevelOrgList' : '/organize/getUpperlevelOrgList',
 
     /***********************************首页***********************************/
     //获取会员消费笔数

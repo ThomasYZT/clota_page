@@ -32,7 +32,7 @@ const instance = axios.create({
 
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
-    if (response.data.message === '请先登录!') {
+    if (response.data.message === '请先登录') {
         common.loginOut();
     }
     return response;
