@@ -39,7 +39,6 @@ export default {
     'fundSetting': '储值设置',
     'fundInfo': '储值记录',
     'consumeSetting': '积分消费管理',
-    'test': '测试菜单',
     'backUp': '收起',
     'upLoad': '展开',
     'logout': '退出系统',
