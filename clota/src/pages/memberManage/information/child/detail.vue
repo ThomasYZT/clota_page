@@ -573,34 +573,25 @@
                 this.$refs.modifyScore.show();
             },
 
-
-
             //修改会员信息
             modifyInfo () {
                 this.$router.push({ name: 'addMember', query: { type: 'modify', info: this.detail }});
             },
 
+            //储值账户--查看明细
             viewDeal (dealData) {
                 this.$router.push({ name: 'infoFund', params: {fundDetail: dealData} });
             },
 
-
-
-            showCashModal () {
-                console.log('cash');
-                this.$refs.toCash.show();
-            },
-
+            //积分账户--查看明细
             viewIntegration  (integraData) {
                 this.$router.push({ name: 'infoInteg', params: {integraDetail: integraData} });
             },
 
+            //查看卡包信息
             viewCardDetail () {
                 this.$router.push({ name: 'infoCard' });
-                console.log('Card')
             },
-
-
 
             //查看享受积分、折扣率信息
             viewCardRateDetail () {

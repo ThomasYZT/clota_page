@@ -9,7 +9,7 @@
 
         <div class="fund-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.type" @on-change="filterDealList">
+                <Select v-model="queryParams.operType" @on-change="filterDealList">
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
                 <Date-picker
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <table-com
-                v-if="queryParams.accountId"
+                v-if="queryParams.accountTypeIds"
                 :auto-height="true"
                 :table-com-min-height="300"
                 :ofsetHeight="170"
@@ -47,14 +47,51 @@
                 :border="true"
                 @query-data="queryList">
                 <el-table-column
+                    slot="column0"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount }}</span>
+                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column1"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.operationType | transOperation }}
-                        <!--<span @click="viewDetail(scope.row)">弹弹</span>-->
+                        <span class="blue-color"
+                              v-if="scope.row.operationType === 'adjust_money'"
+                              @click="viewDetail(scope.row)">
+                            {{ scope.row.operationType | transOperation }}
+                        </span>
+                        <span v-else  @click="viewDetail(scope.row)">{{ scope.row.operationType | transOperation }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column2"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.accountSubType === 'corpus'">本金：{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
+                        <span v-else-if="scope.row.accountSubType === 'donate'">赠送：{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
+                        <span v-else>{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.endingBalance || '-' }}{{fundDetail.unit}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -106,8 +143,9 @@
                 localeRouter: '个人资金交易明细',
                 // 查询数据
                 queryParams: {
-                    accountId: '',
-                    type: 'null',
+                    cardId: '',
+                    accountTypeIds: '',
+                    operType: 'null',
                     startDate: '',
                     endDate: '',
                     pageNo: 1,
@@ -142,10 +180,10 @@
             queryList () {
                 let param = {};
                 Object.assign(param, this.queryParams);
-                if (this.queryParams.type == 'null') {
-                    param.type = null;
+                if (this.queryParams.operType == 'null') {
+                    param.operType = null;
                 }
-                ajax.post('queryAccountChange', param).then(res => {
+                ajax.post('queryOrgAccountChange', param).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
@@ -174,9 +212,8 @@
                         this[item] = params[item];
                     }
 
-                    console.log(this.fundDetail.id)
-
-                    this.queryParams.accountId = this.fundDetail.id;
+                    this.queryParams.cardId = this.fundDetail.cardId;
+                    this.queryParams.accountTypeIds = this.fundDetail.accountDefineId;
                     this.queryList();
                 }
             },
@@ -197,7 +234,7 @@
              */
             resetQueryParams() {
                 Object.assign(this.queryParams, {
-                    type: 'null',
+                    operType: 'null',
                     startDate: '',
                     endDate: '',
                     pageNo: 1,
@@ -264,6 +301,20 @@
                 margin-top: 30px;
                 text-align: center;
             }
+
+            .red-color{
+                color: $color_red;
+            }
+
+            .green-color{
+                color: $color_green;
+            }
+
+            .blue-color{
+                color: $color_blue;
+                cursor: pointer;
+            }
+
         }
 
     }

@@ -9,7 +9,7 @@
 
         <div class="integration-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.type" style="width:200px" @on-change="filterDealList">
+                <Select v-model="queryParams.operType" style="width:200px" @on-change="filterDealList">
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
                 <Date-picker
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <table-com
-                v-if="queryParams.accountId"
+                v-if="queryParams.accountTypeIds"
                 :auto-height="true"
                 :table-com-min-height="300"
                 :ofsetHeight="170"
@@ -48,14 +48,51 @@
                 :border="true"
                 @query-data="queryList">
                 <el-table-column
+                    slot="column0"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount }}</span>
+                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column1"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.operationType | transOperation }}
-                        <!--<span @click="viewDetail(scope.row)">弹弹</span>-->
+                        <span class="blue-color"
+                              v-if="scope.row.operationType === 'adjust_score'"
+                              @click="viewDetail(scope.row)">
+                            {{ scope.row.operationType | transOperation }}
+                        </span>
+                        <span v-else>{{ scope.row.operationType | transOperation }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column2"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.accountSubType === 'corpus'">本金：{{ scope.row.amount || '-' }}</span>
+                        <span v-else-if="scope.row.accountSubType === 'donate'">赠送：{{ scope.row.amount || '-' }}</span>
+                        <span v-else>{{ scope.row.amount || '-' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.endingBalance || '-' }}{{fundDetail.unit}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -107,7 +144,8 @@
                 localeRouter: '个人积分交易明细',
                 // 查询数据
                 queryParams: {
-                    accountId: '',
+                    cardId: '',
+                    accountTypeIds: '',
                     type: 'null',
                     startDate: '',
                     endDate: '',
@@ -144,8 +182,8 @@
             queryList () {
                 let param = {};
                 Object.assign(param, this.queryParams);
-                if (this.queryParams.type == 'null') {
-                    param.type = null;
+                if (this.queryParams.operType == 'null') {
+                    param.operType = null;
                 }
                 ajax.post('queryAccountChange', param).then(res => {
                     if(res.success){
@@ -176,7 +214,8 @@
                         this[item] = params[item];
                     }
 
-                    this.queryParams.accountId = this.integraDetail.id;
+                    this.queryParams.cardId = this.integraDetail.cardId;
+                    this.queryParams.accountTypeIds = this.integraDetail.accountDefineId;
                     this.queryList();
                 }
             },
@@ -197,7 +236,7 @@
              */
             resetQueryParams() {
                 Object.assign(this.queryParams, {
-                    type: 'null',
+                    operType: 'null',
                     startDate: '',
                     endDate: '',
                     pageNo: 1,

@@ -13,7 +13,8 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="账户归属" prop="accountBelonging">
-                        <Select v-model="formData.accountBelonging">
+                        <Select v-model="formData.accountBelonging"
+                                :disabled="formData.defaultAccount === 'true' ? true : false">
                             <Option v-for="(item, index) in tableData"
                                     :value="item.id"
                                     :key="index">
@@ -24,21 +25,27 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="账户名称" prop="accountName">
-                        <Input v-model.trim="formData.accountName" placeholder="请输入"/>
+                        <Input v-model.trim="formData.accountName"
+                               placeholder="请输入"
+                               :disabled="formData.defaultAccount === 'true' ? true : false"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="单位" prop="unit">
-                        <Input v-model.trim="formData.unit" placeholder="请输入"/>
+                        <Input v-model.trim="formData.unit"
+                               placeholder="请输入"
+                               :disabled="formData.defaultAccount === 'true' ? true : false"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="储值比率" prop="rateDenominator">
                         <Input v-model.trim="formData.rateNumerator"
+                               :disabled="formData.defaultAccount === 'true' ? true : false"
                                placeholder="请输入"
                                class="single-input"/>
                         <span style="padding: 0 13px;">:</span>
                         <Input v-model.trim="formData.rateDenominator"
+                               :disabled="formData.defaultAccount === 'true' ? true : false"
                                placeholder="请输入"
                                class="single-input"/>
                     </Form-item>
@@ -155,8 +162,8 @@
                 this.index = this.length;
                 if( data ){
                     let formData = defaultsDeep({}, data.item);
-                    formData.rateDenominator = formData.rateDenominator ? formData.rateDenominator+"" : "";
-                    formData.rateNumerator = formData.rateNumerator ? formData.rateNumerator+"" : "";
+                    formData.rateDenominator = data.item.rateDenominator ? data.item.rateDenominator+"" : "";
+                    formData.rateNumerator = data.item.rateNumerator ? data.item.rateNumerator+"" : "";
                     this.formData = defaultsDeep({}, formData);
                     this.index = data.index;
                 }
@@ -168,6 +175,7 @@
                 this.$refs.formValidate.validate((valid) => {
                     if(valid){
                         let params = {
+                            id: this.formData.id || '',
                             accountBelonging: this.formData.accountBelonging,
                             accountName: this.formData.accountName,
                             unit: this.formData.unit,
@@ -178,7 +186,7 @@
                             corpusAppliedOrgId: this.formData.corpusAppliedOrgId,
                             donateAppliedOrgId: this.formData.donateAppliedOrgId,
                         };
-                        console.log(params)
+                        console.log(params);
                         this.updateMemberAccountDefine(params);
                     }
                 })

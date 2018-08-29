@@ -3,12 +3,12 @@
 export const fundDetailHead = [
     {
         title: '本次交易金额',
-        minWidth: 100,
+        minWidth: 150,
         field: 'amount'
     },
     {
         title: '交易类型',
-        width: 100,
+        width: 150,
         field: 'operationType'
     },
     {
@@ -23,7 +23,7 @@ export const fundDetailHead = [
     },
     {
         title: '交易后账户余额',
-        minWidth: 100,
+        minWidth: 200,
         field: 'endingBalance'
     },
     {
@@ -49,6 +49,6 @@ export const dealType = [
     },
     {
         name: '手动改资金账户',
-        value: 'manual',
+        value: 'adjust_money',
     },
 ];

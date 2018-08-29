@@ -11,7 +11,8 @@
         <div class="modal-body">
             <div class="form-item-wrap">
                 <label>本次修改金额：</label>
-                <span :class="{'red': manualData.amount < 0, 'green': manualData.amount > -1 }">{{manualData.amount}}</span>
+                <span class="green" v-if="manualData.amount > -1">+{{manualData.amount}}</span>
+                <span class="red" v-if="manualData.amount < 0">{{manualData.amount}}</span>
             </div>
             <div class="form-item-wrap">
                 <label>修改后账户余额为：</label>
@@ -66,6 +67,7 @@
 
         .modal-body{
             padding: 20px 0 50px 100px;
+            min-height: 225px;
 
             .form-item-wrap{
                 width: 100%;
@@ -84,6 +86,12 @@
                 .green{
                     color: $color_green;
                 }
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
             }
         }
 

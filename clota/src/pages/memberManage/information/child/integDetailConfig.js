@@ -3,27 +3,27 @@
 export const integraDetailHead = [
     {
         title: '本次交易积分',
-        minWidth: 100,
+        minWidth: 150,
         field: 'amount'
     },
     {
         title: '交易类型',
-        width: 100,
+        width: 150,
         field: 'operationType'
     },
     {
-        title: '交易编码',
-        width: 200,
-        field: 'id'
-    },
-    {
         title: '交易信息',
-        minWidth: 190,
+        minWidth: 200,
         field: 'remark'
     },
     {
+        title: '交易编码',
+        width: 190,
+        field: 'id'
+    },
+    {
         title: '交易后账户积分',
-        minWidth: 100,
+        minWidth: 200,
         field: 'endingBalance'
     },
     {
@@ -40,15 +40,11 @@ export const integraType = [
         value: 'null',
     },
     {
-        name: '积分消耗',
-        value: 'useUp',
-    },
-    {
         name: '消费所得',
         value: 'consume',
     },
     {
         name: '手动改积分账户',
-        value: 'manual',
+        value: 'adjust_score',
     },
 ];

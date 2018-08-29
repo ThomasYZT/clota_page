@@ -118,6 +118,7 @@
         methods: {
 
             show ( data, type) {
+                console.log(data)
                 if(type && type !== 'money'){
                     this.title = '默认账户赠送金额可使用范围设置';
                     this.type = 'send';
@@ -126,9 +127,12 @@
                     this.type = 'money';
                 }
                 if( data ){
-                    this.formData = defaultsDeep({}, data.item);
-                    this.formData.corpusAppliedOrgId = data.item.corpusAppliedOrgId || [];
-                    this.formData.donateAppliedOrgId = data.item.donateAppliedOrgId || [];
+                    let formData = defaultsDeep({}, data.item);
+                    formData.corpusAppliedOrgId = data.item.corpusAppliedOrgId && data.item.corpusAppliedOrgId.length > 0 ?
+                        data.item.corpusAppliedOrgId.split(',') : [];
+                    formData.donateAppliedOrgId = data.item.donateAppliedOrgId && data.item.donateAppliedOrgId.length > 0  ?
+                        data.item.donateAppliedOrgId.split(',') : [];
+                    this.formData = formData;
                     this.index = data.index;
                 }
                 this.visible = true;
@@ -150,14 +154,18 @@
                     });
                 }
                 let params = {
+                    id: this.formData.id || '',
                     account: this.formData.account,
                     accountName: this.formData.accountName,
                     unit: this.formData.unit,
                     rate: this.rate,
                     exchangeToCash: this.formData.exchangeToCash,
-                    corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
-                    donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
+                    corpusAppliedOrgId: this.formData.corpusAppliedOrgId.length > 0 ?
+                        this.formData.corpusAppliedOrgId.join(',') : '',
+                    donateAppliedOrgId: this.formData.donateAppliedOrgId.length > 0 ?
+                        this.formData.donateAppliedOrgId.join(',') : '',
                 };
+                console.log(params);
                 this.updateMemberAccountDefine(params);
             },
 
@@ -178,14 +186,14 @@
             hide(){
                 this.visible = false;
                 this.title = '默认账户本金可使用范围设置';
-                this.formData = {};
-                this.multipleSelection = [];
                 if( this.$refs.moneyMultiTablePlug ){
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }
                 if( this.$refs.sendMultiTablePlug ){
                     this.$refs.sendMultiTablePlug.clearSelection();
                 }
+                this.formData = {};
+                this.multipleSelection = [];
                 this.index = null;
             },
 
