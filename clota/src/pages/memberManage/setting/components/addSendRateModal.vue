@@ -112,11 +112,25 @@
                     this.title = '修改储值赠送金额比例';
                     this.index = this.length;
                 }
+
                 if( data ){
                     this.formData = data.item;
                     this.index = data.index;
                 }
+
                 this.visible = true;
+
+                if( data ){
+                    if(data.item.scope && JSON.parse(data.item.scope) && JSON.parse(data.item.scope).length > 0){
+                        JSON.parse(data.item.scope).forEach( item => {
+                            this.tableData.forEach( (list,index) => {
+                                if(item.id === list.id){
+                                    this.$refs.ruleMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                }
+                            })
+                        })
+                    }
+                }
             },
 
             //校验input输入
@@ -167,6 +181,9 @@
                     _status: 1,
                 };
                 this.multipleSelection = [];
+                if( this.$refs.ruleMultiTablePlug ){
+                    this.$refs.ruleMultiTablePlug.clearSelection();
+                }
                 this.index = null;
                 this.error = '';
             },

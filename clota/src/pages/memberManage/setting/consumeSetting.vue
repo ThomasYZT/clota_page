@@ -181,7 +181,6 @@
             'settingData.scoreExToCharge.donateType' : function (newVal, oldVal) {
                 if(!newVal){
                     this.error.donateIntegrateError = '';
-                    this.error.donateMoneyError = '';
                 }
             },
 

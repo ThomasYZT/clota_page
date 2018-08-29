@@ -222,6 +222,10 @@
             clearSelection () {
                 this.$refs.multipleTable.clearSelection();
             },
+            //设置表格某行选中/不选中
+            toggleRowSelection ( row, selected) {
+                this.$refs.multipleTable.toggleRowSelection( row, selected );
+            }
         },
         created () {
             this.queryList();

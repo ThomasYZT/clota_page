@@ -26,17 +26,17 @@
                 <div class="title">储值积分、成长值比例设置</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreGrowthFromCharging.storedAndGrowthType" vertical>
-                        <Radio label="true">
+                        <Radio label="false">
                             <span>储值时不获得积分、成长值，消费时获取</span>
                         </Radio>
-                        <Radio label="false">
+                        <Radio label="true">
                             <span>储值时获得积分、成长值，消费时不重复获得积分、成长值</span>
                         </Radio>
                     </RadioGroup>
                     <div class="check-group-wrap">储值
                         <span :class="{'ivu-form-item-error': error.moneyToIntegrateError}">
                             <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToIntegrate"
-                                 :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                 :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
                                  @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToIntegrate,'moneyToIntegrateError')"
                                  type="text"
                                  class="single-input"
@@ -50,7 +50,7 @@
                     <div class="check-group-wrap">储值
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
                               <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGgowth"
-                                     :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'false' ? true : false"
+                                     :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
                                      @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGgowth,'moneyToGgowthError')"
                                      type="text"
                                      class="single-input"
@@ -343,11 +343,9 @@
 
             //成长值生效设置
             'settingData.scoreGrowthFromCharging.storedAndGrowthType' : function (newVal, oldVal) {
-                if(newVal !== 'false'){
+                if(newVal !== 'true'){
                     this.error.moneyToIntegrateError = '';
-                    this.error.integrateError = '';
                     this.error.moneyToGgowthError = '';
-                    this.error.growthError = '';
                 }
             },
 
@@ -457,12 +455,12 @@
                     return false
                 }
 
-                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'false' &&
+                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
                     !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToIntegrate) ){
                     this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToIntegrate, 'moneyToIntegrateError');
                     return false
                 }
-                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'false' &&
+                if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
                     !this.validateInput(this.settingData.scoreGrowthFromCharging.moneyToGgowth) ){
                     this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGgowth, 'moneyToGgowthError');
                     return false
