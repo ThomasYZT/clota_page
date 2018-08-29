@@ -146,5 +146,6 @@ export default {
     'cardPkgInfo': 'Card Package Information',
     'newAccount': 'Add New Account',
     'enjoyIntegraAndDiscount': 'Integration Rate/&Discount Rate Information Enjoyed',
+    'accoutStored': '账户储值信息',
 
 }

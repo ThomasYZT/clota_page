@@ -2,7 +2,7 @@
 
 <template>
     <div class="fund-info">
-        <div class="title">储值信息</div>
+        <div class="title">账户储值信息</div>
         <div class="account-info"
             v-for="(item,i) in accountList"
             :key="i">
@@ -12,8 +12,8 @@
                     <img v-else src="../../../assets/images/icon-common-account.svg" alt="">
                 </div>
                 <div class="fund-list">
-                    <div class="account-name" v-w-title="item.accountName + '储值总额（' + item.unit +'）'">
-                        {{item.accountName}}储值总额（{{item.unit}}）
+                    <div class="account-name" v-w-title="item.accountName + '（' + item.unit +'）'">
+                        {{item.accountName}}（{{item.unit}}）
                     </div>
                     <div class="account-money">{{item.amount | moneyFilter}}</div>
                 </div>

@@ -148,5 +148,6 @@ export default {
     'enjoyIntegraAndDiscount': '享受积分、折扣率信息',
     'notExpired': '未过期',
     'used': '已使用',
+    'accoutStored': '账户储值信息',
 
 }

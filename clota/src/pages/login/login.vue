@@ -6,9 +6,9 @@
                 <img src="../../assets/images/logo.svg" alt="">
             </div>
             <div class="lang">
-                <span @click="changeLang">简体中文</span>
+                <span @click="changeLang('zh-CN')">简体中文</span>
                 <span>|</span>
-                <span @click="changeLang">English</span>
+                <span @click="changeLang('en')">English</span>
             </div>
         </div>
         <!-- 登录模块 -->
@@ -85,8 +85,8 @@
         },
         methods: {
             //改变语言
-            changeLang() {
-                this.$store.commit('setLang', 'lang');
+            changeLang(lang) {
+                this.$store.commit('setLang',lang);
             },
             //登录提交表单
             handleSubmit(name) {

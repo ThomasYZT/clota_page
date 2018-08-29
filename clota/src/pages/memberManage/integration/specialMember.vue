@@ -65,8 +65,8 @@
                             <ul class="operate-list">
                                 <li
                                     v-if="!isNotEmpty(scope.row.discountRate) || !isNotEmpty(scope.row.scoreRate)"
-                                    @click="cotactMemberInfo(scope.row)">设置积分、折扣率</li>
-                                <li v-else @click="cotactMemberInfo(scope.row)">修改积分、折扣率</li>
+                                    @click="setInteger(scope.row)">设置积分、折扣率</li>
+                                <li v-else @click="setInteger(scope.row)">修改积分、折扣率</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -173,10 +173,10 @@
                 });
             },
             /**
-             * 关联会员信息
+             * 设置特殊会员积分率和折扣率
              * @param rowData 特殊会员信息
              */
-            cotactMemberInfo (rowData) {
+            setInteger (rowData) {
                 this.currentData = rowData;
                 this.$refs.modifyRate.show();
             },
@@ -270,7 +270,7 @@
             },
             /**
                 修改特殊会员分类
-                @param data 
+                @param data
              */
             modifyEmployeeType (data) {
                 this.specialCurrentData = data;
