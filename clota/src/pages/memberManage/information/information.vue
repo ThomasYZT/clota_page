@@ -207,7 +207,7 @@
                     if(res.success){
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                 })
             },
@@ -223,7 +223,7 @@
                     if(res.success){
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                 })
             },
@@ -254,7 +254,7 @@
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
                     } else {
-                        this.$Message.warning('queryMemberPage 查询失败！');
+                        this.$Message.warning('queryMemberPage '+ $t('queryFailure') +'！');
                     }
                 })
             },

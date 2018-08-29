@@ -203,7 +203,7 @@
                         this.enumData.level = res.data.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberLevels 查询失败！');
+                        this.$Message.warning(res.message || 'queryMemberLevels '+ $t('queryFailure') +'！');
                     }
                 })
             },
@@ -219,7 +219,7 @@
                         this.enumData.channel = res.data.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                 })
             },

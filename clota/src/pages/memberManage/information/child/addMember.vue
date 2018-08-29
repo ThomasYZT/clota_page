@@ -335,7 +335,7 @@
                     if(res.success){
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                     return res;
                 })
@@ -351,7 +351,7 @@
                     if(res.success){
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                 })
             },
@@ -378,11 +378,11 @@
                     if(res.success){
                         //区分新增与修改
                         if(this.type === 'add'){
-                            this.$Message.success('新增会员成功！');
+                            this.$Message.success('！');     // 新增会员成功
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
-                            this.$Message.success('修改会员成功！');
+                            this.$Message.success('！');     // 修改会员成功
                             this.$router.push({name: this.routerFrom.name});
                         }
                     } else {

@@ -154,7 +154,7 @@
                         this.tableData = res.data.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberLevels 查询失败！');
+                        this.$Message.warning(res.message || 'queryMemberLevels '+ $t('queryFailure') +'！');
                     }
                 })
             },

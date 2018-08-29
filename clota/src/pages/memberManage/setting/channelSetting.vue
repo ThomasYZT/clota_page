@@ -114,7 +114,7 @@
                         this.tableData = res.data.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet 查询失败！');
+                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                 })
             },
