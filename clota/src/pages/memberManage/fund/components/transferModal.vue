@@ -73,10 +73,10 @@
             <Button type="primary"
                     class="ivu-btn-90px"
                     :loading="btnLoading"
-                    @click="formValidateFunc" >保存</Button>
+                    @click="formValidateFunc" >{{$t("save")}}</Button>
             <Button type="ghost"
                     class="ivu-btn-90px"
-                    @click="hide" >取消</Button>
+                    @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

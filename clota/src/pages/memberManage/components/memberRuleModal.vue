@@ -34,8 +34,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="formValidateFunc" >{{$t("save")}}</Button>
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

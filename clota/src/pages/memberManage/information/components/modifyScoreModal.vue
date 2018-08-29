@@ -2,32 +2,32 @@
     <!--会员积分账户修改-->
     <Modal
         v-model="visible"
-        title="会员积分账户修改"
+        :title="$t('integraModification')"
         class-name="modify-score-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
-        @on-cancel="hide">
+        @on-cancel="hide"><!--会员积分账户修改-->
 
         <div class="modal-body">
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="160">
 
                 <div class="form-item-wrap">
-                    <label>用户姓名：</label>
+                    <label>{{$t("userName")}}：</label>
                     <span>{{detail.custName || '-'}}</span>
                 </div>
 
                 <div class="form-item-wrap">
                     <label>目前积分账户：</label>
                     <span class="yellow-color">{{account.accountBalance ? account.accountBalance.toCurrency() : '0'}}</span>
-                    积分
+                    {{$t('integral')}}<!--积分-->
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
                     <Form-item label=" 账户余额调整：" prop="corpusAmount">
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
-                                增加
+                                {{$t("increase")}}<!--增加-->
                                 <template v-if="formData.corpusOptSign === 'sub'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -37,7 +37,7 @@
                                 {{accountInfo.unit || ''}}
                             </Radio>
                             <Radio label="sub">
-                                减少
+                                {{$t("reduce")}}<!--减少-->
                                 <template v-if="formData.corpusOptSign === 'add'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -73,8 +73,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="formValidateFunc" >{{$t("save")}}</Button>
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

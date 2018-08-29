@@ -70,8 +70,8 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">保存</Button>
-            <Button type="ghost" @click="resetFieldFunc">取消</Button>
+            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
     </div>

@@ -78,8 +78,8 @@
                     <Input :placeholder="$t('inputField', {field: ''})"/>
                 </div>
                 <div class="popover-footer">
-                    <Button type="primary" size="small">保存</Button>
-                    <Button type="ghost" size="small">取消</Button>
+                    <Button type="primary" size="small">{{$t("save")}}</Button>
+                    <Button type="ghost" size="small">{{$t("cancel")}}</Button>
                 </div>
             </div>
         </kw-popover>
@@ -93,8 +93,8 @@
                     </Select>
                 </div>
                 <div class="popover-footer">
-                    <Button type="primary" size="small">保存</Button>
-                    <Button type="ghost" size="small">取消</Button>
+                    <Button type="primary" size="small">{{$t("save")}}</Button>
+                    <Button type="ghost" size="small">{{$t("cancel")}}</Button>
                 </div>
             </div>
         </kw-popover>

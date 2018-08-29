@@ -146,7 +146,7 @@
                                 :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">删除</span>
-                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">保存</span>
+                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">{{$t("save")}}</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">取消</span>
                             </FormItem>
                         </div>
@@ -213,8 +213,8 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">保存</Button>
-            <Button type="ghost" @click="resetFieldFunc">取消</Button>
+            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
         <!--新增账户modal-->

@@ -113,14 +113,14 @@
         <div slot="footer" class="modal-footer">
             <template v-if="step === 0">
                 <Button type="primary" @click="nextStep(true)" >下一步</Button>
-                <Button type="ghost" @click="hide" >取消</Button>
+                <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
             </template>
             <template v-if="step === 1">
                 <Button type="primary" @click="nextStep(false)" >下一步</Button>
                 <Button type="ghost" @click="prevStep" >上一步</Button>
             </template>
             <template v-if="step === 2">
-                <Button type="primary" @click="save" >保存</Button>
+                <Button type="primary" @click="save" >{{$t("save")}}</Button>
                 <Button type="ghost" @click="prevStep" >上一步</Button>
             </template>
         </div>

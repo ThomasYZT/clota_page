@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="选择要修改的账户：" prop="accountTypeId">
+                    <Form-item :label="$t('selectModifyingAccount') + '：'" prop="accountTypeId"><!--选择要修改的账户-->
                         <Select v-model="formData.accountTypeId" :placeholder="$t('selectField', {msg: ''})" @on-change="changeAccount">
                             <Option v-for="(item,index) in store"
                                     :key="index"
@@ -30,21 +30,21 @@
                 </div>
 
                 <div class="form-item-wrap">
-                    <label>本金账户余额：</label>
+                    <label>$t('PrincipalAccBalance')：</label><!--本金账户余额-->
                     <span class="yellow-color">{{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}</span>
                     {{accountInfo.unit || ''}}
                 </div>
                 <div class="form-item-wrap">
-                    <label>赠送账户余额：</label>
+                    <label>{{$t('giftAccBalance')}}：</label><!--赠送账户余额-->
                     <span class="yellow-color">{{accountInfo.donateBalance ? accountInfo.donateBalance.toCurrency() : '0'}}</span>
                     {{accountInfo.unit || ''}}
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="本金账户余额调整：" prop="corpusAmount">
+                    <Form-item :label="$t('adjustPrincipalAccBalance') + '：'" prop="corpusAmount"><!--本金账户余额调整-->
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
-                                增加
+                                {{$t("increase")}}
                                 <template v-if="formData.corpusOptSign === 'sub'">
                                     <Input placeholder=" " disabled/>
                                 </template>
@@ -54,7 +54,7 @@
                                 {{accountInfo.unit || ''}}
                             </Radio>
                             <Radio label="sub">
-                                减少
+                                {{$t("reduce")}}
                                 <template v-if="formData.corpusOptSign === 'add'">
                                     <Input placeholder=" " disabled/>
                                 </template>
@@ -68,10 +68,10 @@
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="赠送账户余额调整：" prop="donateAmount">
+                    <Form-item :label="$t('adjustGiftAccBalance') + '：'" prop="donateAmount"><!--赠送账户余额调整-->
                         <RadioGroup v-model="formData.donateOptSign">
                             <Radio label="add">
-                                增加
+                                {{$t("increase")}}
                                 <template v-if="formData.donateOptSign === 'sub'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -81,7 +81,7 @@
                                 {{accountInfo.unit || ''}}
                             </Radio>
                             <Radio label="sub">
-                                减少
+                                {{$t("reduce")}}
                                 <template v-if="formData.donateOptSign === 'add'">
                                 <Input placeholder=" " disabled/>
                             </template>

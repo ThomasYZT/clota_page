@@ -56,8 +56,8 @@
         <div slot="footer" class="modal-footer">
             <Button type="primary"
                     :disabled="!(formData.lowerValue && formData.topValue && formData.gift && multipleSelection.length > 0)"
-                    @click="save" >保存</Button>
-            <Button type="ghost" @click="hide">取消</Button>
+                    @click="save" >{{$t("save")}}</Button>
+            <Button type="ghost" @click="hide">{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

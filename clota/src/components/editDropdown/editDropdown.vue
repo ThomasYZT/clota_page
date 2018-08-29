@@ -11,7 +11,7 @@
                         <Input v-model="keywards" size="small"/>
                     </div>
                     <span class="cancel" @click="cancel(item)">取消</span>
-                    <span class="save" @click="save">保存</span>
+                    <span class="save" @click="save">{{$t("save")}}</span>
                 </div>
                 <div class="edutText" v-if="!item.showInputValue">
                     <span class="text">{{item.name}}</span>

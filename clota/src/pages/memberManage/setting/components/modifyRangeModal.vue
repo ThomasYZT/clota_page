@@ -58,8 +58,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="save" >{{$t("save")}}</Button>
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

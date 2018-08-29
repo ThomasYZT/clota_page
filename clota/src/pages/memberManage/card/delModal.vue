@@ -16,12 +16,12 @@
             </div>
         </div>
         <div slot="footer" class="modal-footer">
-            <Button class="ivu-btn-90px" 
-                    type="error" 
+            <Button class="ivu-btn-90px"
+                    type="error"
                     @click="deleteCardFunc" >确定</Button>
-            <Button class="ivu-btn-90px" 
-                    type="ghost" 
-                    @click="hide" >取消</Button>
+            <Button class="ivu-btn-90px"
+                    type="ghost"
+                    @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

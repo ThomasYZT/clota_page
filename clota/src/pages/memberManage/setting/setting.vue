@@ -220,7 +220,7 @@
                                  { validator: emoji, trigger: 'blur' }]">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">删除</span>
-                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">保存</span>
+                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">{{$t("save")}}</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetReason(item,index)">取消</span>
                             </FormItem>
                         </div>
@@ -243,7 +243,7 @@
                                         { validator: emoji, trigger: 'blur' }]">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.name" :maxlength="10" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">删除</span>
-                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">保存</span>
+                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">{{$t("save")}}</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetDocument(item,index)">取消</span>
                             </FormItem>
                         </div>
@@ -256,8 +256,8 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">保存</Button>
-            <Button type="ghost" @click="resetFieldFunc">取消</Button>
+            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
     </div>

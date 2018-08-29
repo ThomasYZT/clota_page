@@ -188,6 +188,7 @@ export default {
     'increase': '增加',
     'reduce': '减少',
     'adjustGiftAccBalance': '赠送账户余额调整',
+    'adjustPrincipalAccBalance': '本金账户余额调整',
     'selectModifyReason': '请选择修改原因',
     'modifiedAccount': '修改的账户',
     'modifyReason': '修改原因',

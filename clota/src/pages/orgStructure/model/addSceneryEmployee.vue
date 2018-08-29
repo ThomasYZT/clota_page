@@ -59,7 +59,7 @@
         <!--自定义页脚-->
         <div slot="footer">
             <template>
-                <i-button size="small" type="primary">保存</i-button>
+                <i-button size="small" type="primary">{{$t("save")}}</i-button>
                 <i-button type="ghost" size="small" @click="hide">取消</i-button>
             </template>
         </div>

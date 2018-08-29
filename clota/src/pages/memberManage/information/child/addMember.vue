@@ -130,7 +130,7 @@
                 <template v-if="type === 'modify'">
                     <Button type="primary" :loading="loading" @click="formValidateFunc">确定</Button>
                 </template>
-                <Button type="ghost" @click="goBack">取消</Button>
+                <Button type="ghost" @click="goBack">{{$t("cancel")}}</Button>
             </div>
 
         </div>
