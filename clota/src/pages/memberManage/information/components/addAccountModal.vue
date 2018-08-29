@@ -2,7 +2,7 @@
     <!--新增账户-->
     <Modal
         v-model="visible"
-        title="新增账户"
+        :title="$t('newAccount')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -11,8 +11,8 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="100">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="请选择账户" prop="accountTypeId">
-                        <Select v-model="data.accountTypeId" placeholder="请选择">
+                    <Form-item :label="$t('selectField', {msg: $t('account')})" prop="accountTypeId">
+                        <Select v-model="data.accountTypeId" :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
@@ -25,8 +25,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="formValidateFunc" >{{$t("save")}}</Button>
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>

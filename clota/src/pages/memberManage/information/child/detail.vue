@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="content-info card-temp">
-                    <div class="title">子母卡信息</div>
+                    <div class="title">{{$t("childMotherCardInfo")}}</div>
                     <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true'">
                         <table-com
                             :auto-height="true"
@@ -165,7 +165,7 @@
                                 :width="row.width"
                                 :min-width="row.minWidth"
                                 slot-scope="row">
-                                <template slot-scope="scoped">母卡</template>
+                                <template slot-scope="scoped">{{$t("motherCard")}}</template>
                             </el-table-column>
                             <el-table-column
                                 slot="column3"
@@ -197,7 +197,7 @@
                                 :width="row.width"
                                 :min-width="row.minWidth"
                                 slot-scope="row">
-                                <template slot-scope="scoped">母卡</template>
+                                <template slot-scope="scoped">{{$t("childCard")}}</template>
                             </el-table-column>
                             <el-table-column
                                 slot="column3"
@@ -216,19 +216,19 @@
                 </div>
 
                 <div class="content-info">
-                    <div class="title">安全设置</div>
+                    <div class="title">{{$t("securitySettings")}}</div>
                     <div class="switch-wrap">
                         <i-switch :value="detail.cardStatus ==='active' ? true : false"
                                   @on-change="changeCardStatus"></i-switch>
-                        <span class="text">冻结该会员卡</span>
+                        <span class="text">{{$t("freezeMemberCard")}}</span>
                     </div>
                 </div>
 
                 <div class="content-info">
-                    <div class="title">修改储值、积分数值</div>
+                    <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
                     <div class="operate">
-                        <div><span @click="showAssetModal">修改该会员储值账户余额</span></div>
-                        <div><span @click="showScoreModal">修改该会员积分账户余额</span></div>
+                        <div><span @click="showAssetModal">{{$t("modifyStorageBalance")}}</span></div>
+                        <div><span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span></div>
                     </div>
 
                 </div>
@@ -339,12 +339,12 @@
                 motherCard: [],
                 motherTableColumn: [
                     {
-                        title: '当前会员卡身份',
+                        title: 'currentMemberCardInfo',
                         minWidth: 260,
                         field: ''
                     },
                     {
-                        title: '母卡信息',
+                        title: 'motherCardInfo',
                         minWidth: 260,
                         field: ''
                     },
@@ -352,12 +352,12 @@
                 sonCard: [],
                 sonTableColumn: [
                     {
-                        title: '当前会员卡身份',
+                        title: 'currentMemberCardInfo',
                         minWidth: 260,
                         field: ''
                     },
                     {
-                        title: '子卡信息',
+                        title: 'childCardInfo',
                         minWidth: 260,
                         field: ''
                     },

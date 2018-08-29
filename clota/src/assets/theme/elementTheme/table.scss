@@ -38,6 +38,11 @@
                 border-right: none;
             }
         }
+        th {
+            &:nth-last-child(2) {
+                border-right: none;
+            }
+        }
     }
 
     @include e(body) {

@@ -2,7 +2,7 @@
     <!--新增储值-->
     <Modal
         v-model="visible"
-        title="新增储值"
+        :title="$t('newStorageValue')"
         class-name="add-fund-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -10,22 +10,22 @@
 
         <div class="modal-body">
             <div class="form-item-wrap">
-                <label>用户姓名：</label>
+                <label>{{$t('userName')}}：</label>
                 <span>{{detail.custName || '-'}}</span>
             </div>
             <div class="form-item-wrap">
-                <label>储值账户名称：</label>
+                <label>{{$t('storageAccount')}}：</label>
                 <span>{{accountInfo.accountName || '-'}}</span>
             </div>
             <div class="form-item-wrap">
-                <label>本金账户余额：</label>
+                <label>{{$t('PrincipalAccBalance')}}：</label>
                 <span>
                     <span class="yellow-color">
                         {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
                     </span>{{accountInfo.unit || ''}}</span>
             </div>
             <div class="form-item-wrap">
-                <label>赠送账户余额：</label>
+                <label>{{$t('giftAccBalance')}}：</label>
                 <span>
                     <span class="yellow-color">
                         {{accountInfo.donateBalance ? accountInfo.donateBalance.toCurrency() : '0'}}
@@ -34,18 +34,18 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label="增加储值金额：" prop="amount">
+                    <Form-item :label="$t('increaseStorageSum') + '：'" prop="amount">
                         <!--@on-blur="getTotalAmount"-->
                        <Input v-model.trim="formData.amount"
-                               placeholder="请输入"/>
-                        <span class="font">实际增加</span>
-                        <Input disabled :value="formData.totalAmount" placeholder="请输入"/>
-                        <span>元</span>
+                               :placeholder="$t('inputField', {field: ''})"/>
+                        <span class="font">{{$t('actualIncrease')}}</span>
+                        <Input disabled :value="formData.totalAmount" :placeholder="$t('inputField', {field: ''})"/>
+                        <span>{{$t("yuan")}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="收款方式：" prop="paymentTypeId">
-                        <Select v-model="formData.paymentTypeId" placeholder="请选择">
+                    <Form-item :label="$t('paymentMethod') + '：'" prop="paymentTypeId">
+                        <Select v-model="formData.paymentTypeId" :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in paymentList" :key="index" :value="item.id">
                                 {{item.payment}}
                             </Option>
@@ -53,16 +53,16 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入"/>
+                    <Form-item :label="$t('remark') + '：'" prop="remark">
+                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
             </Form>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="formValidateFunc" >{{$t("save")}}</Button>
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>
