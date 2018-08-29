@@ -68,7 +68,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="date"
-                    label="备注">
+                    :label="$t('remark')">
                     <template slot-scope="scope">
                         <div>这是动物园门票，这是动物园门票，</div>
                     </template>

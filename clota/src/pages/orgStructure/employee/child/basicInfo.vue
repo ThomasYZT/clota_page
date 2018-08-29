@@ -10,22 +10,22 @@
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="登录名" prop="loginName">
-                    <Input v-model.trim="employee.name" placeholder="请输入"></Input>
+                    <Input v-model.trim="employee.name" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="密码" prop="psw">
-                    <Input v-model.trim="employee.name" placeholder="请输入"></Input>
+                    <Input v-model.trim="employee.name" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="姓名" prop="name">
-                    <Input v-model.trim="employee.name" placeholder="请输入"></Input>
+                    <Input v-model.trim="employee.name" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="电话" prop="mobile">
-                    <Input v-model.trim="employee.mobile" placeholder="请输入"></Input>
+                    <Input v-model.trim="employee.mobile" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
@@ -56,14 +56,14 @@
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="籍贯地址" prop="nativePlaceAddr">
-                    <Input v-model.trim="employee.nativePlaceAddr" placeholder="请输入"></Input>
+                    <Input v-model.trim="employee.nativePlaceAddr" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <!--空字段站位用-->
             <div class="ivu-form-item-wrap"></div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="备注" prop="remark">
-                    <Input v-model="employee.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入"></Input>
+                <Form-item :label="$t('remark') + '：'" prop="remark">
+                    <Input v-model="employee.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <!--空字段站位用-->

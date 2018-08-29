@@ -19,13 +19,13 @@
                                { validator: validateNumber, trigger: 'blur' },
                                { validator: validateHigh, trigger: 'blur' },]">
                         <Input v-model.trim="item.lowerGrowthValue"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                :maxlength="10"
                                class="single-input"/>
                         <span class="split-line">–</span>
                         <Input v-model.trim="item.highestGrowthValue"
                                :maxlength="10"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                class="single-input"/>
                     </Form-item>
                 </div>

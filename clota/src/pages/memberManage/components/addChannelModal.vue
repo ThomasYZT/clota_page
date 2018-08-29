@@ -13,12 +13,12 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="渠道名称：" prop="channelName">
-                        <Input v-model.trim="formData.channelName" placeholder="请输入"/>
+                        <Input v-model.trim="formData.channelName" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入"/>
+                    <Form-item :label="$t('remark') + '：'" prop="remark"><!--备注-->
+                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
             </Form>

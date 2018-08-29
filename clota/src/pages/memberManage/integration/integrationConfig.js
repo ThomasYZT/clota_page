@@ -17,7 +17,7 @@ export const columnData = [
         field: 'discountRate'
     },
     {
-        title: '备注',
+        title: 'remark',
         minWidth: 100,
         field: 'remark'
     },

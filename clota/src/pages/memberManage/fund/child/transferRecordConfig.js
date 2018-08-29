@@ -41,7 +41,7 @@ export const columnData = [
         field: 'operName'
     },
     {
-        title: '备注',
+        title: 'remark',
         minWidth: 200,
         field: 'remark'
     },

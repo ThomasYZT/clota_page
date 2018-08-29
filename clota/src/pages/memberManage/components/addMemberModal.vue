@@ -32,19 +32,19 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="会员成长值范围：" prop="highestGrowthValue">
                         <Input v-model.trim="formData.lowerGrowthValue"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                class="single-input"/>
                         <span class="split-line">–</span>
                         <Input v-model.trim="formData.highestGrowthValue"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                class="single-input"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="备注：" prop="remark">
+                    <Form-item :label="$t('remark') + '：'" prop="remark">
                         <Input v-model.trim="formData.remark"
                                type="textarea"
-                               placeholder="请输入"/>
+                               :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
             </Form>

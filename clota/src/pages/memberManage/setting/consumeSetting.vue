@@ -22,7 +22,7 @@
                                     @on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.integrate,'integrateError')"
                                     type="text"
                                     class="single-input"
-                                    placeholder="请输入"/>
+                                    :placeholder="$t('inputField', {field: ''})"/>
                              <span class="ivu-form-item-error-tip"
                                    style="left: 296px;"
                                    v-if="error.integrateError">{{error.integrateError}}</span>
@@ -33,7 +33,7 @@
                                     :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
                                     @on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.money,'moneyError')"
                                     type="text"
-                                    placeholder="请输入"
+                                    :placeholder="$t('inputField', {field: ''})"
                                     class="single-input"/>
                              <span class="ivu-form-item-error-tip"
                                    style="left: 485px;"
@@ -45,7 +45,7 @@
                                     :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
                                     @on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.highProportion,'highProportionError')"
                                     type="text"
-                                    placeholder="请输入"
+                                    :placeholder="$t('inputField', {field: ''})"
                                     class="single-input"/>
                              <span class="ivu-form-item-error-tip"
                                    style="left: 795px;"
@@ -73,7 +73,7 @@
                                    :disabled="!settingData.scoreExToCharge.donateType"
                                    @on-blur="checkInputBlurFunc(settingData.scoreExToCharge.donateIntegrate,'donateIntegrateError')"
                                    type="text"
-                                   placeholder="请输入"
+                                   :placeholder="$t('inputField', {field: ''})"
                                    class="single-input"/>
                             <span class="ivu-form-item-error-tip"
                                style="left: 176px;"

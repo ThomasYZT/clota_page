@@ -19,7 +19,7 @@
                     <!--卡券名称-->
                     <Form-item label="卡券名称" prop="couponName">
                         <Input v-model.trim="formData.couponName"
-                               placeholder="请输入"/>
+                               :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -39,14 +39,14 @@
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon' || formData.couponType === 'discount_coupon'">
                     <Form-item label="卡券面值" prop="nominalValue">
-                        <Input v-model.trim="formData.nominalValue" placeholder="请输入"/>
+                        <Input v-model.trim="formData.nominalValue" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">
                     <!--消费满-->
                     <Form-item label="消费满" prop="conditionLowerLimtation">
                         <Input v-model.trim="formData.conditionLowerLimtation"
-                               placeholder="请输入"/>
+                               :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">可用</span>
                     </Form-item>
                 </div>
@@ -54,7 +54,7 @@
                     <!--最低消费金额-->
                     <Form-item label="最低消费金额" prop="conditionLowerLimtation">
                         <Input v-model.trim="formData.conditionLowerLimtation"
-                               placeholder="请输入"/>
+                               :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">可用</span>
                     </Form-item>
                 </div>
@@ -62,7 +62,7 @@
                     <!--最高消费金额-->
                     <Form-item label="最高消费金额" prop="conditionUpperLimtation">
                         <Input v-model.trim="formData.conditionUpperLimtation"
-                               placeholder="请输入"/>
+                               :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">可用</span>
                     </Form-item>
                 </div>
@@ -123,7 +123,7 @@
                 <div class="ivu-form-item-wrap">
                     <!--可兑换积分为-->
                     <Form-item label="积分兑换数量" prop="price">
-                        <Input v-model="formData.price"  placeholder="请输入" />
+                        <Input v-model="formData.price"  :placeholder="$t('inputField', {field: ''})" />
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">

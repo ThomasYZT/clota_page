@@ -36,7 +36,7 @@ export const employeeTrustHead = [
         field: 'discountRate'
     },
     {
-        title: '备注',
+        title: 'remark',
         minWidth: 150,
         field: 'remark'
     },

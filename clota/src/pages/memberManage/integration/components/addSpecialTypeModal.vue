@@ -15,7 +15,7 @@
                   :label-width="140">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="员工分类名称" prop="name">
-                        <Input v-model.trim="formData.name" placeholder="请输入"/>
+                        <Input v-model.trim="formData.name" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
             </Form>

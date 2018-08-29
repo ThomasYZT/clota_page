@@ -20,7 +20,7 @@
             </div>
             <div class="form-item-wrap"><label>操作人：</label><span>{{manualData.custName | contentFilter}}</span></div>
             <div class="form-item-wrap"><label>修改时间：</label><span>{{manualData.createdTime}}</span></div>
-            <div class="form-item-wrap"><label>备注：</label><span>{{manualData.remark | contentFilter}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('remark') + '：'}}</label><span>{{manualData.remark | contentFilter}}</span></div>
             <div class="form-item-wrap"><label>修改原因：</label><span>{{manualData.reason | contentFilter}}</span></div>
         </div>
 

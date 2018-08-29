@@ -40,7 +40,7 @@
                                  @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToIntegrate,'moneyToIntegrateError')"
                                  type="text"
                                  class="single-input"
-                                 placeholder="请输入"/> 元获取
+                                 :placeholder="$t('inputField', {field: ''})"/> 元获取
                             <span class="ivu-form-item-error-tip"
                                    style="left: 92px;"
                                    v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
@@ -54,7 +54,7 @@
                                      @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGgowth,'moneyToGgowthError')"
                                      type="text"
                                      class="single-input"
-                                     placeholder="请输入"/> 元获取
+                                     :placeholder="$t('inputField', {field: ''})"/> 元获取
                               <span class="ivu-form-item-error-tip"
                                    style="left: 92px;"
                                    v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
@@ -78,7 +78,7 @@
                                    @on-blur="checkInputBlurFunc(settingData.scoreGrowthEffModeWhileCharging.storedTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
-                                   placeholder="请输入"/>
+                                   :placeholder="$t('inputField', {field: ''})"/>
                             <span>个小时后失效</span>
                             <span class="ivu-form-item-error-tip"
                                   style="left: 113px;"
@@ -98,17 +98,17 @@
                                 <Input type="text"
                                        :value="item.lowerValue"
                                        disabled
-                                       placeholder="请输入"
+                                       :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/> –
                                 <Input type="text"
                                        :value="item.topValue"
                                        disabled
-                                       placeholder="请输入"
+                                       :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/> 赠送
                                 <Input type="text"
                                        :value="item.gift"
                                        disabled
-                                       placeholder="请输入"
+                                       :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/> 元
                                 <span class="add-span blue-color"
                                       @click="showSendRateModal(item,index)">应用范围</span>
@@ -144,7 +144,7 @@
                                 label=""
                                 :prop="'pay.' + index + '.payment'"
                                 :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" placeholder="请输入"/>
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">保存</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">取消</span>

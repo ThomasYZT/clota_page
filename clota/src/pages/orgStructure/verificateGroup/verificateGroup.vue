@@ -75,7 +75,7 @@
             <div class="add-group-popover">
                 <div class="popover-content">
                     <p>新增分组名称</p>
-                    <Input placeholder="请输入"/>
+                    <Input :placeholder="$t('inputField', {field: ''})"/>
                 </div>
                 <div class="popover-footer">
                     <Button type="primary" size="small">保存</Button>

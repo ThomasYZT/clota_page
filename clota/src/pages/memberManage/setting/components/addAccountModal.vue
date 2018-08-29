@@ -34,22 +34,22 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="账户名称" prop="accountName">
-                            <Input v-model.trim="formData.accountName" placeholder="请输入"/>
+                            <Input v-model.trim="formData.accountName" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="单位" prop="unit">
-                            <Input v-model.trim="formData.unit" placeholder="请输入"/>
+                            <Input v-model.trim="formData.unit" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap" >
                         <Form-item label="储值比率" prop="rateDenominator">
                             <Input v-model.trim="formData.rateNumerator"
-                                   placeholder="请输入"
+                                   :placeholder="$t('inputField', {field: ''})"
                                    class="single-input"/>
                             <span style="padding: 0 5px;">:</span>
                             <Input v-model.trim="formData.rateDenominator"
-                                   placeholder="请输入"
+                                   :placeholder="$t('inputField', {field: ''})"
                                    class="single-input"/>
                         </Form-item>
                     </div>

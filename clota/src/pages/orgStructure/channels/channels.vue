@@ -68,9 +68,9 @@
                 </el-table-column>
                 <el-table-column
                     prop="date"
-                    label="备注">
+                    :label="$t('remark')">
                     <template slot-scope="scope">
-                        <div>备注</div>
+                        <div>{{$t('remark')}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column

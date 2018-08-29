@@ -11,17 +11,17 @@
                 <Form ref="formValidate" :model="member" :rules="ruleValidate" :label-width="115">
                     <div class="ivu-form-item-wrap">
                         <Form-item label="姓名" prop="custName">
-                            <Input v-model.trim="member.custName" placeholder="请输入"/>
+                            <Input v-model.trim="member.custName" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="手机号" prop="phoneNum">
-                            <Input v-model.trim="member.phoneNum" placeholder="请输入"/>
+                            <Input v-model.trim="member.phoneNum" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="E-mall" prop="emailAddr">
-                            <Input v-model.trim="member.emailAddr" placeholder="请输入"/>
+                            <Input v-model.trim="member.emailAddr" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -48,17 +48,17 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="QQ" prop="qq">
-                            <Input v-model.trim="member.qq" placeholder="请输入"/>
+                            <Input v-model.trim="member.qq" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="微信" prop="wechatAcct">
-                            <Input v-model.trim="member.wechatAcct" placeholder="请输入"/>
+                            <Input v-model.trim="member.wechatAcct" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="支付宝" prop="alipayAcct">
-                            <Input v-model.trim="member.alipayAcct" placeholder="请输入"/>
+                            <Input v-model.trim="member.alipayAcct" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -77,22 +77,22 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="国家代码" prop="stateCode">
-                            <Input v-model.trim="member.stateCode" placeholder="请输入"/>
+                            <Input v-model.trim="member.stateCode" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="城市代码" prop="cityCode">
-                            <Input v-model.trim="member.cityCode" placeholder="请输入"/>
+                            <Input v-model.trim="member.cityCode" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="第三方卡号" prop="tpNo">
-                            <Input v-model.trim="member.tpNo" placeholder="请输入"/>
+                            <Input v-model.trim="member.tpNo" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="第三方卡面号" prop="tpCardNo">
-                            <Input v-model.trim="member.tpCardNo" placeholder="请输入"/>
+                            <Input v-model.trim="member.tpCardNo" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -104,12 +104,12 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="证件编号" prop="idCardNumber">
-                            <Input v-model.trim="member.idCardNumber" placeholder="请输入"/>
+                            <Input v-model.trim="member.idCardNumber" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="个人兴趣" prop="hobby">
-                            <Input v-model.trim="member.hobby" placeholder="请输入"/>
+                            <Input v-model.trim="member.hobby" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->

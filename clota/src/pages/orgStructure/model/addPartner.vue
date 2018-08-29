@@ -29,7 +29,7 @@
                 </Select>
             </Form-item>
 
-            <Form-item label="备注">
+            <Form-item :label="$t('remark') + '：'"><!--备注-->
                 <Input v-model="addPartner.name" type="textarea" :rows="4" placeholder="Enter something..."/>
             </Form-item>
 

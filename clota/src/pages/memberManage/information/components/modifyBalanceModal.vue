@@ -49,7 +49,7 @@
                                     <Input placeholder=" " disabled/>
                                 </template>
                                 <template v-else>
-                                    <Input v-model.trim="formData.corpusAmount" placeholder="请输入"/>
+                                    <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
@@ -59,7 +59,7 @@
                                     <Input placeholder=" " disabled/>
                                 </template>
                                 <template v-else>
-                                    <Input v-model.trim="formData.corpusAmount" placeholder="请输入"/>
+                                    <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
@@ -76,7 +76,7 @@
                                 <Input placeholder=" " disabled/>
                             </template>
                             <template v-else>
-                                <Input v-model.trim="formData.donateAmount" placeholder="请输入"/>
+                                <Input v-model.trim="formData.donateAmount" :placeholder="$t('inputField', {field: ''})"/>
                             </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
@@ -86,7 +86,7 @@
                                 <Input placeholder=" " disabled/>
                             </template>
                             <template v-else>
-                                <Input v-model.trim="formData.donateAmount" placeholder="请输入"/>
+                                <Input v-model.trim="formData.donateAmount" :placeholder="$t('inputField', {field: ''})"/>
                             </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
@@ -95,8 +95,8 @@
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="请选择修改原因：" prop="reasonId">
-                        <Select v-model="formData.reasonId" placeholder="请选择">
+                    <Form-item :label="$t('selectModifyReason') + '：'" prop="reasonId"><!--请选择修改原因-->
+                        <Select v-model="formData.reasonId" :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in reason"
                                     :key="index"
                                     :value="item.id">

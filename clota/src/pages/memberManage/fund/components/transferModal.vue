@@ -42,7 +42,7 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="转出金额" prop="amount">
                         <Input v-model="data.amount"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                style="width: 240px"/>
                         <span style="padding-left: 10px;">元
                         </span>
@@ -51,17 +51,17 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="手续费" prop="commission">
                         <Input v-model="data.commission"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                style="width: 240px" />
                                 <span style="padding-left: 10px;">元
                                 </span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="备注：">
+                    <Form-item :label="$t('remark') + '：'"><!--备注-->
                         <Input v-model="data.remark"
                                type="textarea"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                :maxlength="100"
                                style="width: 240px" />
                     </Form-item>

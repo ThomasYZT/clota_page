@@ -25,7 +25,7 @@
                                        :disabled="settingData.scoreEffectiveMode.isIntegralType !== 'checkout_after' ? true : false"
                                        @on-blur="checkInputBlurFunc(settingData.scoreEffectiveMode.isNoIntegralTime, 'isNoIntegralTimeError')"
                                        type="text"
-                                       placeholder="请输入"
+                                       :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/>
                                 时后生效</span>
                                 <div class="ivu-form-item-error-tip"
@@ -46,7 +46,7 @@
                                @on-blur="checkInputBlurFunc(settingData.scoreMultipleOnBirthday.multiple, 'multipleError')"
                                type="text"
                                class="single-input"
-                               placeholder="请输入"/>
+                               :placeholder="$t('inputField', {field: ''})"/>
                         倍积分</span>
                         <div class="ivu-form-item-error-tip"
                              style="left: 230px;"
@@ -70,7 +70,7 @@
                                            @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.validityTime, 'validityTimeError')"
                                            type="text"
                                            class="single-input"
-                                           placeholder="请输入"/>
+                                           :placeholder="$t('inputField', {field: ''})"/>
                                     个月后失效，清除</span>
                             </Radio>
                             <span class="ivu-form-item-error-tip"
@@ -86,7 +86,7 @@
                                    @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.remind, 'remindError')"
                                    type="text"
                                    class="single-input"
-                                   placeholder="请输入"/>
+                                   :placeholder="$t('inputField', {field: ''})"/>
                                 天短信提醒，
                                 <span class="blue-color">短信设置</span>
                             <div class="ivu-form-item-error-tip"
@@ -111,7 +111,7 @@
                                         @on-blur="checkInputBlurFunc(settingData.memberValidPeriod.vipValidityTime,'vipValidityTimeError')"
                                         type="text"
                                         class="single-input"
-                                        placeholder="请输入"/>
+                                       :placeholder="$t('inputField', {field: ''})"/>
                                     天后如未使用，冻结该会员卡</span>
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 123px;"
@@ -124,7 +124,7 @@
                                     @on-blur="checkInputBlurFunc(settingData.memberValidPeriod.vipValidityType,'vipValidityError')"
                                     type="text"
                                     class="single-input"
-                                    placeholder="请输入"/>
+                                    :placeholder="$t('inputField', {field: ''})"/>
                                 天后冻结该会员卡</span>
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 68px;"
@@ -137,7 +137,7 @@
                                     @on-blur="checkInputBlurFunc(settingData.memberValidPeriod.vipNumber,'vipNumberError')"
                                     type="text"
                                     class="single-input"
-                                    placeholder="请输入"/>
+                                    :placeholder="$t('inputField', {field: ''})"/>
                                 天后冻结该会员卡</span>
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 110px;"
@@ -157,7 +157,7 @@
                                    @on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"
                                    type="text"
                                    class="single-input"
-                                   placeholder="请输入"/> 天短信提醒，
+                                   :placeholder="$t('inputField', {field: ''})"/> 天短信提醒，
                             <span class="blue-color">短信设置</span>
                         </span>
                         <div class="ivu-form-item-error-tip"
@@ -218,7 +218,7 @@
                                 :prop="'reason.' + index + '.reason'"
                                 :rules="[{required: true, message: '修改原因不能为空', trigger: 'blur'},
                                  { validator: emoji, trigger: 'blur' }]">
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100" placeholder="请输入"/>
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">保存</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetReason(item,index)">取消</span>
@@ -241,7 +241,7 @@
                                 :prop="'idType.' + index + '.name'"
                                 :rules="[{required: true, message: '证件类型不能为空', trigger: 'blur'},
                                         { validator: emoji, trigger: 'blur' }]">
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.name" :maxlength="10" placeholder="请输入"/>
+                                <Input type="text" :disabled="item.disabled" v-model.trim="item.name" :maxlength="10" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">删除</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">保存</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetDocument(item,index)">取消</span>

@@ -26,14 +26,14 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="账户名称" prop="accountName">
                         <Input v-model.trim="formData.accountName"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                :disabled="formData.defaultAccount === 'true' ? true : false"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="单位" prop="unit">
                         <Input v-model.trim="formData.unit"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                :disabled="formData.defaultAccount === 'true' ? true : false"/>
                     </Form-item>
                 </div>
@@ -41,12 +41,12 @@
                     <Form-item label="储值比率" prop="rateDenominator">
                         <Input v-model.trim="formData.rateNumerator"
                                :disabled="formData.defaultAccount === 'true' ? true : false"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                class="single-input"/>
                         <span style="padding: 0 13px;">:</span>
                         <Input v-model.trim="formData.rateDenominator"
                                :disabled="formData.defaultAccount === 'true' ? true : false"
-                               placeholder="请输入"
+                               :placeholder="$t('inputField', {field: ''})"
                                class="single-input"/>
                     </Form-item>
                 </div>

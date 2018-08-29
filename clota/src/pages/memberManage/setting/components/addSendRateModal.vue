@@ -16,17 +16,17 @@
                     <Input type="text"
                            v-model.trim="formData.lowerValue"
                            @on-blur="validateInput(formData.lowerValue)"
-                           placeholder="请输入"
+                           :placeholder="$t('inputField', {field: ''})"
                            class="single-input"/> –
                     <Input type="text"
                            v-model.trim="formData.topValue"
                            @on-blur="validateInput(formData.topValue)"
-                           placeholder="请输入"
+                           :placeholder="$t('inputField', {field: ''})"
                            class="single-input"/> 赠送
                     <Input type="text"
                            v-model.trim="formData.gift"
                            @on-blur="validateInput(formData.gift)"
-                           placeholder="请输入"
+                           :placeholder="$t('inputField', {field: ''})"
                            class="single-input"/> 元
                    <div class="ivu-form-item-error-tip" v-if="error">{{error}}</div>
                 </div>

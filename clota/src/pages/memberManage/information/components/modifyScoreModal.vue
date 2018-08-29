@@ -32,7 +32,7 @@
                                 <Input placeholder=" " disabled/>
                             </template>
                                 <template v-else>
-                                    <Input v-model.trim="formData.corpusAmount" placeholder="请输入"/>
+                                    <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
@@ -42,7 +42,7 @@
                                 <Input placeholder=" " disabled/>
                             </template>
                                 <template v-else>
-                                    <Input v-model.trim="formData.corpusAmount" placeholder="请输入"/>
+                                    <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
                                 {{accountInfo.unit || ''}}
                             </Radio>
@@ -63,8 +63,8 @@
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入" />
+                    <Form-item :label="$t('remark') + '：'" prop="remark"><!--备注-->
+                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: ''})" />
                     </Form-item>
                 </div>
 

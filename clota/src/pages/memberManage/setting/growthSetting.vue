@@ -16,7 +16,7 @@
                                  type="text"
                                  @on-blur="checkInputBlurFunc(settingData.growthRateWhileConsume.growthSet,'growthSetError')"
                                  class="single-input"
-                                 placeholder="请输入"/>元获取
+                                 :placeholder="$t('inputField', {field: ''})"/>元获取
                             <span class="ivu-form-item-error-tip"
                                 style="left: 40px;"
                                 v-if="error.growthSetError">{{error.growthSetError}}</span>
@@ -43,7 +43,7 @@
                                    @on-blur="checkInputBlurFunc(settingData.growthEffectiveMode.growthTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
-                                   placeholder="请输入"/>
+                                   :placeholder="$t('inputField', {field: ''})"/>
                                 小时后生效</span>
                             <span class="ivu-form-item-error-tip"
                                   style="left: 153px;"
