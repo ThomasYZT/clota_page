@@ -12,8 +12,8 @@
                     <img v-else src="../../../assets/images/icon-common-account.svg" alt="">
                 </div>
                 <div class="fund-list">
-                    <div class="account-name" v-w-title="item.accountName + '（' + item.unit +'）'">
-                        {{item.accountName}}（{{item.unit}}）
+                    <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
+                        {{item.accountName}}{{item.unit ? `（${item.unit}）` : ''}}
                     </div>
                     <div class="account-money">{{item.amount | moneyFilter}}</div>
                 </div>

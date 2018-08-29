@@ -93,8 +93,8 @@
                 <!--兑换券店铺必须单选-->
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择店铺-->
-                    <Form-item label="选择店铺" prop="conditionOrgId">
-                        <Select v-model="formData.conditionOrgId"
+                    <Form-item label="选择店铺" prop="singleStoreId">
+                        <Select v-model="formData.singleStoreId"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 :clearable="true"
                                 @on-change="storeChange">
@@ -177,7 +177,7 @@
                 <!--</div>-->
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择商品-->
-                    <Form-item label="选择商品">
+                    <Form-item label="选择商品" prop="conditionProductId">
                         <Select v-model.trim="formData.conditionProductId"
                                 :multiple="true"
                                 :placeholder="$t('selectField', {msg: ''})">
@@ -278,35 +278,69 @@
 
             //校验可用渠道
             const validateConditionChannelId = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(this.formData.conditionOrgId && this.formData.conditionOrgId.length > 0){
-                        callback();
-                    }else{
+                if((this.formData.conditionOrgId && this.formData.conditionOrgId.length > 0) || this.formData.singleStoreId ){
+                    callback();
+                }else{
+                    if(common.isNotEmpty(value)){
                         if(value.length > 0){
                             callback();
                         }else{
                             callback('可用渠道不可为空');
                         }
+                    }else{
+                        callback('可用渠道不可为空');
                     }
-                }else{
-                    callback('可用渠道不可为空');
                 }
             };
 
             //校验可用店铺
             const validateOrg = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
-                        callback();
-                    }else{
+                if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                    callback();
+                }else{
+                    if(common.isNotEmpty(value)){
                         if(value.length > 0){
                             callback();
                         }else{
                             callback('可用店铺不可为空');
                         }
+                    }else{
+                        callback('可用店铺不可为空');
                     }
+                }
+            };
+
+            //校验选择的商品
+            const validateProduct = (rule,value,callback) => {
+                if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                    callback();
                 }else{
-                    callback('可用店铺不可为空');
+                    if(common.isNotEmpty(value)){
+                        if(value.length > 0){
+                            callback();
+                        }else{
+                            callback('商品不可为空');
+                        }
+                    }else{
+                        callback('商品不可为空');
+                    }
+                }
+            };
+
+            //校验单选店铺
+            const validateSingleStore = (rule,value,callback) => {
+                if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                    callback();
+                }else{
+                    if(common.isNotEmpty(value)){
+                        if(value.length > 0){
+                            callback();
+                        }else{
+                            callback('店铺不可为空');
+                        }
+                    }else{
+                        callback('店铺不可为空');
+                    }
                 }
             };
 
@@ -379,6 +413,8 @@
                     expireTime: '',
                     //可用店铺id
                     conditionOrgId : [],
+                    //兑换券单选的店铺id
+                    singleStoreId : '',
                     //可用渠道id
                     conditionChannelId: [],
                     //商品
@@ -435,6 +471,12 @@
                     ],
                     isEffectBeforeDiscount : [
                         {required : true,message : '请选择代金券在折扣前后使用设置',trigger : 'change'}
+                    ],
+                    conditionProductId : [
+                        {requird :true ,validator : validateProduct ,trigger : 'change'}
+                    ],
+                    singleStoreId : [
+                        {required : true,validator : validateSingleStore,trigger : 'change'}
                     ]
                 },
                 //日期插件配置
@@ -531,7 +573,7 @@
                         isDiscountCoexist : this.formData.isDiscountCoexist,
                         price : this.formData.price,
                         isEffectBeforeDiscount : this.formData.isEffectBeforeDiscount,
-                        conditionChannelId : this.formData.conditionChannelId.join(','),
+                        conditionChannelId : this.formData.conditionChannelId ? this.formData.conditionChannelId.join(',') : '',
                         conditionOrgId : this.formData.conditionOrgId.join(','),
                     }
                 }else if(this.formData.couponType === 'exchange_coupon'){//新增兑换券
@@ -543,10 +585,10 @@
                         effectiveTime : this.formData.effectiveTime.format('yyyy-MM-dd'),
                         expireTime : this.formData.expireTime.format('yyyy-MM-dd'),
                         price : this.formData.price,
-                        conditionChannelId : this.formData.conditionChannelId.join(','),
+                        conditionChannelId : this.formData.conditionChannelId ? this.formData.conditionChannelId.join(',') : '',
                         conditionProductId : this.formData.conditionProductId.join(','),
                         remark : this.getDiscountRemark(),
-                        conditionOrgId : this.formData.conditionOrgId,
+                        conditionOrgId : this.formData.singleStoreId,
                     }
                 }else if(this.formData.couponType === 'discount_coupon'){//新增折扣券
                     return {
@@ -561,7 +603,7 @@
                         expireTime : this.formData.expireTime.format('yyyy-MM-dd'),
                         price : this.formData.price,
                         conditionOrgId : this.formData.conditionOrgId.length > 0 ? this.formData.conditionOrgId.join(',') : '',
-                        conditionChannelId : this.formData.conditionChannelId.join(','),
+                        conditionChannelId : this.formData.conditionChannelId ? this.formData.conditionChannelId.join(',') : '',
                     }
                 }
             },
@@ -596,9 +638,15 @@
              */
             getDiscountRemark () {
                 let remark = [];
+                let orgName = this.getSingleStore();
                 this.channelSetList.forEach(item => {
                     if(this.formData.conditionChannelId.includes(item.id)){
                         remark.push(item.channelName);
+                    }
+                });
+                this.productList.forEach(item => {
+                    if(this.formData.conditionProductId.includes(item.id)){
+                        remark.push(orgName + item.productName);
                     }
                 });
                 return remark.join(',');
@@ -641,13 +689,35 @@
              * 选择店铺
              */
             storeChange (data) {
-                this.formData.conditionProductId  = [];
+                console.log(data)
                 this.queryProduct(data);
+            },
+            /**
+             * 获取兑换券下选择店铺的名称
+             */
+            getSingleStore() {
+                for(let i = 0,j = this.listAmountRange.length;i < j;i++){
+                    if(this.formData.conditionOrgId === this.listAmountRange[i].id){
+                        return this.listAmountRange[i].orgName;
+                    }
+                }
+                return '';
             }
         },
         created () {
             this.queryChannelSet();
             this.queryListAmountRange();
+        },
+        watch : {
+            'formData.singleStoreId' (newVal,oldVal) {
+                console.log(newVal,oldVal)
+                if(oldVal){
+                    this.formData.conditionProductId  = [];
+                }
+                if(newVal){
+                    this.queryProduct(newVal);
+                }
+            }
         }
     }
 </script>
