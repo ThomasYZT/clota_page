@@ -7,9 +7,9 @@
                 :to="item.router"
                 v-for="(item,index) in beforeRouterList"
                 :key="index">
-                {{item.name}}
+                {{$t(item.name)}}
             </BreadcrumbItem>
-            <BreadcrumbItem>{{localeRouter}}</BreadcrumbItem>
+            <BreadcrumbItem>{{$t(localeRouter)}}</BreadcrumbItem>
         </Breadcrumb>
     </div>
 </template>

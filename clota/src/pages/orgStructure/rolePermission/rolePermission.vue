@@ -11,8 +11,8 @@
             <Select style="width: 180px;float: left;margin-right:10px">
                 <Option value="132">全部角色名称</Option>
             </Select>
-            <Button type="primary" style="float: left;margin-right: 10px" size="default" @click="search">查 询</Button>
-            <Button type="ghost" style="float: left" size="default" @click="reset">重 置</Button>
+            <Button type="primary" style="float: left;margin-right: 10px" size="default" @click="search">{{$t('query')}}</Button>
+            <Button type="ghost" style="float: left" size="default" @click="reset">{{$t('reset')}}</Button>
         </div>
         <div>
             <el-table

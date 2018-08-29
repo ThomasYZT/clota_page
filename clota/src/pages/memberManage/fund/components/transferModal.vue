@@ -29,7 +29,7 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item label="转入账户选择" prop="toOrgId">
                         <Select v-model="data.toOrgId"
-                                placeholder="请选择"
+                                :placeholder="$t('selectField', {msg: ''})"
                                 style="width: 240px;">
                             <Option :value="item.id"
                                     v-for="(item,i) in inOrgList"

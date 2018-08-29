@@ -18,13 +18,13 @@
                 </div>
 
                 <div class="form-item-wrap">
-                    <label>目前积分账户：</label>
+                    <label>{{$t("currentIntegralAcc")}}：</label><!--目前积分账户-->
                     <span class="yellow-color">{{account.accountBalance ? account.accountBalance.toCurrency() : '0'}}</span>
                     {{$t('integral')}}<!--积分-->
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item label=" 账户余额调整：" prop="corpusAmount">
+                    <Form-item :label="$t('adjustAccBalance') + '：'" prop="corpusAmount"><!--账户余额调整-->
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
                                 {{$t("increase")}}<!--增加-->
@@ -51,8 +51,8 @@
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="请选择修改原因：" prop="reasonId">
-                        <Select v-model="formData.reasonId" placeholder="请选择">
+                    <Form-item :label="$t('selectModifyReason') + '：'" prop="reasonId"><!--请选择修改原因-->
+                        <Select v-model="formData.reasonId" :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in reason"
                                     :key="index"
                                     :value="item.id">

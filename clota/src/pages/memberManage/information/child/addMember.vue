@@ -30,14 +30,14 @@
                                 type="date"
                                 v-model="member.birthDay"
                                 :options="dateOption"
-                                placeholder="请选择"
+                                :placeholder="$t('selectField', {msg: ''})"
                                 @on-change="customValid($event, 'birthDay')">
                             </Date-picker>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label=" 性别" prop="gender">
-                            <Select v-model="member.gender" placeholder="请选择">
+                            <Select v-model="member.gender" :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.genderEnum"
                                         :key="index"
                                         :value="item.name">

@@ -26,7 +26,7 @@
                     <!--卡券类别-->
                     <Form-item label="卡券类别" prop="couponName">
                         <Select v-model.trim="formData.couponType"
-                                placeholder="请选择"
+                                :placeholder="$t('selectField', {msg: ''})"
                                 :disabled="type === 'modify'"
                                 @on-change="typeChange">
                             <Option v-for="(item,index) in couponTypeList"
@@ -74,7 +74,7 @@
                             :editable="false"
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
-                            placeholder="请选择">
+                            :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
                     </Form-item>
                 </div>
@@ -86,7 +86,7 @@
                             :editable="false"
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
-                            placeholder="请选择">
+                            :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
                     </Form-item>
                 </div>
@@ -95,7 +95,7 @@
                     <!--选择店铺-->
                     <Form-item label="选择店铺" prop="conditionOrgId">
                         <Select v-model="formData.conditionOrgId"
-                                placeholder="请选择"
+                                :placeholder="$t('selectField', {msg: ''})"
                                 @on-change="storeChange">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
@@ -111,7 +111,7 @@
                     <Form-item label="选择店铺" prop="conditionOrgId">
                         <Select v-model="formData.conditionOrgId"
                                 :multiple="true"
-                                placeholder="请选择">
+                                :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
                                     :value="item.id">
@@ -149,7 +149,7 @@
                     <Form-item label="可用渠道" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
                                 :multiple="true"
-                                placeholder="请选择">
+                                :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in channelSetList"
                                     :key="index"
                                     :value="item.id">
@@ -163,7 +163,7 @@
                     <!--<Form-item label="可用店铺" prop="useStore">-->
                         <!--<Select v-model.trim="formData.conditionOrgId"-->
                                 <!--:multiple="true"-->
-                                <!--placeholder="请选择">-->
+                                <!--:placeholder="$t('selectField', {msg: ''})">-->
                             <!--<Option v-for="(item,index) in listAmountRange"-->
                                     <!--:key="index"-->
                                     <!--:value="item.id">-->
@@ -177,7 +177,7 @@
                     <Form-item label="选择商品">
                         <Select v-model.trim="formData.conditionProductId"
                                 :multiple="true"
-                                placeholder="请选择">
+                                :placeholder="$t('selectField', {msg: ''})">
                             <Option :value="item.id"
                                     v-for="item in productList"
                                     :key="item.id" >

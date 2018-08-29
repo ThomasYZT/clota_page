@@ -22,19 +22,19 @@
                     style="width:180px;margin-right: 10px;"
                     type="date"
                     v-model="queryParams.startTime"
-                    placeholder="请选择开始日期">
+                    :placeholder="$t('selectField', {msg: $t('startDate')})"><!--请选择开始日期-->
                 </Date-picker>
                 <Date-picker
                     style="width:180px;margin-right: 10px;"
                     type="date"
                     v-model="queryParams.endTime"
-                    placeholder="请选择结束日期">
+                    :placeholder="$t('selectField', {msg: $t('endDate')})"><!--请选择结束日期-->
                 </Date-picker>
                 <Input v-model="queryParams.keyword"
                        placeholder="请输入单位名称"
                        style="width: 240px;margin-right: 10px;" />
-                <Button type="primary" @click="queryList">查 询</Button>
-                <Button type="ghost" @click="reset">重 置</Button>
+                <Button type="primary" @click="queryList">{{$t('query')}}</Button>
+                <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
             </div>
             <div class="table-wrap">
                 <table-com

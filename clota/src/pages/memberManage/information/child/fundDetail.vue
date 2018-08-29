@@ -16,21 +16,21 @@
                     type="datetime"
                     v-model="queryParams.startDate"
                     format="yyyy-MM-dd HH:mm:ss"
-                    placeholder="请选择开始日期"
+                    :placeholder="$t('selectField', {msg: $t('startDate')})"
                     @on-change="changeStartDate"
                     @on-ok="filterDealList()">
-                </Date-picker>
+                </Date-picker><!--请选择开始日期-->
                 <Date-picker
                     type="datetime"
                     :value="queryParams.endDate"
                     format="yyyy-MM-dd HH:mm:ss"
-                    placeholder="请选择结束日期"
+                    :placeholder="$t('selectField', {msg: $t('endDate')})"
                     @on-change="changeEndDate"
-                    @on-ok="filterDealList()">
+                    @on-ok="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
                 <div class="btn-wrap">
-                    <Button type="primary" @click="filterDealList()">查 询</Button>
-                    <Button type="ghost" @click="resetQueryParams()">重 置</Button>
+                    <Button type="primary" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
+                    <Button type="ghost" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
                 </div>
             </div>
             <table-com
@@ -79,8 +79,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.accountSubType === 'corpus'">本金：{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
-                        <span v-else-if="scope.row.accountSubType === 'donate'">赠送：{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
+                        <span v-if="scope.row.accountSubType === 'corpus'"><!--本金-->
+                            {{$t('principal')}}：{{ scope.row.amount || '-' }}{{fundDetail.unit}}
+                        </span>
+                        <span v-else-if="scope.row.accountSubType === 'donate'"><!--赠送-->
+                            {{$t('sendGift')}}：{{ scope.row.amount || '-' }}{{fundDetail.unit}}
+                        </span>
                         <span v-else>{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
                     </template>
                 </el-table-column>
@@ -132,15 +136,15 @@
             return {
                 beforeRouterList: [
                     {
-                        name: '会员信息',
+                        name: 'memberInfo',   // 会员信息
                         router: 'info',
                     },
                     {
-                        name: '会员详情',
+                        name: 'memberDetail',   // 会员详情
                         router: 'detail',
                     },
                 ],
-                localeRouter: '个人资金交易明细',
+                localeRouter: 'selfFundTradeDetail',   // 个人资金交易明细
                 // 查询数据
                 queryParams: {
                     cardId: '',

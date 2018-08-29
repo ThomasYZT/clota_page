@@ -15,8 +15,8 @@
                 <Input v-model.trim="queryParams.keyword"
                        placeholder="请输入产品名称"
                        style="width: 240px;margin-right: 15px;" />
-                <Button type="primary" @click="queryList">查 询</Button>
-                <Button type="ghost" @click="reset">重 置</Button>
+                <Button type="primary" @click="queryList">{{$t('query')}}</Button>
+                <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
             </div>
             <div class="table-wrap">
                 <table-com

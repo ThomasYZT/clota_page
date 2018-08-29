@@ -3,7 +3,7 @@
         <Form ref="formValidate" :model="employee" :rules="ruleValidate" :label-width="115">
             <div class="ivu-form-item-wrap">
                 <Form-item label=" 部门名称" prop="orgName">
-                    <Select v-model="employee.idType" placeholder="请选择">
+                    <Select v-model="employee.idType" :placeholder="$t('selectField', {msg: ''})">
                         <Option v-for="item in enumData.empIDType" :key="item.name" :value="item.name">{{item.desc}}</Option>
                     </Select>
                 </Form-item>
@@ -30,7 +30,7 @@
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label=" 性别" prop="sex">
-                    <Select v-model="employee.sex" placeholder="请选择">
+                    <Select v-model="employee.sex" :placeholder="$t('selectField', {msg: ''})">
                         <Option value="male">男</Option>
                         <Option value="female">女</Option>
                     </Select>
@@ -42,14 +42,14 @@
                         type="date"
                         v-model="employee.birthday"
                         :options="dateOption"
-                        placeholder="请选择"
+                        :placeholder="$t('selectField', {msg: ''})"
                         @on-change="customValid($event, 'birthday')">
                     </Date-picker>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="籍贯" prop="nativePlace">
-                    <Select v-model="employee.nativePlace" placeholder="请选择">
+                    <Select v-model="employee.nativePlace" :placeholder="$t('selectField', {msg: ''})">
                         <Option v-for="item in enumData.empType" :key="item.name" :value="item.name">{{item.desc}}</Option>
                     </Select>
                 </Form-item>
