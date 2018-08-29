@@ -56,13 +56,40 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column4"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row['operationType'])}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column6"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span :class="{'red-color' : scope.row.amount <= 0,'green-color' : scope.row.amount > 0}">
+                        {{getTradeMoney(scope.row) | contentFilter}}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column7"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.endingBalance}}{{unit}}
+                    <span v-if="scope.row.accountTypeId === '1'">
+                        {{scope.row.endingBalance}}{{'元'}}
+                    </span>
+                    <span v-else>
+                        {{scope.row.endingBalance}}{{scope.row.unit}}
+                    </span>
                 </template>
             </el-table-column>
         </table-com>
@@ -122,23 +149,6 @@
             }
         },
         methods: {
-            /**
-             * 显示数值正负
-             * @param n
-             */
-            showNumFunc ( n ) {
-                let num = n ? parseInt(n) : null;
-                if (num && num > 0) {
-                    return '+'+num
-                } else if(num && num < 0) {
-                    return num
-                } else if(num === 0) {
-                    return '0'
-                } else {
-                    return '-'
-                }
-            },
-
             /**
              * 查询资金交易明细
              */
@@ -207,6 +217,26 @@
                 if(params && Object.keys(params).length > 0){
                     this.queryParams.accountTypeId = params.id;
                 }
+            },
+            /**
+             * 获取本次交易金额
+             * @param rowData
+             */
+            getTradeMoney (rowData) {
+                let unit =  '';
+                let label = rowData.amount > 0 ? '+' : '';
+                if(rowData.unit){
+                    unit = rowData.unit;
+                }else if(rowData.accountTypeId === '1'){
+                    unit = '元';
+                }
+                if(rowData.accountSubType === 'corpus'){
+                    return  `本金账户:${label}${rowData.amount}${unit}`;
+                }else if(rowData.accountSubType === 'donate'){
+                    return  `赠送账户:${label}${rowData.amount}${unit}`;
+                }else{
+                    return '';
+                }
             }
 
         },
@@ -217,15 +247,6 @@
             //表格是否显示
             tableShow () {
                 return this.queryParams.accountTypeId;
-            },
-            //获取当前选择账户的
-            unit () {
-                for(let i = 0,j = this.accountList.length;i < j;i++){
-                    if(this.queryParams.accountTypeId === this.accountList[i].id){
-                        return this.accountList[i]['unit'];
-                    }
-                }
-                return '';
             }
         }
     }
@@ -253,16 +274,12 @@
             padding: 0 20px;
         }
 
-        .table-wrap{
+        .green-color{
+            color: $color_green;
+        }
 
-            .green-color{
-                color: $color_green;
-            }
-
-            .red-color{
-                color: $color_red;
-            }
-
+        .red-color{
+            color: $color_red;
         }
 
         .page-wrap{

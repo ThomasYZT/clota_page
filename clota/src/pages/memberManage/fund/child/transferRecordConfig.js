@@ -38,7 +38,7 @@ export const columnData = [
     {
         title: '操作人',
         width: 100,
-        field: 'updateUser'
+        field: 'operName'
     },
     {
         title: '备注',

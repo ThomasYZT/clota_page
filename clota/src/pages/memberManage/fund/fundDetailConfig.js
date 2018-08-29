@@ -28,12 +28,12 @@ export const columnData = [
     },
     {
         title: '账户类型',
-        width: 120,
-        field: 'serverName'
+        width: 140,
+        field: 'accountTypeName'
     },
     {
         title: '本次交易金额',
-        minWidth: 130,
+        minWidth: 170,
         field: 'serverName'
     },
     {
@@ -49,6 +49,6 @@ export const columnData = [
     {
         title: '操作人员记录',
         width: 140,
-        field: 'updateUser'
+        field: 'operName'
     }
 ];

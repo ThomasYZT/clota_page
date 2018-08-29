@@ -82,10 +82,10 @@ export const tradeType1 = [
     },
     {
         label : '储值',
-        value : 'transfer_out',
+        value : 'recharge',
     },
     {
         label : '消费',
-        value : 'transfer_in',
+        value : 'adjust_money',
     },
 ];

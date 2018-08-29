@@ -485,13 +485,9 @@
              * 查询渠道
              */
             queryChannelSet () {
-                ajax.post('querySelfChannel',{
-                    // isDeleted : 'false',
-                    // pageNo : 1,
-                    // pageSize : 9999
-                }).then(res => {
+                ajax.post('querySelfChannel').then(res => {
                     if(res.success){
-                        this.channelSetList = res.data.data ? res.data.data : [];
+                        this.channelSetList = res.data ? res.data : [];
                     }else{
                         this.channelSetList =  [];
                     }

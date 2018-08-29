@@ -7,19 +7,20 @@
                   :span-method="spanMethod"
                   style="width: 100%"
                   ref="multipleTable"
+                  :class="{'table-click-able' : rowClickAble}"
                   :border="border"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
                   @row-click="classDetailLink"
                   @selection-change="handleSelectionChange">
-            <el-table-column
-                v-if="columnCheck"
-                type="selection"
-                :width="selectionWidth">
-            </el-table-column>
-            <template
-                v-for="(item,index) in columnData">
-                <slot :name="'column' + index"
+                   <el-table-column
+                        v-if="columnCheck"
+                        type="selection"
+                        :width="selectionWidth">
+                   </el-table-column>
+                   <template
+                    v-for="(item,index) in columnData">
+                    <slot :name="'column' + index"
                       :width="item.width"
                       :minWidth="item.minWidth"
                       :index="index"
@@ -35,11 +36,11 @@
                         :width="item.width"
                         :min-width="item.minWidth">
                         <template slot-scope="scoped">
-                                    <span
-                                        class="detail-hover"
-                                        v-w-title="scoped.row[item.field]">
-                                        {{scoped.row[item.field] | contentFilter}}
-                                    </span>
+                                <span
+                                    class="detail-hover"
+                                    v-w-title="scoped.row[item.field]">
+                                    {{scoped.row[item.field] | contentFilter}}
+                                </span>
                         </template>
                     </el-table-column>
                     <!--普通列-->
@@ -57,8 +58,8 @@
                                     </span>
                         </template>
                     </el-table-column>
-                </slot>
-            </template>
+                    </slot>
+                    </template>
         </el-table>
         <div class="pagination" v-if="showPagination && tableData.length > 0">
             <el-pagination
@@ -161,6 +162,11 @@
             'span-method' : {
                 type : Function,
                 default : new Function()
+            },
+            //行是否可以点击
+            'row-click-able' : {
+                type : Boolean,
+                default : false
             }
         },
         data() {
@@ -254,6 +260,10 @@
     .table-com {
         position: relative;
         width: 100%;
+
+        .table-click-able /deep/ tbody tr{
+            cursor: pointer;
+        }
 
         .table-bar {
             margin-top: 16px;
