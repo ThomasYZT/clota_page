@@ -9,7 +9,7 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('cashAmount') + '：'" prop="fromAmount">
                         <Input v-model.trim="formData.fromAmount" :maxlength="30" :placeholder="$t('inputField', {field: ''})"/>
@@ -21,16 +21,18 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <FormItem label=" " prop="channel">
-                        <RadioGroup v-model="formData.channel">
-                            <Radio label="cash">{{$t("convertToCash")}}</Radio>
-                            <Radio label="account">{{$t("convertToAccount")}}</Radio>
+                    <FormItem label=" " prop="accountBizType">
+                        <RadioGroup v-model="formData.accountBizType">
+                            <Radio label="to_cash">{{$t("convertToCash")}}</Radio>
+                            <Radio label="transfer_in">{{$t("convertToAccount")}}</Radio>
                         </RadioGroup>
                     </FormItem>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="formData.channel === 'account'">
+                <div class="ivu-form-item-wrap" v-if="formData.accountBizType === 'transfer_in'">
                     <Form-item :label="$t('transferToAccount') + '：'" prop="toAccountId">
-                        <Select v-model="formData.toAccountId" :placeholder="$t('selectField', {msg: ''})">
+                        <Select v-model="formData.toAccountId"
+                                :placeholder="$t('selectField', {msg: ''})"
+                                @on-change="changeToAccountId">
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
@@ -56,7 +58,7 @@
     import common from '@/assets/js/common.js';
 
     export default {
-        props: ['store'],
+        props: ['store','detail'],
         components: {},
         data () {
 
@@ -92,8 +94,17 @@
 
             //校验转入账户
             const validateToAccount = (rule,value,callback) => {
-                if(this.formData.channel === 'account' && value == ''){
+                if(this.formData.accountBizType === 'transfer_in' && value == ''){
                     callback(new Error('请选择转入账户'));
+                } else {
+                    callback();
+                }
+            };
+
+            //校验转入账户不可选自己
+            const validateCheckSelf= (rule,value,callback) => {
+                if( value === this.accountInfo.accountDefineId ){
+                    callback(new Error('请选择其它账户'));
                 } else {
                     callback();
                 }
@@ -105,12 +116,15 @@
                 accountInfo: {},
                 //表单数据
                 formData: {
-                    channel: 'cash',
+                    accountBizType: 'to_cash',
                     fromAccountId: '',//调出账户
                     fromAmount: '',//兑现数量
                     toAccountId: '',//转入账户
                     toAmount: '',//兑换后数量
+                    toAccountTypeId: '',
                 },
+                //转入账户
+                toAccountInfo: {},
                 //表单校验
                 ruleValidate: {
                     fromAmount: [
@@ -118,15 +132,14 @@
                         { max: 30, message: '兑现数量不能超过30字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
-                    ],
-                    channel: [
-                        {required: true},
-                    ],
-                    toAmount: [
                         { validator: validateMaxNum, trigger: 'blur' },
+                    ],
+                    accountBizType: [
+                        {required: true},
                     ],
                     toAccountId: [
                         { validator: validateToAccount, trigger: 'change' },
+                        { validator: validateCheckSelf, trigger: 'change' },
                     ],
                 },
             }
@@ -145,16 +158,28 @@
                 this.formData.toAmount = Number(this.formData.fromAmount)*this.accountInfo.rate;
             },
 
+            //转入账户改变
+            changeToAccountId ( val ) {
+                this.toAccountInfo = this.store.find( item => item.id === val );
+            },
+
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
-                            fromAccountId: this.accountInfo.id,
-                            fromAmount: this.formData.fromAmount,
-                            toAccountId: this.formData.toAccountId,
+                            memberId: this.detail.id,
+                            cardId: this.detail.cardId,
+                            accountId: this.accountInfo.id,
+                            accountTypeId: this.accountInfo.accountDefineId,
+                            amount: '-'+this.formData.fromAmount,
+                            accountBizType: this.formData.accountBizType,
                             toAmount: this.formData.toAmount,
+                            toAccountTypeId: '',
                         };
+                        if(this.formData.accountBizType === 'transfer_in'){
+                            params.toAccountTypeId = this.toAccountInfo.id;
+                        }
                         console.log(params)
                         this.transferAccountBalance(params);
                     }
@@ -180,7 +205,7 @@
                 this.$refs.formValidate.resetFields();
                 this.accountInfo = {};
                 this.formData = {
-                    channel: 'cash',
+                    accountBizType: 'to_cash',
                     fromAccountId: '',
                     fromAmount: '',
                     toAccountId: '',

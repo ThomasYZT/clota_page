@@ -127,7 +127,7 @@ export default {
     'homeAddress': '家庭住址',
     'selectCardAttribution': '会员卡归属选择',
     'memberNum': '会员编号',
-    'memberKinds': '会员类别',
+    'memberKinds': '会员类型',
     'cardIssuer': '发卡单位',
     'signChannel': '注册渠道',
     'thirdCardFaceNum': '第三方卡面号',

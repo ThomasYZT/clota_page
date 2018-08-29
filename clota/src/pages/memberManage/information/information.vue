@@ -97,7 +97,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.status) }}</span>
+                        <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.memberType) }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

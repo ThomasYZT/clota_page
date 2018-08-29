@@ -56,23 +56,23 @@
                         <span>{{$t("selectCardAttribution")}} </span>
                         <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>
                     </div>
-                    <div class="form-wrap" v-if="detail.memberCardVos && detail.memberCardVos[0]">
+                    <div class="form-wrap">
                         <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span>
-                            {{detail.memberCardVos[0].cardCode || '-'}}</span></div>
+                            {{detail.cardCode || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span>
-                            {{detail.memberCardVos[0].orgName || '-'}}</span></div>
+                            {{detail.orgName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span>
-                            {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
+                            {{detail.channelName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("memberKinds")}}：</label><span>
-                            {{detail.memberCardVos[0].phoneNum || '-'}}</span></div>
+                            {{getEnumFieldShow('vipStatusEnum', detail.memberType)}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span>
-                            {{detail.memberCardVos[0].levelDesc || '-'}}</span></div>
+                            {{detail.levelDesc || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
-                            {{detail.memberCardVos[0].passwd || '********'}}</span></div>
+                            {{detail.passwd || '********'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span>
-                            {{detail.memberCardVos[0].tpCardNo || '-'}}</span></div>
+                            {{detail.tpCardNo || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span>
-                            {{detail.memberCardVos[0].tpNo || '-'}}</span></div>
+                            {{detail.tpNo || '-'}}</span></div>
                     </div>
                 </div>
 
@@ -255,7 +255,8 @@
 
         <!--兑现modal-->
         <to-cash-modal ref="toCash"
-                       :store="defineAccount"
+                       :detail="detail"
+                       :store="allFundsAccount"
                        @add-success="listCardAccountInfo(detail)"></to-cash-modal>
 
         <!--应用范围modal-->
@@ -301,7 +302,7 @@
     import moreCard  from '../components/moreCard.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import { genderEnum } from '@/assets/js/constVariable';
+    import { vipStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -325,6 +326,8 @@
                 enumData: {
                     //性别
                     genderEnum: genderEnum,
+                    //会员类型
+                    vipStatusEnum: vipStatusEnum,
                 },
                 //账户信息列表（本金/积分）
                 accountData: [],
@@ -373,6 +376,8 @@
                 scoreData: {},
                 //应用范围列表
                 allStore: [],
+                //所有储值账户
+                allFundsAccount: [],
             }
         },
         created() {
@@ -384,6 +389,8 @@
             this.listAdjustReason();
             //获取储值账户-(本金/赠送金额)应用范围
             this.getSubNode();
+            //查询储值账户
+            this.queryMemberAccountDefine();
         },
         methods: {
 
@@ -428,6 +435,22 @@
                 }).then(res => {
                     if( res.success ) {
                         this.allStore = res.data || [];
+                    }
+                })
+            },
+
+            //查询储值账户
+            queryMemberAccountDefine () {
+                ajax.post('queryMemberAccountDefine',{
+                    accountType: 'charging',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+                        this.allFundsAccount = res.data.data || [];
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'queryMemberAccountDefine 查询失败！');
                     }
                 })
             },

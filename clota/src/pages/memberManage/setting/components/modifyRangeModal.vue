@@ -136,6 +136,33 @@
                     this.index = data.index;
                 }
                 this.visible = true;
+
+                if( data ){
+                    if(type === 'money'){
+                        if(this.formData.corpusAppliedOrgId && this.formData.corpusAppliedOrgId.length > 0){
+                            this.formData.corpusAppliedOrgId.forEach( item => {
+                                this.tableData.forEach( (list,index) => {
+                                    if(item === list.id){
+                                        this.$refs.moneyMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                    }
+                                })
+                            })
+                        }
+                    }
+
+                    if(type === 'send'){
+                        if(this.formData.donateAppliedOrgId && this.formData.donateAppliedOrgId.length > 0){
+                            this.formData.donateAppliedOrgId.forEach( item => {
+                                this.tableData.forEach( (list,index) => {
+                                    if(item === list.id){
+                                        this.$refs.sendMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                    }
+                                })
+                            })
+                        }
+                    }
+                }
+
             },
 
             handleSelectionChange(val) {
