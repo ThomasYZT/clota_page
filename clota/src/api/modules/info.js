@@ -76,7 +76,8 @@ export default {
     'listAllSubStore' : '/member/memberBasicSet/listAllSubStore',
     //查询店铺商品信息
     'queryProduct' : '/product/queryProduct',
-
+    //查询会员渠道，只包含自营渠道和ota
+    'querySelfChannel':'/member/channelSet/querySelfChannel',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询
@@ -140,6 +141,8 @@ export default {
     'queryChargingAccountInfo' : '/member/memberAccount/queryChargingAccountInfo',
     //获取转入账户信息
     'getUpperlevelOrgList' : '/organize/getUpperlevelOrgList',
+    //查询储值明细
+    'queryChargingList' : '/member/memberAccount/queryChargingList',
 
     /***********************************首页***********************************/
     //获取会员消费笔数

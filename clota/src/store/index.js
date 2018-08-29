@@ -68,7 +68,9 @@ export default new Vuex.Store({
         //右侧操作栏是否显示
         operateLine : false,
         //组织信息
-        manageOrgs : {}
+        manageOrgs : {},
+        //当前的皮肤
+        skinType : 'blue-theame'
     },
     getters: {
         //左侧菜单是否收起
@@ -108,6 +110,14 @@ export default new Vuex.Store({
         //当前选择的组织信息
         manageOrgs : state => {
             return state.manageOrgs;
+        },
+        //获取当前的皮肤信息
+        skinType : state => {
+            let skinType = localStorage.getItem('skinType');
+            if (skinType) {
+                state.skinType = skinType;
+            }
+            return state.skinType;
         }
     },
     mutations: {
@@ -162,6 +172,11 @@ export default new Vuex.Store({
         updateManageOrgs(state,org) {
             state.manageOrgs = org;
             localStorage.setItem('manageOrgs',JSON.stringify(org));
+        },
+        //更改皮肤
+        updateSkin (state,skin) {
+            localStorage.setItem('skinType',skin);
+            state.skinType = skin;
         }
     },
     actions: {

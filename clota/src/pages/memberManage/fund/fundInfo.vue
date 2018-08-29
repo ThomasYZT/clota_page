@@ -154,6 +154,7 @@
                 border-bottom: 1px solid #E8E8E8;
 
                 .list{
+                    position: relative;
                     @include block_outline(50%);
                     float: left;
                     line-height: 40px;
@@ -161,6 +162,13 @@
                     color: $color_blue;
                     font-size: $font_size_14px;
                     cursor: pointer;
+
+                    &:nth-of-type(1)::after{
+                        content: '';
+                        @include absolute_pos(absolute,$right : 0,$top : 13px);
+                        background:  #E8E8E8;
+                        @include block_outline(1px,12px);
+                    }
                 }
             }
         }

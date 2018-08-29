@@ -25,13 +25,13 @@
         </div>
         <div class="skin">
             <div class="skin-title">主题皮肤</div>
-            <div class="skin-blue">
+            <div class="skin-blue" @click="chagneSkin('blue-theame')">
 
             </div>
-            <div class="skin-black">
+            <div class="skin-black" @click="chagneSkin('black-theame')">
 
             </div>
-            <div class="skin-pink">
+            <div class="skin-pink" @click="chagneSkin('pink-theame')">
 
             </div>
         </div>
@@ -62,6 +62,13 @@
             logOut () {
                 common.loginOut();
                 this.$store.commit('changeOperateLine',false);
+            },
+            /**
+             * 修改皮肤
+             * @param skin
+             */
+            chagneSkin(skin) {
+                this.$store.commit('updateSkin',skin);
             }
         },
         computed : {
@@ -175,23 +182,26 @@
 
             .skin-blue{
                 @include block_outline($height : 108px);
-                background-image: linear-gradient(-45deg, #0055B8 100%, #00C2CD 0%);
+                background-image: linear-gradient(90deg, #0055B8 0%, #00C2CD 100%);
                 border-radius: 4px;
                 margin-bottom: 25px;
+                cursor: pointer;
             }
 
             .skin-black{
                 @include block_outline($height : 108px);
-                background-image: linear-gradient(-59deg, #182577 5%, #57AFDA 100%);
+                background-image: linear-gradient(90deg, #182577 5%, #57AFDA 100%);
                 border-radius: 4px;
                 margin-bottom: 25px;
+                cursor: pointer;
             }
 
             .skin-pink{
                 @include block_outline($height : 108px);
-                background-image: linear-gradient(-37deg, #553E9B 0%, #E47C96 94%);
+                background-image: linear-gradient(-90deg,#E47C96  0%, #553E9B 94%);
                 border-radius: 4px;
                 margin-bottom: 25px;
+                cursor: pointer;
             }
         }
 

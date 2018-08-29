@@ -174,6 +174,8 @@
                         this[item] = params[item];
                     }
 
+                    console.log(this.fundDetail.id)
+
                     this.queryParams.accountId = this.fundDetail.id;
                     this.queryList();
                 }

@@ -1,3 +1,6 @@
+@import 'blackSkin';
+@import "blueSkin";
+@import "pinkTheame";
 .operate-list{
     @include table_operate();
 }

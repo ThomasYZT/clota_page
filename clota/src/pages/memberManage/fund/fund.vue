@@ -49,6 +49,7 @@
         </div>
 
         <table-com
+            v-if="tableShow"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -68,7 +69,7 @@
                 :min-width="row.minWidth"
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    {{scoped.row.cardCode}}
+                    {{scoped.row.id}}
                     <span class="frozen-cla">{{scoped.row.cardStatus === 'frozen' ? '已冻结' : ''}}</span>
                 </template>
             </el-table-column>
@@ -151,7 +152,7 @@
                     //会员卡状态
                     cardStatus: 'null',
                     //账户类型
-                    accountTypeId : 'all'
+                    accountTypeId : ''
                 },
                 //枚举数据
                 enumData: {
@@ -175,7 +176,9 @@
                 //每页条数
                 pageSize : 10,
                 //账户列表
-                accountList : []
+                accountList : [],
+                //全部的账户id列表
+                accountIds : []
             }
         },
         created() {
@@ -222,11 +225,11 @@
              * 储值账户列表
              */
             queryList () {
-                ajax.post('queryMemberPage',{
+                ajax.post('queryChargingList',{
                     levelId : this.queryParams.levelId !== 'all' ? this.queryParams.levelId : '',
                     channelId : this.queryParams.channelId !=='all' ? this.queryParams.channelId : '',
                     cardStatus : this.queryParams.cardStatus !== 'null' ? this.queryParams.cardStatus : '',
-                    accountTypeId  : this.queryParams.accountTypeId !== 'all' ? this.queryParams.accountTypeId : '',
+                    accountTypeIds  : this.queryParams.accountTypeId !== 'all' ? this.queryParams.accountTypeId : this.accountIds.join(','),
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     keyWord : this.queryParams.keyWord,
@@ -268,6 +271,7 @@
              * 查询账户类型
              */
             queryMemberAccountDefine () {
+                this.accountIds = [];
                 ajax.post('queryMemberAccountDefine',{
                     accountType: 'charging',
                     pageNo: 1,
@@ -275,6 +279,9 @@
                 }).then(res => {
                     if(res.success){
                         this.accountList = res.data.data ? res.data.data : [];
+                        this.accountList.forEach(item => {
+                            this.accountIds.push(item.id);
+                        });
                     }else{
                         this.accountList = [];
                     }
@@ -313,7 +320,9 @@
                 this.$router.push({
                     name : 'infoFund',
                     params: {
-                        fundDetail : data
+                        fundDetail : {
+                            id :data.accountId
+                        }
                     }
                 });
             }
@@ -326,7 +335,7 @@
         computed : {
             //表格是否显示
             tableShow () {
-                return this.queryParams.accountTypeId;
+                return !!this.queryParams.accountTypeId;
             }
         }
     }

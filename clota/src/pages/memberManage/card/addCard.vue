@@ -175,11 +175,11 @@
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择商品-->
                     <Form-item label="选择商品">
-                        <Select v-model.trim="formData.conditionProductId" 
-                                :multiple="true" 
+                        <Select v-model.trim="formData.conditionProductId"
+                                :multiple="true"
                                 placeholder="请选择">
-                            <Option :value="item.id" 
-                                    v-for="item in productList" 
+                            <Option :value="item.id"
+                                    v-for="item in productList"
                                     :key="item.id" >
                                 {{item.productName}}
                             </Option>
@@ -485,10 +485,10 @@
              * 查询渠道
              */
             queryChannelSet () {
-                ajax.post('queryChannelSet',{
-                    isDeleted : 'false',
-                    pageNo : 1,
-                    pageSize : 9999
+                ajax.post('querySelfChannel',{
+                    // isDeleted : 'false',
+                    // pageNo : 1,
+                    // pageSize : 9999
                 }).then(res => {
                     if(res.success){
                         this.channelSetList = res.data.data ? res.data.data : [];

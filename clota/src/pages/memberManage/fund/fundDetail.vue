@@ -1,6 +1,12 @@
 <template>
     <!--会员管理--储值管理--资金明细-->
     <div class="member-fund-account">
+        <div class="breadcrumb-box">
+            <bread-crumb-head
+                locale-router="储值明细"
+                :before-router-list="beforeRouterList">
+            </bread-crumb-head>
+        </div>
 
         <div class="fund-account-header">
             <Select v-model="queryParams.accountTypeId"
@@ -71,14 +77,25 @@
     import ajax from '@/api/index.js';
     import {tradeType1} from '@/assets/js/constVariable.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
 
     export default {
         mixins : [lifeCycleMixins],
         components: {
-            tableCom
+            tableCom,
+            breadCrumbHead
         },
         data () {
             return {
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: this.$t('fund'),
+                        router: {
+                            name: 'fundInfo'
+                        }
+                    }
+                ],
                 //交易类型列表
                 tradeType1 : tradeType1,
                 // 查询数据
@@ -222,6 +239,13 @@
         overflow: auto;
         background: $color-fff;
         border-radius: 4px;
+
+        .breadcrumb-box{
+            height: 50px;
+            line-height: 50px;
+            padding: 0 30px;
+            background: $color_F4F6F8;
+        }
 
         .fund-account-header{
             height: 50px;

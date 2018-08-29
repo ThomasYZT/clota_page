@@ -196,7 +196,7 @@
     }
 
     .login {
-        min-height: 100%;
+        min-height: calc(100% - 133px);
         width: $content_min_width;
         margin: 0 auto;
         position: relative;
