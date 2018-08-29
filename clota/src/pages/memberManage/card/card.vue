@@ -53,7 +53,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}-{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
+                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -113,7 +113,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}-{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
+                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -305,8 +305,8 @@
                         couponType : data.couponType,
                         nominalValue : String(data.nominalValue),
                         conditionLowerLimtation : String(data.conditionLowerLimtation),
-                        effectiveTime : new Date(data.effectiveTime),
-                        expireTime : new Date(data.expireTime),
+                        effectiveTime : new Date(data.effectiveTime.replace(/-/g,'/')),
+                        expireTime : new Date(data.expireTime.replace(/-/g,'/')),
                         price : String(data.price),
                         isDiscountCoexist : data.isDiscountCoexist,
                         isEffectBeforeDiscount : data.isEffectBeforeDiscount,
@@ -318,8 +318,8 @@
                         id : data.id,
                         couponName : data.couponName,
                         couponType : data.couponType,
-                        effectiveTime : new Date(data.effectiveTime),
-                        expireTime : new Date(data.expireTime),
+                        effectiveTime : new Date(data.effectiveTime.replace(/-/g,'/')),
+                        expireTime : new Date(data.expireTime.replace(/-/g,'/')),
                         price : String(data.price),
                         conditionChannelId : data.conditionChannelId,
                         conditionProductId : data.conditionProductId,
@@ -333,8 +333,8 @@
                         nominalValue : String(data.nominalValue),
                         conditionLowerLimtation : String(data.conditionLowerLimtation),
                         conditionUpperLimtation : data.conditionUpperLimtation,
-                        effectiveTime : new Date(data.effectiveTime),
-                        expireTime : new Date(data.expireTime),
+                        effectiveTime : new Date(data.effectiveTime.replace(/-/g,'/')),
+                        expireTime : new Date(data.expireTime.replace(/-/g,'/')),
                         price : String(data.price),
                         conditionOrgId : data.conditionOrgId,
                         conditionChannelId : data.conditionChannelId,

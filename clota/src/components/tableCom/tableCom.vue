@@ -225,13 +225,26 @@
             //设置表格某行选中/不选中
             toggleRowSelection ( row, selected) {
                 this.$refs.multipleTable.toggleRowSelection( row, selected );
-            }
+            },
+            /**
+             * 注册监听页面缩放事件
+             */
+            registerWindowResize() {
+                window.addEventListener('resize', this.setTableMaxHeight);
+            },
+            /**
+             * 解除监听页面缩放事件
+             */
+            unregisterWindowResize() {
+                window.removeEventListener('resize', this.setTableHeight);
+            },
         },
         created () {
             this.queryList();
         },
         mounted () {
             this.setTableMaxHeight();
+            this.registerWindowResize();
         },
         computed : {
             minHeight () {
@@ -254,6 +267,9 @@
                 }
             }
         },
+        beforeDestroy() {
+            this.unregisterWindowResize();
+        }
 
     }
 </script>

@@ -96,6 +96,7 @@
                     <Form-item label="选择店铺" prop="conditionOrgId">
                         <Select v-model="formData.conditionOrgId"
                                 :placeholder="$t('selectField', {msg: ''})"
+                                :clearable="true"
                                 @on-change="storeChange">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
@@ -111,6 +112,7 @@
                     <Form-item label="选择店铺" prop="conditionOrgId">
                         <Select v-model="formData.conditionOrgId"
                                 :multiple="true"
+                                :clearable="true"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
@@ -149,6 +151,7 @@
                     <Form-item label="可用渠道" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
                                 :multiple="true"
+                                :clearable="true"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in channelSetList"
                                     :key="index"
@@ -557,8 +560,8 @@
                         effectiveTime : this.formData.effectiveTime.format('yyyy-MM-dd'),
                         expireTime : this.formData.expireTime.format('yyyy-MM-dd'),
                         price : this.formData.price,
-                        conditionOrgId : this.formData.conditionOrgId.join(','),
-                        conditionChannelId : this.formData.conditionChannelId,
+                        conditionOrgId : this.formData.conditionOrgId.length > 0 ? this.formData.conditionOrgId.join(',') : '',
+                        conditionChannelId : this.formData.conditionChannelId.join(','),
                     }
                 }
             },
@@ -638,6 +641,7 @@
              * 选择店铺
              */
             storeChange (data) {
+                this.formData.conditionProductId  = [];
                 this.queryProduct(data);
             }
         },

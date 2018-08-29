@@ -43,7 +43,7 @@ export const columnData = [
     },
     {
         title: '交易时间',
-        width: 180,
+        width: 200,
         field: 'createdTime'
     },
     {

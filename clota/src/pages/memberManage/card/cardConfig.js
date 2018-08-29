@@ -18,7 +18,7 @@ export const columnData = [
     },
     {
         title: '有效期',
-        width: 210,
+        width: 230,
         field: 'discountRate'
     },
     {

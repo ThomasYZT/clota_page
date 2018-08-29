@@ -203,7 +203,7 @@
         .data-content {
             height: calc(100% - 50px);
             .echarts {
-                @include block_outline(480px, 190px);
+                @include block_outline(100%, 190px);
                 margin: 0 auto;
             }
         }

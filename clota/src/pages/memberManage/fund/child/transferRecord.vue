@@ -145,8 +145,8 @@
             queryList () {
                 ajax.post('queryChangeList',{
                     operType : this.queryParams.tradeType !== 'all' ? this.queryParams.tradeType : '',
-                    startDate : this.queryParams.startTime ? this.queryParams.startTime.format('yyyy-MM-dd') : '',
-                    endDate : this.queryParams.endTime ? this.queryParams.endTime.format('yyyy-MM-dd') : '',
+                    startDate : this.queryParams.startTime ? this.queryParams.startTime.format('yyyy-MM-dd 00:00:00') : '',
+                    endDate : this.queryParams.endTime ? this.queryParams.endTime.format('yyyy-MM-dd 23:59:59') : '',
                     keyword : this.queryParams.keyword,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,

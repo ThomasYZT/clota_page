@@ -108,9 +108,9 @@
                                 sessionStorage.setItem('userInfo',JSON.stringify(res.data));
                                 sessionStorage.setItem('accountName',this.formInline.user);
                                 //保存当前选择的机构
-                                if(!localStorage.getItem('manageOrgs')){
+                                // if(!localStorage.getItem('manageOrgs')){
                                     localStorage.setItem('manageOrgs',JSON.stringify(res.data.manageOrgs[0]));
-                                }
+                                // }
                                 this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
                                 this.setOrgIndex();
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {

@@ -32,7 +32,7 @@ export const columnData = [
     },
     {
         title: '转账时间',
-        width: 180,
+        width: 200,
         field: 'createdTime'
     },
     {

@@ -131,6 +131,7 @@ plugin.install = function (Vue, options) {
                 } else if (klwkUi.validator.isNumber(value)) {
                     return new Date(Number(value)).format(format);
                 } else if (typeof value === 'string') {
+                    value = value.replace(/-/g,'/');
                     return value.toDate().format(format);
                 } else {
                     return value
