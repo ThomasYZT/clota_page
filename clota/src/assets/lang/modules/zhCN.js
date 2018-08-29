@@ -147,6 +147,12 @@ export default {
     'newAccount': '新增账户',
     'enjoyIntegraAndDiscount': '享受积分、折扣率信息',
     'notExpired': '未过期',
-    'used': '已使用'
+    'used': '已使用',
+    'expired': '已过期',
+    'more': '更多',
+    'couponName': '卡券名称',
+    'useCondition': '使用条件',
+    'types': '类别',
+    'validityPeriod': '有效期',
 
 }

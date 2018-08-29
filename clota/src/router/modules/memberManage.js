@@ -145,7 +145,7 @@ export default {
                 path: '/memberManage/integ',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/index.vue'),
                 meta: {
-                    menuName: 'integration', //lang.config.js 里面的语言键值
+                    menuName: 'memberPoints', //lang.config.js 里面的语言键值
                     _name: 'members-point',
                     iconClass: 'icon-diamond',
                     rightPath : topMenuName + '.' + 'memberPoints',
