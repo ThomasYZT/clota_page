@@ -144,7 +144,7 @@
              */
             queryList () {
                 ajax.post('queryOrgAccountChange',{
-                    accountTypeId : this.queryParams.accountTypeId === 'all' ? '' : this.queryParams.accountTypeId,
+                    accountTypeIds : this.queryParams.accountTypeId === 'all' ? '' : this.queryParams.accountTypeId,
                     operType : this.queryParams.tradeType === 'all' ? '' : this.queryParams.tradeType,
                     startDate : '',
                     endDate : '',

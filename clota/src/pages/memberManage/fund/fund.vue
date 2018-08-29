@@ -43,7 +43,7 @@
                 </Option>
             </Select>
             <br>
-            <Input v-model="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
+            <Input v-model.trim="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
             <Button type="primary" @click="queryList">查 询</Button>
             <Button type="ghost" @click="reset">重 置</Button>
         </div>
@@ -178,7 +178,10 @@
                 //账户列表
                 accountList : [],
                 //全部的账户id列表
-                accountIds : []
+                accountIds : [],
+                //会员中心初始化，用于重置查询条件时重置账户类型
+                accountTypeIdInit : ''
+
             }
         },
         created() {
@@ -232,7 +235,7 @@
                     accountTypeIds  : this.queryParams.accountTypeId !== 'all' ? this.queryParams.accountTypeId : this.accountIds.join(','),
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
-                    keyWord : this.queryParams.keyWord,
+                    keyword : this.queryParams.keyWord,
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
@@ -253,17 +256,17 @@
              * @param val String 值
              */
             getEnumFieldShow ( name, val ) {
-                var obj = this.enumData[name].find((item) => val === item.name);
+                let obj = this.enumData[name].find((item) => val === item.name);
                 return this.$t(obj.desc)
             },
 
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
-                this.queryParams.accountTypeId = this.accountList.length > 0 ? this.accountList[0].id : 'all';
+                this.queryParams.accountTypeId = this.accountTypeIdInit ? this.accountTypeIdInit : 'all';
                 this.queryParams.levelId = "all";
                 this.queryParams.channelId = "all";
-                this.queryParams.cardStatus = "all";
+                this.queryParams.cardStatus = "null";
                 this.queryList();
             },
 
@@ -301,6 +304,7 @@
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
                     this.queryParams.accountTypeId = params.id;
+                    this.accountTypeIdInit = params.id;
                 }
             },
             /**

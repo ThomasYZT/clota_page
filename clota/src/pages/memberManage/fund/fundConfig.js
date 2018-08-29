@@ -32,7 +32,7 @@ export const columnData = [
         field: 'accountTypeName'
     },
     {
-        title: '账户可用金额',
+        title: '账户余额',
         minWidth: 130,
         field: 'endingBalance'
     },
