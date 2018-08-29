@@ -323,7 +323,7 @@
                         price : String(data.price),
                         conditionChannelId : data.conditionChannelId,
                         conditionProductId : data.conditionProductId,
-                        conditionOrgId : data.conditionOrgId,
+                        singleStoreId : data.conditionOrgId,
                     }
                 }else if(data.couponType === 'discount_coupon'){//折扣券
                     return {
@@ -332,7 +332,7 @@
                         couponType : data.couponType,
                         nominalValue : String(data.nominalValue),
                         conditionLowerLimtation : String(data.conditionLowerLimtation),
-                        conditionUpperLimtation : data.conditionUpperLimtation,
+                        conditionUpperLimtation : String(data.conditionUpperLimtation),
                         effectiveTime : new Date(data.effectiveTime.replace(/-/g,'/')),
                         expireTime : new Date(data.expireTime.replace(/-/g,'/')),
                         price : String(data.price),
