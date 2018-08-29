@@ -260,6 +260,17 @@ export default {
                             isMenu : true
                         },
                     },
+                    //会员管理-账户资金交易明细
+                    accountFianceDetail : {
+                        path: '/memberManage/account/fianceDetail',
+                        name: 'fianceDetail',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
+                        meta: {
+                            menuName: 'fund', //lang.config.js 里面的语言键值
+                            _name: 'storage-account',
+                            rightPath : topMenuName + '.' + 'fundInfo',
+                        },
+                    },
                     funds: {
                         //会员管理--储值管理--储值明细
                         path: '/memberManage/fund',

@@ -60,7 +60,7 @@
              */
             toTradeDetail(data) {
                 this.$router.push({
-                    name : 'fundDetail',
+                    name : 'fianceDetail',
                     params : data
                 });
             },

@@ -1,7 +1,7 @@
 <template>
     <!--会员管理--储值管理--资金明细-->
     <div class="member-fund-account">
-        <div class="breadcrumb-box">
+        <div class="breadcrumb-box" v-if="fromAccountStore">
             <bread-crumb-head
                 locale-router="储值明细"
                 :before-router-list="beforeRouterList">
@@ -12,11 +12,10 @@
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
                     placeholder="请选择账户类型">
-                <!-- <Option value="all" key='all'>全部</Option> -->
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
-                    :key="item.id">
+                    :key="item.id + Math.random()">
                     {{ item.accountName }}
                 </Option>
             </Select>
@@ -30,13 +29,14 @@
                     {{ item.label }}
                 </Option>
             </Select>
-            <Input v-model="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
+            <Input v-model.trim="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
             <Button type="primary" @click="queryList">查 询</Button>
             <Button type="ghost" @click="reset">重 置</Button>
         </div>
         <table-com
             v-if="tableShow"
-            :ofsetHeight="110"
+            :key="$route.name"
+            :ofsetHeight="fromAccountStore ? 160 : 110"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -145,7 +145,9 @@
                 //每页条数
                 pageSize : 10,
                 //账户类型列表
-                accountList : []
+                accountList : [],
+                //表格是否显示
+                tableShow : false
             }
         },
         methods: {
@@ -179,7 +181,7 @@
              */
             reset () {
                 this.queryParams.keyword = '';
-                this.queryParams.accountTypeId = '';
+                this.queryParams.accountTypeId = 'all';
                 this.queryParams.tradeType = 'all';
                 this.queryList();
             },
@@ -194,19 +196,15 @@
                 }).then(res => {
                     if(res.success){
                         this.accountList = res.data.data ? res.data.data : [];
-                        // if(this.accountList.length > 0){
-                        //     this.queryParams.accountTypeId = this.accountList[0].id;
-                        // }
+                        this.accountList.unshift({
+                            id : 'all',
+                            accountName : '全部账户'
+                        });
                     }else{
                         this.accountList = [];
                     }
                 }).catch(() => {
                     this.accountList = [];
-                }).finally(() => {
-                    this.accountList.unshift({
-                        id : 'all',
-                        accountName : '全部'
-                    });
                 });
             },
             /**
@@ -214,8 +212,14 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
+                this.tableShow = false;
+                if(params && Object.keys(params).length > 0 && this.fromAccountStore){
+                    this.$set(this.queryParams,'accountTypeId',params.id);
                     this.queryParams.accountTypeId = params.id;
+                    this.tableShow = true;
+                }else{
+                    this.$set(this.queryParams,'accountTypeId','all');
+                    this.tableShow = true;
                 }
             },
             /**
@@ -243,10 +247,22 @@
         created () {
             this.queryMemberAccountDefine();
         },
+        beforeRouteLeave(to,from,next){
+            this.tableShow = false;
+            next();
+        },
         computed : {
-            //表格是否显示
-            tableShow () {
-                return this.queryParams.accountTypeId;
+            //是否是从账户储值信息跳转过来的页面
+            fromAccountStore () {
+                return this.$route.name === 'fianceDetail';
+            }
+        },
+        watch : {
+            '$route' (newVal,oldVal) {
+                if(newVal.name === 'fundDetail'){
+                    this.$set(this.queryParams,'accountTypeId','all');
+                    this.tableShow = true;
+                }
             }
         }
     }

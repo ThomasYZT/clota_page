@@ -249,7 +249,7 @@
                     this.handleCurrentChange(1);
                 }
             }
-        }
+        },
 
     }
 </script>
