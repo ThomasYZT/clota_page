@@ -38,7 +38,7 @@ export default {
     'levelSetting': '会员级别',
     'growthSetting': '成长值设置',
     'fundSetting': '储值设置',
-    'fundInfo': '储值记录',
+    'fundInfo': '账户储值信息',
     'consumeSetting': '积分消费管理',
     'backUp': '收起',
     'upLoad': '展开',
@@ -147,7 +147,6 @@ export default {
     'newAccount': '新增账户',
     'enjoyIntegraAndDiscount': '享受积分、折扣率信息',
     'notExpired': '未过期',
-    'used': '已使用',
-    'accoutStored': '账户储值信息',
+    'used': '已使用'
 
 }

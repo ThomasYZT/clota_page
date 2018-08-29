@@ -38,7 +38,7 @@ export default {
     'levelSetting': 'Member Level',
     'growthSetting': 'Growth Value Settings',
     'fundSetting': 'Pre-paid Settings',
-    'fundInfo': 'Pre-paid record',
+    'fundInfo': '账户储值信息',
     'consumeSetting': 'Intergral Consumption Management',
     'backUp': '收起',
     'upLoad': '展开',

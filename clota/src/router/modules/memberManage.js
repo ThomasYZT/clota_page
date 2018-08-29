@@ -254,9 +254,9 @@ export default {
                         name: 'fundInfo',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundInfo.vue'),
                         meta: {
-                            menuName: 'accoutStored', //lang.config.js 里面的语言键值
+                            menuName: 'fundInfo', //lang.config.js 里面的语言键值
                             _name: 'storage-account',
-                            rightPath : topMenuName + '.' + 'accoutStored',
+                            rightPath : topMenuName + '.' + 'fundInfo',
                             isMenu : true
                         },
                     },
