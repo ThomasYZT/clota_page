@@ -171,7 +171,7 @@
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message|| 'addAmount 失败！');
+                        this.$Message.warning(res.message|| 'addAmount '+ $t('failure') +'！');
                     }
                 })
             },
@@ -191,7 +191,7 @@
                     if( res.success ) {
                        this.formData.totalAmount = res.data;
                     } else {
-                        this.$Message.warning(res.message|| 'getRechargeActMoney 失败！');
+                        this.$Message.warning(res.message|| 'getRechargeActMoney '+ $t('failure') +'！');
                     }
                 })
             },

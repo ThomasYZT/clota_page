@@ -10,12 +10,12 @@
             <div class="form-container">
                 <Form ref="formValidate" :model="member" :rules="ruleValidate" :label-width="115">
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="姓名" prop="custName">
+                        <Form-item :label="$t('name')" prop="custName"><!--姓名-->
                             <Input v-model.trim="member.custName" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="手机号" prop="phoneNum">
+                        <Form-item :label="$t('phoneNum').slice(0,3)" prop="phoneNum"><!--手机号-->
                             <Input v-model.trim="member.phoneNum" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
@@ -25,7 +25,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="生日" prop="birthDay">
+                        <Form-item :label="$t('birthday')" prop="birthDay">
                             <Date-picker
                                 type="date"
                                 v-model="member.birthDay"
@@ -36,7 +36,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label=" 性别" prop="gender">
+                        <Form-item :label="$t('gender')" prop="gender"><!--性别-->
                             <Select v-model="member.gender" :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.genderEnum"
                                         :key="index"
@@ -47,76 +47,76 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="QQ" prop="qq">
+                        <Form-item :label="$t('QQ')" prop="qq">
                             <Input v-model.trim="member.qq" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="微信" prop="wechatAcct">
+                        <Form-item :label="$t('weChat')" prop="wechatAcct"><!--微信-->
                             <Input v-model.trim="member.wechatAcct" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="支付宝" prop="alipayAcct">
+                        <Form-item :label="$t('ailiPay')" prop="alipayAcct"><!--支付宝-->
                             <Input v-model.trim="member.alipayAcct" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="会员级别" prop="levelId">
-                            <Select v-model="member.levelId" placeholder="请选择会员初始级别">
+                        <Form-item :label="$t('levelSetting')" prop="levelId"><!--会员级别-->
+                            <Select v-model="member.levelId" :placeholder="$t('selectField', {msg: $t('memberLevelPri')})"><!--请选择会员初始级别-->
                                 <Option v-for="item in enumData.level" :key="item.id" :value="item.id">{{item.levelDesc}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="会员渠道" prop="channelId">
-                            <Select v-model="member.channelId" placeholder="请选择会员来源渠道">
+                        <Form-item :label="$t('memberChannel')" prop="channelId"><!--会员渠道-->
+                            <Select v-model="member.channelId" :placeholder="$t('selectField', {msg: $t('memberOriginChannel')})"><!--请选择会员来源渠道-->
                                 <Option v-for="item in enumData.channel" :key="item.id" :value="item.id">{{item.channelName}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="国家代码" prop="stateCode">
+                        <Form-item :label="$t('countryCode')" prop="stateCode"><!--国家代码-->
                             <Input v-model.trim="member.stateCode" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="城市代码" prop="cityCode">
+                        <Form-item :label="$t('cityCode')" prop="cityCode"><!--城市代码-->
                             <Input v-model.trim="member.cityCode" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="第三方卡号" prop="tpNo">
+                        <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--第三方卡号-->
                             <Input v-model.trim="member.tpNo" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="第三方卡面号" prop="tpCardNo">
+                        <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--第三方卡面号-->
                             <Input v-model.trim="member.tpCardNo" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="证件类型" prop="certificationType">
-                            <Select v-model="member.certificationType" placeholder="请选择证件类型">
+                        <Form-item :label="$t('credentialsType')" prop="certificationType"><!--证件类型-->
+                            <Select v-model="member.certificationType" :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
                                 <Option v-for="item in enumData.idType" :key="item.id" :value="item.id">{{item.name}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="证件编号" prop="idCardNumber">
+                        <Form-item :label="$t('credentialsCode')" prop="idCardNumber"><!--证件编号-->
                             <Input v-model.trim="member.idCardNumber" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="个人兴趣" prop="hobby">
+                        <Form-item :label="$t('personalInterests')" prop="hobby"><!--个人兴趣-->
                             <Input v-model.trim="member.hobby" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item label="地址" prop="homeAddr">
-                            <Input v-model.trim="member.homeAddr" placeholder="请输入家庭地址"/>
+                        <Form-item :label="$t('address')" prop="homeAddr"><!--地址-->
+                            <Input v-model.trim="member.homeAddr" :placeholder="$t('selectField', {msg: $t('address')})"/><!--请输入家庭地址-->
                         </Form-item>
                     </div>
 
@@ -125,10 +125,10 @@
 
             <div class="content-footer">
                 <template v-if="type === 'add'">
-                    <Button type="primary" :loading="loading" @click="formValidateFunc">确定新增</Button>
+                    <Button type="primary" :loading="loading" @click="formValidateFunc">{{$t('confirmAdd')}}</Button><!--确定新增-->
                 </template>
                 <template v-if="type === 'modify'">
-                    <Button type="primary" :loading="loading" @click="formValidateFunc">确定</Button>
+                    <Button type="primary" :loading="loading" @click="formValidateFunc">{{$t('confirm')}}</Button><!--确定-->
                 </template>
                 <Button type="ghost" @click="goBack">{{$t("cancel")}}</Button>
             </div>
@@ -156,7 +156,7 @@
 
                 mobile :  (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(new Error('请输入正确的手机号码'));
+                        callback(new Error( $t('inputField', {field: $t('rightPhoneNum')}) ));    // 请输入正确的手机号码
                     } else {
                         callback();
                     }
@@ -164,7 +164,7 @@
 
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(new Error( $t('errorIrregular') ));    // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -174,7 +174,7 @@
             return {
                 beforeRouterList: [
                     {
-                        name: '会员信息',
+                        name: 'memberInfo',   // 会员信息
                         router: 'info',
                     }
                 ],
@@ -192,8 +192,8 @@
                     idType: [],
                     status: [
                         {
-                            desc: '全部会员状态',
-                            name: '全部会员状态',
+                            desc: $t('memberStatusAll'),    // 全部会员状态
+                            name: $t('memberStatusAll'),
                         }
                     ],
                     genderEnum: genderEnum
@@ -224,16 +224,16 @@
                 },
                 ruleValidate: {
                     custName: [
-                        { required: true, message: '姓名不能为空', trigger: 'blur' },
-                        { type: 'string', max: 20, message: '姓名不能多于20个字符', trigger: 'blur' },
+                        { required: true, message: $t('errorEmpty', {msg: $t('name')}), trigger: 'blur' },     // 姓名不能为空
+                        { type: 'string', max: 20, message: $t('errorMaxLength', {field: $t('name'), length: 20}), trigger: 'blur' },      // 姓名不能多于20个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phoneNum: [
-                        { required: true, message: '手机号不能为空', trigger: 'blur' },
+                        { required: true, message: $t('errorEmpty', {msg: $t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
-                        { required: true, message: '性别不能为空', trigger: 'change' },
+                        { required: true, message: $t('errorEmpty', {msg: $t('gender')}), trigger: 'change' },     // 性别不能为空
                     ],
                 },
                 //编辑原数据
@@ -249,7 +249,7 @@
         },
         computed: {
             localeRouter () {
-                return this.type === 'add' ? '新增会员' : '修改会员信息'
+                return this.type === 'add' ? $t('addMember') : $t('addMember');      // 新增会员 ： 修改会员信息
             },
             isEdit() {
                 return this.$route.query.info;
@@ -387,7 +387,7 @@
                         }
                     } else {
                         console.log(res);
-                        this.$Message.warning(url+' 失败！')
+                        this.$Message.warning(url+' '+ $t('failure') +'！')
                     }
                 })
             },

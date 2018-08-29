@@ -12,7 +12,7 @@
         <div class="rate-content">
 
             <div class="table-wrap width-500">
-                <div class="title-wrap">按会员级别享受积分、折扣率信息</div>
+                <div class="title-wrap">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
                 <table-com
                     :column-data="cardColumnData"
                     :table-data="cardData"
@@ -22,7 +22,7 @@
             </div>
 
             <div class="table-wrap width-660">
-                <div class="title-wrap">按店铺享受积分、折扣率信息</div>
+                <div class="title-wrap">{{$t('enjoyCouponByShop')}}</div><!--按店铺享受积分、折扣率信息-->
                 <table-com
                     :column-data="storeColumnData"
                     :table-data="storeData"
@@ -32,7 +32,7 @@
             </div>
 
             <div class="table-wrap width-1100">
-                <div class="title-wrap">按产品享受积分、折扣率信息</div>
+                <div class="title-wrap">{{$t('enjoyCouponByProduct')}}</div><!--按产品享受积分、折扣率信息-->
                 <table-com
                     :column-data="productColumnData"
                     :table-data="productData"
@@ -68,27 +68,27 @@
             return {
                 beforeRouterList: [
                     {
-                        name: '会员信息',
+                        name: 'memberInfo',   // 会员信息
                         router: 'info',
                     },
                     {
-                        name: '会员详情',
+                        name: 'memberDetail',   // 会员详情
                         router: 'detail',
                     },
                 ],
-                localeRouter: '享受积分、折扣率信息',
+                localeRouter: 'enjoyIntegraAndDiscount',   // 享受积分、折扣率信息
                 //会员详情数据
                 detail: {},
                 //会员卡的积分折扣率
                 cardData: [],
                 cardColumnData: [
                     {
-                        title: '积分率',
+                        title: 'IntegralRate',  // 积分率
                         minWidth: 100,
                         field: 'scoreRate'
                     },
                     {
-                        title: '折扣率',
+                        title: 'discountRate',  // 折扣率
                         minWidth: 100,
                         field: 'discountRate'
                     },
@@ -97,17 +97,17 @@
                 storeData: [],
                 storeColumnData: [
                     {
-                        title: '店铺',
+                        title: 'shop',  // 店铺
                         minWidth: 100,
                         field: 'orgName'
                     },
                     {
-                        title: '积分率',
+                        title: 'IntegralRate',  // 积分率
                         minWidth: 100,
                         field: 'deptScoreRate'
                     },
                     {
-                        title: '折扣率',
+                        title: 'discountRate',  // 折扣率
                         minWidth: 100,
                         field: 'deptDiscountRate'
                     },
@@ -116,22 +116,22 @@
                 productData: [],
                 productColumnData: [
                     {
-                        title: '店铺',
+                        title: 'shop',
                         minWidth: 100,
                         field: 'orgName'
                     },
                     {
-                        title: '商品',
+                        title: 'goods',
                         minWidth: 100,
                         field: 'productName'
                     },
                     {
-                        title: '积分率',
+                        title: 'IntegralRate',
                         minWidth: 100,
                         field: 'prodScoreRate'
                     },
                     {
-                        title: '折扣率',
+                        title: 'discountRate',
                         minWidth: 100,
                         field: 'prodDiscountRate'
                     },
@@ -156,8 +156,7 @@
                             }
                         }
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'listMemberCardRate 失败！');
+                        this.$Message.warning(res.message || 'listMemberCardRate '+ $t('failure') +'！');
                     }
                 });
             },

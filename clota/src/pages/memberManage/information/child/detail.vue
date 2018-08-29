@@ -63,8 +63,8 @@
                             {{detail.orgName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span>
                             {{detail.channelName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("memberKinds")}}：</label><span>
-                            {{getEnumFieldShow('vipStatusEnum', detail.memberType)}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span>
+                            {{getEnumFieldShow('vipStatusEnum', detail.memberKinds)}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span>
                             {{detail.levelDesc || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
@@ -401,7 +401,7 @@
                         this.defineAccount = res.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryDefineAccountType 失败！');
+                        this.$Message.warning(res.message || 'queryDefineAccountType '+ $t('failure') +'！');
                     }
                 });
             },
@@ -490,7 +490,7 @@
                         })
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'listCardAccountInfo 失败！');
+                        this.$Message.warning(res.message || 'listCardAccountInfo '+ $t('failure') +'！');
                     }
                 });
             },
@@ -513,7 +513,7 @@
                         this.couponData = res.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message ||'listCouponsByStatus 失败！');
+                        this.$Message.warning(res.message ||'listCouponsByStatus '+ $t('failure') +'！');
                     }
                 });
             },
@@ -555,7 +555,7 @@
                         this.$Message.success('更新会员卡信息成功！');
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'updateMemberCard 失败！');
+                        this.$Message.warning(res.message || 'updateMemberCard '+ $t('failure') +'！');
                     }
                 });
             },
@@ -579,7 +579,7 @@
                         }
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryChildOrMotherCard 失败！');
+                        this.$Message.warning(res.message || 'queryChildOrMotherCard '+ $t('failure') +'！');
                     }
                 });
             },

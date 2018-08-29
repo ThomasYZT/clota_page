@@ -256,7 +256,7 @@
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message|| 'adjustAmount 失败！');
+                        this.$Message.warning(res.message|| 'adjustAmount '+ $t('failure') +'！');
                     }
                 })
             },
