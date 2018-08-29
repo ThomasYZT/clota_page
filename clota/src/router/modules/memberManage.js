@@ -47,7 +47,7 @@ export default {
                 children: {
                     info: {
                         //会员管理--会员信息
-                        path: '/memberManage/info',
+                        path: '/memberManage/infoList',
                         name: 'memberInfo',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/information.vue'),
                         meta: {

@@ -43,10 +43,12 @@
                 :column-data="infoListHead"
                 :table-data="tableData"
                 :total-count="total"
+                :row-class-name="rowClassName"
                 :page-no-d.sync="queryParams.pageNo"
                 :page-size-d.sync="queryParams.pageSize"
                 :border="true"
                 :row-click="true"
+                :row-click-able="true"
                 @query-data="queryList"
                 @row-click="viewDetail">
                 <el-table-column
@@ -63,12 +65,23 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    slot="column1"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                </el-table-column>
+                <el-table-column
                     slot="column3"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
                     :width="row.width"
                     :min-width="row.minWidth"
+                    show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
@@ -81,6 +94,7 @@
                     :key="row.index"
                     :width="row.width"
                     :min-width="row.minWidth"
+                    show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.status) }}</span>
@@ -93,6 +107,7 @@
                     :key="row.index"
                     :width="row.width"
                     :min-width="row.minWidth"
+                    show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <span>{{ scoped.row.moneyBalance ? scoped.row.moneyBalance.toCurrency()+$t("yuan") : '' }}</span>
@@ -105,6 +120,7 @@
                     :key="row.index"
                     :width="row.width"
                     :min-width="row.minWidth"
+                    show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <span>{{ scoped.row.createdTime ? new Date(scoped.row.createdTime).format('yyyy-MM-dd') : '-' }}</span>
@@ -278,6 +294,16 @@
                 this.queryParams.levelId = this.queryParams.channelId = this.queryParams.vipStatus = this.queryParams.cardStatus = 'null';
                 this.queryList();
             },
+
+            /**
+             * 动态给行添加类名
+             * @param row
+             */
+            rowClassName (row){
+                if(row.row.cardStatus === "frozen"){
+                    return 'frozen-tr';
+                }
+            },
         }
     }
 </script>
@@ -328,6 +354,10 @@
             .red-color{
                 font-size: $font_size_12px;
                 color: $color_red;
+            }
+
+            /deep/ .frozen-tr{
+                color: $color_gray;
             }
         }
 

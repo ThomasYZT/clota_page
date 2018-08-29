@@ -174,9 +174,10 @@
                                 :key="row.index"
                                 :width="row.width"
                                 :min-width="row.minWidth"
+                                show-overflow-tooltip
                                 slot-scope="row">
                                 <template slot-scope="scoped">
-                                    <span>{ {{ scoped.row.custName ? scoped.row.custName+','+scoped.row.idCardNumber : '-' }}</span>
+                                    <span>{{ scoped.row.custName+','+scoped.row.cardCode || '-' }}</span>
                                 </template>
                             </el-table-column>
                         </table-com>
@@ -206,9 +207,10 @@
                                 :key="row.index"
                                 :width="row.width"
                                 :min-width="row.minWidth"
+                                show-overflow-tooltip
                                 slot-scope="row">
                                 <template slot-scope="scoped">
-                                    <span>{ {{ scoped.row.custName ? scoped.row.custName+','+scoped.row.idCardNumber : '-' }}</span>
+                                    <span>{{ scoped.row.custName+','+scoped.row.cardCode || '-' }}</span>
                                 </template>
                             </el-table-column>
                         </table-com>
@@ -257,7 +259,8 @@
                        @add-success="listCardAccountInfo(detail)"></to-cash-modal>
 
         <!--应用范围modal-->
-        <use-range-modal ref="useRange"></use-range-modal>
+        <use-range-modal ref="useRange"
+                         :store="allStore"></use-range-modal>
 
         <!--优惠券信息--查看更多modal-->
         <view-more-coupon-modal :status="status"
@@ -368,6 +371,8 @@
                 charTableData: [],
                 //积分账户信息--用于修改积分余额修改
                 scoreData: {},
+                //应用范围列表
+                allStore: [],
             }
         },
         created() {
@@ -377,6 +382,8 @@
             this.queryPaymentType();
             //查询修改原因--用于会员储值账户余额修改
             this.listAdjustReason();
+            //获取储值账户-(本金/赠送金额)应用范围
+            this.getSubNode();
         },
         methods: {
 
@@ -410,6 +417,17 @@
                 ajax.post('listAdjustReason',{}).then(res => {
                     if(res.success){
                         this.reasonData = res.data || [];
+                    }
+                })
+            },
+
+            //获取储值账户-(本金/赠送金额)应用范围
+            getSubNode () {
+                ajax.post('getSubNode', {
+                    orgType: 'scenic'
+                }).then(res => {
+                    if( res.success ) {
+                        this.allStore = res.data || [];
                     }
                 })
             },

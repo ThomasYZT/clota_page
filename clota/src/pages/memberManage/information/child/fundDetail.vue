@@ -53,8 +53,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount }}</span>
-                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount }}</span>
+                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount }}{{fundDetail.unit}}</span>
+                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount }}{{fundDetail.unit}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

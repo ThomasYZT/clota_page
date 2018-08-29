@@ -92,7 +92,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.endingBalance || '-' }}{{fundDetail.unit}}</span>
+                        <span>{{ scope.row.endingBalance || '-' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

@@ -19,6 +19,56 @@
                 :column-data="columnData"
                 :table-data="tableData.data"
                 :border="true">
+                <el-table-column
+                    slot="column0"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                </el-table-column>
+                <el-table-column
+                    slot="column1"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                </el-table-column>
+                <el-table-column
+                    slot="column2"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                </el-table-column>
+                <el-table-column
+                    slot="column3"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                </el-table-column>
+                <el-table-column
+                    slot="column4"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                </el-table-column>
             </table-com>
         </div>
 

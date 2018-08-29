@@ -18,7 +18,7 @@ export const infoListHead = [
     },
     {
         title: 'gender',
-        minWidth: 70,
+        minWidth: 80,
         field: 'gender'
     },
     {

@@ -11,12 +11,43 @@
         <div class="modal-body">
             <div class="table-wrap">
 
-                <table-com
-                    :table-com-min-height="400"
-                    :column-data="columnData"
-                    :table-data="rangeData"
-                    :border="false">
-                </table-com>
+                <div style="width: 262px;display: inline-block;float: left;">
+                    <table-com
+                        :table-com-min-height="400"
+                        :column-data="corpusColumnData"
+                        :table-data="corpusRangeData"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                        </el-table-column>
+                    </table-com>
+                </div>
+
+                <div style="width: 262px;display: inline-block;">
+                    <table-com
+                        :table-com-min-height="400"
+                        :column-data="donateColumnData"
+                        :table-data="donateRangeData"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                        </el-table-column>
+                    </table-com>
+                </div>
 
             </div>
         </div>
@@ -34,6 +65,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
+        props: ['store'],
         components: {
             tableCom,
         },
@@ -41,22 +73,25 @@
             return {
                 visible: false,
                 //表头数据
-                columnData: [
+                corpusColumnData: [
                     {
                         title: '本金',
-                        minWidth: 400,
+                        minWidth: 200,
                         field: 'corpusRanges'
                     },
+                ],
+                donateColumnData: [
                     {
                         title: '赠送金额',
-                        minWidth: 400,
+                        minWidth: 200,
                         field: 'donateRanges'
                     },
                 ],
                 //会员信息的账户数据
                 accountInfo: {},
                 //应用范围列表
-                rangeData: [],
+                corpusRangeData: [],
+                donateRangeData: [],
             }
         },
         methods: {
@@ -64,37 +99,28 @@
             show ( data ) {
                 if( data ){
                     this.accountInfo = data;
-                    //获取账户应用范围
-                    this.listAccountDetailRange();
+                    let corpusRanges = data.corpusAppliedOrgId ? data.corpusAppliedOrgId.split(',') : [];
+                    let donateRanges = data.donateAppliedOrgId ? data.donateAppliedOrgId.split(',') : [];
+                    this.store.forEach( (item, index) => {
+                        if(corpusRanges.indexOf(item.id) > -1){
+                            this.corpusRangeData.push({ corpusRanges: item.orgName });
+                        }
+                        if(donateRanges.indexOf(item.id) > -1){
+                            this.donateRangeData.push({ donateRanges: item.orgName });
+                        }
+                    });
                 }
                 this.visible = true;
-            },
-
-            //获取账户应用范围
-            listAccountDetailRange () {
-                ajax.post('listAccountDetailRange', {
-                    accountId: this.accountInfo.id
-                }).then(res => {
-                    if(res.success){
-                        if(res.data.corpusRanges.length > 0){
-                            res.data.corpusRanges.forEach( (item,index) => {
-                                this.rangeData.push(
-                                    {
-                                        corpusRanges: res.data.corpusRanges[index],
-                                        donateRanges: res.data.donateRanges[index],
-                                    })
-                            })
-                        }
-                    } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'listAccountDetailRange 失败！');
-                    }
-                });
             },
 
             //关闭模态框
             hide(){
                 this.visible = false;
+                this.accountInfo = {};
+                setTimeout(function () {
+                    this.corpusRangeData = [];
+                    this.donateRangeData = [];
+                },300);
             },
 
         },
