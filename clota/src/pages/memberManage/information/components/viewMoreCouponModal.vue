@@ -2,7 +2,7 @@
     <!--优惠券信息--查看更多-->
     <Modal
         v-model="visible"
-        title="应用范围"
+        :title="$t('applicationScope')"
         class-name="view-more-coupon-modal vertical-center-modal"
         width="950"
         :mask-closable="false"
@@ -15,7 +15,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="ghost" @click="hide" >返回</Button>
+            <Button type="ghost" @click="hide" >{{$t("back")}}</Button>
         </div>
 
     </Modal>

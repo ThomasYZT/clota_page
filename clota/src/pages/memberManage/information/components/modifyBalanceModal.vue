@@ -2,24 +2,24 @@
     <!--会员储值账户余额修改-->
     <Modal
         v-model="visible"
-        title="会员储值账户余额修改"
+        :title="$t('storageBalanceModification')"
         class-name="modify-balance-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
-        @on-cancel="hide">
+        @on-cancel="hide"><!--会员储值账户余额修改-->
 
         <div class="modal-body">
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="160">
 
                 <div class="form-item-wrap">
-                    <label>用户姓名：</label>
+                    <label>{{$t("userName")}}：</label><!--用户姓名-->
                     <span>{{detail.custName || '-'}}</span>
                 </div>
 
                 <div class="ivu-form-item-wrap">
                     <Form-item label="选择要修改的账户：" prop="accountTypeId">
-                        <Select v-model="formData.accountTypeId" placeholder="请选择" @on-change="changeAccount">
+                        <Select v-model="formData.accountTypeId" :placeholder="$t('selectField', {msg: ''})" @on-change="changeAccount">
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
@@ -107,8 +107,8 @@
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="备注：" prop="remark">
-                        <Input v-model.trim="formData.remark" type="textarea" placeholder="请输入" />
+                    <Form-item :label="$t('remark') + '：'" prop="remark">    <!--备注-->
+                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: ''})" />    <!--请输入-->
                     </Form-item>
                 </div>
 
@@ -117,8 +117,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="formValidateFunc" >{{$t("save")}}</Button> <!--保存-->
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>   <!--取消-->
         </div>
 
     </Modal>
@@ -137,7 +137,7 @@
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(new Error( $t('errorIrregular')) );      // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -156,7 +156,7 @@
             //校验本金额不可大于总本金余额
             const validateMaxCorpus = (rule,value,callback) => {
                 if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.corpusBalance ){
-                    callback(new Error('本金余额不可大于总本金余额'));
+                    callback(new Error( $t('errorGreaterThan', {small: $t('principalBalance'), big: $t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
                 } else {
                     callback();
                 }
@@ -165,7 +165,7 @@
             //校验赠送金额不可大于总赠送金额
             const validateMaxDonate = (rule,value,callback) => {
                 if(value && this.formData.donateOptSign === 'sub' && Number(value) > this.accountInfo.donateBalance ){
-                    callback(new Error('赠送金额不可大于总赠送金额'));
+                    callback(new Error( $t('errorGreaterThan', {small: $t('giftSum'), big: $t('totalGiftSum')}) ));    // 赠送金额不可大于总赠送金额
                 } else {
                     callback();
                 }
@@ -189,26 +189,26 @@
                 //表单校验
                 ruleValidate: {
                     accountTypeId: [
-                        { required: true, message: '修改的账户不能为空', trigger: 'change' },
+                        { required: true, message: $t('errorEmpty', {msg: $t('modifiedAccount')}), trigger: 'change' },     // 修改的账户不能为空
                     ],
                     corpusAmount: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '本金余额不能超过10字符', trigger: 'blur' },
+                        { max: 10, message: $t('errorMaxLength', {field: $t('principalBalance'), length: 10}), trigger: 'blur' },  // 本金余额不能超过10字符
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxCorpus, trigger: 'blur' },
                     ],
                     donateAmount: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '赠送金额不能超过10字符', trigger: 'blur' },
+                        { max: 10, message: $t('errorMaxLength', {field: $t('giftSum'), length: 10}), trigger: 'blur' },  // 赠送金额不能超过10字符
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxDonate, trigger: 'blur' },
                     ],
                     reasonId: [
-                        { required: true, message: '修改原因不能为空', trigger: 'change' },
+                        { required: true, message: $t('errorEmpty', {msg: $t('modifyReason')}), trigger: 'change' },  // '修改原因不能为空'
                     ],
                     remark: [
-                        { required: true, message: '备注不能为空', trigger: 'blur' },
-                        { max: 100, message: '备注不能超过100字符', trigger: 'blur' },
+                        { required: true, message: $t('errorEmpty', {msg: $t('remark')}), trigger: 'blur' }, // 备注不能为空
+                        { max: 100, message: $t('errorMaxLength', {field: $t('remark'), length: 100}), trigger: 'blur' },  // 备注不能超过100字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 }

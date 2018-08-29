@@ -2,7 +2,7 @@
     <!--兑现-->
     <Modal
         v-model="visible"
-        title="兑现"
+        :title="$t('cash')"
         class-name="to-cash-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -11,26 +11,26 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="兑现数量：" prop="fromAmount">
-                        <Input v-model.trim="formData.fromAmount" :maxlength="30" placeholder="请输入"/>
+                    <Form-item :label="$t('cashAmount') + '：'" prop="fromAmount">
+                        <Input v-model.trim="formData.fromAmount" :maxlength="30" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="兑换后数量：" prop="toAmount">
-                        <Input v-model.trim="formData.toAmount" disabled placeholder="请输入"/>
+                    <Form-item :label="$t('amountAfterConversion') + '：'" prop="toAmount">
+                        <Input v-model.trim="formData.toAmount" disabled :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <FormItem label=" " prop="channel">
                         <RadioGroup v-model="formData.channel">
-                            <Radio label="cash">转化为现金</Radio>
-                            <Radio label="account">转化至账户</Radio>
+                            <Radio label="cash">{{$t("convertToCash")}}</Radio>
+                            <Radio label="account">{{$t("convertToAccount")}}</Radio>
                         </RadioGroup>
                     </FormItem>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.channel === 'account'">
-                    <Form-item label="转入账户：" prop="toAccountId">
-                        <Select v-model="formData.toAccountId" placeholder="请选择">
+                    <Form-item :label="$t('transferToAccount') + '：'" prop="toAccountId">
+                        <Select v-model="formData.toAccountId" :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
@@ -43,8 +43,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc" >保存</Button>
-            <Button type="ghost" @click="hide" >取消</Button>
+            <Button type="primary" @click="formValidateFunc" >{{$t('save')}}</Button>
+            <Button type="ghost" @click="hide" >{{$t('cancel')}}</Button>
         </div>
 
     </Modal>

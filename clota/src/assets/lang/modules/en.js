@@ -175,5 +175,12 @@ export default {
     'increaseStorageSum': 'Increase the pre-paid sum',
     'actualIncrease': 'Actual increase',
     'paymentMethod': 'Payment method',
+    'amount': 'Amount',
+    'cashAmount': 'Cash amount',
+    'amountAfterConversion': 'Amount after conversion',
+    'convertToCash': 'Convert to cash',
+    'convertToAccount': 'Convert to account',
+    'transferToAccount': 'Transfer to account',
+    'back': 'Back',
 
 }
