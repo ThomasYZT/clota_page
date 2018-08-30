@@ -24,7 +24,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--卡券类别-->
-                    <Form-item label="卡券类别" prop="couponName">
+                    <Form-item :label="$t('couponType')" prop="couponName"><!--卡券类别-->
                         <Select v-model.trim="formData.couponType"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 :disabled="type === 'modify'"
@@ -38,37 +38,37 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon' || formData.couponType === 'discount_coupon'">
-                    <Form-item label="卡券面值" prop="nominalValue">
+                    <Form-item :label="$t('couponFaceValue')" prop="nominalValue"><!--卡券面值-->
                         <Input v-model.trim="formData.nominalValue" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">
                     <!--消费满-->
-                    <Form-item label="消费满" prop="conditionLowerLimtation">
+                    <Form-item :label="$t('spendOver')" prop="conditionLowerLimtation"><!--消费满-->
                         <Input v-model.trim="formData.conditionLowerLimtation"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">可用</span>
+                        <span class="label-used">{{$t('available')}}</span><!--可用-->
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discount_coupon'">
                     <!--最低消费金额-->
-                    <Form-item label="最低消费金额" prop="conditionLowerLimtation">
+                    <Form-item :label="$t('minConsumptionAmount')" prop="conditionLowerLimtation"><!--最低消费金额-->
                         <Input v-model.trim="formData.conditionLowerLimtation"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">可用</span>
+                        <span class="label-used">{{$t('available')}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discount_coupon'">
                     <!--最高消费金额-->
-                    <Form-item label="最高消费金额" prop="conditionUpperLimtation">
+                    <Form-item :label="$t('maxConsumptionAmount')" prop="conditionUpperLimtation"><!--最高消费金额-->
                         <Input v-model.trim="formData.conditionUpperLimtation"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">可用</span>
+                        <span class="label-used">{{$t('available')}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--有效开始日期-->
-                    <Form-item label="有效开始日期" prop="effectiveTime">
+                    <Form-item :label="$t('effectiveStartDate')" prop="effectiveTime"><!--有效开始日期-->
                         <Date-picker
                             type="date"
                             :editable="false"
@@ -80,7 +80,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--有效结束日期-->
-                    <Form-item label="有效结束日期" prop="expireTime">
+                    <Form-item :label="$t('effectiveEndDate')" prop="expireTime"><!--有效结束日期-->
                         <Date-picker
                             type="date"
                             :editable="false"
@@ -93,7 +93,7 @@
                 <!--兑换券店铺必须单选-->
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择店铺-->
-                    <Form-item label="选择店铺" prop="singleStoreId">
+                    <Form-item :label="$t('chooseShop')" prop="singleStoreId"><!--选择店铺-->
                         <Select v-model="formData.singleStoreId"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 :clearable="true"
@@ -109,7 +109,7 @@
                 <!--折扣券和代金券店铺多选-->
                 <div class="ivu-form-item-wrap" v-else>
                     <!--选择店铺-->
-                    <Form-item label="选择店铺" prop="conditionOrgId">
+                    <Form-item :label="$t('chooseShop')" prop="conditionOrgId">
                         <Select v-model="formData.conditionOrgId"
                                 :multiple="true"
                                 :clearable="true"
@@ -124,31 +124,31 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--可兑换积分为-->
-                    <Form-item label="积分兑换数量" prop="price">
+                    <Form-item :label="$t('intergralExchangeCount')" prop="price"><!--积分兑换数量-->
                         <Input v-model="formData.price"  :placeholder="$t('inputField', {field: ''})" />
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">
                     <!--能否和会员折扣权益同时使用-->
-                    <Form-item label="能否和会员折扣权益同时使用" prop="isDiscountCoexist">
+                    <Form-item :label="$t('isUsedTogether')" prop="isDiscountCoexist">
                         <RadioGroup v-model="formData.isDiscountCoexist" @on-change="discountTypeChange">
-                            <Radio label="true">可同时使用</Radio>
-                            <Radio label="false">不可同时使用</Radio>
+                            <Radio label="true">{{$t('useSameTime')}}</Radio><!--可同时使用-->
+                            <Radio label="false">{{$t('noUseSameTime')}}</Radio><!--不可同时使用-->
                         </RadioGroup>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon' && formData.isDiscountCoexist === 'true'">
                     <!--代金券在折扣前后使用设置-->
-                    <Form-item label="代金券在折扣前后使用设置" prop="isEffectBeforeDiscount">
+                    <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
                         <RadioGroup v-model="formData.isEffectBeforeDiscount">
-                            <Radio label="true">折扣前可用</Radio>
-                            <Radio label="false">折扣后可用</Radio>
+                            <Radio label="true">{{$t('availableBeforeDiscount')}}</Radio><!--折扣前可用-->
+                            <Radio label="false">{{$t('availableAfterDiscount')}}</Radio><!--折扣后可用-->
                         </RadioGroup>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--可用渠道-->
-                    <Form-item label="可用渠道" prop="conditionChannelId">
+                    <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
                                 :multiple="true"
                                 :clearable="true"
@@ -177,7 +177,7 @@
                 <!--</div>-->
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'exchange_coupon'">
                     <!--选择商品-->
-                    <Form-item label="选择商品" prop="conditionProductId">
+                    <Form-item :label="$t('selectProduct')" prop="conditionProductId">
                         <Select v-model.trim="formData.conditionProductId"
                                 :multiple="true"
                                 :placeholder="$t('selectField', {msg: ''})">
