@@ -303,5 +303,6 @@ export default {
     'sizeErrorS': '{filed1}不可小于{filed2}',
     'sizeErrorB': '{filed1}不可大于{filed2}',
     'numError': '{filed1}必须为数字',
+    'filterError': '{field}必须输入字母或数字',
 
 }

@@ -202,7 +202,7 @@
 
                 mobile :  (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(new Error( this.$t('inputField', {field: this.$t('rightPhoneNum')}) ));    // 请输入正确的手机号码
+                        callback(this.$t('errorFormat',{field : this.$t('phoneNum')}));
                     } else {
                         callback();
                     }
@@ -223,7 +223,7 @@
                     if(validator.isEmail(value)){
                         callback();
                     }else{
-                        callback('请输入正确的邮箱格式');
+                        callback(this.$t('errorFormat',{field : this.$t('mail')}));
                     }
                 }else{
                     callback();
@@ -233,7 +233,7 @@
             const validateFileLength = (rule,value,callback) => {
                 if(common.isNotEmpty(value)){
                     if(value.length > rule.maxLength){
-                        callback(rule.name + '长度不可以超过' + rule.maxLength + '个字符');
+                        callback(this.$t('errorMaxLength',{field : rule.name,length : rule.maxLength}));
                     }else{
                         callback();
                     }
@@ -246,12 +246,12 @@
                 if(common.isNotEmpty(value)){
                     if(/^[A-Za-z0-9]{0,}$/g.test(value)){
                         if(value.length > rule.maxLength){
-                            callback(rule.name + '长度不可以超过' + rule.maxLength + '个字符');
+                            callback(this.$t('errorMaxLength',{field : rule.name,length : rule.maxLength}));
                         }else{
                             callback();
                         }
                     }else{
-                        callback(rule.name + '必须输入字母或数字');
+                        callback(this.$t('filterError',{field : rule.name}));
                     }
                 }else{
                     callback();
@@ -311,50 +311,50 @@
                 },
                 ruleValidate: {
                     custName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
+                        { required: true, message: this.$t('inputField', {field: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
                         { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },      // 姓名不能多于15个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phoneNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
+                        { required: true, message: this.$t('inputField', {field: this.$t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
+                        { required: true, message: this.$t('selectField', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
                     ],
                     emailAddr : [
                         {validator : validateEmail,trigger : 'blur'},
-                        {  max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },      // 邮箱不能多于50个字符
+                        {  max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },      // 邮箱不能多于100个字符
                     ],
                     qq : [
                         {validator : validateFileLength,trigger : 'blur',name : 'qq',maxLength : 20}
                     ],
                     wechatAcct : [
-                        {validator : validateFileLength,trigger : 'blur',name : '微信',maxLength : 20}
+                        {validator : validateFileLength,trigger : 'blur',name : this.$t('weChat'),maxLength : 20}
                     ],
                     alipayAcct : [
-                        {validator : validateFileLength,trigger : 'blur',name : '支付宝',maxLength : 30}
+                        {validator : validateFileLength,trigger : 'blur',name : this.$t('ailiPay'),maxLength : 30}
                     ],
                     hobby : [
-                        {validator : validateFileLength,trigger : 'blur',name : '个人兴趣',maxLength : 100}
+                        {validator : validateFileLength,trigger : 'blur',name : this.$t('personalInterests'),maxLength : 100}
                     ],
                     homeAddr : [
-                        {validator : validateFileLength,trigger : 'blur',name : '地址',maxLength : 100}
+                        {validator : validateFileLength,trigger : 'blur',name : this.$t('address'),maxLength : 100}
                     ],
                     stateCode : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : '国家代码',maxLength : 30}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('countryCode'),maxLength : 30}
                     ],
                     cityCode : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : '城市代码',maxLength : 30}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('cityCode'),maxLength : 30}
                     ],
                     tpNo : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : '第三方卡号',maxLength : 30}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('thirdCardNum'),maxLength : 30}
                     ],
                     idCardNumber : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : '证件编号',maxLength : 40}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('credentialsCode'),maxLength : 40}
                     ],
                     tpCardNo : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : '第三方卡面号',maxLength : 30}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('thirdCardFaceNum'),maxLength : 30}
                     ]
                 },
                 //编辑原数据
