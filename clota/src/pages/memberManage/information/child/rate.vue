@@ -18,6 +18,19 @@
                     :table-data="cardData"
                     :border="false"
                     :ofset-height="170">
+                    <el-table-column
+                        slot="column0"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <span>{{ scoped.row.scoreRate }} : 1</span>
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
 
@@ -28,6 +41,32 @@
                     :table-data="storeData"
                     :border="false"
                     :ofset-height="335">
+                    <el-table-column
+                        slot="column0"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <span>{{ scoped.row.orgName || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column1"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <span>{{ scoped.row.deptScoreRate }} : 1</span>
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
 
@@ -38,6 +77,45 @@
                     :table-data="productData"
                     :border="false"
                     :ofset-height="545">
+                    <el-table-column
+                        slot="column0"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <span>{{ scoped.row.orgName || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column1"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <span>{{ scoped.row.productName || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column2"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <span>{{ scoped.row.prodScoreRate }} : 1</span>
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
 
@@ -98,12 +176,12 @@
                 storeColumnData: [
                     {
                         title: 'shop',  // 店铺
-                        minWidth: 100,
+                        minWidth: 90,
                         field: 'orgName'
                     },
                     {
                         title: 'IntegralRate',  // 积分率
-                        minWidth: 100,
+                        minWidth: 110,
                         field: 'deptScoreRate'
                     },
                     {
