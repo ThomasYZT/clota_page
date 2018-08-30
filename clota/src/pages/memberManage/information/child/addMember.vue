@@ -15,7 +15,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('phoneNum').slice(0,3)" prop="phoneNum"><!--手机号-->
+                        <Form-item :label="$t('phoneNum')" prop="phoneNum"><!--手机号-->
                             <Input v-model.trim="member.phoneNum" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
@@ -229,7 +229,7 @@
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phoneNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('phoneNum')}), trigger: 'blur' },       // 手机号不能为空
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
@@ -378,16 +378,15 @@
                     if(res.success){
                         //区分新增与修改
                         if(this.type === 'add'){
-                            this.$Message.success('！');     // 新增会员成功
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('addMember')}) + '！');     // 新增会员成功
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
-                            this.$Message.success('！');     // 修改会员成功
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('modifyMember')}) + '！');     // 修改会员成功
                             this.$router.push({name: this.routerFrom.name});
                         }
                     } else {
-                        console.log(res);
-                        this.$Message.warning(url+' '+ $t('failure') +'！')
+                        this.$Message.warning(url+' '+ this.$t('failure') +'！')
                     }
                 })
             },
