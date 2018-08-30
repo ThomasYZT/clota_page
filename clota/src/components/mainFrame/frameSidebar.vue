@@ -17,13 +17,11 @@
                     </menu-com>
                     <MenuItem :name="item.name"
                               v-else
-
                               :key="item.name">
                         <span v-if="item.meta.iconClass"
-                              v-w-title="$t(`${item.meta.menuName}`)"
                               class="iconfont"
                               :class="[item.meta.iconClass]"></span>
-                        <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>
+                        <span class="menu-name" v-w-title="$t(`${item.meta.menuName}`)">{{$t(`${item.meta.menuName}`)}}</span>
                     </MenuItem>
                 </template>
             </Menu>

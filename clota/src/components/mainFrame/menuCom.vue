@@ -6,7 +6,7 @@
             <span v-if="menuInfo.meta.iconClass"
                   class="iconfont"
                   :class="[menuInfo.meta.iconClass]"></span>
-            <span class="menu-name">{{$t(`${menuInfo.meta.menuName}`)}}</span>
+            <span class="menu-name" v-w-title="$t(`${menuInfo.meta.menuName}`)">{{$t(`${menuInfo.meta.menuName}`)}}</span>
         </template>
         <template v-for="(item,i) in subMenuList">
             <menu-com
@@ -21,7 +21,7 @@
                         <span v-if="item.meta.iconClass"
                               class="iconfont"
                               :class="[item.meta.iconClass]"></span>
-                <span class="menu-name">{{$t(`${item.meta.menuName}`)}}</span>
+                <span class="menu-name" v-w-title="$t(`${item.meta.menuName}`)">{{$t(`${item.meta.menuName}`)}}</span>
             </MenuItem>
         </template>
     </Submenu>
