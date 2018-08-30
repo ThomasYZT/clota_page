@@ -21,7 +21,7 @@
                                 style="left: 40px;"
                                 v-if="error.growthSetError">{{error.growthSetError}}</span>
                         </span>
-                        <span> 1 成长值</span>
+                        <span> {{settingData.growthRateWhileConsume.growthSetValue}} 成长值</span>
                     </span>
                 </div>
             </div>
@@ -70,7 +70,7 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="primary" @click="save">{{$t("save")}}</Button>
             <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
@@ -98,16 +98,16 @@
                 settingData: {
                     //成长值设置
                     growthRateWhileConsume: {
-                        growthSet: '1',
-                        growthSetValue: '1',
+                        growthSet: '',//Number
+                        growthSetValue: 1,
                     },
                     //成长值生效设置
                     growthEffectiveMode: {
-                        growthType: 'checkout',
-                        growthTime: '24',
+                        growthType: '',
+                        growthTime: '',//Number
                     },
                     //子母卡成长值归属设置
-                    growthFromFamilies: 'false',
+                    growthFromFamilies: '',
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
@@ -116,6 +116,10 @@
                     growthSetError: '',//成长值设置--消费值
                     growthTimeError: '',//成长值生效设置
                 },
+                //Number型
+                numberProps: ['growthSet','growthTime'],
+                //String型
+                stringProps: ['growthSet','growthTime'],
             }
         },
         watch: {
@@ -134,6 +138,21 @@
         },
         methods: {
 
+            //数据转换，数据查询后转成string进入input，保存时转成相应类型
+            transPropsType ( data, type ) {
+                switch (type) {
+                    case 'number':
+                        return data ? Number(data) : 0;
+                        break;
+                    case 'boolean':
+                        return Boolean(data);
+                        break;
+                    case 'string':
+                        return data!==null ? String(data) : '';
+                        break;
+                }
+            },
+
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
@@ -147,6 +166,17 @@
                                     growthEffectiveMode: JSON.parse(res.data.growthEffectiveMode),
                                     growthFromFamilies: res.data.growthFromFamilies,
                                 };
+                                for( let key in params){
+                                    if(key && Object.keys(params[key]).length > 0){
+                                        for( let ckey in params[key]){
+                                            if(this.stringProps.indexOf(ckey) > -1){
+                                                params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
+                                            }
+                                        }
+                                    }
+                                }
+                                console.log(params)
+
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -159,21 +189,42 @@
                     }
                 })
             },
-            //会员基础设置-保存/修改
-            basicSet () {
+            //点击保存，校验信息，数据处理
+            save () {
                 if(this.checkInputFunc()){
-                    ajax.post('basicSet', {
+
+                    let setParam = defaultsDeep({}, this.settingData);
+                    for( let key in setParam){
+                        if(key && Object.keys(setParam[key]).length > 0){
+                            for( let ckey in setParam[key]){
+                                if(this.numberProps.indexOf(ckey) > -1){
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
+                                }
+                            }
+                        }
+                    }
+                    setParam.id = this.id;
+                    console.log(setParam)
+
+                    let params = {
                         id: this.id,
                         growthRateWhileConsume: JSON.stringify(this.settingData.growthRateWhileConsume),
                         growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
                         growthFromFamilies:this.settingData.growthFromFamilies,
-                    }).then(res => {
-                        if( res.success){
-                            this.$Message.success('保存成长值设置成功!');
-                            this.findBasicSet();
-                        }
-                    })
+                    };
+                    console.log(params)
+                    this.basicSet(params);
+
                 }
+            },
+            //会员成长值设置-保存/修改
+            basicSet ( params ) {
+                ajax.post('basicSet', params).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存成长值设置成功!');
+                        this.findBasicSet();
+                    }
+                })
             },
             //点击取消重置数据
             resetFieldFunc () {

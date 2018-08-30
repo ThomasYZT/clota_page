@@ -256,7 +256,7 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="primary" @click="save">{{$t("save")}}</Button>
             <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
@@ -292,40 +292,40 @@
                 settingData: {
                     //积分生效设置
                     scoreEffectiveMode: {
-                        isIntegralType: 'checkout',
-                        isNoIntegralTime: '24'
+                        isIntegralType: '',
+                        isNoIntegralTime: ''//number
                     },
                     //会员生日积分多倍积分
                     scoreMultipleOnBirthday: {
-                        isSwitch: true,
-                        multiple: '2',
+                        isSwitch: false,//Boolean
+                        multiple: '',//number
                     },
                     //会员积分有效期设置
                     scoreValidityPeriod: {
-                        validityType: 'months_effective',
-                        validityTime: '24',
-                        checked: true,
-                        remind: '60',
+                        validityType: '',
+                        validityTime: '',//number
+                        checked: false,//Boolean
+                        remind: '',//number
                     },
                     //会员卡有效期设置
                     memberValidPeriod: {
-                        type: 'vipValidityTime',//类型
-                        vipValidity: '365',
-                        vipValidityTime: '365',
-                        vipNumber: '10',
+                        type: '',//类型
+                        vipValidity: '',//number
+                        vipValidityTime: '',//number
+                        vipNumber: '',//number
                     },
                     //卡券过期提醒设置
                     notificationBeforeCouponExpire: {
-                        isSwitch: true,
-                        day: '60',
+                        isSwitch: false,//Boolean
+                        day: '',//number
                     },
                     //用户退款时积分是否退还用户
                     handingWithScoreGrowthWhileRefund: {
-                        score: 'false',
-                        coupon: 'false',
+                        score: '',//Boolean
+                        coupon: '',//Boolean
                     },
                     //修改会员储值、积分、虚拟账户余额设置
-                    allowAdjustAccount: 'true',
+                    allowAdjustAccount: '',
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
@@ -347,6 +347,14 @@
                     vipNumberError: '',//会员卡有效期设置
                     dayError: '',//卡券过期提醒设置
                 },
+                //布尔型
+                boolProps: ['isSwitch','checked','score','coupon'],
+                //Number型
+                numberProps: ['isNoIntegralTime','multiple','validityTime','remind','vipValidity',
+                'vipValidityTime','vipNumber','day'],
+                //String型
+                stringProps: ['isNoIntegralTime','multiple','validityTime','remind','vipValidity',
+                    'vipValidityTime','vipNumber','day','score','coupon'],
             }
         },
         watch: {
@@ -421,6 +429,21 @@
         },
         methods: {
 
+            //数据转换，数据查询后转成string进入input，保存时转成相应类型
+            transPropsType ( data, type ) {
+                switch (type) {
+                    case 'number':
+                        return data ? Number(data) : 0;
+                        break;
+                    case 'boolean':
+                        return Boolean(data);
+                        break;
+                    case 'string':
+                        return data!==null ? String(data) : '';
+                        break;
+                }
+            },
+
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
@@ -438,6 +461,16 @@
                                     handingWithScoreGrowthWhileRefund: JSON.parse(res.data.handingWithScoreGrowthWhileRefund),
                                     allowAdjustAccount: res.data.allowAdjustAccount,
                                 };
+                                for( let key in params){
+                                    if(key && Object.keys(params[key]).length > 0){
+                                        for( let ckey in params[key]){
+                                            if(this.stringProps.indexOf(ckey) > -1){
+                                                params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
+                                            }
+                                        }
+                                    }
+                                }
+                                console.log(params)
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -450,27 +483,49 @@
                     }
                 })
             },
-            //会员基础设置-保存/修改
-            basicSet () {
+            //点击保存，校验信息，数据处理
+            save () {
                 if(this.checkInputFunc()){
-                    ajax.post('basicSet', {
-                        id: this.id,
-                        scoreEffectiveMode: JSON.stringify(this.settingData.scoreEffectiveMode),
-                        scoreMultipleOnBirthday: JSON.stringify(this.settingData.scoreMultipleOnBirthday),
-                        scoreValidityPeriod: JSON.stringify(this.settingData.scoreValidityPeriod),
-                        memberValidPeriod: JSON.stringify(this.settingData.memberValidPeriod),
-                        notificationBeforeCouponExpire: JSON.stringify(this.settingData.notificationBeforeCouponExpire),
-                        handingWithScoreGrowthWhileRefund: JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
-                        allowAdjustAccount:this.settingData.allowAdjustAccount,
-                    }).then(res => {
-                        if( res.success){
-                            this.$Message.success('保存基础设置成功!');
-                            this.findBasicSet();
+
+                    let setParam = defaultsDeep({}, this.settingData);
+                    for( let key in setParam){
+                        if(key && Object.keys(setParam[key]).length > 0){
+                            for( let ckey in setParam[key]){
+                                if(this.boolProps.indexOf(ckey) > -1){
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'boolean');
+                                }
+                                if(this.numberProps.indexOf(ckey) > -1){
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
+                                }
+                            }
                         }
-                    })
-                } else {
-                    this.$Message.warning("输入框不能为空");
+                    }
+                    setParam.id = this.id;
+                    console.log(setParam)
+
+                    let params = {
+                        id: this.id,
+                        scoreEffectiveMode: JSON.stringify(setParam.scoreEffectiveMode),
+                        scoreMultipleOnBirthday: JSON.stringify(setParam.scoreMultipleOnBirthday),
+                        scoreValidityPeriod: JSON.stringify(setParam.scoreValidityPeriod),
+                        memberValidPeriod: JSON.stringify(setParam.memberValidPeriod),
+                        notificationBeforeCouponExpire: JSON.stringify(setParam.notificationBeforeCouponExpire),
+                        handingWithScoreGrowthWhileRefund: JSON.stringify(setParam.handingWithScoreGrowthWhileRefund),
+                        allowAdjustAccount: setParam.allowAdjustAccount,
+                    };
+                    console.log(params)
+                    this.basicSet(params);
+
                 }
+            },
+            //会员基础设置-保存/修改
+            basicSet ( params ) {
+                ajax.post('basicSet', params).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存基础设置成功!');
+                        this.findBasicSet();
+                    }
+                })
             },
             //点击取消重置数据
             resetFieldFunc () {

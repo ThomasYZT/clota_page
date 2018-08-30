@@ -185,7 +185,7 @@
                 if (this.queryParams.operType == 'null') {
                     param.operType = null;
                 }
-                ajax.post('queryAccountChange', param).then(res => {
+                ajax.post('queryOrgAccountChange', param).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
@@ -306,6 +306,19 @@
                 margin-top: 30px;
                 text-align: center;
             }
+        }
+
+        .red-color{
+            color: $color_red;
+        }
+
+        .green-color{
+            color: $color_green;
+        }
+
+        .blue-color{
+            color: $color_blue;
+            cursor: pointer;
         }
 
     }
