@@ -243,6 +243,15 @@ export default {
     'recharge': '储值',
     'adjustMoney': '手动改资金账户',
     'mail': '邮箱',
+    'updateMemberInfo': '更新会员卡信息',
+    'transactionIntegralThisTime': '本次交易积分',
+    'accIntegralAfterTransaction': '交易后账户积分',
+    'gainByConsuming': '消费所得',
+    'adjustScore': '手动改积分账户',
+    'otherAccount': '其它账户',
+    'integralAccModification': '积分账户修改',
+    'ModifyAmountThisTime': '本次修改金额',
+    'accBalanceAfterModification': '修改后账户余额',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

@@ -65,7 +65,7 @@
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -86,7 +86,7 @@
             //校验兑换后数量不可大于本金余额
             const validateMaxNum = (rule,value,callback) => {
                 if(value && Number(value) > this.accountInfo.corpusBalance ){
-                    callback(new Error('兑换后数量不可大于本金余额'));
+                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('amountAfterConversion'), big: this.$t('principalBalance')}) ));       // 兑换后数量不可大于本金余额
                 } else {
                     callback();
                 }
@@ -95,7 +95,7 @@
             //校验转入账户
             const validateToAccount = (rule,value,callback) => {
                 if(this.formData.accountBizType === 'transfer_in' && value == ''){
-                    callback(new Error('请选择转入账户'));
+                    callback(new Error( this.$t('selectField', {msg: this.$t('transferToAccount')}) ));     // 请选择转入账户
                 } else {
                     callback();
                 }
@@ -104,7 +104,7 @@
             //校验转入账户不可选自己
             const validateCheckSelf= (rule,value,callback) => {
                 if( value === this.accountInfo.accountDefineId ){
-                    callback(new Error('请选择其它账户'));
+                    callback(new Error( this.$t('selectField', {msg: this.$t('otherAccount')}) ));    // 请选择其它账户
                 } else {
                     callback();
                 }
@@ -128,8 +128,8 @@
                 //表单校验
                 ruleValidate: {
                     fromAmount: [
-                        { required: true, message: '兑现数量不能为空', trigger: 'blur'},
-                        { max: 30, message: '兑现数量不能超过30字符', trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('cashAmount')}), trigger: 'blur'},    // 兑现数量不能为空
+                        { max: 30, message: this.$t('errorMaxLength', {field: this.$t('cashAmount'), length: 30}), trigger: 'blur' },      // 兑现数量不能超过30字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxNum, trigger: 'blur' },
@@ -190,11 +190,11 @@
             transferAccountBalance ( params ) {
                 ajax.post('transferAccountBalance', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('兑现成功！');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('cash')}) + '！');     // 兑现成功
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message|| 'transferAccountBalance 失败！');
+                        this.$Message.warning(res.message|| 'transferAccountBalance '+ this.$t('failure') +'！');
                     }
                 })
             },

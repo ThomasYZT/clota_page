@@ -2,25 +2,28 @@
     <!--积分修改信息/储值账户修改信息-->
     <Modal
         v-model="visible"
-        :title="type === 'fund' ? '储值账户余额修改' : '积分账户修改' "
+        :title="type === 'fund' ? $t('storageBalanceModification') : $t('integralAccModification')"
         class-name="view-modify-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
-        @on-cancel="hide">
+        @on-cancel="hide"><!--'储值账户余额修改' : '积分账户修改'-->
 
         <div class="modal-body">
             <div class="form-item-wrap">
-                <label>本次修改金额：</label>
+                <label>{{$t('ModifyAmountThisTime')}}：</label><!--本次修改金额-->
                 <span class="green" v-if="manualData.amount > -1">+{{manualData.amount}}</span>
                 <span class="red" v-if="manualData.amount < 0">{{manualData.amount}}</span>
             </div>
             <div class="form-item-wrap">
-                <label>修改后账户余额为：</label>
-                <span>{{manualData.endingBalance | contentFilter}}元</span>
+                <label>{{$t('accBalanceAfterModification')}}：</label><!--修改后账户余额为-->
+                <span>{{manualData.endingBalance | contentFilter}}</span>{{$t('yuan')}}
             </div>
+            <!--操作人-->
             <div class="form-item-wrap"><label>操作人：</label><span>{{manualData.custName | contentFilter}}</span></div>
+            <!--修改时间-->
             <div class="form-item-wrap"><label>修改时间：</label><span>{{manualData.createdTime}}</span></div>
             <div class="form-item-wrap"><label>{{$t('remark') + '：'}}</label><span>{{manualData.remark | contentFilter}}</span></div>
+            <!--修改原因-->
             <div class="form-item-wrap"><label>修改原因：</label><span>{{manualData.reason | contentFilter}}</span></div>
         </div>
 
