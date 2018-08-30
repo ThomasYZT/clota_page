@@ -156,7 +156,7 @@
 
                 mobile :  (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(new Error( $t('inputField', {field: $t('rightPhoneNum')}) ));    // 请输入正确的手机号码
+                        callback(new Error( this.$t('inputField', {field: this.$t('rightPhoneNum')}) ));    // 请输入正确的手机号码
                     } else {
                         callback();
                     }
@@ -164,7 +164,7 @@
 
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( $t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -192,8 +192,8 @@
                     idType: [],
                     status: [
                         {
-                            desc: $t('memberStatusAll'),    // 全部会员状态
-                            name: $t('memberStatusAll'),
+                            desc: this.$t('memberStatusAll'),    // 全部会员状态
+                            name: this.$t('memberStatusAll'),
                         }
                     ],
                     genderEnum: genderEnum
@@ -224,16 +224,16 @@
                 },
                 ruleValidate: {
                     custName: [
-                        { required: true, message: $t('errorEmpty', {msg: $t('name')}), trigger: 'blur' },     // 姓名不能为空
-                        { type: 'string', max: 20, message: $t('errorMaxLength', {field: $t('name'), length: 20}), trigger: 'blur' },      // 姓名不能多于20个字符
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 20}), trigger: 'blur' },      // 姓名不能多于20个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phoneNum: [
-                        { required: true, message: $t('errorEmpty', {msg: $t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
-                        { required: true, message: $t('errorEmpty', {msg: $t('gender')}), trigger: 'change' },     // 性别不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
                     ],
                 },
                 //编辑原数据
@@ -249,7 +249,7 @@
         },
         computed: {
             localeRouter () {
-                return this.type === 'add' ? $t('addMember') : $t('addMember');      // 新增会员 ： 修改会员信息
+                return this.type === 'add' ? this.$t('addMember') : this.$t('addMember');      // 新增会员 ： 修改会员信息
             },
             isEdit() {
                 return this.$route.query.info;
@@ -335,7 +335,7 @@
                     if(res.success){
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet '+ this.$t('queryFailure') +'！');
                     }
                     return res;
                 })
@@ -351,7 +351,7 @@
                     if(res.success){
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet '+ this.$t('queryFailure') +'！');
                     }
                 })
             },

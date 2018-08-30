@@ -94,7 +94,7 @@
                 :min-width="row.minWidth"
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    {{scoped.row.moneyBalance}}{{scoped.row.unit}}
+                    {{scoped.row.moneyBalance}}{{getUnit(scoped.row)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -329,6 +329,19 @@
                         }
                     }
                 });
+            },
+            /**
+             * 获取账户单位信息
+             * @param rowData
+             */
+            getUnit (rowData) {
+                if(rowData.accountTypeId === '1'){
+                    return '元';
+                }else if(rowData.unit){
+                    return rowData.unit;
+                }else{
+                    return '';
+                }
             }
         },
         beforeRouteEnter(to,from,next){

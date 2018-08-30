@@ -262,6 +262,8 @@
                 if(newVal.name === 'fundDetail'){
                     this.$set(this.queryParams,'accountTypeId','all');
                     this.tableShow = true;
+                    this.pageSize = 10;
+                    this.pageNo = 1;
                 }
             }
         }

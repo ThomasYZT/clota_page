@@ -87,7 +87,9 @@
                 //当前日期类型
                 timeType : 'week',
                 //自定义时间
-                autoDefTIme : []
+                autoDefTIme : [],
+                //会员注册开始时间
+                memberStartDate : ''
             }
         },
         computed: {
@@ -169,10 +171,24 @@
             dateChange () {
                 this.timeType = 'autoDefTIme';
                 this.getMemberConsumeSumGroupBy();
+            },
+            /**
+             * 获取第一个会员的注册时间
+             */
+            getFirstMemberDate () {
+                ajax.post('getFirstMemberDate').then(res => {
+                    if(res.success){
+                        this.memberStartDate = res.data ? res.replace(/-/g,'/') : new Date().format('yyyy/MM/dd');
+                    }else{
+                        this.memberStartDate = new Date().format('yyyy/MM/dd')
+                    }
+                    console.log(res);
+                })
             }
         },
         created () {
             this.getMemberConsumeSumGroupBy();
+            this.getFirstMemberDate();
         }
     }
 </script>

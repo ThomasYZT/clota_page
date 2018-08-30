@@ -16,6 +16,8 @@ const apiList = {
     login: '/account/login',
     //获取菜单权限
     getPrivilege: '/account/getPrivilege',
+    //获取第一个会员的注册时间
+    getFirstMemberDate: '/member/getFirstMemberDate',
     //首页接口
     ...index,
     //会员信息接口

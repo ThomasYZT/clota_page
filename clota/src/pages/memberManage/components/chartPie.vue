@@ -66,9 +66,15 @@
                         extraCssText: 'border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10)'
                     },
                     legend: {
+                        type: 'scroll',
+                        pageButtonPosition : 'end',
                         orient: 'vertical',
                         top: 'middle',
-                        left: '50%',
+                        pageButtonGap : 10,
+                        lineHeight: 56,
+                        // bottom : 10,
+                        // left: seriesData.length > 6 ? 170 : 250,
+                        left:  250,
                         itemGap: 18,
                         itemWidth: 8,
                         itemHeight: 8,
@@ -105,7 +111,7 @@
                     series: [
                         {
                             type:'pie',
-                            center: ['22%', '50%'],
+                            center: [90, '50%'],
                             radius: ['55%', '73%'],
                             avoidLabelOverlap: false,
 //                            minAngle: 5, //最小的扇区角度（0 ~ 360），用于防止某个值过小导致扇区太小影响交互。
@@ -202,8 +208,9 @@
 
         .data-content {
             height: calc(100% - 50px);
+            padding-top: 10px;
             .echarts {
-                @include block_outline(100%, 190px);
+                @include block_outline(100%, 175px);
                 margin: 0 auto;
             }
         }

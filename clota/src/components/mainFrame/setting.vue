@@ -8,9 +8,11 @@
             <img src="../../assets/images/icon-no-data.png" alt="">
         </div>
         <div class="account-name">
-            {{accountName}}
+            {{accountName | contentFilter}}
         </div>
-        <div class="person-center">个人中心</div>
+        <div class="person-center">
+            <span class="center-name">个人中心</span>
+        </div>
         <div class="lang-wrap">
             <div class="lang-list">
                 <div class="chinese"
@@ -18,7 +20,7 @@
                      @click="changeLang('zh-CN')">中文</div>
                 <div class="english"
                      :class="{active : lang === 'en'}"
-                     @click="changeLang('en')">英文</div>
+                     @click="changeLang('en')">English</div>
                 <div class="label"
                      :style="{left : lang === 'zh-CN' ? '0px' : '100px'}"></div>
             </div>
@@ -55,7 +57,10 @@
     import {mapGetters} from 'vuex';
     export default {
         data() {
-            return {}
+            return {
+                //用户名
+                accountName : ''
+            }
         },
         methods: {
             /**
@@ -78,7 +83,13 @@
              */
             chagneSkin(skin) {
                 this.$store.commit('updateSkin',skin);
+            },
+            getAccountName () {
+                this.accountName = sessionStorage.getItem('accountName') ? sessionStorage.getItem('accountName') : '';
             }
+        },
+        created () {
+            this.getAccountName();
         },
         computed : {
             ...mapGetters({
@@ -86,10 +97,6 @@
                 operateLine : 'operateLine',
                 skinType : 'skinType'
             }),
-            //用户名
-            accountName () {
-                return localStorage.getItem('accountName');
-            }
         }
     }
 </script>
@@ -131,7 +138,10 @@
             margin: 5px 0 ;
             color: $color_blue;
             text-align: center;
-            cursor: pointer;
+
+            .center-name{
+                cursor: pointer;
+            }
         }
 
         .lang-wrap{

@@ -48,6 +48,7 @@ require('echarts/lib/chart/pie');
 require('echarts/lib/chart/line');
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/legend');
+require('echarts/lib/component/legendScroll');
 
 
 // 引入公用样式，指令及方法等

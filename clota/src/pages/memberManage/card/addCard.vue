@@ -347,7 +347,7 @@
             //校验最低消费金额
             const validateLowerMon = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    if(common.isNotEmpty(this.formData.conditionUpperLimtation) && value > this.formData.conditionUpperLimtation){
+                    if(common.isNotEmpty(this.formData.conditionUpperLimtation) && Number(value) > this.formData.conditionUpperLimtation){
                         callback('最低消费金额不可超过最高消费金额');
                     }else{
                         callback();
@@ -360,7 +360,7 @@
             //校验最高消费金额
             const validateUpperMon = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    if(common.isNotEmpty(this.formData.conditionLowerLimtation) && value < this.formData.conditionLowerLimtation){
+                    if(common.isNotEmpty(this.formData.conditionLowerLimtation) && Number(value) < this.formData.conditionLowerLimtation){
                         callback('最高消费金额不可低于最低消费金额');
                     }else{
                         callback();
@@ -460,7 +460,6 @@
                     ],
                     price: [
                         { required: true, message: '可兑换积分为不能为空', trigger: 'blur' },
-                        { validator: validateMethod.mobile, trigger: 'blur'},
                         { validator: validatePrice, trigger: 'blur' },
                     ],
                     conditionChannelId: [
@@ -629,9 +628,9 @@
              * 卡券类别修改
              */
             typeChange () {
-                this.$nextTick(() => {
-                    this.$refs.formValidate.resetFields();
-                });
+                // this.$nextTick(() => {
+                //     // this.$refs.formValidate.resetFields();
+                // });
             },
             /**
              * 获取兑换券的使用条件
@@ -689,7 +688,6 @@
              * 选择店铺
              */
             storeChange (data) {
-                console.log(data)
                 this.queryProduct(data);
             },
             /**
@@ -710,7 +708,6 @@
         },
         watch : {
             'formData.singleStoreId' (newVal,oldVal) {
-                console.log(newVal,oldVal)
                 if(oldVal){
                     this.formData.conditionProductId  = [];
                 }
