@@ -2,7 +2,7 @@
     <!--应用范围-->
     <Modal
         v-model="visible"
-        title="应用范围"
+        :title="$t('applicationScope')"
         class-name="use-range-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -53,7 +53,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="ghost" @click="hide" >返回</Button>
+            <Button type="ghost" @click="hide" >{{$t('back')}}</Button><!--返回-->
         </div>
 
     </Modal>
@@ -75,14 +75,14 @@
                 //表头数据
                 corpusColumnData: [
                     {
-                        title: '本金',
+                        title: 'principal',     // 本金
                         minWidth: 200,
                         field: 'corpusRanges'
                     },
                 ],
                 donateColumnData: [
                     {
-                        title: '赠送金额',
+                        title: 'giftSum',  // 赠送金额
                         minWidth: 200,
                         field: 'donateRanges'
                     },

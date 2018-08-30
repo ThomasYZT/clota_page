@@ -111,7 +111,7 @@
                                        :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/> 元
                                 <span class="add-span blue-color"
-                                      @click="showSendRateModal(item,index)">应用范围</span>
+                                      @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
                                 <span class="add-span blue-color"
                                       @click="showSendRateModal(item,index)">修改</span>
                                 <span class="add-span red-color"

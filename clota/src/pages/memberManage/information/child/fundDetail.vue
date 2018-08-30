@@ -10,7 +10,7 @@
         <div class="fund-detail-content">
             <div class="filter-wrap">
                 <Select v-model="queryParams.operType" @on-change="filterDealList">
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.name) }}</Option>
                 </Select>
                 <Date-picker
                     type="datetime"

@@ -10,7 +10,7 @@
         </div>
 
         <div class="btn-wrap" v-if="tabsName === 'created'">
-            <Button type="primary" @click="add">+ 新增卡券</Button>
+            <Button type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button><!--新增卡券-->
         </div>
         <!--已创建的卡券信息-->
         <table-com

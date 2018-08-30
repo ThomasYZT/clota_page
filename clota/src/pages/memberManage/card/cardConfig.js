@@ -2,7 +2,7 @@
 //表头配置
 export const columnData = [
     {
-        title: '卡券名称',
+        title: 'couponName',
         minWidth: 100,
         field: 'couponName'
     },

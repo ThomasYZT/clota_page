@@ -4,8 +4,8 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :before-router-list="[{name: $t('memberInfo'), router: 'info'}]"
-                :locale-router="$t('memberDetail')">
+                :before-router-list="[{name: 'memberInfo', router: 'info'}]"
+                :locale-router="'memberDetail'">
             </bread-crumb-head>
         </div>
 

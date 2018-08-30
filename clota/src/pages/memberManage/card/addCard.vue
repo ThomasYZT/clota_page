@@ -4,8 +4,8 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="type === 'add' ? '新增卡券' : '修改卡券信息'"
-                :before-router-list="beforeRouterList">
+                :locale-router="type === 'add' ? $t('newCardCoupon') : $t('modifyCardInfo')"
+                :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
             </bread-crumb-head>
         </div>
 
@@ -17,7 +17,7 @@
                   :label-width="220">
                 <div class="ivu-form-item-wrap">
                     <!--卡券名称-->
-                    <Form-item label="卡券名称" prop="couponName">
+                    <Form-item :label="$t('couponName')" prop="couponName"><!--卡券名称-->
                         <Input v-model.trim="formData.couponName"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>

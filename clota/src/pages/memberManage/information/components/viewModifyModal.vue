@@ -25,7 +25,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="hide" >返回</Button>
+            <Button type="primary" @click="hide" >{{$t('back')}}</Button>
         </div>
 
     </Modal>
