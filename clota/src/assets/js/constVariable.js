@@ -45,15 +45,15 @@ export const cardStatusEnum = [
 //卡券类别
 export const couponTypeList = [
     {
-        label : '代金券',
+        label : 'cash_coupon',  // 代金券
         value : 'cash_coupon',
     },
     {
-        label : '兑换券',
+        label : 'exchange_coupon',  // 兑换券
         value : 'exchange_coupon',
     },
     {
-        label : '折扣券',
+        label : 'discount_coupon', // 折扣券
         value : 'discount_coupon',
     }
 ];
@@ -61,15 +61,15 @@ export const couponTypeList = [
 //交易类型
 export const tradeType = [
     {
-        label : '全部交易类型',
+        label : 'transactionTypeAll',     // 全部交易类型
         value : 'all',
     },
     {
-        label : '支出',
+        label : 'transfer_out',     // 支出
         value : 'transfer_out',
     },
     {
-        label : '收入',
+        label : 'transfer_in',     // 收入
         value : 'transfer_in',
     },
 ];
@@ -77,15 +77,15 @@ export const tradeType = [
 //交易类型1
 export const tradeType1 = [
     {
-        label : '全部交易类型',
+        label : 'transactionTypeAll',     // 全部交易类型
         value : 'all',
     },
     {
-        label : '储值',
+        label : 'recharge',     // 储值
         value : 'recharge',
     },
     {
-        label : '消费',
+        label : 'consume',     // 消费
         value : 'adjust_money',
     },
 ];

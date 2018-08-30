@@ -4,8 +4,8 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="'转账记录'"
-                :before-router-list="beforeRouterList">
+                :locale-router="'transferRecord'"
+                :before-router-list="beforeRouterList"><!--转账记录-->
             </bread-crumb-head>
         </div>
 

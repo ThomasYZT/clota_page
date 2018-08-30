@@ -2,7 +2,7 @@
 
 <template>
     <div class="fund-info">
-        <div class="title">账户储值信息</div>
+        <div class="title">{{$t('fundInfo')}}</div><!--账户储值信息-->
         <div class="account-info"
             v-for="(item,i) in accountList"
             :key="i">
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <ul class="account-operate">
-                <li class="list" @click="toFundDetail(item)">储值明细</li>
-                <li class="list" @click="toTradeDetail(item)">资金交易明细</li>
+                <li class="list" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
+                <li class="list" @click="toTradeDetail(item)">{{$t('fundDetail')}}</li><!--资金交易明细-->
             </ul>
         </div>
     </div>

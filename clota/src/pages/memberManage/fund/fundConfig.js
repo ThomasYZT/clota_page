@@ -2,42 +2,42 @@
 
 export const columnData = [
     {
-        title: '会员编号',
+        title: 'memberNum',      // 会员编号
         minWidth: 260,
         field: 'id'
     },
     {
-        title: '会员姓名',
+        title: 'memberName',      // 会员姓名
         minWidth: 100,
         field: 'custName'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',      // 手机号
         minWidth: 140,
         field: 'phoneNum'
     },
     {
-        title: '性别',
+        title: 'gender',      // 性别
         minWidth: 70,
         field: 'gender'
     },
     {
-        title: '会员级别',
+        title: 'levelSetting',      // 会员级别
         minWidth: 100,
         field: 'levelDesc'
     },
     {
-        title: '账户类型',
+        title: 'accountType',      // 账户类型
         minWidth: 120,
         field: 'accountTypeName'
     },
     {
-        title: '账户余额',
+        title: 'moneyBalance',      // 账户余额
         minWidth: 130,
         field: 'endingBalance'
     },
     {
-        title: '操作',
+        title: 'operate',      // 操作
         width: 100,
         field: ''
     },

@@ -3,21 +3,21 @@
     <div class="member-special">
 
         <div class="content-item">
-            <div class="title">景区账户余额</div>
+            <div class="title">{{$t('scenicAccountBalance')}}</div><!--景区账户余额-->
             <div class="content">
-                <div class="header-wrap">本金账户余额（元）</div>
+                <div class="header-wrap">{{`${$t('PrincipalAccBalance')}（${$t('yuan')}）`}}</div><!--本金账户余额（元）-->
                 <div class="body-wrap">
                     <div class="coast">{{moneyLeft | contentFilter}}</div>
                     <div class="operate-right">
-                        <span @click="showTransferModal">转账</span>
+                        <span @click="showTransferModal">{{$t('transfer')}}</span><!--转账-->
                         <span class="split-line"></span>
-                        <span @click="viewTransferRecord">转账记录</span>
+                        <span @click="viewTransferRecord">{{$t('transferRecord')}}</span><!--转账记录-->
                     </div>
                 </div>
             </div>
         </div>
         <div class="tips">
-            提示：本金账户余额为所有储值比率为1：1的本金账户的总和。
+            {{$t('scenicTip')}}<!--提示：本金账户余额为所有储值比率为1：1的本金账户的总和。-->
         </div>
         <!--转账modal-->
         <transfer-modal
@@ -34,7 +34,7 @@
     import transferModal from  './components/transferModal.vue';
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
-    
+
 
     export default {
         components: {

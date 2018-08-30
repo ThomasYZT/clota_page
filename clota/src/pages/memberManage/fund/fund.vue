@@ -4,14 +4,14 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                locale-router="储值明细"
+                :locale-router="'storageDetail'"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
         <div class="header-wrap">
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
-                    placeholder="请选择账户类型">
+                    :placeholder="$t('chooseAccountType')"><!--请选择账户类型-->
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -20,7 +20,7 @@
                 </Option>
             </Select>
             <Select v-model="queryParams.levelId">
-                <Option value="all">全部会员等级</Option>
+                <Option value="all">{{$t('memberLevelAll')}}</Option><!--全部会员等级-->
                 <Option v-for="(item, index) in enumData.level"
                         :value="item.id"
                         :key="index">
@@ -28,7 +28,7 @@
                 </Option>
             </Select>
             <Select v-model="queryParams.channelId">
-                <Option value="all">全部会员渠道</Option>
+                <Option value="all">{{$t('memberChannelAll')}}</Option><!--全部会员渠道-->
                 <Option v-for="(item,index) in enumData.channel"
                         :value="item.id"
                         :key="index">
@@ -43,7 +43,7 @@
                 </Option>
             </Select>
             <br>
-            <Input v-model.trim="queryParams.keyWord" placeholder="请输入姓名、电话、会员编号"/>
+            <Input v-model.trim="queryParams.keyWord" :placeholder="$t('fundPlaceholder')"/><!--请输入姓名、电话、会员编号-->
             <Button type="primary" @click="queryList">{{$t('query')}}</Button>
             <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
         </div>
@@ -71,7 +71,7 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     {{scoped.row.id}}
-                    <span class="frozen-cla">{{scoped.row.cardStatus === 'frozen' ? '已冻结' : ''}}</span>
+                    <span class="frozen-cla">{{scoped.row.cardStatus === 'frozen' ? $t('memberStatusFrozen') : ''}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -111,7 +111,7 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-list">
-                        <li @click="toDetail(scoped.row)">详情</li>
+                        <li @click="toDetail(scoped.row)">{{$t('details')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -140,7 +140,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('fund'),
+                        name: 'fund',
                         router: {
                             name: 'fundInfo'
                         }

@@ -3,7 +3,7 @@
     <div class="member-fund-account">
         <div class="breadcrumb-box" v-if="fromAccountStore">
             <bread-crumb-head
-                locale-router="储值明细"
+                :locale-router="'storageDetail'"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
@@ -11,7 +11,7 @@
         <div class="fund-account-header">
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
-                    placeholder="请选择账户类型">
+                    :placeholder="$t('chooseAccountType')"><!--请选择账户类型-->
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -21,7 +21,7 @@
             </Select>
             <Select v-model="queryParams.tradeType"
                     style="width:180px"
-                    placeholder="请选择交易类型">
+                    :placeholder="$t('selectField', {msg: $t('transactionType')})"><!--请选择交易类型-->
                 <Option
                     v-for="item in tradeType1"
                     :value="item.value"
@@ -29,7 +29,7 @@
                     {{ item.label }}
                 </Option>
             </Select>
-            <Input v-model.trim="queryParams.keyword" placeholder="请输入姓名、电话、会员编号" style="width: 240px" />
+            <Input v-model.trim="queryParams.keyword" :placeholder="$t('fundPlaceholder')" style="width: 240px" /><!--请输入姓名、电话、会员编号-->
             <Button type="primary" @click="queryList">{{$t('query')}}</Button>
             <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
         </div>
@@ -121,7 +121,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('fund'),
+                        name: 'fund',
                         router: {
                             name: 'fundInfo'
                         }
@@ -202,7 +202,7 @@
                         this.accountList = res.data.data ? res.data.data : [];
                         this.accountList.unshift({
                             id : 'all',
-                            accountName : '全部账户'
+                            accountName : this.$t('allAccount')    // 全部账户
                         });
                     }else{
                         this.accountList = [];
@@ -236,12 +236,12 @@
                 if(rowData.unit){
                     unit = rowData.unit;
                 }else if(rowData.accountTypeId === '1'){
-                    unit = '元';
+                    unit = this.$t('yuan');    // '元'
                 }
                 if(rowData.accountSubType === 'corpus'){
-                    return  `本金账户:${label}${rowData.amount}${unit}`;
+                    return  `${this.$t('corpusAccount')}:${label}${rowData.amount}${unit}`; // 本金账户
                 }else if(rowData.accountSubType === 'donate'){
-                    return  `赠送账户:${label}${rowData.amount}${unit}`;
+                    return  `${this.$t('presentAccount')}:${label}${rowData.amount}${unit}`;    // 赠送账户
                 }else{
                     return '';
                 }
