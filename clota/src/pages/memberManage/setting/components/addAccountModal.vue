@@ -198,7 +198,7 @@
                     ],
                     accountName: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '账户名称不能超过10字符', trigger: 'blur' },
+                        { max: 20, message: '账户名称不能超过20字符', trigger: 'blur' },
                     ],
                     unit: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
@@ -211,9 +211,8 @@
                         { validator: validateRateNumerator, trigger: 'blur' },
                     ],
                 },
-                //多选列表
-                multipleSelectionToMoney: [],
-                multipleSelectionToSend: [],
+                //存储所选表格数据
+                selectData: [],
                 //表头信息
                 moneyColumnData: [
                     {
@@ -244,7 +243,7 @@
         watch: {
             'formData.rateNumerator': function (newVal) {
                 this.$refs.formValidate.validateField('rateDenominator');
-            }
+            },
         },
         methods: {
 
@@ -257,6 +256,7 @@
                 this.visible = true;
             },
 
+            //账户归属信息改变
             changeAccountBelonging (val) {
                 let obj = this.tableData.find( item => val === item.id );
                 this.formData.accountName = obj ? obj.orgName : '';
@@ -267,16 +267,51 @@
                 this.$refs.formValidate.validate((valid) => {
                     if(valid){
                         this.step ++;
+                        this.setSelectToTableForStep(this.step);
                     }
                 })
             },
 
             //多选
             handleSelectionChangeToMoney(val) {
-                this.multipleSelectionToMoney = val;
+                this.selectData[0] = val;
             },
             handleSelectionChangeToSend(val) {
-                this.multipleSelectionToSend = val;
+                this.selectData[1] = val;
+            },
+
+            //根据数据回填表格，设置勾选
+            setSelectToTableForStep ( step ) {
+                if( step === 1){
+                    setTimeout( () => {
+                        if(this.selectData[0] && this.selectData[0].length > 0){
+                            this.selectData[0].forEach( item => {
+                                this.tableData.forEach( (list,index) => {
+                                    if(item.id === list.id){
+                                        if(this.$refs.moneyMultiTablePlug){
+                                            this.$refs.moneyMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                        }
+                                    }
+                                })
+                            })
+                        }
+                    },300)
+                }
+                if( step === 2){
+                    setTimeout( () => {
+                        if(this.selectData[1] && this.selectData[1].length > 0){
+                            this.selectData[1].forEach( item => {
+                                this.sendData.forEach( (list,index) => {
+                                    if(item.id === list.id){
+                                        if(this.$refs.sendMultiTablePlug){
+                                            this.$refs.sendMultiTablePlug.toggleRowSelection(this.sendData[index], true);
+                                        }
+                                    }
+                                })
+                            })
+                        }
+                    },300)
+                }
             },
 
             //关闭模态框
@@ -289,12 +324,13 @@
                     rate: '',
                     rateNumerator: '',
                     rateDenominator: '',
-                    exchangeToCash: 'true',
+                    exchangeToCash: 'false',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
                 };
-                this.multipleSelection = [];
+                this.selectData = [];
                 this.index = null;
+                this.step = null;
                 if( this.$refs.moneyMultiTablePlug ){
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }
@@ -312,21 +348,23 @@
                     this.formValidateFunc();
                 } else {
                     this.step ++;
+                    this.setSelectToTableForStep(this.step);
                 }
             },
             //下一步
             prevStep () {
                 this.step --;
+                this.setSelectToTableForStep(this.step);
             },
 
             //保存
             save () {
                 this.formData.corpusAppliedOrgId = [];
                 this.formData.donateAppliedOrgId = [];
-                this.multipleSelectionToMoney.forEach( (item, index) => {
+                this.selectData[0].forEach( (item, index) => {
                     this.formData.corpusAppliedOrgId.push(item.id);
                 });
-                this.multipleSelectionToSend.forEach( (item, index) => {
+                this.selectData[1].forEach( (item, index) => {
                     this.formData.donateAppliedOrgId.push(item.id);
                 });
                 let params = {
@@ -344,7 +382,7 @@
                 this.updateMemberAccountDefine(params);
             },
 
-            //保存/更改/储值账户设置
+            //保存储值账户设置
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if( res.success ) {

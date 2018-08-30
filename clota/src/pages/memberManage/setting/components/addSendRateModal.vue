@@ -34,6 +34,7 @@
             <div class="title">该规则应用范围：</div>
             <div class="table-wrap">
                 <table-com
+                    ref="ruleMultiTablePlug"
                     :table-com-min-height="320"
                     :column-data="columnData"
                     :table-data="tableData"
@@ -121,15 +122,19 @@
                 this.visible = true;
 
                 if( data ){
-                    if(data.item.scope && JSON.parse(data.item.scope) && JSON.parse(data.item.scope).length > 0){
-                        JSON.parse(data.item.scope).forEach( item => {
-                            this.tableData.forEach( (list,index) => {
-                                if(item.id === list.id){
-                                    this.$refs.ruleMultiTablePlug.toggleRowSelection(this.tableData[index], true);
-                                }
+                    setTimeout( () => {
+                        if(data.item.scope && JSON.parse(data.item.scope) && JSON.parse(data.item.scope).length > 0){
+                            JSON.parse(data.item.scope).forEach( item => {
+                                this.tableData.forEach( (list,index) => {
+                                    if(item.id === list.id){
+                                        if(this.$refs.ruleMultiTablePlug){
+                                            this.$refs.ruleMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                        }
+                                    }
+                                })
                             })
-                        })
-                    }
+                        }
+                    },300)
                 }
             },
 

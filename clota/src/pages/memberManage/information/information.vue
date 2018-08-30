@@ -285,7 +285,7 @@
              */
             getEnumFieldShow ( name, val ) {
                 var obj = this.enumData[name].find((item) => val === item.name);
-                return obj.desc
+                return obj ? obj.desc : '-'
             },
 
             //重置查询数据

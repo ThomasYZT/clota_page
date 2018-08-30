@@ -221,7 +221,7 @@
         <add-account-modal ref="addAccount"
                            :length="tableData.length"
                            :table-data="listAmountRangeTable"
-                           :send-data="listAmountRangeTable"
+                           :send-data="sendRangeTable"
                            @updata-list="submitFundsAccount"></add-account-modal>
 
         <!--编辑账户modal-->
@@ -331,6 +331,7 @@
                 ],
                 //获取储值账户-(本金/赠送金额)应用范围
                 listAmountRangeTable: [],
+                sendRangeTable: [],
                 //输入框校验错误显示
                 error: {
                     moneyToIntegrateError: '',//储值额-积分
@@ -385,7 +386,8 @@
                     orgType: 'scenic'
                 }).then(res => {
                     if( res.success ) {
-                        this.listAmountRangeTable = res.data || [];
+                        this.listAmountRangeTable = defaultsDeep([], res.data );
+                        this.sendRangeTable = defaultsDeep([], res.data );
                     }
                 })
             },

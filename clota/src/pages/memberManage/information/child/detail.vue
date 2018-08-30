@@ -177,7 +177,7 @@
                                 show-overflow-tooltip
                                 slot-scope="row">
                                 <template slot-scope="scoped">
-                                    <span>{{ scoped.row.custName+','+scoped.row.cardCode || '-' }}</span>
+                                    <span>{{  scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
                                 </template>
                             </el-table-column>
                         </table-com>
@@ -210,7 +210,7 @@
                                 show-overflow-tooltip
                                 slot-scope="row">
                                 <template slot-scope="scoped">
-                                    <span>{{ scoped.row.custName+','+scoped.row.cardCode || '-' }}</span>
+                                    <span>{{ scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
                                 </template>
                             </el-table-column>
                         </table-com>
@@ -350,7 +350,7 @@
                         field: ''
                     },
                     {
-                        title: 'motherCardInfo',
+                        title: 'childCardInfo',
                         minWidth: 270,
                         field: ''
                     },
@@ -363,7 +363,7 @@
                         field: ''
                     },
                     {
-                        title: 'childCardInfo',
+                        title: 'motherCardInfo',
                         minWidth: 270,
                         field: ''
                     },
