@@ -129,7 +129,7 @@ export default {
         return new Promise((resolve,reject) => {
             if(this.isNotEmpty(value) && validator.isNumber(value)){
                 if(value < 0){
-                    reject('不能输入小数');
+                    reject('不能输入负数');
                 }
                 let  numStr = String(value);
                 //有小数
@@ -191,6 +191,9 @@ export default {
         return new Promise((resolve,reject) => {
             if(this.isNotEmpty(value) && validator.isNumber(value)){
                 let  numStr = String(value);
+                if(value < 0){
+                    reject('不能输入负数');
+                }
                 if(numStr.length < minLength){
                     reject('小于最小长度');
                 }else if(numStr.length > maxLength){

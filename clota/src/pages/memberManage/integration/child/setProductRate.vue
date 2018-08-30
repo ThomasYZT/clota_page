@@ -179,6 +179,7 @@
                 ajax.post('setMemberDiscountOfProduct',{
                     id : this.currentData.id,
                     storeDiscountId : this.memberInfo.id,
+                    levelId : this.memberInfo.levelId,
                     prodDiscountRate : formData.discountRate,
                     prodScoreRate : formData.scoreRate,
                     productId : this.currentData.productId,
@@ -186,6 +187,7 @@
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('设置成功');
+                        this.memberInfo.id = res.data;
                         this.queryList();
                     }else{
                         this.$Message.error('设置失败');

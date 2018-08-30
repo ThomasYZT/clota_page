@@ -359,15 +359,8 @@
                 },
                 //编辑原数据
                 info: {},
-                // // 路由from参数
-                // routerFrom: {}
             }
         },
-        // beforeRouteEnter(to, from, next) {
-        //     next(vm => {
-        //         vm.routerFrom = from;
-        //     });
-        // },
         computed: {
             localeRouter () {
                 return this.type === 'add' ? this.$t('addMember') : this.$t('addMember');      // 新增会员 ： 修改会员信息
@@ -385,35 +378,6 @@
         },
 
         methods: {
-//
-//             //页面初始化，区分新增与修改
-//             async init() {
-//                 try {
-// //                    await Promise.all([this.getLevelList(), this.getChannelList(), this.queryDocument()]);
-//
-//                     if (this.$route.query && this.$route.query.type) {
-//
-//
-//                         // // 编辑页面时给表单赋值
-//                         // if(this.isEdit){
-//                         //     this.info = this.$route.query.info;
-//                         //     var memberInfo = pick(this.$route.query.info, ['custName', 'phoneNum','emailAddr','birthDay',
-//                         //         'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
-//                         //         'certificationType','idCardNumber','homeAddr','status']);
-//                         //     var memberCard = this.$route.query.info.memberCardVos && this.$route.query.info.memberCardVos.length >0 ?
-//                         //         pick(this.$route.query.info.memberCardVos[0], ['levelId', 'channelId','tpNo','tpCardNo']) : {
-//                         //             levelId: '',channelId: '',tpNo: '',tpCardNo: '',
-//                         //         };
-//                         //     this.member = defaultsDeep(memberInfo, memberCard);
-//                         // } else {
-//                         //     this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
-//                         // }
-//                     }
-//                 } catch (err) {
-//                     console.warn(err);
-//                 }
-//
-//             },
 
             //手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
             customValid(data, field){

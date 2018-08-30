@@ -233,9 +233,19 @@
             };
 
             //校验金额格式
-            const validateMoney = (rule,value,callback) => {
+            const validateCardFaceValue = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    callback();
+                    if(this.formData.couponType === 'discount_coupon'){
+                        if(value >= 10){
+                            callback('折扣券面值必须大于0，且小于10');
+                        }else if(value <= 0){
+                            callback('折扣券面值必须大于0，且小于10');
+                        }else{
+                            callback();
+                        }
+                    }else{
+                        callback();
+                    }
                 }).catch(err => {
                     callback(this.$t(err,{field : rule.field}));
                 });
@@ -437,7 +447,7 @@
                     nominalValue: [
                         { required: true, message: '卡券面值不能为空', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' },
+                        { validator: validateCardFaceValue, trigger: 'blur' },
                     ],
                     conditionLowerLimtation: [
                         { required: true, message: '最低消费金额不能为空', trigger: 'blur' },

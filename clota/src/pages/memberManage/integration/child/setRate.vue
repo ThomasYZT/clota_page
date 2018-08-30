@@ -212,6 +212,7 @@
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('设置成功');
+                        this.memberInfo.id = res.data;
                         this.queryList();
                     }else{
                         this.$Message.error('设置失败');
