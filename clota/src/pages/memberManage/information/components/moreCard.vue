@@ -4,8 +4,8 @@
 
         <div class="tabs-wrap">
             <ButtonGroup>
-                <Button :type="status === 'used' ? 'primary' : 'ghost'" @click="changeStatus('used')">{{$t("notExpired")}}</Button>
-                <Button :type="status === 'noOverdue' ? 'primary' : 'ghost'" @click="changeStatus('noOverdue')">{{$t("used")}}</Button>
+                <Button :type="status === 'noOverdue' ? 'primary' : 'ghost'" @click="changeStatus('noOverdue')">{{$t("notExpired")}}</Button>
+                <Button :type="status === 'used' ? 'primary' : 'ghost'" @click="changeStatus('used')">{{$t("used")}}</Button>
                 <Button :type="status === 'overdue' ? 'primary' : 'ghost'" @click="changeStatus('overdue')">{{$t("expired")}}</Button>
             </ButtonGroup>
             <span v-if="type && type === 'view' && tableData.totalRow > 5" class="more" @click="showCouponModal">{{$t("check") + $t("more")}}</span>

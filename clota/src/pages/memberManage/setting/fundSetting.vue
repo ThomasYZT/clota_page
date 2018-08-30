@@ -45,7 +45,7 @@
                                    style="left: 92px;"
                                    v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
                         </span>
-                        <span> 1 积分</span>
+                        <span> {{settingData.scoreGrowthFromCharging.integrate}} 积分</span>
                     </div>
                     <div class="check-group-wrap">储值
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
@@ -59,7 +59,7 @@
                                    style="left: 92px;"
                                    v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
                         </span>
-                        <span> 1 成长值</span>
+                        <span> {{settingData.scoreGrowthFromCharging.growth}} 成长值</span>
                     </div>
                 </div>
             </div>
@@ -213,7 +213,7 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="primary" @click="save">{{$t("save")}}</Button>
             <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
@@ -278,19 +278,19 @@
                     passwdForRechargeAccount: 'true',
                     //储值积分、成长值比例设置
                     scoreGrowthFromCharging: {
-                        storedAndGrowthType: 'true',
-                        moneyToIntegrate: '1',//储值额-积分
-                        integrate: '1',//积分
-                        moneyToGgowth: '1',//储值额-成长值
-                        growth: '1',//成长值
+                        storedAndGrowthType: 'true',//Boolean
+                        moneyToIntegrate: '1',//储值额-积分 Number
+                        integrate: 1,//积分
+                        moneyToGgowth: '1',//储值额-成长值 Number
+                        growth: 1,//成长值
                     },
                     //储值获得积分、成长值生效设置
                     scoreGrowthEffModeWhileCharging: {
                         storedType: 'immediately',
-                        storedTime: '24',
+                        storedTime: '24',//Number
                     },
                     //转账扣除手续费比例
-                    commissionOfTransfermation: '2',
+//                    commissionOfTransfermation: '',
                     //储值赠送金额比例设置
                     donateWhileRecharge: [],
                 },
@@ -338,6 +338,12 @@
                     moneyToGgowthError: '',//储值额--成长值
                     storedTimeError: '',//储值获得积分、成长值生效设置
                 },
+                //布尔型
+                boolProps: ['storedAndGrowthType'],
+                //Number型
+                numberProps: ['moneyToIntegrate','moneyToGgowth','storedTime'],
+                //String型
+                stringProps: ['moneyToIntegrate','moneyToGgowth','storedTime','storedAndGrowthType'],
             }
         },
         watch: {
@@ -371,6 +377,21 @@
             this.getSubNode();
         },
         methods: {
+
+            //数据转换，数据查询后转成string进入input，保存时转成相应类型
+            transPropsType ( data, type ) {
+                switch (type) {
+                    case 'number':
+                        return data ? Number(data) : 0;
+                        break;
+                    case 'boolean':
+                        return Boolean(data);
+                        break;
+                    case 'string':
+                        return data!==null ? String(data) : '';
+                        break;
+                }
+            },
 
             //获取储值赠送金额应用范围
             listAccount () {
@@ -406,9 +427,18 @@
                                         JSON.parse(res.data.scoreGrowthFromCharging) : this.settingData.scoreGrowthFromCharging,
                                     scoreGrowthEffModeWhileCharging: res.data.scoreGrowthEffModeWhileCharging ?
                                         JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
-                                    commissionOfTransfermation: res.data.commissionOfTransfermation,
                                     donateWhileRecharge: res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 };
+                                console.log(params)
+                                for( let key in params){
+                                    if(key && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0){
+                                        for( let ckey in params[key]){
+                                            if(this.stringProps.indexOf(ckey) > -1){
+                                                params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
+                                            }
+                                        }
+                                    }
+                                }
                                 console.log(params)
                                 this.settingData = params;
                                 //复制数据
@@ -422,24 +452,48 @@
                     }
                 })
             },
-            //会员基础设置-保存/修改
-            basicSet () {
+            //点击保存，校验信息，数据处理
+            save () {
                 if(this.checkInputFunc()){
-                    ajax.post('basicSet', {
-                        id: this.id,
-                        passwdForRechargeAccount: this.settingData.scoreEffectiveMode,
-                        scoreGrowthFromCharging: JSON.stringify(this.settingData.scoreGrowthFromCharging),
-                        scoreGrowthEffModeWhileCharging: JSON.stringify(this.settingData.scoreGrowthEffModeWhileCharging),
-//                    commissionOfTransfermation: this.settingData.commissionOfTransfermation,
-                        donateWhileRecharge: this.settingData.donateWhileRecharge.length > 0 ?
-                            JSON.stringify(this.settingData.donateWhileRecharge) : '',
-                    }).then(res => {
-                        if( res.success){
-                            this.$Message.success('保存储值设置成功!');
-                            this.findBasicSet();
+
+                    let setParam = defaultsDeep({}, this.settingData);
+                    console.log(setParam)
+                    for( let key in setParam){
+                        if(key && typeof (setParam[key]) === 'object' && Object.keys(setParam[key]).length > 0){
+                            for( let ckey in setParam[key]){
+                                if(this.boolProps.indexOf(ckey) > -1){
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'boolean');
+                                }
+                                if(this.numberProps.indexOf(ckey) > -1){
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
+                                }
+                            }
                         }
-                    })
+                    }
+                    setParam.id = this.id;
+                    console.log(setParam)
+
+                    let params = {
+                        id: this.id,
+                        passwdForRechargeAccount: setParam.passwdForRechargeAccount,
+                        scoreGrowthFromCharging: JSON.stringify(setParam.scoreGrowthFromCharging),
+                        scoreGrowthEffModeWhileCharging: JSON.stringify(setParam.scoreGrowthEffModeWhileCharging),
+                        donateWhileRecharge: setParam.donateWhileRecharge.length > 0 ?
+                            JSON.stringify(setParam.donateWhileRecharge) : '',
+                    };
+                    console.log(params)
+                    this.basicSet(params);
+
                 }
+            },
+            //会员储值设置-保存/修改
+            basicSet ( params ) {
+                ajax.post('basicSet', params).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存储值设置成功!');
+                        this.findBasicSet();
+                    }
+                })
             },
             //点击取消重置数据
             resetFieldFunc () {
@@ -450,8 +504,10 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
+                console.log(this.checkInputBlurFunc(this.settingData.scoreGrowthEffModeWhileCharging.storedTime, 'storedTimeError'))
 
                 if(this.settingData.scoreGrowthEffModeWhileCharging.storedType === 'checkout_after' &&
+//                    !this.checkInputBlurFunc(this.settingData.scoreGrowthEffModeWhileCharging.storedTime, 'storedTimeError')){
                     !this.validateInput(this.settingData.scoreGrowthEffModeWhileCharging.storedTime)){
                     this.checkInputBlurFunc(this.settingData.scoreGrowthEffModeWhileCharging.storedTime, 'storedTimeError');
                     return false
@@ -517,7 +573,7 @@
 
                 //校验正整数
                 if(val){
-                    common.validateInteger(val).then(() => {
+                    common.validateInteger(val).then( () => {
                         this.error[errorField] = '';
                     }).catch(err => {
                         this.error[errorField] = err;
