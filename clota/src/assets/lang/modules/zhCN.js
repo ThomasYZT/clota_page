@@ -263,6 +263,8 @@ export default {
     'isEffectBeforeDiscount': '代金券在折扣前后使用设置',
     'fee': '手续费',
     'transferAmount': '转出金额',
+    'validAmount': '可用余额',
+    'transferError': '转出金额加手续费不可大于可用余额',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

@@ -28,7 +28,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="转入账户选择" prop="toOrgId">
-                        <Select v-model="data.toOrgId"
+                        <Select v-model.trim="data.toOrgId"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 style="width: 240px;">
                             <Option :value="item.id"
@@ -41,7 +41,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="转出金额" prop="amount">
-                        <Input v-model="data.amount"
+                        <Input v-model.trim="data.amount"
                                :placeholder="$t('inputField', {field: ''})"
                                style="width: 240px"/>
                         <span style="padding-left: 10px;">元
@@ -50,7 +50,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item label="手续费" prop="commission">
-                        <Input v-model="data.commission"
+                        <Input v-model.trim="data.commission"
                                :placeholder="$t('inputField', {field: ''})"
                                style="width: 240px" />
                                 <span style="padding-left: 10px;">元
@@ -58,11 +58,10 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('remark') + '：'"><!--备注-->
-                        <Input v-model="data.remark"
+                    <Form-item :label="$t('remark') + '：'" prop="remark"><!--备注-->
+                        <Input v-model.trim="data.remark"
                                type="textarea"
                                :placeholder="$t('inputField', {field: ''})"
-                               :maxlength="100"
                                style="width: 240px" />
                     </Form-item>
                 </div>
@@ -101,11 +100,11 @@
             const validateeAmount = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
                     if(value > this.orgInfo.balance){
-                        callback('转出金额不可大于可用余额');
+                        callback(this.$t('errorGreaterThan',{small : this.$t('transferAmount'),big : this.$t('validAmount')}));
                     }else{
                         if(validator.isNumber(this.data.commission)){
                             if(Number(value) + Number(this.data.commission) > this.orgInfo.balance){
-                                callback('转出金额加手续费不可大于可用余额');
+                                callback(this.$t('transferError'));
                             }else{
                                 callback();
                             }
@@ -125,11 +124,11 @@
             const validateCommission = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
                     if(value > this.orgInfo.balance){
-                        callback('手续费不可大于可用余额');
+                        callback(this.$t('errorGreaterThan',{small : this.$t('fee'),big : this.$t('validAmount')}));
                     }else{
                         if(validator.isNumber(this.data.amount)){
                             if(Number(value) + Number(this.data.amount) > this.orgInfo.balance){
-                                callback('转出金额加手续费不可大于可用余额');
+                                callback(this.$t('transferError'));
                             }else{
                                 callback();
                             }
@@ -173,6 +172,9 @@
                     commission : [
                         {required : true,message : this.$t('inputField',{field : this.$t('fee')}),trigger : 'blur'},
                         {required : true,validator : validateCommission,trigger : 'blur'}
+                    ],
+                    remark : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 100}),trigger : 'blur'}
                     ]
                 },
                 //btn是否在保存中
