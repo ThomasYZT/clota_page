@@ -38,6 +38,9 @@
                     :min-width="row.minWidth"
                     show-overflow-tooltip
                     slot-scope="row">
+                    <template slot-scope="scoped">
+                        <span>{{ getUseCondition(scoped.row) }}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     slot="column2"
@@ -48,6 +51,9 @@
                     :min-width="row.minWidth"
                     show-overflow-tooltip
                     slot-scope="row">
+                    <template slot-scope="scope">
+                        {{$t(scope.row['couponType'])}}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     slot="column3"
@@ -58,16 +64,9 @@
                     :min-width="row.minWidth"
                     show-overflow-tooltip
                     slot-scope="row">
-                </el-table-column>
-                <el-table-column
-                    slot="column4"
-                    :label="row.title"
-                    :prop="row.field"
-                    :key="row.index"
-                    :width="row.width"
-                    :min-width="row.minWidth"
-                    show-overflow-tooltip
-                    slot-scope="row">
+                    <template slot-scope="scope">
+                        {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
+                    </template>
                 </el-table-column>
             </table-com>
         </div>
@@ -89,14 +88,9 @@
                 //表头配置
                 columnData: [
                     {
-                        title: 'memberCode',
-                        minWidth: 120,
-                        field: 'id'
-                    },
-                    {
                         title: 'couponName',
                         minWidth: 220,
-                        field: 'name'
+                        field: 'couponName'
                     },
                     {
                         title: 'useCondition',
@@ -110,14 +104,29 @@
                     },
                     {
                         title: 'validityPeriod',
-                        minWidth: 200,
-                        field: 'time'
+                        minWidth: 230,
+                        field: ''
                     },
                 ],
             }
         },
         methods: {
 
+            /**
+             * 获取卡券使用条件
+             * @param rowData
+             */
+            getUseCondition(rowData) {
+                if(rowData.couponType === 'discount_coupon'){//折扣券
+                    return `最低可使用金额${rowData.conditionLowerLimtation}元最高使用金额${rowData.conditionUpperLimtation}元`
+                }else if(rowData.couponType === 'exchange_coupon'){//兑换券
+                    return `仅限${rowData.remark}`;
+                }else if(rowData.couponType === 'cash_coupon'){//代金券
+                    return `满${rowData.conditionLowerLimtation}可用`
+                }
+            },
+
+            //显示更多
             showCouponModal () {
                 this.$emit('view-more');
             },

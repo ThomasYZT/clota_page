@@ -146,9 +146,11 @@
                     <div class="operate" @click="viewCardRateDetail"><span class="pointer">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span></div>
                 </div>
 
-                <div class="content-info card-temp">
+                <div class="content-info card-temp"
+                     v-if=" (childOrMotherCard.isMotherCard === 'true' && motherCard.length > 0)
+                     || (childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0)">
                     <div class="title">{{$t("childMotherCardInfo")}}</div>
-                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true'">
+                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && motherCard.length > 0">
                         <table-com
                             :auto-height="true"
                             :table-com-min-height="300"
@@ -182,7 +184,7 @@
                             </el-table-column>
                         </table-com>
                     </div>
-                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false'">
+                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0">
                         <table-com
                             :auto-height="true"
                             :table-com-min-height="300"
@@ -504,7 +506,6 @@
                 ajax.post('listCouponsByStatus', {
                     cardId: params.cardId,
                     memberId: params.id,
-                    couponType: '',
                     status: this.status,
                     pageNo: 1,
                     pageSize: 10,
@@ -572,10 +573,10 @@
                             if(res.data.childCard.length > 0){
                                 this.motherCard = res.data.childCard;
                             } else {
-                                this.motherCard = [{ id: ''}];
+                                this.motherCard = [];
                             }
                         } else {
-                            this.sonCard = res.motherCard || [{ id: ''}];
+                            this.sonCard = res.motherCard || [];
                         }
                     } else {
                         console.log(res);
