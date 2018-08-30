@@ -178,12 +178,12 @@
                     remark: data.remark,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('操作成功！');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');     // 操作成功
                         this.$emit('modify-success');
                         this.hide();
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'updateMemberLevel 操作失败！');
+                        this.$Message.warning(res.message || 'updateMemberLevel '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');  // 操作失败
                     }
                 })
             },

@@ -49,7 +49,7 @@
                 //表单校验
                 ruleValidate: {
                     accountTypeId: [
-                        { required: true, message: '账户不能为空', trigger: 'change' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('account')}), trigger: 'change' },     // 账户不能为空
                     ],
                 }
             }
@@ -77,7 +77,7 @@
                     cardId: this.detail.cardId,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('新增账号成功！');
+                        this.$Message.success(`${this.$t('newAccount')} ${this.$t('success')}！`);   // 新增账号成功
                         this.$emit('add-success');
                         this.hide();
                     } else {

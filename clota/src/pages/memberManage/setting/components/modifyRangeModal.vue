@@ -200,11 +200,11 @@
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('操作成功！');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');     // 操作成功
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.warning(res.message || 'updateMemberAccountDefine 操作失败！');
+                        this.$Message.warning(res.message || 'updateMemberAccountDefine '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');    // 操作失败
                     }
                 })
             },

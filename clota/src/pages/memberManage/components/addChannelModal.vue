@@ -113,7 +113,7 @@
                         this.$emit('close-modal');
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet 删除失败！');
+                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');     // 删除失败
                     }
                 })
             },

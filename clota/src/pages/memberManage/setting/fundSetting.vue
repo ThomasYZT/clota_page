@@ -596,7 +596,7 @@
 
             //删除储值赠送金额比例
             handleRemoveSendRate ( data, index ) {
-                this.$Message.success('删除成功!');
+                this.$Message.success(this.$t('successTip', {tip: 'del'}) + '!');   // 删除成功
                 this.settingData.donateWhileRecharge.splice(index, 1);
             },
             //新增显示储值赠送金额比例

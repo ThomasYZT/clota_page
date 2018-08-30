@@ -133,12 +133,12 @@
                     isDeleted: 'true',
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除成功！');
+                        this.$Message.success(this.$t('successTip', {tip: 'del'}) + '！');     // 删除成功
                         //查询列表
                         this.queryList();
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet 删除失败！');
+                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');     // 删除失败
                     }
                 })
             },

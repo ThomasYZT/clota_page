@@ -214,6 +214,8 @@ export default {
     'goods': '商品',
     'failure': '失败',
     'success': '成功',
+    'failureTip': '{tip} failure',
+    'successTip': '{tip} success',
     'queryFailure': '查询失败',
     'name': '姓名',
     'weChat': '微信',

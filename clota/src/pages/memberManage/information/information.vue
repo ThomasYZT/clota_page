@@ -271,9 +271,9 @@
                     memberId: data.id,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除成功！');
+                        this.$Message.success(this.$t('successTip', {tip: 'del'}) + '！');     // 删除成功
                     } else {
-                        this.$Message.warning('deleteMemberInfo 删除失败！');
+                        this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', {tip: 'del'}) + '！');    // 删除失败
                     }
                 });
             },

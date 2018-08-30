@@ -156,7 +156,7 @@
                             }
                         }
                     } else {
-                        this.$Message.warning(res.message || 'listMemberCardRate '+ $t('failure') +'！');
+                        this.$Message.warning(res.message || 'listMemberCardRate '+ this.$t('failure') +'！');
                     }
                 });
             },

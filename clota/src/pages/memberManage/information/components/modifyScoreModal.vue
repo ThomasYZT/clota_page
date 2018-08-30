@@ -184,7 +184,7 @@
             adjustScore ( params ) {
                 ajax.post('adjustScore', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('操作成功！');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');     // 操作成功
                         this.$emit('add-success');
                         this.hide();
                     } else {
