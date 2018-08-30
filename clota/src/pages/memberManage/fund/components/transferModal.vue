@@ -115,9 +115,9 @@
                     }
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 4}));
+                        callback(this.$t('errorMaxLength',{field : this.$t('transferAmount'),length : 10}));
                     }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                        callback(this.$t(err,{field : this.$t('transferAmount')}));
                     }
                 });
             };
@@ -139,9 +139,9 @@
                     }
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        callback(this.$t('errorMaxLength',{field : this.$t('fee'),length : 10}));
                     }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                        callback(this.$t(err,{field : this.$t('fee')}));
                     }
                 });
             };
@@ -164,12 +164,14 @@
                 //校验方法
                 ruleValidate: {
                     amount : [
-                        {required : true,validator : validateeAmount,trigger : 'blur'}
+                        {required : true,message : this.$t('inputField',{field : this.$t('transferAmount')}),trigger : 'blur'},
+                        {validator : validateeAmount,trigger : 'blur'}
                     ],
                     toOrgId : [
-                        {required : true,message : '请选择转入账户',trigger : 'change'}
+                        {required : true,message : this.$t('selectField',{msg : this.$t('transferToAccount')}),trigger : 'change'}
                     ],
                     commission : [
+                        {required : true,message : this.$t('inputField',{field : this.$t('fee')}),trigger : 'blur'},
                         {required : true,validator : validateCommission,trigger : 'blur'}
                     ]
                 },

@@ -260,16 +260,20 @@ export default {
     'conditionUpperLimtation': '最高消费金额',
     'pointsExchange': '积分兑换数量',
     'isEffectBeforeDiscount': '代金券在折扣前后使用设置',
+    'fee': '手续费',
+    'transferAmount': '转出金额',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
     'errorGreaterThan': '{small}不可大于{big}',
     'errorEmpty': '{msg}不能为空',
     'errorMaxLength': '{field}不能超过{length}字符',
+    'errorMinLength': '{field}不能少于{length}字符',
     'fieldTypeError': '{field}不能为负数',
     'decimalError': '{field}小数位最多2位',
     'rangeError': '{field}必须大于{min}，且小于{max}',
     'sizeErrorS': '{filed1}不可小于{filed2}',
     'sizeErrorB': '{filed1}不可大于{filed2}',
+    'numError': '{filed1}必须为数字',
 
 }

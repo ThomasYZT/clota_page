@@ -124,21 +124,41 @@ export default {
      */
     validateMoney (value,minLength = 0,maxLength = 10,reg = '') {
         return new Promise((resolve,reject) => {
-            if(this.isNotEmpty(value) && validator.isNumber(value)){
-                if(value < 0){
-                    reject('fieldTypeError');
-                }
-                let  numStr = String(value);
-                //有小数
-                if(numStr.indexOf('.') !== -1){
-                    let numSplit = numStr.split('.');
-                    //小数位位数为0
-                    if(numSplit[1].length === 0){
-                        reject('errorFormat');
-                    }else if(numSplit[1].length > 2){//小数位数字大于2
-                        reject('decimalError');
+            if(this.isNotEmpty(value)){
+                if(validator.isNumber(value)){
+                    if(value < 0){
+                        reject('fieldTypeError');
+                    }
+                    let  numStr = String(value);
+                    //有小数
+                    if(numStr.indexOf('.') !== -1){
+                        let numSplit = numStr.split('.');
+                        //小数位位数为0
+                        if(numSplit[1].length === 0){
+                            reject('errorFormat');
+                        }else if(numSplit[1].length > 2){//小数位数字大于2
+                            reject('decimalError');
+                        }else{
+                            if(numSplit[0].length > maxLength){
+                                reject('errorMaxLength');
+                            }else if(numStr.length < minLength){
+                                reject('errorMinLength');
+                            }else{
+                                //使用自定义正则表达式，校验金额
+                                if(reg){
+                                    if(reg.test(value)){
+                                        resolve();
+                                    }else{
+                                        reject('regErr');
+                                    }
+                                }else{
+                                    resolve();
+                                }
+                            }
+                        }
                     }else{
-                        if(numSplit[0].length > maxLength){
+                        //校验整数是否超过范围
+                        if(numStr.length > maxLength){
                             reject('errorMaxLength');
                         }else if(numStr.length < minLength){
                             reject('errorMinLength');
@@ -156,26 +176,10 @@ export default {
                         }
                     }
                 }else{
-                    //校验整数是否超过范围
-                    if(numStr.length > maxLength){
-                        reject('errorMaxLength');
-                    }else if(numStr.length < minLength){
-                        reject('errorMinLength');
-                    }else{
-                        //使用自定义正则表达式，校验金额
-                        if(reg){
-                            if(reg.test(value)){
-                                resolve();
-                            }else{
-                                reject('regErr');
-                            }
-                        }else{
-                            resolve();
-                        }
-                    }
+                    reject('numError');
                 }
             }else{
-                reject('regErr');
+                reject('inputField');
             }
         });
     },

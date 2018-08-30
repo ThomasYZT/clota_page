@@ -261,6 +261,8 @@ export default {
     'conditionUpperLimtation': '最高消费金额',
     'pointsExchange': '积分兑换数量',
     'isEffectBeforeDiscount': '代金券在折扣前后使用设置',
+    'fee': '手续费',
+    'transferAmount': '转出金额',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
@@ -273,5 +275,7 @@ export default {
     'rangeError': '{field}必须大于{min}，且小于{max}',
     'sizeErrorS': '{filed1}不可小于{filed2}',
     'sizeErrorB': '{filed1}不可大于{filed2}',
+    'numError': '{field}必须为数字',
+
 
 }
