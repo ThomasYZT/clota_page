@@ -38,7 +38,7 @@
 
         <div class="table-wrap">
             <table-com
-                :ofsetHeight="170"
+                :ofsetHeight="210"
                 :show-pagination="true"
                 :column-data="infoListHead"
                 :table-data="tableData"
@@ -97,7 +97,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.memberType) }}</span>
+                        <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.memberType) | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -123,7 +123,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ scoped.row.createdTime ? new Date(scoped.row.createdTime).format('yyyy-MM-dd') : '-' }}</span>
+                        <span>{{ scoped.row.createdTime | timeFormat('yyyy-MM-dd') | contentFilter }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -191,8 +191,6 @@
             }
         },
         created(){
-            //查询列表
-            this.queryList();
             this.getLevelList();
             this.getChannelList();
         },
@@ -236,17 +234,21 @@
             //编辑会员
             modifyData ( event, data ) {
                 event.stopPropagation();
-                this.$router.push({ name: 'addMember', query: { type: 'modify', info: data }});
+                this.$router.push({
+                    name: 'addMember',
+                    query: { type: 'modify'},
+                    params : data
+                });
             },
 
             //查询列表(查询表格取统一的方法名)
             queryList () {
                 ajax.post('queryMemberPage', {
                     keyWord: this.queryParams.keyWord,
-                    levelId: this.queryParams.levelId == 'null' ? "" : this.queryParams.levelId,
-                    channelId: this.queryParams.channelId == 'null' ? "" : this.queryParams.channelId,
-                    vipStatus: this.queryParams.vipStatus == 'null' ? "" : this.queryParams.vipStatus,
-                    cardStatus: this.queryParams.cardStatus == 'null' ? "" : this.queryParams.cardStatus,
+                    levelId: this.queryParams.levelId === 'null' ? "" : this.queryParams.levelId,
+                    channelId: this.queryParams.channelId === 'null' ? "" : this.queryParams.channelId,
+                    vipStatus: this.queryParams.vipStatus === 'null' ? "" : this.queryParams.vipStatus,
+                    cardStatus: this.queryParams.cardStatus === 'null' ? "" : this.queryParams.cardStatus,
                     pageNo: this.queryParams.pageNo,
                     pageSize: this.queryParams.pageSize,
                 }).then(res => {
@@ -254,7 +256,9 @@
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
                     } else {
-                        this.$Message.warning('queryMemberPage '+ $t('queryFailure') +'！');
+                        this.tableData = [];
+                        this.total = 0;
+                        this.$Message.warning('queryMemberPage '+ this.$t('queryFailure') +'！');
                     }
                 })
             },
@@ -285,7 +289,7 @@
              */
             getEnumFieldShow ( name, val ) {
                 var obj = this.enumData[name].find((item) => val === item.name);
-                return obj ? obj.desc : '-'
+                return obj ?this.$t(obj.desc) : '';
             },
 
             //重置查询数据

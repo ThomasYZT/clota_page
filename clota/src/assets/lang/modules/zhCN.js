@@ -242,6 +242,7 @@ export default {
     'consume': '消费',
     'recharge': '储值',
     'adjustMoney': '手动改资金账户',
+    'mail': '邮箱',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

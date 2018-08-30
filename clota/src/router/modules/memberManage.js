@@ -142,7 +142,7 @@ export default {
 
             integration: {
                 //会员管理--会员积分--三级菜单
-                path: '/memberManage/integ',
+                path: '/memberManage/point',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/index.vue'),
                 meta: {
                     menuName: 'memberPoints', //lang.config.js 里面的语言键值
@@ -154,7 +154,7 @@ export default {
                 children: {
                     integ: {
                         //会员管理--会员积分--积分、折扣率设置
-                        path: '/memberManage/integ',
+                        path: '/memberManage/point/discount',
                         name: 'integration',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/integration.vue'),
                         meta: {
@@ -166,7 +166,7 @@ export default {
                     },
                     specialMember: {
                         //会员管理--会员积分--特殊会员权益管理
-                        path: '/memberManage/special',
+                        path: '/memberManage/point/specialMem',
                         name: 'specialMember',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/specialMember.vue'),
                         meta: {
@@ -178,7 +178,7 @@ export default {
                     },
                     setRate: {
                         //会员管理--会员积分--设置积分、折扣率
-                        path: '/memberManage/setRate',
+                        path: '/memberManage/point/memberRate',
                         name: 'setRate',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
                         meta: {
@@ -189,7 +189,7 @@ export default {
                     },
                     setProductRate: {
                         //会员管理--会员积分--设置积分、折扣率--按类型/产品
-                        path: '/memberManage/proRate',
+                        path: '/memberManage/point/proRate',
                         name: 'setProductRate',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
                         meta: {
@@ -200,7 +200,7 @@ export default {
                     },
                     linkSpeMember: {
                         //会员管理--会员积分--特殊会员权益管理--关联会员信息
-                        path: '/memberManage/link',
+                        path: '/memberManage/point/link',
                         name: 'linkSpeMember',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/linkSpeMember.vue'),
                         meta: {
@@ -238,7 +238,7 @@ export default {
             },
             fund: {
                 //会员管理--储值管理--三级菜单
-                path: '/memberManage/fund',
+                path: '/memberManage/fiance',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/index.vue'),
                 meta: {
                     menuName: 'financialManagement', //lang.config.js 里面的语言键值
@@ -250,7 +250,7 @@ export default {
                 children: {
                     fundInfo: {
                         //会员管理--储值管理--储值信息
-                        path: '/memberManage/fundInfo',
+                        path: '/memberManage/fiance/fundInfo',
                         name: 'fundInfo',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundInfo.vue'),
                         meta: {
@@ -262,7 +262,7 @@ export default {
                     },
                     //会员管理-账户资金交易明细
                     accountFianceDetail : {
-                        path: '/memberManage/account/fianceDetail',
+                        path: '/memberManage/fiance/account/fianceDetail',
                         name: 'fianceDetail',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                         meta: {
@@ -273,7 +273,7 @@ export default {
                     },
                     funds: {
                         //会员管理--储值管理--储值明细
-                        path: '/memberManage/fund',
+                        path: '/memberManage/fiance/fund',
                         name: 'fund',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fund.vue'),
                         meta: {
@@ -284,7 +284,7 @@ export default {
                     },
                     fundDetail: {
                         //会员管理--储值管理--资金明细
-                        path: '/memberManage/fundDetail',
+                        path: '/memberManage/fiance/fundDetail',
                         name: 'fundDetail',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                         meta: {
@@ -296,7 +296,7 @@ export default {
                     },
                     financialManagement: {
                         //会员管理--储值管理--转账
-                        path: '/memberManage/financial',
+                        path: '/memberManage/fiance/transfer',
                         name: 'transfer',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
                         meta: {
@@ -308,24 +308,13 @@ export default {
                     },
                     transferRecord: {
                         //会员管理--储值管理--财务管理--转账记录
-                        path: '/memberManage/transfer',
+                        path: '/memberManage/fiance/record',
                         name: 'transferRecord',
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/transferRecord.vue'),
                         meta: {
                             menuName: 'financialManagement', //lang.config.js 里面的语言键值
                             _name: 'storage-manage',
                             rightPath : topMenuName + '.' + 'transfer',
-                        },
-                    },
-                    juniorDetail: {
-                        //会员管理--储值管理--财务管理--下级单位储值账户信息详情
-                        path: '/memberManage/fund/junior',
-                        name: 'juniorDetail',
-                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/juniorDetail.vue'),
-                        meta: {
-                            menuName: 'financialManagement', //lang.config.js 里面的语言键值
-                            _name: 'storage-manage',
-                            rightPath : topMenuName + '.' + 'financialManagement',
                         },
                     },
                 }

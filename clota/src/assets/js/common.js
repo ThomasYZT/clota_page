@@ -6,6 +6,9 @@
 import router from '../../router';
 import store from '../../store/index';
 import {validator} from 'klwk-ui';
+import i18n from '../lang/lang.config';
+
+console.log(i18n.messages[i18n.locale])
 
 export default {
 
@@ -125,6 +128,9 @@ export default {
     validateMoney (value,reg = '',minLength = 1,maxLength = 10,async = false) {
         return new Promise((resolve,reject) => {
             if(this.isNotEmpty(value) && validator.isNumber(value)){
+                if(value < 0){
+                    reject('不能输入小数');
+                }
                 let  numStr = String(value);
                 //有小数
                 if(numStr.indexOf('.') !== -1){

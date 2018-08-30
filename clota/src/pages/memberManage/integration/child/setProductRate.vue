@@ -32,6 +32,7 @@
                     @query-data="queryList">
                     <el-table-column
                         slot="column2"
+                        show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -42,6 +43,7 @@
                     </el-table-column>
                     <el-table-column
                         slot="column5"
+                        show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -133,7 +135,7 @@
                     pageSize : this.pageSize,
                     deptDiscountId : this.memberInfo.id,
                     productName : this.queryParams.keyword,
-                    orgId : this.memberInfo.orgId,
+                    orgId : this.memberInfo.sourceDeptId,
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];

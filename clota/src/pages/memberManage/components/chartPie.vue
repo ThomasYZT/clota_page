@@ -35,14 +35,18 @@
         computed: {
             //环形图参数
             options(){
-                let colorList = ['#0055B8', '#33C0BF', '#FD8CB1', '#FBC826'];
+                let colorList = ['#0055B8', '#33C0BF', '#FD8CB1', '#FBC826','#22BB5F','#EB6751','#F7981C','#669ad5','#22BB5F'];
                 let legendData = [], seriesData = [];
                 for(let item of this.memberLevelData){
+                    let per = 0;
+                    if(this.memberCount !== 0){
+                        per = Number(item.value  * 100 / this.memberCount).toFixed(2);
+                    }
                     //格式化图例数据
-                    legendData.push(`${item.label}|${Number(item.value  * 100 / this.memberCount).toFixed(2)}%|${item.value}`);
+                    legendData.push(`${item.label}|${per}%|${item.value}`);
                     //设置环形图数据
                     seriesData.push(Object.assign({
-                        name : `${item.label}|${Number(item.value  * 100 / this.memberCount).toFixed(2)}%|${item.value}`
+                        name : `${item.label}|${per}%|${item.value}`
                     },item));
                 }
                 return {
@@ -66,15 +70,15 @@
                         extraCssText: 'border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10)'
                     },
                     legend: {
-                        type: 'scroll',
-                        pageButtonPosition : 'end',
+                        // type: 'scroll',
+                        // pageButtonPosition : 'end',
                         orient: 'vertical',
                         top: 'middle',
                         pageButtonGap : 10,
                         lineHeight: 56,
                         // bottom : 10,
-                        // left: seriesData.length > 6 ? 170 : 250,
-                        left:  250,
+                        left: seriesData.length > 6 ? 170 : 250,
+                        // left:  250,
                         itemGap: 18,
                         itemWidth: 8,
                         itemHeight: 8,

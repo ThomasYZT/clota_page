@@ -2,26 +2,35 @@
     <!--新增/修改会员信息-->
     <div class="add-member">
 
-        <bread-crumb-head :before-router-list="beforeRouterList" :locale-router="localeRouter"></bread-crumb-head>
+        <bread-crumb-head
+            :before-router-list="beforeRouterList"
+            :locale-router="localeRouter">
+        </bread-crumb-head>
 
         <div class="add-member-content">
 
             <!--基本信息-->
             <div class="form-container">
-                <Form ref="formValidate" :model="member" :rules="ruleValidate" :label-width="115">
+                <Form ref="formValidate"
+                      :model="member"
+                      :rules="ruleValidate"
+                      :label-width="115">
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('name')" prop="custName"><!--姓名-->
-                            <Input v-model.trim="member.custName" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.custName"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('phoneNum')" prop="phoneNum"><!--手机号-->
-                            <Input v-model.trim="member.phoneNum" :placeholder="$t('inputField', {field: ''})"/>
+                        <Form-item :label="$t('phoneNum').slice(0,3)" prop="phoneNum"><!--手机号-->
+                            <Input v-model.trim="member.phoneNum"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item label="E-mall" prop="emailAddr">
-                            <Input v-model.trim="member.emailAddr" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.emailAddr"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -41,82 +50,105 @@
                                 <Option v-for="(item,index) in enumData.genderEnum"
                                         :key="index"
                                         :value="item.name">
-                                    {{item.desc}}
+                                    {{$t(item.desc)}}
                                 </Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('QQ')" prop="qq">
-                            <Input v-model.trim="member.qq" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.qq"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('weChat')" prop="wechatAcct"><!--微信-->
-                            <Input v-model.trim="member.wechatAcct" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.wechatAcct"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('ailiPay')" prop="alipayAcct"><!--支付宝-->
-                            <Input v-model.trim="member.alipayAcct" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.alipayAcct"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('levelSetting')" prop="levelId"><!--会员级别-->
-                            <Select v-model="member.levelId" :placeholder="$t('selectField', {msg: $t('memberLevelPri')})"><!--请选择会员初始级别-->
-                                <Option v-for="item in enumData.level" :key="item.id" :value="item.id">{{item.levelDesc}}</Option>
+                            <Select v-model="member.levelId"
+                                    :placeholder="$t('selectField', {msg: $t('memberLevelPri')})"><!--请选择会员初始级别-->
+                                <Option v-for="item in enumData.level"
+                                        :key="item.id"
+                                        :value="item.id">{{item.levelDesc}}</Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('memberChannel')" prop="channelId"><!--会员渠道-->
-                            <Select v-model="member.channelId" :placeholder="$t('selectField', {msg: $t('memberOriginChannel')})"><!--请选择会员来源渠道-->
-                                <Option v-for="item in enumData.channel" :key="item.id" :value="item.id">{{item.channelName}}</Option>
+                            <Select v-model="member.channelId"
+                                    :placeholder="$t('selectField', {msg: $t('memberOriginChannel')})"><!--请选择会员来源渠道-->
+                                <Option v-for="item in enumData.channel"
+                                        :key="item.id"
+                                        :value="item.id">
+                                    {{item.channelName}}
+                                </Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('countryCode')" prop="stateCode"><!--国家代码-->
-                            <Input v-model.trim="member.stateCode" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.stateCode"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('cityCode')" prop="cityCode"><!--城市代码-->
-                            <Input v-model.trim="member.cityCode" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.cityCode"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--第三方卡号-->
-                            <Input v-model.trim="member.tpNo" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.tpNo"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--第三方卡面号-->
-                            <Input v-model.trim="member.tpCardNo" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.tpCardNo"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('credentialsType')" prop="certificationType"><!--证件类型-->
-                            <Select v-model="member.certificationType" :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
-                                <Option v-for="item in enumData.idType" :key="item.id" :value="item.id">{{item.name}}</Option>
+                            <Select v-model="member.certificationType"
+                                    :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
+                                <Option v-for="item in enumData.idType"
+                                        :key="item.id"
+                                        :value="item.id">
+                                    {{item.name}}
+                                </Option>
                             </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('credentialsCode')" prop="idCardNumber"><!--证件编号-->
-                            <Input v-model.trim="member.idCardNumber" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.idCardNumber"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('personalInterests')" prop="hobby"><!--个人兴趣-->
-                            <Input v-model.trim="member.hobby" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="member.hobby"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('address')" prop="homeAddr"><!--地址-->
-                            <Input v-model.trim="member.homeAddr" :placeholder="$t('selectField', {msg: $t('address')})"/><!--请输入家庭地址-->
+                            <Input v-model.trim="member.homeAddr"
+                                   :placeholder="$t('selectField', {msg: $t('address')})"/><!--请输入家庭地址-->
                         </Form-item>
                     </div>
 
@@ -125,12 +157,23 @@
 
             <div class="content-footer">
                 <template v-if="type === 'add'">
-                    <Button type="primary" :loading="loading" @click="formValidateFunc">{{$t('confirmAdd')}}</Button><!--确定新增-->
+                    <Button type="primary"
+                            :loading="loading"
+                            @click="formValidateFunc">
+                        {{$t('confirmAdd')}}
+                    </Button>
                 </template>
                 <template v-if="type === 'modify'">
-                    <Button type="primary" :loading="loading" @click="formValidateFunc">{{$t('confirm')}}</Button><!--确定-->
+                    <Button type="primary"
+                            :loading="loading"
+                            @click="formValidateFunc">
+                        {{$t('confirm')}}
+                    </Button>
                 </template>
-                <Button type="ghost" @click="goBack">{{$t("cancel")}}</Button>
+                <Button type="ghost"
+                        @click="goBack">
+                    {{$t("cancel")}}
+                </Button>
             </div>
 
         </div>
@@ -145,14 +188,17 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import { validator } from 'klwk-ui';
     import ajax from '@/api/index'
-    import minBy from 'lodash/minBy'
+    import minBy from 'lodash/minBy';
+    import common from '@/assets/js/common.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead
         },
         data() {
-            var validateMethod = {
+            let validateMethod = {
 
                 mobile :  (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
@@ -171,7 +217,48 @@
                 }
 
             };
+            //校验邮箱
+            const validateEmail = (rule,value,callback) => {
+                if(value){
+                    if(validator.isEmail(value)){
+                        callback();
+                    }else{
+                        callback('请输入正确的邮箱格式');
+                    }
+                }else{
+                    callback();
+                }
+            };
+            //校验字段长度
+            const validateFileLength = (rule,value,callback) => {
+                if(common.isNotEmpty(value)){
+                    if(value.length > rule.maxLength){
+                        callback(rule.name + '长度不可以超过' + rule.maxLength + '个字符');
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
+                }
+            };
+            //校验字符串是否包含数字和字母
+            const validateNumAndStr = (rule,value,callback) => {
+                if(common.isNotEmpty(value)){
+                    if(/^[A-Za-z0-9]{0,}$/g.test(value)){
+                        if(value.length > rule.maxLength){
+                            callback(rule.name + '长度不可以超过' + rule.maxLength + '个字符');
+                        }else{
+                            callback();
+                        }
+                    }else{
+                        callback(rule.name + '必须输入字母或数字');
+                    }
+                }else{
+                    callback();
+                }
+            };
             return {
+                //面包屑上级路由信息
                 beforeRouterList: [
                     {
                         name: 'memberInfo',   // 会员信息
@@ -225,28 +312,62 @@
                 ruleValidate: {
                     custName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 20}), trigger: 'blur' },      // 姓名不能多于20个字符
+                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },      // 姓名不能多于15个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phoneNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('phoneNum')}), trigger: 'blur' },       // 手机号不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
                     ],
+                    emailAddr : [
+                        {validator : validateEmail,trigger : 'blur'},
+                        {  max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },      // 邮箱不能多于50个字符
+                    ],
+                    qq : [
+                        {validator : validateFileLength,trigger : 'blur',name : 'qq',maxLength : 20}
+                    ],
+                    wechatAcct : [
+                        {validator : validateFileLength,trigger : 'blur',name : '微信',maxLength : 20}
+                    ],
+                    alipayAcct : [
+                        {validator : validateFileLength,trigger : 'blur',name : '支付宝',maxLength : 30}
+                    ],
+                    hobby : [
+                        {validator : validateFileLength,trigger : 'blur',name : '个人兴趣',maxLength : 100}
+                    ],
+                    homeAddr : [
+                        {validator : validateFileLength,trigger : 'blur',name : '地址',maxLength : 100}
+                    ],
+                    stateCode : [
+                        {validator : validateNumAndStr,trigger : 'blur',name : '国家代码',maxLength : 30}
+                    ],
+                    cityCode : [
+                        {validator : validateNumAndStr,trigger : 'blur',name : '城市代码',maxLength : 30}
+                    ],
+                    tpNo : [
+                        {validator : validateNumAndStr,trigger : 'blur',name : '第三方卡号',maxLength : 30}
+                    ],
+                    idCardNumber : [
+                        {validator : validateNumAndStr,trigger : 'blur',name : '证件编号',maxLength : 40}
+                    ],
+                    tpCardNo : [
+                        {validator : validateNumAndStr,trigger : 'blur',name : '第三方卡面号',maxLength : 30}
+                    ]
                 },
                 //编辑原数据
                 info: {},
-                // 路由from参数
-                routerFrom: {}
+                // // 路由from参数
+                // routerFrom: {}
             }
         },
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.routerFrom = from;
-            });
-        },
+        // beforeRouteEnter(to, from, next) {
+        //     next(vm => {
+        //         vm.routerFrom = from;
+        //     });
+        // },
         computed: {
             localeRouter () {
                 return this.type === 'add' ? this.$t('addMember') : this.$t('addMember');      // 新增会员 ： 修改会员信息
@@ -256,42 +377,43 @@
             },
         },
         created() {
+            this.getChannelList();
+            this.queryDocument();
+            this.getLevelList();
             // 初始化
-            this.init();
+            // this.init();
         },
 
         methods: {
-
-            //页面初始化，区分新增与修改
-            async init() {
-                try {
-                    this.getChannelList();
-                    this.queryDocument();
-//                    await Promise.all([this.getLevelList(), this.getChannelList(), this.queryDocument()]);
-                    await this.getLevelList();
-
-                    if (this.$route.query && this.$route.query.type) {
-                        this.type = this.$route.query.type;
-
-                        // 编辑页面时给表单赋值
-                        if(this.isEdit){
-                            this.info = this.$route.query.info;
-                            var memberInfo = pick(this.$route.query.info, ['custName', 'phoneNum','emailAddr','birthDay',
-                                'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
-                                'certificationType','idCardNumber','homeAddr','status']);
-                            var memberCard = this.$route.query.info.memberCardVos && this.$route.query.info.memberCardVos.length >0 ?
-                                pick(this.$route.query.info.memberCardVos[0], ['levelId', 'channelId','tpNo','tpCardNo']) : {
-                                    levelId: '',channelId: '',tpNo: '',tpCardNo: '',
-                                };
-                            this.member = defaultsDeep(memberInfo, memberCard);
-                        } else {
-                            this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
-                        }
-                    }
-                } catch (err) {
-                    console.warn(err);
-                }
-            },
+//
+//             //页面初始化，区分新增与修改
+//             async init() {
+//                 try {
+// //                    await Promise.all([this.getLevelList(), this.getChannelList(), this.queryDocument()]);
+//
+//                     if (this.$route.query && this.$route.query.type) {
+//
+//
+//                         // // 编辑页面时给表单赋值
+//                         // if(this.isEdit){
+//                         //     this.info = this.$route.query.info;
+//                         //     var memberInfo = pick(this.$route.query.info, ['custName', 'phoneNum','emailAddr','birthDay',
+//                         //         'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
+//                         //         'certificationType','idCardNumber','homeAddr','status']);
+//                         //     var memberCard = this.$route.query.info.memberCardVos && this.$route.query.info.memberCardVos.length >0 ?
+//                         //         pick(this.$route.query.info.memberCardVos[0], ['levelId', 'channelId','tpNo','tpCardNo']) : {
+//                         //             levelId: '',channelId: '',tpNo: '',tpCardNo: '',
+//                         //         };
+//                         //     this.member = defaultsDeep(memberInfo, memberCard);
+//                         // } else {
+//                         //     this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
+//                         // }
+//                     }
+//                 } catch (err) {
+//                     console.warn(err);
+//                 }
+//
+//             },
 
             //手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
             customValid(data, field){
@@ -334,6 +456,9 @@
                 }).then(res => {
                     if(res.success){
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
+                        if(!this.member.levelId){
+                            this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
+                        }
                     } else {
                         this.$Message.warning('queryChannelSet '+ this.$t('queryFailure') +'！');
                     }
@@ -378,11 +503,11 @@
                     if(res.success){
                         //区分新增与修改
                         if(this.type === 'add'){
-                            this.$Message.success(this.$t('successTip', {tip: this.$t('addMember')}) + '！');     // 新增会员成功
+                            this.$Message.success('新增成功！');     // 新增会员成功
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
-                            this.$Message.success(this.$t('successTip', {tip: this.$t('modifyMember')}) + '！');     // 修改会员成功
+                            this.$Message.success('修改成功！');     // 修改会员成功
                             this.$router.push({name: this.routerFrom.name});
                         }
                     } else {
@@ -398,9 +523,32 @@
                     this.$router.push({ name: 'memberInfo'});
                 }
                 if( this.type === 'modify' ){
-                    this.$router.push({name: this.routerFrom.name});
+                    this.$router.back();
+                    // this.$router.push({name: this.routerFrom.name});
                 }
             },
+            /**
+             * 获取路由信息
+             */
+            getParams(params) {
+                if(this.$route.query.type === 'modify'){
+                    if(params && Object.keys(params).length > 0){
+                        this.type = this.$route.query.type;
+                        this.initData(params);
+                    }
+                }
+            },
+            /**
+             * 初始化数据
+             * @param data
+             */
+            initData(data) {
+                this.info = JSON.parse(JSON.stringify(data));
+                let memberInfo = pick(data, ['custName', 'phoneNum','emailAddr','birthDay',
+                    'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
+                    'certificationType','idCardNumber','homeAddr','status','tpNo','tpCardNo','levelId','channelId']);
+                this.member = defaultsDeep({},memberInfo);
+            }
 
         },
     }
@@ -417,6 +565,10 @@
         background: $color-fff;
         border-radius: 4px;
 
+        /deep/ .ivu-breadcrumb{
+            padding-left: 30px;
+        }
+
         .breadcrumb-box{
             height: 50px;
             line-height: 50px;
@@ -427,7 +579,8 @@
         .add-member-content{
 
             .form-container{
-                width: 100%;
+                width: 1000px;
+                margin: 0 auto;
                 height: 100%;
                 background-color: #FFFFFF;
                 border-radius: 4px;

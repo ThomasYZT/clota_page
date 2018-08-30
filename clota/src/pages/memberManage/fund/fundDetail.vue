@@ -48,6 +48,7 @@
             <el-table-column
                 slot="column3"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -57,6 +58,7 @@
             </el-table-column>
             <el-table-column
                 slot="column4"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -67,6 +69,7 @@
             </el-table-column>
             <el-table-column
                 slot="column6"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -79,6 +82,7 @@
             </el-table-column>
             <el-table-column
                 slot="column7"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"

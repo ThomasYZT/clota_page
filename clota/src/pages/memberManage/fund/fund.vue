@@ -62,6 +62,7 @@
             @query-data="queryList">
             <el-table-column
                 slot="column0"
+                show-overflow-tooltip
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -75,6 +76,7 @@
             </el-table-column>
             <el-table-column
                 slot="column3"
+                show-overflow-tooltip
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -87,6 +89,7 @@
             </el-table-column>
             <el-table-column
                 slot="column6"
+                show-overflow-tooltip
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -99,6 +102,7 @@
             </el-table-column>
             <el-table-column
                 slot="column7"
+                show-overflow-tooltip
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"

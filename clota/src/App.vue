@@ -46,6 +46,7 @@
     #app {
         @include block_outline();
         min-width: $window_min_width;
+        min-height: $window_min_height;
         background-size: 100% 100%;
         /*transition: all 0.3s;*/
     }

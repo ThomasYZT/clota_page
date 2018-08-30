@@ -127,8 +127,7 @@
             dateOptions () {
                 return {
                     disabledDate : date =>  {
-                        console.log(this.memberStartDate)
-                        return date && date.valueOf() < this.memberStartDate;
+                        return !(date && (date.valueOf() >= this.memberStartDate) && (date.valueOf() <= new Date().valueOf()));
                     }
                 }
             }
