@@ -38,16 +38,16 @@
                         </div>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-title="detail.wechatAcct">{{detail.wechatAcct || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span v-title="detail.alipayAcct">{{detail.alipayAcct || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>E-mail：</label><span v-title="detail.emailAddr">{{detail.emailAddr || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-title="detail.stateCode">{{detail.stateCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span v-title="detail.cityCode">{{detail.cityCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-title="detail.qq">{{detail.qq || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-title="detail.certificationType">{{detail.certificationType || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-title="detail.idCardNumber">{{detail.idCardNumber || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-title="detail.hobby">{{detail.hobby || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-title="detail.homeAddr">{{detail.homeAddr || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-w-title="detail.wechatAcct">{{detail.wechatAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span v-w-title="detail.alipayAcct">{{detail.alipayAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>E-mail：</label><span v-w-title="detail.emailAddr">{{detail.emailAddr || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-w-title="detail.stateCode">{{detail.stateCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span v-w-title="detail.cityCode">{{detail.cityCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-w-title="detail.qq">{{detail.qq || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="detail.certificationType">{{detail.certificationType || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-w-title="detail.idCardNumber">{{detail.idCardNumber || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-w-title="detail.hobby">{{detail.hobby || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="detail.homeAddr">{{detail.homeAddr || '-'}}</span></div>
                     </div>
                 </div>
 
@@ -57,21 +57,21 @@
                         <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span v-title="detail.cardCode">
+                        <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span v-w-title="detail.cardCode">
                             {{detail.cardCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span v-title="detail.orgName">
+                        <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span v-w-title="detail.orgName">
                             {{detail.orgName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span v-title="detail.channelName">
+                        <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span v-w-title="detail.channelName">
                             {{detail.channelName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span v-title="getEnumFieldShow('vipStatusEnum', detail.memberKinds)">
+                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span v-w-title="getEnumFieldShow('vipStatusEnum', detail.memberKinds)">
                             {{getEnumFieldShow('vipStatusEnum', detail.memberKinds)}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span v-title="detail.levelDesc">
+                        <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span v-w-title="detail.levelDesc">
                             {{detail.levelDesc || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
                             {{detail.passwd || '********'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span v-title="detail.tpCardNo">
+                        <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span v-w-title="detail.tpCardNo">
                             {{detail.tpCardNo || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span v-title="detail.tpNo">
+                        <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span v-w-title="detail.tpNo">
                             {{detail.tpNo || '-'}}</span></div>
                     </div>
                 </div>
@@ -462,7 +462,7 @@
              */
             getEnumFieldShow ( name, val ) {
                 var obj = this.enumData[name].find((item) => val === item.name);
-                return obj ? obj.desc : '-'
+                return obj ? this.$t(obj.desc) : '-'
             },
 
             //显示新增账号弹窗

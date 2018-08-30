@@ -43,7 +43,7 @@ export default {
     'backUp': '收起',
     'upLoad': '展开',
     'logout': '退出系统',
-    'IntegralRate': '积分比例（人民币：积分数）',
+    'IntegralRate': '积分率',
     'integral': '积分',
     'inputPlaceholder': '请输入',
     'inputField': '请输入{field}',
