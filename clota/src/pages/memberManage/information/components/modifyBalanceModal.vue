@@ -161,7 +161,7 @@
             //校验本金额不可大于总本金余额
             const validateMaxCorpus = (rule,value,callback) => {
                 if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.corpusBalance ){
-                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('principalBalance'), big: this.$t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
+                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('corpusAmount'), big: this.$t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
                 } else {
                     callback();
                 }
@@ -194,11 +194,11 @@
                 //表单校验
                 ruleValidate: {
                     accountTypeId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifiedAccount')}), trigger: 'change' },     // 修改的账户不能为空
+                        { required: true, message: this.$t('selectField', {msg: this.$t('modifiedAccount')}), trigger: 'change' },     // 修改的账户不能为空
                     ],
                     corpusAmount: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('principalBalance'), length: 10}), trigger: 'blur' },  // 本金余额不能超过10字符
+                        // { max: 10, message: this.$t('errorMaxLength', {field: this.$t('principalBalance'), length: 10}), trigger: 'blur' },  // 本金余额不能超过10字符
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxCorpus, trigger: 'blur' },
                     ],
@@ -209,10 +209,10 @@
                         { validator: validateMaxDonate, trigger: 'blur' },
                     ],
                     reasonId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifyReason')}), trigger: 'change' },  // '修改原因不能为空'
+                        { required: true, message: this.$t('selectField', {msg: this.$t('modifyReason')}), trigger: 'change' },  // '修改原因不能为空'
                     ],
                     remark: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('remark')}), trigger: 'blur' }, // 备注不能为空
+                        { required: true, message: this.$t('inputField', {field: this.$t('remark')}), trigger: 'blur' }, // 备注不能为空
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },  // 备注不能超过100字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],

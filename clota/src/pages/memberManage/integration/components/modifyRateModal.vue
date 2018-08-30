@@ -86,31 +86,15 @@
         },
         components: {},
         data () {
-            //校验兑换积分数是否合法
-            const validateIntegRate = (rule,value,callback) => {
-                if(this.notEmpty(value)){
-                    if(validator.isNumber(value)){
-                        if(value > 0){
-                            callback();
-                        }else{
-                            callback('积分数必须大于0');
-                        }
-                    }else{
-                        callback(this.$t('errorFormat',{filed : this.$t('integral')}));
-                    }
-                }else{
-                    callback(this.$t('inputField',{filed : this.$t('integral')}));
-                }
-            };
             //校验消费金额是否正确
             const validateConsumption = (rule,value,callback) =>{
                 common.validateMoney(value).then(() => {
                     callback();
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        callback(this.$t('errorMaxLength',{field : this.$t('IntegralRate'),length : 10}));
                     }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                        callback(this.$t(err,{field : this.$t('IntegralRate')}));
                     }
                 });
             };
@@ -124,10 +108,10 @@
                             callback(this.$t('discountError'));
                         }
                     }else{
-                        callback(this.$t('errorFormat',{filed : this.$t('discountRate')}));
+                        callback(this.$t('numError',{field : this.$t('discountRate')}));
                     }
                 }else{
-                    callback(this.$t('inputField',{filed : this.$t('discountRate')}));
+                    callback(this.$t('inputField',{field : this.$t('discountRate')}));
                 }
             };
             return {
@@ -146,9 +130,6 @@
                 },
                 //表单校验规则
                 ruleValidate: {
-                    integRate: [
-                        { required: true, validator : validateIntegRate, trigger: 'blur' },
-                    ],
                     discountRate: [
                         { required: true, validator : validateDiscount, trigger: 'blur' },
                     ],
@@ -156,7 +137,7 @@
                         {required : true, validator : validateConsumption,trigger : 'blur'}
                     ],
                     remark : [
-                        {max : 100,message : '最多输入100字符',trigger : 'blur'}
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 100}),trigger : 'blur'}
                     ]
                 },
                 //会员级别对应的id

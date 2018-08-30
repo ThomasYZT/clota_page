@@ -79,9 +79,9 @@
                     callback();
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        callback(this.$t('errorMaxLength',{field : this.$t('cashAmount'),length : 10}));
                     }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                        callback(this.$t(err,{field : this.$t('cashAmount')}));
                     }
                 });
             };
@@ -90,7 +90,7 @@
             //校验兑换后数量不可大于本金余额
             const validateMaxNum = (rule,value,callback) => {
                 if(value && Number(value) > this.accountInfo.corpusBalance ){
-                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('amountAfterConversion'), big: this.$t('principalBalance')}) ));       // 兑换后数量不可大于本金余额
+                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('amountAfterConversion'), big: this.$t('corpusAmount')}) ));       // 兑换后数量不可大于本金余额
                 } else {
                     callback();
                 }
@@ -132,8 +132,8 @@
                 //表单校验
                 ruleValidate: {
                     fromAmount: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('cashAmount')}), trigger: 'blur'},    // 兑现数量不能为空
-                        { max: 30, message: this.$t('errorMaxLength', {field: this.$t('cashAmount'), length: 30}), trigger: 'blur' },      // 兑现数量不能超过30字符
+                        { required: true, message: this.$t('inputField', {field: this.$t('cashAmount')}), trigger: 'blur'},    // 兑现数量不能为空
+                        // { max: 30, message: this.$t('errorMaxLength', {field: this.$t('cashAmount'), length: 30}), trigger: 'blur' },      // 兑现数量不能超过30字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxNum, trigger: 'blur' },
@@ -142,7 +142,7 @@
                         {required: true},
                     ],
                     toAccountId: [
-                        { validator: validateToAccount, trigger: 'change' },
+                        { required :true,validator: validateToAccount, trigger: 'change' },
                         { validator: validateCheckSelf, trigger: 'change' },
                     ],
                 },

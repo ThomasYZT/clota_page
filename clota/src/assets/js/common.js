@@ -190,36 +190,45 @@ export default {
      * @param minLength
      * @param maxLength
      */
-    validateInteger (value,reg,minLength = 1,maxLength = 10){
+    validateInteger (value,reg,minLength = 0,maxLength = 10){
         return new Promise((resolve,reject) => {
-            if(this.isNotEmpty(value) && validator.isNumber(value)){
-                let  numStr = String(value);
-                if(value < 0){
-                    reject('fieldTypeError');
-                }
-                if(numStr.length < minLength){
-                    reject('小于最小长度');
-                }else if(numStr.length > maxLength){
-                    reject('大于最大长度');
-                }else{
-                    if(Number.parseInt(value) === Number.parseFloat(value)){
-                        //使用自定义正则表达式
-                        if(reg){
-                            if(reg.test(value)){
-                                resolve();
+            if(this.isNotEmpty(value)){
+                if(validator.isNumber(value)){
+                    let  numStr = String(value);
+                    if(value < 0){
+                        reject('fieldTypeError');
+                    }
+                    if(numStr.length < minLength){
+                        reject('errorMinLength');
+                    }else if(numStr.length > maxLength){
+                        reject('errorMaxLength');
+                    }else{
+                        if(Number.parseInt(value) === Number.parseFloat(value)){
+                            //使用自定义正则表达式
+                            if(reg){
+                                if(reg.test(value)){
+                                    resolve();
+                                }else{
+                                    reject('regErr');
+                                }
                             }else{
-                                reject('1006');
+                                resolve();
                             }
                         }else{
-                            resolve();
+                            reject('integetError');
                         }
-                    }else{
-                        reject('请输入正整数');
                     }
+                }else{
+                    reject('integetError');
                 }
             }else{
-                reject('非数字');
+                reject('inputField');
             }
+            // if(this.isNotEmpty(value) && validator.isNumber(value)){
+            //
+            // }else{
+            //     reject('integetError');
+            // }
         });
     }
 }

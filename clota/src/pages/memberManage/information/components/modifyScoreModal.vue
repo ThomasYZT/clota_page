@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
-                    <Form-item :label="$t('adjustAccBalance') + '：'" prop="corpusAmount"><!--账户余额调整-->
+                    <Form-item :label="$t('integAdjust') + '：'" prop="corpusAmount"><!--账户余额调整-->
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
                                 {{$t("increase")}}<!--增加-->
@@ -105,15 +105,20 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    callback(err);
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t(err,{field : this.$t('integAdjust'),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t('integAdjust')}));
+                    }
                 });
             };
 
 
-            //校验本金额不可大于总本金余额
+            //校验积分调整值不可大于总积分
             const validateMaxCorpus = (rule,value,callback) => {
-                if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.accountBalance ){
-                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('principalBalance'), big: this.$t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
+                // console.log(Number(value) > this.accountInfo.accountBalance,this.accountInfo.accountBalance)
+                if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.account.accountBalance ){
+                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('integAdjust'), big: this.$t('accountInteg')}) ));    // 本金余额不可大于总本金余额
                 } else {
                     callback();
                 }
@@ -138,16 +143,15 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifiedAccount')}), trigger: 'change' },     // 修改的账户不能为空
                     ],
                     corpusAmount: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('moneyBalance'), length: 10}), trigger: 'blur' },      // 账户余额不能超过10字符
+                        { validator: validateMethod.emoji, trigger: 'blur' }, // 账户余额不能超过10字符
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxCorpus, trigger: 'blur' },
                     ],
                     reasonId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifyReason')}), trigger: 'change' },     // 修改原因不能为空
+                        { required: true, message: this.$t('selectField', {msg: this.$t('modifyReason')}), trigger: 'change' },     // 修改原因不能为空
                     ],
                     remark: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('remark')}), trigger: 'blur' },       // 备注不能为空
+                        { required: true, message: this.$t('inputField', {field: this.$t('remark')}), trigger: 'blur' },       // 备注不能为空
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],

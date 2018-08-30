@@ -108,6 +108,7 @@ export default {
     'memberType': 'Member Types',
     'pointBalance': 'Available Integral',
     'moneyBalance': 'Account Balance',
+    'moneyBalanceAdjust': '账户余额调整值',
     'signTime': 'Registration Time',
     'operate': 'Operation',
     'modify': 'Modify',
@@ -192,7 +193,7 @@ export default {
     'selectModifyReason': 'Please select the reason for modification',
     'modifiedAccount': 'The account to modify',
     'modifyReason': 'Modified reason',
-    'principalBalance': '本金余额',
+    'corpusAmount': '本金余额',
     'totalPrincipalBalance': '总本金余额',
     'totalGiftSum': '总赠送余额',
     'currentIntegralAcc': '目前积分账户',
@@ -290,6 +291,9 @@ export default {
     'transferAmount': '转出金额',
     'validAmount': '可用余额',
     'transferError': '转出金额加手续费不可大于可用余额',
+    'donateAmount': '赠送账户余',
+    'accountInteg': '账户积分',
+    'integAdjust': '积分账户调整值',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
@@ -303,6 +307,7 @@ export default {
     'sizeErrorS': '{filed1}不可小于{filed2}',
     'sizeErrorB': '{filed1}不可大于{filed2}',
     'numError': '{filed1}必须为数字',
+    'integetError': '{field}必须为正整数',
     'filterError': '{field}必须输入字母或数字',
 
 }
