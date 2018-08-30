@@ -35,6 +35,7 @@
                                 :clearable="false"
                                 :editable="false"
                                 transfer
+                                :options="dateOptions"
                                 placement="bottom-end"
                                 style="width: 319px"
                                 @on-change="dateChange">
@@ -121,6 +122,15 @@
                         endDate : this.autoDefTIme[1] ? this.autoDefTIme[1].format('yyyy-MM-dd') : '',
                     }
                 }
+            },
+            //设置日期不可选时间
+            dateOptions () {
+                return {
+                    disabledDate : date =>  {
+                        console.log(this.memberStartDate)
+                        return date && date.valueOf() < this.memberStartDate;
+                    }
+                }
             }
         },
         methods : {
@@ -178,18 +188,19 @@
             getFirstMemberDate () {
                 ajax.post('getFirstMemberDate').then(res => {
                     if(res.success){
-                        this.memberStartDate = res.data ? res.replace(/-/g,'/') : new Date().format('yyyy/MM/dd');
+                        this.memberStartDate = res.data ? res.data.replace(/-/g,'/').toDate().valueOf() : new Date().valueOf();
                     }else{
-                        this.memberStartDate = new Date().format('yyyy/MM/dd')
+                        this.memberStartDate = new Date().valueOf();
                     }
-                    console.log(res);
-                })
+                }).catch(err => {
+                    this.memberStartDate = new Date().valueOf();
+                });
             }
         },
         created () {
             this.getMemberConsumeSumGroupBy();
             this.getFirstMemberDate();
-        }
+        },
     }
 </script>
 
