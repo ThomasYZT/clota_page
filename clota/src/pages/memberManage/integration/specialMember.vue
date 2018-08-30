@@ -229,10 +229,10 @@
                     remark : formData.remark
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('设置成功');
+                        this.$Message.success(this.$t('settingSuccess'));  // 设置成功
                         this.getStaffLevelInfo();
                     }else{
-                        this.$Message.error('设置失败');
+                        this.$Message.error(this.$t('settingFail'));    // 设置失败
                     }
                 }).finally(() => {
                     callback();

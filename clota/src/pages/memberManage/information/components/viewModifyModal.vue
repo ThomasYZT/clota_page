@@ -19,12 +19,12 @@
                 <span>{{manualData.endingBalance | contentFilter}}</span>{{$t('yuan')}}
             </div>
             <!--操作人-->
-            <div class="form-item-wrap"><label>操作人：</label><span>{{manualData.custName | contentFilter}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('operator')}}：</label><span>{{manualData.custName | contentFilter}}</span></div>
             <!--修改时间-->
-            <div class="form-item-wrap"><label>修改时间：</label><span>{{manualData.createdTime}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('modifiedTime')}}：</label><span>{{manualData.createdTime}}</span></div>
             <div class="form-item-wrap"><label>{{$t('remark') + '：'}}</label><span>{{manualData.remark | contentFilter}}</span></div>
             <!--修改原因-->
-            <div class="form-item-wrap"><label>修改原因：</label><span>{{manualData.reason | contentFilter}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('modifyReason')}}：</label><span>{{manualData.reason | contentFilter}}</span></div>
         </div>
 
         <div slot="footer" class="modal-footer">

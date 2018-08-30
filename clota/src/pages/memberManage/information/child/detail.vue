@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="content-info">
-                    <div class="title">{{$t("integralDetail")}}</div>
+                    <div class="title">{{$t("couponInfo")}}</div><!--优惠券信息-->
                     <more-card type="view"
                                :status="status"
                                :table-data="couponData"

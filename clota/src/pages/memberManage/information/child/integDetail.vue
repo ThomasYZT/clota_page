@@ -9,7 +9,7 @@
 
         <div class="integration-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.operType" style="width:200px" @on-change="filterDealList">
+                <Select v-model="queryParams.operType" style="width:200px" @on-change="filterDealList" :placeholder="$t('selectField', {msg: ''})">
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
                 <Date-picker
