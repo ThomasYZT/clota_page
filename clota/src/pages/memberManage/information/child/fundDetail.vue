@@ -69,7 +69,7 @@
                               @click="viewDetail(scope.row)">
                             {{ scope.row.operationType | transOperation }}
                         </span>
-                        <span v-else  @click="viewDetail(scope.row)">{{ scope.row.operationType | transOperation }}</span>
+                        <span v-else>{{ scope.row.operationType | transOperation }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

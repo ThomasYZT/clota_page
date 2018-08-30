@@ -82,7 +82,7 @@
                         this.hide();
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'addAccountInfo '+ $t('failure') +'！');
+                        this.$Message.warning(res.message || 'addAccountInfo '+ this.$t('failure') +'！');
                     }
                 });
             },

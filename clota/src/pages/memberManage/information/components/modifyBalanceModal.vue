@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-item-wrap">
-                    <label>$t('PrincipalAccBalance')：</label><!--本金账户余额-->
+                    <label>{{$t('PrincipalAccBalance')}}：</label><!--本金账户余额-->
                     <span class="yellow-color">{{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}</span>
                     {{accountInfo.unit || ''}}
                 </div>
@@ -137,7 +137,7 @@
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( $t('errorIrregular')) );      // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular')) );      // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -156,7 +156,7 @@
             //校验本金额不可大于总本金余额
             const validateMaxCorpus = (rule,value,callback) => {
                 if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.corpusBalance ){
-                    callback(new Error( $t('errorGreaterThan', {small: $t('principalBalance'), big: $t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
+                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('principalBalance'), big: this.$t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
                 } else {
                     callback();
                 }
@@ -165,7 +165,7 @@
             //校验赠送金额不可大于总赠送金额
             const validateMaxDonate = (rule,value,callback) => {
                 if(value && this.formData.donateOptSign === 'sub' && Number(value) > this.accountInfo.donateBalance ){
-                    callback(new Error( $t('errorGreaterThan', {small: $t('giftSum'), big: $t('totalGiftSum')}) ));    // 赠送金额不可大于总赠送金额
+                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('giftSum'), big: this.$t('totalGiftSum')}) ));    // 赠送金额不可大于总赠送金额
                 } else {
                     callback();
                 }
@@ -189,26 +189,26 @@
                 //表单校验
                 ruleValidate: {
                     accountTypeId: [
-                        { required: true, message: $t('errorEmpty', {msg: $t('modifiedAccount')}), trigger: 'change' },     // 修改的账户不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifiedAccount')}), trigger: 'change' },     // 修改的账户不能为空
                     ],
                     corpusAmount: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: $t('errorMaxLength', {field: $t('principalBalance'), length: 10}), trigger: 'blur' },  // 本金余额不能超过10字符
+                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('principalBalance'), length: 10}), trigger: 'blur' },  // 本金余额不能超过10字符
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxCorpus, trigger: 'blur' },
                     ],
                     donateAmount: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: $t('errorMaxLength', {field: $t('giftSum'), length: 10}), trigger: 'blur' },  // 赠送金额不能超过10字符
+                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('giftSum'), length: 10}), trigger: 'blur' },  // 赠送金额不能超过10字符
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMaxDonate, trigger: 'blur' },
                     ],
                     reasonId: [
-                        { required: true, message: $t('errorEmpty', {msg: $t('modifyReason')}), trigger: 'change' },  // '修改原因不能为空'
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifyReason')}), trigger: 'change' },  // '修改原因不能为空'
                     ],
                     remark: [
-                        { required: true, message: $t('errorEmpty', {msg: $t('remark')}), trigger: 'blur' }, // 备注不能为空
-                        { max: 100, message: $t('errorMaxLength', {field: $t('remark'), length: 100}), trigger: 'blur' },  // 备注不能超过100字符
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('remark')}), trigger: 'blur' }, // 备注不能为空
+                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },  // 备注不能超过100字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 }
@@ -256,7 +256,7 @@
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message|| 'adjustAmount '+ $t('failure') +'！');
+                        this.$Message.warning(res.message|| 'adjustAmount '+ this.$t('failure') +'！');
                     }
                 })
             },

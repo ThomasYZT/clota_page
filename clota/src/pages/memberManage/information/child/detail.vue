@@ -136,10 +136,10 @@
                                @change-status="changeStatus"></more-card>
                 </div>
 
-                <div class="content-info">
-                    <div class="title">{{$t("cardPkgInfo")}}</div>
-                    <div class="operate" @click="viewCardDetail"><span class="pointer">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
-                </div>
+                <!--<div class="content-info">-->
+                    <!--<div class="title">{{$t("cardPkgInfo")}}</div>-->
+                    <!--<div class="operate" @click="viewCardDetail"><span class="pointer">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>-->
+                <!--</div>-->
 
                 <div class="content-info">
                     <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
@@ -168,7 +168,7 @@
                                 <template slot-scope="scoped">{{$t("motherCard")}}</template>
                             </el-table-column>
                             <el-table-column
-                                slot="column3"
+                                slot="column1"
                                 :label="row.title"
                                 :prop="row.field"
                                 :key="row.index"
@@ -201,7 +201,7 @@
                                 <template slot-scope="scoped">{{$t("childCard")}}</template>
                             </el-table-column>
                             <el-table-column
-                                slot="column3"
+                                slot="column1"
                                 :label="row.title"
                                 :prop="row.field"
                                 :key="row.index"
@@ -346,12 +346,12 @@
                 motherTableColumn: [
                     {
                         title: 'currentMemberCardInfo',
-                        minWidth: 260,
+                        minWidth: 250,
                         field: ''
                     },
                     {
                         title: 'motherCardInfo',
-                        minWidth: 260,
+                        minWidth: 270,
                         field: ''
                     },
                 ],
@@ -359,12 +359,12 @@
                 sonTableColumn: [
                     {
                         title: 'currentMemberCardInfo',
-                        minWidth: 260,
+                        minWidth: 250,
                         field: ''
                     },
                     {
                         title: 'childCardInfo',
-                        minWidth: 260,
+                        minWidth: 270,
                         field: ''
                     },
                 ],
@@ -401,7 +401,7 @@
                         this.defineAccount = res.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryDefineAccountType '+ $t('failure') +'！');
+                        this.$Message.warning(res.message || 'queryDefineAccountType '+ this.$t('failure') +'！');
                     }
                 });
             },
@@ -450,7 +450,7 @@
                         this.allFundsAccount = res.data.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberAccountDefine '+ $t('queryFailure') +'！');
+                        this.$Message.warning(res.message || 'queryMemberAccountDefine '+ this.$t('queryFailure') +'！');
                     }
                 })
             },
@@ -490,7 +490,7 @@
                         })
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'listCardAccountInfo '+ $t('failure') +'！');
+                        this.$Message.warning(res.message || 'listCardAccountInfo '+ this.$t('failure') +'！');
                     }
                 });
             },
@@ -513,7 +513,7 @@
                         this.couponData = res.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message ||'listCouponsByStatus '+ $t('failure') +'！');
+                        this.$Message.warning(res.message ||'listCouponsByStatus '+ this.$t('failure') +'！');
                     }
                 });
             },
@@ -555,7 +555,7 @@
                         this.$Message.success('更新会员卡信息成功！');
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'updateMemberCard '+ $t('failure') +'！');
+                        this.$Message.warning(res.message || 'updateMemberCard '+ this.$t('failure') +'！');
                     }
                 });
             },
@@ -579,7 +579,7 @@
                         }
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryChildOrMotherCard '+ $t('failure') +'！');
+                        this.$Message.warning(res.message || 'queryChildOrMotherCard '+ this.$t('failure') +'！');
                     }
                 });
             },
