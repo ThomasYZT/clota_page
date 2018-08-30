@@ -157,7 +157,7 @@
         methods: {
 
             show () {
-                this.visible = true
+                this.visible = true;
             },
 
             //表单校验

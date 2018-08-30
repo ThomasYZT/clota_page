@@ -33,21 +33,21 @@
                             <div class="form-show">
                                 <span class="form-item-wrap"><label>{{$t("phoneNum")}}：</label>{{detail.phoneNum || '-'}}</span>
                                 <span class="form-item-wrap"><label>{{$t("birthday")}}：</label>
-                                    {{detail.birthDay ? new Date(detail.birthDay).format('yyyy-MM-dd') : '-'}}</span>
+                                    {{detail.birthDay | timeFormat('yyyy-MM-dd')}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span>{{detail.wechatAcct || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span>{{detail.alipayAcct || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>E-mail：</label><span>{{detail.emailAddr || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span>{{detail.stateCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span>{{detail.cityCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span>{{detail.qq || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span>{{detail.certificationType || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span>{{detail.idCardNumber || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span>{{detail.hobby || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span>{{detail.homeAddr || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-title="detail.wechatAcct">{{detail.wechatAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span v-title="detail.alipayAcct">{{detail.alipayAcct || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>E-mail：</label><span v-title="detail.emailAddr">{{detail.emailAddr || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-title="detail.stateCode">{{detail.stateCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span v-title="detail.cityCode">{{detail.cityCode || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-title="detail.qq">{{detail.qq || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-title="detail.certificationType">{{detail.certificationType || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-title="detail.idCardNumber">{{detail.idCardNumber || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-title="detail.hobby">{{detail.hobby || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-title="detail.homeAddr">{{detail.homeAddr || '-'}}</span></div>
                     </div>
                 </div>
 
@@ -57,21 +57,21 @@
                         <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span v-title="detail.cardCode">
                             {{detail.cardCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span v-title="detail.orgName">
                             {{detail.orgName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span v-title="detail.channelName">
                             {{detail.channelName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span v-title="getEnumFieldShow('vipStatusEnum', detail.memberKinds)">
                             {{getEnumFieldShow('vipStatusEnum', detail.memberKinds)}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span v-title="detail.levelDesc">
                             {{detail.levelDesc || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
                             {{detail.passwd || '********'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span v-title="detail.tpCardNo">
                             {{detail.tpCardNo || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span>
+                        <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span v-title="detail.tpNo">
                             {{detail.tpNo || '-'}}</span></div>
                     </div>
                 </div>
@@ -271,7 +271,6 @@
 
         <!--会员储值账户余额修改modal-->
         <modify-balance-modal ref="modifyBalance"
-                              :store="charTableData"
                               :reason="reasonData"
                               :detail="detail"
                               @add-success="listCardAccountInfo(detail)">
@@ -302,6 +301,7 @@
     import moreCard  from '../components/moreCard.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import defaultsDeep from 'lodash/defaultsDeep';
     import { vipStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
@@ -607,7 +607,9 @@
 
             // 修改该会员储值账户余额
             showAssetModal () {
-                this.$refs.modifyBalance.show();
+                let _storeList = defaultsDeep([], this.charTableData);
+                this.$refs.modifyBalance.show( _storeList );
+
             },
             //修改该会员积分账户余额
             showScoreModal () {
@@ -639,6 +641,20 @@
                 this.$router.push({ name: 'infoRate' , params: { detail: this.detail} });
             },
 
+            //根据会员获取会员信息和会员卡信息
+            showMemberDetail ( params ) {
+                ajax.post('showMemberDetail', {
+                    memberId: params.id,
+                }).then(res => {
+                    if(res.success){
+                        this.detail = res.data || {};
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'showMemberDetail '+ this.$t('failure') +'！');
+                    }
+                });
+            },
+
             /**
              * 获取路由参数
              * @param params
@@ -654,6 +670,8 @@
                     this.listCouponsByStatus(params.detail);
                     //字母卡列合并
                     this.queryChildOrMotherCard(params.detail);
+                    //根据会员获取会员信息和会员卡信息
+//                    this.showMemberDetail(params.detail);
                 }else{
                     this.$router.push({
                         name : 'memberInfo'
@@ -801,8 +819,15 @@
                             line-height: 30px;
                             font-size: $font_size_14px;
                             color: $color-666;
+                            display: flex;
                             >label{
                                 color: $color-333;
+                            }
+                            >span{
+                                flex: 1;
+                                display: inline-block;
+                                vertical-align: middle;
+                                @include overflow_tip();
                             }
                         }
                     }

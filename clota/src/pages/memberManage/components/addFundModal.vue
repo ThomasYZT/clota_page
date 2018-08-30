@@ -90,7 +90,7 @@
 
             //校验正整数
             const validateNumber = (rule,value,callback) => {
-                common.validateInteger(value).then(() => {
+                common.validateMoney(value).then(() => {
                     this.getTotalAmount();
                     callback();
                 }).catch(err => {

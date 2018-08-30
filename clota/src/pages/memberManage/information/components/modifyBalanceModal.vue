@@ -127,10 +127,11 @@
 <script>
 
     import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
 
     export default {
-        props: ['store','reason','detail'],
+        props: ['reason','detail'],
         components: {},
         data () {
 
@@ -146,7 +147,7 @@
 
             //校验正整数
             const validateNumber = (rule,value,callback) => {
-                common.validateInteger(value).then(() => {
+                common.validateMoney(value).then(() => {
                     callback();
                 }).catch(err => {
                     callback(err);
@@ -211,13 +212,26 @@
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },  // 备注不能超过100字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                }
+                },
+                //账户数据
+                store: [],
             }
         },
         methods: {
 
-            show () {
-                this.visible = true
+            show ( list ) {
+                if(list && list.length > 0){
+                    let _store = defaultsDeep([], list);
+                    _store.forEach( item => {
+                        if(item.id === null || item.id === undefined){
+                            item.id = "null";
+                        }
+                    } );
+                    this.store = defaultsDeep([], _store);
+                }
+                setTimeout( () => {
+                    this.visible = true;
+                }, 300)
             },
 
             //要修改的账户--监听改变
@@ -235,7 +249,7 @@
                         let params = {
                             memberId: this.detail.id,
                             cardId: this.detail.cardId,
-                            accountId: this.accountInfo.id,
+                            accountId: this.accountInfo.id === "null" ? null : this.accountInfo.id,
                             accountTypeId: this.accountInfo.accountDefineId,
                             amount: this.formData.corpusOptSign==='sub' ? '-'+this.formData.corpusAmount : this.formData.corpusAmount,
                             donateAmount: this.formData.donateOptSign==='sub' ? '-'+this.formData.donateAmount : this.formData.donateAmount,
