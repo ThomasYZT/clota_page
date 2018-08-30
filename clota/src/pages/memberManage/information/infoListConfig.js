@@ -43,7 +43,7 @@ export const infoListHead = [
     },
     {
         title: 'signTime',
-        minWidth: 120,
+        minWidth: 140,
         field: 'updatedTime'
     },
     {

@@ -53,6 +53,7 @@
                 @row-click="viewDetail">
                 <el-table-column
                     slot="column0"
+                    show-overflow-tooltip
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -84,7 +85,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender) }}</span>
+                        <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender)  | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -110,7 +111,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ scoped.row.moneyBalance ? scoped.row.moneyBalance.toCurrency()+$t("yuan") : '' }}</span>
+                        <span>{{ scoped.row.moneyBalance | moneyFilter | contentFilter }}{{$t('yuan')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -275,9 +276,10 @@
                     memberId: data.id,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: 'del'}) + '！');     // 删除成功
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}) + '！');     // 删除成功
+                        this.queryList();
                     } else {
-                        this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', {tip: 'del'}) + '！');    // 删除失败
+                        this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', {tip: this.$t('del')}) + '！');    // 删除失败
                     }
                 });
             },

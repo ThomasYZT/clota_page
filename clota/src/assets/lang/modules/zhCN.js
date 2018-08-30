@@ -252,11 +252,26 @@ export default {
     'integralAccModification': '积分账户修改',
     'ModifyAmountThisTime': '本次修改金额',
     'accBalanceAfterModification': '修改后账户余额',
+    'nominalValue': '卡券折扣',
+    'cardFaceError': '卡券折扣',
+    'validStartTime': '有效开始时间',
+    'validEndTime': '有效结束时间',
+    'validChannel': '可用渠道',
+    'conditionLowerLimtation': '最低消费金额',
+    'conditionUpperLimtation': '最高消费金额',
+    'pointsExchange': '积分兑换数量',
+    'isEffectBeforeDiscount': '代金券在折扣前后使用设置',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
     'errorGreaterThan': '{small}不可大于{big}',
     'errorEmpty': '{msg}不能为空',
     'errorMaxLength': '{field}不能超过{length}字符',
+    'errorMinLength': '{field}不能少于{length}字符',
+    'fieldTypeError': '{field}不能为负数',
+    'decimalError': '{field}小数位最多2位',
+    'rangeError': '{field}必须大于{min}，且小于{max}',
+    'sizeErrorS': '{filed1}不可小于{filed2}',
+    'sizeErrorB': '{filed1}不可大于{filed2}',
 
 }

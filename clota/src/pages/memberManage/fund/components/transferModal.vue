@@ -114,7 +114,11 @@
                         }
                     }
                 }).catch(err => {
-                    callback(this.$t(err,{field : rule.field}));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 4}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
             //校验手续费是否正确
@@ -134,7 +138,11 @@
                         }
                     }
                 }).catch(err => {
-                    callback(this.$t(err,{field : rule.field}));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
             return {

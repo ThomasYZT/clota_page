@@ -78,7 +78,11 @@
                     this.toAmountFunc();
                     callback();
                 }).catch(err => {
-                    callback(err);
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
 

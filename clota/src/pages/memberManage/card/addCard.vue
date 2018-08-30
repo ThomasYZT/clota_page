@@ -37,8 +37,13 @@
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon' || formData.couponType === 'discount_coupon'">
-                    <Form-item :label="$t('couponFaceValue')" prop="nominalValue"><!--卡券面值-->
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discount_coupon'">
+                    <Form-item :label="$t('couponFaceValue')" prop="nominalValue">
+                        <Input v-model.trim="formData.nominalValue" :placeholder="$t('inputField', {field: ''})"/>
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">
+                    <Form-item label="卡券面值" prop="nominalValue">
                         <Input v-model.trim="formData.nominalValue" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
@@ -232,14 +237,12 @@
                 },
             };
 
-            //校验金额格式
+            //校验卡券面值
             const validateCardFaceValue = (rule,value,callback) => {
-                common.validateMoney(value).then(() => {
+                common.validateMoney(value,0,4).then(() => {
                     if(this.formData.couponType === 'discount_coupon'){
-                        if(value >= 10){
-                            callback('折扣券面值必须大于0，且小于10');
-                        }else if(value <= 0){
-                            callback('折扣券面值必须大于0，且小于10');
+                        if(value <= 0 || value >= 10){
+                            callback(this.$t('rangeError',{field : this.$t(rule.field),min : 0,max : 10}));
                         }else{
                             callback();
                         }
@@ -247,7 +250,11 @@
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err,{field : rule.field}));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 4}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
 
@@ -255,12 +262,13 @@
             const validateStartTime = (rule,value,callback) => {
                 if(common.isNotEmpty(value)){
                     if(this.formData.expireTime && value.valueOf() >  this.formData.expireTime.valueOf()){
-                        callback('有效开始时间不可大于结束时间');
+                        // callback('有效开始时间不可大于结束时间');
+                        callback(this.$t('sizeErrorB',{filed1 : this.$t('validStartTime'),filed2 : this.$t('validEndTime')}));
                     }else{
                         callback();
                     }
                 }else{
-                    callback('有效开始时间不可为空');
+                    callback(this.$t('selectField',{msg : this.$t('validStartTime')}));
                 }
             };
 
@@ -268,12 +276,12 @@
             const validateEndTime = (rule,value,callback) => {
                 if(common.isNotEmpty(value)){
                     if(this.formData.effectiveTime && value.valueOf() <  this.formData.effectiveTime.valueOf()){
-                        callback('有效结束时间不可小于开始时间');
+                        callback(this.$t('sizeErrorS',{filed1 : this.$t('validEndTime'),filed2 : this.$t('validStartTime')}));
                     }else{
                         callback();
                     }
                 }else{
-                    callback('有效结束时间不可为空');
+                    callback(this.$t('selectField',{msg : this.$t('validEndTime')}));
                 }
             };
 
@@ -295,10 +303,10 @@
                         if(value.length > 0){
                             callback();
                         }else{
-                            callback('可用渠道不可为空');
+                            callback(this.$t('selectField',{msg : this.$t('validChannel')}));
                         }
                     }else{
-                        callback('可用渠道不可为空');
+                        callback(this.$t('selectField',{msg : this.$t('validChannel')}));
                     }
                 }
             };
@@ -312,10 +320,10 @@
                         if(value.length > 0){
                             callback();
                         }else{
-                            callback('可用店铺不可为空');
+                            callback(this.$t('selectField',{msg : this.$t('shop')}));
                         }
                     }else{
-                        callback('可用店铺不可为空');
+                        callback(this.$t('selectField',{msg : this.$t('shop')}));
                     }
                 }
             };
@@ -329,10 +337,10 @@
                         if(value.length > 0){
                             callback();
                         }else{
-                            callback('商品不可为空');
+                            callback(this.$t('selectField',{msg : this.$t('goods')}));
                         }
                     }else{
-                        callback('商品不可为空');
+                        callback(this.$t('selectField',{msg : this.$t('goods')}));
                     }
                 }
             };
@@ -346,10 +354,10 @@
                         if(value.length > 0){
                             callback();
                         }else{
-                            callback('店铺不可为空');
+                            callback(this.$t('selectField',{msg : this.$t('shop')}));
                         }
                     }else{
-                        callback('店铺不可为空');
+                        callback(this.$t('selectField',{msg : this.$t('shop')}));
                     }
                 }
             };
@@ -358,12 +366,16 @@
             const validateLowerMon = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
                     if(common.isNotEmpty(this.formData.conditionUpperLimtation) && Number(value) > this.formData.conditionUpperLimtation){
-                        callback('最低消费金额不可超过最高消费金额');
+                        callback(this.$t('sizeErrorB',{filed1 : this.$t('conditionLowerLimtation'),filed2 : this.$t('conditionUpperLimtation')}));
                     }else{
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err,{field : rule.field}));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
 
@@ -371,12 +383,16 @@
             const validateUpperMon = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
                     if(common.isNotEmpty(this.formData.conditionLowerLimtation) && Number(value) < this.formData.conditionLowerLimtation){
-                        callback('最高消费金额不可低于最低消费金额');
+                        callback(this.$t('sizeErrorS',{filed1 : this.$t('conditionUpperLimtation'),filed2 : this.$t('conditionLowerLimtation')}));
                     }else{
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err,{field : rule.field}));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
 
@@ -437,25 +453,25 @@
                 //校验规则
                 ruleValidate: {
                     couponName: [
-                        { required: true, message: '卡券名称不能为空', trigger: 'blur' },
-                        { type: 'string', max: 30, message: '卡券名称不能多于20个字符', trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field : this.$t('couponName')}), trigger: 'blur' },
+                        { type: 'string', max: 30, message: this.$t('errorMaxLength',{field : this.$t('couponName'),length : 4}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     couponType: [
-                        { required: true, message: '卡券类别不能为空', trigger: 'change' },
+                        { required: true, message: this.$t('selectField',{msg : this.$t('couponType')}), trigger: 'change' },
                     ],
                     nominalValue: [
-                        { required: true, message: '卡券面值不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field : this.$t('couponFaceValue')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateCardFaceValue, trigger: 'blur' },
                     ],
                     conditionLowerLimtation: [
-                        { required: true, message: '最低消费金额不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field : this.$t('conditionLowerLimtation')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateLowerMon, trigger: 'blur' },
                     ],
                     conditionUpperLimtation: [
-                        { required: true, message: '最高消费金额不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field : this.$t('conditionUpperLimtation')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateUpperMon, trigger: 'blur' },
                     ],
@@ -469,7 +485,7 @@
                         { required: true, validator : validateOrg, trigger: 'change' },
                     ],
                     price: [
-                        { required: true, message: '可兑换积分为不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field : this.$t('pointsExchange')}), trigger: 'blur' },
                         { validator: validatePrice, trigger: 'blur' },
                     ],
                     conditionChannelId: [
@@ -479,7 +495,7 @@
                         {required : true,trigger : 'change'}
                     ],
                     isEffectBeforeDiscount : [
-                        {required : true,message : '请选择代金券在折扣前后使用设置',trigger : 'change'}
+                        {required : true,message : this.$t('selectField',{msg : this.$t('isEffectBeforeDiscount')}),trigger : 'change'}
                     ],
                     conditionProductId : [
                         {requird :true ,validator : validateProduct ,trigger : 'change'}

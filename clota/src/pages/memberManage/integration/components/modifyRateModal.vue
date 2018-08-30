@@ -107,7 +107,11 @@
                 common.validateMoney(value).then(() => {
                     callback();
                 }).catch(err => {
-                    callback(this.$t(err,{field : rule.field}));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    }
                 });
             };
             //校验折扣率是否正确

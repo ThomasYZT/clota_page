@@ -472,10 +472,10 @@
                         }
                         if(this.type === 'modify'){
                             this.$Message.success('修改成功！');     // 修改会员成功
-                            this.$router.push({name: this.routerFrom.name});
+                            this.$router.back();
                         }
                     } else {
-                        this.$Message.warning(url+' '+ this.$t('failure') +'！')
+                        this.$Message.error(res.message);
                     }
                 })
             },
