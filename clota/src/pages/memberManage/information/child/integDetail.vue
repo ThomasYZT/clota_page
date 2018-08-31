@@ -13,17 +13,19 @@
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.name) }}</Option>
                 </Select>
                 <Date-picker
-                    type="datetime"
+                    type="date"
+                    :editable="false"
                     v-model="queryParams.startDate"
-                    format="yyyy-MM-dd HH:mm:ss"
+                    format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
                     @on-change="changeStartDate"
                     @on-ok="filterDealList()"><!--请选择开始日期-->
                 </Date-picker>
                 <Date-picker
-                    type="datetime"
+                    type="date"
+                    :editable="false"
                     :value="queryParams.endDate"
-                    format="yyyy-MM-dd HH:mm:ss"
+                    format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
                     @on-change="changeEndDate"
                     @on-ok="filterDealList()"><!--请选择结束日期-->
@@ -183,7 +185,10 @@
                 if (this.queryParams.operType == 'null') {
                     param.operType = null;
                 }
-                ajax.post('queryOrgAccountChange', param).then(res => {
+                ajax.post('queryOrgAccountChange', Object.assign(param,{
+                    startDate : this.queryParams.startDate ? new Date(this.queryParams.startDate.replace(/-/g,'/')).format('yyyy-MM-dd 00:00:00') : '',
+                    endDate : this.queryParams.endDate ? new Date(this.queryParams.endDate.replace(/-/g,'/')).format('yyyy-MM-dd 23:59:59') : '',
+                })).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;

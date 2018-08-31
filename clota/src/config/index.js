@@ -3,11 +3,20 @@
  */
 
 const dev = process.env.NODE_ENV === 'development';
-export default {
-    // HOST: dev ? 'http://172.25.50.146:8088/' : '', //添哥
-    HOST: dev ? 'http://172.25.50.189:8888/' : HTTP_ENV, //开发环境
-    // HOST: dev ? 'http://172.25.50.26:8080/' : '', //任宇
-    // HOST: dev ? 'http://192.168.1.85:8080/' : '', ///金明
-    // HOST: dev ? 'http://172.25.50.25:8080/' : '', //喻斌
-    // HOST : dev ? 'http://172.25.50.52:9080' : 'http://172.25.50.52:9080' //李瑜
+let  ipLists = {};
+//生产环境
+if(dev){
+    ipLists = {
+        // HOST : 'http://172.25.50.146:8088/', //添哥
+        HOST : 'http://172.25.50.189:8888/', //开发环境
+        // HOST : 'http://172.25.50.26:8080/', //任宇
+        // HOST : 'http://192.168.1.85:8080/', //金明
+        // HOST : 'http://172.25.50.25:8080/', //喻斌
+        // HOST : 'http://172.25.50.52:9080', //添哥
+    };
+}else{//开发环境
+    ipLists = {
+        HOST : HTTP_ENV
+    }
 }
+export default ipLists

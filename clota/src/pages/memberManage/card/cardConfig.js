@@ -23,6 +23,6 @@ export const columnData = [
     },
     {
         title: '操作  ',
-        width: 180,
+        width: 130,
     }
 ];

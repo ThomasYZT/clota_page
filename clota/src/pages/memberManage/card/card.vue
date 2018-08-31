@@ -65,7 +65,8 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="modifyFunc(scope.row)">{{$t('modify')}}</li>
+                        <!--修改暂时去掉-->
+                        <!--<li @click="modifyFunc(scope.row)">{{$t('modify')}}</li>-->
                         <li @click="obsoloteCoupon(scope.row)">作废</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
                     </ul>
@@ -124,6 +125,7 @@
                 :width="150">
                 <template slot-scope="scope">
                     <ul class="operate-list">
+                        <!--<li @click="reloadCoupon(scope.row)">重新启用</li>-->
                         <li @click="reloadCoupon(scope.row)">重新启用</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
                     </ul>
@@ -222,13 +224,25 @@
              * @param data 券数据
              */
             reloadCoupon (data) {
-                this.$router.push({
-                    name: 'addCard',
-                    query: { type: 'reLoad' },
-                    params : this.getUpdateCouponParams(Object.assign({
-                        status :'valid'
-                    },data))
+                let params = this.getUpdateCouponParams(data);
+                ajax.post('updateCoupon',defaultsDeep({
+                    status : 'valid'
+                },params)).then(res => {
+                    if(res.success){
+                        this.$Message.success("启用成功！");
+                        this.queryList();
+                    }else{
+                        this.$Message.error('启用失败！');
+                    }
                 });
+                //暂时修改重新启用的方法
+                // this.$router.push({
+                //     name: 'addCard',
+                //     query: { type: 'reLoad' },
+                //     params : this.getUpdateCouponParams(Object.assign({
+                //         status :'valid'
+                //     },data))
+                // });
             },
 
             /**

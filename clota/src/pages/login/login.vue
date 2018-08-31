@@ -163,11 +163,11 @@
     }
 
     .header {
+        position: absolute;
+        @include block_outline(100%,53px);
         @include clearfix;
         padding: 40px 80px;
-        height: 53px;
         line-height: 53px;
-        box-sizing: content-box;
         .logo {
             float: left;
         }
@@ -196,12 +196,14 @@
     }
 
     .login {
-        min-height: calc(100% - 133px);
-        width: $content_min_width;
+        @include block_outline();
         margin: 0 auto;
         position: relative;
         .content {
-            min-height: 600px;
+            @include absolute_pos(absolute,0,0,0,0);
+            margin: auto auto;
+            width: 1100px;
+            height: 600px;
             img {
                 margin-top: 100px;
             }
