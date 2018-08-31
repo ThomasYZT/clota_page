@@ -80,7 +80,7 @@
                                v-if="error.donateIntegrateError">{{error.donateIntegrateError}}</span>
                         </span>
                         积分
-                        <span> 1 元</span>
+                        <span> {{settingData.scoreExToCharge.donateMoney}} 元</span>
                     </div>
                 </div>
             </div>
@@ -96,7 +96,7 @@
         </div>
 
         <div class="btn-wrap">
-            <Button type="primary" @click="basicSet">{{$t("save")}}</Button>
+            <Button type="primary" @click="save">{{$t("save")}}</Button>
             <Button type="ghost" @click="resetFieldFunc">{{$t("cancel")}}</Button>
         </div>
 
@@ -123,23 +123,23 @@
                 settingData: {
                     //积分交易抵扣规则
                     scoreOffsetInConsumption: {
-                        type: true,
+                        type: false,//Boolean
                         columns: {
-                            integrateToMoney: true,
-                            integrate: 100,//多少积分
-                            money: 5,//多少金额
-                            highProportion: 10,//最多能抵多少
+                            integrateToMoney: false,//Boolean
+                            integrate: '',//多少积分 Number
+                            money: '',//多少金额 Number
+                            highProportion: '',//最多能抵多少 Number
                         },
-                        meanwhile: true,
+                        meanwhile: false,//Boolean
                     },
                     //是否允许积分兑换成为储值账户金额
                     scoreExToCharge: {
-                        donateType: true,
-                        donateIntegrate: '',
-                        donateMoney: '1',
+                        donateType: false,//Boolean
+                        donateIntegrate: '',//Number
+                        donateMoney: 1,
                     },
                     //退款时积分退回设置
-                    scoreInsufficientNotification: true,
+                    scoreInsufficientNotification: false,
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
@@ -150,6 +150,10 @@
                     highProportionError: '',//积分交易抵扣规则--最多能抵多少
                     donateIntegrateError: '',
                 },
+                //Number型
+                numberProps: ['integrate','money','highProportion','donateIntegrate'],
+                //String型
+                stringProps: ['integrate','money','highProportion','donateIntegrate'],
             }
         },
         watch: {
@@ -191,47 +195,101 @@
         },
         methods: {
 
+            //数据转换，数据查询后转成string进入input，保存时转成相应类型
+            transPropsType ( data, type ) {
+                switch (type) {
+                    case 'number':
+                        return data ? Number(data) : 0;
+                        break;
+                    case 'boolean':
+                        return Boolean(data);
+                        break;
+                    case 'string':
+                        return data!==null ? String(data) : '';
+                        break;
+                }
+            },
+
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
                     if( res.success){
                         if(res.data){
                             this.id = res.data.id;
-                            if(res.data.scoreInsufficientNotification){
-                                //处理数据
-                                let params = {
-                                    scoreOffsetInConsumption: JSON.parse(res.data.scoreOffsetInConsumption),
-                                    scoreExToCharge: JSON.parse(res.data.scoreExToCharge),
-                                    scoreInsufficientNotification: res.data.scoreInsufficientNotification,
-                                };
-                                params.scoreInsufficientNotification = Boolean(res.data.scoreInsufficientNotification);
-                                this.settingData = params;
-                                //复制数据
-                                this.copySetData = defaultsDeep({}, params);
-                            } else {
-                                this.copySetData = defaultsDeep({}, this.settingData);
+                            //处理数据
+                            let params = {
+                                scoreOffsetInConsumption: JSON.parse(res.data.scoreOffsetInConsumption),
+                                scoreExToCharge: JSON.parse(res.data.scoreExToCharge),
+                                scoreInsufficientNotification: res.data.scoreInsufficientNotification ?
+                                Boolean(res.data.scoreInsufficientNotification) : false,
+                            };
+                            console.log(params)
+                            for( let key in params){
+                                if(key && Object.keys(params[key]).length > 0){
+                                    for( let ckey in params[key]){
+                                        if(this.stringProps.indexOf(ckey) > -1){
+                                            params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
+                                        }
+                                        if(ckey === 'columns'){
+                                            params[key][ckey].integrate = this.transPropsType(params[key][ckey].integrate, 'string');
+                                            params[key][ckey].money = this.transPropsType(params[key][ckey].money, 'string');
+                                            params[key][ckey].highProportion = this.transPropsType(params[key][ckey].highProportion, 'string');
+                                        }
+                                    }
+                                }
                             }
+                            console.log(params)
+                            this.settingData = params;
+                            //复制数据
+                            this.copySetData = defaultsDeep({}, params);
                         } else {
                             this.copySetData = defaultsDeep({}, this.settingData);
                         }
                     }
                 })
             },
-            //会员基础设置-保存/修改
-            basicSet () {
+            //点击保存，校验信息，数据处理
+            save () {
                 if(this.checkInputFunc()){
-                    ajax.post('basicSet', {
-                        id: this.id,
-                        scoreOffsetInConsumption: JSON.stringify(this.settingData.scoreOffsetInConsumption),
-                        scoreExToCharge: JSON.stringify(this.settingData.scoreExToCharge),
-                        scoreInsufficientNotification: this.settingData.scoreInsufficientNotification,
-                    }).then(res => {
-                        if( res.success){
-                            this.$Message.success('保存积分消费设置成功!');
-                            this.findBasicSet();
+
+                    let setParam = defaultsDeep({}, this.settingData);
+                    console.log(setParam)
+                    for( let key in setParam){
+                        if(key && Object.keys(setParam[key]).length > 0){
+                            for( let ckey in setParam[key]){
+                                if(this.numberProps.indexOf(ckey) > -1){
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
+                                }
+                                if(ckey === 'columns'){
+                                    setParam[key][ckey].integrate = this.transPropsType(setParam[key][ckey].integrate, 'number');
+                                    setParam[key][ckey].money = this.transPropsType(setParam[key][ckey].money, 'number');
+                                    setParam[key][ckey].highProportion = this.transPropsType(setParam[key][ckey].highProportion, 'number');
+                                }
+                            }
                         }
-                    })
+                    }
+                    setParam.id = this.id;
+                    console.log(setParam)
+
+                    let params = {
+                        id: this.id,
+                        scoreOffsetInConsumption: JSON.stringify(setParam.scoreOffsetInConsumption),
+                        scoreExToCharge: JSON.stringify(setParam.scoreExToCharge),
+                        scoreInsufficientNotification: String(setParam.scoreInsufficientNotification),
+                    };
+                    console.log(params)
+                    this.basicSet(params);
+
                 }
+            },
+            //会员积分消费设置-保存/修改
+            basicSet ( params ) {
+                ajax.post('basicSet', params).then(res => {
+                    if( res.success){
+                        this.$Message.success('保存积分消费设置成功!');
+                        this.findBasicSet();
+                    }
+                })
             },
             //点击取消重置数据
             resetFieldFunc () {
