@@ -211,6 +211,8 @@
             .btn-wrap{
                 height: 60px;
                 line-height: 60px;
+                @include clearfix();
+
                 /deep/ .ivu-btn{
                     min-width: 108px;
                     margin-right: 15px;
@@ -219,6 +221,7 @@
                 .tips{
                     font-size: $font_size_12px;
                     color: $color_yellow;
+                    float: right;
                 }
             }
 

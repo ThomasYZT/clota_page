@@ -371,5 +371,9 @@ export default {
     'numError': '{filed1}必须为数字',
     'integetError': '{field}必须为正整数',
     'filterError': '{field}必须输入字母或数字',
+    'M001': '会员等级成长值设置有冲突',
+    'M002': '余额不足',
+    'M003': '会员等级设置冲突',
+    'M004': '会员等级名称设置冲突',
 
 }
