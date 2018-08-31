@@ -17,7 +17,7 @@
 
 <script>
 
-    import vueEcharts from '@/components/vueEcharts/Echarts';
+    import vueEcharts from '../../../components/vueEcharts/Echarts';
     import ajax from '@/api/index.js';
 
     export default {
