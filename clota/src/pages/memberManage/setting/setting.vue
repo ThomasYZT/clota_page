@@ -271,6 +271,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
+    import {validator} from 'klwk-ui';
 
     export default {
         components: {
@@ -537,61 +538,48 @@
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-                if(this.settingData.scoreEffectiveMode.isIntegralType === 'checkout_after' && !this.validateInput(this.settingData.scoreEffectiveMode.isNoIntegralTime)){
-                    this.checkInputBlurFunc(this.settingData.scoreEffectiveMode.isNoIntegralTime, 'isNoIntegralTimeError');
+                if(this.settingData.scoreEffectiveMode.isIntegralType === 'checkout_after' &&
+                    !this.checkInputBlurFunc(this.settingData.scoreEffectiveMode.isNoIntegralTime,'isNoIntegralTimeError')){
                     return false
                 }
 
-                if(this.settingData.scoreMultipleOnBirthday.isSwitch && !this.validateInput(this.settingData.scoreMultipleOnBirthday.multiple)){
-                    this.checkInputBlurFunc(this.settingData.scoreMultipleOnBirthday.isSwitch, 'multipleError');
+                if(this.settingData.scoreMultipleOnBirthday.isSwitch &&
+                    !this.checkInputBlurFunc(this.settingData.scoreMultipleOnBirthday.multiple,'multipleError')){
                     return false
                 }
 
-                if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' && !this.validateInput(this.settingData.scoreValidityPeriod.validityTime)){
-                    this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityType, 'validityTimeError');
+                if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
+                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')){
                     return false
                 }
 
-                if(this.settingData.scoreValidityPeriod.checked && !this.validateInput(this.settingData.scoreValidityPeriod.validityTime)){
-                    this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.checked, 'remindError');
+                if(this.settingData.scoreValidityPeriod.checked &&
+                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'remindError')){
                     return false
                 }
 
-                if(this.settingData.memberValidPeriod.type === 'vipValidityType' && !this.validateInput(this.settingData.memberValidPeriod.vipValidity)){
-                    this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity, 'vipValidityError');
+                if(this.settingData.memberValidPeriod.type === 'vipValidityType' &&
+                    !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity,'vipValidityError')){
                     return false
                 }
 
-                if(this.settingData.memberValidPeriod.type === 'vipValidityTime' && !this.validateInput(this.settingData.memberValidPeriod.vipValidityTime)){
-                    this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidityTime, 'vipValidityTimeError');
+                if(this.settingData.memberValidPeriod.type === 'vipValidityTime' &&
+                    !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidityTime,'vipValidityTimeError')){
                     return false
                 }
 
-                if(this.settingData.memberValidPeriod.type === 'vipNumber' && !this.validateInput(this.settingData.memberValidPeriod.vipNumber)){
-                    this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipNumber, 'vipNumberError');
+                if(this.settingData.memberValidPeriod.type === 'vipNumber' &&
+                    !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipNumber,'vipNumberError')){
                     return false
                 }
 
-                if(this.settingData.notificationBeforeCouponExpire.isSwitch && !this.validateInput(this.settingData.notificationBeforeCouponExpire.day)){
-                    this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day, 'dayError');
+                if(this.settingData.notificationBeforeCouponExpire.isSwitch &&
+                    !this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day,'dayError')){
                     return false
                 }
 
                 return true
             },
-            //校验input输入
-            validateInput ( value ) {
-                if( value === '' || value === 'null' || value == 0 || !value ){
-                    return false
-                } else if( value && value.length > 10 ){
-                    return false
-                } else if( value && value.isUtf16() ){
-                    return false
-                } else {
-                    return true
-                }
-            },
-
 
             //查询证件类型
             queryDocument () {
@@ -731,46 +719,51 @@
              * @param val 值
              * @param errorField 校验错误显示字段
              */
-            async checkInputBlurFunc ( val, errorField ) {
+            checkInputBlurFunc ( val, errorField ) {
 
-                //为空校验
-                if( val === '' || val === 'null' || val == 0 || !val){
-                    this.error[errorField] = this.$t('errorEmpty', {msg: ''});     // '不能为空'
-                    return
-                } else {
+                //校验不为空
+                if(common.isNotEmpty(val)){
                     this.error[errorField] = '';
-                }
-
-                //长度校验
-                if (val && val.length > 10) {
-                    this.error[errorField] = this.$t('errorMaxLength', {field: '', length: 10});    // 不能超过10个
-                    return
-                } else {
-                    this.error[errorField] = '';
+                }else{
+                    this.error[errorField] = this.$t('inputField', {msg: ''});
+                    return false
                 }
 
                 //校验表情符号
                 if (val && val.isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
-                    return
+                    return false
                 } else {
                     this.error[errorField] = '';
                 }
-
-                //校验正整数
-                if(val){
-                    await common.validateInteger(val).then(() => {
-                        this.error[errorField] = '';
-                    }).catch(err => {
-                        this.error[errorField] = err;
-                        return
-                    });
-
-
+                //正整数，长度校验
+                if(validator.isNumber(val)){
+                    let numStr = String(val);
+                    if(numStr.length < 1){
+                        this.error[errorField] = this.$t('errorMinLength',{field : '',length : 1});
+                        return false
+                    }else if(numStr.length > 10){
+                        this.error[errorField] = this.$t('errorMaxLength', {field : '',length : 10});
+                        return false
+                    }else{
+                        if(Number.parseInt(val) === Number.parseFloat(val)){
+                            if(val < 0){
+                                this.error[errorField] = this.$t('fieldTypeError', {msg: ''});
+                                return false
+                            }else{
+                                this.error[errorField] = '';
+                            }
+                        }else{
+                            this.error[errorField] = this.$t('integetError', {msg: ''});
+                            return false
+                        }
+                    }
+                }else{
+                    this.error[errorField] = this.$t('integetError', {msg: ''});
+                    return false
                 }
 
-
-
+                return true
             },
 
         },
