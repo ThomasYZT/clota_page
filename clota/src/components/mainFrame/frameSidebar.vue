@@ -4,10 +4,12 @@
     <div class="frame-slidbar" :class="{'width-is-zero' : menuIsPackUp}">
         <div class="menu-list">
             <Menu :active-name="activeMenu"
+                  accordion
+                  :open-names="openedNames"
                   @on-select="selectMenu"
                   width="auto"
                   ref="menu"
-                  v-if="subMenuList.length > 0">
+                  v-if="subMenuList.length > 0" @on-open-change="openChange">
                 <template v-for="item in subMenuList">
                     <menu-com
                         :menu-info="item"
@@ -21,7 +23,10 @@
                         <span v-if="item.meta.iconClass"
                               class="iconfont"
                               :class="[item.meta.iconClass]"></span>
-                        <span class="menu-name" v-w-title="$t(`${item.meta.menuName}`)">{{$t(`${item.meta.menuName}`)}}</span>
+                        <span class="menu-name"
+                              v-w-title="$t(`${item.meta.menuName}`)">
+                            {{$t(`${item.meta.menuName}`)}}
+                        </span>
                     </MenuItem>
                 </template>
             </Menu>
@@ -32,13 +37,19 @@
 <script>
     import {mapGetters} from 'vuex'
     import menuCom from './menuCom';
+    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         components : {
             menuCom
         },
         data() {
-            return {}
+            return {
+                //当前展开的二级菜单
+                openedNames : [],
+                //上次展开的二级菜单保存记录
+                openedNamesRecord :[]
+            }
         },
         methods: {
             /**
@@ -52,6 +63,16 @@
                 //解决点击菜单组织树不收起来的问题
                 this.$el.click();
                 this.$store.commit('changeOperateLine',false);
+            },
+            /**
+             * 当展开二级菜单的时候，左边菜单全部展开
+             * @param name
+             */
+            openChange (name) {
+                this.openedNamesRecord = name;
+                if(this.menuIsPackUp){
+                    this.$store.commit('updateMenuIsPackUp', false);
+                }
             }
         },
         computed: {
@@ -73,7 +94,6 @@
                             return this.routerInfo[i]['children'].filter(item => {
                                 //排除重定向路由和权限挂在其它路由下的路由
                                 //children大于2的表示它有下级菜单，不可以排除
-                                // return item.meta && item.meta.menuName && !item.meta.hidden && (item.name === item.meta._name || item.children && item.children.length > 2);
                                 return item.meta && item.meta.isMenu;
                             });
                         }
@@ -92,27 +112,26 @@
                 }else{
                     return '';
                 }
-                // if (this.$route && this.$route.meta) {
-                //     if(this.$route.meta._name){
-                //         return this.$route.meta._name;
-                //     }else if(this.$route.name){
-                //         return this.$route.name;
-                //     } else{
-                //         return '';
-                //     }
-                // } else {
-                //     return '';
-                // }
             }
         },
         watch: {
             //监听路由变化，更新激活菜单
-            '$route'(oldVal, newVal) {
+            '$route'(newVal,oldVal) {
                 this.$nextTick(() => {
                     let menu = this.$refs.menu;
                     if (menu) {
                         menu.updateActiveName(this.activeMenu);
                     }
+                });
+            },
+            menuIsPackUp (newVal,oldVal){
+                if(newVal === true){
+                    this.openedNames = [];
+                }else{
+                    this.openedNames = defaultsDeep([],this.openedNamesRecord);
+                }
+                this.$nextTick(() => {
+                    this.$refs.menu.updateOpened();
                 });
             }
         }
