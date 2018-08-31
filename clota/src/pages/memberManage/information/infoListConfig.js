@@ -37,8 +37,8 @@ export const infoListHead = [
         field: 'pointBalance'
     },
     {
-        title: 'moneyBalance',
-        minWidth: 120,
+        title: 'defaultAccountMoney',
+        minWidth: 140,
         field: 'moneyBalance'
     },
     {

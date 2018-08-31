@@ -357,6 +357,7 @@ export default {
     'donateAmount': '赠送账户余',
     'accountInteg': '账户积分',
     'integAdjust': '积分账户调整值',
+    'defaultAccountMoney': '默认账户余额',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

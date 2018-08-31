@@ -18,6 +18,7 @@ const env = process.env.NODE_ENV === 'testing'
     ? require('../config/test.env')
     : require('../config/prod.env')
 var argv = require('yargs').argv;
+console.log(argv.env.http_env)
 
 
 const webpackConfig = merge(baseWebpackConfig, {
