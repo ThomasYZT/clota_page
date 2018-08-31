@@ -687,7 +687,7 @@
                     if(res.success){
                         this.formDynamic.reason[index].disabled = true;
                         this.formDynamic.reason[index].active = true;
-                        this.$Message.success('新增原因成功!');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('addReason')}) + '！');     // 新增原因成功
                     }
                 })
             },
@@ -697,7 +697,7 @@
                     reasonId: data.id,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除原因成功!');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('delReason')}) + '！');     // 删除原因成功
                         this.formDynamic.reason[index]._status = 0;
                     }
                 })
@@ -743,7 +743,7 @@
 
                 //长度校验
                 if (val && val.length > 10) {
-                    this.error[errorField] = '不能超过10个';
+                    this.error[errorField] = this.$t('errorMaxLength', {field: '', length: 10});    // 不能超过10个
                     return
                 } else {
                     this.error[errorField] = '';

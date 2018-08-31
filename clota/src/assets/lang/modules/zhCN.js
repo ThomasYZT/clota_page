@@ -337,6 +337,9 @@ export default {
     'addModifyReason': '新增修改原因',
     'credentialsTypeSetting': '证件类型设置',
     'addCredentialsType': '新增证件类型',
+    'delCredentialsType': '删除证件类型',
+    'addReason': '新增原因',
+    'delReason': '删除原因',
 
     'nominalValue': '卡券折扣',
     'validStartTime': '有效开始时间',
