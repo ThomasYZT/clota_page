@@ -107,7 +107,9 @@
 
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
+    import {validator} from 'klwk-ui';
 
     export default {
         components: {
@@ -302,43 +304,26 @@
             checkInputFunc () {
 
                 if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.integrate)){
-                    this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.integrate, 'integrateError');
+                    !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.integrate, 'integrateError')){
                     return false
                 }
 
                 if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.money)){
-                    this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.money, 'moneyError');
+                    !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.money, 'moneyError')){
                     return false
                 }
 
                 if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    !this.validateInput(this.settingData.scoreOffsetInConsumption.columns.highProportion)){
-                    this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.highProportion, 'highProportionError');
+                    ! this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.highProportion, 'highProportionError')){
                     return false
                 }
 
                 if(this.settingData.scoreExToCharge.donateType &&
-                    !this.validateInput(this.settingData.scoreExToCharge.donateIntegrate)
-                ){
-                    this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.donateIntegrate, 'donateIntegrateError');
+                    !this.checkInputBlurFunc(this.settingData.scoreExToCharge.donateIntegrate, 'donateIntegrateError')){
                     return false
                 }
 
                 return true
-            },
-            //校验input输入
-            validateInput ( value ) {
-                if( value === '' || value === 'null' || value == 0 || !value ){
-                    return false
-                } else if( value && value.length > 10 ){
-                    return false
-                } else if( value && value.isUtf16() ){
-                    return false
-                } else {
-                    return true
-                }
             },
 
             /**
@@ -348,39 +333,50 @@
              */
             checkInputBlurFunc ( val, errorField ) {
 
-                //为空校验
-                if( val === '' || val === 'null' || val == 0 || !val){
-                    this.error[errorField] = this.$t('errorEmpty', {msg: ''});     // '不能为空'
-                    return
-                } else {
+                //校验不为空
+                if(common.isNotEmpty(val)){
                     this.error[errorField] = '';
-                }
-
-                //长度校验
-                if (val && val.length > 10) {
-                    this.error[errorField] = '不能超过10个';
-                    return
-                } else {
-                    this.error[errorField] = '';
+                }else{
+                    this.error[errorField] = this.$t('inputField', {msg: ''});
+                    return false
                 }
 
                 //校验表情符号
                 if (val && val.isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
-                    return
+                    return false
                 } else {
                     this.error[errorField] = '';
                 }
 
-                //校验正整数
-                if(val){
-                    common.validateInteger(val).then(() => {
-                        this.error[errorField] = '';
-                    }).catch(err => {
-                        this.error[errorField] = err;
-                        return
-                    });
+                //正整数，长度校验
+                if(validator.isNumber(val)){
+                    let numStr = String(val);
+                    if(numStr.length < 1){
+                        this.error[errorField] = this.$t('errorMinLength', {msg: ''});
+                        return false
+                    }else if(numStr.length > 10){
+                        this.error[errorField] = this.$t('errorMaxLength', {msg: ''});
+                        return false
+                    }else{
+                        if(Number.parseInt(val) === Number.parseFloat(val)){
+                            if(val < 0){
+                                this.error[errorField] = this.$t('fieldTypeError', {msg: ''});
+                                return false
+                            }else{
+                                this.error[errorField] = '';
+                            }
+                        }else{
+                            this.error[errorField] = this.$t('integetError', {msg: ''});
+                            return false
+                        }
+                    }
+                }else{
+                    this.error[errorField] = this.$t('integetError', {msg: ''});
+                    return false
                 }
+
+                return true
 
             },
 
