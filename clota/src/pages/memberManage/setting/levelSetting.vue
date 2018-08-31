@@ -9,12 +9,12 @@
 
             <div class="btn-wrap">
                 <Button type="primary"
-                        :disabled="tableData.length === 12 ? true : false"
+                        :disabled="tableData.length > 11 ? true : false"
                         @click="showAddMemberModal">+ 新增会员级别</Button>
                 <Button type="primary"
                         :disabled="tableData.length > 0 ? false : true"
                         @click="showRuleModal">晋级设置</Button>
-                <span class="tips">会员级别数量不允许大于12</span>
+                <span class="tips">最多新增12个会员级别</span>
             </div>
             <div class="table-wrap">
                 <table-com

@@ -147,16 +147,16 @@
                 </div>
 
                 <div class="content-info card-temp"
-                     v-if=" (childOrMotherCard.isMotherCard === 'true' && motherCard.length > 0)
+                     v-if=" (childOrMotherCard.isMotherCard === 'true' && childCard.length > 0)
                      || (childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0)">
                     <div class="title">{{$t("childMotherCardInfo")}}</div>
-                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && motherCard.length > 0">
+                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && childCard.length > 0">
                         <table-com
                             :auto-height="true"
                             :table-com-min-height="300"
                             :ofsetHeight="170"
-                            :column-data="motherTableColumn"
-                            :table-data="motherCard"
+                            :column-data="childTableColumn"
+                            :table-data="childCard"
                             :span-method="objectSpanMethod"
                             :border="true">
                             <el-table-column
@@ -189,8 +189,8 @@
                             :auto-height="true"
                             :table-com-min-height="300"
                             :ofsetHeight="170"
-                            :column-data="sonTableColumn"
-                            :table-data="sonCard"
+                            :column-data="motherTableColumn"
+                            :table-data="motherCard"
                             :border="true">
                             <el-table-column
                                 slot="column0"
@@ -337,8 +337,8 @@
                 paymentData: [],
                 //自定义账户--用于新增账户
                 defineAccount: [],
-                //优惠券状态 已使用-used 未过期-noOverdue 已过期-overdue
-                status: 'used',
+                //优惠券状态 未过期-noOverdue 已使用-used  已过期-overdue
+                status: 'noOverdue',
                 //优惠券信息列表,包括分页信息
                 couponData: [],
                 //子母卡信息
@@ -357,8 +357,8 @@
                         field: ''
                     },
                 ],
-                sonCard: [],
-                sonTableColumn: [
+                childCard: [],
+                childTableColumn: [
                     {
                         title: 'currentMemberCardInfo',
                         minWidth: 250,
@@ -570,13 +570,9 @@
                         this.childOrMotherCard = res.data || {};
                         //区分子母卡
                         if(res.data.isMotherCard === 'true'){
-                            if(res.data.childCard.length > 0){
-                                this.motherCard = res.data.childCard;
-                            } else {
-                                this.motherCard = [];
-                            }
+                            this.childCard = res.data.childCard && res.data.childCard.length > 0 ? res.data.childCard: [];
                         } else {
-                            this.sonCard = res.motherCard || [];
+                            this.motherCard = res.data.motherCard && res.data.motherCard.length > 0 ? res.data.motherCard: [];
                         }
                     } else {
                         console.log(res);

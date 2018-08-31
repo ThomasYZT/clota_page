@@ -161,6 +161,8 @@
     .member-rule-modal{
         .modal-body{
             padding: 15px 20px 0;
+            max-height: 420px;
+            overflow: auto;
 
             /deep/ .ivu-input-wrapper{
                 /*width: 280px;*/
