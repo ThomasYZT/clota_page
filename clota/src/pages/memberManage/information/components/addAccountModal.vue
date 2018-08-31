@@ -49,7 +49,7 @@
                 //表单校验
                 ruleValidate: {
                     accountTypeId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('account')}), trigger: 'change' },     // 账户不能为空
+                        { required: true, message: this.$t('selectField', {msg: this.$t('account')}), trigger: 'change' },     // 账户不能为空
                     ],
                 }
             }

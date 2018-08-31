@@ -78,7 +78,7 @@
                         lineHeight: 56,
                         // bottom : 10,
                         // left: seriesData.length > 6 ? 170 : 250,
-                        right: seriesData.length > 6 ? '6%' : '20%',
+                        right: seriesData.length > 6 ? '3%' : '20%',
                         // left:  250,
                         itemGap: 18,
                         itemWidth: 8,

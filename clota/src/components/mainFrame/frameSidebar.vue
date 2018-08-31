@@ -9,7 +9,8 @@
                   @on-select="selectMenu"
                   width="auto"
                   ref="menu"
-                  v-if="subMenuList.length > 0" @on-open-change="openChange">
+                  v-if="subMenuList.length > 0"
+                  @on-open-change="openChange">
                 <template v-for="item in subMenuList">
                     <menu-com
                         :menu-info="item"
@@ -19,7 +20,8 @@
                     </menu-com>
                     <MenuItem :name="item.name"
                               v-else
-                              :key="item.name">
+                              :key="item.name"
+                              @click.native="changeMenuItem">
                         <span v-if="item.meta.iconClass"
                               class="iconfont"
                               :class="[item.meta.iconClass]"></span>
@@ -73,6 +75,16 @@
                 if(this.menuIsPackUp){
                     this.$store.commit('updateMenuIsPackUp', false);
                 }
+            },
+            /**
+             * 选择二级菜单，三级菜单收起
+             */
+            changeMenuItem () {
+                this.openedNames = [];
+                this.openedNamesRecord = [];
+                this.$nextTick(() => {
+                    this.$refs.menu.updateOpened();
+                });
             }
         },
         computed: {

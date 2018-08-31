@@ -615,7 +615,7 @@
 
             //修改会员信息
             modifyInfo () {
-                this.$router.push({ name: 'addMember', query: { type: 'modify', info: this.detail }});
+                this.$router.push({ name: 'addMember', query: { type: 'modify' },params : this.detail});
             },
 
             //储值账户--查看明细

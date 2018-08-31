@@ -327,10 +327,10 @@
                         {  max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },      // 邮箱不能多于100个字符
                     ],
                     qq : [
-                        {validator : validateFileLength,trigger : 'blur',name : 'qq',maxLength : 20}
+                        {validator : validateFileLength,trigger : 'blur',name : 'qq',maxLength : 50}
                     ],
                     wechatAcct : [
-                        {validator : validateFileLength,trigger : 'blur',name : this.$t('weChat'),maxLength : 20}
+                        {validator : validateFileLength,trigger : 'blur',name : this.$t('weChat'),maxLength : 50}
                     ],
                     alipayAcct : [
                         {validator : validateFileLength,trigger : 'blur',name : this.$t('ailiPay'),maxLength : 30}

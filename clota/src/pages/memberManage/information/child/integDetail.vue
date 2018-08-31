@@ -10,7 +10,7 @@
         <div class="integration-detail-content">
             <div class="filter-wrap">
                 <Select v-model="queryParams.operType" style="width:200px" @on-change="filterDealList" :placeholder="$t('selectField', {msg: ''})">
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.name) }}</Option>
                 </Select>
                 <Date-picker
                     type="datetime"
@@ -36,8 +36,6 @@
             </div>
             <table-com
                 v-if="queryParams.accountTypeIds"
-                :auto-height="true"
-                :table-com-min-height="300"
                 :ofsetHeight="170"
                 :show-pagination="true"
                 :column-data="columnData"
