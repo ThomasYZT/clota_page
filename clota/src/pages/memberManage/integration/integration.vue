@@ -110,8 +110,8 @@
              */
             queryList () {
                 ajax.post('memberDiscountOfMemberList',{
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize
+                    pageNo : 1,
+                    pageSize : 9999
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
