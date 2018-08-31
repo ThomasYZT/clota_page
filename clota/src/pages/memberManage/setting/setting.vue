@@ -731,7 +731,7 @@
              * @param val 值
              * @param errorField 校验错误显示字段
              */
-            checkInputBlurFunc ( val, errorField ) {
+            async checkInputBlurFunc ( val, errorField ) {
 
                 //为空校验
                 if( val === '' || val === 'null' || val == 0 || !val){
@@ -759,13 +759,17 @@
 
                 //校验正整数
                 if(val){
-                    common.validateInteger(val).then(() => {
+                    await common.validateInteger(val).then(() => {
                         this.error[errorField] = '';
                     }).catch(err => {
                         this.error[errorField] = err;
                         return
                     });
+
+
                 }
+
+
 
             },
 

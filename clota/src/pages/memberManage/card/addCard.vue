@@ -290,7 +290,7 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    callback(err);
+                    callback(this.$t(err));
                 });
             };
 

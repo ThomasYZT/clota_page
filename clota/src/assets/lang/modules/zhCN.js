@@ -351,6 +351,13 @@ export default {
     'levelCode': '等级编码',
     'memberGrade': '会员等级',
     'growthRange': '成长值范围',
+    'memberLevelSetting': '会员级别设置',
+    'memberGrowthValue': '会员成长值',
+    'memberGrowthRange': '会员成长值范围',
+    'memberLevelName': '会员级别名称，例：黄金会员',
+    'gradeName': '等级名称',
+    'startingValue': '起始值',
+    'maximumValue': '最高值',
 
     'nominalValue': '卡券折扣',
     'validStartTime': '有效开始时间',
