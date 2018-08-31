@@ -153,6 +153,10 @@
                     this.formData.levelNum = this.formData.levelNum > -1 ? this.formData.levelNum+'' : '';
                     this.formData.lowerGrowthValue = this.formData.lowerGrowthValue > -1 ? this.formData.lowerGrowthValue+'' : '';
                     this.formData.highestGrowthValue = this.formData.highestGrowthValue > -1 ? this.formData.highestGrowthValue+'' : '';
+
+                    setTimeout( () => {
+                        this.$refs.formValidate.validateField('highestGrowthValue');
+                    }, 300);
                 }
                 this.visible = true;
             },

@@ -182,7 +182,7 @@
                 this.visible = true;
                 setTimeout( () => {
                     this.$refs.formValidate.validateField('rateDenominator');
-                } )
+                },300 )
             },
 
             //表单校验

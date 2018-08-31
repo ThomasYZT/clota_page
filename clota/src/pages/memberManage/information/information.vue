@@ -139,7 +139,7 @@
                     <template slot-scope="scoped">
                         <ul class="operate-list">
                             <li class="blue-label" @click="modifyData($event,scoped.row)">{{$t("modify")}}</li>
-                            <li class="red-label" @click="deleteMemberInfo($event,scoped.row)">{{$t("del")}}</li>
+                            <!--<li class="red-label" @click="deleteMemberInfo($event,scoped.row)">{{$t("del")}}</li>-->
                         </ul>
                     </template>
                 </el-table-column>

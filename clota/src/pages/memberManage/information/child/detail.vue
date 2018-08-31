@@ -63,8 +63,8 @@
                             {{detail.orgName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span v-w-title="detail.channelName">
                             {{detail.channelName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span v-w-title="getEnumFieldShow('vipStatusEnum', detail.memberKinds)">
-                            {{getEnumFieldShow('vipStatusEnum', detail.memberKinds)}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span v-w-title="getEnumFieldShow('vipStatusEnum', detail.memberType)">
+                            {{getEnumFieldShow('vipStatusEnum', detail.memberType)}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span v-w-title="detail.levelDesc">
                             {{detail.levelDesc || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
@@ -658,9 +658,9 @@
              */
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
-                    for(let item in params){
+                    /*for(let item in params){
                         this[item] = params[item];
-                    }
+                    }*/
                     //根据会员卡获取账户信息
                     this.listCardAccountInfo(params.detail);
                     //获取更多优惠券
@@ -668,7 +668,7 @@
                     //字母卡列合并
                     this.queryChildOrMotherCard(params.detail);
                     //根据会员获取会员信息和会员卡信息
-//                    this.showMemberDetail(params.detail);
+                    this.showMemberDetail(params.detail);
                 }else{
                     this.$router.push({
                         name : 'memberInfo'

@@ -11,21 +11,19 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :label-width="170">
                 <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
-
-                    <!--:rules="[{ validator: emoji, trigger: 'blur' },-->
-                    <!--{ validator: maxLength, trigger: 'blur' },-->
-                    <!--{ validator: validateNumber, trigger: 'blur' },-->
-                    <!--{ validator: validateHigh, trigger: 'blur' },]"-->
-         <Form-item :label="item.levelDesc+'成长值范围：'"
+                    <Form-item :label="item.levelDesc+'成长值范围：'"
                                :key="index"
-                               :prop="'tableData.'+index+'highestGrowthValue'">
+                               :prop="'tableData.'+index+'.highestGrowthValue'"
+                               :rules="[{ validator: emoji, trigger: 'blur' },
+                                { max: 10, message: $t('errorMaxLength',{field : '值',length : 10}), trigger: 'blur' },
+                                { validator: maxLength, trigger: 'blur' },
+                                { validator: validateNumber, trigger: 'blur' },
+                                { validator: validateHigh, trigger: 'blur' },]">
                         <Input v-model.trim="item.lowerGrowthValue"
                                :placeholder="$t('inputField', {field: ''})"
-                               :maxlength="10"
                                class="single-input"/>
                         <span class="split-line">–</span>
                         <Input v-model.trim="item.highestGrowthValue"
-                               :maxlength="10"
                                :placeholder="$t('inputField', {field: ''})"
                                class="single-input"/>
                     </Form-item>
@@ -52,7 +50,6 @@
         components: {},
         data () {
             return {
-
                 //校验正整数
                 validateNumber : (rule,value,callback) => {
                     common.validateInteger( Number(value) ).then(() => {
@@ -72,9 +69,10 @@
                 },
 
                 //校验最高值范围
-                 validateHigh : (rule,value,callback) => {
-                    common.validateInteger( Number(this.formData.lowerGrowthValue) ).then(() => {
-                        if(Number(this.formData.lowerGrowthValue) > Number(value)){
+                validateHigh : (rule,value,callback) => {
+                    let field = rule.field.split('.');
+                    common.validateInteger( Number(this.formData.tableData[field[1]].lowerGrowthValue) ).then(() => {
+                        if(Number(this.formData.tableData[field[1]].lowerGrowthValue) > Number(value)){
                             callback(new Error('起始值不能大于最高值'));
                         } else {
                             callback();
@@ -86,7 +84,8 @@
 
                 //校验长度
                 maxLength : (rule, value, callback) => {
-                    if (value && value.length > 10) {
+                    let field = rule.field.split('.');
+                    if (this.formData.tableData[field[1]].lowerGrowthValue && this.formData.tableData[field[1]].lowerGrowthValue.length > 10) {
                         callback(new Error('长度不能大于10'));
                     } else {
                         callback();
@@ -98,37 +97,65 @@
                 formData: {
                     tableData: [],
                 },
+                //Number型
+                numberProps: ['lowerGrowthValue','highestGrowthValue'],
+                //String型
+                stringProps: ['lowerGrowthValue','highestGrowthValue'],
             }
         },
         methods: {
 
+            //数据转换，数据查询后转成string进入input，保存时转成相应类型
+            transPropsType ( data, type ) {
+                switch (type) {
+                    case 'number':
+                        return data ? Number(data) : 0;
+                        break;
+                    case 'string':
+                        return data!==null ? String(data) : '';
+                        break;
+                }
+            },
+
+            //显示弹窗，页面数据初始化，把数字转成string
             show ( data ) {
                 if(data && data.length > 0){
-                    this.formData.tableData = defaultsDeep([], data);
+                    let list = defaultsDeep([], data);
+                    list.forEach( (item, index) => {
+                        for( let key in item){
+                            if(this.stringProps.indexOf(key) > -1){
+                                item[key]= this.transPropsType(item[key], 'string');
+                            }
+                        }
+                    });
+                    this.formData.tableData =  defaultsDeep([], list);
                 }
                 this.visible = true;
             },
 
             save () {
-                var params = [];
-                console.log(this.formData.tableData)
-                this.formData.tableData.forEach( item => {
-                    var list = {
+                let params = [];
+                let setParam = defaultsDeep([],  this.formData.tableData);
+                setParam.forEach( (item, index) => {
+                    for( let key in item){
+                        if(this.numberProps.indexOf(key) > -1){
+                            item[key]= this.transPropsType(item[key], 'number');
+                        }
+                    }
+                    params.push({
                         id: item.id,
                         levelNum: item.levelNum,
                         levelDesc: item.levelDesc,
                         lowerGrowthValue: item.lowerGrowthValue,
                         highestGrowthValue: item.highestGrowthValue,
-                    };
-                    params.push(list);
-                })
+                    })
+                });
+                console.log(params)
                 this.batchUpdateMemberLevels(params);
             },
 
             //会员等级晋升规则设置
             batchUpdateMemberLevels ( data ) {
-                console.log(data)
-                console.log(JSON.stringify(data))
                 ajax.post('batchUpdateMemberLevels', { models: JSON.stringify(data) }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');  // 操作成功
@@ -144,7 +171,6 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        console.log(true);
                         this.save();
                     }
                 })
