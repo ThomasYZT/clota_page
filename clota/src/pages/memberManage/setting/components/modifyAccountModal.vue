@@ -13,14 +13,26 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <div class="ivu-form-item-wrap">
                     <Form-item label="账户归属" prop="accountBelonging">
-                        <Select v-model="formData.accountBelonging"
-                                :disabled="formData.defaultAccount === 'true' ? true : false">
-                            <Option v-for="(item, index) in tableData"
-                                    :value="item.id"
-                                    :key="index">
-                                {{ item.orgName }}
+                        <!--默认账户-->
+                        <template v-if="formData.defaultAccount === 'true'">
+                            <Select v-model="formData.accountBelonging" disabled>
+                                <Option v-for="(item, index) in allNode"
+                                        :value="item.id"
+                                        :key="index">
+                                    {{ item.orgName }}
                                 </Option>
-                        </Select>
+                            </Select>
+                        </template>
+                        <!--默认账户-->
+                        <template v-else>
+                            <Select v-model="formData.accountBelonging">
+                                <Option v-for="(item, index) in tableData"
+                                        :value="item.id"
+                                        :key="index">
+                                    {{ item.orgName }}
+                                </Option>
+                            </Select>
+                        </template>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -78,7 +90,7 @@
 
 
     export default {
-        props: ['length','table-data'],
+        props: ['length','table-data','all-node'],
         components: {},
         watch: {
             'formData.rateNumerator': function (newVal) {
@@ -168,6 +180,9 @@
                     this.index = data.index;
                 }
                 this.visible = true;
+                setTimeout( () => {
+                    this.$refs.formValidate.validateField('rateDenominator');
+                } )
             },
 
             //表单校验

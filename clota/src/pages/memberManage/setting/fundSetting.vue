@@ -228,12 +228,14 @@
         <modify-account-modal ref="modifyAccount"
                               :length="tableData.length"
                               :table-data="listAmountRangeTable"
+                              :all-node="defaultAllTable"
                               @updata-list="submitFundsAccount"></modify-account-modal>
 
         <!--默认账户本金/赠送金额可使用范围设置modal-->
         <modify-range-modal ref="modifyRange"
                             :length="tableData.length"
                             :table-data="listAmountRangeTable"
+                            :all-node="defaultAllTable"
                             @updata-list="submitFundsAccount"></modify-range-modal>
 
         <!--储值赠送金额比例设置modal-->
@@ -332,6 +334,8 @@
                 //获取储值账户-(本金/赠送金额)应用范围
                 listAmountRangeTable: [],
                 sendRangeTable: [],
+                //获取储值账户-(本金/赠送金额)应用范围(包含自己，用于默认账户)
+                defaultAllTable: [],
                 //输入框校验错误显示
                 error: {
                     moneyToIntegrateError: '',//储值额-积分
@@ -375,6 +379,8 @@
             this.listAccount();
             //获取储值账户-(本金/赠送金额)应用范围
             this.getSubNode();
+            ///获取储值账户-(本金/赠送金额)应用范围(包含自己，用于默认账户)
+            this.getSubNodeAndSelf();
         },
         methods: {
 
@@ -401,14 +407,26 @@
                     }
                 })
             },
-            //获取储值账户-(本金/赠送金额)应用范围
+            //获取储值账户-(本金/赠送金额)应用范围(无自己)
             getSubNode () {
                 ajax.post('getSubNode', {
-                    orgType: 'scenic'
+                    orgType: 'scenic',
+                    includeMe: 'false',
                 }).then(res => {
                     if( res.success ) {
                         this.listAmountRangeTable = defaultsDeep([], res.data );
                         this.sendRangeTable = defaultsDeep([], res.data );
+                    }
+                })
+            },
+            //查询下级店铺，包含自己，用于默认账户编辑
+            getSubNodeAndSelf () {
+                ajax.post('getSubNode', {
+                    orgType: 'scenic',
+                    includeMe: 'true',
+                }).then(res => {
+                    if( res.success ) {
+                        this.defaultAllTable = defaultsDeep([], res.data );
                     }
                 })
             },

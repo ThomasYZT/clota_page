@@ -173,6 +173,8 @@
                 console.log(data)
                 ajax.post('deleteMemberLevel', {
                     id: data.id,
+                    lowerGrowthValue: data.lowerGrowthValue,
+                    highestGrowthValue: data.highestGrowthValue,
                     isDeleted: 'true',
                 }).then(res => {
                     if(res.success){

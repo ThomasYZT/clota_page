@@ -14,6 +14,26 @@
 
                 <template v-if="type === 'money'">
                     <table-com
+                        v-if="formData.defaultAccount === 'true'"
+                        ref="moneyMultiTablePlug"
+                        :table-com-min-height="450"
+                        :column-data="moneyColumnData"
+                        :table-data="allNode"
+                        @selection-change="handleSelectionChange"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            type="selection"
+                            slot-scope="row">
+                        </el-table-column>
+                    </table-com>
+                    <table-com
+                        v-else
                         ref="moneyMultiTablePlug"
                         :table-com-min-height="450"
                         :column-data="moneyColumnData"
@@ -35,6 +55,26 @@
 
                 <template v-if="type === 'send'">
                     <table-com
+                        v-if="formData.defaultAccount === 'true'"
+                        ref="moneyMultiTablePlug"
+                        :table-com-min-height="450"
+                        :column-data="moneyColumnData"
+                        :table-data="allNode"
+                        @selection-change="handleSelectionChange"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            type="selection"
+                            slot-scope="row">
+                        </el-table-column>
+                    </table-com>
+                    <table-com
+                        v-else
                         ref="sendMultiTablePlug"
                         :table-com-min-height="450"
                         :column-data="sendColumnData"
@@ -73,7 +113,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['length','table-data'],
+        props: ['length','table-data','all-node'],
         components: {
             tableCom,
         },
