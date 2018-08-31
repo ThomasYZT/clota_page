@@ -187,7 +187,9 @@
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('settingSuccess'));   // 设置成功
-                        this.memberInfo.id = res.data;
+                        if(res.data){
+                            this.memberInfo.id = res.data;
+                        }
                         this.queryList();
                     }else{
                         this.$Message.error(this.$t('settingFail'));    // 设置失败

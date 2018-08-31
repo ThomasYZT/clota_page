@@ -37,7 +37,7 @@ export const fundDetailHead = [
 export const dealType = [
     {
         name: 'transactionTypeAll',   // 全部交易类型
-        value: 'null',
+        value: 'all',
     },
     {
         name: 'consume',   // 消费

@@ -162,6 +162,8 @@
                     color: $color_blue;
                     font-size: $font_size_14px;
                     cursor: pointer;
+                    @include overflow_tip();
+                    padding: 0 10px;
 
                     &:nth-of-type(1)::after{
                         content: '';

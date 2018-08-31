@@ -14,7 +14,7 @@
                 <Form ref="formValidate"
                       :model="member"
                       :rules="ruleValidate"
-                      :label-width="115">
+                      :label-width="lang === 'zh-CN' ? 115 : 250">
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('name')" prop="custName"><!--姓名-->
                             <Input v-model.trim="member.custName"
@@ -191,6 +191,7 @@
     import minBy from 'lodash/minBy';
     import common from '@/assets/js/common.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {mapGetters} from 'vuex'
 
     export default {
         mixins : [lifeCycleMixins],
@@ -365,9 +366,9 @@
             localeRouter () {
                 return this.type === 'add' ? this.$t('addMember') : this.$t('addMember');      // 新增会员 ： 修改会员信息
             },
-            isEdit() {
-                return this.$route.query.info;
-            },
+            ...mapGetters({
+                lang: 'lang',
+            }),
         },
         created() {
             this.getChannelList();
@@ -562,7 +563,7 @@
                     position: relative;
                     display: inline-block;
                     min-width: 495px;
-                    padding-right: 55px;
+                    /*padding-right: 55px;*/
                     /*width: 40%;*/
                     width: 49%;
                     /*text-align: center;*/

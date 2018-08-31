@@ -19,6 +19,7 @@ export const columnData = [
     {
         title: 'fee',       // 手续费
         width: 100,
+        enWidth: 150,
         field: 'fee'
     },
     {
@@ -38,6 +39,7 @@ export const columnData = [
     {
         title: 'operator',       // 操作人
         width: 100,
+        enWidth: 120,
         field: 'operName'
     },
     {

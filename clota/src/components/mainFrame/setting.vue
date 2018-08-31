@@ -27,19 +27,19 @@
         </div>
         <div class="skin">
             <div class="skin-title">主题皮肤</div>
-            <div class="skin-blue" @click="chagneSkin('blue-theame')">
+            <div class="blue-theame" @click="chagneSkin('blue-theame')">
                 <transition name="fade">
                     <img v-if="skinType === 'blue-theame'"
                          src="../../assets/images/icon-theame-chose.svg" alt="">
                 </transition>
             </div>
-            <div class="skin-black" @click="chagneSkin('black-theame')">
+            <div class="black-theame" @click="chagneSkin('black-theame')">
                 <transition name="fade">
                     <img v-if="skinType === 'black-theame'"
                          src="../../assets/images/icon-theame-chose.svg" alt="">
                 </transition>
             </div>
-            <div class="skin-pink" @click="chagneSkin('pink-theame')">
+            <div class="pink-theame" @click="chagneSkin('pink-theame')">
                 <transition name="fade">
                     <img v-if="skinType === 'pink-theame'"
                          src="../../assets/images/icon-theame-chose.svg" alt="">
@@ -200,9 +200,9 @@
                 padding: 20px 0;
             }
 
-            .skin-blue,
-            .skin-black,
-            .skin-pink{
+            .blue-theame,
+            .black-theame,
+            .pink-theame{
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -215,18 +215,6 @@
                     display: block;
                     @include block_outline(51px,51px);
                 }
-            }
-
-            .skin-blue{
-                background-image: linear-gradient(90deg, #0055B8 0%, #00C2CD 100%);
-            }
-
-            .skin-black{
-                background-image: linear-gradient(90deg, #182577 5%, #57AFDA 100%);
-            }
-
-            .skin-pink{
-                background-image: linear-gradient(-90deg,#E47C96  0%, #553E9B 94%);
             }
         }
 

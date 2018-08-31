@@ -223,6 +223,7 @@
 
                 .chart-title{
                     font-size: $font_size_14px;
+                    line-height: 15px;
                     color: $color_999;
                 }
 

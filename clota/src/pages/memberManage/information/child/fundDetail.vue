@@ -149,7 +149,7 @@
                 queryParams: {
                     cardId: '',
                     accountTypeIds: '',
-                    operType: 'null',
+                    operType: 'all',
                     startDate: '',
                     endDate: '',
                     pageNo: 1,

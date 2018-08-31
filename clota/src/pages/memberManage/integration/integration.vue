@@ -28,6 +28,7 @@
                 slot-scope="row"
                 :resizable="false"
                 :label="row.title"
+                fixed="right"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">

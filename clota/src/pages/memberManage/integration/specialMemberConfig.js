@@ -10,6 +10,7 @@ export const specialEmployeeHead = [
     {
         title: '操作',
         width: 120,
+        enWidth : 170,
     }
 ];
 

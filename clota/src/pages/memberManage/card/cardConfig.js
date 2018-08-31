@@ -24,5 +24,6 @@ export const columnData = [
     {
         title: '操作  ',
         width: 130,
+        enWidth : 150,
     }
 ];

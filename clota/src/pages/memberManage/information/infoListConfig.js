@@ -19,11 +19,13 @@ export const infoListHead = [
     {
         title: 'gender',
         minWidth: 80,
+        enMinWidth : 100,
         field: 'gender'
     },
     {
         title: 'levelSetting',
         minWidth: 100,
+        enMinWidth : 150,
         field: 'levelDesc'
     },
     {
@@ -34,6 +36,7 @@ export const infoListHead = [
     {
         title: 'pointBalance',
         minWidth: 100,
+        enMinWidth : 200,
         field: 'pointBalance'
     },
     {
@@ -44,6 +47,7 @@ export const infoListHead = [
     {
         title: 'signTime',
         minWidth: 140,
+        enMinWidth : 170,
         field: 'updatedTime'
     },
     {

@@ -21,11 +21,11 @@
                    <template
                     v-for="(item,index) in columnData">
                     <slot :name="'column' + index"
-                      :width="item.width"
-                      :minWidth="item.minWidth"
-                      :index="index"
-                      :field="item.field"
-                      :title="$t(item.title)">
+                          :width="getColumnWidth(item)"
+                          :min-width="getColumnMinWidth(item)"
+                          :index="index"
+                          :field="item.field"
+                          :title="$t(item.title)">
                     <!--ableClick表示点击某一列进入详情-->
                     <el-table-column
                         v-if="item.ableClick"
@@ -33,8 +33,8 @@
                         show-overflow-tooltip
                         :prop="item.field"
                         :key="index"
-                        :width="item.width"
-                        :min-width="item.minWidth">
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
                         <template slot-scope="scoped">
                                 <span
                                     class="detail-hover"
@@ -50,8 +50,8 @@
                         :prop="item.field"
                         show-overflow-tooltip
                         :key="index"
-                        :width="item.width"
-                        :min-width="item.minWidth">
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
                         <template slot-scope="scoped">
                                     <span v-w-title="scoped.row[item.field]" >
                                         {{scoped.row[item.field]  | contentFilter}}
@@ -83,6 +83,7 @@
     import {configVariable} from '@/assets/js/constVariable.js';
     import tableMixins from '@/mixins/tableMixins.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import {mapGetters} from 'vuex'
     export default {
         mixins : [tableMixins],
         components : {
@@ -195,7 +196,7 @@
                     let rootEl = this.$root.$el;
                     if(rootEl){
                         if(this.showPagination){
-                            this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight - 92 + 'px';
+                            this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight - 52 + 'px';
                         }else{
                             this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
                         }
@@ -238,6 +239,36 @@
             unregisterWindowResize() {
                 window.removeEventListener('resize', this.setTableHeight);
             },
+            /**
+             * 获取表格宽度
+             * @param columnData
+             */
+            getColumnWidth (columnData) {
+                if(this.lang === 'en'){
+                    if(columnData.enWidth){
+                        return columnData.enWidth;
+                    }else{
+                        return columnData.width;
+                    }
+                }else if(this.lang === 'zh-CN'){
+                    return columnData.width;
+                }
+            },
+            /**
+             * 获取表格最小宽度
+             * @param columnData
+             */
+            getColumnMinWidth (columnData) {
+                if(this.lang === 'en'){
+                    if(columnData.enMinWidth){
+                        return columnData.enMinWidth;
+                    }else{
+                        return columnData.minWidth;
+                    }
+                }else if(this.lang === 'zh-CN'){
+                    return columnData.minWidth;
+                }
+            }
         },
         created () {
             this.queryList();
@@ -257,7 +288,10 @@
                 }else{
                     return 'auto';
                 }
-            }
+            },
+            ...mapGetters({
+                lang: 'lang',
+            })
         },
         watch : {
             //如果表格数据改变了，表格数据长度为0，但是不是在第一页，需要重新获取数据
@@ -290,7 +324,7 @@
         }
 
         .pagination {
-            padding: 30px 0;
+            padding: 10px 0;
             text-align: center;
         }
 
