@@ -83,6 +83,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
+    import {validator} from 'klwk-ui';
 
     export default {
         components: {
@@ -235,30 +236,17 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-                if(!this.validateInput(this.settingData.growthRateWhileConsume.growthSet)){
-                    this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError');
+
+                if(!this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError')){
                     return false
                 }
 
-                if(this.settingData.growthEffectiveMode.growthType === 'checkout_after' && !this.validateInput(this.settingData.growthEffectiveMode.growthTime)){
-                    this.checkInputBlurFunc(this.settingData.growthEffectiveMode.growthTime, 'growthTimeError');
+                if(this.settingData.growthEffectiveMode.growthType === 'checkout_after' &&
+                    !this.checkInputBlurFunc(this.settingData.growthEffectiveMode.growthTime, 'growthTimeError')){
                     return false
                 }
 
                 return true
-            },
-
-            //校验input输入
-            validateInput ( value ) {
-                if( value === '' || value === 'null' || value == 0 || !value ){
-                    return false
-                } else if( value && value.length > 10 ){
-                    return false
-                } else if( value && value.isUtf16() ){
-                    return false
-                } else {
-                    return true
-                }
             },
 
             /**
@@ -268,39 +256,49 @@
              */
             checkInputBlurFunc ( val, errorField ) {
 
-                //为空校验
-                if( val === '' || val === 'null' || val == 0 || !val){
-                    this.error[errorField] = this.$t('errorEmpty', {msg: ''});     // '不能为空'
-                    return
-                } else {
+                //校验不为空
+                if(common.isNotEmpty(val)){
                     this.error[errorField] = '';
-                }
-
-                //长度校验
-                if (val && val.length > 10) {
-                    this.error[errorField] = '不能超过10个';
-                    return
-                } else {
-                    this.error[errorField] = '';
+                }else{
+                    this.error[errorField] = this.$t('inputField', {msg: ''});
+                    return false
                 }
 
                 //校验表情符号
                 if (val && val.isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
-                    return
+                    return false
                 } else {
                     this.error[errorField] = '';
                 }
-
-                //校验正整数
-                if(val){
-                    common.validateInteger(val).then(() => {
-                        this.error[errorField] = '';
-                    }).catch(err => {
-                        this.error[errorField] = err;
-                        return
-                    });
+                //正整数，长度校验
+                if(validator.isNumber(val)){
+                    let numStr = String(val);
+                    if(numStr.length < 1){
+                        this.error[errorField] = this.$t('errorMinLength',{field : '',length : 1});
+                        return false
+                    }else if(numStr.length > 10){
+                        this.error[errorField] = this.$t('errorMaxLength', {field : '',length : 10});
+                        return false
+                    }else{
+                        if(Number.parseInt(val) === Number.parseFloat(val)){
+                            if(val < 0){
+                                this.error[errorField] = this.$t('fieldTypeError', {msg: ''});
+                                return false
+                            }else{
+                                this.error[errorField] = '';
+                            }
+                        }else{
+                            this.error[errorField] = this.$t('integetError', {msg: ''});
+                            return false
+                        }
+                    }
+                }else{
+                    this.error[errorField] = this.$t('integetError', {msg: ''});
+                    return false
                 }
+
+                return true
 
             },
 

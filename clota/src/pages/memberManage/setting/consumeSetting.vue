@@ -348,15 +348,14 @@
                 } else {
                     this.error[errorField] = '';
                 }
-
                 //正整数，长度校验
                 if(validator.isNumber(val)){
                     let numStr = String(val);
                     if(numStr.length < 1){
-                        this.error[errorField] = this.$t('errorMinLength', {msg: ''});
+                        this.error[errorField] = this.$t('errorMinLength',{field : '',length : 1});
                         return false
                     }else if(numStr.length > 10){
-                        this.error[errorField] = this.$t('errorMaxLength', {msg: ''});
+                        this.error[errorField] = this.$t('errorMaxLength', {field : '',length : 10});
                         return false
                     }else{
                         if(Number.parseInt(val) === Number.parseFloat(val)){
