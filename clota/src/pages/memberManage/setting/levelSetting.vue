@@ -86,8 +86,8 @@
                         slot-scope="row">
                         <template slot-scope="scoped">
                             <ul class="operate-list">
-                                <li class="blue-label" @click="showAddMemberModal($event,scoped.row)">修改</li>
-                                <li class="red-label" @click="deleteLevelInfo($event,scoped.row)">删除</li>
+                                <li class="blue-label" @click="showAddMemberModal($event,scoped.row)">{{$t('modify')}}</li>
+                                <li class="red-label" @click="deleteLevelInfo($event,scoped.row)">{{$t('del')}}</li>
                             </ul>
                         </template>
                     </el-table-column>

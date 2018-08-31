@@ -15,7 +15,7 @@
             <div class="content-footer">
                 <i-button type="primary" :loading="loading" @click="confirmModify">确定新增</i-button>
                 <router-link :to="{name: 'staffList'}">
-                    <i-button type="ghost">取消</i-button>
+                    <i-button type="ghost">{{$t('cancel')}}</i-button>
                 </router-link>
             </div>
 

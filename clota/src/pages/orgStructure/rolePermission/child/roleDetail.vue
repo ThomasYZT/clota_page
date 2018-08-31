@@ -77,8 +77,8 @@
                     label="操作">
                     <template slot-scope="scope">
                         <div class="operation">
-                            <span v-if="detailType == 'company'" @click="modify">修改</span>
-                            <span class="span-red" @click="deleteListBtn">删除</span>
+                            <span v-if="detailType == 'company'" @click="modify">{{$t('modify')}}</span>
+                            <span class="span-red" @click="deleteListBtn">{{$t('del')}}</span>
                         </div>
                     </template>
                 </el-table-column>

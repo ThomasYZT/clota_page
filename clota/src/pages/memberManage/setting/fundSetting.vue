@@ -113,9 +113,9 @@
                                 <span class="add-span blue-color"
                                       @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
                                 <span class="add-span blue-color"
-                                      @click="showSendRateModal(item,index)">修改</span>
+                                      @click="showSendRateModal(item,index)">{{$t('modify')}}</span>
                                 <span class="add-span red-color"
-                                      @click="handleRemoveSendRate(item,index)">删除</span>
+                                      @click="handleRemoveSendRate(item,index)">{{$t('del')}}</span>
                             </div>
                         </template>
                     </div>
@@ -145,9 +145,9 @@
                                 :prop="'pay.' + index + '.payment'"
                                 :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" :placeholder="$t('inputField', {field: ''})"/>
-                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">删除</span>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">{{$t('del')}}</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">{{$t("save")}}</span>
-                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">取消</span>
+                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">{{$t('cancel')}}</span>
                             </FormItem>
                         </div>
                     </Form>

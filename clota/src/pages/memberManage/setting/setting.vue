@@ -87,7 +87,7 @@
                                    type="text"
                                    class="single-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                            {{$t('smsRemindsBeforeDays')}}<!--天短信提醒-->，
+                            {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
                                 <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
                             <div class="ivu-form-item-error-tip"
                                  style="left: 155px;"
@@ -157,7 +157,7 @@
                                    @on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"
                                    type="text"
                                    class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}<!--天短信提醒-->，
+                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
                             <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
                         </span>
                         <div class="ivu-form-item-error-tip"
@@ -524,7 +524,7 @@
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
                     if( res.success){
-                        this.$Message.success('保存基础设置成功!');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('saveBaseSetting')}) + '!');  // 保存基础设置成功
                         this.findBasicSet();
                     }
                 })
@@ -622,7 +622,7 @@
                     if(res.success){
                         this.formDynamic.idType[index].disabled = true;
                         this.formDynamic.idType[index].active = true;
-                        this.$Message.success('新增证件类型成功!');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('addCredentialsType')}) + '!');    // 新增证件类型成功
                     }
                 })
             },
@@ -633,7 +633,7 @@
                     isDeleted: 'true',
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除证件类型成功!');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('delCredentialsType')}) + '!');       // 删除证件类型成功
                         this.formDynamic.idType[index]._status = 0;
                     }
                 })

@@ -25,8 +25,8 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                              <ul class="operate-list">
-                                <li @click="modifyEmployeeType(scope.row)">修改</li>
-                                <li class="red-label" @click="delEmployeeType(scope.row)">删除</li>
+                                <li @click="modifyEmployeeType(scope.row)">{{$t('modify')}}</li>
+                                <li class="red-label" @click="delEmployeeType(scope.row)">{{$t('del')}}</li>
                             </ul>
                         </template>
                     </el-table-column>

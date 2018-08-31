@@ -68,8 +68,8 @@
                     label="操作">
                     <template slot-scope="scope">
                         <div class="operation">
-                            <span>修改</span>
-                            <span @click="deleteEmployeeBtn">删除</span>
+                            <span>{{$t('modify')}}</span>
+                            <span @click="deleteEmployeeBtn">{{$t('del')}}</span>
                         </div>
                     </template>
                 </el-table-column>

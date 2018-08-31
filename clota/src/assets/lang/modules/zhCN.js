@@ -315,7 +315,7 @@ export default {
     'gainIntegral': '获得积分',
     'invalidAfterMonths': '个月后失效，清除',
     'clearIntegral': '清除积分前',  // 例：清除积分前n天短信提醒
-    'smsRemindsBeforeDays': '天短信提醒，',
+    'smsRemindsBeforeDays': '天短信提醒',
     'smsSetting': '短信设置',
     'memberCardValiditySet': '会员卡有效期设置',
     'lastTimeConsume': '最后一次消费',
@@ -340,6 +340,7 @@ export default {
     'delCredentialsType': '删除证件类型',
     'addReason': '新增原因',
     'delReason': '删除原因',
+    'saveBaseSetting': '保存基础设置',
 
     'nominalValue': '卡券折扣',
     'validStartTime': '有效开始时间',

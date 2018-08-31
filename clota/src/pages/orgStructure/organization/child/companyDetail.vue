@@ -8,7 +8,7 @@
             广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团
           </span>
             <span class="started">已启用</span>
-            <span class="edit">修改</span>
+            <span class="edit">{{$t('modify')}}</span>
         </div>
         <ul class="company-info">
             <li class="list">

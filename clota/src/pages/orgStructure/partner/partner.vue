@@ -78,9 +78,9 @@
                     label="操作">
                     <template slot-scope="scope">
                         <div class="operation">
-                            <span>修改</span>
+                            <span>{{$t('modify')}}</span>
                             <span class="span-yellow">禁用</span>
-                            <span class="span-gray" @click="deletePartnerBtn">删除</span>
+                            <span class="span-gray" @click="deletePartnerBtn">{{$t('del')}}</span>
                         </div>
                     </template>
                 </el-table-column>
