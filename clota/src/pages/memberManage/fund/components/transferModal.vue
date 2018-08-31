@@ -2,7 +2,7 @@
     <!--转账-->
     <Modal
         v-model="visible"
-        title="转账"
+        :title="$t('transfer')"
         class-name="transfer-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -15,19 +15,19 @@
                   :label-width="190">
 
                 <div class="ivu-form-item-wrap">
-                      <Form-item label="转出账户" class="no-marg-bottom">
+                      <Form-item :label="$t('transferAccount')" class="no-marg-bottom"><!--转出账户-->
                         <span style="color:#666666;">{{orgInfo.orgName}}</span>
                     </Form-item>
                 </div>
                   <div class="ivu-form-item-wrap">
-                      <Form-item label="账户可用余额"
+                      <Form-item :label="$t('availableAccBalance')"
                                 class="no-marg-bottom"
-                                style="margin-bottom:5px!important;">
-                        <span class="num">{{orgInfo.balance | moneyFilter}}</span> 元
+                                style="margin-bottom:5px!important;"><!--账户可用余额-->
+                        <span class="num">{{orgInfo.balance | moneyFilter}}</span> {{$t('yuan')}}
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="转入账户选择" prop="toOrgId">
+                    <Form-item :label="$t('transferToSelection')" prop="toOrgId"><!--转入账户选择-->
                         <Select v-model.trim="data.toOrgId"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 style="width: 240px;">
@@ -40,20 +40,20 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="转出金额" prop="amount">
+                    <Form-item :label="$t('transferAmount')" prop="amount"><!--转出金额-->
                         <Input v-model.trim="data.amount"
                                :placeholder="$t('inputField', {field: ''})"
                                style="width: 240px"/>
-                        <span style="padding-left: 10px;">元
+                        <span style="padding-left: 10px;">{{$t('yuan')}}
                         </span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="手续费" prop="commission">
+                    <Form-item :label="$t('fee')" prop="commission"><!--手续费-->
                         <Input v-model.trim="data.commission"
                                :placeholder="$t('inputField', {field: ''})"
                                style="width: 240px" />
-                                <span style="padding-left: 10px;">元
+                                <span style="padding-left: 10px;">{{$t('yuan')}}
                                 </span>
                     </Form-item>
                 </div>
@@ -221,10 +221,10 @@
                     remark : this.data.remark
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('转账成功');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('transfer')}));    // '转账成功'
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('转账失败');
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('transfer')}));      // '转账失败'
                     }
                 }).finally(() => {
                     this.btnLoading = false;

@@ -11,11 +11,11 @@
 
         <div class="transfer-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.tradeType" style="width:180px;margin-right: 10px;">
+                <Select v-model="queryParams.tradeType" style="width:180px;margin-right: 10px;" :placeholder="$t('selectField', {msg: ''})">
                     <Option v-for="item in tradeType"
                             :value="item.value"
                             :key="item.value">
-                        {{ item.label }}
+                        {{ $t(item.label) }}
                     </Option>
                 </Select>
                 <Date-picker
@@ -31,8 +31,8 @@
                     :placeholder="$t('selectField', {msg: $t('endDate')})"><!--请选择结束日期-->
                 </Date-picker>
                 <Input v-model="queryParams.keyword"
-                       placeholder="请输入单位名称"
-                       style="width: 240px;margin-right: 10px;" />
+                       :placeholder="$t('inputField', {field: $t('unitName')})"
+                       style="width: 240px;margin-right: 10px;" /><!--请输入单位名称-->
                 <Button type="primary" @click="queryList">{{$t('query')}}</Button>
                 <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
             </div>
@@ -56,7 +56,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <span :class="scope.row['operType'] === 'transfer_in' ? 'green-color' : 'red-color'">
-                                {{scope.row['operType'] === 'transfer_in' ? '+' : '-'}}{{scope.row.amount | moneyFilter | contentFilter}}元
+                                {{scope.row['operType'] === 'transfer_in' ? '+' : '-'}}{{scope.row.amount | moneyFilter | contentFilter}}<span>{{$t('yuan')}}</span>
                             </span>
                         </template>
                     </el-table-column>
@@ -79,7 +79,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row['fee']) | moneyFilter}}元
+                            {{$t(scope.row['fee']) | moneyFilter}}<span>{{$t('yuan')}}</span>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -129,7 +129,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('financialManagement'),
+                        name: 'financialManagement',
                         router: {
                             name: 'transfer'
                         }

@@ -2,41 +2,41 @@
 //表头配置
 export const columnData = [
     {
-        title: '交易编号',
+        title: 'transactionNum',  // 交易编号
         width: 220,
         field: 'id'
     },
     {
-        title: '转账金额',
+        title: 'transToAccAmount',      // 转账金额
         width: 120,
         field: 'amount'
     },
     {
-        title: '类型',
+        title: 'type',        // 类型
         width: 80,
         field: 'operType'
     },
     {
-        title: '手续费',
+        title: 'fee',       // 手续费
         width: 100,
         field: 'fee'
     },
     {
-        title: '转出账户',
+        title: 'transferAccount',      // 转出账户
         minWidth: 200,
         field: 'orgName'
     },   {
-        title: '转入账户',
+        title: 'transferToAccount',      // 转入账户
         minWidth: 200,
         field: 'otherOrgName'
     },
     {
-        title: '转账时间',
+        title: 'transferTime',      // 转账时间
         width: 200,
         field: 'createdTime'
     },
     {
-        title: '操作人',
+        title: 'operator',       // 操作人
         width: 100,
         field: 'operName'
     },
