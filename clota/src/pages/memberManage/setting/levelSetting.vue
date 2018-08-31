@@ -200,7 +200,7 @@
 
         .content {
             padding: 0px 30px;
-            height: calc(100% - 124px);
+            height: calc(100% - 90px);
             overflow: auto;
 
             .btn-wrap{

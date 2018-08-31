@@ -175,6 +175,7 @@ export default {
     'PrincipalAccBalance': 'Principal account balance',
     'giftAccBalance': 'Gift account balance',
     'increaseStorageSum': 'Increase the pre-paid sum',
+    'storageSum': '储值金额',
     'actualIncrease': 'Actual increase',
     'paymentMethod': 'Payment method',
     'amount': 'Amount',

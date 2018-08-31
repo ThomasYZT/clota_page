@@ -77,7 +77,8 @@
                         pageButtonGap : 10,
                         lineHeight: 56,
                         // bottom : 10,
-                        left: seriesData.length > 6 ? 170 : 250,
+                        // left: seriesData.length > 6 ? 170 : 250,
+                        right: seriesData.length > 6 ? '6%' : '20%',
                         // left:  250,
                         itemGap: 18,
                         itemWidth: 8,
@@ -108,7 +109,12 @@
                         },
                         formatter: (data) => {
                             let dataArr = data.split('|');
-                            return `{name|${dataArr[0]}}{sg|}{per|${dataArr[1]}}{val|${dataArr[2]}}`;
+                            let name = dataArr[0];
+                            //超过4个字符的长度，显示省略号
+                            if(name.length > 4){
+                                name = name.slice(0,4)+"...";
+                            }
+                            return `{name|${name}}{sg|}{per|${dataArr[1]}}{val|${dataArr[2]}}`;
                         },
                         data: legendData,
                     },
@@ -215,6 +221,7 @@
             padding-top: 10px;
             .echarts {
                 @include block_outline(100%, 175px);
+                max-width: 700px;
                 margin: 0 auto;
             }
         }

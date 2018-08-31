@@ -81,7 +81,7 @@
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(this.$t('errorIrregular'));
                     } else {
                         callback();
                     }
@@ -95,20 +95,11 @@
                     callback();
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        callback(this.$t('errorMaxLength',{field : this.$t('storageSum'),length : 10}));
                     }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                        callback(this.$t(err,{field : this.$t('storageSum')}));
                     }
                 });
-            };
-
-            //校验实际增加金额
-            const validateToTotalAmount = (rule,value,callback) => {
-                if(this.formData.totalAmount === ''){
-                    callback(new Error('输入实际增加金额'));
-                } else {
-                    callback();
-                }
             };
 
             return {
@@ -125,16 +116,15 @@
                 //表单校验
                 ruleValidate: {
                     amount: [
-                        { required: true, message: '储值金额不能为空', trigger: 'blur' },
-                        { max: 10, message: '储值金额不能超过10字符', trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field  : this.$t('storageSum')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                     ],
                     paymentTypeId: [
-                        { required: true, message: '收款方式不能为空', trigger: 'change' },
+                        { required: true, message:this.$t('selectField',{msg  : this.$t('paymentMethod')}), trigger: 'change' },
                     ],
                     remark: [
-                        { max: 100, message: '备注不能超过100字符', trigger: 'blur' },
+                        { max: 100, message: this.$t('errorMaxLength',{field : this.$t('remark'),length : 100}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },

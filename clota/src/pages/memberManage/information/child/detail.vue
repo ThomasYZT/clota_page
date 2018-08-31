@@ -724,11 +724,13 @@
                         }
 
                         .edit{
+                            display: none;
+                            height: 24px;
+                            line-height: 24px;
                             font-size: $font_size_14px;
                             float: right;
                             color: $color-blue;
                             cursor: pointer;
-                            transform: scale(0);
                             .iconfont{
                                 margin-right: 5px;
                             }
@@ -737,7 +739,7 @@
 
                     &:hover{
                         .edit{
-                            transform: scale(1);
+                            display: block;
                         }
                     }
 

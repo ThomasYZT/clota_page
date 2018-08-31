@@ -32,18 +32,18 @@
                             <Option v-for="(item,index) in couponTypeList"
                                     :key="index"
                                     :value="item.value">
-                                {{item.label}}
+                                {{$t(item.label)}}
                             </Option>
                         </Select>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discount_coupon'">
-                    <Form-item :label="$t('couponFaceValue')" prop="nominalValue">
+                    <Form-item :label="$t('nominalValue')" prop="nominalValue">
                         <Input v-model.trim="formData.nominalValue" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'cash_coupon'">
-                    <Form-item label="卡券面值" prop="nominalValue">
+                    <Form-item :label="$t('couponFaceValue')" prop="nominalValue">
                         <Input v-model.trim="formData.nominalValue" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>

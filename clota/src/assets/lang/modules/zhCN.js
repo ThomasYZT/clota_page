@@ -175,6 +175,7 @@ export default {
     'PrincipalAccBalance': '本金账户余额',
     'giftAccBalance': '赠送账户余额',
     'increaseStorageSum': '增加储值金额',
+    'storageSum': '储值金额',
     'actualIncrease': '实际增加',
     'paymentMethod': '收款方式',
     'amount': '数量',
