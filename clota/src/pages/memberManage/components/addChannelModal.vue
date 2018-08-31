@@ -2,7 +2,7 @@
     <!--新增渠道-->
     <Modal
         v-model="visible"
-        :title="title"
+        :title="$t(title)"
         class-name="add-channel-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -12,7 +12,7 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="渠道名称：" prop="channelName">
+                    <Form-item :label="$t('channelName') + '：'" prop="channelName"><!--渠道名称-->
                         <Input v-model.trim="formData.channelName" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
@@ -54,7 +54,7 @@
             return {
                 visible: false,
                 //标题
-                title: '新增渠道',
+                title: 'addChannel',   // '新增渠道'
                 //表单数据
                 formData: {
                     channelName: '',
@@ -63,13 +63,13 @@
                 // 表单校验
                 ruleValidate: {
                     channelName: [
-                        { required: true, message: '渠道名称不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('channelName')}), trigger: 'blur' },   // 渠道名称不能为空
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '渠道名称不能超过10字符', trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('channelName'), length: 10}), trigger: 'blur' },  // 渠道名称不能超过10字符
                     ],
                     remark: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 100, message: '备注不能超过100字符', trigger: 'blur' },
+                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
                     ],
                 }
             }
@@ -79,7 +79,7 @@
             //显示
             show ( data ) {
                 if(data){
-                    this.title = '修改渠道';
+                    this.title = 'modifyChannel';   // 修改渠道
                     this.formData = defaultsDeep({}, data);
                 }
                 this.visible = true;
@@ -94,7 +94,7 @@
                             remark: this.formData.remark,
                         };
                         //区分新增/编辑
-                        if(this.title === '修改渠道'){
+                        if(this.title === 'modifyChannel'){     // 修改渠道
                             params.id = this.formData.id;
                             this.updateChannelSet(params);
                         }else{
@@ -108,7 +108,7 @@
             updateChannelSet ( params ) {
                 ajax.post('updateChannelSet', params).then(res => {
                     if(res.success){
-                        this.$Message.success(this.title+'成功！');
+                        this.$Message.success(this.title + this.$t('successTip', {tip: ''}) + '！');
                         this.hide();
                         this.$emit('close-modal');
                     } else {

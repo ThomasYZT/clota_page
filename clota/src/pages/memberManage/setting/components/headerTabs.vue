@@ -3,7 +3,7 @@
     <div class="header">
         <div class="router-item" v-for="(item,index) in routerList" @click="triggerLink(item)">
             <span class="split-line" v-if="index > 0"></span>
-            <span :class="{'name': true, 'active': routerName === item.name}">{{item.desc}}</span>
+            <span :class="{'name': true, 'active': routerName === item.name}">{{ $t(item.desc) }}</span>
         </div>
     </div>
 </template>
@@ -15,12 +15,12 @@
             return {
                 // 路由列表
                 routerList: [
-                    { name: 'memberSetting', desc: '基础设置' },
-                    { name: 'channelSetting', desc: '渠道设置' },
-                    { name: 'levelSetting', desc: '会员级别' },
-                    { name: 'growthSetting', desc: '成长值设置' },
-                    { name: 'fundSetting', desc: '储值设置' },
-                    { name: 'consumeSetting', desc: '积分消费管理' },
+                    { name: 'memberSetting', desc: 'memberSetting' },      // 基础设置
+                    { name: 'channelSetting', desc: 'channelSetting' },           // 渠道设置
+                    { name: 'levelSetting', desc: 'levelSetting' },             // 会员级别
+                    { name: 'growthSetting', desc: 'growthSetting' },          // 成长值设置
+                    { name: 'fundSetting', desc: 'fundSetting' },              // 储值设置
+                    { name: 'consumeSetting', desc: 'consumeSetting' },       // 积分消费管理
                 ],
             }
         },

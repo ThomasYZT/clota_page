@@ -10,11 +10,11 @@
             <div class="btn-wrap">
                 <Button type="primary"
                         :disabled="tableData.length > 11 ? true : false"
-                        @click="showAddMemberModal">+ 新增会员级别</Button>
+                        @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
                 <Button type="primary"
                         :disabled="tableData.length > 0 ? false : true"
-                        @click="showRuleModal">晋级设置</Button>
-                <span class="tips">最多新增12个会员级别</span>
+                        @click="showRuleModal">{{$t('promotionSetting')}}</Button><!--晋级设置-->
+                <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
             </div>
             <div class="table-wrap">
                 <table-com

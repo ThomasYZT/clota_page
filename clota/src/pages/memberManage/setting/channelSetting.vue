@@ -8,7 +8,7 @@
         <div class="content">
 
             <div class="btn-wrap">
-                <Button type="primary" @click="showChannelModal($event)">+ 新增渠道</Button>
+                <Button type="primary" @click="showChannelModal($event)">+ {{$t('addChannel')}}</Button><!--新增渠道-->
             </div>
             <div class="table-wrap">
                 <table-com
