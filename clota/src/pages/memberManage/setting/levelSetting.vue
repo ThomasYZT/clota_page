@@ -8,10 +8,13 @@
         <div class="content">
 
             <div class="btn-wrap">
-                <Button type="primary" @click="showAddMemberModal">+ 新增会员级别</Button>
+                <Button type="primary"
+                        :disabled="tableData.length === 12 ? true : false"
+                        @click="showAddMemberModal">+ 新增会员级别</Button>
                 <Button type="primary"
                         :disabled="tableData.length > 0 ? false : true"
                         @click="showRuleModal">晋级设置</Button>
+                <span class="tips">会员级别数量不允许大于12</span>
             </div>
             <div class="table-wrap">
                 <table-com
@@ -209,6 +212,11 @@
                 /deep/ .ivu-btn{
                     min-width: 108px;
                     margin-right: 15px;
+                }
+
+                .tips{
+                    font-size: $font_size_12px;
+                    color: $color_yellow;
                 }
             }
 
