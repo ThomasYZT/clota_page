@@ -102,7 +102,7 @@
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -122,7 +122,7 @@
             const validateRateNumerator = (rule,value,callback) => {
                 common.validateInteger( this.formData.rateNumerator ).then(() => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
                     } else {
                         callback();
                     }

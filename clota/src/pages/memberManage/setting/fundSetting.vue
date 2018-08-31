@@ -567,7 +567,7 @@
 
                 //为空校验
                 if( val === '' || val === 'null' || val == 0 || !val){
-                    this.error[errorField] = '不能为空';
+                    this.error[errorField] = this.$t('errorEmpty', {msg: ''});     // '不能为空'
                     return
                 } else {
                     this.error[errorField] = '';
@@ -583,7 +583,7 @@
 
                 //校验表情符号
                 if (val && val.isUtf16()) {
-                    this.error[errorField] = '输入内容不合规则';
+                    this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
                     return
                 } else {
                     this.error[errorField] = '';

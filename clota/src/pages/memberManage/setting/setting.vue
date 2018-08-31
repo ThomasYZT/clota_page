@@ -10,24 +10,24 @@
             <Form ref="formDynamic" :model="formDynamic">
 
                 <div class="content-item">
-                    <div class="title">会员积分生效设置</div>
+                    <div class="title">{{$t('memberIntegralSetting')}}</div><!--会员积分生效设置-->
                     <div class="main">
                         <RadioGroup v-model="settingData.scoreEffectiveMode.isIntegralType" vertical>
                             <Radio label="immediately">
-                                <span>付款成功后立即生效</span>
+                                <span>{{$t('effectAfterPayed')}}</span><!--付款成功后立即生效-->
                             </Radio>
                             <Radio label="checkout">
-                                <span>消费、核销成功后立即生效</span>
+                                <span>{{$t('effectAfterConsumption')}}</span><!--消费、核销成功后立即生效-->
                             </Radio>
                             <Radio label="checkout_after">
-                            <span :class="{'ivu-form-item-error': error.isNoIntegralTimeError}">消费、核销成功后
+                            <span :class="{'ivu-form-item-error': error.isNoIntegralTimeError}">{{$t('afterConsumption')}}<!--消费、核销成功后-->
                                 <Input v-model.trim="settingData.scoreEffectiveMode.isNoIntegralTime"
                                        :disabled="settingData.scoreEffectiveMode.isIntegralType !== 'checkout_after' ? true : false"
                                        @on-blur="checkInputBlurFunc(settingData.scoreEffectiveMode.isNoIntegralTime, 'isNoIntegralTimeError')"
                                        type="text"
                                        :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/>
-                                时后生效</span>
+                                {{$t('effectAfterTime')}}</span><!--时后生效-->
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 153px;"
                                      v-if="error.isNoIntegralTimeError">{{error.isNoIntegralTimeError}}</div>
@@ -37,17 +37,17 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">会员生日积分多倍积分</div>
+                    <div class="title">{{$t('multiIntegralForBirth')}}</div><!--会员生日积分多倍积分-->
                     <div :class="{'ivu-form-item-error': error.multipleError, 'main': true}">
                         <i-switch v-model="settingData.scoreMultipleOnBirthday.isSwitch"></i-switch>
-                        <span class="text">会员生日当天消费可获得
+                        <span class="text">{{$t('gainOnBirthday')}}<!--会员生日当天消费可获得-->
                         <Input v-model.trim="settingData.scoreMultipleOnBirthday.multiple"
                                :disabled="!settingData.scoreMultipleOnBirthday.isSwitch"
                                @on-blur="checkInputBlurFunc(settingData.scoreMultipleOnBirthday.multiple, 'multipleError')"
                                type="text"
                                class="single-input"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        倍积分</span>
+                        {{$t('timesIntegral')}}</span><!--倍积分-->
                         <div class="ivu-form-item-error-tip"
                              style="left: 230px;"
                              v-if="error.multipleError">{{error.multipleError}}</div>
@@ -55,23 +55,23 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">会员积分有效期设置</div>
+                    <div class="title">{{$t('integralValiditySet')}}</div><!--会员积分有效期设置-->
                     <div class="main form-bottom">
                         <RadioGroup v-model="settingData.scoreValidityPeriod.validityType"
                                     vertical
                                     :class="{'ivu-form-item-error': error.validityTimeError}">
                             <Radio label="perpetual">
-                                <span>永久有效</span>
+                                <span>{{$t('permanentValidity')}}</span><!--永久有效-->
                             </Radio>
                             <Radio label="months_effective">
-                                <span>获得积分
+                                <span>{{$t('gainIntegral')}}<!--获得积分-->
                                     <Input v-model.trim="settingData.scoreValidityPeriod.validityTime"
                                            :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false"
                                            @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.validityTime, 'validityTimeError')"
                                            type="text"
                                            class="single-input"
                                            :placeholder="$t('inputField', {field: ''})"/>
-                                    个月后失效，清除</span>
+                                    {{$t('invalidAfterMonths')}}</span><!--个月后失效，清除-->
                             </Radio>
                             <span class="ivu-form-item-error-tip"
                                  style="left: 153px;left: 95px;top: 60px;"
@@ -80,15 +80,15 @@
                         <div class="check-group-wrap" :class="{'ivu-form-item-error': error.remindError}">
                             <Checkbox v-model="settingData.scoreValidityPeriod.checked"
                                       :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false">
-                            </Checkbox>清除积分前
+                            </Checkbox>{{$t('clearIntegral')}}<!--清除积分前-->
                             <Input v-model.trim="settingData.scoreValidityPeriod.remind"
                                    :disabled="!settingData.scoreValidityPeriod.checked"
                                    @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.remind, 'remindError')"
                                    type="text"
                                    class="single-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                                天短信提醒，
-                                <span class="blue-color">短信设置</span>
+                            {{$t('smsRemindsBeforeDays')}}<!--天短信提醒-->，
+                                <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
                             <div class="ivu-form-item-error-tip"
                                  style="left: 155px;"
                                  v-if="error.remindError">{{error.remindError}}</div>
@@ -98,47 +98,47 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">会员卡有效期设置</div>
+                    <div class="title">{{$t('memberCardValiditySet')}}</div><!--会员卡有效期设置-->
                     <div class="main margin-radio-group form-bottom">
                         <RadioGroup v-model="settingData.memberValidPeriod.type" vertical>
                             <Radio label="perpetual">
-                                <span>永久有效</span>
+                                <span>{{$t('permanentValidity')}}</span><!--永久有效-->
                             </Radio>
                             <Radio label="vipValidityTime" :class="{'ivu-form-item-error': error.vipValidityTimeError}">
-                                <span>最后一次消费
+                                <span>{{$t('lastTimeConsume')}}<!--最后一次消费-->
                                 <Input v-model.trim="settingData.memberValidPeriod.vipValidityTime"
                                         :disabled="settingData.memberValidPeriod.type !== 'vipValidityTime' ? true : false"
                                         @on-blur="checkInputBlurFunc(settingData.memberValidPeriod.vipValidityTime,'vipValidityTimeError')"
                                         type="text"
                                         class="single-input"
                                        :placeholder="$t('inputField', {field: ''})"/>
-                                    天后如未使用，冻结该会员卡</span>
+                                    {{$t('freezeUnusedForDays')}}</span><!--天后如未使用，冻结该会员卡-->
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 123px;"
                                      v-if="error.vipValidityTimeError">{{error.vipValidityTimeError}}</div>
                             </Radio>
                             <Radio label="vipValidity" :class="{'ivu-form-item-error': error.vipValidityError}">
-                            <span>开卡
+                            <span>{{$t('openCard')}}<!--开卡-->
                              <Input v-model.trim="settingData.memberValidPeriod.vipValidityType"
                                     :disabled="settingData.memberValidPeriod.type !== 'vipValidity' ? true : false"
                                     @on-blur="checkInputBlurFunc(settingData.memberValidPeriod.vipValidityType,'vipValidityError')"
                                     type="text"
                                     class="single-input"
                                     :placeholder="$t('inputField', {field: ''})"/>
-                                天后冻结该会员卡</span>
+                                {{$t('freezeCardForDays')}}</span><!--天后冻结该会员卡-->
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 68px;"
                                      v-if="error.vipValidityError">{{error.vipValidityError}}</div>
                             </Radio>
                             <Radio label="vipNumber" :class="{'ivu-form-item-error': error.vipNumberError}">
-                            <span>会员卡使用
+                            <span>{{$t('memberCardUsing')}}<!--会员卡使用-->
                              <Input v-model.trim="settingData.memberValidPeriod.vipNumber"
                                     :disabled="settingData.memberValidPeriod.type !== 'vipNumber' ? true : false"
                                     @on-blur="checkInputBlurFunc(settingData.memberValidPeriod.vipNumber,'vipNumberError')"
                                     type="text"
                                     class="single-input"
                                     :placeholder="$t('inputField', {field: ''})"/>
-                                天后冻结该会员卡</span>
+                                {{$t('freezeCardForDays')}}</span><!--天后冻结该会员卡-->
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 110px;"
                                      v-if="error.vipNumberError">{{error.vipNumberError}}</div>
@@ -148,17 +148,17 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">卡券过期提醒设置</div>
+                    <div class="title">{{$t('invalidCouponRemind')}}</div><!--卡券过期提醒设置-->
                     <div :class="{'ivu-form-item-error': error.dayError, 'main': true}">
                         <i-switch v-model="settingData.notificationBeforeCouponExpire.isSwitch"></i-switch>
-                        <span class="text">卡券过期前
+                        <span class="text">{{$t('beforeInvalidCoupon')}}<!--卡券过期前-->
                             <Input v-model.trim="settingData.notificationBeforeCouponExpire.day"
                                    :disabled="!settingData.notificationBeforeCouponExpire.isSwitch"
                                    @on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"
                                    type="text"
                                    class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/> 天短信提醒，
-                            <span class="blue-color">短信设置</span>
+                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}<!--天短信提醒-->，
+                            <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
                         </span>
                         <div class="ivu-form-item-error-tip"
                              style="left: 145px;"
@@ -167,45 +167,45 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">用户退款时积分是否退还用户</div>
+                    <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
                     <div class="main">
                         <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.score" vertical>
                             <Radio label="true">
-                                <span>用户退款时积分不退</span>
+                                <span>{{$t('noReturnIntegral')}}</span><!--用户退款时积分不退-->
                             </Radio>
                             <Radio label="false">
-                                <span>用户退款时积分退回用户积分账户中</span>
+                                <span>{{$t('returnIntegral')}}</span><!--用户退款时积分退回用户积分账户中-->
                             </Radio>
                         </RadioGroup>
                     </div>
                 </div>
 
                 <div class="content-item">
-                    <div class="title">用户退款时卡券是否退还用户</div>
+                    <div class="title">{{$t('isReturnCoupon')}}</div><!--用户退款时卡券是否退还用户-->
                     <div class="main">
                         <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>
                             <Radio label="true">
-                                <span>用户退款时卡券不退</span>
+                                <span>{{$t('noReturnCoupon')}}</span><!--用户退款时卡券不退-->
                             </Radio>
                             <Radio label="false">
-                                <span>用户退款时卡券退回用户会员卡中</span>
+                                <span>{{$t('returnCoupon')}}</span><!--用户退款时卡券退回用户会员卡中-->
                             </Radio>
                         </RadioGroup>
                     </div>
                 </div>
 
                 <div class="content-item">
-                    <div class="title">修改会员储值、积分、虚拟账户余额设置</div>
+                    <div class="title">{{$t('modifyAccBalanceSetting')}}</div><!--修改会员储值、积分、虚拟账户余额设置-->
                     <div class="main">
                         <RadioGroup v-model="settingData.allowAdjustAccount" vertical>
                             <Radio label="false">
-                                <span>不允许修改会员的储值、积分、虚拟账户</span>
+                                <span>{{$t('notAllowModifyAcc')}}</span><!--不允许修改会员的储值、积分、虚拟账户-->
                             </Radio>
                             <Radio label="true">
-                                <span>允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因
+                                <span>{{$t('allowModifyAccReason')}}<!--允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因-->
                                     <span class="add-span blue-color"
                                           v-if="settingData.allowAdjustAccount === 'true'"
-                                          @click="handleAddReason">+ 新增修改原因</span>
+                                          @click="handleAddReason">+ {{$t('addModifyReason')}}</span><!--新增修改原因-->
                                 </span>
                             </Radio>
                         </RadioGroup>
@@ -216,12 +216,12 @@
                                 :key="index"
                                 label=""
                                 :prop="'reason.' + index + '.reason'"
-                                :rules="[{required: true, message: '修改原因不能为空', trigger: 'blur'},
-                                 { validator: emoji, trigger: 'blur' }]">
+                                :rules="[{required: true, message: $t('errorEmpty', {msg: $t('modifyReason')}), trigger: 'blur'},
+                                 { validator: emoji, trigger: 'blur' }]"><!--修改原因不能为空-->
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100" :placeholder="$t('inputField', {field: ''})"/>
-                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">删除</span>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteReason(item,index)">{{$t('del')}}</span><!--删除-->
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForReason(item,index)">{{$t("save")}}</span>
-                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetReason(item,index)">取消</span>
+                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetReason(item,index)">{{$t('cancel')}}</span><!--取消-->
                             </FormItem>
                         </div>
 
@@ -229,7 +229,9 @@
                 </div>
 
                 <div class="content-item">
-                    <div class="title">证件类型设置   <span class="blue-color add-span" @click="handleAddIdType">+ 新增证件类型</span></div>
+                    <div class="title">{{$t('credentialsTypeSetting')}}<!--证件类型设置-->
+                        <span class="blue-color add-span" @click="handleAddIdType">+ {{$t('addCredentialsType')}}</span><!--新增证件类型-->
+                    </div>
                     <div class="main">
 
                         <div class="ivu-form-item-wrap short-wrap margin-left-50">
@@ -239,12 +241,12 @@
                                 :key="index"
                                 label=""
                                 :prop="'idType.' + index + '.name'"
-                                :rules="[{required: true, message: '证件类型不能为空', trigger: 'blur'},
-                                        { validator: emoji, trigger: 'blur' }]">
+                                :rules="[{required: true, message: $t('errorEmpty', {msg: $t('credentialsType')}), trigger: 'blur'},
+                                        { validator: emoji, trigger: 'blur' }]"><!--证件类型不能为空-->
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.name" :maxlength="10" :placeholder="$t('inputField', {field: ''})"/>
-                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">删除</span>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deleteDocument(item,index)">{{$t('del')}}</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForIdType(item,index)">{{$t("save")}}</span>
-                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetDocument(item,index)">取消</span>
+                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetDocument(item,index)">{{$t('cancel')}}</span>
                             </FormItem>
                         </div>
 
@@ -279,7 +281,7 @@
                 //用于动态表单校验(特殊字符)
                 emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error('输入内容不合规则'));
+                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -733,7 +735,7 @@
 
                 //为空校验
                 if( val === '' || val === 'null' || val == 0 || !val){
-                    this.error[errorField] = '不能为空';
+                    this.error[errorField] = this.$t('errorEmpty', {msg: ''});     // '不能为空'
                     return
                 } else {
                     this.error[errorField] = '';
@@ -749,7 +751,7 @@
 
                 //校验表情符号
                 if (val && val.isUtf16()) {
-                    this.error[errorField] = '输入内容不合规则';
+                    this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
                     return
                 } else {
                     this.error[errorField] = '';

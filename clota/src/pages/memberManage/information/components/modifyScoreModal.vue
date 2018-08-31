@@ -148,10 +148,10 @@
                         { validator: validateMaxCorpus, trigger: 'blur' },
                     ],
                     reasonId: [
-                        { required: true, message: this.$t('selectField', {msg: this.$t('modifyReason')}), trigger: 'change' },     // 修改原因不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('modifyReason')}), trigger: 'change' },     // 修改原因不能为空
                     ],
                     remark: [
-                        { required: true, message: this.$t('inputField', {field: this.$t('remark')}), trigger: 'blur' },       // 备注不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('remark')}), trigger: 'blur' },       // 备注不能为空
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],

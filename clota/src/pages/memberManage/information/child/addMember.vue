@@ -22,7 +22,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('phoneNum').slice(0,3)" prop="phoneNum"><!--手机号-->
+                        <Form-item :label="$t('mobilePhone')" prop="phoneNum"><!--手机号-->
                             <Input v-model.trim="member.phoneNum"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
@@ -311,16 +311,16 @@
                 },
                 ruleValidate: {
                     custName: [
-                        { required: true, message: this.$t('inputField', {field: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
                         { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },      // 姓名不能多于15个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phoneNum: [
-                        { required: true, message: this.$t('inputField', {field: this.$t('phoneNum').slice(0,3)}), trigger: 'blur' },       // 手机号不能为空
+                        { required: true, message: this.$t('errorEmpty', {field: this.$t('mobilePhone')}), trigger: 'blur' },       // 手机号不能为空
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
-                        { required: true, message: this.$t('selectField', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
                     ],
                     emailAddr : [
                         {validator : validateEmail,trigger : 'blur'},

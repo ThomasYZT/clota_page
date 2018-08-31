@@ -132,7 +132,7 @@
                 //表单校验
                 ruleValidate: {
                     fromAmount: [
-                        { required: true, message: this.$t('inputField', {field: this.$t('cashAmount')}), trigger: 'blur'},    // 兑现数量不能为空
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('cashAmount')}), trigger: 'blur'},    // 兑现数量不能为空
                         // { max: 30, message: this.$t('errorMaxLength', {field: this.$t('cashAmount'), length: 30}), trigger: 'blur' },      // 兑现数量不能超过30字符
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },

@@ -141,13 +141,13 @@
             //校验input输入
             validateInput ( value ) {
                 if( value === '' || value === 'null' || value == 0 || !value ){
-                    this.error = '不能为空';
+                    this.error = this.$t('errorEmpty', {msg: ''});     // '不能为空'
                     return false
                 } else if( value && value.length > 10 ){
                     this.error = '长度不能超过10';
                     return false
                 } else if( value && value.isUtf16() ){
-                    this.error = '输入内容不合规则';
+                    this.error = this.$t('errorIrregular');     // '输入内容不合规则'
                     return false
                 } else {
                     this.error = '';
