@@ -161,7 +161,7 @@
                 cardData: [],
                 cardColumnData: [
                     {
-                        title: 'IntegralRate',  // 积分率
+                        title: 'integralScale',  // 积分率
                         minWidth: 100,
                         field: 'scoreRate'
                     },
@@ -180,7 +180,7 @@
                         field: 'orgName'
                     },
                     {
-                        title: 'IntegralRate',  // 积分率
+                        title: 'integralScale',  // 积分率
                         minWidth: 110,
                         field: 'deptScoreRate'
                     },
@@ -204,7 +204,7 @@
                         field: 'productName'
                     },
                     {
-                        title: 'IntegralRate',
+                        title: 'integralScale',
                         minWidth: 100,
                         field: 'prodScoreRate'
                     },
