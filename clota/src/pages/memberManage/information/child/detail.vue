@@ -337,8 +337,8 @@
                 paymentData: [],
                 //自定义账户--用于新增账户
                 defineAccount: [],
-                //优惠券状态 未过期-noOverdue 已使用-used  已过期-overdue
-                status: 'noOverdue',
+                //优惠券状态 未使用-noUse 未过期-noOverdue 已使用-used  已过期-overdue
+                status: 'noUse',
                 //优惠券信息列表,包括分页信息
                 couponData: [],
                 //子母卡信息

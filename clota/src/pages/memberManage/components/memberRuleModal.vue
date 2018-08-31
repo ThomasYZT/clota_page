@@ -11,13 +11,14 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :label-width="170">
                 <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
-                    <Form-item :label="item.levelDesc+'成长值范围：'"
+
+                    <!--:rules="[{ validator: emoji, trigger: 'blur' },-->
+                    <!--{ validator: maxLength, trigger: 'blur' },-->
+                    <!--{ validator: validateNumber, trigger: 'blur' },-->
+                    <!--{ validator: validateHigh, trigger: 'blur' },]"-->
+         <Form-item :label="item.levelDesc+'成长值范围：'"
                                :key="index"
-                               :prop="'tableData.'+index+'highestGrowthValue'"
-                               :rules="[{ validator: emoji, trigger: 'blur' },
-                               { validator: maxLength, trigger: 'blur' },
-                               { validator: validateNumber, trigger: 'blur' },
-                               { validator: validateHigh, trigger: 'blur' },]">
+                               :prop="'tableData.'+index+'highestGrowthValue'">
                         <Input v-model.trim="item.lowerGrowthValue"
                                :placeholder="$t('inputField', {field: ''})"
                                :maxlength="10"
@@ -110,9 +111,12 @@
 
             save () {
                 var params = [];
+                console.log(this.formData.tableData)
                 this.formData.tableData.forEach( item => {
                     var list = {
                         id: item.id,
+                        levelNum: item.levelNum,
+                        levelDesc: item.levelDesc,
                         lowerGrowthValue: item.lowerGrowthValue,
                         highestGrowthValue: item.highestGrowthValue,
                     };

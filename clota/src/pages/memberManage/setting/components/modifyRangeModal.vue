@@ -98,7 +98,9 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save" >{{$t("save")}}</Button>
+            <Button type="primary"
+                    :disabled="multipleSelection.length > 0 ? false : true"
+                    @click="save" >{{$t("save")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -178,29 +180,38 @@
                 this.visible = true;
 
                 if( data ){
-                    if(type === 'money'){
-                        if(this.formData.corpusAppliedOrgId && this.formData.corpusAppliedOrgId.length > 0){
-                            this.formData.corpusAppliedOrgId.forEach( item => {
-                                this.tableData.forEach( (list,index) => {
-                                    if(item === list.id){
-                                        this.$refs.moneyMultiTablePlug.toggleRowSelection(this.tableData[index], true);
-                                    }
-                                })
-                            })
-                        }
-                    }
 
-                    if(type === 'send'){
-                        if(this.formData.donateAppliedOrgId && this.formData.donateAppliedOrgId.length > 0){
-                            this.formData.donateAppliedOrgId.forEach( item => {
-                                this.tableData.forEach( (list,index) => {
-                                    if(item === list.id){
-                                        this.$refs.sendMultiTablePlug.toggleRowSelection(this.tableData[index], true);
-                                    }
+                    setTimeout( () => {
+                        if(type === 'money'){
+                            if(this.formData.corpusAppliedOrgId && this.formData.corpusAppliedOrgId.length > 0){
+                                this.formData.corpusAppliedOrgId.forEach( item => {
+                                    this.tableData.forEach( (list,index) => {
+                                        if(item === list.id){
+                                            if( this.$refs.moneyMultiTablePlug ) {
+                                                this.$refs.moneyMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                            }
+                                        }
+                                    })
                                 })
-                            })
+                            }
                         }
-                    }
+
+                        if(type === 'send'){
+                            if(this.formData.donateAppliedOrgId && this.formData.donateAppliedOrgId.length > 0){
+                                this.formData.donateAppliedOrgId.forEach( item => {
+                                    this.tableData.forEach( (list,index) => {
+                                        if(item === list.id){
+                                            if( this.$refs.sendMultiTablePlug ) {
+                                                this.$refs.sendMultiTablePlug.toggleRowSelection(this.tableData[index], true);
+                                            }
+                                        }
+                                    })
+                                })
+                            }
+                        }
+                    },300)
+
+
                 }
 
             },
@@ -213,19 +224,19 @@
             save () {
                 if(this.type === 'send'){
                     this.multipleSelection.forEach( (item, index) => {
-                        this.formData.donateAppliedOrgId.push({ id: item.id });
+                        this.formData.donateAppliedOrgId.push(item.id);
                     });
                 } else {
                     this.multipleSelection.forEach( (item, index) => {
-                        this.formData.corpusAppliedOrgId.push({ id: item.id });
+                        this.formData.corpusAppliedOrgId.push(item.id);
                     });
                 }
                 let params = {
                     id: this.formData.id || '',
-                    account: this.formData.account,
+                    accountBelonging: this.formData.accountBelonging,
                     accountName: this.formData.accountName,
                     unit: this.formData.unit,
-                    rate: this.rate,
+                    rate: this.formData.rate,
                     exchangeToCash: this.formData.exchangeToCash,
                     corpusAppliedOrgId: this.formData.corpusAppliedOrgId.length > 0 ?
                         this.formData.corpusAppliedOrgId.join(',') : '',

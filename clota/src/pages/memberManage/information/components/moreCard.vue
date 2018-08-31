@@ -4,7 +4,8 @@
 
         <div class="tabs-wrap">
             <ButtonGroup>
-                <Button :type="status === 'noOverdue' ? 'primary' : 'ghost'" @click="changeStatus('noOverdue')">{{$t("notExpired")}}</Button>
+                <!--<Button :type="status === 'noOverdue' ? 'primary' : 'ghost'" @click="changeStatus('noOverdue')">{{$t("notExpired")}}</Button>-->
+                <Button :type="status === 'noUse' ? 'primary' : 'ghost'" @click="changeStatus('noUse')">{{$t("noUse")}}</Button>
                 <Button :type="status === 'used' ? 'primary' : 'ghost'" @click="changeStatus('used')">{{$t("used")}}</Button>
                 <Button :type="status === 'overdue' ? 'primary' : 'ghost'" @click="changeStatus('overdue')">{{$t("expired")}}</Button>
             </ButtonGroup>

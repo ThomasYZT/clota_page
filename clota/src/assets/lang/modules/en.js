@@ -149,6 +149,7 @@ export default {
     'newAccount': 'Add New Account',
     'enjoyIntegraAndDiscount': 'Integration Rate/&Discount Rate Information Enjoyed',
     'notExpired': 'Not Expired',
+    'noUse': 'no use',
     'used': 'Used',
     'expired': 'Expired',
     'more': 'More',
