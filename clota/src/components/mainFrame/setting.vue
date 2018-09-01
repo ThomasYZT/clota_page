@@ -2,7 +2,7 @@
 
 <template>
     <div class="system-setting"
-         :style="{right : operateLine ? '-10px' : '-250px'}"
+         :style="{width : operateLine ? '240px' : '0'}"
          @click.stop="">
         <div class="img-area">
             <img src="../../assets/images/icon-no-data.png" alt="">
@@ -104,14 +104,15 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .system-setting{
-        @include block_outline(240px);
+        @include block_outline(0);
         @include absolute_pos(absolute,$top : 0,$right : -10px);
-        z-index: 90;
+        z-index: 9999;
         background: #FFFFFF;
         box-shadow: -2px 0 14px 0 rgba(0,0,0,0.10);
         border-radius: 1px;
         padding: 20px 0 ;
         transition: all 0.3s;
+        overflow: hidden;
 
         .img-area{
             @include block_outline(58px,58px);

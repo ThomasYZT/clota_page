@@ -51,3 +51,9 @@
         /*transition: all 0.3s;*/
     }
 </style>
+<style>
+
+    body{
+        overflow: auto!important;
+    }
+</style>
