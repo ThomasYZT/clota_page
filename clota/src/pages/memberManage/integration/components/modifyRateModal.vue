@@ -4,7 +4,7 @@
         v-model="visible"
         :title="title"
         class-name="set-rate-modal vertical-center-modal"
-        width="520"
+        :width="lang === 'zh-CN' ? 540 : 580"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -12,11 +12,11 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="110">
+                  :label-width="lang === 'zh-CN' ? 110 : 160">
                 <slot></slot>
                 <div class="ivu-form-item-wrap">
                     <i-row>
-                        <i-col span="20">
+                        <i-col :span="lang === 'zh-CN' ? 20 : 21">
                             <Form-item :label="$t('IntegralRate')" prop="scoreRate">
                                 <Input v-model.trim="formData.scoreRate"
                                        style="width: 190px"
@@ -24,7 +24,7 @@
                                 <span class="font">{{$t('yuan')}}  <span class="equil">=</span></span>
                             </Form-item>
                         </i-col>
-                        <i-col span="2">
+                        <i-col span="3">
                             <div class="integral-rate">
                                 <span class="font">{{formData.integRate}}{{$t('integral')}}</span>
                             </div>
@@ -63,6 +63,7 @@
     import ajax from '@/api/index';
     import {validator} from 'klwk-ui';
     import common from '@/assets/js/common';
+    import {mapGetters} from 'vuex';
 
     export default {
         props : {
@@ -208,6 +209,11 @@
                     this.formData.scoreRate = newVal.scoreRate;
                 }
             }
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
         }
     }
 </script>
@@ -223,7 +229,7 @@
         }
 
         .modal-body{
-            padding: 20px 25px 0 25px;
+            padding: 20px 0 0 0;
             min-height: 260px;
             display: flex;
             align-items: center;

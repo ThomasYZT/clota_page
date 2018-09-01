@@ -29,7 +29,9 @@
                     {{ item.label }}
                 </Option>
             </Select>
-            <Input v-model.trim="queryParams.keyword" :placeholder="$t('fundPlaceholder')" style="width: 240px" /><!--请输入姓名、电话、会员编号-->
+            <Input v-model.trim="queryParams.keyword"
+                   :placeholder="$t('fundPlaceholder')"
+                   :style="{width: lang === 'zh-CN' ? '240px' : '390px'}" /><!--请输入姓名、电话、会员编号-->
             <Button type="primary" @click="queryList">{{$t('query')}}</Button>
             <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
         </div>
@@ -109,6 +111,7 @@
     import {tradeType1} from '@/assets/js/constVariable.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -259,7 +262,10 @@
             //是否是从账户储值信息跳转过来的页面
             fromAccountStore () {
                 return this.$route.name === 'fianceDetail';
-            }
+            },
+            ...mapGetters({
+              lang : 'lang'
+            })
         },
         watch : {
             '$route' (newVal,oldVal) {

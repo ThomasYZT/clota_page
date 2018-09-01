@@ -15,7 +15,8 @@
                         <span class="text">允许积分交易时抵现使用</span>
                     </div>
                     <div class="check-group-wrap">
-                        <Checkbox v-model="settingData.scoreOffsetInConsumption.columns.integrateToMoney">交易时，积分可抵扣订单金额，每</Checkbox>
+                        <Checkbox v-model="settingData.scoreOffsetInConsumption.columns.integrateToMoney"
+                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">交易时，积分可抵扣订单金额，每</Checkbox>
                         <span :class="{'ivu-form-item-error': error.integrateError}">
                              <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.integrate"
                                     :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
@@ -54,7 +55,8 @@
                         <span>%</span>
                     </div>
                     <div class="check-group-wrap">
-                        <Checkbox v-model="settingData.scoreOffsetInConsumption.meanwhile">消费时可和优惠券同时使用</Checkbox>
+                        <Checkbox v-model="settingData.scoreOffsetInConsumption.meanwhile"
+                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">消费时可和优惠券同时使用</Checkbox>
                     </div>
                 </div>
             </div>

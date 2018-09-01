@@ -9,6 +9,7 @@ export const columnData = [
     {
         title: '类别',
         width: 100,
+        enWidth: 170,
         field: 'couponType'
     },
     {

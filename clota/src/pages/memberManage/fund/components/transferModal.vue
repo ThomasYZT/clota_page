@@ -4,7 +4,7 @@
         v-model="visible"
         :title="$t('transfer')"
         class-name="transfer-modal vertical-center-modal"
-        width="560"
+        :width="lang === 'zh-CN' ? 560 : 600"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -12,7 +12,7 @@
             <Form ref="formValidate"
                   :model="data"
                   :rules="ruleValidate"
-                  :label-width="190">
+                  :label-width=" lang === 'zh-CN' ? 190 : 230">
 
                 <div class="ivu-form-item-wrap">
                       <Form-item :label="$t('transferAccount')" class="no-marg-bottom"><!--转出账户-->
@@ -85,6 +85,7 @@
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index.js';
     import {validator} from 'klwk-ui';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //账户信息
@@ -256,6 +257,11 @@
         },
         created () {
             this.getUpperlevelOrgList();
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
         }
     }
 </script>

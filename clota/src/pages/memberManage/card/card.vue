@@ -122,7 +122,7 @@
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
-                :width="150">
+                :width="170">
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!--<li @click="reloadCoupon(scope.row)">重新启用</li>-->

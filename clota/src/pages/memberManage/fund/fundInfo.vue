@@ -20,7 +20,9 @@
             </div>
             <ul class="account-operate">
                 <li class="list" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
-                <li class="list" @click="toTradeDetail(item)">{{$t('fundDetail')}}</li><!--资金交易明细-->
+                <li class="list"
+                    v-w-title="$t('fundDetail')"
+                    @click="toTradeDetail(item)">{{$t('fundDetail')}}</li><!--资金交易明细-->
             </ul>
         </div>
     </div>

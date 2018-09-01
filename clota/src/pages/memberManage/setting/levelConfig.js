@@ -29,6 +29,7 @@ export const levelListHead = [
     {
         title: 'operate',   // 操作
         minWidth: 140,
+        enMinWidth: 160,
         field: ''
     },
 ];
