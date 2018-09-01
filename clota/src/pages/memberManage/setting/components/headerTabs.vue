@@ -3,7 +3,8 @@
     <div class="header">
         <div class="router-item" v-for="(item,index) in routerList" @click="triggerLink(item)">
             <span class="split-line" v-if="index > 0"></span>
-            <span :class="{'name': true, 'active': routerName === item.name}">{{ $t(item.desc) }}</span>
+            <span :class="{'name': true, 'active': routerName === item.name}"
+                  v-w-title="$t(item.desc)">{{ $t(item.desc) }}</span>
         </div>
     </div>
 </template>
@@ -58,6 +59,10 @@
             cursor: pointer;
 
             .name{
+                display: inline-block;
+                width: calc(100%  - 20px);
+                word-break: break-all;
+                @include overflow_tip();
 
                 &.active{
                     color: $color_blue;
