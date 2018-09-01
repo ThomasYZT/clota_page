@@ -286,7 +286,6 @@
                     height: 20px;
                     font-size: $font_size_12px;
                     color: $color_999;
-                    padding-left: 60px;
                 }
 
                 .echarts {

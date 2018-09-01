@@ -13,7 +13,7 @@
                 </div>
                 <div class="fund-list">
                     <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
-                        {{item.accountName}}{{item.unit ? `（${item.unit}）` : ''}}
+                        {{item.accountName}}{{getUnit(item)}}
                     </div>
                     <div class="account-money">{{item.amount | moneyFilter}}</div>
                 </div>
@@ -75,6 +75,21 @@
                     name : 'fund',
                     params : data
                 });
+            },
+            /**
+             * 获取单位
+             * @param rowData
+             */
+            getUnit(rowData) {
+                if(rowData.id === '1'){
+                    return  '(' + this.$t('yuan') + ')';
+                }else{
+                    if(rowData.unit){
+                        return '(' + rowData.unit + ')';
+                    }else{
+                        return '';
+                    }
+                }
             }
         },
         beforeRouteEnter(to,from,next) {

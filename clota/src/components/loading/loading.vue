@@ -50,6 +50,8 @@
 
 
     .loader span:nth-child(2){
+        width: 10px;
+        height: 10px;
         background:#ee4141;
         -webkit-animation:kiri 1.2s infinite linear;
         -moz-animation:kiri 1.2s infinite linear;
@@ -57,10 +59,14 @@
 
     }
     .loader span:nth-child(3){
+        width: 10px;
+        height: 10px;
         background:#636363;
         z-index:100;
     }
     .loader span:nth-child(4){
+        width: 10px;
+        height: 10px;
         background:#2f70df;
         -webkit-animation:kanan 1.2s infinite linear;
         -moz-animation:kanan 1.2s infinite linear;
