@@ -4,26 +4,30 @@ export const integraDetailHead = [
     {
         title: 'transactionIntegralThisTime',      // 本次交易积分
         minWidth: 150,
+        enMinWidth : 270,
         field: 'amount'
     },
     {
         title: 'transactionType',      // 交易类型
         width: 150,
+        enWidth : 170,
         field: 'operationType'
     },
     {
         title: 'transactionInfo',      // 交易信息
         minWidth: 200,
+        enMinWidth : 230,
         field: 'remark'
     },
     {
         title: 'transactionCode',      // 交易编码
-        width: 190,
+        width: 220,
         field: 'id'
     },
     {
         title: 'accIntegralAfterTransaction',      // 交易后账户积分
         minWidth: 200,
+        enMinWidth : 280,
         field: 'endingBalance'
     },
     {

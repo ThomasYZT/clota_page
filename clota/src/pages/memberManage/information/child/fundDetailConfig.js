@@ -4,16 +4,19 @@ export const fundDetailHead = [
     {
         title: 'transactionAmountThisTime',     // 本次交易金额
         minWidth: 150,
+        enMinWidth : 290,
         field: 'amount'
     },
     {
         title: 'transactionType',  // 交易类型
         width: 150,
+        enWidth : 250,
         field: 'operationType'
     },
     {
         title: 'transactionInfo',  // 交易信息
         minWidth: 190,
+        enMinWidth : 208,
         field: 'remark'
     },
     {
@@ -24,6 +27,7 @@ export const fundDetailHead = [
     {
         title: 'accBalanceAfterTransaction',  // 交易后账户余额
         minWidth: 200,
+        enMinWidth : 278,
         field: 'endingBalance'
     },
     {

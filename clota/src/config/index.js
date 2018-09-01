@@ -4,7 +4,7 @@
 
 const dev = process.env.NODE_ENV === 'development';
 let  ipLists = {};
-//生产环境
+//开发环境
 if(dev){
     ipLists = {
         // HOST : 'http://172.25.50.146:8088/', //添哥
@@ -14,7 +14,8 @@ if(dev){
         // HOST : 'http://172.25.50.25:8080/', //喻斌
         // HOST : 'http://172.25.50.52:9080', //添哥
     };
-}else{//开发环境
+}else{
+//生产环境
     ipLists = {
         HOST : HTTP_ENV
     }

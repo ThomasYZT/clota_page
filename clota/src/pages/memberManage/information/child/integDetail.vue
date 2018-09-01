@@ -9,8 +9,15 @@
 
         <div class="integration-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.operType" style="width:200px" @on-change="filterDealList" :placeholder="$t('selectField', {msg: ''})">
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.name) }}</Option>
+                <Select v-model="queryParams.operType"
+                        style="width:200px"
+                        @on-change="filterDealList"
+                        :placeholder="$t('selectField', {msg: ''})">
+                    <Option v-for="item in type"
+                            :value="item.value"
+                            :key="item.value">
+                        {{ $t(item.name) }}
+                    </Option>
                 </Select>
                 <Date-picker
                     type="date"
@@ -18,16 +25,14 @@
                     v-model="queryParams.startDate"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
-                    @on-change="changeStartDate"
                     @on-ok="filterDealList()"><!--请选择开始日期-->
                 </Date-picker>
                 <Date-picker
                     type="date"
                     :editable="false"
-                    :value="queryParams.endDate"
+                    v-model="queryParams.endDate"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
-                    @on-change="changeEndDate"
                     @on-ok="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
 
@@ -54,8 +59,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount }}</span>
-                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount }}</span>
+                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount | contentFilter}}</span>
+                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount  | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -80,9 +85,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.accountSubType === 'corpus'">{{$t('principal')}}：{{ scope.row.amount || '-' }}</span>
-                        <span v-else-if="scope.row.accountSubType === 'donate'">{{$t('sendGift')}}：{{ scope.row.amount || '-' }}</span>
-                        <span v-else>{{ scope.row.amount || '-' }}</span>
+                        <span v-if="scope.row.accountSubType === 'corpus'">{{$t('principal')}}：{{ scope.row.amount  | contentFilter }}</span>
+                        <span v-else-if="scope.row.accountSubType === 'donate'">{{$t('sendGift')}}：{{ scope.row.amount  | contentFilter }}</span>
+                        <span v-else>{{ scope.row.amount  | contentFilter }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -92,24 +97,17 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.endingBalance || '-' }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    slot="column5"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{ new Date(scope.row.createdTime).format('yyyy.MM.dd hh:mm:ss') }}
+                        <span>{{ scope.row.endingBalance | contentFilter }}</span>
                     </template>
                 </el-table-column>
             </table-com>
         </div>
 
         <!--积分修改信息modal-->
-        <modify-detail-modal ref="modifyDetail" :manual-data="currManualData"></modify-detail-modal>
+        <modify-detail-modal
+            ref="modifyDetail"
+            :manual-data="currManualData">
+        </modify-detail-modal>
 
     </div>
 </template>
@@ -146,7 +144,7 @@
                 queryParams: {
                     cardId: '',
                     accountTypeIds: '',
-                    type: 'null',
+                    operType: 'null',
                     startDate: '',
                     endDate: '',
                     pageNo: 1,
@@ -154,7 +152,6 @@
                 },
                 // 枚举数据
                 type: integraType,
-
                 // 表格数据
                 tableData: [],
                 //总条数
@@ -186,8 +183,8 @@
                     param.operType = null;
                 }
                 ajax.post('queryOrgAccountChange', Object.assign(param,{
-                    startDate : this.queryParams.startDate ? new Date(this.queryParams.startDate.replace(/-/g,'/')).format('yyyy-MM-dd 00:00:00') : '',
-                    endDate : this.queryParams.endDate ? new Date(this.queryParams.endDate.replace(/-/g,'/')).format('yyyy-MM-dd 23:59:59') : '',
+                    startDate : this.queryParams.startDate ? new Date(this.queryParams).format('yyyy-MM-dd 00:00:00') : '',
+                    endDate : this.queryParams.endDate ? new Date(this.queryParams).format('yyyy-MM-dd 23:59:59') : '',
                 })).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
@@ -248,13 +245,6 @@
                 this.queryList();
             },
 
-            changeStartDate(datetime) {
-                this.queryParams.startDate = datetime;
-            },
-
-            changeEndDate(datetime) {
-                this.queryParams.endDate = datetime;
-            },
 
         }
     }
@@ -267,7 +257,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
         position: relative;

@@ -3,21 +3,28 @@
     <div class="member-information">
 
         <div class="filter-wrap">
+            <!--会员等级-->
             <Select v-model="queryParams.levelId" @on-change="queryList">
-                <Option v-for="(level, index) in enumData.level" :key="index"
+                <Option v-for="(level, index) in enumData.level"
+                        :key="index"
                         :value="level.id">{{$t(level.levelDesc)}}
                 </Option>
             </Select>
-            <Select v-model="queryParams.channelId" @on-change="queryList">
+            <!--会员渠道-->
+            <Select v-model="queryParams.channelId"
+                    @on-change="queryList"
+                    style="width : 190px">
                 <Option v-for="(channel, index) in enumData.channel" :key="index"
                         :value="channel.id">{{$t(channel.channelName)}}
                 </Option>
             </Select>
+            <!--会员类型-->
             <Select v-model="queryParams.vipStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.vipStatusEnum" :key="index"
                         :value="item.name">{{$t(item.desc)}}
                 </Option>
             </Select>
+            <!--会员状态-->
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
@@ -27,7 +34,9 @@
         </div>
 
         <div class="search-wrap">
-            <Input v-model.trim="queryParams.keyWord" :placeholder="$t('memberPlaceholder')"/>
+            <Input v-model.trim="queryParams.keyWord"
+                   :placeholder="$t('memberPlaceholder')"
+                   :style="{width : lang === 'zh-CN' ? '250px' : '400px'}"/>
             <Button type="primary" @click="queryList">{{$t("query")}}</Button>
             <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
         </div>
@@ -38,7 +47,7 @@
 
         <div class="table-wrap">
             <table-com
-                :ofsetHeight="210"
+                :ofsetHeight="205"
                 :show-pagination="true"
                 :column-data="infoListHead"
                 :table-data="tableData"
@@ -154,6 +163,7 @@
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {infoListHead} from './infoListConfig';
+    import {mapGetters} from 'vuex';
     import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
@@ -194,6 +204,11 @@
         created(){
             this.getLevelList();
             this.getChannelList();
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
         },
         methods: {
             // 获取会员级别列表

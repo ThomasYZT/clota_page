@@ -4,12 +4,15 @@
         v-model="visible"
         :title="$t('cash')"
         class-name="to-cash-modal vertical-center-modal"
-        width="560"
+        :width="lang === 'zh-CN' ? 560 :600"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 180 : 220">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('cashAmount') + '：'" prop="fromAmount">
                         <Input v-model.trim="formData.fromAmount" :maxlength="30" :placeholder="$t('inputField', {field: ''})"/>
@@ -56,6 +59,7 @@
 
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: ['store','detail'],
@@ -218,6 +222,11 @@
             },
 
         },
+        computed :{
+            ...mapGetters({
+                lang : 'lang'
+            })
+        }
     }
 </script>
 
@@ -226,7 +235,7 @@
     .to-cash-modal{
 
         .modal-body{
-            padding: 50px 70px;
+            padding: 50px 0 30px 0;
         }
 
         .ivu-form-item-wrap{

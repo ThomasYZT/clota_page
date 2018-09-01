@@ -9,10 +9,16 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="data" :rules="ruleValidate" :label-width="100">
+            <Form ref="formValidate"
+                  :model="data"
+                  :rules="ruleValidate"
+                  :label-width="200">
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('selectField', {msg: $t('account')})" prop="accountTypeId">
-                        <Select v-model="data.accountTypeId" :placeholder="$t('selectField', {msg: ''})">
+                    <Form-item :label="$t('selectField', {msg: $t('account')})"
+                               prop="accountTypeId">
+                        <Select v-model="data.accountTypeId"
+                                :placeholder="$t('selectField', {msg: ''})"
+                                style="width: 260px">
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
@@ -103,7 +109,8 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 90px 85px;
+            padding: 90px 0;
+            margin: 0 auto;
         }
 
         .modal-footer{

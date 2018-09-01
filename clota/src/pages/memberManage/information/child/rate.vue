@@ -11,12 +11,13 @@
 
         <div class="rate-content">
 
-            <div class="table-wrap width-500">
+            <div class="table-wrap" :class="{'width-500' : lang === 'zh-CN' , 'width-660' : lang === 'en'}">
                 <div class="title-wrap">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
                 <table-com
                     :column-data="cardColumnData"
                     :table-data="cardData"
                     :border="false"
+                    :table-com-min-height="400"
                     :ofset-height="170">
                     <el-table-column
                         slot="column0"
@@ -40,6 +41,7 @@
                     :column-data="storeColumnData"
                     :table-data="storeData"
                     :border="false"
+                    :table-com-min-height="400"
                     :ofset-height="335">
                     <el-table-column
                         slot="column0"
@@ -75,6 +77,7 @@
                 <table-com
                     :column-data="productColumnData"
                     :table-data="productData"
+                    :table-com-min-height="400"
                     :border="false"
                     :ofset-height="545">
                     <el-table-column
@@ -130,6 +133,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -138,9 +142,9 @@
             tableCom,
         },
         computed: {
-            show () {
-               return false
-            },
+            ...mapGetters({
+                lang : 'lang'
+            })
         },
         data () {
             return {
@@ -163,11 +167,13 @@
                     {
                         title: 'integralScale',  // 积分率
                         minWidth: 100,
+                        enMinWidth : 320,
                         field: 'scoreRate'
                     },
                     {
                         title: 'discountRate',  // 折扣率
                         minWidth: 100,
+                        enMinWidth : 150,
                         field: 'discountRate'
                     },
                 ],
@@ -182,6 +188,7 @@
                     {
                         title: 'integralScale',  // 积分率
                         minWidth: 110,
+                        enMinWidth: 280,
                         field: 'deptScoreRate'
                     },
                     {
@@ -206,6 +213,7 @@
                     {
                         title: 'integralScale',
                         minWidth: 100,
+                        enMinWidth: 220,
                         field: 'prodScoreRate'
                     },
                     {
@@ -268,7 +276,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
         position: relative;

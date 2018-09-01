@@ -133,7 +133,8 @@
                                :status="status"
                                :table-data="couponData"
                                @view-more="showCouponModal"
-                               @change-status="changeStatus"></more-card>
+                               @change-status="changeStatus">
+                    </more-card>
                 </div>
 
                 <!--<div class="content-info">-->
@@ -638,7 +639,7 @@
                 this.$router.push({ name: 'infoRate' , params: { detail: this.detail} });
             },
 
-            //根据会员获取会员信息和会员卡信息
+            //根据会员id获取会员信息和会员卡信息
             showMemberDetail ( params ) {
                 ajax.post('showMemberDetail', {
                     memberId: params.id,

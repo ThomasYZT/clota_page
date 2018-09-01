@@ -13,19 +13,19 @@
                     <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.name) }}</Option>
                 </Select>
                 <Date-picker
-                    type="datetime"
+                    type="date"
                     v-model="queryParams.startDate"
-                    format="yyyy-MM-dd HH:mm:ss"
+                    :editable="false"
+                    format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
-                    @on-change="changeStartDate"
                     @on-ok="filterDealList()">
                 </Date-picker><!--请选择开始日期-->
                 <Date-picker
-                    type="datetime"
-                    :value="queryParams.endDate"
-                    format="yyyy-MM-dd HH:mm:ss"
+                    type="date"
+                    v-model="queryParams.endDate"
+                    :editable="false"
+                    format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
-                    @on-change="changeEndDate"
                     @on-ok="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
                 <div class="btn-wrap">
@@ -35,8 +35,6 @@
             </div>
             <table-com
                 v-if="queryParams.accountTypeIds"
-                :auto-height="true"
-                :table-com-min-height="300"
                 :ofsetHeight="170"
                 :show-pagination="true"
                 :column-data="columnData"
@@ -53,8 +51,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="green-color" v-if="scope.row.amount > -1">+{{ scope.row.amount }}{{fundDetail.unit}}</span>
-                        <span class="red-color" v-if="scope.row.amount < 0">{{ scope.row.amount }}{{fundDetail.unit}}</span>
+                        <span class="green-color" v-if="scope.row.amount > -1">
+                            +{{ scope.row.amount | moneyFilter | contentFilter }}{{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
+                        </span>
+                        <span class="red-color" v-if="scope.row.amount < 0">
+                            {{ scope.row.amount }}{{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
+                        </span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -80,12 +82,15 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span v-if="scope.row.accountSubType === 'corpus'"><!--本金-->
-                            {{$t('principal')}}：{{ scope.row.amount || '-' }}{{fundDetail.unit}}
+                            {{$t('principal')}}：{{ scope.row.amount | moneyFilter | contentFilter }}
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
                         </span>
                         <span v-else-if="scope.row.accountSubType === 'donate'"><!--赠送-->
-                            {{$t('sendGift')}}：{{ scope.row.amount || '-' }}{{fundDetail.unit}}
+                            {{$t('sendGift')}}：{{ scope.row.amount  | moneyFilter | contentFilter }}
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
                         </span>
-                        <span v-else>{{ scope.row.amount || '-' }}{{fundDetail.unit}}</span>
+                        <span v-else>{{ scope.row.amount  | moneyFilter | contentFilter }}
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -95,17 +100,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.endingBalance || '-' }}{{fundDetail.unit}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    slot="column5"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{ new Date(scope.row.createdTime).format('yyyy.MM.dd hh:mm:ss') }}
+                        <span>{{ scope.row.endingBalance | moneyFilter | contentFilter }}
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}</span>
                     </template>
                 </el-table-column>
             </table-com>
@@ -184,10 +180,13 @@
             queryList () {
                 let param = {};
                 Object.assign(param, this.queryParams);
-                if (this.queryParams.operType == 'null') {
+                if (this.queryParams.operType == 'all') {
                     param.operType = null;
                 }
-                ajax.post('queryOrgAccountChange', param).then(res => {
+                ajax.post('queryOrgAccountChange', Object.assign(param,{
+                    startDate : this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '',
+                    endDate : this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '',
+                })).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
@@ -238,21 +237,13 @@
              */
             resetQueryParams() {
                 Object.assign(this.queryParams, {
-                    operType: 'null',
+                    operType: 'all',
                     startDate: '',
                     endDate: '',
                     pageNo: 1,
                     pageSize: 10,
                 });
                 this.queryList();
-            },
-
-            changeStartDate(datetime) {
-                this.queryParams.startDate = datetime;
-            },
-
-            changeEndDate(datetime) {
-                this.queryParams.endDate = datetime;
             },
 
         }
@@ -266,7 +257,6 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        @include padding_place();
         background: $color-fff;
         border-radius: 4px;
         position: relative;

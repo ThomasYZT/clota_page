@@ -4,30 +4,37 @@
         v-model="visible"
         :title="$t('integraModification')"
         class-name="modify-score-modal vertical-center-modal"
-        width="560"
+        :width="lang === 'zh-CN' ? 560 : 650"
         :mask-closable="false"
         @on-cancel="hide"><!--会员积分账户修改-->
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="160">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 190 : 330">
 
-                <div class="form-item-wrap">
-                    <label>{{$t("userName")}}：</label>
-                    <span>{{detail.custName || '-'}}</span>
+                <div class="ivu-form-item-wrap bottom-5px">
+                    <Form-item :label="$t('userName') + '：'"><!--会员姓名-->
+                        {{detail.custName | contentFilter}}
+                    </Form-item>
                 </div>
 
-                <div class="form-item-wrap">
-                    <label>{{$t("currentIntegralAcc")}}：</label><!--目前积分账户-->
-                    <span class="yellow-color">{{account.accountBalance ? account.accountBalance.toCurrency() : '0'}}</span>
-                    {{$t('integral')}}<!--积分-->
+                <div class="ivu-form-item-wrap bottom-5px">
+                    <Form-item :label="$t('currentIntegralAcc') + '：'"><!--会员姓名-->
+                        <span class="yellow-color">{{account.accountBalance}}</span>
+                        {{$t('integral')}}<!--积分-->
+                    </Form-item>
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
                     <Form-item :label="$t('integAdjust') + '：'" prop="corpusAmount"><!--账户余额调整-->
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
-                                {{$t("increase")}}<!--增加-->
+                                 <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                    {{$t("increase")}}
+                                </span>
                                 <template v-if="formData.corpusOptSign === 'sub'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -37,7 +44,9 @@
                                 {{accountInfo.unit || ''}}
                             </Radio>
                             <Radio label="sub">
-                                {{$t("reduce")}}<!--减少-->
+                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                    {{$t("reduce")}}
+                                </span>
                                 <template v-if="formData.corpusOptSign === 'add'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -84,6 +93,7 @@
 
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: ['account','reason','detail'],
@@ -213,6 +223,11 @@
             },
 
         },
+        computed : {
+            ...mapGetters({
+              lang : 'lang'
+            })
+        }
     }
 </script>
 
@@ -227,29 +242,15 @@
             margin-right: 5px;
         }
 
-        .modal-body{
-            padding: 0px 30px;
-        }
-
-        .form-item-wrap{
-            width: 100%;
-            float: left;
-            margin-right: 10px;
-            margin-bottom: 5px;
-            height: 30px;
-            line-height: 30px;
-            font-size: $font_size_14px;
-            color: $color-666;
-            >label{
-                width: 160px;
-                display: inline-block;
-                text-align: right;
-                padding-right: 10px;
-                color: $color-333;
-            }
-        }
-
         .ivu-form-item-wrap{
+
+            &.bottom-5px /deep/ .ivu-form-item{
+                margin-bottom: 5px;
+            }
+
+            .adjust-type{
+                display: inline-block;
+            }
 
             /deep/ .ivu-select{
                 width: 260px;

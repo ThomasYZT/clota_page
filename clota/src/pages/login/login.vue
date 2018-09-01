@@ -164,6 +164,7 @@
 
     .header {
         position: absolute;
+        z-index: 99;
         @include block_outline(100%,53px);
         @include clearfix;
         padding: 40px 80px;

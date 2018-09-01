@@ -4,35 +4,40 @@
         v-model="visible"
         :title="$t('newStorageValue')"
         class-name="add-fund-modal vertical-center-modal"
-        width="560"
+        :width="lang === 'zh-CN' ? 560 : 680"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap">
-                <label>{{$t('userName')}}：</label>
-                <span>{{detail.custName || '-'}}</span>
-            </div>
-            <div class="form-item-wrap">
-                <label>{{$t('storageAccount')}}：</label>
-                <span>{{accountInfo.accountName || '-'}}</span>
-            </div>
-            <div class="form-item-wrap">
-                <label>{{$t('PrincipalAccBalance')}}：</label>
-                <span>
-                    <span class="yellow-color">
-                        {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
-                    </span>{{accountInfo.unit || ''}}</span>
-            </div>
-            <div class="form-item-wrap">
-                <label>{{$t('giftAccBalance')}}：</label>
-                <span>
-                    <span class="yellow-color">
-                        {{accountInfo.donateBalance ? accountInfo.donateBalance.toCurrency() : '0'}}
-                    </span>{{accountInfo.unit || ''}}</span>
-            </div>
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 150 : 240">
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('userName') + ':'">
+                        {{detail.custName | contentFilter}}
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('storageAccount') + ':'">
+                        {{accountInfo.accountName | contentFilter}}
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('PrincipalAccBalance') + ':'">
+                      <span class="yellow-color">
+                        {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
+                    </span>{{accountInfo.unit || ''}}
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('giftAccBalance') + ':'">
+                        <span class="yellow-color">
+                        {{accountInfo.donateBalance | moneyFilter | contentFilter }}
+                        </span>{{accountInfo.unit}}
+                    </Form-item>
+                </div>
                 <div class="ivu-form-item-wrap double-input">
                     <Form-item :label="$t('increaseStorageSum') + '：'" prop="amount">
                         <!--@on-blur="getTotalAmount"-->
@@ -72,6 +77,7 @@
 
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: ['payment-list','detail'],
@@ -204,6 +210,11 @@
             },
 
         },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
+        }
     }
 </script>
 
@@ -212,25 +223,7 @@
     .add-fund-modal{
 
         .modal-body{
-            padding: 20px 30px;
-        }
-
-        .form-item-wrap{
-            width: 100%;
-            float: left;
-            margin-right: 10px;
-            margin-bottom: 5px;
-            height: 30px;
-            line-height: 30px;
-            font-size: $font_size_14px;
-            color: $color-666;
-            >label{
-                width: 130px;
-                display: inline-block;
-                text-align: right;
-                padding-right: 10px;
-                color: $color-333;
-            }
+            padding: 20px 0 ;
         }
 
         .ivu-form-item-wrap{
@@ -241,6 +234,10 @@
 
             /deep/ .ivu-input-wrapper{
                 width: 315px;
+            }
+
+            /deep/ .ivu-form-item-label{
+                word-break: break-all;
             }
 
             &.double-input{

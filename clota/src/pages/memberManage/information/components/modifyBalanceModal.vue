@@ -4,20 +4,24 @@
         v-model="visible"
         :title="$t('storageBalanceModification')"
         class-name="modify-balance-modal vertical-center-modal"
-        width="560"
+        :width="lang === 'zh-CN' ? 560  : 690"
         :mask-closable="false"
         @on-cancel="hide"><!--会员储值账户余额修改-->
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="160">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 190 : 330">
 
-                <div class="form-item-wrap">
-                    <label>{{$t("userName")}}：</label><!--用户姓名-->
-                    <span>{{detail.custName || '-'}}</span>
+                <div class="ivu-form-item-wrap bottom-5px">
+                    <Form-item :label="$t('userName') + '：'"><!--用户姓名-->
+                        {{detail.custName | contentFilter}}
+                    </Form-item>
                 </div>
 
-                <div class="ivu-form-item-wrap">
+                <div class="ivu-form-item-wrap bottom-5px">
                     <Form-item :label="$t('selectModifyingAccount') + '：'" prop="accountTypeId"><!--选择要修改的账户-->
                         <Select v-model="formData.accountTypeId" :placeholder="$t('selectField', {msg: ''})" @on-change="changeAccount">
                             <Option v-for="(item,index) in store"
@@ -29,39 +33,46 @@
                     </Form-item>
                 </div>
 
-                <div class="form-item-wrap">
-                    <label>{{$t('PrincipalAccBalance')}}：</label><!--本金账户余额-->
-                    <span class="yellow-color">{{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}</span>
-                    {{accountInfo.unit || ''}}
+                <div class="ivu-form-item-wrap bottom-5px">
+                    <Form-item :label="$t('PrincipalAccBalance') + '：'"><!--本金账户余额-->
+                        <span class="yellow-color">{{accountInfo.corpusBalance | moneyFilter | contentFilter}}</span>
+                        {{accountInfo.accountDefineId === '1' ? $t('yuan') : accountInfo.unit}}
+                    </Form-item>
                 </div>
-                <div class="form-item-wrap">
-                    <label>{{$t('giftAccBalance')}}：</label><!--赠送账户余额-->
-                    <span class="yellow-color">{{accountInfo.donateBalance ? accountInfo.donateBalance.toCurrency() : '0'}}</span>
-                    {{accountInfo.unit || ''}}
+
+                <div class="ivu-form-item-wrap bottom-5px">
+                    <Form-item :label="$t('giftAccBalance') + '：'"><!--赠送账户余额-->
+                        <span class="yellow-color">{{accountInfo.donateBalance | moneyFilter | contentFilter}}</span>
+                        {{accountInfo.accountDefineId === '1' ? $t('yuan') : accountInfo.unit}}
+                    </Form-item>
                 </div>
 
                 <div class="ivu-form-item-wrap double-input">
                     <Form-item :label="$t('adjustPrincipalAccBalance') + '：'" prop="corpusAmount"><!--本金账户余额调整-->
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
-                                {{$t("increase")}}
+                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                    {{$t("increase")}}
+                                </span>
                                 <template v-if="formData.corpusOptSign === 'sub'">
                                     <Input placeholder=" " disabled/>
                                 </template>
                                 <template v-else>
                                     <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
-                                {{accountInfo.unit || ''}}
+                                {{accountInfo.unit}}
                             </Radio>
                             <Radio label="sub">
-                                {{$t("reduce")}}
+                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                    {{$t("reduce")}}
+                                </span>
                                 <template v-if="formData.corpusOptSign === 'add'">
                                     <Input placeholder=" " disabled/>
                                 </template>
                                 <template v-else>
                                     <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
-                                {{accountInfo.unit || ''}}
+                                {{accountInfo.unit}}
                             </Radio>
                         </RadioGroup>
                     </Form-item>
@@ -71,7 +82,9 @@
                     <Form-item :label="$t('adjustGiftAccBalance') + '：'" prop="donateAmount"><!--赠送账户余额调整-->
                         <RadioGroup v-model="formData.donateOptSign">
                             <Radio label="add">
-                                {{$t("increase")}}
+                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                    {{$t("increase")}}
+                                </span>
                                 <template v-if="formData.donateOptSign === 'sub'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -81,7 +94,9 @@
                                 {{accountInfo.unit || ''}}
                             </Radio>
                             <Radio label="sub">
-                                {{$t("reduce")}}
+                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                    {{$t("reduce")}}
+                                </span>
                                 <template v-if="formData.donateOptSign === 'add'">
                                 <Input placeholder=" " disabled/>
                             </template>
@@ -129,6 +144,7 @@
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: ['reason','detail'],
@@ -297,6 +313,11 @@
             },
 
         },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
+        }
     }
 </script>
 
@@ -311,29 +332,15 @@
             margin-right: 5px;
         }
 
-        .modal-body{
-            padding: 0px 30px;
-        }
-
-        .form-item-wrap{
-            width: 100%;
-            float: left;
-            margin-right: 10px;
-            margin-bottom: 5px;
-            height: 30px;
-            line-height: 30px;
-            font-size: $font_size_14px;
-            color: $color-666;
-            >label{
-                width: 160px;
-                display: inline-block;
-                text-align: right;
-                padding-right: 10px;
-                color: $color-333;
-            }
-        }
-
         .ivu-form-item-wrap{
+
+            .adjust-type{
+                display: inline-block;
+            }
+
+            &.bottom-5px /deep/ .ivu-form-item{
+                margin-bottom: 5px;
+            }
 
             /deep/ .ivu-select{
                 width: 260px;
@@ -341,6 +348,10 @@
 
             /deep/ .ivu-input-wrapper{
                 width: 260px;
+            }
+
+            /deep/ .ivu-form-item-label{
+                word-break: break-all;
             }
 
             &.double-input{

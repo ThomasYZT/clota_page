@@ -98,6 +98,7 @@
 
             show ( data ) {
                 if( data ){
+                    this.corpusRangeData = [];
                     this.accountInfo = data;
                     let corpusRanges = data.corpusAppliedOrgId ? data.corpusAppliedOrgId.split(',') : [];
                     let donateRanges = data.donateAppliedOrgId ? data.donateAppliedOrgId.split(',') : [];
