@@ -116,15 +116,25 @@
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
                                     this.$router.push({
                                         path: route.path
+                                    },() => {
+                                        setTimeout(() => {
+                                            this.isLoging = false;
+                                        },500);
                                     });
                                 });
+                            }else if(res.toString() === 'Error: Network Error'){
+                                this.errMsg = this.$t('serverFail');
+                                setTimeout(() => {
+                                    this.isLoging = false;
+                                },500);
                             } else {
                                 this.errMsg = this.$t('accoutOrPassErr');
+                                setTimeout(() => {
+                                    this.isLoging = false;
+                                },500);
                             }
                         }).catch(err => {
-                            console.log(err)
                             this.errMsg = this.$t('loginErr');
-                        }).finally(() => {
                             setTimeout(() => {
                                 this.isLoging = false;
                             },500);

@@ -2,7 +2,7 @@
     <!--编辑账户-->
     <Modal
         v-model="visible"
-        title="编辑账户"
+        :title="$t('editAccount')"
         class-name="modify-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -10,9 +10,12 @@
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="130">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="账户归属" prop="accountBelonging">
+                    <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
                         <!--默认账户-->
                         <template v-if="formData.defaultAccount === 'true'">
                             <Select v-model="formData.accountBelonging" disabled>
@@ -36,21 +39,24 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="账户名称" prop="accountName">
+                    <!--账户名称-->
+                    <Form-item :label="$t('accountName')" prop="accountName">
                         <Input v-model.trim="formData.accountName"
                                :placeholder="$t('inputField', {field: ''})"
                                :disabled="formData.defaultAccount === 'true' ? true : false"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="单位" prop="unit">
+                    <!--单位-->
+                    <Form-item :label="$t('unit')" prop="unit">
                         <Input v-model.trim="formData.unit"
                                :placeholder="$t('inputField', {field: ''})"
                                :disabled="formData.defaultAccount === 'true' ? true : false"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="储值比率" prop="rateDenominator">
+                    <!--储值比率-->
+                    <Form-item :label="$t('storedValueRatio')" prop="rateDenominator">
                         <Input v-model.trim="formData.rateNumerator"
                                :disabled="formData.defaultAccount === 'true' ? true : false"
                                :placeholder="$t('inputField', {field: ''})"
@@ -63,10 +69,11 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <FormItem label="是否允许兑现">
+                    <!--是否允许兑现-->
+                    <FormItem :label="$t('whetherCashingIsAllowed')">
                         <RadioGroup v-model="formData.exchangeToCash">
-                            <Radio label="true">允许兑现</Radio>
-                            <Radio label="false">不允许兑现</Radio>
+                            <Radio label="true">{{$t('allowCash')}}</Radio>
+                            <Radio label="false">{{$t('notAllowCash')}}</Radio>
                         </RadioGroup>
                     </FormItem>
                 </div>
@@ -114,7 +121,11 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    callback(this.$t(err));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    }
                 });
             };
 
@@ -127,7 +138,11 @@
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    }
                 });
             };
 
@@ -149,19 +164,18 @@
                 //校验规则
                 ruleValidate: {
                     accountBelonging: [
-                        { required: true, message: '账户归属不能为空', trigger: 'change' },
+                        { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
                     ],
                     accountName: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '账户名称不能超过10字符', trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength',{field : this.$t('accountName'),length : 10}), trigger: 'blur' },
                     ],
                     unit: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '单位不能超过10字符', trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength',{field : this.$t('unit'),length : 10}), trigger: 'blur' },
                     ],
                     rateDenominator: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '储值比率不能超过10字符', trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateRateNumerator, trigger: 'blur' },
                     ],
@@ -208,15 +222,16 @@
             },
 
 
+
             //保存/更改/储值账户设置
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('修改成功！');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.warning(res.message || 'updateMemberAccountDefine 修改失败！');
+                        this.$Message.warning(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
                     }
                 })
             },

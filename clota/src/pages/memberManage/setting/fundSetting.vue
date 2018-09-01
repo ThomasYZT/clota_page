@@ -8,78 +8,78 @@
         <div class="content">
 
             <div class="content-item">
-                <div class="title">储值密码设置</div>
+                <div class="title">{{$t('StorePasswordSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.passwdForRechargeAccount" vertical>
                         <Radio label="false">
-                            <span>消费时无需要密码验证，提供个人信息等</span>
+                            <span>{{$t('consumeWithoutPass')}}</span>
                         </Radio>
                         <Radio label="true">
-                            <span>消费时需要密码验证</span>
-                            <span class="yellow-color">（刷二维码即可或其他短信发送随机密码）</span>
+                            <span>{{$t('consumeWithPass')}}</span>
+                            <span class="yellow-color">{{$t('erCodeOrSmsToPass')}}</span>
                         </Radio>
                     </RadioGroup>
                 </div>
             </div>
 
             <div class="content-item">
-                <div class="title">储值积分、成长值比例设置</div>
+                <div class="title">{{$t('storeIntegetSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreGrowthFromCharging.storedAndGrowthType" vertical>
                         <Radio label="false">
-                            <span>储值时不获得积分、成长值，消费时获取</span>
+                            <span>{{$t('storeWithouIntegetAGrowth')}}</span>
                         </Radio>
                         <Radio label="true">
-                            <span>储值时获得积分、成长值，消费时不重复获得积分、成长值</span>
+                            <span>{{$t('storeWithouIntegetAGrowthNoRepeat')}}</span>
                         </Radio>
                     </RadioGroup>
-                    <div class="check-group-wrap">储值
+                    <div class="check-group-wrap">{{$t('recharge')}}
                         <span :class="{'ivu-form-item-error': error.moneyToIntegrateError}">
                             <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToIntegrate"
                                  :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
                                  @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToIntegrate,'moneyToIntegrateError')"
                                  type="text"
                                  class="single-input"
-                                 :placeholder="$t('inputField', {field: ''})"/> 元获取
+                                 :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
                             <span class="ivu-form-item-error-tip"
                                    style="left: 92px;"
                                    v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
                         </span>
-                        <span> {{settingData.scoreGrowthFromCharging.integrate}} 积分</span>
+                        <span> {{settingData.scoreGrowthFromCharging.integrate}} {{$t('integral')}}</span>
                     </div>
-                    <div class="check-group-wrap">储值
+                    <div class="check-group-wrap">{{$t('recharge')}}
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
                               <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGgowth"
                                      :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
                                      @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGgowth,'moneyToGgowthError')"
                                      type="text"
                                      class="single-input"
-                                     :placeholder="$t('inputField', {field: ''})"/> 元获取
+                                     :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
                               <span class="ivu-form-item-error-tip"
                                    style="left: 92px;"
                                    v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
                         </span>
-                        <span> {{settingData.scoreGrowthFromCharging.growth}} 成长值</span>
+                        <span> {{settingData.scoreGrowthFromCharging.growth}} {{$t('growth')}}</span>
                     </div>
                 </div>
             </div>
 
             <div class="content-item">
-                <div class="title">储值获得积分、成长值生效设置</div>
+                <div class="title">{{$t('storeIntegetRatioSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreGrowthEffModeWhileCharging.storedType" vertical>
                         <Radio label="immediately">
-                            <span>储值成功后立即生效</span>
+                            <span>{{$t('rechartSucEffective')}}</span>
                         </Radio>
                         <Radio label="checkout_after" :class="{'ivu-form-item-error': error.growthTimeError}">
-                            <span>储值成功后</span>
+                            <span>{{$t('rechartSuc')}}</span>
                             <Input v-model.trim="settingData.scoreGrowthEffModeWhileCharging.storedTime"
                                    :disabled="settingData.scoreGrowthEffModeWhileCharging.storedType !== 'checkout_after' ? true : false"
                                    @on-blur="checkInputBlurFunc(settingData.scoreGrowthEffModeWhileCharging.storedTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                            <span>个小时后失效</span>
+                            <span>{{$t('hourLaterInvalid')}}</span>
                             <span class="ivu-form-item-error-tip"
                                   style="left: 113px;"
                                   v-if="error.growthTimeError">{{error.growthTimeError}}</span>
@@ -89,12 +89,14 @@
             </div>
 
             <div class="content-item">
-                <div class="title">储值赠送金额比例设置 <span class="add-span blue-color" @click="addSendRate">+ 新增</span></div>
+                <div class="title">{{$t('setProportionOfBonusAmountOfStorageValue')}}
+                    <span class="add-span blue-color" @click="addSendRate">+ {{$t('add')}}</span>
+                </div>
                 <div class="main" v-if="settingData.donateWhileRecharge.length > 0">
                     <div class="ivu-form-item-wrap">
                         <template v-for="(item, index) in settingData.donateWhileRecharge">
                             <div :key="index" class="send-money-wrap" v-if="item._status">
-                                <span class="label">储值：</span>
+                                <span class="label">{{$t('recharge')}}：</span>
                                 <Input type="text"
                                        :value="item.lowerValue"
                                        disabled
@@ -104,12 +106,12 @@
                                        :value="item.topValue"
                                        disabled
                                        :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/> 赠送
+                                       class="single-input"/> {{$t('sendGift')}}
                                 <Input type="text"
                                        :value="item.gift"
                                        disabled
                                        :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/> 元
+                                       class="single-input"/> {{$t('yuan')}}
                                 <span class="add-span blue-color"
                                       @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
                                 <span class="add-span blue-color"
@@ -133,7 +135,9 @@
             </div>-->
 
             <div class="content-item">
-                <div class="title">收款方式设置   <span class="blue-color add-span" @click="handleAddPay">+ 新增收款方式</span></div>
+                <div class="title">{{$t('CollectionModeSetting')}}
+                    <span class="blue-color add-span" @click="handleAddPay">+ {{$t('newCollectionMethod')}}</span>
+                </div>
                 <div class="main">
                     <Form ref="formDynamic" :model="formDynamic" :label-width="20">
                         <div class="ivu-form-item-wrap short-wrap">
@@ -143,7 +147,7 @@
                                 :key="index"
                                 label=""
                                 :prop="'pay.' + index + '.payment'"
-                                :rules="{required: true, message: '证件类型不能为空', trigger: 'blur'}">
+                                :rules="{required: true, message: $t('CertificateTypeCannotBeEmpty'), trigger: 'blur'}">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" :placeholder="$t('inputField', {field: ''})"/>
                                 <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">{{$t('del')}}</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">{{$t("save")}}</span>
@@ -155,7 +159,9 @@
             </div>
 
             <div class="content-item">
-                <div class="title">储值账户设置   <span class="add-span blue-color" @click="AddAccount">+ 新增账户</span></div>
+                <div class="title">{{$t('storeValueAccountSettings')}}
+                    <span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
+                </div>
                 <div class="main">
                     <div class="table-wrap">
                         <table-com
@@ -173,7 +179,7 @@
                                 slot-scope="row">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">
-                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">应用设置</li>
+                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>
                                     </ul>
                                 </template>
                             </el-table-column>
@@ -187,7 +193,7 @@
                                 slot-scope="row">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">
-                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">应用设置</li>
+                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>
                                     </ul>
                                 </template>
                             </el-table-column>
@@ -201,7 +207,7 @@
                                 slot-scope="row">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">
-                                        <li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">编辑账户</li>
+                                        <li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>
                                     </ul>
                                 </template>
                             </el-table-column>
@@ -312,23 +318,24 @@
                 //表头数据
                 columnData: [
                     {
-                        title: '账户名称',
+                        title: 'accountName',
                         minWidth: 140,
                         field: 'accountName',
                     },
                     {
-                        title: '本金',
+                        title: 'principal',
                         minWidth: 110,
                         field: 'id'
                     },
                     {
-                        title: '赠送金额',
+                        title: 'giftSum',
                         minWidth: 110,
                         field: 'id'
                     },
                     {
-                        title: '操作',
+                        title: 'operate',
                         minWidth: 110,
+                        enMinWidth: 140,
                         field: 'id'
                     },
                 ],
@@ -458,7 +465,6 @@
                                         }
                                     }
                                 }
-                                console.log(params)
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -509,7 +515,7 @@
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
                     if( res.success){
-                        this.$Message.success('保存储值设置成功!');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('saveStorageSetting')}));
                         this.findBasicSet();
                     }
                 })
@@ -622,7 +628,7 @@
                     if(res.success){
                         this.formDynamic.pay[index].disabled = true;
                         this.formDynamic.pay[index].active = true;
-                        this.$Message.success('新增收款方式成功!');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('newCollectionMethod')}));
                     }
                 })
             },
@@ -633,7 +639,7 @@
                     isDeleted: 'true',
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除收款方式成功!');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('delCollectionMethod')}));
                         this.formDynamic.pay[index]._status = 0;
                     }
                 })
@@ -709,7 +715,7 @@
                 let item = {
                     accountBelonging: '',
                     accountName: '',
-                    unit: '元',
+                    unit: this.$t('yuan'),
                     rate: '1',
                     rateNumerator: '1',
                     rateDenominator: '1',
@@ -803,7 +809,7 @@
                     }
                 }
                 .table-wrap{
-                    width: 480px;
+                    width: 510px;
                 }
             }
 

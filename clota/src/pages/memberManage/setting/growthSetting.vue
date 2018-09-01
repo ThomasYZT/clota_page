@@ -8,43 +8,43 @@
         <div class="content">
 
             <div class="content-item">
-                <div class="title">成长值设置</div>
+                <div class="title">{{$t('growthSetting')}}</div>
                 <div class="main">
-                    <span class="text">消费
+                    <span class="text">{{$t('consume')}}
                         <span :class="{'ivu-form-item-error': error.growthSetError}">
                             <Input v-model.trim="settingData.growthRateWhileConsume.growthSet"
                                  type="text"
                                  @on-blur="checkInputBlurFunc(settingData.growthRateWhileConsume.growthSet,'growthSetError')"
                                  class="single-input"
-                                 :placeholder="$t('inputField', {field: ''})"/>元获取
+                                 :placeholder="$t('inputField', {field: ''})"/>{{$t('yuanSaved')}}
                             <span class="ivu-form-item-error-tip"
                                 style="left: 40px;"
                                 v-if="error.growthSetError">{{error.growthSetError}}</span>
                         </span>
-                        <span> {{settingData.growthRateWhileConsume.growthSetValue}} 成长值</span>
+                        <span> {{settingData.growthRateWhileConsume.growthSetValue}} {{$t('growth')}}</span>
                     </span>
                 </div>
             </div>
 
             <div class="content-item">
-                <div class="title">成长值生效设置</div>
+                <div class="title">{{$t('growthValidSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.growthEffectiveMode.growthType" vertical>
                         <Radio label="immediately">
-                            <span>付款成功后立即生效</span>
+                            <span>{{$t('effectAfterPayed')}}</span>
                         </Radio>
                         <Radio label="checkout">
-                            <span>消费、核销成功后立即生效</span>
+                            <span>{{$t('effectAfterConsumption')}}</span>
                         </Radio>
                         <Radio label="checkout_after" :class="{'ivu-form-item-error': error.growthTimeError}">
-                            <span>消费、核销成功后
+                            <span>{{$t('afterConsumption')}}
                             <Input v-model.trim="settingData.growthEffectiveMode.growthTime"
                                    :disabled="settingData.growthEffectiveMode.growthType !== 'checkout_after' ? true : false"
                                    @on-blur="checkInputBlurFunc(settingData.growthEffectiveMode.growthTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                                小时后生效</span>
+                                {{$t('hourLaterEffective')}}</span>
                             <span class="ivu-form-item-error-tip"
                                   style="left: 153px;"
                                   v-if="error.growthTimeError">{{error.growthTimeError}}</span>
@@ -54,14 +54,14 @@
             </div>
 
             <div class="content-item">
-                <div class="title">子母卡成长值归属设置</div>
+                <div class="title">{{$t('parentCardGrowthValueSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.growthFromFamilies" vertical>
                         <Radio label="true">
-                            <span>子卡产生的成长值累加在母卡上</span>
+                            <span>{{$t('childCardGrowthValueSetting')}}</span>
                         </Radio>
                         <Radio label="false">
-                            <span>子卡产生的成长值不累加在母卡上，累加在子卡上，子卡可单独升级</span>
+                            <span>{{$t('childCardGrowthSettingDesc')}}</span>
                         </Radio>
                     </RadioGroup>
                 </div>
@@ -222,7 +222,7 @@
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
                     if( res.success){
-                        this.$Message.success('保存成长值设置成功!');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('saveGrowthSetting')}));
                         this.findBasicSet();
                     }
                 })

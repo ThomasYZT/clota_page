@@ -12,7 +12,7 @@
 
             <div class="ivu-form-item-wrap">
                 <div class="send-money-wrap">
-                    <span class="label">储值：</span>
+                    <span class="label">{{$t('recharge')}}：</span>
                     <Input type="text"
                            v-model.trim="formData.lowerValue"
                            @on-blur="validateInput(formData.lowerValue)"
@@ -22,16 +22,16 @@
                            v-model.trim="formData.topValue"
                            @on-blur="validateInput(formData.topValue)"
                            :placeholder="$t('inputField', {field: ''})"
-                           class="single-input"/> 赠送
+                           class="single-input"/> {{$t('sendGift')}}
                     <Input type="text"
                            v-model.trim="formData.gift"
                            @on-blur="validateInput(formData.gift)"
                            :placeholder="$t('inputField', {field: ''})"
-                           class="single-input"/> 元
+                           class="single-input"/> {{$t('yuan')}}
                    <div class="ivu-form-item-error-tip" v-if="error">{{error}}</div>
                 </div>
             </div>
-            <div class="title">该规则应用范围：</div>
+            <div class="title">{{$t('scopeOfApplicationOfTheRule')}}：</div>
             <div class="table-wrap">
                 <table-com
                     ref="ruleMultiTablePlug"
@@ -99,7 +99,7 @@
                         field: '',
                     },
                     {
-                        title: '本金可使用范围设置',
+                        title: 'principalCanBeUsedInRangeSetting',
                         minWidth: 400,
                         field: 'accountName'
                     },
@@ -110,7 +110,7 @@
 
             show ( data, type) {
                 if(type && type !== 'add'){
-                    this.title = '修改储值赠送金额比例';
+                    this.title = this.$t('modifyProportionOfDonatedAmountOfStorageValue');
                     this.index = this.length;
                 }
 
@@ -144,7 +144,7 @@
                     this.error = this.$t('errorEmpty', {msg: ''});     // '不能为空'
                     return false
                 } else if( value && value.length > 10 ){
-                    this.error = '长度不能超过10';
+                    this.error = this.$t('errorMaxLength',{field : '',length : 10});
                     return false
                 } else if( value && value.isUtf16() ){
                     this.error = this.$t('errorIrregular');     // '输入内容不合规则'
@@ -204,6 +204,8 @@
         .modal-body{
             padding: 0 44px;
             height: 450px;
+            overflow-y: auto;
+            overflow-x: hidden;
 
             /deep/ .ivu-form-item-wrap{
                 position: relative;

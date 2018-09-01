@@ -8,15 +8,15 @@
         <div class="content">
 
             <div class="content-item">
-                <div class="title">会员积分交易抵扣规则设置</div>
+                <div class="title">{{$t('setRulesForMemberPointTransactionDeduction')}}</div>
                 <div class="main">
                     <div>
                         <i-switch v-model="settingData.scoreOffsetInConsumption.type"></i-switch>
-                        <span class="text">允许积分交易时抵现使用</span>
+                        <span class="text">{{$t('allowsCreditTradingWhenCreditIsUsed')}}</span>
                     </div>
                     <div class="check-group-wrap">
                         <Checkbox v-model="settingData.scoreOffsetInConsumption.columns.integrateToMoney"
-                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">交易时，积分可抵扣订单金额，每</Checkbox>
+                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">{{$t('consumeSettingPer')}}</Checkbox>
                         <span :class="{'ivu-form-item-error': error.integrateError}">
                              <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.integrate"
                                     :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
@@ -28,7 +28,7 @@
                                    style="left: 296px;"
                                    v-if="error.integrateError">{{error.integrateError}}</span>
                         </span>
-                        <span>积分抵扣</span>
+                        <span>{{$t('pointsDeduction')}}</span>
                         <span :class="{'ivu-form-item-error': error.moneyError}">
                              <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.money"
                                     :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
@@ -40,7 +40,7 @@
                                    style="left: 485px;"
                                    v-if="error.moneyError">{{error.moneyError}}</span>
                         </span>
-                        <span>元，抵扣比例最多是此订单的</span>
+                        <span>{{$t('deductionToOrder')}}</span>
                         <span :class="{'ivu-form-item-error': error.highProportionError}">
                              <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.highProportion"
                                     :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
@@ -56,20 +56,20 @@
                     </div>
                     <div class="check-group-wrap">
                         <Checkbox v-model="settingData.scoreOffsetInConsumption.meanwhile"
-                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">消费时可和优惠券同时使用</Checkbox>
+                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">{{$t('canUseItTogetherWithCoupons')}}</Checkbox>
                     </div>
                 </div>
             </div>
 
             <div class="content-item">
-                <div class="title">是否允许积分兑换成为储值账户金额</div>
+                <div class="title">{{$t('canAllIntegerToMoney')}}</div>
                 <div class="main">
                     <div>
                         <i-switch v-model="settingData.scoreExToCharge.donateType"></i-switch>
-                        <span class="text">允许积分兑换储值账户金额</span>
+                        <span class="text">{{$t('allIntegerToMoney')}}</span>
                     </div>
                     <div class="check-group-wrap">
-                        请设置兑换比例：
+                        {{$t('setTheExchangeRate')}}：
                         <span :class="{'ivu-form-item-error': error.donateIntegrateError}">
                             <Input v-model.trim="settingData.scoreExToCharge.donateIntegrate"
                                    :disabled="!settingData.scoreExToCharge.donateType"
@@ -81,17 +81,17 @@
                                style="left: 176px;"
                                v-if="error.donateIntegrateError">{{error.donateIntegrateError}}</span>
                         </span>
-                        积分
-                        <span> {{settingData.scoreExToCharge.donateMoney}} 元</span>
+                        {{$t('integral')}}
+                        <span> {{settingData.scoreExToCharge.donateMoney}} {{$t('yuan')}}</span>
                     </div>
                 </div>
             </div>
 
             <div class="content-item">
-                <div class="title">退款时积分退回设置</div>
+                <div class="title">{{$t('pointsReturnedForRefund')}}</div>
                 <div class="main">
                     <i-switch v-model="settingData.scoreInsufficientNotification"></i-switch>
-                    <span class="text">当用户退款时积分同步扣除，如账户剩余积分不足以扣除，用户系统发出提示</span>
+                    <span class="text">{{$t('consumeSettingTips')}}</span>
                 </div>
             </div>
 
@@ -242,7 +242,6 @@
                                     }
                                 }
                             }
-                            console.log(params)
                             this.settingData = params;
                             //复制数据
                             this.copySetData = defaultsDeep({}, params);
@@ -257,7 +256,6 @@
                 if(this.checkInputFunc()){
 
                     let setParam = defaultsDeep({}, this.settingData);
-                    console.log(setParam)
                     for( let key in setParam){
                         if(key && Object.keys(setParam[key]).length > 0){
                             for( let ckey in setParam[key]){
@@ -290,7 +288,7 @@
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
                     if( res.success){
-                        this.$Message.success('保存积分消费设置成功!');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('saveCreditConsumptionSettings')}));
                         this.findBasicSet();
                     }
                 })

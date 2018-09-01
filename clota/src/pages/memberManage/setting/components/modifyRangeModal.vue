@@ -122,7 +122,7 @@
         data () {
             return {
                 visible: false,
-                title: '默认账户本金可使用范围设置',
+                title: this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting'),
                 //表格多选列表
                 multipleSelection: [],
                 //区分本金/赠送金额 money/send
@@ -138,7 +138,7 @@
                         field: '',
                     },
                     {
-                        title: '本金可使用范围设置',
+                        title: 'principalCanBeUsedInRangeSetting',
                         minWidth: 400,
                         field: 'orgName'
                     },
@@ -150,7 +150,7 @@
                         field: '',
                     },
                     {
-                        title: '赠送金额可使用范围设置',
+                        title: 'complimentaryAmountCanBeUsedToSetTheRange',
                         minWidth: 400,
                         field: 'orgName'
                     },
@@ -160,12 +160,11 @@
         methods: {
 
             show ( data, type) {
-                console.log(data)
                 if(type && type !== 'money'){
-                    this.title = '默认账户赠送金额可使用范围设置';
+                    this.title = this.$t('defaultAccountScope');
                     this.type = 'send';
                 } else {
-                    this.title = '默认账户本金可使用范围设置';
+                    this.title = this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting');
                     this.type = 'money';
                 }
                 if( data ){
@@ -263,7 +262,7 @@
             //关闭模态框
             hide(){
                 this.visible = false;
-                this.title = '默认账户本金可使用范围设置';
+                this.title = this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting');
                 if( this.$refs.moneyMultiTablePlug ){
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }

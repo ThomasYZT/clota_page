@@ -2,7 +2,7 @@
     <!--新增账户-->
     <Modal
         v-model="visible"
-        title="新增账户级别"
+        :title="$t('newAccountLevel')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -22,7 +22,8 @@
             <template v-if="step === 0">
                 <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="账户归属" prop="accountBelonging">
+                        <!--账户归属-->
+                        <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
                             <Select v-model="formData.accountBelonging" @on-change="changeAccountBelonging">
                                 <Option v-for="(item, index) in tableData"
                                         :value="item.id"
@@ -33,17 +34,20 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="账户名称" prop="accountName">
+                        <!--账户名称-->
+                        <Form-item :label="$t('accountName')" prop="accountName">
                             <Input v-model.trim="formData.accountName" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item label="单位" prop="unit">
+                        <!--单位-->
+                        <Form-item :label="$t('unit')" prop="unit">
                             <Input v-model.trim="formData.unit" :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap" >
-                        <Form-item label="储值比率" prop="rateDenominator">
+                        <!--储值比率-->
+                        <Form-item :label="$t('storedValueRatio')" prop="rateDenominator">
                             <Input v-model.trim="formData.rateNumerator"
                                    :placeholder="$t('inputField', {field: ''})"
                                    class="single-input"/>
@@ -54,10 +58,11 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <FormItem label="是否允许兑现">
+                        <!--是否允许兑现-->
+                        <FormItem :label="$t('whetherCashingIsAllowed')">
                             <RadioGroup v-model="formData.exchangeToCash">
-                                <Radio label="true">允许兑现</Radio>
-                                <Radio label="false">不允许兑现</Radio>
+                                <Radio label="true">{{$t('allowCash')}}</Radio>
+                                <Radio label="false">{{$t('notAllowCash')}}</Radio>
                             </RadioGroup>
                         </FormItem>
                     </div>
@@ -112,16 +117,16 @@
 
         <div slot="footer" class="modal-footer">
             <template v-if="step === 0">
-                <Button type="primary" @click="nextStep(true)" >下一步</Button>
+                <Button type="primary" @click="nextStep(true)" >{{$t('nextStep')}}</Button>
                 <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
             </template>
             <template v-if="step === 1">
-                <Button type="primary" @click="nextStep(false)" >下一步</Button>
-                <Button type="ghost" @click="prevStep" >上一步</Button>
+                <Button type="primary" @click="nextStep(false)" >{{$t('nextStep')}}</Button>
+                <Button type="ghost" @click="prevStep" >{{$t('lastStep')}}</Button>
             </template>
             <template v-if="step === 2">
                 <Button type="primary" @click="save" >{{$t("save")}}</Button>
-                <Button type="ghost" @click="prevStep" >上一步</Button>
+                <Button type="ghost" @click="prevStep" >{{$t('lastStep')}}</Button>
             </template>
         </div>
 
@@ -157,7 +162,11 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    callback(this.$t(err));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    }
                 });
             };
 
@@ -170,7 +179,11 @@
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err));
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    }
                 });
             };
 
@@ -183,7 +196,7 @@
                 formData: {
                     accountBelonging: '',
                     accountName: '',
-                    unit: '元',
+                    unit: this.$t('yuan'),
                     rate: '1',
                     rateNumerator: '1',
                     rateDenominator: '1',
@@ -194,19 +207,18 @@
                 //校验规则
                 ruleValidate: {
                     accountBelonging: [
-                        { required: true, message: '账户归属不能为空', trigger: 'change' },
+                        { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
                     ],
                     accountName: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 20, message: '账户名称不能超过20字符', trigger: 'blur' },
+                        { max: 20, message: this.$t('errorMaxLength',{field : this.$t('accountName'),length : 20}), trigger: 'blur' },
                     ],
                     unit: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '单位不能超过10字符', trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength',{field : this.$t('unit'),length : 20}), trigger: 'blur' },
                     ],
                     rateDenominator: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: '储值比率不能超过10字符', trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateRateNumerator, trigger: 'blur' },
                     ],
@@ -221,7 +233,7 @@
                         field: '',
                     },
                     {
-                        title: '本金可使用范围设置',
+                        title: 'principalCanBeUsedInRangeSetting',
                         minWidth: 400,
                         field: 'orgName'
                     },
@@ -233,7 +245,7 @@
                         field: '',
                     },
                     {
-                        title: '赠送金额可使用范围设置',
+                        title: 'complimentaryAmountCanBeUsedToSetTheRange',
                         minWidth: 400,
                         field: 'orgName'
                     },
@@ -361,12 +373,15 @@
             save () {
                 this.formData.corpusAppliedOrgId = [];
                 this.formData.donateAppliedOrgId = [];
-                this.selectData[0].forEach( (item, index) => {
-                    this.formData.corpusAppliedOrgId.push(item.id);
-                });
-                this.selectData[1].forEach( (item, index) => {
-                    this.formData.donateAppliedOrgId.push(item.id);
-                });
+                if(this.selectData && this.selectData.length > 0 ){
+                    this.selectData[0].forEach( (item, index) => {
+                        this.formData.corpusAppliedOrgId.push(item.id);
+                    })
+
+                    this.selectData[1].forEach( (item, index) => {
+                        this.formData.donateAppliedOrgId.push(item.id);
+                    });
+                }
                 let params = {
                     accountBelonging: this.formData.accountBelonging,
                     accountName: this.formData.accountName,
@@ -386,11 +401,11 @@
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('新增成功！');
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.warning(res.message || 'updateMemberAccountDefine 新增失败！');
+                        this.$Message.warning(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
                     }
                 })
             },

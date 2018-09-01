@@ -504,7 +504,6 @@
                         }
                     }
                     setParam.id = this.id;
-                    console.log(setParam)
 
                     let params = {
                         id: this.id,
