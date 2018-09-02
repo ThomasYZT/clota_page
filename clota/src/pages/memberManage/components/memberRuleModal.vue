@@ -2,7 +2,7 @@
     <!--会员等级晋升规则设置-->
     <Modal
         v-model="visible"
-        title="会员等级晋升规则设置"
+        :title="$t('memberPromotionRules')"
         class-name="member-rule-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -11,11 +11,11 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :label-width="170">
                 <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
-                    <Form-item :label="item.levelDesc+'成长值范围：'"
+                    <Form-item :label="item.levelDesc + $t('growthRange') + '：'"
                                :key="index"
                                :prop="'tableData.'+index+'.highestGrowthValue'"
                                :rules="[{ validator: emoji, trigger: 'blur' },
-                                { max: 10, message: $t('errorMaxLength',{field : '值',length : 10}), trigger: 'blur' },
+                                { max: 10, message: $t('errorMaxLength',{field : $t('value'),length : 10}), trigger: 'blur' },
                                 { validator: maxLength, trigger: 'blur' },
                                 { validator: validateNumber, trigger: 'blur' },
                                 { validator: validateHigh, trigger: 'blur' },]">
@@ -73,7 +73,7 @@
                     let field = rule.field.split('.');
                     common.validateInteger( Number(this.formData.tableData[field[1]].lowerGrowthValue) ).then(() => {
                         if(Number(this.formData.tableData[field[1]].lowerGrowthValue) > Number(value)){
-                            callback(new Error('起始值不能大于最高值'));
+                            callback(this.$t('startValBiggerThenMaxVal'));
                         } else {
                             callback();
                         }
@@ -86,7 +86,7 @@
                 maxLength : (rule, value, callback) => {
                     let field = rule.field.split('.');
                     if (this.formData.tableData[field[1]].lowerGrowthValue && this.formData.tableData[field[1]].lowerGrowthValue.length > 10) {
-                        callback(new Error('长度不能大于10'));
+                        callback(this.$t('errorMaxLength',{field : '',length : 10}));
                     } else {
                         callback();
                     }

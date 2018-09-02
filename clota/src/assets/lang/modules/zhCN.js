@@ -492,6 +492,10 @@ export default {
     'memberTypeName' : '员工分类名称',
     'linkCategory' : '关联所属类别',
     'link' : '关联',
+    'addStoredSendRatio' : '新增储值赠送金额比例',
+    'memberPromotionRules' : '新增储值赠送金额比例',
+    'value' : '值',
+    'startValBiggerThenMaxVal' : '起始值不能大于最高值',
 
 
 }

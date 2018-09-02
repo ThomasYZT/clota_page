@@ -167,11 +167,11 @@
             addAmount ( params ) {
                 ajax.post('addAmount', params).then(res => {
                     if( res.success ) {
-                        this.$Message.success('新增储值成功！');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('newStorageValue')}));
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message|| 'addAmount '+ this.$t('failure') +'！');
+                        this.$Message.error(res.message|| this.$t('failureTip',{tip : this.$t('newStorageValue')}));
                     }
                 })
             },

@@ -77,7 +77,7 @@
         data () {
             return {
                 visible: false,
-                title: '新增储值赠送金额比例',
+                title: this.$t('addStoredSendRatio'),
                 //表单数据--储值赠送金额比例设置
                 index: null,
                 formData:  {
