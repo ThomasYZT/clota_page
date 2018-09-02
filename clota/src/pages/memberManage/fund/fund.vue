@@ -297,7 +297,7 @@
                 }).finally(() => {
                     this.accountList.unshift({
                         id : 'all',
-                        accountName : '全部'
+                        accountName : this.$t('all')
                     });
                 });
             },
@@ -340,7 +340,7 @@
              */
             getUnit (rowData) {
                 if(rowData.accountTypeId === '1'){
-                    return '元';
+                    return this.$t('yuan');
                 }else if(rowData.unit){
                     return rowData.unit;
                 }else{

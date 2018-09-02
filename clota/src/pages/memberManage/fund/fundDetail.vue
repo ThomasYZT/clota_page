@@ -91,7 +91,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span v-if="scope.row.accountTypeId === '1'">
-                        {{scope.row.endingBalance}}{{'元'}}
+                        {{scope.row.endingBalance}}{{this.$t('yuan')}}
                     </span>
                     <span v-else>
                         {{scope.row.endingBalance}}{{scope.row.unit}}

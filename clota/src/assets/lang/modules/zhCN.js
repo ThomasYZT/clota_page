@@ -465,6 +465,7 @@ export default {
     'delCardTips' : '您正在删除卡券：',
     'operationIrrevocable' : '本操作不可撤销，',
     'sureToDel' : '是否确认删除？',
+    'all' : '全部',
 
 
 }
