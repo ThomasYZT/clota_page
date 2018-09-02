@@ -466,6 +466,12 @@ export default {
     'operationIrrevocable' : '本操作不可撤销，',
     'sureToDel' : '是否确认删除？',
     'all' : '全部',
+    'memberBelonging' : '会员归属',
+    'memberQuery' : '会员信息查询',
+    'yearCardInfo' : '年卡信息',
+    'yearCardId' : '年卡编号：',
+    'yearCardName' : '年卡名称：',
+    'years' : '岁',
 
 
 }

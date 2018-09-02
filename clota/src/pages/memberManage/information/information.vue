@@ -47,7 +47,7 @@
 
         <div class="table-wrap">
             <table-com
-                :ofsetHeight="205"
+                :ofsetHeight="208"
                 :show-pagination="true"
                 :column-data="infoListHead"
                 :table-data="tableData"

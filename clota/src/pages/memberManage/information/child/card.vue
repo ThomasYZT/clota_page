@@ -5,18 +5,18 @@
         <div class="breadcrumb-box">
             <bread-crumb-head
                 :before-router-list="breadRouterList"
-                :locale-router="'会员卡包'">
+                :locale-router="$t('memberCard')">
             </bread-crumb-head>
         </div>
 
         <div class="card-content">
 
             <div class="content-info">
-                <div class="title">优惠券信息</div>
+                <div class="title">{{$t('couponInfo')}}</div>
                 <div class="tabs-wrap">
                     <ButtonGroup>
-                        <Button type="primary">待使用</Button>
-                        <Button type="ghost">已使用</Button>
+                        <Button type="primary">{{$t('toBeUsed')}}</Button>
+                        <Button type="ghost">{{$t('used')}}</Button>
                     </ButtonGroup>
                 </div>
                 <div class="table-wrap">
@@ -26,31 +26,31 @@
                         style="width: 100%">
                         <el-table-column
                             prop="id"
-                            label="串码"
+                            :label="$t('SN')"
                             width="100">
                         </el-table-column>
                         <el-table-column
                             prop="name"
-                            label="产品名称"
+                            :label="$t('productName')"
                             width="160">
                         </el-table-column>
                         <el-table-column
                             prop="num"
-                            label="数量"
+                            :label="$t('amount')"
                             width="60">
                         </el-table-column>
                         <el-table-column
                             prop="content"
-                            label="使用条件">
+                            :label="$t('useCondition')">
                         </el-table-column>
                         <el-table-column
                             prop="range"
-                            label="有效期"
+                            :label="$t('validityPeriod')"
                             width="330">
                         </el-table-column>
                         <el-table-column
                             prop="time"
-                            label="购票日期"
+                            :label="$t('ticketBuyingDate')"
                             width="180">
                         </el-table-column>
                     </el-table>
@@ -58,10 +58,10 @@
             </div>
 
             <div class="content-info">
-                <div class="title">年卡信息</div>
+                <div class="title">{{$t('yearCardInfo')}}</div>
                 <div class="form-wrap">
-                    <div class="form-item-wrap"><label>年卡编号：</label><span>22866882</span></div>
-                    <div class="form-item-wrap"><label>年卡名称：</label><span>欢乐谷年卡</span></div>
+                    <div class="form-item-wrap"><label>{{$t('yearCardId')}}</label><span>22866882</span></div>
+                    <div class="form-item-wrap"><label>{{$t('yearCardName')}}</label><span>欢乐谷年卡</span></div>
                     <div class="form-item-wrap"><label>物理卡号：</label><span>-</span></div>
                     <div class="form-item-wrap"><label>是否指纹注册：</label><span>-</span></div>
                     <div class="form-item-wrap"><label>有效开始日期：</label><span>2017-08-08 08:00:00</span></div>

@@ -119,11 +119,11 @@
              */
             getUseCondition(rowData) {
                 if(rowData.couponType === 'discount_coupon'){//折扣券
-                    return `最低可使用金额${rowData.conditionLowerLimtation}元最高使用金额${rowData.conditionUpperLimtation}元`
+                    return this.$t('discountCouponUseConditions',{minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation});
                 }else if(rowData.couponType === 'exchange_coupon'){//兑换券
-                    return `仅限${rowData.remark}`;
+                    return this.$t('only',{msg : rowData.remark});
                 }else if(rowData.couponType === 'cash_coupon'){//代金券
-                    return `满${rowData.conditionLowerLimtation}可用`
+                    return this.$t('overTipCanUse',{money : rowData.conditionLowerLimtation});
                 }
             },
 

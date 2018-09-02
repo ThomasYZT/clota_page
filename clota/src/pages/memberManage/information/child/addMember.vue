@@ -14,7 +14,7 @@
                 <Form ref="formValidate"
                       :model="member"
                       :rules="ruleValidate"
-                      :label-width="lang === 'zh-CN' ? 115 : 250">
+                      label-position="top">
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('name')" prop="custName"><!--姓名-->
                             <Input v-model.trim="member.custName"
@@ -468,15 +468,21 @@
                     if(res.success){
                         //区分新增与修改
                         if(this.type === 'add'){
-                            this.$Message.success('新增成功！');     // 新增会员成功
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));     // 新增会员成功
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
-                            this.$Message.success('修改成功！');     // 修改会员成功
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));     // 新增会员成功
                             this.$router.back();
                         }
                     } else {
-                        this.$Message.error(res.message);
+                        //区分新增与修改
+                        if(this.type === 'add'){
+                            this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t('add')}));
+                        }
+                        if(this.type === 'modify'){
+                            this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                        }
                     }
                 })
             },
@@ -554,8 +560,12 @@
                     z-index: 2;
                 }
 
+                /deep/ .ivu-form-item-label{
+                    padding-left: 0;
+                }
+
                 .ivu-form{
-                    padding: 60px  0;
+                    padding: 55px  0;
                     text-align: center;
                 }
 
@@ -591,6 +601,7 @@
 
                     &.single{
                         width: calc(49% + 455px);
+                        padding: 0 24px 0 24px;
                         .ivu-form-item{
                             width: 100%;
                         }

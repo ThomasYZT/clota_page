@@ -28,7 +28,7 @@
                             <div>
                                 <span class="name">{{detail.custName || '-'}}</span>
                                 <span>{{ getEnumFieldShow('genderEnum', detail.gender) }}</span>
-                                <span>{{ detail.age ? detail.age+($store.state.lang=='en' ? '' : '岁') : '-' }}</span>
+                                <span>{{ detail.age ? detail.age+($store.state.lang=='en' ? '' : $t('years')) : '-' }}</span>
                             </div>
                             <div class="form-show">
                                 <span class="form-item-wrap"><label>{{$t("phoneNum")}}：</label>{{detail.phoneNum || '-'}}</span>

@@ -25,10 +25,10 @@
             </div>
 
             <div class="table-container">
-                <div class="title-wrap">会员信息查询</div>
+                <div class="title-wrap">{{$t('memberQuery')}}</div>
                 <div class="filter-wrap">
                     <Input v-model="keyword"
-                           placeholder="请输入姓名、电话、会员编号"
+                           :placeholder="$t('fundPlaceholder')"
                            style="width: 240px" />
                     <Button type="primary" @click="queryList">{{$t('query')}}</Button>
                     <Button type="ghost" @click="resetKeyword">{{$t('reset')}}</Button>
@@ -63,7 +63,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <div class="operation">
-                                <span class="span-blue" @click="toDetail(scope.row)">详情</span>
+                                <span class="span-blue" @click="toDetail(scope.row)">{{$t('details')}}</span>
                             </div>
                         </template>
                     </el-table-column>

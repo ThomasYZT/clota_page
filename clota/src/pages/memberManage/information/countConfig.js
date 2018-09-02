@@ -2,32 +2,32 @@
 
 export const countHead = [
     {
-        title: '会员姓名',
+        title: 'memberName',
         minWidth: 100,
         field: 'custName'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',
         minWidth: 100,
         field: 'phoneNum'
     },
     {
-        title: '身份证号',
+        title: 'identificationNum',
         width: 190,
         field: 'cardId'
     },
     {
-        title: '性别',
+        title: 'gender',
         width: 80,
         field: 'gender'
     },
     {
-        title: '会员归属',
+        title: 'memberBelonging',
         minWidth: 100,
         field: 'rate'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 80,
         field: 'rate'
     }

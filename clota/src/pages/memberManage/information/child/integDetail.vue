@@ -183,8 +183,8 @@
                     param.operType = null;
                 }
                 ajax.post('queryOrgAccountChange', Object.assign(param,{
-                    startDate : this.queryParams.startDate ? new Date(this.queryParams).format('yyyy-MM-dd 00:00:00') : '',
-                    endDate : this.queryParams.endDate ? new Date(this.queryParams).format('yyyy-MM-dd 23:59:59') : '',
+                    startDate : this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '',
+                    endDate : this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '',
                 })).then(res => {
                     if(res.success){
                         this.tableData = res.data.data ? res.data.data : [];
