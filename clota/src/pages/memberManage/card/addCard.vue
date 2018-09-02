@@ -14,7 +14,7 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="lang === 'zh-CN' ? 220 : '280'">
+                  label-position="top">
                 <div class="ivu-form-item-wrap">
                     <!--卡券名称-->
                     <Form-item :label="$t('couponName')" prop="couponName"><!--卡券名称-->
@@ -782,26 +782,24 @@
             }
 
             .ivu-form{
-                padding: 40px 90px 80px 0;
+                padding: 40px 0 80px 65px;
                 text-align: center;
-                max-width: 1250px;
-                min-width: 1090px;
+                width: 1090px;
                 margin: 0 auto;
             }
 
             .ivu-form-item-wrap{
                 position: relative;
                 display: inline-block;
-                min-width: 495px;
-                padding-right: 20px;
-                width: 49%;
+                min-width: 405px;
+                width: 48%;
                 text-align: center;
                 vertical-align: middle;
+                padding-right: 100px;
 
                 /deep/ .ivu-radio-wrapper{
                     margin-right: 12px;
                 }
-
 
                 /deep/ .ivu-radio-group-item:nth-last-of-type(1){
                     margin-right: 0;
