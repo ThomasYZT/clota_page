@@ -3,12 +3,12 @@
 //特殊会员分类表头
 export const specialEmployeeHead = [
     {
-        title: '特殊会员分类',
+        title: 'specialMemClassify',
         minWidth: 150,
         field: 'staffDesc'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 120,
         enWidth : 170,
     }
@@ -17,22 +17,24 @@ export const specialEmployeeHead = [
 //获取会员级别对应的特殊会员级别
 export const employeeTrustHead = [
     {
-        title: '会员级别',
+        title: 'levelSetting',
         minWidth: 150,
+        enMinWidth: 180,
         field: 'levelDesc'
     },
     {
-        title: '特殊会员分类',
+        title: 'specialMemClassify',
         minWidth: 150,
         field: 'staffDesc'
     },
     {
-        title: '积分比例（人民币：积分数）',
+        title: 'integralScale',
         minWidth: 220,
+        enMinWidth: 400,
         field: 'scoreRate'
     },
     {
-        title: '折扣率',
+        title: 'discountRate',
         minWidth: 150,
         field: 'discountRate'
     },
@@ -42,7 +44,8 @@ export const employeeTrustHead = [
         field: 'remark'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 180,
+        enWidth: 250,
     }
 ];

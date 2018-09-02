@@ -2,32 +2,32 @@
 //表头配置
 export const columnData = [
     {
-        title: '姓名',
+        title: 'name',
         minWidth: 100,
         field: 'custName'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',
         minWidth: 100,
         field: 'phoneNum'
     },
     {
-        title: '证件编号',
+        title: 'credentialsCode',
         minWidth: 120,
         field: 'cardCode'
     },
     {
-        title: '会员级别',
+        title: 'levelSetting',
         minWidth: 120,
         field: 'levelDesc'
     },
     {
-        title: '已关联特殊会员类别',
+        title: 'linkedSpecialMemType',
         minWidth: 120,
         field: 'staffDesc'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 170,
     }
 ];

@@ -4,7 +4,7 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="$t('关联特殊会员分类')"
+                :locale-router="'linkSpecialMemClassify'"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
@@ -12,14 +12,14 @@
         <div class="rate-content">
             <div class="filter-wrap">
                 <Input v-model.trim="keyword"
-                       placeholder="请输入会员姓名、电话"
+                       :placeholder="$t('inputMemNameOPhone')"
                        style="width: 240px;margin-right: 15px;" />
                 <Button type="primary" @click="queryList">{{$t('query')}}</Button>
                 <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
             </div>
             <div class="table-wrap">
                 <table-com
-                    :ofsetHeight="170"
+                    :ofsetHeight="167"
                     :show-pagination="true"
                     :column-data="columnData"
                     :table-data="tableData"
@@ -36,7 +36,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <ul class="operate-list">
-                                <li @click="contactType(scope.row)">关联特殊会员分类</li>
+                                <li @click="contactType(scope.row)">{{$t('linkSpecialMemClassify')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -87,7 +87,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('specialMember'),
+                        name: 'specialMember',
                         router: {
                             name: 'specialMember'
                         }
@@ -147,6 +147,10 @@
             line-height: 50px;
             padding: 0 30px;
             background: $color_F4F6F8;
+        }
+
+        /deep/ .ivu-btn-primary{
+            margin-right: 5px;
         }
 
         .rate-content{

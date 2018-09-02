@@ -4,16 +4,16 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="'按类别或产品设置积分、折扣率'"
+                :locale-router="$t('settingByProduct')"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
 
         <div class="rate-content">
-            <div class="title-wrap">店铺：{{ memberInfo.deptName }}</div>
+            <div class="title-wrap">{{$t('shop')}}：{{ memberInfo.deptName }}</div>
             <div class="filter-wrap">
                 <Input v-model.trim="queryParams.keyword"
-                       placeholder="请输入产品名称"
+                       :placeholder="$t('inputProductName')"
                        style="width: 240px;margin-right: 15px;" />
                 <Button type="primary" @click="queryList">{{$t('query')}}</Button>
                 <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
@@ -45,6 +45,7 @@
                         slot="column5"
                         show-overflow-tooltip
                         slot-scope="row"
+                        fixed="right"
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -52,8 +53,8 @@
                             <ul class="operate-list">
                                 <li
                                     v-if="!isNotEmpty(scope.row.prodScoreRate) || !isNotEmpty(scope.row.prodDiscountRate)"
-                                    @click="showModifyModal(scope.row)">设置积分、折扣率</li>
-                                <li v-else @click="showModifyModal(scope.row)">修改积分、折扣率</li>
+                                    @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li>
+                                <li v-else @click="showModifyModal(scope.row)">{{$t('ModifyIntegralDiscountRate')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -65,7 +66,7 @@
         <modify-rate-modal
             ref="modifyRate"
             :integra-data="integraData"
-            title="设置卡级店铺消费积分和折扣权益"
+            :title="$t('setStoreSetting')"
             :confirm-operate="setStoreDiscount">
         </modify-rate-modal>
 

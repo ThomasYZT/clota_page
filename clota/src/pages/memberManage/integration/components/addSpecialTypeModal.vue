@@ -2,7 +2,7 @@
     <!--新增特殊会员类别-->
     <Modal
         v-model="visible"
-        title="新增特殊会员类别"
+        :title="$t('addSpecialMemType')"
         class-name="add-special-type-modal vertical-center-modal"
         width="520"
         :mask-closable="false"
@@ -14,7 +14,7 @@
                   :rules="ruleValidate"
                   :label-width="140">
                 <div class="ivu-form-item-wrap">
-                    <Form-item label="员工分类名称" prop="name">
+                    <Form-item :label="$t('memberTypeName')" prop="name">
                         <Input v-model.trim="formData.name" :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
@@ -52,8 +52,8 @@
                 //表单校验规则
                 ruleValidate: {
                     name: [
-                        { required: true, message: '员工分类名称不能为空', trigger: 'blur' },
-                        {max : 15,message : '最多输入15个字符',trigger : 'blur'}
+                        { required: true, message: this.$t('inputField',{field : this.$t('memberTypeName')}), trigger: 'blur' },
+                        {max : 15,message : this.$t('errorMaxLength',{field : this.$t('memberTypeName'),length : 15}),trigger : 'blur'}
                     ],
                 },
                 //当前特殊会员分类的id
@@ -96,10 +96,10 @@
                     staffDesc : this.formData.name
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('新增失败');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                     }
                 }).finally(() => {
                     this.hide();

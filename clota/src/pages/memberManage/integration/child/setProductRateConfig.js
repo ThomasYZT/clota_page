@@ -2,23 +2,25 @@
 //表头配置
 export const columnData = [
     {
-        title: '产品编码',
+        title: 'productCode',
         minWidth: 150,
         field: 'productId'
     },
     {
-        title: '产品名称',
+        title: 'productName',
         minWidth: 150,
         field: 'productName'
     },
     {
-        title: '积分比例（人民币：积分数）',
+        title: 'integralScale',
         width: 230,
+        enWidth: 380,
         field: 'prodScoreRate'
     },
     {
-        title: '折扣率',
+        title: 'discountRate',
         width: 100,
+        enWidth: 150,
         field: 'prodDiscountRate'
     },
     {
@@ -27,7 +29,8 @@ export const columnData = [
         field: 'remark'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 190,
+        enWidth: 250,
     }
 ];

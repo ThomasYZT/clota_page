@@ -2,19 +2,19 @@
     <!--会员管理--会员积分--特殊会员权益管理--会员信息关联分类-->
     <Modal
         v-model="visible"
-        title="关联特殊会员分类"
+        :title="$t('linkSpecialMemClassify')"
         class-name="link-belong-modal vertical-center-modal"
         width="520"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap"><label>用户姓名</label><span>{{memberInfo.custName}}</span></div>
-            <div class="form-item-wrap"><label>手机号</label><span>{{memberInfo.phoneNum}}</span></div>
-            <div class="form-item-wrap"><label>会员编号</label><span>{{memberInfo.id}}</span></div>
-            <div class="form-item-wrap"><label>证件编号</label><span>{{memberInfo.idCardNumber}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('userName')}}</label><span>{{memberInfo.custName}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('mobilePhone')}}</label><span>{{memberInfo.phoneNum}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('memberNum')}}</label><span>{{memberInfo.id}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('credentialsCode')}}</label><span>{{memberInfo.idCardNumber}}</span></div>
             <div class="form-item-wrap">
-                <label>关联所属类别</label>
+                <label>{{$t('linkCategory')}}</label>
                 <Select v-model="staffTypeId">
                     <Option :value="item.id"
                             v-for="(item,i) in specialMemberData"
@@ -78,10 +78,10 @@
                     })
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('关联成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('link')}));
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('关联失败');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('link')}));
                     }
                 }).finally(() => {
                     this.hide();
@@ -131,7 +131,7 @@
     .link-belong-modal{
 
         .modal-body{
-            padding: 20px 0 20px 70px;
+            padding: 20px 0 20px 20px;
             height: 200px;
 
             .form-item-wrap{
@@ -144,7 +144,7 @@
                 color: $color-666;
                 >label{
                     display: inline-block;
-                    width: 90px;
+                    width: 140px;
                     text-align: right;
                     margin-right: 10px;
                     color: $color-333;

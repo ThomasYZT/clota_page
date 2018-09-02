@@ -3,10 +3,10 @@
     <div class="member-special">
 
         <div class="content-item">
-            <div class="title-wrap">特殊会员权益管理</div>
+            <div class="title-wrap">{{$t('specialMember')}}</div>
             <div class="btn-wrap">
-                <Button type="primary" @click="showAddTypeModal">+ 新增特殊会员类别</Button>
-                <Button type="ghost" @click="linkToMember">关联特殊会员信息</Button>
+                <Button type="primary" @click="showAddTypeModal">+ {{$t('addSpecialMemType')}}</Button>
+                <Button type="ghost" @click="linkToMember">{{$t('linkSpecialMemType')}}</Button>
             </div>
             <div class="table-wrap short-table">
                 <table-com
@@ -35,7 +35,7 @@
         </div>
 
         <div class="content-item">
-            <div class="title-wrap">按分类设置权益</div>
+            <div class="title-wrap">{{$t('setRightByType')}}</div>
             <div class="table-wrap">
                    <table-com
                     :column-data="employeeTrustHead"
@@ -59,14 +59,15 @@
                         slot="column5"
                         slot-scope="row"
                         :label="row.title"
+                        fixed="right"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <ul class="operate-list">
                                 <li
                                     v-if="!isNotEmpty(scope.row.discountRate) || !isNotEmpty(scope.row.scoreRate)"
-                                    @click="setInteger(scope.row)">设置积分、折扣率</li>
-                                <li v-else @click="setInteger(scope.row)">修改积分、折扣率</li>
+                                    @click="setInteger(scope.row)">{{$t('setIntegralDiscountRate')}}</li>
+                                <li v-else @click="setInteger(scope.row)">{{$t('ModifyIntegralDiscountRate')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -84,11 +85,11 @@
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
             ref="modifyRate"
-            title="特殊会员积分折扣率设置"
+            :title="$t('specialMemSetting')"
             :integra-data="currentData"
             :confirm-operate="setStoreDiscount">
             <div class="ivu-form-item-wrap">
-                <Form-item label="特殊会员类型" style="margin-bottom: 10px!important;">
+                <Form-item :label="$t('specialMemType')" style="margin-bottom: 10px!important;">
                     <span class="special-title">
                         {{currentData.levelDesc}}-{{currentData.staffDesc}}
                     </span>
