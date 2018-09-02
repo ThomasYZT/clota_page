@@ -68,7 +68,7 @@
              * @param lang
              */
             changeLang (lang) {
-                this.$store.commit('setLang',lang)
+                this.$store.commit('setLang',lang);
             },
             /**
              * 退出登录

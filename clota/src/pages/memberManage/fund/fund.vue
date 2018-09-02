@@ -329,7 +329,8 @@
                     name : 'infoFund',
                     params: {
                         fundDetail : {
-                            id :data.accountId
+                            id :data.accountId,
+                            accountDefineId : data.accountTypeId
                         }
                     }
                 });

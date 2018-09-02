@@ -15,6 +15,7 @@ export const columnData = [
     {
         title: 'mobilePhone',   // 手机号
         width: 140,
+        enWidth: 160,
         field: 'phoneNum'
     },
     {

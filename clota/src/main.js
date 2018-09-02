@@ -1,4 +1,3 @@
-// The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import "babel-polyfill"
 import Vue from 'vue'
@@ -16,9 +15,13 @@ import './assets/theme/iviewTheme/index.less';
 import 'klwk-ui/src/lib/css/index.scss';
 import './assets/theme/elementTheme/index.scss';
 import './assets/css/iconfont.css';
+import eleLocale from 'element-ui/lib/locale';
+import eleEnLang from 'element-ui/lib/locale/lang/en';
+import eleZhCnLang from 'element-ui/lib/locale/lang/zh-CN';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
+// eleLocale.use(eleEnLang);
 
 Vue.use(plugin);
 Vue.config.productionTip = true;
@@ -70,4 +73,28 @@ new Vue({
     i18n,
     store,
     components: {App},
+    computed: {
+        langCode(){
+            return store.state.lang;
+        }
+    },
+    watch: {
+        langCode(val){
+            debugger
+            if(val === 'en'){
+                eleLocale.use(eleEnLang);
+            }else if(val === 'zh-Cn'){
+                eleLocale.use(eleZhCnLang);
+            }
+            Vue.config.lang = val;
+            // document.title = val === 'zh-CN' ? 'BIM数字化平台' : 'BIM Digital Platform';
+        }
+    },
+    mounted () {
+        if(this.langCode === 'en'){
+            eleLocale.use(eleEnLang);
+        }else if(this.langCode === 'zh-Cn'){
+            eleLocale.use(eleZhCnLang);
+        }
+    }
 });

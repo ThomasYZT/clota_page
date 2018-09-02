@@ -26,7 +26,7 @@
                     v-for="item in tradeType1"
                     :value="item.value"
                     :key="item.value">
-                    {{ item.label }}
+                    {{ $t(item.label) }}
                 </Option>
             </Select>
             <Input v-model.trim="queryParams.keyword"
@@ -91,7 +91,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span v-if="scope.row.accountTypeId === '1'">
-                        {{scope.row.endingBalance}}{{this.$t('yuan')}}
+                        {{scope.row.endingBalance}}{{$t('yuan')}}
                     </span>
                     <span v-else>
                         {{scope.row.endingBalance}}{{scope.row.unit}}
