@@ -462,6 +462,6 @@ export default {
     'overTipCanUse' : '满{money}可用',
     'delCard' : '删除卡券',
     'delCardTips' : '您正在删除卡券：',
-    'operationIrrevocable,' : '本操作不可撤销，',
-    'sureToDel,' : '是否确认删除？',
+    'operationIrrevocable' : '本操作不可撤销，',
+    'sureToDel' : '是否确认删除？',
 }

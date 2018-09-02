@@ -4,7 +4,7 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :locale-router="type === 'add' ? $t('newCardCoupon') : $t('modifyCardInfo')"
+                :locale-router="type === 'add' ? 'newCardCoupon' : 'modifyCardInfo'"
                 :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
             </bread-crumb-head>
         </div>
@@ -404,7 +404,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('card'),
+                        name: 'card',
                         router: {
                             name: 'card'
                         }
@@ -794,7 +794,7 @@
                 min-width: 405px;
                 width: 48%;
                 text-align: center;
-                vertical-align: middle;
+                vertical-align: text-top;
                 padding-right: 100px;
 
                 /deep/ .ivu-radio-wrapper{
