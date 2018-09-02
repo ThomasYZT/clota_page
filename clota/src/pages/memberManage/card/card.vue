@@ -4,8 +4,8 @@
 
         <div class="tabs-wrap">
             <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
-                <TabPane label="已创建" name="created"></TabPane>
-                <TabPane label="已作废" name="cancellation"></TabPane>
+                <TabPane :label="$t('created')" name="created"></TabPane>
+                <TabPane :label="$t('cancelled')" name="cancellation"></TabPane>
             </Tabs>
         </div>
 
@@ -67,7 +67,7 @@
                     <ul class="operate-list">
                         <!--修改暂时去掉-->
                         <!--<li @click="modifyFunc(scope.row)">{{$t('modify')}}</li>-->
-                        <li @click="obsoloteCoupon(scope.row)">作废</li>
+                        <li @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
                     </ul>
                 </template>
@@ -126,7 +126,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!--<li @click="reloadCoupon(scope.row)">重新启用</li>-->
-                        <li @click="reloadCoupon(scope.row)">重新启用</li>
+                        <li @click="reloadCoupon(scope.row)">{{$t('recommissioned')}}</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
                     </ul>
                 </template>
@@ -211,10 +211,10 @@
                     status : 'invalid'
                 },params)).then(res => {
                     if(res.success){
-                        this.$Message.success("作废成功！");
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('obsolete')}));
                         this.queryList();
                     }else{
-                        this.$Message.error('作废失败！');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('obsolete')}));
                     }
                 });
             },
@@ -229,10 +229,10 @@
                     status : 'valid'
                 },params)).then(res => {
                     if(res.success){
-                        this.$Message.success("启用成功！");
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('commissioned')}));
                         this.queryList();
                     }else{
-                        this.$Message.error('启用失败！');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('commissioned')}));
                     }
                 });
                 //暂时修改重新启用的方法
@@ -263,10 +263,10 @@
                     isDeleted : 'true'
                 },params)).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: 'del'}) + "！");     // 删除成功
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));     // 删除成功
                         this.queryList();
                     }else{
-                        this.$Message.error(this.$t('failureTip', {tip: 'del'}) + '！');   // 删除失败
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del')}) );   // 删除失败
                     }
                 });
             },
@@ -301,11 +301,11 @@
              */
             getUseCondition(rowData) {
                 if(rowData.couponType === 'discount_coupon'){//折扣券
-                    return `最低可使用金额${rowData.conditionLowerLimtation}元最高使用金额${rowData.conditionUpperLimtation}元`
+                    return this.$t('discountCouponUseConditions',{minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation});
                 }else if(rowData.couponType === 'exchange_coupon'){//兑换券
-                    return `仅限${rowData.remark}`;
+                    return this.$t('only',{msg : this.$t('rowData.remark')});
                 }else if(rowData.couponType === 'cash_coupon'){//代金券
-                    return `满${rowData.conditionLowerLimtation}可用`
+                    return this.$t('overTipCanUse',{money : rowData.conditionLowerLimtation});
                 }
             },
             /**

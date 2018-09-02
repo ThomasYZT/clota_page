@@ -8,6 +8,9 @@ const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+
+const smp = new SpeedMeasurePlugin();
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -24,7 +27,7 @@ const createLintingRule = () => ({
     }
 })
 
-module.exports = {
+module.exports = smp.wrap({
     context: path.resolve(__dirname, '../'),
     entry: {
         app: './src/main.js'
@@ -141,4 +144,4 @@ module.exports = {
             threadPool: happyThreadPool,
         }),
     ]
-}
+})

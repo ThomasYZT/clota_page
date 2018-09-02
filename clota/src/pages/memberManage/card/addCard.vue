@@ -14,7 +14,7 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="220">
+                  :label-width="lang === 'zh-CN' ? 220 : '280'">
                 <div class="ivu-form-item-wrap">
                     <!--卡券名称-->
                     <Form-item :label="$t('couponName')" prop="couponName"><!--卡券名称-->
@@ -52,7 +52,8 @@
                     <Form-item :label="$t('spendOver')" prop="conditionLowerLimtation"><!--消费满-->
                         <Input v-model.trim="formData.conditionLowerLimtation"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">{{$t('available')}}</span><!--可用-->
+                        <span class="label-used"
+                              :style="{right : lang === 'zh-CN' ? '-35px' : '-69px' }">{{$t('available')}}</span><!--可用-->
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discount_coupon'">
@@ -60,7 +61,8 @@
                     <Form-item :label="$t('minConsumptionAmount')" prop="conditionLowerLimtation"><!--最低消费金额-->
                         <Input v-model.trim="formData.conditionLowerLimtation"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">{{$t('available')}}</span>
+                        <span class="label-used"
+                              :style="{right : lang === 'zh-CN' ? '-35px' : '-69px' }">{{$t('available')}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap" v-if="formData.couponType === 'discount_coupon'">
@@ -68,7 +70,8 @@
                     <Form-item :label="$t('maxConsumptionAmount')" prop="conditionUpperLimtation"><!--最高消费金额-->
                         <Input v-model.trim="formData.conditionUpperLimtation"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">{{$t('available')}}</span>
+                        <span class="label-used"
+                              :style="{right : lang === 'zh-CN' ? '-35px' : '-69px' }">{{$t('available')}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -220,6 +223,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import common from '@/assets/js/common.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import {mapGetters} from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         components: {
@@ -533,15 +537,15 @@
                 ajax.post('updateCoupon',params).then(res => {
                     if(res.success){
                         if(this.type === 'add'){
-                            this.$Message.success('新增成功');
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
                         }else{
-                            this.$Message.success('修改成功');
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));
                         }
                     }else{
                         if(this.type === 'add'){
-                            this.$Message.error('新增失败');
+                            this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                         }else{
-                            this.$Message.error('修改失败');
+                            this.$Message.error(this.$t('failureTip',{tip : this.$t('modify')}));
                         }
                     }
                 }).finally(() => {
@@ -741,6 +745,11 @@
                     this.queryProduct(newVal);
                 }
             }
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
         }
     }
 </script>
@@ -775,7 +784,8 @@
             .ivu-form{
                 padding: 40px 90px 80px 0;
                 text-align: center;
-                width: 1090px;
+                max-width: 1250px;
+                min-width: 1090px;
                 margin: 0 auto;
             }
 
@@ -787,6 +797,10 @@
                 width: 49%;
                 text-align: center;
                 vertical-align: middle;
+
+                /deep/ .ivu-radio-wrapper{
+                    margin-right: 12px;
+                }
 
 
                 /deep/ .ivu-radio-group-item:nth-last-of-type(1){
@@ -825,7 +839,7 @@
 
                 .label-used{
                     position: absolute;
-                    @include absolute_pos(absolute,$right : -35px,$top : 2px);
+                    @include absolute_pos(absolute,$right : -35px,$top : -1px);
                 }
             }
 

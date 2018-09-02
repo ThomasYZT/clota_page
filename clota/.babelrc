@@ -10,6 +10,11 @@
                         "last 2 versions",
                         "not ie <= 8"
                     ]
+                },
+                "development" : {
+                    "plugins" :  [
+                        "dynamic-import-node"
+                    ]
                 }
             }
         ],

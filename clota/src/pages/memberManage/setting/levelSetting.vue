@@ -164,13 +164,11 @@
 
             //增加/修改会员级别
             showChannelModal ( event, data ) {
-                console.log(data)
                 this.$refs.addChannel.show(data);
             },
 
             //删除数据
             deleteLevelInfo ( event, data ) {
-                console.log(data)
                 ajax.post('deleteMemberLevel', {
                     id: data.id,
                     lowerGrowthValue: data.lowerGrowthValue,
@@ -178,12 +176,12 @@
                     isDeleted: 'true',
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: 'del'}) + '！');     // 删除成功
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));     // 删除成功
                         //查询列表
                         this.queryList();
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'deleteMemberLevel '+ this.$t('failureTip', {tip: 'del'}) + '！');    // 删除失败
+                        this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
                     }
                 })
             },

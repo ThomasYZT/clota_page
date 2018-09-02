@@ -6,7 +6,7 @@
                 <img src="../../assets/images/logo.svg" alt="">
             </div>
             <div class="lang">
-                <span @click="changeLang('zh-CN')">简体中文</span>
+                <span @click="changeLang('zh-CN')">中文</span>
                 <span>|</span>
                 <span @click="changeLang('en')">English</span>
             </div>

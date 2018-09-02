@@ -7,24 +7,24 @@ export const columnData = [
         field: 'couponName'
     },
     {
-        title: '类别',
+        title: 'types',
         width: 100,
         enWidth: 170,
         field: 'couponType'
     },
     {
-        title: '使用条件',
+        title: 'useCondition',
         minWidth: 100,
         field: 'discountRate'
     },
     {
-        title: '有效期',
+        title: 'validityPeriod',
         width: 230,
         field: 'discountRate'
     },
     {
-        title: '操作  ',
+        title: 'operate  ',
         width: 130,
-        enWidth : 150,
+        enWidth : 180,
     }
 ];

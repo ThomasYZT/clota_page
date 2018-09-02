@@ -453,5 +453,18 @@ export default {
     'defaultAccountPrincipalCanBeUsedInTheRangeSetting' : '默认账户本金可使用范围设置',
     'defaultAccountScope' : '默认账户赠送金额可使用范围设置',
 
+    'created' : '已创建',
+    'cancelled' : '已作废',
+    'obsolete' : '作废',
+    'recommissioned' : '重新启用',
+    'commissioned' : '启用',
+    'discountCouponUseConditions' : '最低可使用金额{minCash}元最高使用金额{maxCash}元',
+    'only' : '仅限{msg}',
+    'overTipCanUse' : '满{money}可用',
+    'delCard' : '删除卡券',
+    'delCardTips' : '您正在删除卡券：',
+    'operationIrrevocable,' : '本操作不可撤销，',
+    'sureToDel,' : '是否确认删除？',
+
 
 }

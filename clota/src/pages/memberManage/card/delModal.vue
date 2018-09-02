@@ -3,7 +3,7 @@
 <template>
     <Modal
         :value="value"
-        title="删除卡券"
+        :title="$t('delCard')"
         class-name="delete-card-modal vertical-center-modal"
         width="420"
         :mask-closable="false"
@@ -11,14 +11,14 @@
         <div class="modal-body">
             <div class="left"><Icon type="help-circled"></Icon></div>
             <div class="right">
-                您正在删除卡券：<span class="name">{{couponData.couponName}}</span><br>
-                <span class="notice">本操作不可撤销，</span>是否确认删除？
+                {{$t('delCardTips')}}<span class="name">{{couponData.couponName}}</span><br>
+                <span class="notice">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}
             </div>
         </div>
         <div slot="footer" class="modal-footer">
             <Button class="ivu-btn-90px"
                     type="error"
-                    @click="deleteCardFunc" >确定</Button>
+                    @click="deleteCardFunc" >{{$t('confirm')}}</Button>
             <Button class="ivu-btn-90px"
                     type="ghost"
                     @click="hide" >{{$t("cancel")}}</Button>
