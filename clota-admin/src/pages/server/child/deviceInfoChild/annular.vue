@@ -2,10 +2,7 @@
 
 <template>
     <div class="circle-chart">
-        <no-data v-if='rate === "-"'>
-        </no-data>
         <vue-echarts
-            v-else
             ref="echarts"
             :options="options"
             auto-resize>
@@ -15,12 +12,10 @@
 
 <script>
     import vueEcharts from '@/components/vueEcharts/ECharts.vue';
-    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components: {
-            vueEcharts,
-            noData
+            vueEcharts
         },
         props: {
             //率

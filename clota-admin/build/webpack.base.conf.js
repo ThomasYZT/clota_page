@@ -43,6 +43,7 @@ module.exports = {
         }
     },
     module: {
+        noParse: /node_modules\/(element-ui\.js)/,
         rules: [
             ...(config.dev.useEslint ? [createLintingRule()] : []),
             {

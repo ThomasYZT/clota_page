@@ -143,6 +143,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ]),
+      // new webpack.optimize.ModuleConcatenationPlugin()
     // new HardSourceWebpackPlugin()
     // new webpack.DllReferencePlugin({
     //   manifest: require('../vueFamily-manifest.json')
@@ -150,7 +151,13 @@ const webpackConfig = merge(baseWebpackConfig, {
     // new webpack.DllReferencePlugin({
     //   manifest: require('../plugins-manifest.json')
     // })
-  ]
+  ],
+    stats: {
+        // Examine all modules
+        maxModules: Infinity,
+        // Display bailout reasons
+        optimizationBailout: true
+    }
 })
 
 if (config.build.productionGzip) {
