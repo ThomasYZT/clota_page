@@ -179,6 +179,8 @@
             //会员积分有效期设置复选框
             'settingData.scoreOffsetInConsumption.columns.integrateToMoney' : function (newVal, oldVal) {
                 if(!newVal){
+                    this.settingData.scoreOffsetInConsumption.type = false;
+                    this.settingData.scoreOffsetInConsumption.meanwhile = false;
                     this.error.integrateError = '';
                     this.error.moneyError = '';
                     this.error.highProportionError = '';
