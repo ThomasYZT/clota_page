@@ -19,7 +19,7 @@
                 <span>{{manualData.endingBalance | contentFilter}}</span>{{$t('yuan')}}
             </div>
             <!--操作人-->
-            <div class="form-item-wrap"><label>{{$t('operator')}}：</label><span>{{manualData.custName | contentFilter}}</span></div>
+            <div class="form-item-wrap"><label>{{$t('operator')}}：</label><span>{{manualData.operName | contentFilter}}</span></div>
             <!--修改时间-->
             <div class="form-item-wrap"><label>{{$t('modifiedTime')}}：</label><span>{{manualData.createdTime}}</span></div>
             <div class="form-item-wrap"><label>{{$t('remark') + '：'}}</label><span>{{manualData.remark | contentFilter}}</span></div>
