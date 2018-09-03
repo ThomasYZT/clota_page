@@ -134,7 +134,7 @@
                                 },500);
                             }
                         }).catch(err => {
-                            this.errMsg = this.$t('loginErr');
+                            this.errMsg = this.$t('loginError');
                             setTimeout(() => {
                                 this.isLoging = false;
                             },500);
