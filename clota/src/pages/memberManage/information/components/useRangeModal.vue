@@ -13,7 +13,7 @@
 
                 <div style="width: 262px;display: inline-block;float: left;">
                     <table-com
-                        :table-com-min-height="400"
+                        :table-com-min-height="360"
                         :column-data="corpusColumnData"
                         :table-data="corpusRangeData"
                         :border="false">
@@ -32,7 +32,7 @@
 
                 <div style="width: 262px;display: inline-block;">
                     <table-com
-                        :table-com-min-height="400"
+                        :table-com-min-height="360"
                         :column-data="donateColumnData"
                         :table-data="donateRangeData"
                         :border="false">
@@ -131,6 +131,11 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .use-range-modal{
+
+        .modal-body{
+            min-height: 360px;
+        }
+
         .modal-footer{
             /deep/ .ivu-btn{
                 padding: 5px 30px;
