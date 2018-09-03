@@ -48,16 +48,16 @@
                         <span> {{settingData.scoreGrowthFromCharging.integrate}} {{$t('integral')}}</span>
                     </div>
                     <div class="check-group-wrap">{{$t('recharge')}}
-                        <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
-                              <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGgowth"
+                        <span :class="{'ivu-form-item-error': error.moneyToGrowthError}">
+                              <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGrowth"
                                      :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
-                                     @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGgowth,'moneyToGgowthError')"
+                                     @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGrowth,'moneyToGrowthError')"
                                      type="text"
                                      class="single-input"
                                      :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
                               <span class="ivu-form-item-error-tip"
                                    style="left: 92px;"
-                                   v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
+                                   v-if="error.moneyToGrowthError">{{error.moneyToGrowthError}}</span>
                         </span>
                         <span> {{settingData.scoreGrowthFromCharging.growth}} {{$t('growth')}}</span>
                     </div>
@@ -290,7 +290,7 @@
                         storedAndGrowthType: 'true',//Boolean
                         moneyToIntegrate: '1',//储值额-积分 Number
                         integrate: 1,//积分
-                        moneyToGgowth: '1',//储值额-成长值 Number
+                        moneyToGrowth: '1',//储值额-成长值 Number
                         growth: 1,//成长值
                     },
                     //储值获得积分、成长值生效设置
@@ -347,15 +347,15 @@
                 //输入框校验错误显示
                 error: {
                     moneyToIntegrateError: '',//储值额-积分
-                    moneyToGgowthError: '',//储值额--成长值
+                    moneyToGrowthError: '',//储值额--成长值
                     storedTimeError: '',//储值获得积分、成长值生效设置
                 },
                 //布尔型
                 boolProps: ['storedAndGrowthType'],
                 //Number型
-                numberProps: ['moneyToIntegrate','moneyToGgowth','storedTime'],
+                numberProps: ['moneyToIntegrate','moneyToGrowth','storedTime'],
                 //String型
-                stringProps: ['moneyToIntegrate','moneyToGgowth','storedTime','storedAndGrowthType'],
+                stringProps: ['moneyToIntegrate','moneyToGrowth','storedTime','storedAndGrowthType'],
             }
         },
         watch: {
@@ -364,7 +364,7 @@
             'settingData.scoreGrowthFromCharging.storedAndGrowthType' : function (newVal, oldVal) {
                 if(newVal !== 'true'){
                     this.error.moneyToIntegrateError = '';
-                    this.error.moneyToGgowthError = '';
+                    this.error.moneyToGrowthError = '';
                 }
             },
 
@@ -540,7 +540,7 @@
                     return false
                 }
                 if(this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGgowth, 'moneyToGgowthError') ){
+                    !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGrowth, 'moneyToGrowthError') ){
                     return false
                 }
 

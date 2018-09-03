@@ -73,6 +73,8 @@
                             {{detail.tpCardNo || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span v-w-title="detail.tpNo">
                             {{detail.tpNo || '-'}}</span></div>
+                         <div class="form-item-wrap"><label>{{$t("growth")}}：</label><span v-w-title="growthAccount.accountBalance">
+                        {{growthAccount.accountBalance !== null ? growthAccount.accountBalance : '-'}}</span></div>
                     </div>
                 </div>
 
@@ -325,6 +327,8 @@
             return {
                 //会员获取会员信息和会员卡信息
                 detail: {},
+                //成长值账户信息
+                growthAccount: {},
                 //枚举数据
                 enumData: {
                     //性别
@@ -490,7 +494,9 @@
                             if(item.accountType === 'score'){
                                 this.scoreData = item;
                             }
-                        })
+                        });
+                        //查询成长值
+                        this.getGrowthBalance(params);
                     } else {
                         console.log(res);
                         this.$Message.warning(res.message || 'listCardAccountInfo '+ this.$t('failure') +'！');
@@ -653,6 +659,20 @@
                 });
             },
 
+            //查询成长值
+            getGrowthBalance ( params ) {
+                ajax.post('getGrowthBalance', {
+                    cardId: params.cardId,
+                }).then(res => {
+                    if(res.success){
+                        this.growthAccount = res.data || {};
+                    } else {
+                        console.log(res);
+                        this.$Message.warning(res.message || 'getGrowthBalance '+ this.$t('failure') +'！');
+                    }
+                });
+            },
+
             /**
              * 获取路由参数
              * @param params
@@ -670,6 +690,8 @@
                     this.queryChildOrMotherCard(params.detail);
                     //根据会员获取会员信息和会员卡信息
                     this.showMemberDetail(params.detail);
+                    //查询成长值
+                    this.getGrowthBalance(params.detail);
                 }else{
                     this.$router.push({
                         name : 'memberInfo'
