@@ -491,7 +491,7 @@ export default {
     'linkCategory' : '关联所属类别',
     'link' : '关联',
     'addStoredSendRatio' : '新增储值赠送金额比例',
-    'memberPromotionRules' : '新增储值赠送金额比例',
+    'memberPromotionRules' : '会员级别晋升规则设置',
     'value' : '值',
     'startValBiggerThenMaxVal' : '起始值不能大于最高值',
     'adjust_money' : '消费',
