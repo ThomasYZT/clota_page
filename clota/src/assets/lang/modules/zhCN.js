@@ -242,13 +242,14 @@ export default {
     'transactionTypeAll': '全部交易类型',
     'consume': '消费',
     'recharge': '储值',
-    'adjustMoney': '手动改资金账户',
+    'adjustMoney': '手动修改储值账户',
+    'adjust_score': '手动修改储值账户',
     'mail': '邮箱',
     'updateMemberInfo': '更新会员卡信息',
     'transactionIntegralThisTime': '本次交易积分',
     'accIntegralAfterTransaction': '交易后账户积分',
     'gainByConsuming': '消费所得',
-    'adjustScore': '手动改积分账户',
+    'adjustScore': '手动修改积分账户',
     'otherAccount': '其它账户',
     'integralAccModification': '积分账户修改',
     'ModifyAmountThisTime': '本次修改金额',
@@ -411,7 +412,7 @@ export default {
     'storeIntegetRatioSetting' : '储值获得积分、成长值生效设置',
     'rechartSucEffective' : '储值成功后立即生效',
     'rechartSuc' : '储值成功后',
-    'hourLaterInvalid' : '个小时后失效',
+    'hourLaterInvalid' : '个小时后生效',
     'setProportionOfBonusAmountOfStorageValue' : '储值赠送金额比例设置',
     'add' : '新增',
     'CollectionModeSetting' : '收款方式设置',
@@ -493,6 +494,7 @@ export default {
     'memberPromotionRules' : '新增储值赠送金额比例',
     'value' : '值',
     'startValBiggerThenMaxVal' : '起始值不能大于最高值',
+    'adjust_money' : '消费',
 
 
 }

@@ -79,7 +79,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row['fee']) | moneyFilter}}<span>{{$t('yuan')}}</span>
+                            {{scope.row['fee'] | moneyFilter}}<span>{{$t('yuan')}}</span>
                         </template>
                     </el-table-column>
                 </table-com>

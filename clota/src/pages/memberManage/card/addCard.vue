@@ -187,7 +187,6 @@
                     <!--选择商品-->
                     <Form-item :label="$t('selectProduct')" prop="conditionProductId">
                         <Select v-model.trim="formData.conditionProductId"
-                                :multiple="true"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option :value="item.id"
                                     v-for="item in productList"
@@ -334,7 +333,7 @@
 
             //校验选择的商品
             const validateProduct = (rule,value,callback) => {
-                if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                if(this.formData.conditionProductId){
                     callback();
                 }else{
                     if(common.isNotEmpty(value)){
@@ -448,7 +447,7 @@
                     //可用渠道id
                     conditionChannelId: [],
                     //商品
-                    conditionProductId: [],
+                    conditionProductId: '',
                     //是否与会员折扣权益同时使用
                     isDiscountCoexist : 'false',
                     //代金券在折扣前后使用设置
@@ -615,7 +614,7 @@
                         expireTime : this.formData.expireTime.format('yyyy-MM-dd'),
                         price : this.formData.price,
                         conditionChannelId : this.formData.conditionChannelId ? this.formData.conditionChannelId.join(',') : '',
-                        conditionProductId : this.formData.conditionProductId.join(','),
+                        conditionProductId : this.formData.conditionProductId,
                         remark : this.getDiscountRemark(),
                         conditionOrgId : this.formData.singleStoreId,
                     }
@@ -644,7 +643,7 @@
                 if(params && Object.keys(params).length > 0){
                     for(let item in params){
                         if(item in this.formData){
-                            if(['conditionChannelId','conditionOrgId','conditionProductId'].includes(item)){
+                            if(['conditionChannelId','conditionOrgId'].includes(item)){
                                 this.formData[item] = params[item] ? params[item].split(',') : '';
                             }else{
                                 this.formData[item] = params[item];
@@ -674,9 +673,12 @@
                     }
                 });
                 this.productList.forEach(item => {
-                    if(this.formData.conditionProductId.includes(item.id)){
+                    if(this.formData.conditionProductId === item.id){
                         remark.push(orgName + item.productName);
                     }
+                    // if(this.formData.conditionProductId.includes(item.id)){
+                    //     remark.push(orgName + item.productName);
+                    // }
                 });
                 return remark.join(',');
             },
@@ -725,7 +727,7 @@
              */
             getSingleStore() {
                 for(let i = 0,j = this.listAmountRange.length;i < j;i++){
-                    if(this.formData.conditionOrgId === this.listAmountRange[i].id){
+                    if(this.formData.singleStoreId === this.listAmountRange[i].id){
                         return this.listAmountRange[i].orgName;
                     }
                 }
@@ -739,7 +741,7 @@
         watch : {
             'formData.singleStoreId' (newVal,oldVal) {
                 if(oldVal){
-                    this.formData.conditionProductId  = [];
+                    this.formData.conditionProductId  = '';
                 }
                 if(newVal){
                     this.queryProduct(newVal);

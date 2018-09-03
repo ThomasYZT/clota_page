@@ -242,7 +242,8 @@ export default {
     'transactionTypeAll': '全部交易类型',
     'consume': 'Consumption',
     'recharge': 'Pre-paid',
-    'adjustMoney': '手动改资金账户',
+    'adjustMoney': '手动修改储值账户',
+    'adjust_score': '手动修改储值账户',
     'mail': 'Mail',
     'updateMemberInfo': '更新会员卡信息',
     'transactionIntegralThisTime': 'Transaction intergral this time',
@@ -492,4 +493,5 @@ export default {
     'memberPromotionRules' : '新增储值赠送金额比例',
     'value' : 'Value',
     'startValBiggerThenMaxVal' : '起始值不能大于最高值',
+    'adjust_money' : '消费',
 }

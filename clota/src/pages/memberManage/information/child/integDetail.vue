@@ -73,9 +73,9 @@
                         <span class="blue-color"
                               v-if="scope.row.operationType === 'adjust_score'"
                               @click="viewDetail(scope.row)">
-                            {{ scope.row.operationType | transOperation }}
+                            {{ $t(scope.row.operationType) }}
                         </span>
-                        <span v-else>{{ scope.row.operationType | transOperation }}</span>
+                        <span v-else>{{ $t(scope.row.operationType)}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -163,14 +163,6 @@
                 //当前手动修改的交易数据
                 currManualData: {},
             }
-        },
-        filters: {
-            transOperation(val) {
-                let optType = integraType.find((item, i) => {
-                    return item.value === val;
-                });
-                return optType ? optType.name : '-';
-            },
         },
         methods: {
             /**

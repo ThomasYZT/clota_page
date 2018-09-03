@@ -88,4 +88,8 @@ export const tradeType1 = [
         label : 'consume',     // 消费
         value : 'adjust_money',
     },
+    {
+        label : 'adjustMoney',     // 消费
+        value : 'adjust_score',
+    },
 ];
