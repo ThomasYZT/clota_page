@@ -80,7 +80,6 @@ new Vue({
     },
     watch: {
         langCode(val){
-            debugger
             if(val === 'en'){
                 eleLocale.use(eleEnLang);
             }else if(val === 'zh-Cn'){
