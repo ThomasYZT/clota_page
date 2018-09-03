@@ -4,4 +4,12 @@ export default {
     'queryPackageList' : 'servicePackage/list.json',
     //获取服务列表
     'queryServiceList' : 'service/list.json',
+    //新增套餐
+    'addPackage' : 'servicePackage/add.json',
+    //根据id获取单个套餐详情
+    'queryPackageInfoById' : 'servicePackage/get.json',
+    //删除套餐
+    'deletePackage' : 'servicePackage/delete.json',
+    //短信套餐列表
+    'smsPackageList' : 'smsPackage/list.json',
 }

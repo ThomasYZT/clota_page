@@ -44,7 +44,7 @@
         </table-com>
         <!--删除套餐模态框-->
         <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除套餐：Server2012Server2012Server2012Server2012Server2012</span>
+            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除套餐：{{currendData.comboName}}</span>
             <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
         </del-modal>
     </div>
@@ -74,7 +74,9 @@
                 //每页的条数
                 pageSize : 10,
                 //套餐列表数据
-                tableData : []
+                tableData : [],
+                //当前操作的数据
+                currendData : {}
             }
         },
         methods: {
@@ -106,10 +108,11 @@
              * @param data
              */
             delPackage (data) {
+                this.currendData = data;
                 this.$refs.delModal.show({
                     title : '删除套餐',
                     confirmCallback : () => {
-                        // this.confirmDelete(data);
+                        this.confirmDel(data.id);
                     }
                 });
             },
@@ -121,12 +124,13 @@
                 this.$router.push({
                     name : 'editPackage',
                     params : {
-                        type : 'watch'
+                        type : 'watch',
+                        id : data.id
                     }
                 });
             },
             /**
-             * 查询调休数据
+             * 查询套餐列表
              */
             queryList () {
                 ajax.post('queryPackageList',{
@@ -157,6 +161,22 @@
                     }
                 }
                 return serverName.join(',');
+            },
+            /**
+             * 删除套餐
+             * @param id 套餐id
+             */
+            confirmDel(id) {
+                ajax.post('deletePackage',{
+                    id : id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('删除成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error(res.message || '删除失败');
+                    }
+                })
             }
         }
     }

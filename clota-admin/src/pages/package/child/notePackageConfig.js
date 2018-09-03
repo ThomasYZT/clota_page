@@ -4,23 +4,23 @@
 export const packageHead = [
     {
         title: '套餐ID',
-        minWidth: 80,
-        field: 'time'
+        minWidth: 220,
+        field: 'id'
     },
     {
         title: '套餐名称',
         minWidth: 200,
-        field: 'rate'
+        field: 'packageName'
     },
     {
         title: '套餐价格',
         minWidth: 100,
-        field: 'rate'
+        field: 'price'
     },
     {
         title: '包含短信数量',
         minWidth: 130,
-        field: 'rate'
+        field: 'smsCount'
     },
     {
         title: '服务商',
@@ -29,17 +29,17 @@ export const packageHead = [
     },
     {
         title: '创建时间',
-        minWidth: 150,
-        field: 'rate'
+        minWidth: 190,
+        field: 'createdTime'
     },
     {
         title: '上次修改时间',
-        minWidth: 150,
-        field: 'rate'
+        minWidth: 190,
+        field: 'updatedTime'
     },
     {
         title: '操作',
-        minWidth: 100,
-        field: 'rate'
+        width: 170,
+        field: 'operate'
     },
 ];

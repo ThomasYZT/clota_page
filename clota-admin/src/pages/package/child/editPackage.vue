@@ -119,7 +119,9 @@
                 //服务操作类型
                 type : '',
                 //服务列表
-                serviceList : []
+                serviceList : [],
+                //套餐id
+                packageId : ''
             }
         },
         methods: {
@@ -151,6 +153,10 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    this.packageId  = params.id;
+                    if(this.type === 'watch' || this.type === 'edit'){
+                        this.queryPackageInfoById();
+                    }
                 }else{
                     this.$router.push({
                         name : 'package'
@@ -193,6 +199,21 @@
                     }
                 }).finally(() => {
                     this.addLoading = false;
+                });
+            },
+            /**
+             * 更具id获取单个套餐的详情
+             */
+            queryPackageInfoById (){
+                ajax.post('queryPackageInfoById',{
+                    id : this.packageId
+                }).then(res => {
+                    console.log(res)
+                    if(res.status === 200){
+
+                    }else{
+
+                    }
                 });
             }
         },
