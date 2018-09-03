@@ -8,6 +8,8 @@ import index from './modules/index';
 import log from './modules/log';
 //服务器接口
 import server from './modules/server';
+//套餐接口
+import Package from './modules/package';
 const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
@@ -24,7 +26,9 @@ const apiList = {
     //日志接口
     ...log,
     //服务器接口
-    ...server
+    ...server,
+    //套餐接口
+    ...Package
 };
 
 export default apiList;
