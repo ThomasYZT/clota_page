@@ -80,13 +80,13 @@
 
                 <div class="content-info" v-for="(item, index) in accountData">
                     <div class="title">
-                        {{item.defaultAccount === 'true' ? $t("DefaultPrePaidAcc") : item.accountName }}
+                        {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
                         <span>{{$t("information")}}</span>
                         <span v-if="item.accountType === 'charging'" class="add" @click="addAccount">+ {{$t("newAccount")}}</span>
                     </div>
                     <div class="content">
                         <div class="header-wrap" v-if="item.accountType === 'charging'">
-                            {{item.defaultAccount === 'true' ? $t("DefaultPrePaidAcc") : item.accountName }}
+                            {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
                             <span>{{$t("information")}}</span>
                         </div>
                         <div class="header-wrap" v-if="item.accountType === 'score'">{{$t("integral")}}</div>
