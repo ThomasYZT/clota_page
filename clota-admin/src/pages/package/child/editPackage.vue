@@ -12,29 +12,31 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="22">
+                <i-row>
+                    <i-col span="22">
                         <FormItem :label="$t('packageName')"
                                   prop="package"
                                   v-if="type === 'add' || type === 'edit'">
-                            <Input v-model="formData.packageName" />
+                            <Input v-model.trim="formData.packageName" />
                         </FormItem>
                         <FormItem :label="$t('packageName')"
-                                  prop="package"
+                                  prop="packageName"
                                   v-else>
                             {{formData.packageName}}
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="22">
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="22">
                         <FormItem :label="$t('choseService')"
                                   prop="services"
                                   v-if="type === 'add' || type === 'edit'">
                             <CheckboxGroup v-model="formData.services" >
-                                <Checkbox :label="item.label"
+                                <Checkbox :label="item.id"
                                           v-for="(item,i) in serviceList"
-                                          :key="i">
+                                          :vlaue="item.id"
+                                          :key="item.id">
+                                    <span>{{item.serviceName}}</span>
                                 </Checkbox>
                             </CheckboxGroup>
                         </FormItem>
@@ -43,8 +45,8 @@
                                   v-else>
                             {{servicesChosed}}
                         </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </i-row>
             </Form>
             <div class="footer" v-if="type === 'add' || type === 'edit'">
                 <Button type="primary"
@@ -70,6 +72,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -98,13 +101,13 @@
                 //表单数据
                 formData: {
                     //套餐名称
-                    packageName: '套餐名称',
+                    packageName: '',
                     //服务列表
-                    services: ['服务1'],
+                    services: [],
                 },
                 //表单校验规则
                 ruleValidate: {
-                    package : [
+                    packageName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('packageName')}), trigger: 'blur'},
                     ],
                     services : [
@@ -116,16 +119,7 @@
                 //服务操作类型
                 type : '',
                 //服务列表
-                serviceList : [
-                    {
-                        label : '服务1',
-                        value : '服务1'
-                    },
-                    {
-                        label : '服务2',
-                        value : '服务2'
-                    },
-                ]
+                serviceList : []
             }
         },
         methods: {
@@ -135,7 +129,11 @@
             save() {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    this.addLoading = false;
+                    if(valid){
+                        this.addPackage();
+                    }else{
+                        this.addLoading = false;
+                    }
                 });
             },
             /**
@@ -158,6 +156,44 @@
                         name : 'package'
                     });
                 }
+                this.queryServiceList();
+            },
+
+            /**
+             * 查询所有服务列表
+             */
+            queryServiceList () {
+                ajax.post('queryServiceList',{
+                    serviceStatus : 'normal'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.serviceList =  res.data ? res.data : [];
+                    }else{
+                        this.serviceList =  [];
+                    }
+                }).catch(err => {
+                    this.serviceList =  [];
+                });
+            },
+            /**
+             * 添加套餐
+             */
+            addPackage () {
+                ajax.get('addPackage',{
+                    packageName : this.formData.packageName,
+                    serviceIds : JSON.stringify(this.formData.services)
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('新增成功');
+                        this.$router.push({
+                            name : 'packageList'
+                        });
+                    }else{
+                        this.$Message.error(res.message || '新增失败');
+                    }
+                }).finally(() => {
+                    this.addLoading = false;
+                });
             }
         },
         beforeRouteEnter(to,fromm,next){

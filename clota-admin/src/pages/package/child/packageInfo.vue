@@ -7,37 +7,6 @@
                 <span @click="addPackage">添加套餐</span>
             </Button>
         </div>
-        <!--<table-com-->
-            <!--:table-data="tableData"-->
-            <!--:table-height="tableHeight"-->
-            <!--:column-data="packageHead"-->
-            <!--:auto-height="true">-->
-            <!--<el-table-column-->
-                <!--slot="column5"-->
-                <!--:label="row.title"-->
-                <!--:prop="row.field"-->
-                <!--:key="row.index"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth"-->
-                <!--slot-scope="row">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<ul class="operate-info">-->
-                        <!--<li class="operate-list" @click="watchPackage(scoped.row)">查看</li>-->
-                        <!--<li class="operate-list" @click="editPackage(scoped.row)">编辑</li>-->
-                        <!--<li class="operate-list del" @click="delPackage(scoped.row)">删除</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</table-com>-->
-        <!--<div class="page-area" v-if="tableData.length > 0">-->
-            <!--<el-pagination-->
-                <!--:current-page="pageNo"-->
-                <!--:page-sizes="pageSizeConfig"-->
-                <!--:page-size="pageSize"-->
-                <!--layout="total, sizes, prev, pager, next, jumper"-->
-                <!--:total="totalCount">-->
-            <!--</el-pagination>-->
-        <!--</div>-->
         <table-com
             :column-data="packageHead"
             :table-data="tableData"
@@ -46,8 +15,32 @@
             :show-pagination="true"
             :page-size-d.sync="pageSize"
             :total-count="totalCount"
-            :ofset-height="210"
+            :ofset-height="120"
             @query-data="queryList">
+            <el-table-column
+                slot="columnservices"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getPackageService(scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnoperate"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scoped">
+                    <ul class="operate-info">
+                        <li class="operate-list" @click="watchPackage(scoped.row)">查看</li>
+                        <li class="operate-list" @click="editPackage(scoped.row)">编辑</li>
+                        <li class="operate-list del" @click="delPackage(scoped.row)">删除</li>
+                    </ul>
+                </template>
+            </el-table-column>
         </table-com>
         <!--删除套餐模态框-->
         <del-modal ref="delModal">
@@ -140,7 +133,7 @@
                     page : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
-                    if(res.status === 'Success'){
+                    if(res.status === 200){
                         this.tableData = res.data.list ? res.data.list : [];
                         this.totalCount = res.data.totalRecord;
                     }else{
@@ -151,6 +144,19 @@
                     this.tableData = [];
                     this.totalCount = 0;
                 });
+            },
+            /**
+             * 获取套餐所包含的服务
+             * @param rowData
+             */
+            getPackageService(rowData) {
+                let serverName = [];
+                if(rowData.services && rowData.services.length > 0){
+                    for(let i = 0,j = rowData.services.length;i < j;i++){
+                        serverName.push(rowData.services[i]['serviceName']);
+                    }
+                }
+                return serverName.join(',');
             }
         }
     }
@@ -160,7 +166,6 @@
     @import '~@/assets/scss/base';
     .package{
         @include block_outline();
-        @include padding_place();
         padding: 0 30px;
 
         .create-package{
