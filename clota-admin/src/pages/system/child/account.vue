@@ -8,10 +8,13 @@
             </Button>
         </div>
         <table-com
+            :ofsetHeight="208"
+            :show-pagination="true"
             :table-data="tableData"
-            :table-height="tableHeight"
             :column-data="accountHead"
-            :auto-height="true">
+            :total-count="total"
+            :page-no-d.sync="accListParams.page"
+            :page-size-d.sync="accListParams.pageSize" :auto-height="true">
             <el-table-column
                 slot="column8"
                 :label="row.title"
@@ -29,7 +32,7 @@
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
+        <!--<div class="page-area" v-if="tableData.length > 0">
             <el-pagination
                 :current-page="pageNo"
                 :page-sizes="pageSizeConfig"
@@ -37,7 +40,7 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="totalCount">
             </el-pagination>
-        </div>
+        </div>-->
         <!--删除账号模态框-->
         <del-modal ref="delModal">
             <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除账号：Server2012Server2012Server2012Server2012Server2012</span>
@@ -52,6 +55,7 @@
     import tableMixins from '../../lessee/tableMixins';
     import {accountHead} from './accountConfig';
     import delModal from '@/components/delModal/index.vue';
+    import ajax from '@/api/index'
 
     export default {
         mixins :[tableMixins],
@@ -63,10 +67,31 @@
             return {
                 totalCount : 100,
                 //表头配置
-                accountHead : accountHead
+                accountHead : accountHead,
+                // 账户列表的请求参数
+                accListParams: {
+                    page: 1,
+                    pageSize: 10
+                },
+                // 列表数据
+                tableData: [],
+                // 列表数据总数
+                total: 0
             }
         },
+        created() {
+            this.getAccountList();
+        },
         methods: {
+            /**
+             * 查询账户信息列表
+             */
+            getAccountList() {
+                ajax.post('user_list', this.accListParams).then(res => {
+                    this.tableData = res.data.list || [];
+                    this.total = res.totalRecord || 0;
+                });
+            },
             /**
              * 新建账号
              */

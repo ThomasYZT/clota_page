@@ -215,7 +215,7 @@
              */
             queryList () {
                 this.$emit('query-data',{
-                    pageNo : this.pageNo,
+                    page : this.pageNo,
                     pageSize : this.showPagination ? this.pageSize : this.maxPageSize
                 });
             },
