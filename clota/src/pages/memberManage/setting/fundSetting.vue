@@ -284,19 +284,19 @@
                 //设置数据
                 settingData: {
                     //储值密码设置
-                    passwdForRechargeAccount: 'true',
+                    passwdForRechargeAccount: '',
                     //储值积分、成长值比例设置
                     scoreGrowthFromCharging: {
-                        storedAndGrowthType: 'true',//Boolean
-                        moneyToIntegrate: '1',//储值额-积分 Number
+                        storedAndGrowthType: '',//Boolean
+                        moneyToIntegrate: '',//储值额-积分 Number
                         integrate: 1,//积分
-                        moneyToGrowth: '1',//储值额-成长值 Number
+                        moneyToGrowth: '',//储值额-成长值 Number
                         growth: 1,//成长值
                     },
                     //储值获得积分、成长值生效设置
                     scoreGrowthEffModeWhileCharging: {
-                        storedType: 'immediately',
-                        storedTime: '24',//Number
+                        storedType: '',
+                        storedTime: '',//Number
                     },
                     //转账扣除手续费比例
 //                    commissionOfTransfermation: '',
@@ -399,7 +399,7 @@
                         return data ? Number(data) : 0;
                         break;
                     case 'boolean':
-                        return Boolean(data);
+                        return data ==='true' ? true : false;
                         break;
                     case 'string':
                         return data!==null ? String(data) : '';
