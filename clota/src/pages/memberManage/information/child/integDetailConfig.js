@@ -48,6 +48,10 @@ export const integraType = [
         value: 'consume',
     },
     {
+        name: 'recharge',   // 储值所得
+        value: 'recharge',
+    },
+    {
         name: 'adjustScore',    // 手动改积分账户
         value: 'adjust_score',
     },

@@ -249,6 +249,7 @@ export default {
     'transactionIntegralThisTime': 'Transaction intergral this time',
     'accIntegralAfterTransaction': 'Account intergral after transacting',
     'gainByConsuming': 'Consumption income',
+    'gainByRecharging': '储值所得',
     'adjustScore': '手动改积分账户',
     'otherAccount': '其它账户',
     'integralAccModification': 'Intergral account  modification',

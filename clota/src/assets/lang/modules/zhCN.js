@@ -249,6 +249,7 @@ export default {
     'transactionIntegralThisTime': '本次交易积分',
     'accIntegralAfterTransaction': '交易后账户积分',
     'gainByConsuming': '消费所得',
+    'gainByRecharging': '储值所得',
     'adjustScore': '手动修改积分账户',
     'otherAccount': '其它账户',
     'integralAccModification': '积分账户修改',
