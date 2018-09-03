@@ -44,7 +44,7 @@
                         <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-w-title="detail.stateCode">{{detail.stateCode || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span v-w-title="detail.cityCode">{{detail.cityCode || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-w-title="detail.qq">{{detail.qq || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="detail.certificationType">{{detail.certificationType || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="detail.certificationTypeName">{{detail.certificationTypeName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-w-title="detail.idCardNumber">{{detail.idCardNumber || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-w-title="detail.hobby">{{detail.hobby || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="detail.homeAddr">{{detail.homeAddr || '-'}}</span></div>
