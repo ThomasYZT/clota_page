@@ -138,7 +138,7 @@
                                     type="text"
                                     class="single-input"
                                     :placeholder="$t('inputField', {field: ''})"/>
-                                {{$t('freezeCardForDays')}}</span><!--天后冻结该会员卡-->
+                                {{$t('freezeCardForTimes')}}</span><!--次后冻结该会员卡-->
                                 <div class="ivu-form-item-error-tip"
                                      style="left: 110px;"
                                      v-if="error.vipNumberError">{{error.vipNumberError}}</div>

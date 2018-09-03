@@ -320,6 +320,7 @@ export default {
     'openCard': '开卡',
     'freezeCardForDays': '天后冻结该会员卡',
     'memberCardUsing': '会员卡使用',
+    'freezeCardForTimes': '次后冻结该会员卡',
     'invalidCouponRemind': '卡券过期提醒设置',
     'beforeInvalidCoupon': '卡券过期前',
     'isReturnIntegral': '用户退款时积分是否退还用户',
