@@ -125,7 +125,7 @@ export default {
     'identificationNum': '身份证号',
     'personalInterests': '个人兴趣',
     'homeAddress': '家庭住址',
-    'selectCardAttribution': '会员卡归属选择',
+    'selectCardAttribution': '会员卡信息',
     'memberNum': '会员编号',
     'memberKinds': '会员类型',
     'cardIssuer': '发卡单位',
