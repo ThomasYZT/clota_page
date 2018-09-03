@@ -69,7 +69,7 @@
                         <span class="blue-color"
                               v-if="scope.row.operationType === 'adjust_money'"
                               @click="viewDetail(scope.row)">
-                            {{ $t(scope.row.operationType) }}
+                            {{ $t('adjustMoney') }}
                         </span>
                         <span v-else>{{ $t(scope.row.operationType) }}</span>
                     </template>

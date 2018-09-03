@@ -9,7 +9,7 @@ export const integraDetailHead = [
     },
     {
         title: 'transactionType',      // 交易类型
-        width: 150,
+        width: 160,
         enWidth : 170,
         field: 'operationType'
     },

@@ -243,7 +243,7 @@ export default {
     'consume': '消费',
     'recharge': '储值',
     'adjustMoney': '手动修改储值账户',
-    'adjust_score': '手动修改储值账户',
+    'adjust_score': '手动修改积分账户',
     'mail': '邮箱',
     'updateMemberInfo': '更新会员卡信息',
     'transactionIntegralThisTime': '本次交易积分',
