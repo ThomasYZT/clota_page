@@ -20,7 +20,7 @@ export const packageHead = [
     {
         title: '创建人',
         minWidth: 100,
-        field: 'comboName'
+        field: 'userName'
     },
     {
         title: '创建时间',

@@ -12,4 +12,6 @@ export default {
     'deletePackage' : 'servicePackage/delete.json',
     //短信套餐列表
     'smsPackageList' : 'smsPackage/list.json',
+    //添加短信套餐
+    'addSmsPackage' : 'smsPackage/add.json',
 }

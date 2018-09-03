@@ -7,35 +7,6 @@
                 <span @click="addPackage">新建套餐</span>
             </Button>
         </div>
-        <!--<table-com-->
-            <!--:table-data="tableData"-->
-            <!--:table-height="tableHeight"-->
-            <!--:column-data="packageHead"-->
-            <!--:auto-height="true">-->
-            <!--<el-table-column-->
-                <!--slot="column7"-->
-                <!--:label="row.title"-->
-                <!--:prop="row.field"-->
-                <!--:key="row.index"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth"-->
-                <!--slot-scope="row">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<ul class="operate-info">-->
-                        <!--<li class="operate-list" @click="editPackage(scoped.row)">修改</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</table-com>-->
-        <!--<div class="page-area" v-if="tableData.length > 0">-->
-            <!--<el-pagination-->
-                <!--:current-page="pageNo"-->
-                <!--:page-sizes="pageSizeConfig"-->
-                <!--:page-size="pageSize"-->
-                <!--layout="total, sizes, prev, pager, next, jumper"-->
-                <!--:total="totalCount">-->
-            <!--</el-pagination>-->
-        <!--</div>-->
         <table-com
             :column-data="packageHead"
             :table-data="tableData"
@@ -50,6 +21,7 @@
                 slot="columnoperate"
                 slot-scope="row"
                 :label="row.title"
+                fixed="right"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scoped">

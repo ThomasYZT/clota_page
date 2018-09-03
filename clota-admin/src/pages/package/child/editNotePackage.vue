@@ -12,13 +12,15 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
+                <i-row>
+                    <i-col span="11">
+                        <!--套餐名称-->
                         <FormItem :label="$t('packageName')" prop="packageName">
                             <Input v-model="formData.packageName" style="width: 280px"/>
                         </FormItem>
-                    </Col>
-                    <Col span="11">
+                    </i-col>
+                    <i-col span="11">
+                        <!--短信服务商-->
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
                             <Select v-model="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
@@ -28,22 +30,24 @@
                                 </Option>
                             </Select>
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--价格-->
                         <FormItem :label="$t('price')" prop="price">
                             <Input v-model="formData.price" style="width: 280px"/>
                             <span class="unit">{{$t('yuan')}}</span>
                         </FormItem>
-                    </Col>
-                    <Col span="11">
+                    </i-col>
+                    <i-col span="11">
+                        <!--数量-->
                         <FormItem :label="$t('number')" prop="number">
                             <Input v-model="formData.number" style="width: 280px"/>
                             <span class="unit">{{$t('strip')}}</span>
                         </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </i-row>
             </Form>
             <div class="footer">
                 <Button type="primary"
@@ -62,6 +66,8 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index.js';
+    import common from '@/assets/js/common.js';
 
     export default {
         components: {
@@ -72,11 +78,15 @@
             //校验数量
             const validateNumber = (rule, value, callback) => {
                 if (value) {
-                    if (validator.isNumber(value)) {
+                    common.validateInteger(value).then(() => {
                         callback();
-                    } else {
-                        callback(this.$t('validateError.formatError',{field : this.$t('number')}));
-                    }
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t(err,{field : this.$t('number'),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t('number')}));
+                        }
+                    });
                 } else {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('number')}))
                 }
@@ -84,11 +94,15 @@
             //校验价格
             const validatePrice = (rule, value, callback) => {
                 if (value) {
-                    if (validator.isNumber(value)) {
+                    common.validateMoney(value,0,4).then(() => {
                         callback();
-                    } else {
-                        callback(this.$t('validateError.formatError',{field : this.$t('price')}));
-                    }
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t('errorMaxLength',{field : this.$t('price'),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t('price')}));
+                        }
+                    });
                 } else {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('price')}))
                 }
@@ -97,7 +111,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('notePackage'),
+                        name: 'notePackage',
                         router: {
                             name: 'notePackageInfo'
                         }
@@ -112,15 +126,16 @@
                     //价格
                     price: '',
                     //数量
-                    number : 0
+                    number : ''
                 },
                 //表单校验规则
                 ruleValidate: {
                     packageName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('packageName')}), trigger: 'blur'},
+                        {max : 20, message : this.$t('errorMaxLength', {field : this.$t('packageName'),length : 20}), trigger: 'blur'},
                     ],
                     smsProvider : [
-                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('smsProvider')}), trigger: 'blur'},
+                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('smsProvider')}), trigger: 'change'},
                     ],
                     price: [
                         {required: true, validator: validatePrice, trigger: 'blur'},
@@ -149,7 +164,11 @@
             save() {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    this.addLoading = false;
+                    if(valid){
+                        this.addSmsPackage();
+                    }else{
+                        this.addLoading = false;
+                    }
                 });
             },
             /**
@@ -172,6 +191,29 @@
                         name : 'notePackageInfo'
                     });
                 }
+            },
+            /**
+             * 新增短信套餐
+             */
+            addSmsPackage () {
+                ajax.post('addSmsPackage',{
+                    packageName : this.formData.packageName,
+                    provider : this.formData.smsProvider,
+                    price : this.formData.price,
+                    smsCount : this.formData.number,
+                }).then(res => {
+                    console.log(res);
+                    if(res.status === 200){
+                        this.$Message.success('新增成功');
+                        this.$router.push({
+                            name : 'notePackageInfo'
+                        });
+                    }else{
+                        this.$Message.error('新增失败');
+                    }
+                }).finally(() => {
+                    this.addLoading = false;
+                });
             }
         },
         beforeRouteEnter(to,fromm,next){

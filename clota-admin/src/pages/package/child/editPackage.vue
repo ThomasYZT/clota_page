@@ -185,9 +185,9 @@
              * 添加套餐
              */
             addPackage () {
-                ajax.get('addPackage',{
+                ajax.post('addPackage',{
                     packageName : this.formData.packageName,
-                    serviceIds : JSON.stringify(this.formData.services)
+                    serviceids  : this.formData.services.join(',')
                 }).then(res => {
                     if(res.status === 200){
                         this.$Message.success('新增成功');
