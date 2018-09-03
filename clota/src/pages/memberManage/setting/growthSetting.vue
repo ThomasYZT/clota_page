@@ -146,7 +146,7 @@
                         return data ? Number(data) : 0;
                         break;
                     case 'boolean':
-                        return Boolean(data);
+                        return data ==='true' ? true : false;
                         break;
                     case 'string':
                         return data!==null ? String(data) : '';

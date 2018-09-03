@@ -13,6 +13,8 @@ export default {
     'editMemberInfo' : '/member/editMemberInfo',
     //根据会员获取会员信息和会员卡信息
     'showMemberDetail' : '/member/showMemberDetail',
+    //查询成长值
+    'getGrowthBalance' : '/member/getGrowthBalance',
     //根据会员卡获取账户信息
     'listCardAccountInfo' : '/member/memberAccount/listCardAccountInfo',
     //获取更多优惠券
