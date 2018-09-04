@@ -381,7 +381,7 @@ export default {
     'errorEmpty': '{msg} cannot be empty',
     'errorMaxLength': '{field} can\'t exceed {length} characters',
     'errorMinLength': '{field} can\'t be less than {length} characters',
-    'fieldTypeError': '{field} cannot be negative',
+    'fieldTypeError': '{field} must be positive integer',
     'decimalError': '{field} decimal places up to 2 digits',
     'rangeError': '{field} must be greater than {min},and less than {max}',
     'sizeErrorS': '{filed1} cannot be less than {filed2}',

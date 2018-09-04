@@ -382,7 +382,7 @@ export default {
     'errorEmpty': '{msg}不能为空',
     'errorMaxLength': '{field}不能超过{length}个字符',
     'errorMinLength': '{field}不能少于{length}个字符',
-    'fieldTypeError': '{field}不能为负数',
+    'fieldTypeError': '{field}必须为正整数',
     'decimalError': '{field}小数位最多2位',
     'rangeError': '{field}必须大于{min}，且小于{max}',
     'sizeErrorS': '{filed1}不可小于{filed2}',

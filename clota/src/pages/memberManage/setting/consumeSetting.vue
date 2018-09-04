@@ -361,7 +361,7 @@
                         return false
                     }else{
                         if(Number.parseInt(val) === Number.parseFloat(val)){
-                            if(val < 0){
+                            if(val < 0 || val == 0){
                                 this.error[errorField] = this.$t('fieldTypeError', {msg: ''});
                                 return false
                             }else{
