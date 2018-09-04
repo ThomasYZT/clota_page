@@ -162,7 +162,8 @@
                         this.$emit('modify-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message || 'batchUpdateMemberLevels ' + this.$t('failureTip', {tip: this.$t('operate')}) + '！');  // 操作失败
+                        this.$Message.warning(res.message ? this.$t(res.message) :
+                            'batchUpdateMemberLevels ' + this.$t('failureTip', {tip: this.$t('operate')}) + '！');  // 操作失败
                     }
                 })
             },

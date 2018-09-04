@@ -122,7 +122,7 @@ export default {
     'cityCode': '城市代码',
     'QQ': 'QQ号',
     'credentialsType': '证件类型',
-    'identificationNum': '身份证号',
+    'identificationNum': '证件编号',
     'personalInterests': '个人兴趣',
     'homeAddress': '家庭住址',
     'selectCardAttribution': '会员卡信息',

@@ -170,7 +170,30 @@
                             :table-data="tableData"
                             :border="false">
                             <el-table-column
+                                slot="column0"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                    {{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column
                                 slot="column1"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                            </el-table-column>
+                            <el-table-column
+                                slot="column2"
                                 :label="row.title"
                                 :prop="row.field"
                                 :key="row.index"
@@ -184,7 +207,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                slot="column2"
+                                slot="column3"
                                 :label="row.title"
                                 :prop="row.field"
                                 :key="row.index"
@@ -198,7 +221,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                slot="column3"
+                                slot="column4"
                                 :label="row.title"
                                 :prop="row.field"
                                 :key="row.index"
@@ -317,6 +340,11 @@
                 tableData: [],
                 //表头数据
                 columnData: [
+                    {
+                        title: 'accountOwnership',
+                        minWidth: 140,
+                        field: 'accountBelonging',
+                    },
                     {
                         title: 'accountName',
                         minWidth: 140,
@@ -739,6 +767,11 @@
             showModifyAccountModal ( item, index ) {
                 this.$refs.modifyAccount.show({ item, index});
             },
+            //展示账户归属名称
+            showAccountBelongName ( val ) {
+                var obj = this.defaultAllTable.find((item) => val === item.id);
+                return obj ?this.$t(obj.orgName) : '-';
+            },
 
         },
     }
@@ -809,7 +842,7 @@
                     }
                 }
                 .table-wrap{
-                    width: 510px;
+                    width: 650px;
                 }
             }
 

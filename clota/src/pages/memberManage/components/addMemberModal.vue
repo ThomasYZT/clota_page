@@ -182,7 +182,6 @@
 
             //新增/修改数据
             updateMemberLevel ( data ) {
-                console.log( data )
                 ajax.post('updateMemberLevel', {
                     id: data.id,
                     levelNum: data.levelNum,
@@ -197,7 +196,8 @@
                         this.hide();
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'updateMemberLevel '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');  // 操作失败
+                        this.$Message.warning(res.message ? this.$t(res.message) :
+                            'updateMemberLevel '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');  // 操作失败
                     }
                 })
             },
