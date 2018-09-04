@@ -89,7 +89,7 @@ export default {
     passedSevenDays: '过去7天',
     passedThirtyDays: '过去30天',
     addServer: '新增服务器',
-    minute: '分钟',
+    minute: '{minute}分钟',
     systemTypeInfo: '{bit}位',
     systemAlarm: '系统报警',
     backUp: '收起',

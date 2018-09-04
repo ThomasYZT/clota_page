@@ -49,7 +49,7 @@
                     <!-- 监听评率 -->
                     <li class="arg-list">
                         <span class="key">{{$t('listenRate')}}：</span>
-                        <span class="val">{{serverDetail.monitoringFrequencc}}{{$t('minute')}}</span>
+                        <span class="val">{{$t('minute',{minute : serverDetail.monitoringFrequencc})}}</span>
                     </li>
                 </ul>
             </div>
@@ -62,8 +62,8 @@
                     </span>
                 </div>
                 <ul class="alarm">
-                    <li class="detail" 
-                        v-for="(item,i) in warnInfoList" 
+                    <li class="detail"
+                        v-for="(item,i) in warnInfoList"
                         :key="i">
                         <div class="alarm-name">
                             <span class="iconfont"
@@ -78,8 +78,8 @@
             </div>
 
             <!--设备在不同时间段的情况-->
-            <time-along :server-ip="serverIp" 
-                        :server-name="serverDetail.serverName" 
+            <time-along :server-ip="serverIp"
+                        :server-name="serverDetail.serverName"
                         v-if='serverIp'>
             </time-along>
         </div>

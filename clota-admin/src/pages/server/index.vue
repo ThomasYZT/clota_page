@@ -6,45 +6,82 @@
             <Button type="primary"
                     @click="addServer">{{$t('addServer')}}</Button>
         </div>
+        <!--<table-com-->
+            <!--:table-data="tableData"-->
+            <!--:table-height="tableHeight"-->
+            <!--:column-data="columnData">-->
+            <!--<el-table-column-->
+                <!--:label="$t('operate')"-->
+                <!--:width="60">-->
+                <!--<template slot-scope="scoped">-->
+                    <!--<span class="watch"-->
+                          <!--@click="toDetail(scoped.row)">{{$t('look')}}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+        <!--</table-com>-->
+        <!--<div class="page-area" v-if="totalCount > 0">-->
+            <!--<el-pagination-->
+                <!--:current-page="pageNo"-->
+                <!--:page-sizes="pageSizeConfig"-->
+                <!--:page-size="pageSize"-->
+                <!--:layout="pageLayout"-->
+                <!--:total="totalCount"-->
+                <!--@size-change="sizeChange"-->
+                <!--@current-change="pageNoChange">-->
+            <!--</el-pagination>-->
+        <!--</div>-->
         <table-com
+            :column-data="columnData"
             :table-data="tableData"
-            :table-height="tableHeight"
-            :column-data="columnData">
+            :border="true"
+            :page-no-d.sync="pageNo"
+            :show-pagination="true"
+            :page-size-d.sync="pageSize"
+            :total-count="totalCount"
+            :ofset-height="120"
+            @query-data="queryAllServerMsg">
             <el-table-column
-                :label="$t('operate')"
-                :width="60">
-                <template slot-scope="scoped">
-                    <span class="watch"
-                          @click="toDetail(scoped.row)">{{$t('look')}}</span>
+                slot="columnsystmeBit"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t('systemTypeInfo',{bit : scope.row.systmeBit})}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnmonitoringFrequencc"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t('minute',{minute : scope.row.monitoringFrequencc})}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnoperate"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <ul class="operate-info">
+                        <li class="normal" @click="toDetail(scope.row)">{{$t('look')}}</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="totalCount > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                :layout="pageLayout"
-                :total="totalCount"
-                @size-change="sizeChange"
-                @current-change="pageNoChange">
-            </el-pagination>
-        </div>
-        <!--加载中-->
-        <loading :visible="isLoading">
-        </loading>
     </div>
 </template>
 
 <script>
-    import tableCom from '../index/child/tableCom';
-    import loading from '@/components/loading/loading.vue';
-    import tableMixins from '../lessee/tableMixins';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {columns} from './serverConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        mixins: [tableMixins],
         components: {
             tableCom,
             loading
@@ -53,6 +90,14 @@
             return {
                 //表头配置
                 columnData: columns,
+                //表格数据
+                tableData : [],
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10,
+                //总条数
+                totalCount : 0
             }
         },
         methods: {
@@ -86,7 +131,7 @@
                     pageSize : this.pageSize
                 }).then(res => {
                     if(res.status === 200){
-                        this.totalCount = res.data.totalRecord;
+                        this.totalCount = Number(res.data.totalRecord);
                         this.tableData = res.data.list ? res.data.list : [];
                     }else{
                         this.totalCount = 0;
@@ -95,8 +140,6 @@
                 }).catch(() => {
                     this.totalCount = 0;
                     this.tableData = [];
-                }).finally(() => {
-                    this.setTableHeight();
                 });
             },
             /**

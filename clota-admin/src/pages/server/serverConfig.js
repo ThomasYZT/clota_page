@@ -32,7 +32,7 @@ export const columns = [
     },
     {
         title: '系统描述',
-        minWidth: 70,
+        minWidth: 170,
         field: 'description'
     },
     {
@@ -40,4 +40,9 @@ export const columns = [
         minWidth: 70,
         field: 'runState'
     },
+    {
+        title: '操作',
+        minWidth: 70,
+        field: 'operate'
+    }
 ];
