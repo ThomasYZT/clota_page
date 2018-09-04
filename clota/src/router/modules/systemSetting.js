@@ -22,13 +22,13 @@ export default {
         children: {
             collectionAccountSetting: {
                 //组织架构--组织架构
-                path: 'onlinePaymentSetting',
+                path: '/systemSetting/onlinePaymentSetting',
                 name: 'onlinePaymentSetting',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/onlinePaymentSetting/onlinePayment.vue'),
                 meta: {
                     _name: 'members', //
-                    menuName: 'collectionAccSetting', //lang.config.js 里面的语言键值
-                    rightPath : topMenuName + '.' + 'systemSetting',
+                    menuName: 'onlinePaymentSetting', //lang.config.js 里面的语言键值
+                    rightPath : topMenuName + '.' + 'onlinePaymentSetting',
                     iconClass: 'icon-person',
                     isMenu : true
                 },
