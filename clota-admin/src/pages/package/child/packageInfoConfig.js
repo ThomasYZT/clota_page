@@ -29,7 +29,7 @@ export const packageHead = [
     },
     {
         title: '操作',
-        width: 160,
+        width: 180,
         field: 'operate'
     },
 ];

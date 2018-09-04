@@ -33,7 +33,7 @@ const instance = axios.create({
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
     if (response.data.message === 'Not Login!') {
-        Vue.$Message.error('登录超时，请重新登录');
+        Vue.prototype.$Message.error('登录超时，请重新登录');
         common.logOutClearData();
     }
     return response;

@@ -24,9 +24,9 @@
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
                             <Select v-model="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
-                                        :value="item.value"
-                                        :key="item.value">
-                                    {{ item.label }}
+                                        :value="item.id"
+                                        :key="item.id">
+                                    {{ item.provider }}
                                 </Option>
                             </Select>
                         </FormItem>
@@ -145,12 +145,7 @@
                     ]
                 },
                 //短信供应商列表
-                smsProviderList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                smsProviderList: [],
                 //是否正在添加中
                 addLoading: false,
                 //账号操作类型
@@ -258,7 +253,11 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    console.log(res);
+                    if(res.status === 200){
+                        this.smsProviderList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.smsProviderList = [];
+                    }
                 })
             }
         },
