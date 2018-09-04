@@ -75,7 +75,14 @@
                               @click="viewDetail(scope.row)">
                              {{ $t('adjust_score') }}
                         </span>
-                        <span v-else>{{ $t(scope.row.operationType)}}</span>
+                        <span v-else>
+                            <template v-if="scope.row.operationType === 'consume'">
+                                {{ $t('gainByConsuming')}}
+                            </template>
+                            <template v-if="scope.row.operationType === 'recharge'">
+                                {{ $t('gainByConsuming')}}
+                            </template>
+                        </span>
                     </template>
                 </el-table-column>
                 <el-table-column

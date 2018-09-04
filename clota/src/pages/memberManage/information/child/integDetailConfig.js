@@ -48,7 +48,7 @@ export const integraType = [
         value: 'consume',
     },
     {
-        name: 'recharge',   // 储值所得
+        name: 'gainByRecharging',   // 储值所得
         value: 'recharge',
     },
     {
