@@ -67,13 +67,13 @@
                 </Button>
                 <Button @click="cancel" class="ivu-btn-min">{{$t('cancel')}}</Button>
             </div>
-            <div class="footer" v-else="type === 'watch'">
-                <Button type="primary"
-                        @click="cancel"
-                        class="ivu-btn-min">
-                    {{$t('close')}}
-                </Button>
-            </div>
+            <!--<div class="footer" v-else="type === 'watch'">-->
+                <!--<Button type="primary"-->
+                        <!--@click="cancel"-->
+                        <!--class="ivu-btn-min">-->
+                    <!--{{$t('close')}}-->
+                <!--</Button>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -83,8 +83,10 @@
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
             cityPlugin
@@ -237,11 +239,6 @@
                     }
                 });
             }
-        },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
         },
         computed : {
             //当前路由名称

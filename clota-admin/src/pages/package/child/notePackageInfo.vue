@@ -18,6 +18,16 @@
             :ofset-height="120"
             @query-data="queryList">
             <el-table-column
+                slot="columnprice"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scoped">
+                    {{scoped.row['price'] | moneyFilter | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="columnoperate"
                 slot-scope="row"
                 :label="row.title"
@@ -111,7 +121,6 @@
     @import '~@/assets/scss/base';
     .package{
         @include block_outline();
-        @include padding_place();
         padding: 0 30px;
 
         .create-package{

@@ -341,7 +341,7 @@ export const operateType = [
 export const serviceOperateType = [
     {
         label : 'open',//开通
-        value : 'open'
+        value : 'normal'
     },
     {
         label : 'renew',//续订
@@ -349,7 +349,7 @@ export const serviceOperateType = [
     },
     {
         label : 'pause',//暂停
-        value : 'pause'
+        value : 'invalid'
     },
     {
         label : 'recover',//恢复

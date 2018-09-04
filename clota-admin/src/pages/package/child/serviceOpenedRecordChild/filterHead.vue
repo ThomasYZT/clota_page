@@ -7,6 +7,7 @@
         <Form :model="formData" label-position="right" :label-width="80" >
             <i-row>
                 <i-col span="8">
+                    <!--租户-->
                     <FormItem :label="$t('lessee')">
                         <Select v-model="formData.orgId" :transfer="true">
                             <Option v-for="item in lesseeList"
@@ -18,6 +19,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="8">
+                    <!--服务-->
                     <FormItem :label="$t('serviceName')">
                         <Select v-model="formData.serviceId" :transfer="true">
                             <Option v-for="item in servicesList"
@@ -29,6 +31,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="8">
+                    <!--操作时间-->
                     <FormItem :label="$t('operateTime')">
                         <DatePicker type="daterange"
                                     v-model.trim="formData.operateTime"
@@ -40,8 +43,9 @@
             </i-row>
             <i-row>
                 <i-col span="8">
+                    <!--类别-->
                     <FormItem label="类别">
-                        <Select v-model="formData.code" :transfer="true">
+                        <Select v-model="formData.runStatus" :transfer="true">
                             <Option v-for="item in serviceOperateType"
                                     :value="item.value"
                                     :key="item.value">
@@ -80,7 +84,9 @@
                     //服务id
                     serviceId : '',
                     //操作时间
-                    operateTime : []
+                    operateTime : [],
+                    //类别
+                    runStatus : ''
                 },
                 //操作类型
                 serviceOperateType : serviceOperateType,
@@ -103,7 +109,7 @@
                     }else{
                         this.servicesList = [];
                     }
-                }).then(() => {
+                }).catch(() => {
                     this.servicesList = [];
                 });
             },
@@ -119,6 +125,7 @@
             reset () {
                 this.formData.serviceId = '';
                 this.formData.orgId = '';
+                this.formData.runStatus = '';
                 this.formData.operateTime = [];
                 this.search();
             },

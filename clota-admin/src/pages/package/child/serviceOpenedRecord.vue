@@ -14,7 +14,7 @@
                 :show-pagination="true"
                 :page-size-d.sync="pageSize"
                 :total-count="totalCount"
-                :ofset-height="120"
+                :ofset-height="170"
                 @query-data="getServiceRecord">
                 <el-table-column
                     slot="columnrunStatus"
@@ -72,7 +72,9 @@
                     //开始时间
                     startTime : '',
                     //结束时间
-                    endTime : ''
+                    endTime : '',
+                    //类别
+                    runStatus : ''
                 },
             }
         },
@@ -81,14 +83,21 @@
              * 获取服务开通记录
              */
             getServiceRecord () {
-                ajax.post('getServiceRecord',{
+                let params = {
                     orgId : this.formData.orgId,
+                    // runStatus : this.formData.runStatus,
                     serviceId : this.formData.serviceId,
                     startTime : this.formData.startTime,
                     endTime : this.formData.endTime,
                     page : this.pageNo,
                     pageSize : this.pageSize,
-                }).then(res => {
+                };
+                if(this.formData.runStatus){
+                    Object.assign(params,{
+                        runStatus : this.formData.runStatus,
+                    })
+                }
+                ajax.post('getServiceRecord',params).then(res => {
                     if(res.status === 200){
                         this.tableData = res.data.list  ? res.data.list : [];
                         this.totalCount =  Number(res.data.totalRecord);
@@ -108,6 +117,7 @@
             searchData (formData) {
                 this.formData.serviceId = formData.serviceId;
                 this.formData.orgId = formData.orgId;
+                this.formData.runStatus = formData.runStatus;
                 this.formData.startTime = formData.operateTime[0] ? new Date(formData.operateTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
                 this.formData.endTime = formData.operateTime[1] ? new Date(formData.operateTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;
                 this.getServiceRecord();
@@ -123,7 +133,6 @@
         min-height: 100%;
         background: $color_fff;
         overflow: auto;
-        @include padding_place();
 
         .page-area {
             @include block_outline($height: 57px);

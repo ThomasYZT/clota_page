@@ -35,7 +35,7 @@ export const serviceOpenHead = [
     {
         title: '操作人',
         minWidth: 100,
-        field: 'rate'
+        field: 'loginName'
     },
     {
         title: '操作时间',
