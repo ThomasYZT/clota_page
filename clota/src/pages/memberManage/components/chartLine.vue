@@ -140,8 +140,9 @@
                 ajax.post('getMemberConsumeSumGroupBy',{
                     startDate : this.getDateInfo.startDate,
                     endDate : this.getDateInfo.endDate,
-                    accountType : this.type === 'money' ? '1' : '2',
-                    accOperType : 'consume',
+                    accountTypeId : this.type === 'money' ? '1' : '2',
+                    operType : 'reduce',
+                    accountType : this.type === 'money' ? 'charging' : 'score',
                 }).then(res => {
                     this.xAxis = [];
                     this.seriesData = [];

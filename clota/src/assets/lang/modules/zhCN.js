@@ -498,6 +498,8 @@ export default {
     'adjust_money' : '消费',
     'delSpecialMem' : '您正在删除特殊会员分类：',
     'accountRepeat': '该账户归属已存在账号',
+    'to_cash' : '兑现',
+    'return_order' : '撤销扣款',
 
 
 }

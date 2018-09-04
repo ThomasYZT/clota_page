@@ -92,4 +92,12 @@ export const tradeType1 = [
         label : 'adjustMoney',     // 消费
         value : 'adjust_score',
     },
+    {
+        label : 'to_cash',     // 兑现
+        value : 'to_cash',
+    },
+    {
+        label : 'return_order',     // 撤销扣款
+        value : 'return_order',
+    },
 ];

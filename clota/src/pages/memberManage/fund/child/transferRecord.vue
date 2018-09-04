@@ -11,7 +11,10 @@
 
         <div class="transfer-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.tradeType" style="width:180px;margin-right: 10px;" :placeholder="$t('selectField', {msg: ''})">
+                <Select v-model="queryParams.tradeType"
+                        style="width:180px;margin-right: 10px;"
+                        :placeholder="$t('selectField', {msg: ''})"
+                        @on-change="queryList">
                     <Option v-for="item in tradeType"
                             :value="item.value"
                             :key="item.value">

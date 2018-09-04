@@ -11,7 +11,8 @@
         <div class="header-wrap">
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
-                    :placeholder="$t('chooseAccountType')"><!--请选择账户类型-->
+                    :placeholder="$t('chooseAccountType')"
+                    @on-change="queryList"><!--请选择账户类型-->
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -19,7 +20,7 @@
                     {{ item.accountName }}
                 </Option>
             </Select>
-            <Select v-model="queryParams.levelId">
+            <Select v-model="queryParams.levelId" @on-change="queryList">
                 <Option value="all">{{$t('memberLevelAll')}}</Option><!--全部会员等级-->
                 <Option v-for="(item, index) in enumData.level"
                         :value="item.id"
@@ -27,7 +28,7 @@
                     {{ item.levelDesc }}
                 </Option>
             </Select>
-            <Select v-model="queryParams.channelId">
+            <Select v-model="queryParams.channelId" @on-change="queryList">
                 <Option value="all">{{$t('memberChannelAll')}}</Option><!--全部会员渠道-->
                 <Option v-for="(item,index) in enumData.channel"
                         :value="item.id"
@@ -35,7 +36,7 @@
                     {{ item.channelName }}
                 </Option>
             </Select>
-            <Select v-model="queryParams.cardStatus">
+            <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
                         :value="item.name">

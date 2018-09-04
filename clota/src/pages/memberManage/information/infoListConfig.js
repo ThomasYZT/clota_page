@@ -3,7 +3,7 @@
 export const infoListHead = [
     {
         title: 'memberCode',
-        minWidth: 280,
+        width: 250,
         field: 'cardCode'
     },
     {

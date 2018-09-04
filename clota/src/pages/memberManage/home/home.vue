@@ -94,8 +94,9 @@
                 ajax.post('getMemberConsumeSumGroupBy',{
                     startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
-                    accountType : '1',
-                    accOperType : 'consume',
+                    accountTypeId : '1',
+                    accountType : 'charging',
+                    operType : 'reduce',
                 }).then(res => {
                     if(res.success){
                         this.vipPlace.total1 = 0;
@@ -116,8 +117,9 @@
                 ajax.post('getMemberConsumeSumGroupBy',{
                     startDate : new Date().addDays(-new Date().getDay()).addDays(-6).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
-                    accountType : '1',
-                    accOperType : 'consume',
+                    accountTypeId : '1',
+                    accountType : 'charging',
+                    operType : 'reduce',
                 }).then(res => {
                     if(res.success){
                         this.vipPlace.total2 = 0;
@@ -138,8 +140,9 @@
                 ajax.post('getMemberConsumeSumGroupBy',{
                     startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
-                    accountType : '2',
-                    accOperType : 'consume',
+                    accountTypeId : '2',
+                    accountType : 'score',
+                    operType : 'reduce',
                 }).then(res => {
                     if(res.success){
                         this.integrationPlace.total2 = 0;
@@ -160,8 +163,9 @@
                 ajax.post('getMemberConsumeSumGroupBy',{
                     startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
-                    accountType : '2',
-                    accOperType : 'donate',
+                    accountTypeId : '2',
+                    accountType : 'score',
+                    operType : 'add',
                 }).then(res => {
                     if(res.success){
                         this.integrationPlace.total1 = 0;

@@ -10,7 +10,7 @@
         <div class="fund-detail-content">
             <div class="filter-wrap">
                 <Select v-model="queryParams.operType" @on-change="filterDealList" :placeholder="$t('selectField', {msg: ''})">
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.name) }}</Option>
+                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
                 <Date-picker
                     type="date"
@@ -118,8 +118,9 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import modifyDetailModal from '../components/viewModifyModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {fundDetailHead, dealType} from './fundDetailConfig';
+    import {fundDetailHead} from './fundDetailConfig';
     import ajax from '@/api/index.js';
+    import {tradeType1} from '@/assets/js/constVariable.js';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -152,7 +153,7 @@
                     pageSize: 10,
                 },
                 // 枚举数据
-                type: dealType,
+                type: tradeType1,
                 // 表格数据
                 tableData: [],
                 //总条数

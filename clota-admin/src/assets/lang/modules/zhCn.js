@@ -286,5 +286,8 @@ export default {
     selectField: '请选择{msg}',
     startUsing: '启用',
     stopUsing: '停用',
+    normal: '暂停',
+    invalid: '开通',
+    expire: '过期',
 
 }
