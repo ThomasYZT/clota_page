@@ -11,7 +11,8 @@
         <div class="fund-account-header">
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
-                    :placeholder="$t('chooseAccountType')"><!--请选择账户类型-->
+                    :placeholder="$t('chooseAccountType')"
+                    @on-change="queryList"><!--请选择账户类型-->
                 <Option
                     v-for="item in accountList"
                     :value="item.id"
@@ -21,7 +22,8 @@
             </Select>
             <Select v-model="queryParams.tradeType"
                     style="width:180px"
-                    :placeholder="$t('selectField', {msg: $t('transactionType')})"><!--请选择交易类型-->
+                    :placeholder="$t('selectField', {msg: $t('transactionType')})"
+                    @on-change="queryList"><!--请选择交易类型-->
                 <Option
                     v-for="item in tradeType1"
                     :value="item.value"

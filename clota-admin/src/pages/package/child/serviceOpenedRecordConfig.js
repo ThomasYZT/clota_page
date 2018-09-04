@@ -15,7 +15,7 @@ export const serviceOpenHead = [
     {
         title: '操作类型',
         minWidth: 100,
-        field: 'rate'
+        field: 'runStatus'
     },
     {
         title: '服务开始时间',

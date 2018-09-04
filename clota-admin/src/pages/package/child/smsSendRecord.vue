@@ -63,6 +63,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {smsSendRecord} from './smsSendRecordConfig';
     import ajax from '@/api/index.js';
+    import common from '@/assets/js/common.js';
 
     export default {
         components : {
@@ -119,17 +120,24 @@
              * 获取短信发送记录
              */
             getSmsSendRecord () {
-                ajax.post('getSmsSendRecord',{
-                    orderNo : this.filterData.orderNo,
+                let params = {
+                    orderNo : this.filterData.orderNo ? this.filterData.orderNo : undefined,
                     provider : this.filterData.provider,
-                    orgId : this.filterData.orgId,
-                    phone : this.filterData.phone,
+                    orgid : this.filterData.orgId,
+                    target : this.filterData.phone,
                     status : this.filterData.status,
                     startTime : this.filterData.startTime,
                     endTime : this.filterData.endTime,
                     page : this.pageNo,
                     pageSize : this.pageSize,
-                }).then(res => {
+                };
+                let realParam = {};
+                for(let item in params){
+                    if(common.isNotEmpty(params[item])){
+                        realParam[item] = params[item];
+                    }
+                }
+                ajax.post('getSmsSendRecord',realParam).then(res => {
                    if(res.status === 200){
                        this.tableData = res.data.list ? res.data.list : [];
                        this.totalCount = Number(res.data.totalRecord);

@@ -497,4 +497,6 @@ export default {
     'adjust_money' : 'consumption',
     'delSpecialMem' : 'You are deleting special membership categories:',
     'accountRepeat': 'This accountBelong is exit',
+    'to_cash' : 'Pay cash',
+    'return_order' : 'Cancel the deductions',
 }

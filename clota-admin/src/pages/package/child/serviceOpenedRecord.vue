@@ -17,6 +17,16 @@
                 :ofset-height="120"
                 @query-data="getServiceRecord">
                 <el-table-column
+                    slot="columnrunStatus"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{$t(scope.row['runStatus'])}}
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="columnterm"
                     slot-scope="row"
                     :label="row.title"
