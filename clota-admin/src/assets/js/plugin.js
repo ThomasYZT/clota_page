@@ -126,6 +126,7 @@ plugin.install = function (Vue, options) {
                 } else if (klwkUi.validator.isNumber(value)) {
                     return new Date(Number(value)).format(format);
                 } else if (typeof value === 'string') {
+                    value = value.replace(/-/g,'/');
                     return value.toDate().format(format);
                 } else {
                     return value
@@ -137,6 +138,14 @@ plugin.install = function (Vue, options) {
                     return '-';
                 } else {
                     return content;
+                }
+            },
+            //货比格式化
+            moneyFilter(content) {
+                if (content === '' || content === null || content === undefined) {
+                    return '-';
+                } else {
+                    return content === 0 ? '0.00' : Number(content).toCurrency();
                 }
             }
         },

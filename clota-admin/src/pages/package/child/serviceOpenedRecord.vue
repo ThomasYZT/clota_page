@@ -96,7 +96,6 @@
              * @param formData
              */
             searchData (formData) {
-                console.log(formData.operateTime[0])
                 this.formData.serviceId = formData.serviceId;
                 this.formData.startTime = formData.operateTime[0] ? new Date(formData.operateTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
                 this.formData.endTime = formData.operateTime[1] ? new Date(formData.operateTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;

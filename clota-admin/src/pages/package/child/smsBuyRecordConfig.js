@@ -5,47 +5,47 @@ export const smsBuyHead = [
     {
         title: '租户名称',
         minWidth: 120,
-        field: 'rate',
+        field: 'orgName',
         filters : true
     },
     {
         title: '短信套餐名称',
         minWidth: 200,
-        field: 'rate'
+        field: 'smsPackageName'
     },
     {
         title: '服务商',
         minWidth: 100,
-        field: 'rate'
+        field: 'providerName'
     },
     {
         title: '套餐单价',
         minWidth: 100,
-        field: 'rate'
+        field: 'price'
     },
     {
         title: '套餐短息数量',
         minWidth: 120,
-        field: 'rate'
+        field: 'smsTotal'
     },
     {
         title: '购买数量',
         minWidth: 100,
-        field: 'rate'
+        field: 'smsCount'
     },
     {
         title: '购买短信总数',
         minWidth: 130,
-        field: 'rate'
+        field: 'smsCount'
     },
     {
         title: '总价',
         minWidth: 120,
-        field: 'rate'
+        field: 'totalPrice'
     },
     {
         title: '购买时间',
-        minWidth: 150,
-        field: 'time'
+        minWidth: 180,
+        field: 'createTime'
     },
 ];

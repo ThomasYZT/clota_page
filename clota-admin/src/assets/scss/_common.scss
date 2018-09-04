@@ -1,0 +1,18 @@
+
+
+.operate-info {
+    @include table_operate();
+
+    .normal {
+        color: $color_blue;
+    }
+
+    .yellow-label{
+        color : $color_yellow
+    }
+
+    .red-label{
+        color: $color_err;
+    }
+}
+

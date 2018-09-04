@@ -35,9 +35,9 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="operate-list" @click="watchPackage(scoped.row)">查看</li>
-                        <li class="operate-list" @click="editPackage(scoped.row)">编辑</li>
-                        <li class="operate-list del" @click="delPackage(scoped.row)">删除</li>
+                        <li class="normal" @click="watchPackage(scoped.row)">查看</li>
+                        <li class="normal" @click="editPackage(scoped.row)">编辑</li>
+                        <li class="red-label" @click="delPackage(scoped.row)">删除</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -194,21 +194,6 @@
             padding: 15px 0;
         }
 
-        .operate-info {
-            @include table_operate();
-
-            .operate-list {
-                color: $color_blue;
-            }
-
-            .stop{
-                color : $color_yellow
-            }
-
-            .del{
-                color: $color_err;
-            }
-        }
 
         .page-area {
             @include block_outline($height: 57px);

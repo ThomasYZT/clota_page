@@ -5,52 +5,61 @@
     <div class="filter-head" >
 
         <Form :model="formData" label-position="right" :label-width="80" >
-            <Row>
-                <Col span="8">
-                <FormItem :label="$t('lessee')">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in lesseeList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="8">
-                <FormItem :label="$t('package')">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in packageList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="8">
-                <FormItem :label="$t('buyTime')">
-                    <DatePicker type="daterange"
-                                :transfer="true"
-                                style="width: 100%;">
-                    </DatePicker>
-                </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="24" style="text-align: right">
+            <i-row>
+                <i-col span="8">
+                    <FormItem :label="$t('lessee')">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in lesseeList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="8">
+                    <!--套餐-->
+                    <FormItem :label="$t('package')">
+                        <Select v-model="formData.smsPackageId" :transfer="true">
+                            <Option v-for="item in packageList"
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.packageName }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="8">
+                    <!--购买时间-->
+                    <FormItem :label="$t('buyTime')">
+                        <DatePicker type="daterange"
+                                    :editable="false"
+                                    v-model.trim="formData.purchaseTime"
+                                    :transfer="true"
+                                    style="width: 100%;">
+                        </DatePicker>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="24" style="text-align: right">
                     <div class="btn-area">
-                        <Button type="primary" class="ivu-btn-90px">搜索</Button>
-                        <Button type="ghost" class="ivu-btn-90px">重置</Button>
+                        <Button type="primary"
+                                class="ivu-btn-90px"
+                                @click="search">搜索</Button>
+                        <Button type="ghost"
+                                class="ivu-btn-90px"
+                                @click="reset">重置</Button>
                     </div>
-                </Col>
-            </Row>
+                </i-col>
+            </i-row>
         </Form>
     </div>
 </template>
 
 <script>
     import{serviceOperateType} from '@/assets/js/constVariable.js';
+    import ajax from '@/api/index.js';
     export default {
         props : {
         },
@@ -59,7 +68,11 @@
                 //表单数据
                 formData : {
                     code : '',
-                    keyWord : ''
+                    keyWord : '',
+                    //套餐id
+                    smsPackageId : '',
+                    //购买时间
+                    purchaseTime : []
                 },
                 //操作类型
                 serviceOperateType : serviceOperateType,
@@ -69,7 +82,41 @@
                 packageList : []
             }
         },
-        methods: {}
+        methods: {
+
+            /**
+             * 查询短信套餐列表
+             */
+            queryPackageList () {
+                ajax.post('smsPackageList',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.status === 200){
+                        this.packageList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.packageList = [];
+                    }
+                })
+            },
+            /**
+             * 搜索数据
+             */
+            search () {
+                this.$emit('search-data',this.formData);
+            },
+            /**
+             * 重置筛选条件
+             */
+            reset () {
+                this.formData.smsPackageId = '';
+                this.formData.purchaseTime = [];
+                this.search();
+            }
+        },
+        created () {
+            this.queryPackageList();
+        }
     }
 </script>
 

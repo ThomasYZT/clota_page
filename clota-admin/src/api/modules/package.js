@@ -18,4 +18,8 @@ export default {
     'getSmsPackage' : 'smsPackage/get.json',
     //获取服务开通记录
     'getServiceRecord' : 'service/setupRecord.json',
+    //获取短信购买记录
+    'purchaseRecordList' : 'sms/purchaseRecordList.json',
+    //获取短信供应商列表
+    'smsProviderList' : 'sms/providerList.json',
 }

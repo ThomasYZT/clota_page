@@ -192,6 +192,7 @@
                     if(this.type === 'edit'){
                         this.getSmsPackage();
                     }
+                    this.getSmsProviderList();
                 }else{
                     this.$router.push({
                         name : 'notePackageInfo'
@@ -247,6 +248,17 @@
                         this.formData.price = '';
                         this.formData.number = '';
                     }
+                })
+            },
+            /**
+             * 获取短信供应商列表
+             */
+            getSmsProviderList () {
+                ajax.post('smsProviderList',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    console.log(res);
                 })
             }
         },
