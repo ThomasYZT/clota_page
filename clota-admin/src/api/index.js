@@ -7,6 +7,7 @@ import querystring from 'querystring';
 import config from '../config/index.js'
 import common from '../assets/js/common';
 import Vue from 'vue';
+import store from '../store/index';
 
 let baseUrl = '';
 let cancelTokenCollection = {};
@@ -62,6 +63,7 @@ export default {
                 token: this.getToken()
             }
         };
+        store.commit('changePromisings','add');
         return instance.get(baseUrl + api[urlKey], myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
@@ -69,7 +71,9 @@ export default {
             return res.data
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err)
-        })
+        }).finally(() => {
+            store.commit('changePromisings','del');
+        });
     },
 
     /**
@@ -99,6 +103,7 @@ export default {
             }
         }
 
+        store.commit('changePromisings','add');
         return instance.post(baseUrl + api[urlKey], querystring.stringify(paramObj), myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
@@ -107,7 +112,9 @@ export default {
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             return err;
-        })
+        }).finally(() => {
+            store.commit('changePromisings','del');
+        });
     },
 
     /**

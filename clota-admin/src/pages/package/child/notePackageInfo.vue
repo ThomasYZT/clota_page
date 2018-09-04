@@ -94,7 +94,7 @@
                 }).then(res => {
                     if(res.status === 200){
                         this.tableData = res.data.list ? res.data.list : [];
-                        this.totalCount = res.data.totalRecord;
+                        this.totalCount = Number(res.data.totalRecord);
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;

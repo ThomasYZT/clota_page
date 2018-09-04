@@ -195,7 +195,7 @@
                 @include block_outline(auto);
 
                 .menu {
-                    @include block_outline(100px);
+                    @include block_outline(120px);
                     display: inline-block;
                     float: left;
                     padding: 15px 0 12px 0;
@@ -207,7 +207,7 @@
                     transition: all 0.5s;
 
                    &.with-sub-menu{
-                       min-width: 100px;
+                       min-width: 120px;
                        width: max-content;
                        transition: all 0.5s;
 

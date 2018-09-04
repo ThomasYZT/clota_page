@@ -58,7 +58,11 @@ export default new Vuex.Store({
         //生成的路由信息
         routerInfo: null,
         //用户信息
-        userInfo : {}
+        userInfo : {},
+        //页面是否显示加载中
+        isLoading : false,
+        //当前正在加载中的接口个数
+        promisings : 0,
     },
     getters: {
         //当前语言状态
@@ -78,7 +82,11 @@ export default new Vuex.Store({
         //用户信息
         userInfo : state => {
             return state.userInfo;
-        }
+        },
+        //是否显示页面加载中
+        isLoading : state => {
+            return state.isLoading;
+        },
     },
     mutations: {
         //设置用户权限
@@ -92,14 +100,33 @@ export default new Vuex.Store({
         //更新路由信息
         updateRouteInfo (state,routerInfo) {
             state.routerInfo = routerInfo;
-        }
+        },
+        //改变是否加载中的状态
+        changeLoadingStatus (state,loading){
+            state.isLoading = loading;
+        },
+        //更改请求中接口的个数
+        changePromisings (state,type){
+            if(type === 'add'){
+                state.promisings++;
+            }else if(type === 'del'){
+                state.promisings--;
+            }
+            if(state.promisings > 0){
+                state.isLoading = true;
+            }else{
+                setTimeout(() => {
+                    state.isLoading = false;
+                },200);
+            }
+        },
     },
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
             ajax.get('getPrivileges').then(res => {
                 if(res.status === 200){
-                    
+
                 }else{
 
                 }

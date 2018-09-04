@@ -15,7 +15,7 @@
                 <i-row>
                     <i-col span="22">
                         <FormItem :label="$t('packageName')"
-                                  prop="package"
+                                  prop="packageName"
                                   v-if="type === 'add' || type === 'edit'">
                             <Input v-model.trim="formData.packageName" />
                         </FormItem>
@@ -43,7 +43,15 @@
                         <FormItem :label="$t('servicesChosed')"
                                   prop="services"
                                   v-else>
-                            {{servicesChosed}}
+                            <CheckboxGroup v-model="formData.services" >
+                                <Checkbox :label="item.id"
+                                          :disabled="true"
+                                          v-for="(item,i) in serviceList"
+                                          :vlaue="item.id"
+                                          :key="item.id">
+                                    <span>{{item.serviceName}}</span>
+                                </Checkbox>
+                            </CheckboxGroup>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -109,6 +117,7 @@
                 ruleValidate: {
                     packageName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('packageName')}), trigger: 'blur'},
+                        {max : 30, message : this.$t('errorMaxLength', {field: this.$t('packageName'),length : 30}), trigger: 'blur'},
                     ],
                     services : [
                         {required: true, validator :validateServices, trigger: 'blur'}
@@ -186,16 +195,25 @@
              */
             addPackage () {
                 ajax.post('addPackage',{
+                    id : this.type === 'edit' ? this.packageId : '',
                     packageName : this.formData.packageName,
                     serviceids  : this.formData.services.join(',')
                 }).then(res => {
                     if(res.status === 200){
-                        this.$Message.success('新增成功');
+                        if(this.type === 'edit'){
+                            this.$Message.success('编辑成功');
+                        }else{
+                            this.$Message.success('新增成功');
+                        }
                         this.$router.push({
                             name : 'packageList'
                         });
                     }else{
-                        this.$Message.error(res.message || '新增失败');
+                        if(this.type === 'edit'){
+                            this.$Message.error(res.message || '编辑失败');
+                        }else{
+                            this.$Message.error(res.message || '新增失败');
+                        }
                     }
                 }).finally(() => {
                     this.addLoading = false;
@@ -208,11 +226,12 @@
                 ajax.post('queryPackageInfoById',{
                     id : this.packageId
                 }).then(res => {
-                    console.log(res)
                     if(res.status === 200){
-
+                        this.formData.packageName = res.data.comboName;
+                        this.formData.services = res.data.services ? res.data.services.map(item => item.id) : [];
                     }else{
-
+                        this.formData.packageName = '';
+                        this.formData.services = [];
                     }
                 });
             }

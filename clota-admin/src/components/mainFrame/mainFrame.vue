@@ -8,21 +8,33 @@
         <!--router-view容器-->
         <div class="main-content">
             <slot></slot>
+            <transition name="fade">
+                <loading v-if="isLoading">
+                </loading>
+            </transition>
         </div>
     </div>
 </template>
 
 <script>
     import mainHeader from './mainHeader';
+    import loading from '@/components/loading/loading.vue';
+    import {mapGetters} from 'vuex';
 
     export default {
         components: {
-            mainHeader
+            mainHeader,
+            loading
         },
         data() {
             return {}
         },
-        methods: {}
+        methods: {},
+        computed : {
+            ...mapGetters({
+                isLoading : 'isLoading'
+            })
+        }
     }
 </script>
 
@@ -33,6 +45,7 @@
         @include block_outline();
 
         .main-content {
+            position: relative;
             @include block_outline($height: unquote('calc(100% - 56px)'));
             background: $color_f4f6f9;
         }

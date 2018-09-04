@@ -66,7 +66,7 @@
         data() {
             return {
                 //总条数
-                totalCount : 100,
+                totalCount : 0,
                 //表头配置
                 packageHead : packageHead,
                 //页码
@@ -99,7 +99,8 @@
                 this.$router.push({
                     name : 'editPackage',
                     params : {
-                        type : 'edit'
+                        type : 'edit',
+                        id : data.id
                     }
                 });
             },
@@ -139,7 +140,7 @@
                 }).then(res => {
                     if(res.status === 200){
                         this.tableData = res.data.list ? res.data.list : [];
-                        this.totalCount = res.data.totalRecord;
+                        this.totalCount = Number(res.data.totalRecord);
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;
