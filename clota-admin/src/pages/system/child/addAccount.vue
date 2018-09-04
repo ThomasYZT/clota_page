@@ -14,10 +14,11 @@
                   :label-width="100">
 
                 <template v-if="type === 'add'">
-                    <i-row  class="yellow">默认密码为888888，请通知租户及时更改</i-row>
+                    <i-row class="yellow padding-bottom">默认密码为888888，请通知租户及时更改。</i-row>
                 </template>
                 <template v-else>
-                    <span class="change-psw blue">重置密码</span>
+                    <p v-if="reset" class="yellow"> 密码已重置为888888，请及时修改。</p>
+                    <span class="change-psw blue" @click="resetPassword">重置密码</span>
                 </template>
 
                 <i-row>
@@ -160,21 +161,27 @@
                 //是否正在添加中
                 addLoading: false,
                 //账号操作类型
-                type : ''
+                type : '',
+                //是否重置密码
+                reset: false,
             }
         },
         created(){
-            //查询列表
+            //查询角色列表
             this.queryRoleList();
         },
         methods: {
 
             /**
-             * 查询账户信息列表
+             * 查询角色列表
              */
             queryRoleList() {
                 ajax.post('roleList', {}).then(res => {
-                    this.roleList = res.data || [];
+                    if(res.status === 200){
+                        this.roleList = res.data || [];
+                    } else {
+                        this.roleList = [];
+                    }
                 });
             },
             /**
@@ -226,17 +233,17 @@
                 });
             },
             /**
-             * 修改账户密码
+             * 重置账户密码
              */
-            modifyPassword () {
-                ajax.post('modifyPassword', {
-                    loginName: this.formData.loginName,
-                    oldPassword: '',
-                    newPassword: '88888888',
+            resetPassword () {
+                ajax.post('resetPassword', {
+                    id: this.formData.id,
                 }).then(res => {
                     if(res.status === 200){
-                        this.$Message.success(this.$t('edit') + this.$t('success'));
-                        this.$router.push({ name: 'account'});
+                        this.reset = true;
+                        this.$Message.success(this.$t('resetPass') + this.$t('success'));
+                    } else {
+                        this.reset = false;
                     }
                 });
             },
@@ -308,10 +315,13 @@
             color: $color_blue;
         }
 
+        .padding-bottom{
+            padding-bottom: 20px;
+        }
+
         .yellow{
             color: $color_yellow;
             letter-spacing: 1px;
-            padding-bottom: 20px;
             padding-left: 6%
         }
 

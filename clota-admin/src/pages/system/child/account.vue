@@ -111,18 +111,31 @@
                 // 列表数据总数
                 total: 0,
                 //角色筛选列表
-                roleList: [
-                    { text: '超级管理员', value: '超级管理员' },
-                    { text: '管理员', value: '管理员' }
-                ],
+                roleList: [],
                 //当前操作数据(修改/停用/启用/删除)
                 operateData: {},
             }
         },
         created() {
+            //查询账户信息列表
             this.queryList();
+            //查询角色列表
+            this.queryRoleList();
         },
         methods: {
+
+            /**
+             * 查询角色列表
+             */
+            queryRoleList() {
+                ajax.post('roleList', {}).then(res => {
+                    if(res.status === 200){
+                        this.roleList = res.data || [];
+                    } else {
+                        this.roleList = [];
+                    }
+                });
+            },
             /**
              * 查询账户信息列表
              */

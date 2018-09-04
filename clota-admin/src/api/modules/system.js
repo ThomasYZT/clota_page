@@ -11,8 +11,8 @@ export default {
     'updateUser' : 'user/update.json',
     //删除账户信息
     'deleteUser' : 'user/delete.json',
-    //修改账户密码
-    'modifyPassword' : 'user/modifyPassword.json',
+    //重置账户密码
+    'resetPassword' : 'user/resetPassword.json',
     //启/停用账户信息
     'switchAccount' : 'user/switchAccount.json',
 
