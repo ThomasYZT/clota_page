@@ -179,7 +179,8 @@
             setStoreDiscount (formData,callback) {
                 ajax.post('setMemberDiscountOfProduct',{
                     id : this.currentData.id,
-                    storeDiscountId : this.memberInfo.id,
+                    storeDiscountId : this.memberInfo.memberDiscountId,
+                    deptId : this.memberInfo.sourceDeptId,
                     levelId : this.memberInfo.levelId,
                     prodDiscountRate : formData.discountRate,
                     prodScoreRate : formData.scoreRate,
