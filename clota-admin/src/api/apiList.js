@@ -12,6 +12,8 @@ import server from './modules/server';
 import Package from './modules/package';
 //系统接口
 import system from './modules/system';
+//系统接口
+import order from './modules/order';
 const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
@@ -33,6 +35,8 @@ const apiList = {
     ...Package,
     //系统接口
     ...system,
+    //订单接口
+    ...order,
 };
 
 export default apiList;
