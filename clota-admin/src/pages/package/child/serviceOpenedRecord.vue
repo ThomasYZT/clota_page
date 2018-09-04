@@ -34,11 +34,9 @@
 <script>
     import filterHead from './serviceOpenedRecordChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import tableMixins from '../../lessee/tableMixins';
     import {serviceOpenHead} from './serviceOpenedRecordConfig';
     import ajax from '@/api/index.js';
     export default {
-        mixins :[tableMixins],
         components : {
             filterHead,
             tableCom

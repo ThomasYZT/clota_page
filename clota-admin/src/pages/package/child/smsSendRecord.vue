@@ -61,12 +61,10 @@
 <script>
     import filterHead from './smsSendRecordChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import tableMixins from '../../lessee/tableMixins';
     import {smsSendRecord} from './smsSendRecordConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        mixins :[tableMixins],
         components : {
             filterHead,
             tableCom

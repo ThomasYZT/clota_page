@@ -79,8 +79,10 @@
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
             cityPlugin
@@ -162,11 +164,6 @@
                 });
             }
         },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
     }
 </script>
 

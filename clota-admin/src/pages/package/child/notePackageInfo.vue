@@ -37,12 +37,10 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import tableMixins from '../../lessee/tableMixins';
     import {packageHead} from './notePackageConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        mixins :[tableMixins],
         components : {
             tableCom,
         },

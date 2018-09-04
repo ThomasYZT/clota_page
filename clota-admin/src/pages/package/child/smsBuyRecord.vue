@@ -48,11 +48,9 @@
 <script>
     import filterHead from './smsBuyRecordChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import tableMixins from '../../lessee/tableMixins';
     import {smsBuyHead} from './smsBuyRecordConfig';
     import ajax from '@/api/index.js';
     export default {
-        mixins :[tableMixins],
         components : {
             filterHead,
             tableCom
