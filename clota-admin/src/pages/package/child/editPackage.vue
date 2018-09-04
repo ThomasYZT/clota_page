@@ -14,6 +14,7 @@
                   :label-width="100">
                 <i-row>
                     <i-col span="22">
+                        <!--套餐名称-->
                         <FormItem :label="$t('packageName')"
                                   prop="packageName"
                                   v-if="type === 'add' || type === 'edit'">
@@ -28,6 +29,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="22">
+                        <!--服务列表-->
                         <FormItem :label="$t('choseService')"
                                   prop="services"
                                   v-if="type === 'add' || type === 'edit'">

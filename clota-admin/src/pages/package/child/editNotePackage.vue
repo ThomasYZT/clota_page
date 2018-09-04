@@ -154,7 +154,9 @@
                 //是否正在添加中
                 addLoading: false,
                 //账号操作类型
-                type : ''
+                type : '',
+                //短信套餐id
+                smsPackageId : ''
             }
         },
         methods: {
@@ -186,6 +188,10 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    this.smsPackageId = params.id;
+                    if(this.type === 'edit'){
+                        this.getSmsPackage();
+                    }
                 }else{
                     this.$router.push({
                         name : 'notePackageInfo'
@@ -197,23 +203,51 @@
              */
             addSmsPackage () {
                 ajax.post('addSmsPackage',{
+                    id : this.type === 'edit' ? this.smsPackageId : '',
                     packageName : this.formData.packageName,
                     provider : this.formData.smsProvider,
                     price : this.formData.price,
                     smsCount : this.formData.number,
                 }).then(res => {
-                    console.log(res);
                     if(res.status === 200){
-                        this.$Message.success('新增成功');
+                        if(this.type === 'add'){
+                            this.$Message.success('新增成功');
+                        }else{
+                            this.$Message.success('编辑成功');
+                        }
                         this.$router.push({
                             name : 'notePackageInfo'
                         });
                     }else{
-                        this.$Message.error('新增失败');
+                        if(this.type === 'add'){
+                            this.$Message.error('新增失败');
+                        }else{
+                            this.$Message.error('编辑失败');
+                        }
                     }
                 }).finally(() => {
                     this.addLoading = false;
                 });
+            },
+            /**
+             * 根据id获取短信套餐详情
+             */
+            getSmsPackage () {
+                ajax.post('getSmsPackage',{
+                    id : this.smsPackageId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.formData.packageName = res.data.packageName;
+                        this.formData.smsProvider = res.data.provider;
+                        this.formData.price = res.data.price;
+                        this.formData.number = res.data.smsCount;
+                    }else{
+                        this.formData.packageName = '';
+                        this.formData.smsProvider = '';
+                        this.formData.price = '';
+                        this.formData.number = '';
+                    }
+                })
             }
         },
         beforeRouteEnter(to,fromm,next){

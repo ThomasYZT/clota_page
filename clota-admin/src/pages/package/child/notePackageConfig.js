@@ -25,7 +25,7 @@ export const packageHead = [
     {
         title: '服务商',
         minWidth: 150,
-        field: 'rate'
+        field: 'provider'
     },
     {
         title: '创建时间',

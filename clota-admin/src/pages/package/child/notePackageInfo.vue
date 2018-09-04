@@ -80,7 +80,8 @@
                 this.$router.push({
                     name : 'editnotePackage',
                     params : {
-                        type : 'edit'
+                        type : 'edit',
+                        id : data.id
                     }
                 });
             },
