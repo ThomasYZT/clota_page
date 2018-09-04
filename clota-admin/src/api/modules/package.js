@@ -22,4 +22,8 @@ export default {
     'purchaseRecordList' : 'sms/purchaseRecordList.json',
     //获取短信供应商列表
     'smsProviderList' : 'sms/providerList.json',
+    //获取短信发送记录
+    'getSmsSendRecord' : 'sms/sendRecord.json',
+    //查询租户列表
+    'listServiceProvider' : 'tenant/listServiceProvider.json',
 }

@@ -5,36 +5,37 @@
     <div class="filter-head" >
 
         <Form :model="formData" label-position="right" :label-width="100" >
-            <Row>
-                <Col span="8">
+            <i-row>
+                <i-col span="8">
+                    <!--订单编号-->
                     <FormItem :label="$t('orderCode')">
-                        <Input v-model="formData.code"/>
+                        <Input v-model="formData.orderNo"/>
                     </FormItem>
-                </Col>
-                <Col span="8">
+                </i-col>
+                <i-col span="8">
                     <!--租户-->
                     <FormItem :label="$t('lessee')">
-                        <Select v-model="formData.code" :transfer="true">
+                        <Select v-model="formData.orgId" :transfer="true">
                             <Option v-for="item in lesseeList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ $t(item.label) }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
                             </Option>
                         </Select>
                     </FormItem>
-                </Col>
-                <Col span="8">
+                </i-col>
+                <i-col span="8">
                     <!--手机号-->
                     <FormItem :label="$t('mobileNum')">
-                        <Input v-model="formData.code"/>
+                        <Input v-model.trim="formData.phone"/>
                     </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="8">
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="8">
                     <!--发送状态-->
                     <FormItem :label="$t('sendStatus')">
-                        <Select v-model="formData.code" :transfer="true">
+                        <Select v-model="formData.status" :transfer="true">
                             <Option v-for="item in sendStatusList"
                                     :value="item.value"
                                     :key="item.value">
@@ -42,43 +43,50 @@
                             </Option>
                         </Select>
                     </FormItem>
-                </Col>
-                <Col span="8">
+                </i-col>
+                <i-col span="8">
                     <!--发送时间-->
                     <FormItem :label="$t('sendTime')">
                         <DatePicker type="daterange"
+                                    :editable="false"
+                                    v-model="formData.sendTime"
                                     :transfer="true"
                                     style="width: 100%;">
                         </DatePicker>
                     </FormItem>
-                </Col>
-                <Col span="8">
+                </i-col>
+                <i-col span="8">
                     <!--短信供应商-->
                     <FormItem :label="$t('smsProvider')">
-                        <Select v-model="formData.code" :transfer="true">
+                        <Select v-model="formData.provider" :transfer="true">
                             <Option v-for="item in smsProviderList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ $t(item.label) }}
+                                    :value="item.provider"
+                                    :key="item.provider">
+                                {{ item.provider }}
                             </Option>
                         </Select>
                     </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="24" style="text-align: right">
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="24" style="text-align: right">
                     <div class="btn-area">
-                        <Button type="primary" class="ivu-btn-90px">搜索</Button>
-                        <Button type="ghost" class="ivu-btn-90px">重置</Button>
+                        <Button type="primary"
+                                class="ivu-btn-90px"
+                                @click="search">搜索</Button>
+                        <Button type="ghost"
+                                class="ivu-btn-90px"
+                                @click="reset">重置</Button>
                     </div>
-                </Col>
-            </Row>
+                </i-col>
+            </i-row>
         </Form>
     </div>
 </template>
 
 <script>
     import{sendStatusList} from '@/assets/js/constVariable.js';
+    import ajax from '@/api/index.js';
     export default {
         props : {
         },
@@ -86,8 +94,18 @@
             return {
                 //表单数据
                 formData : {
-                    code : '',
-                    keyWord : ''
+                    //租户id
+                    orgId : '',
+                    //手机号
+                    phone : '',
+                    //发送时间
+                    sendTime : [],
+                    //发送状态
+                    status : '',
+                    //订单编号
+                    orderNo : '',
+                    //短信供应商
+                    provider : ''
                 },
                 //发送状态列表
                 sendStatusList : sendStatusList,
@@ -97,7 +115,59 @@
                 smsProviderList : [],
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取所有租户信息
+             */
+            listServiceProvider () {
+                ajax.post('listServiceProvider').then(res => {
+                    if(res.status === 200){
+                        this.lesseeList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.lesseeList = [];
+                    }
+                }).catch(err => {
+                    this.lesseeList = [];
+                });
+            },
+            /**
+             * 获取短信提供商
+             */
+            getSmsProviderList () {
+                ajax.post('smsProviderList',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.status === 200){
+                        this.smsProviderList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.smsProviderList = [];
+                    }
+                }).catch(err => {
+                    this.smsProviderList = [];
+                });
+            },
+            /**
+             * 查询数据
+             */
+            search () {
+                this.$emit('search-data',this.formData);
+            },
+            /**
+             * 重置筛选条件
+             */
+            reset () {
+                this.formData.orgId = '';
+                this.formData.phone = '';
+                this.formData.status = '';
+                this.formData.provider = '';
+                this.search();
+            }
+        },
+        created () {
+            this.listServiceProvider();
+            this.getSmsProviderList();
+        }
     }
 </script>
 

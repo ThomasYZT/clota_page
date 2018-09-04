@@ -8,11 +8,11 @@
             <i-row>
                 <i-col span="8">
                     <FormItem :label="$t('lessee')">
-                        <Select v-model="formData.code" :transfer="true">
+                        <Select v-model="formData.orgId" :transfer="true">
                             <Option v-for="item in lesseeList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ $t(item.label) }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
                             </Option>
                         </Select>
                     </FormItem>
@@ -75,8 +75,8 @@
             return {
                 //表单数据
                 formData : {
-                    code : '',
-                    keyWord : '',
+                    //租户id
+                    orgId : '',
                     //服务id
                     serviceId : '',
                     //操作时间
@@ -118,12 +118,28 @@
              */
             reset () {
                 this.formData.serviceId = '';
+                this.formData.orgId = '';
                 this.formData.operateTime = [];
                 this.search();
+            },
+            /**
+             * 获取所有租户信息
+             */
+            listServiceProvider () {
+                ajax.post('listServiceProvider').then(res => {
+                    if(res.status === 200){
+                        this.lesseeList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.lesseeList = [];
+                    }
+                }).catch(err => {
+                    this.lesseeList = [];
+                });
             }
         },
         created () {
             this.queryServiceList();
+            this.listServiceProvider();
         }
     }
 </script>

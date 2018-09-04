@@ -7,12 +7,13 @@
         <Form :model="formData" label-position="right" :label-width="80" >
             <i-row>
                 <i-col span="8">
+                    <!--租户列表-->
                     <FormItem :label="$t('lessee')">
-                        <Select v-model="formData.code" :transfer="true">
+                        <Select v-model="formData.orgId" :transfer="true">
                             <Option v-for="item in lesseeList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ $t(item.label) }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
                             </Option>
                         </Select>
                     </FormItem>
@@ -67,8 +68,8 @@
             return {
                 //表单数据
                 formData : {
-                    code : '',
-                    keyWord : '',
+                    // 选择的租户
+                    orgId : '',
                     //套餐id
                     smsPackageId : '',
                     //购买时间
@@ -109,13 +110,29 @@
              * 重置筛选条件
              */
             reset () {
+                this.formData.orgId = '';
                 this.formData.smsPackageId = '';
                 this.formData.purchaseTime = [];
                 this.search();
+            },
+            /**
+             * 获取所有租户信息
+             */
+            listServiceProvider () {
+                ajax.post('listServiceProvider').then(res => {
+                    if(res.status === 200){
+                        this.lesseeList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.lesseeList = [];
+                    }
+                }).catch(err => {
+                    this.lesseeList = [];
+                });
             }
         },
         created () {
             this.queryPackageList();
+            this.listServiceProvider();
         }
     }
 </script>

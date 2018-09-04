@@ -24,8 +24,8 @@
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
                             <Select v-model="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
-                                        :value="item.id"
-                                        :key="item.id">
+                                        :value="item.provider"
+                                        :key="item.provider">
                                     {{ item.provider }}
                                 </Option>
                             </Select>

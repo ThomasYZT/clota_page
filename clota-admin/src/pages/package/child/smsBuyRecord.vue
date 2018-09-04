@@ -73,7 +73,8 @@
                 filterData : {
                     startTime : '',
                     endTime : '',
-                    smsPackageId :''
+                    smsPackageId :'',
+                    orgId : ''
                 },
                 //共购买的短信条数
                 smsTotal : ''
@@ -85,7 +86,7 @@
              */
             getSmsBuyRecord() {
                 ajax.post('purchaseRecordList',{
-                    orgId : '',
+                    orgId : this.filterData.orgId,
                     smsPackageId : this.filterData.smsPackageId,
                     startTime : this.filterData.startTime,
                     endTime : this.filterData.endTime,
@@ -109,6 +110,7 @@
              */
             searchData (filterData) {
                 this.filterData.smsPackageId = filterData.smsPackageId;
+                this.filterData.orgId = filterData.orgId;
                 this.filterData.startTime = filterData.purchaseTime[0] ? new Date(filterData.purchaseTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
                 this.filterData.endTime = filterData.purchaseTime[1] ? new Date(filterData.purchaseTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;
                 this.getSmsBuyRecord();

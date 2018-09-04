@@ -269,6 +269,8 @@ export default {
     fieldExist : '{field}已存在',
     checkFail : '{filed}校验失败',
     fileSize : '文件大小',
+    sys_send : '系统自动',
+    resend  : '重新发送',
     'errorGreaterThan': '{small}不可大于{big}',
     'errorEmpty': '{msg}不能为空',
     'errorMaxLength': '{field}不能超过{length}个字符',

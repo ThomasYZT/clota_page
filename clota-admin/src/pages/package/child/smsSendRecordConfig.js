@@ -4,47 +4,47 @@
 export const smsSendRecord = [
     {
         title: '订单编号',
-        minWidth: 120,
-        field: 'rate'
+        minWidth: 190,
+        field: 'orderNo'
     },
     {
         title: '租户名称',
         minWidth: 200,
-        field: 'rate'
+        field: 'orgName'
     },
     {
         title: '手机号',
-        minWidth: 120,
-        field: 'rate'
+        minWidth: 150,
+        field: 'target'
     },
     {
         title: '条数',
         minWidth: 100,
-        field: 'rate'
+        field: 'amount'
     },
     {
         title: '发送时间',
-        minWidth: 150,
-        field: 'rate'
+        minWidth: 180,
+        field: 'createdTime'
     },
     {
         title: '触发',
         minWidth: 100,
-        field: 'rate'
+        field: 'invokeType'
     },
     {
         title: '服务商',
         minWidth: 130,
-        field: 'rate'
+        field: 'provider'
     },
     {
         title: '发送状态',
         minWidth: 100,
-        field: 'rate'
+        field: 'status'
     },
     {
         title: '操作',
         minWidth: 80,
-        field: 'time'
+        field: 'operate'
     },
 ];

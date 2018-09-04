@@ -57,6 +57,8 @@
                 pageSize : 10,
                 //筛选条件
                 formData : {
+                    //租户id
+                    orgId : '',
                     //服务id
                     serviceId : '',
                     //开始时间
@@ -72,7 +74,7 @@
              */
             getServiceRecord () {
                 ajax.post('getServiceRecord',{
-                    orgId : '',
+                    orgId : this.formData.orgId,
                     serviceId : this.formData.serviceId,
                     startTime : this.formData.startTime,
                     endTime : this.formData.endTime,
@@ -97,6 +99,7 @@
              */
             searchData (formData) {
                 this.formData.serviceId = formData.serviceId;
+                this.formData.orgId = formData.orgId;
                 this.formData.startTime = formData.operateTime[0] ? new Date(formData.operateTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
                 this.formData.endTime = formData.operateTime[1] ? new Date(formData.operateTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;
                 this.getServiceRecord();
