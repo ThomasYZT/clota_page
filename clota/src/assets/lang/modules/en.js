@@ -343,6 +343,7 @@ export default {
     'saveBaseSetting': 'Save basic settings',
     'addChannel': 'New channel',
     'channelName': 'Channel name',
+    'modifyChannel': 'Change channels',
     'code': 'Number',
     'addMemberLevel': 'Add member level',
     'promotionSetting': 'Promotion setting',

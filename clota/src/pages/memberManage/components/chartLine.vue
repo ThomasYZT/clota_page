@@ -148,12 +148,22 @@
                     this.seriesData = [];
                     if(res.success){
                         if(res.data && Object.keys(res.data).length > 0){
-                            for(let item in res.data){
-                                this.xAxis.push(item ? item.slice(5) : '');
-                                this.seriesData.push({
-                                    name : item ? item.slice(5) : '',
-                                    value : res.data[item]
-                                });
+                            if(this.type === 'money'){
+                                for(let item in res.data){
+                                    this.xAxis.push(item ? item.slice(5) : '');
+                                    this.seriesData.push({
+                                        name : item ? item.slice(5) : '',
+                                        value : res.data[item] / 10000
+                                    });
+                                }
+                            }else{
+                                for(let item in res.data){
+                                    this.xAxis.push(item ? item.slice(5) : '');
+                                    this.seriesData.push({
+                                        name : item ? item.slice(5) : '',
+                                        value : res.data[item]
+                                    });
+                                }
                             }
                         }
                     }
