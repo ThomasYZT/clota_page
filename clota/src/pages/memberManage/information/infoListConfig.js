@@ -52,7 +52,7 @@ export const infoListHead = [
     },
     {
         title: 'operate',
-        minWidth: 140,
+        width: 140,
         field: ''
     },
 ];

@@ -104,7 +104,7 @@
 	@import '~@/assets/scss/base';
     .fund-info{
         @include block_outline();
-        padding: 5px 30px 0 30px;
+        padding: 0 30px 0 30px;
         @include padding_place();
 
         .title{

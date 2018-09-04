@@ -154,7 +154,7 @@
                 });
             },
             /**
-             * 获取上周发放积分总数
+             * 获取本周发放积分总数
              */
             getLastWeekMemberSendIntegraSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{

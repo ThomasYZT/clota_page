@@ -97,6 +97,12 @@
             </div>
         </modify-rate-modal>
 
+        <!--删除模态框-->
+        <del-modal v-model="visible"
+                   @confirm-del="deleteCardFunc"
+                   :special-member-name="memberInfo.staffDesc">
+        </del-modal>
+
     </div>
 </template>
 
@@ -107,12 +113,14 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {specialEmployeeHead,employeeTrustHead} from './specialMemberConfig';
     import ajax from '@/api/index.js';
+    import delModal from './components/delModal';
 
     export default {
         components: {
             addSpecialTypeModal,
             modifyRateModal,
-            tableCom
+            tableCom,
+            delModal
         },
         data () {
             return {
@@ -131,7 +139,11 @@
                 //当前操作的按分类设置权益信息
                 currentData : {},
                 //当前操作的特殊会员分类信息
-                specialCurrentData : {}
+                specialCurrentData : {},
+                //删除模态框是否显示
+                visible : false,
+                //当前将要删除的特殊会员分类信息
+                memberInfo : {}
             }
         },
         methods: {
@@ -258,8 +270,16 @@
              * @param data 特殊会员信息
              */
             delEmployeeType (data) {
+                this.memberInfo = data;
+                this.visible = true;
+
+            },
+            /**
+             * 确定删除特殊会员分类
+             */
+            deleteCardFunc () {
                 ajax.post('setMemberStaffType',{
-                    id : data.id,
+                    id : this.memberInfo.id,
                     isDeleted : 'true'
                 }).then(res => {
                     if(res.success){

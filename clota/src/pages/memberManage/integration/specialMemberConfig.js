@@ -29,7 +29,7 @@ export const employeeTrustHead = [
     },
     {
         title: 'integralScale',
-        minWidth: 220,
+        minWidth: 250,
         enMinWidth: 400,
         field: 'scoreRate'
     },

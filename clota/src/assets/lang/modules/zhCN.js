@@ -496,6 +496,7 @@ export default {
     'value' : '值',
     'startValBiggerThenMaxVal' : '起始值不能大于最高值',
     'adjust_money' : '消费',
+    'delSpecialMem' : '您正在删除特殊会员分类：',
 
 
 }
