@@ -29,7 +29,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-info">
-                            <li class="normal" @click="watchDetail(scoped.row)">查看</li>
+                            <li class="normal" @click="watchDetail(scope.row)">查看</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -111,7 +111,10 @@
              */
             watchDetail(data) {
                 this.$router.push({
-                    name : 'smsSendRecordDetail'
+                    name : 'smsSendRecordDetail',
+                    params : {
+                        id : data.id
+                    }
                 });
             },
             /**

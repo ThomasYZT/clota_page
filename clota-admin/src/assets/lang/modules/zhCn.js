@@ -218,7 +218,7 @@ export default {
     mobileNum : '手机号',
     success : '成功',
     fail : '失败',
-    smsDetail : '短信详情',
+    smsDetail : '短信发送详情',
     smsContent : '短信内容',
     setting : '设置',
     customeSetting : '通用设置',

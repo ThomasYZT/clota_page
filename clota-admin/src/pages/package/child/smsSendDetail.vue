@@ -10,58 +10,65 @@
             <Form ref="formValidate"
                   :model="formData"
                   label-position="right"
-                  :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('orderCode')">
-                        <span class="form-value">{{formData.orderCode}}</span>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('lessee')">
-                        <span class="form-value">{{formData.lessee}}</span>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
+                <i-row>
+                    <i-col span="11">
+                        <!--订单编号-->
+                        <FormItem :label="$t('orderCode')">
+                            <span class="form-value">{{formData.orderCode | contentFilter}}</span>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--租户-->
+                        <FormItem :label="$t('lessee')">
+                            <span class="form-value">{{formData.lessee | contentFilter}}</span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--手机号-->
                         <FormItem :label="$t('mobileNum')" >
-                            <span class="form-value">{{formData.mobile}}</span>
+                            <span class="form-value">{{formData.mobile | contentFilter}}</span>
                         </FormItem>
-                    </Col>
-                    <Col span="11">
+                    </i-col>
+                    <i-col span="11">
+                        <!--条数-->
                         <FormItem :label="$t('strips')">
-                            <span class="form-value">{{formData.strips}}</span>
+                            <span class="form-value">{{formData.strips | contentFilter}}</span>
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('smsProvider')">
-                        <span class="form-value">{{formData.smsProvider}}</span>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('sendTime')">
-                        <span class="form-value">{{formData.sendTime | timeFormat('yyyy-MM-dd HH:mm:ss')}}</span>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('sendStatus')">
-                        <span class="form-value">{{formData.sendStatus}}</span>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="22">
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--短信供应商-->
+                        <FormItem :label="$t('smsProvider')">
+                            <span class="form-value">{{formData.smsProvider | contentFilter}}</span>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--发送时间-->
+                        <FormItem :label="$t('sendTime')">
+                            <span class="form-value">{{formData.sendTime | timeFormat('yyyy-MM-dd HH:mm:ss') | contentFilter}}</span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--发送状态-->
+                        <FormItem :label="$t('sendStatus')">
+                            <span class="form-value">{{$t(formData.sendStatus) | contentFilter}}</span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="22">
+                        <!--短信内容-->
                         <FormItem :label="$t('smsContent')">
-                            <span class="form-value sms-con">{{formData.smsContent}}</span>
+                            <span class="form-value sms-con">{{formData.smsContent | contentFilter}}</span>
                         </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </i-row>
             </Form>
         </div>
     </div>
@@ -71,6 +78,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -91,21 +99,23 @@
                 //表单数据
                 formData: {
                     //订单编号
-                    orderCode: 'F00021039',
+                    orderCode: '',
                     //租户
-                    lessee: '广州长隆有限公司',
+                    lessee: '',
                     //手机号
-                    mobile: '13600000005',
+                    mobile: '',
                     //条数
-                    strips : 0,
+                    strips : '',
                     //短信供应商
-                    smsProvider : '银科环企',
+                    smsProvider : '',
                     //短信发送时间
-                    sendTime : new Date(),
-                    sendStatus : '成功',
+                    sendTime : '',
+                    sendStatus : '',
                     //短信内容
-                    smsContent : '答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时答复阿斯蒂芬安抚按时'
+                    smsContent : ''
                 },
+                //短信发送记录id
+                smsId : ''
             }
         },
         methods: {
@@ -114,6 +124,42 @@
              * @param params
              */
             getParams (params) {
+                if(params.id){
+                    this.smsId = params.id;
+                    this.getSmsDetail();
+                }else{
+                    this.$router.push({
+                        name : 'smsSendRecord'
+                    });
+                }
+            },
+            /**
+             * 获取短信发送记录详情
+             */
+            getSmsDetail () {
+                ajax.post('getSmsDetail',{
+                    id : this.smsId
+                }).then(res =>{
+                    if(res.status === 200){
+                        this.formData.orderCode = res.data.orderNo;
+                        this.formData.lessee = res.data.orgName;
+                        this.formData.mobile = res.data.target;
+                        this.formData.smsProvider = res.data.provider;
+                        this.formData.sendTime = res.data.createdTime;
+                        this.formData.sendStatus = res.data.status;
+                        this.formData.smsContent = res.data.content;
+                        this.formData.strips = res.data.amount;
+                    }else{
+                        this.formData.orderCode = '';
+                        this.formData.lessee = '';
+                        this.formData.mobile = '';
+                        this.formData.smsProvider = '';
+                        this.formData.sendTime = '';
+                        this.formData.sendStatus = '';
+                        this.formData.smsContent = '';
+                        this.formData.strips = '';
+                    }
+                });
             }
         },
         beforeRouteEnter(to,fromm,next){

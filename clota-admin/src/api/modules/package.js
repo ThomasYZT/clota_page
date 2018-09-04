@@ -26,4 +26,6 @@ export default {
     'getSmsSendRecord' : 'sms/sendRecord.json',
     //查询租户列表
     'listServiceProvider' : 'tenant/listServiceProvider.json',
+    //获取单个短信发送记录详情
+    'getSmsDetail' : 'sms/get.json',
 }

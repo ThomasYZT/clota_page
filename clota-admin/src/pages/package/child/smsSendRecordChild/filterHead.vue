@@ -159,8 +159,10 @@
             reset () {
                 this.formData.orgId = '';
                 this.formData.phone = '';
+                this.formData.orderNo = '';
                 this.formData.status = '';
                 this.formData.provider = '';
+                this.formData.sendTime = [];
                 this.search();
             }
         },
