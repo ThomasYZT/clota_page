@@ -496,4 +496,5 @@ export default {
     'startValBiggerThenMaxVal' : 'The starting value cannot be greater than the highest value',
     'adjust_money' : 'consumption',
     'delSpecialMem' : 'You are deleting special membership categories:',
+    'accountRepeat': 'This accountBelong is exit',
 }

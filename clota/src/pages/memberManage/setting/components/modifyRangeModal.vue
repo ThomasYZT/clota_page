@@ -14,26 +14,6 @@
 
                 <template v-if="type === 'money'">
                     <table-com
-                        v-if="formData.defaultAccount === 'true'"
-                        ref="moneyMultiTablePlug"
-                        :table-com-min-height="450"
-                        :column-data="moneyColumnData"
-                        :table-data="allNode"
-                        @selection-change="handleSelectionChange"
-                        :border="false">
-                        <el-table-column
-                            slot="column0"
-                            :label="row.title"
-                            :prop="row.field"
-                            :key="row.index"
-                            :width="row.width"
-                            :min-width="row.minWidth"
-                            type="selection"
-                            slot-scope="row">
-                        </el-table-column>
-                    </table-com>
-                    <table-com
-                        v-else
                         ref="moneyMultiTablePlug"
                         :table-com-min-height="450"
                         :column-data="moneyColumnData"
@@ -55,26 +35,6 @@
 
                 <template v-if="type === 'send'">
                     <table-com
-                        v-if="formData.defaultAccount === 'true'"
-                        ref="moneyMultiTablePlug"
-                        :table-com-min-height="450"
-                        :column-data="moneyColumnData"
-                        :table-data="allNode"
-                        @selection-change="handleSelectionChange"
-                        :border="false">
-                        <el-table-column
-                            slot="column0"
-                            :label="row.title"
-                            :prop="row.field"
-                            :key="row.index"
-                            :width="row.width"
-                            :min-width="row.minWidth"
-                            type="selection"
-                            slot-scope="row">
-                        </el-table-column>
-                    </table-com>
-                    <table-com
-                        v-else
                         ref="sendMultiTablePlug"
                         :table-com-min-height="450"
                         :column-data="sendColumnData"
@@ -115,14 +75,14 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['length','table-data','all-node'],
+        props: ['length','table-data'],
         components: {
             tableCom,
         },
         data () {
             return {
                 visible: false,
-                title: this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting'),
+                title: '',
                 //表格多选列表
                 multipleSelection: [],
                 //区分本金/赠送金额 money/send
@@ -161,10 +121,10 @@
 
             show ( data, type) {
                 if(type && type !== 'money'){
-                    this.title = this.$t('defaultAccountScope');
+                    this.title = data.item.accountName + this.$t('defaultAccountScope');
                     this.type = 'send';
                 } else {
-                    this.title = this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting');
+                    this.title = data.item.accountName + this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting');
                     this.type = 'money';
                 }
                 if( data ){
@@ -210,7 +170,6 @@
                         }
                     },300)
 
-
                 }
 
             },
@@ -231,17 +190,22 @@
                     });
                 }
                 let params = {
-                    id: this.formData.id || '',
-                    accountBelonging: this.formData.accountBelonging,
-                    accountName: this.formData.accountName,
-                    unit: this.formData.unit,
-                    rate: this.formData.rate,
-                    exchangeToCash: this.formData.exchangeToCash,
-                    corpusAppliedOrgId: this.formData.corpusAppliedOrgId.length > 0 ?
-                        this.formData.corpusAppliedOrgId.join(',') : '',
-                    donateAppliedOrgId: this.formData.donateAppliedOrgId.length > 0 ?
-                        this.formData.donateAppliedOrgId.join(',') : '',
+                    typeModelJson: JSON.stringify({
+                        id:this.formData.id,
+                        accountName:this.formData.accountName
+                    }),
+                    extModelJson: JSON.stringify({
+                        accountBelonging: this.formData.accountBelonging,
+                        unit: this.formData.unit,
+                        rate: this.formData.rate,
+                        exchangeToCash: this.formData.exchangeToCash,
+                        corpusAppliedOrgId: this.formData.corpusAppliedOrgId.length > 0 ?
+                            this.formData.corpusAppliedOrgId.join(',') : '',
+                        donateAppliedOrgId: this.formData.donateAppliedOrgId.length > 0 ?
+                            this.formData.donateAppliedOrgId.join(',') : ''
+                    })
                 };
+
                 console.log(params);
                 this.updateMemberAccountDefine(params);
             },

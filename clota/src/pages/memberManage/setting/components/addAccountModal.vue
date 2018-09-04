@@ -2,7 +2,7 @@
     <!--新增账户-->
     <Modal
         v-model="visible"
-        :title="$t('newAccountLevel')"
+        :title="$t('newAccount')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -24,7 +24,8 @@
                     <div class="ivu-form-item-wrap">
                         <!--账户归属-->
                         <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
-                            <Select v-model="formData.accountBelonging" @on-change="changeAccountBelonging">
+                            <Select v-model="formData.accountBelonging"
+                                    @on-change="changeAccountBelonging">
                                 <Option v-for="(item, index) in tableData"
                                         :value="item.id"
                                         :key="index">
@@ -187,6 +188,15 @@
                 });
             };
 
+            //校验归属唯一性
+            const validateOnly = (rule,value,callback) => {
+                if (value && this.check === false) {
+                    callback(new Error(this.$t('accountRepeat')));
+                } else {
+                    callback();
+                }
+            };
+
             return {
                 visible: false,
                 //步骤
@@ -208,6 +218,7 @@
                 ruleValidate: {
                     accountBelonging: [
                         { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
+                        { validator: validateOnly, trigger: 'blur' },
                     ],
                     accountName: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
@@ -250,6 +261,8 @@
                         field: 'orgName'
                     },
                 ],
+                //归属校验
+                check: true,
             }
         },
         watch: {
@@ -271,13 +284,32 @@
             //账户归属信息改变
             changeAccountBelonging (val) {
                 let obj = this.tableData.find( item => val === item.id );
+                if(obj){
+                    var params = {
+                        accountBelonging: obj.id,
+                        accountTypeId: ''
+                    };
+                    this.existAccountBelong(params);
+                }
                 this.formData.accountName = obj ? obj.orgName : '';
+            },
+
+            //判断账户归属是否存在
+            existAccountBelong ( params ) {
+                ajax.post('existAccountBelong', params).then(res => {
+                    if( res.success ) {
+                        this.check = !res.data;
+                        this.$refs.formValidate.validateField('accountBelonging');
+                    } else {
+                        this.$Message.warning(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                    }
+                })
             },
 
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if(valid && this.check){
                         this.step ++;
                         this.setSelectToTableForStep(this.step);
                     }
@@ -332,25 +364,25 @@
                 this.formData = {
                     accountBelonging: '',
                     accountName: '',
-                    unit: '',
-                    rate: '',
-                    rateNumerator: '',
-                    rateDenominator: '',
+                    unit: this.$t('yuan'),
+                    rate: '1',
+                    rateNumerator: '1',
+                    rateDenominator: '1',
                     exchangeToCash: 'false',
                     corpusAppliedOrgId: [],
                     donateAppliedOrgId: [],
                 };
+                if(this.step === 0){
+                    this.$refs.formValidate.resetFields();
+                }
                 this.selectData = [];
                 this.index = null;
-                this.step = null;
+                this.step = 0;
                 if( this.$refs.moneyMultiTablePlug ){
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }
                 if( this.$refs.sendMultiTablePlug ){
                     this.$refs.sendMultiTablePlug.clearSelection();
-                }
-                if(this.step === 0){
-                    this.$refs.formValidate.resetFields();
                 }
             },
 
@@ -383,15 +415,20 @@
                     });
                 }
                 let params = {
-                    accountBelonging: this.formData.accountBelonging,
-                    accountName: this.formData.accountName,
-                    unit: this.formData.unit,
-                    rateDenominator: this.formData.rateDenominator,
-                    rateNumerator: this.formData.rateNumerator,
-                    rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
-                    exchangeToCash: this.formData.exchangeToCash,
-                    corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
-                    donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
+                    typeModelJson: JSON.stringify({
+                        id:'',
+                        accountName:this.formData.accountName
+                    }),
+                    extModelJson: JSON.stringify({
+                        accountBelonging: this.formData.accountBelonging,
+                        unit: this.formData.unit,
+                        rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
+                        exchangeToCash: this.formData.exchangeToCash,
+                        corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
+                        donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
+                        rateDenominator: this.formData.rateDenominator,
+                        rateNumerator: this.formData.rateNumerator
+                    })
                 };
                 console.log(params)
                 this.updateMemberAccountDefine(params);

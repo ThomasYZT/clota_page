@@ -16,26 +16,15 @@
                   :label-width="130">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
-                        <!--默认账户-->
-                        <template v-if="formData.defaultAccount === 'true'">
-                            <Select v-model="formData.accountBelonging" disabled>
-                                <Option v-for="(item, index) in allNode"
-                                        :value="item.id"
-                                        :key="index">
-                                    {{ item.orgName }}
+                        <Select v-model="formData.accountBelonging"
+                                @on-change="changeAccountBelonging"
+                                :disabled="formData.defaultAccount === 'true' ? true : false">
+                            <Option v-for="(item, index) in tableData"
+                                    :value="item.id"
+                                    :key="index">
+                                {{ item.orgName }}
                                 </Option>
-                            </Select>
-                        </template>
-                        <!--默认账户-->
-                        <template v-else>
-                            <Select v-model="formData.accountBelonging">
-                                <Option v-for="(item, index) in tableData"
-                                        :value="item.id"
-                                        :key="index">
-                                    {{ item.orgName }}
-                                </Option>
-                            </Select>
-                        </template>
+                        </Select>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -97,7 +86,7 @@
 
 
     export default {
-        props: ['length','table-data','all-node'],
+        props: ['length','table-data'],
         components: {},
         watch: {
             'formData.rateNumerator': function (newVal) {
@@ -146,6 +135,15 @@
                 });
             };
 
+            //校验归属唯一性
+            const validateOnly = (rule,value,callback) => {
+                if (value && this.check === false) {
+                    callback(new Error(this.$t('accountRepeat')));
+                } else {
+                    callback();
+                }
+            };
+
             return {
                 visible: false,
                 //表单数据
@@ -165,6 +163,7 @@
                 ruleValidate: {
                     accountBelonging: [
                         { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
+                        { validator: validateOnly, trigger: 'blur' },
                     ],
                     accountName: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
@@ -180,12 +179,15 @@
                         { validator: validateRateNumerator, trigger: 'blur' },
                     ],
                 },
+                //归属校验
+                check: true,
             }
         },
         methods: {
 
             show ( data ) {
                 this.index = this.length;
+
                 if( data ){
                     let formData = defaultsDeep({}, data.item);
                     formData.rateDenominator = data.item.rateDenominator ? data.item.rateDenominator+"" : "";
@@ -199,29 +201,56 @@
                 },300 )
             },
 
+            //账户归属信息改变
+            changeAccountBelonging (val) {
+                let obj = this.tableData.find( item => val === item.id );
+                if(obj){
+                   var params = {
+                       accountBelonging: obj.id,
+                       accountTypeId: this.formData.id
+                   };
+                   this.existAccountBelong(params);
+                }
+            },
+
+            //判断账户归属是否存在
+            existAccountBelong ( params ) {
+                ajax.post('existAccountBelong', params).then(res => {
+                    if( res.success ) {
+                        this.check = !res.data;
+                        this.$refs.formValidate.validateField('accountBelonging');
+                    } else {
+                        this.$Message.warning(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                    }
+                })
+            },
+
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if(valid && this.check){
                         let params = {
-                            id: this.formData.id || '',
-                            accountBelonging: this.formData.accountBelonging,
-                            accountName: this.formData.accountName,
-                            unit: this.formData.unit,
-                            rateDenominator: this.formData.rateDenominator,
-                            rateNumerator: this.formData.rateNumerator,
-                            rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
-                            exchangeToCash: this.formData.exchangeToCash,
-                            corpusAppliedOrgId: this.formData.corpusAppliedOrgId,
-                            donateAppliedOrgId: this.formData.donateAppliedOrgId,
+                            typeModelJson: JSON.stringify({
+                                id: this.formData.id || '',
+                                accountName:this.formData.accountName
+                            }),
+                            extModelJson: JSON.stringify({
+                                accountBelonging: this.formData.accountBelonging,
+                                unit: this.formData.unit,
+                                rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
+                                exchangeToCash: this.formData.exchangeToCash,
+                                corpusAppliedOrgId: this.formData.corpusAppliedOrgId,
+                                donateAppliedOrgId: this.formData.donateAppliedOrgId,
+                                rateDenominator: this.formData.rateDenominator,
+                                rateNumerator: this.formData.rateNumerator
+                            })
+
                         };
                         console.log(params);
                         this.updateMemberAccountDefine(params);
                     }
                 })
             },
-
-
 
             //保存/更改/储值账户设置
             updateMemberAccountDefine ( params ) {

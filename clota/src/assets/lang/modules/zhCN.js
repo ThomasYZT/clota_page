@@ -449,8 +449,8 @@ export default {
     'complimentaryAmountCanBeUsedToSetTheRange' : '赠送金额可使用范围设置',
     'scopeOfApplicationOfTheRule' : '该规则应用范围',
     'modifyProportionOfDonatedAmountOfStorageValue' : '修改储值赠送金额比例',
-    'defaultAccountPrincipalCanBeUsedInTheRangeSetting' : '默认账户本金可使用范围设置',
-    'defaultAccountScope' : '默认账户赠送金额可使用范围设置',
+    'defaultAccountPrincipalCanBeUsedInTheRangeSetting' : '本金可使用范围设置',
+    'defaultAccountScope' : '赠送金额可使用范围设置',
 
     'created' : '已创建',
     'cancelled' : '已作废',
@@ -497,6 +497,7 @@ export default {
     'startValBiggerThenMaxVal' : '起始值不能大于最高值',
     'adjust_money' : '消费',
     'delSpecialMem' : '您正在删除特殊会员分类：',
+    'accountRepeat': '该账户归属已存在账号',
 
 
 }

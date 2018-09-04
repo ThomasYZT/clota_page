@@ -121,6 +121,9 @@ export default {
     'updateMemberAccountDefine' : '/member/memberBasicSet/updateMemberAccountDefine',
     //储值设置-获取储值赠送金额应用范围
     'listAccount' : '/member/memberAccount/listAccount',
+    //判断账户归属是否存在
+    'existAccountBelong' : '/member/memberBasicSet/existAccountBelong',
+
 
     /***********************************会员统计***********************************/
     //获取会员总量
