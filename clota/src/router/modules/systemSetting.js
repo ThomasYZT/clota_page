@@ -7,6 +7,8 @@
  * rightPath 菜单点亮路径,格式为 menuName.menuName 第一个menuName表示一级点亮的菜单，第二个menuName表示当前点亮的左侧菜单（不管层级有多深）
  * isMenu 是否是菜单
  */
+//一级菜单的menuname
+let topMenuName = 'systemSetting';
 export default {
     systemSetting: {
         path: '/systemSetting',
@@ -14,7 +16,7 @@ export default {
         meta: {
             _name: 'members',
             menuName: 'systemSetting',
-            rightPath : 'systemSetting',
+            rightPath : topMenuName + '.' + 'systemSetting',
             isMenu : true
         },
         children: {
@@ -26,8 +28,9 @@ export default {
                 meta: {
                     _name: 'members', //
                     menuName: 'collectionAccSetting', //lang.config.js 里面的语言键值
-                    rightPath: 'onlinePaymentSetting',//高亮
-                    iconClass: 'icon-person'
+                    rightPath : topMenuName + '.' + 'systemSetting',
+                    iconClass: 'icon-person',
+                    isMenu : true
                 },
             },
         }

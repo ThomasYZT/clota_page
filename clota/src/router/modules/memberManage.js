@@ -16,7 +16,7 @@ export default {
         meta: {
             _name: 'members',
             menuName: 'memberHome',
-            rightPath : 'memberHome',
+            rightPath : topMenuName + '.' + 'memberHome',
             isMenu : true
         },
         children: {
