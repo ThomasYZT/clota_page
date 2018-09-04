@@ -12,21 +12,21 @@ export default {
         path: '/systemSetting',
         component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/index.vue'),
         meta: {
-            _name: '',
-            menuName: '',
-            rightPath : '',
+            _name: 'members',
+            menuName: 'systemSetting',
+            rightPath : 'systemSetting',
             isMenu : true
         },
         children: {
             collectionAccountSetting: {
                 //组织架构--组织架构
-                path: 'collectionAccountSetting',
-                name: 'collectionAccountSetting',
-                component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/collectionAccountSetting/collectionAccount.vue'),
+                path: 'onlinePaymentSetting',
+                name: 'onlinePaymentSetting',
+                component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/onlinePaymentSetting/onlinePayment.vue'),
                 meta: {
-                    menuName: '', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: '', //
+                    _name: 'members', //
+                    menuName: 'collectionAccSetting', //lang.config.js 里面的语言键值
+                    rightPath: 'onlinePaymentSetting',//高亮
                     iconClass: 'icon-person'
                 },
             },

@@ -502,4 +502,19 @@ export default {
     'return_order' : '撤销扣款',
 
 
+    /*** 系统设置模块 ***/
+    'systemSetting' : '系统设置',
+    'onlinePaymentSetting' : '在线支付账户设置',
+    'resetPassword' : '重置全员密码',
+    'smsManage' : '短信管理',
+    'buySms' : '购买短信',
+    'smsTemplate' : '短信模板',
+    'addAccount' : '增加账户',
+    'modifyAccount' : '修改账户',
+    'edit' : '编辑',
+    'merchantNum' : '商户号',
+    'appID' : 'appID',
+    'appKEY' : 'appKEY',
+    'appSECRET' : 'appSECRET',
+
 }
