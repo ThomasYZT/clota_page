@@ -12,43 +12,57 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('account')" prop="account">
-                        <Input v-model="formData.account" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('name')" prop="name">
-                        <Input v-model="formData.name" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('mobile')" prop="mobile">
-                        <Input v-model="formData.mobile" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('mail')" prop="mail">
-                        <Input v-model="formData.mail" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
+
+                <template v-if="type === 'add'">
+                    <i-row  class="yellow">默认密码为888888，请通知租户及时更改</i-row>
+                </template>
+                <template v-else>
+                    <span class="change-psw blue">重置密码</span>
+                </template>
+
+                <i-row>
+                    <i-col span="11">
+                        <FormItem :label="$t('account')" prop="loginName">
+                            <Input v-model.trim="formData.loginName"
+                                   :disabled="type === 'add' ? false : true"
+                                   :placeholder="$t('inputPlaceholder')"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <FormItem :label="$t('name')" prop="nickName">
+                            <Input v-model.trim="formData.nickName"
+                                   :placeholder="$t('inputPlaceholder')"/>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <FormItem :label="$t('mobile')" prop="phone">
+                            <Input v-model.trim="formData.phone"
+                                   :placeholder="$t('inputPlaceholder')"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <FormItem :label="$t('mail')" prop="email">
+                            <Input v-model.trim="formData.email"
+                                   :placeholder="$t('inputPlaceholder')"/>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
                     <FormItem :label="$t('role')">
-                        <Select v-model="formData.role" style="width:280px">
+                        <Select v-model="formData.roleId"
+                                :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="item in roleList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.roleName }}
                             </Option>
                         </Select>
                     </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </i-row>
             </Form>
             <div class="footer">
                 <Button type="primary"
@@ -64,11 +78,16 @@
 </template>
 
 <script>
+
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
             cityPlugin
@@ -111,52 +130,114 @@
                 //表单数据
                 formData: {
                     //账号
-                    account: '',
+                    loginName: '',
                     //名字
-                    name: '',
+                    nickName: '',
                     //联系电话
-                    mobile: '',
+                    phone: '',
                     //邮箱
-                    mail: '',
+                    email: '',
                     //角色
-                    role: '',
+                    roleId: '',
                 },
                 //表单校验规则
                 ruleValidate: {
-                    account : [
+                    loginName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
                     ],
-                    name : [
+                    nickName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
                     ],
-                    mail: [
+                    email: [
                         {required: false, validator: validatmail, trigger: 'blur'},
                     ],
-                    mobile : [
+                    phone : [
                         {required: true, validator: validateMobile, trigger: 'blur'},
                     ]
                 },
                 //角色列表
-                roleList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                roleList: [],
                 //是否正在添加中
                 addLoading: false,
                 //账号操作类型
                 type : ''
             }
         },
+        created(){
+            //查询列表
+            this.queryRoleList();
+        },
         methods: {
+
+            /**
+             * 查询账户信息列表
+             */
+            queryRoleList() {
+                ajax.post('roleList', {}).then(res => {
+                    this.roleList = res.data || [];
+                });
+            },
             /**
              * 保存新增账户数据
              */
             save() {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    this.addLoading = false;
+                    if(valid){
+                        this.addLoading = false;
+                        if (this.type === 'add') {
+                            console.log(this.formData)
+                            this.addUser(this.formData);
+                        }else {
+                            var params = {
+                                id: this.formData.id,
+                                nickName: this.formData.nickName,
+                                phone: this.formData.phone,
+                                email: this.formData.email,
+                                roleId: this.formData.roleId,
+                            };
+                            console.log(params)
+                            this.updateUser(params);
+                        }
+                    }
+                });
+            },
+            /**
+             * 新增账户
+             */
+            addUser( params ) {
+                ajax.post('addUser', params).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('addSuccess'));
+                        this.$router.push({ name: 'account'});
+                    }
+                });
+            },
+            /**
+             * 修改账户
+             * @param params
+             */
+            updateUser( params ) {
+                ajax.post('updateUser', params).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('edit') + this.$t('success'));
+                        this.$router.push({ name: 'account'});
+                    }
+                });
+            },
+            /**
+             * 修改账户密码
+             */
+            modifyPassword () {
+                ajax.post('modifyPassword', {
+                    loginName: this.formData.loginName,
+                    oldPassword: '',
+                    newPassword: '88888888',
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('edit') + this.$t('success'));
+                        this.$router.push({ name: 'account'});
+                    }
                 });
             },
             /**
@@ -174,6 +255,7 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    this.formData = params.info ? params.info : { loginName: '',nickName: '',phone: '',email: '',roleId: '' };
                 }else{
                     this.$router.push({
                         name : 'account'
@@ -181,11 +263,6 @@
                 }
             }
         },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
     }
 </script>
 
@@ -217,6 +294,35 @@
             /deep/ .ivu-btn-primary {
                 margin-right: 18px;
             }
+        }
+
+        /deep/ .ivu-input-wrapper{
+            width: 280px;
+        }
+
+        /deep/ .ivu-select{
+            width: 280px;
+        }
+
+        .blue{
+            color: $color_blue;
+        }
+
+        .yellow{
+            color: $color_yellow;
+            letter-spacing: 1px;
+            padding-bottom: 20px;
+            padding-left: 6%
+        }
+
+        .change-psw{
+            font-size: $font_size_14px;
+            position: relative;
+            left: 89%;
+            display: inline-block;
+            top: 27px;
+            cursor: pointer;
+            z-index: 1;
         }
     }
 </style>

@@ -10,7 +10,7 @@ export const accountHead = [
     {
         title: '角色',
         minWidth: 100,
-        field: ''
+        field: 'roleName'
     },
     {
         title: '姓名',
@@ -30,17 +30,17 @@ export const accountHead = [
     {
         title: '状态',
         minWidth: 80,
-        field: ''
+        field: 'state'
     },
     {
         title: '创建时间',
         minWidth: 100,
-        field: 'createdTime'
+        field: 'createTime'
     },
     {
         title: '上次修改时间',
         minWidth: 100,
-        field: 'lastLoginTime'
+        field: 'updateTime'
     },
     {
         title: '操作',
