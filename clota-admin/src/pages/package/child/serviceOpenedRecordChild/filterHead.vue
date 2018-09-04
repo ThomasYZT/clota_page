@@ -5,31 +5,41 @@
     <div class="filter-head" >
 
         <Form :model="formData" label-position="right" :label-width="80" >
-            <Row>
-                <Col span="8">
-                <FormItem :label="$t('lessee')">
-                    <Select v-model="formData.code" :transfer="true">
-                        <Option v-for="item in lesseeList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                </Col>
-                <Col span="8">
-                <FormItem :label="$t('serviceName')">
-                    <Input v-model="formData.code" />
-                </FormItem>
-                </Col>
-                <Col span="8">
-                <FormItem :label="$t('operateTime')">
-                    <DatePicker type="daterange" :transfer="true" style="width: 100%;"></DatePicker>
-                </FormItem>
-                </Col>
-            </Row>
-            <Row>
-                <Col span="8">
+            <i-row>
+                <i-col span="8">
+                    <FormItem :label="$t('lessee')">
+                        <Select v-model="formData.code" :transfer="true">
+                            <Option v-for="item in lesseeList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ $t(item.label) }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="8">
+                    <FormItem :label="$t('serviceName')">
+                        <Select v-model="formData.serviceId" :transfer="true">
+                            <Option v-for="item in servicesList"
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.serviceName }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="8">
+                    <FormItem :label="$t('operateTime')">
+                        <DatePicker type="daterange"
+                                    v-model.trim="formData.operateTime"
+                                    :transfer="true"
+                                    style="width: 100%;">
+                        </DatePicker>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="8">
                     <FormItem label="类别">
                         <Select v-model="formData.code" :transfer="true">
                             <Option v-for="item in serviceOperateType"
@@ -39,20 +49,25 @@
                             </Option>
                         </Select>
                     </FormItem>
-                </Col>
-                <Col span="16" style="text-align: right">
+                </i-col>
+                <i-col span="16" style="text-align: right">
                     <div class="btn-area">
-                        <Button type="primary" class="ivu-btn-90px">搜索</Button>
-                        <Button type="ghost" class="ivu-btn-90px">重置</Button>
+                        <Button type="primary"
+                                class="ivu-btn-90px"
+                                @click="search">搜索</Button>
+                        <Button type="ghost"
+                                class="ivu-btn-90px"
+                                @click="reset">重置</Button>
                     </div>
-                </Col>
-            </Row>
+                </i-col>
+            </i-row>
         </Form>
     </div>
 </template>
 
 <script>
     import{serviceOperateType} from '@/assets/js/constVariable.js';
+    import ajax from '@/api/index.js';
     export default {
         props : {
         },
@@ -61,15 +76,55 @@
                 //表单数据
                 formData : {
                     code : '',
-                    keyWord : ''
+                    keyWord : '',
+                    //服务id
+                    serviceId : '',
+                    //操作时间
+                    operateTime : []
                 },
                 //操作类型
                 serviceOperateType : serviceOperateType,
                 //租户列表
                 lesseeList : [],
+                //服务列表
+                servicesList : []
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取服务列表
+             */
+            queryServiceList () {
+                ajax.post('queryServiceList',{
+                    serviceStatus : 'normal'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.servicesList = res.data ? res.data : [];
+                    }else{
+                        this.servicesList = [];
+                    }
+                }).then(() => {
+                    this.servicesList = [];
+                });
+            },
+            /**
+             * 根据筛选条件查询数据
+             */
+            search () {
+                this.$emit('search-data',this.formData);
+            },
+            /**
+             * 重置筛选条件
+             */
+            reset () {
+                this.formData.serviceId = '';
+                this.formData.operateTime = [];
+                this.search();
+            }
+        },
+        created () {
+            this.queryServiceList();
+        }
     }
 </script>
 

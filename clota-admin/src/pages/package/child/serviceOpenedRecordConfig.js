@@ -5,12 +5,12 @@ export const serviceOpenHead = [
     {
         title: '租户名称',
         minWidth: 120,
-        field: 'rate'
+        field: 'orgName'
     },
     {
         title: '服务名称',
         minWidth: 200,
-        field: 'rate'
+        field: 'serviceName'
     },
     {
         title: '操作类型',
@@ -19,18 +19,18 @@ export const serviceOpenHead = [
     },
     {
         title: '服务开始时间',
-        minWidth: 130,
-        field: 'rate'
+        width: 180,
+        field: 'startTime'
     },
     {
         title: '开通期限',
         minWidth: 100,
-        field: 'rate'
+        field: 'term'
     },
     {
         title: '服务到期时间',
-        minWidth: 130,
-        field: 'rate'
+        width: 180,
+        field: 'endTime'
     },
     {
         title: '操作人',
@@ -39,7 +39,7 @@ export const serviceOpenHead = [
     },
     {
         title: '操作时间',
-        minWidth: 130,
-        field: 'time'
+        width: 180,
+        field: 'created_time'
     },
 ];

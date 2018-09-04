@@ -16,4 +16,6 @@ export default {
     'addSmsPackage' : 'smsPackage/add.json',
     //获取单个短信套餐
     'getSmsPackage' : 'smsPackage/get.json',
+    //获取服务开通记录
+    'getServiceRecord' : 'service/setupRecord.json',
 }
