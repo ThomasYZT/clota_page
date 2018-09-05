@@ -291,5 +291,6 @@ export default {
     expire: '过期',
     sys_send: '系统自动',
     resend: '重新发送',
+    formalError: '{field}格式错误',
 
 }

@@ -133,6 +133,7 @@
                         this.roleList = res.data || [];
                     } else {
                         this.roleList = [];
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -147,6 +148,7 @@
                     } else {
                         this.tableData = [];
                         this.total = 0;
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -198,6 +200,8 @@
                             this.$t('startUsing') :
                             this.$t('stopUsing') + this.$t('accountName')+'：'+ data.loginName);
                         this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -225,6 +229,8 @@
                     if(res.status === 200){
                         this.$Message.success(this.$t('success') + this.$t('delete') + this.$t('accountName')+'：'+ data.loginName);
                         this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },

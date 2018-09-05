@@ -52,7 +52,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="11">
-                    <FormItem :label="$t('role')">
+                    <FormItem :label="$t('role')" prop="roleId">
                         <Select v-model="formData.roleId"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="item in roleList"
@@ -100,7 +100,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.phoneError2'));
+                        callback(this.$t('formalError', {field: this.$t('phone')}));
                     }
                 } else {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('phone')}));
@@ -112,7 +112,7 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.emailError2'));
+                        callback(this.$t('formalError', {field: this.$t('email')}));
                     }
                 } else {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('email')}))
@@ -150,11 +150,14 @@
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
                     ],
                     email: [
-                        {required: false, validator: validatmail, trigger: 'blur'},
+                        {required: true, validator: validatmail, trigger: 'blur'},
                     ],
                     phone : [
                         {required: true, validator: validateMobile, trigger: 'blur'},
-                    ]
+                    ],
+                    roleId: [
+                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('role')}), trigger: 'blur'},
+                    ],
                 },
                 //角色列表
                 roleList: [],
@@ -181,6 +184,7 @@
                         this.roleList = res.data || [];
                     } else {
                         this.roleList = [];
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -188,10 +192,9 @@
              * 保存新增账户数据
              */
             save() {
-                this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
-                        this.addLoading = false;
+                        this.addLoading = true;
                         if (this.type === 'add') {
                             console.log(this.formData)
                             this.addUser(this.formData);
@@ -214,9 +217,12 @@
              */
             addUser( params ) {
                 ajax.post('addUser', params).then(res => {
+                    this.addLoading = false;
                     if(res.status === 200){
                         this.$Message.success(this.$t('addSuccess'));
                         this.$router.push({ name: 'account'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -226,9 +232,12 @@
              */
             updateUser( params ) {
                 ajax.post('updateUser', params).then(res => {
+                    this.addLoading = false;
                     if(res.status === 200){
                         this.$Message.success(this.$t('edit') + this.$t('success'));
                         this.$router.push({ name: 'account'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -244,6 +253,7 @@
                         this.$Message.success(this.$t('resetPass') + this.$t('success'));
                     } else {
                         this.reset = false;
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
