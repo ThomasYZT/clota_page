@@ -34,6 +34,7 @@
              <el-table-column
                 slot="columnsex"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -46,6 +47,7 @@
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
+                show-overflow-tooltip
                 :min-width="row.minWidth">
                 <template slot-scope="scoped">
                     <img :src="scoped.row.attach" alt="">
@@ -55,6 +57,7 @@
                 slot="columnoperate"
                 slot-scope="row"
                 :label="row.title"
+                show-overflow-tooltip
                 :width="row.width"
                 fixed="right"
                 :min-width="row.minWidth">
@@ -124,7 +127,8 @@
                 this.$router.push({
                     name : 'cooperaChannelPerDetail',
                     params : {
-                        type : 'per'
+                        type : 'per',
+                        id : data.id
                     }
                 });
             },

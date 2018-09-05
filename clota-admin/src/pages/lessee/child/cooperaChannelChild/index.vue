@@ -9,10 +9,12 @@
         <div class="lessee-per-detail">
             <div class="less-content">
                 <div class="less-name">
-                    <span class="name">{{cooperaPerDetail.name}}</span>
-                    <span class="status">待审核</span>
+                    <span class="name" v-w-title="cooperaPerDetail.name">{{cooperaPerDetail.name}}</span>
+                    <span class="status pass-result" v-if="auditStatus === 'success'">审核通过</span>
+                    <span class="status audit-wait" v-if="auditStatus === 'audit'">待审核</span>
+                    <span class="status nopass-result" v-if="auditStatus === 'reject'">审核不通过</span>
                 </div>
-                <div class="audit-area">
+                <div class="audit-area" v-if="showAuditBtn">
                     <Button type="primary" @click="auditPass">审核通过</Button>
                     <Button type="ghost" class="ivu-btn-90px" @click="reject">驳回</Button>
                 </div>
@@ -22,26 +24,26 @@
                     <li class="list" v-if="item.length === 3">
                         <div class="info-list1">
                             <span class="info-key">{{item[0].label}}：</span>
-                            <span class="info-val">{{item[0].value}}</span>
+                            <span class="info-val">{{item[0].value | contentFilter}}</span>
                         </div>
                         <div class="info-list2">
                             <span class="info-key">{{item[1].label}}：</span>
-                            <span class="info-val">{{item[1].value}}</span>
+                            <span class="info-val">{{item[1].value | contentFilter}}</span>
                         </div>
                         <div class="info-list3" v-if="item[2].label">
                             <span class="info-key">{{item[2].label}}：</span>
-                            <span class="info-val">{{item[2].value}}</span>
+                            <span class="info-val">{{item[2].value | contentFilter}}</span>
                         </div>
                     </li>
                     <li class="list" v-if="item.length === 2">
                         <div class="info-list4">
                             <span class="info-key">{{item[0].label}}：</span>
-                            <span class="info-val">{{item[0].value}}</span>
+                            <span class="info-val">{{item[0].value | contentFilter}}</span>
                         </div>
                         <div class="info-list5">
                             <span class="info-key">{{item[1].label}}：</span>
                                 <span class="info-val">
-                                <img src="../../../../assets/images/icon-no-data.png" alt="">
+                                <img class="classify-img" :src="item[1].value" alt="">
                             </span>
                         </div>
                     </li>
@@ -49,14 +51,26 @@
             </ul>
             <div class="partner-area">
                 <div class="partner-name">合作伙伴</div>
-                <div class="count">合作伙伴数：3</div>
+                <div class="count">合作伙伴数：{{totalCount}}</div>
                 <table-com
-                    :is-pack-up="true"
-                    :table-data="tableData"
+                    v-if="channelId"
                     :column-data="columnData"
-                    :show-page="true"
-                    :total="totalCount"
-                    @get-new-data="getPartnerData">
+                    :table-data="partnerTableData"
+                    :border="true"
+                    :table-com-min-height="300"
+                    :auto-height="true"
+                    @query-data="getChannelPartners">
+                    <el-table-column
+                        slot="columnindex"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{row.index + 1}}
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
         </div>
@@ -99,10 +113,13 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import tableCom from '../organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import editModal from '@/components/editModal/index.vue';
     import getFiledData from './channelConfig';
+    import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             tableCom,
@@ -113,22 +130,18 @@
                 //上级路由列表
                 beforeRouterList: [],
                 //表格数据
-                tableData : [
-                    {},
-                    {},
-                ],
+                partnerTableData : [],
                 //表头配置
                 columnData : [
                     {
                         title: '序号',
                         minWidth: 120,
-                        field: 'realName',
-                        ableClick: true
+                        field: 'index'
                     },
                     {
                         title: '合作伙伴名称',
                         minWidth: 150,
-                        field: 'examName'
+                        field: 'orgName'
                     },
                 ],
                 //表单校验规则
@@ -148,14 +161,18 @@
                     email : ''
                 },
                 //合作伙伴总数
-                totalCount : 10,
+                totalCount : 0,
                 //渠道类型
                 channelType : '',
                 //个人渠道详情信息
                 cooperaPerDetail : {
-                    name :'租户：广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社广州小星星旅行社',
+                    name :'',
                     info : []
-                }
+                },
+                //合作渠道id
+                channelId : '',
+                //审核状态
+                auditStatus : '',
             }
         },
         methods: {
@@ -198,17 +215,12 @@
                 });
             },
             /**
-             * 获取合作伙伴数据
-             */
-            getPartnerData () {
-
-            },
-            /**
              * 获取路由参数
              * @param params
              */
             getParams (params) {
                 if(params.type){
+                    this.channelId =  params.id;
                     if(params.type === 'per'){
                         this.channelType = 'per';
                         this.beforeRouterList = [
@@ -228,35 +240,87 @@
                                     name: 'cooperaChannelOrg'
                                 }
                             }
-                        ]
+                        ];
                     }
+                    this.getPartnerDetail();
                 }else{
-                    if(params.type === 'per'){
-                        this.channelType = 'per';
-                        this.beforeRouterList = [
-                            {
-                                name: this.$t('cooperaChannelPer'),
-                                router: {
-                                    name: 'cooperaChannelPer'
-                                }
-                            }
-                        ]
-                    }
+                    this.$router.push({
+                        name : 'ISPinternet'
+                    });
                 }
-                this.getChannelData();
-                this.getPartnerData();
             },
             /**
-             * 获取渠道详情
+             * 获取合作渠道详情
              */
-            getChannelData () {
-                this.cooperaPerDetail.info = getFiledData(this.channelType,1,2,3,3,3,33,3,3,3,33,3,3,3,3,3,3,3,3,3,3,3,3,3);
+            getPartnerDetail () {
+                ajax.post('getPartnerDetail',{
+                    id : this.channelId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.cooperaPerDetail.name = res.data.orgName;
+                        //个人渠道信息
+                        if(this.channelType === 'per'){
+                            this.cooperaPerDetail.info = getFiledData(
+                                this.channelType,
+                                res.data.certificateNumber,
+                                res.data.telephone,
+                                res.data.managerAccount,
+                                res.data.email,
+                                (res.data.province ? res.data.province : res.data.province) + ( res.data.city ? res.data.city : res.data.city + '') + (res.data.area ? res.data.area : ''),
+                                res.data.address,
+                                res.data.businessAccount,
+                                res.data.createdTime,
+                                res.data.updatedTime,
+                                res.data.auditTime,
+                                res.data.updateUser,
+                                res.data.description,
+                                res.data.attach);
+                        }else{//机构渠道信息
+                            this.cooperaPerDetail.info = getFiledData(
+                                this.channelType,
+                                res.data.linkName,
+                                res.data.telephone,
+                                res.data.managerAccount,
+                                res.data.certificateNumber,
+                                (res.data.province ? res.data.province : res.data.province) + ( res.data.city ? res.data.city : res.data.city + '') + (res.data.area ? res.data.area : ''),
+                                res.data.address,
+                                res.data.email,
+                                res.data.createdTime,
+                                res.data.businessAccount,
+                                res.data.updatedTime,
+                                res.data.auditTime,
+                                res.data.updateUser,
+                                res.data.description,
+                                res.data.attach);
+                        }
+                        this.auditStatus = res.data.auditStatus;
+                    }else{
+                        this.cooperaPerDetail.name = '';
+                        this.auditStatus = '';
+                    }
+                });
+            },
+            /**
+             * 获取合作伙伴信息
+             */
+            getChannelPartners () {
+                ajax.post('getChannelPartners',{
+                    id : this.channelId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.partnerTableData = res.data.channelParentListVos ? res.data.channelParentListVos : [];
+                        this.totalCount = res.data.parentNumber;
+                    }else{
+                        this.totalCount = 0;
+                    }
+                })
             }
         },
-        beforeRouteEnter (to,from,next) {
-            next(vm => {
-                vm.getParams(to.params);
-            });
+        computed : {
+            //是否显示通过和驳回的按钮
+            showAuditBtn () {
+                return this.auditStatus === 'audit';
+            }
         }
     }
 </script>
@@ -288,10 +352,21 @@
 
                     .status{
                         display: inline-block;
-                        @include block_outline(50px);
+                        @include block_outline(60px);
                         font-size: $font_size_14px;
                         vertical-align: top;
+                    }
+
+                    .audit-wait{
                         color:$color_yellow
+                    }
+
+                    .pass-result{
+                        color: $color_green;
+                    }
+
+                    .nopass-result{
+                        color: $color_err;
                     }
 
                     .name{
@@ -324,6 +399,11 @@
                     overflow: auto;
                     padding: 7.5px 0;
                     line-height: 22px;
+
+                    .classify-img{
+                        @include block_outline(100px,100px);
+                        display: block;
+                    }
 
                     .info-list1,
                     .info-list3,

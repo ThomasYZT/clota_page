@@ -33,6 +33,7 @@
             @query-data="queryList">
             <el-table-column
                 slot="columnoperate"
+                show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -86,7 +87,7 @@
                 //合作渠道数据
                 tableData : [],
                 //待审核个数
-                auditNumber : '' 
+                auditNumber : ''
             }
         },
         methods: {
@@ -106,7 +107,8 @@
                 this.$router.push({
                     name : 'cooperaChannelPerDetail',
                     params : {
-                        type : 'org'
+                        type : 'org',
+                        id : data.id
                     }
                 });
             },

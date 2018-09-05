@@ -57,6 +57,7 @@
                 slot="columnnodeType"
                 slot-scope="row"
                 :label="row.title"
+                show-overflow-tooltip
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
@@ -66,6 +67,7 @@
             <el-table-column
                 slot="columnstatus"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -78,6 +80,7 @@
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
+                show-overflow-tooltip
                 fixed="right"
                 :min-width="row.minWidth">
                 <template slot-scope="scoped">

@@ -356,11 +356,24 @@
                 return ajax.post('queryAccountExist',{
                     loginName : this.formData.controlAccount
                 });
+            },
+            /**
+             * 获取当前登录的用户信息
+             */
+            getSysAccountByToken () {
+                ajax.post('getSysAccountByToken').then(res => {
+                    if(res.status === 200){
+                        this.formData.service = res.data.id ? res.data.id : '';
+                    }else{
+                        this.formData.service = '';
+                    }
+                });
             }
         },
         created () {
             this.querySysAccoutList();
             this.querySmsProviderList();
+            this.getSysAccountByToken();
         }
     }
 </script>

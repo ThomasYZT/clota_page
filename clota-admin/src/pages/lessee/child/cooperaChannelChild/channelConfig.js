@@ -104,36 +104,36 @@ export default function (type,...rest) {
             [
                 {
                     label :'受理客服',
-                    value : rest[7]
+                    value : rest[6]
                 },
                 {
                     label :'账号申请时间',
-                    value : rest[8]
+                    value : rest[7]
                 },
                 {
                     label :'上次修改时间',
-                    value : rest[9]
+                    value : rest[8]
                 },
             ],
             [
                 {
                     label :'注册审核时间',
-                    value : rest[10]
+                    value : rest[9]
                 },
                 {
                     label :'上次修改人',
-                    value : rest[11]
+                    value : rest[10]
                 },
                 {}
             ],
             [
                 {
                     label :'个人说明',
-                    value : rest[12]
+                    value : rest[11]
                 },
                 {
                     label :'身份证',
-                    value : rest[13]
+                    value : rest[12]
                 }
             ]
         ]
