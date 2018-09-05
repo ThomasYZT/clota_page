@@ -4,11 +4,11 @@
     <div class="account">
         <div class="create-account">
             <Button type="primary">
-                <span @click="addAccount">+ 新建账号</span>
+                <span @click="addAccount">+ {{$t('addAccount')}}</span>
             </Button>
         </div>
         <table-com
-            :ofsetHeight="208"
+            :ofsetHeight="118"
             :show-pagination="true"
             :column-data="accountHead"
             :table-data="tableData"
@@ -52,7 +52,7 @@
                 :min-width="row.minWidth"
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    <span>{{ scoped.row.state === 'true' ? '已启用' : '未启用'  }}</span>
+                    <span>{{ scoped.row.state === 'true' ? $t('inUse') : $t('outUse')  }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -65,14 +65,14 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="normal" @click="editAccount(scoped.row)">修改</li>
+                        <li class="normal" @click="editAccount(scoped.row)">{{$t('edit')}}</li>
                         <template v-if="scoped.row.state === 'true'">
-                            <li class="yellow-label" @click="stopAccount(scoped.row)">停用</li>
+                            <li class="yellow-label" @click="stopAccount(scoped.row)">{{$t('stopUsing')}}</li>
                         </template>
                         <template v-else>
-                            <li class="normal"  @click="openAccount(scoped.row)">启用</li>
+                            <li class="normal"  @click="openAccount(scoped.row)">{{$t('startUsing')}}</li>
                         </template>
-                        <li class="red-label" @click="delAccount(scoped.row)">删除</li>
+                        <li class="red-label" @click="delAccount(scoped.row)">{{$t('delete')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -117,8 +117,6 @@
             }
         },
         created() {
-            //查询账户信息列表
-            this.queryList();
             //查询角色列表
             this.queryRoleList();
         },

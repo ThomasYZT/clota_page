@@ -293,7 +293,11 @@ export default {
     sys_send: '系统自动',
     resend: '重新发送',
     formalError: '{field}格式错误',
-    inUse : '启用',
-    outUse : '未启用'
+    inUse : '已启用',
+    outUse : '未启用',
+    errorIrregular: '输入内容不合规则',
+    state: '状态',
+    createTime: '创建时间',
+    lastUpdateTime: '上次修改时间',
 
 }

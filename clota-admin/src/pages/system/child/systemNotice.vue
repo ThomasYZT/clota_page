@@ -8,7 +8,7 @@
             </Button>
         </div>
         <table-com
-            :ofsetHeight="208"
+            :ofsetHeight="118"
             :show-pagination="true"
             :column-data="systemHead"
             :table-data="tableData"
@@ -43,7 +43,7 @@
                 :min-width="row.minWidth"
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    <span>{{ scoped.row.state === 'true' ? '已启用' : '未启用'  }}</span>
+                    <span>{{ scoped.row.state === 'true' ? $t('inUse') : $t('outUse')  }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -95,10 +95,6 @@
                 // 列表数据总数
                 total: 0,
             }
-        },
-        created() {
-            //查询账户信息列表
-            this.queryList();
         },
         methods: {
             /**
@@ -173,7 +169,8 @@
                 this.$router.push({
                     name : 'editSystemNotice',
                     params : {
-                        type : 'edit'
+                        type : 'edit',
+                        info : data
                     }
                 });
             },
@@ -182,7 +179,13 @@
              * @param data
              */
             watchNotice (data) {
-
+                this.$router.push({
+                    name : 'editSystemNotice',
+                    params : {
+                        type : 'view',
+                        info : data
+                    }
+                });
             }
         }
     }

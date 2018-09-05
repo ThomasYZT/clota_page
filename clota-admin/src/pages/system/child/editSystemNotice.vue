@@ -12,35 +12,44 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="22">
-                    <FormItem :label="$t('noticeName')" prop="account">
-                        <Input v-model="formData.account" />
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('noticeContent')">
-                        <Upload
-                            action="//jsonplaceholder.typicode.com/posts/"
-                            style="display: inline-block;width:58px;">
-                            <div class="upload-btn">
-                                <Icon type="ios-camera" size="20"></Icon>
-                            </div>
-                        </Upload>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="22">
-                    <FormItem :label="$t('desc')" prop="mobile">
-                        <Input v-model="formData.mobile" type="textarea" />
-                    </FormItem>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="22">
+                        <FormItem :label="$t('noticeName')" prop="title">
+                            <Input v-model.trim="formData.title"
+                                   :placeholder="$t('inputPlaceholder')"/>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <FormItem :label="$t('noticeContent')" prop="images">
+                            <Upload
+                                class="upload-wrap"
+                                action="//jsonplaceholder.typicode.com/posts/">
+                                <div class="upload-btn">
+                                    <Icon type="ios-camera" size="20"></Icon>
+                                </div>
+                            </Upload>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="22">
+                        <FormItem :label="$t('desc')" prop="content">
+                            <Input v-model.trim="formData.content"
+                                   type="textarea"
+                                   :placeholder="$t('inputPlaceholder')"/>
+                        </FormItem>
+                    </i-col>
+                </i-row>
             </Form>
-            <div class="footer">
+            <div class="footer" v-if="type !== 'view'">
+                <Button type="primary"
+                        @click="save"
+                        class="ivu-btn-min"
+                        :loading="addLoading">
+                    {{$t(type === 'add' ? 'addNew' : 'confirmEdit')}}
+                </Button>
                 <Button type="primary"
                         @click="save"
                         class="ivu-btn-min"
@@ -54,40 +63,32 @@
 </template>
 
 <script>
+
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
-    import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
-            cityPlugin
         },
         data() {
-            //校验联系电话
-            const validateMobile = (rule, value, callback) => {
-                if (value) {
-                    if (validator.isMobile(value) || validator.isTelephone(value)) {
-                        callback();
+
+            const validateMethod = {
+
+                // 输入内容不合规则
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error( this.$t('errorIrregular') ));
                     } else {
-                        callback(this.$t('validateError.phoneError2'));
-                    }
-                } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('phone')}));
-                }
-            };
-            //校验电子邮箱
-            const validatmail = (rule, value, callback) => {
-                if (value) {
-                    if (validator.isEmail(value)) {
                         callback();
-                    } else {
-                        callback(this.$t('validateError.emailError2'));
                     }
-                } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('email')}))
                 }
+
             };
+
             return {
                 //上级路由列表
                 beforeRouterList: [
@@ -100,31 +101,28 @@
                 ],
                 //表单数据
                 formData: {
-                    //账号
-                    account: '',
-                    //名字
-                    name: '',
-                    //联系电话
-                    mobile: '',
-                    //邮箱
-                    mail: '',
-                    //角色
-                    role: '',
+                    //标题
+                    title: '',
+                    //内容
+                    content: '',
+                    //图片(可多张)
+                    images: [],
                 },
                 //表单校验规则
                 ruleValidate: {
-                    account : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
+                    title : [
+                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('noticeName')}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 30, message: this.$t('errorMaxLength', {field: this.$t('noticeName'), length: 30}), trigger: 'blur' },
                     ],
-                    name : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
+                    content : [
+                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('desc')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 1000}), trigger: 'blur' },
                     ],
-                    mail: [
-                        {required: false, validator: validatmail, trigger: 'blur'},
+                    images: [
+                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('noticeContent')}), trigger: 'change' },
                     ],
-                    mobile : [
-                        {required: true, validator: validateMobile, trigger: 'blur'},
-                    ]
                 },
                 //是否正在添加中
                 addLoading: false,
@@ -134,12 +132,56 @@
         },
         methods: {
             /**
-             * 保存新增账户数据
+             * 保存公告数据
              */
             save() {
-                this.addLoading = true;
+
                 this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.addLoading = true;
+                        var params = {
+                            title: this.formData.title,
+                            content: this.formData.content,
+                            file: this.formData.images,
+                        };
+                        if (this.type === 'add') {
+//                            this.addNotice(this.formData);
+                        }else {
+                            params.id = this.formData.id;
+//                            this.updateNotice(params);
+                        }
+                        console.log(params)
+                    }
+                });
+            },
+            /**
+             * 添加系统公告
+             * @param params
+             */
+            addNotice( params ) {
+                ajax.post('addNotice', params).then(res => {
                     this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('addSuccess'));
+                        this.$router.push({ name: 'systemNotice'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
+             * 修改系统公告
+             * @param params
+             */
+            updateNotice( params ) {
+                ajax.post('updateNotice', params).then(res => {
+                    this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('edit') + this.$t('success'));
+                        this.$router.push({ name: 'systemNotice'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
                 });
             },
             /**
@@ -157,6 +199,7 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    this.formData = params.info ? params.info : { title: '',content: '',images: [] };
                 }else{
                     this.$router.push({
                         name : 'systemNotice'
@@ -164,11 +207,6 @@
                 }
             }
         },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
     }
 </script>
 
@@ -191,6 +229,12 @@
                 @include block_outline(924px, auto);
                 margin: 0 auto;
             }
+
+            .upload-wrap{
+                display: inline-block;
+                width: 58px;
+            }
+
         }
 
         .footer {

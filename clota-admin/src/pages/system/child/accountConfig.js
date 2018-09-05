@@ -3,47 +3,47 @@
 //账号表头
 export const accountHead = [
     {
-        title: '账号',
+        title: 'accountName',
         minWidth: 100,
         field: 'loginName'
     },
     {
-        title: '角色',
+        title: 'role',
         minWidth: 100,
         field: 'roleName'
     },
     {
-        title: '姓名',
+        title: 'name',
         minWidth: 100,
         field: 'nickName'
     },
     {
-        title: '电话',
+        title: 'mobile',
         minWidth: 100,
         field: 'phone'
     },
     {
-        title: '邮箱',
+        title: 'mail',
         minWidth: 120,
         field: 'email'
     },
     {
-        title: '状态',
+        title: 'state',
         minWidth: 80,
         field: 'state'
     },
     {
-        title: '创建时间',
+        title: 'createTime',
         minWidth: 100,
         field: 'createTime'
     },
     {
-        title: '上次修改时间',
+        title: 'lastUpdateTime',
         minWidth: 100,
         field: 'updateTime'
     },
     {
-        title: '操作',
+        title: 'operate',
         minWidth: 130,
         field: 'operate'
     },

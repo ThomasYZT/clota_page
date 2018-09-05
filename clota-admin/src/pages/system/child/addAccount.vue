@@ -82,18 +82,29 @@
 
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
-    import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index';
-    import defaultsDeep from 'lodash/defaultsDeep';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
-            cityPlugin
         },
         data() {
+
+            const validateMethod = {
+
+                // 输入内容不合规则
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error( this.$t('errorIrregular') ));
+                    } else {
+                        callback();
+                    }
+                }
+
+            };
+
             //校验联系电话
             const validateMobile = (rule, value, callback) => {
                 if (value) {
@@ -144,23 +155,27 @@
                 //表单校验规则
                 ruleValidate: {
                     loginName : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
+                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                         { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 15}), trigger: 'blur' },
                     ],
                     nickName : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
+                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                         { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },
                     ],
                     email: [
-                        {required: true, validator: validatmail, trigger: 'blur'},
+                        { required: true, validator: validatmail, trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                         { type: 'string', max: 30, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 30}), trigger: 'blur' },
                     ],
                     phone : [
-                        {required: true, validator: validateMobile, trigger: 'blur'},
+                        { required: true, validator: validateMobile, trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                         { type: 'string', max: 11, message: this.$t('errorMaxLength', {field: this.$t('mobile'), length: 11}), trigger: 'blur' },
                     ],
                     roleId: [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('role')}), trigger: 'blur'},
+                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('role')}), trigger: 'change'},
                     ],
                 },
                 //角色列表
