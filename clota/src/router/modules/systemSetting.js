@@ -21,14 +21,27 @@ export default {
         },
         children: {
             collectionAccountSetting: {
-                //组织架构--组织架构
-                path: '/systemSetting/onlinePaymentSetting',
+                // 系统设置 - 在线支付账户设置
+                path: '/systemSetting/accountSetting',
                 name: 'onlinePaymentSetting',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/onlinePaymentSetting/onlinePayment.vue'),
                 meta: {
                     _name: 'members', //
                     menuName: 'onlinePaymentSetting', //lang.config.js 里面的语言键值
-                    rightPath : topMenuName + '.' + 'onlinePaymentSetting',
+                    rightPath : topMenuName + '.' + 'accountSetting',
+                    iconClass: 'icon-person',
+                    isMenu : true
+                },
+            },
+            resetPassword: {
+                // 系统设置 - 重置全员密码
+                path: '/systemSetting/resetPassword',
+                name: 'resetPassword',
+                component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/resetPassword/resetPassword.vue'),
+                meta: {
+                    _name: 'members', //
+                    menuName: 'resetPassword', //lang.config.js 里面的语言键值
+                    rightPath : topMenuName + '.' + 'resetPassword',
                     iconClass: 'icon-person',
                     isMenu : true
                 },
