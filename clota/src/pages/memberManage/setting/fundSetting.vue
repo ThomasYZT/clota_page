@@ -569,7 +569,7 @@
                 if(common.isNotEmpty(val)){
                     this.error[errorField] = '';
                 }else{
-                    this.error[errorField] = this.$t('inputField', {msg: ''});
+                    this.error[errorField] = this.$t('inputField', {field: ''});
                     return false
                 }
 
@@ -592,18 +592,18 @@
                     }else{
                         if(Number.parseInt(val) === Number.parseFloat(val)){
                             if(val < 0 || val == 0){
-                                this.error[errorField] = this.$t('fieldTypeError', {msg: ''});
+                                this.error[errorField] = this.$t('fieldTypeError', {field: ''});
                                 return false
                             }else{
                                 this.error[errorField] = '';
                             }
                         }else{
-                            this.error[errorField] = this.$t('integetError', {msg: ''});
+                            this.error[errorField] = this.$t('integetError', {field: ''});
                             return false
                         }
                     }
                 }else{
-                    this.error[errorField] = this.$t('integetError', {msg: ''});
+                    this.error[errorField] = this.$t('integetError', {field: ''});
                     return false
                 }
 

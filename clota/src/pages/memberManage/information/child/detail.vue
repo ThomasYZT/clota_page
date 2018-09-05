@@ -231,7 +231,7 @@
                     </div>
                 </div>
 
-                <div class="content-info">
+                <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount == 'true'">
                     <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
                     <div class="operate">
                         <div><span @click="showAssetModal">{{$t("modifyStorageBalance")}}</span></div>
@@ -385,6 +385,8 @@
                 allStore: [],
                 //所有储值账户
                 allFundsAccount: [],
+                //初始化设置
+                setting: {},
             }
         },
         created() {
@@ -398,6 +400,8 @@
             this.getSubNode();
             //查询储值账户
             this.queryMemberAccountDefine();
+            //查询会员初始化设置
+            this.findBasicSet();
         },
         methods: {
 
@@ -458,6 +462,19 @@
                     } else {
                         console.log(res);
                         this.$Message.warning(res.message || 'queryMemberAccountDefine '+ this.$t('queryFailure') +'！');
+                    }
+                })
+            },
+
+            //查询会员初始化设置
+            findBasicSet () {
+                ajax.post('findBasicSet', {}).then(res => {
+                    if( res.success){
+                        if(res.data){
+                            this.setting = res.data || {};
+                        } else {
+                            this.setting = {};
+                        }
                     }
                 })
             },

@@ -106,7 +106,7 @@
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err));
+                    callback(this.$t(err, {field: ''}));
                 });
             };
 

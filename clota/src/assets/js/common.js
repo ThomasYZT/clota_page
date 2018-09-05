@@ -195,7 +195,7 @@ export default {
             if(this.isNotEmpty(value)){
                 if(validator.isNumber(value)){
                     let  numStr = String(value);
-                    if(value < 0){
+                    if(value < 0 || value == 0){
                         reject('fieldTypeError');
                     }
                     if(numStr.length < minLength){

@@ -55,7 +55,7 @@
                     common.validateInteger( Number(value) ).then(() => {
                         callback();
                     }).catch(err => {
-                        callback(this.$t(err));
+                        callback(this.$t(err, {field: ''}));
                     });
                 },
 
@@ -78,7 +78,7 @@
                             callback();
                         }
                     }).catch(err => {
-                        callback(this.$t(err));
+                        callback(this.$t(err, {field: ''}));
                     });
                 },
 
