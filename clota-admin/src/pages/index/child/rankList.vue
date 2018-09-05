@@ -11,27 +11,74 @@
         </div>
         <div class="rank-list-detail">
 
+            <!--<table-com-->
+                <!--:table-data="tableData"-->
+                <!--table-height="268px"-->
+                <!--:column-data="columnData">-->
+                <!--<el-table-column-->
+                    <!--label="排名"-->
+                    <!--slot="column0"-->
+                    <!--width="70">-->
+                    <!--<template slot-scope="scoped">-->
+                        <!--<span :class="{'with-bck' : scoped.$index < 3}">{{scoped.$index + 1}}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                    <!--label="占比"-->
+                    <!--slot="column2"-->
+                    <!--width="70">-->
+                    <!--<template slot-scope="scoped">-->
+                        <!--<span>{{getIndex(scoped.row.proportion)}}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                    <!--width="100">-->
+                    <!--<template slot-scope="scoped">-->
+                        <!--<div class="bar-warp">-->
+                            <!--<div class="bar" :style="{width : (scoped.row.proportion ? scoped.row.proportion * 100 : 0) + '%'}"></div>s-->
+                        <!--</div>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+            <!--</table-com>-->
             <table-com
+                :column-data="columnData"
                 :table-data="tableData"
-                table-height="268px"
-                :column-data="columnData">
+                :height="265"
+                @query-data="getOrderRankingList">
                 <el-table-column
-                    label="排名"
-                    slot="column0"
-                    width="70">
-                    <template slot-scope="scoped">
-                        <span :class="{'with-bck' : scoped.$index < 3}">{{scoped.$index + 1}}</span>
+                    slot="columnindex"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span :class="{'with-bck' : scope.$index < 3}">{{scope.$index + 1}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="占比"
-                    slot="column2"
-                    width="70">
-                    <template slot-scope="scoped">
-                        <span>{{getIndex(scoped.row.proportion)}}</span>
+                    slot="columnproportion"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{getIndex(scope.row.proportion)}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
+                    slot="columnproportion"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{getIndex(scope.row.proportion)}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="columnbar"
+                    slot-scope="row"
+                    :label="row.title"
                     width="100">
                     <template slot-scope="scoped">
                         <div class="bar-warp">
@@ -45,7 +92,7 @@
 </template>
 
 <script>
-    import tableCom from './tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {columns} from './rankListConfig';
     import ajax from '@/api/index.js';
     import {validator} from 'klwk-ui';
@@ -99,9 +146,6 @@
                     return '-';
                 }
             }
-        },
-        created () {
-            this.getOrderRankingList();
         }
     }
 </script>

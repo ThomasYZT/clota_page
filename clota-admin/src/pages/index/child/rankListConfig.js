@@ -2,8 +2,8 @@
 export const columns = [
     {
         title: '排名',
-        minWidth: 45,
-        field: 'orgName',
+        minWidth: 60,
+        field: 'index',
         ableClick: true
     },
     {
@@ -13,7 +13,12 @@ export const columns = [
     },
     {
         title: '占比',
-        minWidth: 45,
+        minWidth: 70,
         field: 'proportion'
+    },
+    {
+        title: '',
+        minWidth: 70,
+        field: 'bar'
     },
 ];

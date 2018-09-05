@@ -9,7 +9,7 @@
                   ref="multipleTable"
                   :class="{'table-click-able' : rowClickAble}"
                   :border="border"
-                  :height="height"
+                  :height="height === 'auto' ? false : height"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
                   @row-click="classDetailLink"
