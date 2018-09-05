@@ -568,11 +568,11 @@
                 } else {
                     this.detail.cardStatus = 'frozen';
                 }
-                this.updateMemberCard();
+                this.manualUpdateCardStatus();
             },
             //更新会员卡信息
-            updateMemberCard (  ) {
-                ajax.post('updateMemberCard', {
+            manualUpdateCardStatus () {
+                ajax.post('manualUpdateCardStatus', {
                     id: this.detail.cardId,
                     status: this.detail.cardStatus,
                 }).then(res => {
@@ -580,7 +580,7 @@
                         this.$Message.success(this.$t('successTip', {tip: $t('updateMemberInfo')}) + '！');      // 更新会员卡信息成功
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'updateMemberCard '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message || 'manualUpdateCardStatus '+ this.$t('failure') +'！');
                     }
                 });
             },

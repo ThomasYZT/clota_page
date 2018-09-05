@@ -29,6 +29,8 @@ export default {
     'listAccountDetailRange' : '/member/memberAccount/listAccountRange',
     //更新会员卡信息
     'updateMemberCard' : '/member/updateMemberCard',
+    //冻结/启用会员卡
+    'manualUpdateCardStatus' : '/member/manualUpdateCardStatus',
     //获取母卡或子卡
     'queryChildOrMotherCard' : '/member/queryChildOrMotherCard',
     //兑现
