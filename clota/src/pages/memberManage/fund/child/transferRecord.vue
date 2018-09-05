@@ -26,14 +26,16 @@
                     type="date"
                     :editable="false"
                     v-model="queryParams.startTime"
-                    :placeholder="$t('selectField', {msg: $t('startDate')})"><!--请选择开始日期-->
+                    :placeholder="$t('selectField', {msg: $t('startDate')})"
+                    @on-change="queryList"><!--请选择开始日期-->
                 </Date-picker>
                 <Date-picker
                     style="width:180px;margin-right: 10px;"
                     type="date"
                     :editable="false"
                     v-model="queryParams.endTime"
-                    :placeholder="$t('selectField', {msg: $t('endDate')})"><!--请选择结束日期-->
+                    :placeholder="$t('selectField', {msg: $t('endDate')})"
+                    @on-change="queryList"><!--请选择结束日期-->
                 </Date-picker>
                 <Input v-model="queryParams.keyword"
                        :placeholder="$t('inputField', {field: $t('unitName')})"

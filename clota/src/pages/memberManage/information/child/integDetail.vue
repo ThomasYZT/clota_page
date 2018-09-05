@@ -25,7 +25,7 @@
                     v-model="queryParams.startDate"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
-                    @on-ok="filterDealList()"><!--请选择开始日期-->
+                    @on-change="filterDealList()"><!--请选择开始日期-->
                 </Date-picker>
                 <Date-picker
                     type="date"
@@ -33,7 +33,7 @@
                     v-model="queryParams.endDate"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
-                    @on-ok="filterDealList()"><!--请选择结束日期-->
+                    @on-change="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
 
                 <div class="btn-wrap">

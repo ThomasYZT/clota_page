@@ -18,7 +18,7 @@
                     :editable="false"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
-                    @on-ok="filterDealList()">
+                    @on-change="filterDealList()">
                 </Date-picker><!--请选择开始日期-->
                 <Date-picker
                     type="date"
@@ -26,7 +26,7 @@
                     :editable="false"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
-                    @on-ok="filterDealList()"><!--请选择结束日期-->
+                    @on-change="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
                 <div class="btn-wrap">
                     <Button type="primary" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->

@@ -3,7 +3,7 @@
     <div class="member-fund-account">
         <div class="breadcrumb-box" v-if="fromAccountStore">
             <bread-crumb-head
-                :locale-router="'storageDetail'"
+                :locale-router="'fundDetail'"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
