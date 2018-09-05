@@ -3,42 +3,42 @@
 //公告表头
 export const systemHead = [
     {
-        title: '编号',
+        title: 'code',
         minWidth: 100,
         field: 'id'
     },
     {
-        title: '标题',
+        title: 'title',
         minWidth: 100,
         field: 'title'
     },
     {
-        title: '描述',
+        title: 'desc',
         minWidth: 280,
         field: 'content'
     },
     {
-        title: '公告内容',
+        title: 'noticeContent',
         minWidth: 150,
         field: 'images'
     },
     {
-        title: '发布人',
+        title: 'publisher',
         minWidth: 100,
         field: 'publisher'
     },
     {
-        title: '发布时间',
+        title: 'publishTime',
         minWidth: 120,
         field: 'releaseTime'
     },
     {
-        title: '状态',
+        title: 'state',
         minWidth: 100,
         field: 'state'
     },
     {
-        title: '操作',
+        title: 'operate',
         minWidth: 150,
         field: 'operate'
     },

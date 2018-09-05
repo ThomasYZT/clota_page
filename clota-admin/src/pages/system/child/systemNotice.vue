@@ -4,7 +4,7 @@
     <div class="notice">
         <div class="create-notice">
             <Button type="primary">
-                <span @click="addNotice">+ 发布公告</span>
+                <span @click="addNotice">+ {{$t('publishNotice')}}</span>
             </Button>
         </div>
         <table-com
@@ -30,7 +30,7 @@
                         <img class="row-image"
                              v-for="(item,index) in scoped.row.images"
                              :key="index"
-                             :src="item">
+                             :src="getHost(item.slice(1,item.length))">
                     </template>
                 </template>
             </el-table-column>
@@ -56,13 +56,13 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="normal" @click="watchNotice(scoped.row)">查看</li>
+                        <li class="normal" @click="watchNotice(scoped.row)">{{$t('look')}}</li>
                         <template v-if="scoped.row.state === 'true'">
-                            <li class="yellow-label" @click="stopNotice(scoped.row)">禁用</li>
+                            <li class="yellow-label" @click="stopNotice(scoped.row)">{{$t('disabled')}}</li>
                         </template>
                         <template v-else>
-                            <li class="normal"  @click="openNotice(scoped.row)">启用</li>
-                            <li class="normal" @click="editNotice(scoped.row)">编辑</li>
+                            <li class="normal"  @click="openNotice(scoped.row)">{{$t('startUsing')}}</li>
+                            <li class="normal" @click="editNotice(scoped.row)">{{$t('modify')}}</li>
                         </template>
                     </ul>
                 </template>
@@ -97,6 +97,9 @@
             }
         },
         methods: {
+            getHost ( url ) {
+                return ajax.getHost(url)
+            },
             /**
              * 查询账户信息列表
              */
@@ -182,11 +185,11 @@
                 this.$router.push({
                     name : 'editSystemNotice',
                     params : {
-                        type : 'view',
+                        type : 'look',
                         info : data
                     }
                 });
-            }
+            },
         }
     }
 </script>

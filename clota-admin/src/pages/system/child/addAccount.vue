@@ -18,7 +18,7 @@
                 </template>
                 <template v-else>
                     <p v-if="reset" class="yellow"> 密码已重置为888888，请及时修改。</p>
-                    <span class="change-psw blue" @click="resetPassword">重置密码</span>
+                    <span class="change-psw blue" @click="resetPassword">{{$t('resetPass')}}</span>
                 </template>
 
                 <i-row>

@@ -35,7 +35,19 @@ export default {
 
 
     /***********************************设置***********************************/
+    //查询系统设置
+    'getSetting' : 'setting/get.json',
+    //修改系统设置
+    'updateSetting' : 'setting/update.json',
 
+    //查询节假日列表
+    'holidayList' : 'holiday/list.json',
+    //添加节假日
+    'addHoliday' : 'holiday/add.json',
+    //修改节假日
+    'updateHoliday' : 'holiday/update.json',
+    //删除节假日
+    'deleteHoliday' : 'holiday/delete.json',
 
 
 }

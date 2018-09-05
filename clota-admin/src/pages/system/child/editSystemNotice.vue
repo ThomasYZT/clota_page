@@ -3,7 +3,7 @@
 <template>
     <div class="add-account">
         <bread-crumb-head
-            :locale-router="$t(type === 'add' ? 'addSystemNotice' : 'editSystemNotice')"
+            :locale-router="$t(type === 'add' ? 'addSystemNotice' : type === 'look' ? 'lookSystemNotice' : 'editSystemNotice')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="add-account-info">
@@ -23,9 +23,22 @@
                 <i-row>
                     <i-col span="11">
                         <FormItem :label="$t('noticeContent')" prop="images">
+                            <template v-if="formData.images && formData.images.length > 0">
+                                <img class="img-item" v-for="(item,index) in formData.images" :key="index" :src="item"/>
+                            </template>
                             <Upload
+                                v-if="type !== 'look'"
                                 class="upload-wrap"
-                                action="//jsonplaceholder.typicode.com/posts/">
+                                :action="uploadUrl"
+                                :headers="uploadHeaders"
+                                :show-upload-list="false"
+                                :max-size="2048"
+                                :on-exceeded-size="handleExceededSize"
+                                :format="['gif','img','jpeg','jpg','jpeg','png','svg']"
+                                :on-format-error="handleFormatError"
+                                :on-success="handleSuccess"
+                                :before-upload="handleBeforeUpload"
+                                accept="image/*">
                                 <div class="upload-btn">
                                     <Icon type="ios-camera" size="20"></Icon>
                                 </div>
@@ -43,18 +56,19 @@
                     </i-col>
                 </i-row>
             </Form>
-            <div class="footer" v-if="type !== 'view'">
+            <div class="footer" v-if="type !== 'look'">
                 <Button type="primary"
                         @click="save"
                         class="ivu-btn-min"
                         :loading="addLoading">
                     {{$t(type === 'add' ? 'addNew' : 'confirmEdit')}}
                 </Button>
-                <Button type="primary"
-                        @click="save"
+                <Button v-if="formData.state && formData.state !== 'true'"
+                        type="primary"
+                        @click="openNotice"
                         class="ivu-btn-min"
                         :loading="addLoading">
-                    {{$t(type === 'add' ? 'addNew' : 'confirmEdit')}}
+                    {{$t('startUsing')}}
                 </Button>
                 <Button @click="cancel" class="ivu-btn-min">{{$t('cancel')}}</Button>
             </div>
@@ -106,7 +120,9 @@
                     //内容
                     content: '',
                     //图片(可多张)
-                    images: [],
+                    images: [
+//                        'http://klwk-test.oss-cn-beijing.aliyuncs.com/测试图片_481b25e6-074c-49b2-bebd-cf828b3a51ca.jpg',
+                    ],
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -127,7 +143,15 @@
                 //是否正在添加中
                 addLoading: false,
                 //账号操作类型
-                type : ''
+                type : '',
+                // 附件上传地址, 分上传关联附件和普通上传附件
+                uploadUrl: '',
+//                uploadUrl: config.getHttpServer() + '/v3/account/uploadAttFile',
+                // 上传文件请求头
+                uploadHeaders: {
+                    "Accept": 'application/json',
+                    "token": ajax.getToken(),
+                }
             }
         },
         methods: {
@@ -185,6 +209,22 @@
                 });
             },
             /**
+             * 启用公告
+             */
+            openNotice () {
+                ajax.post('switchNotice', {
+                    id: this.formData.id,
+                    state: 'true'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success( this.$t('success')+this.$t('startUsing') + this.formData.title);
+                        this.$router.push({ name: 'systemNotice'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
              * 取消新增
              */
             cancel() {
@@ -205,7 +245,45 @@
                         name : 'systemNotice'
                     });
                 }
-            }
+            },
+
+            //附件超过大小限制提示
+            handleExceededSize(file, fileList){
+                this.$Message.warning({
+                    content: file.name + '文件大小超2M限制，暂时不支持上传该文件',
+                    duration: 3
+                });
+            },
+            //附件类型限制提示
+            handleFormatError(file, fileList){
+                this.$Message.warning({
+                    content: file.name + '文件格式不符合要求，请重新选择文件',
+                    duration: 3
+                });
+            },
+            //附件上传成功回调
+            handleSuccess(response, file, fileList) {
+                var _me = this;
+                var avatar = response.data && response.data.attUrl ? response.data.attUrl : '';
+                if( avatar ){
+
+                }else{
+                    this.$Message.error({
+                        content: file.name + '文件上传失败，请重新上传',
+                        duration: 3
+                    });
+                }
+            },
+            handleBeforeUpload( file  ){
+//                this.uploadUrl = ajax.getHost(file.name)
+            },
+            //附件上传失败提示
+            handleError(error, file, fileList){
+                this.$Message.error({
+                    content: file.name + '文件上传失败，请重新上传',
+                    duration: 3
+                });
+            },
         },
     }
 </script>
@@ -228,6 +306,16 @@
             /deep/ .ivu-form {
                 @include block_outline(924px, auto);
                 margin: 0 auto;
+            }
+
+            .img-item{
+                width: 58px;
+                height: 58px;
+                display: inline-block;
+                margin-right: 5px;
+                vertical-align: top;
+                border-radius: 4px;
+                border: 1px dashed antiquewhite;
             }
 
             .upload-wrap{
