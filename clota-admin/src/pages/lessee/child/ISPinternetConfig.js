@@ -45,4 +45,9 @@ export const columns = [
         minWidth: 310,
         field: 'secretCode'
     },
+    {
+        title : '操作',
+        width : 130,
+        field : 'operate'
+    }
 ];

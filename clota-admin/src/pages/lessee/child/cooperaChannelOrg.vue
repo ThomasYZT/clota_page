@@ -13,79 +13,77 @@
             </ButtonGroup>
             <div class="search">
                 <Input type="text"
-                       v-model="keyWord"
+                       v-model.trim="keyWord"
                        style="width: 200px"
-                       :placeholder="$t('lessPlaceholder')"/>
-                <Button type="primary">查找</Button>
+                       :placeholder="$t('lessPlaceholder')"
+                       @on-enter="queryList"/>
+                <Button type="primary" @click="queryList">查找</Button>
             </div>
         </div>
         <table-com
-            :table-data="tableData"
-            :table-height="tableHeight"
             :column-data="columnData"
-            :row-click="false">
+            :table-data="tableData"
+            :border="true"
+            :page-no-d.sync="pageNo"
+            :show-pagination="true"
+            :page-size-d.sync="pageSize"
+            :total-count="totalCount"
+            :ofset-height="120"
+            @query-data="queryList">
             <el-table-column
-                label="操作"
-                :width="60">
+                slot="columnoperate"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                fixed="right"
+                :min-width="row.minWidth">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="operate-list" @click="toDetail(scoped.row)">查看</li>
+                        <li class="normal" @click="toDetail(scoped.row)">查看</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
-            </el-pagination>
-        </div>
-        <no-data class="no-data"
-                 v-if="tableData.length < 1">
-        </no-data>
-        <loading :visible="isLoading">
-        </loading>
     </div>
 </template>
 
 <script>
-    import tableCom from '../../index/child/tableCom';
-    import noData from '@/components/noDataTip/noData-tip.vue';
-    import loading from '@/components/loading/loading.vue';
-    import tableMixins from '../tableMixins';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {columns} from './cooperaChannelOrgConfig';
+    import ajax from '@/api/index.js';
 
     export default {
-        mixins: [tableMixins],
         components: {
             tableCom,
-            noData,
-            loading
         },
         data() {
             return {
+                //关键字查询
+                keyWord : '',
                 //表头数据
                 columnData: columns,
                 //过滤类型
-                filterType: 'ready',
+                filterType: 'audit',
                 //过滤列表
                 filterList: [
                     {
                         label: 'readyDeal',
-                        value: 'ready'
+                        value: 'audit'
                     },
                     {
                         label: 'auditTrue',
-                        value: 'true'
+                        value: 'success'
                     },
                     {
                         label: 'auditFalse',
-                        value: 'false'
+                        value: 'reject'
                     }
-                ]
+                ],
+                pageNo : 1,
+                pageSize : 10,
+                totalCount : 0,
+                //合作渠道数据
+                tableData : []
             }
         },
         methods: {
@@ -95,6 +93,7 @@
              */
             filterTable(value) {
                 this.filterType = value;
+                this.queryList();
             },
             /**
              * 跳转到详情
@@ -105,6 +104,26 @@
                     name : 'cooperaChannelPerDetail',
                     params : {
                         type : 'org'
+                    }
+                });
+            },
+            /**
+             * 查询机构合作渠道
+             */
+            queryList () {
+                ajax.post('queryPartners',{
+                    partnerType : 'company',
+                    auditStatus : this.filterType,
+                    condition : this.keyWord,
+                    page : this.pageNo,
+                    pageSize : this.pageSize
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.pageInfo.list ? res.data.pageInfo.list : [];
+                        this.totalCount = Number(res.data.pageInfo.totalRecord);
+                    }else{
+                        this.tableData = [];
+                        this.totalCount = 0;
                     }
                 });
             }
@@ -144,16 +163,6 @@
 
             .disabled {
                 color: $color_yellow;
-            }
-        }
-
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
-
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
             }
         }
 

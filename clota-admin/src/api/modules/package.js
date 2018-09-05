@@ -29,7 +29,7 @@ export default {
     //获取短信发送记录
     'getSmsSendRecord' : 'sms/sendRecord.json',
     //查询租户列表
-    'listServiceProvider' : 'tenant/listServiceProvider.json',
+    'listServiceProvider' : 'tenant/getOrgAllNames.json',
     //获取单个短信发送记录详情
     'getSmsDetail' : 'sms/get.json',
 }

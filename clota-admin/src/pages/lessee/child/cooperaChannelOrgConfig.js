@@ -2,29 +2,28 @@
 export const columns = [
     {
         title: '公司ID',
-        minWidth: 100,
-        field: 'index',
-        ableClick: true
+        minWidth: 220,
+        field: 'id',
     },
     {
         title: '合作渠道名称',
-        minWidth: 100,
-        field: 'name'
+        minWidth: 130,
+        field: 'orgName'
     },
     {
         title: '联系人',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 100,
+        field: 'linkName'
     },
     {
         title: '电话',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 150,
+        field: 'telephone'
     },
     {
         title: '社会信用代码',
-        minWidth: 100,
-        field: 'rate'
+        minWidth: 150,
+        field: 'certificateNumber'
     },
     {
         title: '管理账号',
@@ -33,12 +32,17 @@ export const columns = [
     },
     {
         title: '注册时间',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 180,
+        field: 'createdTime'
     },
     {
         title: '受理客服',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 100,
+        field: 'businessAccount'
     },
+    {
+        title : '操作',
+        width : 100,
+        field : 'operate'
+    }
 ];

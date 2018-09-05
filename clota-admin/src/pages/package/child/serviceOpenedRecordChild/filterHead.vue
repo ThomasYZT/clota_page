@@ -135,7 +135,7 @@
             listServiceProvider () {
                 ajax.post('listServiceProvider').then(res => {
                     if(res.status === 200){
-                        this.lesseeList = res.data.list ? res.data.list : [];
+                        this.lesseeList = res.data ? res.data : [];
                     }else{
                         this.lesseeList = [];
                     }

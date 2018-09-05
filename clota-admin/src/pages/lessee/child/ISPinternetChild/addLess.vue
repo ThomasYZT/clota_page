@@ -12,112 +12,127 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('lesseeName')" prop="companyName">
-                        <Input v-model="formData.companyName" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('person')" prop="person">
-                        <Input v-model="formData.person" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('phone')" prop="phone">
-                        <Input v-model="formData.phone" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('group')">
-                        <Select v-model="formData.group" style="width:280px">
-                            <Option v-for="item in groupList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('superior')">
-                        <Select v-model="formData.superior" style="width:280px">
-                            <Option v-for="item in superiorList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('fianceSuperior')">
-                        <Select v-model="formData.fianceSuperior" style="width:280px">
-                            <Option v-for="item in superiorList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('controlAccount')" prop="controlAccount">
-                        <Input v-model="formData.controlAccount" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('email')" prop="mail">
-                        <Input v-model="formData.mail" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                        <Select v-model="formData.smsProvider" style="width:280px">
-                            <Option v-for="item in smsProviderList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('place')">
-                        <city-plugin @select="formData.place = $event" style="width: 280px;">
-                        </city-plugin>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('address')">
-                        <Input v-model="formData.address" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('service')">
-                        <Select v-model="formData.service" style="width:280px" placement="top">
-                            <Option v-for="item in serviceList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="11">
+                        <!--租户公司名称-->
+                        <FormItem :label="$t('lesseeName')" prop="companyName">
+                            <Input v-model="formData.companyName" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--联系人-->
+                        <FormItem :label="$t('person')" prop="person">
+                            <Input v-model="formData.person" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--联系电话-->
+                        <FormItem :label="$t('phone')" prop="phone">
+                            <Input v-model="formData.phone" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--所属集团-->
+                        <FormItem :label="$t('group')">
+                            <Select v-model="formData.group" style="width:280px">
+                                <Option v-for="item in groupList"
+                                        :value="item.value"
+                                        :key="item.value">
+                                    {{ item.label }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--管理上级-->
+                        <FormItem :label="$t('superior')">
+                            <Select v-model="formData.superior" style="width:280px">
+                                <Option v-for="item in superiorList"
+                                        :value="item.value"
+                                        :key="item.value">
+                                    {{ item.label }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--财务上级-->
+                        <FormItem :label="$t('fianceSuperior')">
+                            <Select v-model="formData.fianceSuperior" style="width:280px">
+                                <Option v-for="item in superiorList"
+                                        :value="item.value"
+                                        :key="item.value">
+                                    {{ item.label }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--管理账号-->
+                        <FormItem :label="$t('controlAccount')" prop="controlAccount">
+                            <Input v-model="formData.controlAccount" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--电子邮箱-->
+                        <FormItem :label="$t('email')" prop="mail">
+                            <Input v-model="formData.mail" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
+                        <!--短息供应商-->
+                        <FormItem :label="$t('smsProvider')" prop="smsProvider">
+                            <Select v-model="formData.smsProvider" style="width:280px">
+                                <Option v-for="item in smsProviderList"
+                                        :value="item.id"
+                                        :key="item.id">
+                                    {{ item.provider }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--地点-->
+                        <FormItem :label="$t('place')">
+                            <city-plugin @select="formData.place = $event" style="width: 280px;">
+                            </city-plugin>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <!--详细地址-->
+                    <i-col span="11">
+                        <FormItem :label="$t('address')">
+                            <Input v-model="formData.address" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--受理客服-->
+                        <FormItem :label="$t('service')">
+                            <Select v-model="formData.service" style="width:280px" placement="top">
+                                <Option v-for="item in serviceList"
+                                        :value="item.id"
+                                        :key="item.id">
+                                    {{ item.loginName }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </i-col>
+                </i-row>
             </Form>
             <div class="footer">
-                <Button type="primary" @click="save" class="ivu-btn-min" :loading="addLoading">{{$t('addNew')}}</Button>
+                <Button type="primary"
+                        @click="save"
+                        class="ivu-btn-min"
+                        :loading="addLoading">{{$t('addNew')}}</Button>
                 <Button @click="cancel" class="ivu-btn-min">{{$t('cancel')}}</Button>
             </div>
         </div>
@@ -246,19 +261,9 @@
                     },
                 ],
                 //短信供应商列表
-                smsProviderList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                smsProviderList: [],
                 //受理客服
-                serviceList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                serviceList: [],
                 //是否正在添加中
                 addLoading: false
             }
@@ -287,10 +292,36 @@
              */
             querySysAccoutList () {
                 ajax.post('querySysAccoutList').then(res => {
-
-                    console.log(res)
+                    if(res.status === 200){
+                        this.serviceList = res.data ? res.data : [];
+                    }else{
+                        this.serviceList = [];
+                    }
+                }).catch(err => {
+                    this.serviceList = [];
+                });
+            },
+            /**
+             * 查询所有短息供应商
+             */
+            querySmsProviderList () {
+                ajax.post('smsProviderList',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.status === 200){
+                        this.smsProviderList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.smsProviderList = [];
+                    }
+                }).catch(() => {
+                    this.smsProviderList = [];
                 });
             }
+        },
+        created () {
+            this.querySysAccoutList();
+            this.querySmsProviderList();
         }
     }
 </script>

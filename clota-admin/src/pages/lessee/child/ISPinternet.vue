@@ -72,20 +72,20 @@
                     {{scope.row.status === 'open' ? $t('inUse') : $t('outUse')}}
                 </template>
             </el-table-column>
-            <!--<el-table-column-->
-                <!--slot="columnoperate"-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<ul class="operate-info">-->
-                        <!--<li class="normal" @click="watchPackage(scoped.row)">查看</li>-->
-                        <!--<li class="normal" @click="editPackage(scoped.row)">编辑</li>-->
-                        <!--<li class="red-label" @click="delPackage(scoped.row)">删除</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                slot="columnoperate"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                fixed="right"
+                :min-width="row.minWidth">
+                <template slot-scope="scoped">
+                    <ul class="operate-info">
+                        <li class="normal" @click="toISPinternetDetail">查看</li>
+                        <li class="red-label" @click="disabledLess(scoped.row)">禁用</li>
+                    </ul>
+                </template>
+            </el-table-column>
         </table-com>
         <disabled-less v-model="disabledLessModalShow"
                        :less-detail="currentRow"
