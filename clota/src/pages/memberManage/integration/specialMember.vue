@@ -278,9 +278,8 @@
              * 确定删除特殊会员分类
              */
             deleteCardFunc () {
-                ajax.post('setMemberStaffType',{
-                    id : this.memberInfo.id,
-                    isDeleted : 'true'
+                ajax.post('deleteMemberStaffType',{
+                    id : this.memberInfo.id
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));      // 删除成功
