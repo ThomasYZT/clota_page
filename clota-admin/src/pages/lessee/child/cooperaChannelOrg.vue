@@ -9,6 +9,7 @@
                         :key="index"
                         v-for="(item,index) in filterList">
                     {{$t(item.label)}}
+                    <span v-if="item.value === 'audit'" class="wraing-label">{{auditNumber | contentFilter}}</span>
                 </Button>
             </ButtonGroup>
             <div class="search">
@@ -83,7 +84,9 @@
                 pageSize : 10,
                 totalCount : 0,
                 //合作渠道数据
-                tableData : []
+                tableData : [],
+                //待审核个数
+                auditNumber : '' 
             }
         },
         methods: {
@@ -121,9 +124,11 @@
                     if(res.status === 200){
                         this.tableData = res.data.pageInfo.list ? res.data.pageInfo.list : [];
                         this.totalCount = Number(res.data.pageInfo.totalRecord);
+                        this.auditNumber = res.data.auditNumber;
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;
+                        this.auditNumber = '';
                     }
                 });
             }
@@ -146,6 +151,10 @@
                 @include block_outline(262px);
                 float: right;
                 overflow: hidden;
+            }
+
+             .wraing-label{
+                color: $color_err;
             }
         }
 

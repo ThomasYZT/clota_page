@@ -1,133 +1,139 @@
 //合作渠道（机构）表头配置
 export const columns = {
-    ready: [
+    audit: [
         {
             title: '姓名',
-            minWidth: 100,
-            field: 'index',
-            ableClick: true
+            minWidth: 150,
+            field: 'orgName'
         },
         {
             title: '性别',
-            minWidth: 100,
-            field: 'name'
+            minWidth: 70,
+            field: 'sex'
         },
         {
             title: '电话',
-            minWidth: 70,
-            field: 'rate'
+            minWidth: 140,
+            field: 'telephone'
         },
         {
             title: '身份证号',
-            minWidth: 70,
-            field: 'rate'
+            minWidth: 200,
+            field: 'certificateNumber'
         },
         {
             title: '主账号',
             minWidth: 100,
-            field: 'rate'
+            field: 'loginName'
         },
         {
             title: '身份证',
-            minWidth: 100,
-            field: 'rate'
+            minWidth: 150,
+            field: 'attach'
         },
         {
             title: '注册时间',
-            minWidth: 70,
-            field: 'rate'
+            width: 180,
+            field: 'createdTime'
         },
+        {
+            title : '操作',
+            width : 100,
+            field : 'operate'
+        }
     ],
-    'true': [
+    'success': [
         {
             title: 'ID',
             minWidth: 100,
-            field: 'index',
-            ableClick: true
+            field: 'id',
         },
         {
             title: '姓名',
             minWidth: 100,
-            field: 'index',
-            ableClick: true
+            field: 'orgName',
         },
         {
             title: '性别',
             minWidth: 100,
-            field: 'name'
+            field: 'sex'
         },
         {
             title: '电话',
             minWidth: 70,
-            field: 'rate'
+            field: 'telephone'
         },
         {
             title: '身份证号',
             minWidth: 100,
-            field: 'rate'
+            field: 'certificateNumber'
         },
         {
             title: '主账号',
             minWidth: 100,
-            field: 'rate'
+            field: 'loginName'
         },
         {
             title: '身份证',
             minWidth: 100,
-            field: 'rate'
+            field: 'attach'
         },
         {
             title: '注册时间',
             minWidth: 100,
-            field: 'rate'
+            field: 'createdTime'
         },
         {
             title: '受理客服',
             minWidth: 100,
-            field: 'rate'
+            field: 'businessAccount'
         },
+        {
+            title : '操作',
+            width : 100,
+            field : 'operate'
+        }
     ],
-    'false': [
+    'reject': [
         {
             title: '姓名',
             minWidth: 100,
-            field: 'index',
-            ableClick: true
+            field: 'orgName',
         },
         {
             title: '性别',
             minWidth: 100,
-            field: 'name'
+            field: 'sex'
         },
         {
             title: '电话',
             minWidth: 70,
-            field: 'rate'
+            field: 'telephone'
         },
         {
             title: '身份证号',
             minWidth: 100,
-            field: 'rate'
+            field: 'certificateNumber'
         },
         {
             title: '主账号',
             minWidth: 100,
-            field: 'rate'
+            field: 'loginName'
         },
         {
             title: '身份证',
             minWidth: 100,
-            field: 'rate'
+            field: 'attach'
         },
         {
             title: '注册时间',
             minWidth: 100,
-            field: 'rate'
+            field: 'createdTime'
         },
         {
             title: '受理客服',
             minWidth: 100,
-            field: 'rate'
+            field: 'businessAccount'
         },
         {
             title: '驳回原因',

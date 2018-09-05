@@ -29,6 +29,8 @@ const apiList = {
     getPrivileges : 'user/getPrivileges.json',
     //查询所有的运营后台客服
     querySysAccoutList : 'tenant/listSysAccount.json',
+    //获取当前登录账户的信息
+    getSysAccountByToken : 'user/getSysAccountByToken.json',
     //首页接口
     ...index,
     //日志接口

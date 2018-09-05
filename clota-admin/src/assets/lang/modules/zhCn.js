@@ -299,5 +299,7 @@ export default {
     state: '状态',
     createTime: '创建时间',
     lastUpdateTime: '上次修改时间',
+    male : '男',
+    female : '女'
 
 }

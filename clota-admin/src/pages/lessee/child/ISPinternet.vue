@@ -51,6 +51,7 @@
             :page-size-d.sync="pageSize"
             :total-count="totalCount"
             :ofset-height="120"
+            :row-class-name="rowClassName"
             @query-data="queryList">
             <el-table-column
                 slot="columnnodeType"
@@ -172,6 +173,15 @@
                         this.totalCount = 0;
                     }
                 })
+            },
+            /**
+             * 设置行样式
+             * @param row
+             */
+            rowClassName ({row}) {
+                if(row.viewStatue === 1){
+                    return 'light-row';
+                }
             }
         },
         computed: {}
@@ -204,18 +214,12 @@
             }
         }
 
-        /deep/ .el-table::before {
-            display: none;
+        /deep/ .light-row{
+            color: $color_err;
         }
 
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
-
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
-            }
+        /deep/ .el-table::before {
+            display: none;
         }
 
         .no-data {

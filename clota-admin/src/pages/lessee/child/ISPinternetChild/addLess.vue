@@ -16,13 +16,13 @@
                     <i-col span="11">
                         <!--租户公司名称-->
                         <FormItem :label="$t('lesseeName')" prop="companyName">
-                            <Input v-model="formData.companyName" style="width: 280px"/>
+                            <Input v-model.trim="formData.companyName" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--联系人-->
                         <FormItem :label="$t('person')" prop="person">
-                            <Input v-model="formData.person" style="width: 280px"/>
+                            <Input v-model.trim="formData.person" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -30,59 +30,63 @@
                     <i-col span="11">
                         <!--联系电话-->
                         <FormItem :label="$t('phone')" prop="phone">
-                            <Input v-model="formData.phone" style="width: 280px"/>
+                            <Input v-model.trim="formData.phone" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
-                        <!--所属集团-->
-                        <FormItem :label="$t('group')">
-                            <Select v-model="formData.group" style="width:280px">
-                                <Option v-for="item in groupList"
-                                        :value="item.value"
-                                        :key="item.value">
-                                    {{ item.label }}
-                                </Option>
-                            </Select>
+                        <!--传真-->
+                        <FormItem :label="$t('fax')" prop="fax">
+                            <Input v-model.trim="formData.fax" style="width: 280px"/>
                         </FormItem>
+                        <!--&lt;!&ndash;所属集团&ndash;&gt;-->
+                        <!--<FormItem :label="$t('group')">-->
+                            <!--<Select v-model="formData.group" style="width:280px">-->
+                                <!--<Option v-for="item in groupList"-->
+                                        <!--:value="item.value"-->
+                                        <!--:key="item.value">-->
+                                    <!--{{ item.label }}-->
+                                <!--</Option>-->
+                            <!--</Select>-->
+                        <!--</FormItem>-->
                     </i-col>
                 </i-row>
-                <i-row>
-                    <i-col span="11">
-                        <!--管理上级-->
-                        <FormItem :label="$t('superior')">
-                            <Select v-model="formData.superior" style="width:280px">
-                                <Option v-for="item in superiorList"
-                                        :value="item.value"
-                                        :key="item.value">
-                                    {{ item.label }}
-                                </Option>
-                            </Select>
-                        </FormItem>
-                    </i-col>
-                    <i-col span="11">
-                        <!--财务上级-->
-                        <FormItem :label="$t('fianceSuperior')">
-                            <Select v-model="formData.fianceSuperior" style="width:280px">
-                                <Option v-for="item in superiorList"
-                                        :value="item.value"
-                                        :key="item.value">
-                                    {{ item.label }}
-                                </Option>
-                            </Select>
-                        </FormItem>
-                    </i-col>
-                </i-row>
+                <!--<i-row>-->
+                    <!--<i-col span="11">-->
+                        <!--&lt;!&ndash;管理上级&ndash;&gt;-->
+                        <!--<FormItem :label="$t('superior')">-->
+                            <!--<Select v-model="formData.superior" style="width:280px">-->
+                                <!--<Option v-for="item in superiorList"-->
+                                        <!--:value="item.value"-->
+                                        <!--:key="item.value">-->
+                                    <!--{{ item.label }}-->
+                                <!--</Option>-->
+                            <!--</Select>-->
+                        <!--</FormItem>-->
+                    <!--</i-col>-->
+                    <!--<i-col span="11">-->
+                        <!--&lt;!&ndash;财务上级&ndash;&gt;-->
+                        <!--<FormItem :label="$t('fianceSuperior')">-->
+                            <!--<Select v-model="formData.fianceSuperior" style="width:280px">-->
+                                <!--<Option v-for="item in superiorList"-->
+                                        <!--:value="item.value"-->
+                                        <!--:key="item.value">-->
+                                    <!--{{ item.label }}-->
+                                <!--</Option>-->
+                            <!--</Select>-->
+                        <!--</FormItem>-->
+                    <!--</i-col>-->
+                <!--</i-row>-->
                 <i-row>
                     <i-col span="11">
                         <!--管理账号-->
                         <FormItem :label="$t('controlAccount')" prop="controlAccount">
-                            <Input v-model="formData.controlAccount" style="width: 280px"/>
+                            <Input v-model.trim="formData.controlAccount" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--电子邮箱-->
                         <FormItem :label="$t('email')" prop="mail">
-                            <Input v-model="formData.mail" style="width: 280px"/>
+                            <Input v-model.trim="formData.mail" placeholder="重要！用于接收登录密码" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -90,7 +94,7 @@
                     <i-col span="11">
                         <!--短息供应商-->
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                            <Select v-model="formData.smsProvider" style="width:280px">
+                            <Select v-model.trim="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
                                         :value="item.id"
                                         :key="item.id">
@@ -101,7 +105,7 @@
                     </i-col>
                     <i-col span="11">
                         <!--地点-->
-                        <FormItem :label="$t('place')">
+                        <FormItem :label="$t('location')">
                             <city-plugin @select="formData.place = $event" style="width: 280px;">
                             </city-plugin>
                         </FormItem>
@@ -110,20 +114,29 @@
                 <i-row>
                     <!--详细地址-->
                     <i-col span="11">
-                        <FormItem :label="$t('address')">
-                            <Input v-model="formData.address" style="width: 280px"/>
+                        <FormItem :label="$t('address')" prop="address">
+                            <Input v-model.trim="formData.address" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--受理客服-->
                         <FormItem :label="$t('service')">
-                            <Select v-model="formData.service" style="width:280px" placement="top">
+                            <Select v-model.trim="formData.service" style="width:280px" placement="top">
                                 <Option v-for="item in serviceList"
                                         :value="item.id"
                                         :key="item.id">
                                     {{ item.loginName }}
                                 </Option>
                             </Select>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <!--企业编码-->
+                    <i-col span="17">
+                        <FormItem :label="$t('enterpriseCode')" prop="companyCode">
+                            <Input v-model.trim="formData.companyCode" style="width: 280px"/>
+                            <span class="tips">用于与线下系统对接</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -157,7 +170,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.phoneError2'));
+                        callback(this.$t('formalError',{field : this.$t('phone')}));
                     }
                 } else {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('phone')}));
@@ -168,7 +181,11 @@
                 if (value === '' || value === null || value === undefined) {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('controlAccount')}));
                 } else {
-                    callback();
+                    this.queryAccountExist().then(() => {
+                        callback();
+                    }).catch(() => {
+                        callback('管理账号已存在');
+                    });
                 }
             };
             //校验电子邮箱
@@ -177,7 +194,7 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.emailError2'));
+                        callback(this.$t('formalError',{field : this.$t('mail')}));
                     }
                 } else {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('email')}))
@@ -202,11 +219,13 @@
                     //联系电话
                     phone: '',
                     //所属集团
-                    group: '',
+                    // group: '',
+                    //传真
+                    fax : '',
                     //管理上级
-                    superior: '',
+                    // superior: '',
                     //财务上级
-                    fianceSuperior: '',
+                    // fianceSuperior: '',
                     //管理账号
                     controlAccount: '',
                     //电子邮箱
@@ -219,6 +238,8 @@
                     service: '',
                     //地点
                     place: '',
+                    //企业编码
+                    companyCode : ''
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -228,6 +249,7 @@
                             message: this.$t('validateError.pleaseInput', {'msg': this.$t('lesseeName')}),
                             trigger: 'blur'
                         },
+                        {max : 200,message : this.$t('errorMaxLength',{field : this.$t('lesseeName'),length : 200}),trigger : 'blur'}
                     ],
                     person: [
                         {
@@ -235,31 +257,40 @@
                             message: this.$t('validateError.pleaseInput', {'msg': this.$t('person')}),
                             trigger: 'blur'
                         },
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 20}),trigger : 'blur'}
                     ],
                     phone: [
                         {required: true, validator: validatePhone, trigger: 'blur'},
                     ],
                     controlAccount: [
                         {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        {max : 30,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 30})}
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('mail'),length : 100}),trigger: 'blur'}
+                    ],
+                    address : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger: 'blur'}
+                    ],
+                    companyCode : [
+                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('enterpriseCode'),length : 50}),trigger: 'blur'}
                     ]
                 },
-                //集团列表
-                groupList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
-                //管理人员列表
-                superiorList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                // //集团列表
+                // groupList: [
+                //     {
+                //         value: 'New York',
+                //         label: 'New York'
+                //     },
+                // ],
+                // //管理人员列表
+                // superiorList: [
+                //     {
+                //         value: 'New York',
+                //         label: 'New York'
+                //     },
+                // ],
                 //短信供应商列表
                 smsProviderList: [],
                 //受理客服
@@ -317,6 +348,14 @@
                 }).catch(() => {
                     this.smsProviderList = [];
                 });
+            },
+            /**
+             * 判断管理账号是否存在
+             */
+            queryAccountExist () {
+                return ajax.post('queryAccountExist',{
+                    loginName : this.formData.controlAccount
+                });
             }
         },
         created () {
@@ -344,6 +383,12 @@
                 @include block_outline(924px, auto);
                 margin: 0 auto;
             }
+        }
+
+        .tips{
+            color: $color_gray;
+            display: inline-block;
+            margin-left: 10px;
         }
 
         .footer {
