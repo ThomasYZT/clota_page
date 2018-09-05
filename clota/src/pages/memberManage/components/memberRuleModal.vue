@@ -11,7 +11,7 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :label-width="170">
                 <div class="ivu-form-item-wrap" v-for="(item, index) in formData.tableData">
-                    <Form-item :label="item.levelDesc + $t('growthRange') + '：'"
+                    <Form-item :label="item.levelDesc + '：'"
                                :key="index"
                                :prop="'tableData.'+index+'.highestGrowthValue'"
                                :rules="[{ validator: emoji, trigger: 'blur' },
