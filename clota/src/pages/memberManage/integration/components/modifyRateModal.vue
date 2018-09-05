@@ -103,8 +103,19 @@
             const validateDiscount = (rule,value,callback) => {
                 if(this.notEmpty(value)){
                     if(validator.isNumber(value)){
-                        if(value > 0 && value < 1){
-                            callback();
+                        if(value > 0 && value <= 1){
+                            let  numStr = String(value);
+                            //有小数
+                            if(numStr.indexOf('.') !== -1){
+                                let numSplit = numStr.split('.');
+                                if(numSplit[1].length > 2){//小数位数字大于2
+                                    callback(this.$t('decimalError',{field : this.$t('discountRate')}));
+                                }else{
+                                    callback();
+                                }
+                            }else{
+                                callback();
+                            }
                         }else{
                             callback(this.$t('discountError'));
                         }

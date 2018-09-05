@@ -55,7 +55,8 @@
                                     v-if="!isNotEmpty(scope.row.deptScoreRate) || !isNotEmpty(scope.row.deptDiscountRate)"
                                     @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li>
                                 <li v-else @click="showModifyModal(scope.row)">{{$t('ModifyIntegralDiscountRate')}}</li>
-                                <li @click="setProductRate(scope.row)">{{$t('setInteByProduct')}}</li>
+                                <li :class="{disabled : !isNotEmpty(scope.row.deptScoreRate) || !isNotEmpty(scope.row.deptDiscountRate)}"
+                                    @click="setProductRate(scope.row)">{{$t('setInteByProduct')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -140,6 +141,9 @@
              * @param data
              */
             setProductRate ( data ) {
+                if(!this.isNotEmpty(data.deptScoreRate) || !this.isNotEmpty(data.deptDiscountRate)){
+                    return;
+                }
                 this.$router.push({
                     name: 'setProductRate',
                     params : {

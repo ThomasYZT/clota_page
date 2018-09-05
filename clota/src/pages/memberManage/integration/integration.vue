@@ -37,7 +37,8 @@
                             v-if="!isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)"
                             @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li><!--设置积分、折扣率-->
                         <li v-else @click="showModifyModal(scope.row)">{{$t('ModifyIntegralDiscountRate')}}</li><!--修改积分、折扣率-->
-                        <li @click="setRateToStore(scope.row)">{{$t('setIntegralDiscountByShop')}}</li><!--按店铺设置积分、折扣率-->
+                        <li :class="{disabled : !isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)}"
+                            @click="setRateToStore(scope.row)">{{$t('setIntegralDiscountByShop')}}</li><!--按店铺设置积分、折扣率-->
                     </ul>
                 </template>
             </el-table-column>
@@ -98,6 +99,9 @@
              * @param data
              */
             setRateToStore ( data ) {
+                if(!this.isNotEmpty(data.scoreRate) || !this.isNotEmpty(data.discountRate)){
+                    return ;
+                }
                 this.$router.push({
                     name: 'setRate',
                     params : {

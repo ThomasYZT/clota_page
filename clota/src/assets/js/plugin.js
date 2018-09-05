@@ -63,7 +63,6 @@ plugin.install = function (Vue, options) {
     Vue.use(scrollbar);
     Vue.use(Table);
     Vue.use(TableColumn);
-    Vue.use(Scrollbar);
     Vue.use(Pagination);
     Vue.use(Dropdown);
     Vue.use(DropdownMenu);

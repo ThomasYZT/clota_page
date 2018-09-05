@@ -53,7 +53,7 @@ export default {
     'errorFormat': '{field}wrong format',
     'consumption': 'Consumption amount',
     'mustBigThenZero': '{field}Must be greater than 0',
-    'discountError': 'Discount rate must be greater than 0 and less than 1',
+    'discountError': 'Discount rate must be greater than 0 and less than or equal to 1',
     'accoutOrPassErr': 'Wrong account or password',
     'serverFail': 'Server connection failed',
     'rightGetError': 'Access failed',

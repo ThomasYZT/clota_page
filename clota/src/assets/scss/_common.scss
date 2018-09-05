@@ -3,6 +3,11 @@
 @import "pinkTheame";
 .operate-list{
     @include table_operate();
+
+    .disabled{
+        cursor: not-allowed!important;
+        color: $color_999!important;
+    }
 }
 
 

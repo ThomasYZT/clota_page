@@ -53,7 +53,7 @@ export default {
     'errorFormat': '{field}格式错误',
     'consumption': '消费金额',
     'mustBigThenZero': '{field}必须大于0',
-    'discountError': '折扣率必须大于0且小于1',
+    'discountError': '折扣率必须大于0且小于等于1',
     'accoutOrPassErr': '账号或密码错误',
     'serverFail': '服务器连接失败',
     'rightGetError': '获取权限失败',
