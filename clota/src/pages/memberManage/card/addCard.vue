@@ -9,6 +9,7 @@
             </bread-crumb-head>
         </div>
 
+        <!--折扣券-->
         <div class="form-container">
             <Form ref="discountFormValidate"
                   key="discountFormValidate"
@@ -124,6 +125,7 @@
                 </div>
             </Form>
 
+            <!--代金券-->
             <Form ref="cashFormValidate"
                   v-if="formData.couponType === 'cash_coupon'"
                   :model="formData"
@@ -245,8 +247,11 @@
                         </Select>
                     </Form-item>
                 </div>
+                <div class="ivu-form-item-wrap" v-if="formData.isDiscountCoexist === 'true'">
+                </div>
             </Form>
 
+            <!--兑换券-->
             <Form ref="exchangeFormValidate"
                   key="exchangeFormValidate"
                   v-if="formData.couponType === 'exchange_coupon'"
@@ -1173,7 +1178,7 @@
                 display: inline-block;
                 min-width: 405px;
                 width: 48%;
-                text-align: center;
+                text-align: left;
                 vertical-align: text-top;
                 padding-right: 100px;
 

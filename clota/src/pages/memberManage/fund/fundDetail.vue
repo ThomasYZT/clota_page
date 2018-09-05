@@ -155,8 +155,6 @@
                 pageSize : 10,
                 //账户类型列表
                 accountList : [],
-                //表格是否显示
-                tableShow : false
             }
         },
         methods: {
@@ -164,8 +162,16 @@
              * 查询资金交易明细
              */
             queryList () {
+                let accountTypeIds = [];
+                if(this.queryParams.accountTypeId === 'all'){
+                    for(let i = 0,j = this.accountList.length;i < j;i++){
+                        if(this.accountList[i].id !== 'all'){
+                            accountTypeIds.push(this.accountList[i].id);
+                        }
+                    }
+                }
                 ajax.post('queryOrgAccountChange',{
-                    accountTypeIds : this.queryParams.accountTypeId === 'all' ? '' : this.queryParams.accountTypeId,
+                    accountTypeIds : this.queryParams.accountTypeId === 'all' ? accountTypeIds.join(',') : this.queryParams.accountTypeId,
                     operType : this.queryParams.tradeType === 'all' ? '' : this.queryParams.tradeType,
                     startDate : '',
                     endDate : '',
@@ -221,14 +227,11 @@
              * @param params
              */
             getParams (params) {
-                this.tableShow = false;
                 if(params && Object.keys(params).length > 0 && this.fromAccountStore){
                     this.$set(this.queryParams,'accountTypeId',params.id);
                     this.queryParams.accountTypeId = params.id;
-                    this.tableShow = true;
                 }else{
                     this.$set(this.queryParams,'accountTypeId','all');
-                    this.tableShow = true;
                 }
             },
             /**
@@ -257,7 +260,6 @@
             this.queryMemberAccountDefine();
         },
         beforeRouteLeave(to,from,next){
-            this.tableShow = false;
             next();
         },
         computed : {
@@ -267,13 +269,16 @@
             },
             ...mapGetters({
               lang : 'lang'
-            })
+            }),
+            //表格是否显示
+            tableShow () {
+                return  this.queryParams.accountTypeId && this.accountList && this.accountList.length > 0;
+            }
         },
         watch : {
             '$route' (newVal,oldVal) {
                 if(newVal.name === 'fundDetail'){
                     this.$set(this.queryParams,'accountTypeId','all');
-                    this.tableShow = true;
                     this.pageSize = 10;
                     this.pageNo = 1;
                 }

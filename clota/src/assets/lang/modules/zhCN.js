@@ -29,7 +29,7 @@ export default {
     'card': '会员卡券',
     'fund': '储值记录',
     'fundDetail': '资金交易明细',
-    'financialManagement': '财务管理',
+    'financialManagement': '储值管理',
     'memberSetting': '基础设置',
     'initializationSettings': '初始化设置',
     'channelSetting': '渠道设置',
