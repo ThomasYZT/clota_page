@@ -1,10 +1,14 @@
 
 //系统接口
 export default {
+
+    /***********************************账号***********************************/
     //查询角色信息列表
     'roleList' : 'role/list.json',
     //查询账户信息列表
     'userList' : 'user/list.json',
+    //根据ID查询单个账户信息
+    'getUser' : 'user/get.json',
     //新增账户信息
     'addUser' : 'user/add.json',
     //修改账户信息
@@ -16,6 +20,21 @@ export default {
     //启/停用账户信息
     'switchAccount' : 'user/switchAccount.json',
 
+
+    /***********************************系统公告***********************************/
+    //查询系统公告列表
+    'noticeList' : 'notice/list.json',
+    //根据ID查询单个系统公告
+    'getNotice' : 'notice/get.json',
+    //添加系统公告
+    'addNotice' : 'notice/add.json',
+    //修改系统公告
+    'updateNotice' : 'notice/update.json',
+    //启/停系统公告
+    'switchNotice' : 'notice/switchNotice.json',
+
+
+    /***********************************设置***********************************/
 
 
 

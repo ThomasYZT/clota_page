@@ -4,16 +4,50 @@
     <div class="notice">
         <div class="create-notice">
             <Button type="primary">
-                <span @click="addnotice">发布公告</span>
+                <span @click="addNotice">+ 发布公告</span>
             </Button>
         </div>
         <table-com
-            :table-data="tableData"
-            :table-height="tableHeight"
+            :ofsetHeight="208"
+            :show-pagination="true"
             :column-data="systemHead"
-            :auto-height="true">
+            :table-data="tableData"
+            :total-count="total"
+            :page-no-d.sync="sysListParams.page"
+            :page-size-d.sync="sysListParams.pageSize"
+            :border="false"
+            @query-data="queryList">
+             <el-table-column
+                slot="columnimages"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <template v-if="scoped.row.images && scoped.row.images.length > 0">
+                        <img class="row-image"
+                             v-for="(item,index) in scoped.row.images"
+                             :key="index"
+                             :src="item">
+                    </template>
+                </template>
+            </el-table-column>
             <el-table-column
-                slot="column7"
+                slot="columnstate"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <span>{{ scoped.row.state === 'true' ? '已启用' : '未启用'  }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnoperate"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -22,48 +56,70 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="operate-list" @click="watchNotice(scoped.row)">查看</li>
-                        <li class="operate-list" @click="editnotice(scoped.row)">编辑</li>
-                        <li class="operate-list stop" @click="stopnotice(scoped.row)">禁用</li>
+                        <li class="normal" @click="watchNotice(scoped.row)">查看</li>
+                        <template v-if="scoped.row.state === 'true'">
+                            <li class="yellow-label" @click="stopNotice(scoped.row)">禁用</li>
+                        </template>
+                        <template v-else>
+                            <li class="normal"  @click="openNotice(scoped.row)">启用</li>
+                            <li class="normal" @click="editNotice(scoped.row)">编辑</li>
+                        </template>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount">
-            </el-pagination>
-        </div>
     </div>
 </template>
 
 <script>
 
-    import tableCom from '../../index/child/tableCom';
-    import tableMixins from '../../lessee/tableMixins';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {systemHead} from './systemNoticeConfig';
+    import ajax from '@/api/index';
 
     export default {
-        mixins :[tableMixins],
         components : {
             tableCom,
         },
         data() {
             return {
-                totalCount : 100,
                 //表头配置
-                systemHead : systemHead
+                systemHead : systemHead,
+                // 账户列表的请求参数
+                sysListParams: {
+                    page: 1,
+                    pageSize: 10
+                },
+                // 列表数据
+                tableData: [],
+                // 列表数据总数
+                total: 0,
             }
+        },
+        created() {
+            //查询账户信息列表
+            this.queryList();
         },
         methods: {
             /**
+             * 查询账户信息列表
+             */
+            queryList() {
+                ajax.post('noticeList', this.sysListParams).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list || [];
+                        this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
+                    } else {
+                        this.tableData = [];
+                        this.total = 0;
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
              * 新建公告
              */
-            addnotice () {
+            addNotice () {
                 this.$router.push({
                     name : 'editSystemNotice',
                     params : {
@@ -75,14 +131,45 @@
              * 停用公告
              * @param data
              */
-            stopnotice (data) {
-                this.$Message.success('您已禁用公告1');
+            stopNotice (data) {
+                if(data){
+                    this.switchNotice(data, 'false')
+                }
+            },
+            /**
+             * 启用公告
+             * @param data
+             */
+            openNotice (data) {
+                if(data){
+                    this.switchNotice(data, 'true')
+                }
+            },
+            /**
+             * 启/停用公告信息
+             * @param data
+             * @param state true为启用 false为停用
+             */
+            switchNotice ( data, state) {
+                ajax.post('switchNotice', {
+                    id: data.id,
+                    state: state
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success( this.$t('success')+ state === 'true' ?
+                            this.$t('startUsing') :
+                            this.$t('stopUsing') + data.title);
+                        this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
             /**
              * 编辑公告
              * @param data
              */
-            editnotice (data) {
+            editNotice (data) {
                 this.$router.push({
                     name : 'editSystemNotice',
                     params : {
@@ -113,20 +200,11 @@
             padding: 15px 0;
         }
 
-        .operate-info {
-            @include table_operate();
-
-            .operate-list {
-                color: $color_blue;
-            }
-
-            .stop{
-                color : $color_yellow
-            }
-
-            .del{
-                color: $color_err;
-            }
+        .row-image{
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            margin-right: 5px;
         }
 
         .page-area {

@@ -145,15 +145,19 @@
                 ruleValidate: {
                     loginName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
+                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 15}), trigger: 'blur' },
                     ],
                     nickName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
+                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },
                     ],
                     email: [
                         {required: true, validator: validatmail, trigger: 'blur'},
+                        { type: 'string', max: 30, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 30}), trigger: 'blur' },
                     ],
                     phone : [
                         {required: true, validator: validateMobile, trigger: 'blur'},
+                        { type: 'string', max: 11, message: this.$t('errorMaxLength', {field: this.$t('mobile'), length: 11}), trigger: 'blur' },
                     ],
                     roleId: [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('role')}), trigger: 'blur'},

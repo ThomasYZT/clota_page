@@ -90,7 +90,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {accountHead} from './accountConfig';
     import delModal from '@/components/delModal/index.vue';
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
 
     export default {
         components : {

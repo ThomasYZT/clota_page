@@ -5,41 +5,41 @@ export const systemHead = [
     {
         title: '编号',
         minWidth: 100,
-        field: 'time'
+        field: 'id'
     },
     {
         title: '标题',
         minWidth: 100,
-        field: 'rate'
+        field: 'title'
     },
     {
         title: '描述',
-        minWidth: 300,
-        field: 'rate'
+        minWidth: 280,
+        field: 'content'
     },
     {
         title: '公告内容',
-        minWidth: 100,
-        field: 'rate'
+        minWidth: 150,
+        field: 'images'
     },
     {
         title: '发布人',
-        minWidth: 120,
-        field: 'rate'
+        minWidth: 100,
+        field: 'publisher'
     },
     {
         title: '发布时间',
-        minWidth: 100,
-        field: 'rate'
+        minWidth: 120,
+        field: 'releaseTime'
     },
     {
         title: '状态',
-        minWidth: 80,
-        field: 'rate'
+        minWidth: 100,
+        field: 'state'
     },
     {
         title: '操作',
-        minWidth: 130,
-        field: 'rate'
+        minWidth: 150,
+        field: 'operate'
     },
 ];
