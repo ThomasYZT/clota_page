@@ -10,36 +10,6 @@
             </span>
         </div>
         <div class="rank-list-detail">
-
-            <!--<table-com-->
-                <!--:table-data="tableData"-->
-                <!--table-height="268px"-->
-                <!--:column-data="columnData">-->
-                <!--<el-table-column-->
-                    <!--label="排名"-->
-                    <!--slot="column0"-->
-                    <!--width="70">-->
-                    <!--<template slot-scope="scoped">-->
-                        <!--<span :class="{'with-bck' : scoped.$index < 3}">{{scoped.$index + 1}}</span>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--label="占比"-->
-                    <!--slot="column2"-->
-                    <!--width="70">-->
-                    <!--<template slot-scope="scoped">-->
-                        <!--<span>{{getIndex(scoped.row.proportion)}}</span>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <!--<el-table-column-->
-                    <!--width="100">-->
-                    <!--<template slot-scope="scoped">-->
-                        <!--<div class="bar-warp">-->
-                            <!--<div class="bar" :style="{width : (scoped.row.proportion ? scoped.row.proportion * 100 : 0) + '%'}"></div>s-->
-                        <!--</div>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-            <!--</table-com>-->
             <table-com
                 :column-data="columnData"
                 :table-data="tableData"
@@ -82,7 +52,7 @@
                     width="100">
                     <template slot-scope="scoped">
                         <div class="bar-warp">
-                            <div class="bar" :style="{width : (scoped.row.proportion ? scoped.row.proportion * 100 : 0) + '%'}"></div>s
+                            <div class="bar" :style="{width : (scoped.row.proportion ? scoped.row.proportion * 100 : 0) + '%'}"></div>
                         </div>
                     </template>
                 </el-table-column>

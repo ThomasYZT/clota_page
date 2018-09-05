@@ -42,7 +42,6 @@
                 :column-data="columnData"
                 :table-data="tableData"
                 :border="true"
-                :total-count="totalCount"
                 :height="265"
                 @query-data="queryAllServerMsg">
                 <el-table-column

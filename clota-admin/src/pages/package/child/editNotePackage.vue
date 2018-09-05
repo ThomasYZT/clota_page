@@ -162,7 +162,11 @@
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
-                        this.addSmsPackage();
+                        if(this.type === 'add'){
+                            this.addSmsPackage();
+                        }else if(this.type === 'edit'){
+                            this.updateSmsPackage();
+                        }
                     }else{
                         this.addLoading = false;
                     }
@@ -199,27 +203,41 @@
              */
             addSmsPackage () {
                 ajax.post('addSmsPackage',{
-                    id : this.type === 'edit' ? this.smsPackageId : '',
                     packageName : this.formData.packageName,
                     provider : this.formData.smsProvider,
                     price : this.formData.price,
                     smsCount : this.formData.number,
                 }).then(res => {
                     if(res.status === 200){
-                        if(this.type === 'add'){
-                            this.$Message.success('新增成功');
-                        }else{
-                            this.$Message.success('编辑成功');
-                        }
+                        this.$Message.success('新增成功');
                         this.$router.push({
                             name : 'notePackageInfo'
                         });
                     }else{
-                        if(this.type === 'add'){
-                            this.$Message.error('新增失败');
-                        }else{
-                            this.$Message.error('编辑失败');
-                        }
+                        this.$Message.error('新增失败');
+                    }
+                }).finally(() => {
+                    this.addLoading = false;
+                });
+            },
+            /**
+             * 更新套餐
+             */
+            updateSmsPackage () {
+                ajax.post('updateSmsPackage',{
+                    id : this.smsPackageId,
+                    packageName : this.formData.packageName,
+                    provider : this.formData.smsProvider,
+                    price : this.formData.price,
+                    smsCount : this.formData.number,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('编辑成功');
+                        this.$router.push({
+                            name : 'notePackageInfo'
+                        });
+                    }else{
+                        this.$Message.error('编辑失败');
                     }
                 }).finally(() => {
                     this.addLoading = false;

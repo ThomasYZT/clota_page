@@ -11,36 +11,67 @@
                 <Button type="primary">查找</Button>
             </div>
         </div>
+        <!--<table-com-->
+            <!--:table-data="tableData"-->
+            <!--:table-height="tableHeight"-->
+            <!--:column-data="columnData"-->
+            <!--:row-click="false">-->
+            <!--<el-table-column-->
+                <!--label="操作"-->
+                <!--:width="120">-->
+                <!--<template slot-scope="scoped">-->
+                    <!--<ul class="operate-info">-->
+                        <!--<li class="operate-list" @click="toISPinternetDetail">查看</li>-->
+                        <!--<li class="operate-list disabled" @click="disabledLess(scoped.row)">禁用</li>-->
+                    <!--</ul>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+        <!--</table-com>-->
+        <!--<div class="page-area" v-if="tableData.length > 0">-->
+            <!--<el-pagination-->
+                <!--:current-page="pageNo"-->
+                <!--:page-sizes="pageSizeConfig"-->
+                <!--:page-size="pageSize"-->
+                <!--layout="total, sizes, prev, pager, next, jumper"-->
+                <!--:total="40">-->
+            <!--</el-pagination>-->
+        <!--</div>-->
+
         <table-com
-            :table-data="tableData"
-            :table-height="tableHeight"
             :column-data="columnData"
-            :row-click="false">
-            <el-table-column
-                label="操作"
-                :width="120">
-                <template slot-scope="scoped">
-                    <ul class="operate-info">
-                        <li class="operate-list" @click="toISPinternetDetail">查看</li>
-                        <li class="operate-list disabled" @click="disabledLess(scoped.row)">禁用</li>
-                    </ul>
-                </template>
-            </el-table-column>
+            :table-data="tableData"
+            :border="true"
+            :page-no-d.sync="pageNo"
+            :show-pagination="true"
+            :page-size-d.sync="pageSize"
+            :total-count="totalCount"
+            :ofset-height="120"
+            @query-data="queryList">
+            <!--<el-table-column-->
+                <!--slot="columnservices"-->
+                <!--slot-scope="row"-->
+                <!--:label="row.title"-->
+                <!--:width="row.width"-->
+                <!--:min-width="row.minWidth">-->
+                <!--<template slot-scope="scope">-->
+                    <!--{{getPackageService(scope.row)}}-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+                <!--slot="columnoperate"-->
+                <!--slot-scope="row"-->
+                <!--:label="row.title"-->
+                <!--:width="row.width"-->
+                <!--:min-width="row.minWidth">-->
+                <!--<template slot-scope="scoped">-->
+                    <!--<ul class="operate-info">-->
+                        <!--<li class="normal" @click="watchPackage(scoped.row)">查看</li>-->
+                        <!--<li class="normal" @click="editPackage(scoped.row)">编辑</li>-->
+                        <!--<li class="red-label" @click="delPackage(scoped.row)">删除</li>-->
+                    <!--</ul>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="40">
-            </el-pagination>
-        </div>
-        <no-data class="no-data"
-                 v-if="tableData.length < 1">
-        </no-data>
-        <loading :visible="isLoading">
-        </loading>
         <disabled-less v-model="disabledLessModalShow"
                        :less-detail="currentRow"
                        @confirm-disabled="confirmDisabled">
@@ -50,18 +81,15 @@
 
 <script>
     import {columns} from './ISPinternetConfig';
-    import tableCom from '../../index/child/tableCom';
-    import noData from '@/components/noDataTip/noData-tip.vue';
-    import loading from '@/components/loading/loading.vue';
-    import tableMixins from '../tableMixins';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import disabledLess from './ISPinternetChild/disabledLess';
+    import ajax from '@/api/index';
 
     export default {
-        mixins: [tableMixins],
         components: {
+            breadCrumbHead,
             tableCom,
-            noData,
-            loading,
             disabledLess
         },
         data() {
@@ -71,7 +99,12 @@
                 //是否显示
                 disabledLessModalShow : false,
                 //当前操作的租户数据
-                currentRow : {}
+                currentRow : {},
+                pageNo : 1,
+                pageSize : 10,
+                totalCount : 0,
+                //表格数据
+                tableData : []
             }
         },
         methods: {
@@ -104,6 +137,12 @@
              */
             confirmDisabled () {
 
+            },
+            /**
+             * 查询服务提供商信息
+             */
+            queryList () {
+                ajax.post('')
             }
         },
         computed: {}

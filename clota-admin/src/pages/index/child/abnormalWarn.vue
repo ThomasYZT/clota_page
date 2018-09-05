@@ -86,7 +86,7 @@
                     warningType : '0'
                 }).then(res => {
                     if(res.status === 200){
-                        this.totalCount = res.data.totalRecord;
+                        this.totalCount = Number(res.data.totalRecord);
                         this.warningList = res.data.list ? res.data.list : [];
                     }else{
                         this.totalCount = 0;

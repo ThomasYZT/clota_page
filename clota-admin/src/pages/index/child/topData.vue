@@ -29,7 +29,7 @@
             },
             //指标数量
             'label-num': {
-                type: Number,
+                type: [Number,String],
                 default: 0
             },
             //指标同比率

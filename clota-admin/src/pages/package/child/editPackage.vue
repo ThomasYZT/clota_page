@@ -145,7 +145,11 @@
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
-                        this.addPackage();
+                        if(this.type === 'add'){
+                            this.addPackage();
+                        }else if(this.type === 'edit'){
+                            this.updatePackage();
+                        }
                     }else{
                         this.addLoading = false;
                     }
@@ -199,25 +203,37 @@
              */
             addPackage () {
                 ajax.post('addPackage',{
-                    id : this.type === 'edit' ? this.packageId : '',
                     packageName : this.formData.packageName,
                     serviceids  : this.formData.services.join(',')
                 }).then(res => {
                     if(res.status === 200){
-                        if(this.type === 'edit'){
-                            this.$Message.success('编辑成功');
-                        }else{
-                            this.$Message.success('新增成功');
-                        }
+                        this.$Message.success('新增成功');
                         this.$router.push({
                             name : 'packageList'
                         });
                     }else{
-                        if(this.type === 'edit'){
-                            this.$Message.error(res.message || '编辑失败');
-                        }else{
-                            this.$Message.error(res.message || '新增失败');
-                        }
+                        this.$Message.error(res.message || '新增失败');
+                    }
+                }).finally(() => {
+                    this.addLoading = false;
+                });
+            },
+            /**
+             * 编辑套餐
+             */
+            updatePackage () {
+                ajax.post('updatePackage',{
+                    id : this.packageId,
+                    packageName : this.formData.packageName,
+                    serviceids  : this.formData.services.join(',')
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('编辑成功');
+                        this.$router.push({
+                            name : 'packageList'
+                        });
+                    }else{
+                        this.$Message.error(res.message || '编辑失败');
                     }
                 }).finally(() => {
                     this.addLoading = false;
