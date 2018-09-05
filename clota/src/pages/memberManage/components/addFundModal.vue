@@ -45,7 +45,7 @@
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="font">{{$t('actualIncrease')}}</span>
                         <Input disabled :value="formData.totalAmount" :placeholder="$t('inputField', {field: ''})"/>
-                        <span>{{$t("yuan")}}</span>
+                        <span>{{accountInfo.unit}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
