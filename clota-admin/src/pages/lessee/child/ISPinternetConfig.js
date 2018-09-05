@@ -2,48 +2,47 @@
 export const columns = [
     {
         title: 'ID',
-        minWidth: 45,
-        field: 'name',
-        ableClick: true
+        minWidth: 215,
+        field: 'id'
     },
     {
         title: '编码',
-        minWidth: 70,
-        field: 'name'
+        minWidth: 140,
+        field: 'nodeCode'
     },
     {
         title: '租户名称',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 170,
+        field: 'orgName'
     },
     {
         title: '节点类型',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 100,
+        field: 'nodeType'
     },
     {
         title: '所属集团/公司',
-        minWidth: 100,
-        field: 'rate'
+        minWidth: 150,
+        field: 'parentOrgName'
     },
     {
         title: '最近到期服务',
-        minWidth: 100,
-        field: 'rate'
+        minWidth: 170,
+        field: 'dueService'
     },
     {
         title: '是否启用',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 100,
+        field: 'status'
     },
     {
         title: '受理客服',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 100,
+        field: 'businessAccount'
     },
     {
         title: '企业秘钥',
-        minWidth: 70,
-        field: 'rate'
+        minWidth: 310,
+        field: 'secretCode'
     },
 ];

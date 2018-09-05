@@ -27,6 +27,8 @@ const apiList = {
     getValidateCode : 'user/getValidateCode.json',
     //获取权限接口
     getPrivileges : 'user/getPrivileges.json',
+    //查询所有的运营后台客服
+    querySysAccoutList : 'tenant/listSysAccout.json',
     //首页接口
     ...index,
     //日志接口

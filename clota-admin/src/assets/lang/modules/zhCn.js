@@ -99,6 +99,7 @@ export default {
     nodeName: '节点名称',
     nodeType: '节点类型',
     company: '公司',
+    scenic: '景区',
     department: '部门',
     scene: '景区',
     cashier: '核销/销售款台',
@@ -292,5 +293,7 @@ export default {
     sys_send: '系统自动',
     resend: '重新发送',
     formalError: '{field}格式错误',
+    inUse : '启用',
+    outUse : '未启用'
 
 }

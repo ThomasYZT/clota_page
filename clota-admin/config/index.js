@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/clota_dev/*': {
-            target: 'http://47.100.221.254:9999',
+            target: 'http://114.115.165.167:9999',
             changeOrigin : true,
             pathRewrite: {"^/clota_dev" : ""},
             cookieDomainRewrite: ""

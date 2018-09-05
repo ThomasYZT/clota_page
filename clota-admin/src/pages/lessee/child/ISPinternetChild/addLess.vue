@@ -128,6 +128,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -279,6 +280,15 @@
             cancel() {
                 this.$router.push({
                     name: 'ISPinternet'
+                });
+            },
+            /**
+             * 查询所有的受理客服信息
+             */
+            querySysAccoutList () {
+                ajax.post('querySysAccoutList').then(res => {
+
+                    console.log(res)
                 });
             }
         }

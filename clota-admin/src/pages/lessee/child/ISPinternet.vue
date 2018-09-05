@@ -7,8 +7,13 @@
                 <span @click="addLess">新建租户</span>
             </Button>
             <div class="search">
-                <Input type="text" style="width: 200px" :placeholder="$t('lessPlaceholder')"/>
-                <Button type="primary">查找</Button>
+                <Input type="text"
+                       v-model.trim="keyWord"
+                       style="width: 200px"
+                       :placeholder="$t('lessPlaceholder')"
+                       @on-enter="queryList"/>
+                <Button type="primary"
+                        @click="queryList" >查找</Button>
             </div>
         </div>
         <!--<table-com-->
@@ -47,16 +52,26 @@
             :total-count="totalCount"
             :ofset-height="120"
             @query-data="queryList">
-            <!--<el-table-column-->
-                <!--slot="columnservices"-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scope">-->
-                    <!--{{getPackageService(scope.row)}}-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                slot="columnnodeType"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row.nodeType)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnstatus"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.status === 'open' ? $t('inUse') : $t('outUse')}}
+                </template>
+            </el-table-column>
             <!--<el-table-column-->
                 <!--slot="columnoperate"-->
                 <!--slot-scope="row"-->
@@ -94,6 +109,8 @@
         },
         data() {
             return {
+                //关键字信息查询
+                keyWord : '',
                 //表头数据
                 columnData: columns,
                 //是否显示
@@ -142,7 +159,19 @@
              * 查询服务提供商信息
              */
             queryList () {
-                ajax.post('')
+                ajax.post('queryServiceProvider',{
+                    condition : this.keyWord,
+                    page : this.pageNo,
+                    pageSize : this.pageSize
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list ? res.data.list : [];
+                        this.totalCount = Number(res.data.totalRecord);
+                    }else{
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                })
             }
         },
         computed: {}
