@@ -179,7 +179,7 @@ export default {
     'paymentMethod': '收款方式',
     'amount': '数量',
     'cashAmount': '兑现数量',
-    'amountAfterConversion': '兑换后的数量',
+    'amountAfterConversion': '兑现后的数量',
     'convertToCash': '转化为现金',
     'convertToAccount': '转化至账户',
     'transferToAccount': '转入账户',

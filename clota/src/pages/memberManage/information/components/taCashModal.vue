@@ -20,7 +20,7 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('amountAfterConversion') + '：'" prop="toAmount">
-                        <Input v-model.trim="formData.toAmount" disabled :placeholder="$t('inputField', {field: ''})"/>
+                        <Input v-model.trim="formData.toAmount" disabled/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">

@@ -422,7 +422,7 @@
                     extModelJson: JSON.stringify({
                         accountBelonging: this.formData.accountBelonging,
                         unit: this.formData.unit,
-                        rate: (Number(this.formData.rateDenominator)/Number(this.formData.rateNumerator)).toFixed(2),
+                        rate: (Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)).toFixed(2),
                         exchangeToCash: this.formData.exchangeToCash,
                         corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
                         donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
