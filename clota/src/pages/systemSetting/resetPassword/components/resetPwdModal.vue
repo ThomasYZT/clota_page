@@ -44,12 +44,10 @@
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
-    import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
         props: ['row-data'],
         components: {
-            tableCom,
         },
         data () {
             let self = this;
@@ -102,7 +100,7 @@
 
             show ( data ) {
                 if( data ){
-                    this.formData = defaultsDeep({}, data.item);
+                    this.formData = defaultsDeep({}, this.formData, data.item);
                 }
                 this.visible = true;
             },

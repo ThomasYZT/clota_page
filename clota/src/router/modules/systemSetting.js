@@ -33,6 +33,7 @@ export default {
                     isMenu : true
                 },
             },
+
             resetPassword: {
                 // 系统设置 - 重置全员密码
                 path: '/systemSetting/resetPassword',
@@ -45,6 +46,56 @@ export default {
                     iconClass: 'icon-person',
                     isMenu : true
                 },
+            },
+
+            smsManage: {
+                //系统设置--短信管理--三级菜单
+                path: '/systemSetting/smsManage',
+                component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/index.vue'),
+                meta: {
+                    menuName: 'smsManage', //lang.config.js 里面的语言键值
+                    _name: 'members-point',
+                    iconClass: 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'smsManage',
+                    isMenu : true
+                },
+                children: {
+                    buySms: {
+                        //系统设置--短信管理--购买短信
+                        path: '/systemSetting/smsManage/buySms',
+                        name: 'buySms',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/buySms.vue'),
+                        meta: {
+                            menuName: 'buySms', //lang.config.js 里面的语言键值
+                            _name: 'point-setting',
+                            rightPath : topMenuName + '.' + 'buySms',
+                            isMenu : true
+                        },
+                    },
+                    smsTemplate: {
+                        //系统设置--短信管理--短信模板
+                        path: '/systemSetting/smsManage/smsTemplate',
+                        name: 'smsTemplate',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/smsTemplate.vue'),
+                        meta: {
+                            menuName: 'smsTemplate', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath : topMenuName + '.' + 'smsTemplate',
+                            isMenu : true
+                        },
+                    },
+                    addSmsTemplate: {
+                        //系统设置--短信管理--新增短信模板
+                        path: '/systemSetting/smsManage/addSmsTpl',
+                        name: 'addSmsTemplate',
+                        component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/addSmsTemplate.vue'),
+                        meta: {
+                            menuName: 'smsTemplate', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath : topMenuName + '.' + 'smsTemplate',
+                        },
+                    },
+                }
             },
         }
     }

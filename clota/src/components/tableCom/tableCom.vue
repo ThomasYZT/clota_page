@@ -335,5 +335,10 @@
         .no-data-wrap{
             @include absolute_pos(absolute,48px,0,0,0);
         }
+
+        /deep/ .el-table-column--selection .cell {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
     }
 </style>

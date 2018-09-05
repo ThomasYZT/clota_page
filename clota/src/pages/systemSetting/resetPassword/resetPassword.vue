@@ -108,12 +108,16 @@
                 this.totalCount = this.tableData.length;
             },
 
-            // 搜索会员
+            // 搜索员工
             handleSearch() {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
+            /**
+             * 显示重置密码弹窗，并传入当前被操作的行数据
+             * @param scopeRow - 行数据
+             */
             handleReset(scopeRow) {
                 this.$refs.resetPwdModal.show({item: scopeRow});
             },

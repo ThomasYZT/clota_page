@@ -364,7 +364,7 @@
         },
         computed: {
             localeRouter () {
-                return this.type === 'add' ? this.$t('addMember') : this.$t('addMember');      // 新增会员 ： 修改会员信息
+                return this.type === 'add' ? this.$t('addMember') : this.$t('modifyMember');      // 新增会员 ： 修改会员信息
             },
             ...mapGetters({
                 lang: 'lang',
