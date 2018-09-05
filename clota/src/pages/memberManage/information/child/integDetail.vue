@@ -70,19 +70,20 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="blue-color"
-                              v-if="scope.row.operationType === 'adjust_score'"
-                              @click="viewDetail(scope.row)">
-                             {{ $t('adjust_score') }}
-                        </span>
-                        <span v-else>
-                            <template v-if="scope.row.operationType === 'consume'">
-                                {{ $t('gainByConsuming')}}
-                            </template>
-                            <template v-if="scope.row.operationType === 'recharge'">
-                                {{ $t('gainByRecharging')}}
-                            </template>
-                        </span>
+                        {{$t(scope.row.operationType)}}
+                        <!--<span class="blue-color"-->
+                              <!--v-if="scope.row.operationType === 'adjust_score'"-->
+                              <!--@click="viewDetail(scope.row)">-->
+                             <!--{{ $t('adjust_score') }}-->
+                        <!--</span>-->
+                        <!--<span v-else>-->
+                            <!--<template v-if="scope.row.operationType === 'consume'">-->
+                                <!--{{ $t('gainByConsuming')}}-->
+                            <!--</template>-->
+                            <!--<template v-if="scope.row.operationType === 'recharge'">-->
+                                <!--{{ $t('gainByRecharging')}}-->
+                            <!--</template>-->
+                        <!--</span>-->
                     </template>
                 </el-table-column>
                 <el-table-column

@@ -110,7 +110,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './fundDetailConfig';
     import ajax from '@/api/index.js';
-    import {tradeType1} from '@/assets/js/constVariable.js';
+    import {moneyTradeTypes} from '@/assets/js/constVariable.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {mapGetters} from 'vuex';
@@ -133,7 +133,7 @@
                     }
                 ],
                 //交易类型列表
-                tradeType1 : tradeType1,
+                tradeType1 : moneyTradeTypes,
                 // 查询数据
                 queryParams: {
                     //账户id

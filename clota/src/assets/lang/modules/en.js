@@ -510,7 +510,7 @@ export default {
     'memberPromotionRules' : 'Member level promotion rules set',
     'value' : 'Value',
     'startValBiggerThenMaxVal' : 'The starting value cannot be greater than the highest value',
-    'adjust_money' : 'consumption',
+    'adjust_money' : 'Manually modify the store value account',
     'delSpecialMem' : 'You are deleting special membership categories:',
     'accountRepeat': 'This accountBelong is exit',
     'to_cash' : 'Pay cash',
@@ -531,5 +531,6 @@ export default {
     'appID' : 'appID',
     'appKEY' : 'appKEY',
     'appSECRET' : 'appSECRET',
+    'expire_score' : 'Integral failure',
 
 }

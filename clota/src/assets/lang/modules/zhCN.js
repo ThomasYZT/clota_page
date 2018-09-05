@@ -510,7 +510,7 @@ export default {
     'memberPromotionRules' : '会员级别晋升规则设置',
     'value' : '值',
     'startValBiggerThenMaxVal' : '起始值不能大于最高值',
-    'adjust_money' : '消费',
+    'adjust_money' : '手动修改储值账户',
     'delSpecialMem' : '您正在删除特殊会员分类：',
     'accountRepeat': '该账户归属已存在账号',
     'to_cash' : '兑现',
@@ -531,5 +531,6 @@ export default {
     'appID' : 'appID',
     'appKEY' : 'appKEY',
     'appSECRET' : 'appSECRET',
+    'expire_score' : '积分失效',
 
 }

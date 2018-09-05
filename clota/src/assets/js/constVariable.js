@@ -101,3 +101,31 @@ export const tradeType1 = [
         value : 'return_order',
     },
 ];
+
+// 资金交易类型
+export const moneyTradeTypes = [
+    {
+        label : 'transactionTypeAll',     // 全部交易类型
+        value : 'all',
+    },
+    {
+        label : 'recharge',     // 储值
+        value : 'recharge',
+    },
+    {
+        label : 'consume',     // 消费
+        value : 'consume',
+    },
+    {
+        label : 'adjustMoney',     // 消费
+        value : 'adjust_money',
+    },
+    {
+        label : 'to_cash',     // 兑现
+        value : 'to_cash',
+    },
+    {
+        label : 'return_order',     // 撤销扣款
+        value : 'return_order',
+    },
+];

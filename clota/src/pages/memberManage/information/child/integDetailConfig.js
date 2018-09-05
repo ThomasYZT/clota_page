@@ -55,4 +55,8 @@ export const integraType = [
         name: 'adjustScore',    // 手动改积分账户
         value: 'adjust_score',
     },
+    {
+        name: 'expire_score',    // 手动改积分账户
+        value: 'expire_score',
+    },
 ];

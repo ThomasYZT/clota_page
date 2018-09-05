@@ -120,7 +120,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import {fundDetailHead} from './fundDetailConfig';
     import ajax from '@/api/index.js';
-    import {tradeType1} from '@/assets/js/constVariable.js';
+    import {moneyTradeTypes} from '@/assets/js/constVariable.js';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -153,7 +153,7 @@
                     pageSize: 10,
                 },
                 // 枚举数据
-                type: tradeType1,
+                type: moneyTradeTypes,
                 // 表格数据
                 tableData: [],
                 //总条数
