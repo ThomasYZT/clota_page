@@ -31,6 +31,10 @@ const apiList = {
     querySysAccoutList : 'tenant/listSysAccount.json',
     //获取当前登录账户的信息
     getSysAccountByToken : 'user/getSysAccountByToken.json',
+    //修改密码接口
+    modifyPassword : 'user/modifyPassword.json',
+    //修改账户信息
+    update : 'user/update.json',
     //首页接口
     ...index,
     //日志接口

@@ -8,7 +8,7 @@
               :label-width="120">
             <FormItem :label="$t('validateError.pleaseInput',{msg : $t('password',{msg : $t('now')})})"
                       prop="password">
-                <Input type="password" v-model.trim="formData.password"/>
+                <Input type="text" v-model.trim="formData.password"/>
             </FormItem>
             <FormItem :label="$t('validateError.pleaseInput',{msg : $t('password',{msg : $t('new')})})"
                       prop="newPassword">
@@ -22,7 +22,7 @@
             <Button type="primary"
                     :loading="isSaving"
                     class="ivu-btn-90px"
-                    @click="save">
+                    @click="handleSubmit">
                 {{$t('save')}}
             </Button>
         </div>
@@ -31,13 +31,16 @@
 
 <script>
     import {validator} from 'klwk-ui';
+    import ajax from '@/api/index.js';
     export default {
         data() {
             //校验新密码
             const validatePass = (rule,value,callback) => {
                 if(value){
                     let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
-                    if(reg.test(value)){
+                    if(value == this.formData.password){
+                        callback('新密码不能与旧密码相同');
+                    }else if(reg.test(value)){
                         callback();
                     }else{
                         callback(this.$t('passwordError'));
@@ -73,6 +76,7 @@
                     //再次输入密码
                     newPasswordAgain : '',
                 },
+                loginName: '',
                 //表单校验规则
                 ruleValidate : {
                     password : [
@@ -89,19 +93,50 @@
                 isSaving : false
             }
         },
+        created(){
+            this.getSysAccountByToken();
+        },
         methods: {
+            getSysAccountByToken(){
+                return ajax.post('getSysAccountByToken',).then(res => {
+                    if(res.status == 200){
+                        this.loginName = res.data.loginName;
+                    }
+                });
+            },
+            handleSubmit(){
+                this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.save();
+                    }
+                });
+            },
             /**
              * 保存基本信息
              */
-            save () {
+            async save () {
                 this.isSaving = true;
-                this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        this.$Message.success('保存成功');
+                if(!this.loginName){
+                    await this.getSysAccountByToken();
+                }
+
+               let ChangePassword={
+                      loginName: this.loginName,
+                      oldPassword:this.formData.password,
+                      newPassword:this.formData.newPassword
+                 }
+                 //console.log(ChangePassword)
+                ajax.post('modifyPassword',ChangePassword).then(res => {
+                    if(res.status == 200){
+                        this.$Message.success('修改密码成功');
                         this.resetFormData();
+                    }else{
+                        this.$Message.error(res.message);
                     }
+                }).finally(res => {
                     this.isSaving = false;
                 });
+
             },
             /**
              * 保存信息到后台

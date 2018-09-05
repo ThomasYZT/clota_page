@@ -7,7 +7,7 @@
               :rules="ruleValidate"
               :label-width="80">
             <FormItem :label="$t('accountName')">
-                Server0200
+                {{formData.account}}
             </FormItem>
             <FormItem :label="$t('name')" prop="name">
                 <Input v-model.trim="formData.name"/>
@@ -26,7 +26,7 @@
             <Button type="primary"
                     :loading="isSaving"
                     class="ivu-btn-90px"
-                    @click="save">
+                    @click="handleSubmit">
                 {{$t('save')}}
             </Button>
         </div>
@@ -35,6 +35,7 @@
 
 <script>
     import {validator} from 'klwk-ui';
+    import ajax from '@/api/index.js';
     export default {
         data() {
             //校验姓名格式
@@ -81,7 +82,7 @@
                 //表单数据
                 formData : {
                     //账号
-                    account : '测试账号',
+                    account : '',
                     //姓名
                     name : '',
                     //电话
@@ -89,15 +90,19 @@
                     //邮箱
                     mail : '',
                     //角色
-                    roles : '董事长角色'
+                    roleId : '',
+                    //角色
+                    roles : '',
+                    id:''
                 },
+                loginName: '',
                 //表单校验规则
                 ruleValidate : {
                     name : [
                         {required : true,validator : validateName ,trigger : 'blur'}
                     ],
                     phone : [
-                        {required : false,validator : validatePhone ,trigger : 'blur'}
+                        {required : true,validator : validatePhone ,trigger : 'blur'}
                     ],
                     mail : [
                         {required : false,validator : validateMail ,trigger : 'blur'}
@@ -107,17 +112,52 @@
                 isSaving : false
             }
         },
+         created(){
+            this.getSysAccountByToken();
+        },
         methods: {
             /**
              * 保存基本信息
              */
+               getSysAccountByToken(){
+                return ajax.post('getSysAccountByToken',).then(res => {
+                    if(res.status == 200){
+                        this.formData.id = res.data.id;
+                        this.formData.account = res.data.loginName;
+                        this.formData.name = res.data.nickName;
+                        this.formData.phone = res.data.phone;
+                        this.formData.mail = res.data.email;
+                        this.formData.roleId = Number(res.data.roleId);
+                        this.formData.roles = res.data.roleName;
+                    }
+                });
+            },
+            handleSubmit(){
+                 this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.save();
+                    }
+                });
+            },
             save () {
                 this.isSaving = true;
-                this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        this.$Message.success('保存成功');
-                    }
+                console.log(typeof this.formData.roleId)
+                let AccountInformation={
+                      id:this.formData.id,
+                      nickName:this.formData.name,
+                      phone:this.formData.phone,
+                      email:this.formData.mail,
+                      roleId:this.formData.roleId
+                 }
+                 //console.log(ChangePassword)
+                 ajax.post('updateAccountInfo',AccountInformation).then(res => {
                     this.isSaving = false;
+                    if(res.status == 200){
+                        this.$Message.success('修改密码成功');
+                        this.resetFormData();
+                    }else{
+                        this.$Message.error(res.message);
+                    }
                 });
             },
             /**
