@@ -442,7 +442,8 @@
             //获取储值账户-(本金/赠送金额)应用范围
             getSubNode () {
                 ajax.post('getSubNode', {
-                    orgType: 'scenic'
+                    orgType: 'scenic',
+                    includeMe: 'true',
                 }).then(res => {
                     if( res.success ) {
                         this.allStore = res.data || [];
