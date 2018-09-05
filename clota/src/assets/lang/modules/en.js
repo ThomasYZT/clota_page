@@ -383,6 +383,7 @@ export default {
     'errorMaxLength': '{field} can\'t exceed {length} characters',
     'errorMinLength': '{field} can\'t be less than {length} characters',
     'fieldTypeError': '{field} must be positive integer',
+    'moneyError': '{field} must be a positive integer',
     'decimalError': '{field} decimal places up to 2 digits',
     'rangeError': '{field} must be greater than {min},and less than {max}',
     'sizeErrorS': '{filed1} cannot be less than {filed2}',

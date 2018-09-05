@@ -127,7 +127,7 @@ export default {
             if(this.isNotEmpty(value)){
                 if(validator.isNumber(value)){
                     if(value < 0){
-                        reject('fieldTypeError');
+                        reject('moneyError');
                     }
                     let  numStr = String(value);
                     //有小数
