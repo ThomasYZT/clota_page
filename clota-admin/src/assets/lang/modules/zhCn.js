@@ -178,6 +178,7 @@ export default {
     systemNotice : '系统公告',
     addSystemNotice : '新增公告',
     editSystemNotice : '编辑公告',
+    lookSystemNotice : '查看公告',
     noticeName : '公告名称',
     name : '姓名',
     mobile : '电话',
@@ -300,6 +301,12 @@ export default {
     createTime: '创建时间',
     lastUpdateTime: '上次修改时间',
     male : '男',
-    female : '女'
+    female : '女',
+    publishNotice: '发布公告',
+    modify: '编辑',
+    code: '编号',
+    title: '标题',
+    publisher: '发布人',
+    publishTime: '发布时间',
 
 }
