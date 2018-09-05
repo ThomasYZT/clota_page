@@ -83,8 +83,7 @@
 
     export default {
         components: {
-            tableCom,
-            loading
+            tableCom
         },
         data() {
             return {

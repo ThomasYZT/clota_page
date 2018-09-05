@@ -2,7 +2,7 @@
 export const columns = [
     {
         title: '服务器名称',
-        minWidth: 120,
+        minWidth: 140,
         field: 'serverName'
     },
     {
@@ -27,12 +27,12 @@ export const columns = [
     },
     {
         title: '监控频率',
-        minWidth: 90,
+        minWidth: 110,
         field: 'monitoringFrequencc'
     },
     {
         title: '运行状态',
-        minWidth: 90,
+        minWidth: 110,
         field: 'runState'
     },
 ];

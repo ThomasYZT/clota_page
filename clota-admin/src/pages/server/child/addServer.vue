@@ -67,7 +67,7 @@
                                 <Option v-for="item in listenRateEnum"
                                         :value="item.value"
                                         :key="item.value">
-                                    {{item.value + $t(item.label)}}
+                                    {{ $t(item.label,{minute : item.value})}}
                                 </Option>
                             </Select>
                         </FormItem>

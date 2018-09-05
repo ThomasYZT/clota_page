@@ -9,6 +9,7 @@
                   ref="multipleTable"
                   :class="{'table-click-able' : rowClickAble}"
                   :border="border"
+                  :height="height"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
                   @row-click="classDetailLink"
@@ -48,7 +49,7 @@
                         v-else
                         :label="$t(item.title)"
                         :prop="item.field"
-                        show-overflow-tooltip
+                        :show-overflow-tooltip="true"
                         :key="index"
                         :width="getColumnWidth(item)"
                         :min-width="getColumnMinWidth(item)">
@@ -168,6 +169,11 @@
             'row-click-able' : {
                 type : Boolean,
                 default : false
+            },
+            //表格高度
+            'height' : {
+                type : [Number,String],
+                default : 'auto'
             }
         },
         data() {

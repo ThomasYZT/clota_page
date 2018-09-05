@@ -10,30 +10,59 @@
             </span>
         </div>
         <div class="table-list">
+            <!--<table-com-->
+                <!--:table-data="tableData"-->
+                <!--table-height="268px"-->
+                <!--:column-data="columnData">-->
+                <!--&lt;!&ndash;系统类型&ndash;&gt;-->
+                <!--<el-table-column-->
+                    <!--slot="column4"-->
+                    <!--slot-scope="row"-->
+                    <!--:label="row.title"-->
+                    <!--:width="row.width"-->
+                    <!--:min-width="row.minWidth">-->
+                    <!--<template slot-scope="scoped">-->
+                        <!--{{$t('bit',{length : scoped.row.systmeBit})}}-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+                <!--&lt;!&ndash;监控频率&ndash;&gt;-->
+                <!--<el-table-column-->
+                    <!--slot="column5"-->
+                    <!--slot-scope="row"-->
+                    <!--:label="row.title"-->
+                    <!--:width="row.width"-->
+                    <!--:min-width="row.minWidth">-->
+                    <!--<template slot-scope="scoped">-->
+                        <!--{{$t('minute',{minute : scoped.row.monitoringFrequencc})}}-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+            <!--</table-com>-->
+
             <table-com
+                :column-data="columnData"
                 :table-data="tableData"
-                table-height="268px"
-                :column-data="columnData">
-                <!--系统类型-->
+                :border="true"
+                :total-count="totalCount"
+                :height="265"
+                @query-data="queryAllServerMsg">
                 <el-table-column
-                    slot="column4"
+                    slot="columnsystmeBit"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
-                    <template slot-scope="scoped">
-                        {{$t('bit',{length : scoped.row.systmeBit})}}
+                    <template slot-scope="scope">
+                        {{$t('bit',{length : scope.row.systmeBit})}}
                     </template>
                 </el-table-column>
-                <!--监控频率-->
                 <el-table-column
-                    slot="column5"
+                    slot="columnmonitoringFrequencc"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
-                    <template slot-scope="scoped">
-                        {{scoped.row.monitoringFrequencc}}{{$t('minute')}}
+                    <template slot-scope="scope">
+                        {{$t('minute',{minute : scope.row.monitoringFrequencc})}}
                     </template>
                 </el-table-column>
             </table-com>
@@ -42,7 +71,7 @@
 </template>
 
 <script>
-    import tableCom from './tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {columns} from './serverListConfig';
     import ajax from '@/api/index.js';
 
@@ -55,7 +84,7 @@
                 //表格数据
                 tableData: [],
                 //表头配置
-                columnData: columns
+                columnData: columns,
             }
         },
         methods: {
@@ -85,9 +114,6 @@
                 });
             }
         },
-        created () {
-            this.queryAllServerMsg();
-        }
     }
 </script>
 
