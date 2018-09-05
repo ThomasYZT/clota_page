@@ -80,7 +80,7 @@
                                 {{ $t('gainByConsuming')}}
                             </template>
                             <template v-if="scope.row.operationType === 'recharge'">
-                                {{ $t('gainByConsuming')}}
+                                {{ $t('gainByRecharging')}}
                             </template>
                         </span>
                     </template>
