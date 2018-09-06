@@ -4,7 +4,7 @@ export const columnData = [
     {
         title: 'memberNum',  // 会员编号
         width: 220,
-        field: 'id'
+        field: 'cardCode'
     },
     {
         title: 'memberName',  // 会员姓名

@@ -15,7 +15,7 @@
                     <span class="label">{{$t('recharge')}}：</span>
                     <Input type="text"
                            v-model.trim="formData.lowerValue"
-                           @on-blur="validateInput(formData.lowerValue)"
+                           @on-blur="validateInput(formData.lowerValue, true)"
                            :placeholder="$t('inputField', {field: ''})"
                            class="single-input"/> –
                     <Input type="text"
@@ -56,7 +56,7 @@
 
         <div slot="footer" class="modal-footer">
             <Button type="primary"
-                    :disabled="!(formData.lowerValue && formData.topValue && formData.gift && multipleSelection.length > 0)"
+                    :disabled="!(formData.topValue && formData.gift && multipleSelection.length > 0)"
                     @click="save" >{{$t("save")}}</Button>
             <Button type="ghost" @click="hide">{{$t("cancel")}}</Button>
         </div>
@@ -68,6 +68,7 @@
 
     import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
         props: ['length','table-data'],
@@ -81,9 +82,9 @@
                 //表单数据--储值赠送金额比例设置
                 index: null,
                 formData:  {
-                    lowerValue: 100,
-                    topValue: 199,
-                    gift: 5,
+                    lowerValue: 0,
+                    topValue: 0,
+                    gift: 0,
                     scope: '',
                     _status: 1,
                 },
@@ -115,7 +116,11 @@
                 }
 
                 if( data ){
-                    this.formData = data.item;
+                    if(type && type !== 'add'){
+                        this.formData = defaultsDeep({}, data.item);
+                    } else {
+                        this.formData = data.item;
+                    }
                     this.index = data.index;
                 }
 
@@ -139,10 +144,15 @@
             },
 
             //校验input输入
-            validateInput ( value ) {
-                if( value === '' || value === 'null' || value == 0 || !value ){
-                    this.error = this.$t('errorEmpty', {msg: ''});     // '不能为空'
-                    return false
+            validateInput ( value, flag ) {
+                if( value === '' || value === 'null' || value === null || value == 0 || !value ){
+                    if( (value == 0 || !value) && flag ){
+                        this.error = '';
+                        return true
+                    }else{
+                        this.error = this.$t('errorEmpty', {msg: ''});     // '不能为空'
+                        return false
+                    }
                 } else if( value && value.length > 10 ){
                     this.error = this.$t('errorMaxLength',{field : '',length : 10});
                     return false
@@ -157,15 +167,20 @@
 
             //保存
             save () {
-                if( this.validateInput(this.formData.lowerValue) &&
+                if( this.validateInput(this.formData.lowerValue, true) &&
                     this.validateInput(this.formData.topValue) &&
                     this.validateInput(this.formData.gift) ){
+
+                    if(Number(this.formData.lowerValue) > Number(this.formData.topValue)) {
+                        this.error = this.$t('startValBiggerThenMaxVal', {msg: ''});     // '不能为空'
+                        return
+                    }
+
                     let list = [];
                     this.multipleSelection.forEach( (item, index) => {
                         list.push({ id: item.id });
                     });
                     this.formData.scope = JSON.stringify(list);
-                    console.log(this.formData)
                     this.$emit('submit-date', { item: this.formData, index: this.index});
                     this.hide();
                 }
