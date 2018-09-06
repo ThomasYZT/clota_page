@@ -252,7 +252,7 @@
                 }else if(rowData.accountSubType === 'donate'){
                     return  `${this.$t('presentAccount')}:${label}${rowData.amount}${unit}`;    // 赠送账户
                 }else{
-                    return '';
+                    return `${label}${rowData.amount}${unit}`;
                 }
             }
 
