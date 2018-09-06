@@ -11,7 +11,7 @@ export const fundDetailHead = [
         title: 'transactionType',  // 交易类型
         width: 170,
         enWidth : 250,
-        field: 'operationType'
+        field: 'evaluateType'
     },
     {
         title: 'transactionInfo',  // 交易信息

@@ -251,6 +251,19 @@ export default {
     'gainByConsuming': 'Consumption income',
     'gainByRecharging': 'Stored value income',
     'adjustScore': 'Manually change the point account',
+    'recharge_add': '储值',
+    'consume_reduce': '消费',
+    'return_order_add': '撤销扣款',
+    'to_cash_reduce': '兑现',
+    'transfer_out_reduce': '转出',
+    'transfer_in_add': '转入',
+    'adjust_money_add': '手动修改储值账户',
+    'adjust_money_reduce': '手动修改储值账户',
+    'adjust_score_add': '手动修改积分账户',
+    'adjust_score_reduce': '手动修改积分账户',
+    'consume_add': '消费所得',
+    'expire_score_reduce': '积分失效',
+
     'otherAccount': 'Other account',
     'integralAccModification': 'Intergral account  modification',
     'ModifyAmountThisTime': 'Modified amount this time',
@@ -532,5 +545,6 @@ export default {
     'appKEY' : 'appKEY',
     'appSECRET' : 'appSECRET',
     'expire_score' : 'Integral failure',
+    'scoreResume' : 'Score resume',
 
 }

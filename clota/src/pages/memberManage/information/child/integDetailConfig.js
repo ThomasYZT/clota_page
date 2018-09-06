@@ -44,8 +44,12 @@ export const integraType = [
         value: 'null',
     },
     {
+        name: 'scoreResume',   // 积分消耗
+        value: 'consume,reduce',
+    },
+    {
         name: 'gainByConsuming',   // 消费所得
-        value: 'consume',
+        value: 'consume,add',
     },
     {
         name: 'gainByRecharging',   // 储值所得

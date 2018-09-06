@@ -117,12 +117,20 @@ export const moneyTradeTypes = [
         value : 'consume',
     },
     {
-        label : 'adjustMoney',     // 消费
+        label : 'adjustMoney',     // 调整
         value : 'adjust_money',
     },
     {
         label : 'to_cash',     // 兑现
         value : 'to_cash',
+    },
+    {
+        label : 'transfer_out_reduce',     // 转出
+        value : 'transfer_out',
+    },
+    {
+        label : 'transfer_in_add',     // 转入
+        value : 'transfer_in',
     },
     {
         label : 'return_order',     // 撤销扣款

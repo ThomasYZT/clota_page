@@ -68,7 +68,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row['operationType'] === 'adjust_score' ? $t('adjustMoney') :  $t(scope.row['operationType'])}}
+                    <!--{{scope.row['operationType'] === 'adjust_score' ? $t('adjustMoney') :  $t(scope.row['operationType'])}}-->
+                    {{scope.row['operationType'] === 'adjust_score' ? $t('adjustMoney') :  $t(scope.row['evaluateType'])}}
                 </template>
             </el-table-column>
             <el-table-column

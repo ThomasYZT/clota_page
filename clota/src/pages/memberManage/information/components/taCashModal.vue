@@ -13,6 +13,20 @@
                   :model="formData"
                   :rules="ruleValidate"
                   :label-width="lang === 'zh-CN' ? 180 : 220">
+                <div class="ivu-form-item-wrap show-item">
+                    <Form-item :label="accountInfo.accountName + $t('PrincipalAccBalance') + ':'">
+                      <span class="yellow-color">
+                        {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
+                    </span>{{accountInfo.unit || ''}}
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap show-item">
+                    <Form-item :label="$t('storedValueRatio') + ':'">
+                        <span class="yellow-color">1</span>
+                        <span class="split-line">:</span>
+                        <span class="yellow-color">{{(1/accountInfo.rate).toFixed(0)}}</span>
+                    </Form-item>
+                </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('cashAmount') + '：'" prop="fromAmount">
                         <Input v-model.trim="formData.fromAmount" :maxlength="30" :placeholder="$t('inputField', {field: ''})"/>
@@ -21,6 +35,7 @@
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('amountAfterConversion') + '：'" prop="toAmount">
                         <Input v-model.trim="formData.toAmount" disabled/>
+                        <span class="unit">{{$t('yuan')}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -163,7 +178,7 @@
 
             //计算兑换后数量
             toAmountFunc () {
-                this.formData.toAmount = Number(this.formData.fromAmount)*this.accountInfo.rate;
+                this.formData.toAmount = Number(this.formData.fromAmount)/this.accountInfo.rate;
             },
 
             //转入账户改变
@@ -235,7 +250,13 @@
     .to-cash-modal{
 
         .modal-body{
-            padding: 50px 0 30px 0;
+            padding: 50px 15px 30px 15px;
+        }
+
+        .yellow-color{
+            color: $color_yellow;
+            font-size: $font_size_18px;
+            margin-right: 5px;
         }
 
         .ivu-form-item-wrap{
@@ -246,6 +267,20 @@
 
             /deep/ .ivu-input-wrapper{
                 width: 260px;
+            }
+
+            .split-line{
+                padding: 0 5px 0 0px;
+            }
+
+            .unit{
+                padding-left: 5px;
+            }
+
+            &.show-item{
+                /deep/ .ivu-form-item{
+                    margin-bottom: 5px;
+                }
             }
 
         }

@@ -28,7 +28,7 @@ export const columnData = [
         title: 'transactionType',  // 交易类型
         minWidth: 170,
         enMinWidth: 200,
-        field: 'operationType'
+        field: 'evaluateType'
     },
     {
         title: 'accountType',  // 账户类型

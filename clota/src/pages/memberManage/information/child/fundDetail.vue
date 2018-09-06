@@ -71,7 +71,7 @@
                               @click="viewDetail(scope.row)">
                             {{ $t('adjustMoney') }}
                         </span>
-                        <span v-else>{{ $t(scope.row.operationType) }}</span>
+                        <span v-else>{{ $t(scope.row.evaluateType) }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

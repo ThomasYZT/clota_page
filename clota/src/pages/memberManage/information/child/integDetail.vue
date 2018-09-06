@@ -70,20 +70,25 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t(scope.row.operationType)}}
-                        <!--<span class="blue-color"-->
-                              <!--v-if="scope.row.operationType === 'adjust_score'"-->
-                              <!--@click="viewDetail(scope.row)">-->
-                             <!--{{ $t('adjust_score') }}-->
-                        <!--</span>-->
-                        <!--<span v-else>-->
-                            <!--<template v-if="scope.row.operationType === 'consume'">-->
-                                <!--{{ $t('gainByConsuming')}}-->
-                            <!--</template>-->
-                            <!--<template v-if="scope.row.operationType === 'recharge'">-->
-                                <!--{{ $t('gainByRecharging')}}-->
-                            <!--</template>-->
-                        <!--</span>-->
+                        <span class="blue-color"
+                              v-if="scope.row.operationType === 'adjust_score'"
+                              @click="viewDetail(scope.row)">
+                             {{ $t('adjust_score') }}
+                        </span>
+                        <span v-else>
+                            <template v-if="scope.row.evaluateType === 'consume_add'">
+                                {{ $t('gainByConsuming')}}
+                            </template>
+                            <template v-else-if="scope.row.evaluateType === 'consume_reduce'">
+                                {{ $t('scoreResume')}}
+                            </template>
+                            <template v-else-if="scope.row.evaluateType === 'recharge_add'">
+                                {{ $t('gainByRecharging')}}
+                            </template>
+                            <template v-else>
+                               {{$t(scope.row.evaluateType)}}
+                            </template>
+                        </span>
                     </template>
                 </el-table-column>
                 <el-table-column
