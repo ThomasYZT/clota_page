@@ -6,33 +6,29 @@
         <filter-head @fresh-data="getFilterInfo">
         </filter-head>
         <table-com
+            v-if="logType !== ''"
+            :column-data="columns"
             :table-data="tableData"
-            :table-height="tableHeight"
-            :column-data="columns">
+            :border="true"
+            :page-no-d.sync="pageNo"
+            :show-pagination="true"
+            :page-size-d.sync="pageSize"
+            :total-count="totalCount"
+            :ofset-height="170"
+            @query-data="getLogData">
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                :layout="pageLayout"
-                :total="totalCount"
-                @size-change="sizeChange"
-                @current-change="pageNoChange">
-            </el-pagination>
-        </div>
     </div>
 </template>
 
 <script>
     import filterHead from './operationLogChild/filterHead';
-    import tableCom from '../../index/child/tableCom';
-    import tableMixins from '../../lessee/tableMixins';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {operationLogHead,saasLogHead} from './operationLogConfig';
     import ajax from '@/api/index.js';
     export default {
-        mixins :[tableMixins],
         components : {
+            breadCrumbHead,
             filterHead,
             tableCom
         },
@@ -46,7 +42,9 @@
                 logType : '',
                 spaceOffset : 140,
                 //筛选条件
-                filterData : {}
+                filterData : {},
+                pageSize : 10,
+                pageNo :1
             }
         },
         methods: {
@@ -70,15 +68,13 @@
                     page : this.pageNo,
                 },this.filterData)).then(res => {
                     if(res.status === 200){
-                        this.totalCount = res.data.totalRecord;
+                        this.totalCount = Number(res.data.totalRecord);
                         this.tableData = res.data.list ? res.data.list : [];
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;
                         this.$Message.error(res.message || this.$t('dataError'));
                     }
-                }).finally(() => {
-                    this.setTableHeight();
                 });
             },
             /**
@@ -86,37 +82,20 @@
              * @param data
              */
             getFilterInfo (data) {
-                this.logType = data.type;
-                this.filterData = data.data;
+                this.filterData = data;
                 this.getLogData();
             },
-            /**
-             * 改变每页的条数
-             * @param pageSize
-             */
-            sizeChange (pageSize) {
-                this.pageSize = pageSize;
-                this.getLogData();
-            },
-            /**
-             * 页码改变
-             * @param pageNo
-             */
-            pageNoChange (pageNo) {
-                this.pageNo = pageNo;
-                this.getLogData();
-            }
         },
         watch : {
-            // '$route':{
-            //     handler (newVal,oldVal) {
-            //         if(newVal && newVal.meta){
-            //             this.logType = newVal.meta.subMenuType;
-            //             this.getLogData();
-            //         }
-            //     },
-            //     immediate : true
-            // }
+            '$route':{
+                handler (newVal,oldVal) {
+                    if(newVal && newVal.meta){
+                        this.logType = newVal.meta.subMenuType;
+                        this.getLogData();
+                    }
+                },
+                immediate : true
+            }
         },
         computed :{
             //表头配置
@@ -141,16 +120,5 @@
         background: $color_fff;
         overflow: auto;
         padding: 0 30px;
-        @include padding_place();
-
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
-
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
-            }
-        }
     }
 </style>

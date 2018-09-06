@@ -331,7 +331,7 @@
 
         .pagination {
             padding: 10px 0;
-            text-align: center;
+            text-align: right;
             /*border-top: 1px solid #ebeef5;*/
         }
 

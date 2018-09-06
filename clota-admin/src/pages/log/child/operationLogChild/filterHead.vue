@@ -35,6 +35,7 @@
                 <i-col span="8">
                     <FormItem label="日志时间">
                         <DatePicker v-model="formData.date"
+                                    :editable="false"
                                     type="daterange"
                                     :transfer="true"
                                     style="width: 100%;">
@@ -60,6 +61,11 @@
     import{operateType} from '@/assets/js/constVariable.js';
     export default {
         props : {
+            //日志类型
+            'log-type':{
+                type : String,
+                default : ''
+            }
         },
         data() {
             return {
@@ -72,12 +78,10 @@
                     //操作对象
                     sysTargetName : '',
                     //日志时间
-                    date : [new Date(),new Date()]
+                    date : []
                 },
                 //操作类型
                 operateType : operateType,
-                //日志类型
-                logType : '',
             }
         },
         methods: {
@@ -134,10 +138,7 @@
              * 更新数据
              */
             emitFreshData () {
-                this.$emit('fresh-data',{
-                    data : this.getFormdata(),
-                    type : this.logType
-                });
+                this.$emit('fresh-data',this.getFormdata());
             },
             /**
              * 重置表单数据
@@ -145,20 +146,9 @@
             reset () {
                 this.formData.loginName = '';
                 this.formData.sysOperationScene = '';
-                this.formData.targetName = '';
-                this.formData.date = [new Date(),new Date()];
+                this.formData.sysTargetName = '';
+                this.formData.date = [];
                 this.emitFreshData();
-            }
-        },
-        watch : {
-            '$route':{
-                handler (newVal,oldVal) {
-                    if(newVal && newVal.meta){
-                        this.logType =  newVal.meta.subMenuType;
-                        this.emitFreshData();
-                    }
-                },
-                immediate : true
             }
         },
     }

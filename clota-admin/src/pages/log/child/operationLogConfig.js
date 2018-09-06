@@ -4,7 +4,7 @@
 export const operationLogHead = [
     {
         title: '操作时间',
-        minWidth: 110,
+        minWidth: 130,
         field: 'sysCreatedTime'
     },
     {
@@ -32,7 +32,7 @@ export const operationLogHead = [
 export const saasLogHead = [
     {
         title: '操作时间',
-        minWidth: 110,
+        minWidth: 130,
         field: 'createdTime'
     },
     {
