@@ -42,23 +42,23 @@
                     <FormItem label=" " prop="accountBizType">
                         <RadioGroup v-model="formData.accountBizType">
                             <Radio label="to_cash">{{$t("convertToCash")}}</Radio>
-                            <Radio label="transfer_in">{{$t("convertToAccount")}}</Radio>
+                            <!--<Radio label="transfer_in">{{$t("convertToAccount")}}</Radio>-->
                         </RadioGroup>
                     </FormItem>
                 </div>
-                <div class="ivu-form-item-wrap" v-if="formData.accountBizType === 'transfer_in'">
-                    <Form-item :label="$t('transferToAccount') + '：'" prop="toAccountId">
-                        <Select v-model="formData.toAccountId"
-                                :placeholder="$t('selectField', {msg: ''})"
-                                @on-change="changeToAccountId">
-                            <Option v-for="(item,index) in store"
-                                    :key="index"
-                                    :value="item.id">
-                                {{item.accountName}}
-                            </Option>
-                        </Select>
-                    </Form-item>
-                </div>
+                <!--<div class="ivu-form-item-wrap" v-if="formData.accountBizType === 'transfer_in'">-->
+                    <!--<Form-item :label="$t('transferToAccount') + '：'" prop="toAccountId">-->
+                        <!--<Select v-model="formData.toAccountId"-->
+                                <!--:placeholder="$t('selectField', {msg: ''})"-->
+                                <!--@on-change="changeToAccountId">-->
+                            <!--<Option v-for="(item,index) in store"-->
+                                    <!--:key="index"-->
+                                    <!--:value="item.id">-->
+                                <!--{{item.accountName}}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
+                    <!--</Form-item>-->
+                <!--</div>-->
             </Form>
         </div>
 

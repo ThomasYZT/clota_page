@@ -254,6 +254,7 @@ export default {
     'recharge_add': '储值',
     'consume_reduce': '消费',
     'return_order_add': '撤销扣款',
+    'return_order_reduce': '撤销扣款',
     'to_cash_reduce': '兑现',
     'transfer_out_reduce': '转出',
     'transfer_in_add': '转入',
