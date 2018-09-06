@@ -8,7 +8,7 @@
               :label-width="120">
             <FormItem :label="$t('validateError.pleaseInput',{msg : $t('password',{msg : $t('now')})})"
                       prop="password">
-                <Input type="text" v-model.trim="formData.password"/>
+                <Input type="password" v-model.trim="formData.password"/>
             </FormItem>
             <FormItem :label="$t('validateError.pleaseInput',{msg : $t('password',{msg : $t('new')})})"
                       prop="newPassword">
@@ -119,7 +119,6 @@
                 if(!this.loginName){
                     await this.getSysAccountByToken();
                 }
-
                let ChangePassword={
                       loginName: this.loginName,
                       oldPassword:this.formData.password,
