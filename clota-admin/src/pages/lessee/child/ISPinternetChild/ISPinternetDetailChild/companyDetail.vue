@@ -4,7 +4,7 @@
     <div class="company-detail">
         <div class="com-name">
             <template v-if="type === 'edit'">
-                <Input v-model="formDataCopy.companyName" style="width : 280px"/>
+                <Input v-model="formDataCopy.orgName" style="width : 280px"/>
                 <i-switch v-model="formDataCopy.isStart"></i-switch>
             </template>
             <template v-if="type === 'watch'">
@@ -39,31 +39,26 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">企业编码(线下核销)：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.cashierCode"/>
+                        <Input v-model="formDataCopy.checkinCode"/>
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.checkinCode">
                         {{companyDetail.checkinCode | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">全民分销邀请码：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.inviteCode"/>
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.saleCode">
-                         {{companyDetail.saleCode | contentFilter}}
-                    </span>
+                    <span class="info-key">全民分销邀请码：</span>
+                    <span class="info-val" v-w-title="companyDetail.saleCode">{{companyDetail.saleCode | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">短信供应商：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.smsSuppiler" >
+                          <Select v-model="formDataCopy.smsProvider" >
                             <Option v-for="item in smsSuppilerList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
+                                    :value="item.provider"
+                                    :key="item.provider">
+                                {{ item.provider }}
                             </Option>
                         </Select>
                     </span>
@@ -83,7 +78,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电子邮箱：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.email" />
+                        <Input v-model="formDataCopy.managerAccount.email" />
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.email : ''">
                          {{companyDetail.managerAccount ? companyDetail.managerAccount.email : '' | contentFilter}}
@@ -92,7 +87,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">联系人：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.contactor" />
+                        <Input v-model="formDataCopy.linkName" />
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.linkName">
                          {{companyDetail.linkName | contentFilter}}
@@ -103,7 +98,9 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">所在地：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <city-plugin @select="formDataCopy.place = $event" >
+                        <city-plugin @select="formDataCopy.place = $event"
+                                     v-if="defaultAddress"
+                                     :defaultValue="defaultAddress">
                         </city-plugin>
                     </span>
                     <span class="info-val" v-else v-w-title="companyPlace">
@@ -124,7 +121,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电话：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.phone" />
+                        <Input v-model="formDataCopy.telephone" />
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.telephone">
                          {{companyDetail.telephone | contentFilter}}
@@ -133,7 +130,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">传真：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.fax" />
+                        <Input v-model="formDataCopy.tex" />
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.tex">
                          {{companyDetail.tex | contentFilter}}
@@ -144,7 +141,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">管理上级：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.superior" >
+                          <Select v-model="formDataCopy.parentManage" >
                             <Option v-for="item in superiorList"
                                     :value="item.value"
                                     :key="item.value">
@@ -159,7 +156,7 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.fianceSuperior" >
+                          <Select v-model="formDataCopy.parentEconomic" >
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.value"
                                     :key="item.value">
@@ -180,11 +177,11 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.serviceStaff" >
+                          <Select v-model="formDataCopy.businessAccount1.id" >
                             <Option v-for="item in serviceStaffList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.loginName }}
                             </Option>
                         </Select>
                     </span>
@@ -322,12 +319,7 @@
                 //当前状态
                 type : 'watch',
                 //短信供应商列表
-                smsSuppilerList : [
-                    {
-                        label : '1',
-                        value : '1'
-                    }
-                ],
+                smsSuppilerList : [],
                 //管理上级列表
                 superiorList : [
                     {
@@ -343,12 +335,7 @@
                     }
                 ],
                 //受理客服列表
-                serviceStaffList : [
-                    {
-                        label : '客服',
-                        value : '1'
-                    }
-                ],
+                serviceStaffList : [],
                 //公司详细信息
                 companyDetail : {}
             }
@@ -365,14 +352,38 @@
              */
             saveEdit () {
                 this.type = 'watch';
-                this.formData = defaultsDeep({} , this.formDataCopy);
+                ajax.post('updateOrgInfo',{
+                    id : this.formDataCopy.id,
+                    orgName : this.formDataCopy.orgName,
+                    checkinCode : this.formDataCopy.checkinCode,
+                    smsProvider : this.formDataCopy.smsProvider,
+                    email : this.formDataCopy.managerAccount.email,
+                    // province : this.formDataCopy.sysProvinces,
+                    // city : ''
+                    // district : ''
+                    linkName : this.formDataCopy.linkName,
+                    address : this.formDataCopy.address,
+                    telephone : this.formDataCopy.telephone,
+                    tex : this.formDataCopy.tex,
+                    businessAccountId : this.formDataCopy.businessAccount1.id,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('修改成功');
+                        this.getCompanyDetail();
+                    }else{
+                        this.$Message.error('修改失败');
+                    }
+                });
+                // this.formData = defaultsDeep({} , this.formDataCopy);
             },
             /**
              * 开始编辑
              */
             edit () {
                 this.type = 'edit';
-                this.formDataCopy = defaultsDeep({} , this.formData);
+                this.formDataCopy = defaultsDeep({
+                    isStart : this.companyDetail.status === 'open'
+                }  , this.companyDetail);
             },
             /**
              * 重置密码
@@ -416,10 +427,43 @@
                         this.companyDetail = {};
                     }
                 });
-            }
+            },
+            /**
+             * 查询所有短息供应商
+             */
+            querySmsProviderList () {
+                ajax.post('smsProviderList',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.status === 200){
+                        this.smsSuppilerList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.smsSuppilerList = [];
+                    }
+                }).catch(() => {
+                    this.smsSuppilerList = [];
+                });
+            },
+            /**
+             * 查询所有的受理客服信息
+             */
+            querySysAccoutList () {
+                ajax.post('querySysAccoutList').then(res => {
+                    if(res.status === 200){
+                        this.serviceStaffList = res.data ? res.data : [];
+                    }else{
+                        this.serviceStaffList = [];
+                    }
+                }).catch(err => {
+                    this.serviceStaffList = [];
+                });
+            },
         },
         created () {
             this.getCompanyDetail();
+            this.querySmsProviderList();
+            this.querySysAccoutList();
         },
         computed  : {
             //公司详细地址
@@ -435,6 +479,18 @@
                     place += this.companyDetail.sysAreas.area;
                 }
                 return place;
+            },
+            //默认选中的所在地信息
+            defaultAddress () {
+                if(this.companyDetail && Object.keys(this.companyDetail).length > 0){
+                    return {
+                        province : this.companyDetail.sysProvinces,
+                        city : this.companyDetail.sysCities,
+                        area : this.companyDetail.sysAreas,
+                    }
+                }else{
+                    return false;
+                }
             }
         }
     }
@@ -524,11 +580,11 @@
                 line-height: 22px;
 
                 .info-list1 {
-                    @include block_outline(40%, auto);
+                    @include block_outline(50%, auto);
                 }
 
                 .info-list2 {
-                    @include block_outline(60%, auto);
+                    @include block_outline(50%, auto);
                     padding-left: 15px;
                 }
 
@@ -545,7 +601,7 @@
                         color: $color_333;
 
                         &.fix-key{
-                            width: 120px;
+                            width: 140px;
                             text-align: left;
                         }
                     }

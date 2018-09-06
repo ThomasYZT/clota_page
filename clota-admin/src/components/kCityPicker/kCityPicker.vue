@@ -131,6 +131,13 @@
             placeholder: {
                 type: String,
                 default: '请选择'
+            },
+            //默认选中省、市、区信息
+            defaultValue : {
+                type : Object,
+                default () {
+                    return {};
+                }
             }
         },
         data() {

@@ -17,6 +17,8 @@ export default {
     'getCompanyTree' : 'tenant/getCompanyTree.json',
     //新增公司、景区、部门
     'addOrgInfo' : 'tenant/addOrgInfo.json',
+    //修改公司、景区、部门
+    'updateOrgInfo' : 'tenant/updateOrgInfo.json',
     //修改公司、景区、部门的启用状态
     'updateOrgInfoStatus' : 'tenant/updateOrgInfoStatus.json',
     //获取公司、景区、部门的详细信息

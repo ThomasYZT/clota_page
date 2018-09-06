@@ -131,7 +131,7 @@
                                 this.showErrMessage = true;
                                 this.changeCode();
                             }else{
-                                this.errMessage = 'loginError.accountError';
+                                this.errMessage = res.message || 'loginError.accountError';
                                 this.showErrMessage = true;
                                 this.changeCode();
                             }
