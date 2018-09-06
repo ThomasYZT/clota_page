@@ -346,7 +346,7 @@ export default {
     'returnCoupon': '用户退款时卡券退回用户会员卡中',
     'modifyAccBalanceSetting': '修改会员储值、积分余额设置',
     'notAllowModifyAcc': '不允许修改会员的储值、积分账户',
-    'allowModifyAccReason': '允许修改会员的储值、积分账户,如允许修改，请设置修改原因',
+    'allowModifyAccReason': '允许修改会员的储值、积分账户，如允许修改，请设置修改原因',
     'addModifyReason': '新增修改原因',
     'credentialsTypeSetting': '证件类型设置',
     'addCredentialsType': '新增证件类型',

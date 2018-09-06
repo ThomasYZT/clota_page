@@ -357,7 +357,7 @@
                         field: ''
                     },
                     {
-                        title: 'childCardInfo',
+                        title: 'motherCardInfo',
                         minWidth: 270,
                         field: ''
                     },
@@ -370,7 +370,7 @@
                         field: ''
                     },
                     {
-                        title: 'motherCardInfo',
+                        title: 'childCardInfo',
                         minWidth: 270,
                         field: ''
                     },
