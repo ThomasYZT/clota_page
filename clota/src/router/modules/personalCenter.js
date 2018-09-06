@@ -28,7 +28,7 @@ export default {
                 meta: {
                     _name: 'members', //
                     menuName: 'personalInfo', //lang.config.js 里面的语言键值
-                    rightPath : topMenuName + '.' + 'info',
+                    rightPath : topMenuName + '.' + 'personalInfo',
                     iconClass: 'icon-person',
                     isMenu : true
                 },

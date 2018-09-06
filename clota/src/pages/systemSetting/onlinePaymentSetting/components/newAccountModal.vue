@@ -46,7 +46,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save(true)" >{{$t('save')}}</Button>
+            <Button type="primary" @click="formValidateFunc()" >{{$t('save')}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 

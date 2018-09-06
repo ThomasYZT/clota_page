@@ -28,7 +28,7 @@ export default {
                 meta: {
                     _name: 'members', //
                     menuName: 'onlinePaymentSetting', //lang.config.js 里面的语言键值
-                    rightPath : topMenuName + '.' + 'accountSetting',
+                    rightPath : topMenuName + '.' + 'onlinePaymentSetting',
                     iconClass: 'icon-person',
                     isMenu : true
                 },

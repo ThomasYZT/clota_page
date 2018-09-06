@@ -6,6 +6,7 @@
         class-name="add-account-modal vertical-center-modal"
         width="660"
         :mask-closable="false"
+        :footer-hide="true"
         @on-cancel="hide">
 
         <div class="modal-body">
@@ -29,8 +30,6 @@
             </div>
 
         </div>
-
-        <div slot="footer" class="modal-footer"></div>
 
     </Modal>
 </template>
@@ -132,11 +131,13 @@
                 margin: 20px 0 10px 0;
                 color: $color_303133;
             }
-        }
 
-        .v-transfer-dom .ivu-modal-footer {
-            padding: 0;
-            border-top: none;
+            /deep/ .el-table--border {
+                border-left: 1px solid #ebeef5;
+            }
+            /deep/ .el-table--border::after {
+                width: 1px;
+            }
         }
 
     }

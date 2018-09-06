@@ -45,20 +45,24 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate" @click="goEditSms(scope.row)">编辑</span>
+                    <span class="operate" @click="goEditSms(scope.row)">{{$t('edit')}}</span>
+                    <!--<span class="operate" @click="checkSmsDetail(scope.row)">{{$t('check')}}</span>&lt;!&ndash;查看&ndash;&gt;-->
                 </template>
             </el-table-column>
         </table-com>
 
+        <!--查看短信模板信息 - 弹窗-->
+        <check-tpl-modal ref="checkTplModal"></check-tpl-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {smsTplHead} from './smsTemplateConfig';
+    import checkTplModal from './components/checkTplModal.vue';
 
     export default {
-        components: {tableCom},
+        components: {tableCom, checkTplModal},
         props: {},
         data() {
             return {
@@ -132,6 +136,13 @@
                     query: {type: 'modify'},
                     params: scopeRow
                 });
+            },
+            /**
+             * 查看短信模板详情，并传入当前被操作的行数据
+             * @param scopeRow - 行数据
+             */
+            checkSmsDetail(scopeRow) {
+                this.$refs.checkTplModal.show({item: scopeRow});
             },
             /**
              * 批量勾选结果改变时的处理
