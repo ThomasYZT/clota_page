@@ -4,7 +4,7 @@
     <div class="list-info">
         <div class="btn-area">
             <div class="search-by-word">
-                <Input v-model="holidayListParams.keyword"
+                <Input v-model="holidayListParams.holidayName"
                        :placeholder="$t('validateError.pleaseInput', { msg: $t('holidayName')})"/>
                 <Button type="primary"
                         class="ivu-btn-90px"
@@ -111,7 +111,7 @@
                 //列表的请求参数
                 holidayListParams: {
                     //搜索的关键字
-                    keyword: '',
+                    holidayName: '',
                     page: 1,
                     pageSize: 10
                 },

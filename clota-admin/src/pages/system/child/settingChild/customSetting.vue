@@ -12,7 +12,7 @@
             </MenuItem>
         </Menu>
         <div class="custom-content">
-            <component :is="tabComponent">
+            <component :is="tabComponent" :setting="settingData">
                 <template slot="footer" slot-scope="scoped">
                     <Button type="primary"
                             class="ivu-btn-90px"
@@ -55,23 +55,25 @@
                     },
                 ],
                 //当前的tab对应的组件
-                tabComponent : 'smsSetting'
+                tabComponent : 'smsSetting',
+                //设置数据
+                settingData: {},
             }
         },
         created() {
-            //查询角色列表
+            //查询系统设置
             this.getSetting();
         },
         methods: {
             /**
-             * 查询角色列表
+             * 查询系统设置
              */
             getSetting() {
                 ajax.post('getSetting', {}).then(res => {
                     if(res.status === 200){
-
+                        this.settingData = res.data || {};
                     } else {
-
+                        this.settingData = {};
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 });

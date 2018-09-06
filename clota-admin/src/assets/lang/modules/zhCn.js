@@ -318,6 +318,7 @@ export default {
     continueYesRoNo: '是否继续',
     irreversible: '本操作不可撤销',
     isDoing: '您正在',
+    smsProviderName: '短信供应商名称',
 
 
 }
