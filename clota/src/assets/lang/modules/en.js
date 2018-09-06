@@ -546,5 +546,8 @@ export default {
     'appSECRET' : 'appSECRET',
     'expire_score' : 'Integral failure',
     'scoreResume' : 'Score resume',
+    'personalCenter' : '个人中心',
+    'personalInfo' : '个人信息',
+    'pwdModifying' : '修改密码',
 
 }

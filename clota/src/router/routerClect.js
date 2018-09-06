@@ -5,10 +5,12 @@
 import orgStructureRouter from './modules/orgStructureRouter';
 import memberManageRouter from './modules/memberManage';
 import systemSettingRouter from './modules/systemSetting';
+import personalCenterRouter from './modules/personalCenter';
 
 
 export default {
     ...orgStructureRouter,
     ...memberManageRouter,
     ...systemSettingRouter,
+    ...personalCenterRouter,
 }

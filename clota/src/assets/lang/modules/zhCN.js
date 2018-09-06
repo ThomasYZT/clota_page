@@ -546,5 +546,8 @@ export default {
     'appSECRET' : 'appSECRET',
     'expire_score' : '积分失效',
     'scoreResume' : '积分消耗',
+    'personalCenter' : '个人中心',
+    'personalInfo' : '个人信息',
+    'pwdModifying' : '修改密码',
 
 }

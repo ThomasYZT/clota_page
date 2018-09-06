@@ -59,10 +59,10 @@
                         callback();
                     }
                 },
-                // 校验是否与新密码相同
+                // 校验再次输入的密码是否与新密码相同
                 isEqNewPwd: (rule, value, callback) => {
                     if (value != self.formData.password) {
-                        callback(new Error( this.$t('输入的密码与新密码不同') ));    // 输入的密码与新密码不同
+                        callback(new Error( this.$t('再次输入的密码与新密码不同') ));    // 输入的密码与新密码不同
                     } else {
                         callback();
                     }
