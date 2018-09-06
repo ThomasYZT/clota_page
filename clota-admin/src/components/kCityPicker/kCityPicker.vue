@@ -60,9 +60,9 @@
                                  v-for="(item, i) in arr"
                                  @click="onClickItem(item)">
                                 <div :class="{
-                                    active: select.province && select.province.name === item.name
+                                    active: select.province && select.province.province === item.province
                                 }">
-                                    {{item.name}}
+                                    {{item.province}}
                                 </div>
                             </div>
                         </div>
@@ -71,14 +71,14 @@
                     <div class="select-item c"
                          :key="i + 'c'"
                          v-show="view === 'c'"
-                         v-for="(item, i) in citys"
+                         v-for="(item, i) in cityInfoList"
                          @click="onClickItem(item)">
                         <div
                             :class="{
-                                active: select.city && select.city.name === item.name
+                                active: select.city && select.city.city === item.city
                             }"
-                            v-w-title="item.name">
-                            {{item.name}}
+                            v-w-title="item.city">
+                            {{item.city}}
                         </div>
                     </div>
                     <!-- 区 -->
@@ -107,6 +107,7 @@
     import citys from './dicts/citys';
     import areas from './dicts/areas';
     import {commonFunc} from 'klwk-ui'
+    import ajax from '@/api/index.js';
 
     export default {
         name: 'KCityPicker',
@@ -159,7 +160,11 @@
                     city: null,
                     area: null,
                     value: ''
-                }
+                },
+                //省份信息列表展示
+                provinceInfoList : [],
+                //市区信息列表展示
+                cityInfoList : []
             }
         },
         computed: {
@@ -205,17 +210,9 @@
                             this.callback()
                             this.hide()
                         } else {
-                            // 加载对应省下的市数据
-                            this.init('c')
 
-                            // 如果没有市数据则选择本身，且清空下级数据
-                            if (!this.citys.length) {
-                                this.select.city = this.select.area = null
-                                this.callback()
-                                this.hide()
-                            } else {
-                                this.view = 'c'
-                            }
+
+                            this.queryCityInfoList(data.provinceid);
                         }
                         break
                     case 'c':
@@ -390,11 +387,11 @@
                     }
                 } else {
                     // 先排序再初始化数据
-                    provinces.sort((a, b) => {
-                        let pinyin = commonFunc.getNamePinYin(a.name)
-                        let pinyin1 = commonFunc.getNamePinYin(b.name)
-                        if (a.name.includes('重庆')) pinyin = 'chongqingshi'
-                        if (b.name.includes('重庆')) pinyin1 = 'chongqingshi'
+                    this.provinceInfoList.sort((a, b) => {
+                        let pinyin = commonFunc.getNamePinYin(a.province)
+                        let pinyin1 = commonFunc.getNamePinYin(b.province)
+                        if (a.province.includes('重庆')) pinyin = 'chongqingshi'
+                        if (b.province.includes('重庆')) pinyin1 = 'chongqingshi'
 
                         a.fstCh = pinyin[0]
                         b.fstCh = pinyin1[0]
@@ -402,12 +399,12 @@
                         return pinyin > pinyin1 ? 1 : -1
                     }).forEach(province => {
                         // 整改文案
-                        province.name = province.name.split('省')[0]
-                        province.name = province.name.split('市')[0]
-                        province.name = province.name.split('自治区')[0]
-                        province.name = province.name.split('壮族')[0]
-                        province.name = province.name.split('回族')[0]
-                        province.name = province.name.split('维吾尔')[0]
+                        province.province = province.province.split('省')[0]
+                        province.province = province.province.split('市')[0]
+                        province.province = province.province.split('自治区')[0]
+                        province.province = province.province.split('壮族')[0]
+                        province.province = province.province.split('回族')[0]
+                        province.province = province.province.split('维吾尔')[0]
 
                         if (province.fstCh >= 'a' && province.fstCh <= 'g') {
                             this.provinces['A-G'].push(province)
@@ -423,7 +420,46 @@
                         }
                     })
                 }
+            },
+            /**
+             * 获取省份列表
+             */
+            listProvince () {
+                ajax.post('listProvince').then(res => {
+                    if(res.status === 200){
+                        this.provinceInfoList = res.data ? res.data : [];
+                        this.init()
+                    }else{
+                        this.provinceInfoList = [];
+                    }
+                })
+            },
+            /**
+             * 根据省id获取市信息
+             * @param provinceId
+             */
+            queryCityInfoList (provinceId) {
+                ajax.post('cityInfoList',{
+                    provinceid : provinceId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.cityInfoList = res.data ? res.data : [];
+                        // 加载对应省下的市数据
+                        this.init('c')
+                        // 如果没有市数据则选择本身，且清空下级数据
+                        if (!this.cityInfoList.length) {
+                            this.select.city = this.select.area = null
+                            this.callback()
+                            this.hide()
+                        } else {
+                            this.view = 'c'
+                        }
+                    }
+                })
             }
+        },
+        created () {
+          this.listProvince();
         },
         mounted() {
             const mousedown = document.onmousedown
@@ -450,8 +486,6 @@
                     }
                 })
             }
-
-            this.init()
         }
     }
 </script>

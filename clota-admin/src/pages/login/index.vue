@@ -59,6 +59,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import {commonFunc} from 'klwk-ui';
     export default {
         data() {
             return {
@@ -79,7 +80,7 @@
                     //账户
                     account: 'test',
                     //密码
-                    password: 'abc',
+                    password: 'Aa123456',
                     //验证码
                     verifyCode: ''
                 },
@@ -100,6 +101,7 @@
              * 登录
              */
             login() {
+                commonFunc.delCookie('Account');
                 this.logging = true;
                 this.showErrMessage = false;
                 this.$refs.formValidate.validate(valid => {

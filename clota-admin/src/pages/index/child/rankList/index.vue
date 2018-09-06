@@ -19,57 +19,48 @@
                 </DatePicker>
             </div>
             <table-com
+                :column-data="columns"
                 :table-data="tableData"
-                :table-height="tableHeight"
-                :column-data="columns">
-                <!--排名-->
+                :border="true"
+                :page-no-d.sync="pageNo"
+                :show-pagination="true"
+                :page-size-d.sync="pageSize"
+                :total-count="totalCount"
+                :ofset-height="192"
+                @query-data="getOrderRankingList">
                 <el-table-column
-                    slot="column0"
+                    slot="columnindex"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
-                    <template slot-scope="scoped">
+                    <template slot-scope="scope">
                         {{row.index + 1}}
                     </template>
                 </el-table-column>
-                <!--占比-->
                 <el-table-column
-                    slot="column3"
+                    slot="columnproportion"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
-                    <template slot-scope="scoped">
-                        {{getIndex(scoped.row.proportion)}}
+                    <template slot-scope="scope">
+                        {{getIndex(scope.row.proportion)}}
                     </template>
                 </el-table-column>
             </table-com>
-            <div class="page-area" v-if="totalCount > 0">
-                <el-pagination
-                    :current-page="pageNo"
-                    :page-sizes="pageSizeConfig"
-                    :page-size="pageSize"
-                    :layout="pageLayout"
-                    :total="totalCount"
-                    @size-change="pageSizeChange"
-                    @current-change="pageNoChange">
-                </el-pagination>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import tableCom from '../tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {columns} from './rankConfig.js';
-    import tableMixins from '../../../lessee/tableMixins';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import ajax from '@/api/index.js';
     import {validator} from 'klwk-ui';
 
     export default {
-        mixins :[tableMixins],
         components : {
             tableCom,
             breadCrumbHead
@@ -85,13 +76,16 @@
                   //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('index'),
+                        name: 'index',
                         router: {
                             name: 'index'
                         }
                     }
                 ],
-                spaceOffset : 165
+                //表格数据
+                tableData : [],
+                pageNo : 1,
+                pageSize : 10,
             }
         },
         methods: {
@@ -102,7 +96,7 @@
                 ajax.get('orderRankingList',{
                     page : this.pageNo,
                     pageSize : this.pageSize,
-                    date : this.selectDate.format('yyyy-MM-dd')
+                    date : this.selectDate.format('yyyy-MM-dd HH:mm:ss')
                 }).then(res => {
                     if(res.status === 200){
                         this.totalCount = res.data.totalRecord;
@@ -114,8 +108,6 @@
                 }).catch(err => {
                     this.tableData =  [];
                     this.totalCount = 0;
-                }).finally(() =>{
-                    this.setTableHeight();
                 });
             },
             /**
@@ -163,7 +155,6 @@
             @include block_outline($height: unquote('calc(100% - 74px)'));
             margin-top: 20px;
             background: $color_fff;
-            @include padding_place();
             overflow: auto;
 
             .tab-list {

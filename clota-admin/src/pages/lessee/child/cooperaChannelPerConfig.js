@@ -45,27 +45,27 @@ export const columns = {
     'success': [
         {
             title: 'ID',
-            minWidth: 100,
+            minWidth: 220,
             field: 'id',
         },
         {
             title: '姓名',
-            minWidth: 100,
+            minWidth: 150,
             field: 'orgName',
         },
         {
             title: '性别',
-            minWidth: 100,
+            minWidth: 80,
             field: 'sex'
         },
         {
             title: '电话',
-            minWidth: 70,
+            minWidth: 140,
             field: 'telephone'
         },
         {
             title: '身份证号',
-            minWidth: 100,
+            minWidth: 200,
             field: 'certificateNumber'
         },
         {
@@ -75,12 +75,12 @@ export const columns = {
         },
         {
             title: '身份证',
-            minWidth: 100,
+            minWidth: 150,
             field: 'attach'
         },
         {
             title: '注册时间',
-            minWidth: 100,
+            width: 180,
             field: 'createdTime'
         },
         {
@@ -97,22 +97,22 @@ export const columns = {
     'reject': [
         {
             title: '姓名',
-            minWidth: 100,
+            minWidth: 150,
             field: 'orgName',
         },
         {
             title: '性别',
-            minWidth: 100,
+            minWidth: 70,
             field: 'sex'
         },
         {
             title: '电话',
-            minWidth: 70,
+            minWidth: 140,
             field: 'telephone'
         },
         {
             title: '身份证号',
-            minWidth: 100,
+            minWidth: 150,
             field: 'certificateNumber'
         },
         {
@@ -122,12 +122,12 @@ export const columns = {
         },
         {
             title: '身份证',
-            minWidth: 100,
+            minWidth: 190,
             field: 'attach'
         },
         {
             title: '注册时间',
-            minWidth: 100,
+            width: 180,
             field: 'createdTime'
         },
         {
@@ -138,12 +138,17 @@ export const columns = {
         {
             title: '驳回原因',
             minWidth: 100,
-            field: 'rate'
+            field: 'reason'
         },
         {
             title: '驳回时间',
-            minWidth: 100,
-            field: 'rate'
+            width: 180,
+            field: 'auditTime'
         },
+        {
+            title : '操作',
+            width : 100,
+            field : 'operate'
+        }
     ]
 };

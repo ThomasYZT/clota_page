@@ -121,13 +121,13 @@
              */
                getSysAccountByToken(){
                 return ajax.post('getSysAccountByToken',).then(res => {
-                    if(res.status == 200){
+                    if(res.status === 200){
                         this.formData.id = res.data.id;
                         this.formData.account = res.data.loginName;
                         this.formData.name = res.data.nickName;
                         this.formData.phone = res.data.phone;
                         this.formData.mail = res.data.email;
-                        this.formData.roleId = Number(res.data.roleId);
+                        this.formData.roleId = res.data.roleId;
                         this.formData.roles = res.data.roleName;
                     }
                 });
@@ -141,24 +141,23 @@
             },
             save () {
                 this.isSaving = true;
-                console.log(typeof this.formData.roleId)
                 let AccountInformation={
                       id:this.formData.id,
                       nickName:this.formData.name,
                       phone:this.formData.phone,
                       email:this.formData.mail,
                       roleId:this.formData.roleId
-                 }
-                 //console.log(ChangePassword)
+                 };
                  ajax.post('updateAccountInfo',AccountInformation).then(res => {
-                    this.isSaving = false;
-                    if(res.status == 200){
-                        this.$Message.success('修改密码成功');
+                    if(res.status === 200){
+                        this.$Message.success('修改基本信息成功');
                         this.resetFormData();
                     }else{
-                        this.$Message.error(res.message);
+                        this.$Message.error(res.message || '修改基本信息失败');
                     }
-                });
+                }).finally(() => {
+                     this.isSaving = false;
+                 });
             },
             /**
              * 保存信息到后台

@@ -5,13 +5,13 @@
         <ul class="head">
             <li class="tree-title"
                 :class="{'active' : activeTap === 'management'}"
-                @click="switchTap('management')">
+                @click="switchTap('manage')">
                 <span class="iconfont icon-fiance"></span>
                 经营管理
             </li>
             <li class="tree-title"
-                :class="{'active' : activeTap === 'fiance'}"
-                @click="switchTap('fiance')">
+                :class="{'active' : activeTap === 'economic'}"
+                @click="switchTap('economic')">
                 <span class="iconfont icon-management"></span>
                 财务管理
             </li>
@@ -21,12 +21,18 @@
                 v-model.trim="keyWord"
                 placeholder="请输入查找内容"
                 icon="ios-search"
-                style="width: 360px"/>
+                style="width: 360px"
+                @on-keyup="searchNode"/>
         </div>
         <div class="tree-plugin">
             <Tree :data="treeData"
-                  :render="renderContent">
+                  ref="tree"
+                  v-if="treeData.length > 0"
+                  :render="renderContent"
+                  :filter-node-method="filterNode">
             </Tree>
+            <no-data v-else>
+            </no-data>
         </div>
         <!--删除节点模态框-->
         <del-modal ref="delModal">
@@ -67,6 +73,8 @@
     import addCompany from './child/addCompany';
     import addScene from './child/addScene';
     import addCashier from './child/addCashier';
+    import ajax from '@/api/index.js';
+    import noData from '@/components/noDataTip/noData-tip';
 
     export default {
         props: {
@@ -88,7 +96,8 @@
             addModal,
             addCompany,
             addScene,
-            addCashier
+            addCashier,
+            noData
         },
         data() {
             return {
@@ -137,13 +146,13 @@
                         class: {
                             'title-class': true
                         }
-                    }, data.title),
+                    }, data.name),
                     h('span', {
                         class: {
                             iconfont: 'true',
                             'icon-delete': true,
                             //财务管理不允许删除节点
-                            'hidden' : this.activeTap === 'fiance'
+                            'hidden' : this.activeTap === 'economic'
                         },
                         on: {
                             click: (e) => {
@@ -164,7 +173,7 @@
                             'icon-add': true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
-                            'hidden' : this.activeTap === 'fiance' || data.type === 'department' || data.type === 'cashier'
+                            'hidden' : this.activeTap === 'economic' || data.type === 'department' || data.type === 'cashier'
                         },
                         on: {
                             click: (e) => {
@@ -182,6 +191,8 @@
              */
             switchTap(tap) {
                 this.activeTap = tap;
+                this.keyWord = '';
+                this.$emit('switch-tap',tap);
             },
             /**
              * 打开填写新增公司的信息的模态框
@@ -212,6 +223,33 @@
             addCashier(data) {
                 this.addNodeDetail = data;
                 this.addCashierModalShow = true;
+            },
+            /**
+             * 搜索节点
+             * @param value
+             * @param data
+             * @returns {boolean}
+             */
+            filterNode(value, data) {
+                console.log(data)
+                if (!value) return true;
+                return data.label.indexOf(value) !== -1;
+            },
+            /**
+             * 根据关键字搜索节点
+             * @param e
+             */
+            searchNode(e) {
+                // if(this.$refs.tree){
+                //     console.log(this.$refs.tree)
+                //     this.$refs.tree.filter(this.keyWord);
+                // }
+            }
+        },
+        watch : {
+            keyWord (val) {
+                console.log(this.$refs.tree)
+                this.$refs.tree.filter(val);
             }
         }
     }
@@ -267,7 +305,9 @@
         }
 
         .tree-plugin {
-            @include block_outline($height: unquote('calc(100% - 146px)'));
+            position: relative;
+            @include block_outline($height: unquote('calc(100% - 166px)'));
+            @include padding_place();
             overflow-x: hidden;
 
             /deep/ .ivu-tree-arrow {

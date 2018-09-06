@@ -11,4 +11,8 @@ export default {
     'getPartnerDetail' : 'tenantPartner/getPartner.json',
     //查询渠道下的合作伙伴
     'getChannelPartners' : 'tenantPartner/getChannelPartners.json',
+    //审核渠道
+    'auditPartner' : 'tenantPartner/auditPartner.json',
+    //获取公司、景区、部门、款台数据
+    'getCompanyTree' : 'tenant/getCompanyTree.json',
 }

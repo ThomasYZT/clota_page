@@ -105,7 +105,7 @@ module.exports = {
                 plugins: [
                     'axios',
                     'klwk-ui',
-                    'iview',
+                    'core-js',
                     'echarts/lib/echarts',
                     './src/components/kCityPicker/dicts/areas.json',
                     './src/components/kCityPicker/dicts/citys.json',

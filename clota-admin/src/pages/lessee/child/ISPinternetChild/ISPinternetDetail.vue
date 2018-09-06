@@ -10,7 +10,8 @@
             <div class="structure">
                 <!--组织结构图-->
                 <structure-tree :tree-data="structureData"
-                                v-model="componentName">
+                                v-model="componentName"
+                                @switch-tap="switchTap">
                 </structure-tree>
             </div>
             <!--组织架构不同的节点对应不同的组件-->
@@ -26,9 +27,12 @@
     import companyDetail from './ISPinternetDetailChild/companyDetail';
     import departmentDetail from './ISPinternetDetailChild/departmentDetail';
     import cashierDetail from './ISPinternetDetailChild/cashierDetail';
-    import sceneDetail from './ISPinternetDetailChild/sceneDetail'
+    import sceneDetail from './ISPinternetDetailChild/sceneDetail';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
             structureTree,
@@ -50,38 +54,79 @@
                 ],
                 //组织结构数据
                 structureData: [
-                    {
-                        title: '公司',
-                        type : 'company',
-                        expand: true,
-                        children: [
-                            {
-                                title: '长隆旅游集团',
-                                expand: true,
-                                type : 'company',
-                                children: [
-                                    {
-                                        title: '部门',
-                                        type : 'department'
-                                    },
-                                    {
-                                        title: '核销款台',
-                                        type : 'cashier'
-                                    },
-                                    {
-                                        title: '景区',
-                                        type : 'scene'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
+                    // {
+                    //     title: '公司',
+                    //     type : 'company',
+                    //     children: [
+                    //         {
+                    //             title: '长隆旅游集团',
+                    //             type : 'company',
+                    //             children: [
+                    //                 {
+                    //                     title: '部门',
+                    //                     type : 'department'
+                    //                 },
+                    //                 {
+                    //                     title: '核销款台',
+                    //                     type : 'cashier'
+                    //                 },
+                    //                 {
+                    //                     title: '景区',
+                    //                     type : 'scene'
+                    //                 }
+                    //             ]
+                    //         }
+                    //     ]
+                    // }
                 ],
                 //详情路由
-                componentName : ''
+                componentName : '',
+                //节点id
+                nodeId : '',
+                //当前激活tap
+                activeTap : 'manage'
             }
         },
-        methods: {},
+        methods: {
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params.id){
+                    this.nodeId = params.id;
+                    this.getCompanyTree();
+                }else{
+                    this.$router.push({
+                        name : 'ISPinternet'
+                    });
+                }
+                console.log(params)
+            },
+            /**
+             * 获取组织树
+             */
+            getCompanyTree () {
+                ajax.post('getCompanyTree',{
+                    id : this.nodeId,
+                    type : this.activeTap
+                }).then(res => {
+                    if(res.status === 200){
+                        this.structureData = res.data ? res.data : [];
+                    }else{
+                        this.structureData = [];
+                    }
+                })
+            },
+            /**
+             * 切换tap列表
+             * @param tapType
+             */
+            switchTap (tapType) {
+                this.activeTap = tapType;
+                this.getCompanyTree();
+            }
+        },
         computed : {
             /**
              * 右侧引入的组件

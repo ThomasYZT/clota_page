@@ -24,21 +24,21 @@
                     <li class="list" v-if="item.length === 3">
                         <div class="info-list1">
                             <span class="info-key">{{item[0].label}}：</span>
-                            <span class="info-val">{{item[0].value | contentFilter}}</span>
+                            <span class="info-val" v-w-title="item[0].value">{{item[0].value | contentFilter}}</span>
                         </div>
                         <div class="info-list2">
                             <span class="info-key">{{item[1].label}}：</span>
-                            <span class="info-val">{{item[1].value | contentFilter}}</span>
+                            <span class="info-val" v-w-title="item[1].value">{{item[1].value | contentFilter}}</span>
                         </div>
                         <div class="info-list3" v-if="item[2].label">
                             <span class="info-key">{{item[2].label}}：</span>
-                            <span class="info-val">{{item[2].value | contentFilter}}</span>
+                            <span class="info-val" v-w-title="item[2].value">{{item[2].value | contentFilter}}</span>
                         </div>
                     </li>
                     <li class="list" v-if="item.length === 2">
                         <div class="info-list4">
                             <span class="info-key">{{item[0].label}}：</span>
-                            <span class="info-val">{{item[0].value | contentFilter}}</span>
+                            <span class="info-val" v-w-title="item[0].value">{{item[0].value | contentFilter}}</span>
                         </div>
                         <div class="info-list5">
                             <span class="info-key">{{item[1].label}}：</span>
@@ -82,12 +82,11 @@
                   :rules="ruleValidate"
                   :label-width="0">
                 <FormItem :label="channelType === 'per' ? $t('cooperaChannelPer') : $t('cooperaChannelOrg') + '：'">
-                    <span>张大发</span>
+                    <span>{{cooperaPerDetail.name}}</span>
                 </FormItem>
                 <FormItem label="驳回原因：" prop="passReason">
-                    <Input v-model="formData.passReason"
+                    <Input v-model.trim="formData.passReason"
                            placeholder="请填写驳回原因，不超过20个字符"
-                           :maxlength="20"
                            type="textarea"
                            style="width: 280px"/>
                 </FormItem>
@@ -101,10 +100,10 @@
                   :rules="ruleValidate"
                   :label-width="0">
                 <FormItem :label="channelType === 'per' ? $t('cooperaChannelPer') : $t('cooperaChannelOrg') + '：'">
-                    <span>张大发</span>
+                    <span>{{cooperaPerDetail.name}}</span>
                 </FormItem>
                 <FormItem label="登录密码将发送至：" prop="email">
-                    <Input v-model="formData.email" style="width: 280px"/>
+                    <Input v-model.trim="formData.email" style="width: 280px"/>
                 </FormItem>
             </Form>
         </edit-modal>
@@ -118,6 +117,7 @@
     import getFiledData from './channelConfig';
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {validator} from 'klwk-ui';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -126,6 +126,18 @@
             editModal
         },
         data() {
+            //校验邮箱地址是否正确
+            const validateEmail = (rule,value,callback) => {
+                if(value){
+                    if(validator.isEmail(value)){
+                        callback();
+                    }else{
+                        callback(this.$t('formalError',{field : this.$t('email')}));
+                    }
+                }else{
+                    callback(this.$t('inputField',{field : this.$t('email')}));
+                }
+            };
             return {
                 //上级路由列表
                 beforeRouterList: [],
@@ -147,10 +159,13 @@
                 //表单校验规则
                 ruleValidate : {
                     passReason : [
-                        {required : true,message : '请输入驳回原因',trigger : 'blur'}
+                        {required : true,message : this.$t('inputField',{field : this.$t('rejectReason')}),trigger : 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('rejectReason'),length : 20}),trigger : 'blur'}
                     ],
                     email : [
-                        {required : true,message : '请输入邮件地址',trigger : 'blur'}
+                        {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},
+                        {validator : validateEmail ,trigger : 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('email'),length : 100}),trigger : 'blur'}
                     ]
                 },
                 //表单数据
@@ -186,7 +201,10 @@
                     confirmCallback : () => {
                         this.$refs.passForm.validate(valid => {
                             if(valid){
-                                this.$refs.passModal.hide();
+                                this.auditPartner({
+                                    auditStatus : 'success',
+                                    email : this.formData.email
+                                });
                             }
                         });
                     },
@@ -205,7 +223,10 @@
                     confirmCallback : (pass) => {
                         this.$refs.rejectForm.validate(valid => {
                             if(valid){
-                                this.$refs.rejectModal.hide();
+                                this.auditPartner({
+                                    auditStatus : 'reject',
+                                    reason : this.formData.passReason
+                                });
                             }
                         });
                     },
@@ -266,7 +287,7 @@
                                 res.data.telephone,
                                 res.data.managerAccount,
                                 res.data.email,
-                                (res.data.province ? res.data.province : res.data.province) + ( res.data.city ? res.data.city : res.data.city + '') + (res.data.area ? res.data.area : ''),
+                                (res.data.province ? res.data.province : '') + ( res.data.city ? res.data.city : res.data.city + '') + (res.data.area ? res.data.area : ''),
                                 res.data.address,
                                 res.data.businessAccount,
                                 res.data.createdTime,
@@ -282,7 +303,7 @@
                                 res.data.telephone,
                                 res.data.managerAccount,
                                 res.data.certificateNumber,
-                                (res.data.province ? res.data.province : res.data.province) + ( res.data.city ? res.data.city : res.data.city + '') + (res.data.area ? res.data.area : ''),
+                                (res.data.province ? res.data.province : '') + ( res.data.city ? res.data.city : res.data.city + '') + (res.data.area ? res.data.area : ''),
                                 res.data.address,
                                 res.data.email,
                                 res.data.createdTime,
@@ -313,6 +334,26 @@
                     }else{
                         this.totalCount = 0;
                     }
+                })
+            },
+            /**
+             * 审核渠道
+             * @param params
+             */
+            auditPartner (params) {
+                ajax.post('auditPartner',Object.assign({
+                    id : this.channelId
+                },params)).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('审核成功');
+                        this.getPartnerDetail();
+                        this.getChannelPartners();
+                    }else{
+                        this.$Message.error('审核失败');
+                    }
+                }).finally(() => {
+                    this.$refs.passModal.hide();
+                    this.$refs.rejectModal.hide();
                 })
             }
         },

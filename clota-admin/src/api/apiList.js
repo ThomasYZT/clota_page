@@ -35,6 +35,10 @@ const apiList = {
     modifyPassword : 'user/modifyPassword.json',
     //修改账户信息
     updateAccountInfo : 'user/update.json',
+    //查询省列表
+    listProvince : 'tenant/listProvince.json',
+    //查询市列表
+    cityInfoList : 'tenant/getSysCitiessByProvinceid.json',
     //首页接口
     ...index,
     //日志接口

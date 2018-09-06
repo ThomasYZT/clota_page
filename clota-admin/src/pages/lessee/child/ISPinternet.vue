@@ -85,7 +85,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="normal" @click="toISPinternetDetail">查看</li>
+                        <li class="normal" @click="toISPinternetDetail(scoped.row)">查看</li>
                         <li class="red-label" @click="disabledLess(scoped.row)">禁用</li>
                     </ul>
                 </template>
@@ -139,10 +139,14 @@
             },
             /**
              * 查看服务提供商详情
+             * @param data
              */
-            toISPinternetDetail() {
+            toISPinternetDetail(data) {
                 this.$router.push({
-                    name: 'ISPinternetDetail'
+                    name: 'ISPinternetDetail',
+                    params : {
+                        id : data.id
+                    }
                 });
             },
             /**

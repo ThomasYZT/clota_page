@@ -82,6 +82,8 @@
         },
         data() {
             return {
+                //查询关键字
+                keyWord : '',
                 //表头数据
                 columnData: columns,
                 //过滤类型

@@ -9,7 +9,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
-
+function resolveApp(relativePath) {
+    return path.resolve(relativePath);
+}
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -67,7 +69,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true,
-      dll : {}
+      dll : {},
+    favicon: resolveApp('./static/favicon.ico')
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
