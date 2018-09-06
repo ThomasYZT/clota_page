@@ -153,7 +153,7 @@
                                     this.xAxis.push(item ? item.slice(5) : '');
                                     this.seriesData.push({
                                         name : item ? item.slice(5) : '',
-                                        value : res.data[item] / 10000
+                                        value : Number(res.data[item] / 10000).toFixed(2)
                                     });
                                 }
                             }else{

@@ -516,7 +516,7 @@ export default {
     'inputStoreName' : 'Please input the name of shop',
     'storeName' : 'Name of shop',
     'setInteByProduct' : 'Integration Rate & Discount Rate Settings of each Product',
-    'memberTypeName' : 'Employee classification name',
+    'memberTypeName' : 'Special member name',
     'linkCategory' : 'Associated category',
     'link' : 'Association',
     'addStoredSendRatio' : 'Increase the proportion of stored value',

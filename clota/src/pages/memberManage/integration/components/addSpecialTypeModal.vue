@@ -12,7 +12,7 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="140">
+                  :label-width="lang === 'zh-Cn' ? 150 : 180">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('memberTypeName')" prop="name">
                         <Input v-model.trim="formData.name" :placeholder="$t('inputField', {field: ''})"/>
@@ -31,6 +31,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //当前操作的特殊会员分类信息
@@ -117,6 +118,11 @@
                     }
                 }
             }
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
         }
     }
 </script>

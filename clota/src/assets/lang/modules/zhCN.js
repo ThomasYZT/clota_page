@@ -516,7 +516,7 @@ export default {
     'inputStoreName' : '请输入店铺名称',
     'storeName' : '店铺名称',
     'setInteByProduct' : '按产品设置积分、折扣率',
-    'memberTypeName' : '员工分类名称',
+    'memberTypeName' : '特殊会员分类名称',
     'linkCategory' : '关联所属类别',
     'link' : '关联',
     'addStoredSendRatio' : '新增储值赠送金额比例',

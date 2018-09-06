@@ -335,7 +335,7 @@
             }
 
             .short-table{
-                width: 440px;
+                width: 520px;
             }
         }
 

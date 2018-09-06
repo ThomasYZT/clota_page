@@ -5,6 +5,7 @@ export const specialEmployeeHead = [
     {
         title: 'specialMemClassify',
         minWidth: 150,
+        enMinWidth: 180,
         field: 'staffDesc'
     },
     {
@@ -25,6 +26,7 @@ export const employeeTrustHead = [
     {
         title: 'specialMemClassify',
         minWidth: 150,
+        enMinWidth: 340,
         field: 'staffDesc'
     },
     {
@@ -46,6 +48,6 @@ export const employeeTrustHead = [
     {
         title: 'operate',
         width: 180,
-        enWidth: 250,
+        enWidth: 270,
     }
 ];
