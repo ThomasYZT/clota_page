@@ -202,7 +202,8 @@
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message|| 'adjustAmount '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message ? this.$t(res.message) :
+                            'adjustScore '+ this.$t('failure') +'！');
                     }
                 })
             },
