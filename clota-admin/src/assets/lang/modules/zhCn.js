@@ -319,6 +319,16 @@ export default {
     irreversible: '本操作不可撤销',
     isDoing: '您正在',
     smsProviderName: '短信供应商名称',
+    smsNumSet: '短信字数设置',
+    smsSingleMaxCount: '单条短信最大字数',
+    word: '字',
+    m_mail: '邮件',
+    msgServiceSendMode: '客服警报发送方式',
+    msgMaintainSendMode: '运维警报发送方式',
+    alarmSetting: '预警设置',
+    warningUseRatioVal: '磁盘空间利用率报警阈值',
+    warningLogSizeVal: '日志文件大小报警阈值',
+
 
 
 }

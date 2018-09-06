@@ -2,46 +2,52 @@
 
 <template>
     <div class="notice-setting">
-        <div class="sms-label-title">
-            客服警报发送方式
-        </div>
-        <RadioGroup v-model="serviceAlarmType" vertical>
-            <Radio label="sms">
-                <span>短信</span>
+        <!--客服警报发送方式-->
+        <div class="sms-label-title">{{$t('msgServiceSendMode')}}</div>
+        <RadioGroup v-model="copySettingData.msgServiceSendMode" vertical>
+            <Radio :label="1">
+                <span>{{$t('smsSetting')}}</span>
             </Radio>
-            <Radio label="mail">
-                <span>邮件</span>
+            <Radio :label="2">
+                <span>{{$t('2')}}</span>
             </Radio>
         </RadioGroup>
-        <div class="sms-label-title">
-            运维警报发送方式
-        </div>
-        <RadioGroup v-model="optionAlarmType" vertical>
-            <Radio label="sms">
-                <span>短信</span>
+        <!--运维警报发送方式-->
+        <div class="sms-label-title">{{$t('msgMaintainSendMode')}}</div>
+        <RadioGroup v-model="copySettingData.msgMaintainSendMode" vertical>
+            <Radio :label="1">
+                <span>{{$t('smsSetting')}}</span>
             </Radio>
-            <Radio label="mail">
-                <span>邮件</span>
+            <Radio :label="2">
+                <span>{{$t('m_mail')}}</span>
             </Radio>
         </RadioGroup>
         <div class="btn-area">
-            <slot name="footer"></slot>
+            <slot name="footer" :rowData="copySettingData"></slot>
         </div>
     </div>
 </template>
 
 <script>
+
+    import defaultsDeep from 'lodash/defaultsDeep';
+
     export default {
+        props: ['setting'],
         data() {
             return {
-                //客服报警方式
-                optionAlarmType : '',
-                //运维报警方式
-                serviceAlarmType : ''
+                //复制数据，用于当前修改
+                copySettingData: {},
             }
         },
-        methods: {
-        }
+        created() {
+            this.copySettingData = defaultsDeep({}, this.setting);
+        },
+        watch: {
+            setting : function (val) {
+                this.copySettingData = defaultsDeep({}, val);
+            }
+        },
     }
 </script>
 

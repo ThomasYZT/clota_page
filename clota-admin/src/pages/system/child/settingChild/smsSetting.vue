@@ -2,51 +2,73 @@
 
 <template>
     <div class="sms-setting">
-        <div class="sms-label-title">
-            短信字数设置
+        <div class="sms-label-title">{{$t('smsNumSet')}}</div>
+        <div class="sms-length-setting">{{$t('smsSingleMaxCount')}}
+            <InputNumber :min="1" :max="9999" v-model="copySettingData.smsMaxCount"></InputNumber>
+            {{$t('word')}}
         </div>
-        <div class="sms-length-setting">
-            单条短信最大字数&nbsp;
-            <InputNumber :min="1" v-model="smsLength"></InputNumber>
-            &nbsp;字
+        <div class="sms-label-title">{{$t('smsProvider')}} </div>
+        <div class="table-wrap">
+            <table-com
+                :ofsetHeight="290"
+                :column-data="columnData"
+                :table-data="tableData"
+                :border="false">
+                <el-table-column
+                    slot="columnsmsProviderName"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                        <span>{{ copySettingData.smsSupplierName | contentFilter }}</span>
+                    </template>
+                </el-table-column>
+            </table-com>
         </div>
-        <div class="sms-label-title">
-            短信供应商
-        </div>
-        <el-table
-            :data="tableData"
-            style="width: 150px">
-            <el-table-column
-                prop="date"
-                label="短信供应商名称"
-                width="150">
-            </el-table-column>
-        </el-table>
         <div class="btn-area">
-            <slot name="footer" :rowData="tableData"></slot>
+            <slot name="footer" :rowData="copySettingData"></slot>
         </div>
     </div>
 </template>
 
 <script>
+
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import defaultsDeep from 'lodash/defaultsDeep';
+
     export default {
+        props: ['setting'],
+        components : {
+            tableCom,
+        },
         data() {
             return {
-                //短信长度
-                smsLength : 0,
+                //表头数据
+                columnData: [
+                    {
+                        title: 'smsProviderName',
+                        minWidth: 100,
+                        field: 'smsProviderName'
+                    },
+                ],
                 //表格数据
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }]
+                tableData: [{ smsProviderName: '' }],
+                //复制数据，用于当前修改
+                copySettingData: {},
             }
         },
-        methods: {
-
+        created() {
+            this.copySettingData = defaultsDeep({}, this.setting);
         },
-        computed : {
-        }
+        watch: {
+            setting : function (val) {
+                this.copySettingData = defaultsDeep({}, val);
+            }
+        },
     }
 </script>
 
@@ -67,6 +89,14 @@
         .sms-length-setting{
             font-size: $font_size_14px;
             color: $color_333;
+
+            /deep/ .ivu-input-number{
+                margin: 0 5px;
+            }
+        }
+
+        .table-wrap{
+            width: 200px;
         }
 
         .btn-area{

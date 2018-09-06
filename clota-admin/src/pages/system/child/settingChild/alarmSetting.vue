@@ -2,38 +2,52 @@
 
 <template>
     <div class="alarm-setting">
-        <div class="setting-title">
-            预警设置
-        </div>
+        <!--预警设置-->
+        <div class="setting-title">{{$t('alarmSetting')}}</div>
         <div class="setting">
-            <div class="setting-name">磁盘空间利用率报警阈值&nbsp;</div>
+            <!--磁盘空间利用率报警阈值-->
+            <div class="setting-name">{{$t('warningUseRatioVal')}}</div>
             <InputNumber :max="100"
                          :min="0"
-                         v-model="smsLength">
+                         v-model="copySettingData.warningUseRatioVal">
             </InputNumber>
             &nbsp;%
         </div>
         <div class="setting">
-            <div class="setting-name">日志文件大小报警阈值&nbsp;</div>
+            <!--日志文件大小报警阈值-->
+            <div class="setting-name">{{$t('warningLogSizeVal')}}</div>
             <InputNumber :max="100"
                          :min="0"
-                         v-model="smsLength">
+                         v-model="copySettingData.warningLogSizeVal">
             </InputNumber>
             &nbsp;%
         </div>
         <div class="btn-area">
-            <slot name="footer"></slot>
+            <slot name="footer" :rowData="copySettingData"></slot>
         </div>
     </div>
 </template>
 
 <script>
+
+    import defaultsDeep from 'lodash/defaultsDeep';
+
     export default {
+        props: ['setting'],
         data() {
-            return {}
+            return {
+                //复制数据，用于当前修改
+                copySettingData: {},
+            }
         },
-        methods: {
-        }
+        created() {
+            this.copySettingData = defaultsDeep({}, this.setting);
+        },
+        watch: {
+            setting : function (val) {
+                this.copySettingData = defaultsDeep({}, val);
+            }
+        },
     }
 </script>
 
@@ -59,6 +73,10 @@
                 display: inline-block;
                 @include block_outline(160px,auto);
                 text-align: right;
+            }
+
+            /deep/ .ivu-input-number{
+                margin: 0 5px;
             }
         }
 

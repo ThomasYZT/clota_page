@@ -40,6 +40,9 @@ export default {
     //修改系统设置
     'updateSetting' : 'setting/update.json',
 
+    //查询计量单位列表
+    'unitList' : 'unit/list.json',
+
     //查询节假日列表
     'holidayList' : 'holiday/list.json',
     //添加节假日
@@ -48,6 +51,8 @@ export default {
     'updateHoliday' : 'holiday/update.json',
     //删除节假日
     'deleteHoliday' : 'holiday/deleteBatch.json',
+
+
 
 
 }

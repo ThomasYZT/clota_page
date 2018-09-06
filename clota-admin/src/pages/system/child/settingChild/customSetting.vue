@@ -17,7 +17,9 @@
                     <Button type="primary"
                             class="ivu-btn-90px"
                             @click="save(scoped.rowData)">{{$t('save')}}</Button>
-                    <Button type="ghost" class="ivu-btn-90px">{{$t('cancel')}}</Button>
+                    <Button type="ghost"
+                            class="ivu-btn-90px"
+                            @click="cancel">{{$t('cancel')}}</Button>
                 </template>
             </component>
         </div>
@@ -88,9 +90,39 @@
             /**
              * 保存设置
              */
-            save () {
-                this.$Message.success('保存成功');
-            }
+            save ( data ) {
+                var params = {
+                    id: data.id,
+                    msgMaintainSendMode: data.msgMaintainSendMode,
+                    msgServiceSendMode: data.msgServiceSendMode,
+                    smsMaxCount: data.smsMaxCount,
+                    smsSupplierName: data.smsSupplierName,
+                    warningLogSizeVal: data.warningLogSizeVal,
+                    warningUseRatioVal: data.warningUseRatioVal,
+                };
+                console.log(params);
+                this.updateSetting(params);
+            },
+            /**
+             * 取消还原设置
+             */
+            cancel () {
+                this.getSetting();
+            },
+            /**
+             * 修改系统设置
+             * @param params
+             */
+            updateSetting ( params ) {
+                ajax.post('updateSetting', params).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success( this.$t('edit') + this.$t('success') );
+                        this.getSetting();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
         }
     }
 </script>
