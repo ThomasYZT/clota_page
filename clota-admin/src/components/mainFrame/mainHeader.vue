@@ -81,14 +81,18 @@
              */
             toTopMenu(data) {
                 if(data.children && data.children.length > 0) return false;
-                this.$router.push({path: data.path});
+                this.$router.push({path: data.path},() => {
+                    sessionStorage.clear();
+                });
             },
             /**
              * 跳转到对应的二级菜单
              * @param data
              */
             toSubMenu (data,i) {
-                this.$router.push({path: data.path});
+                this.$router.push({path: data.path},() => {
+                    sessionStorage.clear();
+                });
                 this.$set(this.menuShowList,i,false);
             },
             /**
