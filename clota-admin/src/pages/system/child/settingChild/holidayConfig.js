@@ -3,28 +3,33 @@
 //节假日表头
 export const holidayHead = [
     {
-        title: '编码',
+        title: ' ',
+        minWidth: 80,
+        field: 'select',
+    },
+    {
+        title: 'code',
         minWidth: 100,
-        field: 'name'
+        field: 'code'
     },
     {
-        title: '节假日名称',
-        minWidth: 200,
-        field: 'rate'
+        title: 'holidayName',
+        minWidth: 180,
+        field: 'holidayName'
     },
     {
-        title: '假期时间',
-        minWidth: 150,
-        field: 'rate'
+        title: 'holidayTime',
+        minWidth: 160,
+        field: 'holidayTime'
     },
     {
-        title: '启用状态',
+        title: 'openStatus',
         minWidth: 90,
-        field: 'rate'
+        field: 'status'
     },
     {
-        title: '操作',
+        title: 'operate',
         minWidth: 90,
-        field: 'rate'
+        field: 'operate'
     },
 ];

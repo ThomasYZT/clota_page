@@ -310,6 +310,14 @@ export default {
     publishTime: '发布时间',
     rejectReason: '驳回原因',
     openStatus: '启用状态',
+    to: '至',
+    query: '查询',
+    deleteBatch: '批量删除',
+    add: '新增',
+    holiday: '节假日',
+    continueYesRoNo: '是否继续',
+    irreversible: '本操作不可撤销',
+    isDoing: '您正在',
 
 
 }

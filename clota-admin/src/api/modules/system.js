@@ -47,7 +47,7 @@ export default {
     //修改节假日
     'updateHoliday' : 'holiday/update.json',
     //删除节假日
-    'deleteHoliday' : 'holiday/delete.json',
+    'deleteHoliday' : 'holiday/deleteBatch.json',
 
 
 }

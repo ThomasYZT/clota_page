@@ -79,8 +79,8 @@
         </table-com>
         <!--删除账号模态框-->
         <del-modal ref="delModal">
-            <span class="content-text">您正在删除账号：<span class="yellow-label">{{operateData.loginName}}</span></span>
-            <span><span class="red-label">本操作不可撤销</span>，是否继续？</span>
+            <span class="content-text">{{$t('isDoing')}}{{$t('delete') + $t('accountName')}}<span class="yellow-label">{{operateData.loginName}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
         </del-modal>
     </div>
 </template>

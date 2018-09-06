@@ -12,31 +12,30 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
-                    <FormItem :label="$t('holidayName')" prop="name">
-                        <Input v-model="formData.name" style="width: 280px"/>
-                    </FormItem>
-                    </Col>
-                    <Col span="11">
-                    <FormItem :label="$t('isUsing')">
-                        <Checkbox v-model="formData.isUsing">启用</Checkbox>
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
+                <i-row>
+                    <i-col span="11">
+                        <FormItem :label="$t('holidayName')" prop="holidayName">
+                            <Input v-model="formData.holidayName"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <FormItem :label="$t('isUsing')" prop="status">
+                            <Checkbox v-model="formData.status">{{$t('startUsing')}}</Checkbox>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <row>
+                    <i-col span="11">
                         <FormItem :label="$t('holidayTime')" prop="time">
                             <DatePicker
                                 v-model="formData.time"
                                 type="daterange"
                                 placement="bottom-end"
-                                placeholder="请选择假期时间"
-                                style="width: 280px;" >
+                                :placeholder="$t('validateError.pleaseSelect', {msg: $t('holidayTime')})">
                             </DatePicker>
                         </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </row>
             </Form>
             <div class="footer">
                 <Button type="primary"
@@ -55,10 +54,13 @@
 </template>
 
 <script>
+
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
         },
@@ -84,16 +86,17 @@
                 //表单数据
                 formData: {
                     //单位 名字
-                    name: '',
+                    holidayName: '',
                     //单位是否启用
-                    isUsing: '',
+                    status: false,
                     //假期时间
                     time: [new Date(),new Date()],
                 },
                 //表单校验规则
                 ruleValidate: {
-                    name : [
+                    holidayName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('holidayName')}), trigger: 'blur'},
+                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('holidayName'), length: 15}), trigger: 'blur' },
                     ],
                     time : [
                         {required: true, validator : validateTime, trigger: 'change'},
@@ -107,12 +110,55 @@
         },
         methods: {
             /**
-             * 保存新增单位数据
+             * 保存节假日
              */
             save() {
-                this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.addLoading = true;
+                        let params = {
+                            holidayName: this.formData.holidayName,
+                            status: this.formData.status ? 'normal' : 'invalid',
+                            holidayStartTime: this.formData.time[0].format('yyyy-MM-dd hh:mm:ss'),
+                            holidayEndTime: this.formData.time[1].format('yyyy-MM-dd hh:mm:ss'),
+                        };
+                        if (this.type === 'add') {
+                            this.addHoliday(params);
+                        }else {
+                            params.id = this.formData.id;
+                            this.updateHoliday(params);
+                        }
+                        console.log(params)
+                    }
+                });
+            },
+            /**
+             * 新增节假日
+             */
+            addHoliday( params ) {
+                ajax.post('addHoliday', params).then(res => {
                     this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('addSuccess'));
+                        this.$router.push({ name: 'holiday'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
+             * 修改节假日
+             * @param params
+             */
+            updateHoliday( params ) {
+                ajax.post('updateHoliday', params).then(res => {
+                    this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('edit') + this.$t('success'));
+                        this.$router.push({ name: 'holiday'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
                 });
             },
             /**
@@ -130,18 +176,21 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    if(params.info){
+                        this.formData.id = params.info.id;
+                        this.formData.holidayName = params.info.holidayName;
+                        this.formData.status = params.info.status === 'normal' ? true : false;
+                        this.formData.time = [new Date(params.info.holidayStartTime),new Date(params.info.holidayEndTime) ];
+                    }
                 }else{
                     this.$router.push({
                         name : 'holiday'
                     });
                 }
-            }
+            },
+
         },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
+
     }
 </script>
 
@@ -163,6 +212,10 @@
             /deep/ .ivu-form {
                 @include block_outline(924px, auto);
                 margin: 0 auto;
+
+                /deep/ .ivu-input-wrapper{
+                    width: 280px;
+                }
 
                 textarea.ivu-input{
                     height: 70px;

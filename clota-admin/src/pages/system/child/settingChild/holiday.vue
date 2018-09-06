@@ -4,29 +4,66 @@
     <div class="list-info">
         <div class="btn-area">
             <div class="search-by-word">
-                <Input v-model="keyword"
-                       style="width : 280px"
-                       placeholder="输入节假日名称"/>
+                <Input v-model="holidayListParams.keyword"
+                       :placeholder="$t('validateError.pleaseInput', { msg: $t('holidayName')})"/>
                 <Button type="primary"
                         class="ivu-btn-90px"
-                        @click="getTableData">查询</Button>
+                        @click="queryList">{{$t('query')}}</Button>
             </div>
             <Button type="primary"
                     class="ivu-btn-90px"
-                    @click="add">新增</Button>
-            <Button type="ghost"
+                    @click="add">{{$t('add')}}</Button>
+            <Button type="error"
                     :disabled="rowSelect.length < 1"
-                    @click="bitchDel">批量删除</Button>
+                    @click="bitchDel">{{$t('deleteBatch')}}</Button>
         </div>
         <table-com
-            :table-data="tableData"
-            :table-height="tableHeight"
+            :ofsetHeight="118"
+            :show-pagination="true"
             :column-data="holidayHead"
-            :auto-height="true"
-            :column-check="true"
-            @selection-change="handleSelectionChange">
+            :table-data="tableData"
+            :total-count="total"
+            :page-no-d.sync="holidayListParams.page"
+            :page-size-d.sync="holidayListParams.pageSize"
+            :border="false"
+            @selection-change="handleSelectionChange"
+            @query-data="queryList">
             <el-table-column
-                slot="column4"
+                slot="columnselect"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                type="selection"
+                slot-scope="row">
+            </el-table-column>
+             <el-table-column
+                slot="columnholidayTime"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    {{ scoped.row.holidayStartTime | timeFormat('yyyy-MM-dd')}}{{$t('to')}}{{scoped.row.holidayEndTime | timeFormat('yyyy-MM-dd') }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnstatus"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <span>{{ scoped.row.status === 'normal' ? $t('startUsing') : $t('outUse') }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnoperate"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
@@ -35,55 +72,75 @@
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
-                        <li class="operate-list delete" @click="del(scoped.row)">删除</li>
-                        <li class="operate-list" @click="edit(scoped.row)">修改</li>
+                        <li class="red-label" @click="del(scoped.row)">{{$t('delete')}}</li>
+                        <li class="normal" @click="edit(scoped.row)">{{$t('edit')}}</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount">
-            </el-pagination>
-        </div>
 
         <!--删除模态框-->
         <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除节假日：{{delUnits}}</span>
-            <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
+            <span class="content-text">{{$t('isDoing')}}{{$t('delete') + $t('holiday')}}：<span class="yellow-label">{{delUnits.holidayName}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        </del-modal>
+        <!--批量删除模态框-->
+        <del-modal ref="delBatchModal">
+            <span class="content-text">{{$t('isDoing')}}<span class="yellow-label">{{$t('deleteBatch') + $t('holiday')}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
         </del-modal>
     </div>
 </template>
 
 <script>
-    import tableCom from '../../../index/child/tableCom';
-    import tableMixins from '../../../lessee/tableMixins';
+
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
     import {holidayHead} from './holidayConfig';
+    import ajax from '@/api/index';
+
     export default {
-        mixins :[tableMixins],
         components : {
             tableCom,
             delModal
         },
         data() {
             return {
-                //搜索的关键字
-                keyword : '',
+                //表格多选列表
                 rowSelect : [],
+                //列表的请求参数
+                holidayListParams: {
+                    //搜索的关键字
+                    keyword: '',
+                    page: 1,
+                    pageSize: 10
+                },
                 //表头配置
                 holidayHead : holidayHead,
+                // 列表数据
+                tableData: [],
+                // 列表数据总数
+                total: 0,
                 //删除的信息
-                delUnits : '',
-                //总条数
-                totalCount : 10
+                delUnits : {},
             }
         },
         methods: {
+            /**
+             * 查询账户信息列表
+             */
+            queryList() {
+                ajax.post('holidayList', this.holidayListParams).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list || [];
+                        this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
+                    } else {
+                        this.tableData = [];
+                        this.total = 0;
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
             /**
              * 新增
              */
@@ -96,18 +153,6 @@
                 });
             },
             /**
-             * 批量删除
-             */
-            bitchDel () {
-                this.delUnits = this.rowSelect.map(item => item.name).join(',');
-                this.$refs.delModal.show({
-                    title : '删除节假日',
-                    confirmCallback : () => {
-                        this.$Message.success('删除成功');
-                    }
-                });
-            },
-            /**
              * 触发选择行
              * @param data
              */
@@ -115,15 +160,43 @@
                 this.rowSelect = data;
             },
             /**
-             * 删除行
+             * 批量删除
+             */
+            bitchDel () {
+                let ids = this.rowSelect.map(item => item.id).join(',');
+                this.$refs.delBatchModal.show({
+                    title : this.$t('deleteBatch') + this.$t('holiday'),
+                    confirmCallback : () => {
+                        this.deleteHoliday(ids);
+                    }
+                });
+            },
+            /**
+             * 删除单行
              * @param data
              */
             del(data) {
-                this.delUnits = data.name;
+                this.delUnits = data;
                 this.$refs.delModal.show({
-                    title : '删除节假日',
+                    title : this.$t('delete') + this.$t('holiday'),
                     confirmCallback : () => {
-                        this.$Message.success('删除成功');
+                        this.deleteHoliday(data.id);
+                    }
+                });
+            },
+            /**
+             * 删除节假日
+             * @param data
+             */
+            deleteHoliday( data ) {
+                ajax.post('deleteHoliday',{
+                    ids: data
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -135,16 +208,12 @@
                 this.$router.push({
                     name : 'editHoliday',
                     params :{
-                        type :'edit'
+                        type :'edit',
+                        info: data
                     }
                 });
             },
-            /**
-             * 获取表格数据
-             */
-            getTableData () {
-                alert('aa')
-            }
+
         }
     }
 </script>
@@ -166,29 +235,30 @@
 
             .search-by-word{
                 float: left;
+
+                /deep/ .ivu-input-wrapper{
+                    width: 280px;
+                    margin-right: 15px;
+                }
             }
         }
 
-        .operate-info {
-            @include table_operate();
-
-            .disabled {
-                color: $color_yellow;
-            }
-
-            .delete{
-                color: $color_err;
-            }
-        }
-
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
-
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
-            }
-        }
     }
+
+    .content-text{
+        padding: 0 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .yellow-label{
+        color: $color_yellow;
+    }
+
+    .red-label {
+        color: $color_err;
+    }
+
 </style>
