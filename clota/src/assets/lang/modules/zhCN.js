@@ -549,5 +549,10 @@ export default {
     'personalCenter' : '个人中心',
     'personalInfo' : '个人信息',
     'pwdModifying' : '修改密码',
+    /*** 产品中心模块 ***/
+    'productCenter' : '产品中心',
+    'productList' : '产品列表',
+    'ticketType' : '票类',
+    'marketingPolicy' : '销售政策',
 
 }

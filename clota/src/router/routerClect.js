@@ -6,6 +6,7 @@ import orgStructureRouter from './modules/orgStructureRouter';
 import memberManageRouter from './modules/memberManage';
 import systemSettingRouter from './modules/systemSetting';
 import personalCenterRouter from './modules/personalCenter';
+import productCenterRouter from './modules/productCenter';
 
 
 export default {
@@ -13,4 +14,5 @@ export default {
     ...memberManageRouter,
     ...systemSettingRouter,
     ...personalCenterRouter,
+    ...productCenterRouter,
 }
