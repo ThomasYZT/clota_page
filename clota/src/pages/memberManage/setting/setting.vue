@@ -170,10 +170,10 @@
                     <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
                     <div class="main">
                         <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.score" vertical>
-                            <Radio label="true">
+                            <Radio label="false">
                                 <span>{{$t('noReturnIntegral')}}</span><!--用户退款时积分不退-->
                             </Radio>
-                            <Radio label="false">
+                            <Radio label="true">
                                 <span>{{$t('returnIntegral')}}</span><!--用户退款时积分退回用户积分账户中-->
                             </Radio>
                         </RadioGroup>
@@ -184,10 +184,10 @@
                     <div class="title">{{$t('isReturnCoupon')}}</div><!--用户退款时卡券是否退还用户-->
                     <div class="main">
                         <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>
-                            <Radio label="true">
+                            <Radio label="false">
                                 <span>{{$t('noReturnCoupon')}}</span><!--用户退款时卡券不退-->
                             </Radio>
-                            <Radio label="false">
+                            <Radio label="true">
                                 <span>{{$t('returnCoupon')}}</span><!--用户退款时卡券退回用户会员卡中-->
                             </Radio>
                         </RadioGroup>
