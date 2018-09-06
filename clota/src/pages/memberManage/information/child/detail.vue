@@ -82,7 +82,9 @@
                     <div class="title">
                         {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
                         <span>{{$t("information")}}</span>
-                        <span v-if="item.accountType === 'charging'" class="add" @click="addAccount">+ {{$t("newAccount")}}</span>
+                        <span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"
+                              class="add"
+                              @click="addAccount">+ {{$t("newAccount")}}</span>
                     </div>
                     <div class="content">
                         <div class="header-wrap" v-if="item.accountType === 'charging'">
