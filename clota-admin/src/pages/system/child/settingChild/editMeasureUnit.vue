@@ -12,26 +12,28 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
+                <i-row>
+                    <i-col span="11">
                         <FormItem :label="$t('nameG')" prop="name">
-                            <Input v-model="formData.name" style="width: 280px"/>
+                            <Input v-model.trim="formData.name"
+                                   :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>
-                    </Col>
-                    <Col span="11">
-                        <FormItem :label="$t('isUsing')" prop="isUsing">
-                            <Checkbox v-model="formData.isUsing">启用</Checkbox>
+                    </i-col>
+                    <i-col span="11">
+                        <FormItem :label="$t('isUsing')" prop="status">
+                            <Checkbox v-model="formData.status">{{$t('startUsing')}}</Checkbox>
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="22">
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="22">
                         <FormItem :label="$t('remark')">
-                            <Input v-model="formData.remark"
+                            <Input v-model.trim="formData.remarks"
+                                   :placeholder="$t('inputPlaceholder')"
                                    type="textarea"/>
                         </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </i-row>
             </Form>
             <div class="footer">
                 <Button type="primary"
@@ -50,10 +52,14 @@
 </template>
 
 <script>
+
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
         },
@@ -73,9 +79,9 @@
                     //单位 名字
                     name: '',
                     //单位是否启用
-                    isUsing: '',
+                    status: '',
                     //备注
-                    remark: '',
+                    remarks: '',
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -94,9 +100,50 @@
              * 保存新增单位数据
              */
             save() {
-                this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.addLoading = true;
+                        let params = {
+                            name: this.formData.name,
+                            status: this.formData.status ? 'normal' : 'invalid',
+                            remarks: this.formData.remarks,
+                        };
+                        if (this.type === 'add') {
+                            this.addUnit(params);
+                        }else {
+                            params.id = this.formData.id;
+                            this.updateUnit(params);
+                        }
+                    }
+                });
+            },
+            /**
+             * 新增单位
+             */
+            addUnit( params ) {
+                ajax.post('addUnit', params).then(res => {
                     this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('addSuccess'));
+                        this.$router.push({ name: 'measureUnit'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
+             * 修改单位
+             * @param params
+             */
+            updateUnit( params ) {
+                ajax.post('updateUnit', params).then(res => {
+                    this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('edit') + this.$t('success'));
+                        this.$router.push({ name: 'measureUnit'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
                 });
             },
             /**
@@ -114,18 +161,20 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    if(params.info){
+                        this.formData.id = params.info.id;
+                        this.formData.name = params.info.name;
+                        this.formData.status = params.info.status === 'normal' ? true : false;
+                        this.formData.remarks =  params.info.remarks;
+                    }
                 }else{
                     this.$router.push({
                         name : 'measureUnit'
                     });
                 }
-            }
+            },
+
         },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
     }
 </script>
 
@@ -147,6 +196,11 @@
             /deep/ .ivu-form {
                 @include block_outline(924px, auto);
                 margin: 0 auto;
+
+
+                /deep/ .ivu-input-wrapper{
+                    width: 280px;
+                }
 
                 textarea.ivu-input{
                     height: 70px;

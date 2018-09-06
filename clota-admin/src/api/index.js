@@ -45,6 +45,13 @@ instance.interceptors.response.use(function (response) {
 //通过axios发送请求
 export default {
     /**
+     * 获取域名
+     */
+    getHost(urlKey) {
+        return baseUrl + urlKey || '';
+        // return 'http://114.115.165.167:9999/' + urlKey || '';
+    },
+    /**
      * 获取token参数
      */
     getToken() {

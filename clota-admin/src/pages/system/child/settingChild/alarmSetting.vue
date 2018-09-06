@@ -9,7 +9,8 @@
             <div class="setting-name">{{$t('warningUseRatioVal')}}</div>
             <InputNumber :max="100"
                          :min="0"
-                         v-model="copySettingData.warningUseRatioVal">
+                         v-model.trim="copySettingData.warningUseRatioVal"
+                         :placeholder="$t('inputPlaceholder')">
             </InputNumber>
             &nbsp;%
         </div>
@@ -18,7 +19,8 @@
             <div class="setting-name">{{$t('warningLogSizeVal')}}</div>
             <InputNumber :max="100"
                          :min="0"
-                         v-model="copySettingData.warningLogSizeVal">
+                         v-model.trim="copySettingData.warningLogSizeVal"
+                         :placeholder="$t('inputPlaceholder')">
             </InputNumber>
             &nbsp;%
         </div>

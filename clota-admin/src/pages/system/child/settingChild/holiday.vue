@@ -4,7 +4,7 @@
     <div class="list-info">
         <div class="btn-area">
             <div class="search-by-word">
-                <Input v-model="holidayListParams.holidayName"
+                <Input v-model.trim="holidayListParams.holidayName"
                        :placeholder="$t('validateError.pleaseInput', { msg: $t('holidayName')})"/>
                 <Button type="primary"
                         class="ivu-btn-90px"
@@ -35,6 +35,7 @@
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
                 type="selection"
                 slot-scope="row">
             </el-table-column>
@@ -45,6 +46,7 @@
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
                     {{ scoped.row.holidayStartTime | timeFormat('yyyy-MM-dd')}}{{$t('to')}}{{scoped.row.holidayEndTime | timeFormat('yyyy-MM-dd') }}
@@ -57,6 +59,7 @@
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <span>{{ scoped.row.status === 'normal' ? $t('startUsing') : $t('outUse') }}</span>
@@ -69,6 +72,7 @@
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">

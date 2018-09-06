@@ -42,6 +42,18 @@ export default {
 
     //查询计量单位列表
     'unitList' : 'unit/list.json',
+    //根据名称查询计量单位
+    'unitFindByName' : 'unit/findByName.json',
+    //根据ID查询计量单位
+    'getUnit' : 'unit/get.json',
+    //添加计量单位
+    'addUnit' : 'unit/add.json',
+    //修改计量单位
+    'updateUnit' : 'unit/update.json',
+    //批量删除计量单位
+    'deleteUnit' : 'unit/deleteBatch.json',
+    //修改计量单位状态
+    'switchUnit' : 'unit/switch.json',
 
     //查询节假日列表
     'holidayList' : 'holiday/list.json',
@@ -49,10 +61,23 @@ export default {
     'addHoliday' : 'holiday/add.json',
     //修改节假日
     'updateHoliday' : 'holiday/update.json',
-    //删除节假日
+    //批量删除节假日
     'deleteHoliday' : 'holiday/deleteBatch.json',
 
-
+    //查询渠道信息列表
+    'channelList' : 'channel/list.json',
+    //根据ID查询渠道信息
+    'getChannel' : 'channel/get.json',
+    //添加渠道信息
+    'addChannel' : 'channel/add.json',
+    //修改渠道信息
+    'updateChannel' : 'channel/update.json',
+    ///根据渠道名称获取渠道信息
+    'channelByName' : 'channel/likeName.json',
+    //批量删除渠道信息
+    'deleteChannel' : 'channel/deleteBatch.json',
+    //修改渠道信息状态
+    'switchChannel' : 'channel/switch.json',
 
 
 }

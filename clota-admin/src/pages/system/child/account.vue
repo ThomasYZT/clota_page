@@ -40,7 +40,7 @@
                 show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    <span>{{ scoped.row.roleName || '-' }}</span>
+                    <span>{{ scoped.row.roleName | contentFilter }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -50,6 +50,7 @@
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <span>{{ scoped.row.state === 'true' ? $t('inUse') : $t('outUse')  }}</span>
@@ -62,6 +63,7 @@
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">

@@ -328,6 +328,10 @@ export default {
     alarmSetting: '预警设置',
     warningUseRatioVal: '磁盘空间利用率报警阈值',
     warningLogSizeVal: '日志文件大小报警阈值',
+    unit: '单位',
+    builtin: '是否内置',
+    yes: '是',
+    no: '否',
 
 
 

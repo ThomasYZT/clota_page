@@ -4,7 +4,10 @@
     <div class="sms-setting">
         <div class="sms-label-title">{{$t('smsNumSet')}}</div>
         <div class="sms-length-setting">{{$t('smsSingleMaxCount')}}
-            <InputNumber :min="1" :max="9999" v-model="copySettingData.smsMaxCount"></InputNumber>
+            <InputNumber :min="1"
+                         :max="9999"
+                         v-model.trim="copySettingData.smsMaxCount"
+                         :placeholder="$t('inputPlaceholder')"></InputNumber>
             {{$t('word')}}
         </div>
         <div class="sms-label-title">{{$t('smsProvider')}} </div>

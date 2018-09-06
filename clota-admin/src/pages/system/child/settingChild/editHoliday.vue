@@ -15,7 +15,8 @@
                 <i-row>
                     <i-col span="11">
                         <FormItem :label="$t('holidayName')" prop="holidayName">
-                            <Input v-model="formData.holidayName"/>
+                            <Input v-model.trim="formData.holidayName"
+                                   :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">

@@ -5,59 +5,105 @@
         <div class="btn-area">
             <Button type="primary"
                     class="ivu-btn-90px"
-                    @click="addUnit">新增</Button>
-            <Button type="ghost"
+                    @click="addUnit">{{$t('add')}}</Button>
+            <Button type="error"
                     :disabled="rowSelect.length < 1"
-                    @click="bitchDel">批量删除</Button>
+                    @click="bitchDel">{{$t('deleteBatch')}}</Button>
         </div>
         <table-com
-            :table-data="tableData"
-            :table-height="tableHeight"
+            :ofsetHeight="116"
+            :show-pagination="true"
             :column-data="unitHead"
-            :auto-height="true"
-            :column-check="true"
-            @selection-change="handleSelectionChange">
+            :table-data="tableData"
+            :total-count="total"
+            :page-no-d.sync="unitListParams.page"
+            :page-size-d.sync="unitListParams.pageSize"
+            :border="false"
+            @selection-change="handleSelectionChange"
+            @query-data="queryList">
             <el-table-column
-                slot="column3"
+                slot="columnselect"
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
                 :width="row.width"
                 :min-width="row.minWidth"
+                show-overflow-tooltip
+                type="selection"
+                slot-scope="row">
+            </el-table-column>
+            <el-table-column
+                slot="columnstatus"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    <ul class="operate-info">
-                        <li class="operate-list disabled" @click="disabledUnit(scoped.row)">禁用</li>
-                        <li class="operate-list" @click="delUnit(scoped.row)">删除</li>
-                        <li class="operate-list delete" @click="editUnit(scoped.row)">修改</li>
+                    <span>{{ scoped.row.status === 'normal' ? $t('startUsing') : $t('outUse') }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnbuiltin"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                show-overflow-tooltip
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <span>{{ scoped.row.builtin === 'yes' ? $t('yes') : $t('no') }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnoperate"
+                :label="row.title"
+                :prop="row.field"
+                :key="row.index"
+                :width="row.width"
+                :min-width="row.minWidth"
+                show-overflow-tooltip
+                slot-scope="row">
+                <template slot-scope="scoped">
+                    <ul class="operate-info" v-if="scoped.row.builtin === 'no'">
+                        <template v-if="scoped.row.status === 'normal'">
+                            <li class="normal" @click="disabledUnit(scoped.row)">{{$t('disabled')}}</li>
+                        </template>
+                        <template v-else>
+                            <li class="normal" @click="openUnit(scoped.row)">{{$t('startUsing')}}</li>
+                        </template>
+                        <li class="red-label" @click="delUnit(scoped.row)">{{$t('delete')}}</li>
+                        <li class="normal" @click="editUnit(scoped.row)">{{$t('edit')}}</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
-        <div class="page-area" v-if="tableData.length > 0">
-            <el-pagination
-                :current-page="pageNo"
-                :page-sizes="pageSizeConfig"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount">
-            </el-pagination>
-        </div>
+
         <!--删除模态框-->
         <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除单位：{{delUnits}}</span>
-            <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
+            <span class="content-text">{{$t('isDoing')}}{{$t('delete') + $t('unit')}}：<span class="yellow-label">{{delUnits.name}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
         </del-modal>
+        <!--批量删除模态框-->
+        <del-modal ref="delBatchModal">
+            <span class="content-text">{{$t('isDoing')}}<span class="yellow-label">{{$t('deleteBatch') + $t('unit')}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        </del-modal>
+
     </div>
 </template>
 
 <script>
-    import tableCom from '../../../index/child/tableCom';
-    import tableMixins from '../../../lessee/tableMixins';
+
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {unitHead} from './measureUnitConfig';
     import delModal from '@/components/delModal/index.vue';
+    import ajax from '@/api/index';
+
     export default {
-        mixins :[tableMixins],
         components : {
             tableCom,
             delModal
@@ -65,31 +111,38 @@
         data() {
             return {
                 //表格数据
-                tableData : [
-                    {
-                        name : '元'
-                    },
-                    {
-                        name : '元'
-                    },
-                    {
-                        name : '元'
-                    },
-                    {
-                        name : '元'
-                    },
-                ],
+                tableData : [],
                 //表头配置
                 unitHead : unitHead,
+                //列表的请求参数
+                unitListParams: {
+                    page: 1,
+                    pageSize: 10
+                },
                 //总共条数
-                totalCount :100,
+                total :100,
                 //当前选中的行数据
                 rowSelect : [],
-                //删除的单位
-                delUnits : ''
+                //删除数据
+                delUnits : {}
             }
         },
         methods: {
+            /**
+             * 查询账户信息列表
+             */
+            queryList() {
+                ajax.post('unitList', this.unitListParams).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list || [];
+                        this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
+                    } else {
+                        this.tableData = [];
+                        this.total = 0;
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
             /**
              * 更改选中的状态
              * @param data
@@ -102,18 +155,44 @@
              * @param data
              */
             disabledUnit(data){
-                this.$Message.success('禁用成功');
+                this.switchUnit(data, 'invalid');
+            },
+            /**
+             * 启用单位
+             * @param data
+             */
+            openUnit(data){
+                this.switchUnit(data, 'normal');
+            },
+            /**
+             * 修改计量单位状态
+             * @param data
+             * @param status
+             */
+            switchUnit ( data, status ) {
+                ajax.post('switchUnit',{
+                    id: data.id,
+                    status: status,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success( (status === 'normal' ? this.$t('startUsing') : this.$t('disabled'))
+                            + this.$t('success') );
+                        this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
             /**
              * 删除单位
              * @param data
              */
             delUnit (data) {
-                this.delUnits = data.name;
+                this.delUnits = data;
                 this.$refs.delModal.show({
-                    title : '删除单位',
+                    title : this.$t('delete') + this.$t('unit'),
                     confirmCallback : () => {
-                        this.$Message.success('删除成功');
+                        this.deleteUnit(data.id);
                     }
                 });
             },
@@ -121,11 +200,27 @@
              * 批量删除单位
              */
             bitchDel () {
-                this.delUnits = this.rowSelect.map(item => item.name).join(',');
-                this.$refs.delModal.show({
-                    title : '删除单位',
+                let ids = this.rowSelect.map(item => item.id).join(',');
+                this.$refs.delBatchModal.show({
+                    title : this.$t('deleteBatch') + this.$t('unit'),
                     confirmCallback : () => {
-                        this.$Message.success('删除成功');
+                        this.deleteUnit(ids);
+                    }
+                });
+            },
+            /**
+             * 删除单位
+             * @param data
+             */
+            deleteUnit( data ) {
+                ajax.post('deleteUnit',{
+                    ids: data
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
@@ -148,10 +243,11 @@
                 this.$router.push({
                     name : 'editMeasureUnit',
                     params : {
-                        type : 'edit'
+                        type : 'edit',
+                        info: data
                     }
                 });
-            }
+            },
         }
     }
 </script>
@@ -171,28 +267,24 @@
             .ivu-btn-90px{
                 margin-right: 10px;
             }
+
         }
 
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
+    }
 
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
-            }
-        }
+    .content-text{
+        padding: 0 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
 
-        .operate-info {
-            @include table_operate();
+    .yellow-label{
+        color: $color_yellow;
+    }
 
-            .disabled {
-                color: $color_yellow;
-            }
-
-            .delete{
-                color: $color_err;
-            }
-        }
+    .red-label {
+        color: $color_err;
     }
 </style>
