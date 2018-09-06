@@ -309,6 +309,7 @@ export default {
     publisher: '发布人',
     publishTime: '发布时间',
     rejectReason: '驳回原因',
-    email: '电子邮箱',
+    openStatus: '启用状态',
+
 
 }
