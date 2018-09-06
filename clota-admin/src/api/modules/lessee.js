@@ -17,4 +17,10 @@ export default {
     'getCompanyTree' : 'tenant/getCompanyTree.json',
     //新增公司、景区、部门
     'addOrgInfo' : 'tenant/addOrgInfo.json',
+    //修改公司、景区、部门的启用状态
+    'updateOrgInfoStatus' : 'tenant/updateOrgInfoStatus.json',
+    //获取公司、景区、部门的详细信息
+    'getServiceProvider' : 'tenant/getServiceProvider.json',
+    //重置账号密码吗
+    'resetPassword' : 'tenant/resetPassword.json',
 }

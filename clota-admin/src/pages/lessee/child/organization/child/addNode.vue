@@ -32,7 +32,9 @@
             </FormItem>
         </Form>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
+            <Button type="primary"
+                    class="ivu-btn-90px"
+                    @click="confirm">{{$t('confirm')}}</Button>
             <Button class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
@@ -122,6 +124,7 @@
                             this.$emit('add-cashier-modal-show', JSON.parse(JSON.stringify(this.formData)));
                         }else if(this.formData.nodeType === 'department'){
                             //新增了部门
+                            this.$emit('add-department',JSON.parse(JSON.stringify(this.formData)));
                         }
                         this.$emit('input', false);
                     }
@@ -142,12 +145,16 @@
             //景区可以建立景区、部门、和款台的子节点
             //部门和款台可以不可创建子节点
             nodeListCanChose() {
-                if(this.nodeDetail.type === 'company'){
-                    return this.nodeList.filter(item => item.label !== 'cashier');
-                }else if(this.nodeDetail.type === 'scene' ){
-                    return this.nodeList.filter(item => item.label !== 'company');
-                }else if(this.nodeDetail.type === 'scene' ){
-                    return this.nodeList.filter(item => item.label !== 'company');
+                if(this.nodeDetail.data){
+                    if(this.nodeDetail.data.nodeType === 'company'){
+                        return this.nodeList.filter(item => item.label !== 'cashier');
+                    }else if(this.nodeDetail.data.nodeType === 'scene' ){
+                        return this.nodeList.filter(item => item.label !== 'company');
+                    }else if(this.nodeDetail.data.nodeType === 'scene' ){
+                        return this.nodeList.filter(item => item.label !== 'company');
+                    }else{
+                        return [];
+                    }
                 }else{
                     return [];
                 }

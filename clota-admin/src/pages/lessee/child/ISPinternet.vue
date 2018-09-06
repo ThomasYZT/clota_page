@@ -86,15 +86,16 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <li class="normal" @click="toISPinternetDetail(scoped.row)">查看</li>
-                        <li class="red-label" @click="disabledLess(scoped.row)">禁用</li>
+                        <li class="red-label" v-if="scoped.row.status === 'open'" @click="disabledLess(scoped.row)">禁用</li>
+                        <li class="normal" v-if="scoped.row.status === 'close'" @click="ableLess(scoped.row)">启用</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
-        <disabled-less v-model="disabledLessModalShow"
-                       :less-detail="currentRow"
-                       @confirm-disabled="confirmDisabled">
-        </disabled-less>
+        <!--<disabled-less v-model="disabledLessModalShow"-->
+                       <!--:less-detail="currentRow"-->
+                       <!--@confirm-disabled="confirmDisabled">-->
+        <!--</disabled-less>-->
     </div>
 </template>
 
@@ -142,6 +143,7 @@
              * @param data
              */
             toISPinternetDetail(data) {
+                console.log(data)
                 this.$router.push({
                     name: 'ISPinternetDetail',
                     params : {
@@ -154,8 +156,19 @@
              * @param rowData 租户的数据
              */
             disabledLess (rowData) {
-                this.disabledLessModalShow = true;
-                this.currentRow = rowData;
+                // this.disabledLessModalShow = true;
+                // this.currentRow = rowData;
+                ajax.post('updateOrgInfoStatus',{
+                    id : rowData.id,
+                    status : 'close'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('禁用成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error(res.message || '禁用失败');
+                    }
+                });
             },
             /**
              * 确认禁用租户
@@ -189,6 +202,23 @@
                 if(row.viewStatue === 1){
                     return 'light-row';
                 }
+            },
+            /**
+             * 启用租户
+             * @param rowData
+             */
+            ableLess (rowData) {
+                ajax.post('updateOrgInfoStatus',{
+                    id : rowData.id,
+                    status : 'open'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('启用成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error(res.message || '启用失败');
+                    }
+                });
             }
         },
         computed: {}

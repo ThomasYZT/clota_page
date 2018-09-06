@@ -96,8 +96,8 @@
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
                             <Select v-model.trim="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
-                                        :value="item.id"
-                                        :key="item.id">
+                                        :value="item.provider"
+                                        :key="item.provider">
                                     {{ item.provider }}
                                 </Option>
                             </Select>
@@ -249,7 +249,7 @@
                             message: this.$t('validateError.pleaseInput', {'msg': this.$t('lesseeName')}),
                             trigger: 'blur'
                         },
-                        {max : 200,message : this.$t('errorMaxLength',{field : this.$t('lesseeName'),length : 200}),trigger : 'blur'}
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('lesseeName'),length : 100}),trigger : 'blur'}
                     ],
                     person: [
                         {
@@ -257,14 +257,14 @@
                             message: this.$t('validateError.pleaseInput', {'msg': this.$t('person')}),
                             trigger: 'blur'
                         },
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 20}),trigger : 'blur'}
+                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'}
                     ],
                     phone: [
                         {required: true, validator: validatePhone, trigger: 'blur'},
                     ],
                     controlAccount: [
                         {required: true, validator: validateControlAccount, trigger: 'blur'},
-                        {max : 30,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 30})}
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 20})}
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
@@ -274,7 +274,7 @@
                         {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger: 'blur'}
                     ],
                     companyCode : [
-                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('enterpriseCode'),length : 50}),trigger: 'blur'}
+                        {max : 8,message : this.$t('errorMaxLength',{field : this.$t('enterpriseCode'),length : 8}),trigger: 'blur'}
                     ]
                 },
                 // //集团列表

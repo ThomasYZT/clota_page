@@ -330,5 +330,9 @@
                 float: left;
             }
         }
+
+        /deep/ .ivu-select-dropdown{
+            z-index: 9999;
+        }
     }
 </style>

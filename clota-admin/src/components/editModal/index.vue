@@ -17,7 +17,7 @@
             <slot>
                 <Form :model="formData" ref="formRef" label-position="top" :rules="ruleValidate" :label-width="0">
                     <FormItem :label="title" prop="passWord">
-                        <Input v-model="formData.passWord" style="width: 280px"/>
+                        <Input v-model="formData.passWord" type="password" style="width: 280px"/>
                     </FormItem>
                 </Form>
             </slot>
@@ -34,6 +34,19 @@
         props: {
         },
         data() {
+            //校验密码
+            const validatePass = (rule,value,callback) => {
+                if(value){
+                    let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
+                    if(reg.test(value)){
+                        callback();
+                    }else{
+                        callback(this.$t('passwordError'));
+                    }
+                }else{
+                    callback(this.$t('validateError.pleaseInput',{msg : this.title}));
+                }
+            };
             return {
                 //标题信息
                 title : '',
@@ -50,7 +63,7 @@
                 //校验规则
                 ruleValidate : {
                     passWord : [
-                        {required : true,message : this.$t('validateError.pleaseInput',{msg : this.title}),trigger : 'blur'}
+                        {required : true,validator : validatePass ,trigger :'blur'}
                     ]
                 },
                 //确认文本
@@ -89,7 +102,7 @@
                 //     }
                 // });
                 if(this.confirmCallback){
-                    this.confirmCallback();
+                    this.confirmCallback(this.formData.passWord);
                 }
             },
             /**

@@ -10,12 +10,15 @@
             <div class="structure">
                 <!--组织结构图-->
                 <structure-tree :tree-data="structureData"
+                                :nodeId.sync="nodeId"
                                 v-model="componentName"
                                 @switch-tap="switchTap">
                 </structure-tree>
             </div>
             <!--组织架构不同的节点对应不同的组件-->
-            <component :is="componentSelect">
+            <component v-if="nodeId"
+                       :is="componentSelect"
+                       :node-id="nodeId">
             </component>
         </div>
     </div>
@@ -53,34 +56,9 @@
                     }
                 ],
                 //组织结构数据
-                structureData: [
-                    // {
-                    //     title: '公司',
-                    //     type : 'company',
-                    //     children: [
-                    //         {
-                    //             title: '长隆旅游集团',
-                    //             type : 'company',
-                    //             children: [
-                    //                 {
-                    //                     title: '部门',
-                    //                     type : 'department'
-                    //                 },
-                    //                 {
-                    //                     title: '核销款台',
-                    //                     type : 'cashier'
-                    //                 },
-                    //                 {
-                    //                     title: '景区',
-                    //                     type : 'scene'
-                    //                 }
-                    //             ]
-                    //         }
-                    //     ]
-                    // }
-                ],
+                structureData: {},
                 //详情路由
-                componentName : '',
+                componentName : 'company',
                 //节点id
                 nodeId : '',
                 //当前激活tap
@@ -112,9 +90,9 @@
                     type : this.activeTap
                 }).then(res => {
                     if(res.status === 200){
-                        this.structureData = res.data ? res.data : [];
+                        this.structureData = res.data ? res.data : {};
                     }else{
-                        this.structureData = [];
+                        this.structureData = {};
                     }
                 })
             },
@@ -141,7 +119,7 @@
                 }else if(this.componentName === 'scene'){
                     return 'sceneDetail';
                 }else{
-                    return  '';
+                    return  'companyDetail';
                 }
             }
         }

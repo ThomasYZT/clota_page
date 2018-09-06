@@ -4,7 +4,7 @@
     <div class="structure-tree">
         <ul class="head">
             <li class="tree-title"
-                :class="{'active' : activeTap === 'management'}"
+                :class="{'active' : activeTap === 'manage'}"
                 @click="switchTap('manage')">
                 <span class="iconfont icon-fiance"></span>
                 经营管理
@@ -21,15 +21,14 @@
                 v-model.trim="keyWord"
                 placeholder="请输入查找内容"
                 icon="ios-search"
-                style="width: 360px"
-                @on-keyup="searchNode"/>
+                style="width: 360px"/>
         </div>
         <div class="tree-plugin">
-            <Tree :data="treeData"
+            <Tree :data="companyData"
                   ref="tree"
-                  v-if="treeData.length > 0"
-                  :render="renderContent"
-                  :filter-node-method="filterNode">
+                  :props="defaultProps"
+                  v-if="companyData.length > 0"
+                  :render="renderContent">
             </Tree>
             <no-data v-else>
             </no-data>
@@ -44,7 +43,8 @@
                    :node-detail="currentNode"
                    @add-com-modal-show="addCompanyShow"
                    @add-scene-modal-show="addScene"
-                   @add-cashier-modal-show="addCashier">
+                   @add-cashier-modal-show="addCashier"
+                   @add-department="addDepartment">
         </add-modal>
         <!--新增公司模态框-->
         <add-company v-model="addCompanyModalShow"
@@ -80,13 +80,18 @@
         props: {
             //组织结构数据
             'tree-data': {
-                type: Array,
+                type: Object,
                 default() {
-                    return [];
+                    return {};
                 }
             },
             //当前选中的结构类型
             value : {
+                type : String,
+                default : ''
+            },
+            //当前选择的节点id
+            nodeId : {
                 type : String,
                 default : ''
             }
@@ -104,7 +109,7 @@
                 //搜索关键字
                 keyWord: '',
                 //当前激活菜单
-                activeTap: 'management',
+                activeTap: 'manage',
                 //添加节点模态框是否显示
                 addModalShow: false,
                 //当前操作的节点
@@ -118,7 +123,10 @@
                 //新增的节点信息
                 addNodeDetail: {},
                 //当前激活的节点
-                activeNode : ''
+                activeNode : '',
+                defaultProps: {
+                    children: 'chilrends'
+                }
             }
         },
         methods: {
@@ -133,12 +141,12 @@
                     },
                     class: {
                         'title-wrap': true,
-                        'active-node' : data === this.activeNode
+                        'active-node' : data.id === this.nodeId
                     },
                     on : {
                         click : () => {
                             this.activeNode = data;
-                            this.$emit('input',data.type);
+                            this.$emit('input',data.data.type);
                         }
                     }
                 }, [
@@ -173,7 +181,7 @@
                             'icon-add': true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
-                            'hidden' : this.activeTap === 'economic' || data.type === 'department' || data.type === 'cashier'
+                            // 'hidden' : this.activeTap === 'economic' || data.data.nodeType === 'department' || data.data.nodeType === 'cashier'
                         },
                         on: {
                             click: (e) => {
@@ -225,31 +233,29 @@
                 this.addCashierModalShow = true;
             },
             /**
-             * 搜索节点
-             * @param value
+             * 新增部门
              * @param data
-             * @returns {boolean}
              */
-            filterNode(value, data) {
-                console.log(data)
-                if (!value) return true;
-                return data.label.indexOf(value) !== -1;
-            },
-            /**
-             * 根据关键字搜索节点
-             * @param e
-             */
-            searchNode(e) {
-                // if(this.$refs.tree){
-                //     console.log(this.$refs.tree)
-                //     this.$refs.tree.filter(this.keyWord);
-                // }
+            addDepartment(data) {
+                ajax.post('addOrgInfo',{
+                    rootId : this.currentNode.id,
+                    orgName : data.nodeName,
+                    nodeType : 'department',
+                    parentManageId : this.currentNode.id,
+                }).then(res => {
+
+                });
             }
         },
-        watch : {
-            keyWord (val) {
-                console.log(this.$refs.tree)
-                this.$refs.tree.filter(val);
+        computed : {
+            //公司树数据
+            companyData (){
+                if(this.keyWord){
+                    return [this.treeData];
+                    // return this.treeData.filter(item => String(item.name).indexOf(this.keyWord) !== -1);
+                }else{
+                    return [this.treeData];
+                }
             }
         }
     }

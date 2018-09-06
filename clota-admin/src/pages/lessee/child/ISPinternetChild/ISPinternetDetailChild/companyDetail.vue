@@ -10,8 +10,8 @@
             <template v-if="type === 'watch'">
                 <span class="name"
                      v-if="type === 'watch'"
-                     v-w-title="formData.companyName">
-                    {{formData.companyName}}
+                     v-w-title="companyDetail.orgName">
+                    {{companyDetail.orgName}}
                 </span>
                 <span class="edit"
                   @click="edit">
@@ -19,9 +19,8 @@
                     {{$t('edit')}}
                 </span>
             </template>
-            <span :class="{'started'
-                :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
-                {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+            <span :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
+                {{$t(companyDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
             </span>
 
         </div>
@@ -29,11 +28,11 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">公司ID：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val" v-w-title="companyDetail.id">{{companyDetail.id | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">公司编码：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-val" v-w-title="companyDetail.nodeCode">{{companyDetail.nodeCode | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
@@ -42,8 +41,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.cashierCode"/>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.cashierCode}}
+                    <span class="info-val" v-else v-w-title="companyDetail.checkinCode">
+                        {{companyDetail.checkinCode | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
@@ -51,8 +50,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.inviteCode"/>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.inviteCode}}
+                    <span class="info-val" v-else v-w-title="companyDetail.saleCode">
+                         {{companyDetail.saleCode | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -68,14 +67,14 @@
                             </Option>
                         </Select>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.smsSuppiler}}
+                    <span class="info-val" v-else v-w-title="companyDetail.smsProvider">
+                         {{companyDetail.smsProvider | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">管理账号：</span>
-                    <span class="info-val">
-                        23232323232323232323232323232323232323232
+                    <span class="info-val" v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''">
+                         {{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : '' | contentFilter}}
                         <span class="reset-pass" @click="resetPass">重置密码</span>
                     </span>
                 </div>
@@ -86,8 +85,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.email" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.email}}
+                    <span class="info-val" v-else v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.email : ''">
+                         {{companyDetail.managerAccount ? companyDetail.managerAccount.email : '' | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
@@ -95,8 +94,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.contactor" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.contactor}}
+                    <span class="info-val" v-else v-w-title="companyDetail.linkName">
+                         {{companyDetail.linkName | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -107,8 +106,8 @@
                         <city-plugin @select="formDataCopy.place = $event" >
                         </city-plugin>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.place}}
+                    <span class="info-val" v-else v-w-title="companyPlace">
+                         {{companyPlace | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
@@ -116,8 +115,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.address" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.address}}
+                    <span class="info-val" v-else v-w-title="companyDetail.address">
+                         {{companyDetail.address | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -127,8 +126,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.phone" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.phone}}
+                    <span class="info-val" v-else v-w-title="companyDetail.telephone">
+                         {{companyDetail.telephone | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
@@ -136,8 +135,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.fax" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.fax}}
+                    <span class="info-val" v-else v-w-title="companyDetail.tex">
+                         {{companyDetail.tex | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -153,8 +152,8 @@
                             </Option>
                         </Select>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.superior}}
+                    <span class="info-val" v-else v-w-title="companyDetail.parentManage">
+                        {{companyDetail.parentManage | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
@@ -168,15 +167,15 @@
                             </Option>
                         </Select>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.fianceSuperior}}
+                    <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
+                        {{companyDetail.parentEconomic | contentFilter}}
                     </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">短信余量/累计购买：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val">{{companyDetail.smsDetails | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
@@ -189,29 +188,29 @@
                             </Option>
                         </Select>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.serviceStaff}}
+                    <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
+                         {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
                     </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">创建时间：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val" v-w-title="companyDetail.createdTime">{{companyDetail.createdTime | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">创建人：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
+                    <span class="info-val" v-w-title="companyDetail.createUser">{{companyDetail.createUser | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">上次修改时间：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val" v-w-title="companyDetail.updatedTime">{{companyDetail.updatedTime | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">上次修改人：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
+                    <span class="info-val" v-w-title="companyDetail.updateUser">{{companyDetail.updateUser | contentFilter}}</span>
                 </div>
             </li>
             <li class="btn-area" v-if="type === 'edit'">
@@ -260,8 +259,16 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
+    import ajax from '@/api/index.js';
 
     export default {
+        props : {
+            //节点id
+            'node-id' : {
+               type : String,
+               default : ''
+            },
+        },
         components: {
             tableCom,
             employeeTable,
@@ -341,7 +348,9 @@
                         label : '客服',
                         value : '1'
                     }
-                ]
+                ],
+                //公司详细信息
+                companyDetail : {}
             }
         },
         methods: {
@@ -381,7 +390,51 @@
              * @param pass
              */
             confimChangePass (pass){
-                alert('重置密码成功')
+                ajax.post('resetPassword',{
+                    id : this.nodeId,
+                    password : pass
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('重置成功');
+                    }else{
+                        this.$Message.error(res.message || '重置失败');
+                    }
+                }).finally(() => {
+                    this.$refs.editModal.hide();
+                });
+            },
+            /**
+             * 获取公司详情
+             */
+            getCompanyDetail () {
+                ajax.post('getServiceProvider',{
+                    id : this.nodeId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.companyDetail = res.data ? res.data : {};
+                    }else{
+                        this.companyDetail = {};
+                    }
+                });
+            }
+        },
+        created () {
+            this.getCompanyDetail();
+        },
+        computed  : {
+            //公司详细地址
+            companyPlace () {
+                let place = '';
+                if(this.companyDetail && this.companyDetail.sysProvinces){
+                    place += this.companyDetail.sysProvinces.province;
+                }
+                if(this.companyDetail && this.companyDetail.sysCities){
+                    place += this.companyDetail.sysCities.city;
+                }
+                if(this.companyDetail && this.companyDetail.sysAreas){
+                    place += this.companyDetail.sysAreas.area;
+                }
+                return place;
             }
         }
     }
