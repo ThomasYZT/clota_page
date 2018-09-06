@@ -68,7 +68,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{row.index + 1}}
+                            {{scope.$index+ 1}}
                         </template>
                     </el-table-column>
                 </table-com>

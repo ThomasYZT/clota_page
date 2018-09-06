@@ -85,14 +85,14 @@
                     <div class="select-item a"
                          :key="i + 'a'"
                          v-show="view === 'a'"
-                         v-for="(item, i) in areas"
+                         v-for="(item, i) in areaInfoList"
                          @click="onClickItem(item)">
                         <div
                             :class="{
-                                active: select.area && select.area.name === item.name
+                                active: select.area && select.area.area === item.area
                             }"
-                            v-w-title="item.name">
-                            {{item.name}}
+                            v-w-title="item.area">
+                            {{item.area}}
                         </div>
                     </div>
                 </div>
@@ -103,9 +103,9 @@
 
 <script>
     import dom from '@/utils/domUtils';
-    import provinces from './dicts/provinces';
-    import citys from './dicts/citys';
-    import areas from './dicts/areas';
+    // import provinces from './dicts/provinces';
+    // import citys from './dicts/citys';
+    // import areas from './dicts/areas';
     import {commonFunc} from 'klwk-ui'
     import ajax from '@/api/index.js';
 
@@ -164,7 +164,9 @@
                 //省份信息列表展示
                 provinceInfoList : [],
                 //市区信息列表展示
-                cityInfoList : []
+                cityInfoList : [],
+                //区县列表
+                areaInfoList : []
             }
         },
         computed: {
@@ -210,8 +212,6 @@
                             this.callback()
                             this.hide()
                         } else {
-
-
                             this.queryCityInfoList(data.provinceid);
                         }
                         break
@@ -222,17 +222,7 @@
                             this.callback()
                             this.hide()
                         } else {
-                            // 加载对应省下的市数据
-                            this.init('a')
-
-                            // 如果没有区数据则选择本身，且清空下级数据
-                            if (!this.areas.length) {
-                                this.select.area = null
-                                this.callback()
-                                this.hide()
-                            } else {
-                                this.view = 'a'
-                            }
+                            this.getSysAreassByCityid(data.cityid);
                         }
                         break
                     case 'a':
@@ -260,9 +250,9 @@
                         break
                 }
 
-                this.curVal = this.select.value = (this.select.province && this.select.province.name || '')
-                    + (this.select.city && (`-${this.select.city.name}`) || '')
-                    + (this.select.area && (`-${this.select.area.name}`) || '')
+                this.curVal = this.select.value = (this.select.province && this.select.province.province || '')
+                    + (this.select.city && (`-${this.select.city.city}`) || '')
+                    + (this.select.area && (`-${this.select.area.area}`) || '')
                 this.$emit('select', this.select);
             },
             /**
@@ -371,16 +361,16 @@
                     switch (type) {
                         case 'c':
                             pCode = this.select.province.code
-                            this.citys = citys.filter(city => {
-                                city.name = city.name.split('市')[0]
-                                city.name = city.name.split('市')[0]
-                                city.name = city.name.split('县')[0]
-                                return city.provinceCode === pCode && city.name
+                            this.citys = this.cityInfoList.filter(city => {
+                                city.city = city.city.split('市')[0]
+                                city.city = city.city.split('市')[0]
+                                city.city = city.city.split('县')[0]
+                                return city.cityid === pCode && city.city
                             })
                             break
                         case 'a':
                             pCode = this.select.city.code
-                            this.areas = areas.filter(area => {
+                            this.areas = this.areaInfoList.filter(area => {
                                 return area.cityCode === pCode && area.name
                             })
                             break
@@ -454,8 +444,36 @@
                         } else {
                             this.view = 'c'
                         }
+                    }else{
+                        this.cityInfoList = [];
                     }
                 })
+            },
+            /**
+             * 更具
+             * @param cityid
+             */
+            getSysAreassByCityid (cityid) {
+                ajax.post('getSysAreassByCityid',{
+                    cityid : cityid
+                }).then(res => {
+                   if(res.status === 200){
+                       this.areaInfoList = res.data ? res.data : [];
+                       // 加载对应省下的市数据
+                       this.init('a')
+
+                       // 如果没有区数据则选择本身，且清空下级数据
+                       if (!this.areaInfoList.length) {
+                           this.select.area = null
+                           this.callback()
+                           this.hide()
+                       } else {
+                           this.view = 'a'
+                       }
+                   }else{
+                       this.areaInfoList = [];
+                   }
+                });
             }
         },
         created () {

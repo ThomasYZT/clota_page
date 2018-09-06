@@ -39,6 +39,8 @@ const apiList = {
     listProvince : 'tenant/listProvince.json',
     //查询市列表
     cityInfoList : 'tenant/getSysCitiessByProvinceid.json',
+    //查询区县列表
+    getSysAreassByCityid : 'tenant/getSysAreassByCityid.json',
     //首页接口
     ...index,
     //日志接口

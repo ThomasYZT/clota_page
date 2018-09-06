@@ -15,4 +15,6 @@ export default {
     'auditPartner' : 'tenantPartner/auditPartner.json',
     //获取公司、景区、部门、款台数据
     'getCompanyTree' : 'tenant/getCompanyTree.json',
+    //新增公司、景区、部门
+    'addOrgInfo' : 'tenant/addOrgInfo.json',
 }

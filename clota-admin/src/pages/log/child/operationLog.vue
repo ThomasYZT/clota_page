@@ -3,7 +3,7 @@
 <template>
     <div class="operation-log">
         <!--筛选表头-->
-        <filter-head @fresh-data="getFilterInfo">
+        <filter-head :log-type="logType" @fresh-data="getFilterInfo">
         </filter-head>
         <table-com
             v-if="logType !== ''"
@@ -91,7 +91,9 @@
                 handler (newVal,oldVal) {
                     if(newVal && newVal.meta){
                         this.logType = newVal.meta.subMenuType;
-                        this.getLogData();
+                        if(oldVal){
+                            this.getLogData();
+                        }
                     }
                 },
                 immediate : true

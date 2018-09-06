@@ -17,9 +17,9 @@
                                 :transfer="true"
                                 :clearable="true">
                             <Option v-for="item in operateType"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ $t(item.label) }}
+                                    :value="item.lable"
+                                    :key="item.lable">
+                                {{ item.lable }}
                             </Option>
                         </Select>
                     </FormItem>
@@ -27,7 +27,7 @@
                 <i-col span="8">
                     <FormItem label="操作对象">
                         <Input v-model="formData.sysTargetName"
-                               placeholder="请输入产品名称" ></Input>
+                               placeholder="请输入产品名称" />
                     </FormItem>
                 </i-col>
             </Row>
@@ -59,6 +59,7 @@
 
 <script>
     import{operateType} from '@/assets/js/constVariable.js';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //日志类型
@@ -81,7 +82,7 @@
                     date : []
                 },
                 //操作类型
-                operateType : operateType,
+                operateType : [],
             }
         },
         methods: {
@@ -99,7 +100,7 @@
                                 this.formData['date'][0] &&
                                 this.formData['date'][1]){
                                 returnObj['sysLogStartDate'] = this.formData['date'][0].format('yyyy-MM-dd 00:00:00');
-                                returnObj['sysLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 24:59:59');
+                                returnObj['sysLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 23:59:59');
                             }
                         }else{
                             if(this.formData[item]){
@@ -115,7 +116,7 @@
                                 this.formData['date'][0] &&
                                 this.formData['date'][1]){
                                 returnObj['saasLogStartDate'] = this.formData['date'][0].format('yyyy-MM-dd 00:00:00');
-                                returnObj['saasLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 24:59:59');
+                                returnObj['saasLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 23:59:59');
                             }
                         }else if(item === 'sysOperationScene'){
                             if(this.formData[item]){
@@ -149,8 +150,45 @@
                 this.formData.sysTargetName = '';
                 this.formData.date = [];
                 this.emitFreshData();
+            },
+            /**
+             * 获取运维操作日志的操作类型
+             */
+            querySelectOpScene () {
+                ajax.post('selectOpScene').then(res => {
+                    if(res.status === 200){
+                        this.operateType = res.data ? res.data : [];
+                    }else {
+                        this.operateType = [];
+                    }
+                });
+            },
+            /**
+             * 获取saas平台的操作类型
+             */
+            selectSaaSOpScene () {
+                ajax.post('selectSaaSOpScene').then(res => {
+                    if(res.status === 200){
+                        this.operateType = res.data ? res.data : [];
+                    }else {
+                        this.operateType = [];
+                    }
+                });
             }
         },
+        watch : {
+            //日志类型改变，重新获取操作类型
+            logType : {
+                handler (newVal,oldVal) {
+                    if(newVal === 'operate'){
+                        this.querySelectOpScene();
+                    }else if(newVal === 'sass'){
+                        this.selectSaaSOpScene();
+                    }
+                },
+                immediate : true
+            }
+        }
     }
 </script>
 

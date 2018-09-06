@@ -237,7 +237,7 @@
                     //客服专员
                     service: '',
                     //地点
-                    place: '',
+                    place: {},
                     //企业编码
                     companyCode : ''
                 },
@@ -306,8 +306,9 @@
             save() {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    console.log(valid)
-                    this.addLoading = false;
+                    if(valid){
+                        this.addOrgInfo();
+                    }
                 });
             },
             /**
@@ -368,6 +369,38 @@
                         this.formData.service = '';
                     }
                 });
+            },
+            /**
+             * 新增租户
+             */
+            addOrgInfo () {
+                ajax.post('addOrgInfo',{
+                    orgName : this.formData.companyName,
+                    linkName : this.formData.person,
+                    telephone : this.formData.phone,
+                    tex : this.formData.fax,
+                    loginName : this.formData.controlAccount,
+                    email : this.formData.mail,
+                    smsProvider : this.formData.smsProvider,
+                    provinceid : this.formData.place.province.province,
+                    cityid : this.formData.place.city.cityid,
+                    districtid : this.formData.place.area.areaid,
+                    address : this.formData.address,
+                    businessAccountId : this.formData.service,
+                    checkinCode : this.formData.companyCode,
+                    nodeType : 'company',
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('新增成功');
+                        this.$router.push({
+                            name : 'ISPinternet'
+                        });
+                    }else{
+                        this.$Message.error(res.message || '新增失败');
+                    }
+                }).finally(() => {
+                    this.addLoading = false;
+                })
             }
         },
         created () {
