@@ -83,7 +83,7 @@
                     cardId: this.detail.cardId,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(`${this.$t('newAccount')} ${this.$t('success')}！`);   // 新增账号成功
+                        this.$Message.success(`${this.$t('newAccount')}${this.$t('success')}！`);   // 新增账号成功
                         this.$emit('add-success');
                         this.hide();
                     } else {

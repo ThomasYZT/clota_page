@@ -103,6 +103,7 @@
                         for(let item in res.data){
                             this.vipPlace.total1 += res.data[item];
                         }
+                        this.vipPlace.total1 = Number(this.vipPlace.total1 / 10000).toFixed(2);
                     }else{
                         this.vipPlace.total1 = '';
                     }
@@ -126,6 +127,7 @@
                         for(let item in res.data){
                             this.vipPlace.total2 += res.data[item];
                         }
+                        this.vipPlace.total2 = Number(this.vipPlace.total2 / 10000).toFixed(2);
                     }else{
                         this.vipPlace.total2 = '';
                     }

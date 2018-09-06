@@ -75,8 +75,8 @@ export default {
     'totalMembers': '会员总数',
     'memberDistribute': '会员分布数据',
     'memberConsumptionOverview': '会员消费数据概览',
-    'totalConsumption_thisWeek': '本周会员消费总额(元)', //
-    'totalConsumption_lastWeek': '上周会员消费总额(元)', //
+    'totalConsumption_thisWeek': '本周会员消费总额(万元)', //
+    'totalConsumption_lastWeek': '上周会员消费总额(万元)', //
     'memberIntergralOverview': '会员积分数据概览',
     'sendIntegral_thisWeek': '本周发放积分总数',    //
     'consumeIntegral_thisWeek': '本周消费积分总数', //
