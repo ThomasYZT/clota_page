@@ -170,9 +170,11 @@
                 </table-com>
             </div>
         </transition>
+        <!--开通服务模态框-->
         <open-service-modal
+            :org-id="searchParams.id"
             v-model="openServiceModalShow"
-            @fresh-data="getOpenedService">
+            @fresh-data="queryList">
         </open-service-modal>
         <!--服务延期模态框-->
         <service-delay-modal
@@ -187,8 +189,8 @@
             <span>请及时保存。</span>
         </del-modal>
         <!--添加服务模态框-->
-        <add-service ref="addService">
-        </add-service>
+        <!--<add-service ref="addService">-->
+        <!--</add-service>-->
     </div>
 </template>
 
@@ -245,13 +247,6 @@
             }
         },
         methods: {
-            /**
-             * 获取已开通的服务
-             * @param data
-             */
-            getOpenedService ({pageSize,pageNo} = {pageSize : this.pageSize,pageNo : this.pageNo}) {
-
-            },
             /**
              * 选择的服务数据改变
              * @param data
@@ -327,16 +322,16 @@
                     }
                 });
             },
-            /**
-             * 添加服务
-             */
-            addService () {
-                this.$refs.addService.show({
-                    confirmCallback (data) {
-                        console.log(data)
-                    }
-                });
-            },
+            // /**
+            //  * 添加服务
+            //  */
+            // addService () {
+            //     this.$refs.addService.show({
+            //         confirmCallback (data) {
+            //             console.log(data)
+            //         }
+            //     });
+            // },
             /**
              * 查询已开通的服务
              */

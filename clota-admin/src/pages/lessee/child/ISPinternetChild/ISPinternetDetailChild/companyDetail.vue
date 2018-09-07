@@ -369,9 +369,9 @@
                     checkinCode : this.formDataCopy.checkinCode,
                     smsProvider : this.formDataCopy.smsProvider,
                     email : this.formDataCopy.managerAccount.email,
-                    province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.id : '',
-                    city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.id : '',
-                    district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.id : '',
+                    province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
+                    city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
+                    district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
                     linkName : this.formDataCopy.linkName,
                     address : this.formDataCopy.address,
                     telephone : this.formDataCopy.telephone,
@@ -483,24 +483,24 @@
             changeCity (data) {
                 console.log(data)
                 if(this.formDataCopy.sysProvinces){
-                    this.formDataCopy.sysProvinces.id = data.province ? data.province.id : '';
+                    this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
                 }else{
                     this.formDataCopy.sysProvinces = {
-                        id : data.province ? data.province.id : ''
+                        provinceid : data.province ? data.province.provinceid : ''
                     };
                 }
                 if(this.formDataCopy.sysCities){
-                    this.formDataCopy.sysCities.id = data.city ? data.city.id : '';
+                    this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
                 }else{
                     this.formDataCopy.sysCities = {
-                        id : data.city ? data.city.id : ''
+                        cityid : data.city ? data.city.cityid : ''
                     };
                 }
                 if(this.formDataCopy.sysAreas){
-                    this.formDataCopy.sysAreas.id = data.area ? data.area.id : '';
+                    this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
                 }else{
                     this.formDataCopy.sysAreas = {
-                        id : data.area ? data.area.id : ''
+                        areaid : data.area ? data.area.areaid : ''
                     };
                 }
             }
