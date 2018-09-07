@@ -75,7 +75,8 @@
                             required: true,
                             message: this.$t('validateError.pleaseInput', {msg: this.$t('nodeName')}),
                             trigger: 'blur'
-                        }
+                        },
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('nodeName'),length : 100})}
                     ],
                     nodeType: [
                         {
@@ -142,14 +143,12 @@
         computed: {
             //可以选择的节点类型
             //公司或集团可以建立公司、景区、部门的子节点
-            //景区可以建立景区、部门、和款台的子节点
-            //部门和款台可以不可创建子节点
+            //景区可以建立景区、部门的子节点
+            //部门不可创建子节点
             nodeListCanChose() {
                 if(this.nodeDetail.data){
                     if(this.nodeDetail.data.nodeType === 'company'){
                         return this.nodeList.filter(item => item.label !== 'cashier');
-                    }else if(this.nodeDetail.data.nodeType === 'scene' ){
-                        return this.nodeList.filter(item => item.label !== 'company');
                     }else if(this.nodeDetail.data.nodeType === 'scene' ){
                         return this.nodeList.filter(item => item.label !== 'company');
                     }else{

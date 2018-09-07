@@ -23,6 +23,8 @@ export default {
     'updateOrgInfoStatus' : 'tenant/updateOrgInfoStatus.json',
     //获取公司、景区、部门的详细信息
     'getServiceProvider' : 'tenant/getServiceProvider.json',
-    //重置账号密码吗
+    //重置账号密码
     'resetPassword' : 'tenant/resetPassword.json',
+    //删除节点
+    'deleteNode' : 'tenant/deleteNode.json',
 }

@@ -63,10 +63,6 @@ export const nodeList = [
     {
         label: 'scene',//景区
         value: 'scene'
-    },
-    {
-        label: 'cashier',//款台
-        value: 'cashier'
     }
 ];
 

@@ -26,6 +26,7 @@
         <div class="tree-plugin">
             <Tree :data="companyData"
                   ref="tree"
+                  default-expand-all
                   :props="defaultProps"
                   v-if="companyData.length > 0"
                   :render="renderContent">
@@ -134,6 +135,7 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
+                data.expand = true;
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -148,7 +150,7 @@
                             this.activeNode = data;
                             this.$emit('input',data.data.type);
                         }
-                    }
+                    },
                 }, [
                     h('span', {
                         class: {
@@ -160,16 +162,16 @@
                             iconfont: 'true',
                             'icon-delete': true,
                             //财务管理不允许删除节点
-                            'hidden' : this.activeTap === 'economic'
+                            'hidden' : this.activeTap === 'economic' || data.pid === null
                         },
                         on: {
                             click: (e) => {
                                 e.stopPropagation();
                                 this.currentNode = data;
                                 this.$refs.delModal.show({
-                                    title : `删除${data.title}`,
+                                    title : `删除${data.name}`,
                                     confirmCallback : () => {
-                                        // this.confirmDelete(data);
+                                        this.delNode(data);
                                     }
                                 });
                             }
@@ -181,7 +183,8 @@
                             'icon-add': true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
-                            // 'hidden' : this.activeTap === 'economic' || data.data.nodeType === 'department' || data.data.nodeType === 'cashier'
+                            'hidden' : this.activeTap === 'economic'
+                            || (data.data && data.data.nodeType === 'department')
                         },
                         on: {
                             click: (e) => {
@@ -243,8 +246,29 @@
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
                 }).then(res => {
-
+                    if(res.status === 200){
+                        this.$Message.success('新增成功');
+                        this.$emit('switch-tap',this.activeTap);
+                    }else{
+                        this.$Message.error('新增失败');
+                    }
                 });
+            },
+            /**
+             * 删除节点
+             * @param data
+             */
+            delNode (data) {
+                ajax.post('deleteNode',{
+                    id : data.id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('删除成功');
+                        this.$emit('switch-tap',this.activeTap);
+                    }else{
+                        this.$Message.error('删除失败');
+                    }
+                })
             }
         },
         computed : {
