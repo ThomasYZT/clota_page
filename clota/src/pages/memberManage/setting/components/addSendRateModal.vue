@@ -235,7 +235,7 @@
 
             /deep/ .ivu-input-wrapper{
                 width: 120px;
-                margin: 0 10px;
+                margin: 0 9px;
             }
 
             /deep/ .ivu-form-item-error-tip{

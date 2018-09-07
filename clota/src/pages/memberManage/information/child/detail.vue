@@ -571,7 +571,6 @@
                 } else {
                     this.manualUpdateCardStatus('frozen');
                 }
-                this.manualUpdateCardStatus( );
             },
             //更新会员卡信息
             manualUpdateCardStatus ( status ) {
