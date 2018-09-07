@@ -37,4 +37,8 @@ export default {
     'deleteEmployees' : 'tenant/deleteEmployees.json',
     //删除部门
     'deleteDepartments' : 'tenant/deleteDepartments.json',
+    //获取指定公司短信发送记录
+    'getSmsConsumeRecords' : 'tenant/getSmsConsumeRecords.json',
+    //更新公司服务状态
+    'updateServicesStatus' : 'tenant/updateServicesStatus.json',
 }

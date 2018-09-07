@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import tableCom from '../../../organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {buyColumns,sendColumns} from './noteConfig';
     import noteDetail from './noteDetail';
     export default {

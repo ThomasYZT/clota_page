@@ -88,6 +88,8 @@
              * 获取组织树
              */
             getCompanyTree () {
+                let activeNode = JSON.parse(JSON.stringify(this.activeNode));
+                this.activeNode = {};
                 ajax.post('getCompanyTree',{
                     id : this.nodeId,
                     type : this.activeTap
@@ -100,6 +102,8 @@
                                 pid : this.structureData.pid,
                                 type : this.structureData.data ? this.structureData.data.nodeType : ''
                             }));
+                        }else{
+                            this.activeNode = activeNode;
                         }
                     }else{
                         this.structureData = {};

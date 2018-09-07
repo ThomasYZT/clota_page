@@ -98,7 +98,7 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">所在地：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <city-plugin @select="formDataCopy.place = $event"
+                        <city-plugin @select="changeCity"
                                      v-if="defaultAddress"
                                      :defaultValue="defaultAddress">
                         </city-plugin>
@@ -177,13 +177,13 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.businessAccount1.id" >
-                            <Option v-for="item in serviceStaffList"
-                                    :value="item.id"
-                                    :key="item.id">
-                                {{ item.loginName }}
-                            </Option>
-                        </Select>
+                          <!--<Select v-model="formDataCopy.businessAccount1.id" >-->
+                            <!--<Option v-for="item in serviceStaffList"-->
+                                    <!--:value="item.id"-->
+                                    <!--:key="item.id">-->
+                                <!--{{ item.loginName }}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
                          {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
@@ -244,7 +244,8 @@
             :search-params="{id : activeNode.id}">
         </employee-table>
         <!--短信-->
-        <note-table>
+        <note-table
+            :search-params="{id : activeNode.id}">
         </note-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
@@ -369,13 +370,13 @@
                     smsProvider : this.formDataCopy.smsProvider,
                     email : this.formDataCopy.managerAccount.email,
                     province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.id : '',
-                    // city : ''
-                    // district : ''
+                    city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.id : '',
+                    district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.id : '',
                     linkName : this.formDataCopy.linkName,
                     address : this.formDataCopy.address,
                     telephone : this.formDataCopy.telephone,
                     tex : this.formDataCopy.tex,
-                    businessAccountId : this.formDataCopy.businessAccount1.id,
+                    // businessAccountId : this.formDataCopy.businessAccount1.id,
                 }).then(res => {
                     if(res.status === 200){
                         this.$Message.success('修改成功');
@@ -474,6 +475,34 @@
              */
             freshOrg () {
                 this.$emit('fresh-org',this.activeNode);
+            },
+            /**
+             * 改变城市
+             * @param data
+             */
+            changeCity (data) {
+                console.log(data)
+                if(this.formDataCopy.sysProvinces){
+                    this.formDataCopy.sysProvinces.id = data.province ? data.province.id : '';
+                }else{
+                    this.formDataCopy.sysProvinces = {
+                        id : data.province ? data.province.id : ''
+                    };
+                }
+                if(this.formDataCopy.sysCities){
+                    this.formDataCopy.sysCities.id = data.city ? data.city.id : '';
+                }else{
+                    this.formDataCopy.sysCities = {
+                        id : data.city ? data.city.id : ''
+                    };
+                }
+                if(this.formDataCopy.sysAreas){
+                    this.formDataCopy.sysAreas.id = data.area ? data.area.id : '';
+                }else{
+                    this.formDataCopy.sysAreas = {
+                        id : data.area ? data.area.id : ''
+                    };
+                }
             }
         },
         created () {

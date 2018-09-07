@@ -334,7 +334,9 @@ export default {
     no: '否',
     channel: '渠道',
     depName: '部门名称',
-
+    opened : '已开通',
+    paused : '已暂停',
+    expired : '已到期',
 
 
 }

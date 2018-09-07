@@ -15,11 +15,12 @@
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="120">
+              :label-width="150">
             <FormItem label="已选服务" prop="package">
                 <ul class="service-list">
-                    <li class="service-name">经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务经典业态服务</li>
-                    <li class="service-name">经典业态服务</li>
+                    <li class="service-name"
+                        v-for="(item,i) in serviceList"
+                        :key="i">{{item.serviceName}}</li>
                 </ul>
             </FormItem>
             <FormItem :label="$t('delayTime') + '（月）'" prop="serverTime">
@@ -33,8 +34,9 @@
             </FormItem>
             <FormItem label="预计服务结束时间">
                 <ul class="service-list">
-                    <li class="service-name">22</li>
-                    <li class="service-name">经典业态服务</li>
+                    <li class="service-name"
+                        v-for="(item,i) in serviceList"
+                        :key="i">{{item.serviceName}}   &nbsp;&nbsp; {{item.endTime}}</li>
                 </ul>
             </FormItem>
         </Form>

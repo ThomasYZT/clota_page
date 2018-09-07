@@ -70,7 +70,7 @@
         <!--</table-com>-->
 
         <div class="pick-up-title" >
-            <span class="label">{{$t('subDepartment')}}</span>
+            <span class="label">{{$t('openedService')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
@@ -83,10 +83,10 @@
                     <template v-if="type === 'company'">
                         <Button type="primary"
                                 :disabled="!canRecoverService"
-                                @click="recoverService(selectedService)">恢复</Button>
+                                @click="recoverService(selectedService.map(item => item.serviceId))">恢复</Button>
                         <Button type="primary"
                                 :disabled="!canPauseService"
-                                @click="paushService(selectedService)">暂停</Button>
+                                @click="paushService(selectedService.map(item => item.serviceId))">暂停</Button>
                         <Button type="primary"
                                 :disabled="!canDelayService"
                                 @click="delayService(selectedService)">延期</Button>
@@ -111,15 +111,28 @@
                     :total-count="totalCount"
                     :auto-height="true"
                     :table-com-min-height="280"
-                    @query-data="queryList">
+                    @query-data="queryList"
+                    @selection-change="handleSelectionChange">
                     <el-table-column
                         slot="columncheck"
                         slot-scope="row"
                         :label="row.title"
+                        fixed="left"
                         show-overflow-tooltip
                         type="selection"
                         :width="row.width"
                         :min-width="row.minWidth">
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnrunStatus"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.row.runStatus === 'normal' ? $t('opened') : scoped.row.runStatus === 'invalid' ? $t('paused') : $t('expired')}}
+                        </template>
                     </el-table-column>
                     <el-table-column
                         slot="columnoperate"
@@ -134,16 +147,16 @@
                                 <ul class="operate-info">
                                     <li class="custome"
                                         @click="delayService([scoped.row])"
-                                        v-if="scoped.row.status === 'open'">延期</li>
+                                        v-if="scoped.row.runStatus === 'normal'">延期</li>
                                     <li class="custome"
-                                        @click="paushService([scoped.row])"
-                                        v-if="scoped.row.status === 'open'">暂停</li>
+                                        @click="paushService([scoped.row.serviceId])"
+                                        v-if="scoped.row.runStatus === 'normal'">暂停</li>
                                     <li class="custome"
                                         @click="openService(scoped.row)"
-                                        v-if="scoped.row.status === 'close'">开通服务</li>
+                                        v-if="scoped.row.runStatus === 'expire'">开通服务</li>
                                     <li class="custome"
-                                        @click="recoverService([scoped.row])"
-                                        v-if="scoped.row.status === 'pause'">恢复</li>
+                                        @click="recoverService([scoped.row.serviceId])"
+                                        v-if="scoped.row.runStatus === 'invalid'">恢复</li>
                                 </ul>
                             </template>
                             <template v-if="type === 'scene'">
@@ -214,20 +227,7 @@
                 //已开通服务表头配置
                 openedServiceHead : openedServiceHead,
                 //表格数据
-                tableData : [
-                    {
-                        examName : 'examName',
-                        status : 'open'
-                    },
-                    {
-                        examName : 'examName',
-                        status : 'close'
-                    },
-                    {
-                        examName : 'examName',
-                        status : 'pause'
-                    }
-                ],
+                tableData : [],
                 //员工总数
                 totalCount : 100,
                 //是否显示开通服务的模态框
@@ -267,19 +267,39 @@
             },
             /**
              * 暂停服务
-             * @param data
+             * @param serviceIds 服务id
              */
-            paushService (data) {
-                console.log(data);
-                this.$Message.success('暂停成功');
+            paushService (serviceIds) {
+                ajax.post('updateServicesStatus',{
+                    orgId : this.searchParams.id,
+                    serviceIds : serviceIds,
+                    runStatus : 'invalid'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('暂停成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('暂停失败');
+                    }
+                });
             },
             /**
              * 恢复服务
-             * @param data
+             * @param serviceIds 服务id
              */
-            recoverService (data) {
-                console.log(data);
-                this.$Message.success('恢复成功');
+            recoverService (serviceIds) {
+                ajax.post('updateServicesStatus',{
+                    orgId : this.searchParams.id,
+                    serviceIds : serviceIds,
+                    runStatus : 'normal'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('恢复成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('恢复失败');
+                    }
+                });
             },
             /**
              * 开通服务
@@ -331,13 +351,13 @@
             }
         },
         computed : {
-            //可以开通服务
+            //可以恢复服务
             canRecoverService () {
-                return this.selectedService.length > 0 && this.selectedService.every(item => item.status === 'pause');
+                return this.selectedService.length > 0 && this.selectedService.every(item => item.runStatus === 'invalid');
             },
             //可以暂停服务
             canPauseService () {
-                return this.selectedService.length > 0 && this.selectedService.every(item => item.status === 'open');
+                return this.selectedService.length > 0 && this.selectedService.every(item => item.runStatus === 'normal');
             },
             //可以延期服务
             canDelayService () {
