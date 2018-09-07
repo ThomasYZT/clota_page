@@ -43,4 +43,10 @@ export default {
     'updateServicesStatus' : 'tenant/updateServicesStatus.json',
     //延期公司服务
     'extensionServices' : 'tenant/extensionServices.json',
+    //查询所有服务套餐
+    'getSysServiceCombos' : 'tenant/getSysServiceCombos.json',
+    //查询所有服务
+    'getServices' : 'tenant/getServices.json',
+    //为公司添加服务
+    'addServices' : 'tenant/addServices.json',
 }

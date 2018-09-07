@@ -17,17 +17,19 @@
               :rules="ruleValidate"
               :label-width="120">
             <FormItem label="选择套餐" prop="package">
-                <RadioGroup v-model="formData.packageName">
-                    <Radio :label="item.name"
+                <RadioGroup v-model="formData.packageId" @on-change="packageChange">
+                    <Radio :label="item.id"
                            v-for="(item,index) in packageList"
-                           :key="index">{{item.name}}</Radio>
+                           :key="index">{{item.comboName}}</Radio>
                 </RadioGroup>
             </FormItem>
-            <FormItem label="选择服务" prop="service">
-                <CheckboxGroup v-model="formData.servers">
-                    <Checkbox :label="item.name"
+            <FormItem label="选择服务" prop="servers">
+                <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
+                    <Checkbox :label="item.id"
                               v-for="(item,index) in serverList"
-                              :key="index"></Checkbox>
+                              :key="index">
+                        <span>{{item.serviceName}}</span>
+                    </Checkbox>
                 </CheckboxGroup>
             </FormItem>
             <FormItem label="设置服务开始时间" prop="startTime">
@@ -64,20 +66,34 @@
 
 <script>
     import {monthEnum} from '../../../../../../assets/js/constVariable';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //绑定modal的v-modal值
             value : {
                 type : Boolean,
                 default : false
+            },
+            //组织id
+            'org-id' : {
+                type : String,
+                default : ''
             }
         },
         data() {
+            //校验选择的服务
+            const validateService = (rule,value,callback) => {
+                if(value && value.length > 0){
+                    callback();
+                }else{
+                    callback(this.$t('validateError.pleaseSelect',{msg : this.$t('serverTime')}));
+                }
+            };
             return {
                 //表单数据
                 formData : {
-                    //套餐名称
-                    packageName : '',
+                    //套餐id
+                    packageId : '',
                     //服务开始时间
                     startTime : new Date(),
                     //选择的服务
@@ -87,30 +103,16 @@
                 },
                 //表单校验规则
                 ruleValidate : {
-                    service : [
-                        {required : true,message : this.$t('validateError.pleaseSelect',{msg : this.$t('serverTime')})}
+                    servers : [
+                        {required : true,validator : validateService ,trigger : 'change'}
                     ]
                 },
                 //服务期限列表
                 monthEnum : monthEnum,
                 //服务列表
-                serverList : [
-                    {
-                        name : '服务1'
-                    },
-                    {
-                        name : '服务2'
-                    }
-                ],
+                serverList : [],
                 //套餐列表
-                packageList : [
-                    {
-                        name : '套餐1'
-                    },
-                    {
-                        name : '套餐2'
-                    }
-                ]
+                packageList : []
             }
         },
         methods: {
@@ -126,7 +128,7 @@
              */
             visibleChange(type) {
                 if(type === true){
-                    this.getPackageList();
+                    this.getSysServiceCombos();
                     this.getServerList();
                 }else{
                     this.resetFormData();
@@ -153,37 +155,93 @@
              * 开通服务
              */
             openServer () {
-                this.$emit('fresh-data');
-            },
-            /**
-             * 获取套餐列表
-             */
-            getPackageList () {
-
+                let startTime = this.formData.startTime.valueOf();
+                ajax.post('addServices',{
+                    orgId : this.orgId,
+                    serviceIds : this.formData.servers,
+                    startTime : new Date(startTime).format('yyyy-MM-dd 00:00:00'),
+                    endTime : new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd 23:59:59'),
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('开通成功');
+                        this.$emit('fresh-data');
+                    }else{
+                        this.$Message.error('开通失败');
+                    }
+                }).finally(() => {
+                    this.$emit('input', false);
+                })
             },
             /**
              * 获取服务列表
              */
             getServerList () {
-
+                ajax.post('getServices').then(res => {
+                    if(res.status === 200){
+                        this.serverList = res.data ? res.data : [];
+                    }else{
+                        this.serverList = [];
+                    }
+                });
             },
             /**
              * 重置表单数据
              */
             resetFormData () {
-                this.formData.packageName = '';
+                this.formData.packageId = '';
                 this.formData.startTime = new Date();
                 this.formData.servers = [];
                 this.formData.serverTime = 1;
+            },
+            /**
+             * 查询所有服务套餐
+             */
+            getSysServiceCombos () {
+                ajax.post('getSysServiceCombos').then(res => {
+                    if(res.status === 200){
+                        this.packageList = res.data ? res.data : [];
+                    }else{
+                        this.packageList = [];
+                    }
+                })
+            },
+            /**
+             * 更改选择的套餐
+             */
+            packageChange (data) {
+                if(data){
+                    this.formData.servers = [];
+                    for(let i = 0,j = this.packageList.length;i < j;i++){
+                        if(this.packageList[i].id === data){
+                            if(this.packageList[i].services && this.packageList[i].services.length > 0){
+                                for(let a = 0,b = this.packageList[i].services.length;a < b;a++){
+                                    this.formData.servers.push(this.packageList[i].services[a].id);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            },
+            /**
+             * 更改选择的服务
+             * @param data
+             */
+            serviceChange (data) {
+                this.formData.packageId = '';
             }
+        },
+        created () {
+            this.getSysServiceCombos();
         },
         computed : {
             /**
              * 服务截止日期
              */
             serverEndTime () {
+                let startTime = this.formData.startTime.valueOf();
                 if(this.formData.startTime){
-                    return this.formData.startTime.addMonths(this.formData.serverTime).format('yyyy-MM-dd');
+                    return new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd');
                 }else{
                     return '--';
                 }
@@ -198,7 +256,7 @@
 
         & /deep/ .ivu-modal {
             width: 560px !important;
-            height: 410px;
+            min-height: 410px;
         }
 
         .target-class {
