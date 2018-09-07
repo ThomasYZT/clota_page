@@ -1,4 +1,4 @@
-<!--开通服务模态框-->
+<!--延期服务模态框-->
 
 <template>
     <Modal
@@ -14,7 +14,6 @@
         </div>
         <Form ref="formValidate"
               :model="formData"
-              :rules="ruleValidate"
               :label-width="150">
             <FormItem label="已选服务" prop="package">
                 <ul class="service-list">
@@ -53,6 +52,7 @@
 
 <script>
     import {monthEnum} from '../../../../../../assets/js/constVariable';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //绑定modal的v-modal值
@@ -66,47 +66,22 @@
                 default () {
                     return [];
                 }
+            },
+            //公司id
+            'org-id' : {
+                type : String,
+                default : ''
             }
         },
         data() {
             return {
                 //表单数据
                 formData : {
-                    //套餐名称
-                    packageName : '',
-                    //服务开始时间
-                    startTime : new Date(),
-                    //选择的服务
-                    servers : [],
                     //服务期限
                     serverTime : 1
                 },
-                //表单校验规则
-                ruleValidate : {
-                    service : [
-                        {required : true,message : this.$t('validateError.pleaseSelect',{msg : this.$t('serverTime')})}
-                    ]
-                },
                 //服务期限列表
                 monthEnum : monthEnum,
-                //服务列表
-                serverList : [
-                    {
-                        name : '服务1'
-                    },
-                    {
-                        name : '服务2'
-                    }
-                ],
-                //套餐列表
-                packageList : [
-                    {
-                        name : '套餐1'
-                    },
-                    {
-                        name : '套餐2'
-                    }
-                ]
             }
         },
         methods: {
@@ -121,13 +96,6 @@
              * @param type
              */
             visibleChange(type) {
-                if(type === true){
-                    this.getPackageList();
-                    this.getServerList();
-                }else{
-                    this.resetFormData();
-                    this.$refs.formValidate.resetFields();
-                }
             },
             /**
              * 取消保存
@@ -139,53 +107,28 @@
              * 保存数据
              */
             save () {
-                this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        this.openServer();
+                this.delayService();
+            },
+            /**
+             * 延期服务
+             */
+            delayService () {
+                ajax.post('extensionServices',{
+                    orgId : this.orgId,
+                    serviceIds : this.serviceList.map(item => item.serviceId),
+                    extensionTime : this.formData.serverTime
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('延期成功');
+                        this.$emit('fresh-data');
+                    }else{
+                        this.$Message.error('延期失败');
                     }
-                });
-            },
-            /**
-             * 开通服务
-             */
-            openServer () {
-                this.$emit('fresh-data');
-                console.log(this.serviceList)
-            },
-            /**
-             * 获取套餐列表
-             */
-            getPackageList () {
-
-            },
-            /**
-             * 获取服务列表
-             */
-            getServerList () {
-
-            },
-            /**
-             * 重置表单数据
-             */
-            resetFormData () {
-                this.formData.packageName = '';
-                this.formData.startTime = new Date();
-                this.formData.servers = [];
-                this.formData.serverTime = 1;
+                }).finally(() => {
+                    this.$emit('input', false);
+                }) ;
             }
         },
-        computed : {
-            /**
-             * 服务截止日期
-             */
-            serverEndTime () {
-                if(this.formData.startTime){
-                    return this.formData.startTime.addMonths(this.formData.serverTime).format('yyyy-MM-dd');
-                }else{
-                    return '--';
-                }
-            }
-        }
     }
 </script>
 

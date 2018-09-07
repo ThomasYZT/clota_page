@@ -177,7 +177,9 @@
         <!--服务延期模态框-->
         <service-delay-modal
             v-model="serviceDelayModalShow"
-            :service-list="operateServiceList">
+            :org-id="searchParams.id"
+            :service-list="operateServiceList"
+            @fresh-data="queryList">
         </service-delay-modal>
         <!--删除服务模态框-->
         <del-modal ref="delModal">
@@ -361,7 +363,7 @@
             },
             //可以延期服务
             canDelayService () {
-                return this.selectedService.length > 0 && this.selectedService.every(item => item.status === 'open');
+                return this.selectedService.length > 0 && this.selectedService.every(item => item.runStatus === 'normal');
             },
             //是否可以批量删除服务
             canDelService () {

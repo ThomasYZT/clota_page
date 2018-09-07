@@ -41,4 +41,6 @@ export default {
     'getSmsConsumeRecords' : 'tenant/getSmsConsumeRecords.json',
     //更新公司服务状态
     'updateServicesStatus' : 'tenant/updateServicesStatus.json',
+    //延期公司服务
+    'extensionServices' : 'tenant/extensionServices.json',
 }
