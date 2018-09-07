@@ -152,7 +152,7 @@
                                         @click="paushService([scoped.row.serviceId])"
                                         v-if="scoped.row.runStatus === 'normal'">暂停</li>
                                     <li class="custome"
-                                        @click="openService(scoped.row)"
+                                        @click="openService(scoped.row.serviceId)"
                                         v-if="scoped.row.runStatus === 'expire'">开通服务</li>
                                     <li class="custome"
                                         @click="recoverService([scoped.row.serviceId])"
@@ -172,6 +172,7 @@
         </transition>
         <!--开通服务模态框-->
         <open-service-modal
+            :opened-service-id="openedServiceId"
             :org-id="searchParams.id"
             v-model="openServiceModalShow"
             @fresh-data="queryList">
@@ -244,6 +245,8 @@
                 isPackUp : true,
                 pageNo : 1,
                 pageSize : 10,
+                //需要开通的服务id
+                openedServiceId : ''
             }
         },
         methods: {
@@ -300,15 +303,20 @@
             },
             /**
              * 开通服务
+             * @param serviceId
              */
-            openService () {
-                this.$Message.success('开通成功');
+            openService (serviceId) {
+                this.openedServiceId = serviceId;
+                setTimeout(() => {
+                    this.openServiceModalShow = true;
+                },0);
             },
             /**
              * 新增服务
              */
             addService () {
                 this.openServiceModalShow = true;
+                this.openedServiceId = '';
             },
             /**
              * 删除服务

@@ -25,6 +25,8 @@ export default {
     'getServiceProvider' : 'tenant/getServiceProvider.json',
     //重置账号密码
     'resetPassword' : 'tenant/resetPassword.json',
+    //批量重密码
+    'updatePassword' : 'tenant/updatePassword.json',
     //删除节点
     'deleteNode' : 'tenant/deleteNode.json',
     //查询指定节点下的员工列表

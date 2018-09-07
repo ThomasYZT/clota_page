@@ -177,13 +177,13 @@
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <!--<Select v-model="formDataCopy.businessAccount1.id" >-->
-                            <!--<Option v-for="item in serviceStaffList"-->
-                                    <!--:value="item.id"-->
-                                    <!--:key="item.id">-->
-                                <!--{{ item.loginName }}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
+                          <Select v-model="formDataCopy.businessAccount1.id" >
+                            <Option v-for="item in serviceStaffList"
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.loginName }}
+                            </Option>
+                        </Select>
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
                          {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
@@ -376,7 +376,7 @@
                     address : this.formDataCopy.address,
                     telephone : this.formDataCopy.telephone,
                     tex : this.formDataCopy.tex,
-                    // businessAccountId : this.formDataCopy.businessAccount1.id,
+                    businessAccountId : this.formDataCopy.businessAccount1.id,
                 }).then(res => {
                     if(res.status === 200){
                         this.$Message.success('修改成功');
@@ -393,7 +393,10 @@
             edit () {
                 this.type = 'edit';
                 this.formDataCopy = defaultsDeep({
-                    isStart : this.companyDetail.status === 'open'
+                    isStart : this.companyDetail.status === 'open',
+                    businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {
+
+                    }
                 }  , this.companyDetail);
             },
             /**

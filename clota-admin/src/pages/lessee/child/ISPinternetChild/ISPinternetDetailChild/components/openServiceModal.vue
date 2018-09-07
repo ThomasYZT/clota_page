@@ -78,6 +78,11 @@
             'org-id' : {
                 type : String,
                 default : ''
+            },
+            //默认选中的服务id
+            'opened-service-id' : {
+                type : String,
+                default : ''
             }
         },
         data() {
@@ -179,6 +184,14 @@
                 ajax.post('getServices').then(res => {
                     if(res.status === 200){
                         this.serverList = res.data ? res.data : [];
+                        if(this.openedServiceId){
+                            for(let i = 0,j = this.serverList.length;i < j;i++){
+                                if(this.serverList[i].id === this.openedServiceId){
+                                    this.formData.servers = [this.serverList[i].id];
+                                    break;
+                                }
+                            }
+                        }
                     }else{
                         this.serverList = [];
                     }

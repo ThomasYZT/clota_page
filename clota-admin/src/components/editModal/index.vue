@@ -79,8 +79,8 @@
              */
             visibleChange(type) {
                 if(type === false){
-                    // this.$refs.formRef.resetFields();
-                    // this.formData.passWord = '';
+                    this.$refs.formRef.resetFields();
+                    this.formData.passWord = '';
                 }
             },
             /**

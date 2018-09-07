@@ -199,8 +199,8 @@
              * @param employee
              */
             confirmChangePass(pass,employee) {
-                ajax.post('resetPassword',{
-                    id : employee.map(item => item.id),
+                ajax.post('updatePassword',{
+                    ids : employee.map(item => item.id),
                     password : pass
                 }).then(res => {
                    if(res.status === 200){
