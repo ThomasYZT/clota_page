@@ -66,6 +66,20 @@
             breadCrumbHead,
         },
         data() {
+
+            const validateMethod = {
+
+                // 输入内容不合规则
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error( this.$t('errorIrregular') ));
+                    } else {
+                        callback();
+                    }
+                }
+
+            };
+
             //校验假期时间
             const validateTime = (rule,value,callback) => {
               if(value && value.length === 2 && value[0] && value[1]){
@@ -74,6 +88,7 @@
                   callback(this.$t('validateError.pleaseSelect', {'msg': this.$t('holidayTime')}))
               }
             };
+
             return {
                 //上级路由列表
                 beforeRouterList: [
@@ -97,7 +112,8 @@
                 ruleValidate: {
                     holidayName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('holidayName')}), trigger: 'blur'},
-                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('holidayName'), length: 15}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('holidayName'), length: 20}), trigger: 'blur' },
                     ],
                     time : [
                         {required: true, validator : validateTime, trigger: 'change'},

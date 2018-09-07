@@ -332,6 +332,7 @@ export default {
     builtin: '是否内置',
     yes: '是',
     no: '否',
+    channel: '渠道',
 
 
 

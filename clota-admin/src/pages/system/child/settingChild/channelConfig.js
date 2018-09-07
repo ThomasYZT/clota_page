@@ -3,23 +3,28 @@
 //节假日表头
 export const channelHead = [
     {
-        title: '渠道编码',
+        title: ' ',
+        minWidth: 80,
+        field: 'select',
+    },
+    {
+        title: 'channelCode',//渠道编码
         minWidth: 100,
-        field: 'name'
+        field: 'channelNo'
     },
     {
-        title: '渠道名称',
+        title: 'channelName',//渠道名称
         minWidth: 200,
-        field: 'rate'
+        field: 'channelName'
     },
     {
-        title: '启用状态',
+        title: 'openStatus',//启用状态
         minWidth: 90,
-        field: 'rate'
+        field: 'status'
     },
     {
-        title: '操作',
-        width: 160,
-        field: 'rate'
+        title: 'operate',
+        width: 180,
+        field: 'operate'
     },
 ];

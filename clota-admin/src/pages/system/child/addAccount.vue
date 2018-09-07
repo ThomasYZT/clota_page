@@ -157,12 +157,12 @@
                     loginName : [
                         { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 15}), trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 20}), trigger: 'blur' },
                     ],
                     nickName : [
                         { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 20}), trigger: 'blur' },
                     ],
                     email: [
                         { required: true, validator: validatmail, trigger: 'blur'},

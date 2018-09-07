@@ -18,7 +18,7 @@
                     @click="bitchDel">{{$t('deleteBatch')}}</Button>
         </div>
         <table-com
-            :ofsetHeight="118"
+            :ofsetHeight="116"
             :show-pagination="true"
             :column-data="holidayHead"
             :table-data="tableData"

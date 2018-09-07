@@ -12,29 +12,27 @@
                   label-position="right"
                   :rules="ruleValidate"
                   :label-width="100">
-                <Row>
-                    <Col span="11">
-                        <FormItem :label="$t('channelName')" prop="name">
-                            <Input v-model="formData.name"
-                                   style="width: 280px"
-                                   placeholder="请输入渠道名称"/>
+                <i-row>
+                    <i-col span="11">
+                        <FormItem :label="$t('channelName')" prop="channelName">
+                            <Input v-model.trim="formData.channelName"
+                                   :placeholder="$t('validateError.pleaseInput', {msg: $t('channelName')})"/>
                         </FormItem>
-                    </Col>
-                    <Col span="11">
-                        <FormItem :label="$t('channelCode')" prop="channelCode">
-                            <Input v-model="formData.name"
-                                   style="width: 280px"
-                                   placeholder="请输入渠道编码"/>
+                    </i-col>
+                    <i-col span="11">
+                        <FormItem :label="$t('channelCode')" prop="channelNo">
+                            <Input v-model.trim="formData.channelNo"
+                                   :placeholder="$t('validateError.pleaseInput', {msg: $t('channelCode')})"/>
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span="11">
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="11">
                         <FormItem :label="$t('isUsing')">
-                            <Checkbox v-model="formData.isUsing">启用</Checkbox>
+                            <Checkbox v-model="formData.status">{{$t('startUsing')}}</Checkbox>
                         </FormItem>
-                    </Col>
-                </Row>
+                    </i-col>
+                </i-row>
             </Form>
             <div class="footer">
                 <Button type="primary"
@@ -53,14 +51,39 @@
 </template>
 
 <script>
+
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import {validator} from 'klwk-ui';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
         },
         data() {
+
+            const validateMethod = {
+                // 输入内容不合规则
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error( this.$t('errorIrregular') ));
+                    } else {
+                        callback();
+                    }
+                }
+            };
+
+            //校验数字
+            const validateNumber = (rule, value, callback) => {
+                if (value && !validator.isNumber(value)) {
+                    callback(new Error( this.$t('numError', {field: this.$t('channelCode')}) ));
+                } else {
+                    callback();
+                }
+            };
+
             return {
                 //上级路由列表
                 beforeRouterList: [
@@ -73,20 +96,25 @@
                 ],
                 //表单数据
                 formData: {
-                    //单位 名字
-                    name: '',
-                    //单位是否启用
-                    isUsing: '',
-                    //假期时间
-                    time: [new Date(),new Date()],
+                    //渠道名称
+                    channelName: '',
+                    //渠道编号
+                    channelNo: '',
+                    //渠道是否启用
+                    status: '',
                 },
                 //表单校验规则
                 ruleValidate: {
-                    name : [
+                    channelName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('channelName')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('channelName'), length: 20}), trigger: 'blur' },
                     ],
-                    channelCode : [
+                    channelNo : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('channelCode')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('channelCode'), length: 20}), trigger: 'blur' },
                     ]
                 },
                 //是否正在添加中
@@ -97,12 +125,53 @@
         },
         methods: {
             /**
-             * 保存新增单位数据
+             * 保存渠道数据
              */
             save() {
-                this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.addLoading = true;
+                        let params = {
+                            channelName: this.formData.channelName,
+                            channelNo: this.formData.channelNo,
+                            status: this.formData.status ? 'normal' : 'invalid',
+                        };
+                        if (this.type === 'add') {
+                            this.addChannel(params);
+                        }else {
+                            params.id = this.formData.id;
+                            this.updateChannel(params);
+                        }
+                    }
+                });
+            },
+            /**
+             * 新增渠道
+             */
+            addChannel( params ) {
+                ajax.post('addChannel', params).then(res => {
                     this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('addSuccess'));
+                        this.$router.push({ name: 'channel'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
+             * 修改渠道
+             * @param params
+             */
+            updateChannel( params ) {
+                ajax.post('updateChannel', params).then(res => {
+                    this.addLoading = false;
+                    if(res.status === 200){
+                        this.$Message.success(this.$t('edit') + this.$t('success'));
+                        this.$router.push({ name: 'channel'});
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
                 });
             },
             /**
@@ -110,7 +179,7 @@
              */
             cancel() {
                 this.$router.push({
-                    name: 'holiday'
+                    name: 'channel'
                 });
             },
             /**
@@ -120,18 +189,20 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
+                    if(params.info){
+                        this.formData.id = params.info.id;
+                        this.formData.channelName = params.info.channelName;
+                        this.formData.channelNo =  params.info.channelNo;
+                        this.formData.status = params.info.status === 'normal' ? true : false;
+                    }
                 }else{
                     this.$router.push({
-                        name : 'holiday'
+                        name : 'channel'
                     });
                 }
-            }
+            },
+
         },
-        beforeRouteEnter(to,fromm,next){
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
     }
 </script>
 
@@ -153,6 +224,10 @@
             /deep/ .ivu-form {
                 @include block_outline(924px, auto);
                 margin: 0 auto;
+
+                /deep/ .ivu-input-wrapper{
+                    width: 280px;
+                }
 
                 textarea.ivu-input{
                     height: 70px;

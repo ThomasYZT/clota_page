@@ -72,9 +72,9 @@ export default {
     'addChannel' : 'channel/add.json',
     //修改渠道信息
     'updateChannel' : 'channel/update.json',
-    ///根据渠道名称获取渠道信息
+    //根据渠道名称获取渠道信息
     'channelByName' : 'channel/likeName.json',
-    //批量删除渠道信息
+    //删除渠道信息
     'deleteChannel' : 'channel/deleteBatch.json',
     //修改渠道信息状态
     'switchChannel' : 'channel/switch.json',

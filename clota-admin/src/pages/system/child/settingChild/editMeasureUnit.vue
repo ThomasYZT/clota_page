@@ -64,6 +64,20 @@
             breadCrumbHead,
         },
         data() {
+
+            const validateMethod = {
+
+                // 输入内容不合规则
+                emoji :  (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error( this.$t('errorIrregular') ));
+                    } else {
+                        callback();
+                    }
+                }
+
+            };
+
             return {
                 //上级路由列表
                 beforeRouterList: [
@@ -87,6 +101,12 @@
                 ruleValidate: {
                     name : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('nameG')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('nameG'), length: 20}), trigger: 'blur' },
+                    ],
+                    remarks : [
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 50}), trigger: 'blur' },
                     ],
                 },
                 //是否正在添加中
