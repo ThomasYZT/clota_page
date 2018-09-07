@@ -31,8 +31,10 @@
                         <img class="row-image"
                              v-for="(item,index) in scoped.row.images"
                              :key="index"
-                             :src="getHost(item.slice(1,item.length))">
+                             :src="item">
+                             <!--:src="getHost(item.slice(1,item.length))">-->
                     </template>
+                    <template v-else>-</template>
                 </template>
             </el-table-column>
             <el-table-column
@@ -135,7 +137,7 @@
              */
             stopNotice (data) {
                 if(data){
-                    this.switchNotice(data, 'false')
+                    this.switchNotice(data, 'invalid')
                 }
             },
             /**
@@ -144,7 +146,7 @@
              */
             openNotice (data) {
                 if(data){
-                    this.switchNotice(data, 'true')
+                    this.switchNotice(data, 'normal')
                 }
             },
             /**

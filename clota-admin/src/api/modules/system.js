@@ -31,7 +31,9 @@ export default {
     //修改系统公告
     'updateNotice' : 'notice/update.json',
     //启/停系统公告
-    'switchNotice' : 'notice/switchNotice.json',
+    'switchNotice' : 'notice/switch.json',
+    //图片上传
+    'uploadImage' : 'oss/upload.json',
 
 
     /***********************************设置***********************************/

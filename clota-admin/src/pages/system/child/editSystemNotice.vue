@@ -37,7 +37,6 @@
                                 :format="['gif','img','jpeg','jpg','jpeg','png','svg']"
                                 :on-format-error="handleFormatError"
                                 :on-success="handleSuccess"
-                                :before-upload="handleBeforeUpload"
                                 accept="image/*">
                                 <div class="upload-btn">
                                     <Icon type="ios-camera" size="20"></Icon>
@@ -121,7 +120,7 @@
                     content: '',
                     //图片(可多张)
                     images: [
-//                        'http://klwk-test.oss-cn-beijing.aliyuncs.com/测试图片_481b25e6-074c-49b2-bebd-cf828b3a51ca.jpg',
+                        'https://clotam.oss-cn-beijing.aliyuncs.com/notice/20180907/7b983b6e123b4ab59697bddd2a9c3e67.jpg'
                     ],
                 },
                 //表单校验规则
@@ -137,7 +136,7 @@
                         { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 1000}), trigger: 'blur' },
                     ],
                     images: [
-                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('noticeContent')}), trigger: 'change' },
+//                        { required: true, type: 'array', message : this.$t('validateError.pleaseSelect', {'msg': this.$t('noticeContent')}), trigger: 'change' },
                     ],
                 },
                 //是否正在添加中
@@ -145,8 +144,7 @@
                 //账号操作类型
                 type : '',
                 // 附件上传地址, 分上传关联附件和普通上传附件
-                uploadUrl: '',
-//                uploadUrl: config.getHttpServer() + '/v3/account/uploadAttFile',
+                uploadUrl: ajax.getHost('uploadImage'),
                 // 上传文件请求头
                 uploadHeaders: {
                     "Accept": 'application/json',
@@ -166,15 +164,15 @@
                         var params = {
                             title: this.formData.title,
                             content: this.formData.content,
-                            file: this.formData.images,
+                            images: this.formData.images.join(';'),
+                            picturePath: this.formData.images.join(';'),
                         };
                         if (this.type === 'add') {
-//                            this.addNotice(this.formData);
+                            this.addNotice(this.formData);
                         }else {
                             params.id = this.formData.id;
-//                            this.updateNotice(params);
+                            this.updateNotice(params);
                         }
-                        console.log(params)
                     }
                 });
             },
@@ -229,7 +227,7 @@
              */
             cancel() {
                 this.$router.push({
-                    name: 'account'
+                    name: 'systemNotice'
                 });
             },
             /**
@@ -239,7 +237,15 @@
             getParams (params) {
                 if(params.type) {
                     this.type = params.type;
-                    this.formData = params.info ? params.info : { title: '',content: '',images: [] };
+                    if(params.info){
+                        this.formData = {
+                            id: params.info.id,
+                            title: params.info.title,
+                            content: params.info.content,
+                            images: params.info.images && params.info.images.length > 0 ?
+                                params.info.images : [],
+                        };
+                    }
                 }else{
                     this.$router.push({
                         name : 'systemNotice'
@@ -263,19 +269,18 @@
             },
             //附件上传成功回调
             handleSuccess(response, file, fileList) {
-                var _me = this;
-                var avatar = response.data && response.data.attUrl ? response.data.attUrl : '';
-                if( avatar ){
-
+                console.log(response)
+                var avatar = response.paths && response.paths.length > 0 ? response.paths : [];
+                if( avatar.length > 0 ){
+                    avatar.forEach(url => {
+                        this.formData.images.push(url);
+                    })
                 }else{
                     this.$Message.error({
                         content: file.name + '文件上传失败，请重新上传',
                         duration: 3
                     });
                 }
-            },
-            handleBeforeUpload( file  ){
-//                this.uploadUrl = ajax.getHost(file.name)
             },
             //附件上传失败提示
             handleError(error, file, fileList){
