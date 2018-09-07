@@ -11,7 +11,7 @@ export const partMentHead = [
     },
     {
         title: '部门ID',
-        minWidth: 120,
+        minWidth: 210,
         field: 'id'
     },
     {
@@ -22,7 +22,7 @@ export const partMentHead = [
     {
         title: '是否启用',
         minWidth: 130,
-        field: 'status2'
+        field: 'status'
     },
     {
         title: '部门人数',

@@ -35,4 +35,6 @@ export default {
     'getSubsidiaries' : 'tenant/getSubsidiaries.json',
     //删除员工
     'deleteEmployees' : 'tenant/deleteEmployees.json',
+    //删除部门
+    'deleteDepartments' : 'tenant/deleteDepartments.json',
 }

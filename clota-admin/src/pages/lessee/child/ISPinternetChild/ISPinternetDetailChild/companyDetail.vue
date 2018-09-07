@@ -222,7 +222,9 @@
 
 
         <!--已开通服务-->
-        <opened-service :is-pack-up="true">
+        <opened-service
+            :is-pack-up="true"
+            :search-params="{id : activeNode.id}">
         </opened-service>
         <!--下属公司-->
         <sub-company
@@ -234,7 +236,8 @@
         </sub-scene>
         <!--下属部门-->
         <sub-department
-            :search-params="{id : activeNode.id}">
+            :search-params="{id : activeNode.id}"
+            @org-change="freshOrg">
         </sub-department>
         <!--员工-->
         <employee-table
@@ -466,6 +469,12 @@
                     this.serviceStaffList = [];
                 });
             },
+            /**
+             * 更新左侧的组织树
+             */
+            freshOrg () {
+                this.$emit('fresh-org',this.activeNode);
+            }
         },
         created () {
             this.querySmsProviderList();

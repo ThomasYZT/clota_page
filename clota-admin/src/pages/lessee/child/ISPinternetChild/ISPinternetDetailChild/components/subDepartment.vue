@@ -2,41 +2,6 @@
 
 <template>
     <div class="sub-department">
-        <!--<table-com-->
-            <!--:table-data="tableData"-->
-            <!--:column-data="partMentHead"-->
-            <!--:title="$t('subDepartment')"-->
-            <!--:show-page="true"-->
-            <!--:is-pack-up="isPackUp"-->
-            <!--:show-table-bar="false"-->
-            <!--:total="totalCount"-->
-            <!--@selection-change="handleSelectionChange"-->
-            <!--@get-new-data="getSubCompany"-->
-            <!--@filter-method="handleFilter">-->
-            <!--<el-table-column-->
-                <!--slot="column0"-->
-                <!--type="selection"-->
-                <!--width="55">-->
-            <!--</el-table-column>-->
-            <!--<div class="employee-account" slot="table-title">-->
-                <!--<Button type="error"-->
-                        <!--:disabled="selectedDepartment.length < 1"-->
-                        <!--@click="delDepartment">删除</Button>-->
-            <!--</div>-->
-
-            <!--<el-table-column-->
-                <!--slot="column5"-->
-                <!--:label="$t('operate')"-->
-                <!--width="145">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<ul class="operate-info">-->
-                        <!--<li class="delete" @click="delDep(scoped.row)">删除</li>-->
-                        <!--<li class="reset-pass " @click="changeDep(scoped.row)">修改</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</table-com>-->
-
         <div class="pick-up-title" >
             <span class="label">{{$t('subDepartment')}}</span>
             <span class="back-up"
@@ -63,15 +28,28 @@
                     :total-count="totalCount"
                     :auto-height="true"
                     :table-com-min-height="280"
-                    @query-data="queryList">
+                    @query-data="queryList"
+                    @selection-change="handleSelectionChange">
                     <el-table-column
                         slot="columncheck"
                         slot-scope="row"
                         :label="row.title"
+                        fixed="left"
                         show-overflow-tooltip
                         type="selection"
                         :width="row.width"
                         :min-width="row.minWidth">
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnstatus"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.row.status === 'close' ? $t('outUse') : $t('startUsing')}}
+                        </template>
                     </el-table-column>
                     <el-table-column
                         slot="columnoperate"
@@ -96,6 +74,15 @@
         </del-modal>
         <!--编辑模态框-->
         <edit-modal ref="editModal">
+            <Form :model="formData"
+                  ref="formRef"
+                  label-position="top"
+                  :rules="ruleValidate"
+                  :label-width="0">
+                <FormItem label="修改部门名称" prop="depName">
+                    <Input v-model.trim="formData.depName" style="width: 280px"/>
+                </FormItem>
+            </Form>
         </edit-modal>
     </div>
 </template>
@@ -135,25 +122,30 @@
                 pageSize : 10,
                 //是否收起
                 isPackUp : true,
+                //修改部门名称表单
+                formData : {
+                    depName : ''
+                },
+                //校验规则
+                ruleValidate : {
+                    depName : [
+                        {required : true,message : this.$t('inputField',{field : this.$t('depName')}),trigger : 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('depName')}),trigger : 'blur'}
+                    ]
+                }
             }
         },
         methods: {
             /**
-             * 获取下属部门信息
-             */
-            getSubCompany () {
-
-            },
-            /**
              * 批量删除部门
              */
             delDepartment () {
+                let orgNames = this.selectedDepartment.map(item => item.orgName);
                 this.$refs.delModal.show({
-                    msg : '删除部门',
+                    msg : `删除部门${orgNames.join(',')}`,
                     title : '删除部门',
                     confirmCallback : () =>{
-                        this.$Message.success('删除成功');
-                        this.getSubCompany();
+                        this.confirmDelDepartment(this.selectedDepartment.map(item => item.id));
                     }
                 });
             },
@@ -170,10 +162,10 @@
              */
             delDep (data) {
                 this.$refs.delModal.show({
-                    msg : '删除部门',
+                    msg : `删除部门${data.orgName}`,
                     title : '删除部门',
                     confirmCallback : () =>{
-                        this.$Message.success('删除成功');
+                        this.confirmDelDepartment([data.id]);
                     }
                 });
             },
@@ -184,8 +176,12 @@
             changeDep (data) {
                 this.$refs.editModal.show({
                     title : this.$t('changeDepName'),
-                    confirmCallback : (pass) => {
-                        this.confirmChangeDep(pass,data);
+                    confirmCallback : () => {
+                        this.$refs.formRef.validate(valid => {
+                            if(valid) {
+                                this.confirmChangeDep(this.formData.depName,data);
+                            }
+                        });
                     }
                 });
             },
@@ -195,7 +191,20 @@
              * @param rowData
              */
             confirmChangeDep (name,rowData) {
-                console.log(name,rowData)
+                ajax.post('updateOrgInfo',{
+                    id : rowData.id,
+                    orgName : name
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('修改成功');
+                        this.$emit('org-change');
+                        this.queryList();
+                    }else{
+                        this.$Message.error(res.message || '修改失败');
+                    }
+                }).finally(() => {
+                    this.$refs.editModal.hide();
+                });
             },
             /**
              * 根据筛选条件过滤数据
@@ -218,10 +227,24 @@
                         this.tableData = [];
                     }
                 });
+            },
+            /**
+             * 确认删除部门
+             * @param ids
+             */
+            confirmDelDepartment (ids) {
+                ajax.post('deleteDepartments',{
+                    ids : ids
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('删除成功');
+                        this.$emit('org-change');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('删除失败');
+                    }
+                });
             }
-        },
-        created () {
-            this.getSubCompany();
         },
         computed : {
             //表格是否显示

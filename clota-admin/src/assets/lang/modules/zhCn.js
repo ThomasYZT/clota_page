@@ -333,6 +333,7 @@ export default {
     yes: '是',
     no: '否',
     channel: '渠道',
+    depName: '部门名称',
 
 
 
