@@ -108,7 +108,7 @@
             updateChannelSet ( params ) {
                 ajax.post('updateChannelSet', params).then(res => {
                     if(res.success){
-                        this.$Message.success(this.title + this.$t('successTip', {tip: ''}) + '！');
+                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
                         this.hide();
                         this.$emit('close-modal');
                     } else {

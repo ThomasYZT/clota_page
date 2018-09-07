@@ -178,7 +178,7 @@
 
             //计算兑换后数量
             toAmountFunc () {
-                this.formData.toAmount = Number(this.formData.fromAmount)/this.accountInfo.rate;
+                this.formData.toAmount = Number(this.formData.fromAmount)*this.accountInfo.rate;
             },
 
             //转入账户改变
