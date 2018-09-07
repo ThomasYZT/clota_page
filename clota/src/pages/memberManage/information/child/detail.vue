@@ -567,19 +567,20 @@
             //监听开关组件改变
             changeCardStatus ( bool ){
                 if (bool) {
-                    this.detail.cardStatus = 'active';
+                    this.manualUpdateCardStatus('active');
                 } else {
-                    this.detail.cardStatus = 'frozen';
+                    this.manualUpdateCardStatus('frozen');
                 }
-                this.manualUpdateCardStatus();
+                this.manualUpdateCardStatus( );
             },
             //更新会员卡信息
-            manualUpdateCardStatus () {
+            manualUpdateCardStatus ( status ) {
                 ajax.post('manualUpdateCardStatus', {
                     id: this.detail.cardId,
-                    status: this.detail.cardStatus,
+                    status: status,
                 }).then(res => {
                     if(res.success){
+                        this.detail.cardStatus = status;
                         this.$Message.success(this.$t('successTip', {tip: $t('updateMemberInfo')}) + '！');      // 更新会员卡信息成功
                     } else {
                         console.log(res);

@@ -231,11 +231,11 @@
                 vertical-align: middle;
                 margin: 5px 0 15px;
 
-                /deep/ .ivu-input-wrapper{
-                    width: 120px;
-                    margin: 0 10px;
-                }
+            }
 
+            /deep/ .ivu-input-wrapper{
+                width: 120px;
+                margin: 0 10px;
             }
 
             /deep/ .ivu-form-item-error-tip{

@@ -9,10 +9,22 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="form-item-wrap"><label>{{$t('userName')}}</label><span>{{memberInfo.custName}}</span></div>
-            <div class="form-item-wrap"><label>{{$t('mobilePhone')}}</label><span>{{memberInfo.phoneNum}}</span></div>
-            <div class="form-item-wrap"><label>{{$t('memberNum')}}</label><span>{{memberInfo.id}}</span></div>
-            <div class="form-item-wrap"><label>{{$t('credentialsCode')}}</label><span>{{memberInfo.idCardNumber}}</span></div>
+            <div class="form-item-wrap">
+                <label>{{$t('userName')}}</label>
+                <span class="name" v-w-title="memberInfo.custName">{{memberInfo.custName}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>{{$t('mobilePhone')}}</label>
+                <span class="name" v-w-title="memberInfo.phoneNum">{{memberInfo.phoneNum}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>{{$t('memberNum')}}</label>
+                <span class="name" v-w-title="memberInfo.id">{{memberInfo.id}}</span>
+            </div>
+            <div class="form-item-wrap">
+                <label>{{$t('credentialsCode')}}</label>
+                <span class="name" v-w-title="memberInfo.idCardNumber">{{memberInfo.idCardNumber}}</span>
+            </div>
             <div class="form-item-wrap">
                 <label>{{$t('linkCategory')}}</label>
                 <Select v-model="staffTypeId">
@@ -131,7 +143,7 @@
     .link-belong-modal{
 
         .modal-body{
-            padding: 20px 0 20px 20px;
+            padding: 20px;
             height: 200px;
 
             .form-item-wrap{
@@ -142,12 +154,17 @@
                 line-height: 30px;
                 font-size: $font_size_14px;
                 color: $color-666;
+                display: flex;
                 >label{
                     display: inline-block;
                     width: 140px;
                     text-align: right;
                     margin-right: 10px;
                     color: $color-333;
+                }
+                .name{
+                    flex: 1;
+                    @include overflow_tip();
                 }
                 /deep/ .ivu-select{
                     width: 280px;

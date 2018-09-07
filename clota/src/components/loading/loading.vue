@@ -1,10 +1,16 @@
 <template>
     <div class="loader">
         <div class="container">
-            <h1></h1>
-            <span></span>
-            <span></span>
-            <span></span>
+            <div class="center">
+                <h1></h1>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!--<h1></h1>-->
+            <!--<span></span>-->
+            <!--<span></span>-->
+            <!--<span></span>-->
         </div>
     </div>
 </template>
@@ -23,6 +29,7 @@
         z-index: 9999;
 
         .container{
+            position: relative;
             @include center_center();
         }
     }

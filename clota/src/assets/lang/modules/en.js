@@ -413,6 +413,8 @@ export default {
     'M006': 'Transfer to and transfer to the same account',
     'M007': 'The account type already exists',
     'M008': 'Existing membership card',
+    'M009': 'Membership card is froze',
+    'M010': 'Mother card is froze',
     'S001': 'The parameter is empty',
     'S002': 'Interface exception',
     'S003': 'Import files only support Excel files',

@@ -88,7 +88,7 @@
                         this.hide();
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'addAccountInfo '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message ? this.$t(res.message) : 'addAccountInfo '+ this.$t('failure') +'！');
                     }
                 });
             },
