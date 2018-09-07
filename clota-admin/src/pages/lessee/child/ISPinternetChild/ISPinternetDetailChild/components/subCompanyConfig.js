@@ -2,33 +2,32 @@
 export const companies = [
     {
         title: '公司ID',
-        minWidth: 120,
-        field: 'realName',
-        ableClick: true
+        minWidth: 220,
+        field: 'id',
     },
     {
         title: '公司名称',
-        minWidth: 150,
-        field: 'examName'
+        minWidth: 220,
+        field: 'orgName'
     },
     {
         title: '联系人',
-        minWidth: 130,
-        field: 'examScore'
+        minWidth: 100,
+        field: 'linkName'
     },
     {
         title: '联系电话',
-        minWidth: 130,
-        field: 'examScore'
+        minWidth: 150,
+        field: 'telephone'
     },
     {
         title: '管理员账号',
         minWidth: 130,
-        field: 'examScore'
+        field: 'loginName'
     },
     {
         title: '企业编码',
         minWidth: 130,
-        field: 'examScore'
+        field: 'nodeCode'
     },
 ];

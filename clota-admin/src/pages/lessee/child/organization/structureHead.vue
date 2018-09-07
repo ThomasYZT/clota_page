@@ -91,10 +91,12 @@
                 type : String,
                 default : ''
             },
-            //当前选择的节点id
-            nodeId : {
-                type : String,
-                default : ''
+            //当前激活的节点
+            activeNode : {
+                type : Object,
+                default () {
+                    return  {};
+                }
             }
         },
         components: {
@@ -123,8 +125,6 @@
                 addCashierModalShow: false,
                 //新增的节点信息
                 addNodeDetail: {},
-                //当前激活的节点
-                activeNode : '',
                 defaultProps: {
                     children: 'chilrends'
                 }
@@ -143,11 +143,16 @@
                     },
                     class: {
                         'title-wrap': true,
-                        'active-node' : data.id === this.nodeId
+                        'active-node' : data.id === this.activeNode.id
                     },
                     on : {
                         click : () => {
-                            this.activeNode = data;
+                            this.$emit('update:activeNode',{
+                                id : data.id,
+                                pid : data.pid,
+                                type : data.data ? data.data.nodeType : ''
+                            });
+                            // this.activeNode = data;
                             this.$emit('input',data.data.type);
                         }
                     },

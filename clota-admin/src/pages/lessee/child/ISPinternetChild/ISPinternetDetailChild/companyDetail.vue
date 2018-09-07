@@ -225,16 +225,20 @@
         <opened-service :is-pack-up="true">
         </opened-service>
         <!--下属公司-->
-        <sub-company>
+        <sub-company
+            :search-params="{id : activeNode.id}">
         </sub-company>
         <!--下属景区-->
-        <sub-scene>
+        <sub-scene
+            :search-params="{id : activeNode.id}">
         </sub-scene>
         <!--下属部门-->
-        <sub-department>
+        <sub-department
+            :search-params="{id : activeNode.id}">
         </sub-department>
         <!--员工-->
-        <employee-table>
+        <employee-table
+            :search-params="{id : activeNode.id}">
         </employee-table>
         <!--短信-->
         <note-table>
@@ -260,10 +264,12 @@
 
     export default {
         props : {
-            //节点id
-            'node-id' : {
-               type : String,
-               default : ''
+            //节点信息
+            'activeNode' : {
+               type : Object,
+               default () {
+                   return {};
+               }
             },
         },
         components: {
@@ -354,11 +360,12 @@
                 this.type = 'watch';
                 ajax.post('updateOrgInfo',{
                     id : this.formDataCopy.id,
+                    status : this.formDataCopy.isStart ? 'open' : 'false',
                     orgName : this.formDataCopy.orgName,
                     checkinCode : this.formDataCopy.checkinCode,
                     smsProvider : this.formDataCopy.smsProvider,
                     email : this.formDataCopy.managerAccount.email,
-                    // province : this.formDataCopy.sysProvinces,
+                    province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.id : '',
                     // city : ''
                     // district : ''
                     linkName : this.formDataCopy.linkName,
@@ -402,7 +409,7 @@
              */
             confimChangePass (pass){
                 ajax.post('resetPassword',{
-                    id : this.nodeId,
+                    id : this.activeNode.id,
                     password : pass
                 }).then(res => {
                     if(res.status === 200){
@@ -419,7 +426,7 @@
              */
             getCompanyDetail () {
                 ajax.post('getServiceProvider',{
-                    id : this.nodeId
+                    id : this.activeNode.id,
                 }).then(res => {
                     if(res.status === 200){
                         this.companyDetail = res.data ? res.data : {};
@@ -461,7 +468,6 @@
             },
         },
         created () {
-            this.getCompanyDetail();
             this.querySmsProviderList();
             this.querySysAccoutList();
         },
@@ -491,6 +497,16 @@
                 }else{
                     return false;
                 }
+            }
+        },
+        watch : {
+            //节点更换，重新请求节点数据
+            activeNode : {
+                handler (newVal,oldVal) {
+                    this.getCompanyDetail();
+                },
+                deep : true,
+                immediate : true
             }
         }
     }

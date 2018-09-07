@@ -2,22 +2,48 @@
 
 <template>
     <div class="sub-company">
-        <table-com
-            :table-data="tableData"
-            :column-data="companies"
-            :is-pack-up="true"
-            :title="$t('subCompany')"
-            :show-page="true"
-            :total="totalCount"
-            @get-new-data="getSubCompany">
-        </table-com>
+        <div class="pick-up-title" >
+            <span class="label">下属公司</span>
+            <span class="back-up"
+                  @click="isPackUp = !isPackUp">
+            {{$t(isPackUp ? 'backUp' : 'upLoad')}}
+                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+          </span>
+        </div>
+        <transition name="fade">
+            <div class="table-wrap" v-if="isPackUp">
+                <table-com
+                    v-if="tableShow"
+                    :column-data="companies"
+                    :table-data="tableData"
+                    :border="true"
+                    :page-no-d.sync="pageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="pageSize"
+                    :total-count="totalCount"
+                    :auto-height="true"
+                    :table-com-min-height="280"
+                    @query-data="queryList">
+                </table-com>
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
     import {companies} from './subCompanyConfig';
-    import tableCom from '../../../organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import ajax from '@/api/index.js';
     export default {
+        props : {
+            //表格查询参数
+            'search-params' : {
+                typee : Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         components : {
             tableCom,
         },
@@ -26,34 +52,37 @@
                 //下属公司表头配置
                 companies : companies,
                 //表格数据
-                tableData : [
-                    {
-                        examName : 'examName',
-                        status : 'open'
-                    },
-                    {
-                        examName : 'examName',
-                        status : 'close'
-                    },
-                    {
-                        examName : 'examName',
-                        status : 'pause'
-                    }
-                ],
+                tableData : [],
                 //下属公司总数
-                totalCount : 100,
+                totalCount : 0,
+                //是否收起
+                isPackUp : true,
+                pageNo : 1,
+                pageSize :10
             }
         },
         methods: {
             /**
-             * 获取下属公司信息
+             * 查询下属公司信息
              */
-            getSubCompany () {
-
+            queryList () {
+                ajax.post('getSubsidiaries',{
+                    id : this.searchParams.id,
+                    nodeType : 'company'
+                }).then(res => {
+                   if(res.status === 200){
+                       this.tableData = res.data ? res.data : [];
+                   }else{
+                       this.tableData = [];
+                   }
+                });
             }
         },
-        created () {
-            this.getSubCompany();
+        computed : {
+            //表格是否显示
+            tableShow () {
+                return this.searchParams && !!this.searchParams.id;
+            }
         }
     }
 </script>
@@ -62,6 +91,46 @@
     @import '~@/assets/scss/base';
     .sub-company{
         @include block_outline($height : auto);
+
+
+        .pick-up-title{
+            @include block_outline($height: 59px);
+            padding: 25px 0 10px 0;
+
+            .label {
+                display: inline-block;
+                font-size: $font_size_16px;
+                color: $color_333;
+                line-height: 24px;
+                vertical-align: middle;
+            }
+
+            .back-up {
+                font-size: $font_size_14px;
+                color: $color_blue;
+                display: inline-block;
+                margin-left: 10px;
+                margin-top: 2px;
+                vertical-align: middle;
+                cursor: pointer;
+
+                .icon-pull-down{
+                    display: inline-block;
+                    transition: all 0.5s;
+
+                    &::before{
+                        color: $color_blue;
+                        font-size: 12px;
+                    }
+
+                    &.icon-reverse{
+                        transform: rotate(180deg);
+                        transition: all 0.5s;
+                    }
+
+                }
+            }
+        }
 
         .operate-info{
             @include table_operate();

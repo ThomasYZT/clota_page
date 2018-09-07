@@ -4,31 +4,42 @@
     <div class="department-deail">
         <div class="com-name">
             <template v-if="type === 'edit'">
-                <Input v-model="formDataCopy.depName" style="width : 280px"/>
-                <i-switch v-model="formDataCopy.isStart"></i-switch>
+                <Form ref="formValidate"
+                      :rules="ruleValidate"
+                      :model="formDataCopy"
+                      :label-width="0" inline>
+                    <FormItem prop="orgName">
+                        <Input v-model="formDataCopy.orgName" style="width : 280px"/>
+                    </FormItem>
+                    <FormItem>
+                        <i-switch v-model="formDataCopy.isStart"></i-switch>
+                        <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status === 'close'}">
+                            {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
+                        </span>
+                    </FormItem>
+                </Form>
             </template>
             <template v-if="type === 'watch'">
                 <span class="name"
                       v-if="type === 'watch'"
-                      v-w-title="formData.depName">
-                    {{formData.depName}}
+                      v-w-title="formData.orgName">
+                    {{formData.orgName | contentFilter}}
                 </span>
                 <span class="edit"
                       @click="edit">
                     <span class="iconfont icon-modify"></span>
                     {{$t('edit')}}
                 </span>
+                <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status === 'close'}">
+                    {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
+                </span>
             </template>
-            <span :class="{'started'
-                :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
-                {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
-            </span>
         </div>
         <ul class="department-info">
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">部门ID：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val" v-w-title="formData.id">{{formData.id | contentFilter}}</span>
                 </div>
             </li>
             <li class="btn-area" v-if="type === 'edit'">
@@ -42,6 +53,7 @@
         </ul>
         <!--员工-->
         <employee-table :is-pack-up="true"
+                        :search-params="{id : activeNode.id}"
                         type="department">
         </employee-table>
     </div>
@@ -50,7 +62,17 @@
 <script>
     import employeeTable from './components/employeeTable';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import ajax from '@/api/index.js';
     export default {
+        props : {
+            //节点信息
+            'activeNode' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+        },
         components : {
             employeeTable
         },
@@ -59,13 +81,15 @@
                 //表单数据
                 formDataCopy : {},
                 //表单数据
-                formData : {
-                    //部门名称
-                    depName : '部门ID',
-                    //是否启用
-                    isStart : false
-                },
-                type : 'watch'
+                formData : {},
+                type : 'watch',
+                //校验规则
+                ruleValidate : {
+                    orgName : [
+                        {required : true,message : this.$t('inputField',{field : this.$t('depName')}),trigger : 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('depName'),length : 100})}
+                    ]
+                }
             }
         },
         methods: {
@@ -74,7 +98,9 @@
              */
             edit () {
                 this.type = 'edit';
-                this.formDataCopy = defaultsDeep({} , this.formData);
+                this.formDataCopy = defaultsDeep({
+                    isStart : this.formData.status === 'open'
+                } , this.formData);
             },
             /**
              * 取消编辑
@@ -87,9 +113,44 @@
              */
             saveEdit () {
                 this.type = 'watch';
-                this.formData = defaultsDeep({} , this.formDataCopy);
-                this.$Message.success('保存成功');
+                ajax.post('updateOrgInfo',{
+                    id : this.formDataCopy.id,
+                    status : this.formDataCopy.isStart ? 'open' : 'close',
+                    orgName : this.formDataCopy.orgName
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('修改成功');
+                        this.$emit('fresh-org',this.activeNode);
+                        this.getDepDetail();
+                    }else{
+                        this.$Message.error('修改失败');
+                    }
+                });
             },
+            /**
+             * 获取部门详情
+             */
+            getDepDetail () {
+                ajax.post('getServiceProvider',{
+                    id : this.activeNode.id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.formData = res.data ? res.data : {};
+                    }else{
+                        this.formData = {};
+                    }
+                });
+            },
+        },
+        watch : {
+            //节点更换，重新请求节点数据
+            activeNode : {
+                handler (newVal,oldVal) {
+                    this.getDepDetail();
+                },
+                deep : true,
+                immediate : true
+            }
         }
     }
 </script>
@@ -103,11 +164,17 @@
         overflow: auto;
 
         .com-name {
-            @include overflow_tip(100%, 56px);
-            padding: 14px 0;
+            @include overflow_tip(100%);
+            padding: 14px 0 0 0;
 
             /deep/ .ivu-switch{
                 margin-left: 20px;
+            }
+
+            /deep/ .ivu-form{
+                width: 360px;
+                display: inline-block;
+                vertical-align: middle;
             }
 
             .iconfont{

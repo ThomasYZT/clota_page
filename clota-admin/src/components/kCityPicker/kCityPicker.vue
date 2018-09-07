@@ -481,6 +481,28 @@
                        this.areaInfoList = [];
                    }
                 });
+            },
+            /**
+             * 设置默认选中的值
+             */
+            setDefaultValue (){
+                console.log(this.defaultValue);
+
+                if (this.defaultValue.province) {
+                    this.select.province = this.defaultValue.province;
+                }
+
+                if (this.defaultValue.city) {
+                    this.select.city = this.defaultValue.city;
+                }
+
+                if (this.defaultValue.area) {
+                    this.select.area = this.defaultValue.area;
+                }
+
+                this.curVal = this.select.value = (this.select.province && this.select.province.province || '')
+                    + (this.select.city && this.select.city.city || '')
+                    + (this.select.area && this.select.area.area || '')
             }
         },
         created () {
@@ -510,6 +532,15 @@
                         this.setPos()
                     }
                 })
+            }
+        },
+        watch : {
+            'defaultValue' : {
+                handler (newVal,oldVal) {
+                    this.setDefaultValue();
+                },
+                deep : true,
+                immediate : true
             }
         }
     }

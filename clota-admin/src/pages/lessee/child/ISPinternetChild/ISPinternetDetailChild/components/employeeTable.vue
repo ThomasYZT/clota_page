@@ -2,55 +2,68 @@
 
 <template>
     <div class="employee-table">
-        <table-com
-            :table-data="tableData"
-            :column-data="employeeColumn"
-            title="员工账号"
-            :is-pack-up="isPackUp"
-            :show-page="true"
-            :total="totalCount"
-            @selection-change="handleSelectionChange"
-            @get-new-data="getEmployeeList">
-            <el-table-column
-                slot="column0"
-                type="selection"
-                width="55">
-            </el-table-column>
-            <div class="employee-account" slot="table-title">
-                员工账号数：2
-                <Button type="primary"
-                        :disabled="selectedEmployee.length < 1"
-                        @click="resetPassSelectEmployee">重置密码</Button>
-                <Button type="error"
-                        class="ivu-btn-90px"
-                        :disabled="selectedEmployee.length < 1"
-                        @click="deleteSelectEmployee">删除</Button>
+        <div class="pick-up-title" >
+            <span class="label">员工账号</span>
+            <span class="back-up"
+                  @click="isPackUp = !isPackUp">
+            {{$t(isPackUp ? 'backUp' : 'upLoad')}}
+                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+          </span>
+        </div>
+        <transition name="fade">
+            <div class="table-wrap" v-if="isPackUp">
+                <div class="employee-account">
+                    员工账号数：{{employeeNumber | contentFilter}}
+                    <Button type="primary"
+                            :disabled="selectedEmployee.length < 1"
+                            @click="resetPassSelectEmployee">重置密码</Button>
+                    <Button type="error"
+                            class="ivu-btn-90px"
+                            :disabled="selectedEmployee.length < 1"
+                            @click="deleteSelectEmployee">删除</Button>
+                </div>
+                <table-com
+                    v-if="tableShow"
+                    :column-data="employeeColumn"
+                    :table-data="tableData"
+                    :border="true"
+                    :page-no-d.sync="pageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="pageSize"
+                    :total-count="totalCount"
+                    :auto-height="true"
+                    :table-com-min-height="280"
+                    @query-data="getEmployees"
+                    @selection-change="handleSelectionChange">
+                    <el-table-column
+                        slot="columncheck"
+                        type="selection"
+                        slot-scope="row"
+                        :label="row.title"
+                        fixed="left"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnoperate"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        show-overflow-tooltip
+                        fixed="right"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            <ul class="operate-info">
+                                <li class="red-label" @click="delElement(scoped.row)">删除</li>
+                                <li class="normal" @click="resetPass(scoped.row)">重置密码</li>
+                            </ul>
+                        </template>
+                    </el-table-column>
+                </table-com>
             </div>
-            <el-table-column
-                v-if="type === 'department'"
-                slot="column6"
-                :label="$t('operate')"
-                width="145">
-                <template slot-scope="scoped">
-                    <ul class="operate-info">
-                        <li class="delete" @click="delElement(scoped.row)">删除</li>
-                        <li class="reset-pass " @click="resetPass(scoped.row)">重置密码</li>
-                    </ul>
-                </template>
-            </el-table-column>
-            <el-table-column
-                v-else
-                slot="column4"
-                :label="$t('operate')"
-                width="145">
-                <template slot-scope="scoped">
-                    <ul class="operate-info">
-                        <li class="delete" @click="delElement(scoped.row)">删除</li>
-                        <li class="reset-pass " @click="resetPass(scoped.row)">重置密码</li>
-                    </ul>
-                </template>
-            </el-table-column>
-        </table-com>
+        </transition>
+        <!--删除员工-->
         <del-modal ref="delModal">
         </del-modal>
         <change-pass ref="changePass">
@@ -59,21 +72,24 @@
 </template>
 
 <script>
-    import tableCom from '../../../organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {employee,depEmployee} from '../departmentConfig';
     import delModal from '@/components/delModal/index.vue';
     import changePass from '@/components/editModal/index.vue';
+    import ajax from '@/api/index.js';
     export default {
         props : {
-            //是否展开默认值
-            'is-pack-up': {
-                type: Boolean,
-                default: false
-            },
             //当前查看员工数据的结构类型，分为部门和非部门，默认为非部门
             'type' : {
                 type : String,
                 default : 'noDepartment'
+            },
+            //表格查询参数
+            'search-params' : {
+                typee : Object,
+                default () {
+                    return {}
+                }
             }
         },
         components : {
@@ -84,24 +100,19 @@
         data() {
             return {
                 //表格数据
-                tableData: [
-                    {
-                        aa: '2016-05-03',
-                        realName: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    },
-                    {
-                        aa: '2016-05-03',
-                        realName: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    }
-                ],
+                tableData: [],
                 //表头数据
                 employeeColumn : this.type === 'department' ?  depEmployee : employee ,
                 //选中的员工
                 selectedEmployee : [],
                 //员工总数
-                totalCount : 100
+                totalCount : 0,
+                pageNo : 1,
+                pageSize : 10,
+                //员工总数
+                employeeNumber : '',
+                //是否展开
+                isPackUp : true
             }
         },
         methods: {
@@ -111,13 +122,6 @@
              */
             handleSelectionChange (data) {
                 this.selectedEmployee = data;
-            },
-            /**
-             * 获取员工信息
-             * @param data
-             */
-            getEmployeeList (data) {
-                console.log(data)
             },
             /**
              * 批量重置密码
@@ -134,15 +138,17 @@
              * 删除选中的员工
              */
             deleteSelectEmployee () {
+                let ids = [];
                 let employees = [];
                 this.selectedEmployee.forEach(item => {
-                    employees.push(item.realName);
+                    ids.push(item.id);
+                    employees.push(item.nickName);
                 });
                 this.$refs.delModal.show({
                     msg : `确认删除员工${employees.join('、')}?`,
                     title : '删除员工',
                     confirmCallback : () => {
-                        this.confirmDelete(data);
+                        this.confirmDelete(ids);
                     }
                 });
             },
@@ -152,10 +158,10 @@
              */
             delElement (data) {
                 this.$refs.delModal.show({
-                    msg : `确认删除员工${data.realName}?`,
+                    msg : `确认删除员工${data.nickName}?`,
                     title : '删除员工',
                     confirmCallback : () => {
-                        this.confirmDelete(data);
+                        this.confirmDelete([data.id]);
                     }
                 });
             },
@@ -173,10 +179,19 @@
             },
             /**
              * 确认删除员工
-             * @param data
+             * @param ids
              */
-            confirmDelete (data){
-                console.log(data)
+            confirmDelete (ids){
+                ajax.post('deleteEmployees',{
+                    ids : ids
+                }).then(res => {
+                   if(res.status === 200){
+                       this.$Message.success('删除成功');
+                       this.getEmployees();
+                   }else{
+                       this.$Message.error('删除失败');
+                   }
+                });
             },
             /**
              * 确认修改密码
@@ -184,8 +199,41 @@
              * @param employee
              */
             confirmChangePass(pass,employee) {
-                console.log(pass,employee)
+                ajax.post('resetPassword',{
+                    id : employee.map(item => item.id),
+                    password : pass
+                }).then(res => {
+                   if(res.status === 200){
+                       this.$Message.success('修改成功');
+                   }else{
+                       this.$Message.error('修改失败');
+                   }
+                }).finally(() => {
+                    this.$refs.changePass.hide();
+                });
             },
+            /**
+             * 获取部门下员工列表
+             */
+            getEmployees () {
+                ajax.post('getEmployees',{
+                    id : this.searchParams.id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.list ? res.data.list : [];
+                        this.employeeNumber = res.data.employeeNumber;
+                    }else{
+                        this.tableData = [];
+                        this.employeeNumber = '';
+                    }
+                });
+            }
+        },
+        computed : {
+            //表格是否显示
+            tableShow () {
+                return this.searchParams && this.searchParams.id;
+            }
         }
     }
 </script>
@@ -193,6 +241,45 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .employee-table{
+
+        .pick-up-title{
+            @include block_outline($height: 59px);
+            padding: 25px 0 10px 0;
+
+            .label {
+                display: inline-block;
+                font-size: $font_size_16px;
+                color: $color_333;
+                line-height: 24px;
+                vertical-align: middle;
+            }
+
+            .back-up {
+                font-size: $font_size_14px;
+                color: $color_blue;
+                display: inline-block;
+                margin-left: 10px;
+                margin-top: 2px;
+                vertical-align: middle;
+                cursor: pointer;
+
+                .icon-pull-down{
+                    display: inline-block;
+                    transition: all 0.5s;
+
+                    &::before{
+                        color: $color_blue;
+                        font-size: 12px;
+                    }
+
+                    &.icon-reverse{
+                        transform: rotate(180deg);
+                        transition: all 0.5s;
+                    }
+
+                }
+            }
+        }
 
         .employee-account {
             @include block_outline($height: 40px);

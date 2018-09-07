@@ -10,15 +10,16 @@
             <div class="structure">
                 <!--组织结构图-->
                 <structure-tree :tree-data="structureData"
-                                :nodeId.sync="nodeId"
+                                :activeNode.sync="activeNode"
                                 v-model="componentName"
                                 @switch-tap="switchTap">
                 </structure-tree>
             </div>
             <!--组织架构不同的节点对应不同的组件-->
-            <component v-if="nodeId"
-                       :is="componentSelect"
-                       :node-id="nodeId">
+            <component :is="componentSelect"
+                       :key="nodeKey"
+                       :activeNode="activeNode"
+                       @fresh-org="freshOrgInfo">
             </component>
         </div>
     </div>
@@ -62,7 +63,9 @@
                 //节点id
                 nodeId : '',
                 //当前激活tap
-                activeTap : 'manage'
+                activeTap : 'manage',
+                //当前激活的节点
+                activeNode : {}
             }
         },
         methods: {
@@ -91,8 +94,16 @@
                 }).then(res => {
                     if(res.status === 200){
                         this.structureData = res.data ? res.data : {};
+                        if(Object.keys(this.activeNode).length < 1){
+                            this.activeNode = JSON.parse(JSON.stringify({
+                                id : this.structureData.id,
+                                pid : this.structureData.pid,
+                                type : this.structureData.data ? this.structureData.data.nodeType : ''
+                            }));
+                        }
                     }else{
                         this.structureData = {};
+                        this.activeNode = {};
                     }
                 })
             },
@@ -103,6 +114,14 @@
             switchTap (tapType) {
                 this.activeTap = tapType;
                 this.getCompanyTree();
+            },
+            /**
+             * 更新当前的组织树
+             * @param activeNode 激活的节点信息
+             */
+            freshOrgInfo(activeNode) {
+                this.activeNode = activeNode;
+                this.getCompanyTree();
             }
         },
         computed : {
@@ -110,16 +129,24 @@
              * 右侧引入的组件
              */
             componentSelect () {
-                if(this.componentName === 'company') {
+                if(this.activeNode.type === 'company') {
                     return 'companyDetail'
-                }else if(this.componentName === 'department'){
+                }else if(this.activeNode.type === 'department'){
                     return 'departmentDetail'
-                }else if(this.componentName === 'cashier'){
+                }else if(this.activeNode.type === 'cashier'){
                     return 'cashierDetail';
-                }else if(this.componentName === 'scene'){
+                }else if(this.activeNode.type === 'scene'){
                     return 'sceneDetail';
                 }else{
-                    return  'companyDetail';
+                    return  '';
+                }
+            },
+            //组件动态设置key
+            nodeKey () {
+                if(this.activeNode){
+                    return this.activeNode.id;
+                }else{
+                    return '';
                 }
             }
         }

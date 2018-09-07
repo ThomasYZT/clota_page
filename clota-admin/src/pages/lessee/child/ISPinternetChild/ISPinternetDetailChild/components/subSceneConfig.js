@@ -3,22 +3,21 @@ export const region = [
     {
         title: '公司编码',
         minWidth: 120,
-        field: 'realName',
-        ableClick: true
+        field: 'id',
     },
     {
         title: '景区名称',
         minWidth: 150,
-        field: 'examName'
+        field: 'orgName'
     },
     {
         title: '管理账号',
         minWidth: 130,
-        field: 'examScore'
+        field: 'loginName'
     },
     {
         title: '联系电话',
         minWidth: 130,
-        field: 'examScore'
+        field: 'telephone'
     },
 ];

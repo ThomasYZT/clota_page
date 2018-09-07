@@ -27,4 +27,12 @@ export default {
     'resetPassword' : 'tenant/resetPassword.json',
     //删除节点
     'deleteNode' : 'tenant/deleteNode.json',
+    //查询指定节点下的员工列表
+    'getEmployees' : 'tenant/getEmployees.json',
+    //查询指定节点下开通的服务
+    'getOrgServices' : 'tenant/getOrgServices.json',
+    //查询指定节点下下属公司、景区、部门列表
+    'getSubsidiaries' : 'tenant/getSubsidiaries.json',
+    //删除员工
+    'deleteEmployees' : 'tenant/deleteEmployees.json',
 }
