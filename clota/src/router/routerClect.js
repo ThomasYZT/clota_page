@@ -7,6 +7,7 @@ import memberManageRouter from './modules/memberManage';
 import systemSettingRouter from './modules/systemSetting';
 import personalCenterRouter from './modules/personalCenter';
 import productCenterRouter from './modules/productCenter';
+import financeManageRouter from './modules/financeManage';
 
 
 export default {
@@ -15,4 +16,5 @@ export default {
     ...systemSettingRouter,
     ...personalCenterRouter,
     ...productCenterRouter,
+    ...financeManageRouter,
 }
