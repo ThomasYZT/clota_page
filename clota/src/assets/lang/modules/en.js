@@ -555,5 +555,10 @@ export default {
     'productList' : '产品列表',
     'ticketType' : '票类',
     'marketingPolicy' : '销售政策',
+    /*** 财务管理模块 ***/
+    'financeManage' : '财务管理',
+    'rechargeRecord' : '充值记录',
+    'paymentManage' : '付款账户管理',
+    'collectionManage' : '收款账户管理',
 
 }

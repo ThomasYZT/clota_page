@@ -11,6 +11,7 @@
                   :border="border"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
+                  :default-sort="defaultSort"
                   @row-click="classDetailLink"
                   @selection-change="handleSelectionChange">
                    <el-table-column
@@ -168,7 +169,11 @@
             'row-click-able' : {
                 type : Boolean,
                 default : false
-            }
+            },
+            //表格的默认排序的列、顺序 {prop: '', order: 'ascending'}
+            'default-sort' : {
+                type : Object
+            },
         },
         data() {
             return {
