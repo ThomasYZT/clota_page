@@ -583,7 +583,7 @@
                         this.$Message.success(this.$t('successTip', {tip: $t('updateMemberInfo')}) + '！');      // 更新会员卡信息成功
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'manualUpdateCardStatus '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message ? this.$t(res.message) : 'manualUpdateCardStatus '+ this.$t('failure') +'！');
                     }
                 });
             },

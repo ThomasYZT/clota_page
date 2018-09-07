@@ -300,14 +300,14 @@
                     },
                     //会员生日积分多倍积分
                     scoreMultipleOnBirthday: {
-                        isSwitch: false,//Boolean
+                        isSwitch: false,
                         multiple: '',//number
                     },
                     //会员积分有效期设置
                     scoreValidityPeriod: {
                         validityType: '',
                         validityTime: '',//number
-                        checked: false,//Boolean
+                        checked: false,
                         remind: '',//number
                     },
                     //会员卡有效期设置
@@ -319,7 +319,7 @@
                     },
                     //卡券过期提醒设置
                     notificationBeforeCouponExpire: {
-                        isSwitch: false,//Boolean
+                        isSwitch: false,
                         day: '',//number
                     },
                     //用户退款时积分是否退还用户
@@ -351,7 +351,7 @@
                     dayError: '',//卡券过期提醒设置
                 },
                 //布尔型
-                boolProps: ['isSwitch','checked','score','coupon'],
+                boolProps: ['score','coupon'],
                 //Number型
                 numberProps: ['isNoIntegralTime','multiple','validityTime','remind','vipValidity',
                 'vipValidityTime','vipNumber','day'],

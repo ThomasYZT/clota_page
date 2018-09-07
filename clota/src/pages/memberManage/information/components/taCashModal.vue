@@ -22,9 +22,9 @@
                 </div>
                 <div class="ivu-form-item-wrap show-item">
                     <Form-item :label="$t('storedValueRatio') + ':'">
-                        <span class="yellow-color">1</span>
+                        <span class="yellow-color">{{accountInfo.rateNumerator}}</span>
                         <span class="split-line">:</span>
-                        <span class="yellow-color">{{(1/accountInfo.rate).toFixed(0)}}</span>
+                        <span class="yellow-color">{{accountInfo.rateDenominator}}</span>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
