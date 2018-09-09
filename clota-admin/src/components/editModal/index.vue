@@ -93,16 +93,19 @@
              * 确认删除
              */
             confirm() {
-                // this.$refs.formRef.validate(valid => {
-                //     if(valid) {
-                //         this.modalShow = false;
-                //         if(this.confirmCallback){
-                //             this.confirmCallback(this.formData.passWord);
-                //         }
-                //     }
-                // });
-                if(this.confirmCallback){
-                    this.confirmCallback(this.formData.passWord);
+                if(this.$refs.formRef){
+                    this.$refs.formRef.validate(valid => {
+                        if(valid) {
+                            this.modalShow = false;
+                            if(this.confirmCallback){
+                                this.confirmCallback(this.formData.passWord);
+                            }
+                        }
+                    });
+                }else{
+                    if(this.confirmCallback){
+                        this.confirmCallback(this.formData.passWord);
+                    }
                 }
             },
             /**

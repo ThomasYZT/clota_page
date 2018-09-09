@@ -181,8 +181,16 @@
                 if (value === '' || value === null || value === undefined) {
                     callback(this.$t('validateError.pleaseInput', {'msg': this.$t('controlAccount')}));
                 } else {
-                    this.queryAccountExist().then(() => {
-                        callback();
+                    this.queryAccountExist().then((res) => {
+                        if(res.status === 200){
+                            if(res.data){
+                                callback();
+                            }else{
+                                callback('管理账号已存在');
+                            }
+                        }else{
+                            callback('账号校验失败');
+                        }
                     }).catch(() => {
                         callback('管理账号已存在');
                     });

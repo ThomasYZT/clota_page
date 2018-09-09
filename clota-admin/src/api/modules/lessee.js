@@ -59,4 +59,6 @@ export default {
     'getParentManages' : 'tenant/getParentManages.json',
     //查询指定景区的合作伙伴列表
     'getScenicPartners' : 'tenant/getScenicPartners.json',
+    //获取指定景区上级管理公司已开通的服务
+    'getOpenServices' : 'tenant/getOpenServices.json',
 }

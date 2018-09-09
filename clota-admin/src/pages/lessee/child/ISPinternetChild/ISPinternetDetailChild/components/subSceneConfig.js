@@ -2,7 +2,7 @@
 export const region = [
     {
         title: '公司编码',
-        minWidth: 120,
+        minWidth: 210,
         field: 'id',
     },
     {

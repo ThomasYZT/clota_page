@@ -127,14 +127,27 @@
                 default() {
                     return {}
                 }
+            },
+            //根节点id
+            'root-id' : {
+                type :String,
+                default : ''
             }
         },
         data() {
             //校验管理账号
             const validateControlAccount = (rule, value, callback) => {
                 if(value){
-                    this.queryAccountExist().then(() => {
-                        callback();
+                    this.queryAccountExist().then((res) => {
+                        if(res.status === 200){
+                            if(res.data){
+                                callback();
+                            }else{
+                                callback('管理账号已存在');
+                            }
+                        }else{
+                            callback('账号校验失败');
+                        }
                     }).catch(() => {
                         callback('管理账号已存在');
                     });
@@ -292,7 +305,7 @@
              */
             addCompany() {
                 ajax.post('addOrgInfo',{
-                    rootId : this.chosedNodeDetail.id,
+                    rootId : this.rootId,
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
@@ -313,7 +326,7 @@
                         this.$emit('input', false);
                         this.$Message.success('新增成功');
                     }else{
-                        this.$Message.error('新增失败')
+                        this.$Message.error(res.message | '新增失败')
                     }
                 });
             },
@@ -343,11 +356,11 @@
              * 获取服务列表
              */
             queryServiceList() {
-                ajax.post('queryServiceList',{
-                    serviceStatus : 'normal'
+                ajax.post('getOpenServices',{
+                    orgId : this.chosedNodeDetail.id
                 }).then(res => {
                    if(res.status === 200){
-                       this.serviceList = res.data ? res.data : [];
+                       this.serviceList = res.data.orgServices? res.data.orgServices : [];
                    } else{
                        this.serviceList = [];
                    }

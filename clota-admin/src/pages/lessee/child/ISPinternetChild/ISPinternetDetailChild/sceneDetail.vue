@@ -4,14 +4,14 @@
     <div class="scene-detail">
         <div class="com-name">
             <template v-if="type === 'edit'">
-                <Input v-model="formDataCopy.companyName" style="width : 280px"/>
+                <Input v-model="formDataCopy.orgName" style="width : 280px"/>
                 <i-switch v-model="formDataCopy.isStart"></i-switch>
             </template>
             <template v-if="type === 'watch'">
                 <span class="name"
                       v-if="type === 'watch'"
-                      v-w-title="formData.companyName">
-                    {{formData.companyName}}
+                      v-w-title="sceneDetail.orgName">
+                    {{sceneDetail.orgName}}
                 </span>
                 <span class="edit"
                       @click="edit">
@@ -29,48 +29,43 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">公司ID：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val" v-w-title="sceneDetail.id">{{sceneDetail.id | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">公司编码：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-val" v-w-title="sceneDetail.nodeCode">{{sceneDetail.nodeCode | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">企业编码(线下核销)：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.cashierCode" />
+                        <Input v-model="formDataCopy.checkinCode" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.cashierCode}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.checkinCode">
+                        {{sceneDetail.checkinCode | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">全民分销邀请码：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.inviteCode" />
-                    </span>
-                    <span class="info-val" v-else>
-                        {{formData.inviteCode}}
-                    </span>
+                    <span class="info-val" v-w-title="sceneDetail.saleCode">{{sceneDetail .saleCode | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">管理账号：</span>
-                    <span class="info-val">
-                        268326828@163.com
+                    <span class="info-val" v-w-title="sceneDetail.managerAccount ? sceneDetail.managerAccount.loginName : ''">
+                        {{sceneDetail.managerAccount ? sceneDetail.managerAccount.loginName : ''}}
                         <span class="reset-pass" @click="resetPass">重置密码</span>
                     </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电子邮箱：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.email" />
+                        <Input v-model="formDataCopy.managerAccount.email" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.email}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.managerAccount ? sceneDetail.managerAccount.email : ''">
+                        {{sceneDetail.managerAccount ? sceneDetail.managerAccount.email : ''  | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -78,11 +73,13 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">所在地：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <city-plugin @select="formDataCopy.place = $event">
+                           <city-plugin @select="changeCity"
+                                        v-if="defaultAddress"
+                                        :defaultValue="defaultAddress">
                         </city-plugin>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.place}}
+                    <span class="info-val" v-else v-w-title="companyPlace">
+                         {{companyPlace | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
@@ -90,8 +87,8 @@
                     <span class="info-val" v-if="type === 'edit'">
                         <Input v-model="formDataCopy.address" />
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.address}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.address">
+                        {{sceneDetail.address | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -99,19 +96,19 @@
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">电话：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.phone"/>
+                        <Input v-model="formDataCopy.telephone"/>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.phone}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.telephone">
+                        {{sceneDetail.telephone | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">传真：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.fax"/>
+                        <Input v-model="formDataCopy.tex"/>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.fax}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.tex">
+                        {{sceneDetail.tex | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -119,80 +116,80 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">联系人：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val" v-if="type === 'edit'">
+                        <Input v-model="formDataCopy.linkName"/>
+                    </span>
+                    <span class="info-val" v-else v-w-title="sceneDetail.linkName">
+                        {{sceneDetail.linkName | contentFilter}}
+                    </span>
                 </div>
+
                 <div class="info-list2">
-                    <span class="info-key">管理上级：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">管理上级：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.superior">
+                          <Select v-model="formDataCopy.parentManage.id" >
                             <Option v-for="item in superiorList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
                             </Option>
                         </Select>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.superior}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.fianceSuperior">
-                            <Option v-for="item in fianceSuperiorList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </span>
-                    <span class="info-val" v-else>
-                        {{formData.fianceSuperior}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.parentManage">
+                        {{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}
                     </span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
+                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
+                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid">
+                          <Select v-model="formDataCopy.parentEconomic.id" >
+                            <Option v-for="item in fianceSuperiorList"
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
+                            </Option>
+                        </Select>
+                    </span>
+                    <span class="info-val" v-else v-w-title="sceneDetail.parentEconomic">
+                        {{sceneDetail.parentEconomic ? sceneDetail.parentEconomic.orgName : '' | contentFilter}}
+                    </span>
+                </div>
+                <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
                     <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.serviceStaff">
-                            <Option v-for="item in serviceStaffList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
+                          <Select v-model="formDataCopy.businessAccount1.id" >
+                                <Option v-for="item in serviceStaffList"
+                                      :value="item.id"
+                                      :key="item.id">
+                                    {{ item.loginName }}
+                                </Option>
                         </Select>
                     </span>
-                    <span class="info-val" v-else>
-                        {{formData.serviceStaff}}
+                    <span class="info-val" v-else v-w-title="sceneDetail.businessAccount1 ? sceneDetail.businessAccount1.loginName : ''">
+                         {{sceneDetail.businessAccount1 ? sceneDetail.businessAccount1.loginName : '' | contentFilter}}
                     </span>
                 </div>
-                <div class="info-list2">
+            </li>
+            <li class="list">
+                <div class="info-list1">
                     <span class="info-key">创建时间：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">创建人：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val" v-w-title="sceneDetail.createdTime">{{sceneDetail.createdTime | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
-                    <span class="info-key">上次修改时间：</span>
-                    <span class="info-val">云南省曲靖市马龙县因下路464号</span>
+                    <span class="info-key">创建人：</span>
+                    <span class="info-val" v-w-title="sceneDetail.createUser">{{sceneDetail.createUser | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
+                    <span class="info-key">上次修改时间：</span>
+                    <span class="info-val" v-w-title="sceneDetail.updatedTime">{{sceneDetail.updatedTime | contentFilter}}</span>
+                </div>
+                <div class="info-list2">
                     <span class="info-key">上次修改人：</span>
-                    <span class="info-val">268326828@163.com</span>
+                    <span class="info-val" v-w-title="sceneDetail.updateUser">{{sceneDetail.updateUser | contentFilter}}</span>
                 </div>
             </li>
             <li class="btn-area" v-if="type === 'edit'">
@@ -219,6 +216,7 @@
         </employee-table>
         <!--已开通服务-->
         <opened-service
+            type="scene"
             :search-params="{id : activeNode.id}">
         </opened-service>
         <!--合作伙伴-->
@@ -241,6 +239,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         props : {
@@ -264,65 +263,17 @@
         },
         data() {
             return {
-                tableData: [{
-                    aa: '2016-05-03',
-                    realName: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }
-                ],
-                //表单数据
-                formData : {
-                    //公司名称
-                    companyName : '广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团',
-                    //是否开启
-                    isStart : false,
-                    //线下核销编码
-                    cashierCode : '2323',
-                    //全民分销邀请码
-                    inviteCode : '2323',
-                    //短信供应商
-                    smsSuppiler : '1',
-                    //电子邮箱
-                    email : '1',
-                    //联系人
-                    contactor : '',
-                    //详细地址
-                    address : '沙发斯蒂芬',
-                    //电话
-                    phone : '2323',
-                    //传真
-                    fax : '2323',
-                    //管理上级
-                    superior : '上级',
-                    //授理客服
-                    serviceStaff : '上级',
-                    //所在地
-                    place : '上级',
-                },
                 //复制的表单数据
                 formDataCopy : {},
                 //管理上级列表
-                superiorList : [
-                    {
-                        label : '上级',
-                        value : '1'
-                    }
-                ],
+                superiorList : [],
                 //财务上级列表
-                fianceSuperiorList : [
-                    {
-                        label : '上级',
-                        value : '1'
-                    }
-                ],
+                fianceSuperiorList : [],
                 //受理客服列表
-                serviceStaffList : [
-                    {
-                        label : '客服',
-                        value : '1'
-                    }
-                ],
+                serviceStaffList : [],
                 type : 'watch',
+                //景区详情
+                sceneDetail : {}
             }
         },
         methods: {
@@ -337,21 +288,67 @@
              */
             saveEdit () {
                 this.type = 'watch';
-                this.formData = defaultsDeep({} , this.formDataCopy);
+                ajax.post('updateOrgInfo',{
+                    id : this.formDataCopy.id,
+                    status : this.formDataCopy.isStart ? 'open' : 'false',
+                    orgName : this.formDataCopy.orgName,
+                    checkinCode : this.formDataCopy.checkinCode,
+                    email : this.formDataCopy.managerAccount.email,
+                    province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
+                    city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
+                    district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
+                    telephone : this.formDataCopy.telephone,
+                    tex : this.formDataCopy.tex,
+                    linkName : this.formDataCopy.linkName,
+                    parentManageId : this.formDataCopy.parentManage.id,
+                    parentEconomicId : this.formDataCopy.parentEconomic.id,
+                    address : this.formDataCopy.address,
+                    businessAccountId : this.formDataCopy.businessAccount1.id,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('修改成功');
+                        this.getSceneDetail();
+                    }else{
+                        this.$Message.error(res.message | '修改失败');
+                    }
+                });
             },
             /**
              * 开始编辑
              */
             edit () {
                 this.type = 'edit';
-                this.formDataCopy = defaultsDeep({} , this.formData);
+                this.formDataCopy = defaultsDeep({
+                    isStart : this.sceneDetail.status === 'open',
+                    businessAccount1 : this.sceneDetail.businessAccount1 ? this.sceneDetail.businessAccount1 : {},
+                    parentManage : this.sceneDetail.parentManage ? this.sceneDetail.parentManage : {
+                        id : ''
+                    },
+                    parentEconomic : this.sceneDetail.parentEconomic ? this.sceneDetail.parentEconomic : {
+                        id : ''
+                    },
+                    managerAccount : this.sceneDetail.managerAccount ? this.sceneDetail.managerAccount : {
+                        email : ''
+                    }
+                }  , this.sceneDetail);
             },
             /**
              * 确认重置密码
              * @param pass
              */
             confimChangePass (pass){
-                alert('重置密码成功')
+                ajax.post('resetPassword',{
+                    id : this.activeNode.id,
+                    password : pass
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('重置成功');
+                    }else{
+                        this.$Message.error(res.message || '重置失败');
+                    }
+                }).finally(() => {
+                    this.$refs.editModal.hide();
+                });
             },
             /**
              * 重置密码
@@ -370,6 +367,120 @@
             freshOrg () {
                 this.$emit('fresh-org',this.activeNode);
             },
+            /**
+             * 获取景区详情
+             */
+            getSceneDetail () {
+                ajax.post('getServiceProvider',{
+                    id : this.activeNode.id,
+                }).then(res => {
+                    console.log(res);
+                    if(res.status === 200){
+                        this.sceneDetail = res.data ? res.data : {};
+                    }else{
+                        this.sceneDetail = {};
+                    }
+                });
+            },
+            /**
+             * 获取财务上级和经营上级
+             */
+            getParentManages () {
+                ajax.post('getParentManages',{
+                    id : this.activeNode.id,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.superiorList = res.data.parentManages ? res.data.parentManages : [];
+                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics : [];
+                    }else{
+                        this.superiorList = [];
+                        this.fianceSuperiorList = [];
+                    }
+                });
+            },
+            /**
+             * 查询所有的受理客服信息
+             */
+            querySysAccoutList () {
+                ajax.post('querySysAccoutList').then(res => {
+                    if(res.status === 200){
+                        this.serviceStaffList = res.data ? res.data : [];
+                    }else{
+                        this.serviceStaffList = [];
+                    }
+                }).catch(err => {
+                    this.serviceStaffList = [];
+                });
+            },
+            /**
+             * 改变城市
+             * @param data
+             */
+            changeCity (data) {
+                if(this.formDataCopy.sysProvinces){
+                    this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
+                }else{
+                    this.formDataCopy.sysProvinces = {
+                        provinceid : data.province ? data.province.provinceid : ''
+                    };
+                }
+                if(this.formDataCopy.sysCities){
+                    this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
+                }else{
+                    this.formDataCopy.sysCities = {
+                        cityid : data.city ? data.city.cityid : ''
+                    };
+                }
+                if(this.formDataCopy.sysAreas){
+                    this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
+                }else{
+                    this.formDataCopy.sysAreas = {
+                        areaid : data.area ? data.area.areaid : ''
+                    };
+                }
+            },
+        },
+        watch : {
+            //节点更换，重新请求节点数据
+            activeNode : {
+                handler (newVal,oldVal) {
+                    this.getSceneDetail();
+                },
+                deep : true,
+                immediate : true
+            }
+        },
+        computed : {
+            //公司详细地址
+            companyPlace () {
+                let place = '';
+                if(this.sceneDetail && this.sceneDetail.sysProvinces){
+                    place += this.sceneDetail.sysProvinces.province;
+                }
+                if(this.sceneDetail && this.sceneDetail.sysCities){
+                    place += this.sceneDetail.sysCities.city;
+                }
+                if(this.sceneDetail && this.sceneDetail.sysAreas){
+                    place += this.sceneDetail.sysAreas.area;
+                }
+                return place;
+            },
+            //默认选中的所在地信息
+            defaultAddress () {
+                if(this.sceneDetail && Object.keys(this.sceneDetail).length > 0){
+                    return {
+                        province : this.sceneDetail.sysProvinces,
+                        city : this.sceneDetail.sysCities,
+                        area : this.sceneDetail.sysAreas,
+                    }
+                }else{
+                    return false;
+                }
+            }
+        },
+        created () {
+            this.querySysAccoutList();
+            this.getParentManages();
         }
     }
 </script>

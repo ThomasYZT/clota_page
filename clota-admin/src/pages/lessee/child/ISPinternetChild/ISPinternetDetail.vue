@@ -12,15 +12,18 @@
                 <structure-tree :tree-data="structureData"
                                 :activeNode.sync="activeNode"
                                 v-model="componentName"
-                                @switch-tap="switchTap">
+                                @switch-tap="switchTap"
+                                @fresh-org="freshOrgInfo">
                 </structure-tree>
             </div>
             <!--组织架构不同的节点对应不同的组件-->
-            <component :is="componentSelect"
-                       :key="nodeKey"
-                       :activeNode="activeNode"
-                       @fresh-org="freshOrgInfo">
-            </component>
+            <transition name="fade">
+                <component :is="componentSelect"
+                           :key="nodeKey"
+                           :activeNode="activeNode"
+                           @fresh-org="freshOrgInfo">
+                </component>
+            </transition>
         </div>
     </div>
 </template>
@@ -82,7 +85,6 @@
                         name : 'ISPinternet'
                     });
                 }
-                console.log(params)
             },
             /**
              * 获取组织树
@@ -96,7 +98,7 @@
                 }).then(res => {
                     if(res.status === 200){
                         this.structureData = res.data ? res.data : {};
-                        if(Object.keys(this.activeNode).length < 1){
+                        if(Object.keys(activeNode).length < 1){
                             this.activeNode = JSON.parse(JSON.stringify({
                                 id : this.structureData.id,
                                 pid : this.structureData.pid,

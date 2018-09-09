@@ -155,7 +155,7 @@
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
-                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid"">
+                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid">
                           <Select v-model="formDataCopy.parentEconomic.id" >
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
@@ -288,41 +288,6 @@
         },
         data() {
             return {
-                tableData: [{
-                    aa: '2016-05-03',
-                    realName: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }
-                ],
-                //表单数据
-                formData : {
-                    //公司名称
-                    companyName : '广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团广州长隆旅游集团',
-                    //是否开启
-                    isStart : false,
-                    //线下核销编码
-                    cashierCode : '2323',
-                    //全民分销邀请码
-                    inviteCode : '2323',
-                    //短信供应商
-                    smsSuppiler : '1',
-                    //电子邮箱
-                    email : '1',
-                    //联系人
-                    contactor : '',
-                    //详细地址
-                    address : '沙发斯蒂芬',
-                    //电话
-                    phone : '2323',
-                    //传真
-                    fax : '2323',
-                    //管理上级
-                    superior : '上级',
-                    //授理客服
-                    serviceStaff : '上级',
-                    //所在地
-                    place : '上级',
-                },
                 //复制的表单数据
                 formDataCopy : {},
                 //当前状态
@@ -330,12 +295,7 @@
                 //短信供应商列表
                 smsSuppilerList : [],
                 //管理上级列表
-                superiorList : [
-                    {
-                        label : '上级',
-                        value : '1'
-                    }
-                ],
+                superiorList : [],
                 //财务上级列表
                 fianceSuperiorList : [],
                 //受理客服列表
@@ -381,7 +341,6 @@
                         this.$Message.error('修改失败');
                     }
                 });
-                // this.formData = defaultsDeep({} , this.formDataCopy);
             },
             /**
              * 开始编辑
@@ -484,7 +443,6 @@
              * @param data
              */
             changeCity (data) {
-                console.log(data)
                 if(this.formDataCopy.sysProvinces){
                     this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
                 }else{

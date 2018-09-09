@@ -122,14 +122,27 @@
                 default() {
                     return {}
                 }
+            },
+            //根节点id
+            'root-id' : {
+                type :String,
+                default : ''
             }
         },
         data() {
             //校验管理账号
             const validateControlAccount = (rule, value, callback) => {
                 if(value){
-                    this.queryAccountExist().then(() => {
-                        callback();
+                    this.queryAccountExist().then((res) => {
+                        if(res.status === 200){
+                            if(res.data){
+                                callback();
+                            }else{
+                                callback('管理账号已存在');
+                            }
+                        }else{
+                            callback('账号校验失败');
+                        }
                     }).catch(() => {
                         callback('管理账号已存在');
                     });
@@ -307,7 +320,7 @@
              */
             getParentManages () {
                 ajax.post('getParentManages',{
-                    id : this.chosedNodeDetail.id
+                    id : this.rootId
                 }).then(res => {
                     if(res.status === 200){
                         this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];

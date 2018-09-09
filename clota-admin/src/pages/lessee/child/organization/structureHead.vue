@@ -49,12 +49,14 @@
         </add-modal>
         <!--新增公司模态框-->
         <add-company v-model="addCompanyModalShow"
+                     :root-id="rootId"
                      :chosed-node-detail="currentNode"
                      :added-node-detail="addNodeDetail"
                      @fresh-structure-data="getStructureData">
         </add-company>
         <!--新增景区模态框-->
         <add-scene v-model="addSceneModalShow"
+                   :root-id="rootId"
                    :chosed-node-detail="currentNode"
                    :added-node-detail="addNodeDetail"
                    @fresh-structure-data="getStructureData">
@@ -127,7 +129,7 @@
                 addNodeDetail: {},
                 defaultProps: {
                     children: 'chilrends'
-                }
+                },
             }
         },
         methods: {
@@ -222,7 +224,7 @@
              * 重新获取组织结构数据
              */
             getStructureData() {
-                this.$emit('switch-tap',this.activeTap);
+                this.$emit('fresh-org',this.activeNode);
             },
             /**
              * 打开填写新增景区的信息的模态框
@@ -246,14 +248,14 @@
              */
             addDepartment(data) {
                 ajax.post('addOrgInfo',{
-                    rootId : this.currentNode.id,
+                    rootId : this.rootId,
                     orgName : data.nodeName,
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
                 }).then(res => {
                     if(res.status === 200){
                         this.$Message.success('新增成功');
-                        this.$emit('switch-tap',this.activeTap);
+                        this.getStructureData();
                     }else{
                         this.$Message.error('新增失败');
                     }
@@ -280,10 +282,26 @@
             //公司树数据
             companyData (){
                 if(this.keyWord){
-                    return [this.treeData];
+                    if(this.treeData){
+                        return [this.treeData];
+                    }else{
+                        return [];
+                    }
                     // return this.treeData.filter(item => String(item.name).indexOf(this.keyWord) !== -1);
                 }else{
-                    return [this.treeData];
+                    if(this.treeData){
+                        return [this.treeData];
+                    }else{
+                        return [];
+                    }
+                }
+            },
+            //根节点id
+            rootId (){
+                if(this.treeData){
+                    return this.treeData.id;
+                }else{
+                    return '';
                 }
             }
         }
