@@ -2,7 +2,7 @@
 export const openedServiceHead = [
     {
         title: '',
-        width: 100,
+        width: 80,
         field: 'check'
     },
     {
@@ -12,12 +12,12 @@ export const openedServiceHead = [
     },
     {
         title: '开始日期',
-        minWidth: 180,
+        minWidth: 190,
         field: 'startTime'
     },
     {
         title: '结束日期',
-        minWidth: 180,
+        minWidth: 190,
         field: 'endTime'
     },
     {

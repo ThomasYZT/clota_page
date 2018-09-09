@@ -60,7 +60,7 @@
                                  v-for="(item, i) in arr"
                                  @click="onClickItem(item)">
                                 <div :class="{
-                                    active: select.province && select.province.province === item.province
+                                    active: select.province && select.province.provinceid === item.provinceid
                                 }">
                                     {{item.province}}
                                 </div>
@@ -75,7 +75,7 @@
                          @click="onClickItem(item)">
                         <div
                             :class="{
-                                active: select.city && select.city.city === item.city
+                                active: select.city && select.city.cityid === item.cityid
                             }"
                             v-w-title="item.city">
                             {{item.city}}
@@ -89,7 +89,7 @@
                          @click="onClickItem(item)">
                         <div
                             :class="{
-                                active: select.area && select.area.area === item.area
+                                active: select.area && select.area.areaid === item.areaid
                             }"
                             v-w-title="item.area">
                             {{item.area}}
@@ -486,7 +486,6 @@
              * 设置默认选中的值
              */
             setDefaultValue (){
-                console.log(this.defaultValue);
 
                 if (this.defaultValue.province) {
                     this.select.province = this.defaultValue.province;

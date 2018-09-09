@@ -14,32 +14,54 @@
         <div class="service-body">
             <div class="label-info">
                 <span class="key">上级公司：</span>
-                <span class="val">上级公司上级公司上级公</span>
+                <span class="val">{{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}</span>
             </div>
             <span class="tip">请先为上级公司开通服务后，景区才能添加相应服务。</span>
             <div class="label-info" style="margin-bottom: 10px">
                 <span class="key">上级公司已开通服务：</span>
             </div>
+            <!--<table-com-->
+                <!--table-height="210px"-->
+                <!--:table-data="tableData"-->
+                <!--:column-data="columns"-->
+                <!--@selection-change="handleSelectionChange">-->
+                <!--<el-table-column-->
+                    <!--slot="column0"-->
+                    <!--type="selection"-->
+                    <!--width="55">-->
+                <!--</el-table-column>-->
+            <!--</table-com>-->
+            <!--<div class="page-area" v-if="tableData.length > 0">-->
+                <!--<el-pagination-->
+                    <!--:current-page="pageNo"-->
+                    <!--:page-sizes="pageSizeConfig"-->
+                    <!--:page-size="pageSize"-->
+                    <!--layout="total, sizes, prev, pager, next, jumper"-->
+                    <!--:total="totalCount">-->
+                <!--</el-pagination>-->
+            <!--</div>-->
             <table-com
-                table-height="210px"
-                :table-data="tableData"
+                v-if="tableShow"
                 :column-data="columns"
+                :table-data="tableData"
+                :border="true"
+                :page-no-d.sync="pageNo"
+                :show-pagination="true"
+                :page-size-d.sync="pageSize"
+                :total-count="totalCount"
+                :height="210"
+                @query-data="queryList"
                 @selection-change="handleSelectionChange">
                 <el-table-column
-                    slot="column0"
+                    slot="columncheck"
+                    slot-scope="row"
                     type="selection"
-                    width="55">
+                    :label="row.title"
+                    show-overflow-tooltip
+                    :width="row.width"
+                    :min-width="row.minWidth">
                 </el-table-column>
             </table-com>
-            <div class="page-area" v-if="tableData.length > 0">
-                <el-pagination
-                    :current-page="pageNo"
-                    :page-sizes="pageSizeConfig"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="totalCount">
-                </el-pagination>
-            </div>
         </div>
         <div slot="footer">
             <Button class="ivu-btn-90px"
@@ -47,6 +69,7 @@
                 {{$t('cancel')}}
             </Button>
             <Button type="primary"
+                    :disabled="selectedService.length < 1"
                     class="ivu-btn-90px"
                     @click="confirm">
                 {{$t('save')}}
@@ -56,11 +79,19 @@
 </template>
 
 <script>
-    import tableCom from '../../../../../index/child/tableCom';
-    import tableMixins from '../../../../../lessee/tableMixins';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import {openedServiceHead} from './openedServiceConfig';
+    import ajax from '@/api/index.js';
     export default {
-        mixins :[tableMixins],
+        props : {
+            //景区详情
+            'scene-detail' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         components: {
             tableCom
         },
@@ -75,9 +106,12 @@
                 //表头配置
                 columns : openedServiceHead.slice(0,-1),
                 //服务总条数
-                totalCount : 30,
+                totalCount : 0,
                 //当前选择的服务
-                selectedService : []
+                selectedService : [],
+                pageSize : 10,
+                pageNo : 1,
+                tableData : []
             }
         },
         methods: {
@@ -86,7 +120,9 @@
              * @param type
              */
             visibleChange(type) {
-
+                if(type === false){
+                    this.handleSelectionChange([]);
+                }
             },
             /**
              * 取消新增
@@ -101,10 +137,7 @@
              * 确认新增
              */
             confirm() {
-                this.modalShow = false;
-                if(this.confirmCallback){
-                    this.confirmCallback(this.selectedService);
-                }
+                this.openScenicServices();
             },
             /**
              * 显示 模态框
@@ -127,6 +160,45 @@
             handleSelectionChange (data) {
                 this.selectedService = data;
             },
+            /**
+             * 查询上级开通的服务
+             */
+            queryList () {
+                ajax.post('getOpenServices',{
+                    orgId : this.sceneDetail.id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.tableData = res.data.orgServices ? res.data.orgServices : [];
+                    }else{
+                        this.tableData = [];
+                    }
+                });
+            },
+            /**
+             * 给指定景区开通服务
+             */
+            openScenicServices () {
+                ajax.post('openScenicServices',{
+                    orgId : this.sceneDetail.id,
+                    serviceIds : this.selectedService.map(item => item.serviceId),
+                    parentOrgId : this.sceneDetail.parentManage ? this.sceneDetail.parentManage.id : ''
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('开通成功');
+                        this.$emit('fresh-service');
+                    }else{
+                        this.$Message.error('开通失败');
+                    }
+                }).finally(() => {
+                    this.modalShow = false;
+                });
+            }
+        },
+        computed : {
+            //表格是否显示
+            tableShow () {
+                return this.sceneDetail && !!this.sceneDetail.id;
+            }
         }
     }
 </script>

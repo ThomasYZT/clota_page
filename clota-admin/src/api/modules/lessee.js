@@ -61,4 +61,6 @@ export default {
     'getScenicPartners' : 'tenant/getScenicPartners.json',
     //获取指定景区上级管理公司已开通的服务
     'getOpenServices' : 'tenant/getOpenServices.json',
+    //给指定景区开通服务
+    'openScenicServices' : 'tenant/openScenicServices.json',
 }

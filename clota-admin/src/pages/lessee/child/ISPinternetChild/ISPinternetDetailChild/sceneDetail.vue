@@ -217,6 +217,7 @@
         <!--已开通服务-->
         <opened-service
             type="scene"
+            :scene-detail="sceneDetail"
             :search-params="{id : activeNode.id}">
         </opened-service>
         <!--合作伙伴-->

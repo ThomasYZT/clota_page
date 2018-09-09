@@ -97,7 +97,7 @@
                                 :disabled="!canDelService"
                                 @click="delService(selectedService)">删除服务</Button>
                         <Button type="primary"
-                                @click="addService">添加服务</Button>
+                                @click="orgAddService">添加服务</Button>
                     </template>
                 </div>
                 <table-com
@@ -190,8 +190,11 @@
             <span>请及时保存。</span>
         </del-modal>
         <!--添加服务模态框-->
-        <!--<add-service ref="addService">-->
-        <!--</add-service>-->
+        <add-service
+            ref="addService"
+            :scene-detail="sceneDetail"
+            @fresh-service="queryList">
+        </add-service>
     </div>
 </template>
 
@@ -212,6 +215,13 @@
             },
             //表格查询参数
             'search-params' : {
+                typee : Object,
+                default () {
+                    return {}
+                }
+            },
+            //景区详情
+            'scene-detail' : {
                 typee : Object,
                 default () {
                     return {}
@@ -330,16 +340,16 @@
                     }
                 });
             },
-            // /**
-            //  * 添加服务
-            //  */
-            // addService () {
-            //     this.$refs.addService.show({
-            //         confirmCallback (data) {
-            //             console.log(data)
-            //         }
-            //     });
-            // },
+            /**
+             * 添加服务
+             */
+            orgAddService () {
+                this.$refs.addService.show({
+                    confirmCallback (data) {
+                        console.log(data)
+                    }
+                });
+            },
             /**
              * 查询已开通的服务
              */
