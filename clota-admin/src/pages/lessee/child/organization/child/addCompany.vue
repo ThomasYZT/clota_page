@@ -19,15 +19,15 @@
                   :label-width="150">
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
-                        <Option v-for="item in smsProviderList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
+                        <Option v-for="item in parentEconomics  "
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.orgName }}
                         </Option>
                     </Select>
                 </FormItem>
-                <FormItem :label="$t('manageSuperior')" prop="manageSuperior">
-                    <Input v-model="formData.manageSuperior" disabled style="width: 280px"/>
+                <FormItem :label="$t('manageSuperior')">
+                    <Input :value="chosedNodeDetail.name" disabled style="width: 280px"/>
                 </FormItem>
                 <FormItem :label="$t('controlAccount')" prop="controlAccount">
                     <Input v-model="formData.controlAccount" style="width: 280px"/>
@@ -38,9 +38,9 @@
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
                     <Select v-model="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
+                                :value="item.provider"
+                                :key="item.provider">
+                            {{ item.provider }}
                         </Option>
                     </Select>
                 </FormItem>
@@ -67,11 +67,11 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="ghost" 
-                class="ivu-btn-90px" 
+            <Button type="ghost"
+                class="ivu-btn-90px"
                 @click="cancel">取消</Button>
-            <Button type="primary" 
-                class="ivu-btn-90px" 
+            <Button type="primary"
+                class="ivu-btn-90px"
                 @click="save">保存</Button>
         </div>
     </Modal>
@@ -80,6 +80,7 @@
 <script>
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -109,7 +110,15 @@
         data() {
             //校验管理账号
             const validateControlAccount = (rule, value, callback) => {
-                callback();
+                if(value){
+                    this.queryAccountExist().then(() => {
+                        callback();
+                    }).catch(() => {
+                        callback('管理账号已存在');
+                    });
+                }else{
+                    callback(this.$t('inputField', {msg: this.$t('controlAccount')}));
+                }
             };
             //校验电子邮箱
             const validateMail = (rule, value, callback) => {
@@ -150,8 +159,6 @@
             return {
                 //表单数据
                 formData: {
-                    //经营上级
-                    manageSuperior: '',
                     //联系电话
                     phone: '',
                     //财务上级
@@ -169,7 +176,7 @@
                     //详细地址
                     address: '',
                     //地点
-                    place: '',
+                    place: {},
                     //联系人
                     person: '',
                 },
@@ -185,13 +192,6 @@
                         {
                             required: true,
                             message: this.$t('validateError.pleaseSelect', {msg: this.$t('fianceSuperior')}),
-                            trigger: 'change'
-                        },
-                    ],
-                    manageSuperior: [
-                        {
-                            required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('manageSuperior')}),
                             trigger: 'change'
                         },
                     ],
@@ -213,12 +213,9 @@
                     ]
                 },
                 //短信供应商列表
-                smsProviderList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                smsProviderList: [],
+                //财务上级列表
+                parentEconomics : []
             }
         },
         watch: {
@@ -226,7 +223,6 @@
             'chosedNodeDetail': {
                 handler(newVal, oldVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
-                        this.formData.manageSuperior = newVal.title;
                         this.formData.fianceSuperior = newVal.title;
                     }
                 },
@@ -248,6 +244,9 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                }else{
+                    this.getParentManages();
+                    this.querySmsProviderList();
                 }
             },
             /**
@@ -256,7 +255,7 @@
             save() {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.addCompany();
+                        this.addOrgInfo();
                     }
                 });
             },
@@ -280,6 +279,104 @@
              */
             cancel () {
                 this.$emit('input', false);
+            },
+            /**
+             * 获取财务上级和经营上级
+             */
+            getParentManages () {
+                ajax.post('getParentManages',{
+                    id : this.chosedNodeDetail.id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];
+                    }else{
+                        this.parentEconomics = [];
+                    }
+                });
+            },
+            /**
+             * 获取短信供应商列表
+             */
+            querySmsProviderList () {
+                ajax.post('smsProviderList',{
+                    page : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if(res.status === 200){
+                        this.smsProviderList = res.data.list ? res.data.list : [];
+                    }else{
+                        this.smsProviderList = [];
+                    }
+                });
+            },
+            /**
+             * 新增下属公司
+             */
+            addOrgInfo () {
+                ajax.post('addOrgInfo',{
+                    rootId : this.chosedNodeDetail.id,
+                    orgName : this.addedNodeDetail.nodeName,
+                    loginName : this.formData.controlAccount,
+                    email : this.formData.mail,
+                    smsProvider : this.formData.smsProvider,
+                    linkName : this.formData.person,
+                    telephone : this.formData.phone,
+                    tex : this.formData.fax,
+                    checkinCode : this.formData.companyCode,
+                    provinceid : this.placeInfo.provinceid,
+                    cityid : this.placeInfo.cityid,
+                    districtid : this.placeInfo.areaid,
+                    address : this.formData.address,
+                    parentEconomicId : this.formData.fianceSuperior,
+                    parentManageId : this.chosedNodeDetail.id,
+                    nodeType : 'company'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$emit('fresh-structure-data');
+                        this.$emit('input', false);
+                        this.$Message.success('新增成功');
+                    }else{
+                        this.$Message.error(res.message || '新增失败');
+                    }
+                });
+            },
+            /**
+             * 判断管理账号是否存在
+             */
+            queryAccountExist () {
+                return ajax.post('queryAccountExist',{
+                    loginName : this.formData.controlAccount
+                });
+            },
+        },
+        computed : {
+            //选择的地区信息
+            placeInfo () {
+                let place = {};
+                if(this.formData.place){
+                    if(this.formData.place.province){
+                        place['provinceid'] = this.formData.place.province.provinceid;
+                    }else{
+                        place['provinceid'] = '';
+                    }
+                    if(this.formData.place.city){
+                        place['cityid'] = this.formData.place.city.cityid;
+                    }else{
+                        place['cityid'] = '';
+                    }
+                    if(this.formData.place.area){
+                        place['areaid'] = this.formData.place.area.areaid;
+                    }else{
+                        place['areaid'] = '';
+                    }
+                    return place;
+                }else{
+                    return {
+                        provinceid : '',
+                        cityid : '',
+                        areaid : '',
+                    }
+                }
             }
         }
     }

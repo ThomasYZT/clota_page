@@ -17,62 +17,83 @@
                   :model="formData"
                   :rules="ruleValidate"
                   :label-width="150">
+                <!--财务上级-->
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
                         <Option v-for="item in fianceSuperiorList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.orgName }}
                         </Option>
                     </Select>
                 </FormItem>
-                <FormItem :label="$t('manageSuperior')" prop="manageSuperior">
-                    <Input v-model="formData.manageSuperior" disabled style="width: 280px"/>
+                <!--管理上级-->
+                <FormItem :label="$t('manageSuperior')">
+                    <Select v-model="formData.manageSuperior"
+                            disabled
+                            style="width:280px">
+                        <Option v-for="item in manageSuperiorList"
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.orgName }}
+                        </Option>
+                    </Select>
                 </FormItem>
+                <!--开通服务-->
                 <FormItem :label="$t('openedServices')" prop="openedServices">
-                    <Select v-model="formData.openedServices" multiple style="width:280px">
-                        <Option v-for="item in fianceSuperiorList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
+                    <Select v-model="formData.openedServices"
+                            multiple
+                            style="width:280px">
+                        <Option v-for="item in serviceList"
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.serviceName }}
                         </Option>
                     </Select>
                 </FormItem>
                 <div class="hint">如需开通更多服务，请先为上级公司开通相应服务。</div>
+                <!--管理账号-->
                 <FormItem :label="$t('controlAccount')" prop="controlAccount">
                     <Input v-model="formData.controlAccount" style="width: 280px"/>
                 </FormItem>
+                <!--电子邮箱-->
                 <FormItem :label="$t('email')" prop="mail">
                     <Input v-model="formData.mail" style="width: 280px"/>
                 </FormItem>
+                <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
                     <Input v-model="formData.person" style="width: 280px"/>
                 </FormItem>
+                <!--联系电话-->
                 <FormItem :label="$t('phone')" prop="phone">
                     <Input v-model="formData.phone" style="width: 280px"/>
                 </FormItem>
+                <!--传真-->
                 <FormItem :label="$t('fax')" prop="fax">
                     <Input v-model="formData.fax" style="width: 280px"/>
                 </FormItem>
+                <!--公司编码-->
                 <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'">
                     <Input v-model="formData.companyCode" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
+                <!--地址-->
                 <FormItem :label="$t('location')">
                     <city-plugin @select="formData.place = $event" style="width: 280px">
                     </city-plugin>
                 </FormItem>
+                <!--详细地址-->
                 <FormItem :label="$t('address')">
                     <Input v-model="formData.address" type="textarea" style="width: 280px"/>
                 </FormItem>
             </Form>
         </div>
         <div slot="footer">
-            <Button type="ghost" 
+            <Button type="ghost"
                 class="ivu-btn-90px"
                 @click="cancel">取消</Button>
-            <Button type="primary" 
-                class="ivu-btn-90px" 
+            <Button type="primary"
+                class="ivu-btn-90px"
                 @click="save">保存</Button>
         </div>
     </Modal>
@@ -81,6 +102,7 @@
 <script>
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -110,7 +132,15 @@
         data() {
             //校验管理账号
             const validateControlAccount = (rule, value, callback) => {
-                callback();
+                if(value){
+                    this.queryAccountExist().then(() => {
+                        callback();
+                    }).catch(() => {
+                        callback('管理账号已存在');
+                    });
+                }else{
+                    callback(this.$t('inputField', {msg: this.$t('controlAccount')}));
+                }
             };
             //校验电子邮箱
             const validateMail = (rule, value, callback) => {
@@ -151,12 +181,12 @@
             return {
                 //表单数据
                 formData: {
-                    //经营上级
-                    manageSuperior: '',
                     //联系电话
                     phone: '',
                     //财务上级
                     fianceSuperior: '',
+                    //管理上级
+                    manageSuperior: '',
                     //开通的服务
                     openedServices: [],
                     //传真
@@ -189,13 +219,6 @@
                             trigger: 'change'
                         },
                     ],
-                    manageSuperior: [
-                        {
-                            required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('manageSuperior')}),
-                            trigger: 'change'
-                        },
-                    ],
                     controlAccount: [
                         {required: true, validator: validateControlAccount, trigger: 'blur'},
                     ],
@@ -207,7 +230,11 @@
                     ],
                 },
                 //财务上级列表
-                fianceSuperiorList : []
+                fianceSuperiorList : [],
+                //服务列表
+                serviceList : [],
+                //管理上级列表
+                manageSuperiorList : []
             }
         },
         watch: {
@@ -215,8 +242,8 @@
             'chosedNodeDetail': {
                 handler(newVal, oldVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
-                        this.formData.manageSuperior = newVal.title;
-                        this.formData.fianceSuperior = newVal.title;
+                        this.formData.manageSuperior = newVal.id;
+                        this.formData.fianceSuperior = newVal.id;
                     }
                 },
                 immediate: true
@@ -237,6 +264,9 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                }else{
+                    this.getParentManages();
+                    this.queryServiceList();
                 }
             },
             /**
@@ -261,14 +291,105 @@
              * 调用新增公司的接口
              */
             addCompany() {
-                this.$emit('fresh-structure-data');
-                this.$emit('input', false);
+                ajax.post('addOrgInfo',{
+                    rootId : this.chosedNodeDetail.id,
+                    orgName : this.addedNodeDetail.nodeName,
+                    loginName : this.formData.controlAccount,
+                    email : this.formData.mail,
+                    linkName : this.formData.person,
+                    telephone : this.formData.phone,
+                    tex : this.formData.fax,
+                    checkinCode : this.formData.companyCode,
+                    provinceid : this.placeInfo.provinceid,
+                    cityid : this.placeInfo.cityid,
+                    districtid : this.placeInfo.areaid,
+                    address : this.formData.address,
+                    parentEconomicId : this.formData.fianceSuperior,
+                    parentManageId : this.formData.manageSuperior,
+                    nodeType : 'scenic'
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$emit('fresh-structure-data');
+                        this.$emit('input', false);
+                        this.$Message.success('新增成功');
+                    }else{
+                        this.$Message.error('新增失败')
+                    }
+                });
             },
             /**
              * 取消新增
              */
             cancel () {
                 this.$emit('input', false);
+            },
+            /**
+             * 获取财务上级和经营上级
+             */
+            getParentManages () {
+                ajax.post('getParentManages',{
+                    id : this.chosedNodeDetail.id
+                }).then(res => {
+                    if(res.status === 200){
+                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics : [];
+                        this.manageSuperiorList = res.data.parentManages ? res.data.parentManages : [];
+                    }else{
+                        this.fianceSuperiorList = [];
+                        this.manageSuperiorList = [];
+                    }
+                });
+            },
+            /**
+             * 获取服务列表
+             */
+            queryServiceList() {
+                ajax.post('queryServiceList',{
+                    serviceStatus : 'normal'
+                }).then(res => {
+                   if(res.status === 200){
+                       this.serviceList = res.data ? res.data : [];
+                   } else{
+                       this.serviceList = [];
+                   }
+                });
+            },
+            /**
+             * 判断管理账号是否存在
+             */
+            queryAccountExist () {
+                return ajax.post('queryAccountExist',{
+                    loginName : this.formData.controlAccount
+                });
+            },
+        },
+        computed : {
+            //选择的地区信息
+            placeInfo () {
+                let place = {};
+                if(this.formData.place){
+                    if(this.formData.place.province){
+                        place['provinceid'] = this.formData.place.province.provinceid;
+                    }else{
+                        place['provinceid'] = '';
+                    }
+                    if(this.formData.place.city){
+                        place['cityid'] = this.formData.place.city.cityid;
+                    }else{
+                        place['cityid'] = '';
+                    }
+                    if(this.formData.place.area){
+                        place['areaid'] = this.formData.place.area.areaid;
+                    }else{
+                        place['areaid'] = '';
+                    }
+                    return place;
+                }else{
+                    return {
+                        provinceid : '',
+                        cityid : '',
+                        areaid : '',
+                    }
+                }
             }
         }
     }

@@ -16,43 +16,43 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">订单号：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val" v-w-title="noteDetail.orderNo">{{noteDetail.orderNo | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">公司/景区名称：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-val" v-w-title="noteDetail.orgName">{{noteDetail.orgName | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">手机号：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val" v-w-title="noteDetail.target">{{noteDetail.target | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">条数：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-val" v-w-title="noteDetail.amount">{{noteDetail.amount | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">短信服务商：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val" v-w-title="noteDetail.provider">{{noteDetail.provider | contentFilter}}</span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key">发送时间：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
+                    <span class="info-val" v-w-title="noteDetail.createdTime">{{noteDetail.createdTime | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">发送状态：</span>
-                    <span class="info-val">232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323</span>
+                    <span class="info-val">{{$t(noteDetail.status) | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
                 <div class="info-list3">
                     <span class="info-key">短信内容：</span>
-                    <span class="info-val">短信内容短信内容短信内容短信内容短信内容短信内容短信内容短信内容短信内容</span>
+                    <span class="info-val">{{noteDetail.content | contentFilter}}</span>
                 </div>
             </li>
         </ul>
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //绑定modal的v-modal值
@@ -99,7 +100,7 @@
                 if(type === true){
                     this.getNodeDetail();
                 }else{
-
+                    this.noteDetail = {};
                 }
             },
             /**
@@ -112,7 +113,15 @@
              * 获取短信详情
              */
             getNodeDetail (){
-
+                ajax.post('getSmsConsumeRecordDetails',{
+                    id : this.noteId
+                }).then(res => {
+                    if(res.status === 200){
+                        this.noteDetail = res.data ? res.data : {};
+                    }else{
+                        this.noteDetail = {};
+                    }
+                });
             }
         }
     }

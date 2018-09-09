@@ -12,52 +12,81 @@
         </div>
         <transition name="fade">
             <div v-if="isPackUpLoad">
-                <table-com
-                    :table-data="tableData"
-                    :column-data="buyColumns"
-                    :is-pack-up="true"
-                    :show-page="true"
-                    :total="totalCount"
-                    @get-new-data="getNoteData">
-                    <div class="employee-account" slot="table-title">
-                        <span class="note-record">短信发送记录</span>
-                        <div class="note-sended">
-                            <Icon type="ios-help"></Icon>
-                            <span class="note-tips">共发送短信数量：<span class="icon-weight">1280条</span></span>
-                            <span class="note-tips">剩余短信数量：<span class="icon-weight">1280条</span></span>
-                        </div>
+                <!--短信发送记录-->
+                <div class="employee-account">
+                    <span class="note-record">短信发送记录</span>
+                    <div class="note-sended">
+                        <Icon type="ios-help"></Icon>
+                        <span class="note-tips">共发送短信数量：<span class="icon-weight">{{sendSmsTotals | contentFilter}}条</span></span>
+                        <span class="note-tips">剩余短信数量：<span class="icon-weight">{{smsSurplusTotal | contentFilter}}条</span></span>
                     </div>
+                </div>
+
+                <table-com
+                    v-if="tableShow"
+                    :column-data="sendColumns"
+                    :table-data="smsSendRecord"
+                    :border="true"
+                    :page-no-d.sync="smsSendRecordPageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="smsSendRecordPageSize"
+                    :total-count="smsSendRecordTotal"
+                    :auto-height="true"
+                    :table-com-min-height="280"
+                    @query-data="getSmsSendRecord">
                     <el-table-column
-                        slot="column7"
-                        :label="$t('operate')"
-                        width="70px">
-                        <template slot-scope="scoped">
+                        slot="columninvokeType"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(scope.row.invokeType)}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnoperate"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        fixed="right"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
                             <ul class="operate-info">
-                                <li class="custome" @click="watchNoteDetail(scoped.row)">查看</li>
+                                <li class="normal" @click="watchNoteDetail(scope.row)">查看</li>
                             </ul>
                         </template>
                     </el-table-column>
                 </table-com>
-                <table-com
-                    :table-data="tableData"
-                    :column-data="sendColumns"
-                    :is-pack-up="true"
-                    :show-table-bar="false"
-                    :show-page="true"
-                    :total="totalCount"
-                    @get-new-data="getNoteData">
-                    <div class="employee-account" slot="table-title">
-                        <span class="note-record">短信购买记录</span>
-                        <div class="note-sended">
-                            <Icon type="ios-help"></Icon>
-                            <span class="note-tips">共购买短信数量：<span class="icon-weight">1280条</span></span>
-                        </div>
+
+                <!--短信购买记录-->
+                <div class="employee-account" slot="table-title">
+                    <span class="note-record">短信购买记录</span>
+                    <div class="note-sended">
+                        <Icon type="ios-help"></Icon>
+                        <span class="note-tips">共购买短信数量：<span class="icon-weight">{{smsBuyTotal | contentFilter}}条</span></span>
                     </div>
+                </div>
+
+                <table-com
+                    v-if="tableShow"
+                    :column-data="buyColumns"
+                    :table-data="smsBuyRecord"
+                    :border="true"
+                    :page-no-d.sync="smsBuyRecordPageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="smsBuyRecordPageSize"
+                    :total-count="smsBuyRecordTotal"
+                    :auto-height="true"
+                    :table-com-min-height="280"
+                    @query-data="getSmsBuyRecord">
                 </table-com>
             </div>
         </transition>
         <!--短信发送记录-->
-        <note-detail v-model="noteDetailShow" :currentRow="currentRow">
+        <note-detail v-model="noteDetailShow" :note-id="currentRow.id">
         </note-detail>
     </div>
 </template>
@@ -66,26 +95,23 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {buyColumns,sendColumns} from './noteConfig';
     import noteDetail from './noteDetail';
+    import ajax from '@/api/index.js';
     export default {
+        props : {
+            //表格查询参数
+            'search-params' : {
+                typee : Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         components : {
             tableCom,
             noteDetail
         },
         data() {
             return {
-                //表格数据
-                tableData: [
-                    {
-                        aa: '2016-05-03',
-                        realName: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    },
-                    {
-                        aa: '2016-05-03',
-                        realName: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    }
-                ],
                 //购买短信表头
                 buyColumns : buyColumns,
                 //发送短信表头
@@ -97,17 +123,26 @@
                 //短信记录模态框是否显示
                 noteDetailShow : false,
                 //当前操作的短信条
-                currentRow : {}
+                currentRow : {},
+                //短信购买记录
+                smsBuyRecord : [],
+                smsBuyRecordPageNo : 1,
+                smsBuyRecordPageSize : 10,
+                smsBuyRecordTotal : 0,
+                // 短信总共购买统计
+                smsBuyTotal : '',
+                //短信发送记录
+                smsSendRecord : [],
+                smsSendRecordPageNo : 1,
+                smsSendRecordPageSize : 10,
+                smsSendRecordTotal : 0,
+                //短信剩余数量
+                smsSurplusTotal : '',
+                //短信发送数量
+                sendSmsTotals : ''
             }
         },
         methods: {
-            /**
-             * 获取短信信息
-             * @param data
-             */
-            getNoteData (data) {
-                console.log(data)
-            },
             /**
              * 查看短信发送记录
              * @param data
@@ -115,6 +150,50 @@
             watchNoteDetail (data) {
                 this.noteDetailShow = true;
                 this.currentRow = data;
+            },
+            /**
+             * 获取短信购买记录
+             */
+            getSmsBuyRecord () {
+                ajax.post('getSmsPurchaseRecords',{
+                    id : this.searchParams.id,
+                    pageNo : this.smsBuyRecordPageNo,
+                    pageSize : this.smsBuyRecordPageSize
+                }).then(res => {
+                    if(res.status === 200){
+                        this.smsBuyRecord = res.data.list ? res.data.list : [];
+                        this.smsBuyTotal = res.data.otherData ? res.data.otherData.totals : '';
+                    }else{
+                        this.smsBuyRecord = [];
+                        this.smsBuyTotal = '';
+                    }
+                })
+            },
+            /**
+             * 获取短信发送记录
+             */
+            getSmsSendRecord () {
+                ajax.post('getSmsConsumeRecords',{
+                    id : this.searchParams.id,
+                    pageNo : this.smsBuyRecordPageNo,
+                    pageSize : this.smsBuyRecordPageSize
+                }).then(res => {
+                    if(res.status === 200){
+                        this.smsSendRecord = res.data.list ? res.data.list : [];
+                        this.smsSurplusTotal = res.data.otherData ? res.data.otherData.smsSurplusTotal : '';
+                        this.sendSmsTotals = res.data.otherData ? res.data.otherData.sendSmsTotals : '';
+                    }else{
+                        this.smsSendRecord = [];
+                        this.smsSurplusTotal = '';
+                        this.sendSmsTotals = '';
+                    }
+                })
+            }
+        },
+        computed : {
+            //表格是否显示
+            tableShow () {
+                return this.searchParams && this.searchParams.id;
             }
         }
     }

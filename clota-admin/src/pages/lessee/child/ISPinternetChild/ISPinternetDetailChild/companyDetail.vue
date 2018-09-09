@@ -140,32 +140,32 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">管理上级：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.parentManage" >
+                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid">
+                          <Select v-model="formDataCopy.parentManage.id" >
                             <Option v-for="item in superiorList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
                             </Option>
                         </Select>
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.parentManage">
-                        {{companyDetail.parentManage | contentFilter}}
+                        {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
                     </span>
                 </div>
                 <div class="info-list2">
                     <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.parentEconomic" >
+                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid"">
+                          <Select v-model="formDataCopy.parentEconomic.id" >
                             <Option v-for="item in fianceSuperiorList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
+                                    :value="item.id"
+                                    :key="item.id">
+                                {{ item.orgName }}
                             </Option>
                         </Select>
                     </span>
                     <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
-                        {{companyDetail.parentEconomic | contentFilter}}
+                        {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
                     </span>
                 </div>
             </li>
@@ -338,12 +338,7 @@
                     }
                 ],
                 //财务上级列表
-                fianceSuperiorList : [
-                    {
-                        label : '上级',
-                        value : '1'
-                    }
-                ],
+                fianceSuperiorList : [],
                 //受理客服列表
                 serviceStaffList : [],
                 //公司详细信息
@@ -377,6 +372,8 @@
                     telephone : this.formDataCopy.telephone,
                     tex : this.formDataCopy.tex,
                     businessAccountId : this.formDataCopy.businessAccount1.id,
+                    parentManageId : this.formDataCopy.parentManage.id,
+                    parentEconomicId : this.formDataCopy.parentEconomic.id,
                 }).then(res => {
                     if(res.status === 200){
                         this.$Message.success('修改成功');
@@ -394,9 +391,13 @@
                 this.type = 'edit';
                 this.formDataCopy = defaultsDeep({
                     isStart : this.companyDetail.status === 'open',
-                    businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {
-
-                    }
+                    businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {},
+                    parentManage : this.companyDetail.parentManage ? this.companyDetail.parentManage : {
+                        id : ''
+                    },
+                    parentEconomic : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic : {
+                        id : ''
+                    },
                 }  , this.companyDetail);
             },
             /**
@@ -506,11 +507,28 @@
                         areaid : data.area ? data.area.areaid : ''
                     };
                 }
-            }
+            },
+            /**
+             * 获取财务上级和经营上级
+             */
+            getParentManages () {
+                ajax.post('getParentManages',{
+                    id : this.activeNode.id,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.superiorList = res.data.parentManages ? res.data.parentManages : [];
+                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics : [];
+                    }else{
+                        this.superiorList = [];
+                        this.fianceSuperiorList = [];
+                    }
+                });
+            },
         },
         created () {
             this.querySmsProviderList();
             this.querySysAccoutList();
+            this.getParentManages();
         },
         computed  : {
             //公司详细地址

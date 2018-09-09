@@ -51,4 +51,10 @@ export default {
     'getServices' : 'tenant/getServices.json',
     //为公司添加服务
     'addServices' : 'tenant/addServices.json',
+    //获取指定公司短信购买记录
+    'getSmsPurchaseRecords' : 'tenant/getSmsPurchaseRecords.json',
+    //获取指定公司短信发送详情
+    'getSmsConsumeRecordDetails' : 'tenant/getSmsConsumeRecordDetails.json',
+    //查询管理上级和财务上级
+    'getParentManages' : 'tenant/getParentManages.json',
 }

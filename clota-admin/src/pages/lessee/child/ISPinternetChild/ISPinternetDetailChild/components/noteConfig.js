@@ -1,81 +1,82 @@
-//短信购买表头配置
-export const buyColumns = [
+//短信发送表头配置
+export const sendColumns = [
     {
         title: '订单编号',
-        minWidth: 120,
-        field: 'realName',
-        ableClick: true
+        minWidth: 210,
+        field: 'orderNo'
     },
     {
         title: '手机号',
         minWidth: 150,
-        field: 'examName'
+        field: 'target'
     },
     {
         title: '条数',
         minWidth: 130,
-        field: 'examScore'
+        field: 'amount'
     },
     {
         title: '发送时间',
-        minWidth: 130,
-        field: 'examScore'
+        minWidth: 190,
+        field: 'createdTime'
     },
     {
         title: '触发',
         minWidth: 130,
-        field: 'examScore'
+        field: 'invokeType'
     },
     {
         title: '服务商',
         minWidth: 130,
-        field: 'examScore'
+        field: 'provider'
     },
     {
         title: '发送状态',
         minWidth: 130,
-        field: 'examScore'
+        field: 'status'
     },
-    {}
+    {
+        title: '操作',
+        minWidth: 90,
+        field: 'operate'
+    }
 ];
-//短信发送表头配置
-export const sendColumns = [
+//短信购买表头配置
+export const buyColumns = [
     {
         title: '短信套餐名称',
-        minWidth: 130,
-        field: 'realName',
-        filters: true
+        minWidth: 160,
+        field: 'smsPackageName',
     },
     {
         title: '套餐单价',
         minWidth: 150,
-        field: 'examName'
+        field: 'price'
     },
     {
         title: '套餐短息数量',
         minWidth: 140,
-        field: 'examScore',
-        filters: true
+        field: 'smsCount',
     },
     {
         title: '购买数量',
         minWidth: 130,
-        field: 'examScore'
+        field: 'packageCount'
     },
     {
         title: '购买短信总数',
         minWidth: 130,
-        field: 'examScore'
+        field: 'smsTotal'
     },
     {
         title: '总价',
         minWidth: 130,
-        field: 'examScore'
+        field: 'totalPrice'
     },
     {
         title: '购买时间',
-        minWidth: 150,
-        field: 'examScore',
+        minWidth: 190,
+        field: 'createTime',
         filters: true
     },
 ];

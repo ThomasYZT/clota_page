@@ -219,10 +219,10 @@
                 this.addCompanyModalShow = true;
             },
             /**
-             * 获取组织结构数据
+             * 重新获取组织结构数据
              */
             getStructureData() {
-
+                this.$emit('switch-tap',this.activeTap);
             },
             /**
              * 打开填写新增景区的信息的模态框

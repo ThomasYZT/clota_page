@@ -285,14 +285,18 @@
         },
         computed : {
             minHeight () {
-                if(this.tableData && this.tableData.length === 0){
-                    if(this.tableComMinHeight !== 0){
-                        return this.tableComMinHeight + 'px';
-                    }else{
-                        return this.tableMaxHeight;
-                    }
-                }else{
+                if(this.height !== 'auto'){
                     return 'auto';
+                }else{
+                    if(this.tableData && this.tableData.length === 0){
+                        if(this.tableComMinHeight !== 0){
+                            return this.tableComMinHeight + 'px';
+                        }else{
+                            return this.tableMaxHeight;
+                        }
+                    }else{
+                        return 'auto';
+                    }
                 }
             },
             ...mapGetters({

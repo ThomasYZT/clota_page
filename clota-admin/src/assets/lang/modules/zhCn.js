@@ -16,7 +16,6 @@ export default {
         verifyCodeError: '验证码错误',
         serverError : '链接服务器失败',
         hasLogined : '账户已登录',
-        verifyCodeError : '验证码错误'
     },
     companyName: '银科环企Clota运营平台',
     rememberAccount: '记住账号',
