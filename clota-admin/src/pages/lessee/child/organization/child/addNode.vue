@@ -149,7 +149,7 @@
                 if(this.nodeDetail.data){
                     if(this.nodeDetail.data.nodeType === 'company'){
                         return this.nodeList.filter(item => item.label !== 'cashier');
-                    }else if(this.nodeDetail.data.nodeType === 'scene' ){
+                    }else if(this.nodeDetail.data.nodeType === 'scenic' ){
                         return this.nodeList.filter(item => item.label !== 'company');
                     }else{
                         return [];

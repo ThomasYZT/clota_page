@@ -57,4 +57,6 @@ export default {
     'getSmsConsumeRecordDetails' : 'tenant/getSmsConsumeRecordDetails.json',
     //查询管理上级和财务上级
     'getParentManages' : 'tenant/getParentManages.json',
+    //查询指定景区的合作伙伴列表
+    'getScenicPartners' : 'tenant/getScenicPartners.json',
 }

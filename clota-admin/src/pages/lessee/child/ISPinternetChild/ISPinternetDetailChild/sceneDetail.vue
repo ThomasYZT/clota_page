@@ -205,20 +205,25 @@
             </li>
         </ul>
         <!--下属景区-->
-        <sub-scene>
+        <sub-scene
+            :search-params="{id : activeNode.id}">
         </sub-scene>
         <!--下属部门-->
-        <sub-department :is-pack-up="false">
+        <sub-department
+            :search-params="{id : activeNode.id}"
+            @org-change="freshOrg">
         </sub-department>
         <!--员工-->
-        <employee-table>
+        <employee-table
+            :search-params="{id : activeNode.id}">
         </employee-table>
         <!--已开通服务-->
-        <opened-service :is-pack-up="false"
-                        type="scene">
+        <opened-service
+            :search-params="{id : activeNode.id}">
         </opened-service>
         <!--合作伙伴-->
-        <partner>
+        <partner
+            :search-params="{id : activeNode.id}">
         </partner>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
@@ -238,6 +243,15 @@
     import editModal from '@/components/editModal/index.vue';
 
     export default {
+        props : {
+            //节点信息
+            'activeNode' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+        },
         components: {
             tableCom,
             employeeTable,
@@ -350,6 +364,12 @@
                     }
                 });
             },
+            /**
+             * 更新左侧的组织树
+             */
+            freshOrg () {
+                this.$emit('fresh-org',this.activeNode);
+            },
         }
     }
 </script>
@@ -438,11 +458,11 @@
                 line-height: 22px;
 
                 .info-list1 {
-                    @include block_outline(40%, auto);
+                    @include block_outline(50%, auto);
                 }
 
                 .info-list2 {
-                    @include block_outline(60%, auto);
+                    @include block_outline(50%, auto);
                     padding-left: 15px;
                 }
 

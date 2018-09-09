@@ -54,27 +54,27 @@
                 <div class="hint">如需开通更多服务，请先为上级公司开通相应服务。</div>
                 <!--管理账号-->
                 <FormItem :label="$t('controlAccount')" prop="controlAccount">
-                    <Input v-model="formData.controlAccount" style="width: 280px"/>
+                    <Input v-model.trim="formData.controlAccount" style="width: 280px"/>
                 </FormItem>
                 <!--电子邮箱-->
                 <FormItem :label="$t('email')" prop="mail">
-                    <Input v-model="formData.mail" style="width: 280px"/>
+                    <Input v-model.trim="formData.mail" style="width: 280px"/>
                 </FormItem>
                 <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
-                    <Input v-model="formData.person" style="width: 280px"/>
+                    <Input v-model.trim="formData.person" style="width: 280px"/>
                 </FormItem>
                 <!--联系电话-->
                 <FormItem :label="$t('phone')" prop="phone">
-                    <Input v-model="formData.phone" style="width: 280px"/>
+                    <Input v-model.trim="formData.phone" style="width: 280px"/>
                 </FormItem>
                 <!--传真-->
                 <FormItem :label="$t('fax')" prop="fax">
-                    <Input v-model="formData.fax" style="width: 280px"/>
+                    <Input v-model.trim="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
                 <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'">
-                    <Input v-model="formData.companyCode" style="width: 280px"/>
+                    <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
                 <!--地址-->

@@ -223,7 +223,6 @@
 
         <!--已开通服务-->
         <opened-service
-            :is-pack-up="true"
             :search-params="{id : activeNode.id}">
         </opened-service>
         <!--下属公司-->

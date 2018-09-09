@@ -17,6 +17,7 @@
                   :model="formData"
                   :rules="ruleValidate"
                   :label-width="150">
+                <!--财务上级-->
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
                         <Option v-for="item in parentEconomics  "
@@ -26,17 +27,27 @@
                         </Option>
                     </Select>
                 </FormItem>
+                <!--管理上级-->
                 <FormItem :label="$t('manageSuperior')">
-                    <Input :value="chosedNodeDetail.name" disabled style="width: 280px"/>
+                    <Select v-model="formData.manageSuperior" disabled style="width:280px">
+                        <Option v-for="item in parentManages"
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.orgName }}
+                        </Option>
+                    </Select>
                 </FormItem>
+                <!--管理账号-->
                 <FormItem :label="$t('controlAccount')" prop="controlAccount">
-                    <Input v-model="formData.controlAccount" style="width: 280px"/>
+                    <Input v-model.trim="formData.controlAccount" style="width: 280px"/>
                 </FormItem>
+                <!--电子邮箱-->
                 <FormItem :label="$t('email')" prop="mail">
-                    <Input v-model="formData.mail" style="width: 280px"/>
+                    <Input v-model.trim="formData.mail" style="width: 280px"/>
                 </FormItem>
+                <!--短信服务商-->
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                    <Select v-model="formData.smsProvider" style="width:280px">
+                    <Select v-model.trim="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
                                 :value="item.provider"
                                 :key="item.provider">
@@ -44,25 +55,31 @@
                         </Option>
                     </Select>
                 </FormItem>
+                <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
-                    <Input v-model="formData.person" style="width: 280px"/>
+                    <Input v-model.trim="formData.person" style="width: 280px"/>
                 </FormItem>
+                <!--联系电话-->
                 <FormItem :label="$t('phone')" prop="phone">
-                    <Input v-model="formData.phone" style="width: 280px"/>
+                    <Input v-model.trim="formData.phone" style="width: 280px"/>
                 </FormItem>
+                <!--传真-->
                 <FormItem :label="$t('fax')" prop="fax">
                     <Input v-model="formData.fax" style="width: 280px"/>
                 </FormItem>
+                <!--公司编码-->
                 <FormItem :label="$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'">
-                    <Input v-model="formData.companyCode" style="width: 280px"/>
+                    <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
+                <!--所在地-->
                 <FormItem :label="$t('location')">
                     <city-plugin @select="formData.place = $event" style="width: 280px">
                     </city-plugin>
                 </FormItem>
+                <!--详细地址-->
                 <FormItem :label="$t('address')">
-                    <Input v-model="formData.address" type="textarea" style="width: 280px"/>
+                    <Input v-model.trim="formData.address" type="textarea" style="width: 280px"/>
                 </FormItem>
             </Form>
         </div>
@@ -163,6 +180,8 @@
                     phone: '',
                     //财务上级
                     fianceSuperior: '',
+                    //管理上级
+                    manageSuperior : '',
                     //传真
                     fax: '',
                     //公司编码
@@ -215,7 +234,9 @@
                 //短信供应商列表
                 smsProviderList: [],
                 //财务上级列表
-                parentEconomics : []
+                parentEconomics : [],
+                //管理上级
+                parentManages : []
             }
         },
         watch: {
@@ -223,7 +244,8 @@
             'chosedNodeDetail': {
                 handler(newVal, oldVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
-                        this.formData.fianceSuperior = newVal.title;
+                        this.formData.fianceSuperior = newVal.id;
+                        this.formData.manageSuperior = newVal.id;
                     }
                 },
                 immediate: true
@@ -289,8 +311,10 @@
                 }).then(res => {
                     if(res.status === 200){
                         this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];
+                        this.parentManages = res.data.parentManages ? res.data.parentManages : [];
                     }else{
                         this.parentEconomics = [];
+                        this.parentManages = [];
                     }
                 });
             },
@@ -328,7 +352,7 @@
                     districtid : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
-                    parentManageId : this.chosedNodeDetail.id,
+                    parentManageId : this.formData.manageSuperior,
                     nodeType : 'company'
                 }).then(res => {
                     if(res.status === 200){

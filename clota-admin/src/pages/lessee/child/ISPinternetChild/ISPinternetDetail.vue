@@ -139,7 +139,7 @@
                     return 'departmentDetail'
                 }else if(this.activeNode.type === 'cashier'){
                     return 'cashierDetail';
-                }else if(this.activeNode.type === 'scene'){
+                }else if(this.activeNode.type === 'scenic'){
                     return 'sceneDetail';
                 }else{
                     return  '';
