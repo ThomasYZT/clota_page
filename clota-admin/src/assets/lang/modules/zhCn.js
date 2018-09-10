@@ -339,6 +339,20 @@ export default {
     paused : '已暂停',
     expired : '已到期',
     companyBgName : '公司名称',
+    addProvince: '新增省份',
+    addCity: '新增城市',
+    addArea: '新增区县',
+    areaName: '区县名称',
+    provinceName: '省份名称',
+    cityName: '城市名称',
+    areaNo: '地区编码',
+    areaRemark: '地区备注',
+    provinceTitle: '省份/自治区/直辖市',
+    cityTitle: '地级市/区',
+    areaTitle: '区/县',
+    area: '地区',
+    fatherProvince: '父级省份',
+    fatherCity: '父级城市',
 
 
 }

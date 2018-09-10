@@ -102,11 +102,11 @@
                     name : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('nameG')}), trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('nameG'), length: 20}), trigger: 'blur' },
+                        { type: 'string', max: 5, message: this.$t('errorMaxLength', {field: this.$t('nameG'), length: 5}), trigger: 'blur' },
                     ],
                     remarks : [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 50}), trigger: 'blur' },
+                        { type: 'string', max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },
                     ],
                 },
                 //是否正在添加中

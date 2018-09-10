@@ -114,7 +114,7 @@
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('channelCode')}), trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('channelCode'), length: 20}), trigger: 'blur' },
+                        { type: 'string', max: 8, message: this.$t('errorMaxLength', {field: this.$t('channelCode'), length: 8}), trigger: 'blur' },
                     ]
                 },
                 //是否正在添加中

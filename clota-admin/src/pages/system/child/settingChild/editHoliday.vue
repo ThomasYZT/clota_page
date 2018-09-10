@@ -113,7 +113,7 @@
                     holidayName : [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('holidayName')}), trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('holidayName'), length: 20}), trigger: 'blur' },
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('holidayName'), length: 50}), trigger: 'blur' },
                     ],
                     time : [
                         {required: true, validator : validateTime, trigger: 'change'},

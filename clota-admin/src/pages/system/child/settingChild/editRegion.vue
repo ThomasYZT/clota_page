@@ -120,6 +120,8 @@
                 ruleValidate: {
                     province : [
                         {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('province')}), trigger: 'blur'},
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 20}), trigger: 'blur' },
                     ],
                     city : [
                         {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('city')}), trigger: 'blur'},

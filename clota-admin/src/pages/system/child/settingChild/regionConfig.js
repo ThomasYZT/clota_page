@@ -3,28 +3,23 @@
 //地区信息表头
 export const regionHead = [
     {
-        title: '地区编码',
+        title: 'areaNo',
         minWidth: 100,
-        field: 'name'
+        field: 'id'
     },
     {
-        title: '地区名称名称',
-        minWidth: 200,
-        field: 'rate'
+        title: 'areaName',
+        minWidth: 100,
+        field: 'area'
     },
     {
-        title: '备注',
-        minWidth: 200,
-        field: 'rate'
+        title: 'areaRemark',
+        minWidth: 140,
+        field: 'remarks'
     },
     {
-        title: '启用状态',
-        minWidth: 90,
-        field: 'rate'
-    },
-    {
-        title: '操作',
-        width: 160,
-        field: 'rate'
+        title: 'operate',
+        width: 120,
+        field: 'operate'
     },
 ];

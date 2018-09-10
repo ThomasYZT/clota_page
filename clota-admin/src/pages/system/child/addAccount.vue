@@ -167,12 +167,12 @@
                     email: [
                         { required: true, validator: validatmail, trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 30, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 30}), trigger: 'blur' },
+                        { type: 'string', max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },
                     ],
                     phone : [
                         { required: true, validator: validateMobile, trigger: 'blur'},
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 11, message: this.$t('errorMaxLength', {field: this.$t('mobile'), length: 11}), trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('mobile'), length: 20}), trigger: 'blur' },
                     ],
                     roleId: [
                         {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('role')}), trigger: 'change'},

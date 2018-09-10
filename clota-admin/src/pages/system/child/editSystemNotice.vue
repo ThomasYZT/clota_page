@@ -128,7 +128,7 @@
                     title : [
                         { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('noticeName')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 30, message: this.$t('errorMaxLength', {field: this.$t('noticeName'), length: 30}), trigger: 'blur' },
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('noticeName'), length: 50}), trigger: 'blur' },
                     ],
                     content : [
                         { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('desc')}), trigger: 'blur'},
@@ -157,7 +157,6 @@
              * 保存公告数据
              */
             save() {
-
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
                         this.addLoading = true;

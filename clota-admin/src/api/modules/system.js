@@ -42,6 +42,32 @@ export default {
     //修改系统设置
     'updateSetting' : 'setting/update.json',
 
+    //查询省份
+    'provinceList' : 'tenant/listProvince.json',
+    //添加省份
+    'addProvince' : 'province/add.json',
+    //修改省份
+    'updateProvince' : 'province/update.json',
+    //删除省份
+    'deleteProvince' : 'province/delete.json',
+    //根据省份查询城市列表
+    'cityList' : 'tenant/getSysCitiessByProvinceid.json',
+    //添加城市
+    'addCity' : 'city/add.json',
+    //修改城市
+    'updateCity' : 'city/update.json',
+    //删除城市
+    'deleteCity' : 'city/delete.json',
+    //根据省份查询城市列表
+    'areaList' : 'tenant/getSysAreassByCityid.json',
+    //添加区县
+    'addArea' : 'area/add.json',
+    //修改区县
+    'updateArea' : 'area/update.json',
+    //删除区县
+    'deleteArea' : 'area/delete.json',
+
+
     //查询计量单位列表
     'unitList' : 'unit/list.json',
     //根据名称查询计量单位
