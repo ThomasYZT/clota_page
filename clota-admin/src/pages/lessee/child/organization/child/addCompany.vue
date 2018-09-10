@@ -325,6 +325,15 @@
                     if(res.status === 200){
                         this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];
                         this.parentManages = res.data.parentManages ? res.data.parentManages : [];
+                        this.parentManages.push({
+                            id : this.chosedNodeDetail.id,
+                            orgName : this.chosedNodeDetail.name,
+                        });
+
+                        this.parentEconomics.push({
+                            id : this.chosedNodeDetail.id,
+                            orgName : this.chosedNodeDetail.name,
+                        });
                     }else{
                         this.parentEconomics = [];
                         this.parentManages = [];

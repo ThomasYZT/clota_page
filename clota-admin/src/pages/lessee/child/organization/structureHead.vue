@@ -24,13 +24,15 @@
                 style="width: 360px"/>
         </div>
         <div class="tree-plugin">
-            <Tree :data="companyData"
-                  ref="tree"
-                  default-expand-all
-                  :props="defaultProps"
-                  v-if="companyData.length > 0"
-                  :render="renderContent">
-            </Tree>
+            <el-tree :data="companyData"
+                     node-key="id"
+                     ref="tree"
+                     :default-expanded-keys="defaultExpandedKeys"
+                      :expand-on-click-node="false"
+                      v-if="companyData.length > 0"
+                     :filter-node-method="filterNode"
+                      :render-content="renderContent">
+            </el-tree>
             <no-data v-else>
             </no-data>
         </div>
@@ -141,7 +143,7 @@
                 return h('div', {
                     style: {
                         display: 'inline-block',
-                        width: 'calc(100% - 20px)'
+                        width: '100%'
                     },
                     class: {
                         'title-wrap': true,
@@ -171,6 +173,9 @@
                             //财务管理不允许删除节点
                             'hidden' : this.activeTap === 'economic' || data.pid === null
                         },
+                        style : {
+                            paddingRight : '5px',
+                        },
                         on: {
                             click: (e) => {
                                 e.stopPropagation();
@@ -192,6 +197,9 @@
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
                             || (data.data && data.data.nodeType === 'department')
+                        },
+                        style : {
+                            paddingRight : '5px',
                         },
                         on: {
                             click: (e) => {
@@ -276,20 +284,30 @@
                         this.$Message.error('删除失败');
                     }
                 })
+            },
+            /**
+             * 过滤节点方法
+             * @param value
+             * @param data
+             * @returns {boolean}
+             */
+            filterNode(value, data) {
+                if (!value) return true;
+                return data && data.name &&data.name.indexOf(value) !== -1;
             }
         },
         computed : {
             //公司树数据
             companyData (){
                 if(this.keyWord){
-                    if(this.treeData){
-                        return [this.treeData];
-                    }else{
-                        return [];
-                    }
-                    // return this.treeData.filter(item => String(item.name).indexOf(this.keyWord) !== -1);
+                    // if(Object.keys(this.treeData).length > 0){
+                    //     return [this.treeData];
+                    // }else{
+                    //     return [];
+                    // }
+                    return [this.$refs.tree.filter(this.keyWord)];
                 }else{
-                    if(this.treeData){
+                    if(Object.keys(this.treeData).length > 0){
                         return [this.treeData];
                     }else{
                         return [];
@@ -302,6 +320,14 @@
                     return this.treeData.id;
                 }else{
                     return '';
+                }
+            },
+            //默认展开的节点
+            defaultExpandedKeys () {
+                if(this.activeNode && Object.keys(this.activeNode).length > 0){
+                    return [this.activeNode.id];
+                }else{
+                    return []
                 }
             }
         }
@@ -343,7 +369,7 @@
                 .iconfont {
                     color: $color_666;
                     font-size: $font_size_14px;
-                    margin-right: 10px;
+                    /*margin-right: 10px;*/
                 }
             }
         }
@@ -374,9 +400,8 @@
                 padding-left: 7px;
             }
 
-            /deep/ .ivu-tree ul li {
-                margin: 0;
-                /*position: relative;*/
+            /deep/ .el-tree-node__content{
+                height: 36px;
             }
 
             /deep/ .title-wrap {
@@ -423,7 +448,7 @@
                     cursor: pointer;
 
                     &:nth-last-of-type(2) {
-                        margin-left: 9px;
+                        /*margin-left: 9px;*/
                     }
                 }
             }

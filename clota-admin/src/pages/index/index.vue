@@ -114,7 +114,7 @@
              */
             getLoginCount () {
                 ajax.get('loginCount',{
-                    date : this.date.format('yyyy-MM-dd')
+                    date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
                     if(res.status === 200){
                         this.logCountData = res.data;
@@ -132,7 +132,7 @@
              */
             getOrderCount () {
                 ajax.get('orderCount',{
-                    date : this.date.format('yyyy-MM-dd')
+                    date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
                     if(res.status === 200){
                         this.travelOrderData = res.data;
@@ -150,7 +150,7 @@
              */
             getTenantCount () {
                 ajax.get('tenantCount',{
-                    date : this.date.format('yyyy-MM-dd')
+                    date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
                     if(res.status === 200){
                         this.tenantCountData = res.data;
@@ -168,7 +168,7 @@
              */
             getServerCount () {
                 ajax.get('serverCount',{
-                    date : this.date.format('yyyy-MM-dd')
+                    date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
                     if(res.status === 200){
                         this.serverCountData = res.data;

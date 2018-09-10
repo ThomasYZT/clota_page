@@ -143,11 +143,15 @@
              * @param data
              */
             toISPinternetDetail(data) {
-                console.log(data)
                 this.$router.push({
                     name: 'ISPinternetDetail',
                     params : {
-                        id : data.id
+                        id : data.id,
+                        activeNode : {
+                            id : data.id,
+                            pid : '',
+                            type : data.nodeType
+                        }
                     }
                 });
             },

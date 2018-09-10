@@ -61,7 +61,7 @@
                                  @click="onClickItem(item)">
                                 <div :class="{
                                     active: select.province && select.province.provinceid === item.provinceid
-                                }">
+                                }" v-w-title="item.province">
                                     {{item.province}}
                                 </div>
                             </div>
@@ -368,12 +368,12 @@
                     switch (type) {
                         case 'c':
                             pCode = this.select.province.code
-                            this.citys = this.cityInfoList.filter(city => {
-                                city.city = city.city.split('市')[0]
-                                city.city = city.city.split('市')[0]
-                                city.city = city.city.split('县')[0]
-                                return city.cityid === pCode && city.city
-                            })
+                            // this.citys = this.cityInfoList.filter(city => {
+                            //     city.city = city.city.split('市')[0]
+                            //     city.city = city.city.split('市')[0]
+                            //     city.city = city.city.split('县')[0]
+                            //     return city.cityid === pCode && city.city
+                            // })
                             break
                         case 'a':
                             pCode = this.select.city.code
@@ -396,12 +396,12 @@
                         return pinyin > pinyin1 ? 1 : -1
                     }).forEach(province => {
                         // 整改文案
-                        province.province = province.province.split('省')[0]
-                        province.province = province.province.split('市')[0]
-                        province.province = province.province.split('自治区')[0]
-                        province.province = province.province.split('壮族')[0]
-                        province.province = province.province.split('回族')[0]
-                        province.province = province.province.split('维吾尔')[0]
+                        // province.province = province.province.split('省')[0]
+                        // province.province = province.province.split('市')[0]
+                        // province.province = province.province.split('自治区')[0]
+                        // province.province = province.province.split('壮族')[0]
+                        // province.province = province.province.split('回族')[0]
+                        // province.province = province.province.split('维吾尔')[0]
 
                         if (province.fstCh >= 'a' && province.fstCh <= 'g') {
                             this.provinces['A-G'].push(province)

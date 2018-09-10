@@ -65,3 +65,7 @@
     }
 
 }
+
+.el-table::before{
+    display: none;
+}

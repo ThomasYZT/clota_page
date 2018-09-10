@@ -12,6 +12,7 @@ import Dropdown from 'element-ui/lib/dropdown';
 import DropdownMenu from 'element-ui/lib/dropdown-menu';
 import DropdownItem from 'element-ui/lib/dropdown-item';
 import tooltip from 'element-ui/lib/tooltip';
+import Tree from 'element-ui/lib/tree';
 
 //按需引入iview组件
 import {
@@ -21,7 +22,6 @@ import {
     Select,
     OptionGroup,
     Modal,
-    Tree,
     breadcrumb,
     Icon,
     Radio,
@@ -40,8 +40,6 @@ import {
     TimelineItem,
     Upload
 } from 'iview';
-
-
 
 
 // 按需引入 Echarts 图表
@@ -66,6 +64,7 @@ plugin.install = function (Vue, options) {
     Vue.use(DropdownMenu);
     Vue.use(DropdownItem);
     Vue.use(tooltip);
+    Vue.use(Tree);
 
     //iview按需引入
     Vue.component('Button',Button);
@@ -80,7 +79,6 @@ plugin.install = function (Vue, options) {
     Vue.component('Select',Select);
     Vue.component('OptionGroup',OptionGroup);
     Vue.component('Modal',Modal);
-    Vue.component('Tree',Tree);
     Vue.component('Breadcrumb',breadcrumb);
     Vue.component('BreadcrumbItem',breadcrumb.Item);
     Vue.component('Icon',Icon);

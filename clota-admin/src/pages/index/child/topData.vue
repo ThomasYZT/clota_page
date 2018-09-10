@@ -11,7 +11,7 @@
                 <span class="iconfont"
                       :class="{'icon-arrow-up' : labelCurve === 'up', 'icon-arrow-down' : labelCurve === 'down'}">
                 </span>
-                {{labelRate}}%
+                {{getRate(labelRate) | contentFilter }}%
             </span>
             <span class="desc" v-if="labelRate !== ''">{{$t('circleName')}}</span>
           </span>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import common from '@/assets/js/common.js';
     export default {
         props: {
             //指标名字
@@ -48,7 +49,19 @@
         data() {
             return {}
         },
-        methods: {},
+        methods: {
+            /**
+             * 获取同比增长率
+             * @param val
+             */
+            getRate (val) {
+                if(common.isNotEmpty(val)){
+                    return Number(val).toFixed(2);
+                }else{
+                    return '';
+                }
+            }
+        },
         computed : {
             //同比上周，当前指标是上升，还是下降
             labelCurve () {

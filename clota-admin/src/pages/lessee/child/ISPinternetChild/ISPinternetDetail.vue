@@ -79,6 +79,9 @@
             getParams (params) {
                 if(params.id){
                     this.nodeId = params.id;
+                    if(params.activeNode){
+                        this.activeNode = params.activeNode;
+                    }
                     this.getCompanyTree();
                 }else{
                     this.$router.push({

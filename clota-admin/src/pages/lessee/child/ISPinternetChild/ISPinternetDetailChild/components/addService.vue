@@ -45,21 +45,29 @@
                 :column-data="columns"
                 :table-data="tableData"
                 :border="true"
-                :page-no-d.sync="pageNo"
-                :show-pagination="true"
-                :page-size-d.sync="pageSize"
-                :total-count="totalCount"
-                :height="210"
+                :height="250"
                 @query-data="queryList"
                 @selection-change="handleSelectionChange">
                 <el-table-column
                     slot="columncheck"
                     slot-scope="row"
                     type="selection"
+                    fixed="left"
                     :label="row.title"
                     show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
+                </el-table-column>
+                <el-table-column
+                    slot="columnrunStatus"
+                    slot-scope="row"
+                    :label="row.title"
+                    show-overflow-tooltip
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{$t(scope.row.runStatus)}}
+                    </template>
                 </el-table-column>
             </table-com>
         </div>
