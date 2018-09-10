@@ -159,12 +159,18 @@
                             // this.activeNode = data;
                             this.$emit('input',data.data.type);
                         }
-                    },
+                    }
                 }, [
                     h('span', {
                         class: {
                             'title-class': true
-                        }
+                        },
+                        directives: [
+                            {
+                                name: 'w-title',
+                                value: data.name
+                            }
+                        ],
                     }, data.name),
                     h('span', {
                         class: {

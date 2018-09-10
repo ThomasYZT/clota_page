@@ -2,105 +2,77 @@
 
 <template>
     <div class="cashier-detail">
-        <div class="com-name">
-            <span class="name"
-                  v-w-title="formData.cashierName">
-                {{formData.cashierName}}
-            </span>
-            <template v-if="type === 'watch'">
-                <span class="edit"
-                      @click="edit">
-                    <span class="iconfont icon-modify"></span>
-                    {{$t('edit')}}
+        <Form ref="formValidate"
+              :model="formDataCopy"
+              :rules="ruleValidate"
+              :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
+              label-position="left"
+              inline>
+            <div class="com-name">
+                <span class="name"
+                      v-w-title="formData.cashierName">
+                    {{cashierDetail.orgName | contentFilter}}
                 </span>
-            </template>
-        </div>
-        <ul class="company-info">
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">款台名称：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.cashierName"/>
-                    </span>
-                    <span class="info-val" v-else>
-                        {{formData.cashierName}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">款台ID：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">
-                        服务器名称
+            </div>
+            <i-row>
+                <i-col span="12">
+                    <FormItem label="款台名称：" :label-width="150">
+                        <span class="info-val" v-w-title="cashierDetail.orgName">{{cashierDetail.orgName | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="款台ID：" :label-width="150">
+                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem label="服务器名称：" :label-width="150">
+                        <span class="info-val" v-w-title="cashierDetail.serverName">{{cashierDetail.serverName | contentFilter}}</span>
                         <Tooltip placement="bottom">
-                             <div slot="content" class="tips-content">
-                               {{$t('serverNameTips')}}
+                            <div slot="content" class="tips-content">
+                                {{$t('serverNameTips')}}
                             </div>
                             <Icon type="information-circled"></Icon>
-                        </Tooltip>：
-                    </span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.serverName"/>
-                    </span>
-                    <span class="info-val" v-else>
-                        {{formData.serverName}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">款台类型：</span>
-                    <span class="info-val">23232323232323232323232323232323232323232</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">所属核销设备分组：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.verifyCashierTypeGroup">
-                            <Option v-for="item in verifyCashierTypeGroupList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </span>
-                    <span class="info-val" v-else>
-                        {{formData.verifyCashierTypeGroup}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">所属销售渠道分组：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.verifySaleTypeGroup">
-                            <Option v-for="item in verifySaleTypeGroupList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </span>
-                    <span class="info-val" v-else>
-                        {{formData.verifySaleTypeGroup}}
-                    </span>
-                </div>
-            </li>
-            <li class="btn-area" v-if="type === 'edit'">
-                <Button type="primary"
-                        class="ivu-btn-90px"
-                        @click="saveEdit">{{$t('save')}}</Button>
-                <Button type="ghost"
-                        class="ivu-btn-90px"
-                        @click="cancel">{{$t('cancel')}}</Button>
-            </li>
-        </ul>
+                        </Tooltip>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="款台类型：" :label-width="150">
+                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem label="所属核销设备分组：" :label-width="150">
+                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="所属销售渠道分组：" :label-width="150">
+                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+        </Form>
     </div>
 </template>
 
 <script>
     import defaultsDeep from 'lodash/defaultsDeep';
+    import ajax from '@/api/index.js';
     export default {
+        props : {
+            //节点信息
+            'activeNode' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+        },
         data() {
             return {
                 //表单数据
@@ -133,6 +105,8 @@
                         value : '1'
                     }
                 ],
+                //款台详情
+                cashierDetail :{}
             }
         },
         methods: {
@@ -157,6 +131,30 @@
                 this.formData = defaultsDeep({} , this.formDataCopy);
                 this.$Message.success('保存成功');
             },
+            /**
+             * 获取款台详情
+             */
+            getCashierDetail () {
+                ajax.post('getServiceProvider',{
+                    id : this.activeNode.id,
+                }).then(res => {
+                    if(res.status === 200){
+                        this.cashierDetail = res.data ? res.data : {};
+                    }else{
+                        this.cashierDetail = {};
+                    }
+                });
+            },
+        },
+        watch : {
+            //节点更换，重新请求节点数据
+            activeNode : {
+                handler (newVal,oldVal) {
+                    this.getCashierDetail();
+                },
+                deep : true,
+                immediate : true
+            }
         }
     }
 </script>
@@ -169,6 +167,10 @@
         padding: 11px 35px;
         float: right;
         overflow: auto;
+
+        .ivu-tooltip-inner{
+            white-space: normal;
+        }
 
         .com-name {
             @include overflow_tip(100%, 56px);
@@ -204,78 +206,42 @@
             }
         }
 
-        .company-info {
-            @include block_outline($height: auto);
-            padding-bottom: 21px;
-            border-bottom: 1px dashed $color_E1E1E1;
+        .form-watch{
+            /deep/ .ivu-form-item{
+                margin-bottom: 0;
+            }
+            /deep/ .ivu-form-item-required .ivu-form-item-label:before{
+                display: none;
+            }
+        }
 
-            .btn-area{
-                @include block_outline($height : 72px);
-                text-align: center;
-                padding: 20px 0;
-
-                /deep/ .ivu-btn-primary{
-                    margin-right: 8px;
-                }
+        .form-edit{
+            /deep/ .ivu-form-item{
+                width: calc(100% - 25px);
+                margin-bottom: 14px;
             }
 
-            .list {
-                display: flex;
-                align-items: center;
-                @include block_outline($height: auto);
-                min-height: 30px;
-                padding: 4px 0;
-                line-height: 22px;
-                overflow: auto;
-
-                .info-list1 {
-                    @include block_outline(40%, auto);
-                }
-
-                .info-list2 {
-                    @include block_outline(60%, auto);
-                }
-
-                .info-list1,
-                .info-list2 {
-                    display: flex;
-                    flex-direction: row;
-                    float: left;
-                    font-size: $font_size_14px;
-                    align-items: center;
-
-                    &:nth-last-of-type(1) {
-                        padding-left: 15px;
-                    }
-
-                    .info-key {
-                        @include block_outline(auto, 100%);
-                        color: $color_333;
-
-                        .ivu-icon-information-circled{
-                            font-size: $font_size_15px;
-                            margin-left: 5px;
-                            color: $color_gray;
-                            vertical-align: unset;
-                        }
-
-                        .tips-content{
-                            white-space: normal;
-                        }
-
-                        &.fix-key{
-                            width: 130px;
-                            text-align: left;
-                        }
-                    }
-
-                    .info-val {
-                        flex: 1;
-                        @include overflow_tip(auto, auto);
-                        color: $color_666;
-                    }
-                }
+            /deep/ .ivu-form-item-error-tip{
+                font-size: $font_size_12px;
+                padding-top: 2px;
             }
+        }
+
+        /deep/ .ivu-form-item-label{
+            font-size: $font_size_14px;
+            color: $color_333;
+        }
+
+        /deep/ .ivu-form-item-content{
+            font-size: 14px;
+            color: #333333;
+        }
+
+        .ivu-icon-information-circled{
+            font-size: $font_size_15px;
+            margin-left: 5px;
+            color: $color_gray;
+            vertical-align: unset;
         }
     }
 </style>

@@ -325,7 +325,7 @@
                         {required : true,message : this.$t('inputField',{field : this.$t('scenicName')}),trigger : 'blur'}
                     ],
                     checkinCode : [
-                        {min : 2,max : 8,message : this.$t('rangeBitError',{field : this.$t('enterpriseCode'),length : 8,min : 2,max :10}),trigger : 'blur'},
+                        {min : 2,max : 8,message : this.$t('rangeBitError',{field : this.$t('enterpriseCode'),length : 8,min : 1,max :8}),trigger : 'blur'},
                     ],
                     email : [
                         {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},

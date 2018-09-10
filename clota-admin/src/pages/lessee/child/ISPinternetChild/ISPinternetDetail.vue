@@ -142,7 +142,7 @@
                     return 'companyDetail'
                 }else if(this.activeNode.type === 'department'){
                     return 'departmentDetail'
-                }else if(this.activeNode.type === 'cashier'){
+                }else if(this.activeNode.type === 'table'){
                     return 'cashierDetail';
                 }else if(this.activeNode.type === 'scenic'){
                     return 'sceneDetail';
