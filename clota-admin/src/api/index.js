@@ -48,8 +48,7 @@ export default {
      * 获取域名
      */
     getHost(urlKey) {
-        return baseUrl + urlKey || '';
-        // return 'http://114.115.165.167:9999/' + urlKey || '';
+        return baseUrl + api[urlKey] || '';
     },
     /**
      * 获取token参数

@@ -32,7 +32,6 @@
                              v-for="(item,index) in scoped.row.images"
                              :key="index"
                              :src="item">
-                             <!--:src="getHost(item.slice(1,item.length))">-->
                     </template>
                     <template v-else>-</template>
                 </template>
@@ -102,9 +101,6 @@
             }
         },
         methods: {
-            getHost ( url ) {
-                return ajax.getHost(url)
-            },
             /**
              * 查询账户信息列表
              */
