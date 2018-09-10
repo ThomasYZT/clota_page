@@ -547,7 +547,8 @@
                         padding: 0 5px;
 
                         .iconfont{
-                            display: none;
+                            display: inline-block;
+                            transform: scale(0);
                         }
 
                         &.active{
@@ -559,7 +560,7 @@
                             border-radius: 4px;
                             cursor: pointer;
                             .iconfont{
-                                display: inline-block;
+                                transform: scale(1);
                             }
                         }
 
