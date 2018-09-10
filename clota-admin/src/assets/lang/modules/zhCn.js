@@ -99,6 +99,7 @@ export default {
     nodeType: '节点类型',
     company: '公司',
     scenic: '景区',
+    scenicName: '景区名称',
     department: '部门',
     scene: '景区',
     cashier: '核销/销售款台',

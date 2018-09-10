@@ -4,7 +4,7 @@
     <div class="company-detail">
         <Form ref="formValidate"
               :model="formDataCopy"
-              :rules="type === 'edit' ? ruleValidate : {}"
+              :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
               label-position="left"
               inline>
@@ -99,7 +99,7 @@
                     <FormItem prop="email" label="电子邮箱：" :label-width="150">
                         <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="formDataCopy.email">
-                             {{formDataCopy.email | contentFilter}}
+                             {{companyDetail.managerAccount ? companyDetail.managerAccount.email : '' | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -153,8 +153,8 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="管理上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentManage.id" v-if="type === 'edit' && activeNode && activeNode.pid">
+                    <FormItem prop="parentEconomicId" label="管理上级：" :label-width="150">
+                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in superiorList"
                                 :value="item.id"
                                 :key="item.id">
@@ -167,8 +167,8 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="财务上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentEconomic.id" v-if="type === 'edit' && activeNode && activeNode.pid">
+                    <FormItem prop="parentEconomicId" label="财务上级：" :label-width="150">
+                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
                                     :key="item.id">
@@ -378,6 +378,12 @@
                     ],
                     tex : [
                         {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'},
+                    ],
+                    parentManageId : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('superior')}),trigger : 'blur'},
+                    ],
+                    parentEconomicId : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('fianceSuperior')}),trigger : 'blur'},
                     ]
                 }
             }
@@ -399,7 +405,7 @@
                         this.type = 'watch';
                         ajax.post('updateOrgInfo',{
                             id : this.formDataCopy.id,
-                            status : this.formDataCopy.isStart ? 'open' : 'false',
+                            status : this.formDataCopy.isStart ? 'open' : 'close',
                             orgName : this.formDataCopy.orgName,
                             checkinCode : this.formDataCopy.checkinCode,
                             smsProvider : this.formDataCopy.smsProvider,
@@ -412,8 +418,8 @@
                             telephone : this.formDataCopy.telephone,
                             tex : this.formDataCopy.tex,
                             businessAccountId : this.formDataCopy.businessAccount1.id,
-                            parentManageId : this.formDataCopy.parentManage.id,
-                            parentEconomicId : this.formDataCopy.parentEconomic.id,
+                            parentManageId : this.formDataCopy.parentManageId,
+                            parentEconomicId : this.formDataCopy.parentEconomicId,
                         }).then(res => {
                             if(res.status === 200){
                                 this.$Message.success('修改成功');
@@ -429,18 +435,15 @@
              * 开始编辑
              */
             edit () {
-                this.type = 'edit';
                 this.formDataCopy = defaultsDeep({
                     isStart : this.companyDetail.status === 'open',
                     businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {},
-                    parentManage : this.companyDetail.parentManage ? this.companyDetail.parentManage : {
-                        id : ''
-                    },
-                    parentEconomic : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic : {
-                        id : ''
-                    },
-                    email : this.formDataCopy.managerAccount ? this.formDataCopy.managerAccount.email : '',
+                    parentManageId : this.companyDetail.parentManage ? this.companyDetail.parentManage.id : '',
+                    parentEconomicId : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic.id : '',
+                    email : this.companyDetail.managerAccount ? this.companyDetail.managerAccount.email : '',
                 }  , this.companyDetail);
+
+                this.type = 'edit';
             },
             /**
              * 重置密码
@@ -557,8 +560,8 @@
                     id : this.activeNode.id,
                 }).then(res => {
                     if(res.status === 200){
-                        this.superiorList = res.data.parentManages ? res.data.parentManages : [];
-                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics : [];
+                        this.superiorList = res.data.parentManages ? res.data.parentManages.filter(item => item.id !== this.activeNode.id) : [];
+                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics.filter(item => item.id !== this.activeNode.id) : [];
                     }else{
                         this.superiorList = [];
                         this.fianceSuperiorList = [];
@@ -625,11 +628,20 @@
             /deep/ .ivu-form-item{
                 margin-bottom: 0;
             }
+            /deep/ .ivu-form-item-required .ivu-form-item-label:before{
+                display: none;
+            }
         }
 
         .form-edit{
             /deep/ .ivu-form-item{
                 width: calc(100% - 25px);
+                margin-bottom: 14px;
+            }
+
+            /deep/ .ivu-form-item-error-tip{
+                font-size: $font_size_12px;
+                padding-top: 2px;
             }
         }
 
