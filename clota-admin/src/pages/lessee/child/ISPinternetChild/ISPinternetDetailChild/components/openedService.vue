@@ -97,7 +97,7 @@
                                 :disabled="!canDelService"
                                 @click="delService(selectedService)">删除服务</Button>
                         <Button type="primary"
-                                @click="orgAddService">添加服务</Button>
+                                @click="orgAddService(selectedService)">添加服务</Button>
                     </template>
                 </div>
                 <table-com
@@ -336,7 +336,7 @@
                 this.$refs.delModal.show({
                     title : `删除服务`,
                     confirmCallback : () => {
-                        // this.confirmDelete(data);
+                        this.comfirmDeletService(data.map(item => item.serviceId));
                     }
                 });
             },
@@ -361,6 +361,23 @@
                         this.tableData = res.data ? res.data : [];
                     }else{
                         this.tableData = [];
+                    }
+                });
+            },
+            /**
+             * 确认删除服务
+             * @param serviceIds 需要删除的服务id
+             */
+            comfirmDeletService (serviceIds) {
+                ajax.post('deleteServices',{
+                    orgId : this.searchParams.id,
+                    serviceIds : serviceIds
+                }).then(res => {
+                    if(res.status === 200){
+                        this.$Message.success('删除成功');
+                        this.queryList();
+                    }else{
+                        this.$Message.error('删除失败');
                     }
                 });
             }

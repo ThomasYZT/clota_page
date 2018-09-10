@@ -63,4 +63,6 @@ export default {
     'getOpenServices' : 'tenant/getOpenServices.json',
     //给指定景区开通服务
     'openScenicServices' : 'tenant/openScenicServices.json',
+    //指定景区删除服务
+    'deleteServices' : 'tenant/deleteServices.json',
 }

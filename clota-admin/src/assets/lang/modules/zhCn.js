@@ -277,6 +277,7 @@ export default {
     fieldTypeError: '{field}不能为负数',
     decimalError: '{field}小数位最多2位',
     rangeError: '{field}必须大于{min}，且小于{max}',
+    rangeBitError: '{field}必须大于{min}位，且小于{max}位',
     sizeErrorS: '{filed1}不可小于{filed2}',
     sizeErrorB: '{filed1}不可大于{filed2}',
     numError: '{field}必须为数字',
@@ -336,6 +337,7 @@ export default {
     opened : '已开通',
     paused : '已暂停',
     expired : '已到期',
+    companyBgName : '公司名称',
 
 
 }

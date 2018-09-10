@@ -85,9 +85,9 @@
         props: {
             //组织结构数据
             'tree-data': {
-                type: Object,
+                type: Array,
                 default() {
-                    return {};
+                    return [];
                 }
             },
             //当前选中的结构类型
@@ -139,7 +139,7 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
-                data.expand = true;
+                // data.expand = true;
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -300,15 +300,10 @@
             //公司树数据
             companyData (){
                 if(this.keyWord){
-                    // if(Object.keys(this.treeData).length > 0){
-                    //     return [this.treeData];
-                    // }else{
-                    //     return [];
-                    // }
-                    return [this.$refs.tree.filter(this.keyWord)];
+                    return this.$refs.tree.filter(this.keyWord);
                 }else{
                     if(Object.keys(this.treeData).length > 0){
-                        return [this.treeData];
+                        return this.treeData;
                     }else{
                         return [];
                     }
@@ -316,15 +311,15 @@
             },
             //根节点id
             rootId (){
-                if(this.treeData){
-                    return this.treeData.id;
+                if(this.treeData && this.treeData.length > 0){
+                    return this.treeData[0].id;
                 }else{
                     return '';
                 }
             },
             //默认展开的节点
             defaultExpandedKeys () {
-                if(this.activeNode && Object.keys(this.activeNode).length > 0){
+                if(this.activeNode){
                     return [this.activeNode.id];
                 }else{
                     return []

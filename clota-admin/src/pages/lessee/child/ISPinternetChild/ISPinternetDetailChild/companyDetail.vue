@@ -2,10 +2,29 @@
 
 <template>
     <div class="company-detail">
+        <Form ref="formValidate"
+              :model="formDataCopy"
+              :rules="type === 'edit' ? ruleValidate : {}"
+              :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
+              label-position="left"
+              inline>
         <div class="com-name">
             <template v-if="type === 'edit'">
-                <Input v-model="formDataCopy.orgName" style="width : 280px"/>
-                <i-switch v-model="formDataCopy.isStart"></i-switch>
+                <i-row>
+                    <i-col span="8">
+                        <FormItem prop="orgName" >
+                            <Input v-model.trim="formDataCopy.orgName" style="width : 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="2">
+                        <FormItem>
+                            <i-switch v-model="formDataCopy.isStart"></i-switch>
+                            <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
+                                {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+                            </span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
             </template>
             <template v-if="type === 'watch'">
                 <span class="name"
@@ -18,207 +37,211 @@
                     <span class="iconfont icon-modify"></span>
                     {{$t('edit')}}
                 </span>
+                <span :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
+                    {{$t(companyDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
+                </span>
             </template>
-            <span :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
-                {{$t(companyDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
-            </span>
 
         </div>
-        <ul class="company-info">
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">公司ID：</span>
+        <i-row>
+            <i-col span="12">
+                <FormItem label="公司ID：" :label-width="150">
                     <span class="info-val" v-w-title="companyDetail.id">{{companyDetail.id | contentFilter}}</span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">公司编码：</span>
+                </FormItem>
+            </i-col>
+            <i-col span="12">
+                <FormItem label="公司编码：" :label-width="150">
                     <span class="info-val" v-w-title="companyDetail.nodeCode">{{companyDetail.nodeCode | contentFilter}}</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">企业编码(线下核销)：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.checkinCode"/>
-                    </span>
+                </FormItem>
+            </i-col>
+        </i-row>
+        <i-row>
+            <i-col span="12">
+                <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="150">
+                    <Input v-model.trim="formDataCopy.checkinCode"  v-if="type === 'edit'"/>
                     <span class="info-val" v-else v-w-title="companyDetail.checkinCode">
                         {{companyDetail.checkinCode | contentFilter}}
                     </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">全民分销邀请码：</span>
+                </FormItem>
+            </i-col>
+            <i-col span="12">
+                <FormItem label="全民分销邀请码：" :label-width="150">
                     <span class="info-val" v-w-title="companyDetail.saleCode">{{companyDetail.saleCode | contentFilter}}</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">短信供应商：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.smsProvider" >
+                </FormItem>
+            </i-col>
+        </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="smsProvider" label="短信供应商：" :label-width="150">
+                        <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.provider"
                                     :key="item.provider">
                                 {{ item.provider }}
                             </Option>
                         </Select>
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.smsProvider">
-                         {{companyDetail.smsProvider | contentFilter}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">管理账号：</span>
-                    <span class="info-val" v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''">
-                         {{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : '' | contentFilter}}
-                        <span class="reset-pass" @click="resetPass">重置密码</span>
-                    </span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">电子邮箱：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.managerAccount.email" />
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.email : ''">
-                         {{companyDetail.managerAccount ? companyDetail.managerAccount.email : '' | contentFilter}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">联系人：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.linkName" />
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.linkName">
-                         {{companyDetail.linkName | contentFilter}}
-                    </span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">所在地：</span>
-                    <span class="info-val" v-if="type === 'edit'">
+                        <span class="info-val" v-else v-w-title="companyDetail.smsProvider">
+                             {{companyDetail.smsProvider | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="管理账号：" :label-width="150">
+                        <span class="info-val" v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''">
+                             {{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : '' | contentFilter}}
+                            <span class="reset-pass" @click="resetPass">重置密码</span>
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="email" label="电子邮箱：" :label-width="150">
+                        <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
+                        <span class="info-val" v-else v-w-title="formDataCopy.email">
+                             {{formDataCopy.email | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="linkName" label="联系人：" :label-width="150">
+                        <Input v-model.trim="formDataCopy.linkName" v-if="type === 'edit'"/>
+                        <span class="info-val" v-else v-w-title="companyDetail.linkName">
+                             {{companyDetail.linkName | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem label="所在地：" :label-width="150">
                         <city-plugin @select="changeCity"
-                                     v-if="defaultAddress"
+                                     v-if="defaultAddress && type === 'edit'"
                                      :defaultValue="defaultAddress">
                         </city-plugin>
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyPlace">
-                         {{companyPlace | contentFilter}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">详细地址：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.address" />
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.address">
-                         {{companyDetail.address | contentFilter}}
-                    </span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">电话：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.telephone" />
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.telephone">
-                         {{companyDetail.telephone | contentFilter}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">传真：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                        <Input v-model="formDataCopy.tex" />
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.tex">
-                         {{companyDetail.tex | contentFilter}}
-                    </span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">管理上级：</span>
-                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid">
-                          <Select v-model="formDataCopy.parentManage.id" >
+                        <span class="info-val" v-else v-w-title="companyPlace">
+                             {{companyPlace | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="address" label="详细地址：" :label-width="150">
+                        <Input v-model="formDataCopy.address" v-if="type === 'edit'"/>
+                        <span class="info-val" v-else v-w-title="companyDetail.address">
+                             {{companyDetail.address | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="telephone" label="电话：" :label-width="150">
+                        <Input v-model.trim="formDataCopy.telephone" v-if="type === 'edit'"/>
+                        <span class="info-val" v-else v-w-title="companyDetail.telephone">
+                             {{companyDetail.telephone | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="tex" label="传真：" :label-width="150">
+                        <Input v-model.trim="formDataCopy.tex" v-if="type === 'edit'"/>
+                        <span class="info-val" v-else v-w-title="companyDetail.tex">
+                             {{companyDetail.tex | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="管理上级：" :label-width="150">
+                        <Select v-model.trim="formDataCopy.parentManage.id" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in superiorList"
-                                    :value="item.id"
-                                    :key="item.id">
+                                :value="item.id"
+                                :key="item.id">
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.parentManage">
-                        {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
-                    </span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">财务上级：</span>
-                    <span class="info-val" v-if="type === 'edit' && activeNode && activeNode.pid">
-                          <Select v-model="formDataCopy.parentEconomic.id" >
+                        <span class="info-val" v-else v-w-title="companyDetail.parentManage">
+                            {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="财务上级：" :label-width="150">
+                        <Select v-model.trim="formDataCopy.parentEconomic.id" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
                                     :key="item.id">
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
-                        {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
-                    </span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">短信余量/累计购买：</span>
-                    <span class="info-val">{{companyDetail.smsDetails | contentFilter}}</span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key" :class="{'fix-key' : type === 'edit'}">受理客服：</span>
-                    <span class="info-val" v-if="type === 'edit'">
-                          <Select v-model="formDataCopy.businessAccount1.id" >
+                        <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
+                            {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
+                        {{companyDetail.smsDetails | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="受理客服：" :label-width="150">
+                        <Select v-model="formDataCopy.businessAccount1.id" v-if="type === 'edit'  && activeNode && !activeNode.pid">
                             <Option v-for="item in serviceStaffList"
                                     :value="item.id"
                                     :key="item.id">
                                 {{ item.loginName }}
                             </Option>
                         </Select>
-                    </span>
-                    <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
-                         {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
-                    </span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">创建时间：</span>
-                    <span class="info-val" v-w-title="companyDetail.createdTime">{{companyDetail.createdTime | contentFilter}}</span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">创建人：</span>
-                    <span class="info-val" v-w-title="companyDetail.createUser">{{companyDetail.createUser | contentFilter}}</span>
-                </div>
-            </li>
-            <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">上次修改时间：</span>
-                    <span class="info-val" v-w-title="companyDetail.updatedTime">{{companyDetail.updatedTime | contentFilter}}</span>
-                </div>
-                <div class="info-list2">
-                    <span class="info-key">上次修改人：</span>
-                    <span class="info-val" v-w-title="companyDetail.updateUser">{{companyDetail.updateUser | contentFilter}}</span>
-                </div>
-            </li>
-            <li class="btn-area" v-if="type === 'edit'">
-                <Button type="primary"
-                        class="ivu-btn-90px"
-                        @click="saveEdit">{{$t('save')}}</Button>
-                <Button type="ghost"
-                        class="ivu-btn-90px"
-                        @click="cancel">{{$t('cancel')}}</Button>
-            </li>
-        </ul>
+                        <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
+                             {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="创建时间：" :label-width="150">
+                        <span class="info-val" v-w-title="companyDetail.createdTime">{{companyDetail.createdTime | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="创建人：" :label-width="150">
+                        <span class="info-val" v-w-title="companyDetail.createUser">{{companyDetail.createUser | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+
+            <i-row>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="上次修改时间：" :label-width="150">
+                        <span class="info-val" v-w-title="companyDetail.updatedTime">{{companyDetail.updatedTime | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem prop="orgName" label="上次修改人：" :label-width="150">
+                        <span class="info-val" v-w-title="companyDetail.updateUser">{{companyDetail.updateUser | contentFilter}}</span>
+                    </FormItem>
+                </i-col>
+            </i-row>
+
+            <i-row v-if="type === 'edit'">
+                <i-col span="24" style="text-align: center">
+                    <Button type="primary"
+                            class="ivu-btn-90px"
+                            @click="saveEdit"
+                            style="margin-right: 5px;">{{$t('save')}}</Button>
+                    <Button type="ghost"
+                            class="ivu-btn-90px"
+                            @click="cancel">{{$t('cancel')}}</Button>
+                </i-col>
+            </i-row>
+
+        </Form>
 
 
         <!--已开通服务-->
@@ -264,6 +287,7 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
+    import {validator} from 'klwk-ui';
 
     export default {
         props : {
@@ -287,6 +311,30 @@
             editModal
         },
         data() {
+            //校验邮箱
+            const validateEmail = (rule,value,callback) => {
+                if(value){
+                    if(validator.isEmail(value)){
+                        callback();
+                    }else{
+                        callback(this.$t('formalError',{field : this.$t('email')}));
+                    }
+                }else{
+                    callback(this.$t('inputField',{field : this.$t('email')}));
+                }
+            };
+            //校验手机号
+            const validatePhone = (rule,value,callback) => {
+                if(value){
+                    if(validator.isTelephone(value)){
+                        callback();
+                    }else{
+                        callback(this.$t('formalError',{field : this.$t('phone')}));
+                    }
+                }else{
+                    callback();
+                }
+            };
             return {
                 //复制的表单数据
                 formDataCopy : {},
@@ -301,7 +349,37 @@
                 //受理客服列表
                 serviceStaffList : [],
                 //公司详细信息
-                companyDetail : {}
+                companyDetail : {},
+                ruleValidate : {
+                    orgName : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('companyBgName'),length : 100}),trigger : 'blur'},
+                        {required : true,message : this.$t('inputField',{field : this.$t('companyBgName')}),trigger : 'blur'}
+                    ],
+                    checkinCode : [
+                        {min : 2,max : 8,message : this.$t('rangeBitError',{field : this.$t('enterpriseCode'),length : 8,min : 2,max :10}),trigger : 'blur'},
+                    ],
+                    smsProvider : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('smsProvider')}),trigger : 'blur'}
+                    ],
+                    email : [
+                        {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},
+                        {validator : validateEmail,trigger : 'blur'}
+                    ],
+                    linkName : [
+                        {required : true,message : this.$t('inputField',{field : this.$t('person')}),trigger : 'blur'},
+                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'},
+                    ],
+                    address : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'},
+                    ],
+                    telephone : [
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'},
+                        {validator : validatePhone ,trigger : 'blur'}
+                    ],
+                    tex : [
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'},
+                    ]
+                }
             }
         },
         methods: {
@@ -309,36 +387,41 @@
              * 取消编辑
              */
             cancel () {
+                this.$refs.formValidate.resetFields();
                 this.type = 'watch';
             },
             /**
              * 保存编辑的信息
              */
             saveEdit () {
-                this.type = 'watch';
-                ajax.post('updateOrgInfo',{
-                    id : this.formDataCopy.id,
-                    status : this.formDataCopy.isStart ? 'open' : 'false',
-                    orgName : this.formDataCopy.orgName,
-                    checkinCode : this.formDataCopy.checkinCode,
-                    smsProvider : this.formDataCopy.smsProvider,
-                    email : this.formDataCopy.managerAccount.email,
-                    province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
-                    city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
-                    district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
-                    linkName : this.formDataCopy.linkName,
-                    address : this.formDataCopy.address,
-                    telephone : this.formDataCopy.telephone,
-                    tex : this.formDataCopy.tex,
-                    businessAccountId : this.formDataCopy.businessAccount1.id,
-                    parentManageId : this.formDataCopy.parentManage.id,
-                    parentEconomicId : this.formDataCopy.parentEconomic.id,
-                }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('修改成功');
-                        this.getCompanyDetail();
-                    }else{
-                        this.$Message.error('修改失败');
+                this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.type = 'watch';
+                        ajax.post('updateOrgInfo',{
+                            id : this.formDataCopy.id,
+                            status : this.formDataCopy.isStart ? 'open' : 'false',
+                            orgName : this.formDataCopy.orgName,
+                            checkinCode : this.formDataCopy.checkinCode,
+                            smsProvider : this.formDataCopy.smsProvider,
+                            email : this.formDataCopy.email,
+                            province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
+                            city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
+                            district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
+                            linkName : this.formDataCopy.linkName,
+                            address : this.formDataCopy.address,
+                            telephone : this.formDataCopy.telephone,
+                            tex : this.formDataCopy.tex,
+                            businessAccountId : this.formDataCopy.businessAccount1.id,
+                            parentManageId : this.formDataCopy.parentManage.id,
+                            parentEconomicId : this.formDataCopy.parentEconomic.id,
+                        }).then(res => {
+                            if(res.status === 200){
+                                this.$Message.success('修改成功');
+                                this.getCompanyDetail();
+                            }else{
+                                this.$Message.error('修改失败');
+                            }
+                        });
                     }
                 });
             },
@@ -356,6 +439,7 @@
                     parentEconomic : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic : {
                         id : ''
                     },
+                    email : this.formDataCopy.managerAccount ? this.formDataCopy.managerAccount.email : '',
                 }  , this.companyDetail);
             },
             /**
@@ -537,12 +621,35 @@
         float: right;
         overflow: auto;
 
+        .form-watch{
+            /deep/ .ivu-form-item{
+                margin-bottom: 0;
+            }
+        }
+
+        .form-edit{
+            /deep/ .ivu-form-item{
+                width: calc(100% - 25px);
+            }
+        }
+
+        /deep/ .ivu-form-item-label{
+            font-size: $font_size_14px;
+            color: $color_333;
+        }
+
+        /deep/ .ivu-form-item-content{
+            font-size: 14px;
+            color: #333333;
+        }
+
         .com-name {
-            @include overflow_tip(100%, 56px);
+            @include overflow_tip(100%, 70px);
             padding: 14px 0;
 
             /deep/ .ivu-switch{
                 margin-left: 20px;
+                width: 100%;
             }
 
             .name {
@@ -597,62 +704,12 @@
             }
         }
 
-        .company-info {
-            @include block_outline($height: auto);
-            padding-bottom: 21px;
-            border-bottom: 1px dashed $color_E1E1E1;
-
-            .list {
-                display: flex;
-                align-items: center;
-                @include block_outline(auto);
-                min-height: 30px;
-                overflow: auto;
-                padding: 4px 0;
-                line-height: 22px;
-
-                .info-list1 {
-                    @include block_outline(50%, auto);
-                }
-
-                .info-list2 {
-                    @include block_outline(50%, auto);
-                    padding-left: 15px;
-                }
-
-                .info-list1,
-                .info-list2 {
-                    display: flex;
-                    flex-direction: row;
-                    float: left;
-                    font-size: $font_size_14px;
-                    align-items: center;
-
-                    .info-key {
-                        @include block_outline(auto, 100%,false);
-                        color: $color_333;
-
-                        &.fix-key{
-                            width: 140px;
-                            text-align: left;
-                        }
-                    }
-
-                    .info-val {
-                        flex: 1;
-                        @include overflow_tip(auto, auto);
-                        color: $color_666;
-
-                        .reset-pass{
-                            color: $color_0082D5;
-                            font-size: $font_size_12px;
-                            margin-left: 10px;
-                            display: inline-block;
-                            cursor: pointer;
-                        }
-                    }
-                }
-            }
+        .reset-pass{
+            color: $color_0082D5;
+            font-size: $font_size_12px;
+            margin-left: 10px;
+            display: inline-block;
+            cursor: pointer;
         }
 
         .open-service {
