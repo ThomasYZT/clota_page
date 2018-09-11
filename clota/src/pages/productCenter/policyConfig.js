@@ -2,11 +2,6 @@
 // 我定义的销售政策
 export const myPolicyHead = [
     {
-        title: '',      //多选
-        width: 90,
-        field: 'select'
-    },
-    {
         title: '销售政策名称',      // 销售政策名称
         width: 160,
         field: 'id'

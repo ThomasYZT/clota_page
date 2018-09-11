@@ -219,3 +219,83 @@ export const nodeList = [
         value: 'scene'
     }
 ];
+
+//是否团队产品
+export const isTeamProduct = [
+    {
+        label: 'yes',//是
+        value: 'yes'
+    },
+    {
+        label: 'no',//否
+        value: 'no'
+    },
+];
+
+//预定时提交游客身份信息
+export const orderInfo = [
+    {
+        label: 'noCommit',//无需提交身份信息
+        value: 'no'
+    },
+    {
+        label: 'moreTicket',//每个证件可预订多张票
+        value: 'more'
+    },
+    {
+        label: 'oneTicket',//每个证件只能预订一张票
+        value: 'one'
+    }
+];
+
+//证件类型
+export const idType = [
+    {
+        label: 'idCard',//身份证
+        value: 'identity'
+    },
+    {
+        label: 'passport',//护照
+        value: 'passport'
+    },
+    {
+        label: 'drivingLicense',//驾照
+        value: 'driver'
+    },
+    {
+        label: 'officersCert',//军官证
+        value: 'officer'
+    },
+    {
+        label: 'policeCert',//警官证
+        value: 'police'
+    }
+];
+
+//限制库存
+export const limitStore = [
+    {
+        label: 'limitDay',//限制每日库存
+        value: 'everyday'
+    },
+    {
+        label: 'limitTotal',//限制库存总量
+        value: 'total'
+    },
+    {
+        label: 'noLimit',//不限库存
+        value: 'is_no_limit'
+    }
+];
+
+//产品有效性设置
+export const productEffectSet = [
+    {
+        label: 'dayToStart',//自游玩之日起X天有效
+        value: 'dayToStart'
+    },
+    {
+        label: 'toPolicy',//同销售政策适用游玩期限
+        value: 'toPolicy'
+    },
+];
