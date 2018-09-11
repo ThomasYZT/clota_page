@@ -45,23 +45,44 @@ export default {
                             isMenu : true
                         },
                     },
-
+                    addTicket: {
+                        //产品中心--产品列表--新建/修改票类
+                        path: '/productCenter/pList/addTicket',
+                        name: 'addTicket',
+                        component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/editTicket.vue'),
+                        meta: {
+                            menuName: 'ticketType', //lang.config.js 里面的语言键值
+                            _name: 'point-setting',
+                            rightPath : topMenuName + '.' + 'productList',
+                        },
+                    },
+                    ticketDetail: {
+                        //产品中心--产品列表--票类详情
+                        path: '/productCenter/pList/ticketDetail',
+                        name: 'ticketDetail',
+                        component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/ticketDetail.vue'),
+                        meta: {
+                            menuName: 'ticketType', //lang.config.js 里面的语言键值
+                            _name: 'point-setting',
+                            rightPath : topMenuName + '.' + 'productList',
+                        },
+                    },
                 }
             },
 
-            /*marketingPolicy: {
+            marketingPolicy: {
                 //产品中心--销售政策
-                path: '/productCenter/productList',
-                name: 'onlinePaymentSetting',
-                component: () => import(/!* webpackChunkName: "productCenter" *!/ '../../pages/systemSetting/onlinePaymentSetting/onlinePayment.vue'),
+                path: '/productCenter/mPolicy',
+                name: 'marketingPolicy',
+                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/list.vue'),
                 meta: {
                     _name: 'members', //
-                    menuName: 'onlinePaymentSetting', //lang.config.js 里面的语言键值
-                    rightPath : topMenuName + '.' + 'onlinePaymentSetting',
+                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
+                    rightPath : topMenuName + '.' + 'marketingPolicy',
                     iconClass: 'icon-person',
                     isMenu : true
                 },
-            },*/
+            },
 
 
         }

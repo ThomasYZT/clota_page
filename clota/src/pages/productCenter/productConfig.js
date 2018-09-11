@@ -17,22 +17,22 @@ export const ticketTypeHead = [
         field: 'productName'
     },
     {
-        title: '产品描述',      // 产品描述
+        title: 'productDesc',      // 产品描述
         minWidth: 220,
         field: 'productDesc'
     },
     {
-        title: '发售机构',      // 发售机构
+        title: 'sellingOrg',      // 发售机构
         minWidth: 100,
         field: 'sellingOrg'
     },
     {
-        title: '状态',        // 状态
-        minWidth: 90,
+        title: 'status',        // 状态
+        minWidth: 110,
         field: 'status'
     },
     {
-        title: '更新时间',      // 更新时间
+        title: 'updateTime',      // 更新时间
         minWidth: 180,
         field: 'updateTime'
     },

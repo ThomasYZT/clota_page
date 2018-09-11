@@ -7,13 +7,15 @@
 <template>
     <div class="ticket-type">
         <div class="operation-box">
-            <Button type="primary" @click="$router.push({name: 'addSmsTemplate'})">+ {{$t('add')}}</Button>
-            <Button type="ghost">{{$t('设置')}}</Button>
-            <Button type="error">{{$t('del')}}</Button>
+            <Button type="primary"
+                    @click="$router.push({name: 'addTicket', params: { type: 'add'}})">+ {{$t('add')}}</Button>
+            <Button type="error"
+                    :disabled="selectedRow.length > 0 ? false : true"
+                    @click="batchDel">{{$t('del')}}</Button>
         </div>
 
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="120"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -31,9 +33,17 @@
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
+                :filters="filterList"
+                :filter-method="filterHandler"
+                filter-placement="bottom-end"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <div class="tpl-content">{{scope.row.status}}</div>
+                    <div>
+                        <span v-if="scope.row.status === '已启用'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
+                        <span v-if="scope.row.status === '审核中'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
+                        <span v-if="scope.row.status === '已驳回'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                        <span v-if="scope.row.status === '未启用'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
@@ -51,24 +61,39 @@
             <el-table-column
                 slot="column7"
                 slot-scope="row"
+                fixed="right"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate" @click="checkProductDetail(scope.row)">{{$t('check')}}</span><!--查看-->
+                    <ul class="operate-list">
+                        <li class="operate" @click="checkProductDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
 
+        <!--删除模态框-->
+        <del-modal ref="delModal">
+            <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{delUnits}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        </del-modal>
+
     </div>
 </template>
 <script type="text/ecmascript-6">
+
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {ticketTypeHead} from '../productConfig';
+    import ajax from '@/api/index';
+    import delModal from '@/components/delModal/index.vue';
 
     export default {
-        components: {tableCom},
+        components: {
+            tableCom,
+            delModal,
+        },
         props: {},
         data() {
             return {
@@ -80,6 +105,11 @@
                 filterParam: {
                     order: 'update_time desc',
                 },
+                // 筛选列表
+                filterList: [
+                    {text: '已启用', value: '已启用'},
+                    {text: '未启用', value: '未启用'},
+                ],
                 // 表格表头字段名
                 columnData: ticketTypeHead,
                 // 列表数据
@@ -88,6 +118,8 @@
                 totalCount: 0,
                 // 已勾选的模板
                 selectedRow: [],
+                // 删除数据
+                delUnits: '',
             }
         },
         computed: {},
@@ -97,6 +129,7 @@
         },
         watch: {},
         methods: {
+
             // 查询票类产品列表
             queryList() {
                 this.tableData = [
@@ -138,13 +171,16 @@
                 this.totalCount = this.tableData.length;
             },
 
-            /**
-             * 查看短信模板详情，并传入当前被操作的行数据
-             * @param scopeRow - 行数据
-             */
-            checkSmsDetail(scopeRow) {
-                this.$refs.checkTplModal.show({item: scopeRow});
+            //查看详情
+            checkProductDetail ( data ) {
+                this.$router.push({
+                    name: 'ticketDetail',
+                    params: {
+                        info: data
+                    }
+                })
             },
+
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
@@ -152,6 +188,35 @@
             changeSelection(selection) {
                 this.selectedRow = selection;
             },
+            // 批量删除
+            batchDel () {
+                let ids = this.selectedRow.map(item => item.id).join(',');
+                this.delUnits = this.selectedRow.map(item => item.productName).join(',');
+                console.log(ids);
+                this.$refs.delModal.show({
+                    title : this.$t('deleteBatch'),
+                    confirmCallback : () => {
+                        this.deleteTicket(ids);
+                    }
+                });
+            },
+            /**
+             * 删除票类
+             * @param data
+             */
+            deleteTicket( data ) {
+                ajax.post('deleteTicket',{
+                    ids: data
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.queryList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+
             /**
              * 列表排序 - 默认按更新时间降序排列
              * @param params - { column, prop, order }
@@ -172,6 +237,17 @@
                     this.queryList();
                 }
             },
+
+            /**
+             * 表格筛选
+             * @param value
+             * @param row
+             * @returns {boolean}
+             */
+            filterHandler(value, row) {
+                return row.status === value;
+            },
+
         }
     };
 </script>
@@ -186,10 +262,50 @@
             /deep/ .ivu-btn {
                 width: 88px;
                 margin-right: 7px;
-                &:nth-child(2) {
-                    border-color: $color_blue;
-                }
             }
         }
+
+        .status-recharge {
+            position: relative;
+            padding-left: 14px;
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 6px;
+                height: 6px;
+                border-radius: 50px;
+            }
+        }
+        .pass:after {
+            background: $color_green;
+        }
+        .pending:after {
+            background: $color_BBC5D5;
+        }
+        .reject:after {
+            background: $color_red;
+        }
+
     }
+
+    .content-text{
+        padding: 0 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .yellow-label{
+        color: $color_yellow;
+    }
+
+    .red-label {
+        color: $color_red;
+    }
+
 </style>

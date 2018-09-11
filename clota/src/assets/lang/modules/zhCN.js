@@ -552,11 +552,31 @@ export default {
     'personalCenter' : '个人中心',
     'personalInfo' : '个人信息',
     'pwdModifying' : '修改密码',
+
+
     /*** 产品中心模块 ***/
     'productCenter' : '产品中心',
     'productList' : '产品列表',
     'ticketType' : '票类',
     'marketingPolicy' : '销售政策',
+    'continueYesRoNo': '是否继续',
+    'irreversible': '本操作不可撤销',
+    'isDoing': '您正在',
+    'deleteBatch': '批量删除',
+    'delete': '删除',
+    'productDesc' : '产品描述',
+    'sellingOrg' : '发售机构',
+    'status' : '状态',
+    'updateTime' : '更新时间',
+    'startingUse' : '已启用',
+    'checking' : '审核中',
+    'rejected' : '已驳回',
+    'unStarting' : '未启用',
+    'addTicket' : '新建票类',
+    'editDetail' : '修改票类',
+    'ticketDetail' : '票类详情',
+
+
     /*** 财务管理模块 ***/
     'financeManage' : '财务管理',
     'rechargeRecord' : '充值记录',
