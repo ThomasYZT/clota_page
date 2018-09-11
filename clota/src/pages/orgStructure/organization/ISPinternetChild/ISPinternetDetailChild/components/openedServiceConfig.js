@@ -13,12 +13,12 @@ export const openedServiceHead = [
     {
         title: '服务开始日期',
         minWidth: 190,
-        field: 'startTime'
+        field: 'startDate'
     },
     {
         title: '服务结束日期',
         minWidth: 190,
-        field: 'endTime'
+        field: 'endDate'
     },
     {
         title: '服务状态',

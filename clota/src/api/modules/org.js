@@ -28,5 +28,7 @@ export default {
     'deleteOrg' : '/organize/deleteOrg',
     //获取核销和销售分组信息
     'getOrgGroupList' : '/organize/getOrgGroupList',
+    //获取上级开通的服务
+    'getOrgServiceList' : '/organize/getOrgServiceList',
 
 }

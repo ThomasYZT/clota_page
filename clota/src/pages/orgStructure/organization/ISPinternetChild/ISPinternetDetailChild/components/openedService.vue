@@ -114,6 +114,17 @@
                     @query-data="queryList"
                     @selection-change="handleSelectionChange">
                     <el-table-column
+                        slot="column0"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.$index + 1}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="columncheck"
                         slot-scope="row"
                         :label="row.title"
@@ -124,7 +135,7 @@
                         :min-width="row.minWidth">
                     </el-table-column>
                     <el-table-column
-                        slot="columnrunStatus"
+                        slot="columnrun4"
                         slot-scope="row"
                         :label="row.title"
                         show-overflow-tooltip
@@ -360,14 +371,14 @@
              * 查询已开通的服务
              */
             queryList () {
-                ajax.post('getOrgServices',{
-                    id : this.searchParams.id,
+                ajax.post('getOrgServiceList',{
+                    orgId : this.searchParams.id,
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
-                        this.tableData = res.data ? res.data.list : [];
-                        this.totalCount = Number(res.data.totalRecord);
+                    if(res.success){
+                        this.tableData = res.data ? res.data.serviceList ? res.data.serviceList.data : [] : [];
+                        this.totalCount = Number(res.data.serviceList.totalRow);
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;
@@ -390,7 +401,7 @@
                         this.$Message.error('删除失败');
                     }
                 });
-            }
+            },
         },
         computed : {
             //可以恢复服务

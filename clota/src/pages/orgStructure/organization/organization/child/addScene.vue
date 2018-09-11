@@ -233,7 +233,7 @@
                         },
                     ],
                     controlAccount: [
-                        {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        // {required: true, validator: validateControlAccount, trigger: 'blur'},
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
@@ -279,7 +279,8 @@
                     this.$refs.formValidate.resetFields();
                 }else{
                     this.getParentManages();
-                    this.queryServiceList();
+                    this.getParentEconomic();
+                    this.getOrgServiceList();
                 }
             },
             /**
@@ -305,7 +306,6 @@
              */
             addCompany() {
                 ajax.post('addOrgInfo',{
-                    rootId : this.rootId,
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
@@ -318,10 +318,11 @@
                     districtid : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
-                    parentManageId : this.formData.manageSuperior,
-                    nodeType : 'scenic'
+                    parentManageId : this.formData.fianceSuperior,
+                    nodeType : 'scenic',
+                    openService : this.formData.openedServices.map(item => item.id)
                 }).then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.$emit('fresh-structure-data');
                         this.$emit('input', false);
                         this.$Message.success('新增成功');
@@ -337,42 +338,33 @@
                 this.$emit('input', false);
             },
             /**
-             * 获取财务上级和经营上级
+             * 获取经营上级
              */
             getParentManages () {
-                ajax.post('getParentManages',{
-                    id : this.chosedNodeDetail.id
+                ajax.post('getOrgsByManageType',{
+                    orgId :  this.chosedNodeDetail.id,
+                    manageType : 'manage'
                 }).then(res => {
-                    if(res.status === 200){
-                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics : [];
-                        this.manageSuperiorList = res.data.parentManages ? res.data.parentManages : [];
-                        // this.manageSuperiorList.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
-						//
-                        // this.fianceSuperiorList.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
+                    if(res.success){
+                        this.manageSuperiorList = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
                     }else{
-                        this.fianceSuperiorList = [];
                         this.manageSuperiorList = [];
                     }
                 });
             },
             /**
-             * 获取服务列表
+             * 获取财务上级
              */
-            queryServiceList() {
-                ajax.post('getOpenServices',{
-                    orgId : this.chosedNodeDetail.id
+            getParentEconomic () {
+                ajax.post('getOrgsByManageType',{
+                    orgId : this.chosedNodeDetail.id,
+                    manageType : 'economic'
                 }).then(res => {
-                   if(res.status === 200){
-                       this.serviceList = res.data.orgServices? res.data.orgServices : [];
-                   } else{
-                       this.serviceList = [];
-                   }
+                    if(res.success){
+                        this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
+                    }else{
+                        this.fianceSuperiorList = [];
+                    }
                 });
             },
             /**
@@ -383,6 +375,22 @@
                     loginName : this.formData.controlAccount
                 });
             },
+            /**
+             * 获取上级开通的服务信息
+             */
+            getOrgServiceList () {
+                ajax.post('getOrgServiceList',{
+                    orgId : this.chosedNodeDetail.id,
+                    pageNo : 1,
+                    pageSize : 9999
+                }).then(res => {
+                   if(res.success){
+                       this.serviceList = res.data ? res.data.rootServiceList ? res.data.rootServiceList.data : [] : [];
+                   }else{
+                       this.serviceList = [];
+                   }
+                });
+            }
         },
         computed : {
             //选择的地区信息
