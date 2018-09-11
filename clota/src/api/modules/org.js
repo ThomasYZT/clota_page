@@ -14,5 +14,11 @@ export default {
     'resetAccountPassword' : '/account/resetAccountPassword',
     //获取短信供应商列表
     'getSmsProviderList' : '/organize/getSmsProviderList',
+    //新增员工
+    'addEmployee' : '/account/addEmployee',
+    //获取员工账号列表
+    'getEmployeeList' : '/account/getEmployeeList',
+    //删除员工
+    'deletedEmployee' : '/account/deletedEmployee',
 
 }
