@@ -12,7 +12,7 @@
         </div>
         <!--内容区域-->
         <div class="content">
-            <div class="delete-icon">?</div>
+            <i class="iconfont icon-help delete-icon"></i>
             <div class="text">
                 <span>您正在{{deleteName}}：</span>
                 <span class="name">{{name}}</span>
@@ -25,8 +25,8 @@
         <!--自定义页脚-->
         <div slot="footer">
             <template>
-                <i-button class="ivu-btn-error" size="small" type="primary" @click="submit">确认</i-button>
-                <i-button type="ghost" size="small" @click="hide">{{$t('cancel')}}</i-button>
+                <i-button class="ivu-btn-error" type="primary" @click="submit">确认</i-button>
+                <i-button type="ghost" @click="hide">{{$t('cancel')}}</i-button>
             </template>
         </div>
 
@@ -35,6 +35,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import ajax from '@/api/index'
+
     export default {
         components: {},
         props: ['deleteName', 'name'],
@@ -68,6 +70,8 @@
              * 创建自定义指标表单校验
              */
             submit() {
+
+
                 this.$emit('deletions')
                 this.visible = false;
             },
@@ -78,26 +82,36 @@
     @import '~@/assets/scss/base';
     @import '../commonFile/common';
 
-    /deep/ .deleteList {
+    .deleteList {
         .ivu-modal-body {
             padding-top: 58px;
             padding-bottom: 58px;
             padding-left: 81px;
             padding-right: 54px;
         }
+
+        .ivu-modal-footer {
+            .ivu-btn {
+                padding: 4px 30px;
+            }
+        }
     }
 
     .deleteList {
         .content {
             position: relative;
+            margin: 40px 0;
+
             .delete-icon {
-                @include draw_circle(14px, 14px, $color_red, $color_fff, $font_size_12px);
-                @include absolute_pos(absolute, $top: 5px, $left: -20px);
+                /*@include draw_circle(14px, 14px, $color_red, $color_fff, $font_size_12px);*/
+                @include absolute_pos(absolute, $top: 0px, $left: 60px);
+                color: $color_red;
             }
             .text {
                 font-size: $font_size_14px;
                 color: #333333;
                 line-height: 24px;
+                text-align: center;
                 .name {
                     color: $color_yellow;
                 }
