@@ -5,14 +5,40 @@
 -->
 
 <template>
-    <div class="ticket-type">
-        <div class="operation-box">
-            <Button type="primary" @click="$router.push({name: 'addSmsTemplate'})">+ {{$t('add')}}</Button>
-            <Button type="ghost">{{$t('设置')}}</Button>
-            <Button type="error">{{$t('del')}}</Button>
+    <div class="marketing-policy">
+
+        <div class="tabs-wrap">
+            <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
+                <TabPane :label="$t('我定义的销售政策')" name="created"></TabPane>
+                <TabPane :label="$t('分销给我的销售政策')" name="cancellation"></TabPane>
+            </Tabs>
         </div>
 
+        <div class="btn-wrap" v-if="tabsName === 'created'">
+            <Button type="primary">+ {{$t('add')}}</Button>
+            <Button type="error"
+                    :disabled="selectedRow.length > 0 ? false : true"
+                    @click="batchDel">{{$t('del')}}</Button>
+        </div>
+
+        <div class="btn-wrap" v-if="tabsName === 'cancellation'">
+            <!--所属景区：-->
+            <span>所属景区：</span>
+            <Select v-model="queryParams.scene" @on-change="queryList">
+                <Option v-for="(item,index) in enumData.scene" :key="index"
+                        :value="item.name">{{$t(item.desc)}}
+                </Option>
+            </Select>
+            <div class="float-right">
+                <Input v-model.trim="queryParams.keyWord"
+                       :placeholder="$t('请输入销售政策名称')"/>
+                <Button type="primary" @click="queryList">{{$t("query")}}</Button>
+            </div>
+        </div>
+
+        <!--我定义的销售政策-->
         <table-com
+            v-if="tabsName === 'created'"
             :ofsetHeight="170"
             :show-pagination="true"
             :column-data="myPolicyHead"
@@ -22,18 +48,65 @@
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             :column-check="true"
-            :default-sort="{prop: 'updateTime', order: 'descending'}"
-            @sort-change="handleSortChanged"
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
-                slot="column7"
+                slot="column3"
                 slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :filters="filterList"
+                :filter-method="filterHandler"
+                filter-placement="bottom-end"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <div>
+                        <span v-if="scope.row.status === '已启用'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
+                        <span v-if="scope.row.status === '审核中'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
+                        <span v-if="scope.row.status === '已驳回'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                        <span v-if="scope.row.status === '未启用'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                fixed="right"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate" @click="checkProductDetail(scope.row)">{{$t('check')}}</span><!--查看-->
+                    <ul class="operate-list">
+                        <li class="normal" @click="checkProductDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                    </ul>
+                </template>
+            </el-table-column>
+        </table-com>
+
+        <!--分销给我的销售政策-->
+        <table-com
+            v-if="tabsName === 'cancellation'"
+            :ofsetHeight="170"
+            :show-pagination="true"
+            :column-data="distributePolicyHead"
+            :table-data="tableData"
+            :total-count="totalCount"
+            :page-no-d.sync="queryParams.pageNo"
+            :page-size-d.sync="queryParams.pageSize"
+            :border="true"
+            @query-data="queryList">
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                fixed="right"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <ul class="operate-list">
+                        <li class="normal" @click="checkProductDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li class="normal" @click="checkProductDetail(scope.row)">{{$t('分销')}}</li><!--分销-->
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -51,8 +124,12 @@
         props: {},
         data() {
             return {
+                //当前tap值
+                tabsName: 'created',
                 // 获取数据的请求参数
                 queryParams: {
+                    scene: '',
+                    keyWord: '',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
@@ -68,6 +145,15 @@
                 totalCount: 0,
                 // 已勾选的模板
                 selectedRow: [],
+                // 枚举数据
+                enumData: {
+                    scene: [],
+                },
+                // 筛选列表
+                filterList: [
+                    {text: '已启用', value: '已启用'},
+                    {text: '未启用', value: '未启用'},
+                ],
             }
         },
         computed: {},
@@ -77,7 +163,8 @@
         },
         watch: {},
         methods: {
-            // 查询票类产品列表
+
+            // 查询列表
             queryList() {
                 this.tableData = [
                     {
@@ -119,12 +206,13 @@
             },
 
             /**
-             * 查看短信模板详情，并传入当前被操作的行数据
-             * @param scopeRow - 行数据
+             * 切换tab
+             * @param name
              */
-            checkSmsDetail(scopeRow) {
-                this.$refs.checkTplModal.show({item: scopeRow});
+            changeTab (name) {
+                this.tabsName = name;
             },
+
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
@@ -132,26 +220,18 @@
             changeSelection(selection) {
                 this.selectedRow = selection;
             },
-            /**
-             * 列表排序 - 默认按更新时间降序排列
-             * @param params - { column, prop, order }
-             */
-            handleSortChanged: function (params) {
-                let order = 'desc';
-                if (params.order && params.order === 'ascending'){
-                    order = 'asc';
-                }
-                if (params.prop){
-                    if (params.prop === 'updateTime'){
-                        params.prop = 'update_time';
-                    }
 
-                    Object.assign(this.filterParam, { order: `${params.prop} ${order}` });
-                    Object.assign(this.queryParams, this.filterParam);
-                    this.queryParams.pageNo = 1;
-                    this.queryList();
-                }
+            /**
+             * 表格筛选
+             * @param value
+             * @param row
+             * @returns {boolean}
+             */
+            filterHandler(value, row) {
+                return row.status === value;
             },
+
+
         }
     };
 </script>
@@ -159,17 +239,63 @@
 <style lang="scss" scoped>
     @import "~@/assets/scss/base";
 
-    .ticket-type {
+    .marketing-policy {
 
-        .operation-box {
-            padding: 15px 30px;
+        .tabs-wrap{
+            /deep/ .ivu-tabs-nav{
+                margin-left: 30px;
+            }
+        }
+
+        .btn-wrap{
+            height: 58px;
+            line-height: 56px;
+            padding: 0px 30px;
+            @include clearfix();
+
             /deep/ .ivu-btn {
                 width: 88px;
                 margin-right: 7px;
-                &:nth-child(2) {
-                    border-color: $color_blue;
-                }
+            }
+
+            /deep/ .ivu-input-wrapper{
+                width: 280px;
+                margin-right: 15px;
+            }
+            /deep/ .ivu-select{
+                width: 280px;
+            }
+
+            .float-right{
+                float: right;
+            }
+
+        }
+
+        .status-recharge {
+            position: relative;
+            padding-left: 14px;
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 6px;
+                height: 6px;
+                border-radius: 50px;
             }
         }
+        .pass:after {
+            background: $color_green;
+        }
+        .pending:after {
+            background: $color_BBC5D5;
+        }
+        .reject:after {
+            background: $color_red;
+        }
+
     }
 </style>

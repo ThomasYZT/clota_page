@@ -8,27 +8,27 @@ export const myPolicyHead = [
     },
     {
         title: '业态类型',   // 业态类型
-        minWidth: 150,
+        minWidth: 200,
         field: 'productCode'
     },
     {
         title: '描述',   // 描述
-        minWidth: 100,
+        minWidth: 120,
         field: 'productName'
     },
     {
         title: '状态',      // 状态
-        minWidth: 220,
+        minWidth: 120,
         field: 'productDesc'
     },
     {
         title: '销售渠道分组',      // 销售渠道分组
-        minWidth: 100,
+        minWidth: 180,
         field: 'sellingOrg'
     },
     {
         title: 'operate',       // 操作
-        width: 80,
+        width: 100,
         field: ''
     },
 ];
