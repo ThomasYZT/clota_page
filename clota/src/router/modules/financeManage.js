@@ -51,6 +51,7 @@ export default {
             collectionManage: {
                 //系统设置--短信管理--三级菜单
                 path: '/financeManage/collection',
+                name: 'collectionManage',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
                 meta: {
                     _name: 'members-point',

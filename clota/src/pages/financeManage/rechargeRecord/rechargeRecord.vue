@@ -161,7 +161,7 @@
                 return statusHtml;
             },
 
-            // 搜索短信套餐
+            // 搜索信息
             handleSearch() {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);

@@ -1,5 +1,5 @@
 
-
+// 充值记录表头
 export const rechargeHead = [
     {
         title: '付款方',      // 付款方
@@ -39,6 +39,45 @@ export const rechargeHead = [
     {
         title: 'operate',       // 操作
         width: 80,
+        field: ''
+    },
+];
+
+// 付款账户管理表头
+export const paymentHead = [
+    {
+        title: '状态',        // 状态
+        minWidth: 110,
+        field: 'status'
+    },
+    {
+        title: 'code',        // 编码
+        minWidth: 200,
+        field: 'code'
+    },
+    {
+        title: 'partner',        // 合作伙伴
+        minWidth: 220,
+        field: 'partner'
+    },
+    {
+        title: '可用额度',        // 可用额度
+        minWidth: 180,
+        field: 'availableCredit'
+    },
+    {
+        title: 'moneyBalance',        // 账户余额
+        minWidth: 180,
+        field: 'balance'
+    },
+    {
+        title: '信用额度',        // 信用额度
+        minWidth: 180,
+        field: 'creditLimits'
+    },
+    {
+        title: 'operate',       // 操作
+        minWidth: 80,
         field: ''
     },
 ];
