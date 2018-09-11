@@ -1158,7 +1158,6 @@
         }
         .form-container{
             width: 100%;
-            height: calc(100% - 90px);
             background-color: #FFFFFF;
             border-radius: 4px;
             overflow: hidden;

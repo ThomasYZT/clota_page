@@ -175,9 +175,9 @@
     .header {
         position: absolute;
         z-index: 99;
-        @include block_outline(100%,53px);
+        @include block_outline(100%,100px);
         @include clearfix;
-        padding: 40px 80px;
+        padding: 40px 80px 0 80px;
         line-height: 53px;
         .logo {
             float: left;

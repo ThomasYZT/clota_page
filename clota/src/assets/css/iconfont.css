@@ -9,8 +9,19 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.ivu-input {
-    font-size: 14px;
+@font-face {
+    font-family: 'pingfang';
+    src: url('../fonts/PingFang-Regular.eot');
+    src:
+        url('../fonts/PingFang-Regular.eot?#font-spider') format('embedded-opentype'),
+        url('../fonts/PingFang-Regular.woff') format('woff'),
+        url('../fonts/PingFang-Regular.ttf') format('truetype'),
+        url('../fonts/PingFang-Regular.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: 'pingfang'!important;
 }
 
 /*.icon-arrow-bottom:before {*/

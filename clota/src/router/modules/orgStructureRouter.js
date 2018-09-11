@@ -6,15 +6,18 @@
  * lightMenu 这个参数表示当前二级菜单对应的一级菜单
  * iconClass 图标类名
  */
+//一级菜单的menuname
+let topMenuName = 'org';
 export default {
     orgStructure: {
         //组织架构
         path: '/orgManage',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/index.vue'),
         meta: {
-            _name: 'orgManage',
+            _name: 'members',
             menuName: 'org',
-            lightMenu: 'orgManage',
+            rightPath : topMenuName + '.' + 'org',
+            isMenu : true
         },
         children: {
             organization: {
@@ -24,9 +27,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/organization.vue'),
                 meta: {
                     menuName: 'org', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: 'organization', //
-                    iconClass: 'icon-person'
+                    _name: 'members', //
+                    iconClass: 'icon-person',
+                    rightPath : topMenuName + '.' + 'org',
+                    isMenu : true
                 },
             },
             employee: {
@@ -36,9 +40,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                 meta: {
                     menuName: 'employee', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: 'employee', //
-                    iconClass: 'icon-orgaization'
+                    _name: 'members', //
+                    iconClass: 'icon-orgaization',
+                    rightPath : topMenuName + '.' + 'employee',
+                    isMenu : true
                 },
             },
             addEmployee: {
@@ -48,9 +53,9 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                 meta: {
                     menuName: 'employee', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: 'employee', //
-                    iconClass: 'icon-orgaization'
+                    _name: 'members', //
+                    iconClass: 'icon-orgaization',
+                    rightPath : topMenuName + '.' + 'employee'
                 },
             },
             rolePermission: {
@@ -60,9 +65,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/rolePermission.vue'),
                 meta: {
                     menuName: 'rolePermission', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: 'rolePermission', //
-                    iconClass: 'icon-role-permission'
+                    _name: 'members', //
+                    iconClass: 'icon-role-permission',
+                    rightPath : topMenuName + '.' + 'rolePermission',
+                    isMenu : true
                 },
             },
             roleSceneryDetail: {
@@ -72,9 +78,9 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/roleDetail.vue'),
                 meta: {
                     menuName: 'rolePermission', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: 'rolePermission', //
-                    iconClass: 'icon-role-permission'
+                    _name: 'members', //
+                    iconClass: 'icon-role-permission',
+                    rightPath : topMenuName + '.' + 'rolePermission'
                 },
             },
             partner: {
@@ -84,9 +90,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/partner/partner.vue'),
                 meta: {
                     menuName: 'partner', //lang.config.js 里面的语言键值
-                    lightMenu: 'orgManage',//高亮
-                    _name: 'partner', //
-                    iconClass: 'icon-partner'
+                    _name: 'members', //
+                    iconClass: 'icon-partner',
+                    rightPath : topMenuName + '.' + 'partner',
+                    isMenu : true
                 },
             },
             channels: {
@@ -96,9 +103,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/channels/channels.vue'),
                 meta: {
                     menuName: 'channels',
-                    lightMenu: 'orgManage',
-                    _name: 'channels',
-                    iconClass: 'icon-market-channel'
+                    _name: 'members',
+                    iconClass: 'icon-market-channel',
+                    rightPath : topMenuName + '.' + 'channels',
+                    isMenu : true
                 },
             },
             saleChannelsGroup: {
@@ -108,9 +116,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/saleChannelsGroup/saleChannelsGroup.vue'),
                 meta: {
                     menuName: 'saleChannelsGroup',
-                    lightMenu: 'orgManage',
-                    _name: 'saleChannelsGroup',
-                    iconClass: 'icon-trade-channel'
+                    _name: 'members',
+                    iconClass: 'icon-trade-channel',
+                    rightPath : topMenuName + '.' + 'saleChannelsGroup',
+                    isMenu : true
                 },
             },
             verificateGroup: {
@@ -120,9 +129,10 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/verificateGroup.vue'),
                 meta: {
                     menuName: 'verificateGroup',
-                    lightMenu: 'orgManage',
-                    _name: 'verificateGroup',
-                    iconClass: 'icon-partner'
+                    _name: 'members',
+                    iconClass: 'icon-partner',
+                    rightPath : topMenuName + '.' + 'verificateGroup',
+                    isMenu : true
                 },
             },
         }
