@@ -255,7 +255,6 @@
 	@import '~@/assets/scss/base';
     .account{
         @include block_outline();
-        @include padding_place();
         padding: 0 30px;
 
         .create-account{

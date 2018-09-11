@@ -149,7 +149,6 @@
                         id : data.id,
                         activeNode : {
                             id : data.id,
-                            pid : '',
                             type : data.nodeType
                         }
                     }

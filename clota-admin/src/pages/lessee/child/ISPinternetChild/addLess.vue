@@ -11,7 +11,7 @@
                   :model="formData"
                   label-position="right"
                   :rules="ruleValidate"
-                  :label-width="100">
+                  :label-width="120">
                 <i-row>
                     <i-col span="11">
                         <!--租户公司名称-->
@@ -221,11 +221,11 @@
                 //表单数据
                 formData: {
                     //*租户公司名称
-                    companyName: '',
+                    companyName: 'aaa',
                     //联系人
-                    person: '',
+                    person: 'tst',
                     //联系电话
-                    phone: '',
+                    phone: '13054153343',
                     //所属集团
                     // group: '',
                     //传真
@@ -237,7 +237,7 @@
                     //管理账号
                     controlAccount: '',
                     //电子邮箱
-                    mail: '',
+                    mail: 'zgh@qq.com',
                     //短信供应商
                     smsProvider: '',
                     //详细地址
@@ -316,6 +316,8 @@
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
                         this.addOrgInfo();
+                    }else{
+                        this.addLoading = false;
                     }
                 });
             },
@@ -390,9 +392,9 @@
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
                     smsProvider : this.formData.smsProvider,
-                    provinceid : this.formData.place.province.province,
-                    cityid : this.formData.place.city.cityid,
-                    districtid : this.formData.place.area.areaid,
+                    provinceid : this.placeSelected.province.provinceid,
+                    cityid : this.placeSelected.city.cityid,
+                    districtid : this.placeSelected.area.areaid,
                     address : this.formData.address,
                     businessAccountId : this.formData.service,
                     checkinCode : this.formData.companyCode,
@@ -415,6 +417,24 @@
             this.querySysAccoutList();
             this.querySmsProviderList();
             this.getSysAccountByToken();
+        },
+        computed : {
+            //选择的地区信息
+            placeSelected () {
+                if(this.formData.place && Object.keys(this.formData.place).length > 0){
+                    return {
+                        province : this.formData.place.province,
+                        city : this.formData.place.city,
+                        area : this.formData.place.area,
+                    }
+                }else{
+                    return {
+                        province : '',
+                        city : '',
+                        area : '',
+                    }
+                }
+            }
         }
     }
 </script>

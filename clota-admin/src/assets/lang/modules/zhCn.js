@@ -353,6 +353,7 @@ export default {
     area: '地区',
     fatherProvince: '父级省份',
     fatherCity: '父级城市',
+    accountOPassError : '账号或密码错误'
 
 
 }

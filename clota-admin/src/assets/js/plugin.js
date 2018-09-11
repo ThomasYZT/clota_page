@@ -56,7 +56,7 @@ let plugin = {};
 plugin.install = function (Vue, options) {
 
     // element-ui按需引入
-    Vue.use(Scrollbar);
+    // Vue.use(Scrollbar);
     Vue.use(Table);
     Vue.use(TableColumn);
     Vue.use(Pagination);

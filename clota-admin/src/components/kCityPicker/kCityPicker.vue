@@ -462,10 +462,12 @@
              */
             getSysAreassByCityid (cityid) {
                 ajax.post('getSysAreassByCityid',{
+                    page : 1,
+                    pageSize : 9999,
                     cityid : cityid
                 }).then(res => {
                    if(res.status === 200){
-                       this.areaInfoList = res.data ? res.data : [];
+                       this.areaInfoList = res.data ? res.data.list : [];
                        // 加载对应省下的市数据
                        this.init('a')
 

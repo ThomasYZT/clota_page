@@ -52,9 +52,10 @@
             </li>
         </ul>
         <!--员工-->
-        <employee-table :is-pack-up="true"
-                        :search-params="{id : activeNode.id}"
-                        type="department">
+        <employee-table
+            :isDefaultPackUp="true"
+            :search-params="{id : activeNode.id}"
+            type="department">
         </employee-table>
     </div>
 </template>

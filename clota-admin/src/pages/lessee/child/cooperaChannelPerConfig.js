@@ -122,7 +122,7 @@ export const columns = {
         },
         {
             title: '身份证',
-            minWidth: 190,
+            minWidth: 220,
             field: 'attach'
         },
         {
@@ -142,7 +142,7 @@ export const columns = {
         },
         {
             title: '驳回时间',
-            width: 180,
+            width: 200,
             field: 'auditTime'
         },
         {

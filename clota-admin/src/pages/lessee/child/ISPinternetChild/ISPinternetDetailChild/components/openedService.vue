@@ -174,6 +174,7 @@
         <open-service-modal
             :opened-service-id="openedServiceId"
             :org-id="searchParams.id"
+            :opened-services="tableData"
             v-model="openServiceModalShow"
             @fresh-data="queryList">
         </open-service-modal>
@@ -226,6 +227,11 @@
                 default () {
                     return {}
                 }
+            },
+            //是否默认展开
+            'isDefaultPackUp' : {
+                type : Boolean,
+                default : false
             }
         },
         components : {
@@ -356,11 +362,15 @@
             queryList () {
                 ajax.post('getOrgServices',{
                     id : this.searchParams.id,
+                    page : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                     if(res.status === 200){
-                        this.tableData = res.data ? res.data : [];
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = Number(res.data.totalRecord);
                     }else{
                         this.tableData = [];
+                        this.totalCount = 0;
                     }
                 });
             },
@@ -402,6 +412,19 @@
             //表格是否显示
             tableShow () {
                 return this.searchParams && this.searchParams.id;
+            }
+        },
+        watch : {
+            //默认展开的初始值
+            isDefaultPackUp : {
+                handler (newVal){
+                    if(newVal === true){
+                        this.isPackUp = true;
+                    }else{
+                        this.isPackUp = false;
+                    }
+                },
+                immediate : true
             }
         }
     }

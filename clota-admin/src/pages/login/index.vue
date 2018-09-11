@@ -130,6 +130,10 @@
                                 this.errMessage = 'loginError.verifyCodeError';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                            }else if(res.message === 'Loginname or password error!'){
+                                this.errMessage = 'accountOPassError';
+                                this.showErrMessage = true;
+                                this.changeCode();
                             }else{
                                 this.errMessage = res.message || 'loginError.accountError';
                                 this.showErrMessage = true;

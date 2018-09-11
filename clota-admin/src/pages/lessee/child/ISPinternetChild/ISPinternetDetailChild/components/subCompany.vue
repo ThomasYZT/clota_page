@@ -68,12 +68,16 @@
             queryList () {
                 ajax.post('getSubsidiaries',{
                     id : this.searchParams.id,
-                    nodeType : 'company'
+                    nodeType : 'company',
+                    page : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                    if(res.status === 200){
-                       this.tableData = res.data ? res.data : [];
+                       this.tableData = res.data ? res.data.list : [];
+                       this.totalCount = Number(res.data.totalRecord);
                    }else{
                        this.tableData = [];
+                       this.totalCount = 0;
                    }
                 });
             }

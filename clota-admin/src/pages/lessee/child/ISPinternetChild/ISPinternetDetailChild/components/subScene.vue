@@ -67,13 +67,17 @@
              */
             queryList () {
                 ajax.post('getSubsidiaries',{
+                    page : this.pageNo,
+                    pageSize : this.pageSize,
                     id : this.searchParams.id,
                     nodeType : 'scenic'
                 }).then(res => {
                     if(res.status === 200){
-                        this.tableData = res.data ? res.data : [];
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = Number(res.data.totalRecord);
                     }else{
                         this.tableData = [];
+                        this.totalCount = 0;
                     }
                 });
             }

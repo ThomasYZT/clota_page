@@ -34,8 +34,8 @@
             <FormItem label="预计服务结束时间">
                 <ul class="service-list">
                     <li class="service-name"
-                        v-for="(item,i) in serviceList"
-                        :key="i">{{item.serviceName}}   &nbsp;&nbsp; {{item.endTime}}</li>
+                        v-for="(item,i) in serviceDelayedInfo"
+                        :key="i">{{item.serviceName}}   &nbsp;&nbsp; {{item.estimateEndtime}}</li>
                 </ul>
             </FormItem>
         </Form>
@@ -129,6 +129,22 @@
                 }) ;
             }
         },
+        computed : {
+            //服务延期后预计结束时间
+            serviceDelayedInfo () {
+                let result = [];
+                if(this.serviceList && this.serviceList.length > 0){
+                    for(let i = 0, j = this.serviceList.length;i < j;i++){
+                        result.push(Object.assign({
+                             estimateEndtime : this.serviceList[i].endTime
+                                ? this.serviceList[i].endTime.replace(/-/g,'/').toDate().addMonths(this.formData.serverTime).format('yyyy-MM-dd hh:mm:ss')
+                                : this.serviceList[i].endTime
+                        },this.serviceList[i]));
+                    }
+                }
+                return result;
+            }
+        }
     }
 </script>
 

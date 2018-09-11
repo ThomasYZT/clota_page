@@ -5,6 +5,8 @@
         <div class="time-chose">
             <DatePicker type="date"
                         v-model="date"
+                        :editable="false"
+                        :clearable="false"
                         placement="bottom-end"
                         style="width: 224px"
                         @on-change="dateChange">

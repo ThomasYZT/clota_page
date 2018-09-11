@@ -4,7 +4,6 @@
     <div class="cashier-detail">
         <Form ref="formValidate"
               :model="formDataCopy"
-              :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
               label-position="left"
               inline>

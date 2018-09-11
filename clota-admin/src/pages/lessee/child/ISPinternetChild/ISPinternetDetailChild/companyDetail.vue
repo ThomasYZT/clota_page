@@ -16,7 +16,7 @@
                             <Input v-model.trim="formDataCopy.orgName" style="width : 280px"/>
                         </FormItem>
                     </i-col>
-                    <i-col span="2">
+                    <i-col span="5" style="width: 73px;">
                         <FormItem>
                             <i-switch v-model="formDataCopy.isStart"></i-switch>
                             <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
@@ -72,7 +72,7 @@
         </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="smsProvider" label="短信供应商：" :label-width="150">
+                    <FormItem label="短信供应商：" :label-width="150">
                         <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.provider"
@@ -153,8 +153,8 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="parentEconomicId" label="管理上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">
+                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentManageId' : ''" label="管理上级：" :label-width="150">
+                        <Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in superiorList"
                                 :value="item.id"
                                 :key="item.id">
@@ -167,7 +167,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="parentEconomicId" label="财务上级：" :label-width="150">
+                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentEconomicId' : ''" label="财务上级：" :label-width="150">
                         <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
@@ -246,6 +246,7 @@
 
         <!--已开通服务-->
         <opened-service
+            :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}">
         </opened-service>
         <!--下属公司-->
@@ -263,6 +264,7 @@
         </sub-department>
         <!--员工-->
         <employee-table
+            :isDefaultPackUp="false"
             :search-params="{id : activeNode.id}">
         </employee-table>
         <!--短信-->
@@ -424,6 +426,10 @@
                             if(res.status === 200){
                                 this.$Message.success('修改成功');
                                 this.getCompanyDetail();
+                                //修改了节点的名字，需要刷新左侧的组织树
+                                if(this.formDataCopy.orgName !== this.companyDetail.orgName){
+                                    this.freshOrg();
+                                }
                             }else{
                                 this.$Message.error('修改失败');
                             }

@@ -20,26 +20,6 @@
             <div class="label-info" style="margin-bottom: 10px">
                 <span class="key">上级公司已开通服务：</span>
             </div>
-            <!--<table-com-->
-                <!--table-height="210px"-->
-                <!--:table-data="tableData"-->
-                <!--:column-data="columns"-->
-                <!--@selection-change="handleSelectionChange">-->
-                <!--<el-table-column-->
-                    <!--slot="column0"-->
-                    <!--type="selection"-->
-                    <!--width="55">-->
-                <!--</el-table-column>-->
-            <!--</table-com>-->
-            <!--<div class="page-area" v-if="tableData.length > 0">-->
-                <!--<el-pagination-->
-                    <!--:current-page="pageNo"-->
-                    <!--:page-sizes="pageSizeConfig"-->
-                    <!--:page-size="pageSize"-->
-                    <!--layout="total, sizes, prev, pager, next, jumper"-->
-                    <!--:total="totalCount">-->
-                <!--</el-pagination>-->
-            <!--</div>-->
             <table-com
                 v-if="tableShow"
                 :column-data="columns"
@@ -176,7 +156,7 @@
                     orgId : this.sceneDetail.id
                 }).then(res => {
                     if(res.status === 200){
-                        this.tableData = res.data.orgServices ? res.data.orgServices : [];
+                        this.tableData = res.data && res.data.orgServices ? res.data.orgServices : [];
                     }else{
                         this.tableData = [];
                     }
@@ -205,7 +185,7 @@
         computed : {
             //表格是否显示
             tableShow () {
-                return this.sceneDetail && !!this.sceneDetail.id;
+                return this.sceneDetail && !!this.sceneDetail.id && this.modalShow;
             }
         }
     }

@@ -103,14 +103,13 @@ module.exports = {
             entry: {
                 vueFamily: ['vue', 'vue-router', 'vuex','vue-i18n'],
                 plugins: [
-                    'axios',
-                    'klwk-ui',
-                    'core-js',
                     'echarts/lib/echarts',
-                    './src/components/kCityPicker/dicts/areas.json',
-                    './src/components/kCityPicker/dicts/citys.json',
-                    './src/components/kCityPicker/dicts/provinces.json',
-                    'babel-polyfill',
+                    'core-js',
+                    'axios',
+                    'echarts/lib/chart/pie',
+                    'echarts/lib/chart/line',
+                    'echarts/lib/component/tooltip',
+                    'echarts/lib/component/legend',
                     'element-ui/lib/table.js',
                     'element-ui/lib/table-column.js',
                     'element-ui/lib/scrollbar.js',
@@ -118,6 +117,7 @@ module.exports = {
                     'element-ui/lib/dropdown.js',
                     'element-ui/lib/dropdown-menu.js',
                     'element-ui/lib/dropdown-item.js',
+                    'element-ui/lib/tree',
                     'element-ui/lib/tooltip'
                 ]
             },

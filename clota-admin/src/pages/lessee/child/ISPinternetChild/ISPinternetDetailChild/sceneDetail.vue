@@ -139,7 +139,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem prop="parentManageId" label="管理上级：" :label-width="150">
-                        <Select v-model="formDataCopy.parentManageId" v-if="type === 'edit'">
+                        <Select v-model="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.pid">
                             <Option v-for="item in superiorList"
                                     :value="item.id"
                                     :key="item.id">
@@ -169,7 +169,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="受理客服：" :label-width="150">
-                        <Select v-model="formDataCopy.businessAccount1.id" v-if="type === 'edit' && activeNode && !activeNode.pid">
+                        <Select v-model="formDataCopy.businessAccount1.id" v-if="type === 'edit' && activeNode && activeNode.pid">
                                 <Option v-for="item in serviceStaffList"
                                     :value="item.id"
                                     :key="item.id">
@@ -230,10 +230,12 @@
         </sub-department>
         <!--员工-->
         <employee-table
+            :isDefaultPackUp="false"
             :search-params="{id : activeNode.id}">
         </employee-table>
         <!--已开通服务-->
         <opened-service
+            :isDefaultPackUp="false"
             type="scene"
             :scene-detail="sceneDetail"
             :search-params="{id : activeNode.id}">
@@ -389,6 +391,9 @@
                             if(res.status === 200){
                                 this.$Message.success('修改成功');
                                 this.getSceneDetail();
+                                if(this.formDataCopy.orgName !== this.sceneDetail.orgName){
+                                    this.freshOrg();
+                                }
                             }else{
                                 this.$Message.error(res.message | '修改失败');
                             }

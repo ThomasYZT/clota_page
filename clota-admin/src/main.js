@@ -15,7 +15,7 @@ import i18n from './assets/lang/lang.config';
 import './assets/theme/iviewTheme/index.less';
 import 'klwk-ui/src/lib/css/index.scss';
 import './assets/theme/elementTheme/index.scss';
-// import './assets/scss/_iconfont.scss';
+import './assets/scss/_iconfont.scss';
 import './assets/css/iconfont.css';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令

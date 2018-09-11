@@ -46,6 +46,17 @@
                         </template>
                     </el-table-column>
                     <el-table-column
+                        slot="columnstatus"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(scope.row.status)}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="columnoperate"
                         slot-scope="row"
                         :label="row.title"

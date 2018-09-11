@@ -15,7 +15,7 @@
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="120">
+              :label-width="130">
             <FormItem label="选择套餐" prop="package">
                 <RadioGroup v-model="formData.packageId" @on-change="packageChange">
                     <Radio :label="item.id"
@@ -27,6 +27,7 @@
                 <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
                     <Checkbox :label="item.id"
                               v-for="(item,index) in serverList"
+                              :disabled="item.disabled"
                               :key="index">
                         <span>{{item.serviceName}}</span>
                     </Checkbox>
@@ -83,6 +84,13 @@
             'opened-service-id' : {
                 type : String,
                 default : ''
+            },
+            //已开通的服务
+            'opened-services' : {
+                type : Array,
+                default () {
+                    return [];
+                }
             }
         },
         data() {
@@ -192,6 +200,13 @@
                                 }
                             }
                         }
+                        for(let i = 0,j = this.serverList.length;i < j;i++){
+                            if(this.serverList[i].id in this.openedServicesObj){
+                                this.$set(this.serverList[i],'disabled',true);
+                            }else{
+                                this.$set(this.serverList[i],'disabled',false);
+                            }
+                        }
                     }else{
                         this.serverList = [];
                     }
@@ -228,7 +243,9 @@
                         if(this.packageList[i].id === data){
                             if(this.packageList[i].services && this.packageList[i].services.length > 0){
                                 for(let a = 0,b = this.packageList[i].services.length;a < b;a++){
-                                    this.formData.servers.push(this.packageList[i].services[a].id);
+                                    if(!(this.packageList[i].services[a].id in this.openedServicesObj)){
+                                        this.formData.servers.push(this.packageList[i].services[a].id);
+                                    }
                                 }
                                 break;
                             }
@@ -258,6 +275,16 @@
                 }else{
                     return '--';
                 }
+            },
+            //已开通服务对象
+            openedServicesObj() {
+                let obj = {};
+                if(this.openedServices && this.openedServices.length > 0){
+                    for(let i = 0,j = this.openedServices.length;i < j;i++){
+                        obj[this.openedServices[i].serviceId] = true;
+                    }
+                }
+                return obj;
             }
         }
     }
@@ -268,7 +295,7 @@
     .open-service-modal {
 
         & /deep/ .ivu-modal {
-            width: 560px !important;
+            width: 600px !important;
             min-height: 410px;
         }
 

@@ -139,6 +139,11 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
+                if(data.id === this.activeNode.id){
+                    this.$emit('update:activeNode',Object.assign(this.activeNode,{
+                        pid : data.pid,
+                    }));
+                }
                 // data.expand = true;
                 return h('div', {
                     style: {

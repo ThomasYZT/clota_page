@@ -121,7 +121,7 @@
                 pageNo : 1,
                 pageSize : 10,
                 //是否收起
-                isPackUp : true,
+                isPackUp : false,
                 //修改部门名称表单
                 formData : {
                     depName : ''
@@ -219,12 +219,16 @@
             queryList () {
                 ajax.post('getSubsidiaries',{
                     id : this.searchParams.id,
-                    nodeType : 'department'
+                    nodeType : 'department',
+                    page : this.pageNo,
+                    pageSize : this.pageSize,
                 }).then(res => {
                     if(res.status === 200){
-                        this.tableData = res.data ? res.data : [];
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = Number(res.data.totalRecord);
                     }else{
                         this.tableData = [];
+                        this.totalCount = 0;
                     }
                 });
             },
