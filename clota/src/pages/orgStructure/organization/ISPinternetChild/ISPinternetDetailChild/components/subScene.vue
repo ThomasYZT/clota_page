@@ -66,11 +66,11 @@
              * 查询下属景区信息
              */
             queryList () {
-                ajax.post('getSubsidiaries',{
-                    page : this.pageNo,
-                    pageSize : this.pageSize,
-                    id : this.searchParams.id,
-                    nodeType : 'scenic'
+                ajax.post('getSubNode',{
+                    // page : this.pageNo,
+                    // pageSize : this.pageSize,
+                    orgId : this.searchParams.id,
+                    orgType : 'scenic'
                 }).then(res => {
                     if(res.status === 200){
                         this.tableData = res.data ? res.data.list : [];

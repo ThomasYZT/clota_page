@@ -585,5 +585,7 @@ export default {
     'organization' : '组织架构',
     'hasStart' : '已启用',
     'hasNotStart' : '未启用',
+    'subDepartment' : '下属部门',
+    'openedService' : '开通服务',
 
 }

@@ -1,9 +1,9 @@
 //已开通服务比表头
 export const openedServiceHead = [
     {
-        title: '',
-        width: 80,
-        field: 'check'
+        title: '序号',
+        minWidth: 100,
+        field: 'index'
     },
     {
         title: '服务名称',
@@ -11,12 +11,12 @@ export const openedServiceHead = [
         field: 'serviceName'
     },
     {
-        title: '开始日期',
+        title: '服务开始日期',
         minWidth: 190,
         field: 'startTime'
     },
     {
-        title: '结束日期',
+        title: '服务结束日期',
         minWidth: 190,
         field: 'endTime'
     },
@@ -25,9 +25,4 @@ export const openedServiceHead = [
         minWidth: 100,
         field: 'runStatus'
     },
-    {
-        title: '操作',
-        minWidth: 160,
-        field: 'operate'
-    }
 ];

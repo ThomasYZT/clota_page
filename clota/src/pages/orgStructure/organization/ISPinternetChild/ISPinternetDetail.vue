@@ -87,7 +87,7 @@
                         if(Object.keys(activeNode).length < 1){
                             this.activeNode = JSON.parse(JSON.stringify({
                                 id : this.structureData.id,
-                                pid : this.structureData.pid,
+                                level : this.structureData.level,
                                 type : this.structureData.nodeType
                             }));
                         }else{

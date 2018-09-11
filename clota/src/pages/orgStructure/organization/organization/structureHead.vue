@@ -142,7 +142,7 @@
             renderContent(h, {root, node, data}) {
                 if(data.id === this.activeNode.id){
                     this.$emit('update:activeNode',Object.assign(this.activeNode,{
-                        pid : data.pid,
+                        level : node.level,
                     }));
                 }
                 // data.expand = true;
@@ -159,7 +159,7 @@
                         click : () => {
                             this.$emit('update:activeNode',{
                                 id : data.id,
-                                pid : data.pid,
+                                level : node.level,
                                 type : data.nodeType
                             });
                             // this.activeNode = data;
@@ -183,7 +183,7 @@
                             iconfont: 'true',
                             'icon-delete': true,
                             //财务管理不允许删除节点
-                            'hidden' : this.activeTap === 'economic' || data.pid === null
+                            'hidden' : this.activeTap === 'economic' || data.level === 1
                         },
                         style : {
                             paddingRight : '5px',

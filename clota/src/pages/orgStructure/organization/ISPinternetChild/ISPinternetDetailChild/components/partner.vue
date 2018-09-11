@@ -97,8 +97,11 @@
              * 获取合作伙伴信息
              */
             queryList () {
-                ajax.post('getScenicPartners',{
-                    id : this.searchParams.id
+                ajax.post('getSubNode',{
+                    orgId : this.searchParams.id,
+                    orgType : 'partner',
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                    if(res.status === 200) {
                        this.tableData = res.data ? res.data : [];

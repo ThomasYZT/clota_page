@@ -20,5 +20,7 @@ export default {
     'getEmployeeList' : '/account/getEmployeeList',
     //删除员工
     'deletedEmployee' : '/account/deletedEmployee',
+    //获取管理上级或财务上级
+    'getOrgsByManageType' : '/organize/getOrgsByManageType',
 
 }

@@ -14,13 +14,6 @@
             <div class="table-wrap" v-if="isPackUp">
                 <div class="employee-account">
                     员工账号数：{{employeeNumber | contentFilter}}
-                    <Button type="primary"
-                            :disabled="selectedEmployee.length < 1"
-                            @click="resetPassSelectEmployee">重置密码</Button>
-                    <Button type="error"
-                            class="ivu-btn-90px"
-                            :disabled="selectedEmployee.length < 1"
-                            @click="deleteSelectEmployee">删除</Button>
                 </div>
                 <table-com
                     v-if="tableShow"
@@ -33,49 +26,16 @@
                     :total-count="totalCount"
                     :auto-height="true"
                     :table-com-min-height="280"
-                    @query-data="getEmployees"
-                    @selection-change="handleSelectionChange">
-                    <el-table-column
-                        slot="columncheck"
-                        type="selection"
-                        slot-scope="row"
-                        :label="row.title"
-                        fixed="left"
-                        show-overflow-tooltip
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                    </el-table-column>
-                    <el-table-column
-                        slot="columnoperate"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        show-overflow-tooltip
-                        fixed="right"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scoped">
-                            <ul class="operate-info">
-                                <li class="red-label" @click="delElement(scoped.row)">删除</li>
-                                <li class="normal" @click="resetPass(scoped.row)">重置密码</li>
-                            </ul>
-                        </template>
-                    </el-table-column>
+                    @query-data="getEmployees">
                 </table-com>
             </div>
         </transition>
-        <!--删除员工-->
-        <del-modal ref="delModal">
-        </del-modal>
-        <change-pass ref="changePass">
-        </change-pass>
     </div>
 </template>
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {employee,depEmployee} from '../departmentConfig';
-    import delModal from '@/components/delModal/index.vue';
-    import changePass from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -98,9 +58,7 @@
             }
         },
         components : {
-            tableCom,
-            delModal,
-            changePass
+            tableCom
         },
         data() {
             return {
@@ -108,8 +66,6 @@
                 tableData: [],
                 //表头数据
                 employeeColumn : this.type === 'department' ?  depEmployee : employee ,
-                //选中的员工
-                selectedEmployee : [],
                 //员工总数
                 totalCount : 0,
                 pageNo : 1,
@@ -122,107 +78,13 @@
         },
         methods: {
             /**
-             * 选择的员工数据改变
-             * @param data
-             */
-            handleSelectionChange (data) {
-                this.selectedEmployee = data;
-            },
-            /**
-             * 批量重置密码
-             */
-            resetPassSelectEmployee () {
-                this.$refs.changePass.show({
-                    title : this.$t('changePass'),
-                    confirmCallback : (pass) => {
-                        this.confirmChangePass(pass,this.selectedEmployee);
-                    }
-                });
-            },
-            /**
-             * 删除选中的员工
-             */
-            deleteSelectEmployee () {
-                let ids = [];
-                let employees = [];
-                this.selectedEmployee.forEach(item => {
-                    ids.push(item.id);
-                    employees.push(item.nickName);
-                });
-                this.$refs.delModal.show({
-                    msg : `确认删除员工${employees.join('、')}?`,
-                    title : '删除员工',
-                    confirmCallback : () => {
-                        this.confirmDelete(ids);
-                    }
-                });
-            },
-            /**
-             * 删除员工
-             * @param data
-             */
-            delElement (data) {
-                this.$refs.delModal.show({
-                    msg : `确认删除员工${data.nickName}?`,
-                    title : '删除员工',
-                    confirmCallback : () => {
-                        this.confirmDelete([data.id]);
-                    }
-                });
-            },
-            /**
-             * 重置密码
-             * @param data
-             */
-            resetPass (data) {
-                this.$refs.changePass.show({
-                    title : this.$t('changePass'),
-                    confirmCallback : (pass) => {
-                        this.confirmChangePass(pass,[data]);
-                    }
-                });
-            },
-            /**
-             * 确认删除员工
-             * @param ids
-             */
-            confirmDelete (ids){
-                ajax.post('deleteEmployees',{
-                    ids : ids
-                }).then(res => {
-                   if(res.status === 200){
-                       this.$Message.success('删除成功');
-                       this.getEmployees();
-                   }else{
-                       this.$Message.error('删除失败');
-                   }
-                });
-            },
-            /**
-             * 确认修改密码
-             * @param pass
-             * @param employee
-             */
-            confirmChangePass(pass,employee) {
-                ajax.post('updatePassword',{
-                    ids : employee.map(item => item.id),
-                    password : pass
-                }).then(res => {
-                   if(res.status === 200){
-                       this.$Message.success('修改成功');
-                   }else{
-                       this.$Message.error('修改失败');
-                   }
-                }).finally(() => {
-                    this.$refs.changePass.hide();
-                });
-            },
-            /**
              * 获取部门下员工列表
              */
             getEmployees () {
-                ajax.post('getEmployees',{
-                    id : this.searchParams.id
+                ajax.post('getEmployeeList',{
+                    id : this.searchParams.id,
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                     if(res.status === 200){
                         this.tableData = res.data.list ? res.data.list : [];

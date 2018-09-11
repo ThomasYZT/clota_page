@@ -178,7 +178,7 @@
 
     .company-detail {
         @include block_outline($width: unquote('calc(100% - 400px)'));
-        padding: 11px 35px;
+        padding: 11px 20px;
         float: right;
         overflow: auto;
 

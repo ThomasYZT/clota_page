@@ -13,7 +13,7 @@
                     </FormItem>
                     <FormItem>
                         <i-switch v-model="formDataCopy.isStart"></i-switch>
-                        <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status === 'close'}">
+                        <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status !== 'open'}">
                             {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                         </span>
                     </FormItem>
@@ -136,11 +136,11 @@
              * 获取部门详情
              */
             getDepDetail () {
-                ajax.post('getServiceProvider',{
-                    id : this.activeNode.id
+                ajax.post('getOrgInfo',{
+                    orgId : this.activeNode.id
                 }).then(res => {
-                    if(res.status === 200){
-                        this.formData = res.data ? res.data : {};
+                    if(res.success){
+                        this.formData = res.data ? res.data.basicInfo : {};
                     }else{
                         this.formData = {};
                     }

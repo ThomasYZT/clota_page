@@ -1,9 +1,6 @@
 //非部门查看员工账号表头
 export const employee = [
     {
-
-    },
-    {
         title: '部门',
         minWidth: 120,
         field: 'realName',
@@ -20,17 +17,9 @@ export const employee = [
         minWidth: 130,
         field: 'examScore'
     },
-    {
-
-    },
 ];
 //部门查看员工账号表头
 export const depEmployee = [
-    {
-        title : '',
-        width : 90,
-        field : 'check'
-    },
     {
         title: '员工编号',
         minWidth: 200,
@@ -55,10 +44,5 @@ export const depEmployee = [
         title: '角色权限',
         minWidth: 130,
         field: 'roleName'
-    },
-    {
-        title : '操作',
-        width: 150,
-        field : 'operate'
     },
 ];

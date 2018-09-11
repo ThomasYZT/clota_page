@@ -5,11 +5,6 @@
 //下属部门表头
 export const partMentHead = [
     {
-        title : '',
-        width : 100,
-        field: 'check',
-    },
-    {
         title: '部门ID',
         minWidth: 210,
         field: 'id'
@@ -28,10 +23,5 @@ export const partMentHead = [
         title: '部门人数',
         minWidth: 130,
         field: 'departmentNumber'
-    },
-    {
-        title : '操作',
-        width : 150,
-        field: 'operate'
     }
 ];

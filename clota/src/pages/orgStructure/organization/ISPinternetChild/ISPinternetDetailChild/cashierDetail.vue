@@ -10,25 +10,25 @@
             <div class="com-name">
                 <span class="name"
                       v-w-title="formData.cashierName">
-                    {{cashierDetail.orgName | contentFilter}}
+                    {{cashierDetail.channelName | contentFilter}}
                 </span>
             </div>
             <i-row>
                 <i-col span="12">
                     <FormItem label="款台名称：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.orgName">{{cashierDetail.orgName | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.channelName">{{cashierDetail.channelName | contentFilter}}</span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
                     <FormItem label="款台ID：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.partnerId">{{cashierDetail.partnerId | contentFilter}}</span>
                     </FormItem>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
                     <FormItem label="服务器名称：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.serverName">{{cashierDetail.serverName | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.serverUrl">{{cashierDetail.serverUrl | contentFilter}}</span>
                         <Tooltip placement="bottom">
                             <div slot="content" class="tips-content">
                                 {{$t('serverNameTips')}}
@@ -39,19 +39,19 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="款台类型：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.checkerType">{{cashierDetail.checkerType | contentFilter}}</span>
                     </FormItem>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
                     <FormItem label="所属核销设备分组：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.checkGroupName">{{cashierDetail.checkGroupName | contentFilter}}</span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
                     <FormItem label="所属销售渠道分组：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.saleGroupName">{{cashierDetail.saleGroupName | contentFilter}}</span>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -134,11 +134,11 @@
              * 获取款台详情
              */
             getCashierDetail () {
-                ajax.post('getServiceProvider',{
-                    id : this.activeNode.id,
+                ajax.post('getOrgInfo',{
+                    orgId : this.activeNode.id,
                 }).then(res => {
-                    if(res.status === 200){
-                        this.cashierDetail = res.data ? res.data : {};
+                    if(res.success){
+                        this.cashierDetail = res.data ? res.data.orgSelfChannel : {};
                     }else{
                         this.cashierDetail = {};
                     }

@@ -6,13 +6,13 @@
               :model="formDataCopy"
               :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
-              :label-position="type === 'edit' ? 'right' : 'left'"
+              :label-position="type === 'edit' ? 'top' : 'left'"
               inline>
         <div class="com-name">
             <template v-if="type === 'edit'">
                 <i-row>
                     <i-col span="9" style="width : 240px">
-                        <FormItem prop="orgName" >
+                        <FormItem prop="orgName" :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.orgName" style="width : 220px"/>
                         </FormItem>
                     </i-col>
@@ -46,7 +46,7 @@
         <div :class="{'form-area' : type === 'edit'}">
             <i-row>
                 <i-col span="12">
-                    <FormItem label="公司ID：" :label-width="150">
+                    <FormItem label="公司ID：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.id"
                                disabled
                                v-if="type === 'edit'"/>
@@ -58,7 +58,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="公司编码：" :label-width="150">
+                    <FormItem label="公司编码：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.nodeCode"
                                disabled
                                v-if="type === 'edit'"/>
@@ -72,7 +72,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="150">
+                    <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="formDataCopy.checkinCode"  v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.checkinCode">
                     {{companyDetail.checkinCode | contentFilter}}
@@ -81,7 +81,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="全民分销邀请码："
-                              :label-width="150">
+                              :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.saleCode"
                                disabled
                                v-if="type === 'edit'"/>
@@ -95,7 +95,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="短信供应商：" :label-width="150">
+                    <FormItem label="短信供应商：" :label-width="type === 'edit' ? 0 : 150">
                         <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.desc"
@@ -109,7 +109,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="管理账号：" :label-width="150">
+                    <FormItem label="管理账号：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.manager"
                                disabled
                                v-if="type === 'edit'"/>
@@ -117,14 +117,16 @@
                               v-else
                               v-w-title="companyDetail.manager">
                              {{companyDetail.manager | contentFilter}}
-                            <span class="reset-pass" @click="resetPass">重置密码</span>
+                            <span class="reset-pass"
+                                  v-if="activeNode && activeNode.level !== 1"
+                                  @click="resetPass">重置密码</span>
                         </span>
                     </FormItem>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="email" label="电子邮箱：" :label-width="150">
+                    <FormItem prop="email" label="电子邮箱：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="formDataCopy.email">
                      {{companyDetail.email | contentFilter}}
@@ -132,7 +134,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="linkName" label="联系人：" :label-width="150">
+                    <FormItem prop="linkName" label="联系人：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="formDataCopy.linkName" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.linkName">
                      {{companyDetail.linkName | contentFilter}}
@@ -142,7 +144,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="所在地：" :label-width="150">
+                    <FormItem label="所在地：" :label-width="type === 'edit' ? 0 : 150">
                         <city-plugin @select="changeCity"
                                      v-if="defaultAddress && type === 'edit'"
                                      :defaultValue="defaultAddress">
@@ -153,7 +155,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="address" label="详细地址：" :label-width="150">
+                    <FormItem prop="address" label="详细地址：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model="formDataCopy.address" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.address">
                      {{companyDetail.address | contentFilter}}
@@ -163,7 +165,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="telephone" label="电话：" :label-width="150">
+                    <FormItem prop="telephone" label="电话：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="formDataCopy.telephone" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.telephone">
                      {{companyDetail.telephone | contentFilter}}
@@ -171,7 +173,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="tex" label="传真：" :label-width="150">
+                    <FormItem prop="tex" label="传真：" :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="formDataCopy.tex" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.tex">
                      {{companyDetail.tex | contentFilter}}
@@ -181,8 +183,10 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentManageId' : ''" label="管理上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.pid">
+                    <FormItem :prop="(activeNode && activeNode.level !== 1) ? 'parentManageId' : ''"
+                              label="管理上级："
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.level !== 1">
                             <Option v-for="item in superiorList"
                                     :value="item.id"
                                     :key="item.id">
@@ -195,8 +199,10 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentEconomicId' : ''" label="财务上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">
+                    <FormItem :prop="(activeNode && activeNode.level !== 1) ? 'parentEconomicId' : ''"
+                              label="财务上级："
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.level !== 1">
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
                                     :key="item.id">
@@ -211,7 +217,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
+                    <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="type === 'edit' ? 0 : 150">
                         <Input :value="companyDetail.smsCount + '/' + companyDetail.totalSmsCount"
                                disabled
                                v-if="type === 'edit'"/>
@@ -221,20 +227,13 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="受理客服：" :label-width="150">
-                        <!--<Select v-model="formDataCopy.businessAccount1.id" v-if="type === 'edit'  && activeNode && !activeNode.pid">-->
-                            <!--<Option v-for="item in serviceStaffList"-->
-                                    <!--:value="item.id"-->
-                                    <!--:key="item.id">-->
-                                <!--{{ item.loginName }}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
-                        <Input v-model.trim="companyDetail.manager"
+                    <FormItem prop="orgName" label="受理客服：" :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model.trim="companyDetail.customerService"
                                disabled
                                v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
-                     {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
-                </span>
+                        <span class="info-val" v-else v-w-title="companyDetail.customerService">
+                             {{companyDetail.customerService | contentFilter}}
+                        </span>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -276,10 +275,6 @@
             :isDefaultPackUp="false"
             :search-params="{id : activeNode.id}">
         </employee-table>
-        <!--短信-->
-        <note-table
-            :search-params="{id : activeNode.id}">
-        </note-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
         </edit-modal>
@@ -289,7 +284,6 @@
 <script>
     import tableCom from '../../organization/tableCom';
     import employeeTable from './components/employeeTable';
-    import noteTable from './components/noteTable';
     import openedService from './components/openedService';
     import subCompany from './components/subCompany';
     import subScene from './components/subScene';
@@ -313,7 +307,6 @@
         components: {
             tableCom,
             employeeTable,
-            noteTable,
             openedService,
             subCompany,
             subScene,
@@ -357,8 +350,6 @@
                 superiorList : [],
                 //财务上级列表
                 fianceSuperiorList : [],
-                //受理客服列表
-                serviceStaffList : [],
                 //公司详细信息
                 companyDetail : {},
                 ruleValidate : {
@@ -494,7 +485,7 @@
              */
             getCompanyDetail () {
                 ajax.post('getOrgInfo',{
-                    id : this.activeNode.id,
+                    orgId : this.activeNode.id,
                 }).then(res => {
                     if(res.success){
                         this.companyDetail = res.data ? res.data.basicInfo : {};
@@ -515,20 +506,6 @@
                     }
                 }).catch(() => {
                     this.smsSuppilerList = [];
-                });
-            },
-            /**
-             * 查询所有的受理客服信息
-             */
-            querySysAccoutList () {
-                ajax.post('querySysAccoutList').then(res => {
-                    if(res.status === 200){
-                        this.serviceStaffList = res.data ? res.data : [];
-                    }else{
-                        this.serviceStaffList = [];
-                    }
-                }).catch(err => {
-                    this.serviceStaffList = [];
                 });
             },
             /**
@@ -565,17 +542,31 @@
                 }
             },
             /**
-             * 获取财务上级和经营上级
+             * 获取经营上级
              */
             getParentManages () {
-                ajax.post('getParentManages',{
-                    id : this.activeNode.id,
+                ajax.post('getOrgsByManageType',{
+                    orgId : this.activeNode.id,
+                    manageType : 'manage'
                 }).then(res => {
-                    if(res.status === 200){
-                        this.superiorList = res.data.parentManages ? res.data.parentManages.filter(item => item.id !== this.activeNode.id) : [];
-                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics.filter(item => item.id !== this.activeNode.id) : [];
+                    if(res.success){
+                        this.superiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
                     }else{
                         this.superiorList = [];
+                    }
+                });
+            },
+            /**
+             * 获取财务上级
+             */
+            getParentEconomic () {
+                ajax.post('getOrgsByManageType',{
+                    orgId : this.activeNode.id,
+                    manageType : 'economic'
+                }).then(res => {
+                    if(res.success){
+                        this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
+                    }else{
                         this.fianceSuperiorList = [];
                     }
                 });
@@ -583,8 +574,8 @@
         },
         created () {
             this.querySmsProviderList();
-            this.querySysAccoutList();
             this.getParentManages();
+            this.getParentEconomic();
         },
         computed  : {
             //公司详细地址
@@ -632,7 +623,7 @@
 
     .company-detail {
         @include block_outline($width: unquote('calc(100% - 400px)'));
-        padding: 11px 35px;
+        padding: 11px 20px;
         float: right;
         overflow: auto;
 
@@ -660,6 +651,7 @@
         /deep/ .ivu-form-item-label{
             font-size: $font_size_14px;
             color: $color_333;
+            padding: 3px 0 10px 0;
         }
 
         /deep/ .ivu-form-item-content{
@@ -667,12 +659,9 @@
             color: #333333;
         }
 
-        /deep/ .ivu-form .ivu-form-item-label{
-            padding: 10px 0 10px 0;
-        }
 
         .com-name {
-            @include overflow_tip(100%, 60px);
+            @include overflow_tip(100%, 65px);
             padding: 14px 0 0 0;
 
             /deep/ .ivu-switch{
@@ -724,8 +713,10 @@
 
         .form-area{
             background:  rgba(#F5F7FA,0.3);
-            padding: 10px 0 20px 0;
+            padding: 20px 0 20px 20px;
             border-radius: 4px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .btn-area{
