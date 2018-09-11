@@ -24,12 +24,12 @@ export default {
                 //组织架构--组织架构
                 path: 'organization',
                 name: 'organization',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/organization.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/ISPinternetChild/ISPinternetDetail.vue'),
                 meta: {
-                    menuName: 'org', //lang.config.js 里面的语言键值
+                    menuName: 'organization', //lang.config.js 里面的语言键值
                     _name: 'members', //
                     iconClass: 'icon-person',
-                    rightPath : topMenuName + '.' + 'org',
+                    rightPath : topMenuName + '.' + 'organization',
                     isMenu : true
                 },
             },

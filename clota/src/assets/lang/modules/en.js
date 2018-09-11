@@ -562,5 +562,8 @@ export default {
     'rechargeRecord' : '充值记录',
     'paymentManage' : '付款账户管理',
     'collectionManage' : '收款账户管理',
+    'organization' : '组织架构',
+    'hasStart' : '已启用',
+    'hasNotStart' : '未启用',
 
 }

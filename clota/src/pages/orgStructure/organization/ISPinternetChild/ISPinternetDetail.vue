@@ -1,0 +1,164 @@
+<!--服务提供商详情-->
+
+<template>
+    <div class="isp-internet-detail">
+        <!--<div class="less-company-detail">-->
+        <!--</div>-->
+        <div class="structure">
+            <!--组织结构图-->
+            <structure-tree :tree-data="structureData"
+                            :activeNode.sync="activeNode"
+                            v-model="componentName"
+                            @switch-tap="switchTap"
+                            @fresh-org="freshOrgInfo">
+            </structure-tree>
+        </div>
+        <!--组织架构不同的节点对应不同的组件-->
+        <transition name="fade">
+            <component :is="componentSelect"
+                       :key="nodeKey"
+                       :activeNode="activeNode"
+                       @fresh-org="freshOrgInfo">
+            </component>
+        </transition>
+    </div>
+</template>
+
+<script>
+    import structureTree from '../organization/structureHead';
+    import companyDetail from './ISPinternetDetailChild/companyDetail';
+    import departmentDetail from './ISPinternetDetailChild/departmentDetail';
+    import cashierDetail from './ISPinternetDetailChild/cashierDetail';
+    import sceneDetail from './ISPinternetDetailChild/sceneDetail';
+    import ajax from '@/api/index.js';
+
+    export default {
+        components: {
+            structureTree,
+            companyDetail,
+            departmentDetail,
+            cashierDetail,
+            sceneDetail
+        },
+        data() {
+            return {
+                //组织结构数据
+                structureData: {},
+                //详情路由
+                componentName : 'company',
+                //节点id
+                nodeId : '',
+                //当前激活tap
+                activeTap : 'manage',
+                //当前激活的节点
+                activeNode : {}
+            }
+        },
+        methods: {
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                // if(params.id){
+                //     this.nodeId = params.id;
+                //     if(params.activeNode){
+                //         this.activeNode = params.activeNode;
+                //     }
+                //     this.getCompanyTree();
+                // }else{
+                //     this.$router.push({
+                //         name : 'ISPinternet'
+                //     });
+                // }
+            },
+            /**
+             * 获取组织树
+             */
+            getCompanyTree () {
+                let activeNode = JSON.parse(JSON.stringify(this.activeNode));
+                this.activeNode = {};
+                ajax.post('getOrgTree',{
+                    manageType : this.activeTap,
+                    showScene : 'manage',
+                }).then(res => {
+                    if(res.success){
+                        this.structureData = res.data ? res.data : {};
+                        if(Object.keys(activeNode).length < 1){
+                            this.activeNode = JSON.parse(JSON.stringify({
+                                id : this.structureData.id,
+                                pid : this.structureData.pid,
+                                type : this.structureData.nodeType
+                            }));
+                        }else{
+                            this.activeNode = activeNode;
+                        }
+                    }else{
+                        this.structureData = {};
+                        this.activeNode = {};
+                    }
+                })
+            },
+            /**
+             * 切换tap列表
+             * @param tapType
+             */
+            switchTap (tapType) {
+                this.activeTap = tapType;
+                this.getCompanyTree();
+            },
+            /**
+             * 更新当前的组织树
+             * @param activeNode 激活的节点信息
+             */
+            freshOrgInfo(activeNode) {
+                this.activeNode = activeNode;
+                this.getCompanyTree();
+            }
+        },
+        computed : {
+            /**
+             * 右侧引入的组件
+             */
+            componentSelect () {
+                if(this.activeNode.type === 'company') {
+                    return 'companyDetail'
+                }else if(this.activeNode.type === 'department'){
+                    return 'departmentDetail'
+                }else if(this.activeNode.type === 'table'){
+                    return 'cashierDetail';
+                }else if(this.activeNode.type === 'scenic'){
+                    return 'sceneDetail';
+                }else{
+                    return  '';
+                }
+            },
+            //组件动态设置key
+            nodeKey () {
+                if(this.activeNode){
+                    return this.activeNode.id;
+                }else{
+                    return '';
+                }
+            }
+        },
+        created () {
+            this.getCompanyTree();
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
+
+    .isp-internet-detail {
+        @include block_outline();
+        background: $color_fff;
+
+        .structure {
+            float: left;
+            @include block_outline(400px);
+            border-right: 1px solid $color_E1E1E1;
+        }
+    }
+</style>

@@ -137,3 +137,85 @@ export const moneyTradeTypes = [
         value : 'return_order',
     },
 ];
+//月份枚举
+export const monthEnum = [
+    {
+        label : 'month',
+        value : 1
+    },
+    {
+        label : 'month',
+        value : 2
+    },
+    {
+        label : 'month',
+        value : 3
+    },
+    {
+        label : 'month',
+        value : 4
+    },
+    {
+        label : 'month',
+        value : 5
+    },
+    {
+        label : 'month',
+        value : 6
+    },
+    {
+        label : 'month',
+        value : 7
+    },
+    {
+        label : 'month',
+        value : 8
+    },
+    {
+        label : 'month',
+        value : 9
+    },
+    {
+        label : 'month',
+        value : 10
+    },
+    {
+        label : 'month',
+        value : 11
+    },
+    {
+        label : 'month',
+        value : 12
+    }
+];
+
+//款台类型
+export const cashierType = [
+    {
+        label: 'verifyCashierType',//核销款台
+        value: 'verifyCashierType'
+    },
+    {
+        label: 'verifySaleType',//销售款台
+        value: 'verifySaleType'
+    },
+    {
+        label: 'verifySaleAndCashierType',//核销/销售一体款台
+        value: 'verifySaleAndCashierType'
+    },
+];
+//节点类型
+export const nodeList = [
+    {
+        label: 'company',//公司
+        value: 'company'
+    },
+    {
+        label: 'department',//部门
+        value: 'department'
+    },
+    {
+        label: 'scene',//景区
+        value: 'scene'
+    }
+];
