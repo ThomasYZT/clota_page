@@ -39,7 +39,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="款台类型：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.checkerType">{{cashierDetail.checkerType | contentFilter}}</span>
+                        <span class="info-val" v-w-title="$t(checkerType)">{{$t(checkerType) | contentFilter}}</span>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -62,6 +62,7 @@
 <script>
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
+    import {cashierType} from '@/assets/js/constVariable.js';
     export default {
         props : {
             //节点信息
@@ -105,7 +106,9 @@
                     }
                 ],
                 //款台详情
-                cashierDetail :{}
+                cashierDetail :{},
+                //款台类型列表
+                cashierType : cashierType
             }
         },
         methods: {
@@ -153,6 +156,17 @@
                 },
                 deep : true,
                 immediate : true
+            }
+        },
+        computed : {
+            //款台类型
+            checkerType () {
+                for(let i = 0,j = this.cashierType.length;i < j;i++){
+                    if(this.cashierDetail.checkerType === this.cashierType[i].value){
+                        return this.cashierType[i].label;
+                    }
+                }
+                return '';
             }
         }
     }

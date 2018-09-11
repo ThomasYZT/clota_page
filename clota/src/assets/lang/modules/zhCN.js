@@ -634,5 +634,6 @@ export default {
     'hasNotStart' : '未启用',
     'subDepartment' : '下属部门',
     'openedService' : '开通服务',
+    'verifySaleAndCashierType' : '核销/销售一体款台',
 
 }

@@ -40,9 +40,9 @@
                           v-if="showCashierTypeGroup">
                     <Select v-model="formData.cashierTypeGroup" style="width:280px">
                         <Option v-for="item in cashierTypeGroupList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ $t(item.label) }}
+                                :value="item.id"
+                                :key="item.id">
+                            {{ $t(item.groupName) }}
                         </Option>
                     </Select>
                 </FormItem>
@@ -52,16 +52,16 @@
                           v-if="showSaleTypeGroup">
                     <Select v-model="formData.saleTypeGroup" style="width:280px">
                         <Option v-for="item in saleTypeGroupList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.groupName }}
                         </Option>
                     </Select>
                 </FormItem>
             </Form>
         </div>
         <div slot="footer">
-            <Button type="ghost" 
+            <Button type="ghost"
                 class="ivu-btn-90px"
                 @click="cancel">取消</Button>
             <Button type="primary"
@@ -75,6 +75,7 @@
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import {cashierType} from '@/assets/js/constVariable.js';
+    import ajax from '@/api/index.js';
 
     export default {
         components: {
@@ -112,7 +113,7 @@
                     //款台类型
                     cashierType: '',
                     //所属核销设备分组
-                    cashierTypeGroup: [],
+                    cashierTypeGroup: '',
                     //服务器名称
                     serverName: '',
                     //短信供应商
@@ -174,6 +175,9 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                }else{
+                    this.getCheckItemPage();
+                    this.getSaleItemPage();
                 }
             },
             /**
@@ -182,7 +186,7 @@
             save() {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.addCompany();
+                        this.addCashier();
                     }
                 });
             },
@@ -195,11 +199,27 @@
                 }
             },
             /**
-             * 调用新增公司的接口
+             * 调用新增款台的接口
              */
-            addCompany() {
-                this.$emit('fresh-structure-data');
-                this.$emit('input', false);
+            addCashier() {
+                ajax.post('addOrgInfo',{
+                    orgName : this.addedNodeDetail.nodeName,
+                    nodeType : 'table',
+                    checkerType : this.formData.cashierType,
+                    saleGroupId : this.formData.saleTypeGroup,
+                    checkGroupId : this.formData.cashierTypeGroup,
+                    serverUrl : this.formData.serverName,
+                    parentManageId : this.chosedNodeDetail.id,
+                    parentEconomicId : this.chosedNodeDetail.id,
+                }).then(res => {
+                   if(res.success){
+                       this.$emit('fresh-structure-data');
+                       this.$emit('input', false);
+                       this.$Message.success('新增成功');
+                   }else{
+                        this.$Message.error('新增失败');
+                   }
+                });
             },
             /**
              * 选择款台类型之后
@@ -213,13 +233,41 @@
              */
             cancel () {
                 this.$emit('input', false);
+            },
+            /**
+             * 获取核销设备分组
+             */
+            getCheckItemPage () {
+                ajax.post('getOrgGroupList',{
+                    groupType : 'check'
+                }).then(res => {
+                   if(res.success){
+                       this.cashierTypeGroupList = res.data ? res.data : [];
+                   } else{
+                       this.cashierTypeGroupList = [];
+                   }
+                });
+            },
+            /**
+             * 获取销售设备分组
+             */
+            getSaleItemPage () {
+                ajax.post('getOrgGroupList',{
+                    groupType : 'sale'
+                }).then(res => {
+                    if(res.success){
+                        this.saleTypeGroupList = res.data ? res.data : [];
+                    } else{
+                        this.saleTypeGroupList = [];
+                    }
+                });
             }
         },
         computed : {
             //是否显示所属核销设备分组
             showCashierTypeGroup () {
                 if(this.formData.cashierType){
-                    return this.formData.cashierType === 'verifyCashierType' || this.formData.cashierType === 'verifySaleAndCashierType';
+                    return this.formData.cashierType === 'check' || this.formData.cashierType === 'combine';
                 }else{
                     return true;
                 }
@@ -227,12 +275,12 @@
             //是否显示所属销售渠道分组
             showSaleTypeGroup () {
                 if(this.formData.cashierType){
-                    return this.formData.cashierType === 'verifySaleType' || this.formData.cashierType === 'verifySaleAndCashierType';
+                    return this.formData.cashierType === 'sale' || this.formData.cashierType === 'combine';
                 }else{
                     return true;
                 }
             }
-        }
+        },
     }
 </script>
 

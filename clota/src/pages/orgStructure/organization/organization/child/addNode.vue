@@ -43,6 +43,7 @@
 <script>
     import {nodeList} from '@/assets/js/constVariable.js';
 
+
     export default {
         props: {
             //绑定的模态框是否显示的变量
@@ -146,10 +147,10 @@
             //景区可以建立景区、部门的子节点
             //部门不可创建子节点
             nodeListCanChose() {
-                if(this.nodeDetail.data){
-                    if(this.nodeDetail.data.nodeType === 'company'){
+                if(this.nodeDetail){
+                    if(this.nodeDetail.nodeType === 'company'){
                         return this.nodeList.filter(item => item.label !== 'cashier');
-                    }else if(this.nodeDetail.data.nodeType === 'scenic' ){
+                    }else if(this.nodeDetail.nodeType === 'scenic' ){
                         return this.nodeList.filter(item => item.label !== 'company');
                     }else{
                         return [];

@@ -22,5 +22,11 @@ export default {
     'deletedEmployee' : '/account/deletedEmployee',
     //获取管理上级或财务上级
     'getOrgsByManageType' : '/organize/getOrgsByManageType',
+    //新增组织树节点
+    'addOrgInfo' : '/organize/addOrgInfo',
+    //删除节点
+    'deleteOrg' : '/organize/deleteOrg',
+    //获取核销和销售分组信息
+    'getOrgGroupList' : '/organize/getOrgGroupList',
 
 }

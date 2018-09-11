@@ -49,9 +49,9 @@
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
                     <Select v-model.trim="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
-                                :value="item.provider"
-                                :key="item.provider">
-                            {{ item.provider }}
+                                :value="item.name"
+                                :key="item.name">
+                            {{ item.name }}
                         </Option>
                     </Select>
                 </FormItem>
@@ -228,7 +228,7 @@
                         },
                     ],
                     controlAccount: [
-                        {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        // {required: true, validator: validateControlAccount, trigger: 'blur'},
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
@@ -281,6 +281,7 @@
                     this.$refs.formValidate.resetFields();
                 }else{
                     this.getParentManages();
+                    this.getParentEconomic();
                     this.querySmsProviderList();
                     this.formData.fianceSuperior = this.chosedNodeDetail.id;
                     this.formData.manageSuperior = this.chosedNodeDetail.id;
@@ -320,25 +321,55 @@
             /**
              * 获取财务上级和经营上级
              */
+            // getParentManages () {
+            //     ajax.post('getParentManages',{
+            //         id : this.chosedNodeDetail.id
+            //     }).then(res => {
+            //         if(res.status === 200){
+            //             this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];
+            //             this.parentManages = res.data.parentManages ? res.data.parentManages : [];
+            //             // this.parentManages.push({
+            //             //     id : this.chosedNodeDetail.id,
+            //             //     orgName : this.chosedNodeDetail.name,
+            //             // });
+				// 		//
+            //             // this.parentEconomics.push({
+            //             //     id : this.chosedNodeDetail.id,
+            //             //     orgName : this.chosedNodeDetail.name,
+            //             // });
+            //         }else{
+            //             this.parentEconomics = [];
+            //             this.parentManages = [];
+            //         }
+            //     });
+            // },
+            /**
+             * 获取经营上级
+             */
             getParentManages () {
-                ajax.post('getParentManages',{
-                    id : this.chosedNodeDetail.id
+                ajax.post('getOrgsByManageType',{
+                    orgId :  this.chosedNodeDetail.id,
+                    manageType : 'manage'
                 }).then(res => {
-                    if(res.status === 200){
-                        this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];
-                        this.parentManages = res.data.parentManages ? res.data.parentManages : [];
-                        // this.parentManages.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
-						//
-                        // this.parentEconomics.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
+                    if(res.success){
+                        this.parentManages = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
+                    }else{
+                        this.parentManages = [];
+                    }
+                });
+            },
+            /**
+             * 获取财务上级
+             */
+            getParentEconomic () {
+                ajax.post('getOrgsByManageType',{
+                    orgId : this.chosedNodeDetail.id,
+                    manageType : 'economic'
+                }).then(res => {
+                    if(res.success){
+                        this.parentEconomics = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
                     }else{
                         this.parentEconomics = [];
-                        this.parentManages = [];
                     }
                 });
             },
@@ -346,12 +377,9 @@
              * 获取短信供应商列表
              */
             querySmsProviderList () {
-                ajax.post('smsProviderList',{
-                    page : 1,
-                    pageSize : 9999
-                }).then(res => {
-                    if(res.status === 200){
-                        this.smsProviderList = res.data.list ? res.data.list : [];
+                ajax.post('getSmsProviderList').then(res => {
+                    if(res.success){
+                        this.smsProviderList = res.data ? res.data : [];
                     }else{
                         this.smsProviderList = [];
                     }
@@ -362,7 +390,7 @@
              */
             addOrgInfo () {
                 ajax.post('addOrgInfo',{
-                    rootId : this.chosedNodeDetail.id,
+                    // rootId : this.chosedNodeDetail.id,
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
@@ -376,10 +404,10 @@
                     districtid : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
-                    parentManageId : this.formData.manageSuperior,
+                    parentManageId : this.formData.fianceSuperior,
                     nodeType : 'company'
                 }).then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.$emit('fresh-structure-data');
                         this.$emit('input', false);
                         this.$Message.success('新增成功');

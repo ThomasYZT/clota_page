@@ -183,17 +183,18 @@
                             iconfont: 'true',
                             'icon-delete': true,
                             //财务管理不允许删除节点
-                            'hidden' : this.activeTap === 'economic' || data.level === 1
+                            'hidden' : this.activeTap === 'economic' || node.level === 1
                         },
                         style : {
                             paddingRight : '5px',
+                            color : '#EB6751'
                         },
                         on: {
                             click: (e) => {
                                 e.stopPropagation();
                                 this.currentNode = data;
                                 this.$refs.delModal.show({
-                                    title : `删除${data.name}`,
+                                    title : `删除${data.orgName}`,
                                     confirmCallback : () => {
                                         this.delNode(data);
                                     }
@@ -204,7 +205,7 @@
                     h('span', {
                         class: {
                             iconfont: 'true',
-                            'icon-add': true,
+                            'icon-delete': true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
@@ -268,12 +269,13 @@
              */
             addDepartment(data) {
                 ajax.post('addOrgInfo',{
-                    rootId : this.rootId,
+                    // rootId : this.rootId,
                     orgName : data.nodeName,
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
+                    parentEconomicId : this.currentNode.id,
                 }).then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.$Message.success('新增成功');
                         this.getStructureData();
                     }else{
@@ -286,10 +288,10 @@
              * @param data
              */
             delNode (data) {
-                ajax.post('deleteNode',{
-                    id : data.id
+                ajax.post('deleteOrg',{
+                    orgId : data.id
                 }).then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.$Message.success('删除成功');
                         this.$emit('switch-tap',this.activeTap);
                     }else{
@@ -414,6 +416,10 @@
 
             /deep/ .el-tree-node__content{
                 height: 36px;
+
+                &:hover{
+                    background: transparent;
+                }
             }
 
             /deep/ .title-wrap {
@@ -456,12 +462,8 @@
                     color: $color_blue;
                     font-size: 14px;
                     float: right;
-                    margin-top: 12px;
+                    margin-top: 7px;
                     cursor: pointer;
-
-                    &:nth-last-of-type(2) {
-                        /*margin-left: 9px;*/
-                    }
                 }
             }
         }

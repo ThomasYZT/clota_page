@@ -193,15 +193,15 @@ export const monthEnum = [
 export const cashierType = [
     {
         label: 'verifyCashierType',//核销款台
-        value: 'verifyCashierType'
+        value: 'check'
     },
     {
         label: 'verifySaleType',//销售款台
-        value: 'verifySaleType'
+        value: 'sale'
     },
     {
         label: 'verifySaleAndCashierType',//核销/销售一体款台
-        value: 'verifySaleAndCashierType'
+        value: 'combine'
     },
 ];
 //节点类型
@@ -217,6 +217,10 @@ export const nodeList = [
     {
         label: 'scene',//景区
         value: 'scene'
+    },
+    {
+        label: 'cashier',//款台
+        value: 'cashier'
     }
 ];
 
