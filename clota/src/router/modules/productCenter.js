@@ -23,7 +23,7 @@ export default {
             productList: {
                 //产品中心--产品列表--三级菜单
                 path: '/productCenter/pList',
-                name : 'productList',
+                // name : 'productList',
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/index.vue'),
                 meta: {
                     menuName: 'productList', //lang.config.js 里面的语言键值
@@ -40,7 +40,7 @@ export default {
                         component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType.vue'),
                         meta: {
                             menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'point-setting',
+                            _name: 'members',
                             rightPath : topMenuName + '.' + 'productList',
                             isMenu : true
                         },
