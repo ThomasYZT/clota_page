@@ -2,10 +2,15 @@
     <!--新增/修改员工信息-->
     <div class="add-employee">
         <div class="breadcrumb-box">
-            <Breadcrumb separator=">">
+            <!--<Breadcrumb separator=">">
                 <BreadcrumbItem to="/orgManage/rolePermission">员工</BreadcrumbItem>
                 <BreadcrumbItem>{{ type === 'add' ? '新增员工' : '修改员工信息'}}</BreadcrumbItem>
-            </Breadcrumb>
+            </Breadcrumb>-->
+
+            <bread-crumb-head
+                :before-router-list="beforeRouterList"
+                :locale-router="localeRouter">
+            </bread-crumb-head>
         </div>
         <div class="add-employee-content">
 
@@ -24,12 +29,13 @@
 </template>
 
 <script>
-
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
     import basicForm from './basicInfo.vue'
 
     export default {
         components: {
             basicForm,
+            breadCrumbHead
         },
         data () {
             return {
@@ -42,12 +48,24 @@
                 formData: [{
                     date: '2016-05-03',
                 }],
+
+                // 面包屑上级路由信息
+                beforeRouterList: [
+                    {
+                        name: 'employee',   // 员工
+                        router: 'employee',
+                    }
+                ],
                 //新增/修改
                 type: 'add',
                 loading: false
             }
         },
-        computed: {},
+        computed: {
+            localeRouter () {
+                return this.type === 'add' ? this.$t('add') : this.$t('edit');      // 新增 ： 修改
+            },
+        },
         created() {
             this.init();
         },

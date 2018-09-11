@@ -1,6 +1,9 @@
 <template>
     <div class="new-employee-info">
-        <Form ref="formValidate" :model="employee" :rules="ruleValidate" :label-width="115">
+        <Form ref="formValidate"
+              :model="employee"
+              :rules="ruleValidate"
+              label-position="top">
             <div class="ivu-form-item-wrap">
                 <Form-item label=" 部门名称" prop="orgName">
                     <Select v-model="employee.idType" :placeholder="$t('selectField', {msg: ''})">
@@ -37,7 +40,7 @@
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="出日" prop="birthday">
+                <Form-item label="生日" prop="birthday">
                     <Date-picker
                         type="date"
                         v-model="employee.birthday"
@@ -60,21 +63,28 @@
                 </Form-item>
             </div>
             <!--空字段站位用-->
-            <div class="ivu-form-item-wrap"></div>
+            <!--<div class="ivu-form-item-wrap"></div>-->
             <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('remark') + '：'" prop="remark">
+                <Form-item :label="$t('remark')" prop="remark">
                     <Input v-model="employee.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
-            <!--空字段站位用-->
-            <div class="ivu-form-item-wrap"></div>
+            <!--角色权限-->
+            <div class="ivu-form-item-wrap">
+                <Form-item :label="$t('rolePermission')" prop="privileges">
+                    <Select v-model="employee.privileges" multiple>
+                        <!--<Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>-->
+                        <Option :value="'haha'">{{'角色'}}</Option>
+                    </Select>
+                </Form-item>
+            </div>
             <div class="ivu-form-item-wrap">
                 <Form-item label="是否启用" prop="open">
                     <Checkbox v-model="employee.open"></Checkbox>
                 </Form-item>
             </div>
             <!--空字段站位用-->
-            <div class="ivu-form-item-wrap"></div>
+            <!--<div class="ivu-form-item-wrap"></div>-->
 
         </Form>
     </div>
@@ -134,6 +144,7 @@
                     nativePlace: '',
                     nativePlaceAddr: '',
                     remark: '',
+                    privileges: [],
                     open: true,
                 },
                 ruleValidate: {
@@ -232,7 +243,7 @@
         width: 100%;
         height: 100%;
         background-color: #FFFFFF;
-        border-radius: 4px;
+        /*border-radius: 4px;*/
         overflow: auto;
         .ivu-input-icon{
             z-index: 2;

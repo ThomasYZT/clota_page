@@ -100,18 +100,17 @@
     .deleteList {
         .content {
             position: relative;
-            margin: 40px 0;
+            margin: 40px 80px;
 
             .delete-icon {
                 /*@include draw_circle(14px, 14px, $color_red, $color_fff, $font_size_12px);*/
-                @include absolute_pos(absolute, $top: 0px, $left: 60px);
+                @include absolute_pos(absolute, $top: 0px, $left: -28px);
                 color: $color_red;
             }
             .text {
                 font-size: $font_size_14px;
                 color: #333333;
                 line-height: 24px;
-                text-align: center;
                 .name {
                     color: $color_yellow;
                 }
