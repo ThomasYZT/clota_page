@@ -156,7 +156,7 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap" v-if="formData.orderToCommitVisitorIdInfo !== 'no'">
                         <Form-item :label="$t('idType')" prop="idType"><!--可接受证件类型-->
                             <CheckboxGroup v-model="formData.idType">
                                 <Checkbox v-for="(item,index) in enumData.idType"
@@ -167,24 +167,24 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitById')" prop="limitById"><!--身份证购票限制-->
-                            <Input v-model.trim="formData.limitById.day"
+                        <Form-item :label="$t('limitById')" prop="limitByIdDay"><!--身份证购票限制-->
+                            <Input v-model.trim="formData.limitByIdDay"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span class="label">{{$t('maxBuy')}}</span>
-                            <Input v-model.trim="formData.limitById.num"
+                            <Input v-model.trim="formData.limitByIdNum"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span>{{$t('paper')}}</span>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitByMobile')" prop="limitByMobile"><!--手机号购票限制-->
-                            <Input v-model.trim="formData.limitByMobile.day"
+                        <Form-item :label="$t('limitByMobile')" prop="limitByMobileDay"><!--手机号购票限制-->
+                            <Input v-model.trim="formData.limitByMobileDay"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span class="label">{{$t('maxBuy')}}</span>
-                            <Input v-model.trim="formData.limitByMobile.num"
+                            <Input v-model.trim="formData.limitByMobileNum"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span>{{$t('paper')}}</span>
@@ -208,6 +208,8 @@
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
+                    <!--空字段站位用-->
+                    <div class="ivu-form-item-wrap" v-if="formData.orderToCommitVisitorIdInfo === 'no'"></div>
                 </div>
 
                 <!--产品有效性-->
@@ -236,10 +238,10 @@
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('playPark')"><!--可游玩园区-->
-                            <span class="blue">+ {{$t('addPark')}}</span>
+                            <span class="blue" @click="addPark">+ {{$t('addPark')}}</span>
                             <table-com
                                 :ofsetHeight="120"
-                                :table-com-min-height="250"
+                                :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="tableData"
                                 :border="false">
@@ -271,6 +273,10 @@
                             @click="formValidateFunc">
                         {{$t('commitCheck')}}
                     </Button>
+                    <Button type="ghost"
+                            @click="goBack">
+                        {{$t("giveUpAdd")}}
+                    </Button>
                 </template>
                 <template v-if="type === 'modify'">
                     <Button type="primary"
@@ -278,14 +284,17 @@
                             @click="formValidateFunc">
                         {{$t('confirm')}}
                     </Button>
+                    <Button type="ghost"
+                            @click="goBack">
+                        {{$t("giveUpModify")}}
+                    </Button>
                 </template>
-                <Button type="ghost"
-                        @click="goBack">
-                    {{$t("cancel")}}
-                </Button>
             </div>
 
         </div>
+
+        <!--新增/编辑园区-->
+        <edit-park-modal ref="editPark"></edit-park-modal>
 
     </div>
 </template>
@@ -295,6 +304,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import editParkModal from './editParkModal.vue'
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
@@ -308,6 +318,7 @@
             breadCrumbHead,
             titleTemp,
             tableCom,
+            editParkModal,
         },
         data () {
 
@@ -320,45 +331,61 @@
                     }
                 }
             };
-            //校验字符串是否包含数字和字母
-            const validateNumAndStr = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(/^[A-Za-z0-9]{0,}$/g.test(value)){
-                        if(value.length > rule.maxLength){
-                            callback(this.$t('errorMaxLength',{field : rule.field,length : rule.maxLength}));
-                        }else{
-                            callback();
-                        }
-                    }else{
-                        callback(this.$t('filterError',{field : rule.field}));
-                    }
-                }else{
-                    callback();
-                }
-            };
             //校验钱
             const validateMoney = (rule,value,callback) => {
-                common.validateMoney(value).then(() => {
-                    callback();
-                }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
-                    }
-                });
+                if(value){
+                    common.validateMoney(value).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                        }
+                    });
+                }
             };
             //校验正整数
             const validateNumber = (rule,value,callback) => {
-                common.validateInteger(value).then(() => {
-                    callback();
-                }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
-                    }
-                });
+                if(value){
+                    common.validateInteger(value).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                        }
+                    });
+                }
+            };
+            //校验身份证购票限制
+            const validateIdBuyTicket = (rule,value,callback) => {
+                if(value || this.formData.limitByIdNum){
+                    common.validateInteger(this.formData.limitByIdNum).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                        }
+                    });
+                }
+            };
+            //校验手机号码购票限制
+            const validateMobileBuyTicket = (rule,value,callback) => {
+                if(value || this.formData.limitByMobileNum){
+                    common.validateInteger(this.formData.limitByMobileNum).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                        }
+                    });
+                }
             };
 
             return {
@@ -387,18 +414,14 @@
                     //购买限制
                     isTeamProduct : 'yes',//是否团队产品
                     enterNum : '',//可入园人数
-                    minOrderNum : '',//每订单最小起订数
-                    maxOrderNum : '',//每订单最大限订数
+                    minOrderNum : '10',//每订单最小起订数
+                    maxOrderNum : '100',//每订单最大限订数
                     orderToCommitVisitorIdInfo : 'no',//预定时提交游客身份信息
                     idType : ['identity','passport'],//可接受证件类型
-                    limitById : {
-                        day: '5',
-                        num: '5',
-                    },//身份证件购票限制
-                    limitByMobile : {
-                        day: '5',
-                        num: '5',
-                    },//手机号购票限制
+                    limitByIdDay: '5',//身份证件购票限制
+                    limitByIdNum: '5',//身份证件购票限制
+                    limitByMobileDay: '5',//手机号购票限制
+                    limitByMobileNum: '5',//手机号购票限制
                     limitStore : 'is_no_limit',//限制库存
                     storeNum : '',//库存数量
                     //产品有效性
@@ -464,6 +487,18 @@
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
+                    limitByIdDay: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitById'), length: 10}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateIdBuyTicket, trigger: 'blur' }
+                    ],
+                    limitByMobileDay: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitByMobile'), length: 10}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateMobileBuyTicket, trigger: 'blur' }
+                    ],
                 },
                 //枚举数据
                 enumData: {
@@ -481,8 +516,8 @@
                 },
                 //可游玩园区表头
                 columnData: parkColumn,
-                tableData: [],
-
+                //可游玩园区表格数据
+                tableData: [{}],
             }
         },
         created() {
@@ -508,10 +543,7 @@
 
             //新增/修改票类
             saveAndEditTicket( url, params ){
-                ajax.post(url, {
-                    memberInfo: JSON.stringify(params.memberInfo),
-                    memberCard: JSON.stringify(params.memberCard),
-                }).then(res => {
+                ajax.post(url, {}).then(res => {
                     if(res.success){
                         //区分新增与修改
                         this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
@@ -525,12 +557,32 @@
 
             //修改可游玩园区
             modify ( data ) {
-
+                this.$refs.editPark.show({
+                    data: data,
+                    title : this.$t('modify')+this.$t('oneTicketPark'),
+                    type: 'modify',
+                    confirmCallback : () => {
+                        //push to tableData
+                        debugger
+                        console.log(true)
+                    }
+                });
             },
-
             //删除可游玩园区
             del ( data ) {
 
+            },
+            //新增可游玩园区
+            addPark () {
+                this.$refs.editPark.show({
+                    title : this.$t('add')+this.$t('oneTicketPark'),
+                    type: 'add',
+                    confirmCallback : ( data ) => {
+                        //push to tableData
+                        console.log(true)
+                        this.tableData.push(data);
+                    }
+                });
             },
 
             //返回
@@ -550,7 +602,9 @@
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
                     this.type = params.type;
-                    this.formData = params.info || {};
+                    if(params.info){
+                        this.formData = params.info;
+                    }
                 }
             },
             /**
@@ -568,7 +622,7 @@
         },
         computed: {
             localeRouter () {
-                return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail');      // 新增会员 ： 修改会员信息
+                return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail');      // 新增票类 ： 修改票类信息
             },
         },
     }
@@ -645,6 +699,13 @@
 
                         /deep/ .ivu-checkbox-wrapper{
                             margin-right: 24px;
+                            &:last-child{
+                                margin-right: 0;
+                            }
+                        }
+
+                        /deep/ .ivu-checkbox{
+                            margin-right: 5px;
                         }
 
                         .label{

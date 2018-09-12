@@ -303,3 +303,24 @@ export const productEffectSet = [
         value: 'toPolicy'
     },
 ];
+
+//售票方式
+export const saleType = [
+    {
+        label: 'one_ticket',//一票制
+        value: 'one'
+    },
+    {
+        label: 'more_ticket',//多票制
+        value: 'more'
+    },
+];
+
+//认证方式
+export const authenticationType = [
+    {
+        label: 'fingerprint',//指纹验证
+        value: 'fingerprint'
+    },
+];
+
