@@ -16,7 +16,7 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="150">
+                  :label-width="190">
                 <!--财务上级-->
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
@@ -28,7 +28,7 @@
                     </Select>
                 </FormItem>
                 <!--管理上级-->
-                <FormItem :label="$t('manageSuperior')">
+                <FormItem :label="$t('manageSuperior')" required>
                     <Select v-model="formData.manageSuperior" disabled style="width:280px">
                         <Option v-for="item in parentManages"
                                 :value="item.id"
@@ -49,9 +49,9 @@
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
                     <Select v-model.trim="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
-                                :value="item.name"
-                                :key="item.name">
-                            {{ item.name }}
+                                :value="item.desc"
+                                :key="item.desc">
+                            {{ item.desc }}
                         </Option>
                     </Select>
                 </FormItem>
@@ -79,7 +79,7 @@
                 </FormItem>
                 <!--详细地址-->
                 <FormItem :label="$t('address')">
-                    <Input v-model.trim="formData.address" type="textarea" style="width: 280px"/>
+                    <Input v-model.trim="formData.address" style="width: 280px"/>
                 </FormItem>
             </Form>
         </div>
@@ -159,7 +159,7 @@
                         callback(this.$t('validateError.emailError'));
                     }
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {msg: this.$t('email')}));
+                    callback(this.$t('inputField', {field: this.$t('email')}));
                 }
             };
             //校验联系电话
@@ -223,7 +223,7 @@
                     fianceSuperior: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('fianceSuperior')}),
+                            message: this.$t('inputField', {field: this.$t('fianceSuperior')}),
                             trigger: 'change'
                         },
                     ],
@@ -236,12 +236,12 @@
                     smsProvider: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('smsProvider')}),
+                            message: this.$t('inputField', {field: this.$t('smsProvider')}),
                             trigger: 'change'
                         },
                     ],
                     person : [
-                        {required :true,message : this.$t('validateError.pleaseInput',{msg : this.$t('person')})}
+                        {required :true,message : this.$t('inputField',{field : this.$t('person')})}
                     ]
                 },
                 //短信供应商列表
@@ -471,7 +471,7 @@
         }
 
         .hint {
-            text-indent: 150px;
+            text-indent: 215px;
             margin-top: -12px;
             margin-bottom: 10px;
             font-size: $font_size_14px;
@@ -494,11 +494,10 @@
                     .ivu-form-item-error-tip {
                         width: 110px;
                         position: absolute;
-                        top: 7px;
-                        right: -110px;
-                        left: auto;
+                        top: 32px;
+                        left: 0;
                         line-height: 1;
-                        padding: 6px 0 0 5px;
+                        padding: 0 0 0 0;
                         color: #ed3f14;
                     }
                 }
@@ -506,6 +505,7 @@
                 .ivu-form-item-label {
                     font-size: $font_size_14px;
                     color: $color_6c6c6c;
+                    padding: 8px 10px 9px 12px;
                 }
 
                 textarea.ivu-input{

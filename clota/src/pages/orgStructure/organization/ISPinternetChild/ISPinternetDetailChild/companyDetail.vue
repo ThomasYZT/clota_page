@@ -247,7 +247,7 @@
                     </FormItem>
                 </i-col>
             </i-row>
-            <i-row v-if="type === 'edit'">
+            <i-row v-if="type === 'edit'" style="margin-top: 10px;">
                 <i-col span="24" style="text-align: center">
                     <Button type="primary"
                             class="ivu-btn-90px"
@@ -642,6 +642,8 @@
         overflow: auto;
 
         .form-watch{
+            border-bottom: 1px dashed #E1E1E1;
+
             /deep/ .ivu-form-item{
                 margin-bottom: 0;
             }
@@ -651,6 +653,8 @@
         }
 
         .form-edit{
+            border-bottom: 1px dashed #E1E1E1;
+
             /deep/ .ivu-form-item{
                 width: calc(100% - 25px);
                 margin-bottom: 14px;
@@ -684,10 +688,7 @@
             @include overflow_tip(100%, 65px);
             padding: 14px 0 0 0;
 
-            &.com-min-width{
-                max-width: 1000px;
-                margin: 0 auto;
-            }
+            .com-min-width{}
 
             /deep/ .ivu-switch{
                 margin-left: 20px;

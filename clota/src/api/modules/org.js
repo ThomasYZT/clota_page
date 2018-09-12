@@ -52,5 +52,9 @@ export default {
     'queryRoleList' : '/role/queryRoleList',
     //验证款台服务名的唯一性
     'checkServerUrlUnique' : '/selfChannel/checkServerUrlUnique',
+    //下级景区添加服务
+    'addOrgServiceList' : '/organize/addOrgServiceList',
+    //下级景区删除服务
+    'deleteOrgServiceList' : '/organize/deleteOrgServiceList',
 
 }

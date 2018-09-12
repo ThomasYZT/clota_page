@@ -20,7 +20,7 @@
                             @click="orgAddService(selectedService)">添加服务</Button>
                 </div>
                 <table-com
-                    v-if="tableShow"
+                    v-if="tableShow && type === 'scene'"
                     :column-data="openedServiceHead"
                     :table-data="tableData"
                     :border="true"
@@ -33,22 +33,11 @@
                     @query-data="queryList"
                     @selection-change="handleSelectionChange">
                     <el-table-column
+                        :key="type"
                         slot="column0"
                         slot-scope="row"
                         :label="row.title"
-                        show-overflow-tooltip
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scoped">
-                            {{(pageNo - 1) * pageSize + scoped.$index + 1}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="columncheck"
-                        slot-scope="row"
-                        :label="row.title"
                         fixed="left"
-                        show-overflow-tooltip
                         type="selection"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -64,21 +53,42 @@
                             {{scoped.row.runStatus === 'normal' ? $t('opened') : scoped.row.runStatus === 'invalid' ? $t('paused') : $t('expired')}}
                         </template>
                     </el-table-column>
+                </table-com>
+
+                <table-com
+                    v-if="tableShow && type === 'company'"
+                    :column-data="openedServiceHead"
+                    :table-data="tableData"
+                    :border="true"
+                    :page-no-d.sync="pageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="pageSize"
+                    :total-count="totalCount"
+                    :auto-height="true"
+                    :table-com-min-height="280"
+                    @query-data="queryList"
+                    @selection-change="handleSelectionChange">
                     <el-table-column
-                        slot="columnoperate"
+                        :key="type"
+                        slot="column0"
                         slot-scope="row"
                         :label="row.title"
-                        :width="row.width"
                         show-overflow-tooltip
-                        fixed="right"
+                        :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scoped">
-                            <template v-if="type === 'scene'">
-                                <ul class="operate-info">
-                                    <li class="custome"
-                                        @click="delService([scoped.row])">删除</li>
-                                </ul>
-                            </template>
+                            {{(pageNo - 1) * pageSize + scoped.$index + 1}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column4"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.row.runStatus === 'normal' ? $t('opened') : scoped.row.runStatus === 'invalid' ? $t('paused') : $t('expired')}}
                         </template>
                     </el-table-column>
                 </table-com>
@@ -86,12 +96,16 @@
         </transition>
         <!--删除服务模态框-->
         <del-modal ref="delModal">
-            <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>
-            <span>请及时保存。</span>
+            <div class="del-tips">
+                <Icon type="help-circled"></Icon>
+                <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>
+                <span>请及时保存。</span>
+            </div>
         </del-modal>
         <!--添加服务模态框-->
         <add-service
             ref="addService"
+            :opened-services="tableData"
             :scene-detail="sceneDetail"
             @fresh-service="queryList">
         </add-service>
@@ -168,7 +182,7 @@
                 this.$refs.delModal.show({
                     title : `删除服务`,
                     confirmCallback : () => {
-                        this.comfirmDeletService(data.map(item => item.serviceId));
+                        this.comfirmDeletService(data.map(item => item.id));
                     }
                 });
             },
@@ -205,11 +219,19 @@
              * @param serviceIds 需要删除的服务id
              */
             comfirmDeletService (serviceIds) {
-                ajax.post('deleteServices',{
-                    orgId : this.searchParams.id,
-                    serviceIds : serviceIds
-                }).then(res => {
-                    if(res.status === 200){
+                ajax.post('deleteOrgServiceList',
+                    serviceIds.map(item => {
+                        return {
+                            id : item
+                        }
+                    }),
+                    {
+                        headers : {
+                            'Content-Type' : 'application/json;charset-UTF-8'
+                        }
+                    }
+                ).then(res => {
+                    if(res.success){
                         this.$Message.success('删除成功');
                         this.queryList();
                     }else{
@@ -279,7 +301,6 @@
                 color: $color_blue;
                 display: inline-block;
                 margin-left: 10px;
-                margin-top: 2px;
                 vertical-align: middle;
                 cursor: pointer;
 
@@ -301,13 +322,17 @@
             }
         }
 
-        @at-root .red-bale{
-            padding: 0 20px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width : 100%;
-            color:#ed3f14;
+        @at-root .del-tips{
+            position: absolute;
+            padding: 0 76px 0 106px;
+            color: $color_333;
+            font-size: $font_size_14px;
+
+            .ivu-icon{
+                @include absolute_pos(absolute,$left : 88px,$top : 2px);
+                font-size: 15px;
+                color: #EB6751;
+            }
         }
     }
 </style>

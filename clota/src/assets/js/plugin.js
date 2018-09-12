@@ -41,6 +41,7 @@ import DropdownMenu from 'element-ui/lib/dropdown-menu';
 import DropdownItem from 'element-ui/lib/dropdown-item';
 import scrollbar from 'element-ui/lib/scrollbar';
 import elTree from 'element-ui/lib/tree';
+import elCheckbox from 'element-ui/lib/checkbox';
 
 
 // // 按需引入 Echarts 图表
@@ -68,6 +69,7 @@ plugin.install = function (Vue, options) {
     Vue.use(DropdownMenu);
     Vue.use(DropdownItem);
     Vue.use(elTree);
+    Vue.use(elCheckbox);
 
     //iview按需引入
     Vue.component('Button',Button);

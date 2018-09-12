@@ -10,7 +10,7 @@
         class="add-node"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('createNodeMsg',{node : nodeDetail.title})}}</span>
+            <span class="title">{{$t('createNodeMsg',{node : nodeDetail.orgName})}}</span>
         </div>
         <Form ref="formValidate"
               :model="formData"
@@ -168,7 +168,7 @@
 
     .add-node {
         & /deep/ .ivu-modal {
-            width: 600px !important;
+            width: 560px !important;
             height: 350px;
         }
 

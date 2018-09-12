@@ -14,17 +14,25 @@
         <div class="service-body">
             <div class="label-info">
                 <span class="key">上级公司：</span>
-                <span class="val">{{sceneDetail.parentManager | contentFilter}}</span>
+                <span class="val">
+                    {{sceneDetail.parentManager | contentFilter}}
+                     <Tooltip placement="top">
+                        <div slot="content" class="tips-content">
+                            {{$t('请先为上级公司开通服务后，景区才能添加相应服务。')}}
+                        </div>
+                        <Icon type="information-circled"></Icon>
+                    </Tooltip>
+                </span>
             </div>
-            <span class="tip">请先为上级公司开通服务后，景区才能添加相应服务。</span>
+            <!--<span class="tip">请先为上级公司开通服务后，景区才能添加相应服务。</span>-->
             <div class="label-info" style="margin-bottom: 10px">
-                <span class="key">上级公司已开通服务：</span>
+                <span class="val">上级公司已开通服务：</span>
             </div>
             <table-com
                 v-if="tableShow"
+                ref="multipleTable"
                 :column-data="columns"
                 :table-data="tableData"
-                :border="true"
                 :height="250"
                 @query-data="queryList"
                 @selection-change="handleSelectionChange">
@@ -33,9 +41,13 @@
                     slot-scope="row"
                     type="selection"
                     fixed="left"
+                    :disabled="true"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-checkbox disabled="" :value="selectedService.includes(scope.row)" @input="test(scope.row,$event)"></el-checkbox>-->
+                    <!--</template>-->
                 </el-table-column>
                 <el-table-column
                     slot="column4"
@@ -56,7 +68,6 @@
                 {{$t('cancel')}}
             </Button>
             <Button type="primary"
-                    :disabled="selectedService.length < 1"
                     class="ivu-btn-90px"
                     @click="confirm">
                 {{$t('save')}}
@@ -76,6 +87,13 @@
                 type : Object,
                 default () {
                     return {};
+                }
+            },
+            //已经开通的服务
+            'opened-services' : {
+                type : Array,
+                default () {
+                    return [];
                 }
             }
         },
@@ -124,7 +142,19 @@
              * 确认新增
              */
             confirm() {
-                this.openScenicServices();
+                if(this.selectedService.length < 1){
+                    this.$Message.warning('请选择服务');
+                }else{
+                    for(let i = 0,j = this.openedServices.length;i < j;i++){
+                        for(let a = 0,b = this.selectedService.length;i < j;i++){
+                            if(this.openedServices[i].serviceId === this.selectedService[a].serviceId){
+                                this.$Message.warning('请不要选中已开通的服务');
+                                return;
+                            }
+                        }
+                    }
+                    this.openScenicServices();
+                }
             },
             /**
              * 显示 模态框
@@ -158,6 +188,9 @@
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data && res.data.rootServiceList ? res.data.rootServiceList.data : [];
+                        this.$nextTick(() => {
+                            // this.setDefaultChosed(this.tableData);
+                        });
                     }else{
                         this.tableData = [];
                     }
@@ -167,12 +200,23 @@
              * 给指定景区开通服务
              */
             openScenicServices () {
-                ajax.post('openScenicServices',{
-                    orgId : this.sceneDetail.id,
-                    serviceIds : this.selectedService.map(item => item.serviceId),
-                    parentOrgId : this.sceneDetail.parentManage ? this.sceneDetail.parentManage.id : ''
-                }).then(res => {
-                    if(res.status === 200){
+                ajax.post('addOrgServiceList',
+                    this.selectedService.map(item => {
+                        return {
+                            orgId : this.sceneDetail.id,
+                            startTime : item.startTime,
+                            endTime : item.endTime,
+                            serviceId : item.serviceId,
+                            serviceName : item.serviceName,
+                        }
+                    }),
+                    {
+                        headers : {
+                            'Content-Type' : 'application/json;charset-UTF-8'
+                        }
+                    }
+                ).then(res => {
+                    if(res.success){
                         this.$Message.success('开通成功');
                         this.$emit('fresh-service');
                     }else{
@@ -181,7 +225,36 @@
                 }).finally(() => {
                     this.modalShow = false;
                 });
-            }
+            },
+            /**
+             * 设置默认选中的框
+             * @param tableData
+             */
+            setDefaultChosed (tableData) {
+                for(let i = 0,j = this.openedServices.length;i < j;i++){
+                    for(let a = 0,b = tableData.length;a < b;a++){
+                        if(tableData[a].serviceId === this.openedServices[i].serviceId){
+                            this.$refs.multipleTable.toggleRowSelection(tableData[i]);
+                        }
+                    }
+                }
+            },
+            test (data,type) {
+                this.$refs.multipleTable.toggleRowSelection();
+                if(type === false){
+                    for(let i = 0,j = this.selectedService.length;i < j;i++){
+                        if(this.selectedService[i] === data){
+                            this.$refs.multipleTable.toggleRowSelection(this.selectedService[i]);
+                        }
+                    }
+                }else{
+                    for(let i = 0,j = this.tableData.length;i < j;i++){
+                        if(this.tableData[i] === data){
+                            this.$refs.multipleTable.toggleRowSelection(this.tableData[i]);
+                        }
+                    }
+                }
+            },
         },
         computed : {
             //表格是否显示
@@ -238,17 +311,18 @@
             font-size: $font_size_14px;
             color: $color_333;
             text-align: left;
-            padding: 10px 20px;
+            padding: 15px 20px;
             $key_width : 150px;
 
             .label-info{
                 @include block_outline(100%,30px);
                 line-height: 30px;
+                margin-top: 5px;
 
                 .key{
                     float: left;
                     display: inline-block;
-                    @include block_outline($key_width,30px);
+                    @include block_outline(auto,30px);
                     text-align: right;
                     padding-right: 10px;
                     font-size: $font_size_14px;
@@ -263,23 +337,6 @@
                     color: $color_666;
                 }
 
-            }
-
-            .tip{
-                padding-left: $key_width;
-                color: $color_999;
-                @include block_outline($height : 20px);
-            }
-        }
-
-
-        .page-area {
-            @include block_outline($height: 57px);
-            text-align: right;
-
-            /deep/ .el-pagination {
-                display: inline-block;
-                padding-top: 15px;
             }
         }
     }

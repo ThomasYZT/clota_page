@@ -352,6 +352,10 @@
         @include block_outline();
         padding: 0 20px;
 
+        /deep/ .loader{
+            background: red;
+        }
+
         .head {
             @include block_outline($height: 68px);
             border-bottom: 1px solid $color_E1E1E1;
@@ -418,9 +422,10 @@
 
             /deep/ .el-tree-node__content{
                 height: 36px;
+                background: $color_fff;
 
                 &:hover{
-                    background: transparent;
+                    background: $color_fff!important;
                 }
             }
 

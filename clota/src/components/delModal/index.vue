@@ -96,7 +96,7 @@
 
     .del-node {
         & /deep/ .ivu-modal {
-            width: 450px !important;
+            width: 420px !important;
             height: 280px;
         }
 
