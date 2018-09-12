@@ -8,17 +8,17 @@ export const paratner = [
     {
         title: '合作伙伴名称',
         minWidth: 150,
-        field: 'orgName'
+        field: 'channelName'
     },
     {
         title: '协议有效期起始日期',
         minWidth: 180,
-        field: 'startTime'
+        field: 'startDate'
     },
     {
         title: '协议有效期结束日期',
         minWidth: 180,
-        field: 'endTime'
+        field: 'endDate'
     },
     {
         title: '当前状态',

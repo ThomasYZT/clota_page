@@ -36,5 +36,7 @@ export default {
     'getSubNodePage' : '/organize/getSubNodePage',
     //查询合作伙伴列表
     'queryPartnerList' : '/partner/queryPartnerList',
+    //编辑款台信息
+    'modifyTable' : '/organize/modifyTable',
 
 }

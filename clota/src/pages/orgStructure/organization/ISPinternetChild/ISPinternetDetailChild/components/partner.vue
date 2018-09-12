@@ -34,14 +34,14 @@
                     :table-com-min-height="280"
                     @query-data="queryList">
                     <el-table-column
-                        slot="columnindex"
+                        slot="column0"
                         slot-scope="row"
                         :label="row.title"
                         show-overflow-tooltip
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{scope.$index + 1}}
+                            {{(pageNo - 1) * pageSize + scope.$index + 1}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -52,7 +52,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row.status)}}
+                            {{$t(scope.row.status === 'valid' ? 'hasStart' : 'hasNotStart')}}
                         </template>
                     </el-table-column>
                 </table-com>

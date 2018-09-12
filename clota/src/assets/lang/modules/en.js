@@ -635,5 +635,7 @@ export default {
     'subDepartment' : '下属部门',
     'openedService' : '开通服务',
     'verifySaleAndCashierType' : '核销/销售一体款台',
+    'checkoutName' : '款台名称',
+    'serverName' : '服务器名称',
 
 }

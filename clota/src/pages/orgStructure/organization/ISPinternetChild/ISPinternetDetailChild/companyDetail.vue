@@ -16,7 +16,7 @@
                             <Input v-model.trim="formDataCopy.orgName" style="width : 220px"/>
                         </FormItem>
                     </i-col>
-                    <i-col span="5" style="width: 73px;">
+                    <i-col span="5" style="width: 73px;" v-if="activeNode.level !== 1">
                         <FormItem>
                             <i-switch v-model="formDataCopy.isStart"></i-switch>
                             <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
@@ -34,7 +34,7 @@
                 </span>
                 <span class="edit"
                   @click="edit">
-                    <span class="iconfont icon-modify"></span>
+                    <span class="iconfont icon-edit"></span>
                     {{$t('edit')}}
                 </span>
                 <span :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
@@ -251,7 +251,6 @@
         </div>
         </Form>
 
-
         <!--已开通服务-->
         <opened-service
             :isDefaultPackUp="true"
@@ -412,7 +411,7 @@
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
                         this.type = 'watch';
-                        ajax.post('updateOrgInfo',{
+                        ajax.post('modifyOrgInfo',{
                             id : this.formDataCopy.id,
                             status : this.formDataCopy.isStart ? 'open' : 'close',
                             orgName : this.formDataCopy.orgName,
@@ -430,12 +429,13 @@
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                         }).then(res => {
-                            if(res.status === 200){
+                            if(res.success){
                                 this.$Message.success('修改成功');
-                                this.getCompanyDetail();
                                 //修改了节点的名字，需要刷新左侧的组织树
                                 if(this.formDataCopy.orgName !== this.companyDetail.orgName){
                                     this.freshOrg();
+                                }else{
+                                    this.getCompanyDetail();
                                 }
                             }else{
                                 this.$Message.error('修改失败');
@@ -655,10 +655,16 @@
             }
         }
 
-        /deep/ .ivu-form-item-label{
+        .form-edit /deep/ .ivu-form-item-label{
             font-size: $font_size_14px;
             color: $color_333;
             padding: 3px 0 10px 0;
+        }
+
+        .form-watch /deep/ .ivu-form-item-label{
+            font-size: $font_size_14px;
+            color: $color_333;
+            padding: 10px 0 10px 0;
         }
 
         /deep/ .ivu-form-item-content{

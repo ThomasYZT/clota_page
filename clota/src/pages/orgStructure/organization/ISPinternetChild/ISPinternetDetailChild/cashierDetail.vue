@@ -1,60 +1,143 @@
+
 <!--款台信息-->
 
 <template>
     <div class="cashier-detail">
         <Form ref="formValidate"
               :model="formDataCopy"
+              :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
               label-position="left"
+              :label-position="type === 'edit' ? 'top' : 'left'"
               inline>
             <div class="com-name">
                 <span class="name"
-                      v-w-title="formData.cashierName">
+                      v-w-title="cashierDetail.channelName">
                     {{cashierDetail.channelName | contentFilter}}
                 </span>
+                <span class="edit"
+                      v-if="type === 'watch'"
+                      @click="edit">
+                    <span class="iconfont icon-edit"></span>
+                    {{$t('edit')}}
+                </span>
             </div>
-            <i-row>
-                <i-col span="12">
-                    <FormItem label="款台名称：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.channelName">{{cashierDetail.channelName | contentFilter}}</span>
-                    </FormItem>
-                </i-col>
-                <i-col span="12">
-                    <FormItem label="款台ID：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.partnerId">{{cashierDetail.partnerId | contentFilter}}</span>
-                    </FormItem>
-                </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="12">
-                    <FormItem label="服务器名称：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.serverUrl">{{cashierDetail.serverUrl | contentFilter}}</span>
-                        <Tooltip placement="bottom">
-                            <div slot="content" class="tips-content">
-                                {{$t('serverNameTips')}}
-                            </div>
-                            <Icon type="information-circled"></Icon>
-                        </Tooltip>
-                    </FormItem>
-                </i-col>
-                <i-col span="12">
-                    <FormItem label="款台类型：" :label-width="150">
-                        <span class="info-val" v-w-title="$t(checkerType)">{{$t(checkerType) | contentFilter}}</span>
-                    </FormItem>
-                </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="12">
-                    <FormItem label="所属核销设备分组：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.checkGroupName">{{cashierDetail.checkGroupName | contentFilter}}</span>
-                    </FormItem>
-                </i-col>
-                <i-col span="12">
-                    <FormItem label="所属销售渠道分组：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.saleGroupName">{{cashierDetail.saleGroupName | contentFilter}}</span>
-                    </FormItem>
-                </i-col>
-            </i-row>
+
+            <div :class="{'form-area' : type === 'edit'}">
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="款台名称："
+                                  prop="channelName"
+                                  :label-width="type === 'edit' ? 0 : 150">
+                            <Input v-model.trim="formDataCopy.channelName"
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="cashierDetail.channelName">
+                                {{cashierDetail.channelName | contentFilter}}
+                            </span>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="款台ID：" :label-width="type === 'edit' ? 0 : 150">
+                            <Input v-model.trim="formDataCopy.partnerId"
+                                   disabled
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="cashierDetail.partnerId">
+                                {{cashierDetail.partnerId | contentFilter}}
+                            </span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <FormItem prop="serverUrl" :label-width="type === 'edit' ? 0 : 150">
+                            <Input v-model.trim="formDataCopy.serverUrl"
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val"
+                                 v-else
+                                 v-w-title="cashierDetail.serverUrl">
+                            {{cashierDetail.serverUrl | contentFilter}}
+                            </span>
+                            <template slot="label">
+                                <span>服务器名称：</span>
+                                <Tooltip placement="bottom">
+                                    <div slot="content" class="tips-content">
+                                        {{$t('serverNameTips')}}
+                                    </div>
+                                    <Icon type="information-circled"></Icon>
+                                </Tooltip>
+                            </template>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="款台类型：" :label-width="type === 'edit' ? 0 : 150">
+                            <Select v-model="formDataCopy.checkerType"
+                                    disabled
+                                    v-if="type === 'edit'">
+                                <Option v-for="item in cashierType"
+                                        :value="item.value"
+                                        :key="item.value">
+                                    {{ $t(item.label) }}
+                                </Option>
+                            </Select>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="$t(checkerType)">
+                                {{$t(checkerType) | contentFilter}}
+                            </span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="所属核销设备分组：" :label-width="type === 'edit' ? 0 : 150">
+                            <Select v-model="formDataCopy.checkGroupId"
+                                    v-if="type === 'edit'">
+                                <Option v-for="item in verifyCashierTypeGroupList"
+                                        :value="item.id"
+                                        :key="item.id">
+                                    {{ $t(item.groupName) }}
+                                </Option>
+                            </Select>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="cashierDetail.checkGroupName">
+                                {{cashierDetail.checkGroupName | contentFilter}}
+                            </span>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="所属销售渠道分组：" :label-width="type === 'edit' ? 0 : 150">
+                            <Select v-model="formDataCopy.saleGroupId" v-if="type === 'edit'">
+                                <Option v-for="item in verifySaleTypeGroupList"
+                                        :value="item.id"
+                                        :key="item.id">
+                                    {{ item.groupName }}
+                                </Option>
+                            </Select>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="cashierDetail.saleGroupName">
+                                {{cashierDetail.saleGroupName | contentFilter}}
+                            </span>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row v-if="type === 'edit'">
+                    <i-col span="24" style="text-align: center">
+                        <Button type="primary"
+                                class="ivu-btn-90px"
+                                @click="saveEdit"
+                                style="margin-right: 5px;">{{$t('save')}}</Button>
+                        <Button type="ghost"
+                                class="ivu-btn-90px"
+                                @click="cancel">{{$t('cancel')}}</Button>
+                    </i-col>
+                </i-row>
+            </div>
         </Form>
     </div>
 </template>
@@ -92,23 +175,24 @@
                 },
                 type : 'watch',
                 //核销设备分组列表
-                verifyCashierTypeGroupList : [
-                    {
-                        label : '1',
-                        value : '1'
-                    }
-                ],
+                verifyCashierTypeGroupList : [],
                 //所属销售渠道分组
-                verifySaleTypeGroupList : [
-                    {
-                        label : '1',
-                        value : '1'
-                    }
-                ],
+                verifySaleTypeGroupList : [],
                 //款台详情
                 cashierDetail :{},
                 //款台类型列表
-                cashierType : cashierType
+                cashierType : cashierType,
+                //校验规则
+                ruleValidate : {
+                    channelName : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('checkoutName'),length : 100}),trigger : 'blur'},
+                        {required : true,message : this.$t('inputField',{field : this.$t('checkoutName')}),trigger : 'blur'}
+                    ],
+                    serverUrl : [
+                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('serverName'),length : 50}),trigger : 'blur'},
+                        {required : true,message : this.$t('inputField',{field : this.$t('serverName')}),trigger : 'blur'}
+                    ]
+                }
             }
         },
         methods: {
@@ -116,22 +200,26 @@
              * 开始编辑
              */
             edit () {
+                this.formDataCopy = defaultsDeep({}  , this.cashierDetail);
                 this.type = 'edit';
-                this.formDataCopy = defaultsDeep({} , this.formData);
             },
             /**
              * 取消编辑
              */
             cancel () {
                 this.type = 'watch';
+                this.$refs.formValidate.resetFields();
             },
             /**
              * 保存编辑的信息
              */
             saveEdit () {
-                this.type = 'watch';
-                this.formData = defaultsDeep({} , this.formDataCopy);
-                this.$Message.success('保存成功');
+                this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        this.modifyTable();
+                        this.type = 'watch';
+                    }
+                });
             },
             /**
              * 获取款台详情
@@ -147,6 +235,55 @@
                     }
                 });
             },
+            /**
+             * 获取核销设备分组
+             */
+            getCheckItemPage () {
+                ajax.post('getOrgGroupList',{
+                    groupType : 'check'
+                }).then(res => {
+                    if(res.success){
+                        this.verifyCashierTypeGroupList = res.data ? res.data : [];
+                    } else{
+                        this.verifyCashierTypeGroupList = [];
+                    }
+                });
+            },
+            /**
+             * 获取销售设备分组
+             */
+            getSaleItemPage () {
+                ajax.post('getOrgGroupList',{
+                    groupType : 'sale'
+                }).then(res => {
+                    if(res.success){
+                        this.verifySaleTypeGroupList = res.data ? res.data : [];
+                    } else{
+                        this.verifySaleTypeGroupList = [];
+                    }
+                });
+            },
+            /**
+             * 编辑款台信息
+             */
+            modifyTable () {
+                ajax.post('modifyTable',{
+                    id :this.formDataCopy.id,
+                    partnerId : this.formDataCopy.partnerId,
+                    channelName : this.formDataCopy.channelName,
+                    serverUrl : this.formDataCopy.serverUrl,
+                    checkGroupId : this.formDataCopy.checkGroupId,
+                    saleGroupId : this.formDataCopy.saleGroupId,
+                }).then(res => {
+                   if(res.success){
+                       this.$Message.success('修改成功');
+                       this.getCashierDetail();
+                       this.$emit('fresh-org',this.activeNode);
+                   }else{
+                       this.$Message.error('修改失败');
+                   }
+                });
+            }
         },
         watch : {
             //节点更换，重新请求节点数据
@@ -168,6 +305,10 @@
                 }
                 return '';
             }
+        },
+        created () {
+            this.getCheckItemPage();
+            this.getSaleItemPage();
         }
     }
 </script>
@@ -183,6 +324,18 @@
 
         .ivu-tooltip-inner{
             white-space: normal;
+        }
+
+        /deep/ .ivu-icon-information-circled{
+            margin-left: 0!important;
+        }
+
+        .form-area{
+            background:  rgba(#F5F7FA,0.3);
+            padding: 20px 0 20px 20px;
+            border-radius: 4px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .com-name {
@@ -236,7 +389,7 @@
 
             /deep/ .ivu-form-item-error-tip{
                 font-size: $font_size_12px;
-                padding-top: 2px;
+                padding-top: 0
             }
         }
 
