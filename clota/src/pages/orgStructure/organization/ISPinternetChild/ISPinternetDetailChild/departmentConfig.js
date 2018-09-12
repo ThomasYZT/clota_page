@@ -13,7 +13,7 @@ export const employee = [
         filters : true
     },
     {
-        title: '登录名',
+        title: '登录账号',
         minWidth: 130,
         field: 'loginName'
     },
@@ -36,7 +36,7 @@ export const depEmployee = [
         field: 'phone'
     },
     {
-        title: '登录名',
+        title: '登录账号',
         minWidth: 130,
         field: 'loginName'
     },

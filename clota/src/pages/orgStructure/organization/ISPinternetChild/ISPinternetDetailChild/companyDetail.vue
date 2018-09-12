@@ -99,8 +99,8 @@
                     <FormItem label="短信供应商：" :label-width="type === 'edit' ? 0 : 150">
                         <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
-                                    :value="item.name"
-                                    :key="item.name">
+                                    :value="item.desc"
+                                    :key="item.desc">
                                 {{ item.desc }}
                             </Option>
                         </Select>
@@ -278,6 +278,7 @@
         </sub-scene>
         <!--下属部门-->
         <sub-department
+            :activeTap="activeTap"
             :search-params="{id : activeNode.id}"
             @org-change="freshOrg">
         </sub-department>

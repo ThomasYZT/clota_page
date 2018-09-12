@@ -22,7 +22,7 @@
                       v-if="iconClearShow">
                 </span>
                 <!-- 箭头 -->
-                <span class="icon-arrow-down el-icon-arrow-down"
+                <span class="iconfont icon-arrow-down"
                       :class="{
                         'visible': visible
                     }"
@@ -598,6 +598,7 @@
                 display: inline-block;
                 transition: all .2s ease-in-out;
                 color: #C5C5C5;
+                font-size: 12px;
                 &.visible {
                     transform: rotate(180deg);
                 }

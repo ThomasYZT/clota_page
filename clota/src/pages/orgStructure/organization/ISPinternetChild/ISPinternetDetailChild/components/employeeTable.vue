@@ -82,7 +82,7 @@
              */
             getEmployees () {
                 ajax.post('getEmployeeList',{
-                    id : this.searchParams.id,
+                    orgId : this.searchParams.id,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {

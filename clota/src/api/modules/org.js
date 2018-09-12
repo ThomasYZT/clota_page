@@ -50,5 +50,7 @@ export default {
     'queryDepartments' : '/organize/queryDepartments',
     //查询角色权限列表
     'queryRoleList' : '/role/queryRoleList',
+    //验证款台服务名的唯一性
+    'checkServerUrlUnique' : '/selfChannel/checkServerUrlUnique',
 
 }

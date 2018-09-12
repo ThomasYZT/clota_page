@@ -19,7 +19,7 @@
                       v-if="type === 'watch'"
                       @click="edit">
                     <span class="iconfont icon-edit"></span>
-                    {{$t('edit')}}
+                    {{$t('modify')}}
                 </span>
             </div>
 
@@ -27,6 +27,7 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem label="款台名称："
+                                  :required="true"
                                   prop="channelName"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.channelName"
@@ -53,7 +54,9 @@
                 </i-row>
                 <i-row>
                     <i-col span="12">
-                        <FormItem prop="serverUrl" :label-width="type === 'edit' ? 0 : 150">
+                        <FormItem prop="serverUrl"
+                                  :required="true"
+                                  :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.serverUrl"
                                    v-if="type === 'edit'"/>
                             <span class="info-val"
@@ -93,7 +96,10 @@
                 </i-row>
                 <i-row>
                     <i-col span="12">
-                        <FormItem label="所属核销设备分组：" :label-width="type === 'edit' ? 0 : 150">
+                        <FormItem label="所属核销设备分组："
+                                  :required="true"
+                                  prop="checkGroupId"
+                                  :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkGroupId"
                                     v-if="type === 'edit'">
                                 <Option v-for="item in verifyCashierTypeGroupList"
@@ -110,7 +116,10 @@
                         </FormItem>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="所属销售渠道分组：" :label-width="type === 'edit' ? 0 : 150">
+                        <FormItem label="所属销售渠道分组："
+                                  :required="true"
+                                  prop="saleGroupId"
+                                  :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.saleGroupId" v-if="type === 'edit'">
                                 <Option v-for="item in verifySaleTypeGroupList"
                                         :value="item.id"
@@ -126,7 +135,7 @@
                         </FormItem>
                     </i-col>
                 </i-row>
-                <i-row v-if="type === 'edit'">
+                <i-row v-if="type === 'edit'" style="margin-top: 10px;">
                     <i-col span="24" style="text-align: center">
                         <Button type="primary"
                                 class="ivu-btn-90px"
@@ -157,21 +166,43 @@
             },
         },
         data() {
+            //校验服务名的唯一性
+            const validateServerUrl = (rule,value,callback) => {
+                if(value){
+                    if(this.cashierDetail.serverUrl != value){
+                        this.checkServerUrlUnique(value).then(res => {
+                            if(res.success){
+                                if(res.data){
+                                    callback();
+                                }else{
+                                    callback('服务器名称已存在');
+                                }
+                            }else{
+                                callback('服务器名称校验失败');
+                            }
+                        });
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback(this.$t('inputField',{field : this.$t('serverName')}));
+                }
+            };
             return {
                 //表单数据
                 formDataCopy : {},
                 //表单数据
                 formData : {
                     //款台名称
-                    cashierName : '款台名称',
+                    cashierName : '',
                     //是否启用
                     isStart : false,
                     //服务器名称
-                    serverName : '服务器名称',
+                    serverName : '',
                     //核销设备分组
-                    verifyCashierTypeGroup : '1',
+                    verifyCashierTypeGroup : '',
                     //所属销售渠道分组
-                    verifySaleTypeGroup : '1',
+                    verifySaleTypeGroup : '',
                 },
                 type : 'watch',
                 //核销设备分组列表
@@ -190,7 +221,14 @@
                     ],
                     serverUrl : [
                         {max : 50,message : this.$t('errorMaxLength',{field : this.$t('serverName'),length : 50}),trigger : 'blur'},
-                        {required : true,message : this.$t('inputField',{field : this.$t('serverName')}),trigger : 'blur'}
+                        {required : true,message : this.$t('inputField',{field : this.$t('serverName')}),trigger : 'blur'},
+                        {validator : validateServerUrl,trigger : 'blur'}
+                    ],
+                    checkGroupId : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('verificateGroup')}),trigger : 'change'}
+                    ],
+                    saleGroupId : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('saleChannelsGroup')}),trigger : 'change'}
                     ]
                 }
             }
@@ -283,6 +321,15 @@
                        this.$Message.error('修改失败');
                    }
                 });
+            },
+            /**
+             * 校验服务器名称的唯一性
+             * @param value
+             */
+            checkServerUrlUnique (value) {
+                return ajax.post('checkServerUrlUnique',{
+                    serverUrl : value
+                });
             }
         },
         watch : {
@@ -328,6 +375,18 @@
 
         /deep/ .ivu-icon-information-circled{
             margin-left: 0!important;
+        }
+
+        .form-edit /deep/ .ivu-form-item-label{
+            font-size: $font_size_14px;
+            color: $color_333;
+            padding: 3px 0 10px 0;
+        }
+
+        .form-watch /deep/ .ivu-form-item-label{
+            font-size: $font_size_14px;
+            color: $color_333;
+            padding: 10px 0 10px 0;
         }
 
         .form-area{
@@ -389,7 +448,7 @@
 
             /deep/ .ivu-form-item-error-tip{
                 font-size: $font_size_12px;
-                padding-top: 0
+                padding-top: 2px;
             }
         }
 

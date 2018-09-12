@@ -27,8 +27,8 @@
                 </span>
                 <span class="edit"
                       @click="edit">
-                    <span class="iconfont icon-modify"></span>
-                    {{$t('edit')}}
+                    <span class="iconfont icon-edit"></span>
+                    {{$t('modify')}}
                 </span>
                 <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status === 'close'}">
                     {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
