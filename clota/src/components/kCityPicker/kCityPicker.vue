@@ -422,8 +422,8 @@
              * 获取省份列表
              */
             listProvince () {
-                ajax.post('listProvince').then(res => {
-                    if(res.status === 200){
+                ajax.post('getProvinceList').then(res => {
+                    if(res.success){
                         this.provinceInfoList = res.data ? res.data : [];
                         this.init()
                     }else{
@@ -436,10 +436,10 @@
              * @param provinceId
              */
             queryCityInfoList (provinceId) {
-                ajax.post('cityInfoList',{
+                ajax.post('getCityList',{
                     provinceid : provinceId
                 }).then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.cityInfoList = res.data ? res.data : [];
                         // 加载对应省下的市数据
                         this.init('c')
@@ -457,17 +457,15 @@
                 })
             },
             /**
-             * 更具
+             * 根据市id获取区县
              * @param cityid
              */
             getSysAreassByCityid (cityid) {
-                ajax.post('getSysAreassByCityid',{
-                    page : 1,
-                    pageSize : 9999,
+                ajax.post('getAreaList',{
                     cityid : cityid
                 }).then(res => {
-                   if(res.status === 200){
-                       this.areaInfoList = res.data ? res.data.list : [];
+                   if(res.success){
+                       this.areaInfoList = res.data ? res.data : [];
                        // 加载对应省下的市数据
                        this.init('a')
 

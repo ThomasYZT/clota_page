@@ -637,5 +637,7 @@ export default {
     'verifySaleAndCashierType' : '核销/销售一体款台',
     'checkoutName' : '款台名称',
     'serverName' : '服务器名称',
+    'opened' : '已开通',
+    'paused' : '已暂停',
 
 }

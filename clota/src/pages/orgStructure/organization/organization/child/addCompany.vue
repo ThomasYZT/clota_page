@@ -134,7 +134,7 @@
             const validateControlAccount = (rule, value, callback) => {
                 if(value){
                     this.queryAccountExist().then((res) => {
-                        if(res.status === 200){
+                        if(res.success){
                             if(res.data){
                                 callback();
                             }else{
@@ -228,7 +228,7 @@
                         },
                     ],
                     controlAccount: [
-                        // {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        {required: true, validator: validateControlAccount, trigger: 'blur'},
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
@@ -395,7 +395,7 @@
              * 判断管理账号是否存在
              */
             queryAccountExist () {
-                return ajax.post('queryAccountExist',{
+                return ajax.post('checkLoginNameUnique',{
                     loginName : this.formData.controlAccount
                 });
             },

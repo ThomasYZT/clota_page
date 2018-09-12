@@ -38,5 +38,13 @@ export default {
     'queryPartnerList' : '/partner/queryPartnerList',
     //编辑款台信息
     'modifyTable' : '/organize/modifyTable',
+    //获取省列表
+    'getProvinceList' : '/organize/getProvinceList',
+    //获取市列表
+    'getCityList' : '/organize/getCityList',
+    //获取区列表
+    'getAreaList' : '/organize/getAreaList',
+    //验证管理账号是否唯一
+    'checkLoginNameUnique' : '/account/checkLoginNameUnique',
 
 }

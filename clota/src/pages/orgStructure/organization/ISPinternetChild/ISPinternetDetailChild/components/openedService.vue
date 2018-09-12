@@ -2,103 +2,22 @@
 
 <template>
     <div class="opened-service">
-        <!--<table-com-->
-            <!--:table-data="tableData"-->
-            <!--:column-data="openedServiceHead"-->
-            <!--:title="$t('openedService')"-->
-            <!--:show-page="true"-->
-            <!--:is-pack-up="isPackUp"-->
-            <!--:show-table-bar="false"-->
-            <!--:total="totalCount"-->
-            <!--@selection-change="handleSelectionChange"-->
-            <!--@get-new-data="getOpenedService">-->
-            <!--<el-table-column-->
-                <!--slot="column0"-->
-                <!--type="selection"-->
-                <!--width="55">-->
-            <!--</el-table-column>-->
-            <!--<div class="service-operation" slot="table-title">-->
-                <!--<template v-if="type === 'company'">-->
-                    <!--<Button type="primary"-->
-                            <!--:disabled="!canRecoverService"-->
-                            <!--@click="recoverService(selectedService)">恢复</Button>-->
-                    <!--<Button type="primary"-->
-                            <!--:disabled="!canPauseService"-->
-                            <!--@click="paushService(selectedService)">暂停</Button>-->
-                    <!--<Button type="primary"-->
-                            <!--:disabled="!canDelayService"-->
-                            <!--@click="delayService(selectedService)">延期</Button>-->
-                    <!--<Button type="primary" @click="addService">开通服务</Button>-->
-                <!--</template>-->
-                <!--<template v-else-if="type === 'scene'">-->
-                    <!--<Button type="primary"-->
-                            <!--:disabled="!canDelService"-->
-                            <!--@click="delService(selectedService)">删除服务</Button>-->
-                    <!--<Button type="primary"-->
-                            <!--@click="addService">添加服务</Button>-->
-                <!--</template>-->
-            <!--</div>-->
-            <!--<el-table-column-->
-                <!--slot="column5"-->
-                <!--:label="$t('operate')"-->
-                <!--:width="type === 'company' ? 145 : 90">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<template v-if="type === 'company'">-->
-                        <!--<ul class="operate-info">-->
-                            <!--<li class="custome"-->
-                                <!--@click="delayService([scoped.row])"-->
-                                <!--v-if="scoped.row.status === 'open'">延期</li>-->
-                            <!--<li class="custome"-->
-                                <!--@click="paushService([scoped.row])"-->
-                                <!--v-if="scoped.row.status === 'open'">暂停</li>-->
-                            <!--<li class="custome"-->
-                                <!--@click="openService(scoped.row)"-->
-                                <!--v-if="scoped.row.status === 'close'">开通服务</li>-->
-                            <!--<li class="custome"-->
-                                <!--@click="recoverService([scoped.row])"-->
-                                <!--v-if="scoped.row.status === 'pause'">恢复</li>-->
-                        <!--</ul>-->
-                    <!--</template>-->
-                    <!--<template v-if="type === 'scene'">-->
-                        <!--<ul class="operate-info">-->
-                            <!--<li class="custome"-->
-                                <!--@click="delService([scoped.row])">删除</li>-->
-                        <!--</ul>-->
-                    <!--</template>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</table-com>-->
-
         <div class="pick-up-title" >
             <span class="label">{{$t('openedService')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
-                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+                <span class="iconfont icon-arrow-down" :class="{'icon-reverse' : isPackUp}"></span>
             </span>
         </div>
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
-                <div class="service-operation" slot="table-title">
-                    <template v-if="type === 'company'">
-                        <Button type="primary"
-                                :disabled="!canRecoverService"
-                                @click="recoverService(selectedService.map(item => item.serviceId))">恢复</Button>
-                        <Button type="primary"
-                                :disabled="!canPauseService"
-                                @click="paushService(selectedService.map(item => item.serviceId))">暂停</Button>
-                        <Button type="primary"
-                                :disabled="!canDelayService"
-                                @click="delayService(selectedService)">延期</Button>
-                        <Button type="primary" @click="addService">开通服务</Button>
-                    </template>
-                    <template v-else-if="type === 'scene'">
-                        <Button type="primary"
-                                :disabled="!canDelService"
-                                @click="delService(selectedService)">删除服务</Button>
-                        <Button type="primary"
-                                @click="orgAddService(selectedService)">添加服务</Button>
-                    </template>
+                <div class="service-operation" v-if="type === 'scene'">
+                    <Button type="primary"
+                            :disabled="!canDelService"
+                            @click="delService(selectedService)">删除服务</Button>
+                    <Button type="primary"
+                            @click="orgAddService(selectedService)">添加服务</Button>
                 </div>
                 <table-com
                     v-if="tableShow"
@@ -135,7 +54,7 @@
                         :min-width="row.minWidth">
                     </el-table-column>
                     <el-table-column
-                        slot="columnrun4"
+                        slot="column4"
                         slot-scope="row"
                         :label="row.title"
                         show-overflow-tooltip
@@ -154,22 +73,6 @@
                         fixed="right"
                         :min-width="row.minWidth">
                         <template slot-scope="scoped">
-                            <template v-if="type === 'company'">
-                                <ul class="operate-info">
-                                    <li class="custome"
-                                        @click="delayService([scoped.row])"
-                                        v-if="scoped.row.runStatus === 'normal'">延期</li>
-                                    <li class="custome"
-                                        @click="paushService([scoped.row.serviceId])"
-                                        v-if="scoped.row.runStatus === 'normal'">暂停</li>
-                                    <li class="custome"
-                                        @click="openService(scoped.row.serviceId)"
-                                        v-if="scoped.row.runStatus === 'expire'">开通服务</li>
-                                    <li class="custome"
-                                        @click="recoverService([scoped.row.serviceId])"
-                                        v-if="scoped.row.runStatus === 'invalid'">恢复</li>
-                                </ul>
-                            </template>
                             <template v-if="type === 'scene'">
                                 <ul class="operate-info">
                                     <li class="custome"
@@ -181,21 +84,6 @@
                 </table-com>
             </div>
         </transition>
-        <!--开通服务模态框-->
-        <open-service-modal
-            :opened-service-id="openedServiceId"
-            :org-id="searchParams.id"
-            :opened-services="tableData"
-            v-model="openServiceModalShow"
-            @fresh-data="queryList">
-        </open-service-modal>
-        <!--服务延期模态框-->
-        <service-delay-modal
-            v-model="serviceDelayModalShow"
-            :org-id="searchParams.id"
-            :service-list="operateServiceList"
-            @fresh-data="queryList">
-        </service-delay-modal>
         <!--删除服务模态框-->
         <del-modal ref="delModal">
             <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>
@@ -213,8 +101,6 @@
 <script>
     import {openedServiceHead} from './openedServiceConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import openServiceModal from './openServiceModal';
-    import serviceDelayModal from './serviceDelayModal.vue';
     import delModal from '@/components/delModal/index.vue';
     import addService from './addService';
     import ajax from '@/api/index.js';
@@ -247,8 +133,6 @@
         },
         components : {
             tableCom,
-            openServiceModal,
-            serviceDelayModal,
             delModal,
             addService
         },
@@ -262,18 +146,10 @@
                 tableData : [],
                 //员工总数
                 totalCount : 100,
-                //是否显示开通服务的模态框
-                openServiceModalShow : false,
-                //是否显示延期服务模态框
-                serviceDelayModalShow : false,
-                //当前操作的服务里列表
-                operateServiceList : [],
                 //是否收起
                 isPackUp : true,
                 pageNo : 1,
                 pageSize : 10,
-                //需要开通的服务id
-                openedServiceId : ''
             }
         },
         methods: {
@@ -283,67 +159,6 @@
              */
             handleSelectionChange (data) {
                 this.selectedService = data;
-            },
-            /**
-             * 延期服务
-             * @param data
-             */
-            delayService (data) {
-                this.operateServiceList = data;
-                this.serviceDelayModalShow = true;
-            },
-            /**
-             * 暂停服务
-             * @param serviceIds 服务id
-             */
-            paushService (serviceIds) {
-                ajax.post('updateServicesStatus',{
-                    orgId : this.searchParams.id,
-                    serviceIds : serviceIds,
-                    runStatus : 'invalid'
-                }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('暂停成功');
-                        this.queryList();
-                    }else{
-                        this.$Message.error('暂停失败');
-                    }
-                });
-            },
-            /**
-             * 恢复服务
-             * @param serviceIds 服务id
-             */
-            recoverService (serviceIds) {
-                ajax.post('updateServicesStatus',{
-                    orgId : this.searchParams.id,
-                    serviceIds : serviceIds,
-                    runStatus : 'normal'
-                }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('恢复成功');
-                        this.queryList();
-                    }else{
-                        this.$Message.error('恢复失败');
-                    }
-                });
-            },
-            /**
-             * 开通服务
-             * @param serviceId
-             */
-            openService (serviceId) {
-                this.openedServiceId = serviceId;
-                setTimeout(() => {
-                    this.openServiceModalShow = true;
-                },0);
-            },
-            /**
-             * 新增服务
-             */
-            addService () {
-                this.openServiceModalShow = true;
-                this.openedServiceId = '';
             },
             /**
              * 删除服务
@@ -404,18 +219,6 @@
             },
         },
         computed : {
-            //可以恢复服务
-            canRecoverService () {
-                return this.selectedService.length > 0 && this.selectedService.every(item => item.runStatus === 'invalid');
-            },
-            //可以暂停服务
-            canPauseService () {
-                return this.selectedService.length > 0 && this.selectedService.every(item => item.runStatus === 'normal');
-            },
-            //可以延期服务
-            canDelayService () {
-                return this.selectedService.length > 0 && this.selectedService.every(item => item.runStatus === 'normal');
-            },
             //是否可以批量删除服务
             canDelService () {
                 return this.selectedService.length > 0;
@@ -480,7 +283,7 @@
                 vertical-align: middle;
                 cursor: pointer;
 
-                .icon-pull-down{
+                .icon-arrow-down{
                     display: inline-block;
                     transition: all 0.5s;
 
@@ -495,14 +298,6 @@
                     }
 
                 }
-            }
-        }
-
-        .operate-info{
-            @include table_operate();
-
-            .custome{
-                color: $color_blue;
             }
         }
 

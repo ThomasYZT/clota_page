@@ -37,7 +37,8 @@
                     <span class="iconfont icon-edit"></span>
                     {{$t('edit')}}
                 </span>
-                <span :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
+                <span v-if="companyDetail.status"
+                      :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
                     {{$t(companyDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                 </span>
             </template>
@@ -98,14 +99,14 @@
                     <FormItem label="短信供应商：" :label-width="type === 'edit' ? 0 : 150">
                         <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
-                                    :value="item.desc"
-                                    :key="item.desc">
+                                    :value="item.name"
+                                    :key="item.name">
                                 {{ item.desc }}
                             </Option>
                         </Select>
                         <span class="info-val" v-else v-w-title="companyDetail.smsProvider">
-                     {{companyDetail.smsProvider | contentFilter}}
-                </span>
+                             {{companyDetail.smsProvider | contentFilter}}
+                        </span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
@@ -186,23 +187,29 @@
                     <FormItem :prop="(activeNode && activeNode.level !== 1) ? 'parentManageId' : ''"
                               label="管理上级："
                               :label-width="type === 'edit' ? 0 : 150">
-                        <Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.level !== 1">
+                        <Select v-model.trim="formDataCopy.parentManageId"
+                                v-if="type === 'edit' && activeNode && activeNode.level !== 1">
                             <Option v-for="item in superiorList"
                                     :value="item.id"
                                     :key="item.id">
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentManage">
-                    {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
-                </span>
+                        <span class="info-val" v-else v-w-title="companyDetail.parentManager">
+                            <template v-if="activeNode.level !== 1">
+                                {{companyDetail.parentManager | contentFilter}}
+                            </template>
+                            <template v-else>-</template>
+                        </span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
                     <FormItem :prop="(activeNode && activeNode.level !== 1) ? 'parentEconomicId' : ''"
                               label="财务上级："
                               :label-width="type === 'edit' ? 0 : 150">
-                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.level !== 1">
+                        <Select v-model.trim="formDataCopy.parentEconomicId"
+                                v-if="type === 'edit'
+                                && activeNode && activeNode.level !== 1">
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
                                     :key="item.id">
@@ -210,8 +217,11 @@
                             </Option>
                         </Select>
                         <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
-                    {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
-                </span>
+                            <template v-if="activeNode.level !== 1">
+                                {{companyDetail.parentEconomic | contentFilter}}
+                            </template>
+                            <template v-else>-</template>
+                        </span>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -425,9 +435,9 @@
                             address : this.formDataCopy.address,
                             telephone : this.formDataCopy.telephone,
                             tex : this.formDataCopy.tex,
-                            businessAccountId : this.formDataCopy.businessAccount1.id,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
+                            managerId : this.formDataCopy.managerId,
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');
@@ -450,10 +460,6 @@
             edit () {
                 this.formDataCopy = defaultsDeep({
                     isStart : this.companyDetail.status === 'open',
-                    businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {},
-                    parentManageId : this.companyDetail.parentManage ? this.companyDetail.parentManage.id : '',
-                    parentEconomicId : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic.id : '',
-                    email : this.companyDetail.managerAccount ? this.companyDetail.managerAccount.email : '',
                 }  , this.companyDetail);
 
                 this.type = 'edit';
@@ -506,7 +512,7 @@
              */
             querySmsProviderList () {
                 ajax.post('getSmsProviderList').then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.smsSuppilerList = res.data ? res.data : [];
                     }else{
                         this.smsSuppilerList = [];
@@ -603,9 +609,15 @@
             defaultAddress () {
                 if(this.companyDetail && Object.keys(this.companyDetail).length > 0){
                     return {
-                        province : this.companyDetail.sysProvinces,
-                        city : this.companyDetail.sysCities,
-                        area : this.companyDetail.sysAreas,
+                        province : {
+                            provinceid : this.companyDetail.province,
+                        },
+                        city : {
+                            cityid : this.companyDetail.city,
+                        },
+                        area : {
+                            areaid : this.companyDetail.district,
+                        },
                     }
                 }else{
                     return false;
