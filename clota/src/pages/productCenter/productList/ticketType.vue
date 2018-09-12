@@ -84,10 +84,10 @@
 <script type="text/ecmascript-6">
 
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import delModal from '@/components/delModal/index.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {ticketTypeHead} from '../productConfig';
     import ajax from '@/api/index';
-    import delModal from '@/components/delModal/index.vue';
 
     export default {
         components: {
@@ -118,7 +118,7 @@
                 totalCount: 0,
                 // 已勾选的模板
                 selectedRow: [],
-                // 删除数据
+                // 删除数据显示
                 delUnits: '',
             }
         },
@@ -290,14 +290,6 @@
             background: $color_red;
         }
 
-    }
-
-    .content-text{
-        padding: 0 20px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
     }
 
     .yellow-label{

@@ -9,30 +9,42 @@
 
         <div class="tabs-wrap">
             <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
-                <TabPane :label="$t('我定义的销售政策')" name="created"></TabPane>
-                <TabPane :label="$t('分销给我的销售政策')" name="cancellation"></TabPane>
+                <TabPane :label="$t('mySalePolicy')" name="created"></TabPane><!--我定义的销售政策-->
+                <!--<TabPane :label="$t('distributeSalePolicy')" name="cancellation"></TabPane>&lt;!&ndash;分销给我的销售政策&ndash;&gt;-->
             </Tabs>
         </div>
 
         <div class="btn-wrap" v-if="tabsName === 'created'">
-            <Button type="primary">+ {{$t('add')}}</Button>
+            <Button type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
             <Button type="error"
                     :disabled="selectedRow.length > 0 ? false : true"
-                    @click="batchDel">{{$t('del')}}</Button>
+                    @click="batchDel">{{$t('batchOperate')}}</Button>
+            <!--<el-dropdown @command="handleCommand">-->
+                <!--<span class="el-dropdown-link">-->
+                    <!--{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                <!--</span>-->
+                <!--<el-dropdown-menu slot="dropdown">-->
+                    <!--<el-dropdown-item v-for="(item,index) in dropdownList"-->
+                                      <!--:key="index"-->
+                                      <!--:command="item.value">-->
+                        <!--{{$t(item.name)}}-->
+                    <!--</el-dropdown-item>-->
+                <!--</el-dropdown-menu>-->
+            <!--</el-dropdown>-->
         </div>
 
+        <!--暂时隐藏-->
         <div class="btn-wrap" v-if="tabsName === 'cancellation'">
-            <!--所属景区：-->
-            <span>所属景区：</span>
-            <Select v-model="queryParams.scene" @on-change="queryList">
+            <span>{{$t('scenePlace')}}：</span>
+            <Select v-model="queryParams.scene" @on-change="queryDistPolicyList"> <!--所属景区：-->
                 <Option v-for="(item,index) in enumData.scene" :key="index"
                         :value="item.name">{{$t(item.desc)}}
                 </Option>
             </Select>
             <div class="float-right">
                 <Input v-model.trim="queryParams.keyWord"
-                       :placeholder="$t('请输入销售政策名称')"/>
-                <Button type="primary" @click="queryList">{{$t("query")}}</Button>
+                       :placeholder="$t('inputField',{field: $t('salePolicyName')})"/>
+                <Button type="primary" @click="queryDistPolicyList">{{$t("query")}}</Button>
             </div>
         </div>
 
@@ -42,13 +54,13 @@
             :ofsetHeight="170"
             :show-pagination="true"
             :column-data="myPolicyHead"
-            :table-data="tableData"
-            :total-count="totalCount"
-            :page-no-d.sync="queryParams.pageNo"
-            :page-size-d.sync="queryParams.pageSize"
+            :table-data="myPolicyData"
+            :total-count="mTotal"
+            :page-no-d.sync="myPolicyParams.pageNo"
+            :page-size-d.sync="myPolicyParams.pageSize"
             :border="true"
             :column-check="true"
-            @query-data="queryList"
+            @query-data="queryMyPolicyList"
             @selection-change="changeSelection">
             <el-table-column
                 slot="column3"
@@ -77,24 +89,24 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li class="normal" @click="checkProductDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li class="normal" @click="viewDetail(scope.row)">{{$t('check')}}</li><!--查看-->
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
 
-        <!--分销给我的销售政策-->
+        <!--分销给我的销售政策--暂时隐藏-->
         <table-com
             v-if="tabsName === 'cancellation'"
             :ofsetHeight="170"
             :show-pagination="true"
             :column-data="distributePolicyHead"
-            :table-data="tableData"
-            :total-count="totalCount"
+            :table-data="distPolicyData"
+            :total-count="dTotal"
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
-            @query-data="queryList">
+            @query-data="queryDistPolicyList">
             <el-table-column
                 slot="column5"
                 slot-scope="row"
@@ -104,47 +116,71 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li class="normal" @click="checkProductDetail(scope.row)">{{$t('check')}}</li><!--查看-->
-                        <li class="normal" @click="checkProductDetail(scope.row)">{{$t('分销')}}</li><!--分销-->
+                        <li class="normal">{{$t('check')}}</li><!--查看-->
+                        <li class="normal">{{$t('distribution')}}</li><!--分销-->
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
+
+        <!--删除模态框-->
+        <del-modal ref="delModal">
+            <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{delUnits}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        </del-modal>
+
+        <!--新建销售政策-->
+        <add-sale-policy-modal ref="addSalePolicyModal"
+                               @close-modal="queryMyPolicyList">
+        </add-sale-policy-modal>
 
     </div>
 </template>
 <script type="text/ecmascript-6">
 
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import delModal from '@/components/delModal/index.vue';
+    import addSalePolicyModal from './components/addSalePolicyModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {myPolicyHead, distributePolicyHead} from '../policyConfig';
+    import ajax from '@/api/index';
 
     export default {
-        components: {tableCom},
+        components: {
+            tableCom,
+            delModal,
+            addSalePolicyModal,
+        },
         props: {},
         data() {
             return {
                 //当前tap值
                 tabsName: 'created',
-                // 获取数据的请求参数
+                // 表格表头字段名
+                myPolicyHead: myPolicyHead,
+                distributePolicyHead: distributePolicyHead,
+                // 列表数据
+                myPolicyData: [],
+                distPolicyData: [],
+                // 获取我的销售政策列表数据请求参数
+                myPolicyParams: {
+                    pageNo: 1,                                      // 当前页码数
+                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                },
+                // 获取分销列表数据的请求参数
                 queryParams: {
                     scene: '',
                     keyWord: '',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
-                filterParam: {
-                    order: 'update_time desc',
-                },
-                // 表格表头字段名
-                myPolicyHead: myPolicyHead,
-                distributePolicyHead: distributePolicyHead,
-                // 列表数据
-                tableData: [],
                 // 数据总条数
-                totalCount: 0,
-                // 已勾选的模板
+                mTotal: 0,
+                dTotal: 0,
+                // 已勾选的删除数据
                 selectedRow: [],
+                // 删除数据显示
+                delUnits: '',
                 // 枚举数据
                 enumData: {
                     scene: [],
@@ -154,19 +190,35 @@
                     {text: '已启用', value: '已启用'},
                     {text: '未启用', value: '未启用'},
                 ],
+                // 下拉列表数据
+                dropdownList: [
+                    { name: 'check', value: 'check' },//审核
+                    { name: 'up', value: 'ip' },//上架
+                    { name: 'down', value: 'down' },//下架
+                    { name: 'delete', value: 'delete' },//删除
+                ],
             }
         },
         computed: {},
         created() {
+            this.queryDistPolicyList();
         },
         mounted() {
         },
         watch: {},
         methods: {
 
-            // 查询列表
-            queryList() {
-                this.tableData = [
+            /**
+             * 切换tab
+             * @param name
+             */
+            changeTab (name) {
+                this.tabsName = name;
+            },
+
+            // 查询我定义的销售政策列表
+            queryMyPolicyList() {
+                this.myPolicyData = [
                     {
                         'id': '00002103965',
                         'productCode': '星火旅行社1',
@@ -202,15 +254,55 @@
                     },
 
                 ];
-                this.totalCount = this.tableData.length;
+                this.mTotal = this.myPolicyData.length;
             },
 
-            /**
-             * 切换tab
-             * @param name
-             */
-            changeTab (name) {
-                this.tabsName = name;
+            // 查询分销给我的销售政策列表
+            queryDistPolicyList() {
+                this.distPolicyData = [
+                    {
+                        'id': '00002103965',
+                        'productCode': '星火旅行社1',
+                        'productName': '票内业态',
+                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
+                        'sellingOrg': '野生动物园',
+                        'status': '已启用',
+                        'updateTime': '2018-08-20 15:31:00',
+                    },{
+                        'id': '00002103965',
+                        'productCode': '星火旅行社2',
+                        'productName': '票内业态',
+                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
+                        'sellingOrg': '冰雪世界',
+                        'status': '已启用',
+                        'updateTime': '2018-06-01 15:31:00',
+                    },{
+                        'id': '00002103965',
+                        'productCode': '星火旅行社3',
+                        'productName': '票内业态',
+                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
+                        'sellingOrg': '野生动物园',
+                        'status': '已启用',
+                        'updateTime': '2018-04-17 15:31:00',
+                    },{
+                        'id': '00002103965',
+                        'productCode': '星火旅行社4',
+                        'productName': '票内业态',
+                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
+                        'sellingOrg': '冰雪世界',
+                        'status': '已启用',
+                        'updateTime': '2018-03-17 15:31:00',
+                    },
+
+                ];
+                this.dTotal = this.distPolicyData.length;
+            },
+
+            //新建销售政策
+            addPolicy () {
+                if(this.$refs.addSalePolicyModal){
+                    this.$refs.addSalePolicyModal.show();
+                }
             },
 
             /**
@@ -219,6 +311,34 @@
              */
             changeSelection(selection) {
                 this.selectedRow = selection;
+            },
+            // 批量删除
+            batchDel () {
+                let ids = this.selectedRow.map(item => item.id).join(',');
+                this.delUnits = this.selectedRow.map(item => item.productName).join(',');
+                console.log(ids);
+                this.$refs.delModal.show({
+                    title : this.$t('deleteBatch'),
+                    confirmCallback : () => {
+                        this.deletePolicy(ids);
+                    }
+                });
+            },
+            /**
+             * 删除票类
+             * @param data
+             */
+            deletePolicy( data ) {
+                ajax.post('deletePolicy',{
+                    ids: data
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.queryMyPolicyList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
 
             /**
@@ -229,6 +349,16 @@
              */
             filterHandler(value, row) {
                 return row.status === value;
+            },
+
+            //点击dropdown回调
+            handleCommand( item ) {
+                console.log(item)
+            },
+
+            //查看详情
+            viewDetail ( data ) {
+
             },
 
 
@@ -254,7 +384,7 @@
             @include clearfix();
 
             /deep/ .ivu-btn {
-                width: 88px;
+                min-width: 88px;
                 margin-right: 7px;
             }
 
@@ -262,6 +392,11 @@
                 width: 280px;
                 margin-right: 15px;
             }
+
+            /deep/ .ivu-input{
+                font-size: $font_size_14px;
+            }
+
             /deep/ .ivu-select{
                 width: 280px;
             }
@@ -298,4 +433,13 @@
         }
 
     }
+
+    .yellow-label{
+        color: $color_yellow;
+    }
+
+    .red-label {
+        color: $color_red;
+    }
+
 </style>

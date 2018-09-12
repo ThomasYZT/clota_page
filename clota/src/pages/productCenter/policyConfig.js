@@ -2,29 +2,29 @@
 // 我定义的销售政策
 export const myPolicyHead = [
     {
-        title: '销售政策名称',      // 销售政策名称
+        title: 'salePolicyName',      // 销售政策名称
         width: 160,
         field: 'id'
     },
     {
-        title: '业态类型',   // 业态类型
+        title: 'industryType',   // 业态类型
         minWidth: 200,
-        field: 'productCode'
+        field: 'industryType'
     },
     {
-        title: '描述',   // 描述
+        title: 'desc',   // 描述
         minWidth: 120,
-        field: 'productName'
+        field: 'desc'
     },
     {
-        title: '状态',      // 状态
+        title: 'status',      // 状态
         minWidth: 120,
-        field: 'productDesc'
+        field: 'status'
     },
     {
-        title: '销售渠道分组',      // 销售渠道分组
+        title: 'saleChannelsGroup',      // 销售渠道分组
         minWidth: 180,
-        field: 'sellingOrg'
+        field: 'saleChannelsGroup'
     },
     {
         title: 'operate',       // 操作
@@ -36,32 +36,32 @@ export const myPolicyHead = [
 // 分销给我的销售政策
 export const distributePolicyHead = [
     {
-        title: '销售政策名称',      // 销售政策名称
+        title: 'salePolicyName',      // 销售政策名称
         width: 160,
         field: 'id'
     },
     {
-        title: '所属景区',   // 所属景区
+        title: 'scenePlace',   // 所属景区
         minWidth: 150,
         field: 'productCode'
     },
     {
-        title: '业态类型',   // 业态类型
+        title: 'industryType',   // 业态类型
         minWidth: 100,
-        field: 'productName'
+        field: 'industryType'
     },
     {
-        title: '描述',      // 描述
+        title: 'desc',      // 描述
         minWidth: 220,
-        field: 'productDesc'
+        field: 'desc'
     },
     {
-        title: '上级分销商',      // 上级分销商
+        title: 'superiorDistribution',      // 上级分销商
         minWidth: 100,
-        field: 'sellingOrg'
+        field: 'superiorDistribution'
     },
     {
-        title: '操作',        // 操作
+        title: 'operate',        // 操作
         minWidth: 90,
         field: ''
     },
