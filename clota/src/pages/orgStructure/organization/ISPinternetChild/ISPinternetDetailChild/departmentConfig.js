@@ -3,19 +3,19 @@ export const employee = [
     {
         title: '部门',
         minWidth: 120,
-        field: 'realName',
+        field: 'orgName',
         filters : true
     },
     {
         title: '姓名',
         minWidth: 150,
-        field: 'realName',
+        field: 'nickName',
         filters : true
     },
     {
         title: '登录名',
         minWidth: 130,
-        field: 'examScore'
+        field: 'loginName'
     },
 ];
 //部门查看员工账号表头

@@ -7,7 +7,7 @@
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
-                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+                <span class="iconfont icon-arrow-down" :class="{'icon-reverse' : isPackUp}"></span>
             </span>
         </div>
         <transition name="fade">
@@ -134,7 +134,7 @@
                 vertical-align: middle;
                 cursor: pointer;
 
-                .icon-pull-down{
+                .icon-arrow-down{
                     display: inline-block;
                     transition: all 0.5s;
 

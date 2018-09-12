@@ -16,7 +16,7 @@
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
             {{$t(isPackUp ? 'backUp' : 'upLoad')}}
-                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+                <span class="iconfont icon-arrow-down" :class="{'icon-reverse' : isPackUp}"></span>
           </span>
         </div>
         <transition name="fade">
@@ -45,7 +45,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="columnstatus"
+                        slot="column4"
                         slot-scope="row"
                         :label="row.title"
                         show-overflow-tooltip
@@ -97,16 +97,18 @@
              * 获取合作伙伴信息
              */
             queryList () {
-                ajax.post('getSubNode',{
+                ajax.post('queryPartnerList',{
                     orgId : this.searchParams.id,
-                    orgType : 'partner',
+                    nodeType : 'partner',
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                   if(res.status === 200) {
-                       this.tableData = res.data ? res.data : [];
+                   if(res.success) {
+                       this.tableData = res.data ? res.data.data : [];
+                       this.totalCount = res.data.totalRow;
                    }else{
                        this.tableData = [];
+                       this.totalCount = 0;
                    }
                 });
             }
@@ -146,7 +148,7 @@
                 vertical-align: middle;
                 cursor: pointer;
 
-                .icon-pull-down{
+                .icon-arrow-down{
                     display: inline-block;
                     transition: all 0.5s;
 
@@ -161,14 +163,6 @@
                     }
 
                 }
-            }
-        }
-
-        .operate-info{
-            @include table_operate();
-
-            .custome{
-                color: $color_blue;
             }
         }
     }

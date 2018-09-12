@@ -121,7 +121,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scoped">
-                            {{scoped.$index + 1}}
+                            {{(pageNo - 1) * pageSize + scoped.$index + 1}}
                         </template>
                     </el-table-column>
                     <el-table-column

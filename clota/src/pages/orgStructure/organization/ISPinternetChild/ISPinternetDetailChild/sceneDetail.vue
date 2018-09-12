@@ -185,10 +185,12 @@
         </Form>
         <!--下属景区-->
         <sub-scene
+            :activeTap="activeTap"
             :search-params="{id : activeNode.id}">
         </sub-scene>
         <!--下属部门-->
         <sub-department
+            :activeTap="activeTap"
             :search-params="{id : activeNode.id}"
             @org-change="freshOrg">
         </sub-department>
@@ -230,6 +232,11 @@
                     return {};
                 }
             },
+            //当前激活菜单
+            'activeTap' : {
+                type : String,
+                default : ''
+            }
         },
         components: {
             tableCom,

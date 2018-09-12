@@ -34,5 +34,7 @@ export default {
     'modifyOrgInfo' : '/organize/modifyOrgInfo',
     //获取下属机构列表
     'getSubNodePage' : '/organize/getSubNodePage',
+    //查询合作伙伴列表
+    'queryPartnerList' : '/partner/queryPartnerList',
 
 }
