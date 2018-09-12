@@ -176,7 +176,7 @@
         overflow: auto;
 
         .com-name {
-            @include overflow_tip(100%);
+            @include overflow_tip(100%,65px);
             padding: 14px 0 0 0;
 
             /deep/ .ivu-switch{

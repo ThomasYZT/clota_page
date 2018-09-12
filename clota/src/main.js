@@ -38,6 +38,7 @@ router.beforeEach((to, from, next) => {
             if (store.getters.permissionInfo !== null) {
                 next();
             } else {
+                console.log('getUserRight')
                 store.dispatch('getUserRight', to).then((router) => {
                     next({ ...to, replace: true })
                 }).catch(() => {

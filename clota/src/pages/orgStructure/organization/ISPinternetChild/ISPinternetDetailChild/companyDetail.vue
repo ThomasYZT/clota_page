@@ -8,7 +8,7 @@
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
               :label-position="type === 'edit' ? 'top' : 'left'"
               inline>
-        <div class="com-name">
+        <div class="com-name" :class="{'com-min-width' : type === 'edit'}">
             <template v-if="type === 'edit'">
                 <i-row>
                     <i-col span="9" style="width : 240px">
@@ -35,7 +35,7 @@
                 <span class="edit"
                   @click="edit">
                     <span class="iconfont icon-edit"></span>
-                    {{$t('edit')}}
+                    {{$t('modify')}}
                 </span>
                 <span v-if="companyDetail.status"
                       :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
@@ -683,6 +683,11 @@
         .com-name {
             @include overflow_tip(100%, 65px);
             padding: 14px 0 0 0;
+
+            &.com-min-width{
+                max-width: 1000px;
+                margin: 0 auto;
+            }
 
             /deep/ .ivu-switch{
                 margin-left: 20px;

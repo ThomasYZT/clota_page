@@ -398,7 +398,7 @@
         }
 
         .com-name {
-            @include overflow_tip(100%, 56px);
+            @include overflow_tip(100%, 65px);
             padding: 14px 0;
 
             .iconfont{

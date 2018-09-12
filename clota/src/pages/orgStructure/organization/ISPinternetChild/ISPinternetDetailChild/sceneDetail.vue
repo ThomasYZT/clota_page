@@ -8,7 +8,7 @@
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
               :label-position="type === 'edit' ? 'top' : 'left'"
               inline>
-            <div class="com-name">
+            <div class="com-name" :class="{'com-min-width' : type === 'edit'}">
                 <template v-if="type === 'edit'">
                     <i-row>
                         <i-col span="9" style="width : 240px">
@@ -375,13 +375,15 @@
                             linkName : this.formDataCopy.linkName,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
-                            address : this.formDataCopy.address
+                            address : this.formDataCopy.address,
+                            managerId : this.formDataCopy.managerId,
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');
-                                this.getSceneDetail();
                                 if(this.formDataCopy.orgName !== this.sceneDetail.orgName){
                                     this.freshOrg();
+                                }else{
+                                    this.getSceneDetail();
                                 }
                             }else{
                                 this.$Message.error(res.message | '修改失败');
@@ -609,6 +611,11 @@
         .com-name {
             @include overflow_tip(100%, 65px);
             padding: 14px 0 0 0;
+
+            &.com-min-width{
+                max-width: 1000px;
+                margin: 0 auto;
+            }
 
             /deep/ .ivu-switch{
                 margin-left: 20px;
