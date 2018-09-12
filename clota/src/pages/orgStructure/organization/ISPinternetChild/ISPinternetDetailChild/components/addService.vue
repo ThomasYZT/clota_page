@@ -29,24 +29,23 @@
                 @query-data="queryList"
                 @selection-change="handleSelectionChange">
                 <el-table-column
-                    slot="columncheck"
+                    slot="column0"
                     slot-scope="row"
                     type="selection"
                     fixed="left"
                     :label="row.title"
-                    show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
                 </el-table-column>
                 <el-table-column
-                    slot="columnrunStatus"
+                    slot="column4"
                     slot-scope="row"
                     :label="row.title"
                     show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t(scope.row.runStatus)}}
+                        {{scope.row.runStatus === 'normal' ? $t('opened') : scope.row.runStatus === 'invalid' ? $t('paused') : $t('expired')}}
                     </template>
                 </el-table-column>
             </table-com>
@@ -92,7 +91,7 @@
                 //取消执行的回调函数
                 cancelCallback : null,
                 //表头配置
-                columns : openedServiceHead.slice(0,-1),
+                columns : openedServiceHead,
                 //服务总条数
                 totalCount : 0,
                 //当前选择的服务
@@ -152,11 +151,13 @@
              * 查询上级开通的服务
              */
             queryList () {
-                ajax.post('getOpenServices',{
-                    orgId : this.sceneDetail.id
+                ajax.post('getOrgServiceList',{
+                    orgId : this.sceneDetail.id,
+                    pageNo : 1,
+                    pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
-                        this.tableData = res.data && res.data.orgServices ? res.data.orgServices : [];
+                    if(res.success){
+                        this.tableData = res.data && res.data.rootServiceList ? res.data.rootServiceList.data : [];
                     }else{
                         this.tableData = [];
                     }

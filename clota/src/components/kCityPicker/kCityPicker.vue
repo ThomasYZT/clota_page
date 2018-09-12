@@ -258,8 +258,8 @@
                 }
 
                 this.curVal = this.select.value = (this.select.province && this.select.province.province || '')
-                    + (this.select.city && (`-${this.select.city.city}`) || '')
-                    + (this.select.area && (`-${this.select.area.area}`) || '')
+                    + (this.select.city && (`${this.select.city.city}`) || '')
+                    + (this.select.area && (`${this.select.area.area}`) || '')
                 this.$emit('select', this.select);
             },
             /**

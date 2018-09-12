@@ -428,9 +428,9 @@
                             checkinCode : this.formDataCopy.checkinCode,
                             smsProvider : this.formDataCopy.smsProvider,
                             email : this.formDataCopy.email,
-                            province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
-                            city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
-                            district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
+                            province : this.formDataCopy.provinceCode,
+                            city : this.formDataCopy.cityCode,
+                            district : this.formDataCopy.districtCode,
                             linkName : this.formDataCopy.linkName,
                             address : this.formDataCopy.address,
                             telephone : this.formDataCopy.telephone,
@@ -532,26 +532,17 @@
              * @param data
              */
             changeCity (data) {
-                if(this.formDataCopy.sysProvinces){
-                    this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
-                }else{
-                    this.formDataCopy.sysProvinces = {
-                        provinceid : data.province ? data.province.provinceid : ''
-                    };
+                if(data.province && Object.keys(data.province).length > 0){
+                    this.formDataCopy.provinceCode = data.province.provinceid;
+                    this.formDataCopy.province = data.province.province;
                 }
-                if(this.formDataCopy.sysCities){
-                    this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
-                }else{
-                    this.formDataCopy.sysCities = {
-                        cityid : data.city ? data.city.cityid : ''
-                    };
+                if(data.city && Object.keys(data.city).length > 0){
+                    this.formDataCopy.cityCode = data.city.cityid;
+                    this.formDataCopy.city = data.city.city;
                 }
-                if(this.formDataCopy.sysAreas){
-                    this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
-                }else{
-                    this.formDataCopy.sysAreas = {
-                        areaid : data.area ? data.area.areaid : ''
-                    };
+                if(data.area && Object.keys(data.area).length > 0){
+                    this.formDataCopy.districtCode = data.area.areaid;
+                    this.formDataCopy.district = data.area.area;
                 }
             },
             /**
@@ -594,14 +585,14 @@
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if(this.companyDetail && this.companyDetail.sysProvinces){
-                    place += this.companyDetail.sysProvinces.province;
+                if(this.companyDetail && this.companyDetail.province){
+                    place += this.companyDetail.province;
                 }
-                if(this.companyDetail && this.companyDetail.sysCities){
-                    place += this.companyDetail.sysCities.city;
+                if(this.companyDetail && this.companyDetail.city){
+                    place += this.companyDetail.city;
                 }
-                if(this.companyDetail && this.companyDetail.sysAreas){
-                    place += this.companyDetail.sysAreas.area;
+                if(this.companyDetail && this.companyDetail.district){
+                    place += this.companyDetail.district;
                 }
                 return place;
             },
@@ -610,13 +601,16 @@
                 if(this.companyDetail && Object.keys(this.companyDetail).length > 0){
                     return {
                         province : {
-                            provinceid : this.companyDetail.province,
+                            provinceid : this.companyDetail.provinceCode,
+                            province : this.companyDetail.province
                         },
                         city : {
-                            cityid : this.companyDetail.city,
+                            cityid : this.companyDetail.cityCode,
+                            city : this.companyDetail.city,
                         },
                         area : {
-                            areaid : this.companyDetail.district,
+                            areaid : this.companyDetail.districtCode,
+                            area : this.companyDetail.district,
                         },
                     }
                 }else{

@@ -9,6 +9,7 @@
                   ref="multipleTable"
                   :class="{'table-click-able' : rowClickAble}"
                   :border="border"
+                  :height="height === 'auto' ? null : height"
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
                   :default-sort="defaultSort"
@@ -174,6 +175,11 @@
             'default-sort' : {
                 type : Object
             },
+            //表格高度
+            'height' : {
+                type : [Number,String],
+                default : 'auto'
+            }
         },
         data() {
             return {
@@ -284,14 +290,18 @@
         },
         computed : {
             minHeight () {
-                if(this.tableData && this.tableData.length === 0){
-                    if(this.tableComMinHeight !== 0){
-                        return this.tableComMinHeight + 'px';
-                    }else{
-                        return this.tableMaxHeight;
-                    }
-                }else{
+                if(this.height !== 'auto'){
                     return 'auto';
+                }else{
+                    if(this.tableData && this.tableData.length === 0){
+                        if(this.tableComMinHeight !== 0){
+                            return this.tableComMinHeight + 'px';
+                        }else{
+                            return this.tableMaxHeight;
+                        }
+                    }else{
+                        return 'auto';
+                    }
                 }
             },
             ...mapGetters({
