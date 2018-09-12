@@ -8,7 +8,6 @@ import ajax from '@/api/index.js';
 import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
 
 Vue.use(Vuex);
-
 //子路由深度复制
 const childDeepClone = (childrenList, data) => {
     let children = [];
@@ -210,11 +209,11 @@ export default new Vuex.Store({
                         console.log(err)
                     });
                 }else{
-                    Vue.prototype.$Message.error(this.$t('rightGetError'));
+                    Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
                     return new Promise().reject();
                 }
             }).catch(() => {
-                Vue.prototype.$Message.error(this.$t('rightGetError'));
+                Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
             });
         },
         //获取用户信息

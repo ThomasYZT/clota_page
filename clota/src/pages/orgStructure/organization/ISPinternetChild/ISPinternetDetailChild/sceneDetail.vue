@@ -11,12 +11,12 @@
             <div class="com-name">
                 <template v-if="type === 'edit'">
                     <i-row>
-                        <i-col span="8">
+                        <i-col span="9" style="width : 240px">
                             <FormItem prop="orgName" >
-                                <Input v-model.trim="formDataCopy.orgName" style="width : 280px"/>
+                                <Input v-model.trim="formDataCopy.orgName" style="width : 220px"/>
                             </FormItem>
                         </i-col>
-                        <i-col span="2">
+                        <i-col span="5" style="width: 73px;" v-if="activeNode.level !== 1">
                             <FormItem>
                                 <i-switch v-model="formDataCopy.isStart"></i-switch>
                                 <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
@@ -34,8 +34,8 @@
                     </span>
                     <span class="edit"
                           @click="edit">
-                        <span class="iconfont icon-modify"></span>
-                        {{$t('edit')}}
+                        <span class="iconfont icon-edit"></span>
+                        {{$t('modify')}}
                     </span>
                     <span :class="{'started'
                         :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
@@ -79,17 +79,29 @@
                     </i-col>
                     <i-col span="12">
                         <FormItem label="全民分销邀请码：" :label-width="type === 'edit' ? 0 : 150">
-                            <span class="info-val" v-w-title="sceneDetail.saleCode">{{sceneDetail.saleCode | contentFilter}}</span>
+                            <Input v-model.trim="formDataCopy.saleCode"
+                                   disabled
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="sceneDetail.saleCode">
+                                {{sceneDetail.saleCode | contentFilter}}
+                            </span>
                         </FormItem>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="12">
                         <FormItem label="管理账号：" :label-width="type === 'edit' ? 0 : 150">
-                        <span class="info-val" v-w-title="sceneDetail.manager">
-                             {{sceneDetail.manager | contentFilter}}
-                            <span class="reset-pass" @click="resetPass">重置密码</span>
-                        </span>
+                            <Input v-model.trim="formDataCopy.manager"
+                                   disabled
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val"
+                                  v-else
+                                  v-w-title="sceneDetail.manager">
+                                 {{sceneDetail.manager | contentFilter}}
+                                <span class="reset-pass" @click="resetPass" v-if="type === 'edit'">重置密码</span>
+                            </span>
                         </FormItem>
                     </i-col>
                     <i-col span="12">
@@ -158,9 +170,12 @@
                                     {{ item.orgName }}
                                 </Option>
                             </Select>
-                            <span class="info-val" v-else v-w-title="sceneDetail.parentManage">
-                            {{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}
-                        </span>
+                            <span class="info-val" v-else v-w-title="sceneDetail.parentManager">
+                                <template v-if="activeNode.level !== 1">
+                                    {{sceneDetail.parentManager | contentFilter}}
+                                </template>
+                                <template v-else>-</template>
+                            </span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -175,12 +190,15 @@
                                 </Option>
                             </Select>
                             <span class="info-val" v-else v-w-title="sceneDetail.parentEconomic">
-                            {{sceneDetail.parentEconomic ? sceneDetail.parentEconomic.orgName : '' | contentFilter}}
-                        </span>
+                                <template v-if="activeNode.level !== 1">
+                                    {{sceneDetail.parentEconomic | contentFilter}}
+                                </template>
+                                <template v-else>-</template>
+                            </span>
                         </FormItem>
                     </i-col>
                 </i-row>
-                <i-row v-if="type === 'edit'">
+                <i-row v-if="type === 'edit'" style="margin-top: 10px;">
                     <i-col span="24" style="text-align: center">
                         <Button type="primary"
                                 class="ivu-btn-90px"
@@ -343,24 +361,23 @@
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
                         this.type = 'watch';
-                        ajax.post('updateOrgInfo',{
+                        ajax.post('modifyOrgInfo',{
                             id : this.formDataCopy.id,
                             status : this.formDataCopy.isStart ? 'open' : 'close',
                             orgName : this.formDataCopy.orgName,
                             checkinCode : this.formDataCopy.checkinCode,
                             email : this.formDataCopy.email,
-                            province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
-                            city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
-                            district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
+                            province : this.formDataCopy.provinceCode,
+                            city : this.formDataCopy.cityCode,
+                            district : this.formDataCopy.districtCode,
                             telephone : this.formDataCopy.telephone,
                             tex : this.formDataCopy.tex,
                             linkName : this.formDataCopy.linkName,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
-                            address : this.formDataCopy.address,
-                            businessAccountId : this.formDataCopy.businessAccount1.id,
+                            address : this.formDataCopy.address
                         }).then(res => {
-                            if(res.status === 200){
+                            if(res.success){
                                 this.$Message.success('修改成功');
                                 this.getSceneDetail();
                                 if(this.formDataCopy.orgName !== this.sceneDetail.orgName){
@@ -379,10 +396,6 @@
             edit () {
                 this.formDataCopy = defaultsDeep({
                     isStart : this.sceneDetail.status === 'open',
-                    businessAccount1 : this.sceneDetail.businessAccount1 ? this.sceneDetail.businessAccount1 : {},
-                    parentManageId : this.sceneDetail.parentManage ? this.sceneDetail.parentManage.id : '',
-                    parentEconomicId : this.sceneDetail.parentEconomic ? this.sceneDetail.parentEconomic.id : '',
-                    email : this.sceneDetail.managerAccount ? this.sceneDetail.managerAccount.email : ''
                 }  , this.sceneDetail);
                 this.type = 'edit';
             },
@@ -470,26 +483,17 @@
              * @param data
              */
             changeCity (data) {
-                if(this.formDataCopy.sysProvinces){
-                    this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
-                }else{
-                    this.formDataCopy.sysProvinces = {
-                        provinceid : data.province ? data.province.provinceid : ''
-                    };
+                if(data.province && Object.keys(data.province).length > 0){
+                    this.formDataCopy.provinceCode = data.province.provinceid;
+                    this.formDataCopy.province = data.province.province;
                 }
-                if(this.formDataCopy.sysCities){
-                    this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
-                }else{
-                    this.formDataCopy.sysCities = {
-                        cityid : data.city ? data.city.cityid : ''
-                    };
+                if(data.city && Object.keys(data.city).length > 0){
+                    this.formDataCopy.cityCode = data.city.cityid;
+                    this.formDataCopy.city = data.city.city;
                 }
-                if(this.formDataCopy.sysAreas){
-                    this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
-                }else{
-                    this.formDataCopy.sysAreas = {
-                        areaid : data.area ? data.area.areaid : ''
-                    };
+                if(data.area && Object.keys(data.area).length > 0){
+                    this.formDataCopy.districtCode = data.area.areaid;
+                    this.formDataCopy.district = data.area.area;
                 }
             },
         },
@@ -507,14 +511,14 @@
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if(this.sceneDetail && this.sceneDetail.sysProvinces){
-                    place += this.sceneDetail.sysProvinces.province;
+                if(this.sceneDetail && this.sceneDetail.province){
+                    place += this.sceneDetail.province;
                 }
-                if(this.sceneDetail && this.sceneDetail.sysCities){
-                    place += this.sceneDetail.sysCities.city;
+                if(this.sceneDetail && this.sceneDetail.city){
+                    place += this.sceneDetail.city;
                 }
-                if(this.sceneDetail && this.sceneDetail.sysAreas){
-                    place += this.sceneDetail.sysAreas.area;
+                if(this.sceneDetail && this.sceneDetail.district){
+                    place += this.sceneDetail.district;
                 }
                 return place;
             },
@@ -522,9 +526,18 @@
             defaultAddress () {
                 if(this.sceneDetail && Object.keys(this.sceneDetail).length > 0){
                     return {
-                        province : this.sceneDetail.sysProvinces,
-                        city : this.sceneDetail.sysCities,
-                        area : this.sceneDetail.sysAreas,
+                        province : {
+                            provinceid : this.sceneDetail.provinceCode,
+                            province : this.sceneDetail.province
+                        },
+                        city : {
+                            cityid : this.sceneDetail.cityCode,
+                            city : this.sceneDetail.city,
+                        },
+                        area : {
+                            areaid : this.sceneDetail.districtCode,
+                            area : this.sceneDetail.district,
+                        },
                     }
                 }else{
                     return false;
@@ -568,10 +581,16 @@
             }
         }
 
-        /deep/ .ivu-form-item-label{
+        .form-edit /deep/ .ivu-form-item-label{
             font-size: $font_size_14px;
             color: $color_333;
-            padding: 0 0 10px 0;
+            padding: 3px 0 10px 0;
+        }
+
+        .form-watch /deep/ .ivu-form-item-label{
+            font-size: $font_size_14px;
+            color: $color_333;
+            padding: 10px 0 10px 0;
         }
 
         /deep/ .ivu-form-item-content{
