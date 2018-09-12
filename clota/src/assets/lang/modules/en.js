@@ -652,6 +652,19 @@ export default {
     'giveUpAdd': '放弃新增',
     'giveUpModify': '放弃修改',
     'example': '示例',
+    'addSalePolicy': '新建销售政策',
+    'salePolicyName': '销售政策名称',
+    'mySalePolicy': '我定义的销售政策',
+    'distributeSalePolicy': '分销给我的销售政策',
+    'distribution': '分销',
+    'industryType': '业态类型',
+    'industry': '业态',
+    'desc': '描述',
+    'superiorDistribution': '上级分销商',
+    'batchOperate': '批量操作',
+    'checked': '审核',
+    'up': '上架',
+    'down': '下架',
 
 
     /*** 财务管理模块 ***/
