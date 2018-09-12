@@ -7,7 +7,7 @@
                     size="default"><span class="add-icon">+ {{$t('新增员工')}}</span>
             </Button>
             <Input class="input-field"
-                   v-model.trim="filterParam.name"
+                   v-model.trim="filterParam.keyword"
                    icon="ios-search"
                    :placeholder="$t('请输入任意信息进行查询')"
                    @on-enter="handleSearch"
@@ -116,7 +116,7 @@
                     :width="130"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="modify-info" @click="getNewPartner('modify')">{{$t('modify')}}</span>
+                        <span class="modify-info" @click="getNewPartner('modify', scope.row)">{{$t('modify')}}</span>
                         <span class="divide-line"></span>
                         <span class="del-info" @click="deleteEmployee(scope.row)">{{$t('del')}}</span>
                     </template>
@@ -151,7 +151,7 @@
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
                 filterParam: {
-                    name: '',
+                    keyword: '',
                 },
                 // 表格表头字段名
                 columnData: employeeInfoHead.filter((item, i) => {
@@ -216,8 +216,12 @@
             },
 
             //新增/修改员工
-            getNewPartner(type) {
-                this.$router.replace({'name': 'addEmployee', query: {'type': type}})
+            getNewPartner(type, scopeRow) {
+                this.$router.replace({
+                    name: 'addEmployee',
+                    query: {type: type},
+                    params: {employeeItem: scopeRow}
+                })
             },
             //删除员工
             deleteEmployee(scopeRow) {
