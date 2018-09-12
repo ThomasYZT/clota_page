@@ -307,20 +307,16 @@
              */
             filterNode(value, data) {
                 if (!value) return true;
-                return data && data.name &&data.name.indexOf(value) !== -1;
+                return data && data.orgName && data.orgName.indexOf(value) !== -1;
             }
         },
         computed : {
             //公司树数据
             companyData (){
-                if(this.keyWord){
-                    return [this.$refs.tree.filter(this.keyWord)];
+                if(Object.keys(this.treeData).length > 0){
+                    return [this.treeData];
                 }else{
-                    if(Object.keys(this.treeData).length > 0){
-                        return [this.treeData];
-                    }else{
-                        return [];
-                    }
+                    return [];
                 }
             },
             //根节点id
@@ -338,6 +334,12 @@
                 }else{
                     return []
                 }
+            }
+        },
+        watch : {
+            //监视查询关键字，如果改变就进行查找
+            keyWord (newVal,oldVal) {
+                this.$refs.tree.filter(newVal);
             }
         }
     }
