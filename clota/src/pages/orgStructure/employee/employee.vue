@@ -162,8 +162,8 @@
                 // 数据总条数
                 totalCount: 0,
 
-                deleteName: '删除员工',  //删除内容名字
-                name: '售票处终端001', //删除弹窗名字
+                deleteName: this.$t('删除员工'),  //删除内容名字
+                name: '', //删除弹窗名字
                 scopeRowData: {}, //当前被操作的行数据
             }
         },
@@ -198,8 +198,13 @@
                  */
                 ajax.post('getEmployeeList', this.queryParams).then(res => {
                     if (res.success) {
-                        this.tableData = res.data || [];
-                        this.totalCount = this.tableData.length;
+                        if (res.data && res.data.data) {
+                            this.tableData = res.data.data;
+                            this.totalCount = res.data.totalRow;
+                        } else {
+                            this.tableData = [];
+                            this.totalCount = 0;
+                        }
                     }
                 });
             },
@@ -227,7 +232,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));
-                        this.queryList();
+                        this.handleSearch();
                     }
                 });
             },

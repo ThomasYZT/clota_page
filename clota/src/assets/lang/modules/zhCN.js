@@ -640,4 +640,13 @@ export default {
     'opened' : '已开通',
     'paused' : '已暂停',
 
+
+    /*** 组织架构模块 ***/
+    'departName' : '部门名称',
+    'loginName' : '登录名',
+    'telephone' : '电话',
+    'nativePlace' : '籍贯',
+    'nativeAddress' : '籍贯地址',
+    'isStarted' : '是否启用',
+
 }

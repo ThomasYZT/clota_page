@@ -5,34 +5,36 @@
               :rules="ruleValidate"
               label-position="top">
             <div class="ivu-form-item-wrap">
-                <Form-item label=" 部门名称" prop="orgName">
-                    <Select v-model="employee.idType" :placeholder="$t('selectField', {msg: ''})">
-                        <Option v-for="item in enumData.empIDType" :key="item.name" :value="item.name">{{item.desc}}</Option>
+                <Form-item :label="$t('departName')" prop="deptId"><!--部门名称-->
+                    <Select v-model="employee.deptId" :placeholder="$t('selectField', {msg: ''})">
+                        <Option v-for="item in enumData.department" :key="item.id"
+                                :value="item.id">{{item.orgName}}
+                        </Option>
                     </Select>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="登录名" prop="loginName">
-                    <Input v-model.trim="employee.name" :placeholder="$t('inputField', {field: ''})"></Input>
+                <Form-item :label="$t('loginName')" prop="loginName"><!--登录名-->
+                    <Input v-model.trim="employee.loginName" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="密码" prop="psw">
-                    <Input v-model.trim="employee.name" :placeholder="$t('inputField', {field: ''})"></Input>
+                <Form-item :label="$t('password')" prop="password"><!--密码-->
+                    <Input type="password" v-model.trim="employee.password" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="姓名" prop="name">
-                    <Input v-model.trim="employee.name" :placeholder="$t('inputField', {field: ''})"></Input>
+                <Form-item :label="$t('name')" prop="nickName"><!--姓名-->
+                    <Input v-model.trim="employee.nickName" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="电话" prop="mobile">
-                    <Input v-model.trim="employee.mobile" :placeholder="$t('inputField', {field: ''})"></Input>
+                <Form-item :label="$t('telephone')" prop="phone"><!--电话-->
+                    <Input v-model.trim="employee.phone" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label=" 性别" prop="sex">
+                <Form-item :label="$t('sex')" prop="sex"><!--性别-->
                     <Select v-model="employee.sex" :placeholder="$t('selectField', {msg: ''})">
                         <Option value="male">男</Option>
                         <Option value="female">女</Option>
@@ -40,7 +42,7 @@
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="生日" prop="birthday">
+                <Form-item :label="$t('birthday')" prop="birthday"><!--生日-->
                     <Date-picker
                         type="date"
                         v-model="employee.birthday"
@@ -51,46 +53,50 @@
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="籍贯" prop="nativePlace">
+                <Form-item :label="$t('nativePlace')" prop="nativePlace"><!--籍贯-->
                     <Select v-model="employee.nativePlace" :placeholder="$t('selectField', {msg: ''})">
-                        <Option v-for="item in enumData.empType" :key="item.name" :value="item.name">{{item.desc}}</Option>
+                        <Option v-for="item in enumData.nativePlace" :key="item.id"
+                                :value="item.provinceid">{{item.province}}
+                        </Option>
                     </Select>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="籍贯地址" prop="nativePlaceAddr">
-                    <Input v-model.trim="employee.nativePlaceAddr" :placeholder="$t('inputField', {field: ''})"></Input>
+                <Form-item :label="$t('nativeAddress')" prop="address"><!--籍贯地址-->
+                    <Input v-model.trim="employee.address" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <!--空字段站位用-->
-            <!--<div class="ivu-form-item-wrap"></div>-->
+            <div class="ivu-form-item-wrap"></div>
             <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('remark')" prop="remark">
-                    <Input v-model="employee.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="$t('inputField', {field: ''})"></Input>
+                <Form-item :label="$t('remark')" prop="desc">
+                    <Input v-model="employee.desc" type="textarea" :autosize="{minRows: 3,maxRows: 6}" :placeholder="$t('inputField', {field: ''})"></Input>
                 </Form-item>
             </div>
             <!--角色权限-->
             <div class="ivu-form-item-wrap">
                 <Form-item :label="$t('rolePermission')" prop="privileges">
-                    <Select v-model="employee.privileges" multiple>
-                        <!--<Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>-->
-                        <Option :value="'haha'">{{'角色'}}</Option>
+                    <Select v-model="rolePrivileges" multiple @change="onChangeSelect">
+                        <Option v-for="item in enumData.privileges" :key="item.id"
+                                :value="item.id">{{ item.roleName }}
+                        </Option>
                     </Select>
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item label="是否启用" prop="open">
-                    <Checkbox v-model="employee.open"></Checkbox>
+                <Form-item :label="$t('isStarted')" prop="status"><!--是否启用-->
+                    <Checkbox v-model="employee.status" :true-value="'valid'" :false-true="'invalid'"></Checkbox>
                 </Form-item>
             </div>
             <!--空字段站位用-->
-            <!--<div class="ivu-form-item-wrap"></div>-->
+            <div class="ivu-form-item-wrap"></div>
 
         </Form>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import ajax from '@/api/index';
 
     export default {
         props: ['employee-info'],
@@ -125,28 +131,35 @@
             };
 
             return {
-                loading: false,
                 dateOption: {
                     disabledDate: function( value ){
                         return value && ( value.format('yyyy-MM-dd') < '1900-01-01' || value.format('yyyy-MM-dd') > new Date().format('yyyy-MM-dd'));
                     }
                 },
-                enumData: {},
+                enumData: {
+                    department: [],
+                    nativePlace: [],
+                    privileges: [],
+                },
                 employee: {
-                    orgId: '',
-                    orgName: '',
-                    loginName: '',
-                    psw: '',
-                    name: '',
-                    mobile: '',
+                    deptId: '',             // 部门
+//                    orgName: '',
+                    loginName: '',          // 登录名
+                    password: '',
+                    nickName: '',
+                    phone: '',
                     sex: '',
                     birthday: '',
                     nativePlace: '',
-                    nativePlaceAddr: '',
-                    remark: '',
-                    privileges: [],
-                    open: true,
+                    address: '',
+                    desc: '',               // 备注
+                    roleIds: '',            // 角色权限ids
+                    status: 'valid',        // 是否启用 valid/invalid
                 },
+                // 勾选的角色权限
+                rolePrivileges: [],
+
+                // 表单校验规则
                 ruleValidate: {
                     orgName: [
                         { required: true, message: '请选择部门', trigger: 'change' },
@@ -205,35 +218,53 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        this.saveEmployee( param );
+                        this.saveEmployee();
                     }
                 })
+            },
+
+            getFieldInitData(apiKey, dataKey) {
+                ajax.post(apiKey).then(res => {
+                    if (res.success) {
+                        this.enumData[dataKey] = res.data || [];
+                    }
+                });
             },
 
             //新增员工接口
             saveEmployee( param ){
                 var self = this;
-                self.loading = true;
-                getData.post("saveEmployee", param).then(function (res) {
-                    if(res.data.success){
-                        self.employee.employeeId = res.data.data;
-                        var data = {
-                            step: 2,
-                            employeeInfo:self.employee,
-                            enumData:self.enumData,
-                        };
-                        self.$emit('show-step',data);
+
+                ajax.post("addEmployee", this.employee).then(function (res) {
+                    if(res.success){
+                        self.$Message.success(self.$t('新增员工成功！'));
+                        self.$router.push({name: 'employee'});
                     }else{
                         self.$Message.warning( res.data.message ? res.data.message : '网络错误，请稍后重试' );
                     }
-                    self.loading = false;
                 }).catch(function (err) {
-                    self.loading = false;
                     self.$Message.error('网络错误，请联系客服');
                 });
-            }
+            },
+            /**
+             * 多选角色权限
+             * @param selections
+             */
+            onChangeSelect(selections) {
+                this.employee.roleIds = selections.join(',');
+            },
 
-        }
+        },
+        created() {
+            let fields = [
+                    {apiKey: 'queryDepartments', dataKey: 'department'},
+                    {apiKey: 'getProvinceList', dataKey: 'nativePlace'},
+                    {apiKey: 'queryRoleList', dataKey: 'privileges'},
+                ];
+            fields.forEach((item, i) => {
+                this.getFieldInitData(item.apiKey, item.dataKey);
+            });
+        },
     }
 </script>
 

@@ -46,5 +46,9 @@ export default {
     'getAreaList' : '/organize/getAreaList',
     //验证管理账号是否唯一
     'checkLoginNameUnique' : '/account/checkLoginNameUnique',
+    //查询部门名称列表
+    'queryDepartments' : '/organize/queryDepartments',
+    //查询角色权限列表
+    'queryRoleList' : '/role/queryRoleList',
 
 }
