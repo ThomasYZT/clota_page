@@ -49,12 +49,22 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem label="公司ID：" :label-width="type === 'edit' ? 0 : 150">
-                            <span class="info-val" v-w-title="sceneDetail.id">{{sceneDetail.id | contentFilter}}</span>
+                            <Input v-model.trim="formDataCopy.id"
+                                   disabled
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val" v-else v-w-title="sceneDetail.id">
+                                {{sceneDetail.id | contentFilter}}
+                            </span>
                         </FormItem>
                     </i-col>
                     <i-col span="12">
                         <FormItem label="公司编码：" :label-width="type === 'edit' ? 0 : 150">
-                            <span class="info-val" v-w-title="sceneDetail.nodeCode">{{sceneDetail.nodeCode | contentFilter}}</span>
+                            <Input v-model.trim="formDataCopy.nodeCode"
+                                   disabled
+                                   v-if="type === 'edit'"/>
+                            <span class="info-val" v-else v-w-title="sceneDetail.nodeCode">
+                                {{sceneDetail.nodeCode | contentFilter}}
+                            </span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -63,8 +73,8 @@
                         <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.checkinCode"  v-if="type === 'edit'"/>
                             <span class="info-val" v-else v-w-title="sceneDetail.checkinCode">
-                        {{sceneDetail.checkinCode | contentFilter}}
-                    </span>
+                                {{sceneDetail.checkinCode | contentFilter}}
+                            </span>
                         </FormItem>
                     </i-col>
                     <i-col span="12">
@@ -573,10 +583,12 @@
             background:  rgba(#F5F7FA,0.3);
             padding: 20px 0 20px 20px;
             border-radius: 4px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .com-name {
-            @include overflow_tip(100%);
+            @include overflow_tip(100%, 65px);
             padding: 14px 0 0 0;
 
             /deep/ .ivu-switch{

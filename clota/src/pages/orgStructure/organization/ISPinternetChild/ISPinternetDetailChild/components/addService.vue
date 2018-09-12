@@ -14,7 +14,7 @@
         <div class="service-body">
             <div class="label-info">
                 <span class="key">上级公司：</span>
-                <span class="val">{{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}</span>
+                <span class="val">{{sceneDetail.parentManager | contentFilter}}</span>
             </div>
             <span class="tip">请先为上级公司开通服务后，景区才能添加相应服务。</span>
             <div class="label-info" style="margin-bottom: 10px">
