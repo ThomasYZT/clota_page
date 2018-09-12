@@ -7,7 +7,7 @@
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
             {{$t(isPackUp ? 'backUp' : 'upLoad')}}
-                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+                <span class="iconfont icon-arrow-down" :class="{'icon-reverse' : isPackUp}"></span>
           </span>
         </div>
         <transition name="fade">
@@ -38,10 +38,15 @@
         props : {
             //表格查询参数
             'search-params' : {
-                typee : Object,
+                type : Object,
                 default () {
                     return {}
                 }
+            },
+            //当前组织架构类型
+            'activeTap' : {
+                type : String,
+                default : ''
             }
         },
         components : {
@@ -66,15 +71,16 @@
              * 查询下属公司信息
              */
             queryList () {
-                ajax.post('getSubsidiaries',{
-                    id : this.searchParams.id,
+                ajax.post('getSubNodePage',{
+                    orgId : this.searchParams.id,
                     nodeType : 'company',
                     page : this.pageNo,
-                    pageSize : this.pageSize
+                    pageSize : this.pageSize,
+                    manageType : this.activeTap,
                 }).then(res => {
-                   if(res.status === 200){
-                       this.tableData = res.data ? res.data.list : [];
-                       this.totalCount = Number(res.data.totalRecord);
+                   if(res.success){
+                       this.tableData = res.data ? res.data.data : [];
+                       this.totalCount = res.data.totalRow;
                    }else{
                        this.tableData = [];
                        this.totalCount = 0;
@@ -114,11 +120,10 @@
                 color: $color_blue;
                 display: inline-block;
                 margin-left: 10px;
-                margin-top: 2px;
                 vertical-align: middle;
                 cursor: pointer;
 
-                .icon-pull-down{
+                .icon-arrow-down{
                     display: inline-block;
                     transition: all 0.5s;
 

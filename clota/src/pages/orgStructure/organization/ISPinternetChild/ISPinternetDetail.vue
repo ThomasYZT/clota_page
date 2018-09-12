@@ -17,6 +17,7 @@
         <transition name="fade">
             <component :is="componentSelect"
                        :key="nodeKey"
+                       :activeTap="activeTap"
                        :activeNode="activeNode"
                        @fresh-org="freshOrgInfo">
             </component>

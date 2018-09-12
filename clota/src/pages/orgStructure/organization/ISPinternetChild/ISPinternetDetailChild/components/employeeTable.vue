@@ -86,12 +86,13 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
-                        this.tableData = res.data.list ? res.data.list : [];
-                        this.employeeNumber = res.data.employeeNumber;
+                    if(res.success){
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount  = this.employeeNumber = res.data.totalRow;
                     }else{
                         this.tableData = [];
                         this.employeeNumber = '';
+                        this.totalCount = 0;
                     }
                 });
             }

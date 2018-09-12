@@ -13,8 +13,8 @@
                     </FormItem>
                     <FormItem>
                         <i-switch v-model="formDataCopy.isStart"></i-switch>
-                        <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status !== 'open'}">
-                            {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
+                        <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
+                            {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
                         </span>
                     </FormItem>
                 </Form>
@@ -114,18 +114,19 @@
              */
             saveEdit () {
                 this.type = 'watch';
-                ajax.post('updateOrgInfo',{
+                ajax.post('modifyOrgInfo',{
                     id : this.formDataCopy.id,
                     status : this.formDataCopy.isStart ? 'open' : 'close',
                     orgName : this.formDataCopy.orgName
                 }).then(res => {
-                    if(res.status === 200){
+                    if(res.success){
                         this.$Message.success('修改成功');
-                        this.$emit('fresh-org',this.activeNode);
-                        this.getDepDetail();
                         //修改了节点的名字，需要刷新左侧的组织树
                         if(this.formDataCopy.orgName !== this.formData.orgName){
                             this.freshOrg();
+                        }else{
+                            this.$emit('fresh-org',this.activeNode);
+                            this.getDepDetail();
                         }
                     }else{
                         this.$Message.error('修改失败');

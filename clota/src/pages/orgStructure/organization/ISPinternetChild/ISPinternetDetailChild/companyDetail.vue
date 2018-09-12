@@ -259,10 +259,12 @@
         </opened-service>
         <!--下属公司-->
         <sub-company
+            :activeTap="activeTap"
             :search-params="{id : activeNode.id}">
         </sub-company>
         <!--下属景区-->
         <sub-scene
+            :activeTap="activeTap"
             :search-params="{id : activeNode.id}">
         </sub-scene>
         <!--下属部门-->
@@ -303,6 +305,11 @@
                    return {};
                }
             },
+            //当前激活菜单
+            'activeTap' : {
+                type : String,
+                default : ''
+            }
         },
         components: {
             tableCom,

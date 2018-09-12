@@ -25,14 +25,14 @@
                     :table-com-min-height="280"
                     @query-data="queryList">
                     <el-table-column
-                        slot="columnstatus"
+                        slot="column2"
                         slot-scope="row"
                         :label="row.title"
                         show-overflow-tooltip
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scoped">
-                            {{scoped.row.status === 'close' ? $t('outUse') : $t('startUsing')}}
+                            {{scoped.row.status === 'close' ? $t('hasNotStart') : $t('hasStart')}}
                         </template>
                     </el-table-column>
                 </table-com>
@@ -49,10 +49,15 @@
         props : {
             //表格查询参数
             'search-params' : {
-                typee : Object,
+                type : Object,
                 default () {
                     return {}
                 }
+            },
+            //当前组织架构类型
+            'activeTap' : {
+                type : String,
+                default : ''
             }
         },
         components : {
@@ -77,15 +82,16 @@
              * 查询下属部门信息
              */
             queryList () {
-                ajax.post('getSubNode',{
+                ajax.post('getSubNodePage',{
                     orgId : this.searchParams.id,
-                    orgType : 'department',
-                    // page : this.pageNo,
-                    // pageSize : this.pageSize,
+                    nodeType : 'department',
+                    page : this.pageNo,
+                    pageSize : this.pageSize,
+                    manageType : this.activeTap,
                 }).then(res => {
-                    if(res.status === 200){
-                        this.tableData = res.data ? res.data.list : [];
-                        this.totalCount = Number(res.data.totalRecord);
+                    if(res.success){
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;
@@ -106,14 +112,6 @@
     @import '~@/assets/scss/base';
     .sub-department{
         @include block_outline($height : auto);
-
-        .operate-info{
-            @include table_operate();
-
-            .custome{
-                color: $color_blue;
-            }
-        }
 
         .pick-up-title{
             @include block_outline($height: 59px);
@@ -151,18 +149,6 @@
                     }
 
                 }
-            }
-        }
-
-        .operate-info{
-            @include table_operate();
-
-            .reset-pass{
-                color: $color_blue;
-            }
-
-            .delete{
-                color:$color_err
             }
         }
     }

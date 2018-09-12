@@ -41,10 +41,15 @@
         props : {
             //表格查询参数
             'search-params' : {
-                typee : Object,
+                type : Object,
                 default () {
                     return {}
                 }
+            },
+            //当前组织架构类型
+            'activeTap' : {
+                type : String,
+                default : ''
             }
         },
         data() {
@@ -66,19 +71,22 @@
              * 查询下属景区信息
              */
             queryList () {
-                ajax.post('getSubNode',{
-                    // page : this.pageNo,
-                    // pageSize : this.pageSize,
+                ajax.post('getSubNodePage',{
                     orgId : this.searchParams.id,
-                    orgType : 'scenic'
+                    page : this.pageNo,
+                    pageSize : this.pageSize,
+                    manageType : this.activeTap,
+                    nodeType : 'scenic'
                 }).then(res => {
-                    if(res.status === 200){
-                        this.tableData = res.data ? res.data.list : [];
-                        this.totalCount = Number(res.data.totalRecord);
+                    if(res.success){
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
                     }else{
                         this.tableData = [];
                         this.totalCount = 0;
                     }
+                }).catch(err => {
+                    console.log(err)
                 });
             }
         },

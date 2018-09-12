@@ -13,7 +13,7 @@ export const region = [
     {
         title: '管理账号',
         minWidth: 130,
-        field: 'loginName'
+        field: 'manager'
     },
     {
         title: '联系电话',

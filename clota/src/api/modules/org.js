@@ -30,5 +30,9 @@ export default {
     'getOrgGroupList' : '/organize/getOrgGroupList',
     //获取上级开通的服务
     'getOrgServiceList' : '/organize/getOrgServiceList',
+    //修改组织架构节点
+    'modifyOrgInfo' : '/organize/modifyOrgInfo',
+    //获取下属机构列表
+    'getSubNodePage' : '/organize/getSubNodePage',
 
 }
