@@ -42,6 +42,9 @@
             <span style="" class="red-bale">本操作将同步删除本节点的全部下级节点，并不可撤销，</span>
             <span>是否继续删除？</span>
         </del-modal>
+        <edit-modal ref="delModalTip">
+            <div style="padding: 0 20px">{{$t('S007')}}</div>
+        </edit-modal>
         <!--新增节点模态框-->
         <add-modal v-model="addModalShow"
                    :node-detail="currentNode"
@@ -75,6 +78,7 @@
 
 <script>
     import delModal from '@/components/delModal/index.vue';
+    import editModal from '@/components/editModal/index.vue';
     import addModal from './child/addNode';
     import addCompany from './child/addCompany';
     import addScene from './child/addScene';
@@ -110,7 +114,8 @@
             addCompany,
             addScene,
             addCashier,
-            noData
+            noData,
+            editModal
         },
         data() {
             return {
@@ -295,7 +300,13 @@
                         this.$Message.success('删除成功');
                         this.$emit('switch-tap',this.activeTap);
                     }else{
-                        this.$Message.error('删除失败');
+                        if(res.code === 'S007'){
+                            this.$refs.delModalTip.show({
+                                title : '提示',
+                            });
+                        }else{
+                            this.$Message.error('删除失败');
+                        }
                     }
                 })
             },

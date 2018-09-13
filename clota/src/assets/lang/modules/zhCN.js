@@ -726,5 +726,6 @@ export default {
     'cashierType': '款台类型',
     'verifyCashierType': '核销款台',
     'verifySaleType': '销售款台',
+    'S007': '当前删除节点或其子孙节点是其它节点的财务上级，不可删除，请重新设置财务上级后再删除',
 
 }

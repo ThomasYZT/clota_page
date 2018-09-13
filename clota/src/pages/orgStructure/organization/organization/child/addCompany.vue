@@ -80,6 +80,7 @@
                     </template>
                     <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
+                <!--<div class="hint">用于与线下系统对接</div>-->
                 <!--所在地-->
                 <FormItem :label="$t('location')">
                     <city-plugin @select="changeCity" style="width: 280px">
@@ -383,7 +384,6 @@
              */
             addOrgInfo () {
                 ajax.post('addOrgInfo',{
-                    // rootId : this.chosedNodeDetail.id,
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
@@ -397,7 +397,7 @@
                     district : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
-                    parentManageId : this.formData.fianceSuperior,
+                    parentManageId : this.formData.manageSuperior,
                     nodeType : 'company'
                 }).then(res => {
                     if(res.success){

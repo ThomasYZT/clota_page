@@ -289,6 +289,10 @@
         </employee-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
+            <div style="padding: 0 20px">
+                您正在重置管理员{{companyDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
+                {{companyDetail.email}}
+            </div>
         </edit-modal>
     </div>
 </template>
@@ -470,25 +474,25 @@
              */
             resetPass () {
                 this.$refs.editModal.show({
-                    title : this.$t('resetPass'),
-                    confirmCallback : (pass) => {
-                        this.confimChangePass(pass);
+                    title : '重置密码',
+                    confirmCallback : () => {
+                        this.confimChangePass();
                     }
                 });
             },
             /**
              * 确认重置密码
-             * @param pass
              */
-            confimChangePass (pass){
-                ajax.post('resetPassword',{
-                    id : this.activeNode.id,
-                    password : pass
+            confimChangePass (){
+                ajax.post('resetManagerPassword',{
+                    orgId : this.activeNode.id,
+                    managerId : this.companyDetail.managerId,
+                    email : this.companyDetail.email,
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('重置成功');
+                    if(res.success){
+                        this.$Message.success(`重置管理员${this.companyDetail.manager}密码成功`);
                     }else{
-                        this.$Message.error(res.message || '重置失败');
+                        this.$Message.error(res.message || `重置管理员${this.companyDetail.manager}密码失败`);
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();

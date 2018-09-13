@@ -79,8 +79,10 @@
              */
             visibleChange(type) {
                 if(type === false){
-                    this.$refs.formRef.resetFields();
-                    this.formData.passWord = '';
+                    if(this.$refs.formRef){
+                        this.$refs.formRef.resetFields();
+                        this.formData.passWord = '';
+                    }
                 }
             },
             /**
@@ -105,6 +107,8 @@
                 }else{
                     if(this.confirmCallback){
                         this.confirmCallback(this.formData.passWord);
+                    }else{
+                        this.cancel();
                     }
                 }
             },

@@ -351,7 +351,7 @@
                     district : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
-                    parentManageId : this.formData.fianceSuperior,
+                    parentManageId : this.formData.manageSuperior,
                     nodeType : 'scenic',
                     openService : this.formData.openedServices.join(',')
                 }).then(res => {

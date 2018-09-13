@@ -100,7 +100,7 @@
                                   v-else
                                   v-w-title="sceneDetail.manager">
                                  {{sceneDetail.manager | contentFilter}}
-                                <span class="reset-pass" @click="resetPass" v-if="type === 'edit'">重置密码</span>
+                                <span class="reset-pass" @click="resetPass">重置密码</span>
                             </span>
                         </FormItem>
                     </i-col>
@@ -235,6 +235,10 @@
         </opened-service>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
+            <div style="padding: 0 20px">
+                您正在重置管理员{{sceneDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
+                {{sceneDetail.email}}
+            </div>
         </edit-modal>
     </div>
 </template>
@@ -403,15 +407,15 @@
             },
             /**
              * 确认重置密码
-             * @param pass
              */
-            confimChangePass (pass){
-                ajax.post('resetPassword',{
-                    id : this.activeNode.id,
-                    password : pass
+            confimChangePass (){
+                ajax.post('resetManagerPassword',{
+                    orgId : this.activeNode.id,
+                    managerId : this.sceneDetail.managerId,
+                    email : this.sceneDetail.email,
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('重置成功');
+                    if(res.success){
+                        this.$Message.success(`重置管理员${this.sceneDetail.manager}密码成功`);
                     }else{
                         this.$Message.error(res.message || '重置失败');
                     }
@@ -424,9 +428,9 @@
              */
             resetPass () {
                 this.$refs.editModal.show({
-                    title : this.$t('resetPass'),
-                    confirmCallback : (pass) => {
-                        this.confimChangePass(pass);
+                    title : '重置密码',
+                    confirmCallback : () => {
+                        this.confimChangePass();
                     }
                 });
             },

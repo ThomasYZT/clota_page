@@ -64,5 +64,7 @@ export default {
     'getAllPrivilege' : '/privilege/getAllPrivilege',
     //新增角色
     'addRole' : '/role/addRole',
+    //重置管理员密码
+    'resetManagerPassword' : '/account/resetManagerPassword',
 
 }
