@@ -34,10 +34,11 @@
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('sex')" prop="sex"><!--性别-->
+                <Form-item :label="$t('gender')" prop="sex"><!--性别-->
                     <Select v-model="employee.sex" :placeholder="$t('selectField', {msg: ''})">
-                        <Option value="male">男</Option>
-                        <Option value="female">女</Option>
+                        <Option v-for="item in genderEnum" :key="item.name"
+                                :value="item.name">{{$t(item.desc)}}
+                        </Option>
                     </Select>
                 </Form-item>
             </div>
@@ -54,7 +55,7 @@
             </div>
             <div class="ivu-form-item-wrap">
                 <Form-item :label="$t('nativePlace')" prop="nativePlace"><!--籍贯-->
-                    <Select v-model="employee.nativePlace" :placeholder="$t('selectField', {msg: ''})">
+                    <Select v-model="employee.provinceId" :placeholder="$t('selectField', {msg: ''})">
                         <Option v-for="item in enumData.nativePlace" :key="item.id"
                                 :value="item.provinceid">{{item.province}}
                         </Option>
@@ -97,24 +98,27 @@
 
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
+    import MD5 from 'crypto-js/md5';
+    import {genderEnum} from '@/assets/js/constVariable';
+    import { validator } from 'klwk-ui';
 
     export default {
-        props: ['employee-info'],
+        props: ['employeeInfo'],
         components: {},
         data () {
 
             var validateMethod = {
 
                 mobile :  (rule, value, callback) => {
-                    /*if (!validator.isMobile(value)) {
+                    if (!validator.isMobile(value)) {
                         callback(new Error('请输入正确的手机号码'));
                     } else {
                         callback();
-                    }*/
+                    }
                 },
 
                 orgName : (rule, value, callback) => {
-                    if (value && !this.employee.orgId) {
+                    if (value && !this.employee.deptId) {
                         callback(new Error('该部门不存在'));
                     } else {
                         callback();
@@ -143,14 +147,13 @@
                 },
                 employee: {
                     deptId: '',             // 部门
-//                    orgName: '',
                     loginName: '',          // 登录名
                     password: '',
                     nickName: '',
                     phone: '',
                     sex: '',
                     birthday: '',
-                    nativePlace: '',
+                    provinceId: '',
                     address: '',
                     desc: '',               // 备注
                     roleIds: '',            // 角色权限ids
@@ -158,10 +161,12 @@
                 },
                 // 勾选的角色权限
                 rolePrivileges: [],
+                // 性别
+                genderEnum: genderEnum,
 
                 // 表单校验规则
                 ruleValidate: {
-                    orgName: [
+                    deptId: [
                         { required: true, message: '请选择部门', trigger: 'change' },
                         { validator: validateMethod.orgName, trigger: 'change'}
                     ],
@@ -170,25 +175,25 @@
                         { type: 'string', max: 20, message: '登录名不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    name: [
+                    nickName: [
                         { required: true, message: '姓名不能为空', trigger: 'blur' },
                         { type: 'string', max: 20, message: '姓名不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    psw: [
+                    password: [
                         { required: true, message: '密码不能为空', trigger: 'blur' },
                         { type: 'string', max: 20, message: '密码不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    mobile: [
+                    phone: [
                         { required: true, message: '手机号不能为空', trigger: 'blur' },
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
-                    nativePlaceAddr: [
+                    address: [
                         { type: 'string', max: 20, message: '籍贯地址不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    remark: [
+                    desc: [
                         { type: 'string', max: 20, message: '备注不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
@@ -203,6 +208,19 @@
             'employee.orgName' : function(newVal, oldVal){
                 this.$refs.formValidate.validateField('orgName');
             },
+            employeeInfo: {
+                handler: function (newVal, oldVal) {
+                    if (this.isEdit) {
+                        this.employee = Object.assign(this.employee, newVal);
+                    }
+                },
+                immediate: true
+            }
+        },
+        computed: {
+            isEdit() {
+                return this.$route.query.type && (this.$route.query.type == 'modify');
+            }
         },
 
         methods: {
@@ -223,6 +241,22 @@
                 })
             },
 
+
+            init() {
+                let fields = [
+                    {apiKey: 'queryDepartments', dataKey: 'department'},
+                    {apiKey: 'getProvinceList', dataKey: 'nativePlace'},
+                    {apiKey: 'queryRoleList', dataKey: 'privileges'},
+                ];
+                fields.forEach((item, i) => {
+                    this.getFieldInitData(item.apiKey, item.dataKey);
+                });
+            },
+            /**
+             * 获取部门名称、籍贯、角色权限 下拉列表数据
+             * @params apiKey - 接口api
+             * @params dataKey - enumData的key值
+             **/
             getFieldInitData(apiKey, dataKey) {
                 ajax.post(apiKey).then(res => {
                     if (res.success) {
@@ -235,7 +269,8 @@
             saveEmployee( param ){
                 var self = this;
 
-                ajax.post("addEmployee", this.employee).then(function (res) {
+                this.employee.password = MD5(this.employee.password).toString();
+                ajax.post("addOrUpdateEmployee", this.employee).then(function (res) {
                     if(res.success){
                         self.$Message.success(self.$t('新增员工成功！'));
                         self.$router.push({name: 'employee'});
@@ -251,19 +286,13 @@
              * @param selections
              */
             onChangeSelect(selections) {
-                this.employee.roleIds = selections.join(',');
+                this.employee.roleIds = this.rolePrivileges.join(',');
             },
+
 
         },
         created() {
-            let fields = [
-                    {apiKey: 'queryDepartments', dataKey: 'department'},
-                    {apiKey: 'getProvinceList', dataKey: 'nativePlace'},
-                    {apiKey: 'queryRoleList', dataKey: 'privileges'},
-                ];
-            fields.forEach((item, i) => {
-                this.getFieldInitData(item.apiKey, item.dataKey);
-            });
+            this.init();
         },
     }
 </script>

@@ -15,7 +15,7 @@
         <div class="add-employee-content">
 
             <!--基本信息-->
-            <basic-form ref="basicForm"></basic-form>
+            <basic-form ref="basicForm" :employee-info="employeeData"></basic-form>
 
             <div class="content-footer">
                 <i-button type="primary" :loading="loading" @click="confirmModify">确定新增</i-button>
@@ -30,18 +30,16 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index';
-    import basicForm from './basicInfo.vue'
+    import basicForm from './basicInfo.vue';
+    import MD5 from 'crypto-js/md5';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins';
 
     export default {
         components: {
             basicForm,
             breadCrumbHead
         },
-        data () {
-            return {
-                loading: false,
-            }
-        },
+        mixins: [lifeCycleMixins],
         data() {
             return {
                 // 表单数据
@@ -58,7 +56,9 @@
                 ],
                 //新增/修改
                 type: 'add',
-                loading: false
+                loading: false,
+                // 员工信息数据
+                employeeData: {},
             }
         },
         computed: {
@@ -80,6 +80,17 @@
             //确认修改按钮回调，需校验表单
             confirmModify(){
                 this.$refs.basicForm.formValidateFunc();
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams(params){
+                if(this.$route.query.type === 'modify'){
+                    if(params && Object.keys(params).length > 0){
+                        this.employeeData = Object.assign({}, this.employeeData, params.employeeItem);
+                    }
+                }
             },
 
         },
