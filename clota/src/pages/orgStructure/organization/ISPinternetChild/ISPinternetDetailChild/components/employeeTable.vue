@@ -55,6 +55,11 @@
             'isDefaultPackUp' : {
                 type : Boolean,
                 default : false
+            },
+            //是否是部门
+            'is-department' : {
+                type : Boolean,
+                default : false
             }
         },
         components : {
@@ -81,11 +86,21 @@
              * 获取部门下员工列表
              */
             getEmployees () {
-                ajax.post('getEmployeeList',{
-                    orgId : this.searchParams.id,
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize
-                }).then(res => {
+                let params = {};
+                if(this.isDepartment){
+                    params = {
+                        depId : this.searchParams.id,
+                        pageNo : this.pageNo,
+                        pageSize : this.pageSize,
+                    };
+                }else{
+                    params = {
+                        orgId : this.searchParams.id,
+                        pageNo : this.pageNo,
+                        pageSize : this.pageSize,
+                    };
+                }
+                ajax.post('getEmployeeList',params).then(res => {
                     if(res.success){
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount  = this.employeeNumber = res.data.totalRow;

@@ -300,7 +300,6 @@
         .breadcrumb-box{
             height: 50px;
             line-height: 50px;
-            padding: 0 30px;
             background: $color_F4F6F8;
         }
 

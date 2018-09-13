@@ -7,10 +7,13 @@
 
         <div class="data-content">
             <vue-echarts
+                v-if="memberLevelData && memberLevelData.length > 0"
                 ref="vueChart"
                 :options="options"
                 auto-resize>
             </vue-echarts>
+            <no-data v-else>
+            </no-data>
         </div>
     </div>
 </template>
@@ -19,10 +22,12 @@
 
     import vueEcharts from '../../../components/vueEcharts/eCharts.vue';
     import ajax from '@/api/index.js';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components: {
-            vueEcharts
+            vueEcharts,
+            noData
         },
         data () {
             return {
@@ -219,6 +224,8 @@
         .data-content {
             height: calc(100% - 50px);
             padding-top: 10px;
+            position: relative;
+
             .echarts {
                 @include block_outline(100%, 175px);
                 max-width: 700px;

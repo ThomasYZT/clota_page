@@ -54,6 +54,7 @@
         <!--员工-->
         <employee-table
             :isDefaultPackUp="true"
+            :is-department="true"
             :search-params="{id : activeNode.id}"
             type="department">
         </employee-table>

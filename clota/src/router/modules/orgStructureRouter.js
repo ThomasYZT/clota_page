@@ -22,7 +22,7 @@ export default {
         children: {
             organization: {
                 //组织架构--组织架构
-                path: 'organization',
+                path: '/orgManage/organization',
                 name: 'organization',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/ISPinternetChild/ISPinternetDetail.vue'),
                 meta: {
@@ -35,7 +35,7 @@ export default {
             },
             employee: {
                 //组织架构--员工
-                path: 'employee',
+                path: '/orgManage/employee',
                 name: 'employee',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                 meta: {
@@ -48,7 +48,7 @@ export default {
             },
             addEmployee: {
                 //组织架构--员工--新增员工
-                path: 'addEmployee',
+                path: '/orgManage/addEmployee',
                 name: 'addEmployee',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                 meta: {
@@ -60,7 +60,7 @@ export default {
             },
             rolePermission: {
                 //组织架构--角色权限
-                path: 'rolePermission',
+                path: '/orgManage/rolePermission',
                 name: 'rolePermission',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/rolePermission.vue'),
                 meta: {
@@ -71,9 +71,20 @@ export default {
                     isMenu : true
                 },
             },
+            addRole: {
+                //组织架构--角色权限
+                path: '/orgManage/addRole',
+                name: 'addRole',
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/addRole.vue'),
+                meta: {
+                    menuName: 'addRole', //lang.config.js 里面的语言键值
+                    _name: 'members', //
+                    rightPath : topMenuName + '.' + 'rolePermission'
+                },
+            },
             roleSceneryDetail: {
                 //组织架构--角色权限--角色详情
-                path: 'rolePermission/roleDetail',
+                path: '/orgManage/rolePermission/roleDetail',
                 name: 'roleDetail',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/roleDetail.vue'),
                 meta: {
@@ -85,7 +96,7 @@ export default {
             },
             partner: {
                 //组织架构--合作伙伴
-                path: 'partner',
+                path: '/orgManage/partner',
                 name: 'partner',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/partner/partner.vue'),
                 meta: {
@@ -98,7 +109,7 @@ export default {
             },
             channels: {
                 //组织架构--自营渠道
-                path: 'channels',
+                path: '/orgManage/channels',
                 name: 'channels',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/channels/channels.vue'),
                 meta: {
@@ -111,7 +122,7 @@ export default {
             },
             saleChannelsGroup: {
                 //组织架构--销售渠道分组
-                path: 'saleChannelsGroup',
+                path: '/orgManage/saleChannelsGroup',
                 name: 'saleChannelsGroup',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/saleChannelsGroup/saleChannelsGroup.vue'),
                 meta: {
@@ -124,7 +135,7 @@ export default {
             },
             verificateGroup: {
                 //组织架构--核销设备分组
-                path: 'verificateGroup',
+                path: '/orgManage/verificateGroup',
                 name: 'verificateGroup',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/verificateGroup.vue'),
                 meta: {

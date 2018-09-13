@@ -536,14 +536,9 @@
         background: $color-fff;
         border-radius: 4px;
 
-        /deep/ .ivu-breadcrumb{
-            padding-left: 30px;
-        }
-
         .breadcrumb-box{
             height: 50px;
             line-height: 50px;
-            padding: 0 30px;
             background: $color_F4F6F8;
         }
 

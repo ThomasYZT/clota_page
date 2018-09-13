@@ -2,119 +2,124 @@
     <!-- 角色权限 -->
     <div class="partner">
         <div class="orgHeader">
-            <Select style="width: 180px;float: left;margin-right:10px">
-                <Option value="132">全部公司景区</Option>
-            </Select>
-            <Select style="width: 180px;float: left;margin-right:10px">
-                <Option value="132">全部业态</Option>
-            </Select>
-            <Select style="width: 180px;float: left;margin-right:10px">
-                <Option value="132">全部角色名称</Option>
-            </Select>
-            <Button type="primary" style="float: left;margin-right: 10px" size="default" @click="search">{{$t('query')}}</Button>
-            <Button type="ghost" style="float: left" size="default" @click="reset">{{$t('reset')}}</Button>
+            <Button type="primary" @click="addRole">新增角色</Button>
+            <Input v-model.trim="keyWrod"
+                   style="width: 353px;"
+                   placeholder="请输入任意信息进行查询"
+                   icon="ios-search"
+                   @on-click="queryList"
+                   @on-enter="queryList"/>
         </div>
-        <div>
-            <el-table
-                :data="tableData"
+        <div class="content">
+            <table-com
+                :column-data="columns"
+                :table-data="tableData"
                 :border="true"
-                style="width: 100%">
+                :page-no-d.sync="pageNo"
+                :show-pagination="true"
+                :page-size-d.sync="pageSize"
+                :total-count="totalCount"
+                :ofset-height="120"
+                @query-data="queryList">
                 <el-table-column
-                    prop="date"
-                    label="公司/景区名称">
-                    <template slot-scope="scope">
-                        <div class="cellText">水世界管理有限公司</div>
+                    slot="column2"
+                    slot-scope="row"
+                    :label="row.title"
+                    show-overflow-tooltip
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scoped">
+                        <ul class="operate-list">
+                            <li @click="toDetail(scoped.row)">详情</li>
+                        </ul>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="业态类型">
-                    <template slot-scope="scope">
-                        <div>票务</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="合作伙伴名称">
-                    <template slot-scope="scope">
-                        <div>A级销售渠道</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="角色名称">
-                    <template slot-scope="scope">
-                        <div>产品操作员</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="操作">
-                    <template slot-scope="scope">
-                        <div class="operation">
-                            <span class="span-blue" @click="listDetail">查看详情(风景)</span>
-                            <span @click="listDetail2">查看详情(公司)</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="pagination">
-                <el-pagination
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
-                </el-pagination>
-            </div>
+            </table-com>
         </div>
     </div>
 </template>
 
 
 <script>
-    //弹窗
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {roleHead} from './rolePermissionConfig';
+    import ajax from '@/api/index.js';
     export default {
-        components: {},
+        components: {
+            tableCom
+        },
         data() {
             return {
                 // 表单数据
-                tableData: [{
-                    date: '2016-05-03',
-                }],
+                tableData: [],
+                //查询关键字
+                keyWrod : '',
+                //表头配置
+                columns : roleHead,
+                pageNo : 1,
+                pageSize : 10,
+                //总条数
+                totalCount : 0
             }
         },
         methods: {
-            //查看详情
-            listDetail() {
-                this.$router.replace({'name': 'roleDetail', query: {'detailType': 'scenery'}})
+            /**
+             * 获取权限信息
+             */
+            queryList () {
+                ajax.post('queryRoles',{
+                    keyword : this.keyWrod,
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
+                    }else{
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
             },
-            listDetail2() {
-                this.$router.replace({'name': 'roleDetail', query: {'detailType': 'company'}})
+            /**
+             * 跳转到角色详情
+             * @param data
+             */
+            toDetail (data) {
+                this.$router.push({
+                    name : 'addRole'
+                });
             },
-            //重置
-            reset() {
-
-            },
-            //查询
-            search() {
-
-            },
-            init() {
-
+            /**
+             * 新增角色权限
+             */
+            addRole () {
+                this.$router.push({
+                    name : 'addRole'
+                });
             }
-        },
-        computed: {},
-        created() {
         },
     }
 </script>
 
 <style lang="scss">
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .partner {
         @include block_outline();
         background: $color_fff;
+
+        .orgHeader{
+            @include block_outline($height : 60px);
+            padding: 14px 20px 0 20px;
+
+            /deep/ .ivu-input-type{
+                float: right;
+            }
+        }
+
+        .content{
+            @include block_outline($height : unquote('calc(100% - 60px)'));
+        }
     }
 </style>

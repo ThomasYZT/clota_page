@@ -58,5 +58,7 @@ export default {
     'addOrgServiceList' : '/organize/addOrgServiceList',
     //下级景区删除服务
     'deleteOrgServiceList' : '/organize/deleteOrgServiceList',
+    //查询全部角色列表
+    'queryRoles' : '/role/queryRoles',
 
 }
