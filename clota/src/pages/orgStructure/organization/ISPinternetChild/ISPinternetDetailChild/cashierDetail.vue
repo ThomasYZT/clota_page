@@ -97,10 +97,11 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem label="所属核销设备分组："
-                                  :required="true"
+                                  :required="formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine'"
                                   prop="checkGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkGroupId"
+                                    :disabled="formDataCopy.checkerType === 'sale'"
                                     v-if="type === 'edit'">
                                 <Option v-for="item in verifyCashierTypeGroupList"
                                         :value="item.id"
@@ -117,10 +118,12 @@
                     </i-col>
                     <i-col span="12">
                         <FormItem label="所属销售渠道分组："
-                                  :required="true"
+                                  :required="formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine'"
                                   prop="saleGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Select v-model="formDataCopy.saleGroupId" v-if="type === 'edit'">
+                            <Select v-model="formDataCopy.saleGroupId"
+                                    :disabled="formDataCopy.checkerType === 'check'"
+                                    v-if="type === 'edit'">
                                 <Option v-for="item in verifySaleTypeGroupList"
                                         :value="item.id"
                                         :key="item.id">
@@ -155,6 +158,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
     import {cashierType} from '@/assets/js/constVariable.js';
+    import common from '@/assets/js/common.js';
     export default {
         props : {
             //节点信息
@@ -186,6 +190,15 @@
                     }
                 }else{
                     callback(this.$t('inputField',{field : this.$t('serverName')}));
+                }
+            };
+            //校验是否为空
+            const validateNotEmpty = (rule,value,callback) => {
+                if(common.isNotEmpty(value)){
+                    callback();
+                }else{
+                    // callback();
+                    callback(this.$t('selectField',{msg : this.$t(rule._field)}));
                 }
             };
             return {
@@ -225,10 +238,10 @@
                         {validator : validateServerUrl,trigger : 'blur'}
                     ],
                     checkGroupId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('verificateGroup')}),trigger : 'change'}
+                        {validator : validateNotEmpty,trigger : 'change',_field : 'cashierTypeGroup'}
                     ],
                     saleGroupId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('saleChannelsGroup')}),trigger : 'change'}
+                        {validator : validateNotEmpty,trigger : 'change',_field : 'saleTypeGroup'}
                     ]
                 }
             }

@@ -9,7 +9,7 @@
         @on-visible-change="visibleChange"
         class="add-node"
         class-name="vertical-center-modal">
-        <div slot="header" class="target-class">
+        <div slot="header" class="target-class" v-w-title="$t('createNodeMsg',{node : nodeDetail.orgName})">
             <span class="title">{{$t('createNodeMsg',{node : nodeDetail.orgName})}}</span>
         </div>
         <Form ref="formValidate"
@@ -74,15 +74,15 @@
                     nodeName: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseInput', {msg: this.$t('nodeName')}),
+                            message: this.$t('inputField', {field: this.$t('nodeName')}),
                             trigger: 'blur'
                         },
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('nodeName'),length : 100})}
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('nodeName'),length : 100}),trigger: 'blur'}
                     ],
                     nodeType: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('nodeName')}),
+                            message: this.$t('selectField', {msg: this.$t('nodeType')}),
                             trigger: 'blur'
                         }
                     ]
@@ -175,6 +175,7 @@
         .target-class {
             height: 23px;
             line-height: 23px;
+            @include overflow_tip();
 
             .title {
                 font-size: 14px;

@@ -16,12 +16,20 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="160">
+                  :label-width="180">
                 <!--服务器名称-->
-                <FormItem :label="$t('serverName')" prop="serverName">
-                    <Input v-model="formData.serverName" style="width: 280px"/>
+                <FormItem prop="serverName">
+                    <template slot="label">
+                        <Tooltip placement="top" transfer>
+                            <div slot="content" class="tips-content">
+                                服务器名称为景区编码+设备编码或内网IP地址，不可重复
+                            </div>
+                            <Icon type="information-circled"></Icon>
+                        </Tooltip>
+                        <span>服务器名称：</span>
+                    </template>
+                    <Input v-model.trim="formData.serverName" style="width: 280px"/>
                 </FormItem>
-                <div class="hint">服务器名称为景区编码+设备编码或内网IP地址，不可重复</div>
                 <!--款台类型-->
                 <FormItem :label="$t('cashierType')" prop="cashierType">
                     <Select v-model="formData.cashierType"
@@ -38,7 +46,9 @@
                 <FormItem :label="$t('cashierTypeGroup')"
                           prop="cashierTypeGroup"
                           v-if="showCashierTypeGroup">
-                    <Select v-model="formData.cashierTypeGroup" style="width:280px">
+                    <Select v-model="formData.cashierTypeGroup"
+                            style="width:280px"
+                            transfer>
                         <Option v-for="item in cashierTypeGroupList"
                                 :value="item.id"
                                 :key="item.id">
@@ -48,9 +58,12 @@
                 </FormItem>
                 <!--所属销售渠道分组-->
                 <FormItem :label="$t('saleTypeGroup')"
+                          transfer
                           prop="saleTypeGroup"
                           v-if="showSaleTypeGroup">
-                    <Select v-model="formData.saleTypeGroup" style="width:280px">
+                    <Select v-model="formData.saleTypeGroup"
+                            style="width:280px"
+                            transfer>
                         <Option v-for="item in saleTypeGroupList"
                                 :value="item.id"
                                 :key="item.id">
@@ -126,17 +139,37 @@
                     cashierType: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('fianceSuperior')}),
+                            message: this.$t('selectField', {msg: this.$t('cashierType')}),
                             trigger: 'change'
                         },
                     ],
                     serverName: [
+                        {
+                            required: true,
+                            message: this.$t('inputField', {field: this.$t('serverName')}),
+                            trigger: 'blur'
+                        },
                         {required: true, validator: validateServerName, trigger: 'blur'},
+                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('serverName'),length : 50}),trigger : 'blur'}
                     ],
                     smsProvider: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('smsProvider')}),
+                            message: this.$t('selectField', {msg: this.$t('smsProvider')}),
+                            trigger: 'change'
+                        },
+                    ],
+                    cashierTypeGroup : [
+                        {
+                            required: true,
+                            message: this.$t('selectField', {msg: this.$t('cashierTypeGroup')}),
+                            trigger: 'change'
+                        },
+                    ],
+                    saleTypeGroup : [
+                        {
+                            required: true,
+                            message: this.$t('selectField', {msg: this.$t('saleTypeGroup')}),
                             trigger: 'change'
                         },
                     ]
@@ -323,8 +356,8 @@
 
         .target-body {
             width: 100%;
-            height: 290px;
-            padding: 55px 0 5px 0;
+            height: 250px;
+            padding: 37px 0 5px 0;
             overflow: auto;
 
             /deep/ .ivu-form {
@@ -335,13 +368,11 @@
                     position: relative;
 
                     .ivu-form-item-error-tip {
-                        width: 110px;
                         position: absolute;
-                        top: 7px;
-                        right: -110px;
-                        left: auto;
+                        top: 33px;
+                        left: 0;
                         line-height: 1;
-                        padding: 6px 0 0 5px;
+                        padding: 0;
                         color: #ed3f14;
                     }
                 }

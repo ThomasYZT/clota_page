@@ -209,7 +209,7 @@
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
-                            || (data.data && data.data.nodeType === 'department')
+                            || (data.nodeType === 'department')
                         },
                         style : {
                             paddingRight : '5px',
