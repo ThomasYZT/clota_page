@@ -141,10 +141,10 @@
                     </more-card>
                 </div>
 
-                <!--<div class="content-info">-->
-                    <!--<div class="title">{{$t("cardPkgInfo")}}</div>-->
-                    <!--<div class="operate"><span class="pointer"  @click="viewCardDetail">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>-->
-                <!--</div>-->
+                <div class="content-info">
+                    <div class="title">{{$t("cardPkgInfo")}}</div>
+                    <div class="operate"><span class="pointer"  @click="viewCardDetail">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
+                </div>
 
                 <div class="content-info">
                     <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
