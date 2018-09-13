@@ -552,7 +552,7 @@
             getParentManages () {
                 ajax.post('getOrgsByManageType',{
                     orgId : this.activeNode.id,
-                    manageType : 'manage'
+                    manageType : 'manage',
                 }).then(res => {
                     if(res.success){
                         this.superiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];

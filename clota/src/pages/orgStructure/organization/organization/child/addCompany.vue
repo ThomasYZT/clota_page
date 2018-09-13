@@ -68,13 +68,21 @@
                     <Input v-model="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
-                <FormItem :label="$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'">
+                <FormItem  prop="companyCode">
+                    <template slot="label">
+                        <Tooltip placement="top" transfer>
+                            <div slot="content" class="tips-content">
+                                用于与线下系统对接
+                            </div>
+                            <Icon type="information-circled"></Icon>
+                        </Tooltip>
+                        <span>{{$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'}}：</span>
+                    </template>
                     <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
-                <div class="hint">用于与线下系统对接</div>
                 <!--所在地-->
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="formData.place = $event" style="width: 280px">
+                    <city-plugin @select="changeCity" style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
@@ -147,7 +155,7 @@
                         callback('管理账号已存在');
                     });
                 }else{
-                    callback(this.$t('inputField', {msg: this.$t('controlAccount')}));
+                    callback(this.$t('inputField', {field: this.$t('controlAccount')}));
                 }
             };
             //校验电子邮箱
@@ -156,7 +164,7 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.emailError'));
+                        callback(this.$t('errorFormat',{field: this.$t('email')}));
                     }
                 } else {
                     callback(this.$t('inputField', {field: this.$t('email')}));
@@ -168,7 +176,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.phoneError'));
+                        callback(this.$t('errorFormat', {field: this.$t('phone')}));
                     }
                 } else {
                     callback();
@@ -180,7 +188,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.formatError', {field: this.$t('fax')}));
+                        callback(this.$t('errorFormat',{field: this.$t('fax')}));
                     }
                 } else {
                     callback();
@@ -216,9 +224,11 @@
                 ruleValidate: {
                     phone: [
                         {validator: validatePhone, trigger: 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'}
                     ],
                     fax: [
                         {validator: validateFax, trigger: 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'}
                     ],
                     fianceSuperior: [
                         {
@@ -229,19 +239,25 @@
                     ],
                     controlAccount: [
                         {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 20}),trigger : 'blur'}
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('email'),length : 100}),trigger : 'blur'}
                     ],
                     smsProvider: [
                         {
                             required: true,
-                            message: this.$t('inputField', {field: this.$t('smsProvider')}),
+                            message: this.$t('selectField', {msg: this.$t('smsProvider')}),
                             trigger: 'change'
                         },
                     ],
                     person : [
-                        {required :true,message : this.$t('inputField',{field : this.$t('person')})}
+                        {required :true,message : this.$t('inputField',{field : this.$t('person')})},
+                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'}
+                    ],
+                    companyCode : [
+                        {min : 2,max : 8,message : this.$t('rangeError',{field : this.$t('companyCode'),min : 2,max : 8}),trigger : 'blur'}
                     ]
                 },
                 //短信供应商列表
@@ -324,10 +340,11 @@
             getParentManages () {
                 ajax.post('getOrgsByManageType',{
                     orgId :  this.chosedNodeDetail.id,
-                    manageType : 'manage'
+                    manageType : 'manage',
+                    nodeType : this.chosedNodeDetail.nodeType,
                 }).then(res => {
                     if(res.success){
-                        this.parentManages = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
+                        this.parentManages = res.data ? res.data : [];
                     }else{
                         this.parentManages = [];
                     }
@@ -339,10 +356,11 @@
             getParentEconomic () {
                 ajax.post('getOrgsByManageType',{
                     orgId : this.chosedNodeDetail.id,
-                    manageType : 'economic'
+                    manageType : 'economic',
+                    nodeType : this.chosedNodeDetail.nodeType,
                 }).then(res => {
                     if(res.success){
-                        this.parentEconomics = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
+                        this.parentEconomics = res.data ? res.data : [];
                     }else{
                         this.parentEconomics = [];
                     }
@@ -374,9 +392,9 @@
                     telephone : this.formData.phone,
                     tex : this.formData.fax,
                     checkinCode : this.formData.companyCode,
-                    provinceid : this.placeInfo.provinceid,
-                    cityid : this.placeInfo.cityid,
-                    districtid : this.placeInfo.areaid,
+                    province : this.placeInfo.provinceid,
+                    city : this.placeInfo.cityid,
+                    district : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.fianceSuperior,
@@ -399,6 +417,13 @@
                     loginName : this.formData.controlAccount
                 });
             },
+            /**
+             * 地区改变后
+             * @param data
+             */
+            changeCity (data ) {
+                this.formData.place = data;
+            }
         },
         computed : {
             //选择的地区信息
@@ -470,14 +495,6 @@
             padding: 0;
         }
 
-        .hint {
-            text-indent: 215px;
-            margin-top: -12px;
-            margin-bottom: 10px;
-            font-size: $font_size_14px;
-            color: $color_999;
-        }
-
         .target-body {
             width: 100%;
             height: 497px;
@@ -492,7 +509,6 @@
                     position: relative;
 
                     .ivu-form-item-error-tip {
-                        width: 110px;
                         position: absolute;
                         top: 32px;
                         left: 0;

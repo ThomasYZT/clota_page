@@ -16,7 +16,7 @@
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="150">
+                  :label-width="190">
                 <!--财务上级-->
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
                     <Select v-model="formData.fianceSuperior" style="width:280px">
@@ -28,7 +28,7 @@
                     </Select>
                 </FormItem>
                 <!--管理上级-->
-                <FormItem :label="$t('manageSuperior')">
+                <FormItem :label="$t('manageSuperior')" prop="manageSuperior">
                     <Select v-model="formData.manageSuperior"
                             disabled
                             style="width:280px">
@@ -40,18 +40,25 @@
                     </Select>
                 </FormItem>
                 <!--开通服务-->
-                <FormItem :label="$t('openedServices')" prop="openedServices">
-                    <Select v-model="formData.openedServices"
-                            multiple
-                            style="width:280px">
-                        <Option v-for="item in serviceList"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.serviceName }}
-                        </Option>
-                    </Select>
+                <FormItem  prop="openedServices">
+                    <template slot="label">
+                        <Tooltip placement="top" transfer>
+                            <div slot="content" class="tips-content">
+                                如需开通更多服务，请先为上级公司开通相应服务。
+                            </div>
+                            <Icon type="information-circled"></Icon>
+                        </Tooltip>
+                        <span>{{$t('openedServices')}}：</span>
+                    </template>
+                    <CheckboxGroup v-model="formData.openedServices">
+                        <Checkbox v-for="item in serviceList"
+                                  :key="item.id"
+                                  :label="item.id">
+                            {{item.serviceName}}
+                        </Checkbox>
+                    </CheckboxGroup>
                 </FormItem>
-                <div class="hint">如需开通更多服务，请先为上级公司开通相应服务。</div>
+                <!--<div class="hint">如需开通更多服务，请先为上级公司开通相应服务。</div>-->
                 <!--管理账号-->
                 <FormItem :label="$t('controlAccount')" prop="controlAccount">
                     <Input v-model.trim="formData.controlAccount" style="width: 280px"/>
@@ -73,18 +80,26 @@
                     <Input v-model.trim="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
-                <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'">
+                <FormItem prop="companyCode">
+                    <template slot="label">
+                        <Tooltip placement="top" transfer>
+                            <div slot="content" class="tips-content">
+                                用于与线下系统对接
+                            </div>
+                            <Icon type="information-circled"></Icon>
+                        </Tooltip>
+                        <span>{{$t('companyCode') + '(' + $t('offlineVerify') + ')'}}：</span>
+                    </template>
                     <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
-                <div class="hint">用于与线下系统对接</div>
                 <!--地址-->
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="formData.place = $event" style="width: 280px">
+                    <city-plugin @select="changeCity" style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
-                <FormItem :label="$t('address')">
-                    <Input v-model="formData.address" type="textarea" style="width: 280px"/>
+                <FormItem :label="$t('address')" prop="address">
+                    <Input v-model="formData.address" style="width: 280px"/>
                 </FormItem>
             </Form>
         </div>
@@ -139,7 +154,7 @@
             const validateControlAccount = (rule, value, callback) => {
                 if(value){
                     this.queryAccountExist().then((res) => {
-                        if(res.status === 200){
+                        if(res.success){
                             if(res.data){
                                 callback();
                             }else{
@@ -152,7 +167,7 @@
                         callback('管理账号已存在');
                     });
                 }else{
-                    callback(this.$t('inputField', {msg: this.$t('controlAccount')}));
+                    callback(this.$t('inputField', {field: this.$t('controlAccount')}));
                 }
             };
             //校验电子邮箱
@@ -161,10 +176,10 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.emailError'));
+                        callback(this.$t('errorFormat',{field: this.$t('email')}));
                     }
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {msg: this.$t('email')}));
+                    callback(this.$t('inputField', {field: this.$t('email')}));
                 }
             };
             //校验联系电话
@@ -173,7 +188,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.phoneError'));
+                        callback(this.$t('errorFormat', {field: this.$t('phone')}));
                     }
                 } else {
                     callback();
@@ -185,7 +200,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.formatError', {field: this.$t('fax')}));
+                        callback(this.$t('errorFormat',{field: this.$t('fax')}));
                     }
                 } else {
                     callback();
@@ -213,7 +228,7 @@
                     //详细地址
                     address: '',
                     //地点
-                    place: '',
+                    place: {},
                     //联系人
                     person : ''
                 },
@@ -221,26 +236,44 @@
                 ruleValidate: {
                     phone: [
                         {validator: validatePhone, trigger: 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'}
                     ],
                     fax: [
                         {validator: validateFax, trigger: 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'}
                     ],
                     fianceSuperior: [
                         {
                             required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('fianceSuperior')}),
+                            message: this.$t('selectField', {msg: this.$t('fianceSuperior')}),
+                            trigger: 'change'
+                        },
+                    ],
+                    manageSuperior : [
+                        {
+                            required: true,
+                            message: this.$t('selectField', {msg: this.$t('manageSuperior')}),
                             trigger: 'change'
                         },
                     ],
                     controlAccount: [
-                        // {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        {required: true, validator: validateControlAccount, trigger: 'blur'},
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 20}),trigger : 'blur'}
                     ],
                     mail: [
                         {required: true, validator: validateMail, trigger: 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('email'),length : 100}),trigger : 'blur'}
                     ],
                     person: [
-                        {required: true,message: this.$t('validateError.pleaseInput', {msg: this.$t('person')}), trigger: 'blur'},
+                        {required: true,message: this.$t('inputField', {field: this.$t('person')}), trigger: 'blur'},
+                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'}
                     ],
+                    address : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'}
+                    ],
+                    companyCode : [
+                        {min : 2,max : 8,message : this.$t('rangeError',{field : this.$t('companyCode'),min : 2,max : 8}),trigger : 'blur'}
+                    ]
                 },
                 //财务上级列表
                 fianceSuperiorList : [],
@@ -313,14 +346,14 @@
                     telephone : this.formData.phone,
                     tex : this.formData.fax,
                     checkinCode : this.formData.companyCode,
-                    provinceid : this.placeInfo.provinceid,
-                    cityid : this.placeInfo.cityid,
-                    districtid : this.placeInfo.areaid,
+                    province : this.placeInfo.provinceid,
+                    city : this.placeInfo.cityid,
+                    district : this.placeInfo.areaid,
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.fianceSuperior,
                     nodeType : 'scenic',
-                    openService : this.formData.openedServices.map(item => item.id)
+                    openService : this.formData.openedServices.join(',')
                 }).then(res => {
                     if(res.success){
                         this.$emit('fresh-structure-data');
@@ -343,10 +376,11 @@
             getParentManages () {
                 ajax.post('getOrgsByManageType',{
                     orgId :  this.chosedNodeDetail.id,
-                    manageType : 'manage'
+                    manageType : 'manage',
+                    nodeType : this.chosedNodeDetail.nodeType,
                 }).then(res => {
                     if(res.success){
-                        this.manageSuperiorList = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
+                        this.manageSuperiorList = res.data ? res.data : [];
                     }else{
                         this.manageSuperiorList = [];
                     }
@@ -358,10 +392,11 @@
             getParentEconomic () {
                 ajax.post('getOrgsByManageType',{
                     orgId : this.chosedNodeDetail.id,
-                    manageType : 'economic'
+                    manageType : 'economic',
+                    nodeType : this.chosedNodeDetail.nodeType,
                 }).then(res => {
                     if(res.success){
-                        this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.chosedNodeDetail.id) : [];
+                        this.fianceSuperiorList = res.data ? res.data : [];
                     }else{
                         this.fianceSuperiorList = [];
                     }
@@ -371,7 +406,7 @@
              * 判断管理账号是否存在
              */
             queryAccountExist () {
-                return ajax.post('queryAccountExist',{
+                return ajax.post('checkLoginNameUnique',{
                     loginName : this.formData.controlAccount
                 });
             },
@@ -390,6 +425,13 @@
                        this.serviceList = [];
                    }
                 });
+            },
+            /**
+             * 地区改变后
+             * @param data
+             */
+            changeCity (data ) {
+                this.formData.place = data;
             }
         },
         computed : {
@@ -462,14 +504,6 @@
             padding: 0;
         }
 
-        .hint {
-            text-indent: 150px;
-            margin-top: -12px;
-            margin-bottom: 10px;
-            font-size: $font_size_14px;
-            color: $color_999;
-        }
-
         .target-body {
             width: 100%;
             height: 497px;
@@ -484,13 +518,11 @@
                     position: relative;
 
                     .ivu-form-item-error-tip {
-                        width: 110px;
                         position: absolute;
-                        top: 7px;
-                        right: -110px;
-                        left: auto;
+                        top: 32px;
+                        left: 0;
                         line-height: 1;
-                        padding: 6px 0 0 5px;
+                        padding: 2px 0 0 0;
                         color: #ed3f14;
                     }
                 }
