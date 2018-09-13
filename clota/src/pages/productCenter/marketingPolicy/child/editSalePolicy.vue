@@ -1,10 +1,11 @@
 <!--
-内容：产品列表 - 票类列表 - 编辑/新增
+内容：产品列表 - 销售政策列表 - 新建销售政策
 作者：
 日期：
 -->
+
 <template>
-    <div class="edit-ticket">
+    <div class="edit-sale-policy">
 
         <bread-crumb-head
             :before-router-list="beforeRouterList"
@@ -267,9 +268,6 @@
 
         </div>
 
-        <!--新增/编辑园区-->
-        <edit-park-modal ref="editPark"></edit-park-modal>
-
     </div>
 </template>
 
@@ -278,7 +276,6 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import editParkModal from './editParkModal.vue'
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
@@ -292,7 +289,6 @@
             breadCrumbHead,
             titleTemp,
             tableCom,
-            editParkModal,
         },
         data () {
 
@@ -363,15 +359,15 @@
             };
 
             return {
+                //新增/修改 add/modify
+                type: 'add',
                 //面包屑上级路由信息
                 beforeRouterList: [
                     {
-                        name: 'ticketType',   // 产品列表--票类列表
-                        router: 'ticketType',
+                        name: 'marketingPolicy',   //  销售政策列表
+                        router: 'marketingPolicy',
                     }
                 ],
-                //新增/修改
-                type: 'add',
                 loading: false,
                 //表单数据
                 formData: {
@@ -596,7 +592,7 @@
         },
         computed: {
             localeRouter () {
-                return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail');      // 新增票类 ： 修改票类信息
+                return this.type === 'add' ? this.$t('addSalePolicy') : this.$t('modifySalePolicy');      // 新建销售政策 ： 修改销售政策
             },
         },
     }
@@ -605,13 +601,14 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .edit-ticket {
+    .edit-sale-policy {
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
         @include padding_place();
         background: $color-fff;
         border-radius: 4px;
+
         .container{
 
             .ivu-form{

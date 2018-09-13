@@ -15,6 +15,8 @@
         </div>
 
         <div class="btn-wrap" v-if="tabsName === 'created'">
+            <Button type="primary"
+                    @click="$router.push({name: 'editSalePolicy', params: { type: 'add'}})">+ {{$t('add')}}</Button>
             <Button type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
             <Button type="error"
                     :disabled="selectedRow.length > 0 ? false : true"
@@ -358,7 +360,12 @@
 
             //查看详情
             viewDetail ( data ) {
-
+                this.$router.push({
+                    name: 'salePolicyDetail',
+                    params: {
+                        info: data
+                    }
+                })
             },
 
 
@@ -374,6 +381,7 @@
         .tabs-wrap{
             /deep/ .ivu-tabs-nav{
                 margin-left: 30px;
+                font-size: $font_size_16px;
             }
         }
 

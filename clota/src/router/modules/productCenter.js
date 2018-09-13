@@ -83,7 +83,28 @@ export default {
                     isMenu : true
                 },
             },
-
+            editSalePolicy: {
+                //产品中心--销售政策--新建/修改政策
+                path: '/productCenter/MPEdit',
+                name: 'editSalePolicy',
+                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
+                meta: {
+                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
+                    _name: 'point-setting',
+                    rightPath : topMenuName + '.' + 'marketingPolicy',
+                },
+            },
+            salePolicyDetail: {
+                //产品中心--销售政策--政策详情
+                path: '/productCenter/MPDetail',
+                name: 'salePolicyDetail',
+                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/salePolicyDetail.vue'),
+                meta: {
+                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
+                    _name: 'point-setting',
+                    rightPath : topMenuName + '.' + 'marketingPolicy',
+                },
+            },
 
         }
     }

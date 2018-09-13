@@ -626,7 +626,7 @@ export default {
     'moreTicketPark': '多票制园区',
     'choosePark': '选择园区',
     'one_ticket': '一票制',
-    'more_ticket': '多票制',
+    'assort': '多票制',
     'saleType': '售票方式',
     'disabled': '禁用',
     'peopleEnterTimes': '每人可入园总次数',
@@ -665,6 +665,13 @@ export default {
     'checked': '审核',
     'up': '上架',
     'down': '下架',
+    'productLog': '产品日志',
+    'checkPass': '审核通过',
+    'reject': '驳回',
+    'revocation': '撤回',
+    'marketingPolicyDetail' : '销售政策详情',
+    'viewDetail' : '查看详情',
+    'modifySalePolicy': '新建销售政策',
 
 
     /*** 财务管理模块 ***/

@@ -308,11 +308,11 @@ export const productEffectSet = [
 export const saleType = [
     {
         label: 'one_ticket',//一票制
-        value: 'one'
+        value: 'one_ticket'
     },
     {
-        label: 'more_ticket',//多票制
-        value: 'more'
+        label: 'assort',//多票制
+        value: 'assort'
     },
 ];
 

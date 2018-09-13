@@ -20,7 +20,7 @@
             <!--一票制表单信息-->
             <Form ref="oneTicketFormValidate"
                   key="oneTicketFormValidate"
-                  v-if="formData.saleType === 'one'"
+                  v-if="formData.saleType === 'one_ticket'"
                   :model="formData"
                   :rules="ruleValidate"
                   label-position="top">
@@ -28,6 +28,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('choosePark')" prop="choosePark"><!--选择园区-->
                             <Select v-model="formData.choosePark"
+                                    :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.park"
                                         :key="index"
@@ -43,6 +44,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('saleType')" prop="saleType"><!--售票方式-->
                             <Select v-model="formData.saleType"
+                                    :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})" @on-change="changeSaleType">
                                 <Option v-for="(item,index) in enumData.saleType"
                                         :key="index"
@@ -50,24 +52,37 @@
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
-                            <span class="notice" v-if="formData.saleType === 'one'">{{$t('oneTicketNotice')}}</span>
-                            <span class="notice" v-if="formData.saleType === 'more'">{{$t('moreTicketNotice')}}</span>
+                            <span class="notice" v-if="formData.saleType === 'one_ticket'">{{$t('oneTicketNotice')}}</span>
+                            <span class="notice" v-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('peopleEnterTimes')" prop="peopleEnterTimes"><!--每人可入园总次数-->
+                        <Form-item prop="Times"><!--每人可入园总次数-->
+                            <span>{{$t('预定时指定游玩日期。入园后，门票')}}</span>
                             <Input v-model.trim="formData.peopleEnterTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('天有效，一共可入园/观影')}}</span>
+                            <Input v-model.trim="formData.dayEnterTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('次')}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('dayEnterTimes')" prop="dayEnterTimes"><!--每日可入园次数-->
+                        <Form-item prop="Times"><!--每人可入园总次数-->
+                            <span>{{$t('在销售政策适用游玩期限内，可入园/观影')}}</span>
                             <Input v-model.trim="formData.dayEnterTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('次')}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -75,6 +90,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="equipmentGroup"><!--设备分组-->
                             <Select v-model="formData.equipmentGroup"
+                                    :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="changeEquipmentGroup">
                                 <Option v-for="(item,index) in enumData.group"
@@ -89,8 +105,16 @@
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('enterCheckPlace')" prop="enterCheckPlace"><!--入园检票处-->
-                            <!--入园检票处--核销表格-->
+                            <!--入园检票处--核销表格,区分查看与编辑-->
                             <table-com
+                                v-if="type === 'check'"
+                                :table-com-min-height="250"
+                                :column-data="viewDistributeColumnHead"
+                                :table-data="distributeTableData"
+                                :border="false">
+                            </table-com>
+                            <table-com
+                                v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
                                 :table-data="distributeTableData"
@@ -134,6 +158,7 @@
                         <Form-item :label="$t('otherSet')" prop="otherSet"><!--其他设置-->
                             <CheckboxGroup v-model="formData.otherSet">
                                 <Checkbox v-for="(item,index) in enumData.authenticationType"
+                                          :disabled="type === 'check'"
                                           :key="index"
                                           :label="item.value">
                                     {{$t(item.label)}}</Checkbox>
@@ -146,7 +171,7 @@
             <!--多票制表单信息-->
             <Form ref="moreTicketFormValidate"
                   key="moreTicketFormValidate"
-                  v-if="formData.saleType === 'more'"
+                  v-if="formData.saleType === 'assort'"
                   :model="formData"
                   :rules="ruleValidate"
                   label-position="top">
@@ -154,6 +179,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('choosePark')" prop="choosePark"><!--选择园区-->
                             <Select v-model="formData.choosePark"
+                                    :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.park"
                                         :key="index"
@@ -169,6 +195,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('saleType')" prop="saleType"><!--售票方式-->
                             <Select v-model="formData.saleType"
+                                    :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})" @on-change="changeSaleType">
                                 <Option v-for="(item,index) in enumData.saleType"
                                         :key="index"
@@ -176,8 +203,8 @@
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
-                            <span class="notice" v-if="formData.saleType === 'one'">{{$t('oneTicketNotice')}}</span>
-                            <span class="notice" v-if="formData.saleType === 'more'">{{$t('moreTicketNotice')}}</span>
+                            <span class="notice" v-if="formData.saleType === 'one_ticket'">{{$t('oneTicketNotice')}}</span>
+                            <span class="notice" v-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -186,17 +213,30 @@
                 <title-park title="enterCheck"></title-park>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('peopleEnterTimes')" prop="peopleEnterTimes"><!--每人可入园总次数-->
+                        <Form-item prop="Times"><!--每人可入园总次数-->
+                            <span>{{$t('预定时指定游玩日期。入园后，门票')}}</span>
                             <Input v-model.trim="formData.peopleEnterTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('天有效，一共可入园/观影')}}</span>
+                            <Input v-model.trim="formData.dayEnterTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('次')}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('dayEnterTimes')" prop="dayEnterTimes"><!--每日可入园次数-->
+                        <Form-item prop="Times"><!--每人可入园总次数-->
+                            <span>{{$t('在销售政策适用游玩期限内，可入园/观影')}}</span>
                             <Input v-model.trim="formData.dayEnterTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('次')}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -204,6 +244,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="equipmentGroup"><!--设备分组-->
                             <Select v-model="formData.equipmentGroup"
+                                    :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="changeEquipmentGroup">
                                 <Option v-for="(item,index) in enumData.group"
@@ -218,8 +259,16 @@
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('enterCheckPlace')" prop="enterCheckPlace"><!--入园检票处-->
-                            <!--入园检票处--核销表格-->
+                            <!--入园检票处--核销表格,区分查看与编辑-->
                             <table-com
+                                v-if="type === 'check'"
+                                :table-com-min-height="250"
+                                :column-data="viewDistributeColumnHead"
+                                :table-data="distributeTableData"
+                                :border="false">
+                            </table-com>
+                            <table-com
+                                v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
                                 :table-data="distributeTableData"
@@ -265,6 +314,7 @@
                     <i-col span="24">
                         <Form-item :label="$t('projectTotalTimes')" prop="projectTotalTimes"><!--项目游玩总次数-->
                             <Input v-model.trim="formData.projectTotalTimes"
+                                   :disabled="type === 'check'"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </i-col>
@@ -273,6 +323,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('addProjectGroup')" prop="addProjectGroup"><!--添加项目分组-->
                             <Select v-model="formData.addProjectGroup"
+                                    :disabled="type === 'check'"
                                     :multiple="true"
                                     :clearable="true"
                                     :placeholder="$t('selectField', {msg: ''})" @on-change="changeProjectGroup">
@@ -334,12 +385,19 @@
                                         :min-width="row.minWidth">
                                         <template slot-scope="scope">
                                             <ul class="operate-list">
-                                                <li class="normal"
-                                                    v-if="scope.row.play === 'true'"
-                                                    @click="setAblePlay(scope.row)">{{$t('setAblePlay')}}</li><!--设为可玩-->
-                                                <li class="normal"
-                                                    v-else
-                                                    @click="setMustPlay(scope.row)">{{$t('setMustPlay')}}</li><!--设为必玩-->
+                                                <template v-if="type === 'check'">
+                                                    <li class="normal"
+                                                        v-if="scope.row.play === 'true'">{{$t('必玩项')}}</li><!--必玩项-->
+                                                    <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
+                                                </template>
+                                                <template v-else>
+                                                    <li class="normal"
+                                                        v-if="scope.row.play === 'true'"
+                                                        @click="setAblePlay(scope.row)">{{$t('setAblePlay')}}</li><!--设为可玩-->
+                                                    <li class="normal"
+                                                        v-else
+                                                        @click="setMustPlay(scope.row)">{{$t('setMustPlay')}}</li><!--设为必玩-->
+                                                </template>
                                             </ul>
                                         </template>
                                     </el-table-column>
@@ -353,6 +411,7 @@
                         <Form-item :label="$t('otherSet')" prop="otherSet"><!--其他设置-->
                             <CheckboxGroup v-model="formData.otherSet">
                                 <Checkbox v-for="(item,index) in enumData.authenticationType"
+                                          :disabled="type === 'check'"
                                           :key="index"
                                           :label="item.value">
                                     {{$t(item.label)}}</Checkbox>
@@ -365,8 +424,13 @@
 
         </div>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
-            <Button type="ghost" class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
+            <template  v-if="type !== 'check'">
+                <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
+                <Button type="ghost" class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
+            </template>
+            <template  v-else>
+                <Button type="ghost" class="ivu-btn-90px" @click="cancel">{{$t('back')}}</Button>
+            </template>
         </div>
     </Modal>
 </template>
@@ -374,9 +438,9 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import titlePark from '../components/titlePark.vue';
+    import titlePark from '../../components/titlePark.vue';
     import { saleType, authenticationType } from '@/assets/js/constVariable';
-    import {distributeColumnHead, proGroupColumnHead} from './parkConfig';
+    import {distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead} from './parkConfig';
     import common from '@/assets/js/common.js';
 
     export default {
@@ -473,6 +537,7 @@
                 },
                 //入园检票处表头
                 distributeColumnHead: distributeColumnHead,
+                viewDistributeColumnHead: viewDistributeColumnHead,//查看表头
                 //可游玩园区表格数据
                 distributeTableData: [
                     {
@@ -519,16 +584,16 @@
             //售票方式改变
             changeSaleType ( val ) {
                 let obj = this.enumData.saleType.find( item => val === item.value );
-                if(obj && val === 'one'){
+                if(obj && val === 'one_ticket'){
                     this.title = this.$t(this.type) + this.$t('oneTicketPark');
                 } else {
                     this.title = this.$t(this.type) + this.$t('moreTicketPark');
                 }
                 this.$nextTick(() => {
                     let fromRef = '';
-                    if(this.formData.saleType === 'one'){
+                    if(this.formData.saleType === 'one_ticket'){
                         fromRef = 'oneTicketFormValidate'
-                    }else if(this.formData.saleType === 'more'){
+                    }else if(this.formData.saleType === 'assort'){
                         fromRef = 'moreTicketFormValidate'
                     }
                     if(fromRef){
@@ -580,9 +645,9 @@
              */
             confirm() {
                 let fromRef = '';
-                if(this.formData.saleType === 'one'){
+                if(this.formData.saleType === 'one_ticket'){
                     fromRef = 'oneTicketFormValidate'
-                }else if(this.formData.saleType === 'more'){
+                }else if(this.formData.saleType === 'assort'){
                     fromRef = 'moreTicketFormValidate'
                 }
                 if(fromRef){
@@ -701,6 +766,9 @@
 
             /deep/ .ivu-input-wrapper{
                 width: 280px;
+                &.short-input{
+                    width: 90px;
+                }
             }
 
             /deep/ .ivu-input-number{

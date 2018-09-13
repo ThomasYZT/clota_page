@@ -260,7 +260,7 @@
         .operation-box {
             padding: 15px 30px;
             /deep/ .ivu-btn {
-                width: 88px;
+                min-width: 88px;
                 margin-right: 7px;
             }
         }

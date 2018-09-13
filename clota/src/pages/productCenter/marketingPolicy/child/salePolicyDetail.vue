@@ -1,5 +1,5 @@
 <!--
-内容：产品列表 - 票类列表 - 票类详情
+内容：产品列表 - 销售政策列表 - 销售政策详情
 作者：
 日期：
 -->
@@ -9,17 +9,14 @@
 
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="$t('ticketDetail')">
+            :locale-router="$t('marketingPolicyDetail')">
         </bread-crumb-head>
 
         <div class="container">
 
             <div class="title-wrap">
-                <span>{{$t('ticketDetail')}}</span>
-                <span class="yellow-span">{{$t('待审核')}}</span>
-                <span class="green-span">{{$t('已启用')}}</span>
-                <span class="red-span">{{$t('已驳回')}}</span>
-                <span class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
+                <span>{{$t('marketingPolicy')}}</span>
+                <span class="blue-span" @click="showDetailModal">{{$t('viewDetail')}}</span>
             </div>
 
             <!--表单信息-->
@@ -57,172 +54,6 @@
                     </i-row>
                 </div>
 
-                <!--票面信息-->
-                <title-temp title="ticketInfo"></title-temp>
-                <div class="form-content">
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('printName')+'：'"><!--打印名称-->
-                                <div v-w-title="detail.printName">{{detail.printName | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('ticketPrice')+'：'"><!--票面价格-->
-                                <div>{{detail.printPrice | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="24">
-                            <Form-item :label="$t('ticketDesc')+'：'"><!--票面说明-->
-                                <div v-w-title="detail.ticketRemark">{{detail.ticketRemark | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="24">
-                            <Form-item :label="$t('printDesc')+'：'"><!--打印说明-->
-                                <div v-w-title="detail.printRemark">{{detail.printRemark | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                </div>
-
-                <!--购买限制-->
-                <title-temp title="buyLimit"></title-temp>
-                <div class="form-content">
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('isTeamProduct')+'：'"><!--是否团队产品-->
-                                <div>{{detail.isGroup === 'true' ? $t('yes') : $t('no') }}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('enterNum')+'：'"><!--可入园人数-->
-                                <div>{{detail.inNum | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('minOrderNum')+'：'"><!--每订单最小起订数-->
-                                <div>{{detail.minNum | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('maxOrderNum')+'：'"><!--每订单最大限订数-->
-                                <div>{{detail.maxNum | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('orderToCommitVisitorIdInfo')+'：'"><!--预定时提交身份信息-->
-                                <div v-w-title="$t(detail.needId)">{{$t(detail.needId)}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row v-if="detail.needId !== 'noRequired'">
-                        <i-col span="24">
-                            <Form-item :label="$t('idType')+'：'"><!--可接受证件类型-->
-                                <template v-if="detail.acceptIdType">
-                                    <CheckboxGroup v-model="detail.acceptIdType.split(',')">
-                                        <Checkbox v-for="(item,index) in detail.acceptIdType.split(',')"
-                                                  disabled :key="index" :label="item">
-                                            {{$t(item)}}
-                                        </Checkbox>
-                                    </CheckboxGroup>
-                                </template>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('limitById')+'：'"><!--身份证购票限制-->
-                                <div>
-                                    <span class="label">{{detail.idLimit ? JSON.parse(detail.idLimit).day : '-'}}</span>
-                                    <span class="label">{{$t('maxBuy')}}</span>
-                                    <span class="label">{{detail.idLimit ? JSON.parse(detail.idLimit).quantity : '-'}}</span>
-                                    <span>{{$t('paper')}}</span>
-                                </div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('limitByMobile')+'：'"><!--手机号购票限制-->
-                                <div>
-                                    <span class="label">{{detail.mobileLimit ? JSON.parse(detail.mobileLimit).day : '-'}}</span>
-                                    <span class="label">{{$t('maxBuy')}}</span>
-                                    <span class="label">{{detail.mobileLimit ? JSON.parse(detail.mobileLimit).quantity : '-'}}</span>
-                                    <span>{{$t('paper')}}</span>
-                                </div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('limitStore')+'：'"><!--限制库存-->
-                                <div v-w-title="$t(detail.stockType)">{{ $t(detail.stockType) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('storeNum')+'：'"><!--库存数量-->
-                                <div>{{ detail.stockNum | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                </div>
-
-                <!--产品有效性-->
-                <title-temp title="productEffect"></title-temp>
-                <div class="form-content">
-                    <i-row>
-                        <i-col span="11">
-                            <Form-item :label="$t('productEffectSet')+'：'"><!--产品有效性设置-->
-                                <div v-w-title="$t(detail.productEffSet)">{{$t(detail.productEffSet) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                </div>
-
-                <!--游玩规则-->
-                <title-temp title="playRule"></title-temp>
-                <div class="form-content" :style="{height: (detail.productPlayRuleVo.length + 1) * 50 + 20+'px'}">
-                    <Form-item :label="$t('playPark')+'：'"><!--可游玩园区-->
-                        <div>
-                            <table-com
-                                :ofsetHeight="755"
-                                :table-com-min-height="260"
-                                :column-data="columnData"
-                                :table-data="detail.productPlayRuleVo"
-                                :border="false">
-                                <el-table-column
-                                    slot="column3"
-                                    slot-scope="row"
-                                    :label="row.title"
-                                    :width="row.width"
-                                    :min-width="row.minWidth">
-                                    <template slot-scope="scope">
-                                        <ul class="operate-list">
-                                            <li class="normal" @click="viewParkDetail(scope.row)">{{$t('check')}}</li><!--查看-->
-                                        </ul>
-                                    </template>
-                                </el-table-column>
-                            </table-com>
-                        </div>
-                    </Form-item>
-                </div>
-
-                <!--产品日志-->
-                <title-temp title="productLog"></title-temp>
-                <div class="form-content">
-                    <Timeline>
-                        <TimelineItem v-for="(item,index) in logList" color="#DFDFDF">
-                            <p class="time">{{item.time}}</p>
-                            <p class="content"><span class="name">{{item.name}}</span>{{item.desc}}</p>
-                        </TimelineItem>
-                    </Timeline>
-                </div>
-
             </Form>
 
         </div>
@@ -241,9 +72,6 @@
             <Button type="ghost">{{$t('back')}}</Button><!--返回-->
         </div>
 
-        <!--查看园区-->
-        <edit-park-modal ref="viewPark"></edit-park-modal>
-
     </div>
 </template>
 
@@ -252,7 +80,6 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import editParkModal from './editParkModal.vue'
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import {parkColumn} from './parkConfig';
 
@@ -262,15 +89,16 @@
             breadCrumbHead,
             titleTemp,
             tableCom,
-            editParkModal,
         },
         data () {
             return {
+                //type add/modify
+                type: 'add',
                 //面包屑上级路由信息
                 beforeRouterList: [
                     {
-                        name: 'ticketType',   // 产品列表--票类列表
-                        router: 'ticketType',
+                        name: 'marketingPolicy',   // 产品列表--票类列表
+                        router: 'marketingPolicy',
                     }
                 ],
                 //详情数据
@@ -365,16 +193,16 @@
              */
             viewParkDetail ( data ) {
                 console.log(data)
-                this.$refs.viewPark.show({
-                    data: data,
-                    title : this.$t('check')+this.$t(data.saleType),
-                    type: 'check',
-                    confirmCallback : () => {
-                        //push to tableData
-                        debugger
-                        console.log(true)
-                    }
-                });
+//                this.$refs.viewPark.show({
+//                    data: data,
+//                    title : this.$t('check')+this.$t(data.saleType),
+//                    type: 'check',
+//                    confirmCallback : () => {
+//                        //push to tableData
+//                        debugger
+//                        console.log(true)
+//                    }
+//                });
             },
 
             //提交审核
@@ -382,8 +210,8 @@
 
             },
 
-            //修改
-            modify () {
+            //查看详情
+            showDetailModal () {
                 this.$router.push({
                     name: 'addTicket',
                     params: {
@@ -436,29 +264,6 @@
                     }
                 }
 
-                .yellow-span{
-                    background: $color_F7981C_010;
-                    border-radius: 28px;
-                    font-size: $font_size_14px;
-                    color: $color_yellow;
-                    padding: 4px 15px;
-                }
-
-                .green-span{
-                    background: $color_22BB5F_010;
-                    border-radius: 28px;
-                    font-size: $font_size_14px;
-                    color: $color_green;
-                    padding: 4px 15px;
-                }
-
-                .red-span{
-                    background: $color_EB6751_010;
-                    border-radius: 28px;
-                    font-size: $font_size_14px;
-                    color: $color_red;
-                    padding: 4px 15px;
-                }
             }
 
             .ivu-form{
