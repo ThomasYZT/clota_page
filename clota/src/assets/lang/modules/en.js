@@ -615,7 +615,7 @@ export default {
     'driver': '驾照',
     'officer': '军官证',
     'police': '警官证',
-    'dayToStart': '自游玩之日起X天有效',
+    'dayToStart': '自游玩之日起M天有效',
     'toPolicy': '同销售政策适用游玩期限',
     'yes': '是',
     'no': '否',

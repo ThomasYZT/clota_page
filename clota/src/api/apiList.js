@@ -8,6 +8,8 @@ import index from './modules/index';
 import info from './modules/info';
 //组织架构接口
 import org from './modules/org';
+//产品中心接口
+import product from './modules/product';
 
 const apiList = {
 
@@ -24,6 +26,8 @@ const apiList = {
     ...info,
     //组织架构接口
     ...org,
+    //产品中心接口
+    ...product,
 
 };
 

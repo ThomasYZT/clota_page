@@ -295,7 +295,7 @@ export const limitStore = [
 //产品有效性设置
 export const productEffectSet = [
     {
-        label: 'dayToStart',//自游玩之日起X天有效
+        label: 'dayToStart',//自游玩之日起M天有效
         value: 'dayToStart'
     },
     {
