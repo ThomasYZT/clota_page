@@ -23,7 +23,7 @@ export const companies = [
     {
         title: '管理员账号',
         minWidth: 130,
-        field: 'loginName'
+        field: 'manager'
     },
     {
         title: '企业编码',

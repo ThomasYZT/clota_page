@@ -113,7 +113,8 @@
                 <i-col span="12">
                     <FormItem label="短信供应商："
                               v-if="type === 'edit'"
-                              :label-width="type === 'edit' ? 0 : 150">
+                              :label-width="type === 'edit' ? 0 : 150"
+                              prop="smsProvider">
                         <Select v-model.trim="formDataCopy.smsProvider" >
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.desc"
@@ -482,6 +483,9 @@
                     ],
                     parentEconomicId : [
                         {required : true,message : this.$t('selectField',{msg : this.$t('fianceSuperior')}),trigger : 'blur'},
+                    ],
+                    smsProvider : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('smsProvider')}),trigger : 'blur'},
                     ]
                 }
             }

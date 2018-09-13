@@ -2,7 +2,7 @@
 export const paratner = [
     {
         title: '序号',
-        minWidth: 80,
+        minWidth: 90,
         field: 'index',
     },
     {
@@ -12,12 +12,12 @@ export const paratner = [
     },
     {
         title: '协议有效期起始日期',
-        minWidth: 180,
+        minWidth: 190,
         field: 'startDate'
     },
     {
         title: '协议有效期结束日期',
-        minWidth: 180,
+        minWidth: 190,
         field: 'endDate'
     },
     {
