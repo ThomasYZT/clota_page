@@ -48,6 +48,7 @@
                         type="date"
                         v-model="employee.birthday"
                         :options="dateOption"
+                        format="yyyy-MM-dd"
                         :placeholder="$t('selectField', {msg: ''})"
                         @on-change="customValid($event, 'birthday')">
                     </Date-picker>
@@ -68,29 +69,50 @@
                 </Form-item>
             </div>
             <!--空字段站位用-->
-            <div class="ivu-form-item-wrap"></div>
-            <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('remark')" prop="desc">
-                    <Input v-model="employee.desc" type="textarea" :autosize="{minRows: 3,maxRows: 6}" :placeholder="$t('inputField', {field: ''})"></Input>
-                </Form-item>
-            </div>
+            <!--<div class="ivu-form-item-wrap"></div>-->
+            <Form-item :label="$t('remark')" prop="descript" style="width: 845px;">
+                <Input v-model.trim="employee.descript"
+                       type="textarea"
+                       :autosize="{minRows: 3,maxRows: 6}"
+                       :placeholder="$t('inputField', {field: ''})" />
+            </Form-item>
             <!--角色权限-->
-            <div class="ivu-form-item-wrap">
+            <!--<div class="ivu-form-item-wrap">-->
                 <Form-item :label="$t('rolePermission')" prop="privileges">
-                    <Select v-model="rolePrivileges" multiple @change="onChangeSelect">
+                    <!--<Select v-model="rolePrivileges" multiple @on-change="onChangeSelect">
                         <Option v-for="item in enumData.privileges" :key="item.id"
                                 :value="item.id">{{ item.roleName }}
                         </Option>
+                    </Select>-->
+                    <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})"><!--$t('selectField', {msg: ''})-->
+                        <div>
+                            <div class="selectTop">
+                                <i-input class="search-classify-input"
+                                         v-model.trim="roleKeyword"
+                                         placeholder="$t('搜索')"
+                                         @on-enter="searchMatched"
+                                         @on-click="searchMatched"
+                                         icon="ios-search-strong">
+                                </i-input>
+                            </div>
+                            <Checkbox-group v-model="rolePrivileges" @on-change="">
+                                <Checkbox v-for="(item,index) in matchedData" :key="index" :label="item.id">
+                                    <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
+                                </Checkbox>
+                            </Checkbox-group>
+                            <div class="noData" v-if="enumData.privileges.length == 0">暂无数据</div>
+                            <div class="noData" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
+                        </div>
                     </Select>
                 </Form-item>
-            </div>
+            <!--</div>-->
             <div class="ivu-form-item-wrap">
                 <Form-item :label="$t('isStarted')" prop="status"><!--是否启用-->
-                    <Checkbox v-model="employee.status" :true-value="'valid'" :false-true="'invalid'"></Checkbox>
+                    <Checkbox v-model="employee.status" :true-value="'valid'" :false-value="'invalid'"></Checkbox>
                 </Form-item>
             </div>
             <!--空字段站位用-->
-            <div class="ivu-form-item-wrap"></div>
+            <!--<div class="ivu-form-item-wrap"></div>-->
 
         </Form>
     </div>
@@ -101,6 +123,7 @@
     import MD5 from 'crypto-js/md5';
     import {genderEnum} from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
+    import map from 'lodash/map';
 
     export default {
         props: ['employeeInfo'],
@@ -155,14 +178,19 @@
                     birthday: '',
                     provinceId: '',
                     address: '',
-                    desc: '',               // 备注
+                    descript: '',               // 备注
                     roleIds: '',            // 角色权限ids
                     status: 'valid',        // 是否启用 valid/invalid
                 },
                 // 勾选的角色权限
                 rolePrivileges: [],
+                // 搜索角色关键字
+                roleKeyword: '',
+                matchedData: [],
                 // 性别
                 genderEnum: genderEnum,
+                // 旧密码
+                oldPwd: '',
 
                 // 表单校验规则
                 ruleValidate: {
@@ -182,7 +210,6 @@
                     ],
                     password: [
                         { required: true, message: '密码不能为空', trigger: 'blur' },
-                        { type: 'string', max: 20, message: '密码不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phone: [
@@ -193,8 +220,8 @@
                         { type: 'string', max: 20, message: '籍贯地址不能多于20个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    desc: [
-                        { type: 'string', max: 20, message: '备注不能多于20个字符', trigger: 'blur' },
+                    descript: [
+                        { type: 'string', max: 100, message: '备注不能多于100个字符', trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
 
@@ -202,16 +229,17 @@
             }
         },
         watch: {
-            'employee.sex' : function(newVal, oldVal){
+            /*'employee.sex' : function(newVal, oldVal){
                 this.$refs.formValidate.validateField('sex');
             },
             'employee.orgName' : function(newVal, oldVal){
                 this.$refs.formValidate.validateField('orgName');
-            },
+            },*/
             employeeInfo: {
                 handler: function (newVal, oldVal) {
-                    if (this.isEdit) {
-                        this.employee = Object.assign(this.employee, newVal);
+                    if (this.isEdit && newVal.id) {
+//                        this.employee = Object.assign(this.employee, newVal);
+                        this.getEmployeeDetail(newVal.id);
                     }
                 },
                 immediate: true
@@ -227,9 +255,10 @@
 
             // 手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
             customValid(data, field){
+                this.employee.birthday = data;
                 this.$nextTick(()=>{
                     this.$refs.formValidate.validateField( field );
-                })
+                });
             },
 
             //表单校验
@@ -251,6 +280,7 @@
                 fields.forEach((item, i) => {
                     this.getFieldInitData(item.apiKey, item.dataKey);
                 });
+
             },
             /**
              * 获取部门名称、籍贯、角色权限 下拉列表数据
@@ -261,6 +291,9 @@
                 ajax.post(apiKey).then(res => {
                     if (res.success) {
                         this.enumData[dataKey] = res.data || [];
+                        if (dataKey=='privileges') {
+                            this.matchedData = JSON.parse(JSON.stringify(this.enumData[dataKey]));
+                        }
                     }
                 });
             },
@@ -268,8 +301,13 @@
             //新增员工接口
             saveEmployee( param ){
                 var self = this;
+                // 如果是编辑员工且密码未被修改过，那就不需要MD5加密
+                if (self.oldPwd !== self.employee.password) {
+                    this.employee.password = MD5(this.employee.password).toString();
+                }
+                // 生日日期格式化
+                this.employee.birthday = new Date(this.employee.birthday).format('yyyy-MM-dd');
 
-                this.employee.password = MD5(this.employee.password).toString();
                 ajax.post("addOrUpdateEmployee", this.employee).then(function (res) {
                     if(res.success){
                         self.$Message.success(self.$t('新增员工成功！'));
@@ -286,7 +324,30 @@
              * @param selections
              */
             onChangeSelect(selections) {
-                this.employee.roleIds = this.rolePrivileges.join(',');
+                this.employee.roleIds = selections.join(',');
+            },
+            /**
+             * 获取员工信息详情 - 用于修改员工时数据回填
+             * @params id  员工id
+             */
+            getEmployeeDetail(id) {
+                ajax.post("findEmployeeDetail", {
+                    employeeId: id
+                }).then(res => {
+                    if(res.success){
+                        this.employee = Object.assign(this.employee, res.data || {});
+                        this.rolePrivileges = map(this.employee.roles, 'id');   // 角色权限列表
+                        this.$set(this.employee, 'roleIds', this.rolePrivileges.join(','));
+                        this.oldPwd = this.employee.password;
+                    }
+                })
+            },
+
+            // 搜索匹配到的角色
+            searchMatched() {
+                this.matchedData = this.enumData.privileges.filter((roleItem, i) => {
+                    return roleItem.roleName.includes(this.roleKeyword);
+                });
             },
 
 
@@ -300,8 +361,9 @@
 <style lang="scss">
 
     .new-employee-info{
-        width: 100%;
+        width: 850px;
         height: 100%;
+        margin: auto;
         background-color: #FFFFFF;
         /*border-radius: 4px;*/
         overflow: auto;
@@ -310,19 +372,22 @@
         }
 
         .ivu-form{
-            padding-top: 5%;
-            padding-bottom: 5%;
-            text-align: center;
+            padding-top: 40px;
+            padding-bottom: 20px;
+            /*text-align: center;*/
         }
 
         .ivu-form-item-wrap{
             position: relative;
             display: inline-block;
-            min-width: 495px;
-            padding-right: 55px;
-            width: 40%;
-            text-align: center;
+            /*min-width: 495px;*/
+            /*padding-right: 55px;*/
+            /*width: 40%;*/
+            /*text-align: center;*/
             vertical-align: middle;
+            &:nth-child(2n+1) {
+                margin-right: 280px;
+            }
 
             .btn-add-dept,
             .btn-add-position{
@@ -337,8 +402,8 @@
         }
 
         .ivu-form-item{
-            width: 395px;
-            margin: 0 auto 20px;
+            width: 280px;
+            /*margin: 0 auto 20px;*/
             text-align: left;
 
             .ivu-date-picker {

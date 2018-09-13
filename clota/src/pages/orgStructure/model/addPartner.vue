@@ -8,35 +8,43 @@
         @on-cancel="hide">
         <!--自定义页头-->
         <div slot="header" class="ivu-modal-header-inner">
-            <span>新增合作伙伴</span>
+            <span>{{type=='add' ? $t('新增合作伙伴') : $t('修改合作伙伴')}}</span>
         </div>
         <!--内容区域-->
         <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="120">
-            <Form-item label="合作伙伴名称" prop="name">
-                <Select v-model="addPartner.name">
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Form-item label="合作伙伴名称" prop="partnerId">
+                <Select v-model="addPartner.partnerId"
+                        :disabled="type=='modify'"
+                        @on-change="handlePartnerChanged">
+                    <Option v-for="item in partners" :value="item.id" :key="item.id">{{ item.orgName }}</Option>
                 </Select>
             </Form-item>
 
-            <Form-item label="协议起止日期" prop="name">
-                <DatePicker type="daterange" placement="bottom-end" placeholder="Select date"
-                            style="width: 100%"></DatePicker>
+            <Form-item label="协议起止日期" prop="startDate">
+                <DatePicker v-model="protoDate"
+                            type="daterange"
+                            placement="bottom-end"
+                            :placeholder="$t('selectField', {msg: ''})"
+                            style="width: 100%"
+                            format="yyyy-MM-dd"
+                            @on-change="changeDateRange">
+                </DatePicker>
             </Form-item>
 
-            <Form-item label="销售渠道分组">
-                <Select v-model="addPartner.name">
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Form-item label="销售渠道分组" prop="saleGroupId">
+                <Select v-model="addPartner.saleGroupId">
+                    <Option v-for="item in saleChannels" :value="item.id" :key="item.id">{{ item.groupName }}</Option>
                 </Select>
             </Form-item>
 
-            <Form-item :label="$t('remark') + '：'"><!--备注-->
-                <Input v-model="addPartner.name" type="textarea" :rows="4" placeholder="Enter something..."/>
+            <Form-item :label="$t('remark') + '：'" prop="description"><!--备注-->
+                <Input v-model="addPartner.description" type="textarea" :rows="4" :placeholder="$t('inputField', {field: ''})"/>
             </Form-item>
 
-            <Form-item label="是否启用协议">
-                <RadioGroup v-model="addPartner.name">
-                    <Radio label="ok"><span>启用</span></Radio>
-                    <Radio label="no"><span>暂不启用</span></Radio>
+            <Form-item label="是否启用协议" prop="status">
+                <RadioGroup v-model="addPartner.status">
+                    <Radio label="valid"><span>启用</span></Radio>
+                    <Radio label="invalid"><span>暂不启用</span></Radio>
                 </RadioGroup>
             </Form-item>
 
@@ -44,8 +52,8 @@
         <!--自定义页脚-->
         <div slot="footer">
             <template>
-                <i-button size="small" type="primary">确认</i-button>
-                <i-button type="ghost" size="small" @click="hide">{{$t('cancel')}}</i-button>
+                <i-button type="primary" @click="confirmAddPartner">{{$t('confirm')}}</i-button>
+                <i-button type="ghost" @click="hide">{{$t('cancel')}}</i-button>
             </template>
         </div>
 
@@ -54,6 +62,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import pick from 'lodash/pick';
+
     export default {
         components: {},
         props: [],
@@ -63,23 +75,41 @@
                 readonly: false,
                 loading: false,
                 addPartner: {
-                    name: '',
+                    partnerId: '',
+                    startDate: '',
+                    endDate: '',
+                    saleGroupId: '',
+                    channelName: '',
+                    description: '',
+                    status: 'valid',
                 },
+
+                // 表单校验
                 ruleValidate: {
-                    name: [
-                        {required: true, message: '请输入小组名称', trigger: 'blur'},
+                    partnerId: [
+                        {required: true, message: '请选择合作伙伴', trigger: 'change'},
+                    ],
+                    startDate: [
+                        {required: true, message: '请选择协议起止日期', trigger: 'change'},
+                    ],
+                    endDate: [
+                        {required: true, message: '请选择协议起止日期', trigger: 'change'},
                     ],
                 },
-                cityList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                ],
+                // 所有合作伙伴列表
+                partners: [],
+                // 销售渠道分组列表
+                saleChannels: [],
+                // 协议起止日期
+                protoDate: [],
+                // 新增or修改
+                type: 'add'
             }
         },
         computed: {},
         created() {
+            this.getSaleGroup();
+            this.getAllPartnerList();
         },
         watch: {},
         methods: {
@@ -89,6 +119,12 @@
              * @param data {data有值表示查看，反之新增}
              */
             show(data) {
+                if( data ){
+                    this.addPartner = defaultsDeep({}, pick(data.item, [...Object.keys(this.addPartner), 'id']), this.addPartner);
+                    this.type = data.type;
+                    this.protoDate = [data.item.startDate, data.item.endDate];
+                }
+
                 this.visible = true;
             },
             /**
@@ -108,6 +144,63 @@
                     }
                 });
             },
+            // 获取销售渠道分组列表
+            getSaleGroup() {
+                ajax.post('getOrgGroupList', {
+                    groupType: 'sale'
+                }).then(res => {
+                    if (res.success) {
+                        this.saleChannels = res.data || [];
+                    }
+                });
+            },
+            // 获取所有合作伙伴
+            getAllPartnerList() {
+                ajax.post('queryAllPartnerList').then(res => {
+                    if (res.success) {
+                        this.partners = res.data || [];
+                    }
+                });
+            },
+            // 协议日期改变的处理
+            changeDateRange(date) {
+                this.addPartner.startDate = date[0];
+                this.addPartner.endDate = date[1];
+            },
+            // 确定新增合作伙伴
+            confirmAddPartner() {
+                let partnerObj = {};
+                if (this.type=='add') {
+                    partnerObj.apiKey = 'addPartner';
+                    partnerObj.successTip = '您已成功新增合作伙伴';
+                    partnerObj.failTip = '新增合作伙伴失败';
+                } else if (this.type=='modify') {
+                    partnerObj.apiKey = 'updatePartner';
+                    partnerObj.successTip = '您已成功修改合作伙伴';
+                    partnerObj.failTip = '修改合作伙伴失败';
+                }
+                this.addPartner.startDate = new Date(this.addPartner.startDate).format('yyyy-MM-dd');
+                this.addPartner.endDate = new Date(this.addPartner.endDate).format('yyyy-MM-dd');
+
+                ajax.post(partnerObj.apiKey, this.addPartner).then(res => {
+                    if (res.success) {
+                        this.hide();
+                        let partnerName = this.partners.find((item, i) => {
+                            return item.id === this.addPartner.partnerId;
+                        });
+                        this.$Message.success(partnerObj.successTip + '：' + partnerName ? partnerName.orgName : '');
+                        this.$emit('on-add-success');
+                    } else {
+                        this.$Message.error(partnerObj.failTip);
+                    }
+                });
+            },
+            handlePartnerChanged(selected) {
+                this.addPartner.channelName = this.partners.find((item, i) => {
+                    return item.id === selected;
+                }).orgName;
+            },
+
         }
     }
 </script>
@@ -115,8 +208,8 @@
     @import '~@/assets/scss/base';
     @import '../commonFile/common';
 
-    /deep/ .addPartner {
-        .ivu-modal-body {
+    .addPartner {
+        /deep/ .ivu-modal-body {
             padding: 42px 90px 40px 66px;
         }
     }

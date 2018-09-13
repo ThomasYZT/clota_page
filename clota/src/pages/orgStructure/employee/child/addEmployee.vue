@@ -88,7 +88,8 @@
             getParams(params){
                 if(this.$route.query.type === 'modify'){
                     if(params && Object.keys(params).length > 0){
-                        this.employeeData = Object.assign({}, this.employeeData, params.employeeItem);
+//                        this.employeeData = Object.assign({}, this.employeeData, params.employeeItem);
+                        this.employeeData = params.employeeItem;
                     }
                 }
             },
@@ -102,15 +103,26 @@
     @import '../../commonFile/common';
 
     .add-employee {
-
+        /deep/ .bread-crumb-head {
+            border-radius: 4px 4px 0 0;
+        }
         .add-employee-content{
-
+            background-color: $color_fff;
             .content-footer{
                 text-align: center;
             }
 
         }
 
+    }
+    .content-footer {
+        padding-bottom: 30px;
+        /deep/ .ivu-btn {
+            width: 108px;
+            &.ivu-btn-primary {
+                margin-right: 20px;
+            }
+        }
     }
 </style>
 

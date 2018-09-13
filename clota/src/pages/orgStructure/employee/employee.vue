@@ -255,6 +255,7 @@
     .partner {
         @include block_outline();
         background: $color_fff;
+        border-radius: 4px;
 
         .filter-box {
             padding: 15px 30px 15px;

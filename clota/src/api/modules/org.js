@@ -76,5 +76,7 @@ export default {
     'updatePartner' : '/partner/updatePartner',
     //合作伙伴启用、禁用协议
     'updateChannelStatus' : '/partner/updateChannelStatus',
+    //合作伙伴启用、禁用协议
+    'deletePartners' : '/partner/deletePartners',
 
 }
