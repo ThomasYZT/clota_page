@@ -239,8 +239,8 @@ export const isTeamProduct = [
 //预定时提交游客身份信息
 export const orderInfo = [
     {
-        label: 'noCommit',//无需提交身份信息
-        value: 'no'
+        label: 'noRequired',//无需提交身份信息
+        value: 'noRequired'
     },
     {
         label: 'moreTicket',//每个证件可预订多张票

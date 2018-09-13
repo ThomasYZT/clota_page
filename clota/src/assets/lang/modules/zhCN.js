@@ -607,7 +607,7 @@ export default {
     'maxBuy' : '天/最多可购买',
     'paper': '张',
     'productEffectSet': '产品有效性设置',
-    'noCommit': '无需提交身份信息',
+    'noRequired': '无需提交身份信息',
     'moreTicket': '每个证件可预订多张票',
     'oneTicket': '每个证件只能预订一张票',
     'idCard': '身份证',

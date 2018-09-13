@@ -22,18 +22,6 @@
                 <!--基本信息-->
                 <title-temp title="basicInfo"></title-temp>
                 <div class="form-content">
-                    <!-- <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('scenePlace')" prop="scenePlace">&lt;!&ndash;所属景区&ndash;&gt;
-                            <Select v-model="formData.scenePlace"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="item in enumData.scene"
-                                        :key="item.id"
-                                        :value="item.id">
-                                    {{item.name}}
-                                </Option>
-                            </Select>
-                        </Form-item>
-                    </div>-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('productName')" prop="productName"><!--产品名称-->
                             <Input v-model.trim="formData.productName"
@@ -79,20 +67,6 @@
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
-                    <!--<div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('printTemplate')" prop="printTemplate">&lt;!&ndash;打印模板&ndash;&gt;
-                            <Select v-model="formData.printTemplate"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="item in enumData.scene"
-                                        :key="item.id"
-                                        :value="item.id">
-                                    {{item.name}}
-                                </Option>
-                            </Select>
-                        </Form-item>
-                    </div>-->
-                    <!--空字段站位用-->
-                    <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('ticketDesc')" prop="ticketDesc"><!--票面说明-->
                             <Input v-model.trim="formData.ticketDesc"
@@ -416,7 +390,7 @@
                     enterNum : '',//可入园人数
                     minOrderNum : '10',//每订单最小起订数
                     maxOrderNum : '100',//每订单最大限订数
-                    orderToCommitVisitorIdInfo : 'no',//预定时提交游客身份信息
+                    orderToCommitVisitorIdInfo : 'noRequired',//预定时提交游客身份信息
                     idType : ['identity','passport'],//可接受证件类型
                     limitByIdDay: '5',//身份证件购票限制
                     limitByIdNum: '5',//身份证件购票限制
