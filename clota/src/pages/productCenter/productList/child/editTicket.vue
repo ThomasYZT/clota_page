@@ -130,7 +130,9 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap" v-if="formData.orderToCommitVisitorIdInfo !== 'no'">
+                    <!--空字段站位用-->
+                    <div class="ivu-form-item-wrap"></div>
+                    <div class="ivu-form-item-wrap single" v-if="formData.orderToCommitVisitorIdInfo !== 'noRequired'">
                         <Form-item :label="$t('idType')" prop="idType"><!--可接受证件类型-->
                             <CheckboxGroup v-model="formData.idType">
                                 <Checkbox v-for="(item,index) in enumData.idType"
@@ -183,7 +185,7 @@
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
-                    <div class="ivu-form-item-wrap" v-if="formData.orderToCommitVisitorIdInfo === 'no'"></div>
+                    <!--<div class="ivu-form-item-wrap" v-if="formData.orderToCommitVisitorIdInfo === 'no'"></div>-->
                 </div>
 
                 <!--产品有效性-->

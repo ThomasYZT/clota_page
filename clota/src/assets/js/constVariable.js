@@ -255,7 +255,7 @@ export const orderInfo = [
 //证件类型
 export const idType = [
     {
-        label: 'idCard',//身份证
+        label: 'identity',//身份证
         value: 'identity'
     },
     {
@@ -263,15 +263,15 @@ export const idType = [
         value: 'passport'
     },
     {
-        label: 'drivingLicense',//驾照
+        label: 'driver',//驾照
         value: 'driver'
     },
     {
-        label: 'officersCert',//军官证
+        label: 'officer',//军官证
         value: 'officer'
     },
     {
-        label: 'policeCert',//警官证
+        label: 'police',//警官证
         value: 'police'
     }
 ];
