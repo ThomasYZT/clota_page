@@ -528,6 +528,8 @@
                                 //修改了节点的名字，需要刷新左侧的组织树
                                 if(this.formDataCopy.orgName !== this.companyDetail.orgName){
                                     this.freshOrg();
+                                }else if(this.formDataCopy.parentManageId !== this.companyDetail.parentManageId){
+                                    this.freshOrg();
                                 }else{
                                     this.getCompanyDetail();
                                 }
@@ -636,6 +638,7 @@
                 ajax.post('getOrgsByManageType',{
                     orgId : this.activeNode.id,
                     manageType : 'manage',
+                    nodeType : this.activeNode.type,
                 }).then(res => {
                     if(res.success){
                         this.superiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
@@ -650,7 +653,8 @@
             getParentEconomic () {
                 ajax.post('getOrgsByManageType',{
                     orgId : this.activeNode.id,
-                    manageType : 'economic'
+                    manageType : 'economic',
+                    nodeType : this.activeNode.type,
                 }).then(res => {
                     if(res.success){
                         this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];

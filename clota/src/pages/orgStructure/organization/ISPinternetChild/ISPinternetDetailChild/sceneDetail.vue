@@ -527,7 +527,8 @@
             getParentManages () {
                 ajax.post('getOrgsByManageType',{
                     orgId : this.activeNode.id,
-                    manageType : 'manage'
+                    manageType : 'manage',
+                    nodeType : this.activeNode.type,
                 }).then(res => {
                     if(res.success){
                         this.superiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
@@ -542,7 +543,8 @@
             getParentEconomic () {
                 ajax.post('getOrgsByManageType',{
                     orgId : this.activeNode.id,
-                    manageType : 'economic'
+                    manageType : 'economic',
+                    nodeType : this.activeNode.type,
                 }).then(res => {
                     if(res.success){
                         this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
