@@ -14,12 +14,14 @@ export default {
     'resetAccountPassword' : '/account/resetAccountPassword',
     //获取短信供应商列表
     'getSmsProviderList' : '/organize/getSmsProviderList',
-    //新增/修改员工
+    //新增/修改员工 (本接口已停止使用)
     'addEmployee' : '/account/addEmployee',
     //新增/修改员工
     'addOrUpdateEmployee' : '/account/addOrUpdateEmployee',
     //获取员工账号列表
     'getEmployeeList' : '/account/getEmployeeList',
+    //查找员工详情
+    'findEmployeeDetail' : '/account/findEmployeeDetail',
     //删除员工
     'deletedEmployee' : '/account/deletedEmployee',
     //获取管理上级或财务上级
@@ -66,5 +68,13 @@ export default {
     'addRole' : '/role/addRole',
     //重置管理员密码
     'resetManagerPassword' : '/account/resetManagerPassword',
+    //查询所有合作伙伴
+    'queryAllPartnerList' : '/partner/queryAllPartnerList',
+    //新增合作伙伴
+    'addPartner' : '/partner/addPartner',
+    //修改合作伙伴信息
+    'updatePartner' : '/partner/updatePartner',
+    //合作伙伴启用、禁用协议
+    'updateChannelStatus' : '/partner/updateChannelStatus',
 
 }
