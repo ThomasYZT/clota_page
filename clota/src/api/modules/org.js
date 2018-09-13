@@ -60,5 +60,9 @@ export default {
     'deleteOrgServiceList' : '/organize/deleteOrgServiceList',
     //查询全部角色列表
     'queryRoles' : '/role/queryRoles',
+    //查询组织机构对应的菜单权限
+    'getAllPrivilege' : '/privilege/getAllPrivilege',
+    //新增角色
+    'addRole' : '/role/addRole',
 
 }
