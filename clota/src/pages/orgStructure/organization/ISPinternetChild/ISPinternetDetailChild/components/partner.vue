@@ -144,7 +144,6 @@
                 color: $color_blue;
                 display: inline-block;
                 margin-left: 10px;
-                margin-top: 2px;
                 vertical-align: middle;
                 cursor: pointer;
 

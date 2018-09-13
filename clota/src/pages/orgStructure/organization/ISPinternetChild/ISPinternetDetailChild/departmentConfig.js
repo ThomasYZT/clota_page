@@ -22,7 +22,7 @@ export const employee = [
 export const depEmployee = [
     {
         title: '员工编号',
-        minWidth: 200,
+        minWidth: 220,
         field: 'id',
     },
     {
@@ -32,7 +32,7 @@ export const depEmployee = [
     },
     {
         title: '电话',
-        minWidth: 130,
+        minWidth: 150,
         field: 'phone'
     },
     {

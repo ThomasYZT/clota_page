@@ -27,7 +27,7 @@ export const companies = [
     },
     {
         title: '企业编码',
-        minWidth: 160,
+        minWidth: 210,
         field: 'nodeCode'
     },
 ];

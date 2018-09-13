@@ -27,43 +27,43 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem label="款台名称："
+                                  v-if="type === 'edit'"
                                   :required="true"
                                   prop="channelName"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="formDataCopy.channelName"
-                                   v-if="type === 'edit'"/>
-                            <span class="info-val"
-                                  v-else
-                                  v-w-title="cashierDetail.channelName">
-                                {{cashierDetail.channelName | contentFilter}}
-                            </span>
+                            <Input v-model.trim="formDataCopy.channelName"/>
                         </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">款台名称：</span>
+                            <span class="info-val"
+                                  v-w-title="cashierDetail.channelName">
+                                {{cashierDetail.channelName}}
+                            </span>
+                        </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="款台ID：" :label-width="type === 'edit' ? 0 : 150">
+                        <FormItem label="款台ID："
+                                  v-if="type === 'edit'"
+                                  :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.partnerId"
-                                   disabled
-                                   v-if="type === 'edit'"/>
-                            <span class="info-val"
-                                  v-else
-                                  v-w-title="cashierDetail.partnerId">
-                                {{cashierDetail.partnerId | contentFilter}}
-                            </span>
+                                   disabled/>
                         </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">款台ID：</span>
+                            <span class="info-val"
+                                  v-w-title="cashierDetail.partnerId">
+                                {{cashierDetail.partnerId}}
+                            </span>
+                        </div>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="12">
                         <FormItem prop="serverUrl"
+                                  v-if="type === 'edit'"
                                   :required="true"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="formDataCopy.serverUrl"
-                                   v-if="type === 'edit'"/>
-                            <span class="info-val"
-                                 v-else
-                                 v-w-title="cashierDetail.serverUrl">
-                            {{cashierDetail.serverUrl | contentFilter}}
-                            </span>
+                            <Input v-model.trim="formDataCopy.serverUrl"/>
                             <template slot="label">
                                 <span>服务器名称：</span>
                                 <Tooltip placement="bottom">
@@ -74,68 +74,82 @@
                                 </Tooltip>
                             </template>
                         </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">服务器名称：</span>
+                            <span class="info-val"
+                                  v-w-title="cashierDetail.serverUrl">
+                                {{cashierDetail.serverUrl}}
+                            </span>
+                        </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="款台类型：" :label-width="type === 'edit' ? 0 : 150">
+                        <FormItem label="款台类型："
+                                  v-if="type === 'edit'"
+                                  :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkerType"
-                                    disabled
-                                    v-if="type === 'edit'">
+                                    disabled>
                                 <Option v-for="item in cashierType"
                                         :value="item.value"
                                         :key="item.value">
                                     {{ $t(item.label) }}
                                 </Option>
                             </Select>
-                            <span class="info-val"
-                                  v-else
-                                  v-w-title="$t(checkerType)">
-                                {{$t(checkerType) | contentFilter}}
-                            </span>
                         </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">服务器名称：</span>
+                            <span class="info-val"
+                                  v-w-title="$t(checkerType)">
+                                 {{$t(checkerType) | contentFilter}}
+                            </span>
+                        </div>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="12">
                         <FormItem label="所属核销设备分组："
+                                  v-if="type === 'edit'"
                                   :required="formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine'"
                                   prop="checkGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkGroupId"
-                                    :disabled="formDataCopy.checkerType === 'sale'"
-                                    v-if="type === 'edit'">
+                                    :disabled="formDataCopy.checkerType === 'sale'">
                                 <Option v-for="item in verifyCashierTypeGroupList"
                                         :value="item.id"
                                         :key="item.id">
                                     {{ $t(item.groupName) }}
                                 </Option>
                             </Select>
+                        </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">所属核销设备分组：</span>
                             <span class="info-val"
-                                  v-else
                                   v-w-title="cashierDetail.checkGroupName">
                                 {{cashierDetail.checkGroupName | contentFilter}}
                             </span>
-                        </FormItem>
+                        </div>
                     </i-col>
                     <i-col span="12">
                         <FormItem label="所属销售渠道分组："
+                                  v-if="type === 'edit'"
                                   :required="formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine'"
                                   prop="saleGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.saleGroupId"
-                                    :disabled="formDataCopy.checkerType === 'check'"
-                                    v-if="type === 'edit'">
+                                    :disabled="formDataCopy.checkerType === 'check'">
                                 <Option v-for="item in verifySaleTypeGroupList"
                                         :value="item.id"
                                         :key="item.id">
                                     {{ item.groupName }}
                                 </Option>
                             </Select>
+                        </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">所属核销设备分组：</span>
                             <span class="info-val"
-                                  v-else
                                   v-w-title="cashierDetail.saleGroupName">
                                 {{cashierDetail.saleGroupName | contentFilter}}
                             </span>
-                        </FormItem>
+                        </div>
                     </i-col>
                 </i-row>
                 <i-row v-if="type === 'edit'" style="margin-top: 10px;">
@@ -381,6 +395,25 @@
         padding: 11px 35px;
         float: right;
         overflow: auto;
+
+        .node-info{
+            display: flex;
+            flex-direction: row;
+            height: 34px;
+            line-height: 34px;
+            @include overflow_tip();
+            .info-val{
+                display: inline-block;
+                @include overflow_tip();
+                float: left;
+                color: $color_666;
+            }
+            .info-key{
+                display: inline-block;
+                float: left;
+                color: $color_333;
+            }
+        }
 
         .ivu-tooltip-inner{
             white-space: normal;

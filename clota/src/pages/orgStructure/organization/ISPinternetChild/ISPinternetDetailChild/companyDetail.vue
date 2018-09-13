@@ -47,204 +47,279 @@
         <div :class="{'form-area' : type === 'edit'}">
             <i-row>
                 <i-col span="12">
-                    <FormItem label="公司ID：" :label-width="type === 'edit' ? 0 : 150">
+                    <FormItem label="公司ID："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.id"
-                               disabled
-                               v-if="type === 'edit'"/>
+                               disabled/>
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">公司ID：</span>
                         <span class="info-val"
-                              v-else
                               v-w-title="companyDetail.id">
                             {{companyDetail.id | contentFilter}}
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="公司编码：" :label-width="type === 'edit' ? 0 : 150">
+                    <FormItem label="公司编码："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.nodeCode"
-                               disabled
-                               v-if="type === 'edit'"/>
+                               disabled/>
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">公司编码：</span>
                         <span class="info-val"
-                              v-else
                               v-w-title="companyDetail.nodeCode">
                             {{companyDetail.nodeCode | contentFilter}}
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="type === 'edit' ? 0 : 150">
-                        <Input v-model.trim="formDataCopy.checkinCode"  v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.checkinCode">
-                    {{companyDetail.checkinCode | contentFilter}}
-                </span>
+                    <FormItem prop="checkinCode"
+                              v-if="type === 'edit'"
+                              label="企业编码(线下核销)："
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model.trim="formDataCopy.checkinCode"  />
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">企业编码(线下核销)：</span>
+                        <span class="info-val"
+                              v-w-title="companyDetail.checkinCode">
+                            {{companyDetail.checkinCode | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
                 <i-col span="12">
                     <FormItem label="全民分销邀请码："
+                              v-if="type === 'edit'"
                               :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.saleCode"
-                               disabled
-                               v-if="type === 'edit'"/>
+                               disabled/>
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">全民分销邀请码：</span>
                         <span class="info-val"
-                              v-else
                               v-w-title="companyDetail.saleCode">
                             {{companyDetail.saleCode | contentFilter}}
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="短信供应商：" :label-width="type === 'edit' ? 0 : 150">
-                        <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
+                    <FormItem label="短信供应商："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Select v-model.trim="formDataCopy.smsProvider" >
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.desc"
                                     :key="item.desc">
                                 {{ item.desc }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.smsProvider">
-                             {{companyDetail.smsProvider | contentFilter}}
-                        </span>
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">短信供应商：</span>
+                        <span class="info-val"
+                              v-w-title="companyDetail.smsProvider">
+                            {{companyDetail.smsProvider | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="管理账号：" :label-width="type === 'edit' ? 0 : 150">
+                    <FormItem label="管理账号："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.manager"
-                               disabled
-                               v-if="type === 'edit'"/>
+                               disabled/>
+
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">管理账号：</span>
                         <span class="info-val"
-                              v-else
                               v-w-title="companyDetail.manager">
                              {{companyDetail.manager | contentFilter}}
                             <span class="reset-pass"
                                   v-if="activeNode && activeNode.level !== 1"
                                   @click="resetPass">重置密码</span>
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="email" label="电子邮箱：" :label-width="type === 'edit' ? 0 : 150">
-                        <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="formDataCopy.email">
-                     {{companyDetail.email | contentFilter}}
-                </span>
+                    <FormItem prop="email"
+                              label="电子邮箱："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model.trim="formDataCopy.email" />
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">电子邮箱：</span>
+                        <span class="info-val" v-w-title="formDataCopy.email">
+                             {{companyDetail.email | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="linkName" label="联系人：" :label-width="type === 'edit' ? 0 : 150">
-                        <Input v-model.trim="formDataCopy.linkName" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.linkName">
-                     {{companyDetail.linkName | contentFilter}}
-                </span>
+                    <FormItem prop="linkName"
+                              label="联系人："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model.trim="formDataCopy.linkName" />
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">联系人：</span>
+                        <span class="info-val" v-w-title="formDataCopy.linkName">
+                             {{companyDetail.linkName | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="所在地：" :label-width="type === 'edit' ? 0 : 150">
+                    <FormItem label="所在地："
+                              v-if="defaultAddress && type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
                         <city-plugin @select="changeCity"
-                                     v-if="defaultAddress && type === 'edit'"
                                      :defaultValue="defaultAddress">
                         </city-plugin>
-                        <span class="info-val" v-else v-w-title="companyPlace">
-                     {{companyPlace | contentFilter}}
-                </span>
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">所在地：</span>
+                        <span class="info-val" v-w-title="companyPlace">
+                             {{companyPlace | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="address" label="详细地址：" :label-width="type === 'edit' ? 0 : 150">
-                        <Input v-model="formDataCopy.address" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.address">
-                     {{companyDetail.address | contentFilter}}
-                </span>
+                    <FormItem prop="address"
+                              label="详细地址："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model="formDataCopy.address" />
                     </FormItem>
+
+                    <div class="node-info" v-else>
+                        <span class="info-key">详细地址：</span>
+                        <span class="info-val" v-w-title="companyDetail.address">
+                             {{companyDetail.address | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="telephone" label="电话：" :label-width="type === 'edit' ? 0 : 150">
-                        <Input v-model.trim="formDataCopy.telephone" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.telephone">
-                     {{companyDetail.telephone | contentFilter}}
-                </span>
+                    <FormItem prop="telephone"
+                              label="电话："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model.trim="formDataCopy.telephone" />
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">电话：</span>
+                        <span class="info-val" v-w-title="companyDetail.telephone">
+                             {{companyDetail.telephone | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="tex" label="传真：" :label-width="type === 'edit' ? 0 : 150">
-                        <Input v-model.trim="formDataCopy.tex" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.tex">
-                     {{companyDetail.tex | contentFilter}}
-                </span>
+                    <FormItem prop="tex"
+                              label="传真："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
+                        <Input v-model.trim="formDataCopy.tex" />
                     </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">传真：</span>
+                        <span class="info-val" v-w-title="companyDetail.tex">
+                             {{companyDetail.tex | contentFilter}}
+                        </span>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
                     <FormItem :prop="(activeNode && activeNode.level !== 1) ? 'parentManageId' : ''"
                               label="管理上级："
+                              v-if="type === 'edit' && activeNode && activeNode.level !== 1"
                               :label-width="type === 'edit' ? 0 : 150">
-                        <Select v-model.trim="formDataCopy.parentManageId"
-                                v-if="type === 'edit' && activeNode && activeNode.level !== 1">
+                        <Select v-model.trim="formDataCopy.parentManageId">
                             <Option v-for="item in superiorList"
                                     :value="item.id"
                                     :key="item.id">
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentManager">
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">管理上级：</span>
+                        <span class="info-val" v-w-title="companyDetail.parentManager">
                             <template v-if="activeNode.level !== 1">
                                 {{companyDetail.parentManager | contentFilter}}
                             </template>
                             <template v-else>-</template>
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
                 <i-col span="12">
                     <FormItem :prop="(activeNode && activeNode.level !== 1) ? 'parentEconomicId' : ''"
                               label="财务上级："
+                              v-if="type === 'edit' && activeNode && activeNode.level !== 1"
                               :label-width="type === 'edit' ? 0 : 150">
-                        <Select v-model.trim="formDataCopy.parentEconomicId"
-                                v-if="type === 'edit'
-                                && activeNode && activeNode.level !== 1">
+                        <Select v-model.trim="formDataCopy.parentEconomicId">
                             <Option v-for="item in fianceSuperiorList"
                                     :value="item.id"
                                     :key="item.id">
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">财务上级：</span>
+                        <span class="info-val" v-w-title="companyDetail.parentEconomic">
                             <template v-if="activeNode.level !== 1">
                                 {{companyDetail.parentEconomic | contentFilter}}
                             </template>
                             <template v-else>-</template>
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="type === 'edit' ? 0 : 150">
+                    <FormItem prop="orgName"
+                              label="短信余量/累计购买："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
                         <Input :value="companyDetail.smsCount + '/' + companyDetail.totalSmsCount"
-                               disabled
-                               v-if="type === 'edit'"/>
-                        <span class="info-val" v-else>
+                               disabled/>
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">短信余量/累计购买：</span>
+                        <span class="info-val">
                             {{companyDetail.smsCount | contentFilter}} / {{companyDetail.totalSmsCount | contentFilter}}
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="受理客服：" :label-width="type === 'edit' ? 0 : 150">
+                    <FormItem prop="orgName"
+                              label="受理客服："
+                              v-if="type === 'edit'"
+                              :label-width="type === 'edit' ? 0 : 150">
                         <Input v-model.trim="companyDetail.customerService"
-                               disabled
-                               v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.customerService">
+                               disabled/>
+                    </FormItem>
+                    <div class="node-info" v-else>
+                        <span class="info-key">受理客服：</span>
+                        <span class="info-val" v-w-title="companyDetail.customerService">
                              {{companyDetail.customerService | contentFilter}}
                         </span>
-                    </FormItem>
+                    </div>
                 </i-col>
             </i-row>
             <i-row v-if="type === 'edit'" style="margin-top: 10px;">
@@ -645,10 +720,31 @@
         float: right;
         overflow: auto;
 
+        .node-info{
+            display: flex;
+            flex-direction: row;
+            height: 34px;
+            line-height: 34px;
+            @include overflow_tip();
+            .info-val{
+                display: inline-block;
+                @include overflow_tip();
+                float: left;
+                color: $color_666;
+            }
+            .info-key{
+                color: $color_333;
+                display: inline-block;
+                float: left;
+            }
+        }
+
         .form-watch{
+            padding-bottom: 20px;
             border-bottom: 1px dashed #E1E1E1;
 
             /deep/ .ivu-form-item{
+                width: calc(100% - 25px);
                 margin-bottom: 0;
             }
             /deep/ .ivu-form-item-required .ivu-form-item-label:before{
@@ -657,6 +753,7 @@
         }
 
         .form-edit{
+            padding-bottom: 20px;
             border-bottom: 1px dashed #E1E1E1;
 
             /deep/ .ivu-form-item{
