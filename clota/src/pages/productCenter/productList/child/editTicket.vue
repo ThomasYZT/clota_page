@@ -184,8 +184,6 @@
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
-                    <!--空字段站位用-->
-                    <!--<div class="ivu-form-item-wrap" v-if="formData.orderToCommitVisitorIdInfo === 'no'"></div>-->
                 </div>
 
                 <!--产品有效性-->

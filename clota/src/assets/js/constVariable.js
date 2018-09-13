@@ -279,15 +279,15 @@ export const idType = [
 //限制库存
 export const limitStore = [
     {
-        label: 'limitDay',//限制每日库存
+        label: 'everyday',//限制每日库存
         value: 'everyday'
     },
     {
-        label: 'limitTotal',//限制库存总量
+        label: 'total',//限制库存总量
         value: 'total'
     },
     {
-        label: 'noLimit',//不限库存
+        label: 'is_no_limit',//不限库存
         value: 'is_no_limit'
     }
 ];
