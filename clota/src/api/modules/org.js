@@ -75,10 +75,18 @@ export default {
     //修改合作伙伴信息
     'updatePartner' : '/partner/updatePartner',
     //合作伙伴启用、禁用协议
-    'updateChannelStatus' : '/partner/updateChannelStatus',
+    'updatePartnerStatus' : '/partner/updatePartnerStatus',
     //合作伙伴启用、禁用协议
     'deletePartners' : '/partner/deletePartners',
     //角色详情
     'findById' : '/role/findById',
+    //新增或修改自营渠道
+    'addOrUpdateSelfChannel' : '/selfChannel/addOrUpdateSelfChannel',
+    //查询自营渠道列表
+    'querySelfOwnedChannel' : '/selfChannel/querySelfOwnedChannel',
+    //禁用启用自营渠道
+    'updateChannelStatus' : '/selfChannel/updateChannelStatus',
+    //删除自营渠道
+    'deleteChannels' : '/selfChannel/deleteChannels',
 
 }
