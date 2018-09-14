@@ -24,7 +24,7 @@
                             <div slot="content" class="tips-content">
                                 服务器名称为景区编码+设备编码或内网IP地址，不可重复
                             </div>
-                            <Icon type="information-circled"></Icon>
+                            <span class="iconfont icon-note"></span>
                         </Tooltip>
                         <span>服务器名称：</span>
                     </template>

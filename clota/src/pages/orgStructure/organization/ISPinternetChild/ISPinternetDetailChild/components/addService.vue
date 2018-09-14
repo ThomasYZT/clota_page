@@ -20,7 +20,7 @@
                         <div slot="content" class="tips-content">
                             {{$t('请先为上级公司开通服务后，景区才能添加相应服务。')}}
                         </div>
-                        <Icon type="information-circled"></Icon>
+                         <span class="iconfont icon-note"></span>
                     </Tooltip>
                 </span>
             </div>
@@ -145,15 +145,20 @@
                 if(this.selectedService.length < 1){
                     this.$Message.warning('请选择服务');
                 }else{
-                    for(let i = 0,j = this.openedServices.length;i < j;i++){
-                        for(let a = 0,b = this.selectedService.length;i < j;i++){
-                            if(this.openedServices[i].serviceId === this.selectedService[a].serviceId){
-                                this.$Message.warning('请不要选中已开通的服务');
-                                return;
+                    let selectService = [];
+                    if(this.openedServices.length === 0){
+                        selectService = this.selectedService;
+                    }else{
+                        for(let i = 0,j = this.openedServices.length;i < j;i++){
+                            for(let a = 0,b = this.selectedService.length;i < j;i++){
+                                if(this.openedServices[i].serviceId !== this.selectedService[a].serviceId){
+                                    alert(1)
+                                    selectService.push(this.selectedService[a]);
+                                }
                             }
                         }
                     }
-                    this.openScenicServices();
+                    this.openScenicServices(selectService);
                 }
             },
             /**
@@ -198,10 +203,11 @@
             },
             /**
              * 给指定景区开通服务
+             * @param selectService
              */
-            openScenicServices () {
+            openScenicServices (selectService) {
                 ajax.post('addOrgServiceList',
-                    this.selectedService.map(item => {
+                    selectService.map(item => {
                         return {
                             orgId : this.sceneDetail.id,
                             startTime : item.startTime,

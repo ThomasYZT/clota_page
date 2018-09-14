@@ -1,12 +1,13 @@
-/*@import '//at.alicdn.com/t/font_772944_80hqjuy3fme.css';*/
-@import '//at.alicdn.com/t/font_772944_jifz83ohlc9.css';
+
+@import '//at.alicdn.com/t/font_772944_lg93o1xap1o.css';
 
 .iconfont {
     font-family: "iconfont" !important;
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
 }
 
 @font-face {
@@ -23,68 +24,3 @@
 body {
     font-family: 'pingfang'!important;
 }
-
-/*.icon-arrow-bottom:before {*/
-    /*content: "\e60a";*/
-/*}*/
-
-/*.icon-help:before {*/
-    /*content: "\e60b";*/
-/*}*/
-
-/*.icon-partner:before {*/
-    /*content: "\e60c";*/
-/*}*/
-
-/*.icon-verify:before {*/
-    /*content: "\e60d";*/
-/*}*/
-
-/*.icon-fold:before {*/
-    /*content: "\e60e";*/
-/*}*/
-
-/*.icon-notification:before {*/
-    /*content: "\e60f";*/
-/*}*/
-
-/*.icon-market-channel:before {*/
-    /*content: "\e610";*/
-/*}*/
-
-/*.icon-orgaization:before {*/
-    /*content: "\e611";*/
-/*}*/
-
-/*.icon-role-permission:before {*/
-    /*content: "\e612";*/
-/*}*/
-
-/*.icon-notification-w:before {*/
-    /*content: "\e613";*/
-/*}*/
-
-/*.icon-trade-channel:before {*/
-    /*content: "\e614";*/
-/*}*/
-
-/*.icon-theme:before {*/
-    /*content: "\e615";*/
-/*}*/
-
-/*.icon-avator:before {*/
-    /*content: "\e616";*/
-/*}*/
-
-/*.icon-person:before {*/
-    /*content: "\e617";*/
-/*}*/
-
-/*.icon-icon-pack-up:before {*/
-    /*content: "\e618";*/
-/*}*/
-
-/*.icon-icon-unfold:before {*/
-    /*content: "\e619";*/
-/*}*/
-

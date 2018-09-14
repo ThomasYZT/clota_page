@@ -46,7 +46,7 @@
                             <div slot="content" class="tips-content">
                                 如需开通更多服务，请先为上级公司开通相应服务。
                             </div>
-                            <Icon type="information-circled"></Icon>
+                            <span class="iconfont icon-note"></span>
                         </Tooltip>
                         <span>{{$t('openedServices')}}：</span>
                     </template>
@@ -86,7 +86,7 @@
                             <div slot="content" class="tips-content">
                                 用于与线下系统对接
                             </div>
-                            <Icon type="information-circled"></Icon>
+                            <span class="iconfont icon-note"></span>
                         </Tooltip>
                         <span>{{$t('companyCode') + '(' + $t('offlineVerify') + ')'}}：</span>
                     </template>

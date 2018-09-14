@@ -6,13 +6,13 @@
             <li class="tree-title"
                 :class="{'active' : activeTap === 'manage'}"
                 @click="switchTap('manage')">
-                <span class="iconfont icon-fiance"></span>
+                <span class="iconfont icon-finance"></span>
                 经营管理
             </li>
             <li class="tree-title"
                 :class="{'active' : activeTap === 'economic'}"
                 @click="switchTap('economic')">
-                <span class="iconfont icon-management"></span>
+                <span class="iconfont icon-manage"></span>
                 财务管理
             </li>
         </ul>
@@ -192,7 +192,8 @@
                         },
                         style : {
                             paddingRight : '5px',
-                            color : '#EB6751'
+                            color : '#EB6751',
+                            fontSize : '16px'
                         },
                         on: {
                             click: (e) => {
@@ -210,7 +211,7 @@
                     h('span', {
                         class: {
                             iconfont: 'true',
-                            'icon-delete': true,
+                            'icon-node-add': true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
@@ -218,6 +219,7 @@
                         },
                         style : {
                             paddingRight : '5px',
+                            fontSize : '16px'
                         },
                         on: {
                             click: (e) => {
@@ -466,7 +468,7 @@
                 }
 
                 .title-class {
-                    @include overflow_tip(unquote('calc(100% - 40px)'), 36px);
+                    @include overflow_tip(unquote('calc(100% - 45px)'), 36px);
                     display: inline-block;
                     padding: 7px 0;
                     line-height: 22px;

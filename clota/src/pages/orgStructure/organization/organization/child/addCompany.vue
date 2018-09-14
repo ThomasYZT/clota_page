@@ -74,7 +74,8 @@
                             <div slot="content" class="tips-content">
                                 用于与线下系统对接
                             </div>
-                            <Icon type="information-circled"></Icon>
+                            <span class="iconfont icon-note"></span>
+                            <!--<Icon type="information-circled"></Icon>-->
                         </Tooltip>
                         <span>{{$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'}}：</span>
                     </template>

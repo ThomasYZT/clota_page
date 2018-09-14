@@ -40,9 +40,4 @@ export const depEmployee = [
         minWidth: 130,
         field: 'loginName'
     },
-    {
-        title: '角色权限',
-        minWidth: 130,
-        field: 'roleName'
-    },
 ];

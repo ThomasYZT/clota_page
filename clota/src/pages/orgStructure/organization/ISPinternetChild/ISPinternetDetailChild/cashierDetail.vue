@@ -70,12 +70,20 @@
                                     <div slot="content" class="tips-content">
                                         {{$t('serverNameTips')}}
                                     </div>
-                                    <Icon type="information-circled"></Icon>
+                                    <span class="iconfont icon-note"></span>
                                 </Tooltip>
                             </template>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">服务器名称：</span>
+                            <span class="info-key">
+                                服务器名称：
+                                 <Tooltip placement="bottom">
+                                    <div slot="content" class="tips-content">
+                                        {{$t('serverNameTips')}}
+                                    </div>
+                                     <span class="iconfont icon-note"></span>
+                                </Tooltip>
+                            </span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.serverUrl">
                                 {{cashierDetail.serverUrl}}
