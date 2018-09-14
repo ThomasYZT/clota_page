@@ -2,13 +2,22 @@
     <!-- 合作伙伴 -->
     <div class="partner">
         <div class="filter-box">
-            <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="newPartnerBtn('add')"
+            <Button type="primary" style="float: left;margin-right: 10px" @click="newPartnerBtn('add')"
                     size="default"><span class="add-icon">+ {{$t('新增合作伙伴')}}</span>
             </Button>
-            <Button type="ghost" style="float: left" size="default">批量操作</Button>
-            <!--<div class="search">
-                <Input suffix="ios-search" placeholder="请输入任意信息进行查询"/>
-            </div>-->
+            <el-dropdown trigger="click"
+                         placement="bottom-start"
+                         size="medium"
+                         @command="handleCommand">
+                <Button type="ghost" style="float: left" size="default">{{$t('batchOperate')}}</Button><!--批量操作-->
+
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-for="(item,index) in batchOperate" :key="index"
+                                      :command="item">{{$t(item.label)}}
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
@@ -132,11 +141,11 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="operate-btn" @click="newPartnerBtn('modify', scope.row)">{{$t('modify')}}</span>
+                        <span class="operate-btn blue" @click="newPartnerBtn('modify', scope.row)">{{$t('modify')}}</span>
                         <span class="divide-line"></span>
-                        <span class="operate-btn" @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}</span><!--禁用-->
+                        <span class="operate-btn org" @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}</span><!--禁用-->
                         <span class="divide-line"></span>
-                        <span class="operate-btn" @click="showDelModal(scope.row)">{{$t('del')}}</span>
+                        <span class="operate-btn red" @click="showDelModal(scope.row)">{{$t('del')}}</span>
                     </template>
                 </el-table-column>
             </table-com>
@@ -162,7 +171,8 @@
     import ajax from '@/api/index';
     import {partnerListHead} from '../orgStructure';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable} from '@/assets/js/constVariable';
+    import {configVariable, batchOperate} from '@/assets/js/constVariable';
+    import map from 'lodash/map';
 
     export default {
         components: {
@@ -190,10 +200,7 @@
                 totalCount: 0,
 
 
-                /*// 表格数据
-                tableData: [{
-                    date: '2016-05-03',
-                }],
+                /*
                 // 表格筛选下拉菜单
                 listFilters: {
                     stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
@@ -207,6 +214,10 @@
                 deleteName: '删除合作伙伴', //删除内容名字
                 partnerIds: [], //合作伙伴ids
 //                scopeRowData: {}, //当前被操作的行数据
+                // 批量操作下拉选项
+                batchOperate: batchOperate,
+                // 已勾选的数据
+                chosenPartners: [],
             }
         },
         methods: {
@@ -250,38 +261,59 @@
 
             },
             //启用或者禁用
-            enable(scopeRow) {
-                this.partnerIds = [scopeRow.id];
-
+            enable(scopeRow, isBatch) {
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
-                    partnerObj.successTip = '您已启用合作伙伴';
-//                    partnerObj.failTip = '新增合作伙伴失败';
-                } else if (scopeRow.status=='invalid') {
                     partnerObj.successTip = '您已禁用合作伙伴';
-//                    partnerObj.failTip = '修改合作伙伴失败';
+                    partnerObj.failTip = '禁用失败';
+                    partnerObj.status = 'invalid';
+                } else if (scopeRow.status=='invalid') {
+                    partnerObj.successTip = '您已启用合作伙伴';
+                    partnerObj.failTip = '启用失败';
+                    partnerObj.status = 'valid';
                 }
 
-                ajax.post('updateChannelStatus', {
+                ajax.post('updatePartnerStatus', {
                     ids: this.partnerIds.join(','),
-                    status: scopeRow.status=='valid' ? 'invalid' : 'valid'
+                    status: partnerObj.status
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(partnerObj.successTip + '：' + scopeRow.channelName);
+                        if (isBatch==true) {
+                            // 批量操作提示语
+                            this.$Message.success(partnerObj.successTip + '：' + this.$t('batchOperate'));
+                        } else {
+                            // 单个操作提示语
+                            this.$Message.success(partnerObj.successTip + '：' + scopeRow.channelName);
+                        }
+
                         this.queryList();
+                    } else {
+                        this.$Message.error(res.message ? res.message : partnerObj.failTip);
                     }
                 });
             },
-            //新增/修改合作伙伴
+            /**
+             * 新增/修改合作伙伴
+             * @param type - 新增/修改 类型
+             * @param scopeRow - 修改时的行数据
+             **/
             newPartnerBtn(type, scopeRow) {
                 let obj = type=='add' ? null : {item: scopeRow, type: type};
                 this.$refs.addPartnerModal.show(obj);
             },
-            //删除合作伙伴
-            showDelModal(scopeRow) {
-//                this.scopeRowData = scopeRow;
-                this.partnerIds = [scopeRow.id];
-                this.name = scopeRow.channelName;
+            /**
+             * 删除某一个合作伙伴
+             * @param data - 被删除的行数据
+             * @param isBatch - 是否批量操作  Boolean
+             */
+            showDelModal(data, isBatch) {
+                if (isBatch==true) {
+                    this.name = `${data[0].channelName}、${data[1].channelName}等${data.length}位合作伙伴`;
+                } else {
+                    this.partnerIds = [data.id];
+                    this.name = data.channelName;
+                }
+
                 this.$refs.delListModal.show();
             },
             //确认删除
@@ -301,7 +333,25 @@
              * @param selection - 被勾选的数据  Array
              */
             changeSelection(selection) {
-                this.partnerIds = selection;
+                this.chosenPartners = selection;
+                if (selection.length>0){
+                    this.partnerIds = map(selection, 'id');
+                }
+            },
+            handleCommand(dropItem) {
+                if (this.chosenPartners.length<=0) {
+                    this.$Message.warning('请勾选批量操作项');
+                    return;
+                }
+                switch (dropItem.status) {
+                    case 'valid' :
+                    case 'invalid' :
+                        this.enable(dropItem, true);
+                        break;
+                    case 'del' :
+                        this.showDelModal(this.chosenPartners, true);
+                        break;
+                }
             },
         },
         computed: {},
@@ -325,6 +375,11 @@
                 width: 350px;
                 float: right;
             }
+
+            /deep/ .ivu-btn-ghost {
+                border-color: $color_blue;
+                color: $color_blue;
+            }
         }
 
         .divide-line {
@@ -338,6 +393,16 @@
 
         .operate-btn {
             cursor: pointer;
+        }
+
+        .blue {
+            color: $color_blue;
+        }
+        .org {
+            color: $color_yellow;
+        }
+        .red {
+            color: $color_red;
         }
     }
 </style>

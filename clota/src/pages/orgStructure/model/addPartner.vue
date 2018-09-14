@@ -52,7 +52,7 @@
         <!--自定义页脚-->
         <div slot="footer">
             <template>
-                <i-button type="primary" @click="confirmAddPartner">{{$t('confirm')}}</i-button>
+                <i-button type="primary" @click="submit()">{{$t('confirm')}}</i-button>
                 <i-button type="ghost" @click="hide">{{$t('cancel')}}</i-button>
             </template>
         </div>
@@ -103,13 +103,15 @@
                 // 协议起止日期
                 protoDate: [],
                 // 新增or修改
-                type: 'add'
+                type: 'add',
+                emptyPartner: '',
             }
         },
         computed: {},
         created() {
             this.getSaleGroup();
             this.getAllPartnerList();
+            this.emptyPartner = JSON.stringify(this.addPartner);
         },
         watch: {},
         methods: {
@@ -132,6 +134,8 @@
              */
             hide() {
                 this.visible = false;
+                this.addPartner = JSON.parse(this.emptyPartner);
+                this.protoDate = [];
             },
             /**
              * 创建自定义指标表单校验
@@ -139,8 +143,7 @@
             submit() {
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
-
-                    } else {
+                        this.confirmAddPartner();
                     }
                 });
             },
@@ -185,13 +188,14 @@
                 ajax.post(partnerObj.apiKey, this.addPartner).then(res => {
                     if (res.success) {
                         this.hide();
+                        // 新增成功后，根据partnerId 找到匹配的合作伙伴数据，并将合作伙伴名称显示在提示信息内容中
                         let partnerName = this.partners.find((item, i) => {
                             return item.id === this.addPartner.partnerId;
                         });
-                        this.$Message.success(partnerObj.successTip + '：' + partnerName ? partnerName.orgName : '');
+                        this.$Message.success(partnerObj.successTip + '：' + partnerName ? partnerName.channelName : '');
                         this.$emit('on-add-success');
                     } else {
-                        this.$Message.error(partnerObj.failTip);
+                        this.$Message.error(res.message ? res.message : partnerObj.failTip);
                     }
                 });
             },
@@ -211,6 +215,9 @@
     .addPartner {
         /deep/ .ivu-modal-body {
             padding: 42px 90px 40px 66px;
+        }
+        /deep/ .ivu-btn {
+            width: 88px;
         }
     }
 </style>
