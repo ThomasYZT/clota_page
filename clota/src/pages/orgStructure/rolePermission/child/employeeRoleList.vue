@@ -141,6 +141,7 @@
              * @param data
              */
             confirmDel (data) {
+
                 for(let i = 0,j = data.length;i < j;i++){
                     for(let a = this.tableData.length - 1,b = 0;a >= b;a--){
                         if(data[i].id === this.tableData[a].id){

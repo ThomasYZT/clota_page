@@ -98,5 +98,7 @@ export default {
     'deleteChannelGroup' : '/organize/deleteChannelGroup',
     //修改角色
     'updateRole' : '/role/updateRole',
+    //删除角色下员工
+    'deleteRoleOfEmps' : '/role/deleteRoleOfEmps',
 
 }
