@@ -155,12 +155,20 @@
              */
             selectedChange (data) {
                 this.employeeChosed = data;
+            },
+            /**
+             * 重置员工数据
+             */
+            resetEmployeeData () {
+                this.tableData = [];
+                this.$emit('updateSelected',this.tableData);
             }
         },
         watch : {
             'employeeList' (newVal,oldVal){
                 if(newVal){
                     this.tableData = JSON.parse(JSON.stringify(newVal));
+                    this.$emit('updateSelected',this.tableData);
                 }
             }
         }

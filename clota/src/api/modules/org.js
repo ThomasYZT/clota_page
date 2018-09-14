@@ -96,5 +96,7 @@ export default {
     'batchMoveChannelGroup' : '/organize/batchMoveChannelGroup',
     //删除销售渠道分组
     'deleteChannelGroup' : '/organize/deleteChannelGroup',
+    //修改角色
+    'updateRole' : '/role/updateRole',
 
 }

@@ -54,6 +54,15 @@
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
     export default {
+        props : {
+            //默认选中的节点
+            'default-chosed-node-init' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         data() {
             return {
                 //组织树配置
@@ -255,6 +264,22 @@
         },
         created () {
             this.getOrgTree();
+        },
+        watch : {
+            //设置默认选中的节点
+            defaultChosedNodeInit (newVal,oldVal) {
+                if(newVal && Object.keys(newVal).length > 0){
+                    this.privaligeInfo = newVal;
+                    let data = [];
+                    for(let item in this.defaultChosedNodeInit){
+                        data.push(item);
+                    }
+                    this.chosedOrgList = data;
+                    this.$nextTick(() => {
+                        this.$refs.nodeTree.setCheckedKeys(data);
+                    });
+                }
+            }
         }
     }
 </script>

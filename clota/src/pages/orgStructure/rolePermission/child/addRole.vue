@@ -21,17 +21,21 @@
                             <Input v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>
+                    <i-col span="4" style="text-align: right" v-if="type === 'edit'">
+                        <Button type="primary" @click="copyRole">复制角色</Button>
+                    </i-col>
                 </i-row>
             </Form>
             <!--景区经营权限设置-->
-            <manage-role-set ref="mangeRole">
+            <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
             </manage-role-set>
             <div class="gap"></div>
             <!--财务权限设置-->
-            <finace-role-set ref="finaceRole">
+            <finace-role-set ref="finaceRole" :default-chosed-node-init="economicDefaultChosed">
             </finace-role-set>
             <!--员工权限设置-->
             <employee-role-list
+                ref="employee"
                 :employee-list="employeeList"
                 @updateSelected="setSelectedEmployee">
             </employee-role-list>
@@ -88,7 +92,11 @@
                 //当前查看类型
                 type : 'add',
                 //角色已经包含的员工列表
-                employeeList : []
+                employeeList : [],
+                //经营权限默认选中的节点
+                manageDefaultChosed : {},
+                //财务权限默认选中节点
+                economicDefaultChosed : {}
             }
         },
         components : {
@@ -115,7 +123,11 @@
                 }else{
                     this.$refs.formValidate.validate(valid => {
                         if(valid){
-                            this.addRole(privileges);
+                            if(this.roleId){
+                                this.modifyRole(privileges);
+                            }else{
+                                this.addRole(privileges);
+                            }
                         }
                     });
                 }
@@ -150,6 +162,7 @@
                     if(res.success){
                         this.employeeList = res.data ? res.data.employeeVos : [];
                         this.formData.roleName = res.data ? res.data.role.roleName : '';
+                        this.getMangePrivalige(res.data.privModelList);
                     }else{
                         this.employeeList = [];
                         this.formData.roleName = '';
@@ -170,6 +183,79 @@
                 }else{
                     this.type = 'add';
                 }
+            },
+            /**
+             * 获取景区经营权限节点列表
+             * @param data
+             */
+            getMangePrivalige (data) {
+                this.manageDefaultChosed = {};
+                this.economicDefaultChosed = {};
+                for(let i = 0,j = data.length;i < j;i++){
+                    if(data[i].orgType === 'manage'){
+                        if(!this.manageDefaultChosed[data[i].privOrg]){
+                            this.manageDefaultChosed[data[i].privOrg] = [{
+                                path : data[i].path,
+                                privCode : data[i].privCode,
+                                privType : data[i].privType,
+                                ranges : data[i].ranges,
+                            }];
+                        }else{
+                            this.manageDefaultChosed[data[i].privOrg].push({
+                                path : data[i].path,
+                                privCode : data[i].privCode,
+                                privType : data[i].privType,
+                                ranges : data[i].ranges,
+                            });
+                        }
+                    }else if(data[i].orgType === 'economic'){
+                        if(!this.economicDefaultChosed[data[i].privOrg]){
+                            this.economicDefaultChosed[data[i].privOrg] = [{
+                                path : data[i].path,
+                                privCode : data[i].privCode,
+                                privType : data[i].privType,
+                                ranges : data[i].ranges,
+                            }];
+                        }else{
+                            this.economicDefaultChosed[data[i].privOrg].push({
+                                path : data[i].path,
+                                privCode : data[i].privCode,
+                                privType : data[i].privType,
+                                ranges : data[i].ranges,
+                            });
+                        }
+                    }
+                }
+            },
+            /**
+             * 修改权限
+             * @param privileges
+             */
+            modifyRole (privileges) {
+                ajax.post('updateRole',{
+                    roleId : this.roleId,
+                    privileges : JSON.stringify(privileges),
+                    roleName : this.formData.roleName,
+                    accountIds : this.selectedEmployees.map(item => item.id)
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('修改成功');
+                        this.$router.push({
+                            name : 'rolePermission'
+                        });
+                    }else{
+                        this.$Message.error('修改失败');
+                    }
+                })
+            },
+            /**
+             * 复制角色
+             */
+            copyRole () {
+                this.type = 'copy';
+                this.roleId = '';
+                this.formData.roleName = '';
+                this.$refs.employee.resetEmployeeData();
             }
         },
         computed : {

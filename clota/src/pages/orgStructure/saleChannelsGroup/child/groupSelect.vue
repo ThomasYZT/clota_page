@@ -7,7 +7,7 @@
                     v-for="item in allGroupList"
                     :label="item.groupName"
                     :key="item.id">
-                <div class="group-list" >
+                <div class="group-list" @click="stopPro" >
                     <template v-if="!item.edit">
                         <span class="label-text" v-w-title="item.groupName">{{item.groupName}}</span>
                         <span class="iconfont icon-edit"
@@ -33,15 +33,19 @@
                 </span>
             </div>
         </del-modal>
+        <edit-modal>
+        </edit-modal>
     </div>
 </template>
 
 <script>
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index.js';
+    import editModal from '@/components/editModal/index.vue';
     export default {
         components : {
-            delModal
+            delModal,
+            editModal
         },
         props : {
             //销售渠道分组
