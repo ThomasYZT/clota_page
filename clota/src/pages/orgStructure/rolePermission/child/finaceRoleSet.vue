@@ -236,6 +236,7 @@
                             privType : this.privaligeInfo[item][i].privType,
                             path : this.privaligeInfo[item][i].path,
                             ranges : this.privaligeInfo[item][i].ranges,
+                            orgType : 'economic'
                         });
                     }
                 }

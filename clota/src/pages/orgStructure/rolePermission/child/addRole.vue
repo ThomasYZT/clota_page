@@ -161,10 +161,12 @@
              * @param params
              */
             getParams (params) {
-                if(params.id){
+                if(params.type){
                     this.type = params.type;
-                    this.roleId = params.id;
-                    this.queryRoleDetail();
+                    if(this.type === 'edit'){
+                        this.roleId = params.id;
+                        this.queryRoleDetail();
+                    }
                 }else{
                     this.type = 'add';
                 }

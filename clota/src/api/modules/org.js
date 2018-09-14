@@ -94,5 +94,7 @@ export default {
     'addOrUpdateOrgGroup' : '/organize/addOrUpdateOrgGroup',
     //移动销售渠道分组
     'batchMoveChannelGroup' : '/organize/batchMoveChannelGroup',
+    //删除销售渠道分组
+    'deleteChannelGroup' : '/organize/deleteChannelGroup',
 
 }

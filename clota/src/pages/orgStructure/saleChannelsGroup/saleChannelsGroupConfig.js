@@ -1,5 +1,6 @@
 //销售渠道分组
 export const saleGroup = [
+    {},
     {
         title: '渠道编码',
         minWidth: 200,

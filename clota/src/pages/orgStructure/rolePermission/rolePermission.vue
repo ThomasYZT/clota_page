@@ -99,7 +99,10 @@
              */
             addRole () {
                 this.$router.push({
-                    name : 'addRole'
+                    name : 'addRole',
+                    params : {
+                        type : 'add'
+                    }
                 });
             }
         },

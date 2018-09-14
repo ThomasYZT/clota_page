@@ -342,3 +342,15 @@ export const batchOperate = [
         status: 'del',
     },
 ];
+
+//销售渠道批量操作
+export const saleOperateBatch = [
+    {
+        label : '移至其它分组',
+        value : 'toOtherGroup'
+    },
+    {
+        label : '移出分组',
+        value : 'outGroup'
+    }
+];
