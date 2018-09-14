@@ -15,40 +15,171 @@
         <div class="container">
 
             <div class="title-wrap">
-                <span>{{$t('marketingPolicy')}}</span>
-                <span class="blue-span" @click="showDetailModal">{{$t('viewDetail')}}</span>
+                <span>{{$t('销售政策详情')}}</span>
+                <!--<span class="blue-span" @click="showDetailModal">{{$t('viewDetail')}}</span>-->
             </div>
 
             <!--表单信息-->
             <Form ref="formValidate"
                   :model="detail">
 
-                <!--基本信息-->
-                <title-temp title="basicInfo"></title-temp>
                 <div class="form-content">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('productName')+'：'"><!--产品名称-->
-                                <div v-w-title="detail.productName">{{detail.productName | contentFilter}}</div>
+                            <Form-item :label="$t('销售政策名称')+'：'"><!--销售政策名称-->
+                                <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('scenePrice')+'：'"><!--景区成本价-->
-                                <div>{{detail.standardPrice | contentFilter}}</div>
+                            <Form-item :label="$t('描述')+'：'"><!--描述-->
+                                <div v-w-title="detail.productPolicy.policyDesc">{{detail.productPolicy.policyDesc | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
-                        <i-col span="24">
-                            <Form-item :label="$t('thirdProductNo')+'：'"><!--第三方产品编码-->
-                                <div v-w-title="detail.thirdCode">{{detail.thirdCode | contentFilter}}</div>
+                        <i-col span="12">
+                            <Form-item :label="$t('政策可售期')+'：'"><!--政策可售期-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('提前天数（M）')+'：'"><!--提前天数（M）-->
+                                <div>{{detail.describe | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
-                        <i-col span="24">
-                            <Form-item :label="$t('productDesc')+'：'"><!--产品描述-->
-                                <div v-w-title="detail.productDes">{{detail.productDes | contentFilter}}</div>
+                        <i-col span="12">
+                            <Form-item :label="$t('每日可售时间')+'：'"><!--每日可售时间-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('当日票可售时间')+'：'"><!--当日票可售时间-->
+                                <div>{{detail.describe | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                </div>
+
+                <div class="form-content">
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('游玩期限')+'：'"><!--游玩期限-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('指定起止日期')+'：'"><!--指定起止日期-->
+                                <div>{{detail.describe | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('每周可玩日期')+'：'"><!--每周可玩日期-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('入园时间控制')+'：'"><!--入园时间控制-->
+                                <div>{{detail.describe | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('下单后延迟生效')+'：'"><!--下单后延迟生效-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('当日票可售时间')+'：'"><!--当日票可售时间-->
+                                <div>{{detail.describe | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                </div>
+
+                <div class="form-content" :style="{height: detail.policyItems.length > 0 ? (detail.policyItems.length + 1) * 50 + 80+'px' : '280px'}">
+                    <Form-item :label="$t('产品列表')+'：'"><!--产品列表-->
+                        <div>
+                            <table-com
+                                :ofsetHeight="755"
+                                :show-pagination="true"
+                                :table-com-min-height="260"
+                                :column-data="productColumn"
+                                :table-data="detail.policyItems"
+                                :border="false">
+                            </table-com>
+                        </div>
+                    </Form-item>
+                </div>
+
+                <div class="form-content line" :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
+                    <Form-item :label="$t('销售渠道')+'：'"><!--销售渠道-->
+                        <div>
+                            <table-com
+                                :ofsetHeight="755"
+                                :show-pagination="true"
+                                :table-com-min-height="260"
+                                :column-data="saleChannelColumn"
+                                :table-data="detail.policyChannels"
+                                :border="false">
+                            </table-com>
+                        </div>
+                    </Form-item>
+                </div>
+
+                <!--全民营销 暂时隐藏-->
+                <!--<div class="form-content line" :style="{height: (detail.productList.length + 1) * 50 + 80+'px'}">
+                    <Form-item :label="$t('全民营销')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
+                        <div>
+                            <table-com
+                                :ofsetHeight="755"
+                                :show-pagination="true"
+                                :table-com-min-height="260"
+                                :column-data="marketingColumn"
+                                :table-data="detail.productList"
+                                :border="false">
+                            </table-com>
+                        </div>
+                    </Form-item>
+                </div>-->
+
+                <div class="form-content" :style="{height: (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px'}">
+                    <Form-item :label="$t('退改规则')+'：'"><!--退改规则-->
+                        <div>
+                            <span>{{detail.describe | contentFilter}}</span>
+                            <table-com
+                                :ofsetHeight="755"
+                                :table-com-min-height="260"
+                                :column-data="refundColumn"
+                                :table-data="detail.productPolicy.returnRuleModel.rules"
+                                :border="false">
+                            </table-com>
+                        </div>
+                    </Form-item>
+                </div>
+
+                <br/>
+                <div class="form-content line">
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('改签规则')+'：'"><!--改签规则-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('最晚改签日期')+'：'"><!--最晚改签日期-->
+                                <div>{{detail.describe | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('购票须知')+'：'"><!--购票须知-->
+                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -59,17 +190,9 @@
         </div>
 
         <div class="footer">
-            <template v-if="detail.auditStatus === 'auditing'">
-                <Button type="primary"
-                        @click="submit">{{$t('commitCheck')}}</Button><!--提交审核-->
-                <Button type="ghost"
-                        @click="modify">{{$t('modify')}}</Button><!--修  改-->
-            </template>
-            <Button type="primary">{{$t('disabled')}}</Button><!--禁用-->
-            <Button type="ghost">{{$t('checkPass')}}</Button><!--审核通过-->
-            <Button type="ghost">{{$t('reject')}}</Button><!--驳回-->
-            <Button type="ghost">{{$t('revocation')}}</Button><!--撤回-->
-            <Button type="ghost">{{$t('back')}}</Button><!--返回-->
+            <Button type="primary"
+                    @click="submit">{{$t('commitCheck')}}</Button><!--提交审核-->
+            <Button type="ghost">{{$t('cancel')}}</Button><!--返回-->
         </div>
 
     </div>
@@ -81,7 +204,7 @@
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {parkColumn} from './parkConfig';
+    import {productColumn, saleChannelColumn, marketingColumn, refundColumn} from './detailConfig';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -103,86 +226,136 @@
                 ],
                 //详情数据
                 detail: {
-                    "auditStatus": "auditing",
-                    "code": "1039754625290473472",
-                    "companyId": null,
-                    "createdTime": "2018-09-12 13:56:35",
-                    "productId": "1039754623965073408",
-                    "inNum": "3",
-                    "isGroup": "true",
-                    "orgId": "1037976274619994113",
-                    "printName": "打印名称-李瑜测试产品1",
-                    "printPrice": "120",
-                    "printRemark": "打印说明",
-                    "printTpl": "",
-                    "productDes": "李瑜测试产品1描述",
-                    "productName": "李瑜测试产品1",
-                    "productType": "ticket",
-                    "standardPrice": "100",
-                    "thirdCode": "123456789",
-                    "ticketRemark": "票面说明",
-                    "acceptIdType": "identity",
-                    "createUser": "1",
-                    "saleRuleId": "1039754623965073409",
-                    "idLimit": "{\"day\":\"5\",\"quantity\":\"5\"}",
-                    "maxNum": "100",
-                    "minNum": "10",
-                    "mobileLimit": "{\"day\":\"5\",\"quantity\":\"5\"}",
-                    "needAllId": "",
-                    "needId": "noRequired",
-                    "stockNum": "10000",
-                    "stockType": "is_no_limit",
-                    "updateUser": null,
-                    "productEffSet": "since_the_play",
-                    "updatedTime": "2018-09-12 13:56:35",
-                    "productPlayRuleVo": [
+                    //销售组列表
+                    "policyChannels":[
                         {
-                            "checkPoint": [
-                                {
-                                    "checkId": "1037982966690746369",
-                                    "checkType": "garden",
-                                    "createUser": "1",
-                                    "createdTime": "2018-09-12 13:56:35",
-                                    "dayTimes": "2",
-                                    "id": "1039754624908791808",
-                                    "isDeleted": "false",
-                                    "orgId": "1037976274619994113",
-                                    "parkId": "1037976274619994113",
-                                    "playRuleId": "1039754623965073410",
-                                    "playType": "required",
-                                    "productId": "1039754623965073408",
-                                    "sumTimes": "7",
-                                    "updateUser": null,
-                                    "updatedTime": "2018-09-12 13:56:35"
-                                }
-                            ],
-                            "checkPoints": null,
-                            "createUser": "1",
-                            "createdTime": "2018-09-12 13:56:35",
-                            "effDay": 1,
-                            "effTimes": 1,
-                            "fingerCheck": "true",
-                            "id": "1039754623965073410",
-                            "itemCheckTimes": "10",
-                            "orgId": "1037976274619994113",
-                            "parkId": "1037976274619994113",
-                            "parkName": "魔法花园",
-                            "productId": "1039754623965073408",
-                            "saleType": "one_ticket",
-                            "updateUser": null,
-                            "updatedTime": "2018-09-12 13:56:35"
+                            "allocationId":"1040526354644340736",
+                            "createUser":"1037976274619994112",
+                            "createdTime":"2018-09-14 17:03:10",
+                            "groupId":"1040477916850425856",
+                            "groupName":"xt优质销售组1",
+                            "groupchannels":"xt销售渠道1,xt销售渠道2,",
+                            "id":"1040526354963107840",
+                            "isDeleted":"false",
+                            "policyId":"1040526353243443200",
+                            "updateUser":"1037976274619994112",
+                            "updatedTime":"2018-09-14 17:03:10"
+                        },
+                        {
+                            "allocationId":"1040526354644340736",
+                            "createUser":"1037976274619994112",
+                            "createdTime":"2018-09-14 17:03:10",
+                            "groupId":"1040478245901963264",
+                            "groupName":"xt普通销售组2",
+                            "groupchannels":"xt销售渠道3,xt销售渠道4,",
+                            "id":"1040526355269292032",
+                            "isDeleted":"false",
+                            "policyId":"1040526353243443200",
+                            "updateUser":"1037976274619994112",
+                            "updatedTime":"2018-09-14 17:03:10"
                         }
                     ],
+                    //产品列表
+                    "policyItems":[],
+                    //销售政策信息
+                    "productPolicy":{
+                        //改签规则
+                        "alterRuleModel":{
+                            "alterNum":"1",//最晚改签日期（游玩日期前N天）
+                            "befPlayLatestDays":"2",//最晚改签日期（游玩日期前N天）
+                            "type":"noAudit" //改签类型（不允许-notAllow,需要审核-needAudit,不审核-noAudit）
+                        },
+                        //游玩规则
+                        "playRuleModel":{
+                            "afterDay":null,
+                            "beforeDay":null,
+                            "endTime":"2018-10-31",
+                            "specifiedTime":"",//指定时间（例：2018-10-12,2018-10-18）
+                            "startTime":"2018-10-01",
+                            "type":"specifiedPeriodSold", //期限类型（指定期间-specifiedPeriodSold，指定日期-specifiedDateSold）
+                            "validDates":null,
+                            "weekSold":"1,2,3,4,5,6,7"//指定周数（例：1,2,3,4,5,6,7）
+                        },
+                        //退票规则
+                        "returnRuleModel":{
+                            "rules":[
+                                {
+                                    "befPlayStart": "0",//游玩日期前起始天（0代表当天）
+                                    "befPlayEnd": "0",//游玩日期前截止天（0代表当天）
+                                    "procedureRates": "2"//手续费率
+                                },
+                                {
+                                    "befPlayEnd":"7",
+                                    "befPlayStart":"1",
+                                    "procedureRates":"0.1"
+                                }
+                            ],
+                            "type":"noAudit" //退票类型（不允许-notAllow,需要审核-needAudit,不审核-noAudit ）
+                        },
+                        //销售规则
+                        "saleRuleModel":{
+                            "afterDay":null,
+                            "beforeDay":null,
+                            "endTime":"2018-09-30",
+                            "specifiedTime":"",//指定时间（例：2018-10-12,2018-10-18）
+                            "startTime":"2018-09-01",
+                            "type":"specifiedPeriodSold", //期限类型（游玩日期前M天可售-playBeforeSold，指定期间-specifiedPeriodSold，指定日期-specifiedDateSold）
+                            "validDates":null,
+                            "weekSold":"1,2,3,4,5"//指定周数（例：1,2,3,4,5,6,7）
+                        },
+                        "auditStatus":"auditing",//审核状态 auditing-审核中，rejected-已驳回，not_enabled-未启用，enabled-已启用
+                        "checkinTime":"09:00-18:00",//入园时间范围；格式：mm:ss-mm:ss
+                        "delayValidTime":"5",//下单延迟生效时间（分钟）
+                        "id":"1040526353243443200",//政策ID
+                        "name":"xt销售政策1",//政策名称
+                        "orgId":"1037976274619994113",//所属机构ID
+                        "policyDesc":"xt销售政策1说明43454345",//描述
+                        "productType":"ticket",//业态类型 ticket-票类，repast-餐饮，hotel-酒店，ticket_package-套票
+                        "saleEndTime":"20:00",//每日可售结束时间；格式：mm:ss
+                        "saleStartTime":"08:00",//每日可售开始时间；格式：mm:ss
+                        "todaySaleEndTime":"18:00",//当日票可售结束时间；格式：mm:ss
+                        "todaySaleStartTime":"09:00",//当日票可售开始时间；格式：mm:ss
+                        "isDeleted":"false",
+                        "createUser":"1037976274619994112",
+                        "createdTime":"2018-09-14 17:03:09",
+                        "productPolicyPlayRule":{
+                            "afterDay":null,
+                            "beforeDay":null,
+                            "endTime":"2018-10-31",
+                            "specifiedTime":"",
+                            "startTime":"2018-10-01",
+                            "type":"specifiedPeriodSold",
+                            "validDates":null,
+                            "weekSold":"1,2,3,4,5,6,7"
+                        },
+                        "productPolicySoldRule":{
+                            "afterDay":null,
+                            "beforeDay":null,
+                            "endTime":"2018-09-30",
+                            "specifiedTime":"",
+                            "startTime":"2018-09-01",
+                            "type":"specifiedPeriodSold",
+                            "validDates":null,
+                            "weekSold":"1,2,3,4,5"
+                        },
+                        "alterRule":"{\"type\":\"noAudit\",\"befPlayLatestDays\":\"2\",\"alterNum\":\"1\"}",
+                        "playRule":"{\"type\":\"specifiedPeriodSold\",\"beforDay\":\"\",\"afterDay\":\"\",\"startTime\":\"2018-10-01\",\"endTime\":\"2018-10-31\",\"weekSold\":\"1,2,3,4,5,6,7\",\"specifiedTime\":\"\"}",
+                        "returnRule":"{\"type\":\"noAudit\",\"rules\":[{\"befPlayStart\":\"0\",\"befPlayEnd\":\"0\",\"procedureRates\":\"0.2\"},{\"befPlayStart\":\"1\",\"befPlayEnd\":\"7\",\"procedureRates\":\"0.1\"}]}",
+                        "saleRule":"{\"type\":\"specifiedPeriodSold\",\"beforDay\":\"\",\"afterDay\":\"\",\"startTime\":\"2018-09-01\",\"endTime\":\"2018-09-30\",\"weekSold\":\"1,2,3,4,5\",\"specifiedTime\":\"\"}",
+                        "updateUser":"1037976274619994112",
+                        "updatedTime":"2018-09-14 17:03:09"
+                    },
                 },
-                //日志列表
-                logList: [
-                    { name : '张三', time: '2018/07/01  12:00', desc: '提交了审核' },
-                    { name : '李四', time: '2018/07/01  12:00', desc: '审核通过，启用产品' },
-                ],
-                //可游玩园区表头
-                columnData: parkColumn,
-                //可游玩园区表格数据
-                tableData: [{}],
+
+                //产品列表表头
+                productColumn: productColumn,
+                //销售渠道表头
+                saleChannelColumn: saleChannelColumn,
+                //全民营销表头
+                marketingColumn: marketingColumn,
+                //退票表头
+                refundColumn: refundColumn,
+
             }
         },
         methods: {
@@ -272,8 +445,19 @@
             }
 
             .form-content{
+                border-top: 1px dashed $color_979797_020;
                 width: 85%;
                 margin: 0 auto;
+                padding: 20px 0;
+
+                &:first-child{
+                    border-top: none;
+                }
+
+                &.line{
+                    border-top: none;
+                    padding-top: 0px;
+                }
 
                 .ivu-input-icon{
                     z-index: 2;

@@ -20,107 +20,25 @@
                   :rules="ruleValidate"
                   label-position="top">
 
-                <!--基本信息-->
-                <title-temp title="basicInfo"></title-temp>
                 <div class="form-content">
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('productName')" prop="productName"><!--产品名称-->
-                            <Input v-model.trim="formData.productName"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('scenePrice')" prop="scenePrice"><!--景区成本价-->
-                            <Input v-model.trim="formData.scenePrice"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('thirdProductNo')" prop="thirdProductNo"><!--第三方产品编码-->
-                            <Input v-model.trim="formData.thirdProductNo"
+                        <Form-item :label="$t('salePolicyName')" prop="salePolicyName"><!--销售政策名称-->
+                            <Input v-model.trim="formData.salePolicyName"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('productDesc')" prop="productDesc"><!--产品描述-->
-                            <Input v-model.trim="formData.productDesc"
-                                   type="textarea"
-                                   :rows="3"
-                                   :placeholder="$t('inputField', {msg: ''})"/>
-                        </Form-item>
-                    </div>
-                </div>
-
-                <!--票面信息-->
-                <title-temp title="ticketInfo"></title-temp>
-                <div class="form-content">
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('printName')" prop="printName"><!--打印名称-->
-                            <Input v-model.trim="formData.printName"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('ticketPrice')" prop="ticketPrice"><!--票面价格-->
-                            <Input v-model.trim="formData.ticketPrice"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('ticketDesc')" prop="ticketDesc"><!--票面说明-->
-                            <Input v-model.trim="formData.ticketDesc"
+                        <Form-item :label="$t('desc')" prop="desc"><!--描述-->
+                            <Input v-model.trim="formData.desc"
                                    type="textarea"
                                    :rows="3"
                                    :placeholder="$t('inputField', {msg: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('printDesc')" prop="printDesc"><!--打印说明-->
-                            <Input v-model.trim="formData.printDesc"
-                                   type="textarea"
-                                   :rows="3"
-                                   :placeholder="$t('inputField', {msg: ''})"/>
-                        </Form-item>
-                    </div>
-                </div>
-
-                <!--购买限制-->
-                <title-temp title="buyLimit"></title-temp>
-                <div class="form-content">
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('isTeamProduct')" prop="isTeamProduct"><!--是否团队产品-->
-                            <Select v-model="formData.isTeamProduct"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.isTeamProduct"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
-                                </Option>
-                            </Select>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('enterNum')" prop="enterNum"><!-- 可入园人数-->
-                            <Input v-model.trim="formData.enterNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('minOrderNum')" prop="minOrderNum"><!--每订单最小起订数-->
-                            <Input v-model.trim="formData.minOrderNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('maxOrderNum')" prop="maxOrderNum"><!--每订单最大限订数-->
-                            <Input v-model.trim="formData.maxOrderNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('orderToCommitVisitorIdInfo')" prop="orderToCommitVisitorIdInfo"><!--预定时提交身份信息-->
+                        <Form-item :label="$t('政策可售期')" prop="scenePrice"><!--政策可售期-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.orderInfo"
@@ -131,97 +49,205 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <!--空字段站位用-->
-                    <div class="ivu-form-item-wrap"></div>
-                    <div class="ivu-form-item-wrap single" v-if="formData.orderToCommitVisitorIdInfo !== 'noRequired'">
-                        <Form-item :label="$t('idType')" prop="idType"><!--可接受证件类型-->
-                            <CheckboxGroup v-model="formData.idType">
-                                <Checkbox v-for="(item,index) in enumData.idType"
-                                          :key="index"
-                                          :label="item.value">
-                                    {{$t(item.label)}}</Checkbox>
-                            </CheckboxGroup>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitById')" prop="limitByIdDay"><!--身份证购票限制-->
-                            <Input v-model.trim="formData.limitByIdDay"
-                                   class="short-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span class="label">{{$t('maxBuy')}}</span>
-                            <Input v-model.trim="formData.limitByIdNum"
-                                   class="short-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('paper')}}</span>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitByMobile')" prop="limitByMobileDay"><!--手机号购票限制-->
-                            <Input v-model.trim="formData.limitByMobileDay"
-                                   class="short-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span class="label">{{$t('maxBuy')}}</span>
-                            <Input v-model.trim="formData.limitByMobileNum"
-                                   class="short-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('paper')}}</span>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitStore')" prop="limitStore"><!--限制库存-->
-                            <Select v-model="formData.limitStore"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.limitStore"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
-                                </Option>
-                            </Select>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('storeNum')" prop="storeNum"><!-- 库存数量-->
-                            <Input v-model.trim="formData.storeNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </Form-item>
-                    </div>
-                </div>
-
-                <!--产品有效性-->
-                <title-temp title="productEffect"></title-temp>
-                <div class="form-content">
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('productEffectSet')" prop="productEffectSet"><!--产品有效性设置-->
-                            <Select v-model="formData.productEffectSet"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.productEffectSet"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
-                                </Option>
-                            </Select>
-                        </Form-item>
-                    </div>
-                    <!--空字段站位用-->
-                    <div class="ivu-form-item-wrap">
-                        <Form-item label=""></Form-item>
-                    </div>
-                </div>
-
-                <!--游玩规则-->
-                <title-temp title="playRule"></title-temp>
-                <div class="form-content">
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('playPark')"><!--可游玩园区-->
-                            <span class="blue" @click="addPark">+ {{$t('addPark')}}</span>
+                        <Form-item :label="$t('提前天数(M)')" prop="thirdProductNo"><!--提前天数(M)-->
+                            <InputNumber :max="365"
+                                         :min="0"
+                                         v-model.trim="formData.thirdProductNo"
+                                         :placeholder="$t('inputField', {field: ''})">
+                            </InputNumber>
+                            <span class="split">{{$t('至')}}</span>
+                            <InputNumber :max="365"
+                                         :min="0"
+                                         v-model.trim="formData.thirdProductNo"
+                                         :placeholder="$t('inputField', {field: ''})">
+                            </InputNumber>
+                            <span class="notice">{{$t('提前0天表示可售当日票，提前1天表示可售次日票，依次类推')}}</span>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('指定起止日期')" prop="ticketPrice"><!--指定起止日期-->
+                            <DatePicker v-model="formData.ticketPrice"
+                                        :placeholder="$t('selectField', {msg: ''})"
+                                        format="yyyy-MM-dd"
+                                        type="daterange"
+                                        :clearable="false"
+                                        :editable="false"
+                                        transfer
+                                        placement="bottom-end"
+                                        style="width: 280px;">
+                            </DatePicker>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('指定日期')" prop="ticketPrice"><!--指定日期-->
+                            <Select v-model="formData.orderToCommitVisitorIdInfo"
+                                    :placeholder="$t('selectField', {msg: ''})">
+                                <Option v-for="(item,index) in enumData.orderInfo"
+                                        :key="index"
+                                        :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
+                            </Select>
+                            <span class="blue">{{$t('切换为日期清单视图')}}</span>
+                            <span class="blue">{{$t('切换日历视图增减日期')}}</span>
+                            <br/>
+                            <DatePicker v-model="formData.ticketPrice"
+                                        :open="open"
+                                        multiple
+                                        :placeholder="$t('selectField', {msg: ''})"
+                                        format="yyyy-MM-dd"
+                                        :clearable="false"
+                                        :editable="false"
+                                        transfer
+                                        placement="bottom-end"
+                                        style="width: 280px;">
+                            </DatePicker>
                             <table-com
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
-                                :column-data="columnData"
-                                :table-data="tableData"
+                                :column-data="dateListColumn"
+                                :table-data="dateData"
+                                :border="false">
+                            </table-com>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('每周可玩日期')" prop="ticketDesc"><!--每周可玩日期-->
+                            <Button v-for="(item,index) in weekList"
+                                    class="week-btn"
+                                    :key="index"
+                                    :type="formData.week.indexOf(item) > -1 ? 'primary' : 'ghost'"
+                                    @click="triggerWeek(item)">
+                                {{$t(item)}}
+                                <i class="iconfont icon-selected" v-if="formData.week.indexOf(item) > -1"></i>
+                            </Button>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('每日可售时间')" prop="thirdProductNo"><!--每日可售时间-->
+                            <TimePicker format="HH:mm"
+                                        :placeholder="$t('selectField', {msg: ''})"></TimePicker>
+                            <span class="split">{{$t('至')}}</span>
+                            <TimePicker format="HH:mm"
+                                        :placeholder="$t('selectField', {msg: ''})"></TimePicker>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('当日票可售时间')" prop="thirdProductNo"><!--当日票可售时间-->
+                            <TimePicker format="HH:mm"
+                                        :placeholder="$t('selectField', {msg: ''})"></TimePicker>
+                            <span class="split">{{$t('至')}}</span>
+                            <TimePicker format="HH:mm"
+                                        :placeholder="$t('selectField', {msg: ''})"></TimePicker>
+                        </Form-item>
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('游玩期限')" prop="scenePrice"><!--游玩期限-->
+                            <Select v-model="formData.orderToCommitVisitorIdInfo"
+                                    :placeholder="$t('selectField', {msg: ''})">
+                                <Option v-for="(item,index) in enumData.orderInfo"
+                                        :key="index"
+                                        :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
+                            </Select>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('指定起止日期')" prop="ticketPrice"><!--指定起止日期-->
+                            <DatePicker v-model="formData.ticketPrice"
+                                        :placeholder="$t('selectField', {msg: ''})"
+                                        format="yyyy-MM-dd"
+                                        type="daterange"
+                                        :clearable="false"
+                                        :editable="false"
+                                        transfer
+                                        placement="bottom-end"
+                                        style="width: 280px;">
+                            </DatePicker>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('指定日期')" prop="ticketPrice"><!--指定日期-->
+                            <Select v-model="formData.orderToCommitVisitorIdInfo"
+                                    :placeholder="$t('selectField', {msg: ''})">
+                                <Option v-for="(item,index) in enumData.orderInfo"
+                                        :key="index"
+                                        :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
+                            </Select>
+                            <span class="blue">{{$t('切换为日期清单视图')}}</span>
+                            <span class="blue">{{$t('切换日历视图增减日期')}}</span>
+                            <br/>
+                            <DatePicker v-model="formData.ticketPrice"
+                                        multiple
+                                        :placeholder="$t('selectField', {msg: ''})"
+                                        format="yyyy-MM-dd"
+                                        :clearable="false"
+                                        :editable="false"
+                                        transfer
+                                        placement="bottom-end"
+                                        style="width: 280px;">
+                            </DatePicker>
+                            <table-com
+                                :ofsetHeight="120"
+                                :table-com-min-height="260"
+                                :column-data="dateListColumn"
+                                :table-data="dateData"
+                                :border="false">
+                            </table-com>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('每周可玩日期')" prop="ticketDesc"><!--每周可玩日期-->
+                            <Button v-for="(item,index) in weekList"
+                                    class="week-btn"
+                                    :key="index"
+                                    :type="formData.week.indexOf(item) > -1 ? 'primary' : 'ghost'"
+                                    @click="triggerWeek(item)">
+                                {{$t(item)}}
+                                <i class="iconfont icon-selected" v-if="formData.week.indexOf(item) > -1"></i>
+                            </Button>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('入园时间控制')" prop="ticketDesc"><!--入园时间控制-->
+                            <TimePicker format="HH:mm"
+                                        :placeholder="$t('selectField', {msg: ''})"></TimePicker>
+                            <span class="split">{{$t('至')}}</span>
+                            <TimePicker format="HH:mm"
+                                        :placeholder="$t('selectField', {msg: ''})"></TimePicker>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('下单后延迟生效')" prop="ticketDesc"><!--下单后延迟生效-->
+                            <InputNumber :max="60"
+                                         :min="0"
+                                         v-model.trim="formData.thirdProductNo"
+                                         :placeholder="$t('inputField', {field: ''})">
+                            </InputNumber>
+                            <span class="split">{{$t('分钟')}}</span>
+                        </Form-item>
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('产品列表')"><!--产品列表-->
+                            <span class="blue" @click="addProduct">+ {{$t('新增产品')}}</span><!--新增产品-->
+                            <table-com
+                                :ofsetHeight="120"
+                                :table-com-min-height="260"
+                                :column-data="productColumn"
+                                :table-data="productData"
                                 :border="false">
                                 <el-table-column
-                                    slot="column3"
+                                    slot="column4"
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
@@ -236,37 +262,186 @@
                             </table-com>
                         </Form-item>
                     </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('销售渠道')"><!--销售渠道-->
+                            <table-com
+                                :ofsetHeight="120"
+                                :table-com-min-height="260"
+                                :column-data="saleChannelColumn"
+                                :table-data="saleChannelData"
+                                :border="false"
+                                :column-check="true"
+                                @selection-change="changeSelection">
+                            </table-com>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('全民营销')"><!--全民营销-->
+                            <span class="blue" @click="addPark">+ {{$t('增加营销等级')}}</span><!--增加营销等级-->
+                            <table-com
+                                :ofsetHeight="120"
+                                :table-com-min-height="260"
+                                :column-data="marketingColumn"
+                                :table-data="marketingData"
+                                :show-pagination="true"
+                                :total-count="total"
+                                :page-no-d.sync="queryParams.pageNo"
+                                :page-size-d.sync="queryParams.pageSize"
+                                :border="false"
+                                @query-data="queryList">
+                                <el-table-column
+                                    slot="column0"
+                                    slot-scope="row"
+                                    show-overflow-tooltip
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth">
+                                    <template slot-scope="scope">
+                                        <Select v-if="scope.row.editable"
+                                                v-model="scope.row.name"
+                                                transfer
+                                                :placeholder="$t('selectField', {msg: ''})">
+                                            <Option v-for="(item,index) in enumData.orderInfo"
+                                                    :key="index"
+                                                    :value="item.value">
+                                                {{$t(item.label)}}
+                                            </Option>
+                                        </Select>
+                                        <span v-else>{{$t(scope.row.editable) | contentFilter}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    show-overflow-tooltip
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth">
+                                    <template slot-scope="scope">
+                                        <Select v-if="scope.row.editable"
+                                                v-model="scope.row.name"
+                                                transfer
+                                                :placeholder="$t('selectField', {msg: ''})">
+                                            <Option v-for="(item,index) in enumData.orderInfo"
+                                                    :key="index"
+                                                    :value="item.value">
+                                                {{$t(item.label)}}
+                                            </Option>
+                                        </Select>
+                                        <span v-else>{{$t(scope.row.editable) | contentFilter}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth">
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <template v-if="scope.row.editable">
+                                                <li class="normal" @click="modify(scope.row)">{{$t('save')}}</li><!--保存-->
+                                                <li class="normal" @click="modify(scope.row)">{{$t('cancel')}}</li><!--取消-->
+                                            </template>
+                                            <template v-else>
+                                                <li class="red-label" @click="del(scope.row)">{{$t('delete')}}</li><!--删除-->
+                                            </template>
+                                        </ul>
+                                    </template>
+                                </el-table-column>
+                            </table-com>
+                        </Form-item>
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('退票规则')" prop="scenePrice"><!--退票规则-->
+                            <Select v-model="formData.orderToCommitVisitorIdInfo"
+                                    :placeholder="$t('selectField', {msg: ''})">
+                                <Option v-for="(item,index) in enumData.orderInfo"
+                                        :key="index"
+                                        :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
+                            </Select>
+                            <span class="blue" @click="addPark">+ {{$t('新增退票手续费率档位')}}</span><!--新增退票手续费率档位-->
+                            <table-com
+                                :ofsetHeight="120"
+                                :table-com-min-height="260"
+                                :column-data="refundColumn"
+                                :table-data="refundData"
+                                :border="false">
+                                <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth">
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <li class="normal" @click="modify(scope.row)">{{$t('modify')}}</li><!--修改-->
+                                            <li class="red-label" @click="del(scope.row)">{{$t('delete')}}</li><!--删除-->
+                                            <li class="normal" @click="modify(scope.row)">{{$t('save')}}</li><!--保存-->
+                                            <li class="normal" @click="modify(scope.row)">{{$t('cancel')}}</li><!--取消-->
+                                        </ul>
+                                    </template>
+                                </el-table-column>
+                            </table-com>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('改签规则')" prop="scenePrice"><!--改签规则-->
+                            <Select v-model="formData.orderToCommitVisitorIdInfo"
+                                    :placeholder="$t('selectField', {msg: ''})">
+                                <Option v-for="(item,index) in enumData.orderInfo"
+                                        :key="index"
+                                        :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
+                            </Select>
+                            <div class="custom-row">
+                                <span>{{$t('最晚改签日期：游玩日期前')}}</span>
+                                <Input v-model.trim="formData.salePolicyName"
+                                       class="short-input"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                                <span>{{$t('天/可改签次数')}}</span>
+                                <Input v-model.trim="formData.salePolicyName"
+                                       class="short-input"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </div>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap single">
+                        <Form-item :label="$t('购票须知')" prop="productDesc"><!--购票须知-->
+                            <Input v-model.trim="formData.productDesc"
+                                   type="textarea"
+                                   :rows="3"
+                                   :placeholder="$t('inputField', {msg: $t('购票须知')})"/>
+                        </Form-item>
+                    </div>
                 </div>
 
             </Form>
 
             <!--底部操作-->
             <div class="footer">
-                <template v-if="type === 'add'">
-                    <Button type="primary"
-                            :loading="loading"
-                            @click="formValidateFunc">
-                        {{$t('commitCheck')}}
-                    </Button>
-                    <Button type="ghost"
-                            @click="goBack">
-                        {{$t("giveUpAdd")}}
-                    </Button>
-                </template>
-                <template v-if="type === 'modify'">
-                    <Button type="primary"
-                            :loading="loading"
-                            @click="formValidateFunc">
-                        {{$t('confirm')}}
-                    </Button>
-                    <Button type="ghost"
-                            @click="goBack">
-                        {{$t("giveUpModify")}}
-                    </Button>
-                </template>
+                <Button type="primary"
+                        :loading="loading"
+                        @click="formValidateFunc">
+                    {{$t('save')}}
+                </Button>
+                <Button type="ghost"
+                        @click="goBack">
+                    {{$t("cancel")}}
+
+                </Button>
             </div>
 
         </div>
+
+        <!--添加/修改产品-->
+        <edit-product ref="editProduct"></edit-product>
 
     </div>
 </template>
@@ -276,12 +451,14 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import editProduct from './editProductModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
-    import {parkColumn} from './parkConfig';
+    import {productColumn, saleChannelColumn, marketingColumn, dateListColumn, refundColumn} from './editPolicyConfig';
     import { isTeamProduct, orderInfo, idType, productEffectSet, limitStore } from '@/assets/js/constVariable';
+    import {configVariable} from '@/assets/js/constVariable';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -289,6 +466,7 @@
             breadCrumbHead,
             titleTemp,
             tableCom,
+            editProduct,
         },
         data () {
 
@@ -369,10 +547,18 @@
                     }
                 ],
                 loading: false,
+                //week
+                weekList: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                //控制点选日期控件显示/隐藏
+                open: false,
                 //表单数据
                 formData: {
+                    salePolicyName: '',//销售政策名称
+                    desc: '',//描述
+                    week: ['Monday','Tuesday','Wednesday'],//每周可玩日期
+
+
                     //基本信息
-                    productName: '',//产品名称
                     scenePrice: '',//景区成本价
                     thirdProductNo: '',//第三方产品编码
                     productDesc: '',//产品描述
@@ -399,11 +585,21 @@
                     //游玩规则
                 },
                 ruleValidate: {
-                    productName: [
+                    salePolicyName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('productName')}), trigger: 'blur' },     // 不能为空
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('productName'), length: 50}), trigger: 'blur' },      // 不能多于15个字符
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('salePolicyName'), length: 50}), trigger: 'blur' },      // 不能多于50个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
+                    desc: [
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 500}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    ],
+
+
+
+
+
+
                     scenePrice: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('scenePrice')}), trigger: 'blur' },
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('scenePrice'), length: 10}), trigger: 'blur' },
@@ -484,16 +680,66 @@
                     //限制库存
                     limitStore: limitStore,
                 },
-                //可游玩园区表头
-                columnData: parkColumn,
-                //可游玩园区表格数据
-                tableData: [{}],
+
+                //产品列表及表头
+                productColumn: productColumn,
+                productData: [{}],
+
+                //销售渠道列表及表头
+                saleChannelColumn: saleChannelColumn,
+                saleChannelData: [{}],
+                selectedRow: [],
+
+                //全民营销列表及表头
+                marketingColumn: marketingColumn,
+                marketingData: [
+                    { editable: false },
+                    { editable: true },
+                ],
+                queryParams: {
+                    pageNo: 1,                                      // 当前页码数
+                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                },
+                // 数据总条数
+                total: 0,
+
+                //日期清单视图列表及表头
+                dateListColumn: dateListColumn,
+                dateData: [ { year: '2018', month: '9', day: '7、8、10、14、20'}],
+
+                //退票规则列表及表头
+                refundColumn: refundColumn,
+                refundData: [{}],
+
             }
         },
         created() {
 
         },
         methods: {
+
+            //星期的选中/不选中
+            triggerWeek ( val ) {
+                if(this.formData.week.indexOf(val) > -1){
+                    let index = this.formData.week.indexOf(val);
+                    this.formData.week.splice(index, 1);
+                }else{
+                    this.formData.week.push(val);
+                }
+            },
+
+            /**
+             * 销售渠道勾选结果改变时的处理
+             * @param selection - 被勾选的数据  Array
+             */
+            changeSelection(selection) {
+                this.selectedRow = selection;
+            },
+
+            //查询全民营销列表
+            queryList() {
+
+            },
 
             //表单校验
             formValidateFunc () {
@@ -525,6 +771,19 @@
                 })
             },
 
+            //新增产品，显示新增产品弹窗
+            addProduct () {
+                this.$refs.editProduct.show({
+                    title : this.$t('add')+this.$t('产品'),
+                    type: 'add',
+                    confirmCallback : ( data ) => {
+                        //push to tableData
+                        console.log(true)
+//                        this.tableData.push(data);
+                    }
+                });
+            },
+
             //修改可游玩园区
             modify ( data ) {
                 this.$refs.editPark.show({
@@ -550,7 +809,7 @@
                     confirmCallback : ( data ) => {
                         //push to tableData
                         console.log(true)
-                        this.tableData.push(data);
+//                        this.tableData.push(data);
                     }
                 });
             },
@@ -572,9 +831,9 @@
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
                     this.type = params.type;
-                    if(params.info){
-                        this.formData = params.info;
-                    }
+//                    if(params.info){
+//                        this.formData = params.info;
+//                    }
                 }
             },
             /**
@@ -612,7 +871,7 @@
         .container{
 
             .ivu-form{
-                padding: 10px 0 20px;
+                padding: 10px 0 30px;
                 text-align: center;
             }
 
@@ -622,8 +881,14 @@
             }
 
             .form-content{
+                border-top: 1px dashed $color_979797_020;
                 width: 1000px;
                 margin: 0 auto;
+                padding-top: 20px;
+
+                &:first-child{
+                    border-top: none;
+                }
 
                 .ivu-input-icon{
                     z-index: 2;
@@ -655,6 +920,21 @@
                             font-size: $font_size_14px;
                         }
 
+                        /deep/ .ivu-input-number{
+                            width: 120px;
+                            font-size: $font_size_14px;
+                        }
+
+                        /deep/ .ivu-date-picker{
+                            font-size: $font_size_14px;
+                            width: 120px;
+                            display: inline-block;
+                        }
+
+                        /deep/ .ivu-select{
+                            max-width: 395px;
+                        }
+
                         /deep/ .ivu-select-item{
                             font-size: $font_size_14px !important;
                         }
@@ -681,6 +961,10 @@
                         .label{
                             margin-right: 10px;
                         }
+
+                        .split{
+                            margin: 0 10px;
+                        }
                     }
 
                     &.single{
@@ -690,6 +974,31 @@
                             width: 100%;
                         }
                     }
+                    /deep/ .ivu-btn{
+                        width: 70px;
+                        &.week-btn{
+                            margin-right: 10px;
+                            .iconfont{
+                                font-size: $font_size_20px;
+                                position: absolute;
+                                bottom: 2px;
+                            }
+                        }
+                    }
+
+                    .notice{
+                        font-size: $font_size_12px;
+                        color: $color_999;
+                        display: inline-block;
+                        width: calc(100% - 300px);
+                        line-height: 14px;
+                        padding-left: 8px;
+                    }
+
+                    .custom-row{
+                        padding-top: 10px;
+                    }
+
                 }
 
             }

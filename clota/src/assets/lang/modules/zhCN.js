@@ -672,6 +672,14 @@ export default {
     'marketingPolicyDetail' : '销售政策详情',
     'viewDetail' : '查看详情',
     'modifySalePolicy': '新建销售政策',
+    'Monday': '周一',
+    'Tuesday': '周二',
+    'Wednesday': '周三',
+    'Thursday': '周四',
+    'Friday': '周五',
+    'Saturday': '周六',
+    'Sunday': '周日',
+
 
 
     /*** 财务管理模块 ***/
