@@ -52,7 +52,7 @@
         <!--自定义页脚-->
         <div slot="footer">
             <template>
-                <i-button type="primary" @click="submit()">{{$t('confirm')}}</i-button>
+                <i-button type="primary" @click="submit()">{{$t('save')}}</i-button>
                 <i-button type="ghost" @click="hide">{{$t('cancel')}}</i-button>
             </template>
         </div>
@@ -170,7 +170,7 @@
                 this.addPartner.startDate = date[0];
                 this.addPartner.endDate = date[1];
             },
-            // 确定新增合作伙伴
+            // 确定新增/修改合作伙伴
             confirmAddPartner() {
                 let partnerObj = {};
                 if (this.type=='add') {

@@ -79,12 +79,12 @@
             <!--角色权限-->
             <!--<div class="ivu-form-item-wrap">-->
                 <Form-item :label="$t('rolePermission')" prop="privileges">
-                    <!--<Select v-model="rolePrivileges" multiple @on-change="onChangeSelect">
+                    <Select v-model="rolePrivileges" multiple @on-change="onChangeSelect">
                         <Option v-for="item in enumData.privileges" :key="item.id"
                                 :value="item.id">{{ item.roleName }}
                         </Option>
-                    </Select>-->
-                    <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})"><!--$t('selectField', {msg: ''})-->
+                    </Select>
+                    <!--<Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})">&lt;!&ndash;$t('selectField', {msg: ''})&ndash;&gt;
                         <div class="selectTop">
                             <i-input class="search-classify-input"
                                      v-model.trim="roleKeyword"
@@ -101,7 +101,7 @@
                         </Checkbox-group>
                         <div class="noData" v-if="enumData.privileges.length == 0">暂无数据</div>
                         <div class="noData" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
-                    </Select>
+                    </Select>-->
                 </Form-item>
             <!--</div>-->
             <div class="ivu-form-item-wrap">

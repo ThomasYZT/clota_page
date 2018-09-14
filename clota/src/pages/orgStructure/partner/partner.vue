@@ -7,7 +7,6 @@
             </Button>
             <el-dropdown trigger="click"
                          placement="bottom-start"
-                         size="medium"
                          @command="handleCommand">
                 <Button type="ghost" style="float: left" size="default">{{$t('batchOperate')}}</Button><!--批量操作-->
 
@@ -26,80 +25,6 @@
                    @on-click="handleSearch" />
         </div>
         <div class="selection-table">
-            <!--<el-table
-                :data="tableData"
-                :border="true"
-                style="width: 100%">
-                <el-table-column
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="合作伙伴编码">
-                    <template slot-scope="scope">
-                        <div class="cellText"><span class="code">309287482</span></div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="合作伙伴名称">
-                    <template slot-scope="scope">
-                        <div>星火旅行社1</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="合作伙伴名称">
-                    <template slot-scope="scope">
-                        <div>A级销售渠道</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="合作协议起始日期">
-                    <template slot-scope="scope">
-                        <div>2018-10-09</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="合作协议结束日期">
-                    <template slot-scope="scope">
-                        <div>2018-10-09</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="协议状态"
-                    :render-header="renderHeader">
-                    <template slot-scope="scope">
-                        <div class="cellText">
-                <span @click="enable">
-                  <span :class="enableValue?'icon_enable':'icon_notEnable'"></span><span>已启用</span>
-                </span>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    :label="$t('remark')">
-                    <template slot-scope="scope">
-                        <div>这是动物园门票，这是动物园门票，</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="操作">
-                    <template slot-scope="scope">
-                        <div class="operation">
-                            <span>{{$t('modify')}}</span>
-                            <span class="span-yellow">禁用</span>
-                            <span class="span-gray" @click="deletePartnerBtn">{{$t('del')}}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>-->
 
             <table-com
                 :ofsetHeight="170"
@@ -124,6 +49,7 @@
                         {{new Date(scope.row.startDate).format('yyyy-MM-dd')}}
                     </template>
                 </el-table-column>
+
                 <el-table-column
                     slot="column4"
                     slot-scope="row"
@@ -134,6 +60,23 @@
                         {{new Date(scope.row.endDate).format('yyyy-MM-dd')}}
                     </template>
                 </el-table-column>
+
+                <el-table-column
+                    slot="column5"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status=='valid'">
+                            <span class="status-sign valid"></span>已启用
+                        </span>
+                        <span v-if="scope.row.status=='invalid'">
+                            <span class="status-sign invalid"></span>未启用
+                        </span>
+                    </template>
+                </el-table-column>
+
                 <el-table-column
                     slot="column7"
                     slot-scope="row"
@@ -143,7 +86,9 @@
                     <template slot-scope="scope">
                         <span class="operate-btn blue" @click="newPartnerBtn('modify', scope.row)">{{$t('modify')}}</span>
                         <span class="divide-line"></span>
-                        <span class="operate-btn org" @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}</span><!--禁用-->
+                        <span :class="['operate-btn', scope.row.status=='valid' ? 'org' : 'blue']"
+                              @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}
+                        </span><!--启用/禁用-->
                         <span class="divide-line"></span>
                         <span class="operate-btn red" @click="showDelModal(scope.row)">{{$t('del')}}</span>
                     </template>
@@ -274,7 +219,7 @@
                 }
 
                 ajax.post('updatePartnerStatus', {
-                    ids: this.partnerIds.join(','),
+                    ids: isBatch==true ? this.partnerIds.join(',') : scopeRow.id,
                     status: partnerObj.status
                 }).then(res => {
                     if (res.success) {
@@ -302,13 +247,13 @@
                 this.$refs.addPartnerModal.show(obj);
             },
             /**
-             * 删除某一个合作伙伴
+             * 删除某一个或多个合作伙伴
              * @param data - 被删除的行数据
              * @param isBatch - 是否批量操作  Boolean
              */
             showDelModal(data, isBatch) {
                 if (isBatch==true) {
-                    this.name = `${data[0].channelName}、${data[1].channelName}等${data.length}位合作伙伴`;
+                    this.name = `${data[0].channelName}、${data[1].channelName}<span style="color: #333;">等${data.length}个合作伙伴</span>`;
                 } else {
                     this.partnerIds = [data.id];
                     this.name = data.channelName;
@@ -367,6 +312,7 @@
     .partner {
         @include block_outline();
         background: $color_fff;
+        border-radius: 4px 4px 0 0;
 
         .filter-box {
             padding: 15px 30px 15px;
@@ -404,5 +350,31 @@
         .red {
             color: $color_red;
         }
+
+        .status-sign {
+            position: relative;
+            padding-left: 14px;
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 6px;
+                height: 6px;
+                border-radius: 50px;
+            }
+        }
+        .valid:after {
+            background: $color_green;
+        }
+        .invalid:after {
+            background: $color_BBC5D5;
+        }
+    }
+
+    .el-dropdown-menu {
+        width: 88px;
     }
 </style>

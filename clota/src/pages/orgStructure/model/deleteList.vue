@@ -15,7 +15,7 @@
             <i class="iconfont icon-help delete-icon"></i>
             <div class="text">
                 <span>您正在{{deleteName}}：</span>
-                <span class="name">{{name}}</span>
+                <span class="name" v-html="name"></span>
             </div>
             <div class="text">
                 <span class="tips">本操作不可撤销，</span>
