@@ -85,24 +85,22 @@
                         </Option>
                     </Select>-->
                     <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})"><!--$t('selectField', {msg: ''})-->
-                        <div>
-                            <div class="selectTop">
-                                <i-input class="search-classify-input"
-                                         v-model.trim="roleKeyword"
-                                         placeholder="$t('搜索')"
-                                         @on-enter="searchMatched"
-                                         @on-click="searchMatched"
-                                         icon="ios-search-strong">
-                                </i-input>
-                            </div>
-                            <Checkbox-group v-model="rolePrivileges" @on-change="">
-                                <Checkbox v-for="(item,index) in matchedData" :key="index" :label="item.id">
-                                    <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
-                                </Checkbox>
-                            </Checkbox-group>
-                            <div class="noData" v-if="enumData.privileges.length == 0">暂无数据</div>
-                            <div class="noData" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
+                        <div class="selectTop">
+                            <i-input class="search-classify-input"
+                                     v-model.trim="roleKeyword"
+                                     placeholder="$t('搜索')"
+                                     @on-enter="searchMatched"
+                                     @on-click="searchMatched"
+                                     icon="ios-search-strong">
+                            </i-input>
                         </div>
+                        <Checkbox-group v-model="rolePrivileges" @on-change="">
+                            <Checkbox v-for="(item,index) in matchedData" :key="index" :label="item.id">
+                                <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
+                            </Checkbox>
+                        </Checkbox-group>
+                        <div class="noData" v-if="enumData.privileges.length == 0">暂无数据</div>
+                        <div class="noData" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
                     </Select>
                 </Form-item>
             <!--</div>-->
@@ -366,7 +364,6 @@
         margin: auto;
         background-color: #FFFFFF;
         /*border-radius: 4px;*/
-        overflow: auto;
         .ivu-input-icon{
             z-index: 2;
         }

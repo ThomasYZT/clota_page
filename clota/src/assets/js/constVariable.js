@@ -324,3 +324,21 @@ export const authenticationType = [
     },
 ];
 
+// 批量操作 - 组织架构（合作伙伴、自营渠道）
+export const batchOperate = [
+    {
+        label: 'commissioned',   // 启用
+        value: 'valid',
+        status: 'invalid',
+    },
+    {
+        label: 'disabled',   // 禁用
+        value: 'invalid',
+        status: 'valid'
+    },
+    {
+        label: 'del',   // 删除
+        value: 'del',
+        status: 'del',
+    },
+];

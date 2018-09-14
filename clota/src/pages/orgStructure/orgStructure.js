@@ -39,6 +39,7 @@ export const partnerListHead = [
     {
         title: 'operate',       // 操作
         width: 180,
+        enWidth: 220,
         field: ''
     },
 ];
