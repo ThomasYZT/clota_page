@@ -32,6 +32,7 @@
             </finace-role-set>
             <!--员工权限设置-->
             <employee-role-list
+                :employee-list="employeeList"
                 @updateSelected="setSelectedEmployee">
             </employee-role-list>
         </div>
@@ -49,7 +50,9 @@
     import employeeRoleList from './employeeRoleList';
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         data() {
             return {
                 //上级路由列表
@@ -79,7 +82,13 @@
                         {required : true,message : this.$t('inputField',{field : '角色名称'}),trigger : 'blur'},
                         {max : 50,message : this.$t('errorMaxLength',{field : '角色名称',length  : 50}),trigger : 'blur'}
                     ],
-                }
+                },
+                //当前查看角色的id
+                roleId : '',
+                //当前查看类型
+                type : 'add',
+                //角色已经包含的员工列表
+                employeeList : []
             }
         },
         components : {
@@ -130,6 +139,35 @@
                         this.$Message.error('新增失败');
                     }
                 })
+            },
+            /**
+             * 查询角色详情
+             */
+            queryRoleDetail () {
+                ajax.post('findById',{
+                    id : this.roleId
+                }).then(res => {
+                    if(res.success){
+                        this.employeeList = res.data ? res.data.employeeVos : [];
+                        this.formData.roleName = res.data ? res.data.role.roleName : '';
+                    }else{
+                        this.employeeList = [];
+                        this.formData.roleName = '';
+                    }
+                });
+            },
+            /**
+             * 获取路由详情
+             * @param params
+             */
+            getParams (params) {
+                if(params.id){
+                    this.type = params.type;
+                    this.roleId = params.id;
+                    this.queryRoleDetail();
+                }else{
+                    this.type = 'add';
+                }
             }
         },
         computed : {

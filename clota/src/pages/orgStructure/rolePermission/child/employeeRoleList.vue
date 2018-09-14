@@ -13,7 +13,7 @@
             :table-data="tableData"
             :border="true"
             :auto-height="true"
-            :table-com-min-height="200"
+            :table-com-min-height="300"
             @query-data="queryList"
             @selection-change="selectedChange">
             <el-table-column
@@ -59,6 +59,15 @@
     import addEmployee from './addEmployee';
     import delModal from '@/components/delModal/index.vue';
     export default {
+        props : {
+            //已包含的员工列表
+            'employee-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         data() {
             return {
                 //表头配置
@@ -146,6 +155,13 @@
              */
             selectedChange (data) {
                 this.employeeChosed = data;
+            }
+        },
+        watch : {
+            'employeeList' (newVal,oldVal){
+                if(newVal){
+                    this.tableData = JSON.parse(JSON.stringify(newVal));
+                }
             }
         }
     }

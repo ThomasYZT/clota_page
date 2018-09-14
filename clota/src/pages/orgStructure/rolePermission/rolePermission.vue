@@ -87,7 +87,11 @@
              */
             toDetail (data) {
                 this.$router.push({
-                    name : 'addRole'
+                    name : 'addRole',
+                    params : {
+                        id : data.id,
+                        type : 'edit'
+                    }
                 });
             },
             /**

@@ -88,5 +88,11 @@ export default {
     'updateChannelStatus' : '/selfChannel/updateChannelStatus',
     //删除自营渠道
     'deleteChannels' : '/selfChannel/deleteChannels',
+    //查询销售渠道分组
+    'getSaleChannelPage' : '/organize/getSaleChannelPage',
+    //新增销售或渠道分组
+    'addOrUpdateOrgGroup' : '/organize/addOrUpdateOrgGroup',
+    //移动销售渠道分组
+    'batchMoveChannelGroup' : '/organize/batchMoveChannelGroup',
 
 }

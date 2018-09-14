@@ -29,7 +29,8 @@ import {
     TimelineItem,
     Upload,
     Tabs,
-    Steps
+    Steps,
+    Poptip
 } from 'iview';
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
@@ -115,6 +116,7 @@ plugin.install = function (Vue, options) {
     Vue.component('TabPane',Tabs.Pane);
     Vue.component('Steps',Steps);
     Vue.component('Step',Steps.Step);
+    Vue.component('Poptip',Poptip);
     Vue.prototype.$Message = Message;
 
     // 公用样式，指令及方法
