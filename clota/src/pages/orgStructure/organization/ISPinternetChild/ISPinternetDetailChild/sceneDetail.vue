@@ -219,9 +219,10 @@
                     <i-col span="12">
                         <FormItem prop="parentManageId"
                                   label="管理上级："
-                                  v-if="type === 'edit' && activeNode && activeNode.level !== 1"
+                                  v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Select v-model="formDataCopy.parentManageId" >
+                            <Select v-model="formDataCopy.parentManageId"
+                                    :disabled="activeNode && activeNode.level === 1">
                                 <Option v-for="item in superiorList"
                                         :value="item.id"
                                         :key="item.id">
@@ -244,9 +245,10 @@
                     <i-col span="12">
                         <FormItem prop="parentEconomicId"
                                   label="财务上级："
-                                  v-if="type === 'edit' && activeNode && activeNode.level !== 1"
+                                  v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Select v-model="formDataCopy.parentEconomicId" >
+                            <Select v-model="formDataCopy.parentEconomicId"
+                                    :disabled="activeNode && activeNode.level === 1">
                                 <Option v-for="item in fianceSuperiorList"
                                         :value="item.id"
                                         :key="item.id">
