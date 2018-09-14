@@ -136,6 +136,17 @@
                         id : '-1',
                         stay : true
                     });
+                }else{
+                    orgGroupList.push({
+                        groupName : '未分组',
+                        id : '-2',
+                        stay : true
+                    });
+                    orgGroupList.unshift({
+                        groupName : '全部分组',
+                        id : '-1',
+                        stay : true
+                    });
                 }
                 return orgGroupList;
             }
