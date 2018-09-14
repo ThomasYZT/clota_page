@@ -78,5 +78,7 @@ export default {
     'updateChannelStatus' : '/partner/updateChannelStatus',
     //合作伙伴启用、禁用协议
     'deletePartners' : '/partner/deletePartners',
+    //角色详情
+    'findById' : '/role/findById',
 
 }

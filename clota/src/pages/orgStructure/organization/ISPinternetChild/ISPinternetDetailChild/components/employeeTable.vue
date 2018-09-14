@@ -89,7 +89,7 @@
                 let params = {};
                 if(this.isDepartment){
                     params = {
-                        depId : this.searchParams.id,
+                        deptId : this.searchParams.id,
                         pageNo : this.pageNo,
                         pageSize : this.pageSize,
                     };
