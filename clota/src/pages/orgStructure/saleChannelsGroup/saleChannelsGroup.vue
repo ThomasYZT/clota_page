@@ -46,6 +46,17 @@
                     :min-width="row.minWidth">
                 </el-table-column>
                 <el-table-column
+                    slot="column3"
+                    slot-scope="row"
+                    :label="row.title"
+                    show-overflow-tooltip
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{$t(scope.row.type === 'channel' ? 'channels' : 'partner')}}
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column4"
                     slot-scope="row"
                     :label="row.title"
@@ -73,7 +84,7 @@
                                     @move-channel-group="moveChannelGroup">
                                 </move-group>
                             </li>
-                            <li @click="channelRemove(scoped.row)">移除分组</li>
+                            <li :class="{disabled : !scoped.row.saleGroupName}" @click="channelRemove(scoped.row)">移除分组</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -206,6 +217,7 @@
              * @param data
              */
             channelRemove (data) {
+                if(!data.saleGroupName) return;
                 this.removeGroup([{
                     saleGroupId :  '',
                     id :  data.id,
@@ -264,13 +276,6 @@
 
             /deep/ .ivu-btn-primary{
                 margin-right: 10px;
-            }
-
-            .label-text{
-                display: inline-block;
-                width: 200px;
-                float: left;
-                @include overflow_tip();
             }
 
             .save{

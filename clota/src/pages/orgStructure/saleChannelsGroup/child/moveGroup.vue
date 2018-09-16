@@ -4,7 +4,9 @@
     <Poptip placement="right"
             width="312"
             :value="value"
-            transfer popper-class="select-group">
+            transfer
+            popper-class="select-group"
+            @on-popper-hide="popperHide">
         <span @click="$emit('input',true)">移动到</span>
         <div slot="content">
             <div class="name">将所选销售渠道移至分组</div>
@@ -79,6 +81,12 @@
                     }
                 });
             },
+            /**
+             * 模态框隐藏触发事件
+             */
+            popperHide () {
+                this.$refs.formData.resetFields();
+            }
         }
     }
 </script>

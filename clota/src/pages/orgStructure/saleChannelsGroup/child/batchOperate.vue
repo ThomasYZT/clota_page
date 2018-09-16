@@ -5,7 +5,8 @@
             v-model="bathChangeGroupShow"
             width="312"
             transfer
-            popper-class="select-group">
+            popper-class="select-group"
+            @on-popper-hide="popperHide">
         <el-dropdown trigger="click"
                      placement="bottom-start"
                      size="medium"
@@ -28,7 +29,9 @@
                         <Option :value="item.id"
                                 v-for="item in orgGroupList"
                                 :label="item.groupName"
-                                :key="item.id">
+                                :key="item.id"
+                                class="name-select"
+                                v-w-title="item.groupName">
                         </Option>
                     </Select>
                 </FormItem>
@@ -103,6 +106,12 @@
                         this.bathChangeGroupShow = false;
                     }
                 });
+            },
+            /**
+             * 弹窗隐藏时，去掉表单验证信息
+             */
+            popperHide () {
+                this.$refs.formData.resetFields();
             }
         }
     }
@@ -127,6 +136,10 @@
         padding: 20px 0 10px 0;
         font-size: 12px;
         color: #666666;
+    }
+
+    .name-select{
+        @include overflow_tip();
     }
     .select-group .btn-area{
         text-align: right;

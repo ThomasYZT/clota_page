@@ -6,7 +6,8 @@
             width="312"
             transfer
             style="float: left"
-            popper-class="add-group">
+            popper-class="add-group"
+            @on-popper-hide="popperHide">
         <Button type="primary"
                 icon="ios-plus-empty"
                 class="ivu-btn-108px"
@@ -80,7 +81,13 @@
             addGroup(event) {
                 this.addGroupPopVisible = true;
             },
-        }
+            /**
+             * 弹窗隐藏时，去掉表单验证信息
+             */
+            popperHide () {
+                this.$refs.formData.resetFields();
+            }
+        },
     }
 </script>
 

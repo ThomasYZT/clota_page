@@ -7,19 +7,19 @@
                     v-for="item in allGroupList"
                     :label="item.groupName"
                     :key="item.id">
-                <div class="group-list" @click="stopPro" >
-                    <template v-if="!item.edit">
+                <div class="group-list" >
+                    <template>
                         <span class="label-text" v-w-title="item.groupName">{{item.groupName}}</span>
                         <span class="iconfont icon-edit"
                               v-if="item.stay !== true"
                               @click="editOrgType($event,item)"></span>
-                        <span class="iconfont icon-delete" v-if="item.stay !== true" @click="delGroupShowModal(item)"></span>
+                        <span class="iconfont icon-delete" v-if="item.stay !== true" @click="delGroupShowModal(item,$event)"></span>
                     </template>
-                    <template v-else>
-                        <Input v-model="item.groupName" style="width: 190px;"/>
-                        <span class="save">保存</span>
-                        <span class="cancel" @click="item.edit = false">取消</span>
-                    </template>
+                    <!--<template v-else>-->
+                        <!--<Input v-model="item.groupName" style="width: 190px;"/>-->
+                        <!--<span class="save">保存</span>-->
+                        <!--<span class="cancel" @click="item.edit = false">取消</span>-->
+                    <!--</template>-->
                 </div>
             </Option>
         </Select>
@@ -33,7 +33,13 @@
                 </span>
             </div>
         </del-modal>
-        <edit-modal>
+        <!--修改分组名字模态框-->
+        <edit-modal ref="editModal">
+            <Form ref="formData" :model="formData" :rules="ruleValidate">
+                <FormItem prop="orgName" label="修改分组名称">
+                    <Input v-model.trim="formData.orgName" style="width: 280px"/>
+                </FormItem>
+            </Form>
         </edit-modal>
     </div>
 </template>
@@ -62,27 +68,49 @@
                 groupType : '-1',
                 //当前操作的分组信息
                 currentGroup : {},
+                //表单校验规则
+                ruleValidate : {
+                    orgName : [
+                        {required : true,message : this.$t('inputField',{field : '分组名称'}),trigger : 'blur'},
+                        {max : 50,message : this.$t('errorMaxLength',{field : '分组名称',length : 50}),trigger : 'blur'},
+                    ]
+                },
+                //分组信息
+                formData : {
+                    //分组姓名
+                    orgName : '',
+                    //分组id
+                    orgId : ''
+                },
             }
         },
         methods: {
-            stopPro (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            },
             /**
              * 编辑分组
              * @param e
              * @param data
              */
             editOrgType (e,data) {
-                // e.stopPropagation();
+                e.stopPropagation();
                 this.$set(data,'edit',!data.edit);
+                this.formData.orgName = data.groupName;
+                this.formData.orgId = data.id;
+                //解决select必须点击一次才能消失的问题
+                document.body.click();
+                this.$refs.editModal.show({
+                    title : '修改分组名称',
+                    confirmCallback : () => {
+                        this.confirmChangeOrgname();
+                    }
+                });
             },
             /**
              * 删除销售渠道分组模态框显示
              * @param data
+             * @param e
              */
-            delGroupShowModal (data) {
+            delGroupShowModal (data,e) {
+                e.stopPropagation();
                 this.currentGroup = data;
                 this.$refs.delGroupModal.show({
                     title : `删除分组`,
@@ -90,6 +118,8 @@
                         this.delGroup(data);
                     }
                 });
+                //解决select必须点击一次才能消失的问题
+                document.body.click();
             },
             /**
              * 删除销售渠道分组
@@ -118,6 +148,26 @@
             groupChange () {
                 this.$emit('update:groupType',this.groupType);
                 this.$emit('fresh-channel');
+            },
+            /**
+             * 确定修改分组名称
+             */
+            confirmChangeOrgname () {
+                ajax.post('addOrUpdateOrgGroup',{
+                    id : this.formData.orgId,
+                    groupType : 'sale',
+                    groupName : this.formData.orgName
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('修改成功');
+                        this.$emit('fresh-data');
+                        this.$emit('fresh-channel');
+                    }else{
+                        this.$Message.error('修改失败');
+                    }
+                }).finally(() => {
+                    this.$refs.editModal.hide();
+                });
             }
         },
         computed: {
@@ -173,6 +223,13 @@
                     display: inline-block;
                 }
             }
+        }
+
+        .label-text{
+            display: inline-block;
+            width: 190px;
+            float: left;
+            @include overflow_tip();
         }
 
         .group-list{
