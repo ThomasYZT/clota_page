@@ -47,11 +47,14 @@
                           prop="cashierTypeGroup"
                           v-if="showCashierTypeGroup">
                     <Select v-model="formData.cashierTypeGroup"
+                            transfer
                             style="width:280px"
                             transfer>
                         <Option v-for="item in cashierTypeGroupList"
                                 :value="item.id"
-                                :key="item.id">
+                                :key="item.id"
+                                v-w-title="item.groupName"
+                                class="overflow-tip">
                             {{ $t(item.groupName) }}
                         </Option>
                     </Select>
@@ -62,11 +65,14 @@
                           prop="saleTypeGroup"
                           v-if="showSaleTypeGroup">
                     <Select v-model="formData.saleTypeGroup"
+                            transfer
                             style="width:280px"
                             transfer>
                         <Option v-for="item in saleTypeGroupList"
                                 :value="item.id"
-                                :key="item.id">
+                                :key="item.id"
+                                v-w-title="item.groupName"
+                                class="overflow-tip">
                             {{ item.groupName }}
                         </Option>
                     </Select>
@@ -118,7 +124,21 @@
         data() {
             //校验服务器名称
             const validateServerName = (rule, value, callback) => {
-                callback();
+                if(value){
+                    this.checkServerUrlUnique(value).then(res => {
+                        if(res.success){
+                            if(res.data){
+                                callback();
+                            }else{
+                                callback('服务器名称已存在');
+                            }
+                        }else{
+                            callback('服务器名称校验失败');
+                        }
+                    });
+                }else{
+                    callback(this.$t('inputField',{field : this.$t('serverName')}));
+                }
             };
             return {
                 //表单数据
@@ -272,7 +292,8 @@
              */
             getCheckItemPage () {
                 ajax.post('getOrgGroupList',{
-                    groupType : 'check'
+                    groupType : 'check',
+                    orgId : this.chosedNodeDetail.id
                 }).then(res => {
                    if(res.success){
                        this.cashierTypeGroupList = res.data ? res.data : [];
@@ -286,13 +307,23 @@
              */
             getSaleItemPage () {
                 ajax.post('getOrgGroupList',{
-                    groupType : 'sale'
+                    groupType : 'sale',
+                    orgId : this.chosedNodeDetail.id
                 }).then(res => {
                     if(res.success){
                         this.saleTypeGroupList = res.data ? res.data : [];
                     } else{
                         this.saleTypeGroupList = [];
                     }
+                });
+            },
+            /**
+             * 校验服务器名称的唯一性
+             * @param value
+             */
+            checkServerUrlUnique (value) {
+                return ajax.post('checkServerUrlUnique',{
+                    serverUrl : value
                 });
             }
         },
@@ -360,6 +391,11 @@
             padding: 37px 0 5px 0;
             overflow: auto;
 
+            .icon-note{
+                color: #9e9e9e;
+                font-size: 13px;
+            }
+
             /deep/ .ivu-form {
 
                 .ivu-form-item {
@@ -381,6 +417,10 @@
                     font-size: $font_size_14px;
                     color: $color_6c6c6c;
                 }
+            }
+
+            @at-root .overflow-tip{
+                @include overflow_tip();
             }
         }
         & /deep/ .ivu-modal-footer {

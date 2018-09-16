@@ -7,9 +7,9 @@
             transfer
             popper-class="select-group"
             @on-popper-hide="popperHide">
-        <span @click="$emit('input',true)">移动到</span>
+        <span @click="$emit('input',true)">移至其它分组</span>
         <div slot="content">
-            <div class="name">将所选销售渠道移至分组</div>
+            <div class="name">将所选核销设备移至分组</div>
             <Form ref="formData" :model="formData" :rules="ruleValidate">
                 <FormItem prop="selectOrgId">
                     <Select v-model="formData.selectOrgId" style="width:240px" transfer>
@@ -39,7 +39,7 @@
                    return {};
                }
            },
-            //销售渠道分组
+            //核销设备分组
             'orgGroupList' : {
                 type : Array,
                 default () {

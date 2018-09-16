@@ -54,7 +54,7 @@
             editModal
         },
         props : {
-            //销售渠道分组
+            //核销设备分组分组
             'orgGroupList' : {
                 type : Array,
                 default () {
@@ -105,7 +105,7 @@
                 });
             },
             /**
-             * 删除销售渠道分组模态框显示
+             * 删除核销设备分组分组模态框显示
              * @param data
              * @param e
              */
@@ -122,11 +122,11 @@
                 document.body.click();
             },
             /**
-             * 删除销售渠道分组
+             * 删除核销设备分组分组
              * @param data
              */
             delGroup (data) {
-                ajax.post('deleteChannelGroup',{
+                ajax.post('deleteItemGroup',{
                     groupId : data.id
                 }).then(res => {
                     if(res.success){

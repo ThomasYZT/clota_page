@@ -66,18 +66,18 @@
                             <Input v-model.trim="formDataCopy.serverUrl"/>
                             <template slot="label">
                                 <span>服务器名称：</span>
-                                <Tooltip placement="bottom">
+                                <Tooltip placement="bottom" transfer>
                                     <div slot="content" class="tips-content">
                                         {{$t('serverNameTips')}}
                                     </div>
-                                    <span class="iconfont icon-note"></span>
+                                    <span class="iconfont icon-note" style="color: #9e9e9e;"></span>
                                 </Tooltip>
                             </template>
                         </FormItem>
                         <div class="node-info" v-else>
                             <span class="info-key">
                                 服务器名称：
-                                 <Tooltip placement="bottom">
+                                 <Tooltip placement="bottom" transfer>
                                     <div slot="content" class="tips-content">
                                         {{$t('serverNameTips')}}
                                     </div>
@@ -104,7 +104,7 @@
                             </Select>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">服务器名称：</span>
+                            <span class="info-key">款台类型：</span>
                             <span class="info-val"
                                   v-w-title="$t(checkerType)">
                                  {{$t(checkerType) | contentFilter}}
@@ -313,7 +313,8 @@
              */
             getCheckItemPage () {
                 ajax.post('getOrgGroupList',{
-                    groupType : 'check'
+                    groupType : 'check',
+                    orgId : this.activeNode.id,
                 }).then(res => {
                     if(res.success){
                         this.verifyCashierTypeGroupList = res.data ? res.data : [];
@@ -327,7 +328,8 @@
              */
             getSaleItemPage () {
                 ajax.post('getOrgGroupList',{
-                    groupType : 'sale'
+                    groupType : 'sale',
+                    orgId : this.activeNode.id,
                 }).then(res => {
                     if(res.success){
                         this.verifySaleTypeGroupList = res.data ? res.data : [];
@@ -420,6 +422,11 @@
                 display: inline-block;
                 float: left;
                 color: $color_333;
+
+                .icon-note{
+                    color: #9e9e9e;
+                    margin-right: 5px;
+                }
             }
         }
 

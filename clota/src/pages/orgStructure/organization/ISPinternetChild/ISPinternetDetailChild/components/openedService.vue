@@ -307,6 +307,7 @@
                 .icon-arrow-down{
                     display: inline-block;
                     transition: all 0.5s;
+                    color: #9e9e9e;
 
                     &::before{
                         color: $color_blue;

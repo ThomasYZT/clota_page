@@ -367,7 +367,7 @@
         </employee-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
-            <div style="padding: 0 20px">
+            <div style="padding: 0 20px;word-break: break-all">
                 您正在重置管理员{{companyDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
                 {{companyDetail.email}}
             </div>
@@ -726,7 +726,7 @@
 
     .company-detail {
         @include block_outline($width: unquote('calc(100% - 400px)'));
-        padding: 11px 20px;
+        padding: 11px 35px;
         float: right;
         overflow: auto;
 

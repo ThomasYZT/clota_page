@@ -127,8 +127,13 @@
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            } else {
+                            }else if(res.message === '用户名密码错误'){
                                 this.errMsg = this.$t('accoutOrPassErr');
+                                setTimeout(() => {
+                                    this.isLoging = false;
+                                },500);
+                            } else {
+                                this.errMsg = this.$t('loginError');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);

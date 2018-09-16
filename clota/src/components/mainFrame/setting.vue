@@ -11,7 +11,9 @@
             {{accountName | contentFilter}}
         </div>
         <div class="person-center">
-            <span class="center-name">个人中心</span>
+            <span class="center-name" @click="toPersonCenter">
+                个人中心 <span class="iconfont icon-arrow-right"></span>
+            </span>
         </div>
         <div class="lang-wrap">
             <div class="lang-list">
@@ -86,6 +88,15 @@
             },
             getAccountName () {
                 this.accountName = sessionStorage.getItem('accountName') ? sessionStorage.getItem('accountName') : '';
+            },
+            /**
+             * 跳转到个人中心页面
+             */
+            toPersonCenter () {
+                this.$router.push({
+                    name : 'personalInfo'
+                });
+                this.$store.commit('changeOperateLine',false);
             }
         },
         created () {
@@ -142,6 +153,10 @@
 
             .center-name{
                 cursor: pointer;
+
+                .icon-arrow-right{
+                    font-size: 12px;
+                }
             }
         }
 

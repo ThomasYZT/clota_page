@@ -357,11 +357,12 @@
                 }).then(res => {
                     if(res.success){
                         this.$emit('fresh-structure-data');
-                        this.$emit('input', false);
                         this.$Message.success('新增成功');
                     }else{
                         this.$Message.error(res.message | '新增失败')
                     }
+                }).finally(() => {
+                    this.$emit('input', false);
                 });
             },
             /**

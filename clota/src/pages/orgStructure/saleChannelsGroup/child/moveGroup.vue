@@ -7,7 +7,7 @@
             transfer
             popper-class="select-group"
             @on-popper-hide="popperHide">
-        <span @click="$emit('input',true)">移动到</span>
+        <span @click="$emit('input',true)">移至其它分组</span>
         <div slot="content">
             <div class="name">将所选销售渠道移至分组</div>
             <Form ref="formData" :model="formData" :rules="ruleValidate">

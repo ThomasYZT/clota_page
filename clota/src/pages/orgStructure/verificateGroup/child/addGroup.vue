@@ -64,7 +64,7 @@
                             groupName : this.formData.orgName
                         }).then(res => {
                             if(res.success){
-                                this.$Message.success(`新增销售渠道分组:${this.formData.orgName}成功`);
+                                this.$Message.success(`新增核销设备分组:${this.formData.orgName}成功`);
                                 this.$emit('fresh-data');
                             }else{
                                 this.$Message.error('新增失败');

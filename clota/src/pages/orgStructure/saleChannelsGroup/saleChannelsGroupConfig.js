@@ -1,6 +1,10 @@
 //销售渠道分组
 export const saleGroup = [
-    {},
+    {
+        title: '',
+        width: 60,
+        field: 'check',
+    },
     {
         title: '渠道编码',
         minWidth: 200,
@@ -23,7 +27,7 @@ export const saleGroup = [
     },
     {
         title : '操作',
-        width : 170,
+        width : 210,
         field : 'operate'
     }
 ];

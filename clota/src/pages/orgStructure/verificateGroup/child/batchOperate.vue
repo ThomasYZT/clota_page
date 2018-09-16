@@ -22,7 +22,7 @@
             </el-dropdown-menu>
         </el-dropdown>
         <div slot="content">
-            <div class="name">将所选销售渠道移至分组</div>
+            <div class="name">将所选核销设备移至分组</div>
             <Form ref="formData" :model="formData" :rules="ruleValidate">
                 <FormItem prop="selectOrgId">
                     <Select v-model="formData.selectOrgId" style="width:240px" transfer>
@@ -48,7 +48,7 @@
     import {saleOperateBatch} from '@/assets/js/constVariable.js';
     export default {
         props : {
-            //销售渠道分组
+            //核销设备分组
             'orgGroupList' : {
               type : Array,
               default () {

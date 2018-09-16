@@ -17,7 +17,6 @@ export default {
             _name: 'members',
             menuName: 'personalCenter',
             rightPath : topMenuName + '.' + 'personalCenter',
-            isMenu : true
         },
         children: {
             personalInfo: {

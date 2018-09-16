@@ -104,5 +104,7 @@ export default {
     'getCheckItemPage' : '/organize/getCheckItemPage',
     //移动核销设备分组
     'batchMoveItemGroup' : '/organize/batchMoveItemGroup',
+    //删除核销设备分组
+    'deleteItemGroup' : '/organize/deleteItemGroup',
 
 }

@@ -152,7 +152,6 @@
                         for(let i = 0,j = this.openedServices.length;i < j;i++){
                             for(let a = 0,b = this.selectedService.length;i < j;i++){
                                 if(this.openedServices[i].serviceId !== this.selectedService[a].serviceId){
-                                    alert(1)
                                     selectService.push(this.selectedService[a]);
                                 }
                             }

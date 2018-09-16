@@ -37,9 +37,8 @@
                         <span class="iconfont icon-edit"></span>
                         {{$t('modify')}}
                     </span>
-                    <span :class="{'started'
-                        :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
-                        {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+                    <span :class="{'started' :sceneDetail.status === 'open' ,'not-started' : sceneDetail.status === 'close'}">
+                        {{$t(sceneDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                     </span>
                 </template>
 
@@ -633,7 +632,7 @@
 
     .scene-detail {
         @include block_outline($width: unquote('calc(100% - 400px)'));
-        padding: 11px 20px;
+        padding: 11px 35px;
         float: right;
         overflow: auto;
 

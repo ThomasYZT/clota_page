@@ -53,7 +53,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t(scope.row.type === 'channel' ? 'channels' : 'partner')}}
+                        {{$t(scope.row.type === 'partner' ? 'partner' : 'channels')}}
                     </template>
                 </el-table-column>
                 <el-table-column
