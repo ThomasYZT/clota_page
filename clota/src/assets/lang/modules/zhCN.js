@@ -735,6 +735,9 @@ export default {
     'verifyCashierType': '核销款台',
     'verifySaleType': '销售款台',
     'S007': '当前删除节点或其子孙节点是其它节点的财务上级，不可删除，请重新设置财务上级后再删除',
-    serverNameTips: '服务器名称可以是景区编码+款台编号，也可以输入内网IP地址。不可重复。',
+    'serverNameTips': '服务器名称可以是景区编码+款台编号，也可以输入内网IP地址。不可重复。',
+    'addRole': '新增角色',
+    'roleDetail': '角色详细',
+    'copyRole': '复制角色',
 
 }

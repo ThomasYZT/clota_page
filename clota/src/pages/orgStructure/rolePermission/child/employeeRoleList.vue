@@ -58,6 +58,7 @@
     import {roleHead} from './employeeRoleListConfig';
     import addEmployee from './addEmployee';
     import delModal from '@/components/delModal/index.vue';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //已包含的员工列表
@@ -66,6 +67,11 @@
                 default () {
                     return [];
                 }
+            },
+            //修改时角色的id
+            'role-id' : {
+                type : String,
+                default : ''
             }
         },
         data() {
@@ -141,14 +147,30 @@
              * @param data
              */
             confirmDel (data) {
-
+                //需要删除的员工的id
+                let delIds = [];
+                //保留的员工id
+                let leftTableData = [];
                 for(let i = 0,j = data.length;i < j;i++){
                     for(let a = this.tableData.length - 1,b = 0;a >= b;a--){
                         if(data[i].id === this.tableData[a].id){
-                            this.tableData.splice(a,1);
+                            delIds.push(data[i].id);
+                        }else{
+                            leftTableData.push(this.tableData[a]);
                         }
                     }
                 }
+                ajax.post('deleteRoleOfEmps',{
+                    roleId : this.roleId,
+                    accountIds : delIds.join(',')
+                }).then(res => {
+                    if(res.success){
+                       this.$Message.success('删除成功');
+                       this.tableData = leftTableData;
+                    }else{
+                        this.$Message.error(res.message || '删除失败');
+                    }
+                });
             },
             /**
              * 选择员工改变

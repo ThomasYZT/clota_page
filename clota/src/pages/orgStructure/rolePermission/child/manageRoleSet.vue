@@ -4,7 +4,7 @@
     <div class="manage-role-set">
         <div class="node-list">
             <div class="node-name">
-                景区经营权限：
+                经营权限：
             </div>
             <div class="node-info">
                 <el-tree :data="companyData"

@@ -3,7 +3,7 @@
 <template>
     <div class="add-role">
         <bread-crumb-head
-            :locale-router="'newCardCoupon'"
+            :locale-router="localeRouter"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
@@ -35,6 +35,7 @@
             </finace-role-set>
             <!--员工权限设置-->
             <employee-role-list
+                :role-id="roleId"
                 ref="employee"
                 :employee-list="employeeList"
                 @updateSelected="setSelectedEmployee">
@@ -62,9 +63,9 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: 'card',
+                        name: 'rolePermission',
                         router: {
-                            name: 'card'
+                            name: 'rolePermission'
                         }
                     }
                 ],
@@ -118,7 +119,7 @@
              */
             save () {
                 let privileges = [...this.$refs.mangeRole.getMangePrivalige(),...this.$refs.finaceRole.getMangePrivalige()];
-                if(privileges.length < 0){
+                if(privileges.length <= 0){
                     this.$Message.warning('请先添加菜单权限');
                 }else{
                     this.$refs.formValidate.validate(valid => {
@@ -182,6 +183,7 @@
                     }
                 }else{
                     this.type = 'add';
+                    this.roleId = '';
                 }
             },
             /**
@@ -261,7 +263,19 @@
         computed : {
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
-            })
+            }),
+            //面包屑上当前菜单名
+            localeRouter () {
+                if(this.type === 'add'){
+                    return 'addRole';
+                }else if(this.type === 'edit'){
+                    return 'roleDetail';
+                }else if(this.type === 'copy'){
+                    return 'copyRole'
+                }else{
+                    return '';
+                }
+            }
         }
     }
 </script>

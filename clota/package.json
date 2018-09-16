@@ -20,6 +20,7 @@
     "crypto-js": "^3.1.9-1",
     "echarts": "4.1.0",
     "element-ui": "^2.4.5",
+    "fundebug-javascript": "^1.2.3",
     "iview": "^2.14.2",
     "klwk-ui": "^0.4.1",
     "vue": "^2.5.2",

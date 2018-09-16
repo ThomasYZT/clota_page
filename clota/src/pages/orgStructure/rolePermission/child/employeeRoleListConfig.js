@@ -17,7 +17,7 @@ export const roleHead = [
     },
     {
         title : '部门',
-        width : 120,
+        minWidth: 150,
         field : 'deptName'
     },
     {

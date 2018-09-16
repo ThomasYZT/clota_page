@@ -216,7 +216,7 @@
                 <title-temp title="productLog"></title-temp>
                 <div class="form-content">
                     <Timeline>
-                        <TimelineItem v-for="(item,index) in logList" color="#DFDFDF">
+                        <TimelineItem v-for="(item,index) in logList" :key="index" color="#DFDFDF">
                             <p class="time">{{item.time}}</p>
                             <p class="content"><span class="name">{{item.name}}</span>{{item.desc}}</p>
                         </TimelineItem>

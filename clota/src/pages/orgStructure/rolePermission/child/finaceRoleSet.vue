@@ -4,7 +4,7 @@
     <div class="finace-role-set">
         <div class="node-list">
             <div class="node-name">
-                景区财务权限：
+                财务权限：
             </div>
             <div class="node-info">
                 <el-tree :data="companyData"
