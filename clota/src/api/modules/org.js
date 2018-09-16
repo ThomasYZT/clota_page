@@ -100,5 +100,9 @@ export default {
     'updateRole' : '/role/updateRole',
     //删除角色下员工
     'deleteRoleOfEmps' : '/role/deleteRoleOfEmps',
+    //查询所有的核销设备分组
+    'getCheckItemPage' : '/organize/getCheckItemPage',
+    //移动核销设备分组
+    'batchMoveItemGroup' : '/organize/batchMoveItemGroup',
 
 }

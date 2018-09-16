@@ -137,7 +137,7 @@ export default {
                 //组织架构--核销设备分组
                 path: '/orgManage/verificateGroup',
                 name: 'verificateGroup',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/verificateGroup.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/checkGroup.vue'),
                 meta: {
                     menuName: 'verificateGroup',
                     _name: 'members',

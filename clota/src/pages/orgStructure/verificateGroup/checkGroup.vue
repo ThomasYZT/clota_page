@@ -1,6 +1,6 @@
 1<template>
-    <!-- 销售渠道分组 -->
-    <div class="saleChannelsGroup">
+    <!-- 核销设备分组 -->
+    <div class="check-group">
         <div class="orgHeader">
 
             <!--新增分组-->
@@ -53,22 +53,24 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t(scope.row.type === 'channel' ? 'channels' : 'partner')}}
+                        {{$t(scope.row.checkerType === 'check'
+                        ? 'verifyCashierType' :  scope.row.checkerType === 'sale'
+                        ? 'verifySaleType' : 'verifySaleAndCashierType')}}
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column4"
+                    slot="column5"
                     slot-scope="row"
                     :label="row.title"
                     show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.saleGroupName ? scope.row.saleGroupName : '未分组'}}
+                        {{scope.row.checkGroupId ? scope.row.checkGroupName : '未分组'}}
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column5"
+                    slot="column6"
                     slot-scope="row"
                     :label="row.title"
                     show-overflow-tooltip
@@ -84,7 +86,7 @@
                                     @move-channel-group="moveChannelGroup">
                                 </move-group>
                             </li>
-                            <li :class="{disabled : !scoped.row.saleGroupName}" @click="channelRemove(scoped.row)">移出分组</li>
+                            <li :class="{disabled : !scoped.row.checkGroupId}" @click="channelRemove(scoped.row)">移出分组</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -94,7 +96,7 @@
         <del-modal ref="delModal">
             <div class="del-tips">
                 <Icon type="help-circled"></Icon>
-                <span class="red-bale">将所选销售渠道从本分组移出后，将列入未分组</span>
+                <span class="red-bale">将所选核销设备从本分组移出后，将列入未分组</span>
             </div>
         </del-modal>
     </div>
@@ -104,13 +106,14 @@
 <script>
     import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {saleGroup} from './saleChannelsGroupConfig';
+    import {saleGroup} from './checkGroupConfig';
     import delModal from '@/components/delModal/index.vue';
     import {saleOperateBatch} from '@/assets/js/constVariable.js';
     import batchOpertate from'./child/batchOperate';
     import addGroup from './child/addGroup';
     import groupSelect from './child/groupSelect';
     import moveGroup from './child/moveGroup';
+    import {mapGetters} from 'vuex';
 
     export default {
         components: {
@@ -125,7 +128,7 @@
             return {
                 //表单数据
                 tableData: [],
-                //销售渠道分组
+                //核销设备分组
                 orgGroupList : [],
                 //表头配置
                 columns : saleGroup,
@@ -143,28 +146,28 @@
         },
         methods: {
             /**
-             * 查询销售渠道分组信息
+             * 查询核销设备分组信息
              */
             getOrgGroupList () {
                 ajax.post('getOrgGroupList',{
-                    groupType : 'sale'
+                    groupType : 'check'
                 }).then(res => {
                     if(res.success){
                         this.orgGroupList = res.data ? res.data : [];
-
                     }else{
                         this.orgGroupList = [];
                     }
                 });
             },
             /**
-             * 查询所有销售渠道分组
+             * 查询所有核销设备分组
              */
             queryList() {
-                ajax.post('getSaleChannelPage',{
+                ajax.post('getCheckItemPage',{
                     groupId : this.groupType === '-2' ? '' : this.groupType,
                     pageNo : this.pageNo,
-                    pageSize : this.pageSize
+                    pageSize : this.pageSize,
+                    orgId : this.manageOrgs.id
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data ? res.data.data : [];
@@ -176,11 +179,11 @@
                 })
             },
             /**
-             * 移动销售渠道分组
+             * 移动核销设备分组
              * @param data
              */
             batchMoveChannelGroup (data) {
-                ajax.post('batchMoveChannelGroup',data,{
+                ajax.post('batchMoveItemGroup',data,{
                     headers : {
                         'Content-Type' : 'application/json;charset-UTF-8'
                     }
@@ -217,9 +220,9 @@
              * @param data
              */
             channelRemove (data) {
-                if(!data.saleGroupName) return;
+                if(!data.checkGroupId) return;
                 this.removeGroup([{
-                    saleGroupId :  '',
+                    checkGroupId :  '',
                     id :  data.id,
                 }]);
             },
@@ -228,7 +231,7 @@
              */
             handleOutGroup () {
                 this.removeGroup(this.saleGroupSelected.map(item => ({
-                    saleGroupId :  '',
+                    checkGroupId :  '',
                     id :  item.id,
                 })));
             },
@@ -238,7 +241,7 @@
              */
             handleRemoveGroup (groupId) {
                 this.batchMoveChannelGroup(this.saleGroupSelected.map(item => ({
-                    saleGroupId :  groupId,
+                    checkGroupId :  groupId,
                     id :  item.id,
                 })));
             },
@@ -253,6 +256,11 @@
         created() {
             this.getOrgGroupList();
         },
+        computed : {
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            })
+        }
     }
 </script>
 
@@ -261,7 +269,7 @@
     @import '../commonFile/common';
 
 
-    .saleChannelsGroup {
+    .check-group {
         @include block_outline();
         background: $color_fff;
 
