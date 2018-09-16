@@ -64,6 +64,8 @@ export default {
     'queryRoles' : '/role/queryRoles',
     //查询组织机构对应的菜单权限
     'getAllPrivilege' : '/privilege/getAllPrivilege',
+    //查询角色在各机构的权限
+    'findRolePrivInOrg' : '/role/findRolePrivInOrg',
     //新增角色
     'addRole' : '/role/addRole',
     //重置管理员密码

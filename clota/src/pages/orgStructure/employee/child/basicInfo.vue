@@ -78,64 +78,67 @@
             </Form-item>
             <!--角色权限-->
             <!--<div class="ivu-form-item-wrap">-->
-            <Form-item :label="$t('rolePermission')" prop="privileges">
+            <!--<Form-item :label="$t('rolePermission')" prop="privileges">
                 <Select v-model="rolePrivileges" multiple @on-change="onChangeSelect">
                     <Option v-for="item in enumData.privileges" :key="item.id"
                             :value="item.id">{{ item.roleName }}
                     </Option>
                 </Select>
-            </Form-item>
+            </Form-item>-->
 
-            <!--<Form-item class="privilege-wrap" :label="$t('rolePermission')" prop="privileges">
-                    <Select v-model="rolePrivileges" multiple @on-change="onChangeSelect">
-                        <Option v-for="item in enumData.privileges" :key="item.id"
-                                :value="item.id">{{ item.roleName }}
-                        </Option>
-                    </Select>
+            <Form-item class="privilege-wrap" :label="$t('rolePermission')" prop="privileges">
 
-                    &lt;!&ndash;<span class="text text-ellipsis" v-if="rolePrivileges.length != 0">{{rolePrivileges.join(',')}}</span>&ndash;&gt;
-                    <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})">
-                        <Option :value="''">
-                            <div class="select-content" @click.stop="">
-                                <div class="selectTop">
-                                    <i-input class="search-classify-input"
-                                             v-model.trim="roleKeyword"
-                                             :placeholder="$t('搜索')"
-                                             @on-enter="searchMatched"
-                                             @on-click="searchMatched"
-                                             icon="ios-search-strong">
-                                    </i-input>
+                <span class="text text-ellipsis" v-if="rolePrivileges.length != 0">{{roleNames}}</span>
+                <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})">
+                    <Option :value="''">
+                        <div class="select-content" @click.stop="">
+                            <div class="selectTop">
+                                <Input class="search-classify-input"
+                                       v-model.trim="roleKeyword"
+                                       :placeholder="$t('搜索')"
+                                       @on-enter="searchMatched"
+                                       @on-click="searchMatched"
+                                       icon="ios-search" />
+                            </div>
+                            <Checkbox-group v-model="rolePrivileges" @on-change="onChangeSelect">
+                                <div :class="['select-group-item', {'active': item.id==activeGroupItem.id}]"
+                                     v-for="(item,index) in matchedData" :key="index"
+                                     @click="handleClickItem(item)">
+                                    <Checkbox :label="item.id" @click.native.stop="">{{''}}</Checkbox>
+                                    <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
                                 </div>
-                                <Checkbox-group v-model="rolePrivileges" @on-change="">
-                                    <div class="select-group-item"
-                                         v-for="(item,index) in matchedData" :key="index"
-                                         @click="">
-                                        <Checkbox :label="item.id">{{''}}</Checkbox>
-                                        <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
-                                    </div>
 
-                                </Checkbox-group>
-                                <div class="noData" v-if="enumData.privileges.length == 0">暂无数据</div>
-                                <div class="noData" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
-                                &lt;!&ndash;右侧内容&ndash;&gt;
-                                <div class="privilege-part">
-                                    <div class="part-1">
-                                        <h4>景区权限</h4>
-                                        <div class="part-content">
-                                            <p class="no-data">暂无数据</p>
+                            </Checkbox-group>
+                            <div class="no-data" v-if="enumData.privileges.length == 0">暂无数据</div>
+                            <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
+                            <!--右侧内容-->
+                            <div class="privilege-part">
+                                <div class="part-1">
+                                    <h4>景区权限</h4>
+                                    <div class="part-content">
+                                        <div :class="['part-author', {'active-author': item.orgId==activeRoleInOrg.orgId}]"
+                                             v-for="(item,index) in roleInOrg" :key="index"
+                                             @click="onActiveAuthor(item)">{{item.orgName}}
                                         </div>
+                                        <p class="no-data" v-if="roleInOrg.length==0">暂无数据</p>
                                     </div>
-                                    <div class="part-2">
-                                        <h4>菜单权限</h4>
-                                        <div class="part-content">
-                                            <p class="no-data">暂无数据</p>
+                                </div>
+                                <div class="part-2">
+                                    <h4>菜单权限</h4>
+                                    <div class="part-content">
+                                        <div :class="['part-author']"
+                                             v-for="(item,index) in menuInRole" :key="index"
+                                             @click="onActiveAuthor(item)">{{item.orgName}}
                                         </div>
+                                        <div>menuInRole</div>
+                                        <p class="no-data" v-if="menuInRole.length==0">暂无数据</p>
                                     </div>
                                 </div>
                             </div>
-                        </Option>
-                    </Select>
-                </Form-item>-->
+                        </div>
+                    </Option>
+                </Select>
+            </Form-item>
             <!--</div>-->
             <div class="ivu-form-item-wrap">
                 <Form-item :label="$t('isStarted')" prop="status"><!--是否启用-->
@@ -222,6 +225,16 @@
                 genderEnum: genderEnum,
                 // 旧密码
                 oldPwd: '',
+                // 当前点击active的角色权限下拉项
+                activeGroupItem: {},
+                // 当前点击查看的角色所包含的景区权限
+                roleInOrg: [],
+                // 角色下的菜单权限
+                menuInRole: [],
+                // 当前点击active的景区权限
+                activeRoleInOrg: {},
+                // 已勾选的角色名称
+                roleNames: '',
 
                 // 表单校验规则
                 ruleValidate: {
@@ -312,6 +325,7 @@
                     this.getFieldInitData(item.apiKey, item.dataKey);
                 });
 
+                this.getAllPrivilege();
             },
             /**
              * 获取部门名称、籍贯、角色权限 下拉列表数据
@@ -328,7 +342,14 @@
                     }
                 });
             },
+            //
+            getAllPrivilege() {
+                ajax.post('getAllPrivilege', {
+                    orgId: this.$store.state.manageOrgs.id
+                }).then(res => {
 
+                });
+            },
             //新增员工接口
             saveEmployee( param ){
                 var self = this;
@@ -356,6 +377,7 @@
              */
             onChangeSelect(selections) {
                 this.employee.roleIds = selections.join(',');
+                this.getChosen(selections);
             },
             /**
              * 获取员工信息详情 - 用于修改员工时数据回填
@@ -381,18 +403,34 @@
                 });
             },
             /**
-             * 获取专业
+             * 获取角色
              */
             getChosen (val) {
                 let professionText = [];
                 val.forEach(item => {
-                    this.professionList.forEach(child => {
+                    this.enumData.privileges.forEach(child => {
                         if (child.id == item) {
-                            professionText.push(child.tagName);
+                            professionText.push(child.roleName);
                         }
                     })
-                })
-                this.professionText = professionText.join(',');
+                });
+                this.roleNames = professionText.join(',');
+            },
+            // 点击选择要查看的角色
+            handleClickItem(roleItem) {
+                this.activeGroupItem = roleItem;
+                ajax.post('findRolePrivInOrg', {
+                    roleId: roleItem.id
+                }).then(res => {
+                    if (res.success) {
+                        this.roleInOrg = res.data || [];
+                    }
+                });
+            },
+            // 点击选择要查看的景区权限
+            onActiveAuthor(orgItem) {
+                this.activeRoleInOrg = orgItem;
+                this.menuInRole = orgItem.rolePrivModels;
             },
 
 
@@ -405,6 +443,13 @@
 
 <style lang="scss">
     @import '~@/assets/scss/base';
+
+    .text-ellipsis{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all;
+    }
 
     .new-employee-info{
         width: 850px;
@@ -466,6 +511,15 @@
         }
 
         .privilege-wrap {
+            .text {
+                position: absolute;
+                z-index: 1;
+                width: 280px;
+                padding: 0 20px 0 10px;
+                color: #333;
+                pointer-events: none;
+            }
+
             .ivu-select-dropdown {
                 overflow: visible;
                 max-height: 270px;
@@ -478,8 +532,14 @@
             }
             .select-content {
                 overflow: auto;
-                max-height: 255px;
+                height: 255px;
                 padding: 0 16px;
+
+                .no-data {
+                    margin-top: 100px;
+                    text-align: center;
+                    color: $color_E1E1E1;
+                }
             }
             .privilege-part {
                 position: absolute;
@@ -493,7 +553,7 @@
 
                 .part-1, .part-2 {
                     float: left;
-                    height: 100%;
+                    height: 270px;
                     >h4 {
                         margin: 15px 20px;
                         color: #333;
@@ -510,19 +570,25 @@
                     height: calc(100% - 50px);
                     position: relative;
                     overflow: auto;
+                }
+                .part-author {
+                    padding: 0 20px;
+                    margin-bottom: 15px;
 
-                    .no-data {
-                        margin-top: 100px;
-                        text-align: center;
-                        color: $color_E1E1E1;
+                    &.active-author {
+                        color: $color_blue;
                     }
                 }
+
             }
 
             .select-group-item {
                 padding: 4px;
                 &:hover {
                     background-color: #fafafa;
+                }
+                &.active {
+                    color: $color_blue;
                 }
             }
 
