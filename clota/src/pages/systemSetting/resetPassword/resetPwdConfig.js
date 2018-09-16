@@ -48,7 +48,7 @@
 export const employeeInfoHead = [
     {
         title: '员工ID',
-        width: 180,
+        width: 220,
         field: 'id'
     },
     {
@@ -63,13 +63,13 @@ export const employeeInfoHead = [
     },
     {
         title: '企业/景区名称',
-        minWidth: 160,
+        minWidth: 190,
         enMinWidth : 160,
         field: 'orgName'
     },
     {
         title: '部门名称',
-        minWidth: 120,
+        minWidth: 190,
         enMinWidth : 150,
         field: 'deptName'
     },

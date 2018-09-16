@@ -56,10 +56,11 @@
 
         /deep/ .ivu-breadcrumb-item-link {
             color: $color_333;
+            font-weight: normal;
         }
 
         /deep/ .ivu-breadcrumb-item-separator{
-            color: $color_999;
+            color: $color_666;
         }
     }
 </style>

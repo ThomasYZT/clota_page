@@ -238,6 +238,7 @@
             switchTap(tap) {
                 this.activeTap = tap;
                 this.keyWord = '';
+                this.$emit('update:activeNode',{});
                 this.$emit('switch-tap',tap);
             },
             /**

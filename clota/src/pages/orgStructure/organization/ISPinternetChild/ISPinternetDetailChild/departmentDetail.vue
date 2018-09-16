@@ -14,7 +14,7 @@
                     <FormItem>
                         <i-switch v-model="formDataCopy.isStart"></i-switch>
                         <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
-                            {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+                            {{$t(formDataCopy.isStart ? 'commissioned' : 'hasNotStart')}}
                         </span>
                     </FormItem>
                 </Form>
@@ -88,8 +88,8 @@
                 //校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('depName')}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('depName'),length : 100})}
+                        {required : true,message : this.$t('inputField',{field : this.$t('departName')}),trigger : 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('departName'),length : 100})}
                     ]
                 }
             }

@@ -10,7 +10,7 @@
             <Form :model="formData" ref="formValidate" :rules="ruleValidate">
                 <i-row>
                     <i-col span="10">
-                        <FormItem label="公司/景区名称" :label-width="100">
+                        <FormItem label="公司/景区名称" :label-width="120">
                             <Input :value="manageOrgs.orgName"
                                    disabled
                                    style="width: 280px;"/>
@@ -43,7 +43,7 @@
         </div>
         <div class="btn-area">
             <Button type="primary" class="ivu-btn-108px" @click="save">保存</Button>
-            <Button type="ghost" class="ivu-btn-108px">取消</Button>
+            <Button type="ghost" class="ivu-btn-108px" @click="cancel">取消</Button>
         </div>
     </div>
 </template>
@@ -149,7 +149,7 @@
                             name : 'rolePermission'
                         });
                     }else{
-                        this.$Message.error('新增失败');
+                        this.$Message.error(res.message || '新增失败');
                     }
                 })
             },
@@ -246,7 +246,7 @@
                             name : 'rolePermission'
                         });
                     }else{
-                        this.$Message.error('修改失败');
+                        this.$Message.error(res.message || '修改失败');
                     }
                 })
             },
@@ -258,6 +258,14 @@
                 this.roleId = '';
                 this.formData.roleName = '';
                 this.$refs.employee.resetEmployeeData();
+            },
+            /**
+             * 取消新增
+             */
+            cancel () {
+                this.$router.push({
+                    name : 'rolePermission'
+                });
             }
         },
         computed : {

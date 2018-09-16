@@ -11,7 +11,9 @@
                 <Button type="ghost" style="float: left" size="default">{{$t('batchOperate')}}</Button><!--批量操作-->
 
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="(item,index) in batchOperate" :key="index"
+                    <el-dropdown-item v-for="(item,index) in batchOperate"
+                                      :key="index"
+                                      :disabled="chosenPartners.length <= 0"
                                       :command="item">{{$t(item.label)}}
                     </el-dropdown-item>
                 </el-dropdown-menu>
@@ -81,6 +83,7 @@
                     slot="column7"
                     slot-scope="row"
                     :label="row.title"
+                    fixed="right"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">

@@ -89,7 +89,7 @@
             </div>-->
 
             <table-com
-                :ofsetHeight="170"
+                :ofsetHeight="120"
                 :show-pagination="true"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -112,6 +112,7 @@
                 <el-table-column
                     slot="column6"
                     slot-scope="row"
+                    fixed="right"
                     :label="row.title"
                     :width="130"
                     :min-width="row.minWidth">

@@ -33,8 +33,8 @@
                          node-key="privCode"
                          ref="menuTree"
                          disabled
-                         check-strictly
                          show-checkbox
+                         check-strictly
                          :default-expand-all="true"
                          :props="menuDefaultProps"
                          :default-expanded-keys="menuDefaultChosed"
@@ -155,7 +155,7 @@
                                 value: data.orgName
                             }
                         ],
-                    }, data.privCode)
+                    }, this.$t(data.privCode))
                 ])
             },
             /**

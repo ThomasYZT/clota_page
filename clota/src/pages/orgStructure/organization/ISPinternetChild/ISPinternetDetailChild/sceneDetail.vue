@@ -354,7 +354,7 @@
                     if(validator.isEmail(value)){
                         callback();
                     }else{
-                        callback(this.$t('formalError',{field : this.$t('email')}));
+                        callback(this.$t('errorFormat',{field : this.$t('email')}));
                     }
                 }else{
                     callback(this.$t('inputField',{field : this.$t('email')}));
@@ -366,7 +366,7 @@
                     if(validator.isTelephone(value)){
                         callback();
                     }else{
-                        callback(this.$t('formalError',{field : this.$t('phone')}));
+                        callback(this.$t('errorFormat',{field : this.$t('phone')}));
                     }
                 }else{
                     callback();
@@ -562,14 +562,23 @@
                 if(data.province && Object.keys(data.province).length > 0){
                     this.formDataCopy.provinceCode = data.province.provinceid;
                     this.formDataCopy.province = data.province.province;
+                }else{
+                    this.formDataCopy.provinceCode = '000000';
+                    this.formDataCopy.province = '';
                 }
                 if(data.city && Object.keys(data.city).length > 0){
                     this.formDataCopy.cityCode = data.city.cityid;
                     this.formDataCopy.city = data.city.city;
+                }else{
+                    this.formDataCopy.cityCode = '000000';
+                    this.formDataCopy.city = '';
                 }
                 if(data.area && Object.keys(data.area).length > 0){
                     this.formDataCopy.districtCode = data.area.areaid;
                     this.formDataCopy.district = data.area.area;
+                }else{
+                    this.formDataCopy.districtCode = '000000';
+                    this.formDataCopy.district = '';
                 }
             },
         },
@@ -642,11 +651,13 @@
             height: 34px;
             line-height: 34px;
             @include overflow_tip();
+
             .info-val{
                 display: inline-block;
                 @include overflow_tip();
                 float: left;
                 color: $color_666;
+                padding-right: 10px;
             }
             .info-key{
                 display: inline-block;

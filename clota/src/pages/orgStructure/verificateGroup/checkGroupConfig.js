@@ -12,7 +12,7 @@ export const saleGroup = [
     },
     {
         title: '核销/销售款台名称',
-        minWidth: 150,
+        minWidth: 200,
         field: 'channelName',
     },
     {

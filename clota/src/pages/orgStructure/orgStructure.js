@@ -3,17 +3,17 @@
 export const partnerListHead = [
     {
         title: '合作伙伴编码',      // 合作伙伴编码
-        width: 125,
+        width: 200,
         field: 'partnerId'
     },
     {
         title: '合作伙伴名称',   // 合作伙伴编码
-        minWidth: 125,
+        minWidth: 155,
         field: 'channelName'
     },
     {
         title: '销售渠道分组',   // 销售渠道分组
-        minWidth: 125,
+        minWidth: 155,
         field: 'saleGroupName'
     },
     {
@@ -48,7 +48,7 @@ export const partnerListHead = [
 export const saleChannelHead = [
     {
         title: '自营渠道编码',      // 自营渠道编码
-        width: 125,
+        width: 200,
         field: 'partnerId'
     },
     {

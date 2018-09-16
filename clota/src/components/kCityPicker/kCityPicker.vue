@@ -441,14 +441,14 @@
                 }).then(res => {
                     if(res.success){
                         this.cityInfoList = res.data ? res.data : [];
-                        // 加载对应省下的市数据
-                        this.init('c')
                         // 如果没有市数据则选择本身，且清空下级数据
                         if (!this.cityInfoList.length) {
-                            this.select.city = this.select.area = null
+                            this.select.city = this.select.area = null;
                             this.callback()
                             this.hide()
                         } else {
+                            // 加载对应省下的市数据
+                            this.init('c')
                             this.view = 'c'
                         }
                     }else{

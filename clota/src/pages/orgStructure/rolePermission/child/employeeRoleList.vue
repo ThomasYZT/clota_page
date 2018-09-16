@@ -167,6 +167,7 @@
                     if(res.success){
                        this.$Message.success('删除成功');
                        this.tableData = leftTableData;
+                        this.$emit('updateSelected',this.tableData);
                     }else{
                         this.$Message.error(res.message || '删除失败');
                     }

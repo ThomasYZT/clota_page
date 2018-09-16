@@ -63,7 +63,7 @@
         },
         computed: {
             localeRouter () {
-                return this.type === 'add' ? this.$t('add') : this.$t('edit');      // 新增 ： 修改
+                return (this.type === 'add' ? this.$t('add') : this.$t('edit')) + this.$t('employee');      // 新增 ： 修改
             },
         },
         created() {
@@ -103,6 +103,9 @@
     @import '../../commonFile/common';
 
     .add-employee {
+        @include block_outline();
+        overflow: auto;
+
         /deep/ .bread-crumb-head {
             border-radius: 4px 4px 0 0;
         }

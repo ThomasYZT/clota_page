@@ -3,7 +3,7 @@ export const employee = [
     {
         title: '部门',
         minWidth: 120,
-        field: 'orgName',
+        field: 'deptName',
         filters : true
     },
     {

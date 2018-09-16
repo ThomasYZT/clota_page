@@ -98,7 +98,8 @@
                                     disabled>
                                 <Option v-for="item in cashierType"
                                         :value="item.value"
-                                        :key="item.value">
+                                        :key="item.value"
+                                        class="overflow-tip">
                                     {{ $t(item.label) }}
                                 </Option>
                             </Select>
@@ -123,6 +124,8 @@
                                     :disabled="formDataCopy.checkerType === 'sale'">
                                 <Option v-for="item in verifyCashierTypeGroupList"
                                         :value="item.id"
+                                        class="overflow-tip"
+                                        v-w-title="item.groupName"
                                         :key="item.id">
                                     {{ $t(item.groupName) }}
                                 </Option>
@@ -146,13 +149,15 @@
                                     :disabled="formDataCopy.checkerType === 'check'">
                                 <Option v-for="item in verifySaleTypeGroupList"
                                         :value="item.id"
+                                        class="overflow-tip"
+                                        v-w-title="item.groupName"
                                         :key="item.id">
                                     {{ item.groupName }}
                                 </Option>
                             </Select>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">所属核销设备分组：</span>
+                            <span class="info-key">所属销售渠道分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.saleGroupName">
                                 {{cashierDetail.saleGroupName | contentFilter}}
@@ -216,11 +221,19 @@
             };
             //校验是否为空
             const validateNotEmpty = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
+                //款台类型为核销款台，所属核销设备分组不是必填项
+                //款台类型为销售款台，所属销售设备分组不是必填项
+                if(rule._field === 'cashierTypeGroup' && this.formDataCopy.checkerType === 'sale'){
+                    callback();
+                }else if(rule._field === 'saleTypeGroup' && this.formDataCopy.checkerType === 'check'){
                     callback();
                 }else{
-                    // callback();
-                    callback(this.$t('selectField',{msg : this.$t(rule._field)}));
+                    if(common.isNotEmpty(value)){
+                        callback();
+                    }else{
+                        // callback();
+                        callback(this.$t('selectField',{msg : this.$t(rule._field)}));
+                    }
                 }
             };
             return {
@@ -303,6 +316,8 @@
                 }).then(res => {
                     if(res.success){
                         this.cashierDetail = res.data ? res.data.orgSelfChannel : {};
+                        this.getCheckItemPage();
+                        this.getSaleItemPage();
                     }else{
                         this.cashierDetail = {};
                     }
@@ -314,7 +329,7 @@
             getCheckItemPage () {
                 ajax.post('getOrgGroupList',{
                     groupType : 'check',
-                    orgId : this.activeNode.id,
+                    orgId : this.cashierDetail.orgId,
                 }).then(res => {
                     if(res.success){
                         this.verifyCashierTypeGroupList = res.data ? res.data : [];
@@ -329,7 +344,7 @@
             getSaleItemPage () {
                 ajax.post('getOrgGroupList',{
                     groupType : 'sale',
-                    orgId : this.activeNode.id,
+                    orgId : this.cashierDetail.orgId,
                 }).then(res => {
                     if(res.success){
                         this.verifySaleTypeGroupList = res.data ? res.data : [];
@@ -389,10 +404,6 @@
                 }
                 return '';
             }
-        },
-        created () {
-            this.getCheckItemPage();
-            this.getSaleItemPage();
         }
     }
 </script>
@@ -406,17 +417,23 @@
         float: right;
         overflow: auto;
 
+        .overflow-tip{
+            @include overflow_tip();
+        }
+
         .node-info{
             display: flex;
             flex-direction: row;
             height: 34px;
             line-height: 34px;
             @include overflow_tip();
+
             .info-val{
                 display: inline-block;
                 @include overflow_tip();
                 float: left;
                 color: $color_666;
+                padding-right: 10px;
             }
             .info-key{
                 display: inline-block;
