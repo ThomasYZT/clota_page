@@ -131,7 +131,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.type=='online' ? '线上' : '线下'}}
+                        {{scope.row.saleGroupName ? scope.row.saleGroupName : '未分组'}}
                     </template>
                 </el-table-column>
 
