@@ -681,7 +681,6 @@ export default {
     'Sunday': '周日',
 
 
-
     /*** 财务管理模块 ***/
     'financeManage' : '财务管理',
     'rechargeRecord' : '充值记录',
@@ -765,5 +764,6 @@ export default {
     'org-channel': '自营渠道',
     'org-sale': '销售渠道分组',
     'org-checker': '核销设备分组',
+    'cardScopeSetting': '会员卡可用范围设置',
 
 }

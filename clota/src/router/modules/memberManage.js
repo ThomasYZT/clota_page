@@ -344,18 +344,30 @@ export default {
                             isMenu : true
                         },
                     },
-                    channelSetting: {
-                        //会员管理--渠道设置
-                        path: '/memberManage/channel',
-                        name: 'channelSetting',
-                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/channelSetting.vue'),
+                    //基础设置--会员卡可用范围
+                    cardScopeSetting: {
+                        path: '/memberManage/cardScope',
+                        name: 'cardScopeSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/cardScope.vue'),
                         meta: {
-                            menuName: 'channelSetting', //lang.config.js 里面的语言键值
+                            menuName: 'cardScopeSetting', //lang.config.js 里面的语言键值
                             _name: 'channel-setting',
-                            rightPath : topMenuName + '.' + 'channelSetting',
+                            rightPath : topMenuName + '.' + 'cardScopeSetting',
                             isMenu : true
                         },
                     },
+                    // channelSetting: {
+                    //     //会员管理--渠道设置
+                    //     path: '/memberManage/channel',
+                    //     name: 'channelSetting',
+                    //     component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/channelSetting.vue'),
+                    //     meta: {
+                    //         menuName: 'channelSetting', //lang.config.js 里面的语言键值
+                    //         _name: 'channel-setting',
+                    //         rightPath : topMenuName + '.' + 'channelSetting',
+                    //         isMenu : true
+                    //     },
+                    // },
                     levelSetting: {
                         //会员管理--会员级别
                         path: '/memberManage/level',
@@ -404,6 +416,7 @@ export default {
                             isMenu : true
                         },
                     },
+
                 }
             },
         }

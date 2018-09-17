@@ -3,6 +3,11 @@
 //特殊会员分类表头
 export const specialEmployeeHead = [
     {
+        title: '',
+        field: 'check',
+        width: 70,
+    },
+    {
         title: 'specialMemClassify',
         minWidth: 150,
         enMinWidth: 180,

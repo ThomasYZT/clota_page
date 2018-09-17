@@ -764,5 +764,6 @@ export default {
     'org-channel': '自营渠道',
     'org-sale': '销售渠道分组',
     'org-checker': '核销设备分组',
+    'cardScopeSetting': '会员卡可用范围设置',
 
 }
