@@ -444,7 +444,7 @@
     import common from '@/assets/js/common.js';
 
     export default {
-        props: {},
+        props: ['parkList'],
         components: {
             tableCom,
             titlePark,
@@ -488,7 +488,7 @@
                 //表单数据
                 formData: {
                     choosePark: '',//选择园区
-                    saleType: 'one',//售票方式
+                    saleType: 'one_ticket',//售票方式
                     //入园核销
                     peopleEnterTimes: '',//每人可入园总次数
                     dayEnterTimes: '',//每日可入园次数
@@ -577,6 +577,8 @@
                         play: 'false',
                     },
                 ],
+                //核销分组下的核销设备列表数据
+                checkItemList: [],
             }
         },
         methods: {
@@ -700,6 +702,37 @@
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
                 }
+            },
+
+            //查询核销设备组
+            getCheckItemPage () {
+                ajax.post('getCheckItemPage', {
+                    orgId: '',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
+                    if(res.success){
+
+                    } else {
+
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                })
+            },
+
+            //获取核销分组下的核销设备
+            getCheckItems () {
+                ajax.post('getCheckItems', {
+                    orgId: '',
+                    groupIds: '',
+                }).then(res => {
+                    if(res.success){
+                        this.checkItemList = res.data || [];
+                    } else {
+                        this.checkItemList = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                })
             },
 
         }

@@ -17,7 +17,7 @@ export const ticketTypeHead = [
         field: 'productName'
     },
     {
-        title: 'scenePrice',      // 景区成本价
+        title: 'standardPrice',      // 景区成本价
         minWidth: 120,
         field: 'standardPrice'
     },

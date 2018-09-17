@@ -218,7 +218,31 @@
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="tableData"
+                                :row-class-name="rowClassName"
                                 :border="false">
+                                <el-table-column
+                                    slot="column0"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span class="red" v-if="!scope.row.check">!</span>
+                                        <span>{{ scope.row.parkName | contentFilter }}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                       {{$t(scope.row.saleType) | contentFilter}}
+                                    </template>
+                                </el-table-column>
                                 <el-table-column
                                     slot="column3"
                                     slot-scope="row"
@@ -241,25 +265,27 @@
 
             <!--底部操作-->
             <div class="footer">
+                <!--新增按钮-->
                 <template v-if="type === 'add'">
+                    <Button type="primary"
+                            :loading="loading"
+                            @click="formValidateFunc"> <!--提交审核-->
+                            {{$t('commitCheck')}}
+                    </Button>
+                    <Button type="ghost"
+                            @click="goBack"><!--放弃新增-->
+                            {{$t("giveUpAdd")}}
+                    </Button>
+                </template>
+                <!--修改按钮-->
+                <template v-if="type === 'modify'">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc">
                         {{$t('commitCheck')}}
                     </Button>
                     <Button type="ghost"
-                            @click="goBack">
-                        {{$t("giveUpAdd")}}
-                    </Button>
-                </template>
-                <template v-if="type === 'modify'">
-                    <Button type="primary"
-                            :loading="loading"
-                            @click="formValidateFunc">
-                        {{$t('confirm')}}
-                    </Button>
-                    <Button type="ghost"
-                            @click="goBack">
+                            @click="goBack"><!--放弃修改-->
                         {{$t("giveUpModify")}}
                     </Button>
                 </template>
@@ -268,7 +294,7 @@
         </div>
 
         <!--新增/编辑园区-->
-        <edit-park-modal ref="editPark"></edit-park-modal>
+        <edit-park-modal ref="editPark" :park-list="parkList"></edit-park-modal>
 
     </div>
 </template>
@@ -285,6 +311,7 @@
     import common from '@/assets/js/common.js';
     import {parkColumn} from './parkConfig';
     import { isTeamProduct, orderInfo, idType, productEffectSet, limitStore } from '@/assets/js/constVariable';
+    import ajax from '@/api/index';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -317,6 +344,8 @@
                             callback(this.$t(err,{field : this.$t(rule.field)}));
                         }
                     });
+                }else{
+                    callback();
                 }
             };
             //校验正整数
@@ -331,6 +360,8 @@
                             callback(this.$t(err,{field : this.$t(rule.field)}));
                         }
                     });
+                }else{
+                    callback();
                 }
             };
             //校验身份证购票限制
@@ -376,32 +407,28 @@
                 //表单数据
                 formData: {
                     //基本信息
-                    productName: '',//产品名称
-                    standardPrice: '',//景区成本价
-                    thirdCode: '',//第三方产品编码
-                    productDes: '',//产品描述
+                    productName: '产品名称',//产品名称
+                    standardPrice: '12000',//景区成本价
+                    thirdCode: '111111111',//第三方产品编码
+                    productDes: '产品描述',//产品描述
                     //票面信息
-                    printName: '',//打印名称
-                    printPrice: '',//票面价格
-                    ticketRemark: '',//票面说明
-                    printRemark: '',//打印说明
+                    printName: '打印名称',//打印名称
+                    printPrice: '12000',//票面价格
+                    ticketRemark: '票面说明',//票面说明
+                    printRemark: '打印说明',//打印说明
                     //购买限制
                     isGroup : 'true',//是否团队产品
-                    inNum : '',//可入园人数
+                    inNum : '3',//可入园人数
                     minNum : '10',//每订单最小起订数
                     maxNum : '100',//每订单最大限订数
                     needId : 'noRequired',//预定时提交游客身份信息
                     acceptIdType : ['identity','passport'],//可接受证件类型
-
-                    idLimit: {"day":"7","quantity":"5"},//身份证件购票限制 '{"day":"7","quantity":"5"}'
-                    mobileLimit: {"day":"5","quantity":"5"},//手机号购票限制 '{"day":"5","quantity":"5"}'
-
                     limitByIdDay: '5',//身份证件购票限制
                     limitByIdNum: '5',//身份证件购票限制
                     limitByMobileDay: '5',//手机号购票限制
                     limitByMobileNum: '5',//手机号购票限制
                     stockType : 'is_no_limit',//限制库存
-                    stockNum : '100001',//库存数量
+                    stockNum : '',//库存数量
                     //产品有效性
                     productEffSet: 'since_the_play',//产品有效性设置
                 },
@@ -497,7 +524,37 @@
                 //可游玩园区表头
                 columnData: parkColumn,
                 //可游玩园区表格数据
-                tableData: [{}],
+                tableData: [
+                    {
+                        "check": false,
+                        "fingerCheck": "true",
+                        "id": "",
+                        "parkId": "1037976274619994113",
+                        "parkName": "啦啦啦园区",
+                        "itemCheckTimes": 10,
+                        "productId": "",
+                        "saleType": "one_ticket",
+                        "effDay": "1",
+                        "effTimes": "1",
+                        "checkPoints": [
+                            {
+                                "id": "",
+                                "productId": "",
+                                "playRuleId": "",
+                                "checkId": "1037982966690746369",
+                                "parkId": "1037976274619994113",
+                                "checkType": "garden",
+                                "playType": "required",
+                                "sumTimes": "7",
+                                "dayTimes": "2",
+                                "status": "valid"
+                            }
+                        ],
+                    }
+                ],
+                //可游玩园区列表数据
+                parkList: [],
+
             }
         },
         created() {
@@ -509,13 +566,82 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ){
-                        console.log(true);
+                        let params = {
+                            //产品
+                            productJson: JSON.stringify({
+                                auditStatus: this.formData.auditStatus || '',
+                                code: this.formData.code || '',
+                                productDes: this.formData.productDes || '',
+                                id: this.formData.id || '',
+                                inNum: this.formData.inNum || '',
+                                isGroup: this.formData.isGroup || '',
+                                printName: this.formData.printName || '',
+                                printPrice: this.formData.printPrice || '',
+                                printRemark: this.formData.printRemark || '',
+                                printTpl: this.formData.printTpl || '',
+                                productName: this.formData.productName || '',
+                                productType: this.formData.productType || '',
+                                standardPrice: this.formData.standardPrice || '',
+                                thirdCode: this.formData.thirdCode || '',
+                                ticketRemark: this.formData.ticketRemark || '',
+                                productEffSet: this.formData.productEffSet || '',
+                            }),
+                            //销售
+                            saleRuleJson : JSON.stringify({
+                                acceptIdType: this.formData.acceptIdType.length > 0 ? this.formData.acceptIdType.join(',') : '',
+                                id: this.formData.id || '',
+                                idLimit: JSON.stringify({
+                                    day: this.formData.limitByIdDay || '',
+                                    quantity: this.formData.limitByIdNum || '',
+                                }),
+                                mobileLimit: JSON.stringify({
+                                    day: this.formData.limitByMobileDay || '',
+                                    quantity: this.formData.limitByMobileNum || '',
+                                }),
+                                minNum: this.formData.minNum || '',
+                                maxNum: this.formData.maxNum || '',
+                                needAllId: '',
+                                needId: this.formData.needId || '',
+                                productId: this.formData.productId || '',
+                                stockNum: this.formData.stockNum || '',
+                                stockType: this.formData.stockType || '',
+                            }),
+                            //游玩
+                            playRuleJson: JSON.stringify([
+                                {
+                                    check: false,
+                                    "fingerCheck": "true",
+                                    "id": "",
+                                    "parkId": "1037976274619994113",
+                                    "itemCheckTimes": 10,
+                                    "productId": "",
+                                    "saleType": "one_ticket",
+                                    "effDay": "1",
+                                    "effTimes": "1",
+                                    "checkPoints": JSON.stringify([
+                                        {
+                                            "id": "",
+                                            "productId": "",
+                                            "playRuleId": "",
+                                            "checkId": "1037982966690746369",
+                                            "parkId": "1037976274619994113",
+                                            "checkType": "garden",
+                                            "playType": "required",
+                                            "sumTimes": "7",
+                                            "dayTimes": "2",
+                                            "status": "valid"
+                                        }
+                                    ]),
+                                }
+                            ])
+                        };
+                        console.log(params)
                         //区分新增与修改
                         if( this.type === 'add' ){
-                            this.saveAndEditTicket( 'saveNewMemberInfo', params);
+                            this.saveAndEditTicket( 'addProduct', params);
                         }
                         if( this.type === 'modify' ){
-                            this.saveAndEditTicket( 'editMemberInfo', params);
+                            this.saveAndEditTicket( 'updateProduct', params);
                         }
                     }
                 })
@@ -523,7 +649,7 @@
 
             //新增/修改票类
             saveAndEditTicket( url, params ){
-                ajax.post(url, {}).then(res => {
+                ajax.post(url, params).then(res => {
                     if(res.success){
                         //区分新增与修改
                         this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
@@ -543,7 +669,6 @@
                     type: 'modify',
                     confirmCallback : () => {
                         //push to tableData
-                        debugger
                         console.log(true)
                     }
                 });
@@ -577,26 +702,54 @@
             },
 
             /**
+             * 动态给行添加类名
+             * @param row
+             */
+            rowClassName (row){
+                if(!row.row.check){
+                    return 'error-tr';
+                }
+            },
+
+            /**
              * 获取路由信息
              */
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
                     this.type = params.type;
                     if(params.info){
-                        this.formData = params.info;
+                        this.initData(params.info);
                     }
                 }
+                this.queryScenicOrgByAccountRole();
             },
             /**
              * 初始化数据
              * @param data
              */
             initData(data) {
-                this.info = JSON.parse(JSON.stringify(data));
-                let memberInfo = pick(data, ['custName', 'phoneNum','emailAddr','birthDay',
-                    'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
-                    'certificationType','idCardNumber','homeAddr','status','tpNo','tpCardNo','levelId','channelId']);
-                this.member = defaultsDeep({},memberInfo);
+                let formData =  defaultsDeep({},data);
+                formData.limitByIdDay = data.idLimit ? JSON.parse(data.idLimit).day : '';
+                formData.limitByIdNum = data.idLimit ? JSON.parse(data.idLimit).quantity : '';
+                formData.limitByMobileDay = data.mobileLimit ? JSON.parse(data.mobileLimit).day : '';
+                formData.limitByMobileNum = data.mobileLimit ? JSON.parse(data.mobileLimit).quantity : '';
+                formData.limitByMobileNum = data.mobileLimit ? JSON.parse(data.mobileLimit).quantity : '';
+                formData.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : '';
+                this.formData = defaultsDeep({},formData);
+            },
+
+            //查询权限下的园区
+            queryScenicOrgByAccountRole () {
+                ajax.post('queryScenicOrgByAccountRole', {
+                    privCode: '',
+                }).then(res => {
+                    if(res.success){
+                        this.parkList = res.data || [];
+                    } else {
+                        this.parkList = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                })
             },
 
         },
@@ -701,6 +854,14 @@
                     }
                 }
 
+            }
+
+            .red{
+                color: $color_red;
+            }
+
+            /deep/ .error-tr{
+                background: $color_EB6751_005;
             }
 
             .footer{
