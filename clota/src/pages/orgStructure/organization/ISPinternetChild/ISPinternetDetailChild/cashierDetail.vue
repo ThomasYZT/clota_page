@@ -7,7 +7,6 @@
               :model="formDataCopy"
               :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
-              label-position="left"
               :label-position="type === 'edit' ? 'top' : 'left'"
               inline>
             <div class="com-name">

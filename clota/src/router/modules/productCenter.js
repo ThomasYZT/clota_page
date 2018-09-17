@@ -6,6 +6,7 @@
  * iconClass 图标类名
  * rightPath 菜单点亮路径,格式为 menuName.menuName 第一个menuName表示一级点亮的菜单，第二个menuName表示当前点亮的左侧菜单（不管层级有多深）
  * isMenu 是否是菜单
+ * isStaticMenu 表示不需要权限的菜单，如果配置了这个属性，可以不用再配置是_name
  */
 //一级菜单的menuname
 let topMenuName = 'productCenter';

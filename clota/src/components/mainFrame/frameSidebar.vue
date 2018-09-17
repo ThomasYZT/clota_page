@@ -103,11 +103,11 @@
                     let activeTopMenu = this.$route.meta.rightPath ? this.$route.meta.rightPath.split('.')[0] : '';
                     for (let i = 0, j = this.routerInfo.length; i < j; i++) {
                         if ( (this.routerInfo[i].meta.rightPath ? this.routerInfo[i].meta.rightPath.split('.')[0] : '') === activeTopMenu) {
-                            return this.routerInfo[i]['children'].filter(item => {
+                            return this.routerInfo[i]['children'] ? this.routerInfo[i]['children'].filter(item => {
                                 //排除重定向路由和权限挂在其它路由下的路由
                                 //children大于2的表示它有下级菜单，不可以排除
-                                return item.meta && item.meta.isMenu;
-                            });
+                                return (item.meta && item.meta.isMenu) || (item.meta && item.meta.isStaticMenu);
+                            }) : [];
                         }
                     }
                     return [];

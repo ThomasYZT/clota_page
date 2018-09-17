@@ -14,7 +14,7 @@ const childDeepClone = (childrenList, data) => {
     for (let child in childrenList) {
         let router = defaultsDeep({}, childrenList[child]);
         //判断路由的名称是否存在于权限接口当中，部分父路由没有直接指定名称，所以需要判断meta信息里面的_name对应的权限是否存在
-        if ((router.meta && router.meta._name && router.meta._name in data)) {
+        if ((router.meta && router.meta._name && router.meta._name in data) || (router.meta && router.meta.isStaticMenu)) {
             if (router.children) {
                 let children = childDeepClone(router.children, data);
                 //配置没有匹配到路由的重定向页面

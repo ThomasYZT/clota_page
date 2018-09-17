@@ -2,12 +2,18 @@
 
 <template>
     <div class="without-sub-menu">
-        该菜单下没有二级菜单
+        <mainFrame>
+            该菜单下没有二级菜单
+        </mainFrame>
     </div>
 </template>
 
 <script>
+    import mainFrame from '@/components/mainFrame/mainFrame';
     export default {
+        components : {
+            mainFrame
+        },
         data() {
             return {}
         },

@@ -2,14 +2,20 @@
 
 <template>
     <div class="permission-not">
-        <div class="wrap">
-            <img src="../../assets/images/icon-no-permission.png" class="img-pic" alt="">
-        </div>
+        <main-frame>
+            <div class="wrap">
+                <img src="../../assets/images/icon-no-permission.png" class="img-pic" alt="">
+            </div>
+        </main-frame>
     </div>
 </template>
 
 <script>
+    import mainFrame from '@/components/mainFrame/mainFrame';
     export default {
+        components : {
+            mainFrame
+        },
         data() {
             return {}
         },
@@ -22,10 +28,10 @@
 
     .permission-not {
         position: relative;
-        background: #ffffff;
         @include block_outline();
 
         .wrap {
+            background: #ffffff;
             @include center_center();
 
             .img-pic {

@@ -756,7 +756,14 @@ export default {
     'channel-setting': '渠道设置',
     'member-level': '会员级别',
     'growth-setting': '成长值设置',
-    'point-manage': '积分消费管理',
     'storage-setting': '储值设置',
+    'point-manage': '积分消费管理',
+    'org-struct': '组织架构',
+    'org-emp': '员工',
+    'org-role': '角色权限',
+    'org-partner': '合作伙伴',
+    'org-channel': '自营渠道',
+    'org-sale': '销售渠道分组',
+    'org-checker': '核销设备分组',
 
 }

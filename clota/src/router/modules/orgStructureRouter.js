@@ -14,7 +14,7 @@ export default {
         path: '/orgManage',
         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/index.vue'),
         meta: {
-            _name: 'members',
+            _name: 'org',
             menuName: 'org',
             rightPath : topMenuName + '.' + 'org',
             isMenu : true
@@ -27,7 +27,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/ISPinternetChild/ISPinternetDetail.vue'),
                 meta: {
                     menuName: 'organization', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-struct', //
                     iconClass: 'icon-person',
                     rightPath : topMenuName + '.' + 'organization',
                     isMenu : true
@@ -40,7 +40,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                 meta: {
                     menuName: 'employee', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-emp', //
                     iconClass: 'icon-orgaization',
                     rightPath : topMenuName + '.' + 'employee',
                     isMenu : true
@@ -53,7 +53,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                 meta: {
                     menuName: 'employee', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-emp', //
                     iconClass: 'icon-orgaization',
                     rightPath : topMenuName + '.' + 'employee'
                 },
@@ -65,20 +65,20 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/rolePermission.vue'),
                 meta: {
                     menuName: 'rolePermission', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-role', //
                     iconClass: 'icon-role-permission',
                     rightPath : topMenuName + '.' + 'rolePermission',
                     isMenu : true
                 },
             },
             addRole: {
-                //组织架构--角色权限
+                //组织架构--新增角色权限
                 path: '/orgManage/addRole',
                 name: 'addRole',
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/addRole.vue'),
                 meta: {
                     menuName: 'addRole', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-role', //
                     rightPath : topMenuName + '.' + 'rolePermission'
                 },
             },
@@ -89,7 +89,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/roleDetail.vue'),
                 meta: {
                     menuName: 'rolePermission', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-role', //
                     iconClass: 'icon-role-permission',
                     rightPath : topMenuName + '.' + 'rolePermission'
                 },
