@@ -58,20 +58,23 @@
                      :root-id="rootId"
                      :chosed-node-detail="currentNode"
                      :added-node-detail="addNodeDetail"
-                     @fresh-structure-data="getStructureData">
+                     @fresh-structure-data="getStructureData"
+                     @input="clearDetail">
         </add-company>
         <!--新增景区模态框-->
         <add-scene v-model="addSceneModalShow"
                    :root-id="rootId"
                    :chosed-node-detail="currentNode"
                    :added-node-detail="addNodeDetail"
-                   @fresh-structure-data="getStructureData">
+                   @fresh-structure-data="getStructureData"
+                   @input="clearDetail">
         </add-scene>
         <!--新增核销/销售款台模态框-->
         <add-cashier v-model="addCashierModalShow"
                      :chosed-node-detail="currentNode"
                      :added-node-detail="addNodeDetail"
-                     @fresh-structure-data="getStructureData">
+                     @fresh-structure-data="getStructureData"
+                     @input="clearDetail">
         </add-cashier>
     </div>
 </template>
@@ -322,6 +325,15 @@
             filterNode(value, data) {
                 if (!value) return true;
                 return data && data.orgName && data.orgName.indexOf(value) !== -1;
+            },
+            /**
+             * 清空当前选择的节点
+             * @param data
+             */
+            clearDetail (data){
+                if(data === false){
+                    this.currentNode = {};
+                }
             }
         },
         computed : {
