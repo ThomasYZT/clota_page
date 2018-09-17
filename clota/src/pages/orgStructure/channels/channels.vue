@@ -327,7 +327,7 @@
              * @param scopeRow - 修改时的行数据
              **/
             newSelfSupportBtn(type, scopeRow) {
-                let obj = type=='add' ? null : {item: scopeRow, type: type};
+                let obj = type=='add' ? {type: type} : {item: scopeRow, type: type};
                 this.$refs.addSelfSupport.show(obj);
             },
             /**

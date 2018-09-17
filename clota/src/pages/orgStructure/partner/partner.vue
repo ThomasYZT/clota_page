@@ -246,7 +246,7 @@
              * @param scopeRow - 修改时的行数据
              **/
             newPartnerBtn(type, scopeRow) {
-                let obj = type=='add' ? null : {item: scopeRow, type: type};
+                let obj = type=='add' ? {type: type} : {item: scopeRow, type: type};
                 this.$refs.addPartnerModal.show(obj);
             },
             /**
