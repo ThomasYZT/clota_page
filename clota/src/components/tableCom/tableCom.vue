@@ -13,6 +13,7 @@
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
                   :default-sort="defaultSort"
+                  @sort-change="handleSortChanged"
                   @row-click="classDetailLink"
                   @selection-change="handleSelectionChange">
                    <el-table-column
@@ -220,6 +221,13 @@
              */
             handleSelectionChange (data) {
                 this.$emit('selection-change',data);
+            },
+            /**
+             * 排序改变
+             * @param data
+             */
+            handleSortChanged (data) {
+                this.$emit('sort-change',data);
             },
             /**
              * 触发查询数据的方法
