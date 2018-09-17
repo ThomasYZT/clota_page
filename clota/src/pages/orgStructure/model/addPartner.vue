@@ -121,11 +121,11 @@
              * @param data {data有值表示查看，反之新增}
              */
             show(data) {
-                if( data ){
+                if( data.item ){
                     this.addPartner = defaultsDeep({}, pick(data.item, [...Object.keys(this.addPartner), 'id']), this.addPartner);
-                    this.type = data.type;
                     this.protoDate = [data.item.startDate, data.item.endDate];
                 }
+                this.type = data.type;
 
                 this.visible = true;
             },

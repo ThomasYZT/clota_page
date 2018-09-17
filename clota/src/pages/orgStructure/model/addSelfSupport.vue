@@ -5,7 +5,7 @@
         class-name="vertical-center-modal"
         :mask-closable="false"
         :width="560"
-        :title="$t('新增自营渠道')"
+        :title="type=='add' ? $t('新增自营渠道') : $t('修改自营渠道')"
         @on-cancel="hide">
 
         <!--内容区域-->
@@ -100,10 +100,10 @@
              * @param data {data有值表示查看，反之新增}
              */
             show(data) {
-                if( data ){
+                if( data.item ){
                     this.addChannel = defaultsDeep({}, pick(data.item, [...Object.keys(this.addChannel), 'id']), this.addChannel);
-                    this.type = data.type;
                 }
+                this.type = data.type;
 
                 this.visible = true;
             },
