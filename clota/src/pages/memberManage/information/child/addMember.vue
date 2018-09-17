@@ -61,12 +61,12 @@
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('weChat')" prop="wechatAcct"><!--微信-->
+                    <!--<div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('weChat')" prop="wechatAcct">&lt;!&ndash;微信&ndash;&gt;
                             <Input v-model.trim="member.wechatAcct"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
-                    </div>
+                    </div>-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('ailiPay')" prop="alipayAcct"><!--支付宝-->
                             <Input v-model.trim="member.alipayAcct"
@@ -83,10 +83,10 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('memberChannel')" prop="channelId"><!--会员渠道-->
+                    <!--<div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('memberChannel')" prop="channelId">&lt;!&ndash;会员渠道&ndash;&gt;
                             <Select v-model="member.channelId"
-                                    :placeholder="$t('selectField', {msg: $t('memberOriginChannel')})"><!--请选择会员来源渠道-->
+                                    :placeholder="$t('selectField', {msg: $t('memberOriginChannel')})">&lt;!&ndash;请选择会员来源渠道&ndash;&gt;
                                 <Option v-for="item in enumData.channel"
                                         :key="item.id"
                                         :value="item.id">
@@ -94,7 +94,7 @@
                                 </Option>
                             </Select>
                         </Form-item>
-                    </div>
+                    </div>-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('countryCode')" prop="stateCode"><!--国家代码-->
                             <Input v-model.trim="member.stateCode"
@@ -295,7 +295,7 @@
                     "birthDay":"",//生日
                     "gender":"",// 性别
                     "qq":"",//QQ
-                    "wechatAcct":"",//微信
+//                    "wechatAcct":"",//微信
                     "alipayAcct":"",//支付宝
                     "cityCode":"",//城市代码
                     "stateCode":"",//国家代码
@@ -306,7 +306,7 @@
                     "status":"active",//默认正式会员
                     //卡信息
                     "levelId":"",//会员级别
-                    "channelId":"",//会员渠道
+//                    "channelId":"",//会员渠道
                     "tpNo":"",//第三方卡号
                     "tpCardNo":"",//第三方卡面号
                 },
