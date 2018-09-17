@@ -529,6 +529,8 @@
                                     this.freshOrg();
                                 }else if(this.formDataCopy.parentManageId !== this.companyDetail.parentManageId){
                                     this.freshOrg();
+                                }else if(this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId){
+                                    this.freshOrg();
                                 }else{
                                     this.getCompanyDetail();
                                 }
