@@ -127,8 +127,18 @@
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.message === '用户名密码错误'){
+                            }else if(res.code === 'A001'){
                                 this.errMsg = this.$t('accoutOrPassErr');
+                                setTimeout(() => {
+                                    this.isLoging = false;
+                                },500);
+                            }else if(res.code === 'A002'){
+                                this.errMsg = this.$t('accountFundError');
+                                setTimeout(() => {
+                                    this.isLoging = false;
+                                },500);
+                            }else if(res.code === 'A009'){
+                                this.errMsg = this.$t('accountPrivaligeError');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
