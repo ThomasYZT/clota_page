@@ -107,7 +107,7 @@ new Vue({
 
 //使用fundeBug实时监测代码运行错误，测试时开启
 let fundebug = require("fundebug-javascript");
-fundebug.apikey = "7a0ef57656b2a4b59207cf9410c7edc5d9c40db437c42b5d3c825999d2cebf30";
+fundebug.apikey = "1b0b90409498540d616fb56754902f1f67554ac5161d4478237ca3bd639d1144";
 
 function formatComponentName(vm)
 {
