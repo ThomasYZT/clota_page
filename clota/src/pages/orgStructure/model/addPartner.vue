@@ -95,6 +95,9 @@
                     endDate: [
                         {required: true, message: '请选择协议起止日期', trigger: 'change'},
                     ],
+                    description: [
+                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                    ]
                 },
                 // 所有合作伙伴列表
                 partners: [],
