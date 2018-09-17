@@ -124,13 +124,17 @@
                                     </div>
                                 </div>
                                 <div class="part-2">
-                                    <h4>菜单权限</h4>
+                                    <h4>菜单权限
+                                        <span v-if="activeRoleInOrg.orgName">
+                                            （<span class="title-desc text-ellipsis" v-w-title="activeRoleInOrg.orgName">{{activeRoleInOrg.orgName}}</span>）
+                                        </span>
+                                    </h4>
                                     <div class="part-content">
                                         <div :class="['part-author']"
                                              v-for="(item,index) in menuInRole" :key="index"
-                                             @click="onActiveAuthor(item)">{{item.orgName}}
+                                             @click="">{{$t(item.privCode)}}
                                         </div>
-                                        <div>menuInRole</div>
+                                        <!--<div>menuInRole</div>-->
                                         <p class="no-data" v-if="menuInRole.length==0">暂无数据</p>
                                     </div>
                                 </div>
@@ -424,6 +428,10 @@
                 }).then(res => {
                     if (res.success) {
                         this.roleInOrg = res.data || [];
+                        // 清空菜单权限数据列表
+                        this.menuInRole = [];
+                        // 清空点击选择了的景区权限
+                        this.activeRoleInOrg = {};
                     }
                 });
             },
@@ -550,12 +558,13 @@
                 background: #F5F7FA;
                 border: 1px solid $color_E1E1E1;
                 border-radius: 4px;
+                cursor: default;
 
                 .part-1, .part-2 {
                     float: left;
-                    height: 270px;
+                    height: 100%;
                     >h4 {
-                        margin: 15px 20px;
+                        margin: 13px 20px;
                         color: #333;
                     }
                 }
@@ -565,15 +574,24 @@
                 }
                 .part-2 {
                     width: 38%;
+                    .title-desc {
+                        display: inline-block;
+                        max-width: 110px;
+                        vertical-align: middle;
+                    }
                 }
                 .part-content {
                     height: calc(100% - 50px);
                     position: relative;
                     overflow: auto;
+                    margin: 0 3px 0 5px;
                 }
                 .part-author {
-                    padding: 0 20px;
-                    margin-bottom: 15px;
+                    padding: 7px 15px;
+                    cursor: pointer;
+                    &:hover {
+                        background-color: $color_F5F7FA;
+                    }
 
                     &.active-author {
                         color: $color_blue;

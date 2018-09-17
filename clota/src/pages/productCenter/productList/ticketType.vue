@@ -221,7 +221,7 @@
              * 列表排序 - 默认按更新时间降序排列
              * @param params - { column, prop, order }
              */
-            handleSortChanged: function (params) {
+            handleSortChanged: function (params) {debugger
                 let order = 'desc';
                 if (params.order && params.order === 'ascending'){
                     order = 'asc';
