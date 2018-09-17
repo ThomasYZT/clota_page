@@ -172,7 +172,7 @@
                     this.seriesData = [];
                 }).finally(() => {
                     this.$nextTick(() => {
-                        this.$refs.vueCharts.refresh();
+                        this.$refs.vueCharts ? this.$refs.vueCharts.refresh() : '';
                     });
                 });
             },

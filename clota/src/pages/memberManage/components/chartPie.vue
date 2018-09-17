@@ -186,7 +186,7 @@
                     this.memberLevelData = [];
                 }).finally(() => {
                     this.$nextTick(() => {
-                        this.$refs.vueChart.refresh();
+                        this.$refs.vueChart ? this.$refs.vueChart.refresh() : '';
                     });
                 });
             }
