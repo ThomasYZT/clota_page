@@ -186,14 +186,15 @@
 
                 <!--游玩规则-->
                 <title-temp title="playRule"></title-temp>
-                <div class="form-content" :style="{height: (detail.productPlayRuleVo.length + 1) * 50 + 20+'px'}">
+                <div class="form-content" :style="{height: productPlayRuleVo.length > 0 ? (productPlayRuleVo.length + 1) * 50 + 20+'px' : '240px'}">
+                    <br/>
                     <Form-item :label="$t('playPark')+'：'"><!--可游玩园区-->
                         <div>
                             <table-com
                                 :ofsetHeight="755"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
-                                :table-data="detail.productPlayRuleVo"
+                                :table-data="productPlayRuleVo"
                                 :border="false">
                                 <el-table-column
                                     slot="column3"
@@ -255,6 +256,7 @@
     import editParkModal from './editParkModal.vue'
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import {parkColumn} from './parkConfig';
+    import ajax from '@/api/index';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -307,45 +309,46 @@
                     "updateUser": null,
                     "productEffSet": "since_the_play",
                     "updatedTime": "2018-09-12 13:56:35",
-                    "productPlayRuleVo": [
-                        {
-                            "checkPoint": [
-                                {
-                                    "checkId": "1037982966690746369",
-                                    "checkType": "garden",
-                                    "createUser": "1",
-                                    "createdTime": "2018-09-12 13:56:35",
-                                    "dayTimes": "2",
-                                    "id": "1039754624908791808",
-                                    "isDeleted": "false",
-                                    "orgId": "1037976274619994113",
-                                    "parkId": "1037976274619994113",
-                                    "playRuleId": "1039754623965073410",
-                                    "playType": "required",
-                                    "productId": "1039754623965073408",
-                                    "sumTimes": "7",
-                                    "updateUser": null,
-                                    "updatedTime": "2018-09-12 13:56:35"
-                                }
-                            ],
-                            "checkPoints": null,
-                            "createUser": "1",
-                            "createdTime": "2018-09-12 13:56:35",
-                            "effDay": 1,
-                            "effTimes": 1,
-                            "fingerCheck": "true",
-                            "id": "1039754623965073410",
-                            "itemCheckTimes": "10",
-                            "orgId": "1037976274619994113",
-                            "parkId": "1037976274619994113",
-                            "parkName": "魔法花园",
-                            "productId": "1039754623965073408",
-                            "saleType": "one_ticket",
-                            "updateUser": null,
-                            "updatedTime": "2018-09-12 13:56:35"
-                        }
-                    ],
                 },
+                //产品园区列表数据
+                productPlayRuleVo: [
+                    {
+                        "checkPoint": [
+                            {
+                                "checkId": "1037982966690746369",
+                                "checkType": "garden",
+                                "createUser": "1",
+                                "createdTime": "2018-09-12 13:56:35",
+                                "dayTimes": "2",
+                                "id": "1039754624908791808",
+                                "isDeleted": "false",
+                                "orgId": "1037976274619994113",
+                                "parkId": "1037976274619994113",
+                                "playRuleId": "1039754623965073410",
+                                "playType": "required",
+                                "productId": "1039754623965073408",
+                                "sumTimes": "7",
+                                "updateUser": null,
+                                "updatedTime": "2018-09-12 13:56:35"
+                            }
+                        ],
+                        "checkPoints": null,
+                        "createUser": "1",
+                        "createdTime": "2018-09-12 13:56:35",
+                        "effDay": 1,
+                        "effTimes": 1,
+                        "fingerCheck": "true",
+                        "id": "1039754623965073410",
+                        "itemCheckTimes": "10",
+                        "orgId": "1037976274619994113",
+                        "parkId": "1037976274619994113",
+                        "parkName": "魔法花园",
+                        "productId": "1039754623965073408",
+                        "saleType": "one_ticket",
+                        "updateUser": null,
+                        "updatedTime": "2018-09-12 13:56:35"
+                    }
+                ],
                 //日志列表
                 logList: [
                     { name : '张三', time: '2018/07/01  12:00', desc: '提交了审核' },
@@ -393,14 +396,31 @@
                 })
             },
 
+            // 根据产品Id查明细
+            findProductById( data ) {
+                ajax.post('findProductById', {
+                    productId: data.id
+                }).then(res => {
+                    if(res.success){
+                        this.detail = res.data.productSaleVo || {};
+                        this.productPlayRuleVo = res.data.productPlayRuleVo || [];
+                    } else {
+                        this.detail = {};
+                        this.productPlayRuleVo = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+
             /**
              * 获取路由信息
              */
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
-//                    this.detail = params.info;
-                    //根据产品Id查明细
-
+                    if(params.info){
+                        //根据产品Id查明细
+                        this.findProductById(params.info)
+                    }
                 }
             },
         },

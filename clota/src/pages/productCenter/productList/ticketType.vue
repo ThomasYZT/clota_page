@@ -19,12 +19,12 @@
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
-            :total-count="totalCount"
+            :total-count="total"
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             :column-check="true"
-            :default-sort="{prop: 'updateTime', order: 'descending'}"
+            :default-sort="{prop: 'updatedTime', order: 'descending'}"
             @sort-change="handleSortChanged"
             @query-data="queryList"
             @selection-change="changeSelection">
@@ -39,10 +39,10 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <div>
-                        <span v-if="scope.row.status === '已启用'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
-                        <span v-if="scope.row.status === '审核中'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
-                        <span v-if="scope.row.status === '已驳回'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
-                        <span v-if="scope.row.status === '未启用'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
+                        <span v-if="scope.row.auditStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
+                        <span v-if="scope.row.auditStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
+                        <span v-if="scope.row.auditStatus === '已驳回'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                        <span v-if="scope.row.auditStatus === '未启用'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
                     </div>
                 </template>
             </el-table-column>
@@ -55,7 +55,7 @@
                 sortable="custom"
                 :prop="row.field">
                 <template slot-scope="scope">
-                    {{scope.row.updateTime}}
+                    {{scope.row.updatedTime}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -115,60 +115,27 @@
                 // 列表数据
                 tableData: [],
                 // 数据总条数
-                totalCount: 0,
+                total: 0,
                 // 已勾选的模板
                 selectedRow: [],
                 // 删除数据显示
                 delUnits: '',
             }
         },
-        computed: {},
-        created() {
-        },
-        mounted() {
-        },
-        watch: {},
         methods: {
 
             // 查询票类产品列表
             queryList() {
-                this.tableData = [
-                    {
-                        'id': '00002103965',
-                        'productCode': '星火旅行社1',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '野生动物园',
-                        'status': '已启用',
-                        'updateTime': '2018-08-20 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社2',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '冰雪世界',
-                        'status': '已启用',
-                        'updateTime': '2018-06-01 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社3',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '野生动物园',
-                        'status': '已启用',
-                        'updateTime': '2018-04-17 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社4',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '冰雪世界',
-                        'status': '已启用',
-                        'updateTime': '2018-03-17 15:31:00',
-                    },
-
-                ];
-                this.totalCount = this.tableData.length;
+                ajax.post('queryProductPage',this.queryParams).then(res => {
+                    if(res.success){
+                        this.tableData = res.data.data || [];
+                        this.total = res.data.totalRow || 0;
+                    } else {
+                        this.tableData = [];
+                        this.total = 0;
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
 
             //查看详情
@@ -205,8 +172,8 @@
              * @param data
              */
             deleteTicket( data ) {
-                ajax.post('deleteTicket',{
-                    ids: data
+                ajax.post('deleteProduct',{
+                    productIds: data
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('success') + this.$t('delete'));
@@ -221,14 +188,14 @@
              * 列表排序 - 默认按更新时间降序排列
              * @param params - { column, prop, order }
              */
-            handleSortChanged: function (params) {debugger
+            handleSortChanged: function (params) {
                 let order = 'desc';
                 if (params.order && params.order === 'ascending'){
                     order = 'asc';
                 }
                 if (params.prop){
-                    if (params.prop === 'updateTime'){
-                        params.prop = 'update_time';
+                    if (params.prop === 'updatedTime'){
+                        params.prop = 'updated_time';
                     }
 
                     Object.assign(this.filterParam, { order: `${params.prop} ${order}` });
@@ -245,7 +212,9 @@
              * @returns {boolean}
              */
             filterHandler(value, row) {
+
                 return row.status === value;
+
             },
 
         }

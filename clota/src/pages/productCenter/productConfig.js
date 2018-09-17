@@ -9,7 +9,7 @@ export const ticketTypeHead = [
     {
         title: 'productCode',   // 产品编码
         minWidth: 150,
-        field: 'productCode'
+        field: 'code'
     },
     {
         title: 'productName',   // 产品名称
@@ -17,24 +17,24 @@ export const ticketTypeHead = [
         field: 'productName'
     },
     {
-        title: 'productDesc',      // 产品描述
-        minWidth: 220,
-        field: 'productDesc'
+        title: 'scenePrice',      // 景区成本价
+        minWidth: 120,
+        field: 'standardPrice'
     },
     {
-        title: 'sellingOrg',      // 发售机构
-        minWidth: 100,
-        field: 'sellingOrg'
+        title: 'scenePlace',      // 所属景区
+        minWidth: 220,
+        field: 'orgName'
     },
     {
         title: 'status',        // 状态
         minWidth: 110,
-        field: 'status'
+        field: 'auditStatus'
     },
     {
         title: 'updateTime',      // 更新时间
         minWidth: 180,
-        field: 'updateTime'
+        field: 'updatedTime'
     },
     {
         title: 'operate',       // 操作

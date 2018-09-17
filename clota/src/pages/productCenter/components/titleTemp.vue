@@ -4,7 +4,6 @@
         <div class="line"></div>
         <span class="name">{{$t(title)}}</span>
     </div>
-
 </template>
 
 <script>
