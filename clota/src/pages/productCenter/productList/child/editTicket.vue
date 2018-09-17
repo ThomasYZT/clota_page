@@ -29,22 +29,22 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('scenePrice')" prop="scenePrice"><!--景区成本价-->
-                            <Input v-model.trim="formData.scenePrice"
+                        <Form-item :label="$t('standardPrice')" prop="standardPrice"><!--景区成本价-->
+                            <Input v-model.trim="formData.standardPrice"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('thirdProductNo')" prop="thirdProductNo"><!--第三方产品编码-->
-                            <Input v-model.trim="formData.thirdProductNo"
+                        <Form-item :label="$t('thirdCode')" prop="thirdCode"><!--第三方产品编码-->
+                            <Input v-model.trim="formData.thirdCode"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('productDesc')" prop="productDesc"><!--产品描述-->
-                            <Input v-model.trim="formData.productDesc"
+                        <Form-item :label="$t('productDes')" prop="productDes"><!--产品描述-->
+                            <Input v-model.trim="formData.productDes"
                                    type="textarea"
                                    :rows="3"
                                    :placeholder="$t('inputField', {msg: ''})"/>
@@ -62,22 +62,22 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('ticketPrice')" prop="ticketPrice"><!--票面价格-->
-                            <Input v-model.trim="formData.ticketPrice"
+                        <Form-item :label="$t('printPrice')" prop="printPrice"><!--票面价格-->
+                            <Input v-model.trim="formData.printPrice"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('ticketDesc')" prop="ticketDesc"><!--票面说明-->
-                            <Input v-model.trim="formData.ticketDesc"
+                        <Form-item :label="$t('ticketRemark')" prop="ticketRemark"><!--票面说明-->
+                            <Input v-model.trim="formData.ticketRemark"
                                    type="textarea"
                                    :rows="3"
                                    :placeholder="$t('inputField', {msg: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('printDesc')" prop="printDesc"><!--打印说明-->
-                            <Input v-model.trim="formData.printDesc"
+                        <Form-item :label="$t('printRemark')" prop="printRemark"><!--打印说明-->
+                            <Input v-model.trim="formData.printRemark"
                                    type="textarea"
                                    :rows="3"
                                    :placeholder="$t('inputField', {msg: ''})"/>
@@ -89,8 +89,8 @@
                 <title-temp title="buyLimit"></title-temp>
                 <div class="form-content">
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('isTeamProduct')" prop="isTeamProduct"><!--是否团队产品-->
-                            <Select v-model="formData.isTeamProduct"
+                        <Form-item :label="$t('isGroup')" prop="isGroup"><!--是否团队产品-->
+                            <Select v-model="formData.isGroup"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.isTeamProduct"
                                         :key="index"
@@ -101,26 +101,26 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('enterNum')" prop="enterNum"><!-- 可入园人数-->
-                            <Input v-model.trim="formData.enterNum"
+                        <Form-item :label="$t('inNum')" prop="inNum"><!-- 可入园人数-->
+                            <Input v-model.trim="formData.inNum"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('minOrderNum')" prop="minOrderNum"><!--每订单最小起订数-->
-                            <Input v-model.trim="formData.minOrderNum"
+                        <Form-item :label="$t('minOrderNum')" prop="minNum"><!--每订单最小起订数-->
+                            <Input v-model.trim="formData.minNum"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('maxOrderNum')" prop="maxOrderNum"><!--每订单最大限订数-->
-                            <Input v-model.trim="formData.maxOrderNum"
+                        <Form-item :label="$t('maxOrderNum')" prop="maxNum"><!--每订单最大限订数-->
+                            <Input v-model.trim="formData.maxNum"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('orderToCommitVisitorIdInfo')" prop="orderToCommitVisitorIdInfo"><!--预定时提交身份信息-->
-                            <Select v-model="formData.orderToCommitVisitorIdInfo"
+                        <Form-item :label="$t('needId')" prop="needId"><!--预定时提交身份信息-->
+                            <Select v-model="formData.needId"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.orderInfo"
                                         :key="index"
@@ -132,9 +132,9 @@
                     </div>
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
-                    <div class="ivu-form-item-wrap single" v-if="formData.orderToCommitVisitorIdInfo !== 'noRequired'">
-                        <Form-item :label="$t('idType')" prop="idType"><!--可接受证件类型-->
-                            <CheckboxGroup v-model="formData.idType">
+                    <div class="ivu-form-item-wrap single" v-if="formData.needId !== 'noRequired'">
+                        <Form-item :label="$t('idType')" prop="acceptIdType"><!--可接受证件类型-->
+                            <CheckboxGroup v-model="formData.acceptIdType">
                                 <Checkbox v-for="(item,index) in enumData.idType"
                                           :key="index"
                                           :label="item.value">
@@ -167,10 +167,10 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitStore')" prop="limitStore"><!--限制库存-->
-                            <Select v-model="formData.limitStore"
+                        <Form-item :label="$t('stockType')" prop="stockType"><!--限制库存-->
+                            <Select v-model="formData.stockType"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.limitStore"
+                                <Option v-for="(item,index) in enumData.stockType"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
@@ -179,8 +179,8 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('storeNum')" prop="storeNum"><!-- 库存数量-->
-                            <Input v-model.trim="formData.storeNum"
+                        <Form-item :label="$t('stockNum')" prop="stockNum"><!-- 库存数量-->
+                            <Input v-model.trim="formData.stockNum"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
@@ -190,10 +190,10 @@
                 <title-temp title="productEffect"></title-temp>
                 <div class="form-content">
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('productEffectSet')" prop="productEffectSet"><!--产品有效性设置-->
-                            <Select v-model="formData.productEffectSet"
+                        <Form-item :label="$t('productEffSet')" prop="productEffSet"><!--产品有效性设置-->
+                            <Select v-model="formData.productEffSet"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.productEffectSet"
+                                <Option v-for="(item,index) in enumData.productEffSet"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
@@ -377,87 +377,93 @@
                 formData: {
                     //基本信息
                     productName: '',//产品名称
-                    scenePrice: '',//景区成本价
-                    thirdProductNo: '',//第三方产品编码
-                    productDesc: '',//产品描述
+                    standardPrice: '',//景区成本价
+                    thirdCode: '',//第三方产品编码
+                    productDes: '',//产品描述
                     //票面信息
                     printName: '',//打印名称
-                    ticketPrice: '',//票面价格
-                    ticketDesc: '',//票面说明
-                    printDesc: '',//打印说明
+                    printPrice: '',//票面价格
+                    ticketRemark: '',//票面说明
+                    printRemark: '',//打印说明
                     //购买限制
-                    isTeamProduct : 'yes',//是否团队产品
-                    enterNum : '',//可入园人数
-                    minOrderNum : '10',//每订单最小起订数
-                    maxOrderNum : '100',//每订单最大限订数
-                    orderToCommitVisitorIdInfo : 'noRequired',//预定时提交游客身份信息
-                    idType : ['identity','passport'],//可接受证件类型
+                    isGroup : 'true',//是否团队产品
+                    inNum : '',//可入园人数
+                    minNum : '10',//每订单最小起订数
+                    maxNum : '100',//每订单最大限订数
+                    needId : 'noRequired',//预定时提交游客身份信息
+                    acceptIdType : ['identity','passport'],//可接受证件类型
+
+                    idLimit: {"day":"7","quantity":"5"},//身份证件购票限制 '{"day":"7","quantity":"5"}'
+                    mobileLimit: {"day":"5","quantity":"5"},//手机号购票限制 '{"day":"5","quantity":"5"}'
+
                     limitByIdDay: '5',//身份证件购票限制
                     limitByIdNum: '5',//身份证件购票限制
                     limitByMobileDay: '5',//手机号购票限制
                     limitByMobileNum: '5',//手机号购票限制
-                    limitStore : 'is_no_limit',//限制库存
-                    storeNum : '',//库存数量
+                    stockType : 'is_no_limit',//限制库存
+                    stockNum : '100001',//库存数量
                     //产品有效性
-                    productEffectSet: 'dayToStart',//产品有效性设置
-                    //游玩规则
+                    productEffSet: 'since_the_play',//产品有效性设置
                 },
+                //游玩规则-产品园区列表数据
+                productPlayRuleVo: [],
+                //校验规则
                 ruleValidate: {
                     productName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('productName')}), trigger: 'blur' },     // 不能为空
                         { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('productName'), length: 50}), trigger: 'blur' },      // 不能多于15个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
-                    scenePrice: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('scenePrice')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('scenePrice'), length: 10}), trigger: 'blur' },
+                    standardPrice: [
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('standardPrice')}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('standardPrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' }
                     ],
-                    thirdProductNo: [
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('thirdProductNo'), length: 50}), trigger: 'blur' },
+                    thirdCode: [
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('thirdCode'), length: 50}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
-                    productDesc: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('productDesc'), length: 500}), trigger: 'blur' },
+                    productDes: [
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('productDes'), length: 500}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     printName: [
                         { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('printName'), length: 50}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    ticketPrice: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('ticketPrice'), length: 10}), trigger: 'blur' },
+                    printPrice: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('printPrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' }
                     ],
-                    ticketDesc: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 500}), trigger: 'blur' },
+                    ticketRemark: [
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('ticketRemark'), length: 500}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    printDesc: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('printDesc'), length: 500}), trigger: 'blur' },
+                    printRemark: [
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('printRemark'), length: 500}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    enterNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('enterNum')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('enterNum'), length: 10}), trigger: 'blur' },
+                    inNum: [
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('inNum')}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('inNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
-                    minOrderNum: [
+                    minNum: [
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('minOrderNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
-                    maxOrderNum: [
+                    maxNum: [
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('maxOrderNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
-                    storeNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('storeNum'), length: 10}), trigger: 'blur' },
+                    stockNum: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('stockNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
@@ -484,9 +490,9 @@
                     //证件类型
                     idType: idType,
                     //产品有效性设置
-                    productEffectSet: productEffectSet,
+                    productEffSet: productEffectSet,
                     //限制库存
-                    limitStore: limitStore,
+                    stockType: limitStore,
                 },
                 //可游玩园区表头
                 columnData: parkColumn,

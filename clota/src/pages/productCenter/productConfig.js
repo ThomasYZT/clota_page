@@ -3,12 +3,12 @@
 export const ticketTypeHead = [
     {
         title: 'ID',      // ID
-        width: 160,
+        width: 140,
         field: 'id'
     },
     {
         title: 'productCode',   // 产品编码
-        minWidth: 150,
+        minWidth: 140,
         field: 'code'
     },
     {
@@ -23,12 +23,12 @@ export const ticketTypeHead = [
     },
     {
         title: 'scenePlace',      // 所属景区
-        minWidth: 220,
+        minWidth: 150,
         field: 'orgName'
     },
     {
         title: 'status',        // 状态
-        minWidth: 110,
+        minWidth: 100,
         field: 'auditStatus'
     },
     {

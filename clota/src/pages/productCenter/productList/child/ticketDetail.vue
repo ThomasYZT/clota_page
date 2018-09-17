@@ -36,21 +36,21 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('scenePrice')+'：'"><!--景区成本价-->
+                            <Form-item :label="$t('standardPrice')+'：'"><!--景区成本价-->
                                 <div>{{detail.standardPrice | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
-                            <Form-item :label="$t('thirdProductNo')+'：'"><!--第三方产品编码-->
+                            <Form-item :label="$t('thirdCode')+'：'"><!--第三方产品编码-->
                                 <div v-w-title="detail.thirdCode">{{detail.thirdCode | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
-                            <Form-item :label="$t('productDesc')+'：'"><!--产品描述-->
+                            <Form-item :label="$t('productDes')+'：'"><!--产品描述-->
                                 <div v-w-title="detail.productDes">{{detail.productDes | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -67,21 +67,21 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('ticketPrice')+'：'"><!--票面价格-->
+                            <Form-item :label="$t('printPrice')+'：'"><!--票面价格-->
                                 <div>{{detail.printPrice | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
-                            <Form-item :label="$t('ticketDesc')+'：'"><!--票面说明-->
+                            <Form-item :label="$t('ticketRemark')+'：'"><!--票面说明-->
                                 <div v-w-title="detail.ticketRemark">{{detail.ticketRemark | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
-                            <Form-item :label="$t('printDesc')+'：'"><!--打印说明-->
+                            <Form-item :label="$t('printRemark')+'：'"><!--打印说明-->
                                 <div v-w-title="detail.printRemark">{{detail.printRemark | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -93,12 +93,12 @@
                 <div class="form-content">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('isTeamProduct')+'：'"><!--是否团队产品-->
+                            <Form-item :label="$t('isGroup')+'：'"><!--是否团队产品-->
                                 <div>{{detail.isGroup === 'true' ? $t('yes') : $t('no') }}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('enterNum')+'：'"><!--可入园人数-->
+                            <Form-item :label="$t('inNum')+'：'"><!--可入园人数-->
                                 <div>{{detail.inNum | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -117,7 +117,7 @@
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('orderToCommitVisitorIdInfo')+'：'"><!--预定时提交身份信息-->
+                            <Form-item :label="$t('needId')+'：'"><!--预定时提交身份信息-->
                                 <div v-w-title="$t(detail.needId)">{{$t(detail.needId)}}</div>
                             </Form-item>
                         </i-col>
@@ -160,12 +160,12 @@
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('limitStore')+'：'"><!--限制库存-->
+                            <Form-item :label="$t('stockType')+'：'"><!--限制库存-->
                                 <div v-w-title="$t(detail.stockType)">{{ $t(detail.stockType) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('storeNum')+'：'"><!--库存数量-->
+                            <Form-item :label="$t('stockNum')+'：'"><!--库存数量-->
                                 <div>{{ detail.stockNum | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -177,7 +177,7 @@
                 <div class="form-content">
                     <i-row>
                         <i-col span="11">
-                            <Form-item :label="$t('productEffectSet')+'：'"><!--产品有效性设置-->
+                            <Form-item :label="$t('productEffSet')+'：'"><!--产品有效性设置-->
                                 <div v-w-title="$t(detail.productEffSet)">{{$t(detail.productEffSet) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -276,40 +276,7 @@
                     }
                 ],
                 //详情数据
-                detail: {
-                    "auditStatus": "auditing",
-                    "code": "1039754625290473472",
-                    "companyId": null,
-                    "createdTime": "2018-09-12 13:56:35",
-                    "productId": "1039754623965073408",
-                    "inNum": "3",
-                    "isGroup": "true",
-                    "orgId": "1037976274619994113",
-                    "printName": "打印名称-李瑜测试产品1",
-                    "printPrice": "120",
-                    "printRemark": "打印说明",
-                    "printTpl": "",
-                    "productDes": "李瑜测试产品1描述",
-                    "productName": "李瑜测试产品1",
-                    "productType": "ticket",
-                    "standardPrice": "100",
-                    "thirdCode": "123456789",
-                    "ticketRemark": "票面说明",
-                    "acceptIdType": "identity",
-                    "createUser": "1",
-                    "saleRuleId": "1039754623965073409",
-                    "idLimit": "{\"day\":\"5\",\"quantity\":\"5\"}",
-                    "maxNum": "100",
-                    "minNum": "10",
-                    "mobileLimit": "{\"day\":\"5\",\"quantity\":\"5\"}",
-                    "needAllId": "",
-                    "needId": "noRequired",
-                    "stockNum": "10000",
-                    "stockType": "is_no_limit",
-                    "updateUser": null,
-                    "productEffSet": "since_the_play",
-                    "updatedTime": "2018-09-12 13:56:35",
-                },
+                detail: {},
                 //产品园区列表数据
                 productPlayRuleVo: [
                     {

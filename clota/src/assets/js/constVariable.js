@@ -228,11 +228,11 @@ export const nodeList = [
 export const isTeamProduct = [
     {
         label: 'yes',//是
-        value: 'yes'
+        value: 'true'
     },
     {
         label: 'no',//否
-        value: 'no'
+        value: 'false'
     },
 ];
 
@@ -295,12 +295,12 @@ export const limitStore = [
 //产品有效性设置
 export const productEffectSet = [
     {
-        label: 'dayToStart',//自游玩之日起M天有效
-        value: 'dayToStart'
+        label: 'since_the_play',//自游玩之日起M天有效
+        value: 'since_the_play'
     },
     {
-        label: 'toPolicy',//同销售政策适用游玩期限
-        value: 'toPolicy'
+        label: 'same_to_policy',//同销售政策适用游玩期限
+        value: 'same_to_policy'
     },
 ];
 
