@@ -2,7 +2,7 @@
 
 <template>
     <div class="group-list-main">
-        <Select v-model="groupType" class="group-list" style="width:280px;" @on-change="groupChange">
+        <Select v-model="groupType" class="group-list" style="width:280px;z-index:2000;" @on-change="groupChange">
             <Option :value="item.id"
                     v-for="item in allGroupList"
                     :label="item.groupName"
