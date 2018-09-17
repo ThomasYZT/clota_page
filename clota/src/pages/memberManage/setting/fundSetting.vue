@@ -238,6 +238,19 @@
                     </div>
                 </div>
             </div>
+            <div class="content-item">
+                <div class="title">{{$t('消费时优先扣除账户设置')}}</div>
+                <div class="main">
+                    <RadioGroup v-model="settingData.priorityDeductionInConsumption">
+                        <Radio label="corpus">
+                            <span>{{$t('corpusAccount')}}</span>
+                        </Radio>
+                        <Radio label="donate">
+                            <span>{{$t('赠送金额账户')}}</span>
+                        </Radio>
+                    </RadioGroup>
+                </div>
+            </div>
 
         </div>
 
@@ -323,6 +336,8 @@
 //                    commissionOfTransfermation: '',
                     //储值赠送金额比例设置
                     donateWhileRecharge: [],
+                    //消费时优先扣除账户设置
+                    priorityDeductionInConsumption  : ''
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
@@ -465,8 +480,8 @@
                                     scoreGrowthEffModeWhileCharging: res.data.scoreGrowthEffModeWhileCharging ?
                                         JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
                                     donateWhileRecharge: res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
+                                    priorityDeductionInConsumption : res.data.priorityDeductionInConsumption
                                 };
-                                console.log(params)
                                 for( let key in params){
                                     if(key && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0){
                                         for( let ckey in params[key]){
@@ -493,7 +508,6 @@
                 if(this.checkInputFunc()){
 
                     let setParam = defaultsDeep({}, this.settingData);
-                    console.log(setParam)
                     for( let key in setParam){
                         if(key && typeof (setParam[key]) === 'object' && Object.keys(setParam[key]).length > 0){
                             for( let ckey in setParam[key]){
@@ -507,7 +521,6 @@
                         }
                     }
                     setParam.id = this.id;
-                    console.log(setParam)
 
                     let params = {
                         id: this.id,
@@ -516,6 +529,7 @@
                         scoreGrowthEffModeWhileCharging: JSON.stringify(setParam.scoreGrowthEffModeWhileCharging),
                         donateWhileRecharge: setParam.donateWhileRecharge.length > 0 ?
                             JSON.stringify(setParam.donateWhileRecharge) : '',
+                        priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption
                     };
                     console.log(params)
                     this.basicSet(params);
