@@ -98,6 +98,7 @@
                 class="ivu-btn-90px"
                 @click="cancel">取消</Button>
             <Button type="primary"
+                    :loading="savIng"
                 class="ivu-btn-90px"
                 @click="save">保存</Button>
         </div>
@@ -267,7 +268,9 @@
                 //财务上级列表
                 parentEconomics : [],
                 //管理上级
-                parentManages : []
+                parentManages : [],
+                //是否在新增中
+                savIng : false
             }
         },
         watch: {
@@ -309,9 +312,12 @@
              * 保存新增租户数据
              */
             save() {
+                this.savIng = true;
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         this.addOrgInfo();
+                    }else{
+                        this.savIng = false;
                     }
                 });
             },
@@ -408,6 +414,8 @@
                     }else{
                         this.$Message.error(res.message || '新增失败');
                     }
+                }).finally(() => {
+                    this.savIng = false;
                 });
             },
             /**
