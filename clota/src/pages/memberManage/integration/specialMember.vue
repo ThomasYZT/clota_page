@@ -16,9 +16,18 @@
                     :table-com-min-height="250"
                     :auto-height="true"
                     :total-count="specialMemberDataCount"
-                    @query-data="memberStaffTypeList">
+                    @query-data="memberStaffTypeList"
+                    @selection-change="requeryEmployeeTypes">
                     <el-table-column
-                        slot="column1"
+                        slot="column0"
+                        slot-scope="row"
+                        type="selection"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                    </el-table-column>
+                    <el-table-column
+                        slot="column2"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -297,6 +306,13 @@
             modifyEmployeeType (data) {
                 this.specialCurrentData = data;
                 this.$refs.addSpecialType.show();
+            },
+            /**
+             * 重新按照特殊会员分类查询权益设置
+             * @param data
+             */
+            requeryEmployeeTypes (data) {
+                this.getStaffLevelInfo();
             }
         },
     }

@@ -17,7 +17,7 @@
                 // 路由列表
                 routerList: [
                     { name: 'memberSetting', desc: 'memberSetting' },      // 基础设置
-                    { name: 'channelSetting', desc: 'channelSetting' },           // 渠道设置
+                    { name: 'cardScopeSetting', desc: 'cardScopeSetting' },           // 会员卡应用范围设置
                     { name: 'levelSetting', desc: 'levelSetting' },             // 会员级别
                     { name: 'growthSetting', desc: 'growthSetting' },          // 成长值设置
                     { name: 'fundSetting', desc: 'fundSetting' },              // 储值设置
