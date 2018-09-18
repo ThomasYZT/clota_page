@@ -107,12 +107,12 @@
                             if (res.success) {
                                 sessionStorage.setItem('userInfo',JSON.stringify(res.data));
                                 sessionStorage.setItem('accountName',this.formInline.user);
-                                //保存当前选择的机构
-                                // if(!localStorage.getItem('manageOrgs')){
-                                    localStorage.setItem('manageOrgs',JSON.stringify(res.data.manageOrgs[0]));
-                                // }
-                                this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
-                                this.setOrgIndex();
+                                sessionStorage.setItem('token',res.data ? res.data.token : '');
+                                // //保存当前选择的机构
+                                // // if(!localStorage.getItem('manageOrgs')){
+                                // //     localStorage.setItem('manageOrgs',JSON.stringify(res.data.manageOrgs[0]));
+                                // // }
+                                // this.setOrgIndex(res.data.manageOrgs);
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
                                     this.$router.push({
                                         path: route.path
@@ -159,11 +159,19 @@
             },
             /**
              * 判断是否有存储所在机构的索引，如果没有则默认存储第一个
+             * @param data 组织树所有权限数据
              */
-            setOrgIndex () {
-                let orgIndex = sessionStorage.getItem('orgIndex');
+            setOrgIndex (data) {
+                let orgIndex = localStorage.getItem('orgId');
                 if(orgIndex === '' || orgIndex === null){
-                    sessionStorage.setItem('orgIndex',0);
+                    orgIndex = data[0].id;
+                    localStorage.setItem('orgIndex',data[0].id);
+                }
+                for(let i = 0,j = data.length;i < j;i++){
+                    if(orgIndex === data[i].id){
+                        this.$store.commit('updateManageOrgs',data[i]);
+                        break;
+                    }
                 }
             }
         },

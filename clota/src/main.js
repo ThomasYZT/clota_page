@@ -22,6 +22,8 @@ import eleZhCnLang from 'element-ui/lib/locale/lang/zh-CN';
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
 // eleLocale.use(eleEnLang);
+import common from './assets/js/common';
+
 
 Vue.use(plugin);
 Vue.config.productionTip = true;
@@ -38,24 +40,43 @@ router.beforeEach((to, from, next) => {
             if (store.getters.permissionInfo !== null) {
                 next();
             } else {
-                store.dispatch('getUserRight', to).then((router) => {
-                    if(router){
-                        next({ ...to, replace: true })
-                    }else{
+                //查询本地存储的用户信息是否还有，如果没有则直接跳转到登录页面
+                let manageOrgs = common.getUserInfo().manageOrgs;
+                if(manageOrgs && Object.keys(manageOrgs).length > 0){
+                    let orgIndex = localStorage.getItem('orgId');
+                    if(orgIndex === '' || orgIndex === null){
+                        orgIndex = manageOrgs[0].id;
+                        localStorage.setItem('orgIndex',manageOrgs[0].id);
+                    }
+                    for(let i = 0,j = manageOrgs.length;i < j;i++){
+                        if(orgIndex === manageOrgs[i].id){
+                            store.commit('updateManageOrgs',manageOrgs[i]);
+                            break;
+                        }
+                    }
+                    store.dispatch('getUserRight', to).then((router) => {
+                        if(router){
+                            next({ ...to, replace: true })
+                        }else{
+                            next({
+                                name: 'login'
+                            });
+                        }
+                    }).catch(() => {
                         next({
                             name: 'login'
                         });
-                    }
-                }).catch(() => {
+                    });
+                }else{
                     next({
                         name: 'login'
                     });
-                });
+                }
             }
         } else {
             //判断是否本地有存储token，有的话，直接重新获取用户信息
             if(ajax.getToken()){
-                let userInfo  = JSON.parse(sessionStorage.getItem('userInfo'));
+                let userInfo  = common.getUserInfo().userInfo;
                 store.dispatch('getUserInfo',userInfo).then(route => {
                     next({
                         path: to.path

@@ -71,6 +71,8 @@ export default new Vuex.Store({
         manageOrgs : {},
         //当前的皮肤
         skinType : 'blue-theame',
+        //随机数，用于更新组件
+        hashKey : ''
     },
     getters: {
         //左侧菜单是否收起
@@ -118,6 +120,9 @@ export default new Vuex.Store({
                 state.skinType = skinType;
             }
             return state.skinType;
+        },
+        hashKey : state => {
+            return state.hashKey;
         }
     },
     mutations: {
@@ -172,22 +177,26 @@ export default new Vuex.Store({
         //更改组织机构
         updateManageOrgs(state,org) {
             state.manageOrgs = org;
-            localStorage.setItem('manageOrgs',JSON.stringify(org));
         },
         //更改皮肤
         updateSkin (state,skin) {
             localStorage.setItem('skinType',skin);
             state.skinType = skin;
+        },
+        //更新随机数
+        updateHashKey (state) {
+            console.log('hash')
+            state.hashKey = Math.random();
         }
     },
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
-            let index = sessionStorage.getItem('orgIndex') ? sessionStorage.getItem('orgIndex') : 0;
             return ajax.post('getPrivilege',{
-                orgId : store.getters.userInfo.manageOrgs[index].id
+                orgId : store.state.manageOrgs.id
             }).then(res =>{
                 if(res.success){
+                    sessionStorage.setItem('token',res.data ? res.data.token : '');
                     return new Promise((resolve, reject) => {
                         let privCode = {};
                         let privateData = res.data.privileges;
@@ -221,6 +230,18 @@ export default new Vuex.Store({
             return new Promise((resolve,reject) => {
                 if(userInfo.token){
                     store.commit('updateUserInfo',userInfo);
+                    let manageOrgs = userInfo.manageOrgs ? userInfo.manageOrgs : [];
+                    let orgIndex = localStorage.getItem('orgId');
+                    if(orgIndex === '' || orgIndex === null){
+                        orgIndex = manageOrgs[0].id;
+                        localStorage.setItem('orgIndex',orgIndex);
+                    }
+                    for(let i = 0,j = manageOrgs.length;i < j;i++){
+                        if(orgIndex === manageOrgs[i].id){
+                            store.commit('updateManageOrgs',manageOrgs[i]);
+                            break;
+                        }
+                    }
                     resolve(userInfo);
                 }else{
                     reject();
@@ -229,6 +250,14 @@ export default new Vuex.Store({
                 return store.dispatch('getUserRight');
             }).catch(err => {
                 console.log(err)
+            });
+        },
+        //重新选择登录的机构
+        resetNodeChosed (store,orgInfo ) {
+            store.state.manageOrgs = orgInfo;
+            return this.dispatch('getUserRight').then(res =>{
+                store.commit('updateHashKey');
+                return res;
             });
         }
     }

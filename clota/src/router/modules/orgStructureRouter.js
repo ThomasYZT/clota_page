@@ -101,7 +101,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/partner/partner.vue'),
                 meta: {
                     menuName: 'partner', //lang.config.js 里面的语言键值
-                    _name: 'members', //
+                    _name: 'org-partner', //
                     iconClass: 'icon-partner',
                     rightPath : topMenuName + '.' + 'partner',
                     isMenu : true
@@ -114,7 +114,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/channels/channels.vue'),
                 meta: {
                     menuName: 'channels',
-                    _name: 'members',
+                    _name: 'org-channel',
                     iconClass: 'icon-market-channel',
                     rightPath : topMenuName + '.' + 'channels',
                     isMenu : true
@@ -127,7 +127,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/saleChannelsGroup/saleChannelsGroup.vue'),
                 meta: {
                     menuName: 'saleChannelsGroup',
-                    _name: 'members',
+                    _name: 'org-sale',
                     iconClass: 'icon-trade-channel',
                     rightPath : topMenuName + '.' + 'saleChannelsGroup',
                     isMenu : true
@@ -140,7 +140,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/verificateGroup/checkGroup.vue'),
                 meta: {
                     menuName: 'verificateGroup',
-                    _name: 'members',
+                    _name: 'org-checker',
                     iconClass: 'icon-partner',
                     rightPath : topMenuName + '.' + 'verificateGroup',
                     isMenu : true
