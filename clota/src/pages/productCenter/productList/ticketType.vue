@@ -41,8 +41,8 @@
                     <div>
                         <span v-if="scope.row.auditStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
                         <span v-if="scope.row.auditStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
-                        <span v-if="scope.row.auditStatus === '已驳回'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
-                        <span v-if="scope.row.auditStatus === '未启用'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
+                        <span v-if="scope.row.auditStatus === 'rejected'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                        <span v-if="scope.row.auditStatus === 'not_enabled'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
                     </div>
                 </template>
             </el-table-column>
@@ -101,9 +101,10 @@
                 queryParams: {
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                    auditStatus: '',                                //审核状态；（未启用-not_enabled，已驳回-rejected，审核中-auditing，已启用-enabled）
                 },
                 filterParam: {
-                    order: 'update_time desc',
+                    orderBy: [{name: 'p.updated_time', val: 'desc'}],//[{name:xxx,val:asc|desc}]
                 },
                 // 筛选列表
                 filterList: [
@@ -195,10 +196,10 @@
                 }
                 if (params.prop){
                     if (params.prop === 'updatedTime'){
-                        params.prop = 'updated_time';
+                        params.prop = 'p.updated_time';
                     }
 
-                    Object.assign(this.filterParam, { order: `${params.prop} ${order}` });
+                    Object.assign(this.filterParam, { orderBy: JSON.stringify([{name: `${params.prop}`, val: `${order}`}]) });
                     Object.assign(this.queryParams, this.filterParam);
                     this.queryParams.pageNo = 1;
                     this.queryList();

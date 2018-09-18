@@ -741,7 +741,7 @@
             //查询权限下的园区
             queryScenicOrgByAccountRole () {
                 ajax.post('queryScenicOrgByAccountRole', {
-                    privCode: '',
+                    privCode: 'addProduct',
                 }).then(res => {
                     if(res.success){
                         this.parkList = res.data || [];

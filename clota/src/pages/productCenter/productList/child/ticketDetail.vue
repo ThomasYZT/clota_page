@@ -16,9 +16,9 @@
 
             <div class="title-wrap">
                 <span>{{$t('ticketDetail')}}</span>
-                <span class="yellow-span">{{$t('待审核')}}</span>
-                <span class="green-span">{{$t('已启用')}}</span>
-                <span class="red-span">{{$t('已驳回')}}</span>
+                <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
+                <span class="yellow-span" v-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
+                <span class="red-span" v-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
                 <span class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
             </div>
 
@@ -197,6 +197,17 @@
                                 :table-data="productPlayRuleVo"
                                 :border="false">
                                 <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        {{$t(scope.row.saleType) | contentFilter}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
                                     slot="column3"
                                     slot-scope="row"
                                     :label="row.title"
@@ -229,17 +240,26 @@
         </div>
 
         <div class="footer">
-            <template v-if="detail.auditStatus === 'auditing'">
+            <!--已驳回-->
+            <template v-if="detail.auditStatus === 'rejected'">
                 <Button type="primary"
                         @click="submit">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
                         @click="modify">{{$t('modify')}}</Button><!--修  改-->
             </template>
-            <Button type="primary">{{$t('disabled')}}</Button><!--禁用-->
-            <Button type="ghost">{{$t('checkPass')}}</Button><!--审核通过-->
-            <Button type="ghost">{{$t('reject')}}</Button><!--驳回-->
-            <Button type="ghost">{{$t('revocation')}}</Button><!--撤回-->
-            <Button type="ghost">{{$t('back')}}</Button><!--返回-->
+            <!--已启用-->
+            <template v-if="detail.auditStatus === 'enabled'">
+                <Button type="primary">{{$t('disabled')}}</Button><!--禁用-->
+                <Button type="ghost">{{$t('back')}}</Button><!--返回-->
+            </template>
+            <!--待审核-->
+            <template v-if="detail.auditStatus === 'auditing'">
+                <Button type="primary">{{$t('checkPass')}}</Button><!--审核通过-->
+                <Button type="error">{{$t('revocation')}}</Button><!--撤回-->
+                <Button type="ghost" class="active-btn">{{$t('reject')}}</Button><!--驳回-->
+                <Button type="ghost">{{$t('back')}}</Button><!--返回-->
+                <span class="blue">{{$t('填写备注')}}</span>
+            </template>
         </div>
 
         <!--查看园区-->
@@ -544,6 +564,16 @@
             /deep/ .ivu-btn {
                 min-width: 108px;
                 margin-right: 15px;
+
+                &.active-btn{
+                    border-color: $color_blue;
+                    color: $color_blue;
+                }
+            }
+
+            .blue{
+                color: $color_blue;
+                cursor: pointer;
             }
         }
     }
