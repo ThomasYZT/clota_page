@@ -88,17 +88,27 @@
                     fixed="right"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
+                        <!--修改-->
                         <span class="operate-btn blue"
                               @click="newSelfSupportBtn('modify', scope.row)">{{$t('modify')}}
                         </span>
                         <span class="divide-line"></span>
+                        <!--启用/禁用-->
                         <span :class="['operate-btn', scope.row.status=='valid' ? 'org' : 'blue']"
                               @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}
-                        </span><!--启用/禁用-->
+                        </span>
                         <span class="divide-line"></span>
-                        <span :class="['operate-btn', scope.row.type=='online' ? 'red' : 'gray']"
+                        <!--删除-->
+                        <span :class="['operate-btn', 'red']"
+                              v-if="scope.row.type=='online'"
                               @click="showDelModal(scope.row)">{{$t('del')}}
                         </span>
+                        <Tooltip placement="top-end" :transfer="true" v-if="scope.row.type=='offline'">
+                            <span :class="['operate-btn', 'gray']">{{$t('del')}}</span>
+                            <div slot="content">
+                                <div class="tip-trade">{{$t('线下渠道主要是售票闸机等，只能在组织架构内增加/删除，不允许在此页面增加或删除。')}}</div>
+                            </div>
+                        </Tooltip>
                     </template>
                 </el-table-column>
             </table-com>
@@ -255,7 +265,9 @@
              */
             showDelModal(data, isBatch) {
                 if (isBatch==true) {
-                    this.name = `${data[0].channelName}、${data[1].channelName}<span style="color: #333;">等${data.length}个渠道</span>`;
+                    let channelNames = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
+
+                    this.name = `${channelNames}<span style="color: #333;">等${data.length}个渠道</span>`;
                     this.$refs.delListModal.show();
                 } else {
                     this.rowIds = [data.id];
@@ -288,6 +300,10 @@
                     this.rowIds = map(selection, 'id');
                 }
             },
+            /**
+             * 选择批量操作
+             * @param dropItem - 选择的操作方式  String
+             */
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {
                     this.$Message.warning('请勾选批量操作项');
@@ -299,7 +315,15 @@
                         this.enable(dropItem, true);
                         break;
                     case 'del' :
-                        this.showDelModal(this.chosenRowData, true);
+                        let onlineData = this.chosenRowData.filter((item, i) => {
+                            // 过滤出线上的自营渠道类型，因线下类型不可删除
+                            return item.type == 'online';
+                        });
+                        if (onlineData && onlineData.length>0) {
+                            this.showDelModal(onlineData, true);
+                        } else {
+                            this.$Message.warning('线下渠道主要是售票闸机等，只能在组织架构内增加/删除，不允许在此页面增加或删除。')
+                        }
                         break;
                 }
             },

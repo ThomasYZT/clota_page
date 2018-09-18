@@ -190,22 +190,25 @@
 
                 ajax.post(partnerObj.apiKey, this.addPartner).then(res => {
                     if (res.success) {
-                        this.hide();
                         // 新增成功后，根据partnerId 找到匹配的合作伙伴数据，并将合作伙伴名称显示在提示信息内容中
                         let partnerName = this.partners.find((item, i) => {
                             return item.id === this.addPartner.partnerId;
                         });
-                        this.$Message.success(partnerObj.successTip + '：' + partnerName ? partnerName.channelName : '');
+                        this.$Message.success( partnerObj.successTip + '：' + (partnerName ? partnerName.orgName : '') );
                         this.$emit('on-add-success');
+                        this.hide();
                     } else {
                         this.$Message.error(res.message ? res.message : partnerObj.failTip);
                     }
                 });
             },
+            // 改变合作伙伴选择的处理
             handlePartnerChanged(selected) {
-                this.addPartner.channelName = this.partners.find((item, i) => {
-                    return item.id === selected;
-                }).orgName;
+                if (selected) {
+                    this.addPartner.channelName = this.partners.find((item, i) => {
+                        return item.id === selected;
+                    }).orgName;
+                }
             },
 
         }
