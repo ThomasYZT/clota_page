@@ -12,30 +12,30 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <!--账户类型-->
-                <Form-item :label="$t('accountType')" prop="paymentName">
-                    <Select v-model="formData.paymentName" @on-change="handleAccountChanged">
+                <Form-item :label="$t('accountType')" prop="accountType">
+                    <Select v-model="formData.accountType" @on-change="handleAccountChanged">
                         <Option v-for="(item, index) in accountList"
-                                :value="item.payType"
+                                :value="item.accountType"
                                 :key="index">
                             {{ item.payTypeName }}
                         </Option>
                     </Select>
                 </Form-item>
                 <!--商户号-->
-                <Form-item :label="$t('merchantNum')" prop="merchantNum">
-                    <Input v-model.trim="formData.merchantNum" :placeholder="$t('inputField', {field: ''})"/>
+                <Form-item :label="$t('merchantNum')" prop="merchantNumber">
+                    <Input v-model.trim="formData.merchantNumber" :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
                 <!--appID-->
-                <Form-item :label="$t('appID')" prop="appID">
-                    <Input v-model.trim="formData.appID" :placeholder="$t('inputField', {field: ''})"/>
+                <Form-item :label="$t('appID')" prop="appId">
+                    <Input v-model.trim="formData.appId" :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
                 <!--appKEY-->
-                <Form-item :label="$t('appKEY')" prop="appKEY">
-                    <Input v-model.trim="formData.appKEY" :placeholder="$t('inputField', {field: ''})"/>
+                <Form-item :label="$t('appKEY')" prop="appKey">
+                    <Input v-model.trim="formData.appKey" :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
                 <!--appSECRET-->
-                <Form-item :label="$t('appSECRET')" prop="appSECRET">
-                    <Input v-model.trim="formData.appSECRET" :placeholder="$t('inputField', {field: ''})"/>
+                <Form-item :label="$t('appSECRET')" prop="appSecret">
+                    <Input v-model.trim="formData.appSecret" :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
                 <!--备注-->
                 <Form-item :label="$t('remark')" prop="remark" style="margin-bottom: 0;">
@@ -61,7 +61,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['length','account-list','modal-title'],
+        props: ['length','modal-title','has-paytype-list'],
         components: {
             tableCom,
         },
@@ -98,31 +98,31 @@
                 //表单数据
                 index: null,
                 formData: {
-                    paymentName: '',
+                    accountType: '',
                     merchantNum: '',
-                    appID: '',
-                    appKEY: '',
-                    appSECRET: '',
+                    appId: '',
+                    appKey: '',
+                    appSecret: '',
                     remark: '',
                 },
                 //校验规则
                 ruleValidate: {
-                    paymentName: [
+                    accountType: [
                         { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
                     ],
-                    merchantNum: [
+                    merchantNumber: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('merchantNum')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    appID: [
+                    appId: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('appID')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    appKEY: [
+                    appKey: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('appKEY')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    appSECRET: [
+                    appSecret: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('appSECRET')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
@@ -159,6 +159,7 @@
                         field: 'orgName'
                     },
                 ],
+                accountList: []
             }
         },
         watch: {
@@ -168,10 +169,35 @@
 
             show ( data ) {
                 this.index = this.length;
+                this.accountList = [
+                    {accountType: 'alipay', payTypeName: '支付宝支付账户'},
+                    {accountType: 'weixin', payTypeName: '微信支付账户'}
+                ]
                 if( data ){
                     this.formData = defaultsDeep({}, data.item);
                     this.index = data.index;
                 }
+
+                //获取未添加过的账户类型信息
+                if(data.item) {
+                    //console.log(this.hasPaytypeList)
+                    this.accountList.forEach((item, index) => {
+                        if(item.accountType == data.item.accountType) {
+                            this.accountList.splice( index-1,1)
+                        }
+                    })
+                }else {
+                    //console.log(this.hasPaytypeList)
+                    for(let i=0, len=this.accountList.length; i<len;) {
+                        if(this.hasPaytypeList.indexOf(this.accountList[i].accountType) > -1){
+                            this.accountList.splice(i,1);
+                            len -= 1;
+                        }else {
+                            i++;
+                        }
+                    }
+                }
+
                 this.visible = true;
             },
 
@@ -184,20 +210,36 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if(valid){
-
+                        //校验成功，触发新增账户接口
+                        this.saveAccountInfo()
                     }
                 })
             },
-
+            /**
+             * 提交账户信息
+             */
+            saveAccountInfo() {
+                ajax.post('addOnlineAccount', {
+                    ...this.formData
+                }).then((res) => {
+                    if(res.success) {
+                        this.$emit('updata-list');
+                        this.hide();
+                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
+                    } else {
+                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');
+                    }
+                })
+            },
             //关闭模态框
             hide(){
                 this.visible = false;
                 this.formData = {
-                    paymentName: '',
-                    merchantNum: '',
-                    appID: '',
-                    appKEY: '',
-                    appSECRET: '',
+                    accountType: '',
+                    merchantNumber: '',
+                    appId: '',
+                    appKey: '',
+                    appSecret: '',
                     remark: '',
                 };
                 this.selectData = [];
@@ -209,9 +251,8 @@
                 if( this.$refs.sendMultiTablePlug ){
                     this.$refs.sendMultiTablePlug.clearSelection();
                 }
-                if(this.step === 0){
-                    this.$refs.formValidate.resetFields();
-                }
+                this.$refs.formValidate.resetFields();
+
             },
 
 
@@ -220,11 +261,11 @@
                 this.formData.corpusAppliedOrgId = [];
                 this.formData.donateAppliedOrgId = [];
                 if(this.selectData && this.selectData.length > 0 ){
-                    this.selectData[0].forEach( (item, index) => {
+                    this.selectData[0].forEach( (item) => {
                         this.formData.corpusAppliedOrgId.push(item.id);
                     })
 
-                    this.selectData[1].forEach( (item, index) => {
+                    this.selectData[1].forEach( (item) => {
                         this.formData.donateAppliedOrgId.push(item.id);
                     });
                 }

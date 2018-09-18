@@ -766,4 +766,6 @@ export default {
     'org-sale': '销售渠道分组',
     'org-checker': '核销设备分组',
 
+    'deleteAccount': '删除账户'
+
 }

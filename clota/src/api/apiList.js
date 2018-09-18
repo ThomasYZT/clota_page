@@ -8,6 +8,8 @@ import index from './modules/index';
 import info from './modules/info';
 //组织架构接口
 import org from './modules/org';
+//系统设置接口
+import sms from './modules/sms'
 //产品中心接口
 import product from './modules/product';
 
@@ -28,6 +30,8 @@ const apiList = {
     ...org,
     //产品中心接口
     ...product,
+    //系统设置接口
+    ...sms
 
 };
 

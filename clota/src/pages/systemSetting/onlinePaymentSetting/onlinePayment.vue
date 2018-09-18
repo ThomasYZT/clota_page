@@ -23,23 +23,23 @@
                     </div>
                     <div class="payment-list">
                         <div class="payment-name" v-w-title="item.paymentName">
-                            {{item.paymentName}}
+                            {{payTypeName[item.accountType]}}
                         </div>
                         <div class="payment-item">
                             <span>{{'商户号：'}}</span>
-                            <div>{{item.merchantNum}}</div>
+                            <div>{{item.merchantNumber}}</div>
                         </div>
                         <div class="payment-item">
                             <span>{{'appID：'}}</span>
-                            <div>{{item.appID}}</div>
+                            <div>{{item.appId}}</div>
                         </div>
                         <div class="payment-item">
                             <span>{{'appKEY：'}}</span>
-                            <div>{{item.appKEY}}</div>
+                            <div>{{item.appKey}}</div>
                         </div>
                         <div class="payment-item">
                             <span>{{'appSECRET：'}}</span>
-                            <div>{{item.appSECRET}}</div>
+                            <div>{{item.appSecret}}</div>
                         </div>
                         <div class="payment-item">
                             <span>{{$t('remark') + '：'}}</span>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <ul class="account-operate">
-                    <li class="list" @click="addPaymentAccount('modifyAccount')">{{$t('edit')}}</li><!--编辑-->
+                    <li class="list" @click="addPaymentAccount('modifyAccount',item)">{{$t('edit')}}</li><!--编辑-->
                     <li class="list" @click="delPaymentAccount(item)">{{$t('del')}}</li><!--删除-->
                 </ul>
             </div>
@@ -65,15 +65,15 @@
         <!--增加/修改账户Modal-->
         <new-account-modal ref="addAccount"
                            :modal-title="modalTitle"
-                           :account-list="collectionAccList"
-                           @updata-list="">
+                           :hasPaytypeList="hasPaytypeList"
+                           @updata-list="queryOnlineAccount">
         </new-account-modal>
 
-        <!--删除账户Modal-->
-        <del-account-modal ref="delAccount"
-                           :modal-title="'删除账户'"
-                           @on-delete="">
-        </del-account-modal>
+        <!--删除模态框-->
+        <del-modal ref="delModal">
+            <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{selectedPayType}}</span></span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        </del-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -81,40 +81,31 @@
     import newAccountModal from './components/newAccountModal.vue'
     import delAccountModal from './components/delAccountModal.vue'
 
+    import delModal from '@/components/delModal';
+    import ajax from '@/api/index'
+
     export default {
-        components: {noData, newAccountModal, delAccountModal},
+        components: {noData, newAccountModal, delAccountModal, delModal},
         props: {},
         data() {
             return {
-                collectionAccList: [
-                    {
-                        'paymentName': '支付宝支付账户信息',
-                        'merchantNum': 'Tfj789782',
-                        'appID': 'Tfj789782',
-                        'appKEY': 'iirr789782',
-                        'appSECRET': 'Thff89782',
-                        'remark': '这里是备注信息，这里是备注信息，这里是备注信息，',
-                        'payType': 'zfb',
-                        'payTypeName': '支付宝'
-                    },
-                    {
-                        'paymentName': '微信支付账户信息',
-                        'merchantNum': 'jjj789782',
-                        'appID': 'jjj789782',
-                        'appKEY': 'jkh449782',
-                        'appSECRET': 'uio339782',
-                        'remark': '这里是备注信息，这里是备注信息，这里是备注信息，',
-                        'payType': 'wx',
-                        'payTypeName': '微信'
-                    },
-                ],
+                collectionAccList: [],
 
                 // 增加/修改账户modalTitle
                 modalTitle: '',
+                //当前选中删除的账户类型
+                selectedPayType: '',
+                payTypeName: {
+                    'alipay': '支付宝支付账户',
+                    'weixin': '微信支付账户'
+                },
+                //当前用户已拥有的账户类型list
+                hasPaytypeList: []
             }
         },
         computed: {},
         created() {
+            this.queryOnlineAccount()
         },
         mounted() {
         },
@@ -124,8 +115,7 @@
              * 增加/修改账户
              * @param operate - 增加、修改的双语键值
              */
-            addPaymentAccount(operate) {
-                let item = {};
+            addPaymentAccount(operate, item) {
                 let index = this.collectionAccList.length;
 
                 this.modalTitle = operate;
@@ -135,7 +125,39 @@
              * 删除账户
              */
             delPaymentAccount(item) {
-                this.$refs.delAccount.show({item});
+                this.selectedPayType = item.paymentName;
+                this.$refs.delModal.show({
+                    title : this.$t('deleteAccount'),
+                    confirmCallback : () => {
+                        ajax.post('deleteOnlineAccount', {
+                            id: item.id
+                        }).then((res) => {
+                            if(res.success){
+                                this.$Message.success(this.$t('success') + this.$t('delete'));
+                                this.queryOnlineAccount();
+                            } else {
+                                this.$Message.error(res.message || this.$t('fail'));
+                            }
+                        })
+                    }
+                })
+            },
+            /**
+             * 获取在线账户支付列表
+             */
+            queryOnlineAccount() {
+                ajax.post('queryOnlineAccount').then((res) => {
+                    this.collectionAccList = res.data;
+                    this.hasPaytypeList = [];
+                    this.collectionAccList.forEach((item) => {
+                        if(this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType == 'alipay') {
+                            this.hasPaytypeList.push('alipay');
+                        }
+                        if(this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType == 'weixin') {
+                            this.hasPaytypeList.push('weixin');
+                        }
+                    });
+                })
             },
         }
     };
