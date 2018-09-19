@@ -100,6 +100,12 @@ export default {
     'deleteAdjustReason' : '/member/memberBasicSet/deleteAdjustReason',
     //基础设置-增加调账原因
     'addAdjustReason' : '/member/memberBasicSet/addAdjustReason',
+    //获取所有产品类型
+    'queryProductType' : '/member/productType/queryProductType',
+    //新增或修改产品类型
+    'saveProductType' : '/member/productType/saveProductType',
+    //删除产品类别
+    'deleteProductType' : '/member/productType/deleteProductType',
 
     //渠道设置-会员渠道-查询
     'queryChannelSet' : '/member/channelSet/queryChannelSet',
