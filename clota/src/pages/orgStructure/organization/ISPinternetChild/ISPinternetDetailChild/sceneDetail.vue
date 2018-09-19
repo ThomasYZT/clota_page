@@ -454,6 +454,10 @@
                                 this.$Message.success('修改成功');
                                 if(this.formDataCopy.orgName !== this.sceneDetail.orgName){
                                     this.freshOrg();
+                                }else if(this.formDataCopy.parentManageId !== this.sceneDetail.parentManageId){
+                                    this.freshOrg();
+                                }else if(this.formDataCopy.parentEconomicId !== this.sceneDetail.parentEconomicId){
+                                    this.freshOrg();
                                 }else{
                                     this.getSceneDetail();
                                 }

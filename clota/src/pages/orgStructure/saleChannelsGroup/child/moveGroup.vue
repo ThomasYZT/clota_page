@@ -12,7 +12,7 @@
             <div class="name">将所选销售渠道移至分组</div>
             <Form ref="formData" :model="formData" :rules="ruleValidate">
                 <FormItem prop="selectOrgId">
-                    <Select v-model="formData.selectOrgId" style="width:240px" transfer>
+                    <Select v-model="formData.selectOrgId" style="width:240px;z-index: 2000!important;" transfer>
                         <Option :value="item.id"
                                 v-for="item in orgGroupList"
                                 :label="item.groupName"

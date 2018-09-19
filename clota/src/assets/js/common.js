@@ -28,16 +28,10 @@ export default {
      */
     getUserInfo() {
         let userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-        let empInfo = userInfo && userInfo.empInfo ? userInfo.empInfo : {};
-        let roleType = userInfo && userInfo.roleType ? userInfo.roleType : 'perf_subordinate';
-        let defaultCompany = userInfo && userInfo.companys ? userInfo.companys.find(attr => {
-            return attr.id == userInfo.empInfo.companyId
-        }) : '';
+        let manageOrgs = userInfo && userInfo.manageOrgs ? userInfo.manageOrgs : [];
         return {
             userInfo,
-            empInfo,
-            roleType,
-            defaultCompany
+            manageOrgs,
         }
     },
 

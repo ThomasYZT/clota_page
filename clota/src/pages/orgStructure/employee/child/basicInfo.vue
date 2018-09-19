@@ -329,7 +329,7 @@
                     this.getFieldInitData(item.apiKey, item.dataKey);
                 });
 
-                this.getAllPrivilege();
+//                this.getAllPrivilege();
             },
             /**
              * 获取部门名称、籍贯、角色权限 下拉列表数据

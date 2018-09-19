@@ -765,6 +765,9 @@ export default {
     'org-sale': '销售渠道分组',
     'org-checker': '核销设备分组',
     'cardScopeSetting': '会员卡可用范围设置',
-
+    'checkNameError': '{field}分组名称已存在',
+    'accountFundError': '账户未启用，或已关闭',
+    'accountPrivaligeError': '账户没有菜单权限，请联系管理员开通权限',
+    'productTypeSetting': '产品类别设置',
     'deleteAccount': 'deleteAccount'
 }

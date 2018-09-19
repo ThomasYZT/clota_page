@@ -2,7 +2,7 @@
 
 <template>
     <div class="org-tree-wrap" @click.stop="">
-        <Input v-model="filterValue"
+        <Input v-model.trim="filterValue"
                placeholder="搜索"
                style="width: 270px;margin-bottom:5px;margin-left: 15px;"
                @input="filter($event)"/>
@@ -21,6 +21,7 @@
 
 <script>
     import common from '@/assets/js/common';
+    import {mapGetters} from 'vuex';
     export default {
         data() {
             return {
@@ -51,7 +52,7 @@
              */
             filterNode(value, data) {
                 if (!value) return true;
-                return data.label.indexOf(value) !== -1;
+                return data && data.orgName && data.orgName.indexOf(value) !== -1;
             },
             /**
              * 获取组织树列表
@@ -64,7 +65,7 @@
              * @returns {string | null}
              */
             getChoseOrg (){
-                return localStorage.getItem('manageOrgs') ? JSON.parse(localStorage.getItem('manageOrgs')) : {};
+                return this.manageOrgs;
             },
             /**
              * 更改组织结构
@@ -72,8 +73,17 @@
              * @param node
              */
             orgChose (data,node){
-                this.$store.commit('updateManageOrgs',data);
-                this.$emit('hide-tree');
+                if(data.id !== this.manageOrgs.id){
+                    this.$store.dispatch('resetNodeChosed',data).then(route => {
+                        this.$router.replace({
+                            path : route.path
+                        });
+                        this.$nextTick(() =>{
+                            this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
+                            this.$emit('hide-tree');
+                        });
+                    });
+                }
             }
         },
         created () {
@@ -83,6 +93,17 @@
             this.$nextTick(() =>{
                 this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
             });
+        },
+        computed : {
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            })
+        },
+        watch : {
+            //监视查询关键字，如果改变就进行查找
+            filterValue (newVal,oldVal) {
+                this.$refs.tree.filter(newVal);
+            }
         }
     }
 </script>

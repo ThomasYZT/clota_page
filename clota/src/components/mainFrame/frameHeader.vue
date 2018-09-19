@@ -217,10 +217,6 @@
                 } else {
                     return [];
                 }
-            },
-            //当前选择的组织名称
-            orgName () {
-                return localStorage.getItem('manageOrgs') ? JSON.parse(localStorage.getItem('manageOrgs')).orgName : {};
             }
         }
     }

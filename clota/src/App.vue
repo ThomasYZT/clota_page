@@ -5,7 +5,7 @@
         <router-view v-if="noFrame"/>
         <main-frame v-else>
             <transition name="fade">
-                <router-view>
+                <router-view :key="hashKey">
                 </router-view>
             </transition>
         </main-frame>
@@ -32,10 +32,11 @@
             },
             ...mapGetters({
                 skinType: 'skinType',
+                hashKey : 'hashKey'
             }),
         },
         created () {
-            this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
+            // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
         }
     }
 </script>

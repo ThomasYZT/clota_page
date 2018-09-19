@@ -84,6 +84,7 @@
                 class="ivu-btn-90px"
                 @click="cancel">取消</Button>
             <Button type="primary"
+                    :loading="saveIng"
                     class="ivu-btn-90px"
                     @click="save">保存</Button>
         </div>
@@ -200,6 +201,8 @@
                 cashierTypeGroupList: [],
                 //所属销售渠道分组
                 saleTypeGroupList: [],
+                //是否在保存中
+                saveIng : false
             }
         },
         watch: {
@@ -237,9 +240,12 @@
              * 保存新增租户数据
              */
             save() {
+                this.saveIng = true;
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         this.addCashier();
+                    }else{
+                        this.saveIng = false;
                     }
                 });
             },
@@ -267,11 +273,13 @@
                 }).then(res => {
                    if(res.success){
                        this.$emit('fresh-structure-data');
-                       this.$emit('input', false);
                        this.$Message.success('新增成功');
                    }else{
                         this.$Message.error('新增失败');
                    }
+                }).finally(() => {
+                    this.saveIng = false;
+                    this.$emit('input', false);
                 });
             },
             /**

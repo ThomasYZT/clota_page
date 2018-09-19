@@ -34,7 +34,6 @@
                          ref="menuTree"
                          disabled
                          show-checkbox
-                         check-strictly
                          :default-expand-all="true"
                          :props="menuDefaultProps"
                          :default-expanded-keys="menuDefaultChosed"
@@ -200,6 +199,7 @@
              * @param checkedKeys
              */
             treeCheck (data,{checkedNodes,checkedKeys}) {
+                console.log(arguments)
                 // debugger
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
@@ -214,9 +214,10 @@
              * @param data
              * @param checkedKeys
              * @param checkedNodes
+             * @param halfCheckedNodes
              */
-            menuCheckChange (data,{checkedKeys,checkedNodes}){
-                this.privaligeInfo[this.activeNodeId] = checkedNodes;
+            menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
+                this.privaligeInfo[this.activeNodeId] = [...checkedNodes,...halfCheckedNodes];
             },
             /**
              * 设置右侧默认选中的菜单节点
