@@ -225,15 +225,21 @@
                 </div>
 
                 <!--产品日志-->
-                <title-temp title="productLog"></title-temp>
-                <div class="form-content">
-                    <Timeline>
-                        <TimelineItem v-for="(item,index) in logList" :key="index" color="#DFDFDF">
-                            <p class="time">{{item.time}}</p>
-                            <p class="content"><span class="name">{{item.name}}</span>{{item.desc}}</p>
-                        </TimelineItem>
-                    </Timeline>
-                </div>
+                <template v-if="recordsVos && recordsVos.length > 0">
+                    <title-temp title="productLog"></title-temp>
+                    <div class="form-content">
+                        <Timeline>
+                            <TimelineItem v-for="(item,index) in recordsVos" :key="index" color="#DFDFDF">
+                                <p class="time">{{item.createdTime}}</p>
+                                <p class="content">
+                                    <span class="name">{{item.createName}}/{{item.createAccount}}</span>
+                                    <span>{{$t(item.operationStatus)}}</span>
+                                    <span v-if="item.contents">{{$t('remark')}}：{{item.contents}}</span>
+                                </p>
+                            </TimelineItem>
+                        </Timeline>
+                    </div>
+                </template>
 
             </Form>
 
@@ -241,29 +247,34 @@
 
         <div class="footer">
             <!--已驳回-->
-            <template v-if="detail.auditStatus === 'rejected'">
+            <template v-if="detail.auditStatus === 'rejected' || detail.auditStatus === 'auditing'">
                 <Button type="primary"
-                        @click="submit">{{$t('commitCheck')}}</Button><!--提交审核-->
+                        @click="auditProduct('PRODUCT_APPLY')">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
                         @click="modify">{{$t('modify')}}</Button><!--修  改-->
             </template>
             <!--已启用-->
             <template v-if="detail.auditStatus === 'enabled'">
-                <Button type="primary">{{$t('disabled')}}</Button><!--禁用-->
-                <Button type="ghost">{{$t('back')}}</Button><!--返回-->
+                <Button type="primary" @click="auditProduct('PRODUCT_DISABLE')">{{$t('disabled')}}</Button><!--禁用-->
             </template>
             <!--待审核-->
             <template v-if="detail.auditStatus === 'auditing'">
-                <Button type="primary">{{$t('checkPass')}}</Button><!--审核通过-->
-                <Button type="error">{{$t('revocation')}}</Button><!--撤回-->
-                <Button type="ghost" class="active-btn">{{$t('reject')}}</Button><!--驳回-->
-                <Button type="ghost">{{$t('back')}}</Button><!--返回-->
-                <span class="blue">{{$t('填写备注')}}</span>
+                <Button type="primary" @click="auditProduct('PRODUCT_AUDIT_PASS')">{{$t('checkPass')}}</Button><!--审核通过-->
+                <Button type="error" @click="auditProduct('PRODUCT_REVOCATION')">{{$t('revocation')}}</Button><!--撤回-->
+                <Button type="ghost" class="active-btn" @click="auditProduct('PRODUCT_AUDIT_REJECT')">{{$t('reject')}}</Button><!--驳回-->
+            </template>
+            <Button type="ghost" @click="goBack">{{$t('back')}}</Button><!--返回-->
+            <!--待审核--填写备注-->
+            <template v-if="detail.auditStatus === 'auditing'">
+                <span class="blue" @click="showRemarkModal">{{$t('填写备注')}}</span>
             </template>
         </div>
 
         <!--查看园区-->
-        <edit-park-modal ref="viewPark"></edit-park-modal>
+        <edit-park-modal ref="viewPark" :park-list="parkList" :data="detail"></edit-park-modal>
+
+        <!--新增备注弹窗-->
+        <add-remark-modal ref="addRemarkModal"></add-remark-modal>
 
     </div>
 </template>
@@ -273,7 +284,8 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import editParkModal from './editParkModal.vue'
+    import editParkModal from './editParkModal.vue';
+    import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import {parkColumn} from './parkConfig';
     import ajax from '@/api/index';
@@ -285,6 +297,7 @@
             titleTemp,
             tableCom,
             editParkModal,
+            addRemarkModal,
         },
         data () {
             return {
@@ -336,19 +349,17 @@
                         "updatedTime": "2018-09-12 13:56:35"
                     }
                 ],
-                //日志列表
-                logList: [
-                    { name : '张三', time: '2018/07/01  12:00', desc: '提交了审核' },
-                    { name : '李四', time: '2018/07/01  12:00', desc: '审核通过，启用产品' },
-                ],
+                //产品日志数据
+                recordsVos: [],
                 //可游玩园区表头
                 columnData: parkColumn,
-                //可游玩园区表格数据
-                tableData: [{}],
+                //可游玩园区列表数据
+                parkList: [],
+                //备注
+                remark: '',
             }
         },
         methods: {
-
 
             /**
              * 查看可游玩园区详情
@@ -359,17 +370,7 @@
                     data: data,
                     title : this.$t('check')+this.$t(data.saleType),
                     type: 'check',
-                    confirmCallback : () => {
-                        //push to tableData
-                        debugger
-                        console.log(true)
-                    }
                 });
-            },
-
-            //提交审核
-            submit () {
-
             },
 
             //修改
@@ -391,12 +392,61 @@
                     if(res.success){
                         this.detail = res.data.productSaleVo || {};
                         this.productPlayRuleVo = res.data.productPlayRuleVo || [];
+                        this.recordsVos = res.data.recordsVos || [];
                     } else {
                         this.detail = {};
                         this.productPlayRuleVo = [];
+                        this.recordsVos = [];
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
+            },
+
+            // 查询权限下的园区
+            queryScenicOrgByAccountRole () {
+                ajax.post('queryScenicOrgByAccountRole', {
+                    privCode: 'addProduct',
+                }).then(res => {
+                    if(res.success){
+                        this.parkList = res.data || [];
+                    } else {
+                        this.parkList = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                })
+            },
+
+            //审核操作
+            auditProduct ( status ) {
+                ajax.post('auditProduct', {
+                    productId: this.detail.id,
+                    operType: status,
+                    remark: this.remark,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success(this.$t('checked') + this.$t('success'));
+                        //根据产品Id查明细
+                        this.findProductById(this.detail);
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                })
+            },
+
+            //显示备注弹窗
+            showRemarkModal () {
+                this.$refs.addRemarkModal.show({
+                    data: {remark: this.remark},
+                    confirmCallback : ( data ) => {
+                        console.log(data);
+                        this.remark = data;
+                    }
+                });
+            },
+
+            //返回
+            goBack() {
+                this.$router.back();
             },
 
             /**
@@ -406,10 +456,13 @@
                 if(params && Object.keys(params).length > 0){
                     if(params.info){
                         //根据产品Id查明细
-                        this.findProductById(params.info)
+                        this.findProductById(params.info);
+                        //查询权限下的园区
+                        this.queryScenicOrgByAccountRole();
                     }
                 }
             },
+
         },
     }
 </script>

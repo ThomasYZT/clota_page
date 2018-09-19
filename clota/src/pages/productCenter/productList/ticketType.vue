@@ -213,9 +213,7 @@
              * @returns {boolean}
              */
             filterHandler(value, row) {
-
                 return row.status === value;
-
             },
 
         }

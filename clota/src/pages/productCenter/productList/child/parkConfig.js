@@ -33,7 +33,7 @@ export const distributeColumnHead = [
     {
         title: 'equipmentName',   // 设备名称
         minWidth: 150,
-        field: 'name'
+        field: 'channelName'
     },
     {
         title: 'status',   // 状态
@@ -65,23 +65,23 @@ export const viewDistributeColumnHead = [
 export const proGroupColumnHead = [
     {
         title: 'index',      // 序号
-        width: 70,
+        width: 100,
         field: 'id'
     },
     {
         title: 'projectName',   // 项目名称
         minWidth: 120,
-        field: 'name'
+        field: 'channelName'
     },
     {
         title: 'totalPlayTimes',   // 累计可游玩次数
         minWidth: 150,
-        field: 'times'
+        field: 'sumTimes'
     },
     {
         title: 'dayPlayTimes',   // 每日可游玩次数
         minWidth: 150,
-        field: 'day'
+        field: 'dayTimes'
     },
     {
         title: 'operate',       // 操作

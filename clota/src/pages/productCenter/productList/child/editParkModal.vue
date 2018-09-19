@@ -26,17 +26,18 @@
                   label-position="top">
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('choosePark')" prop="choosePark"><!--选择园区-->
-                            <Select v-model="formData.choosePark"
+                        <FormItem :label="$t('choosePark')" prop="parkId"><!--选择园区-->
+                            <Select v-model="formData.parkId"
                                     :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.park"
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="selectParkChange">
+                                <Option v-for="(item,index) in parkList"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.id">
+                                    {{item.orgName}}
                                 </Option>
                             </Select>
-                            <span class="iconfont icon-help" v-title="$t('chooseParkNotice')"></span>
+                            <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -57,46 +58,48 @@
                         </FormItem>
                     </i-col>
                 </i-row>
-                <i-row>
+                <!--产品有效性设置 === 自游玩之日起M天有效-->
+                <i-row v-if="data.productEffSet === 'since_the_play'">
                     <i-col span="24">
-                        <Form-item prop="Times"><!--每人可入园总次数-->
-                            <span>{{$t('预定时指定游玩日期。入园后，门票')}}</span>
-                            <Input v-model.trim="formData.peopleEnterTimes"
+                        <Form-item prop="effTimes">
+                            <span>{{$t('dayToPlay')}}</span>
+                            <Input v-model.trim="formData.effDay"
                                    :disabled="type === 'check'"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('天有效，一共可入园/观影')}}</span>
-                            <Input v-model.trim="formData.dayEnterTimes"
+                            <span>{{$t('dayToEffect')}}</span>
+                            <Input v-model.trim="formData.effTimes"
                                    :disabled="type === 'check'"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('次')}}</span>
+                            <span>{{$t('times')}}</span>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+                <!--产品有效性设置 === 同销售政策适用游玩期限-->
+                <i-row v-if="data.productEffSet === 'same_to_policy'">
+                    <i-col span="24">
+                        <Form-item prop="effTimes">
+                            <span>{{$t('timesToPolicy')}}</span>
+                            <Input v-model.trim="formData.effTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('times')}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item prop="Times"><!--每人可入园总次数-->
-                            <span>{{$t('在销售政策适用游玩期限内，可入园/观影')}}</span>
-                            <Input v-model.trim="formData.dayEnterTimes"
-                                   :disabled="type === 'check'"
-                                   class="short-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('次')}}</span>
-                        </Form-item>
-                    </i-col>
-                </i-row>
-                <i-row>
-                    <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="equipmentGroup"><!--设备分组-->
-                            <Select v-model="formData.equipmentGroup"
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})"><!--设备分组-->
+                            <Select v-model="formData.gardenGroupId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="changeEquipmentGroup">
                                 <Option v-for="(item,index) in enumData.group"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.id">
+                                    {{item.groupName}}
                                 </Option>
                             </Select>
                         </FormItem>
@@ -104,21 +107,34 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('enterCheckPlace')" prop="enterCheckPlace"><!--入园检票处-->
+                        <FormItem :label="$t('enterCheckPlace')"><!--入园检票处-->
                             <!--入园检票处--核销表格,区分查看与编辑-->
                             <table-com
                                 v-if="type === 'check'"
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
-                                :table-data="distributeTableData"
+                                :table-data="checkPoints"
                                 :border="false">
                             </table-com>
                             <table-com
                                 v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
-                                :table-data="distributeTableData"
+                                :table-data="checkPoints"
                                 :border="false">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        {{ scope.$index+1 }}
+                                    </template>
+                                </el-table-column>
                                 <el-table-column
                                     slot="column2"
                                     :label="row.title"
@@ -129,7 +145,7 @@
                                     show-overflow-tooltip
                                     slot-scope="row">
                                     <template slot-scope="scope">
-                                        <span>{{ scope.row.status === 'true' ? $t('startingUse') : $t('unStarting') }}</span>
+                                        <span>{{ scope.row.status === 'valid' ? $t('startingUse') : $t('unStarting') }}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -140,12 +156,12 @@
                                     :min-width="row.minWidth">
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
-                                            <li class="normal"
-                                                v-if="scope.row.status === 'false'"
-                                                @click="startUse(scope.row)">{{$t('commissioned')}}</li><!--启用-->
                                             <li class="span-yellow"
+                                                v-if="scope.row.status === 'valid'"
+                                                @click="disabled(scope.row,scope.$index)">{{$t('disabled')}}</li><!--禁用-->
+                                            <li class="normal"
                                                 v-else
-                                                @click="disabled(scope.row)">{{$t('disabled')}}</li><!--禁用-->
+                                                @click="startUse(scope.row,scope.$index)">{{$t('commissioned')}}</li><!--启用-->
                                         </ul>
                                     </template>
                                 </el-table-column>
@@ -155,14 +171,9 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('otherSet')" prop="otherSet"><!--其他设置-->
-                            <CheckboxGroup v-model="formData.otherSet">
-                                <Checkbox v-for="(item,index) in enumData.authenticationType"
-                                          :disabled="type === 'check'"
-                                          :key="index"
-                                          :label="item.value">
-                                    {{$t(item.label)}}</Checkbox>
-                            </CheckboxGroup>
+                        <Form-item :label="$t('otherSet')"><!--其他设置-->
+                            <Checkbox v-model="formData.fingerCheck"
+                                      :disabled="type === 'check'">{{$t('fingerprint')}}</Checkbox>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -177,17 +188,18 @@
                   label-position="top">
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('choosePark')" prop="choosePark"><!--选择园区-->
-                            <Select v-model="formData.choosePark"
+                        <FormItem :label="$t('choosePark')" prop="parkId"><!--选择园区-->
+                            <Select v-model="formData.parkId"
                                     :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.park"
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="selectParkChange">
+                                <Option v-for="(item,index) in parkList"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.id">
+                                    {{item.orgName}}
                                 </Option>
                             </Select>
-                            <span class="iconfont icon-help" v-title="$t('chooseParkNotice')"></span>
+                            <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -211,46 +223,48 @@
 
                 <!--入园核销-->
                 <title-park title="enterCheck"></title-park>
-                <i-row>
+                <!--产品有效性设置 === 自游玩之日起M天有效-->
+                <i-row v-if="data.productEffSet === 'since_the_play'">
                     <i-col span="24">
-                        <Form-item prop="Times"><!--每人可入园总次数-->
-                            <span>{{$t('预定时指定游玩日期。入园后，门票')}}</span>
-                            <Input v-model.trim="formData.peopleEnterTimes"
+                        <Form-item prop="effTimes">
+                            <span>{{$t('dayToPlay')}}</span>
+                            <Input v-model.trim="formData.effDay"
                                    :disabled="type === 'check'"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('天有效，一共可入园/观影')}}</span>
-                            <Input v-model.trim="formData.dayEnterTimes"
+                            <span>{{$t('dayToEffect')}}</span>
+                            <Input v-model.trim="formData.effTimes"
                                    :disabled="type === 'check'"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('次')}}</span>
+                            <span>{{$t('times')}}</span>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+                <!--产品有效性设置 === 同销售政策适用游玩期限-->
+                <i-row v-if="data.productEffSet === 'same_to_policy'">
+                    <i-col span="24">
+                        <Form-item prop="effTimes">
+                            <span>{{$t('timesToPolicy')}}</span>
+                            <Input v-model.trim="formData.effTimes"
+                                   :disabled="type === 'check'"
+                                   class="short-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('times')}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item prop="Times"><!--每人可入园总次数-->
-                            <span>{{$t('在销售政策适用游玩期限内，可入园/观影')}}</span>
-                            <Input v-model.trim="formData.dayEnterTimes"
-                                   :disabled="type === 'check'"
-                                   class="short-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('次')}}</span>
-                        </Form-item>
-                    </i-col>
-                </i-row>
-                <i-row>
-                    <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="equipmentGroup"><!--设备分组-->
-                            <Select v-model="formData.equipmentGroup"
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})"><!--设备分组-->
+                            <Select v-model="formData.gardenGroupId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="changeEquipmentGroup">
                                 <Option v-for="(item,index) in enumData.group"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.id">
+                                    {{item.groupName}}
                                 </Option>
                             </Select>
                         </FormItem>
@@ -258,21 +272,34 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('enterCheckPlace')" prop="enterCheckPlace"><!--入园检票处-->
+                        <FormItem :label="$t('enterCheckPlace')"><!--入园检票处-->
                             <!--入园检票处--核销表格,区分查看与编辑-->
                             <table-com
                                 v-if="type === 'check'"
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
-                                :table-data="distributeTableData"
+                                :table-data="checkPoints"
                                 :border="false">
                             </table-com>
                             <table-com
                                 v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
-                                :table-data="distributeTableData"
+                                :table-data="checkPoints"
                                 :border="false">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        {{ scope.$index+1 }}
+                                    </template>
+                                </el-table-column>
                                 <el-table-column
                                     slot="column2"
                                     :label="row.title"
@@ -283,7 +310,7 @@
                                     show-overflow-tooltip
                                     slot-scope="row">
                                     <template slot-scope="scope">
-                                        <span>{{ scope.row.status === 'true' ? $t('startingUse') : $t('unStarting') }}</span>
+                                        <span>{{ scope.row.status === 'valid' ? $t('startingUse') : $t('unStarting') }}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -294,12 +321,12 @@
                                     :min-width="row.minWidth">
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
-                                            <li class="normal"
-                                                v-if="scope.row.status === 'false'"
-                                                @click="startUse(scope.row)">{{$t('commissioned')}}</li><!--启用-->
                                             <li class="span-yellow"
+                                                v-if="scope.row.status === 'valid'"
+                                                @click="disabled(scope.row, scope.$index)">{{$t('disabled')}}</li><!--禁用-->
+                                            <li class="normal"
                                                 v-else
-                                                @click="disabled(scope.row)">{{$t('disabled')}}</li><!--禁用-->
+                                                @click="startUse(scope.row, scope.$index)">{{$t('commissioned')}}</li><!--启用-->
                                         </ul>
                                     </template>
                                 </el-table-column>
@@ -312,8 +339,8 @@
                 <title-park title="playProject"></title-park>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('projectTotalTimes')" prop="projectTotalTimes"><!--项目游玩总次数-->
-                            <Input v-model.trim="formData.projectTotalTimes"
+                        <Form-item :label="$t('projectTotalTimes')" prop="itemCheckTimes"><!--项目游玩总次数-->
+                            <Input v-model.trim="formData.itemCheckTimes"
                                    :disabled="type === 'check'"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
@@ -321,16 +348,16 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('addProjectGroup')" prop="addProjectGroup"><!--添加项目分组-->
-                            <Select v-model="formData.addProjectGroup"
+                        <FormItem :label="$t('addProjectGroup')"><!--添加项目分组-->
+                            <Select v-model="formData.equipmentGroupIds"
                                     :disabled="type === 'check'"
                                     :multiple="true"
                                     :clearable="true"
                                     :placeholder="$t('selectField', {msg: ''})" @on-change="changeProjectGroup">
-                                <Option v-for="(item,index) in enumData.saleType"
+                                <Option v-for="(item,index) in enumData.group"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.id">
+                                    {{item.groupName}}
                                     </Option>
                             </Select>
                             <span class="example" @click="jumpForExample">{{$t('example')}}</span>
@@ -339,8 +366,23 @@
                                 <table-com
                                     :table-com-min-height="250"
                                     :column-data="proGroupColumnHead"
-                                    :table-data="proGroupTableData"
+                                    :table-data="playPoints"
                                     :border="false">
+                                    <el-table-column
+                                        slot="column0"
+                                        :label="row.title"
+                                        :prop="row.field"
+                                        :key="row.index"
+                                        :width="row.width"
+                                        :min-width="row.minWidth"
+                                        show-overflow-tooltip
+                                        slot-scope="row">
+                                        <template slot-scope="scope">
+                                            <span v-if="scope.row.playType === 'required'"
+                                                  class="must-span iconfont icon-must-play"></span>
+                                            <span>{{ scope.$index+1 }}</span>
+                                        </template>
+                                    </el-table-column>
                                     <el-table-column
                                         slot="column2"
                                         :label="row.title"
@@ -351,11 +393,11 @@
                                         show-overflow-tooltip
                                         slot-scope="row">
                                         <template slot-scope="scope">
-                                            <InputNumber :max="9999999999"
-                                                         :min="1"
-                                                         v-model.trim="scope.row.times"
+                                            <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                         :min="0"
+                                                         v-model.trim="scope.row.sumTimes"
                                                          :placeholder="$t('inputField', {field: ''})"
-                                                         @on-blur="checkTimes(scope.row)">
+                                                         @on-blur="checkTimes(scope.row.sumTimes)">
                                             </InputNumber>
                                         </template>
                                     </el-table-column>
@@ -369,11 +411,11 @@
                                         show-overflow-tooltip
                                         slot-scope="row">
                                         <template slot-scope="scope">
-                                            <InputNumber :max="9999999999"
-                                                         :min="1"
-                                                         v-model.trim="scope.row.day"
+                                            <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                         :min="0"
+                                                         v-model.trim="scope.row.dayTimes"
                                                          :placeholder="$t('inputField', {field: ''})"
-                                                         @on-blur="checkTimes(scope.row)">
+                                                         @on-blur="checkTimes(scope.row.dayTimes)">
                                             </InputNumber>
                                         </template>
                                     </el-table-column>
@@ -387,16 +429,16 @@
                                             <ul class="operate-list">
                                                 <template v-if="type === 'check'">
                                                     <li class="normal"
-                                                        v-if="scope.row.play === 'true'">{{$t('必玩项')}}</li><!--必玩项-->
+                                                        v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
                                                     <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
                                                 </template>
                                                 <template v-else>
                                                     <li class="normal"
-                                                        v-if="scope.row.play === 'true'"
-                                                        @click="setAblePlay(scope.row)">{{$t('setAblePlay')}}</li><!--设为可玩-->
+                                                        v-if="scope.row.playType === 'required'"
+                                                        @click="setAblePlay(scope.row, scope.$index)">{{$t('setAblePlay')}}</li><!--设为可玩-->
                                                     <li class="normal"
                                                         v-else
-                                                        @click="setMustPlay(scope.row)">{{$t('setMustPlay')}}</li><!--设为必玩-->
+                                                        @click="setMustPlay(scope.row, scope.$index)">{{$t('setMustPlay')}}</li><!--设为必玩-->
                                                 </template>
                                             </ul>
                                         </template>
@@ -408,14 +450,9 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <Form-item :label="$t('otherSet')" prop="otherSet"><!--其他设置-->
-                            <CheckboxGroup v-model="formData.otherSet">
-                                <Checkbox v-for="(item,index) in enumData.authenticationType"
-                                          :disabled="type === 'check'"
-                                          :key="index"
-                                          :label="item.value">
-                                    {{$t(item.label)}}</Checkbox>
-                            </CheckboxGroup>
+                        <Form-item :label="$t('otherSet')"><!--其他设置-->
+                            <Checkbox v-model="formData.fingerCheck"
+                                      :disabled="type === 'check'">{{$t('fingerprint')}}</Checkbox>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -441,10 +478,12 @@
     import titlePark from '../../components/titlePark.vue';
     import { saleType, authenticationType } from '@/assets/js/constVariable';
     import {distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead} from './parkConfig';
+    import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
+    import ajax from '@/api/index';
 
     export default {
-        props: ['parkList'],
+        props: ['parkList','data'],
         components: {
             tableCom,
             titlePark,
@@ -474,7 +513,33 @@
                 }
             };
 
+            //校验次数，天数
+            const validateTimes = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                    if(this.data.productEffSet === 'since_the_play'){
+                        common.validateInteger(this.formData.effDay).then(() => {
+                            callback();
+                        }).catch(err => {
+                            if(err === 'errorMaxLength'){
+                                callback(this.$t(err,{field : '', length : 10}));
+                            }else{
+                                callback(this.$t(err,{field : ''}));
+                            }
+                        });
+                    }
+                }).catch(err => {
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t(err,{field : '', length : 10}));
+                    }else{
+                        callback(this.$t(err,{field : ''}));
+                    }
+                });
+            };
+
             return {
+                //记录修改的数据
+                index: null,
                 //类型 add/modify
                 type: 'add',
                 //标题信息
@@ -487,38 +552,31 @@
                 cancelCallback : null,
                 //表单数据
                 formData: {
-                    choosePark: '',//选择园区
+                    parkName: '',
+                    parkId: '',//选择园区
                     saleType: 'one_ticket',//售票方式
                     //入园核销
-                    peopleEnterTimes: '',//每人可入园总次数
-                    dayEnterTimes: '',//每日可入园次数
-                    equipmentGroup: '',//设备分组
-                    enterCheckPlace: '',//入园检票处
-                    otherSet: ['fingerprint'],//其他设置
+                    effDay: '1',
+                    effTimes: '1',
+                    gardenGroupId: '',//核销设备分组ID
+                    fingerCheck: true,//其他设置
                     //游玩项目
-                    projectTotalTimes: '',//项目游玩总次数
-                    addProjectGroup: [],//添加项目分组
+                    itemCheckTimes: 0,//项目游玩总次数itemCheckTimes
+                    equipmentGroupIds: [],//游玩项目分组ID-多个逗号分隔
                 },
                 ruleValidate: {
-                    choosePark: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('productName')}), trigger: 'change' },     // 不能为空
+                    parkId: [
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('choosePark')}), trigger: 'change' },     // 不能为空
                     ],
                     saleType: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleType')}), trigger: 'change' },
                     ],
-                    peopleEnterTimes: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('peopleEnterTimes')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('peopleEnterTimes'), length: 10}), trigger: 'blur' },
+                    effTimes: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: '', length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                        { validator: validateTimes, trigger: 'blur' }
                     ],
-                    dayEnterTimes: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('dayEnterTimes')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('dayEnterTimes'), length: 10}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
-                    ],
-                    projectTotalTimes: [
+                    itemCheckTimes: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('projectTotalTimes')}), trigger: 'blur' },
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('projectTotalTimes'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
@@ -527,7 +585,6 @@
                 },
                 //枚举数据
                 enumData: {
-                    choosePark: [],
                     //售票方式
                     saleType: saleType,
                     //设备分组
@@ -538,47 +595,12 @@
                 //入园检票处表头
                 distributeColumnHead: distributeColumnHead,
                 viewDistributeColumnHead: viewDistributeColumnHead,//查看表头
-                //可游玩园区表格数据
-                distributeTableData: [
-                    {
-                        id: '1',
-                        name: '闸机A',
-                        status: 'true',
-                    },
-                    {
-                        id: '2',
-                        name: '闸机B',
-                        status: 'false',
-                    },
-                ],
+                //可游玩园区表格数据 核销设备点 数组
+                checkPoints: [],
                 //项目分组表头
                 proGroupColumnHead: proGroupColumnHead,
-                //项目分组表格数据
-                proGroupTableData: [
-                    {
-                        id: '1',
-                        name: '旋转木马',
-                        times: 3,
-                        day: 3,
-                        play: 'true',
-                    },
-                    {
-                        id: '2',
-                        name: '摩天轮',
-                        times: 3,
-                        day: 3,
-                        play: 'false',
-                    },
-                    {
-                        id: '3',
-                        name: '过山车',
-                        times: 0,
-                        day: 0,
-                        play: 'false',
-                    },
-                ],
-                //核销分组下的核销设备列表数据
-                checkItemList: [],
+                //项目分组表格数据(核销分组下的核销设备列表数据) 游玩项目点 数组
+                playPoints: [],
             }
         },
         methods: {
@@ -606,30 +628,48 @@
 
             //设备分组改变
             changeEquipmentGroup ( val ) {
-                console.log(val)
+                console.log(val);
+                let obj = this.enumData.group.find( item => val === item.id );
+                if(obj){
+                    this.checkPoints = [];
+                    this.getCheckItems(obj);
+                }
             },
 
             //项目分组改变
             changeProjectGroup ( val ) {
-                console.log(val)
+                console.log(val);
+                if(val && val.length > 0){
+                    this.playPoints = [];
+                    val.forEach( value => {
+                        let obj = this.enumData.group.find( item => value === item.id );
+                        if(obj){
+                            this.getCheckItems(obj,true);
+                        }
+                    })
+                }
             },
 
             //启用
-            startUse ( data ) {
-                console.log(data)
+            startUse ( data, index ) {
+                this.$Message.success(this.$t('commissioned')+this.$t('success'));
+                this.checkPoints[index].status = 'valid';
             },
             //禁用
-            disabled ( data ) {
-                console.log(data)
+            disabled ( data, index ) {
+                this.$Message.success(this.$t('disabled')+this.$t('success'));
+                this.checkPoints[index].status = 'invalid';
             },
 
             //设为可玩
-            setAblePlay ( data ) {
-                console.log(data)
+            setAblePlay ( data, index ) {
+                this.$Message.success(this.$t('setAblePlay')+this.$t('success'));
+                this.playPoints[index].playType = 'optional';
             },
             //设为必玩
-            setMustPlay ( data ) {
-                console.log(data)
+            setMustPlay ( data, index ) {
+                this.$Message.success(this.$t('setMustPlay')+this.$t('success'));
+                this.playPoints[index].playType = 'required';
             },
 
             //校验表格填入次数与总数
@@ -655,9 +695,28 @@
                 if(fromRef){
                     this.$refs[fromRef].validate((valid) => {
                         if ( valid ) {
+                            //校验设备分组
+                            if(this.formData.gardenGroupId == ''){
+                                this.$Message.warning(this.$t('selectField',{msg: this.$t('equipmentGroup')}));
+                                return
+                            }
+                            //校验产品有效性设置与游玩规则数据
+                            if(this.data.productEffSet === 'since_the_play' && (this.formData.effDay == '' || this.formData.effDay == 0)){
+                                this.$Message.warning(this.$t('请输入有效天数'));
+                                return
+                            }
+                            //校验项目分组
+                            if(this.formData.saleType === 'assort' && this.formData.equipmentGroupIds.length < 1){
+                                this.$Message.warning(this.$t('selectField',{msg: this.$t('addProjectGroup')}));
+                                return
+                            }
                             this.loading = true;
                             if(this.confirmCallback){
-                                this.confirmCallback( this.formData );
+                                let formData = defaultsDeep({},this.formData);
+                                formData.equipmentGroupIds = this.formData.equipmentGroupIds.join(',');
+                                formData.checkPoints = defaultsDeep([],this.checkPoints);
+                                formData.playPoints = defaultsDeep([],this.playPoints);
+                                this.confirmCallback( formData, this.index );
                                 this.cancel();
                             }
                         }
@@ -679,22 +738,35 @@
                 if(this.cancelCallback){
                     this.cancelCallback();
                 }
+                this.resetFunc();
             },
 
             /**
              * 显示 模态框
+             * @param index
              * @param data
              * @param type
              * @param title
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({data,type,title,confirmCallback = null,cancelCallback}) {
+            show ({index,data,type,title,confirmCallback = null,cancelCallback}) {
                 this.visible = true;
                 this.title = title;
                 this.type = type;
-                if(data && data.id){
-                    this.formData = data;
+                this.index = index;
+                if(data){
+                    this.formData = defaultsDeep({}, data);
+                    if(data.fingerCheck == 'true' || data.fingerCheck === true){
+                        this.formData.fingerCheck = true;
+                    }else{
+                        this.formData.fingerCheck = false;
+                    }
+                    this.formData.equipmentGroupIds = data.equipmentGroupIds.split(',');
+                    this.selectParkChange(data.parkId);
+                }
+                if(this.data.productEffSet === 'same_to_policy'){
+                    this.formData.effDay == '';
                 }
                 if(confirmCallback && typeof confirmCallback == 'function'){
                     this.confirmCallback = confirmCallback;
@@ -704,35 +776,87 @@
                 }
             },
 
+            //选择园区改变，联动查询设备分组
+            selectParkChange ( val ) {
+                let obj = this.parkList.find( item => val === item.id );
+                if(obj){
+                    this.formData.parkName = obj.orgName;
+                    this.getOrgGroupList(obj);
+                }
+            },
+
             //查询核销设备组
-            getCheckItemPage () {
-                ajax.post('getCheckItemPage', {
-                    orgId: '',
-                    pageNo: 1,
-                    pageSize: 99999,
+            getOrgGroupList ( data ) {
+                ajax.post('getOrgGroupList', {
+                    orgId: data.id,
+                    groupType: 'check',
                 }).then(res => {
                     if(res.success){
-
+                        this.enumData.group = res.data || [];
                     } else {
-
+                        this.enumData.group = [];
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 })
             },
 
             //获取核销分组下的核销设备
-            getCheckItems () {
+            getCheckItems ( data, bool ) {
                 ajax.post('getCheckItems', {
-                    orgId: '',
-                    groupIds: '',
+                    orgId: data.orgId,
+                    groupIds: data.id,
                 }).then(res => {
                     if(res.success){
-                        this.checkItemList = res.data || [];
+                        if(res.data && res.data.length > 0){
+                            if(bool){
+                                res.data.forEach(item => {
+                                    //项目分组表格数据
+                                    this.playPoints.push({
+                                        id: item.id,
+                                        parkId: this.formData.parkId,
+                                        channelName: item.channelName,
+                                        checkType: "equipment",
+                                        playType: "optional",//默认可玩
+                                        sumTimes: 0,
+                                        dayTimes: 0,
+                                    });
+                                });
+                            } else {
+                                res.data.forEach(item => {
+                                    //入园检票处表格数据
+                                    this.checkPoints.push({
+                                        id: item.id,
+                                        channelName: item.channelName,
+                                        parkId: this.formData.parkId,
+                                        checkType: "garden",
+                                        status: 'valid',
+                                    });
+                                })
+                            }
+                        }
                     } else {
-                        this.checkItemList = [];
+                        this.playPoints = [];
+                        this.checkPoints = [];
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 })
+            },
+
+            //重置数据
+            resetFunc () {
+                this.formData = {
+                    parkName: '',
+                    parkId: '',//选择园区
+                    saleType: 'one_ticket',//售票方式
+                    //入园核销
+                    effDay: '1',
+                    effTimes: '1',
+                    gardenGroupId: '',//核销设备分组ID
+                    fingerCheck: true,//其他设置
+                    //游玩项目
+                    itemCheckTimes: 0,//项目游玩总次数itemCheckTimes
+                    equipmentGroupIds: [],//游玩项目分组ID-多个逗号分隔
+                };
             },
 
         }
@@ -852,6 +976,18 @@
             }
 
         }
+
+        .must-span{
+            position: absolute;
+            left: -6px;
+            bottom: 0;
+
+            &.iconfont{
+                font-size: 22px;
+                color: $color_F7981C_080;
+            }
+        }
+
     }
 
     .span-yellow{

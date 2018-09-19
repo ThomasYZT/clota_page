@@ -217,7 +217,7 @@
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
-                                :table-data="tableData"
+                                :table-data="productPlayRuleVo"
                                 :row-class-name="rowClassName"
                                 :border="false">
                                 <el-table-column
@@ -228,7 +228,7 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        <span class="red" v-if="!scope.row.check">!</span>
+                                        <!--<span class="red" v-if="!scope.row.check">!</span>-->
                                         <span>{{ scope.row.parkName | contentFilter }}</span>
                                     </template>
                                 </el-table-column>
@@ -251,8 +251,8 @@
                                     :min-width="row.minWidth">
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
-                                            <li class="normal" @click="modify(scope.row)">{{$t('modify')}}</li><!--修改-->
-                                            <li class="red-label" @click="del(scope.row)">{{$t('delete')}}</li><!--删除-->
+                                            <li class="normal" @click="modify(scope.row, scope.$index)">{{$t('modify')}}</li><!--修改-->
+                                            <li class="red-label" @click="del(scope.row, scope.$index)">{{$t('delete')}}</li><!--删除-->
                                         </ul>
                                     </template>
                                 </el-table-column>
@@ -294,7 +294,7 @@
         </div>
 
         <!--新增/编辑园区-->
-        <edit-park-modal ref="editPark" :park-list="parkList"></edit-park-modal>
+        <edit-park-modal ref="editPark" :park-list="parkList" :data="formData"></edit-park-modal>
 
     </div>
 </template>
@@ -432,6 +432,10 @@
                     //产品有效性
                     productEffSet: 'since_the_play',//产品有效性设置
                 },
+                //可游玩园区表头
+                columnData: parkColumn,
+                //可游玩园区列表数据
+                parkList: [],
                 //游玩规则-产品园区列表数据
                 productPlayRuleVo: [],
                 //校验规则
@@ -509,7 +513,6 @@
                 },
                 //枚举数据
                 enumData: {
-                    scene: [],
                     //是否团队产品
                     isTeamProduct: isTeamProduct,
                     //预定时提交游客身份信息
@@ -521,40 +524,6 @@
                     //限制库存
                     stockType: limitStore,
                 },
-                //可游玩园区表头
-                columnData: parkColumn,
-                //可游玩园区表格数据
-                tableData: [
-                    {
-                        "check": false,
-                        "fingerCheck": "true",
-                        "id": "",
-                        "parkId": "1037976274619994113",
-                        "parkName": "啦啦啦园区",
-                        "itemCheckTimes": 10,
-                        "productId": "",
-                        "saleType": "one_ticket",
-                        "effDay": "1",
-                        "effTimes": "1",
-                        "checkPoints": [
-                            {
-                                "id": "",
-                                "productId": "",
-                                "playRuleId": "",
-                                "checkId": "1037982966690746369",
-                                "parkId": "1037976274619994113",
-                                "checkType": "garden",
-                                "playType": "required",
-                                "sumTimes": "7",
-                                "dayTimes": "2",
-                                "status": "valid"
-                            }
-                        ],
-                    }
-                ],
-                //可游玩园区列表数据
-                parkList: [],
-
             }
         },
         created() {
@@ -564,8 +533,40 @@
 
             //表单校验
             formValidateFunc () {
+                //校验游玩规则-产品园区列表数据
+                if(this.productPlayRuleVo.length < 1){
+                    this.$Message.warning(this.$t('selectField',{msg: this.$t('playPark')}));
+                    return
+                }
+                //校验产品有效性设置与游玩规则数据
+                this.productPlayRuleVo.forEach(item => {
+                    if(this.formData.productEffSet === 'since_the_play' && (item.effDay == '' || item.effDay == 0)){
+                        this.$Message.warning(this.$t('请输入可游玩园区有效天数'));
+                        return
+                    }
+                });
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ){
+
+                        let rule = [];
+                        this.productPlayRuleVo.forEach((item,index) => {
+                            let obj = defaultsDeep({},item);
+                            if(item.checkPoints && item.checkPoints.length > 0){
+                                obj.checkPoints = JSON.stringify(item.checkPoints);
+                            }else{
+                                obj.checkPoints = '';
+                            }
+                            if(item.playPoints && item.playPoints.length > 0){
+                                obj.playPoints = JSON.stringify(item.playPoints);
+                            }else{
+                                obj.playPoints = '';
+                            }
+                            if(item.saleType === 'one_ticket'){
+                                obj.playPoints = '';
+                            }
+                            rule.push(JSON.stringify(obj));
+                        });
+
                         let params = {
                             //产品
                             productJson: JSON.stringify({
@@ -607,33 +608,7 @@
                                 stockType: this.formData.stockType || '',
                             }),
                             //游玩
-                            playRuleJson: JSON.stringify([
-                                {
-                                    check: false,
-                                    "fingerCheck": "true",
-                                    "id": "",
-                                    "parkId": "1037976274619994113",
-                                    "itemCheckTimes": 10,
-                                    "productId": "",
-                                    "saleType": "one_ticket",
-                                    "effDay": "1",
-                                    "effTimes": "1",
-                                    "checkPoints": JSON.stringify([
-                                        {
-                                            "id": "",
-                                            "productId": "",
-                                            "playRuleId": "",
-                                            "checkId": "1037982966690746369",
-                                            "parkId": "1037976274619994113",
-                                            "checkType": "garden",
-                                            "playType": "required",
-                                            "sumTimes": "7",
-                                            "dayTimes": "2",
-                                            "status": "valid"
-                                        }
-                                    ]),
-                                }
-                            ])
+                            playRuleJson: JSON.stringify(rule),
                         };
                         console.log(params)
                         //区分新增与修改
@@ -662,20 +637,20 @@
             },
 
             //修改可游玩园区
-            modify ( data ) {
+            modify ( data, index ) {
                 this.$refs.editPark.show({
+                    index: index,
                     data: data,
                     title : this.$t('modify')+this.$t('oneTicketPark'),
                     type: 'modify',
-                    confirmCallback : () => {
-                        //push to tableData
-                        console.log(true)
+                    confirmCallback : ( data, index ) => {
+                        this.$set(this.productPlayRuleVo, index, data);
                     }
                 });
             },
             //删除可游玩园区
-            del ( data ) {
-
+            del ( data, index ) {
+                this.productPlayRuleVo.splice(index,1);
             },
             //新增可游玩园区
             addPark () {
@@ -683,9 +658,8 @@
                     title : this.$t('add')+this.$t('oneTicketPark'),
                     type: 'add',
                     confirmCallback : ( data ) => {
-                        //push to tableData
-                        console.log(true)
-                        this.tableData.push(data);
+                        console.log(data);
+                        this.productPlayRuleVo.push(data);
                     }
                 });
             },

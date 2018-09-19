@@ -17,6 +17,8 @@ export default {
     'queryScenicOrgByAccountRole' : '/organize/queryScenicOrgByAccountRole',
     //获取核销分组下的核销设备
     'getCheckItems' : '/organize/getCheckItems',
+    //审核操作
+    'auditProduct' : '/product/auditProduct',
 
 
     /***********************************销售政策***********************************/

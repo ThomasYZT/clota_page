@@ -684,6 +684,16 @@ export default {
     'Friday': '周五',
     'Saturday': '周六',
     'Sunday': '周日',
+    'waitChecking': '待审核',
+    'PRODUCT_APPLY': '提交了产品启用申请',
+    'PRODUCT_AUDIT_REJECT': '驳回申请',
+    'PRODUCT_AUDIT_PASS': '审核通过，产品已启用，',
+    'PRODUCT_DISABLE': '停用了本产品',
+    'RODUCT_REVOCATION': '撤回了产品启用申请',
+    'times': '次',
+    'dayToEffect': '天有效，一共可入园/观影',
+    'dayToPlay': '预定时指定游玩日期。入园后，门票',
+    'timesToPolicy': '在销售政策适用游玩期限内',
 
 
     /*** 财务管理模块 ***/
