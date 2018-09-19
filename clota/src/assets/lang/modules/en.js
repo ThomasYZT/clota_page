@@ -769,5 +769,7 @@ export default {
     'accountFundError': '账户未启用，或已关闭',
     'accountPrivaligeError': '账户没有菜单权限，请联系管理员开通权限',
     'productTypeSetting': '产品类别设置',
-    'deleteAccount': 'deleteAccount'
+    'deleteAccount': 'deleteAccount',
+    'cardUnopened': '未开卡',
+    'cardOpened': '已开卡',
 }

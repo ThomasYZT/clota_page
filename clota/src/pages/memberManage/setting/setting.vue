@@ -258,6 +258,12 @@
                         <span class="a-link-el" @click="toEntityCardDetail">实体卡管理</span>
                     </div>
                 </div>
+                <div class="content-item">
+                    <div class="title">{{$t('支付协议设置')}}</div>
+                    <div class="main">
+                        <span class="a-link-el" @click="toSetPayProtocol">支付协议设置</span>
+                    </div>
+                </div>
 
             </Form>
 
@@ -777,6 +783,12 @@
                 this.$router.push({
                     name : 'entityCard'
                 });
+            },
+            /**
+             * 跳转到支付协议设置
+             */
+            toSetPayProtocol () {
+
             }
 
         },

@@ -106,6 +106,10 @@ export default {
     'saveProductType' : '/member/productType/saveProductType',
     //删除产品类别
     'deleteProductType' : '/member/productType/deleteProductType',
+    //查询实体卡信息
+    'queryEntityCard' : '/member/entityCard/queryEntityCard',
+    //单个新增实体卡
+    'saveEntityCard' : '/member/entityCard/saveEntityCard',
 
     //渠道设置-会员渠道-查询
     'queryChannelSet' : '/member/channelSet/queryChannelSet',
