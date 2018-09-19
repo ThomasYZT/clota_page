@@ -22,7 +22,7 @@
                 </span>
             </div>
 
-            <div :class="{'form-area' : type === 'edit'}">
+            <div :class="{'form-area' : type === 'edit'}" style="clear: both">
                 <i-row>
                     <i-col span="12">
                         <FormItem label="款台名称："
@@ -115,7 +115,7 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem label="所属核销设备分组："
-                                  v-if="type === 'edit'"
+                                  v-if="type === 'edit' && (formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine')"
                                   :required="formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine'"
                                   prop="checkGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
@@ -130,7 +130,7 @@
                                 </Option>
                             </Select>
                         </FormItem>
-                        <div class="node-info" v-else>
+                        <div class="node-info" v-if="type !== 'edit' && (cashierDetail.checkerType === 'check' || cashierDetail.checkerType === 'combine')">
                             <span class="info-key">所属核销设备分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.checkGroupName">
@@ -140,7 +140,7 @@
                     </i-col>
                     <i-col span="12">
                         <FormItem label="所属销售渠道分组："
-                                  v-if="type === 'edit'"
+                                  v-if="type === 'edit' && (formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine')"
                                   :required="formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine'"
                                   prop="saleGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
@@ -155,7 +155,8 @@
                                 </Option>
                             </Select>
                         </FormItem>
-                        <div class="node-info" v-else>
+                        <div class="node-info"
+                             v-if="type !== 'edit' && (cashierDetail.checkerType === 'sale' || cashierDetail.checkerType === 'combine')">
                             <span class="info-key">所属销售渠道分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.saleGroupName">
