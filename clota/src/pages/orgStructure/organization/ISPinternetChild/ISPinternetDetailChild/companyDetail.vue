@@ -529,6 +529,8 @@
                                     this.freshOrg();
                                 }else if(this.formDataCopy.parentManageId !== this.companyDetail.parentManageId){
                                     this.freshOrg();
+                                }else if(this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId){
+                                    this.freshOrg();
                                 }else{
                                     this.getCompanyDetail();
                                 }
@@ -822,6 +824,7 @@
                 display: inline-block;
                 @include overflow_tip($width: auto, $height: 100%);
                 max-width: calc(100% - 127px);
+                float: left;
             }
 
             .started,

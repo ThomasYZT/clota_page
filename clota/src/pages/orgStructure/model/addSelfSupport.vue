@@ -5,7 +5,7 @@
         class-name="vertical-center-modal"
         :mask-closable="false"
         :width="560"
-        :title="$t('新增自营渠道')"
+        :title="type=='add' ? $t('新增自营渠道') : $t('修改自营渠道')"
         @on-cancel="hide">
 
         <!--内容区域-->
@@ -38,6 +38,10 @@
             <!--APP Secret-->
             <Form-item label="APP Secret" prop="appSecret">
                 <Input v-model="addChannel.appSecret" :placeholder="$t('inputField', {field: ''})" />
+            </Form-item>
+            <!--备注-->
+            <Form-item :label="$t('remark') + '：'" prop="description">
+                <Input v-model="addChannel.description" type="textarea" :rows="4" :placeholder="$t('inputField', {field: ''})"/>
             </Form-item>
 
         </Form>
@@ -72,7 +76,8 @@
                     serverUrl: '',
                     appId: '',
                     appSecret: '',
-                    status: 'valid'
+                    status: 'valid',
+                    description: ''
                 },
                 // 新增or修改
                 type: 'add',
@@ -84,6 +89,9 @@
                         {required: true, message: '请输入自营渠道名称', trigger: 'blur'},
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('自营渠道名称'), length: 100}), trigger: 'blur' },  // 自营渠道名称不能超过100字符
                     ],
+                    description: [
+                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                    ]
                 },
 
             }
@@ -100,10 +108,10 @@
              * @param data {data有值表示查看，反之新增}
              */
             show(data) {
-                if( data ){
+                if( data.item ){
                     this.addChannel = defaultsDeep({}, pick(data.item, [...Object.keys(this.addChannel), 'id']), this.addChannel);
-                    this.type = data.type;
                 }
+                this.type = data.type;
 
                 this.visible = true;
             },
@@ -126,6 +134,7 @@
             },
             // 确定新增自营渠道
             confirmAdd() {
+                let self = this;
                 let partnerObj = {};
                 if (this.type=='add') {
                     partnerObj.successTip = '您已成功新增自营渠道';
@@ -137,10 +146,9 @@
 
                 ajax.post('addOrUpdateSelfChannel', this.addChannel).then(res => {
                     if (res.success) {
-                        this.hide();
-
-                        this.$Message.success(partnerObj.successTip + '：' + this.addChannel.channelName);
-                        this.$emit('on-add-success');
+                        self.$Message.success(partnerObj.successTip + '：' + self.addChannel.channelName);
+                        self.$emit('on-add-success');
+                        self.hide();
                     } else {
                         this.$Message.error(res.message ? res.message : partnerObj.failTip);
                     }

@@ -34,7 +34,6 @@
                          ref="menuTree"
                          disabled
                          show-checkbox
-                         check-strictly
                          :default-expand-all="true"
                          :props="menuDefaultProps"
                          :default-expanded-keys="menuDefaultChosed"
@@ -200,6 +199,7 @@
              * @param checkedKeys
              */
             treeCheck (data,{checkedNodes,checkedKeys}) {
+                console.log(arguments)
                 // debugger
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
@@ -214,17 +214,29 @@
              * @param data
              * @param checkedKeys
              * @param checkedNodes
+             * @param halfCheckedNodes
              */
-            menuCheckChange (data,{checkedKeys,checkedNodes}){
-                this.privaligeInfo[this.activeNodeId] = checkedNodes;
+            menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
+                this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
+                    return {
+                        ...item,
+                        choseStatus : ''
+                    }
+                }),...halfCheckedNodes.map(item => {
+                    return {
+                        ...item,
+                        choseStatus : 'half'
+                    }
+                })];
             },
             /**
              * 设置右侧默认选中的菜单节点
              */
             setDefaultMenuChosed () {
                 if(this.activeNodeId in this.privaligeInfo){
+                    let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
                     this.$nextTick(() => {
-                        this.$refs.menuTree.setCheckedNodes(this.privaligeInfo[this.activeNodeId]);
+                        this.$refs.menuTree.setCheckedNodes(chosedNode);
                     });
                 }else{
                     this.$nextTick(() => {
@@ -245,7 +257,8 @@
                             privType : this.privaligeInfo[item][i].privType,
                             path : this.privaligeInfo[item][i].path,
                             ranges : this.privaligeInfo[item][i].ranges,
-                            orgType : 'manage'
+                            orgType : 'manage',
+                            choseStatus : this.privaligeInfo[item][i].choseStatus
                         });
                     }
                 }

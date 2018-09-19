@@ -22,6 +22,7 @@
                     { name: 'growthSetting', desc: 'growthSetting' },          // 成长值设置
                     { name: 'fundSetting', desc: 'fundSetting' },              // 储值设置
                     { name: 'consumeSetting', desc: 'consumeSetting' },       // 积分消费管理
+                    { name: 'productTypeSetting', desc: 'productTypeSetting' },       // 产品类别设置
                 ],
             }
         },
@@ -51,7 +52,7 @@
         .router-item{
             float: left;
             display: inline-block;
-            width: 16%;
+            width: 14.2%;
             font-size: $font_size_16px;
             color: $color-666;
             letter-spacing: 2.29px;

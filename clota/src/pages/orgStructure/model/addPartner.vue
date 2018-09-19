@@ -95,6 +95,9 @@
                     endDate: [
                         {required: true, message: '请选择协议起止日期', trigger: 'change'},
                     ],
+                    description: [
+                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                    ]
                 },
                 // 所有合作伙伴列表
                 partners: [],
@@ -121,11 +124,11 @@
              * @param data {data有值表示查看，反之新增}
              */
             show(data) {
-                if( data ){
+                if( data.item ){
                     this.addPartner = defaultsDeep({}, pick(data.item, [...Object.keys(this.addPartner), 'id']), this.addPartner);
-                    this.type = data.type;
                     this.protoDate = [data.item.startDate, data.item.endDate];
                 }
+                this.type = data.type;
 
                 this.visible = true;
             },
@@ -187,22 +190,25 @@
 
                 ajax.post(partnerObj.apiKey, this.addPartner).then(res => {
                     if (res.success) {
-                        this.hide();
                         // 新增成功后，根据partnerId 找到匹配的合作伙伴数据，并将合作伙伴名称显示在提示信息内容中
                         let partnerName = this.partners.find((item, i) => {
                             return item.id === this.addPartner.partnerId;
                         });
-                        this.$Message.success(partnerObj.successTip + '：' + partnerName ? partnerName.channelName : '');
+                        this.$Message.success( partnerObj.successTip + '：' + (partnerName ? partnerName.orgName : '') );
                         this.$emit('on-add-success');
+                        this.hide();
                     } else {
                         this.$Message.error(res.message ? res.message : partnerObj.failTip);
                     }
                 });
             },
+            // 改变合作伙伴选择的处理
             handlePartnerChanged(selected) {
-                this.addPartner.channelName = this.partners.find((item, i) => {
-                    return item.id === selected;
-                }).orgName;
+                if (selected) {
+                    this.addPartner.channelName = this.partners.find((item, i) => {
+                        return item.id === selected;
+                    }).orgName;
+                }
             },
 
         }

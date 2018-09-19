@@ -15,7 +15,7 @@
             <i class="iconfont icon-help delete-icon"></i>
             <div class="text">
                 <span>您正在{{deleteName}}：</span>
-                <span class="name" v-html="name"></span>
+                <span class="name" v-html="name" v-w-title="name"></span>
             </div>
             <div class="text">
                 <span class="tips">本操作不可撤销，</span>
@@ -111,7 +111,13 @@
                 font-size: $font_size_14px;
                 color: #333333;
                 line-height: 24px;
+
                 .name {
+                    display: inline-block;
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                     color: $color_yellow;
                 }
                 .tips {

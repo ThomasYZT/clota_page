@@ -67,7 +67,7 @@
                                 this.$Message.success(`新增销售渠道分组:${this.formData.orgName}成功`);
                                 this.$emit('fresh-data');
                             }else{
-                                this.$Message.error('新增失败');
+                                this.$Message.error(res.code === '0004' ? this.$t('checkNameError',{field : this.formData.orgName}) : '新增失败');
                             }
                         }).finally(() => {
                             this.addGroupPopVisible = false;

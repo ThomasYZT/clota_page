@@ -108,8 +108,9 @@
                 class="ivu-btn-90px"
                 @click="cancel">取消</Button>
             <Button type="primary"
-                class="ivu-btn-90px"
-                @click="save">保存</Button>
+                    :loading="saveIng"
+                    class="ivu-btn-90px"
+                    @click="save">保存</Button>
         </div>
     </Modal>
 </template>
@@ -280,7 +281,9 @@
                 //服务列表
                 serviceList : [],
                 //管理上级列表
-                manageSuperiorList : []
+                manageSuperiorList : [],
+                //是否正在保存中
+                saveIng : false
             }
         },
         watch: {
@@ -320,9 +323,12 @@
              * 保存新增租户数据
              */
             save() {
+                this.saveIng =  true;
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         this.addCompany();
+                    }else{
+                        this.saveIng =  false;
                     }
                 });
             },
@@ -363,6 +369,7 @@
                     }
                 }).finally(() => {
                     this.$emit('input', false);
+                    this.saveIng =  false;
                 });
             },
             /**

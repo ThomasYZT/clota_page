@@ -58,20 +58,23 @@
                      :root-id="rootId"
                      :chosed-node-detail="currentNode"
                      :added-node-detail="addNodeDetail"
-                     @fresh-structure-data="getStructureData">
+                     @fresh-structure-data="getStructureData"
+                     @input="clearDetail">
         </add-company>
         <!--新增景区模态框-->
         <add-scene v-model="addSceneModalShow"
                    :root-id="rootId"
                    :chosed-node-detail="currentNode"
                    :added-node-detail="addNodeDetail"
-                   @fresh-structure-data="getStructureData">
+                   @fresh-structure-data="getStructureData"
+                   @input="clearDetail">
         </add-scene>
         <!--新增核销/销售款台模态框-->
         <add-cashier v-model="addCashierModalShow"
                      :chosed-node-detail="currentNode"
                      :added-node-detail="addNodeDetail"
-                     @fresh-structure-data="getStructureData">
+                     @fresh-structure-data="getStructureData"
+                     @input="clearDetail">
         </add-cashier>
     </div>
 </template>
@@ -215,7 +218,7 @@
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
-                            || (data.nodeType === 'department')
+                            || (data.nodeType === 'department') || data.nodeType === 'table'
                         },
                         style : {
                             paddingRight : '5px',
@@ -322,6 +325,15 @@
             filterNode(value, data) {
                 if (!value) return true;
                 return data && data.orgName && data.orgName.indexOf(value) !== -1;
+            },
+            /**
+             * 清空当前选择的节点
+             * @param data
+             */
+            clearDetail (data){
+                if(data === false){
+                    this.currentNode = {};
+                }
             }
         },
         computed : {
@@ -476,6 +488,7 @@
                     font-size: 16px;
                     color: #333333;
                     vertical-align: middle;
+                    float: left;
                 }
 
                 .iconfont {
