@@ -202,6 +202,7 @@
                 display: inline-block;
                 @include overflow_tip($width: auto, $height: 100%);
                 max-width: calc(100% - 127px);
+                float: left;
             }
 
             .started,

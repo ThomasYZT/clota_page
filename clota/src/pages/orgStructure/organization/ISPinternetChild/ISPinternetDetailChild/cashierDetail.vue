@@ -477,6 +477,7 @@
         .com-name {
             @include overflow_tip(100%, 65px);
             padding: 14px 0;
+            float: left;
 
             .iconfont{
                 vertical-align: middle;
@@ -490,6 +491,7 @@
                 display: inline-block;
                 @include overflow_tip($width: auto, $height: 100%);
                 max-width: calc(100% - 127px);
+                float: left;
             }
 
             .edit {

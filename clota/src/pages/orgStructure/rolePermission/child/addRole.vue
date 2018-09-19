@@ -201,6 +201,7 @@
                                 privCode : data[i].privCode,
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
+                                choseStatus : data[i].choseStatus,
                             }];
                         }else{
                             this.manageDefaultChosed[data[i].privOrg].push({
@@ -208,6 +209,7 @@
                                 privCode : data[i].privCode,
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
+                                choseStatus : data[i].choseStatus,
                             });
                         }
                     }else if(data[i].orgType === 'economic'){
@@ -217,6 +219,7 @@
                                 privCode : data[i].privCode,
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
+                                choseStatus : data[i].choseStatus,
                             }];
                         }else{
                             this.economicDefaultChosed[data[i].privOrg].push({
@@ -224,6 +227,7 @@
                                 privCode : data[i].privCode,
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
+                                choseStatus : data[i].choseStatus,
                             });
                         }
                     }
