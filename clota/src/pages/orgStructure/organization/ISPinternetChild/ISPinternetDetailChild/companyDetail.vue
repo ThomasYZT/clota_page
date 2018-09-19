@@ -420,7 +420,7 @@
                     if(validator.isEmail(value)){
                         callback();
                     }else{
-                        callback(this.$t('formalError',{field : this.$t('email')}));
+                        callback(this.$t('errorFormat',{field : this.$t('email')}));
                     }
                 }else{
                     callback(this.$t('inputField',{field : this.$t('email')}));
