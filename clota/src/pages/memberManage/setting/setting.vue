@@ -252,6 +252,12 @@
 
                     </div>
                 </div>
+                <div class="content-item">
+                    <div class="title">{{$t('实体卡管理')}}</div>
+                    <div class="main">
+                        <span class="a-link-el" @click="toEntityCardDetail">实体卡管理</span>
+                    </div>
+                </div>
 
             </Form>
 
@@ -764,6 +770,14 @@
 
                 return true
             },
+            /**
+             * 跳转到实体卡管理详情
+             */
+            toEntityCardDetail () {
+                this.$router.push({
+                    name : 'entityCard'
+                });
+            }
 
         },
     }
@@ -841,6 +855,11 @@
                         /deep/ .ivu-radio-wrapper{
                            margin-bottom: 18px;
                         }
+                    }
+
+                    .a-link-el{
+                        cursor: pointer;
+                        color: $color_blue;
                     }
                 }
             }

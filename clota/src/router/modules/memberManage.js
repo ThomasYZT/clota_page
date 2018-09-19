@@ -344,6 +344,17 @@ export default {
                             isMenu : true
                         },
                     },
+                    //会员管理--基础设置--实体卡管理
+                    entityCardControle: {
+                        path: '/memberManage/entityCard',
+                        name: 'entityCard',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
+                        meta: {
+                            menuName: 'entityCard', //lang.config.js 里面的语言键值
+                            _name: 'basic-setting',
+                            rightPath : topMenuName + '.' + 'memberSetting'
+                        },
+                    },
                     //基础设置--会员卡可用范围
                     cardScopeSetting: {
                         path: '/memberManage/cardScope',
@@ -416,7 +427,19 @@ export default {
                             isMenu : true
                         },
                     },
-
+                    //初始化设置-产品类别设置
+                    productTypeSetting: {
+                        //会员管理--积分消费管理
+                        path: '/memberManage/productTypeSetting',
+                        name: 'productTypeSetting',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/productTypeSetting.vue'),
+                        meta: {
+                            menuName: 'productTypeSetting', //lang.config.js 里面的语言键值
+                            _name: 'point-manage',
+                            rightPath : topMenuName + '.' + 'productTypeSetting',
+                            isMenu : true
+                        },
+                    },
                 }
             },
         }
