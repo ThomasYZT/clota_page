@@ -34,6 +34,19 @@ export default {
                     isMenu : true
                 },
             },
+            newCard: {
+                //会员管理--新开卡
+                path: '/memberManage/newCard',
+                name: 'openNewCard',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                meta: {
+                    menuName: 'newCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    iconClass: 'icon-home',
+                    rightPath : topMenuName + '.' + 'newCard',
+                    isMenu : true
+                },
+            },
             memberInfo: {
                 //会员管理--会员信息--三级菜单
                 path: '/memberManage/info',

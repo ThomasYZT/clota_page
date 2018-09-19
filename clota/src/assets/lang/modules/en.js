@@ -389,6 +389,11 @@ export default {
     'accountInteg': 'Account points',
     'integAdjust': 'Point account adjustment value',
     'defaultAccountMoney': 'Default account balance',
+    'newCard': '新开卡',
+    'cardOwnerInfo': '持卡人信息',
+    'entityCardInfo': '实体卡信息',
+    'familyAddress': ' home address',
+    'readCard': '请读卡',
 
     // 检验错误提示
     'errorIrregular': 'Input content is illegal',

@@ -389,6 +389,11 @@ export default {
     'accountInteg': '账户积分',
     'integAdjust': '积分账户调整值',
     'defaultAccountMoney': '默认账户余额',
+    'newCard': '新开卡',
+    'cardOwnerInfo': '持卡人信息',
+    'entityCardInfo': '实体卡信息',
+    'familyAddress': '家庭地址',
+    'readCard': '请读卡',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

@@ -67,12 +67,12 @@
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>-->
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('ailiPay')" prop="alipayAcct"><!--支付宝-->
+                    <!--<div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('ailiPay')" prop="alipayAcct">&lt;!&ndash;支付宝&ndash;&gt;
                             <Input v-model.trim="member.alipayAcct"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
-                    </div>
+                    </div>-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('levelSetting')" prop="levelId"><!--会员级别-->
                             <Select v-model="member.levelId"
@@ -148,7 +148,7 @@
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('address')" prop="homeAddr"><!--地址-->
                             <Input v-model.trim="member.homeAddr"
-                                   :placeholder="$t('selectField', {msg: $t('address')})"/><!--请输入家庭地址-->
+                                   :placeholder="$t('inputField', {field: $t('familyAddress')})"/><!--请输入家庭地址-->
                         </Form-item>
                     </div>
 
@@ -296,7 +296,7 @@
                     "gender":"",// 性别
                     "qq":"",//QQ
 //                    "wechatAcct":"",//微信
-                    "alipayAcct":"",//支付宝
+//                    "alipayAcct":"",//支付宝
                     "cityCode":"",//城市代码
                     "stateCode":"",//国家代码
                     "hobby":"",//个人兴趣
@@ -330,12 +330,12 @@
                     qq : [
                         {validator : validateFileLength,trigger : 'blur',name : 'qq',maxLength : 50}
                     ],
-                    wechatAcct : [
+                    /*wechatAcct : [
                         {validator : validateFileLength,trigger : 'blur',name : this.$t('weChat'),maxLength : 50}
-                    ],
-                    alipayAcct : [
+                    ],*/
+                    /*alipayAcct : [
                         {validator : validateFileLength,trigger : 'blur',name : this.$t('ailiPay'),maxLength : 30}
-                    ],
+                    ],*/
                     hobby : [
                         {validator : validateFileLength,trigger : 'blur',name : this.$t('personalInterests'),maxLength : 100}
                     ],
