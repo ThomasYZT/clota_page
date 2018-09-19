@@ -39,7 +39,9 @@
                             class="ivu-btn-108px"
                             style="margin-right: 5px;"
                             @click="importSingle">单个导入</Button>
-                    <Button type="primary" class="ivu-btn-108px">批量导入</Button>
+                    <Button type="primary"
+                            class="ivu-btn-108px"
+                            @click="batchImport">批量导入</Button>
                 </div>
             </div>
             <table-com
@@ -188,6 +190,14 @@
             modify (rowData) {
                 this.importVisible = true;
                 this.currentData = rowData;
+            },
+            /**
+             * 批量导入
+             */
+            batchImport () {
+                this.$router.push({
+                    name : 'importEntityCard'
+                });
             }
         }
     }

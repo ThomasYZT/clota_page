@@ -35,7 +35,7 @@ import {
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
 import TableColumn from 'element-ui/lib/table-column';
-import Scrollbar from 'element-ui/lib/scrollbar';
+// import Scrollbar from 'element-ui/lib/scrollbar';
 import Pagination from 'element-ui/lib/pagination';
 import Dropdown from 'element-ui/lib/dropdown';
 import DropdownMenu from 'element-ui/lib/dropdown-menu';
@@ -43,6 +43,7 @@ import DropdownItem from 'element-ui/lib/dropdown-item';
 import scrollbar from 'element-ui/lib/scrollbar';
 import elTree from 'element-ui/lib/tree';
 import elCheckbox from 'element-ui/lib/checkbox';
+import elUpload from 'element-ui/lib/upload';
 
 
 // // 按需引入 Echarts 图表
@@ -71,6 +72,7 @@ plugin.install = function (Vue, options) {
     Vue.use(DropdownItem);
     Vue.use(elTree);
     Vue.use(elCheckbox);
+    Vue.use(elUpload);
 
     //iview按需引入
     Vue.component('Button',Button);

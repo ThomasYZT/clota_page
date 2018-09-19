@@ -110,6 +110,12 @@ export default {
     'queryEntityCard' : '/member/entityCard/queryEntityCard',
     //单个新增实体卡
     'saveEntityCard' : '/member/entityCard/saveEntityCard',
+    //下载导入实体卡模板
+    'downloadEntityCardTmp' : '/member/entityCard/downloadEntityCardTmp',
+    //导入实体卡
+    'resolverEntityCard' : '/member/entityCard/resolverEntityCard',
+    //将解析后的数据导入
+    'batchSaveEntityCards' : '/member/entityCard/batchSaveEntityCards',
 
     //渠道设置-会员渠道-查询
     'queryChannelSet' : '/member/channelSet/queryChannelSet',
