@@ -218,7 +218,7 @@
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
-                            || (data.nodeType === 'department')
+                            || (data.nodeType === 'department') || data.nodeType === 'table'
                         },
                         style : {
                             paddingRight : '5px',
@@ -488,6 +488,7 @@
                     font-size: 16px;
                     color: #333333;
                     vertical-align: middle;
+                    float: left;
                 }
 
                 .iconfont {

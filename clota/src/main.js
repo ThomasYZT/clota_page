@@ -78,9 +78,16 @@ router.beforeEach((to, from, next) => {
             if(ajax.getToken()){
                 let userInfo  = common.getUserInfo().userInfo;
                 store.dispatch('getUserInfo',userInfo).then(route => {
-                    next({
-                        path: to.path
-                    });
+                    if(to.query && Object.keys(to.query).length > 0){
+                        next({
+                            path: to.path,
+                            query : to.query
+                        });
+                    }else{
+                        next({
+                            path: to.path
+                        });
+                    }
                 });
             }else{
                 next({
