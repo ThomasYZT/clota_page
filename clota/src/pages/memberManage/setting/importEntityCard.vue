@@ -23,10 +23,13 @@
                 </div>
             </div>
             <div class="tap-switch" v-if="resolveResultShow">
-                <Tabs v-model="tapValue">
-                    <TabPane :label="sucResolve"  name="successData"></TabPane>
-                    <TabPane :label="failResolve" name="errorData"></TabPane>
+                <Tabs v-model="tapValue" :animated="false">
+                    <TabPane :label="sucResolve"  name="successData">
+                    </TabPane>
+                    <TabPane :label="failResolve" name="errorData">
+                    </TabPane>
                 </Tabs>
+                <span class="fail-tip">解析失败的数据将不会被导入</span>
             </div>
             <table-com
                 v-if="resolveResultShow"
@@ -73,7 +76,7 @@
                         }
                     },
                     {
-                        name: '实体卡导入',
+                        name: '实体卡管理',
                         router: {
                             name: 'entityCard'
                         }
@@ -234,8 +237,11 @@
             }
 
             .tap-switch{
+                width: 600px;
+                position: relative;
                 height: 70px;
                 text-align: center;
+                margin: 0 auto;
 
                 /deep/ .ivu-tabs-nav-scroll{
                     width: 300px;
@@ -252,6 +258,14 @@
 
                 /deep/ .ivu-tabs-tab:nth-last-of-type(1){
                     color: #EB6751;
+                }
+
+                .fail-tip{
+                    position: absolute;
+                    top: 15px;
+                    right: 0;
+                    font-size: $font_size_14px;
+                    color: #C5C5C5;
                 }
             }
         }

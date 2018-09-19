@@ -47,7 +47,11 @@
                     this.$emit('upload-success',response.data);
                     this.$Message.success('解析成功');
                 }else{
-                    this.$Message.error( response.data.message || '解析失败' );
+                    if(response.code === 'S003'){
+                        this.$Message.error( this.$t('uploadCardError') );
+                    }else{
+                        this.$Message.error( '解析失败' );
+                    }
                 }
                 this.$store.commit('changePromisings','del');
             },

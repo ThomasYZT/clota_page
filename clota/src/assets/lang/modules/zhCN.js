@@ -777,5 +777,6 @@ export default {
     'deleteAccount': '删除账户',
     'cardUnopened': '未开卡',
     'cardOpened': '已开卡',
+    'uploadCardError': '导入文件仅支持Excel文件',
 
 }
