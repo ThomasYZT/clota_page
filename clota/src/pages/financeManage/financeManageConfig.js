@@ -4,27 +4,27 @@ export const rechargeHead = [
     {
         title: '付款方',      // 付款方
         width: 160,
-        field: 'payer'
+        field: 'peerOrgName'
     },
     {
         title: '收款方',   // 收款方
         minWidth: 150,
-        field: 'payee'
+        field: 'orgName'
     },
     {
         title: '充值金额',   // 充值金额
         minWidth: 100,
-        field: 'rechargeAmount'
+        field: 'amount'
     },
     {
         title: '充值方式',      // 充值方式
         minWidth: 120,
-        field: 'rechargeType'
+        field: 'paymentType'
     },
     {
         title: '交易流水号',      // 交易流水号
         minWidth: 210,
-        field: 'transactionNo'
+        field: 'tpOrderNo'
     },
     {
         title: 'remark',      // 备注
@@ -53,27 +53,27 @@ export const paymentHead = [
     {
         title: 'code',        // 编码
         minWidth: 200,
-        field: 'code'
+        field: 'accountCode'
     },
     {
         title: 'partner',        // 合作伙伴
         minWidth: 220,
-        field: 'partner'
+        field: 'orgName'
     },
     {
         title: '可用额度',        // 可用额度
         minWidth: 180,
-        field: 'availableCredit'
+        field: 'availableBalance'
     },
     {
         title: 'moneyBalance',        // 账户余额
         minWidth: 180,
-        field: 'balance'
+        field: 'accountBalance'
     },
     {
         title: '信用额度',        // 信用额度
         minWidth: 180,
-        field: 'creditLimits'
+        field: 'creditBalance'
     },
     {
         title: 'operate',       // 操作

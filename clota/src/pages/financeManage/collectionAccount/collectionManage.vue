@@ -42,7 +42,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.availableCredit | moneyFilter}}
+                    {{scope.row.availableBalance | moneyFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -52,7 +52,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.balance | moneyFilter}}
+                    {{scope.row.accountBalance | moneyFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -62,7 +62,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.creditLimits | moneyFilter}}
+                    {{scope.row.creditBalance | moneyFilter}}
                 </template>
             </el-table-column>
 
@@ -81,7 +81,8 @@
         </table-com>
 
         <!--撤回充值申请 - 弹窗-->
-        <modify-limit-modal ref="modifyLimitModal"></modify-limit-modal>
+        <modify-limit-modal ref="modifyLimitModal"
+                            @updata-list="queryList"></modify-limit-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -89,6 +90,7 @@
     import modifyLimitModal from './components/modifyLimitModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {paymentHead} from '../financeManageConfig';
+    import ajax from '@/api/index';
 
     export default {
         components: {tableCom, modifyLimitModal},
@@ -122,31 +124,15 @@
              * 查询收款账户列表
              **/
             queryList() {
-                this.tableData = [
-                    {
-                        'status': 'normal',
-                        'code': '0043987',
-                        'partner': '卧龙城景区',
-                        'availableCredit': 5000,
-                        'balance': 5000,
-                        'creditLimits': 6000,
-                    },{
-                        'status': 'normal',
-                        'code': '0043987',
-                        'partner': '星星旅行社',
-                        'availableCredit': 5000,
-                        'balance': 5000,
-                        'creditLimits': 6000,
-                    },{
-                        'status': 'warning',
-                        'code': '0043987',
-                        'partner': '野马旅行社',
-                        'availableCredit': 5000,
-                        'balance': 5000,
-                        'creditLimits': 6000,
-                    },
-
-                ];
+                ajax.post('queryPartnerAccounts', this.queryParams).then((res) => {
+                    if (res.data && res.data.data) {
+                        this.tableData = res.data.data;
+                        this.totalCount = res.data.totalRow;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
                 this.totalCount = this.tableData.length;
             },
 

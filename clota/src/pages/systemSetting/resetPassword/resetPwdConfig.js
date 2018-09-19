@@ -76,7 +76,7 @@ export const employeeInfoHead = [
     {
         title: '角色权限',
         minWidth: 220,
-        field: 'rolePrivilege'
+        field: 'roleName'
     },
     {
         title: 'mobilePhone',

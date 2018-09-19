@@ -31,7 +31,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.packagePrice | moneyFilter}}
+                    {{scope.row.price | moneyFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -55,6 +55,7 @@
     import buySmsModal from './components/buySmsModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {smsPkgHead} from './buySmsConfig';
+    import ajax from '@/api/index'
 
     export default {
         components: {tableCom, buySmsModal},
@@ -85,22 +86,17 @@
         watch: {},
         methods: {
             queryList() {
-                this.tableData = [
-                    {
-                        'packageID': 'F000021039',
-                        'packageName': '套餐一',
-                        'packagePrice': 50.1,
-                        'smsProvider': '银科环企有限公司',
-                        'smsCount': 100,
-                    },
-                    {
-                        'packageID': 'F00002103a',
-                        'packageName': '套餐二',
-                        'packagePrice': 50.5,
-                        'smsProvider': '银科环企有限公司',
-                        'smsCount': 100,
-                    },
-                ];
+                ajax.post('getSmsPackageList', this.queryParams).then((res) =>{
+                    if (res.success) {
+                        if (res.data && res.data.data) {
+                            this.tableData = res.data.data;
+                            this.totalCount = res.data.totalRow;
+                        } else {
+                            this.tableData = [];
+                            this.totalCount = 0;
+                        }
+                    }
+                })
                 this.totalCount = this.tableData.length;
             },
 

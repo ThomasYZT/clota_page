@@ -17,7 +17,7 @@
                 </Form-item>
                 <!--套餐价格-->
                 <Form-item :label="$t('套餐价格') + '：'" prop="">
-                    <span>￥{{formData.packagePrice | moneyFilter}}</span>
+                    <span>￥{{formData.price | moneyFilter}}</span>
                 </Form-item>
                 <!--短信数量-->
                 <Form-item :label="$t('短信数量') + '：'" prop="">
@@ -25,7 +25,7 @@
                 </Form-item>
                 <!--短信供应商-->
                 <Form-item :label="$t('短信供应商') + '：'" prop="">
-                    <span>{{formData.smsProvider | contentFilter}}</span>
+                    <span>{{formData.provider | contentFilter}}</span>
                 </Form-item>
                 <!--支付方式-->
                 <Form-item :label="$t('支付方式') + '：'" prop="">
@@ -40,7 +40,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="buyNow()" >{{$t('立即购买')}}</Button>
+            <Button type="primary" @click="buyNow(formData)" >{{$t('立即购买')}}</Button>
         </div>
 
     </Modal>
@@ -60,9 +60,9 @@
                 //表单数据
                 formData: {
                     packageName: '',
-                    packagePrice: '',
+                    price: '',
                     smsCount: 0,
-                    smsProvider: '',
+                    provider: '',
                     payType: 'zfb',
                 },
                 //校验规则
@@ -98,9 +98,9 @@
                 this.visible = false;
                 this.formData = {
                     packageName: '',
-                    packagePrice: '',
+                    price: '',
                     smsCount: 0,
-                    smsProvider: '',
+                    provider: '',
                     payType: 'zfb',
                 };
 
@@ -111,7 +111,9 @@
 
             // 立即购买
             buyNow ( params ) {
-                /*ajax.post('updateMemberAccountDefine', params).then(res => {
+                ajax.post('buySmsPackage', {
+                    smsPackageId: params.id
+                }).then(res => {
                     if( res.success ) {
                         this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
                         this.hide();
@@ -119,7 +121,7 @@
                     } else {
                         this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
                     }
-                })*/
+                })
             },
 
         },

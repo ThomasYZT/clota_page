@@ -13,16 +13,16 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <!--合作伙伴-->
                 <Form-item :label="$t('partner') + ':'" prop="">
-                    <span>{{formData.partner}}</span>
+                    <span>{{formData.orgName}}</span>
                 </Form-item>
                 <!--信用额度-->
                 <Form-item :label="$t('信用额度')" prop="creditLimits">
-                    <Input v-model.trim="formData.rechargeAmount" :placeholder="$t('inputField', {field: $t('充值金额')})" />
+                    <Input v-model.trim="formData.creditBalance" :placeholder="$t('inputField', {field: $t('充值金额')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
                 <!--预警额度-->
                 <Form-item :label="$t('预警额度')" prop="warningLimits">
-                    <Input v-model.trim="formData.rechargeAmount" :placeholder="$t('inputField', {field: $t('充值金额')})" />
+                    <Input v-model.trim="formData.alarmValue" :placeholder="$t('inputField', {field: $t('充值金额')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
 
@@ -64,11 +64,7 @@
             return {
                 visible: false,
                 //表单数据
-                formData: {
-                    partner: '',
-                    creditLimits: 0,
-                    warningLimits: 0,
-                },
+                formData: {},
                 //校验规则
                 ruleValidate: {
                     /*rechargeAmount: [
@@ -86,7 +82,7 @@
 
             show ( data ) {
                 if( data ){
-                    this.formData = defaultsDeep({}, pick(data.item, Object.keys(this.formData)), this.formData);
+                    this.formData = defaultsDeep({}, this.formData, data.item);
                 }
                 this.visible = true;
             },
@@ -120,7 +116,11 @@
 
             // 确认充值
             confirmRecharge ( params ) {
-                /*ajax.post('updateMemberAccountDefine', params).then(res => {
+                ajax.post('updatePartnerAccount', {
+                    id: params.id,
+                    creditBalance: params.creditBalance,
+                    alarmValue: params.alarmValue
+                }).then(res => {
                     if( res.success ) {
                         this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
                         this.hide();
@@ -128,7 +128,7 @@
                     } else {
                         this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
                     }
-                })*/
+                })
             },
 
         },

@@ -55,6 +55,8 @@
                           v-if="scope.row.status=='reject'"
                           @click="handleRecall(scope.row)">{{$t('撤回')}}
                     </span>
+                    <span v-else-if="scope.row.status=='valid'">{{'-'}}
+                    </span>
                     <span class="operate"
                           v-else
                           @click="handleAudit(scope.row)">{{$t('审核')}}
@@ -75,6 +77,7 @@
     import recallModal from './components/recallModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {rechargeHead} from '../financeManageConfig';
+    import ajax from '@/api/index';
 
     export default {
         components: {tableCom, auditRechargeModal ,recallModal},
@@ -110,34 +113,15 @@
              * 查询充值记录列表
              **/
             queryList() {
-                this.tableData = [
-                    {
-                        'payer': '星星旅行社',
-                        'payee': '卧龙城景区',
-                        'rechargeAmount': 5000,
-                        'rechargeType': '微信',
-                        'transactionNo': 'r59083478jh',
-                        'remark': '工商银行，流水号：1524521354225',
-                        'status': 'pass',
-                    },{
-                        'payer': '野马旅行社',
-                        'payee': '卧龙城景区',
-                        'rechargeAmount': 5000,
-                        'rechargeType': '微信',
-                        'transactionNo': 'r59083478jh',
-                        'remark': '工商银行，流水号：1524521354225',
-                        'status': 'pending',
-                    },{
-                        'payer': '果冻旅行社',
-                        'payee': '卧龙城景区',
-                        'rechargeAmount': 5000,
-                        'rechargeType': '支付宝',
-                        'transactionNo': 'r59083478jh',
-                        'remark': '工商银行，流水号：1524521354225',
-                        'status': 'reject',
-                    },
-
-                ];
+                ajax.post('queryRechargeList', this.queryParams).then((res) => {
+                    if (res.data && res.data.data) {
+                        this.tableData = res.data.data;
+                        this.totalCount = res.data.totalRow;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
                 this.totalCount = this.tableData.length;
             },
 
@@ -148,13 +132,13 @@
             statusFilter: function(status) {
                 let statusHtml = ``;
                 switch (status) {
-                    case 'pass' :
+                    case 'valid' :
                         statusHtml = `<span class="status-recharge pass">${this.$t('审核通过')}</span>`;
                         break;
-                    case 'pending' :
+                    case 'pending_audit' :
                         statusHtml = `<span class="status-recharge pending">${this.$t('待审核')}</span>`;
                         break;
-                    case 'reject' :
+                    case 'rejected' :
                         statusHtml = `<span class="status-recharge reject">${this.$t('已驳回')}</span>`;
                         break;
                 }

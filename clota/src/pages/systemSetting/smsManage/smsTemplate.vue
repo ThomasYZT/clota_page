@@ -7,8 +7,9 @@
 <template>
     <div class="sms-template">
         <div class="filter-box">
-            <Button type="primary" @click="$router.push({name: 'addSmsTemplate'})">{{$t('add')}}</Button>
-            <Button type="primary" :disabled="selectedTpl.length < 1">{{$t('批量删除')}}</Button>
+            <!--新增短信模版/删除、批量删除短信模版需求 暂时不做-->
+            <!--<Button type="primary" @click="$router.push({name: 'addSmsTemplate'})">{{$t('add')}}</Button>-->
+            <!--<Button type="primary" :disabled="selectedTpl.length < 1">{{$t('批量删除')}}</Button>-->
             <Input class="input-field"
                    v-model.trim="filterParam.name"
                    icon="ios-search"
@@ -25,7 +26,6 @@
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
-            :column-check="true"
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
@@ -35,7 +35,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <div class="tpl-content" v-w-title="scope.row.templateContent">{{scope.row.templateContent}}</div>
+                    <div class="tpl-content" v-w-title="scope.row.templetContent">{{scope.row.templetContent}}</div>
                 </template>
             </el-table-column>
             <el-table-column
@@ -60,6 +60,7 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {smsTplHead} from './smsTemplateConfig';
     import checkTplModal from './components/checkTplModal.vue';
+    import ajax from '@/api/index';
 
     export default {
         components: {tableCom, checkTplModal},
@@ -92,31 +93,17 @@
         watch: {},
         methods: {
             queryList() {
-                this.tableData = [
-                    {
-                        'code': '00002103965',
-                        'templateName': '星火旅行社1',
-                        'templateType': '票内业态',
-                        'templateContent': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'isInlay': '是',
-                        'createdTime': '2018-04-17 15:31:00',
-                    },{
-                        'code': '00002103964',
-                        'templateName': '星火旅行社2',
-                        'templateType': '票内业态',
-                        'templateContent': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'isInlay': '是',
-                        'createdTime': '2018-04-16 15:31:00',
-                    },{
-                        'code': '00002103963',
-                        'templateName': '星火旅行社3',
-                        'templateType': '票内业态',
-                        'templateContent': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'isInlay': '是',
-                        'createdTime': '2018-04-15 15:31:00',
-                    },
-
-                ];
+                ajax.post('getSmsTempletList',this.queryParams).then((res) => {
+                    if (res.success) {
+                        if (res.data && res.data.data) {
+                            this.tableData = res.data.data;
+                            this.totalCount = res.data.totalRow;
+                        } else {
+                            this.tableData = [];
+                            this.totalCount = 0;
+                        }
+                    }
+                });
                 this.totalCount = this.tableData.length;
             },
 

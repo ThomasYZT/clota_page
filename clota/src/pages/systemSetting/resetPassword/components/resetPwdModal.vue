@@ -13,7 +13,7 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <!--姓名-->
                 <Form-item :label="$t('name')" prop="">
-                    <span>{{formData.name | contentFilter}}</span>
+                    <span>{{formData.nickName | contentFilter}}</span>
                 </Form-item>
                 <!--登录名-->
                 <Form-item :label="$t('登录名')" prop="">
@@ -72,12 +72,7 @@
             return {
                 visible: false,
                 //表单数据
-                formData: {
-                    name: '',
-                    loginName: '',
-                    password: '',
-                    rePassword: '',
-                },
+                formData: {},
                 //校验规则
                 ruleValidate: {
                     password: [
@@ -97,12 +92,13 @@
 
         },
         methods: {
-
+            //显示模态框
             show ( data ) {
                 if( data ){
-                    this.formData = defaultsDeep({}, this.formData, data.item);
+                    this.formData = defaultsDeep(this.formData, data.item);
                 }
                 this.visible = true;
+                console.log(this.formData)
             },
 
             //表单校验
@@ -117,12 +113,7 @@
             //关闭模态框
             hide(){
                 this.visible = false;
-                this.formData = {
-                    name: '',
-                    loginName: '',
-                    password: '',
-                    rePassword: '',
-                };
+                this.formData = {};
 
             },
 
@@ -134,7 +125,8 @@
 
             // 重置密码
             resetPwd ( params ) {
-                /*ajax.post('updateMemberAccountDefine', params).then(res => {
+                ajax.post('resetAccountPassword', params).then((res) => {
+                    console.log(res)
                     if( res.success ) {
                         this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
                         this.hide();
@@ -142,7 +134,7 @@
                     } else {
                         this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
                     }
-                })*/
+                });
             },
 
         },

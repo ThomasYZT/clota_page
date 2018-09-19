@@ -766,6 +766,7 @@ export default {
     'org-checker': '核销设备分组',
     'cardScopeSetting': '会员卡可用范围设置',
 
-    'deleteAccount': '删除账户'
+    'deleteAccount': '删除账户',
+    'errorPwdRule': '密码只能由26个英文大小写字母和数字组成'
 
 }

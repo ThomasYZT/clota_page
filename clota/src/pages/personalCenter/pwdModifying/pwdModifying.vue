@@ -55,7 +55,8 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-
+    import ajax from '@/api/index'
+    import MD5 from 'crypto-js/md5';
     export default {
         components: {},
         props: {},
@@ -69,6 +70,17 @@
                         callback();
                     }
                 },
+
+                //密码只能是数字+26个英文大小写字母
+                pwdRule: (rule, value, callback) => {
+                    let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
+                    if(value.match(reg)) {
+                        callback(new Error( this.$t('errorPwdRule') ));
+                    }else {
+                        callback()
+                    }
+                },
+
                 // 校验再次输入的密码是否与新密码相同
                 isEqNewPwd: (rule, value, callback) => {
                     if (value != self.pwdForm.newPassword) {
@@ -96,12 +108,14 @@
                     ],
                     newPassword: [
                         {required: true, message: this.$t('errorEmpty', {msg: this.$t('新密码')}), trigger: 'blur'},     // 新密码不能为空
-                        {validator: validateMethod.emoji, trigger: 'blur'}
+                        {validator: validateMethod.emoji, trigger: 'blur'},
+                        {validator: validateMethod.pwdRule, trigger: 'blur'},
                     ],
                     rePassword: [
                         { required: true, message: this.$t('请再次输入密码'), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMethod.isEqNewPwd, trigger: 'blur' },
+                        { validator: validateMethod.pwdRule, trigger: 'blur'},
                     ],
 
                 },
@@ -122,7 +136,7 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if(valid){
-
+                        this.changePassWord(this.pwdForm);
                     }
                 })
             },
@@ -131,6 +145,21 @@
             resetField() {
                 Object.assign(this.pwdForm, JSON.parse(this.emptyPwdForm));
             },
+
+            //修改密码
+            changePassWord(params) {
+                ajax.post('modifyPassword', {
+                    password: MD5(params.oldPassword).toString(),
+                    newPassword: MD5(params.newPassword).toString()
+                }).then((res) =>{
+                    if( res.success ) {
+                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$refs.formValidate.resetFields();
+                    } else {
+                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                    }
+                })
+            }
         }
     };
 </script>

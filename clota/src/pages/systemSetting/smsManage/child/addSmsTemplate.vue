@@ -23,27 +23,27 @@
 
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('模板名称')" prop="templateName"><!--模板名称-->
-                            <Input v-model.trim="smsForm.templateName"
+                            <Input v-model.trim="smsForm.templetName"
                                    :placeholder="$t('inputField', {field: '模板名称'})"/>
                         </Form-item>
                     </div>
 
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('模版类型')" prop="templateType"><!-- 模版类型-->
-                            <Select v-model="smsForm.templateType" :placeholder="$t('selectField', {msg: $t('type')})">
+                            <Select v-model="smsForm.templetType" :placeholder="$t('selectField', {msg: $t('type')})">
                                 <!--<Option v-for="(item,index) in enumData.genderEnum"
                                         :key="index"
                                         :value="item.name">
                                     {{$t(item.desc)}}
                                 </Option>-->
-                                <Option :value="'custom'">自定义</Option>
+                                <Option value="1">自定义</Option>
                             </Select>
                         </Form-item>
                     </div>
 
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('模版内容')" prop="templateContent"><!-- 模版内容-->
-                            <Input v-model.trim="smsForm.templateContent"
+                            <Input v-model.trim="smsForm.templetContent"
                                    type="textarea"
                                    :rows="5"
                                    :placeholder="$t('短信内容不能超过320个字符')"/>
@@ -82,7 +82,8 @@
 <script type="text/ecmascript-6">
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import exampleTplModal from '../components/exampleTplModal.vue'
+    import exampleTplModal from '../components/exampleTplModal.vue';
+    import ajax from '@/api/index';
 
     export default {
         components: {
@@ -117,14 +118,13 @@
                 loading: false,
                 // 表单数据绑定
                 smsForm: {
-                    templateName: '',
-                    templateType: '',
-                    templateContent: '',
+                    templetName: '',
+                    templetType: '',
+                    templetContent: '',
                 },
-
                 // 校验规则
                 ruleValidate: {
-                    templateName: [
+                    templetName: [
                         {required: true, message: this.$t('errorEmpty', {msg: this.$t('模板名称')}), trigger: 'blur'},     // 模板名称不能为空
                         {
                             type: 'string',
@@ -134,10 +134,10 @@
                         },      // 模板名称不能超过15个字符
                         {validator: validateMethod.emoji, trigger: 'blur'}
                     ],
-                    templateType: [
+                    templetType: [
                         {required: true, message: this.$t('errorEmpty', {msg: this.$t('模板类型')}), trigger: 'change'},     // 模板类型不能为空
                     ],
-                    templateContent: [
+                    templetContent: [
                         {required: true, message: this.$t('errorEmpty', {msg: this.$t('模板内容')}), trigger: 'blur'},     // 模板内容不能为空
                         {
                             type: 'string',
@@ -167,11 +167,11 @@
                     if ( valid ) {
 
                         //区分新增与修改
-                        if( this.type === 'add' ){
-//                            this.saveAndEditMember( 'saveNewMemberInfo', params);
-                        }
                         if( this.type === 'modify' ){
-//                            this.saveAndEditMember( 'editMemberInfo', params);
+
+                            this.saveAndEditMember(this.smsForm);
+                        }else {
+                            //新增需求暂时不做
                         }
                     }
                 })
@@ -181,12 +181,19 @@
              * 获取路由信息
              */
             getParams(params) {
+                console.log(params)
                 if(this.$route.query.type === 'modify'){
                     if(params && Object.keys(params).length > 0){
                         this.type = this.$route.query.type;
-//                        this.initData(params);
+                        this.initData(params);
                     }
                 }
+            },
+            /**
+             * 初始化编辑模版页面数据
+             */
+            initData(params) {
+                this.smsForm = params
             },
             //返回
             goBack() {
@@ -198,6 +205,22 @@
                     this.$router.back();
                 }
             },
+            //编辑并保存模版
+            saveAndEditMember(params) {
+                ajax.post('updateSmsTemplet',{
+                    id: params.id,
+                    templetName: params.templetName,
+                    templetContent: params.templetContent
+                }).then((res) => {
+                    console.log(res)
+                    if(res.success){
+                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$router.push({ name: 'smsTemplate'});
+                    }else {
+                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                    }
+                })
+            }
         }
     };
 </script>

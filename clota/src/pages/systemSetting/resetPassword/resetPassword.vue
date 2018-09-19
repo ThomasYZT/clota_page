@@ -55,6 +55,7 @@
     import resetPwdModal from './components/resetPwdModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {employeeInfoHead} from './resetPwdConfig';
+    import ajax from '@/api/index'
 
     export default {
         components: {tableCom, resetPwdModal},
@@ -85,26 +86,17 @@
         watch: {},
         methods: {
             queryList() {
-                this.tableData = [
-                    {
-                        'employeeID': '309287482',
-                        'loginName': 'adminclota01',
-                        'name': '张贝贝',
-                        'orgName': '银科环企有限公司',
-                        'department': '销售部',
-                        'rolePrivilege': '长隆欢乐园管理员、深圳xxxxxxxxxxxxx',
-                        'phone': '18900003333'
-                    },
-                    {
-                        'employeeID': '309287482',
-                        'loginName': 'adminclota02',
-                        'name': '张闪闪',
-                        'orgName': '银科环企有限公司',
-                        'department': '研发部',
-                        'rolePrivilege': '长隆欢乐园管理员、深圳xxxxxxxxxxxxx',
-                        'phone': '18900003333'
-                    },
-                ];
+                ajax.post('getEmployeeList',this.queryParams).then((res) => {
+                    if (res.success) {
+                        if (res.data && res.data.data) {
+                            this.tableData = res.data.data;
+                            this.totalCount = res.data.totalRow;
+                        } else {
+                            this.tableData = [];
+                            this.totalCount = 0;
+                        }
+                    }
+                })
                 this.totalCount = this.tableData.length;
             },
 

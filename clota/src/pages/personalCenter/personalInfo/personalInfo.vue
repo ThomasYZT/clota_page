@@ -5,106 +5,73 @@
 -->
 
 <template>
-    <div class="personal-info">
-        <h3>{{'广州长隆旅游集团'}}</h3>
-        <Row :gutter="16">
-            <Col span="8">
-                <ul>
-                    <li>
-                        <span class="field-name">{{$t('登录名')}}：</span>{{'zhang'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('线下核销编码')}}：</span>{{'239879'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('传真')}}：</span>{{'0722-823642832'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('详细地址')}}：</span>{{'云南省曲靖市马龙县因下路464号'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('受理客服')}}：</span>{{'客服1'}}
-                    </li>
-                </ul>
-            </Col>
-            <Col span="8">
-                <ul>
-                    <li>
-                        <span class="field-name">{{$t('公司ID')}}：</span>{{'483274'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('全民分销邀请码')}}：</span>{{'JK239879'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('电子邮箱')}}：</span>{{'268326828@163.com'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('短信供应商')}}：</span>{{'容联'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('财务上级')}}：</span>{{'无'}}
-                    </li>
-                </ul>
-            </Col>
-            <Col span="8">
-                <ul>
-                    <li>
-                        <span class="field-name">{{$t('公司编码')}}：</span>{{'zhang'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('电话')}}：</span>{{'0755-823642832'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('所在地')}}：</span>{{'云南省 曲靖市 马龙县'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('短信余量（条）')}}：</span>{{'1830'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('管理上级')}}：</span>{{'无'}}
-                    </li>
-                </ul>
-            </Col>
-        </Row>
+    <div>
+        <!-- 公司管理员视图 -->
+        <template v-if="employeeType == 'company_manager'">
+            <company-manager-temp :accountInfo="accountInfo"></company-manager-temp>
+        </template>
+
+        <!-- 景区管理员视图 -->
+        <template v-else-if="employeeType == 'scenic_manager'">
+            <scenic-manager-temp :accountInfo="accountInfo"></scenic-manager-temp>
+        </template>
+
+        <!-- 员工视图 -->
+        <template v-else-if="employeeType == 'employee'">
+            <employee-temp :accountInfo="accountInfo"></employee-temp>
+        </template>
+
+        <!-- 合作伙伴视图-->
+        <template v-else-if="employeeType == 'partner'">
+            <partner-temp :accountInfo="accountInfo"></partner-temp>
+        </template>
     </div>
 </template>
 <script type="text/ecmascript-6">
+    import ajax from '@/api/index'
+    import companyManagerTemp from './components/company_manager_view'
+    import employeeTemp from './components/employee_view'
+    import partnerTemp from './components/partner_view'
+    import scenicManagerTemp from './components/scenic_manager_view'
 
     export default {
-        components: {},
+        components: {
+            companyManagerTemp,
+            employeeTemp,
+            partnerTemp,
+            scenicManagerTemp
+        },
         props: {},
         data() {
-            return {}
+            return {
+                //用户信息
+                accountInfo: {},
+                //用户类型
+                employeeType: '',
+            }
         },
         computed: {},
         created() {
+            this.getAccountInfo();
         },
         mounted() {
         },
         watch: {},
-        methods: {}
+        methods: {
+            /**
+             * 获取个人信息数据
+             */
+            getAccountInfo() {
+                ajax.post('getProfile').then((res) => {
+                    console.log(res)
+                    this.accountInfo = res.data;
+                    this.employeeType = res.data.employeeType
+                })
+            }
+        }
     };
 </script>
 
 <style lang="scss" scoped>
-    @import "~@/assets/scss/base";
-
-    .personal-info {
-
-        > h3 {
-            font-family: PingFangSC-Medium;
-            margin: 18px 0;
-            font-size: 20px;
-            color: rgba(0, 0, 0, 0.85);
-        }
-
-        ul li {
-            margin-bottom: 8px;
-            color: $color_666;
-
-            .field-name {
-                color: $color_333;
-            }
-        }
-    }
+    @import '~@/assets/scss/base';
 </style>

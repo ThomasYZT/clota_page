@@ -89,6 +89,7 @@
     import rechargeModal from './components/rechargeModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import {paymentHead} from '../financeManageConfig';
+    import ajax from '@/api/index'
 
     export default {
         components: {tableCom, rechargeModal},
@@ -122,31 +123,16 @@
              * 查询付款账户列表
              **/
             queryList() {
-                this.tableData = [
-                    {
-                        'status': 'normal',
-                        'code': '0043987',
-                        'partner': '卧龙城景区',
-                        'availableCredit': 5000,
-                        'balance': 5000,
-                        'creditLimits': 6000,
-                    },{
-                        'status': 'normal',
-                        'code': '0043987',
-                        'partner': '星星旅行社',
-                        'availableCredit': 5000,
-                        'balance': 5000,
-                        'creditLimits': 6000,
-                    },{
-                        'status': 'warning',
-                        'code': '0043987',
-                        'partner': '野马旅行社',
-                        'availableCredit': 5000,
-                        'balance': 5000,
-                        'creditLimits': 6000,
-                    },
-
-                ];
+                ajax.post('queryPayAccounts', this.queryParams).then((res) => {
+                    console.log(res.data.data)
+                    if (res.data && res.data.data) {
+                        this.tableData = res.data.data;
+                        this.totalCount = res.data.totalRow;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
                 this.totalCount = this.tableData.length;
             },
 

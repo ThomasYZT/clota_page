@@ -12,6 +12,10 @@ import org from './modules/org';
 import sms from './modules/sms'
 //产品中心接口
 import product from './modules/product';
+//个人中心接口
+import account from './modules/account';
+//财务管理接口
+import finance from './modules/finance';
 
 const apiList = {
 
@@ -31,8 +35,11 @@ const apiList = {
     //产品中心接口
     ...product,
     //系统设置接口
-    ...sms
-
+    ...sms,
+    //个人中心接口
+    ...account,
+    //财务管理接口
+    ...finance
 };
 
 export default apiList;

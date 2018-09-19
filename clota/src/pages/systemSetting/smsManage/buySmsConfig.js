@@ -4,7 +4,7 @@ export const smsPkgHead = [
     {
         title: '套餐ID',
         width: 180,
-        field: 'packageID'
+        field: 'id'
     },
     {
         title: '套餐名称',
@@ -14,13 +14,13 @@ export const smsPkgHead = [
     {
         title: '套餐价格',
         minWidth: 100,
-        field: 'packagePrice'
+        field: 'price'
     },
     {
         title: '短信服务商',
         minWidth: 160,
         enMinWidth : 160,
-        field: 'smsProvider'
+        field: 'provider'
     },
     {
         title: '短信数量',

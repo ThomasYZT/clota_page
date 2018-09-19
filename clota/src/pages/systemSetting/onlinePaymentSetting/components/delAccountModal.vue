@@ -59,6 +59,15 @@
 
             // 确定删除
             confirmDel() {
+                ajax.post('deleteOnlineAccount', {
+                    id: this.accountData.id
+                }).then((res) => {
+                    if(res.success){
+                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
+                    } else {
+                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');
+                    }
+                })
                 this.$emit('on-delete');
                 this.visible = false;
             },
