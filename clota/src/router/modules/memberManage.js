@@ -151,6 +151,17 @@ export default {
                             rightPath : topMenuName + '.' + 'memberInfo'
                         },
                     },
+                    myOrder: {
+                        //会员管理--会员信息--我的订单
+                        path: '/memberManage/order',
+                        name: 'myOrder',
+                        component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/orders.vue'),
+                        meta: {
+                            menuName: 'memberInfo', //lang.config.js 里面的语言键值
+                            _name: 'members-detail',
+                            rightPath : topMenuName + '.' + 'memberInfo'
+                        },
+                    },
                 }
             },
 
@@ -462,6 +473,17 @@ export default {
                             _name: 'point-manage',
                             rightPath : topMenuName + '.' + 'productTypeSetting',
                             isMenu : true
+                        },
+                    },
+                    paymentProtocol: {
+                        //会员管理--基础设置--支付协议设置
+                        path: '/memberManage/paymentProtocol',
+                        name: 'paymentProtocol',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/paymentProtocol.vue'),
+                        meta: {
+                            menuName: 'entityCard', //lang.config.js 里面的语言键值
+                            _name: 'basic-setting',
+                            rightPath : topMenuName + '.' + 'memberSetting'
                         },
                     },
                 }

@@ -56,3 +56,50 @@ export const infoListHead = [
         field: ''
     },
 ];
+
+// 我的订单列表表头
+export const orderListHead = [
+    {
+        title: '交易号',      // 交易号
+        minWidth: 150,
+        field: 'phoneNum'
+    },
+    {
+        title: '景区',        // 景区
+        minWidth: 160,
+        enMinWidth : 100,
+        field: 'gender'
+    },
+    {
+        title: '会员方交易流水号',  // 会员方交易流水号
+        minWidth: 160,
+        enMinWidth : 150,
+        field: 'levelDesc'
+    },
+    {
+        title: '整单交易金额',    // 整单交易金额
+        minWidth: 150,
+        field: 'status'
+    },
+    {
+        title: '订单状态(支付、退款)',      // 订单状态(支付、退款)
+        minWidth: 180,
+        enMinWidth : 200,
+        field: 'pointBalance'
+    },
+    {
+        title: '交易时间',    // 交易时间
+        minWidth: 180,
+        field: 'moneyBalance'
+    },
+    {
+        title: '会员系统交易时间',      // 会员系统交易时间
+        minWidth: 180,
+        field: 'updatedTime'
+    },
+    {
+        title: 'operate',
+        width: 140,
+        field: ''
+    },
+];
