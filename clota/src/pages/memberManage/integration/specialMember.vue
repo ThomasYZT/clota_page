@@ -48,11 +48,11 @@
             <div class="table-wrap">
                    <table-com
                     :column-data="employeeTrustHead"
-                    :table-data="specialMemberBylyData"
+                    :table-data="memberTypeRight"
                     :border="true"
                     :total-count="specialMemberDataCount"
                     :auto-height="true"
-                    :table-com-min-height="250"
+                    :table-com-min-height="350"
                     @query-data="getStaffLevelInfo">
                        <el-table-column
                            slot="column2"
@@ -152,7 +152,9 @@
                 //删除模态框是否显示
                 visible : false,
                 //当前将要删除的特殊会员分类信息
-                memberInfo : {}
+                memberInfo : {},
+                //选择的特殊会员分类
+                specialMemberChosed : []
             }
         },
         methods: {
@@ -312,9 +314,23 @@
              * @param data
              */
             requeryEmployeeTypes (data) {
-                this.getStaffLevelInfo();
+                this.specialMemberChosed = data;
             }
         },
+        computed : {
+            //按分类设置权益数据
+            memberTypeRight () {
+                let specialMemberChosed = this.specialMemberChosed.map(item => item.id);
+                let specialMemberBylyData = this.specialMemberBylyData;
+                let result = [];
+                for(let i = 0,j = specialMemberBylyData.length;i < j;i++){
+                    if(specialMemberChosed.includes(specialMemberBylyData[i]['id'])){
+                        result.push(specialMemberBylyData[i]);
+                    }
+                }
+                return result;
+            }
+        }
     }
 </script>
 

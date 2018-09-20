@@ -25,7 +25,7 @@ export const columnData = [
     },
     {
         title: 'operate  ',
-        width: 350,
+        width: 363,
         enWidth: 450,
     }
 ];

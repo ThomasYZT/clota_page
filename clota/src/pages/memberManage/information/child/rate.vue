@@ -206,7 +206,7 @@
                         field: 'orgName'
                     },
                     {
-                        title: 'goods',
+                        title: 'productType',
                         minWidth: 100,
                         field: 'productName'
                     },
