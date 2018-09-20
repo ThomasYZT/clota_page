@@ -12,7 +12,7 @@ export default {
     orgStructure: {
         //组织架构
         path: '/orgManage',
-        component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/index.vue'),
+        component: () => import(/* webpackChunkName: "orgStructureInit" */ '../../pages/orgStructure/index.vue'),
         meta: {
             _name: 'org',
             menuName: 'org',
@@ -24,7 +24,7 @@ export default {
                 //组织架构--组织架构
                 path: '/orgManage/organization',
                 name: 'organization',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/organization/ISPinternetChild/ISPinternetDetail.vue'),
+                component: () => import(/* webpackChunkName: "orgStructureInit" */ '../../pages/orgStructure/organization/ISPinternetChild/ISPinternetDetail.vue'),
                 meta: {
                     menuName: 'organization', //lang.config.js 里面的语言键值
                     _name: 'org-struct', //

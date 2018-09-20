@@ -303,7 +303,7 @@
         </opened-service>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
-            <div style="padding: 0 20px">
+            <div style="padding: 0 20px;word-break: break-all;width: 100%;">
                 您正在重置管理员{{sceneDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
                 {{sceneDetail.email}}
             </div>
@@ -449,6 +449,7 @@
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                             address : this.formDataCopy.address,
                             managerId : this.formDataCopy.managerId,
+                            nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');

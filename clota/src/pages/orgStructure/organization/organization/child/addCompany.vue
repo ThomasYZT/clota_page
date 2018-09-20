@@ -84,7 +84,7 @@
                 <!--<div class="hint">用于与线下系统对接</div>-->
                 <!--所在地-->
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="changeCity" style="width: 280px">
+                    <city-plugin @select="changeCity" v-if="value" style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->

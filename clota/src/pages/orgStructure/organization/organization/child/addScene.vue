@@ -94,7 +94,10 @@
                 </FormItem>
                 <!--地址-->
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="changeCity" style="width: 280px">
+                    <city-plugin
+                        v-if="value"
+                        @select="changeCity"
+                        style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
