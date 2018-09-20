@@ -144,12 +144,17 @@
                     if(res.success){
                         this.$Message.success('新增成功');
                         this.$emit('fresh-data');
+                        this.cancel();
                     }else{
-                        this.$Message.error('新增失败');
+                        if(res.code === 'M011'){
+                            this.$Message.error('实体卡已存在');
+                        }else{
+                            this.$Message.error('新增失败');
+                            this.cancel();
+                        }
                     }
                 }).finally(() => {
                     this.saveIng = false;
-                    this.cancel();
                 });
             },
             /**
@@ -164,12 +169,17 @@
                     if(res.success){
                         this.$Message.success('修改成功');
                         this.$emit('fresh-data');
+                        this.cancel();
                     }else{
-                        this.$Message.error('修改失败');
+                        if(res.code === 'M011'){
+                            this.$Message.error('实体卡已存在');
+                        }else{
+                            this.$Message.error('修改失败');
+                            this.cancel();
+                        }
                     }
                 }).finally(() => {
                     this.saveIng = false;
-                    this.cancel();
                 });
             }
         },
