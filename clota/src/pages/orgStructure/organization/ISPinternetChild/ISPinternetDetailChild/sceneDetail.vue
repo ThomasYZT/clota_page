@@ -449,6 +449,7 @@
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                             address : this.formDataCopy.address,
                             managerId : this.formDataCopy.managerId,
+                            nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');

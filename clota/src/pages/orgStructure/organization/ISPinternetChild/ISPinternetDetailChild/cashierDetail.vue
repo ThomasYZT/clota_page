@@ -364,6 +364,7 @@
                     serverUrl : this.formDataCopy.serverUrl,
                     checkGroupId : this.formDataCopy.checkGroupId,
                     saleGroupId : this.formDataCopy.saleGroupId,
+                    nodeType : 'table'
                 }).then(res => {
                    if(res.success){
                        this.$Message.success('修改成功');

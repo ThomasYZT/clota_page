@@ -521,6 +521,7 @@
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                             managerId : this.formDataCopy.managerId,
+                            nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');

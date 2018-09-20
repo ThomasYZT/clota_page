@@ -118,7 +118,8 @@
                 ajax.post('modifyOrgInfo',{
                     id : this.formDataCopy.id,
                     status : this.formDataCopy.isStart ? 'open' : 'close',
-                    orgName : this.formDataCopy.orgName
+                    orgName : this.formDataCopy.orgName,
+                    nodeType : this.formDataCopy.nodeType,
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('修改成功');
