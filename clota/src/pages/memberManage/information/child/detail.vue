@@ -673,7 +673,6 @@
                     if(res.success){
                         this.detail = res.data || {};
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message || 'showMemberDetail '+ this.$t('failure') +'！');
                     }
                 });

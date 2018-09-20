@@ -229,7 +229,6 @@
                                 scoreInsufficientNotification: res.data.scoreInsufficientNotification ?
                                 Boolean(res.data.scoreInsufficientNotification) : false,
                             };
-                            console.log(params)
                             for( let key in params){
                                 if(key && Object.keys(params[key]).length > 0){
                                     for( let ckey in params[key]){
@@ -281,7 +280,6 @@
                         scoreExToCharge: JSON.stringify(setParam.scoreExToCharge),
                         scoreInsufficientNotification: String(setParam.scoreInsufficientNotification),
                     };
-                    console.log(params)
                     this.basicSet(params);
 
                 }

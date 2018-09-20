@@ -466,7 +466,6 @@
                                         JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
                                     donateWhileRecharge: res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 };
-                                console.log(params)
                                 for( let key in params){
                                     if(key && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0){
                                         for( let ckey in params[key]){
@@ -507,7 +506,6 @@
                         }
                     }
                     setParam.id = this.id;
-                    console.log(setParam)
 
                     let params = {
                         id: this.id,
@@ -698,7 +696,6 @@
             },
             //保存后回调传参
             submitAddSend (data) {
-                console.log(data)
                 this.$set(this.settingData.donateWhileRecharge,data.index, data.item);
             },
             //点击‘应用范围’与‘修改’，显示储值赠送金额比例
@@ -739,7 +736,6 @@
             },
             //保存后回调传参
             submitFundsAccount (data) {
-                console.log(data)
                 this.queryMemberAccountDefine();
             },
             //点击储值账户的应用设置，显示应用设置弹窗

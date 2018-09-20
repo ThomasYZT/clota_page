@@ -113,7 +113,6 @@
                     if(res.success){
                         this.tableData = res.data.data || [];
                     } else {
-                        console.log(res);
                         this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
                     }
                 })
@@ -127,7 +126,6 @@
 
             //删除数据
             deleteChannel ( event, data ) {
-                console.log(data)
                 ajax.post('updateChannelSet', {
                     id: data.id,
                     isDeleted: 'true',

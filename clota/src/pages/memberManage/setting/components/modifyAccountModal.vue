@@ -246,7 +246,6 @@
                             })
 
                         };
-                        console.log(params);
                         this.updateMemberAccountDefine(params);
                     }
                 })

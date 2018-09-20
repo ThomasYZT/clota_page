@@ -98,7 +98,6 @@
         methods: {
 
             showAddMemberModal ( event, data ) {
-                console.log(data)
                 this.$refs.addMember.show( data || null );
             },
 
@@ -140,7 +139,6 @@
                         //查询列表
                         this.queryList();
                     } else {
-                        console.log(res);
                         this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
                     }
                 })

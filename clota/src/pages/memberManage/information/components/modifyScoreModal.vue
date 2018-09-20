@@ -126,7 +126,6 @@
 
             //校验积分调整值不可大于总积分
             const validateMaxCorpus = (rule,value,callback) => {
-                // console.log(Number(value) > this.accountInfo.accountBalance,this.accountInfo.accountBalance)
                 if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.account.accountBalance ){
                     callback(new Error( this.$t('errorGreaterThan', {small: this.$t('integAdjust'), big: this.$t('accountInteg')}) ));    // 本金余额不可大于总本金余额
                 } else {

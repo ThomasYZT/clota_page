@@ -473,7 +473,6 @@
                                         }
                                     }
                                 }
-                                console.log(params)
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
