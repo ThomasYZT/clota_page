@@ -17,12 +17,12 @@
                 <i-row>
                     <i-col span="22">
                         <Form-item :label="$t('industry') + '：'" prop="industry"><!--业态-->
-                            <Select v-model="formData.industry"
+                            <Select v-model="formData.productType"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in industryEnum"
+                                <Option v-for="(item,index) in list"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.name">
+                                    {{$t(item.name)}}
                                 </Option>
                             </Select>
                         </Form-item>
@@ -45,6 +45,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
+        props: ['list'],
         components: {},
         data () {
 
@@ -54,10 +55,8 @@
                 title: 'addSalePolicy',   // '新建销售政策'
                 //表单数据
                 formData: {
-                    industry: '',//业态
+                    productType: '',//业态
                 },
-                //业态列表
-                industryEnum: [],
                 // 表单校验
                 ruleValidate: {
                     industry: [
@@ -77,24 +76,13 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        var params = {
-                            industry: this.formData.industry,
-                        };
-                        this.updateChannelSet(params);
-                    }
-                })
-            },
-
-            //新建销售政策
-            updateChannelSet ( params ) {
-                ajax.post('updateChannelSet', params).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
-                        this.hide();
-                        this.$emit('close-modal');
-                    } else {
-                        console.log(res);
-                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');     // 删除失败
+                        this.$router.push({
+                            name: 'editSalePolicy',
+                            params: {
+                                type: 'add',
+                                productType: this.formData.productType
+                            }
+                        })
                     }
                 })
             },
@@ -103,7 +91,7 @@
             hide(){
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                this.formData = { industry: '' };
+                this.formData = { productType: '' };
             },
 
         },

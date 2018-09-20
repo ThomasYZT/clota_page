@@ -73,7 +73,7 @@ export default {
 
             marketingPolicy: {
                 //产品中心--销售政策
-                path: '/productCenter/mPolicy',
+                path: '/productCenter/marketingPolicy',
                 name: 'marketingPolicy',
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/list.vue'),
                 meta: {
@@ -86,7 +86,7 @@ export default {
             },
             editSalePolicy: {
                 //产品中心--销售政策--新建/修改政策
-                path: '/productCenter/MPEdit',
+                path: '/productCenter/editSalePolicy',
                 name: 'editSalePolicy',
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
                 meta: {
@@ -97,7 +97,7 @@ export default {
             },
             salePolicyDetail: {
                 //产品中心--销售政策--政策详情
-                path: '/productCenter/MPDetail',
+                path: '/productCenter/salePolicyDetail',
                 name: 'salePolicyDetail',
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/salePolicyDetail.vue'),
                 meta: {

@@ -247,7 +247,7 @@
 
         <div class="footer">
             <!--已驳回-->
-            <template v-if="detail.auditStatus === 'rejected' || detail.auditStatus === 'auditing'">
+            <template v-if="detail.auditStatus === 'rejected' || detail.auditStatus === 'not_enabled'">
                 <Button type="primary"
                         @click="auditProduct('PRODUCT_APPLY')">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
@@ -380,6 +380,7 @@
                     params: {
                         type: 'modify',
                         info: this.detail,
+                        productPlayRuleVo: this.productPlayRuleVo,
                     }
                 })
             },
