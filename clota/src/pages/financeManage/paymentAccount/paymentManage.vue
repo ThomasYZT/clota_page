@@ -42,7 +42,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.availableCredit | moneyFilter}}
+                    {{scope.row.availableBalance | moneyFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -52,7 +52,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.balance | moneyFilter}}
+                    {{scope.row.accountBalance | moneyFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -62,7 +62,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.creditLimits | moneyFilter}}
+                    {{scope.row.creditBalance | moneyFilter}}
                 </template>
             </el-table-column>
 
@@ -81,7 +81,8 @@
         </table-com>
 
         <!--撤回充值申请 - 弹窗-->
-        <recharge-modal ref="rechargeModal"></recharge-modal>
+        <recharge-modal ref="rechargeModal"
+                        @update-list="queryList"></recharge-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">

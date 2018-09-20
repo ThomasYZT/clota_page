@@ -13,19 +13,19 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <!--付款方-->
                 <Form-item :label="$t('付款方') + '：'" prop="">
-                    <span>{{formData.payer}}</span>
+                    <span>{{formData.peerOrgName}}</span>
                 </Form-item>
                 <!--支付方式-->
                 <Form-item :label="$t('支付方式') + '：'" prop="">
-                    <span>{{formData.rechargeType | contentFilter}}</span>
+                    <span>{{formData.paymentType | contentFilter}}</span>
                 </Form-item>
                 <!--充值金额-->
                 <Form-item :label="$t('充值金额') + '：'" prop="">
-                    <span>{{formData.rechargeAmount | moneyFilter}}</span>
+                    <span>{{formData.amount | moneyFilter}}</span>
                 </Form-item>
                 <!--交易流水号-->
                 <Form-item :label="$t('交易流水号') + '：'" prop="">
-                    <span>{{formData.transactionNo | contentFilter}}</span>
+                    <span>{{formData.tpOrderNo | contentFilter}}</span>
                     <Tooltip placement="top">
                         <i class="iconfont icon-help"></i>
                         <div slot="content">
@@ -42,8 +42,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="buyNow()" >{{$t('审核通过')}}</Button>
-            <Button type="error" @click="buyNow()" >{{$t('驳回')}}</Button>
+            <Button type="primary" @click="confirm()" >{{$t('审核通过')}}</Button>
+            <Button type="error" @click="cancel()" >{{$t('驳回')}}</Button>
         </div>
 
     </Modal>
@@ -61,13 +61,7 @@
             return {
                 visible: false,
                 //表单数据
-                formData: {
-                    payer: '',
-                    rechargeAmount: 0,
-                    rechargeType: '',
-                    transactionNo: '',
-                    remark: '',
-                },
+                formData: {},
                 //校验规则
                 ruleValidate: {
 
@@ -79,10 +73,9 @@
 
         },
         methods: {
-
             show ( data ) {
                 if( data ){
-                    this.formData = defaultsDeep({}, data.item, this.formData);
+                    this.formData = defaultsDeep(this.formData, data.item);
                 }
                 this.visible = true;
             },
@@ -109,19 +102,52 @@
 
             },
 
-            // 立即购买
-            buyNow ( params ) {
-                /*ajax.post('updateMemberAccountDefine', params).then(res => {
+            // 确认
+            confirm () {
+                //审核通过
+                this.passAudit(this.formData);
+
+            },
+
+            // 取消
+            cancel() {
+                //驳回
+                this.rejectRecharge(this.formData);
+            },
+
+            //驳回
+            rejectRecharge(params) {
+                ajax.post('rejectRecharge', {
+                    rechargeId: params.id,
+                    remark: this.formData.remark
+                }).then(res => {
                     if( res.success ) {
                         this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('update-list', { item: this.formData, index: this.index});
                     } else {
                         this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
                     }
-                })*/
+                })
             },
 
+            //审核通过
+            passAudit(params) {
+                console.log(params)
+                ajax.post('passRecharge', {
+                    rechargeId: params.id,
+                    remark: this.formData.remark
+                }).then(res => {
+                    console.log(res)
+                    if( res.success ) {
+                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.hide();
+                        this.$emit('update-list', { item: this.formData, index: this.index});
+                    } else {
+                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                    }
+                })
+            }
         },
     }
 </script>

@@ -8,36 +8,36 @@
                         <span class="field-name">{{$t('联系人')}}：</span>{{accountInfo.loginName}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('电子邮箱')}}：</span>{{accountInfo.checkinCode}}
+                        <span class="field-name">{{$t('电子邮箱')}}：</span>{{accountInfo.email}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('详细地址')}}：</span>{{accountInfo.tex}}
+                        <span class="field-name">{{$t('详细地址')}}：</span>{{accountInfo.address}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('备注')}}：</span>{{accountInfo.address}}
+                        <span class="field-name">{{$t('备注')}}：</span>{{accountInfo.description}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('登录名')}}：</span>{{accountInfo.id ? accountInfo.id : '无'}}
+                        <span class="field-name">{{$t('登录名')}}：</span>{{accountInfo.loginName}}
                     </li>
                     <li>
                         <span class="field-name">{{$t('所属渠道类型')}}：</span>{{accountInfo.saleCode}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('社会信用代码')}}：</span>{{accountInfo.email}}
+                        <span class="field-name">{{$t('社会信用代码')}}：</span>{{accountInfo.certificateNumber}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('联系方式')}}：</span>{{accountInfo.nodeCode}}
+                        <span class="field-name">{{$t('联系方式')}}：</span>{{accountInfo.telephone}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('所在地')}}：</span>{{accountInfo.telephone}}
+                        <span class="field-name">{{$t('所在地')}}：</span>{{accountInfo.district}}
                     </li>
                     <li>
                         <span class="field-name">{{$t('营业执照附件')}}：</span>{{accountInfo.address}}

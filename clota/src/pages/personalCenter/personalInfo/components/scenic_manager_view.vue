@@ -14,10 +14,10 @@
                         <span class="field-name">{{$t('电话')}}：</span>{{accountInfo.telephone}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('所在地')}}：</span>{{accountInfo.address}}
+                        <span class="field-name">{{$t('所在地')}}：</span>{{accountInfo.district}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('管理上级')}}：</span>{{accountInfo.checkinCode}}
+                        <span class="field-name">{{$t('管理上级')}}：</span>{{accountInfo.parentManage}}
                     </li>
                 </ul>
             </Col>
@@ -25,29 +25,29 @@
                 <ul>
 
                     <li>
-                        <span class="field-name">{{$t('公司编码')}}：</span>{{accountInfo.saleCode}}
+                        <span class="field-name">{{$t('公司编码')}}：</span>{{accountInfo.nodeCode}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('线下核销编码')}}：</span>{{accountInfo.email}}
+                        <span class="field-name">{{$t('线下核销编码')}}：</span>{{accountInfo.checkinCode}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('电子邮箱')}}：</span>{{accountInfo.smsProvider}}
+                        <span class="field-name">{{$t('电子邮箱')}}：</span>{{accountInfo.email}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('详细地址')}}：</span>{{accountInfo.parentFinanc}}
+                        <span class="field-name">{{$t('详细地址')}}：</span>{{accountInfo.address}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('财务上级')}}：</span>{{accountInfo.nodeCode}}
+                        <span class="field-name">{{$t('财务上级')}}：</span>{{accountInfo.parentFinanc}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('全民分销邀请码')}}：</span>{{accountInfo.nodeCode}}
+                        <span class="field-name">{{$t('全民分销邀请码')}}：</span>{{accountInfo.saleCode}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('传真')}}：</span>{{accountInfo.smsAmount}}
+                        <span class="field-name">{{$t('传真')}}：</span>{{accountInfo.tex}}
                     </li>
                 </ul>
             </Col>

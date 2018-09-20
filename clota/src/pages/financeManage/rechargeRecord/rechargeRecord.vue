@@ -51,9 +51,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate"
-                          v-if="scope.row.status=='reject'"
-                          @click="handleRecall(scope.row)">{{$t('撤回')}}
+                    <span v-if="scope.row.status=='rejected'">{{$t('-')}}
                     </span>
                     <span v-else-if="scope.row.status=='valid'">{{'-'}}
                     </span>
@@ -66,7 +64,8 @@
         </table-com>
 
         <!--审核充值 - 弹窗-->
-        <audit-recharge-modal ref="auditModal"></audit-recharge-modal>
+        <audit-recharge-modal ref="auditModal"
+                              @update-list="queryList"></audit-recharge-modal>
         <!--撤回充值申请 - 弹窗-->
         <recall-modal ref="recallModal"></recall-modal>
     </div>

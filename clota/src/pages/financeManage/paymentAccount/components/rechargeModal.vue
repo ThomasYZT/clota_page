@@ -13,7 +13,7 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <!--合作伙伴-->
                 <Form-item :label="$t('partner') + ':'" prop="">
-                    <span>{{formData.partner}}</span>
+                    <span>{{formData.orgName}}</span>
                 </Form-item>
                 <!--充值金额-->
                 <Form-item :label="$t('充值金额')" prop="rechargeAmount">
@@ -70,12 +70,7 @@
             return {
                 visible: false,
                 //表单数据
-                formData: {
-                    partner: '',
-                    rechargeAmount: 0,
-                    payType: 'zfb',
-                    remark: '',
-                },
+                formData: {},
                 //校验规则
                 ruleValidate: {
                     rechargeAmount: [
@@ -92,8 +87,9 @@
         methods: {
 
             show ( data ) {
+                console.log(data)
                 if( data ){
-                    this.formData = defaultsDeep({}, pick(data.item, Object.keys(this.formData)), this.formData);
+                    this.formData = defaultsDeep(this.formData, data.item );
                 }
                 this.visible = true;
             },
@@ -127,15 +123,20 @@
 
             // 确认充值
             confirmRecharge ( params ) {
-                /*ajax.post('updateMemberAccountDefine', params).then(res => {
+                ajax.post('recharge', {
+                    orgAccountId: params.id,
+                    amount: this.formData.rechargeAmount,
+                    paymentType: this.formData.payType,
+                    remark: this.formData.remark
+                }).then(res => {
                     if( res.success ) {
                         this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('update-list', { item: this.formData, index: this.index});
                     } else {
                         this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
                     }
-                })*/
+                })
             },
 
         },
