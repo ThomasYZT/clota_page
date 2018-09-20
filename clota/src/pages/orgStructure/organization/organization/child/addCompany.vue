@@ -88,7 +88,7 @@
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
-                <FormItem :label="$t('address')">
+                <FormItem :label="$t('address')" prop="address">
                     <Input v-model.trim="formData.address" style="width: 280px"/>
                 </FormItem>
             </Form>
@@ -261,6 +261,9 @@
                     ],
                     companyCode : [
                         {min : 2,max : 8,message : this.$t('rangeError',{field : this.$t('companyCode'),min : 2,max : 8}),trigger : 'blur'}
+                    ],
+                    address : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'}
                     ]
                 },
                 //短信供应商列表

@@ -111,4 +111,8 @@
     .add-group .ivu-btn-ghost{
         margin-left:5px;
     }
+
+    .ivu-poptip{
+        margin-right: 10px;
+    }
 </style>

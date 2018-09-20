@@ -714,7 +714,6 @@
             },
             //保存后回调传参
             submitAddSend (data) {
-                console.log(data)
                 this.$set(this.settingData.donateWhileRecharge,data.index, data.item);
             },
             //点击‘应用范围’与‘修改’，显示储值赠送金额比例
@@ -755,7 +754,6 @@
             },
             //保存后回调传参
             submitFundsAccount (data) {
-                console.log(data)
                 this.queryMemberAccountDefine();
             },
             //点击储值账户的应用设置，显示应用设置弹窗

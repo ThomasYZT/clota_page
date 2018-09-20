@@ -13,6 +13,7 @@
                 ref="tree"
                 :filter-node-method="filterNode"
                 :data="treeData"
+                :render-content="menuRenderContent"
                 @node-click="orgChose">
             </el-tree>
         </div>
@@ -84,7 +85,33 @@
                         });
                     });
                 }
-            }
+            },
+            /**
+             * 菜单组织树
+             */
+            menuRenderContent (h, {root, node, data}) {
+                return h('div', {
+                    style: {
+                        display: 'inline-block',
+                        width: '100%'
+                    },
+                    class: {
+                        'title-wrap': true,
+                    },
+                }, [
+                    h('span', {
+                        class: {
+                            'title-class': true
+                        },
+                        directives: [
+                            {
+                                name: 'w-title',
+                                value: data.orgName
+                            }
+                        ],
+                    }, data.orgName)
+                ])
+            },
         },
         created () {
             this.getOrgTree();
@@ -143,6 +170,54 @@
             /deep/ .is-checked{
                 background: $color_fafa;
             }
+        }
+
+        /deep/ .title-wrap {
+            @include absolute_pos(relative, 0, 0, 0, -20px);
+            padding-left: 20px;
+            cursor: pointer;
+
+            &:hover {
+                background: $color_fafa;
+
+                .title-class {
+                    color: $color_blue;
+                }
+
+                .iconfont:not(.hidden) {
+                    display: inline-block;
+                }
+            }
+
+            &.active-node{
+
+                .title-class {
+                    color: $color_blue;
+                }
+            }
+
+            .title-class {
+                @include overflow_tip(unquote('calc(100% - 40px)'), 36px);
+                display: inline-block;
+                padding: 7px 0;
+                line-height: 22px;
+                font-size: 16px;
+                color: #333333;
+                vertical-align: middle;
+            }
+
+            .iconfont {
+                display: none;
+                color: $color_blue;
+                font-size: 14px;
+                float: right;
+                margin-top: 7px;
+                cursor: pointer;
+            }
+        }
+
+        /deep/ .tree-list{
+            overflow-x: hidden;
         }
     }
 </style>

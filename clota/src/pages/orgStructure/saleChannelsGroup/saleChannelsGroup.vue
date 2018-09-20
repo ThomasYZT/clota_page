@@ -269,10 +269,6 @@
             @include block_outline($height : 60px);
             padding: 14px 30px 0 30px;
 
-            /deep/ .ivu-btn-primary{
-                margin-right: 10px;
-            }
-
             .save{
                 font-size: $font_size_12px;
                 color: $color_blue;
@@ -294,13 +290,19 @@
     }
 
     .del-tips{
-        position: absolute;
+        @include block_outline();
+        @include center_center();
         padding: 0 76px 0 106px;
         color: $color_333;
         font-size: $font_size_14px;
 
+        .red-bale{
+            display: inline-block;
+            width: 100%;
+        }
+
         .ivu-icon{
-            @include absolute_pos(absolute,$left : 88px,$top : 2px);
+            @include absolute_pos(absolute,$left : 88px,$top : 65px);
             font-size: 15px;
             color: #EB6751;
         }

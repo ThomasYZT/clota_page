@@ -430,7 +430,6 @@
                         rateNumerator: this.formData.rateNumerator
                     })
                 };
-                console.log(params)
                 this.updateMemberAccountDefine(params);
             },
 
