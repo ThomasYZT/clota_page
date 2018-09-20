@@ -1,0 +1,27 @@
+
+/*@import '//at.alicdn.com/t/font_772944_l8eqwm2u4qi.css';*/
+@import '//at.alicdn.com/t/font_772944_zfj3qjyzsog.css';
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 15px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+}
+
+@font-face {
+    font-family: 'pingfang';
+    src: url('../fonts/PingFang-Regular.eot');
+    src:
+        url('../fonts/PingFang-Regular.eot?#font-spider') format('embedded-opentype'),
+        url('../fonts/PingFang-Regular.woff') format('woff'),
+        url('../fonts/PingFang-Regular.ttf') format('truetype'),
+        url('../fonts/PingFang-Regular.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: 'pingfang'!important;
+}
