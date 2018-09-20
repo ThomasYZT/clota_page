@@ -126,7 +126,7 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
-                if(data.nodeType === 'department' ||  data.nodeType === 'table'){
+                if(data.nodeType === 'department' ||  data.nodeType === 'table' ||  data.nodeType === 'company'){
                     this.$set(data,'disabled',true);
                 }
                 return h('div', {
