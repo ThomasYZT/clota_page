@@ -9,14 +9,18 @@
         <div  class="content">
             <div class="import-area">
                 <div class="import-label">
-                    <img class="img-label" src="" alt="">
+                    <div class="img-label">
+                        <img  src="../../../assets/images/icon-upload.png" alt="">
+                    </div>
                     <span class="font-label">
                         <upload-file @upload-success="getUploadResult">
                         </upload-file>
                     </span>
                 </div>
                 <div class="download-template">
-                    <img class="img-label" src="" alt="">
+                    <div class="img-label">
+                        <img  src="../../../assets/images/icon-download.png" alt="">
+                    </div>
                     <span class="font-label">
                         <a :href="downloadUrl">下载标准模板</a>
                     </span>
@@ -218,6 +222,14 @@
                         @include block_outline(64px,100%,false);
                         border-right: 1px solid $color_eee;
                         float: left;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        img{
+                            display: block;
+                            @include block_outline(22px,30px);
+                        }
                     }
 
                     .font-label{
@@ -237,7 +249,7 @@
             }
 
             .tap-switch{
-                width: 600px;
+                width: 630px;
                 position: relative;
                 height: 70px;
                 text-align: center;
@@ -258,6 +270,11 @@
 
                 /deep/ .ivu-tabs-tab:nth-last-of-type(1){
                     color: #EB6751;
+                }
+
+                /deep/ .ivu-tabs-nav-prev,
+                /deep/ .ivu-tabs-nav-next{
+                    display: none;
                 }
 
                 .fail-tip{

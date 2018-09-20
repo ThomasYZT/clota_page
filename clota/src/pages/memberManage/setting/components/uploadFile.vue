@@ -5,6 +5,8 @@
         :before-upload="beforeUpload"
         :on-success="uploadSuc"
         :headers="headers"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        :format="['xlsx']"
         :action="action"
         :show-file-list="false">
         <span>选择实体卡文件上传</span>
