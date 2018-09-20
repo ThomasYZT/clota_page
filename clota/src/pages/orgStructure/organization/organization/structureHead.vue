@@ -182,7 +182,11 @@
                         directives: [
                             {
                                 name: 'w-title',
-                                value: data.orgName
+                                // value: data.orgName,
+                                value: {
+                                    position : 'top',
+                                    msg: data.orgName,
+                                },
                             }
                         ],
                     }, data.orgName),

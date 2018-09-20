@@ -143,7 +143,7 @@
                         <span class="info-key">管理账号：</span>
                         <span class="info-val"
                               v-w-title="companyDetail.manager">
-                             {{companyDetail.manager | contentFilter}}
+                            <span class="account-con">{{companyDetail.manager | contentFilter}}</span>
                             <span class="reset-pass"
                                   v-if="activeNode && activeNode.level !== 1"
                                   @click="resetPass">重置密码</span>
@@ -752,6 +752,13 @@
                 float: left;
                 color: $color_666;
                 padding-right: 10px;
+
+                .account-con{
+                    display: inline-block;
+                    width: calc(100% - 50px);
+                    float: left;
+                    @include overflow_tip();
+                }
             }
             .info-key{
                 color: $color_333;
