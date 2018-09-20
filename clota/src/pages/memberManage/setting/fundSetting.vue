@@ -149,7 +149,7 @@
                                 :prop="'pay.' + index + '.payment'"
                                 :rules="{required: true, message: $t('CertificateTypeCannotBeEmpty'), trigger: 'blur'}">
                                 <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" :placeholder="$t('inputField', {field: ''})"/>
-                                <span class="span-bottom red-color" v-if="item.active && index > 0" @click="deletePay(item,index)">{{$t('del')}}</span>
+                                <span class="span-bottom red-color" v-if="item.active && item.isSystem=='false'" @click="deletePay(item,index)">{{$t('del')}}</span>
                                 <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">{{$t("save")}}</span>
                                 <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">{{$t('cancel')}}</span>
                             </FormItem>
@@ -653,6 +653,7 @@
                     if(res.success){
                         this.formDynamic.pay[index].disabled = true;
                         this.formDynamic.pay[index].active = true;
+                        this.formDynamic.pay[index].isSystem = 'false';
                         this.$Message.success(this.$t('successTip',{tip : this.$t('newCollectionMethod')}));
                     }
                 })
@@ -666,6 +667,7 @@
                     if(res.success){
                         this.$Message.success(this.$t('successTip',{tip : this.$t('delCollectionMethod')}));
                         this.formDynamic.pay[index]._status = 0;
+                        this.formDynamic.pay.splice(index, 1);     // 如果删除收款方式后不调查询收款方式接口，就记得在formDynamic.pay数组中清除被删除的数据
                     }
                 })
             },
