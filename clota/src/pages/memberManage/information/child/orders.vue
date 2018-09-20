@@ -26,16 +26,6 @@
                 :page-size-d.sync="queryParams.pageSize"
                 :border="true"
                 @query-data="queryList">
-                <!--<el-table-column
-                    slot="column2"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{scope.row.saleGroupName ? scope.row.saleGroupName : '未分组'}}
-                    </template>
-                </el-table-column>
 
                 <el-table-column
                     slot="column3"
@@ -43,25 +33,20 @@
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{scope.row.type=='online' ? '线上' : '线下'}}
-                    </template>
+                    <template slot-scope="scope">{{scope.row.amount | moneyFilter}}</template>
                 </el-table-column>
+
                 <el-table-column
-                    slot="column5"
+                    slot="column4"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status=='valid'">
-                            <span class="status-sign valid"></span>已启用
-                        </span>
-                        <span v-if="scope.row.status=='invalid'">
-                            <span class="status-sign invalid"></span>未启用
-                        </span>
+                        <span :class="[{'org': scope.row.status=='refund'}]">{{scope.row.status | orderStatus}}</span>
                     </template>
-                </el-table-column>-->
+                </el-table-column>
+
                 <el-table-column
                     slot="column7"
                     slot-scope="row"
@@ -70,7 +55,7 @@
                     fixed="right"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-
+                        <span class="operate-btn blue" @click="goOderDetail(scope.row)">{{$t('details')}}</span><!--详情-->
                     </template>
                 </el-table-column>
             </table-com>
@@ -84,7 +69,7 @@
     import ajax from '@/api/index';
     import {orderListHead} from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable, batchOperate} from '@/assets/js/constVariable';
+    import {configVariable} from '@/assets/js/constVariable';
     import map from 'lodash/map';
     import {mapGetters} from 'vuex';
 
@@ -121,30 +106,33 @@
                 tableData: [],
                 // 数据总条数
                 totalCount: 0,
-
-                // 表格筛选下拉菜单
-                /*listFilters: {
-                    stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-                    alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-                        name: '正常',
-                        alert: 'normal'
-                    }],
-                },*/
-                enableValue: true,  //启用，未启用变量
-                name: '', //删除弹窗名字
-                deleteName: '删除渠道', //删除内容名字
-                rowIds: [], //自营渠道ids
-                // 批量操作下拉选项
-                batchOperate: batchOperate,
-                // 已勾选的数据
-                chosenRowData: [],
             }
+        },
+        filters: {
+            orderStatus(status) {
+                let statusName = '-';
+                switch (status) {
+                    case 'pay' :
+                        statusName = '支付';
+                        break;
+                    case 'refund' :
+                        statusName = '退款';
+                        break;
+                    case 'cancel_pay' :
+                        statusName = '撤销支付';
+                        break;
+                    case 'cancel_refund' :
+                        statusName = '撤销退款';
+                        break;
+                }
+                return statusName;
+            },
         },
         methods: {
             // 初始化加载获取员工列表数据
             queryList() {
 
-                /*ajax.post('querySelfOwnedChannel', this.queryParams).then(res => {
+                ajax.post('queryMemberOrder', this.queryParams).then(res => {
                     if (res.success) {
                         if (res.data && res.data.data) {
                             this.tableData = res.data.data;
@@ -154,7 +142,7 @@
                             this.totalCount = 0;
                         }
                     }
-                });*/
+                });
             },
 
             // 搜索员工
@@ -167,95 +155,15 @@
             //重置查询数据
             reset () {
                 this.filterParam.keyWord = "";
-                this.queryList();
+                this.handleSearch();
             },
 
-            // 筛选下拉组件
-            /*renderHeader(h, params) {
-                return h(filterDrop, {
-                    props: {
-                        colParams: params.column,
-                        filters: this.listFilters
-                    },
-                    on: {
-                        'state-filter': this.handleAlertFilter,
-                        'alert-filter': this.handleAlertFilter,
-                    }
+            //路由跳转订单详情页面
+            goOderDetail(scopeRow) {
+                this.$router.push({
+                    name: 'orderDetail',
+                    query: {orderId: scopeRow.id}
                 });
-            },*/
-            // 筛选点击事件
-            handleAlertFilter() {
-
-            },
-            /**
-             * 删除某一个或多个自营渠道
-             * @param data - 被删除的行数据
-             * @param isBatch - 是否批量操作  Boolean
-             */
-            showDelModal(data, isBatch) {
-                if (isBatch==true) {
-                    let channelNames = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
-
-                    this.name = `<span class="operate-name" v-w-title="channelNames">${channelNames}</span>
-                                 <span style="color: #333;">等${data.length}个渠道</span>`;
-                    this.$refs.delListModal.show();
-                } else {
-                    this.rowIds = [data.id];
-                    this.name = data.channelName;
-                    if (data.type=='online') {
-                        this.$refs.delListModal.show();
-                    }
-                }
-
-            },
-            //确认删除
-            handleDeletions() {
-
-                ajax.post('deleteChannels', {
-                    ids: this.rowIds.join(',')
-                }).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));
-                        this.handleSearch();
-                    }
-                });
-            },
-            /**
-             * 批量勾选结果改变时的处理
-             * @param selection - 被勾选的数据  Array
-             */
-            changeSelection(selection) {
-                this.chosenRowData = selection;
-                if (selection.length>0){
-                    this.rowIds = map(selection, 'id');
-                }
-            },
-            /**
-             * 选择批量操作
-             * @param dropItem - 选择的操作方式  String
-             */
-            handleCommand(dropItem) {
-                if (this.chosenRowData.length<=0) {
-                    this.$Message.warning('请勾选批量操作项');
-                    return;
-                }
-                switch (dropItem.status) {
-                    case 'valid' :
-                    case 'invalid' :
-                        this.enable(dropItem, true);
-                        break;
-                    case 'del' :
-                        let onlineData = this.chosenRowData.filter((item, i) => {
-                            // 过滤出线上的自营渠道类型，因线下类型不可删除
-                            return item.type == 'online';
-                        });
-                        if (onlineData && onlineData.length>0) {
-                            this.showDelModal(onlineData, true);
-                        } else {
-                            this.$Message.warning('线下渠道主要是售票闸机等，只能在组织架构内增加/删除，不允许在此页面增加或删除。')
-                        }
-                        break;
-                }
             },
 
         },
@@ -290,15 +198,6 @@
             }
         }
 
-        .divide-line {
-            display: inline-block;
-            width: 1px;
-            height: 14px;
-            margin: 0 5px;
-            margin-bottom: -2px;
-            background: #E1E1E1;
-        }
-
         .operate-btn {
             cursor: pointer;
         }
@@ -309,37 +208,6 @@
         .org {
             color: $color_yellow;
         }
-        .red {
-            color: $color_red;
-        }
-        .gray {
-            color: $color_gray;
-        }
 
-        .status-sign {
-            position: relative;
-            padding-left: 14px;
-            &:after {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                width: 6px;
-                height: 6px;
-                border-radius: 50px;
-            }
-        }
-        .valid:after {
-            background: $color_green;
-        }
-        .invalid:after {
-            background: $color_BBC5D5;
-        }
-    }
-
-    .el-dropdown-menu {
-        width: 88px;
     }
 </style>
