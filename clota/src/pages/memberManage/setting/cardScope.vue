@@ -109,7 +109,7 @@
              * 获取组织树列表
              */
             getOrgTree () {
-                ajax.post('getOrgTree',{
+                ajax.post('getRootOrgTree',{
                     showScene : 'manage',
                     manageType : 'manage',
                 }).then(res =>{

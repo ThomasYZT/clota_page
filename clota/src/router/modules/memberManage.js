@@ -397,7 +397,7 @@ export default {
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/cardScope.vue'),
                         meta: {
                             menuName: 'cardScopeSetting', //lang.config.js 里面的语言键值
-                            _name: 'channel-setting',
+                            _name: 'basic-setting',
                             rightPath : topMenuName + '.' + 'cardScopeSetting',
                             isMenu : true
                         },
