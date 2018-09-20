@@ -116,10 +116,10 @@
                     <i-col span="12">
                         <FormItem label="所属核销设备分组："
                                   v-if="type === 'edit' && (formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine')"
-                                  :required="formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine'"
                                   prop="checkGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkGroupId"
+                                    :clearable="true"
                                     :disabled="formDataCopy.checkerType === 'sale'">
                                 <Option v-for="item in verifyCashierTypeGroupList"
                                         :value="item.id"
@@ -141,10 +141,10 @@
                     <i-col span="12">
                         <FormItem label="所属销售渠道分组："
                                   v-if="type === 'edit' && (formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine')"
-                                  :required="formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine'"
                                   prop="saleGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.saleGroupId"
+                                    :clearable="true"
                                     :disabled="formDataCopy.checkerType === 'check'">
                                 <Option v-for="item in verifySaleTypeGroupList"
                                         :value="item.id"
@@ -219,23 +219,23 @@
                     callback(this.$t('inputField',{field : this.$t('serverName')}));
                 }
             };
-            //校验是否为空
-            const validateNotEmpty = (rule,value,callback) => {
-                //款台类型为核销款台，所属核销设备分组不是必填项
-                //款台类型为销售款台，所属销售设备分组不是必填项
-                if(rule._field === 'cashierTypeGroup' && this.formDataCopy.checkerType === 'sale'){
-                    callback();
-                }else if(rule._field === 'saleTypeGroup' && this.formDataCopy.checkerType === 'check'){
-                    callback();
-                }else{
-                    if(common.isNotEmpty(value)){
-                        callback();
-                    }else{
-                        // callback();
-                        callback(this.$t('selectField',{msg : this.$t(rule._field)}));
-                    }
-                }
-            };
+            // //校验是否为空
+            // const validateNotEmpty = (rule,value,callback) => {
+            //     //款台类型为核销款台，所属核销设备分组不是必填项
+            //     //款台类型为销售款台，所属销售设备分组不是必填项
+            //     if(rule._field === 'cashierTypeGroup' && this.formDataCopy.checkerType === 'sale'){
+            //         callback();
+            //     }else if(rule._field === 'saleTypeGroup' && this.formDataCopy.checkerType === 'check'){
+            //         callback();
+            //     }else{
+            //         if(common.isNotEmpty(value)){
+            //             callback();
+            //         }else{
+            //             // callback();
+            //             callback(this.$t('selectField',{msg : this.$t(rule._field)}));
+            //         }
+            //     }
+            // };
             return {
                 //表单数据
                 formDataCopy : {},
@@ -272,12 +272,12 @@
                         {required : true,message : this.$t('inputField',{field : this.$t('serverName')}),trigger : 'blur'},
                         {validator : validateServerUrl,trigger : 'blur'}
                     ],
-                    checkGroupId : [
-                        {validator : validateNotEmpty,trigger : 'change',_field : 'cashierTypeGroup'}
-                    ],
-                    saleGroupId : [
-                        {validator : validateNotEmpty,trigger : 'change',_field : 'saleTypeGroup'}
-                    ]
+                    // checkGroupId : [
+                    //     {validator : validateNotEmpty,trigger : 'change',_field : 'cashierTypeGroup'}
+                    // ],
+                    // saleGroupId : [
+                    //     {validator : validateNotEmpty,trigger : 'change',_field : 'saleTypeGroup'}
+                    // ]
                 }
             }
         },

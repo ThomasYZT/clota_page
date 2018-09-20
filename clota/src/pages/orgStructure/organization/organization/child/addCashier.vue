@@ -48,6 +48,7 @@
                           v-if="showCashierTypeGroup">
                     <Select v-model="formData.cashierTypeGroup"
                             style="width:280px"
+                            :clearable="true"
                             transfer>
                         <Option v-for="item in cashierTypeGroupList"
                                 :value="item.id"
@@ -65,6 +66,7 @@
                           v-if="showSaleTypeGroup">
                     <Select v-model="formData.saleTypeGroup"
                             style="width:280px"
+                            :clearable="true"
                             transfer>
                         <Option v-for="item in saleTypeGroupList"
                                 :value="item.id"
@@ -180,14 +182,12 @@
                     ],
                     cashierTypeGroup : [
                         {
-                            required: true,
                             message: this.$t('selectField', {msg: this.$t('cashierTypeGroup')}),
                             trigger: 'change'
                         },
                     ],
                     saleTypeGroup : [
                         {
-                            required: true,
                             message: this.$t('selectField', {msg: this.$t('saleTypeGroup')}),
                             trigger: 'change'
                         },
