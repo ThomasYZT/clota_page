@@ -108,11 +108,6 @@
                                 sessionStorage.setItem('userInfo',JSON.stringify(res.data));
                                 sessionStorage.setItem('accountName',this.formInline.user);
                                 sessionStorage.setItem('token',res.data ? res.data.token : '');
-                                // //保存当前选择的机构
-                                // // if(!localStorage.getItem('manageOrgs')){
-                                // //     localStorage.setItem('manageOrgs',JSON.stringify(res.data.manageOrgs[0]));
-                                // // }
-                                // this.setOrgIndex(res.data.manageOrgs);
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
                                     this.$router.push({
                                         path: route.path

@@ -13,7 +13,7 @@ let topMenuName = 'memberHome';
 export default {
     memberMange: {
         path: '/memberManage',
-        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/index.vue'),
+        component: () => import(/* webpackChunkName: "memberManageInit" */ '../../pages/memberManage/index.vue'),
         meta: {
             _name: 'members',
             menuName: 'memberHome',
@@ -25,7 +25,7 @@ export default {
                 //会员管理--会员主页
                 path: '/memberManage/home',
                 name: 'memberHome',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/home/home.vue'),
+                component: () => import(/* webpackChunkName: "memberManageInit" */ '../../pages/memberManage/home/home.vue'),
                 meta: {
                     menuName: 'memberHome', //lang.config.js 里面的语言键值
                     _name: 'members-index',

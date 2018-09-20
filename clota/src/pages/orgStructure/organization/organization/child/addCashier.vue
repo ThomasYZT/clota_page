@@ -47,7 +47,6 @@
                           prop="cashierTypeGroup"
                           v-if="showCashierTypeGroup">
                     <Select v-model="formData.cashierTypeGroup"
-                            transfer
                             style="width:280px"
                             transfer>
                         <Option v-for="item in cashierTypeGroupList"
@@ -65,7 +64,6 @@
                           prop="saleTypeGroup"
                           v-if="showSaleTypeGroup">
                     <Select v-model="formData.saleTypeGroup"
-                            transfer
                             style="width:280px"
                             transfer>
                         <Option v-for="item in saleTypeGroupList"
