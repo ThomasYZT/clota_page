@@ -2,22 +2,22 @@
 // 产品列表表头
 export const productColumn = [
     {
-        title: '产品名称',      // 产品名称
+        title: 'productName',      // 产品名称
         width: 200,
         field: 'productName'
     },
     {
-        title: '景区成本价',   // 景区成本价
+        title: 'standardPrice',   // 景区成本价
         minWidth: 90,
         field: 'standardPrice'
     },
     {
-        title: '产品单价',   // 产品单价
+        title: 'settlePrice',   // 产品单价
         minWidth: 90,
         field: 'settlePrice'
     },
     {
-        title: '限制库存',       // 限制库存
+        title: 'stockType',       // 限制库存
         width: 180,
         field: 'stockType'
     }
@@ -26,12 +26,12 @@ export const productColumn = [
 //销售渠道表头
 export const saleChannelColumn = [
     {
-        title: '选择销售渠道分组',      // 选择销售渠道分组
+        title: 'chooseSaleChannelGroup',      // 选择销售渠道分组
         width: 200,
         field: 'groupName'
     },
     {
-        title: '已选中的销售渠道',   // 已选中的销售渠道
+        title: 'selectedSaleChannel',   // 已选中的销售渠道
         minWidth: 300,
         field: 'groupchannels'
     }
@@ -55,12 +55,12 @@ export const marketingColumn = [
 //退票表头
 export const refundColumn = [
     {
-        title: '退票申请期限',      // 退票申请期限
+        title: 'returnDeadline',      // 退票申请期限
         width: 300,
         field: 'befPlayStart'
     },
     {
-        title: '退票手续费率',   // 退票手续费率
+        title: 'procedureRates',   // 退票手续费率
         minWidth: 100,
         field: 'procedureRates'
     }

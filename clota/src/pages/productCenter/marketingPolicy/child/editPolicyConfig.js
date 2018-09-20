@@ -2,23 +2,23 @@
 // 产品表头
 export const productColumn = [
     {
-        title: '产品名称',      // 产品名称
+        title: 'productName',      // 产品名称
         width: 160,
-        field: 'parkName'
+        field: 'productName'
     },
     {
-        title: '景区成本价',   // 景区成本价
+        title: 'standardPrice',   // 景区成本价
         minWidth: 150,
-        field: 'saleType'
+        field: 'standardPrice'
     },
     {
-        title: '产品单价',   // 产品单价
+        title: 'settlePrice',   // 产品单价
         minWidth: 130,
-        field: 'itemCheckTimes'
+        field: 'settlePrice'
     },    {
-        title: '限制库存',   // 限制库存
+        title: 'stockType',   // 限制库存
         minWidth: 130,
-        field: 'itemCheckTimes'
+        field: 'stockType'
     },
     {
         title: 'operate',       // 操作
@@ -30,14 +30,14 @@ export const productColumn = [
 // 销售渠道表头
 export const saleChannelColumn = [
     {
-        title: '销售渠道分组',      // 销售渠道分组
+        title: 'saleChannelGroup',      // 销售渠道分组
         width: 260,
-        field: 'parkName'
+        field: 'groupName'
     },
     {
-        title: '销售渠道',   // 销售渠道
+        title: 'saleChannels',   // 销售渠道
         minWidth: 400,
-        field: 'saleType'
+        field: 'groupchannels'
     },
 ];
 
@@ -63,17 +63,17 @@ export const marketingColumn = [
 //日期清单视图表头
 export const dateListColumn = [
     {
-        title: '年',      // 年
+        title: 'Year',      // 年
         width: 90,
         field: 'year'
     },
     {
-        title: '月',   // 月
+        title: 'Month',   // 月
         minWidth: 90,
         field: 'month'
     },
     {
-        title: '日',   // 日
+        title: 'Day',   // 日
         minWidth: 200,
         field: 'day'
     },
@@ -82,14 +82,14 @@ export const dateListColumn = [
 //退票表头
 export const refundColumn = [
     {
-        title: '退票申请期限',      // 退票申请期限
+        title: 'returnDeadline',      // 退票申请期限
         width: 300,
-        field: 'year'
+        field: 'befPlayStart'
     },
     {
-        title: '退票手续费率',   // 退票手续费率
+        title: 'procedureRates',   // 退票手续费率
         minWidth: 100,
-        field: 'month'
+        field: 'procedureRates'
     },
     {
         title: 'operate',       // 操作
@@ -101,14 +101,14 @@ export const refundColumn = [
 //分账表头
 export const subAccountColumn = [
     {
-        title: '园区',      // 退票申请期限
+        title: 'park',      // 园区
         width: 340,
-        field: 'year'
+        field: 'park'
     },
     {
-        title: '金额（元）',   // 退票手续费率
+        title: 'moneyUnit',   // 金额（元）
         minWidth: 300,
-        field: 'month'
+        field: 'money'
     },
 ];
 

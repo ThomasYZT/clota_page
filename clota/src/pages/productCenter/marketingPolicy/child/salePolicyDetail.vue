@@ -15,7 +15,7 @@
         <div class="container">
 
             <div class="title-wrap">
-                <span>{{$t('销售政策详情')}}</span>
+                <span>{{$t('marketingPolicyDetail')}}</span>
             </div>
 
             <!--表单信息-->
@@ -25,24 +25,24 @@
                 <div class="form-content">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('销售政策名称')+'：'"><!--销售政策名称-->
+                            <Form-item :label="$t('salePolicyName')+'：'"><!--销售政策名称-->
                                 <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('描述')+'：'"><!--描述-->
+                            <Form-item :label="$t('desc')+'：'"><!--描述-->
                                 <div v-w-title="detail.productPolicy.policyDesc">{{detail.productPolicy.policyDesc | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('政策可售期')+'：'"><!--政策可售期-->
+                            <Form-item :label="$t('policyValidity')+'：'"><!--政策可售期-->
                                 <div v-w-title="$t(detail.productPolicy.saleRuleModel.type)">{{$t(detail.productPolicy.saleRuleModel.type) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('提前天数（M）')+'：'"><!--提前天数（M）-->
+                            <Form-item :label="$t('aheadDays')+'：'"><!--提前天数（M）-->
                                 <div>
                                     {{detail.productPolicy.saleRuleModel.beforeDay | contentFilter}} {{$t('To')}} {{detail.productPolicy.saleRuleModel.afterDay | contentFilter}}
                                 </div>
@@ -51,14 +51,14 @@
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('每日可售时间')+'：'"><!--每日可售时间-->
+                            <Form-item :label="$t('saleDayTime')+'：'"><!--每日可售时间-->
                                 <div>
                                     {{detail.productPolicy.saleStartTime | contentFilter}} ~ {{detail.productPolicy.saleEndTime | contentFilter}}
                                 </div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('当日票可售时间')+'：'"><!--当日票可售时间-->
+                            <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
                                 <div>
                                     {{detail.productPolicy.todaySaleStartTime | contentFilter}} ~ {{detail.productPolicy.todaySaleEndTime | contentFilter}}
                                 </div>
@@ -70,36 +70,36 @@
                 <div class="form-content">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('游玩期限')+'：'"><!--游玩期限-->
+                            <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
                                 <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">{{$t(detail.productPolicy.playRuleModel.type) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('指定起止日期')+'：'"><!--指定起止日期-->
+                            <Form-item :label="$t('specifiedTime')+'：'"><!--指定起止日期-->
                                 <div>{{detail.productPolicy.playRuleModel.specifiedTime | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('每周可玩日期')+'：'"><!--每周可玩日期-->
+                            <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
                                 <div v-w-title="detail.productPolicy.playRuleModel.weekSold">{{detail.productPolicy.playRuleModel.weekSold | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('入园时间控制')+'：'"><!--入园时间控制-->
+                            <Form-item :label="$t('checkinTime')+'：'"><!--入园时间控制-->
                                 <div>{{detail.productPolicy.checkinTime | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('下单后延迟生效')+'：'"><!--下单后延迟生效-->
+                            <Form-item :label="$t('delayValidTime')+'：'"><!--下单后延迟生效-->
                                 <div>{{detail.productPolicy.delayValidTime | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('当日票可售时间')+'：'"><!--当日票可售时间-->
+                            <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
                                 <div>
                                     {{detail.productPolicy.todaySaleStartTime | contentFilter}} ~ {{detail.productPolicy.todaySaleEndTime | contentFilter}}
                                 </div>
@@ -110,7 +110,7 @@
 
                 <!--产品列表-->
                 <div class="form-content" :style="{height: detail.policyItems.length > 0 ? (detail.policyItems.length + 1) * 50 + 80+'px' : '280px'}">
-                    <Form-item :label="$t('产品列表')+'：'"><!--产品列表-->
+                    <Form-item :label="$t('productList')+'：'"><!--产品列表-->
                         <div>
                             <table-com
                                 :table-com-min-height="260"
@@ -135,7 +135,7 @@
 
                 <!--销售渠道-->
                 <div class="form-content line" :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
-                    <Form-item :label="$t('销售渠道')+'：'"><!--销售渠道-->
+                    <Form-item :label="$t('saleChannels')+'：'"><!--销售渠道-->
                         <div>
                             <table-com
                                 :table-com-min-height="260"
@@ -149,7 +149,7 @@
 
                 <!--全民营销 暂时隐藏-->
                 <!--<div class="form-content line" :style="{height: (detail.productList.length + 1) * 50 + 80+'px'}">
-                    <Form-item :label="$t('全民营销')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
+                    <Form-item :label="$t('allPeopleMarket')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
                         <div>
                             <table-com
                                 :ofsetHeight="755"
@@ -165,9 +165,9 @@
 
                 <!--退改规则-->
                 <div class="form-content" :style="{height: (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px'}">
-                    <Form-item :label="$t('退改规则')+'：'"><!--退改规则-->
+                    <Form-item :label="$t('returnAndAlterRule')+'：'"><!--退改规则-->
                         <div>
-                            <span>{{$t(detail.productPolicy.returnRuleModel.type) | contentFilter}}</span>
+                            <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
                             <table-com
                                 :ofsetHeight="755"
                                 :table-com-min-height="260"
@@ -182,9 +182,9 @@
                                    :min-width="row.minWidth"
                                    show-overflow-tooltip>
                                    <template slot-scope="scope">
-                                       {{$t('游玩日期')}}{{scope.row.befPlayStart == '0' ? '当' : '前'+scope.row.befPlayStart}}{{$t('天')}}
+                                       {{$t('playDate')}}{{scope.row.befPlayStart == '0' ? $t('when') : $t('before')+scope.row.befPlayStart}}{{$t('day')}}
                                        <span> ~ </span>
-                                       {{$t('游玩日期')}}{{scope.row.befPlayStart == '0' ? '当' : '前'+scope.row.befPlayEnd}}{{$t('天')}}
+                                       {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
                                     </template>
                                </el-table-column>
                             </table-com>
@@ -196,13 +196,13 @@
                 <div class="form-content line">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('改签规则')+'：'"><!--改签规则-->
-                                <div v-w-title="$t(detail.productPolicy.alterRuleModel.type)">{{$t(detail.productPolicy.alterRuleModel.type) | contentFilter}}</div>
+                            <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
+                                <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('最晚改签日期')+'：'"><!--最晚改签日期-->
-                                <div>{{$t('游玩日期前10天可改签次数1次',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
+                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                                <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -268,8 +268,6 @@
         },
         data () {
             return {
-                //type add/modify
-                type: 'add',
                 //面包屑上级路由信息
                 beforeRouterList: [
                     {
@@ -437,7 +435,6 @@
                         "updatedTime":"2018-09-14 17:03:09"
                     },
                 },
-
                 //产品列表表头
                 productColumn: productColumn,
                 //销售渠道表头
@@ -448,7 +445,6 @@
                 refundColumn: refundColumn,
                 //备注
                 remark: '',
-
             }
         },
         methods: {

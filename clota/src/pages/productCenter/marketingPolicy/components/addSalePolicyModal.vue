@@ -16,7 +16,7 @@
                   label-position="top">
                 <i-row>
                     <i-col span="22">
-                        <Form-item :label="$t('industry') + '：'" prop="industry"><!--业态-->
+                        <Form-item :label="$t('industry') + '：'" prop="productType"><!--业态-->
                             <Select v-model="formData.productType"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in list"
@@ -59,7 +59,7 @@
                 },
                 // 表单校验
                 ruleValidate: {
-                    industry: [
+                    productType: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('industry')}), trigger: 'change' },   // 业态不能为空
                     ],
                 }
