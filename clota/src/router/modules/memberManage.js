@@ -13,7 +13,7 @@ let topMenuName = 'memberHome';
 export default {
     memberMange: {
         path: '/memberManage',
-        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/index.vue'),
+        component: () => import(/* webpackChunkName: "memberManageInit" */ '../../pages/memberManage/index.vue'),
         meta: {
             _name: 'members',
             menuName: 'memberHome',
@@ -25,7 +25,7 @@ export default {
                 //会员管理--会员主页
                 path: '/memberManage/home',
                 name: 'memberHome',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/home/home.vue'),
+                component: () => import(/* webpackChunkName: "memberManageInit" */ '../../pages/memberManage/home/home.vue'),
                 meta: {
                     menuName: 'memberHome', //lang.config.js 里面的语言键值
                     _name: 'members-index',
@@ -145,6 +145,17 @@ export default {
                         path: '/memberManage/rate',
                         name: 'infoRate',
                         component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/rate.vue'),
+                        meta: {
+                            menuName: 'memberInfo', //lang.config.js 里面的语言键值
+                            _name: 'members-detail',
+                            rightPath : topMenuName + '.' + 'memberInfo'
+                        },
+                    },
+                    myOrder: {
+                        //会员管理--会员信息--我的订单
+                        path: '/memberManage/order',
+                        name: 'myOrder',
+                        component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/orders.vue'),
                         meta: {
                             menuName: 'memberInfo', //lang.config.js 里面的语言键值
                             _name: 'members-detail',
@@ -386,7 +397,7 @@ export default {
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/cardScope.vue'),
                         meta: {
                             menuName: 'cardScopeSetting', //lang.config.js 里面的语言键值
-                            _name: 'channel-setting',
+                            _name: 'basic-setting',
                             rightPath : topMenuName + '.' + 'cardScopeSetting',
                             isMenu : true
                         },
@@ -462,6 +473,17 @@ export default {
                             _name: 'point-manage',
                             rightPath : topMenuName + '.' + 'productTypeSetting',
                             isMenu : true
+                        },
+                    },
+                    paymentProtocol: {
+                        //会员管理--基础设置--支付协议设置
+                        path: '/memberManage/paymentProtocol',
+                        name: 'paymentProtocol',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/paymentProtocol.vue'),
+                        meta: {
+                            menuName: 'entityCard', //lang.config.js 里面的语言键值
+                            _name: 'basic-setting',
+                            rightPath : topMenuName + '.' + 'memberSetting'
                         },
                     },
                 }

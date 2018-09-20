@@ -116,6 +116,8 @@ export default {
     'resolverEntityCard' : '/member/entityCard/resolverEntityCard',
     //将解析后的数据导入
     'batchSaveEntityCards' : '/member/entityCard/batchSaveEntityCards',
+    //获取包含根节点在内的组织树
+    'getRootOrgTree' : '/organize/getRootOrgTree',
 
     //渠道设置-会员渠道-查询
     'queryChannelSet' : '/member/channelSet/queryChannelSet',

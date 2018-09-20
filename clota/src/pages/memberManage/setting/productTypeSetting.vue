@@ -155,7 +155,7 @@
         @include block_outline();
 
         .content {
-            height: calc(100% - 70px);
+            height: calc(100% - 126px);
             overflow: auto;
             padding: 0 30px;
 

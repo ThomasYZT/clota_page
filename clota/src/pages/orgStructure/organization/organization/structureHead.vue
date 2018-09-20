@@ -196,7 +196,8 @@
                         style : {
                             paddingRight : '5px',
                             color : '#EB6751',
-                            fontSize : '16px'
+                            fontSize : '14px',
+                            marginTop : '10px'
                         },
                         on: {
                             click: (e) => {

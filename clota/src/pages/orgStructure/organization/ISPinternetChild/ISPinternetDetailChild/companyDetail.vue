@@ -367,7 +367,7 @@
         </employee-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
-            <div style="padding: 0 20px;word-break: break-all">
+            <div style="padding: 0 20px;word-break: break-all;width: 100%;">
                 您正在重置管理员{{companyDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
                 {{companyDetail.email}}
             </div>
@@ -420,7 +420,7 @@
                     if(validator.isEmail(value)){
                         callback();
                     }else{
-                        callback(this.$t('formalError',{field : this.$t('email')}));
+                        callback(this.$t('errorFormat',{field : this.$t('email')}));
                     }
                 }else{
                     callback(this.$t('inputField',{field : this.$t('email')}));
@@ -521,6 +521,7 @@
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                             managerId : this.formDataCopy.managerId,
+                            nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');

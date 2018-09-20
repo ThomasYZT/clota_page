@@ -199,7 +199,6 @@
              * @param checkedKeys
              */
             treeCheck (data,{checkedNodes,checkedKeys}) {
-                console.log(arguments)
                 // debugger
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];

@@ -22,7 +22,7 @@
                 </span>
             </div>
 
-            <div :class="{'form-area' : type === 'edit'}">
+            <div :class="{'form-area' : type === 'edit'}" style="clear: both">
                 <i-row>
                     <i-col span="12">
                         <FormItem label="款台名称："
@@ -115,11 +115,11 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem label="所属核销设备分组："
-                                  v-if="type === 'edit'"
-                                  :required="formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine'"
+                                  v-if="type === 'edit' && (formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine')"
                                   prop="checkGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkGroupId"
+                                    :clearable="true"
                                     :disabled="formDataCopy.checkerType === 'sale'">
                                 <Option v-for="item in verifyCashierTypeGroupList"
                                         :value="item.id"
@@ -130,21 +130,21 @@
                                 </Option>
                             </Select>
                         </FormItem>
-                        <div class="node-info" v-else>
+                        <div class="node-info" v-if="type !== 'edit' && (cashierDetail.checkerType === 'check' || cashierDetail.checkerType === 'combine')">
                             <span class="info-key">所属核销设备分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.checkGroupName">
-                                {{cashierDetail.checkGroupName | contentFilter}}
+                                {{cashierDetail.checkGroupName ? cashierDetail.checkGroupName : '未分组'}}
                             </span>
                         </div>
                     </i-col>
                     <i-col span="12">
                         <FormItem label="所属销售渠道分组："
-                                  v-if="type === 'edit'"
-                                  :required="formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine'"
+                                  v-if="type === 'edit' && (formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine')"
                                   prop="saleGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.saleGroupId"
+                                    :clearable="true"
                                     :disabled="formDataCopy.checkerType === 'check'">
                                 <Option v-for="item in verifySaleTypeGroupList"
                                         :value="item.id"
@@ -155,11 +155,12 @@
                                 </Option>
                             </Select>
                         </FormItem>
-                        <div class="node-info" v-else>
+                        <div class="node-info"
+                             v-if="type !== 'edit' && (cashierDetail.checkerType === 'sale' || cashierDetail.checkerType === 'combine')">
                             <span class="info-key">所属销售渠道分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.saleGroupName">
-                                {{cashierDetail.saleGroupName | contentFilter}}
+                                {{cashierDetail.saleGroupName ? cashierDetail.saleGroupName : '未分组'}}
                             </span>
                         </div>
                     </i-col>
@@ -218,23 +219,23 @@
                     callback(this.$t('inputField',{field : this.$t('serverName')}));
                 }
             };
-            //校验是否为空
-            const validateNotEmpty = (rule,value,callback) => {
-                //款台类型为核销款台，所属核销设备分组不是必填项
-                //款台类型为销售款台，所属销售设备分组不是必填项
-                if(rule._field === 'cashierTypeGroup' && this.formDataCopy.checkerType === 'sale'){
-                    callback();
-                }else if(rule._field === 'saleTypeGroup' && this.formDataCopy.checkerType === 'check'){
-                    callback();
-                }else{
-                    if(common.isNotEmpty(value)){
-                        callback();
-                    }else{
-                        // callback();
-                        callback(this.$t('selectField',{msg : this.$t(rule._field)}));
-                    }
-                }
-            };
+            // //校验是否为空
+            // const validateNotEmpty = (rule,value,callback) => {
+            //     //款台类型为核销款台，所属核销设备分组不是必填项
+            //     //款台类型为销售款台，所属销售设备分组不是必填项
+            //     if(rule._field === 'cashierTypeGroup' && this.formDataCopy.checkerType === 'sale'){
+            //         callback();
+            //     }else if(rule._field === 'saleTypeGroup' && this.formDataCopy.checkerType === 'check'){
+            //         callback();
+            //     }else{
+            //         if(common.isNotEmpty(value)){
+            //             callback();
+            //         }else{
+            //             // callback();
+            //             callback(this.$t('selectField',{msg : this.$t(rule._field)}));
+            //         }
+            //     }
+            // };
             return {
                 //表单数据
                 formDataCopy : {},
@@ -271,12 +272,12 @@
                         {required : true,message : this.$t('inputField',{field : this.$t('serverName')}),trigger : 'blur'},
                         {validator : validateServerUrl,trigger : 'blur'}
                     ],
-                    checkGroupId : [
-                        {validator : validateNotEmpty,trigger : 'change',_field : 'cashierTypeGroup'}
-                    ],
-                    saleGroupId : [
-                        {validator : validateNotEmpty,trigger : 'change',_field : 'saleTypeGroup'}
-                    ]
+                    // checkGroupId : [
+                    //     {validator : validateNotEmpty,trigger : 'change',_field : 'cashierTypeGroup'}
+                    // ],
+                    // saleGroupId : [
+                    //     {validator : validateNotEmpty,trigger : 'change',_field : 'saleTypeGroup'}
+                    // ]
                 }
             }
         },
@@ -361,8 +362,9 @@
                     partnerId : this.formDataCopy.partnerId,
                     channelName : this.formDataCopy.channelName,
                     serverUrl : this.formDataCopy.serverUrl,
-                    checkGroupId : this.formDataCopy.checkGroupId,
-                    saleGroupId : this.formDataCopy.saleGroupId,
+                    checkGroupId : this.formDataCopy.checkGroupId ? this.formDataCopy.checkGroupId : 0,
+                    saleGroupId : this.formDataCopy.saleGroupId ? this.formDataCopy.saleGroupId : 0,
+                    nodeType : 'table'
                 }).then(res => {
                    if(res.success){
                        this.$Message.success('修改成功');

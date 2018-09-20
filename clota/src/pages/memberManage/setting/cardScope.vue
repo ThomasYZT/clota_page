@@ -109,7 +109,7 @@
              * 获取组织树列表
              */
             getOrgTree () {
-                ajax.post('getOrgTree',{
+                ajax.post('getRootOrgTree',{
                     showScene : 'manage',
                     manageType : 'manage',
                 }).then(res =>{
@@ -166,7 +166,7 @@
              * 保存设置
              */
             saveSetting () {
-                let companyIds = this.$refs.tree.getCheckedKeys();
+                let companyIds = this.$refs.tree ? this.$refs.tree.getCheckedKeys() : [];
                 ajax.post('basicSet',{
                     channelIds : this.channelSelected.map(item => item.id).join(','),
                     parkIds : companyIds.join(','),

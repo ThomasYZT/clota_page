@@ -366,7 +366,7 @@
 
                 ajax.post("addOrUpdateEmployee", this.employee).then(function (res) {
                     if(res.success){
-                        self.$Message.success(self.$t('新增员工成功！'));
+                        self.$Message.success(self.isEdit ? self.$t('编辑员工成功！') : self.$t('新增员工成功！'));
                         self.$router.push({name: 'employee'});
                     }else{
                         self.$Message.warning( res.data.message ? res.data.message : '网络错误，请稍后重试' );
@@ -395,6 +395,8 @@
                         this.employee = Object.assign(this.employee, res.data || {});
                         this.rolePrivileges = map(this.employee.roles, 'id');   // 角色权限列表
                         this.$set(this.employee, 'roleIds', this.rolePrivileges.join(','));
+                        this.roleNames = map(this.employee.roles || [], 'roleName').join(',');
+
                         this.oldPwd = this.employee.password;
                     }
                 })
@@ -571,6 +573,9 @@
                 .part-1 {
                     width: 62%;
                     border-right: 1px dashed $color_E1E1E1;
+                    .part-author {
+                        cursor: pointer;
+                    }
                 }
                 .part-2 {
                     width: 38%;
@@ -588,7 +593,6 @@
                 }
                 .part-author {
                     padding: 7px 15px;
-                    cursor: pointer;
                     &:hover {
                         background-color: $color_F5F7FA;
                     }
@@ -602,6 +606,12 @@
 
             .select-group-item {
                 padding: 4px;
+                .value {
+                    display: inline-block;
+                    max-width: 200px;
+                    vertical-align: middle;
+                }
+
                 &:hover {
                     background-color: #fafafa;
                 }

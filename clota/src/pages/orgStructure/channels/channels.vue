@@ -114,10 +114,18 @@
             </table-com>
         </div>
         <add-self-support ref="addSelfSupport" @on-add-success="queryList"></add-self-support>
-        <delete-list ref="delListModal"
+        <!--<delete-list ref="delListModal"
                      @deletions="handleDeletions"
                      :deleteName="deleteName"
-                     :name="name"></delete-list>
+                     :name="name"></delete-list>-->
+        <del-modal ref="delListModal">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
+                <span class="yellow-label" v-w-title="name">{{name}}</span>
+                <span style="color: #333;" v-if="rowIds.length>1">等{{rowIds.length}}个渠道</span>
+            </span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span><!--本操作不可撤销，是否确认删除？-->
+        </del-modal>
     </div>
 </template>
 
@@ -128,7 +136,7 @@
     // 新增自营渠道弹窗
     import addSelfSupport from '../model/addSelfSupport.vue';
     // 删除自营渠道弹窗
-    import deleteList from '../model/deleteList.vue';
+    import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index';
     import {saleChannelHead} from '../orgStructure';
     import tableCom from '@/components/tableCom/tableCom.vue';
@@ -139,7 +147,7 @@
         components: {
             filterDrop,
             addSelfSupport,
-            deleteList,
+            delModal,
             tableCom
         },
         data() {
@@ -265,17 +273,19 @@
              */
             showDelModal(data, isBatch) {
                 if (isBatch==true) {
-                    let channelNames = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
-
-                    this.name = `${channelNames}<span style="color: #333;">等${data.length}个渠道</span>`;
-                    this.$refs.delListModal.show();
+                    this.rowIds = data.map(item => item.id);
+                    this.name = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
                 } else {
                     this.rowIds = [data.id];
                     this.name = data.channelName;
-                    if (data.type=='online') {
-                        this.$refs.delListModal.show();
-                    }
                 }
+
+                this.$refs.delListModal.show({
+                    title : this.$t(this.deleteName),
+                    confirmCallback : () => {
+                        this.handleDeletions();
+                    }
+                });
 
             },
             //确认删除
@@ -409,5 +419,29 @@
 
     .el-dropdown-menu {
         width: 88px;
+    }
+
+    .content-text {
+        width: 210px;
+        position: relative;
+
+        .delete-icon {
+            position: absolute;
+            left: -27px;
+            margin-right: 12px;
+            color: $color_red;
+        }
+
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
+    }
+
+    .red-label {
+        color: $color_red;
     }
 </style>

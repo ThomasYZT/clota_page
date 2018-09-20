@@ -18,7 +18,7 @@
             <basic-form ref="basicForm" :employee-info="employeeData"></basic-form>
 
             <div class="content-footer">
-                <i-button type="primary" :loading="loading" @click="confirmModify">确定新增</i-button>
+                <i-button type="primary" :loading="loading" @click="confirmModify">{{type=='add' ? $t('confirmAdd') : $t('confirm')}}</i-button>
                 <router-link :to="{name: 'employee'}">
                     <i-button type="ghost">{{$t('cancel')}}</i-button>
                 </router-link>
@@ -42,11 +42,6 @@
         mixins: [lifeCycleMixins],
         data() {
             return {
-                // 表单数据
-                formData: [{
-                    date: '2016-05-03',
-                }],
-
                 // 面包屑上级路由信息
                 beforeRouterList: [
                     {
