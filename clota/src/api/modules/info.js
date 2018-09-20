@@ -45,6 +45,8 @@ export default {
     'listMemberCardRate' : '/members/listMemberCardRate',
     //充值时获取实际所得到的金额
     'getRechargeActMoney' : '/member/memberAccount/getRechargeActMoney',
+    //充值时获取实际所得到的金额
+    'getCardPackage' : '/member/getCardPackage',
 
 
     /***********************************会员积分***********************************/

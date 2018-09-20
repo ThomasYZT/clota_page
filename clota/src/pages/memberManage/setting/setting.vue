@@ -792,8 +792,7 @@
             toSetPayProtocol () {
                 this.$router.push({
                     name: 'paymentProtocol',
-                    query: {basicId: this.id},
-                    params: {protocol: this.paymentAgreement}
+                    params: {paymentAgreement: this.paymentAgreement, id: this.id}
                 });
             }
 

@@ -103,3 +103,27 @@ export const orderListHead = [
         field: ''
     },
 ];
+
+// 我的订单列表表头
+export const cardOwnerHead = [
+    {
+        title: '成员序号',       // 成员序号
+        field: 'no'
+    },
+    {
+        title: 'name',       // 姓名
+        field: 'name'
+    },
+    {
+        title: '身份证号',       // 身份证号
+        field: 'idno'
+    },
+    {
+        title: 'mobilePhone',       // 手机号
+        field: 'phone'
+    },
+    {
+        title: 'gender',       // 性别
+        field: 'gender'
+    },
+];
