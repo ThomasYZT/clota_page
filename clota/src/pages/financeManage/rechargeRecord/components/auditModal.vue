@@ -10,7 +10,7 @@
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate" :model="formData"  :label-width="130">
                 <!--付款方-->
                 <Form-item :label="$t('付款方') + '：'" prop="">
                     <span>{{formData.peerOrgName}}</span>
@@ -62,11 +62,6 @@
                 visible: false,
                 //表单数据
                 formData: {},
-                //校验规则
-                ruleValidate: {
-
-                },
-
             }
         },
         watch: {
@@ -78,15 +73,6 @@
                     this.formData = defaultsDeep(this.formData, data.item);
                 }
                 this.visible = true;
-            },
-
-            //表单校验
-            formValidateFunc () {
-                this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-
-                    }
-                })
             },
 
             //关闭模态框
@@ -122,29 +108,27 @@
                     remark: this.formData.remark
                 }).then(res => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('operate')}));
                         this.hide();
                         this.$emit('update-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('operate')}));
                     }
                 })
             },
 
             //审核通过
             passAudit(params) {
-                console.log(params)
                 ajax.post('passRecharge', {
                     rechargeId: params.id,
                     remark: this.formData.remark
                 }).then(res => {
-                    console.log(res)
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('operate')}));
                         this.hide();
                         this.$emit('update-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('operate')}));
                     }
                 })
             }

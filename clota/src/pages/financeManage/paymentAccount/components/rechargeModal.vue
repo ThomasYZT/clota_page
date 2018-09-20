@@ -56,7 +56,6 @@
         components: {
         },
         data () {
-            let self = this;
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
@@ -87,20 +86,10 @@
         methods: {
 
             show ( data ) {
-                console.log(data)
                 if( data ){
                     this.formData = defaultsDeep(this.formData, data.item );
                 }
                 this.visible = true;
-            },
-
-            //表单校验
-            formValidateFunc () {
-                this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-
-                    }
-                })
             },
 
             //关闭模态框
@@ -118,7 +107,11 @@
 
             // 确定
             confirm () {
-                this.confirmRecharge(this.formData);
+                this.$refs.formValidate.validate((valid) => {
+                    if(valid){
+                        this.confirmRecharge(this.formData);
+                    }
+                })
             },
 
             // 确认充值

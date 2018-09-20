@@ -15,7 +15,7 @@
                    @on-click="handleSearch" />
         </div>
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="120"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -125,16 +125,14 @@
              **/
             queryList() {
                 ajax.post('queryPayAccounts', this.queryParams).then((res) => {
-                    console.log(res.data.data)
-                    if (res.data && res.data.data) {
-                        this.tableData = res.data.data;
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
-                this.totalCount = this.tableData.length;
             },
 
             // 搜索信息

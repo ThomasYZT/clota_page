@@ -15,7 +15,7 @@
                    @on-click="handleSearch" />
         </div>
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="120"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -133,7 +133,6 @@
                         this.totalCount = 0;
                     }
                 });
-                this.totalCount = this.tableData.length;
             },
 
             // 搜索信息

@@ -15,7 +15,7 @@
                    @on-click="handleSearch" />
         </div>
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="120"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -51,7 +51,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.status=='rejected'">{{$t('-')}}
+                    <span v-if="scope.row.status=='rejected'">{{'-'}}
                     </span>
                     <span v-else-if="scope.row.status=='valid'">{{'-'}}
                     </span>
@@ -114,14 +114,13 @@
             queryList() {
                 ajax.post('queryRechargeList', this.queryParams).then((res) => {
                     if (res.data && res.data.data) {
-                        this.tableData = res.data.data;
+                        this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
-                this.totalCount = this.tableData.length;
             },
 
             /**
