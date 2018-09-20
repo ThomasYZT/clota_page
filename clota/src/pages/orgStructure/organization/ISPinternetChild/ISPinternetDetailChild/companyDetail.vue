@@ -367,7 +367,7 @@
         </employee-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
-            <div style="padding: 0 20px;word-break: break-all">
+            <div style="padding: 0 20px;word-break: break-all;width: 100%;">
                 您正在重置管理员{{companyDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
                 {{companyDetail.email}}
             </div>
