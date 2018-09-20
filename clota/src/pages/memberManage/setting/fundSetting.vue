@@ -483,7 +483,7 @@
                                     priorityDeductionInConsumption : res.data.priorityDeductionInConsumption
                                 };
                                 for( let key in params){
-                                    if(key && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0){
+                                    if(key && params[key] && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0){
                                         for( let ckey in params[key]){
                                             if(this.stringProps.indexOf(ckey) > -1){
                                                 params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
