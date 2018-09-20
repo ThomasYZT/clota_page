@@ -134,7 +134,7 @@
                             <span class="info-key">所属核销设备分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.checkGroupName">
-                                {{cashierDetail.checkGroupName | contentFilter}}
+                                {{cashierDetail.checkGroupName ? cashierDetail.checkGroupName : '未分组'}}
                             </span>
                         </div>
                     </i-col>
@@ -160,7 +160,7 @@
                             <span class="info-key">所属销售渠道分组：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.saleGroupName">
-                                {{cashierDetail.saleGroupName | contentFilter}}
+                                {{cashierDetail.saleGroupName ? cashierDetail.saleGroupName : '未分组'}}
                             </span>
                         </div>
                     </i-col>
@@ -362,8 +362,8 @@
                     partnerId : this.formDataCopy.partnerId,
                     channelName : this.formDataCopy.channelName,
                     serverUrl : this.formDataCopy.serverUrl,
-                    checkGroupId : this.formDataCopy.checkGroupId,
-                    saleGroupId : this.formDataCopy.saleGroupId,
+                    checkGroupId : this.formDataCopy.checkGroupId ? this.formDataCopy.checkGroupId : 0,
+                    saleGroupId : this.formDataCopy.saleGroupId ? this.formDataCopy.saleGroupId : 0,
                     nodeType : 'table'
                 }).then(res => {
                    if(res.success){
