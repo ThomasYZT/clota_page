@@ -344,6 +344,8 @@
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
+                // 支付协议内容
+                paymentAgreement: '',
                 //动态表单数据
                 reasonIndex: 1,
                 idTypeIndex: 1,
@@ -465,6 +467,7 @@
                     if( res.success){
                         if(res.data){
                             this.id = res.data.id;
+                            this.paymentAgreement = res.data.paymentAgreement;
                             if(res.data.allowAdjustAccount){
                                 //处理数据
                                 let params = {
@@ -485,7 +488,6 @@
                                         }
                                     }
                                 }
-                                console.log(params)
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -788,7 +790,11 @@
              * 跳转到支付协议设置
              */
             toSetPayProtocol () {
-
+                this.$router.push({
+                    name: 'paymentProtocol',
+                    query: {basicId: this.id},
+                    params: {protocol: this.paymentAgreement}
+                });
             }
 
         },
