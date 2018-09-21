@@ -107,6 +107,7 @@ let webpackConfig = smp.wrap({
             entry: {
                 vueFamily: ['vue', 'vue-router','vuex','vue-i18n'],
                 plugins: [
+                    'vux',
                     'echarts/lib/echarts',
                     'core-js',
                     'axios',
@@ -114,7 +115,6 @@ let webpackConfig = smp.wrap({
                     'echarts/lib/chart/line',
                     'echarts/lib/component/tooltip',
                     'echarts/lib/component/legend',
-                    '../../utils/vux/components/x-input/index.min',
                 ]
             },
             plugins: [

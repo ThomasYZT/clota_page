@@ -6,7 +6,10 @@
 import {
     XInput,
     Group,
-    XButton
+    XButton,
+    PopupPicker,
+    Swiper,
+    SwiperItem,
 } from 'vux';
 
 
@@ -28,7 +31,9 @@ plugin.install = function (Vue, options) {
     Vue.component( 'XInput', XInput);
     Vue.component( 'Group', Group);
     Vue.component( 'XButton', XButton);
-
+    Vue.component( 'popup-picker', PopupPicker);
+    Vue.component('swiper', Swiper);
+    Vue.component('swiper-item', SwiperItem);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);

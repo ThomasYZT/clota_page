@@ -59,7 +59,7 @@ const createRouter = () => new Router({
             // }
         },
         {
-            path: '/mobile/login',
+            path: '/login',
             name: 'mobileLogin',
             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
             meta: {
@@ -67,12 +67,17 @@ const createRouter = () => new Router({
             }
         },
         {
-            path: '/mobile/register',
+            path: '/register',
             name: 'mobileRegister',
             component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
             meta: {
                 noFrame: true
             }
+        },
+        {
+            path : '/account',
+            name : 'account',
+            component : () => import(/* webpackChunkName: "account" */'../pages/account/index.vue'),
         }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
