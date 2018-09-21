@@ -65,7 +65,6 @@ export default new Vuex.Store({
         },
         //更新随机数
         updateHashKey (state) {
-            console.log('hash')
             state.hashKey = Math.random();
         }
     },
