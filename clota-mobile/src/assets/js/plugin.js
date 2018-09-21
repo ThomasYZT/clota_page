@@ -11,7 +11,6 @@ import {
     Swiper,
     SwiperItem,
     Radio,
-    XButton,
     Cell
 } from 'vux';
 
