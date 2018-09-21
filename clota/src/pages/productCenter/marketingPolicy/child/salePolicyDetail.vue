@@ -15,8 +15,7 @@
         <div class="container">
 
             <div class="title-wrap">
-                <span>{{$t('销售政策详情')}}</span>
-                <!--<span class="blue-span" @click="showDetailModal">{{$t('viewDetail')}}</span>-->
+                <span>{{$t('marketingPolicyDetail')}}</span>
             </div>
 
             <!--表单信息-->
@@ -26,37 +25,43 @@
                 <div class="form-content">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('销售政策名称')+'：'"><!--销售政策名称-->
+                            <Form-item :label="$t('salePolicyName')+'：'"><!--销售政策名称-->
                                 <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('描述')+'：'"><!--描述-->
+                            <Form-item :label="$t('desc')+'：'"><!--描述-->
                                 <div v-w-title="detail.productPolicy.policyDesc">{{detail.productPolicy.policyDesc | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('政策可售期')+'：'"><!--政策可售期-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            <Form-item :label="$t('policyValidity')+'：'"><!--政策可售期-->
+                                <div v-w-title="$t(detail.productPolicy.saleRuleModel.type)">{{$t(detail.productPolicy.saleRuleModel.type) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('提前天数（M）')+'：'"><!--提前天数（M）-->
-                                <div>{{detail.describe | contentFilter}}</div>
+                            <Form-item :label="$t('aheadDays')+'：'"><!--提前天数（M）-->
+                                <div>
+                                    {{detail.productPolicy.saleRuleModel.beforeDay | contentFilter}} {{$t('To')}} {{detail.productPolicy.saleRuleModel.afterDay | contentFilter}}
+                                </div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('每日可售时间')+'：'"><!--每日可售时间-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            <Form-item :label="$t('saleDayTime')+'：'"><!--每日可售时间-->
+                                <div>
+                                    {{detail.productPolicy.saleStartTime | contentFilter}} ~ {{detail.productPolicy.saleEndTime | contentFilter}}
+                                </div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('当日票可售时间')+'：'"><!--当日票可售时间-->
-                                <div>{{detail.describe | contentFilter}}</div>
+                            <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
+                                <div>
+                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}} ~ {{detail.productPolicy.todaySaleEndTime | contentFilter}}
+                                </div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -65,63 +70,74 @@
                 <div class="form-content">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('游玩期限')+'：'"><!--游玩期限-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
+                                <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">{{$t(detail.productPolicy.playRuleModel.type) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('指定起止日期')+'：'"><!--指定起止日期-->
-                                <div>{{detail.describe | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('每周可玩日期')+'：'"><!--每周可玩日期-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('入园时间控制')+'：'"><!--入园时间控制-->
-                                <div>{{detail.describe | contentFilter}}</div>
+                            <Form-item :label="$t('specifiedTime')+'：'"><!--指定起止日期-->
+                                <div>{{detail.productPolicy.playRuleModel.specifiedTime | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('下单后延迟生效')+'：'"><!--下单后延迟生效-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
+                                <div v-w-title="detail.productPolicy.playRuleModel.weekSold">{{detail.productPolicy.playRuleModel.weekSold | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('当日票可售时间')+'：'"><!--当日票可售时间-->
-                                <div>{{detail.describe | contentFilter}}</div>
+                            <Form-item :label="$t('checkinTime')+'：'"><!--入园时间控制-->
+                                <div>{{detail.productPolicy.checkinTime | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('delayValidTime')+'：'"><!--下单后延迟生效-->
+                                <div>{{detail.productPolicy.delayValidTime | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
+                                <div>
+                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}} ~ {{detail.productPolicy.todaySaleEndTime | contentFilter}}
+                                </div>
                             </Form-item>
                         </i-col>
                     </i-row>
                 </div>
 
+                <!--产品列表-->
                 <div class="form-content" :style="{height: detail.policyItems.length > 0 ? (detail.policyItems.length + 1) * 50 + 80+'px' : '280px'}">
-                    <Form-item :label="$t('产品列表')+'：'"><!--产品列表-->
+                    <Form-item :label="$t('productList')+'：'"><!--产品列表-->
                         <div>
                             <table-com
-                                :ofsetHeight="755"
-                                :show-pagination="true"
                                 :table-com-min-height="260"
                                 :column-data="productColumn"
                                 :table-data="detail.policyItems"
                                 :border="false">
+                                <el-table-column
+                                    slot="column3"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </div>
                     </Form-item>
                 </div>
 
+                <!--销售渠道-->
                 <div class="form-content line" :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
-                    <Form-item :label="$t('销售渠道')+'：'"><!--销售渠道-->
+                    <Form-item :label="$t('saleChannels')+'：'"><!--销售渠道-->
                         <div>
                             <table-com
-                                :ofsetHeight="755"
-                                :show-pagination="true"
                                 :table-com-min-height="260"
                                 :column-data="saleChannelColumn"
                                 :table-data="detail.policyChannels"
@@ -133,7 +149,7 @@
 
                 <!--全民营销 暂时隐藏-->
                 <!--<div class="form-content line" :style="{height: (detail.productList.length + 1) * 50 + 80+'px'}">
-                    <Form-item :label="$t('全民营销')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
+                    <Form-item :label="$t('allPeopleMarket')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
                         <div>
                             <table-com
                                 :ofsetHeight="755"
@@ -147,16 +163,30 @@
                     </Form-item>
                 </div>-->
 
+                <!--退改规则-->
                 <div class="form-content" :style="{height: (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px'}">
-                    <Form-item :label="$t('退改规则')+'：'"><!--退改规则-->
+                    <Form-item :label="$t('returnAndAlterRule')+'：'"><!--退改规则-->
                         <div>
-                            <span>{{detail.describe | contentFilter}}</span>
+                            <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
                             <table-com
                                 :ofsetHeight="755"
                                 :table-com-min-height="260"
                                 :column-data="refundColumn"
                                 :table-data="detail.productPolicy.returnRuleModel.rules"
                                 :border="false">
+                               <el-table-column
+                                   slot="column0"
+                                   slot-scope="row"
+                                   :label="row.title"
+                                   :width="row.width"
+                                   :min-width="row.minWidth"
+                                   show-overflow-tooltip>
+                                   <template slot-scope="scope">
+                                       {{$t('playDate')}}{{scope.row.befPlayStart == '0' ? $t('when') : $t('before')+scope.row.befPlayStart}}{{$t('day')}}
+                                       <span> ~ </span>
+                                       {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
+                                    </template>
+                               </el-table-column>
                             </table-com>
                         </div>
                     </Form-item>
@@ -166,20 +196,20 @@
                 <div class="form-content line">
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('改签规则')+'：'"><!--改签规则-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                            <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
+                                <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('最晚改签日期')+'：'"><!--最晚改签日期-->
-                                <div>{{detail.describe | contentFilter}}</div>
+                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                                <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('购票须知')+'：'"><!--购票须知-->
-                                <div v-w-title="detail.name">{{detail.name | contentFilter}}</div>
+                                <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -190,10 +220,30 @@
         </div>
 
         <div class="footer">
-            <Button type="primary"
-                    @click="submit">{{$t('commitCheck')}}</Button><!--提交审核-->
-            <Button type="ghost">{{$t('cancel')}}</Button><!--返回-->
+            <!--已驳回-->
+            <template v-if="detail.productPolicy.auditStatus === 'rejected' || detail.productPolicy.auditStatus === 'not_enabled'">
+                <Button type="primary"
+                        @click="auditProduct('enabled')">{{$t('commitCheck')}}</Button><!--提交审核-->
+                <Button type="ghost"
+                        @click="modify">{{$t('modify')}}</Button><!--修  改-->
+            </template>
+            <!--已启用-->
+            <template v-if="detail.productPolicy.auditStatus === 'enabled'">
+                <Button type="primary" @click="auditProduct('not_enabled')">{{$t('disabled')}}</Button><!--禁用-->
+            </template>
+            <!--待审核-->
+            <template v-if="detail.productPolicy.auditStatus === 'auditing'">
+                <Button type="primary" @click="auditProduct('enabled')">{{$t('checkPass')}}</Button><!--审核通过-->
+            </template>
+            <Button type="ghost" @click="goBack">{{$t('back')}}</Button><!--返回-->
+            <!--待审核--填写备注-->
+            <!--<template v-if="detail.productPolicy.auditStatus === 'auditing'">-->
+                <!--<span class="blue" @click="showRemarkModal">{{$t('填写备注')}}</span>-->
+            <!--</template>-->
         </div>
+
+        <!--新增备注弹窗-->
+        <add-remark-modal ref="addRemarkModal"></add-remark-modal>
 
     </div>
 </template>
@@ -203,8 +253,10 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import {productColumn, saleChannelColumn, marketingColumn, refundColumn} from './detailConfig';
+    import ajax from '@/api/index';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -212,11 +264,10 @@
             breadCrumbHead,
             titleTemp,
             tableCom,
+            addRemarkModal,
         },
         data () {
             return {
-                //type add/modify
-                type: 'add',
                 //面包屑上级路由信息
                 beforeRouterList: [
                     {
@@ -256,7 +307,44 @@
                         }
                     ],
                     //产品列表
-                    "policyItems":[],
+                    "policyItems":[
+                        {
+                            allocationId: "1040526354644340736",
+                            createUser: "1037976274619994112",
+                            createdTime: "2018-09-14 17:03:10",
+                            id: "1040526355575476224",
+                            isDeleted: "false",
+                            itemRule: null,
+                            policyId: "1040526353243443200",
+                            printPrice: null,
+                            productId: "1040508543163305984",
+                            productName: "xt测试产品1",
+                            settlePrice: 150,
+                            standardPrice: "100.00",
+                            stockNum: "10000",
+                            stockType: "total",
+                            updateUser: "1037976274619994112",
+                            updatedTime: "2018-09-14 17:03:10",
+                        },
+                        {
+                            allocationId: "1040526354644340736",
+                            createUser: "1037976274619994112",
+                            createdTime: "2018-09-14 17:03:10",
+                            id: "1040526355885854720",
+                            isDeleted: "false",
+                            itemRule: null,
+                            policyId: "1040526353243443200",
+                            printPrice: null,
+                            productId: "1040508701972238336",
+                            productName: "xt测试产品2111111",
+                            settlePrice: 180,
+                            standardPrice: "101.00",
+                            stockNum: "5000",
+                            stockType: "total",
+                            updateUser: "1037976274619994112",
+                            updatedTime: "2018-09-14 17:03:10",
+                        }
+                    ],
                     //销售政策信息
                     "productPolicy":{
                         //改签规则
@@ -270,7 +358,7 @@
                             "afterDay":null,
                             "beforeDay":null,
                             "endTime":"2018-10-31",
-                            "specifiedTime":"",//指定时间（例：2018-10-12,2018-10-18）
+                            "specifiedTime":"2018-10-12,2018-10-18",//指定时间（例：2018-10-12,2018-10-18）
                             "startTime":"2018-10-01",
                             "type":"specifiedPeriodSold", //期限类型（指定期间-specifiedPeriodSold，指定日期-specifiedDateSold）
                             "validDates":null,
@@ -316,6 +404,7 @@
                         "todaySaleEndTime":"18:00",//当日票可售结束时间；格式：mm:ss
                         "todaySaleStartTime":"09:00",//当日票可售开始时间；格式：mm:ss
                         "isDeleted":"false",
+                        "buyTicketNotes": "购票须知",//购票须知
                         "createUser":"1037976274619994112",
                         "createdTime":"2018-09-14 17:03:09",
                         "productPolicyPlayRule":{
@@ -346,7 +435,6 @@
                         "updatedTime":"2018-09-14 17:03:09"
                     },
                 },
-
                 //产品列表表头
                 productColumn: productColumn,
                 //销售渠道表头
@@ -355,38 +443,16 @@
                 marketingColumn: marketingColumn,
                 //退票表头
                 refundColumn: refundColumn,
-
+                //备注
+                remark: '',
             }
         },
         methods: {
 
-
-            /**
-             * 查看可游玩园区详情
-             */
-            viewParkDetail ( data ) {
-                console.log(data)
-//                this.$refs.viewPark.show({
-//                    data: data,
-//                    title : this.$t('check')+this.$t(data.saleType),
-//                    type: 'check',
-//                    confirmCallback : () => {
-//                        //push to tableData
-//                        debugger
-//                        console.log(true)
-//                    }
-//                });
-            },
-
-            //提交审核
-            submit () {
-
-            },
-
-            //查看详情
-            showDetailModal () {
+            //修改
+            modify () {
                 this.$router.push({
-                    name: 'addTicket',
+                    name: 'editSalePolicy',
                     params: {
                         type: 'modify',
                         info: this.detail,
@@ -394,14 +460,62 @@
                 })
             },
 
+            //审核操作
+            auditProduct ( status ) {
+                ajax.post('modifyPolicyStatus',{
+                    policyIds: ids,
+                    status: status,
+                    remark: this.remark,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success(this.$t('updateStatus') + this.$t('success'));
+                        //获取销售政策详情（包含销售组、产品）
+                        this.findProductById(this.detail.productPolicy);
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+
+            //获取销售政策详情（包含销售组、产品）
+            getPolicyInfo ( data ) {
+                ajax.post('getPolicyInfo', {
+                    allocationId: data.allocationId
+                }).then(res => {
+                    if(res.success){
+                        this.detail = res.data || {};
+                    } else {
+                        this.detail = {};
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+
+            //显示备注弹窗
+            showRemarkModal () {
+                this.$refs.addRemarkModal.show({
+                    data: {remark: this.remark},
+                    confirmCallback : ( msg ) => {
+                        console.log(msg);
+                        this.remark = msg;
+                    }
+                });
+            },
+
+            //返回
+            goBack() {
+                this.$router.back();
+            },
+
             /**
              * 获取路由信息
              */
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
-//                    this.detail = params.info;
-                    //根据产品Id查明细
-
+                    //获取销售政策详情（包含销售组、产品）
+                    if( params.info ){
+                        this.getPolicyInfo( params.info );
+                    }
                 }
             },
         },

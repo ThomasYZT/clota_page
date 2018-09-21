@@ -15,24 +15,22 @@
         </div>
 
         <div class="btn-wrap" v-if="tabsName === 'created'">
-            <Button type="primary"
-                    @click="$router.push({name: 'editSalePolicy', params: { type: 'add'}})">+ {{$t('add')}}</Button>
             <Button type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
             <Button type="error"
-                    :disabled="selectedRow.length > 0 ? false : true"
-                    @click="batchDel">{{$t('batchOperate')}}</Button>
-            <!--<el-dropdown @command="handleCommand">-->
-                <!--<span class="el-dropdown-link">-->
-                    <!--{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-                <!--</span>-->
-                <!--<el-dropdown-menu slot="dropdown">-->
-                    <!--<el-dropdown-item v-for="(item,index) in dropdownList"-->
-                                      <!--:key="index"-->
-                                      <!--:command="item.value">-->
-                        <!--{{$t(item.name)}}-->
-                    <!--</el-dropdown-item>-->
-                <!--</el-dropdown-menu>-->
-            <!--</el-dropdown>-->
+                    v-if="selectedRow.length < 1"
+                    disabled>{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i></Button>
+            <el-dropdown @command="handleCommand" trigger="click" v-else>
+                <span class="el-dropdown-link">
+                    {{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-for="(item,index) in dropdownList"
+                                      :key="index"
+                                      :command="item.value">
+                        {{$t(item.name)}}
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
 
         <!--暂时隐藏-->
@@ -75,10 +73,10 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <div>
-                        <span v-if="scope.row.status === '已启用'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
-                        <span v-if="scope.row.status === '审核中'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
-                        <span v-if="scope.row.status === '已驳回'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
-                        <span v-if="scope.row.status === '未启用'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
+                        <span v-if="scope.row.auditStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
+                        <span v-if="scope.row.auditStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
+                        <span v-if="scope.row.auditStatus === 'rejected'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                        <span v-if="scope.row.auditStatus === 'not_enabled'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
                     </div>
                 </template>
             </el-table-column>
@@ -133,6 +131,7 @@
 
         <!--新建销售政策-->
         <add-sale-policy-modal ref="addSalePolicyModal"
+                               :list="policyTypeList"
                                @close-modal="queryMyPolicyList">
         </add-sale-policy-modal>
 
@@ -166,6 +165,7 @@
                 distPolicyData: [],
                 // 获取我的销售政策列表数据请求参数
                 myPolicyParams: {
+                    selectType: 'from',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
@@ -194,16 +194,21 @@
                 ],
                 // 下拉列表数据
                 dropdownList: [
-                    { name: 'check', value: 'check' },//审核
-                    { name: 'up', value: 'ip' },//上架
+                    { name: 'checked', value: 'checked' },//审核
+                    { name: 'up', value: 'up' },//上架
                     { name: 'down', value: 'down' },//下架
                     { name: 'delete', value: 'delete' },//删除
                 ],
+                // 业态类型数据
+                policyTypeList: [],
             }
         },
         computed: {},
         created() {
-            this.queryDistPolicyList();
+            /*this.queryDistPolicyList();*/
+
+            //获取所有销售政策业态类型
+            this.getAllPolicyType();
         },
         mounted() {
         },
@@ -218,45 +223,31 @@
                 this.tabsName = name;
             },
 
+            // 获取所有销售政策业态类型
+            getAllPolicyType () {
+                ajax.post('getAllPolicyType', {}).then(res => {
+                    if(res.success){
+                        this.policyTypeList = res.data || [];
+                    } else {
+                        this.policyTypeList = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+
             // 查询我定义的销售政策列表
             queryMyPolicyList() {
-                this.myPolicyData = [
-                    {
-                        'id': '00002103965',
-                        'productCode': '星火旅行社1',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '野生动物园',
-                        'status': '已启用',
-                        'updateTime': '2018-08-20 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社2',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '冰雪世界',
-                        'status': '已启用',
-                        'updateTime': '2018-06-01 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社3',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '野生动物园',
-                        'status': '已启用',
-                        'updateTime': '2018-04-17 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社4',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '冰雪世界',
-                        'status': '已启用',
-                        'updateTime': '2018-03-17 15:31:00',
-                    },
-
-                ];
-                this.mTotal = this.myPolicyData.length;
+                ajax.post('queryPolicy', this.myPolicyParams).then(res => {
+                    this.selectedRow = [];
+                    if(res.success){
+                        this.myPolicyData = res.data.data || [];
+                        this.mTotal = res.data.totalRow || 0;
+                    } else {
+                        this.myPolicyData = [];
+                        this.mTotal = 0;
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
 
             // 查询分销给我的销售政策列表
@@ -300,7 +291,7 @@
                 this.dTotal = this.distPolicyData.length;
             },
 
-            //新建销售政策
+            // 新建销售政策
             addPolicy () {
                 if(this.$refs.addSalePolicyModal){
                     this.$refs.addSalePolicyModal.show();
@@ -317,7 +308,7 @@
             // 批量删除
             batchDel () {
                 let ids = this.selectedRow.map(item => item.id).join(',');
-                this.delUnits = this.selectedRow.map(item => item.productName).join(',');
+                this.delUnits = this.selectedRow.map(item => item.name).join(',');
                 console.log(ids);
                 this.$refs.delModal.show({
                     title : this.$t('deleteBatch'),
@@ -328,11 +319,11 @@
             },
             /**
              * 删除票类
-             * @param data
+             * @param ids
              */
-            deletePolicy( data ) {
+            deletePolicy( ids ) {
                 ajax.post('deletePolicy',{
-                    ids: data
+                    policyIds: ids
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('success') + this.$t('delete'));
@@ -353,12 +344,44 @@
                 return row.status === value;
             },
 
-            //点击dropdown回调
+            // 点击dropdown回调 (checked-enabled审核,up-enabled上架,down-not_enabled下架,delete-删除)
             handleCommand( item ) {
-                console.log(item)
+                console.log(item);
+                if(item){
+                    let ids = this.selectedRow.map(item => item.id).join(',');
+                    switch (item) {
+                        case 'checked' :
+                            this.modifyPolicyStatus(ids, 'enabled');
+                            break;
+                        case 'up' :
+                            this.modifyPolicyStatus(ids, 'enabled');
+                            break;
+                        case 'down' :
+                            this.modifyPolicyStatus(ids, 'not_enabled');
+                            break;
+                        case 'delete' :
+                            this.batchDel();
+                            break;
+                    }
+                }
             },
 
-            //查看详情
+            // 更新销售政策状态
+            modifyPolicyStatus ( ids, status ) {
+                ajax.post('modifyPolicyStatus',{
+                    policyIds: ids,
+                    status: status
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success(this.$t('updateStatus') + this.$t('success'));
+                        this.queryMyPolicyList();
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+
+            // 查看详情
             viewDetail ( data ) {
                 this.$router.push({
                     name: 'salePolicyDetail',
@@ -367,7 +390,6 @@
                     }
                 })
             },
-
 
         }
     };
@@ -407,6 +429,15 @@
 
             /deep/ .ivu-select{
                 width: 280px;
+            }
+
+            /deep/ .el-dropdown{
+                line-height: 29px;
+                color: $color_blue;
+                border: 1px solid $color_blue;
+                padding: 0 15px;
+                border-radius: 4px;
+                cursor: pointer;
             }
 
             .float-right{

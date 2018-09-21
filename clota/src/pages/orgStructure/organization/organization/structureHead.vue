@@ -182,7 +182,11 @@
                         directives: [
                             {
                                 name: 'w-title',
-                                value: data.orgName
+                                // value: data.orgName,
+                                value: {
+                                    position : 'top',
+                                    msg: data.orgName,
+                                },
                             }
                         ],
                     }, data.orgName),
@@ -417,7 +421,7 @@
         }
 
         .search-input {
-            @include block_outline($height: 78px);
+            @include block_outline($height: 70px);
             padding-top: 20px;
 
             /deep/ .ivu-input {

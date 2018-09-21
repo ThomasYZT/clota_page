@@ -135,7 +135,7 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     deptDiscountId : this.memberInfo.id,
-                    productName : this.queryParams.keyword,
+                    typeName : this.queryParams.keyword,
                     orgId : this.memberInfo.sourceDeptId,
                 }).then(res => {
                     if(res.success){
@@ -184,7 +184,7 @@
                     levelId : this.memberInfo.levelId,
                     prodDiscountRate : formData.discountRate,
                     prodScoreRate : formData.scoreRate,
-                    productId : this.currentData.productId,
+                    typeId : this.currentData.typeId,
                     remark : formData.remark
                 }).then(res => {
                     if(res.success){

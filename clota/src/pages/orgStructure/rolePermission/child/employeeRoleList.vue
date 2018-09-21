@@ -3,7 +3,7 @@
 <template>
     <div class="employee-privalige-set">
         <div class="btn-area">
-            <Button type="primary" @click="addEmployee">增加员工</Button>
+            <Button type="primary" @click="addEmployee" style="margin-right: 7px;">增加员工</Button>
             <Button type="error"
                     @click="del(employeeChosed)"
                     :disabled="employeeChosed.length < 1">批量删除</Button>
@@ -41,8 +41,10 @@
         <!--新增员工弹窗-->
         <add-employee
             v-model="addVisible"
+            :added-employee="tableData"
             @updateSelected="updateSelected">
         </add-employee>
+        <!--删除员工模态框-->
         <del-modal ref="delModal">
             <div class="del-tips">
                 <Icon type="help-circled"></Icon>

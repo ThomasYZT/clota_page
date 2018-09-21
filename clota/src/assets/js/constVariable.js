@@ -354,3 +354,65 @@ export const saleOperateBatch = [
         value : 'outGroup'
     }
 ];
+
+//政策可售期
+export const policyValidity = [
+    {
+        label : 'playBeforeSold',//游玩日期之前 N 天可售
+        value : 'playBeforeSold'
+    },
+    {
+        label : 'specifiedPeriodSold',//指定期间可售
+        value : 'specifiedPeriodSold'
+    },
+    {
+        label: 'specifiedDateSold',//指定日期方案
+        value : 'specifiedDateSold'
+    }
+];
+
+//游玩期限
+export const playDeadline = [
+    {
+        label : 'specifiedPeriodSold',//指定期间可售
+        value : 'specifiedPeriodSold'
+    },
+    {
+        label: 'specifiedDateSold',//指定日期方案
+        value : 'specifiedDateSold'
+    }
+];
+
+
+//退票规则
+export const returnRule = [
+    {
+        label : 'notAllow',//不允许退票
+        value : 'notAllow'
+    },
+    {
+        label : 'needAudit',//允许退票并需要审核
+        value : 'needAudit'
+    },
+    {
+        label: 'noAudit',//允许退票不需要审核
+        value : 'noAudit'
+    }
+];
+
+
+//改签规则
+export const alterRule = [
+    {
+        label : 'notAllow',//不允许改签
+        value : 'notAllow'
+    },
+    {
+        label : 'needAudit',//允许改签并需要审核
+        value : 'needAudit'
+    },
+    {
+        label: 'noAudit',//允许改签不需要审核
+        value : 'noAudit'
+    }
+];

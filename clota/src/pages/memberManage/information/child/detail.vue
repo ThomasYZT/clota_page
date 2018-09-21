@@ -657,7 +657,7 @@
 
             //查看卡包信息
             viewCardDetail () {
-                this.$router.push({ name: 'infoCard' });
+                this.$router.push({ name: 'infoCard', params: {cardPkg: this.detail} });
             },
 
             //查看享受积分、折扣率信息
@@ -673,7 +673,6 @@
                     if(res.success){
                         this.detail = res.data || {};
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message || 'showMemberDetail '+ this.$t('failure') +'！');
                     }
                 });

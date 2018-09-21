@@ -62,44 +62,68 @@ export const orderListHead = [
     {
         title: '交易号',      // 交易号
         minWidth: 150,
-        field: 'phoneNum'
+        field: 'outOrderNo'
     },
     {
         title: '景区',        // 景区
         minWidth: 160,
         enMinWidth : 100,
-        field: 'gender'
+        field: 'outOrgName'
     },
     {
         title: '会员方交易流水号',  // 会员方交易流水号
         minWidth: 160,
         enMinWidth : 150,
-        field: 'levelDesc'
+        field: 'orderNo'
     },
     {
         title: '整单交易金额',    // 整单交易金额
         minWidth: 150,
-        field: 'status'
+        field: 'amount'
     },
     {
         title: '订单状态(支付、退款)',      // 订单状态(支付、退款)
         minWidth: 180,
         enMinWidth : 200,
-        field: 'pointBalance'
+        field: 'status'
     },
     {
         title: '交易时间',    // 交易时间
-        minWidth: 180,
-        field: 'moneyBalance'
+        minWidth: 200,
+        field: 'tradeTime'
     },
     {
         title: '会员系统交易时间',      // 会员系统交易时间
-        minWidth: 180,
-        field: 'updatedTime'
+        minWidth: 200,
+        field: 'createdTime'
     },
     {
         title: 'operate',
         width: 140,
         field: ''
+    },
+];
+
+// 我的订单列表表头
+export const cardOwnerHead = [
+    {
+        title: '成员序号',       // 成员序号
+        field: 'no'
+    },
+    {
+        title: 'name',       // 姓名
+        field: 'name'
+    },
+    {
+        title: '身份证号',       // 身份证号
+        field: 'idno'
+    },
+    {
+        title: 'mobilePhone',       // 手机号
+        field: 'phone'
+    },
+    {
+        title: 'gender',       // 性别
+        field: 'gender'
     },
 ];

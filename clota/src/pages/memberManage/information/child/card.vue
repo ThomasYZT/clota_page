@@ -11,7 +11,7 @@
 
         <div class="card-content">
 
-            <div class="content-info">
+            <!--<div class="content-info">
                 <div class="title">{{$t('couponInfo')}}</div>
                 <div class="tabs-wrap">
                     <ButtonGroup>
@@ -55,30 +55,30 @@
                         </el-table-column>
                     </el-table>
                 </div>
-            </div>
+            </div>-->
 
-            <div class="content-info">
+            <div class="content-info" v-for="annualCard in cardInfo.annual" :key="annualCard.id">
                 <div class="title">{{$t('yearCardInfo')}}</div>
                 <div class="form-wrap">
-                    <div class="form-item-wrap"><label>{{$t('yearCardId')}}</label><span>22866882</span></div>
-                    <div class="form-item-wrap"><label>{{$t('yearCardName')}}</label><span>欢乐谷年卡</span></div>
-                    <div class="form-item-wrap"><label>物理卡号：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>是否指纹注册：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>有效开始日期：</label><span>2017-08-08 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>有效开结束日期：</label><span>2017-08-08 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>销售日期：</label><span>2017-03-03 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>开卡单位：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>年卡状态：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>年卡备注：</label><span>-</span></div>
+                    <div class="form-item-wrap"><label>{{$t('yearCardId')}}</label><span>{{annualCard.vipCardNo}}</span></div><!--年卡编号-->
+                    <div class="form-item-wrap"><label>{{$t('yearCardName')}}</label><span>{{annualCard.vipCardName}}</span></div><!--年卡名称-->
+                    <div class="form-item-wrap"><label>物理卡号：</label><span>{{annualCard.physicalCardNo | contentFilter}}</span></div><!--物理卡号-->
+                    <div class="form-item-wrap"><label>是否指纹注册：</label><span>{{annualCard.isFingerPrint=='true' ? '是' : '否'}}</span></div><!--是否指纹注册-->
+                    <div class="form-item-wrap"><label>有效开始日期：</label><span>{{annualCard.validFrom}}</span></div><!--有效开始日期-->
+                    <div class="form-item-wrap"><label>有效开结束日期：</label><span>{{annualCard.validTo}}</span></div><!--有效开结束日期-->
+                    <div class="form-item-wrap"><label>销售日期：</label><span>{{annualCard.saleDate}}</span></div><!--销售日期-->
+                    <div class="form-item-wrap"><label>开卡单位：</label><span>{{annualCard.issuser | contentFilter}}</span></div><!--开卡单位-->
+                    <div class="form-item-wrap"><label>年卡状态：</label><span>{{annualCard.status | contentFilter}}</span></div><!--年卡状态-->
+                    <div class="form-item-wrap"><label>年卡备注：</label><span>{{annualCard.note | contentFilter}}</span></div><!--年卡备注-->
                 </div>
                 <div class="label"></div>
                 <div class="table-wrap">
-                    <el-table
-                        :data="cardData"
+                    <!--<el-table
+                        :data="JSON.parse(annualCard.availPersons) || []"
                         :border="false"
                         style="width: 100%">
                         <el-table-column
-                            prop="id"
+                            prop="no"
                             label="成员序号">
                         </el-table-column>
                         <el-table-column
@@ -86,20 +86,42 @@
                             label="姓名">
                         </el-table-column>
                         <el-table-column
-                            prop="idNum"
+                            prop="idno"
                             label="身份证号">
                         </el-table-column>
                         <el-table-column
-                            prop="mobile"
+                            prop="phone"
                             label="手机号">
                         </el-table-column>
                         <el-table-column
-                            prop="sex"
+                            prop="gender"
                             label="性别">
                         </el-table-column>
-                    </el-table>
+                    </el-table>-->
+                    <table-com
+                        :ofsetHeight="170"
+                        :column-data="cardOwnerHead"
+                        :table-data="JSON.parse(annualCard.availPersons) || []"
+                        :border="true">
+                        <el-table-column
+                            slot="column4"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            fixed="right"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">{{$t(scope.row.gender)}}</template>
+                        </el-table-column>
+                    </table-com>
                 </div>
+                <!--可使用范围-->
                 <div class="label range"></div>
+                <ul class="range-list">
+                    <li v-for="(range,index) in JSON.parse(annualCard.availOrgs)" :key="index">{{range.orgName}}</li>
+                </ul>
+                <!--使用说明-->
+                <div class="label instruction"></div>
+                <div class="range-list">{{annualCard.instructions | contentFilter}}</div>
                 <div class="table-wrap" style="width: 810px;">
                     <el-table
                         :width="810"
@@ -118,26 +140,26 @@
                 </div>
             </div>
 
-            <div class="content-info">
+            <div class="content-info" v-for="timesCard in cardInfo.times" :key="timesCard.id">
                 <div class="title">次卡信息</div>
                 <div class="form-wrap">
-                    <div class="form-item-wrap"><label>年卡编号：</label><span>22866882</span></div>
-                    <div class="form-item-wrap"><label>年卡名称：</label><span>欢乐谷年卡</span></div>
-                    <div class="form-item-wrap"><label>物理卡号：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>是否指纹注册：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>有效开始日期：</label><span>2017-08-08 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>有效开结束日期：</label><span>2017-08-08 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>销售日期：</label><span>2017-03-03 08:00:00</span></div>
-                    <div class="form-item-wrap"><label>开卡单位：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>年卡状态：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>年卡备注：</label><span>-</span></div>
-                    <div class="form-item-wrap"><label>总次数：</label><span>323</span></div>
-                    <div class="form-item-wrap"><label>现在可用次数：</label><span>10</span></div>
+                    <div class="form-item-wrap"><label>次卡编号：</label><span>{{timesCard.vipCardNo}}</span></div><!--次卡编号-->
+                    <div class="form-item-wrap"><label>次卡名称：</label><span>{{timesCard.vipCardName}}</span></div><!--次卡名称-->
+                    <div class="form-item-wrap"><label>物理卡号：</label><span>{{timesCard.physicalCardNo | contentFilter}}</span></div><!--物理卡号-->
+                    <div class="form-item-wrap"><label>是否指纹注册：</label><span>{{timesCard.isFingerPrint=='true' ? '是' : '否'}}</span></div><!--是否指纹注册-->
+                    <div class="form-item-wrap"><label>有效开始日期：</label><span>{{timesCard.validFrom}}</span></div><!--有效开始日期-->
+                    <div class="form-item-wrap"><label>有效开结束日期：</label><span>{{timesCard.validTo}}</span></div><!--有效开结束日期-->
+                    <div class="form-item-wrap"><label>销售日期：</label><span>{{timesCard.saleDate}}</span></div><!--销售日期-->
+                    <div class="form-item-wrap"><label>开卡单位：</label><span>{{timesCard.totalTimes | issuser}}</span></div><!--开卡单位-->
+                    <div class="form-item-wrap"><label>次卡状态：</label><span>{{timesCard.totalTimes | status}}</span></div><!--次卡状态-->
+                    <div class="form-item-wrap"><label>次卡备注：</label><span>{{timesCard.totalTimes | note}}</span></div><!--次卡备注-->
+                    <div class="form-item-wrap"><label>总次数：</label><span>{{timesCard.totalTimes | contentFilter}}</span></div><!--总次数-->
+                    <div class="form-item-wrap"><label>现在可用次数：</label><span>{{timesCard.leftTime | contentFilter}}</span></div><!--现在可用次数-->
                 </div>
                 <div class="label"></div>
                 <div class="table-wrap">
-                    <el-table
-                        :data="cardData"
+                    <!--<el-table
+                        :data="JSON.parse(timesCard.availPersons) || []"
                         :border="false"
                         style="width: 100%">
                         <el-table-column
@@ -160,9 +182,33 @@
                             prop="sex"
                             label="性别">
                         </el-table-column>
-                    </el-table>
+                    </el-table>-->
+
+                    <table-com
+                        :ofsetHeight="170"
+                        :column-data="cardOwnerHead"
+                        :table-data="JSON.parse(timesCard.availPersons) || []"
+                        :border="true">
+                        <el-table-column
+                            slot="column4"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            fixed="right"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">{{$t(scope.row.gender)}}</template>
+                        </el-table-column>
+                    </table-com>
+
                 </div>
+                <!--可使用范围-->
                 <div class="label range"></div>
+                <ul class="range-list">
+                    <li v-for="(range,index) in JSON.parse(timesCard.availOrgs)" :key="index">{{range.orgName}}</li>
+                </ul>
+                <!--使用说明-->
+                <div class="label instruction"></div>
+                <div class="range-list">{{timesCard.instructions | contentFilter}}</div>
                 <div class="table-wrap" style="width: 810px;">
                     <el-table
                         :width="810"
@@ -187,15 +233,20 @@
 </template>
 
 <script>
-    import breadCrumbHead from '@/components/breadCrumbHead/index'
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
+    import ajax from '@/api/index';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {cardOwnerHead} from '../infoListConfig';
+    import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        components: {breadCrumbHead},
+        components: {breadCrumbHead, tableCom},
+        mixins : [lifeCycleMixins],
         data () {
             return {
                 // 面包屑路由列表
                 breadRouterList: [{name: '会员信息', router: 'info'}, {name: '会员详情', router: 'detail'}],
-                // 表格数据
+                /*// 表格数据
                 tableData: [
                     {
                         id: '00032822',
@@ -232,9 +283,58 @@
                         money: '张记手擀面',
                         send: '温泉酒店',
                     },
-                ]
+                ],*/
+
+                // 年卡、次卡信息数据
+                cardInfo: {
+                    annual: [],
+                    times: []
+                },
+                // 年卡、次卡可使用人表头
+                cardOwnerHead: cardOwnerHead,
             }
-        }
+        },
+        created() {
+        },
+        methods: {
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    this.getCardPackage(params.cardPkg ? params.cardPkg.cardId : '');
+                }else{
+                    this.$router.push({
+                        name : 'infoDetail'
+                    });
+                }
+            },
+            /**
+             * 获取卡包信息
+             */
+            getCardPackage(cardId) {
+                ajax.post('getCardPackage', {
+                    cardId: cardId
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data) {
+                            // 年卡数据
+                            this.cardInfo.annual = res.data.filter((item,i) => {
+                                return item.vipType == 'annual';
+                            }) || [];
+                            // 次卡数据
+                            this.cardInfo.times = res.data.filter((item,i) => {
+                                return item.vipType == 'times';
+                            }) || [];
+                        }
+                    } else {
+                        this.$Message.error(res.message || '');
+                    }
+
+                });
+            },
+        },
     }
 </script>
 
@@ -313,6 +413,19 @@
                         &::before{
                             content: '可用范围';
                         }
+                    }
+                    &.instruction{
+                        margin-top: 0px;
+                        &::before{
+                            content: '使用说明';
+                        }
+                    }
+                }
+
+                .range-list {
+                    margin-bottom: 15px;
+                    > li {
+                        line-height: 20px;
                     }
                 }
 

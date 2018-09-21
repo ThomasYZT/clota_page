@@ -38,10 +38,10 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('政策可售期')" prop="scenePrice"><!--政策可售期-->
+                        <Form-item :label="$t('policyValidity')" prop="scenePrice"><!--政策可售期-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.orderInfo"
+                                <Option v-for="(item,index) in enumData.policyValidity"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
@@ -50,13 +50,13 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('提前天数(M)')" prop="thirdProductNo"><!--提前天数(M)-->
+                        <Form-item :label="$t('aheadDays')" prop="thirdProductNo"><!--提前天数(M)-->
                             <InputNumber :max="365"
                                          :min="0"
                                          v-model.trim="formData.thirdProductNo"
                                          :placeholder="$t('inputField', {field: ''})">
                             </InputNumber>
-                            <span class="split">{{$t('至')}}</span>
+                            <span class="split">{{$t('To')}}</span>
                             <InputNumber :max="365"
                                          :min="0"
                                          v-model.trim="formData.thirdProductNo"
@@ -66,7 +66,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('指定起止日期')" prop="ticketPrice"><!--指定起止日期-->
+                        <Form-item :label="$t('specifiedTime')" prop="ticketPrice"><!--指定起止日期-->
                             <DatePicker v-model="formData.ticketPrice"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         format="yyyy-MM-dd"
@@ -80,17 +80,17 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('指定日期')" prop="ticketPrice"><!--指定日期-->
+                        <Form-item :label="$t('specifiedDateSold')" prop="ticketPrice"><!--指定日期-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.orderInfo"
+                                <Option v-for="(item,index) in enumData.playDeadline"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
-                            <span class="blue">{{$t('切换为日期清单视图')}}</span>
-                            <span class="blue">{{$t('切换日历视图增减日期')}}</span>
+                            <span class="blue">{{$t('toList')}}</span>
+                            <span class="blue">{{$t('toDate')}}</span>
                             <br/>
                             <DatePicker v-model="formData.ticketPrice"
                                         :open="open"
@@ -113,7 +113,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('每周可玩日期')" prop="ticketDesc"><!--每周可玩日期-->
+                        <Form-item :label="$t('weekSold')" prop="ticketDesc"><!--每周可玩日期-->
                             <Button v-for="(item,index) in weekList"
                                     class="week-btn"
                                     :key="index"
@@ -125,19 +125,19 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('每日可售时间')" prop="thirdProductNo"><!--每日可售时间-->
+                        <Form-item :label="$t('saleDayTime')" prop="thirdProductNo"><!--每日可售时间-->
                             <TimePicker format="HH:mm"
                                         :placeholder="$t('selectField', {msg: ''})"></TimePicker>
-                            <span class="split">{{$t('至')}}</span>
+                            <span class="split">{{$t('To')}}</span>
                             <TimePicker format="HH:mm"
                                         :placeholder="$t('selectField', {msg: ''})"></TimePicker>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('当日票可售时间')" prop="thirdProductNo"><!--当日票可售时间-->
+                        <Form-item :label="$t('saleTodayTime')" prop="thirdProductNo"><!--当日票可售时间-->
                             <TimePicker format="HH:mm"
                                         :placeholder="$t('selectField', {msg: ''})"></TimePicker>
-                            <span class="split">{{$t('至')}}</span>
+                            <span class="split">{{$t('To')}}</span>
                             <TimePicker format="HH:mm"
                                         :placeholder="$t('selectField', {msg: ''})"></TimePicker>
                         </Form-item>
@@ -146,10 +146,10 @@
 
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('游玩期限')" prop="scenePrice"><!--游玩期限-->
+                        <Form-item :label="$t('playDeadline')" prop="scenePrice"><!--游玩期限-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.orderInfo"
+                                <Option v-for="(item,index) in enumData.playDeadline"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
@@ -158,7 +158,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('指定起止日期')" prop="ticketPrice"><!--指定起止日期-->
+                        <Form-item :label="$t('specifiedTime')" prop="ticketPrice"><!--指定起止日期-->
                             <DatePicker v-model="formData.ticketPrice"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         format="yyyy-MM-dd"
@@ -172,17 +172,17 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('指定日期')" prop="ticketPrice"><!--指定日期-->
+                        <Form-item :label="$t('specifiedDateSold')" prop="ticketPrice"><!--指定日期-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.orderInfo"
+                                <Option v-for="(item,index) in enumData.playDeadline"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
-                            <span class="blue">{{$t('切换为日期清单视图')}}</span>
-                            <span class="blue">{{$t('切换日历视图增减日期')}}</span>
+                            <span class="blue">{{$t('toList')}}</span>
+                            <span class="blue">{{$t('toDate')}}</span>
                             <br/>
                             <DatePicker v-model="formData.ticketPrice"
                                         multiple
@@ -204,7 +204,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('每周可玩日期')" prop="ticketDesc"><!--每周可玩日期-->
+                        <Form-item :label="$t('weekSold')" prop="ticketDesc"><!--每周可玩日期-->
                             <Button v-for="(item,index) in weekList"
                                     class="week-btn"
                                     :key="index"
@@ -216,30 +216,30 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('入园时间控制')" prop="ticketDesc"><!--入园时间控制-->
+                        <Form-item :label="$t('checkinTime')" prop="ticketDesc"><!--入园时间控制-->
                             <TimePicker format="HH:mm"
                                         :placeholder="$t('selectField', {msg: ''})"></TimePicker>
-                            <span class="split">{{$t('至')}}</span>
+                            <span class="split">{{$t('To')}}</span>
                             <TimePicker format="HH:mm"
                                         :placeholder="$t('selectField', {msg: ''})"></TimePicker>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('下单后延迟生效')" prop="ticketDesc"><!--下单后延迟生效-->
+                        <Form-item :label="$t('delayValidTime')" prop="ticketDesc"><!--下单后延迟生效-->
                             <InputNumber :max="60"
                                          :min="0"
                                          v-model.trim="formData.thirdProductNo"
                                          :placeholder="$t('inputField', {field: ''})">
                             </InputNumber>
-                            <span class="split">{{$t('分钟')}}</span>
+                            <span class="split">{{$t('minute')}}</span>
                         </Form-item>
                     </div>
                 </div>
 
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('产品列表')"><!--产品列表-->
-                            <span class="blue" @click="addProduct">+ {{$t('新增产品')}}</span><!--新增产品-->
+                        <Form-item :label="$t('productList')"><!--产品列表-->
+                            <span class="blue" @click="addProduct">+ {{$t('addProduct')}}</span><!--新增产品-->
                             <table-com
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
@@ -263,7 +263,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('销售渠道')"><!--销售渠道-->
+                        <Form-item :label="$t('saleChannels')"><!--销售渠道-->
                             <table-com
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
@@ -275,8 +275,9 @@
                             </table-com>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('全民营销')"><!--全民营销-->
+                    <!--全民营销暂不显示-->
+                    <div class="ivu-form-item-wrap single" v-if="false">
+                        <Form-item :label="$t('allPeopleMarket')"><!--全民营销-->
                             <span class="blue" @click="addPark">+ {{$t('增加营销等级')}}</span><!--增加营销等级-->
                             <table-com
                                 :ofsetHeight="120"
@@ -356,16 +357,16 @@
 
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('退票规则')" prop="scenePrice"><!--退票规则-->
+                        <Form-item :label="$t('returnRule')" prop="scenePrice"><!--退票规则-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.orderInfo"
+                                <Option v-for="(item,index) in enumData.returnRule"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
-                            <span class="blue" @click="addPark">+ {{$t('新增退票手续费率档位')}}</span><!--新增退票手续费率档位-->
+                            <span class="blue" @click="addPark">+ {{$t('addReturnRateRule')}}</span><!--新增退票手续费率档位-->
                             <table-com
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
@@ -391,21 +392,21 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('改签规则')" prop="scenePrice"><!--改签规则-->
+                        <Form-item :label="$t('alterRule')" prop="scenePrice"><!--改签规则-->
                             <Select v-model="formData.orderToCommitVisitorIdInfo"
                                     :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.orderInfo"
+                                <Option v-for="(item,index) in enumData.alterRule"
                                         :key="index"
                                         :value="item.value">
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
                             <div class="custom-row">
-                                <span>{{$t('最晚改签日期：游玩日期前')}}</span>
+                                <span>{{$t('lastAlterDate')}}：{{$t('playDate')}}{{$t('before')}}</span>
                                 <Input v-model.trim="formData.salePolicyName"
                                        class="short-input"
                                        :placeholder="$t('inputField', {field: ''})"/>
-                                <span>{{$t('天/可改签次数')}}</span>
+                                <span>{{$t('alterTimes')}}</span>
                                 <Input v-model.trim="formData.salePolicyName"
                                        class="short-input"
                                        :placeholder="$t('inputField', {field: ''})"/>
@@ -413,11 +414,11 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('购票须知')" prop="productDesc"><!--购票须知-->
+                        <Form-item :label="$t('buyTicketNotes')" prop="productDesc"><!--购票须知-->
                             <Input v-model.trim="formData.productDesc"
                                    type="textarea"
                                    :rows="3"
-                                   :placeholder="$t('inputField', {msg: $t('购票须知')})"/>
+                                   :placeholder="$t('inputField', {msg: $t('buyTicketNotes')})"/>
                         </Form-item>
                     </div>
                 </div>
@@ -457,7 +458,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import {productColumn, saleChannelColumn, marketingColumn, dateListColumn, refundColumn} from './editPolicyConfig';
-    import { isTeamProduct, orderInfo, idType, productEffectSet, limitStore } from '@/assets/js/constVariable';
+    import { policyValidity, playDeadline, returnRule, alterRule } from '@/assets/js/constVariable';
     import {configVariable} from '@/assets/js/constVariable';
 
     export default {
@@ -668,17 +669,14 @@
                 },
                 //枚举数据
                 enumData: {
-                    scene: [],
-                    //是否团队产品
-                    isTeamProduct: isTeamProduct,
-                    //预定时提交游客身份信息
-                    orderInfo: orderInfo,
-                    //证件类型
-                    idType: idType,
-                    //产品有效性设置
-                    productEffectSet: productEffectSet,
-                    //限制库存
-                    limitStore: limitStore,
+                    //政策可售期
+                    policyValidity: policyValidity,
+                    //游玩期限
+                    playDeadline: playDeadline,
+                    //退票规则
+                    returnRule: returnRule,
+                    //改签规则
+                    alterRule: alterRule,
                 },
 
                 //产品列表及表头
@@ -774,7 +772,7 @@
             //新增产品，显示新增产品弹窗
             addProduct () {
                 this.$refs.editProduct.show({
-                    title : this.$t('add')+this.$t('产品'),
+                    title : this.$t('add')+this.$t('product'),
                     type: 'add',
                     confirmCallback : ( data ) => {
                         //push to tableData

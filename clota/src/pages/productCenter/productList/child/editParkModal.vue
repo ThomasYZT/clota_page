@@ -113,14 +113,14 @@
                                 v-if="type === 'check'"
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
-                                :table-data="checkPoints"
+                                :table-data="checkPoint"
                                 :border="false">
                             </table-com>
                             <table-com
                                 v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
-                                :table-data="checkPoints"
+                                :table-data="checkPoint"
                                 :border="false">
                                 <el-table-column
                                     slot="column0"
@@ -278,14 +278,14 @@
                                 v-if="type === 'check'"
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
-                                :table-data="checkPoints"
+                                :table-data="checkPoint"
                                 :border="false">
                             </table-com>
                             <table-com
                                 v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
-                                :table-data="checkPoints"
+                                :table-data="checkPoint"
                                 :border="false">
                                 <el-table-column
                                     slot="column0"
@@ -366,7 +366,7 @@
                                 <table-com
                                     :table-com-min-height="250"
                                     :column-data="proGroupColumnHead"
-                                    :table-data="playPoints"
+                                    :table-data="playPoint"
                                     :border="false">
                                     <el-table-column
                                         slot="column0"
@@ -572,7 +572,7 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleType')}), trigger: 'change' },
                     ],
                     effTimes: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: '', length: 10}), trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength', {field: '', length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateTimes, trigger: 'blur' }
                     ],
@@ -596,11 +596,14 @@
                 distributeColumnHead: distributeColumnHead,
                 viewDistributeColumnHead: viewDistributeColumnHead,//查看表头
                 //可游玩园区表格数据 核销设备点 数组
-                checkPoints: [],
+                checkPoint: [],
                 //项目分组表头
                 proGroupColumnHead: proGroupColumnHead,
                 //项目分组表格数据(核销分组下的核销设备列表数据) 游玩项目点 数组
-                playPoints: [],
+                playPoint: [],
+                //复制数据，用于修改初次赋值
+                copyData: {},
+                check: false,
             }
         },
         methods: {
@@ -631,7 +634,7 @@
                 console.log(val);
                 let obj = this.enumData.group.find( item => val === item.id );
                 if(obj){
-                    this.checkPoints = [];
+                    this.checkPoint = [];
                     this.getCheckItems(obj);
                 }
             },
@@ -640,7 +643,7 @@
             changeProjectGroup ( val ) {
                 console.log(val);
                 if(val && val.length > 0){
-                    this.playPoints = [];
+                    this.playPoint = [];
                     val.forEach( value => {
                         let obj = this.enumData.group.find( item => value === item.id );
                         if(obj){
@@ -653,23 +656,23 @@
             //启用
             startUse ( data, index ) {
                 this.$Message.success(this.$t('commissioned')+this.$t('success'));
-                this.checkPoints[index].status = 'valid';
+                this.checkPoint[index].status = 'valid';
             },
             //禁用
             disabled ( data, index ) {
                 this.$Message.success(this.$t('disabled')+this.$t('success'));
-                this.checkPoints[index].status = 'invalid';
+                this.checkPoint[index].status = 'invalid';
             },
 
             //设为可玩
             setAblePlay ( data, index ) {
                 this.$Message.success(this.$t('setAblePlay')+this.$t('success'));
-                this.playPoints[index].playType = 'optional';
+                this.playPoint[index].playType = 'optional';
             },
             //设为必玩
             setMustPlay ( data, index ) {
                 this.$Message.success(this.$t('setMustPlay')+this.$t('success'));
-                this.playPoints[index].playType = 'required';
+                this.playPoint[index].playType = 'required';
             },
 
             //校验表格填入次数与总数
@@ -714,8 +717,8 @@
                             if(this.confirmCallback){
                                 let formData = defaultsDeep({},this.formData);
                                 formData.equipmentGroupIds = this.formData.equipmentGroupIds.join(',');
-                                formData.checkPoints = defaultsDeep([],this.checkPoints);
-                                formData.playPoints = defaultsDeep([],this.playPoints);
+                                formData.checkPoint = defaultsDeep([],this.checkPoint);
+                                formData.playPoint = defaultsDeep([],this.playPoint);
                                 this.confirmCallback( formData, this.index );
                                 this.cancel();
                             }
@@ -751,19 +754,44 @@
              * @param cancelCallback
              */
             show ({index,data,type,title,confirmCallback = null,cancelCallback}) {
-                this.visible = true;
                 this.title = title;
                 this.type = type;
                 this.index = index;
                 if(data){
+                    this.check = true;
+                    if(type !=='check'){
+                        this.selectParkChange(data.parkId);
+                    }
                     this.formData = defaultsDeep({}, data);
+                    this.copyData = defaultsDeep({}, data);
                     if(data.fingerCheck == 'true' || data.fingerCheck === true){
                         this.formData.fingerCheck = true;
                     }else{
                         this.formData.fingerCheck = false;
                     }
                     this.formData.equipmentGroupIds = data.equipmentGroupIds.split(',');
-                    this.selectParkChange(data.parkId);
+                    //查看/详情后的修改
+                    if(data.checkPoint && data.checkPoint.length > 0){
+                        this.checkPoint = defaultsDeep([], data.checkPoint);
+                        if( this.checkPoint.remove ){
+                            delete this.checkPoint.remove;
+                        }
+                        delete this.formData.checkPoint;
+                    }
+                    if(data.playPoint && data.playPoint.length > 0){
+                        this.playPoint = defaultsDeep([], data.playPoint);
+                        if( this.playPoint.remove ){
+                            delete this.checkPoint.remove;
+                        }
+                        delete this.formData.playPoint;
+                        this.playPoint.forEach( item =>{
+                            item.sumTimes = item.sumTimes ? Number(item.sumTimes) : 0;
+                            item.dayTimes = item.dayTimes ? Number(item.dayTimes) : 0;
+                        } )
+                    }
+                    //数字转字符串
+                    this.formData.effDay = data.effDay ? String(data.effDay) : '0';
+                    this.formData.effTimes = data.effTimes ? String(data.effTimes) : '0';
                 }
                 if(this.data.productEffSet === 'same_to_policy'){
                     this.formData.effDay == '';
@@ -774,6 +802,22 @@
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
                 }
+                this.visible = true;
+            },
+
+            //处理修改数据联动赋值
+            getOriginDate () {
+                if(this.checkPoint && this.checkPoint.length > 0){
+                    this.checkPoint = defaultsDeep([], this.copyData.checkPoint);
+                }
+                if(this.playPoint && this.playPoint.length > 0){
+                    this.playPoint = defaultsDeep([], this.copyData.playPoint);
+                    this.playPoint.forEach( item =>{
+                        item.sumTimes = item.sumTimes ? Number(item.sumTimes) : 0;
+                        item.dayTimes = item.dayTimes ? Number(item.dayTimes) : 0;
+                    } )
+                }
+                this.check = false;
             },
 
             //选择园区改变，联动查询设备分组
@@ -811,9 +855,10 @@
                             if(bool){
                                 res.data.forEach(item => {
                                     //项目分组表格数据
-                                    this.playPoints.push({
-                                        id: item.id,
+                                    this.playPoint.push({
+                                        id: '',
                                         parkId: this.formData.parkId,
+                                        checkId: item.partnerId,
                                         channelName: item.channelName,
                                         checkType: "equipment",
                                         playType: "optional",//默认可玩
@@ -824,19 +869,24 @@
                             } else {
                                 res.data.forEach(item => {
                                     //入园检票处表格数据
-                                    this.checkPoints.push({
-                                        id: item.id,
+                                    this.checkPoint.push({
+                                        id: '',
                                         channelName: item.channelName,
                                         parkId: this.formData.parkId,
+                                        checkId: item.partnerId,
                                         checkType: "garden",
                                         status: 'valid',
                                     });
                                 })
                             }
+                            if(this.check){
+                                //处理修改数据联动赋值
+                                this.getOriginDate();
+                            }
                         }
                     } else {
-                        this.playPoints = [];
-                        this.checkPoints = [];
+                        this.playPoint = [];
+                        this.checkPoint = [];
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 })
@@ -857,6 +907,7 @@
                     itemCheckTimes: 0,//项目游玩总次数itemCheckTimes
                     equipmentGroupIds: [],//游玩项目分组ID-多个逗号分隔
                 };
+                this.check = false;
             },
 
         }

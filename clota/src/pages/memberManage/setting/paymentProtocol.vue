@@ -59,6 +59,7 @@
                 editFlag: false,
                 // 协议内容
                 protocol: {
+                    id: '',
                     paymentAgreement: ''
                 },
                 isLoading: false,
@@ -82,17 +83,19 @@
              * @param params
              */
             getParams (params) {
-                if(params.protocol){
-                    this.protocol.paymentAgreement = params.protocol;
+                if(params && params.id){
+                    Object.assign(this.protocol, params);
+                } else {
+                    this.$router.push({
+                        name : 'memberSetting'
+                    });
                 }
             },
 
             // 保存支付协议的设置
             saveProtocol() {
                 this.isLoading = true;
-                ajax.post('basicSet', Object.assign(this.protocol, {
-                    id: this.$route.query.basicId
-                })).then(res => {
+                ajax.post('basicSet', this.protocol).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', {tip: this.$t('save')}));
                         this.hide();

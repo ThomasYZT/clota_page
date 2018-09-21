@@ -103,7 +103,7 @@
                         show-overflow-tooltip
                         slot-scope="row">
                         <template slot-scope="scoped">
-                            <span>{{ scoped.row.productName || '-' }}</span>
+                            <span>{{ scoped.row.typeName || '-' }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -206,9 +206,9 @@
                         field: 'orgName'
                     },
                     {
-                        title: 'goods',
+                        title: 'productType',
                         minWidth: 100,
-                        field: 'productName'
+                        field: 'typeName'
                     },
                     {
                         title: 'integralScale',

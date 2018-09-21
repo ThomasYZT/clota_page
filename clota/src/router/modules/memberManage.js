@@ -162,6 +162,17 @@ export default {
                             rightPath : topMenuName + '.' + 'memberInfo'
                         },
                     },
+                    orderDetail: {
+                        //会员管理--会员信息--我的订单--订单详情
+                        path: '/memberManage/order/detail',
+                        name: 'orderDetail',
+                        component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/orderDetail.vue'),
+                        meta: {
+                            menuName: 'memberInfo', //lang.config.js 里面的语言键值
+                            _name: 'members-detail',
+                            rightPath : topMenuName + '.' + 'memberInfo'
+                        },
+                    },
                 }
             },
 

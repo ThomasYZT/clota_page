@@ -25,9 +25,9 @@
         </Select>
         <!--删除分组-->
         <del-modal ref="delGroupModal">
-            <div class="del-tips">
-                <Icon type="help-circled"></Icon>
-                <span class="red-bale">您正在删除分组：
+            <div class="remove-group">
+                <span class="red-bale">
+                <Icon type="help-circled"></Icon>您正在删除分组：
                 <span style="color : #f8a334;">{{currentGroup.groupName}}</span>&nbsp;本组的渠道将被全部移至‘未分组’，<br>
                 <span style="color:#EB6751;">本操作不可撤销</span>，确认删除？
                 </span>
@@ -250,6 +250,27 @@
                 font-size: 14px;
                 margin-left: 5px;
             }
+        }
+
+        @at-root .remove-group{
+            @include block_outline();
+            @include center_center();
+            padding: 5px 50px 0 70px;
+            color: $color_333;
+            font-size: $font_size_14px;
+
+            .red-bale{
+                position: relative;
+                display: inline-block;
+                width: 100%;
+
+                .ivu-icon{
+                    @include absolute_pos(absolute,$left : -19px,$top : 2px);
+                    font-size: 15px;
+                    color: #EB6751;
+                }
+            }
+
         }
     }
 </style>

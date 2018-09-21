@@ -120,7 +120,7 @@
             @include block_outline($height : 60px);
             padding: 14px 20px 0 20px;
 
-            /deep/ .ivu-input-type{
+            .ivu-input-type{
                 float: right;
             }
         }

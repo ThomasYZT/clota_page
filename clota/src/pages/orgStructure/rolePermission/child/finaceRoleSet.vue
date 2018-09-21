@@ -32,7 +32,6 @@
                 <el-tree :data="menuList"
                          node-key="privCode"
                          ref="menuTree"
-                         disabled
                          show-checkbox
                          :default-expand-all="true"
                          :props="menuDefaultProps"

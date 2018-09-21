@@ -2,14 +2,14 @@
 //表头配置
 export const columnData = [
     {
-        title: 'productCode',
+        title: 'proTypeCode',
         minWidth: 150,
-        field: 'productId'
+        field: 'typeId'
     },
     {
-        title: 'productName',
+        title: 'types',
         minWidth: 150,
-        field: 'productName'
+        field: 'typeName'
     },
     {
         title: 'integralScale',
@@ -30,7 +30,7 @@ export const columnData = [
     },
     {
         title: 'operate',
-        width: 190,
+        width: 220,
         enWidth: 250,
     }
 ];

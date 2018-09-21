@@ -4,27 +4,27 @@ export const myPolicyHead = [
     {
         title: 'salePolicyName',      // 销售政策名称
         width: 160,
-        field: 'id'
+        field: 'name'
     },
     {
         title: 'industryType',   // 业态类型
-        minWidth: 200,
-        field: 'industryType'
+        minWidth: 120,
+        field: 'productTypeDesc'
     },
     {
         title: 'desc',   // 描述
-        minWidth: 120,
-        field: 'desc'
+        minWidth: 200,
+        field: 'policyDesc'
     },
     {
         title: 'status',      // 状态
         minWidth: 120,
-        field: 'status'
+        field: 'auditStatus'
     },
     {
         title: 'saleChannelsGroup',      // 销售渠道分组
         minWidth: 180,
-        field: 'saleChannelsGroup'
+        field: 'groupNames'
     },
     {
         title: 'operate',       // 操作
@@ -38,22 +38,22 @@ export const distributePolicyHead = [
     {
         title: 'salePolicyName',      // 销售政策名称
         width: 160,
-        field: 'id'
+        field: 'name'
     },
     {
         title: 'scenePlace',   // 所属景区
         minWidth: 150,
-        field: 'productCode'
+        field: 'orgName'
     },
     {
         title: 'industryType',   // 业态类型
         minWidth: 100,
-        field: 'industryType'
+        field: 'productTypeDesc'
     },
     {
         title: 'desc',      // 描述
         minWidth: 220,
-        field: 'desc'
+        field: 'policyDesc'
     },
     {
         title: 'superiorDistribution',      // 上级分销商

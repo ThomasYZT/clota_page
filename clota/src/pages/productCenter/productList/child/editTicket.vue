@@ -355,7 +355,7 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t(err,{field : this.$t(rule.field),length : 50}));
                         }else{
                             callback(this.$t(err,{field : this.$t(rule.field)}));
                         }
@@ -407,27 +407,27 @@
                 //表单数据
                 formData: {
                     //基本信息
-                    productName: '产品名称',//产品名称
-                    standardPrice: '12000',//景区成本价
-                    thirdCode: '111111111',//第三方产品编码
-                    productDes: '产品描述',//产品描述
+                    productName: '',//产品名称
+                    standardPrice: '',//景区成本价
+                    thirdCode: '',//第三方产品编码
+                    productDes: '',//产品描述
                     //票面信息
-                    printName: '打印名称',//打印名称
-                    printPrice: '12000',//票面价格
-                    ticketRemark: '票面说明',//票面说明
-                    printRemark: '打印说明',//打印说明
+                    printName: '',//打印名称
+                    printPrice: '',//票面价格
+                    ticketRemark: '',//票面说明
+                    printRemark: '',//打印说明
                     //购买限制
-                    isGroup : 'true',//是否团队产品
-                    inNum : '3',//可入园人数
-                    minNum : '10',//每订单最小起订数
-                    maxNum : '100',//每订单最大限订数
+                    isGroup : '',//是否团队产品
+                    inNum : '',//可入园人数
+                    minNum : '',//每订单最小起订数
+                    maxNum : '',//每订单最大限订数
                     needId : 'noRequired',//预定时提交游客身份信息
                     acceptIdType : ['identity','passport'],//可接受证件类型
-                    limitByIdDay: '5',//身份证件购票限制
-                    limitByIdNum: '5',//身份证件购票限制
-                    limitByMobileDay: '5',//手机号购票限制
-                    limitByMobileNum: '5',//手机号购票限制
-                    stockType : 'is_no_limit',//限制库存
+                    limitByIdDay: '',//身份证件购票限制
+                    limitByIdNum: '',//身份证件购票限制
+                    limitByMobileDay: '',//手机号购票限制
+                    limitByMobileNum: '',//手机号购票限制
+                    stockType : '',//限制库存
                     stockNum : '',//库存数量
                     //产品有效性
                     productEffSet: 'since_the_play',//产品有效性设置
@@ -447,12 +447,12 @@
                     ],
                     standardPrice: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('standardPrice')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('standardPrice'), length: 10}), trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('standardPrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' }
                     ],
                     thirdCode: [
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('thirdCode'), length: 50}), trigger: 'blur' },
+                        { max: 50, message: this.$t('errorMaxLength', {field: this.$t('thirdCode'), length: 50}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
@@ -551,20 +551,10 @@
                         let rule = [];
                         this.productPlayRuleVo.forEach((item,index) => {
                             let obj = defaultsDeep({},item);
-                            if(item.checkPoints && item.checkPoints.length > 0){
-                                obj.checkPoints = JSON.stringify(item.checkPoints);
-                            }else{
-                                obj.checkPoints = '';
-                            }
-                            if(item.playPoints && item.playPoints.length > 0){
-                                obj.playPoints = JSON.stringify(item.playPoints);
-                            }else{
-                                obj.playPoints = '';
-                            }
                             if(item.saleType === 'one_ticket'){
-                                obj.playPoints = '';
+                                obj.playPoint = [];
                             }
-                            rule.push(JSON.stringify(obj));
+                            rule.push(obj);
                         });
 
                         let params = {
@@ -694,6 +684,9 @@
                     if(params.info){
                         this.initData(params.info);
                     }
+                    if(params.productPlayRuleVo){
+                        this.productPlayRuleVo = defaultsDeep([],params.productPlayRuleVo);
+                    }
                 }
                 this.queryScenicOrgByAccountRole();
             },
@@ -702,13 +695,15 @@
              * @param data
              */
             initData(data) {
-                let formData =  defaultsDeep({},data);
+                let formData = defaultsDeep({},data);
                 formData.limitByIdDay = data.idLimit ? JSON.parse(data.idLimit).day : '';
                 formData.limitByIdNum = data.idLimit ? JSON.parse(data.idLimit).quantity : '';
                 formData.limitByMobileDay = data.mobileLimit ? JSON.parse(data.mobileLimit).day : '';
                 formData.limitByMobileNum = data.mobileLimit ? JSON.parse(data.mobileLimit).quantity : '';
                 formData.limitByMobileNum = data.mobileLimit ? JSON.parse(data.mobileLimit).quantity : '';
                 formData.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : '';
+                formData.printPrice = data.printPrice ? String(data.printPrice) : '0';
+                formData.standardPrice = data.standardPrice ? String(data.standardPrice) : '0';
                 this.formData = defaultsDeep({},formData);
             },
 

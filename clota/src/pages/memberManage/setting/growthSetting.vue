@@ -176,8 +176,6 @@
                                         }
                                     }
                                 }
-                                console.log(params)
-
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -213,7 +211,6 @@
                         growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
                         growthFromFamilies:this.settingData.growthFromFamilies,
                     };
-                    console.log(params)
                     this.basicSet(params);
 
                 }

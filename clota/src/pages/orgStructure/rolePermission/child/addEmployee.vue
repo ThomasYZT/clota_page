@@ -21,7 +21,8 @@
             :column-data="columns"
             :table-data="tableData"
             :border="true"
-            :height="500"
+            :ofset-height="200"
+            :table-com-min-height="250"
             @query-data="queryList"
             @selection-change="selectedChange">
             <el-table-column
@@ -55,6 +56,13 @@
                 type: Boolean,
                 default: false
             },
+            //已经新增的员工
+            'added-employee' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
         },
         components : {
             tableCom
@@ -96,6 +104,8 @@
             visibleChange(type) {
                 if(type === true){
                 }else{
+                    this.tableData = [];
+                    this.employeeSelected = [];
                 }
             },
             /**
@@ -107,7 +117,14 @@
                     pageSize : 99999
                 }).then(res => {
                     if(res.success){
-                        this.tableData = res.data ? res.data.data : [];
+                        let addIds = this.addedEmployee.map(item => item.id);
+                        if(res.data && res.data.data){
+                            this.tableData = res.data.data.filter(item =>{
+                                return !addIds.includes(item.id);
+                            });
+                        }else{
+                            this.tableData = [];
+                        }
                     }else{
                         this.tableData = [];
                     }
@@ -136,7 +153,8 @@
         }
 
         .ivu-modal-body{
-            padding: 0 10px;
+            padding: 0 10px 10px 0;
+            min-height: 300px;
         }
     }
 </style>

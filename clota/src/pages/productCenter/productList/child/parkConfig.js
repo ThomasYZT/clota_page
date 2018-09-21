@@ -57,7 +57,7 @@ export const viewDistributeColumnHead = [
     {
         title: 'equipmentName',   // 设备名称
         minWidth: 250,
-        field: 'name'
+        field: 'channelName'
     },
 ];
 

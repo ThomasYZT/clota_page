@@ -155,6 +155,7 @@
     .isp-internet-detail {
         @include block_outline();
         background: $color_fff;
+        border-radius: 4px;
 
         .structure {
             float: left;
