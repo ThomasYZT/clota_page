@@ -67,6 +67,14 @@ const createRouter = () => new Router({
                 }
             }
         },
+        {
+            path: '/mobile/login',
+            name: 'mobileLogin',
+            component: () => import(/* webpackChunkName: "login" */ '../mobile/login/login.vue'),
+            meta: {
+                noFrame: true
+            }
+        }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {

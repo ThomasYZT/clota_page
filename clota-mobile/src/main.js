@@ -1,5 +1,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import "babel-polyfill"
+//移动端html font-size适配方案
+import 'lib-flexible'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -32,7 +34,9 @@ router.beforeEach((to, from, next) => {
     //如果是跳转到登录页面，不做任何权限判断
     if (to.name === 'login') {
         next();
-    } else {
+    } else if (to.name === 'mobileLogin'){
+        next();
+    }else {
         //判断是否已经获取用户信息
         if (Object.keys(store.getters.userInfo).length > 0 ) {
             //判断是否已经保存权限信息，如果permissionInfo不为null表示已经获取过权限

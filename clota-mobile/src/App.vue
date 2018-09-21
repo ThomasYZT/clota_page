@@ -43,26 +43,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~@/assets/scss/base';
 
-    #app {
-        @include block_outline();
-        min-width: $window_min_width;
-        min-height: $window_min_height;
-        background-size: 100% 100%;
-        overflow: auto;
-        /*transition: all 0.3s;*/
-    }
 </style>
-<style lang="scss">
-    @import '~@/assets/scss/base';
-    body,
-    html{
-        min-width: $window_min_width;
-        min-height: $window_min_height;
 
-    }
-    html{
-        overflow: auto!important;
-    }
-</style>

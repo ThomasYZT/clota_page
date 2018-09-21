@@ -9,6 +9,7 @@ const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const vuxLoader = require('vux-loader');
 
 const smp = new SpeedMeasurePlugin();
 
@@ -27,7 +28,7 @@ const createLintingRule = () => ({
     }
 })
 
-module.exports = smp.wrap({
+let webpackConfig = smp.wrap({
     context: path.resolve(__dirname, '../'),
     entry: {
         app: './src/main.js'
@@ -144,4 +145,9 @@ module.exports = smp.wrap({
             threadPool: happyThreadPool,
         }),
     ]
+})
+
+
+module.exports =  vuxLoader.merge(webpackConfig, {
+    plugins: ['vux-ui']
 })

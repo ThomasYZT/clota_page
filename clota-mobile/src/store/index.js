@@ -70,7 +70,7 @@ export default new Vuex.Store({
         //组织信息
         manageOrgs : {},
         //当前的皮肤
-        skinType : 'blue-theame',
+        skinType : '',
         //随机数，用于更新组件
         hashKey : ''
     },

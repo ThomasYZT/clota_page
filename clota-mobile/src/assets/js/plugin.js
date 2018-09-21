@@ -32,6 +32,12 @@ import {
     Steps,
     Poptip
 } from 'iview';
+//按需引入vux组件
+import {
+    XInput,
+    Group,
+    XButton
+} from 'vux'
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
 import TableColumn from 'element-ui/lib/table-column';
@@ -120,6 +126,11 @@ plugin.install = function (Vue, options) {
     Vue.component('Step',Steps.Step);
     Vue.component('Poptip',Poptip);
     Vue.prototype.$Message = Message;
+
+    //vux按需引入
+    Vue.component( 'XInput', XInput);
+    Vue.component( 'Group', Group);
+    Vue.component( 'XButton', XButton);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
