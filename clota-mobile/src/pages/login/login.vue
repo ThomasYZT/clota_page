@@ -3,30 +3,32 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="login" v-transfer-dom>
-        <group class="group" label-width="150px">
+    <div class="login">
 
-            <x-input title="手机号码"
-                     class="c-input"
-                     keyboard="number">
-            </x-input>
+        <x-input title="手机号码"
+                 class="c-input"
+                 keyboard="number"
+                 label-width="150px">
+        </x-input>
 
-            <span style="display: block;width: 100px;"></span>
+        <span style="display: block;width: 100px;"></span>
 
-            <x-input title="验证码"
-                     placeholder="输入验证码"
-                     class="c-input verify-input"
-                     :show-clear="false">
-                <div slot="right"
-                     class="code-button"
-                     @click="getCode">
-                    <p>获取动态码</p>
-                </div>
-            </x-input>
-        </group>
+        <x-input title="验证码"
+                 placeholder="输入验证码"
+                 class="c-input verify-input"
+                 :show-clear="false"
+                 keyboard="number"
+                 label-width="150px">
+            <div slot="right"
+                 class="code-button"
+                 @click="getCode">
+                <p>获取动态码</p>
+            </div>
+        </x-input>
+
         <div>
             <p class="register-entry"
-               @click="$router.push('/mobile/register')">去注册</p>
+               @click="$router.push({path: '/register'})">去注册</p>
         </div>
 
         <x-button class="button">登陆</x-button>
@@ -52,17 +54,21 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+
     .login {
+        margin-top: 15px;
         color: #4A4A4A;
 
         .c-input {
+            &:before {
+                border: none !important;
+            }
             height: 50.5px;
             font-size: 15px;
+            border-bottom: 1px solid #F5F5F5;
         }
 
         .verify-input{
-            border-top: 1px solid #F5F5F5;
-            border-bottom: 1px solid #F5F5F5;
 
             .code-button {
                 padding-left: 16.5px;
@@ -78,12 +84,12 @@
         }
 
         .register-entry {
-            /*margin-right: 16.5px;*/
-            /*color: #046FDB;*/
-            /*height: 50.5px;*/
-            /*line-height: 50.5px;*/
-            /*font-size: 12.5px;*/
-            /*text-align: right;*/
+            margin-right: 16.5px;
+            color: #046FDB;
+            height: 50.5px;
+            line-height: 50.5px;
+            font-size: 12.5px;
+            text-align: right;
         }
 
         .button {
@@ -91,11 +97,7 @@
             max-width: calc(100% - 110px);
             background-color: #0073EB;
             color: #FFF;
-            /*-webkit-border-radius: 20px;*/
-            /*-moz-border-radius: 20px;*/
-            /*border-radius: 20px;*/
         }
-
     }
 </style>
 

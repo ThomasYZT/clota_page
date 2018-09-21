@@ -1,23 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store/index';
-
 Vue.use(Router);
-
-// export default new Router({
-//     routes: [
-//         //登录页面路由
-//         {
-//             path: '/login',
-//             name: 'login',
-//             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue')
-//             , meta: {
-//                 noFrame: true
-//             }
-//         },
-//     ]
-// })
-
 
 //生成新路由的方法
 const createRouter = () => new Router({
@@ -59,7 +43,7 @@ const createRouter = () => new Router({
             // }
         },
         {
-            path: '/mobile/login',
+            path: '/login',
             name: 'mobileLogin',
             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
             meta: {
@@ -67,9 +51,25 @@ const createRouter = () => new Router({
             }
         },
         {
-            path: '/mobile/register',
+            path: '/register',
             name: 'mobileRegister',
             component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
+            meta: {
+                noFrame: true
+            }
+        },
+        {
+            path: '/testRoute',
+            name: 'testRoute',
+            component: () => import(/* webpackChunkName: "login" */ '../pages/testRoute/testRoute.vue'),
+            meta: {
+                noFrame: true
+            }
+        },
+        {
+            path: '/home',
+            name: 'home',
+            component: () => import(/* webpackChunkName: "login" */ '../pages/home/home.vue'),
             meta: {
                 noFrame: true
             }
@@ -84,6 +84,5 @@ const createRouter = () => new Router({
 });
 
 const router = createRouter();
-
 
 export default router;

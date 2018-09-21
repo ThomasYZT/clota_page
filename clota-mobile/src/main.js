@@ -24,14 +24,10 @@ import common from './assets/js/common';
 Vue.use(plugin);
 Vue.config.productionTip = true;
 
-// router.beforeEach((to, from, next) => {
-//     //如果是跳转到登录页面，不做任何权限判断
-//     if (to.name === 'login') {
-//         next();
-//     } else if (to.name === 'mobileLogin'){
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    //todo
+    next()
+});
 
 
 /* eslint-disable no-new */
