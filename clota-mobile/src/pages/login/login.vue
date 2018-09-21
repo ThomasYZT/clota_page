@@ -7,6 +7,8 @@
                      keyboard="number">
             </x-input>
 
+            <span style="display: block;width: 100px;"></span>
+
             <x-input title="验证码"
                      placeholder="输入验证码"
                      class="c-input verify-input"
