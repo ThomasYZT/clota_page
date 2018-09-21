@@ -75,14 +75,6 @@ const createRouter = () => new Router({
             }
         },
         {
-            path: '/testRoute',
-            name: 'testRoute',
-            component: () => import(/* webpackChunkName: "login" */ '../pages/testRoute/testRoute.vue'),
-            meta: {
-                noFrame: true
-            }
-        },
-        {
             path: '/home',
             name: 'home',
             component: () => import(/* webpackChunkName: "login" */ '../pages/home/home.vue'),
@@ -98,12 +90,21 @@ const createRouter = () => new Router({
                 title : '账户'
             }
         },
+        //账户充值
         {
             path : '/account/recharge',
             name : 'accountRecharge',
             component : () => import(/* webpackChunkName: "account" */'../pages/account/child/accountRecharge.vue'),
             meta : {
                 title : '默认账户充值'
+            }
+        },
+        {
+            path : '/personInfo',
+            name : 'personInfo',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/index.vue'),
+            meta : {
+                title : '个人信息'
             }
         }
     ],
@@ -116,5 +117,6 @@ const createRouter = () => new Router({
 });
 
 const router = createRouter();
+
 
 export default router;

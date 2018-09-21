@@ -22,10 +22,7 @@
     ],
     "plugins": [
         "transform-vue-jsx",
-        ["import", {
-            "libraryName": "iview",
-            "libraryDirectory": "src/components"
-        }]
+        "transform-runtime"
     ],
     "env": {
         "test": {

@@ -45,11 +45,6 @@
 </script>
 
 <style lang="scss">
-    html, body {
-        height: 100%;
-        width: 100%;
-        overflow-x: hidden;
-    }
     .vux-pop-out-enter-active,
     .vux-pop-out-leave-active,
     .vux-pop-in-enter-active,

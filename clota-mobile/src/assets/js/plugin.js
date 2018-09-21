@@ -11,7 +11,8 @@ import {
     Swiper,
     SwiperItem,
     Radio,
-    Cell
+    Cell,
+    Icon,
 } from 'vux';
 
 
@@ -33,11 +34,12 @@ plugin.install = function (Vue, options) {
     Vue.component( 'XInput', XInput);
     Vue.component( 'Group', Group);
     Vue.component( 'XButton', XButton);
-    Vue.component( 'PopupPicker', PopupPicker);
-    Vue.component( 'Cell', Cell);
+    Vue.component( 'popup-picker', PopupPicker);
     Vue.component('swiper', Swiper);
     Vue.component('swiper-item', SwiperItem);
     Vue.component('Radio', Radio);
+    Vue.component('Cell', Cell);
+    Vue.component('Icon', Icon);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
