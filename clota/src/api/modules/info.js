@@ -49,6 +49,8 @@ export default {
     'getCardPackage' : '/member/getCardPackage',
     //订单-查询订单信息
     'queryMemberOrder' : '/member/memberOrder/queryMemberOrder',
+    //订单-订单详情
+    'queryOrderDetail' : '/member/memberOrder/queryOrderDetail',
 
 
     /***********************************会员积分***********************************/

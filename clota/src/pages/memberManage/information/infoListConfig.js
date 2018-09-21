@@ -127,3 +127,60 @@ export const cardOwnerHead = [
         field: 'gender'
     },
 ];
+
+/*** 订单详情 - 积分率相关表格表头 ***/
+// 按会员级别享受积分、折扣率信息 - 列表表头
+export const byLevelHead = [
+    {
+        title: 'IntegralRate',       // 积分率
+        field: 'IntegralRate'
+    },
+    {
+        title: 'discountRate',       // 折扣率
+        field: 'discountRate'
+    },
+];
+
+// 按店铺享受积分、折扣率信息 - 列表表头
+export const byShopHead = [
+    {
+        title: 'shop',       // 店铺
+        field: 'shop'
+    },
+    ...byLevelHead
+];
+
+// 按产品享受积分、折扣率信息 - 列表表头
+export const byProductHead = [
+    {
+        title: 'shop',       // 店铺
+        field: 'shop'
+    },
+    {
+        title: 'goods',       // 商品
+        field: 'goods'
+    },
+    ...byLevelHead
+];
+
+
+// 订单状态的过滤显示
+export const orderStatus = function (status) {
+    let statusName = '-';
+    switch (status) {
+        case 'pay' :
+            statusName = '支付';
+            break;
+        case 'refund' :
+            statusName = '退款';
+            break;
+        case 'cancel_pay' :
+            statusName = '撤销支付';
+            break;
+        case 'cancel_refund' :
+            statusName = '撤销退款';
+            break;
+    }
+    return statusName;
+};
+

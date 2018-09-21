@@ -6,29 +6,96 @@
 
 <template>
     <div class="order-detail">
-        hehe
+        <bread-crumb-head
+            :before-router-list="beforeRouterList"
+            :locale-router="$t('我的订单')">
+        </bread-crumb-head>
+        <!--主表-->
+        <order-info-main :info-data="order.memberOrderModel"></order-info-main>
+        <!--产品子表-->
+        <order-info-item :info-data="order.itemModels"></order-info-item>
+        <!--支付方式子表-->
+        <order-info-pay :info-data="order.payModels"></order-info-pay>
+        <!--积分率信息-->
+        <order-info-integral :info-data="order.payModels"></order-info-integral>
+
     </div>
 </template>
 <script type="text/ecmascript-6">
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
+    import orderInfoMain from '../components/orderInfoMain.vue';
+    import orderInfoItem from '../components/orderInfoItem.vue';
+    import orderInfoPay from '../components/orderInfoPay.vue';
+    import orderInfoIntegral from '../components/orderInfoIntegral.vue';
+    import ajax from '@/api/index';
 
     export default {
-        components: {},
+        components: {
+            breadCrumbHead,
+            orderInfoMain,
+            orderInfoItem,
+            orderInfoPay,
+            orderInfoIntegral,
+        },
         props: {},
         data() {
-            return {}
+            return {
+                //面包屑上级路由信息
+                beforeRouterList: [
+                    {
+                        name: 'memberInfo',   // 会员信息
+                        router: {name: 'memberInfo'},
+                    },
+                    {
+                        name: 'memberDetail',   // 会员详情
+                        router: {name: 'infoDetail'},
+                    },
+                    {
+                        name: 'myOrder',   // 我的订单
+                        router: {name: 'myOrder'},
+                    },
+                    {
+                        name: 'orderDetail',   // 订单详情
+                        router: {name: 'orderDetail'},
+                    },
+                ],
+
+                // 订单详情数据
+                order: {
+                    itemModels: [],
+                    memberOrderModel: {},
+                    payModels: [],
+                },
+            }
         },
         computed: {},
         created() {
+            this.getOrderDetail();
         },
         mounted() {
         },
         watch: {},
-        methods: {}
+        methods: {
+            getOrderDetail() {
+                if (this.$route.query.orderId) {
+                    ajax.post('queryOrderDetail', {
+                        orderId: this.$route.query.orderId
+                    }).then(res => {
+                        if (res.success && res.data) {
+                            this.order = res.data;
+                        }
+                    });
+                } else {
+                    this.$router.push({name: 'myOrder'});
+                }
+            },
+        }
     };
 </script>
 
 <style lang="scss" scoped>
     .order-detail {
-
+        height: 100%;
+        overflow: auto;
     }
 </style>
