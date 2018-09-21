@@ -59,7 +59,7 @@ let webpackConfig = smp.wrap({
             {
                 test: /\.js$/,
                 loader: 'happypack/loader?id=happy-babel-js',
-                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/iview/src')]
+                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -107,7 +107,6 @@ let webpackConfig = smp.wrap({
             entry: {
                 vueFamily: ['vue', 'vue-router','vuex','vue-i18n'],
                 plugins: [
-                    'vux',
                     'echarts/lib/echarts',
                     'core-js',
                     'axios',
