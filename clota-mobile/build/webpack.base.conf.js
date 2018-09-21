@@ -9,7 +9,7 @@ const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-// const vuxLoader = require('vux-loader');
+const vuxLoader = require('vux-loader');
 
 const smp = new SpeedMeasurePlugin();
 
@@ -114,7 +114,7 @@ let webpackConfig = smp.wrap({
                     'echarts/lib/chart/line',
                     'echarts/lib/component/tooltip',
                     'echarts/lib/component/legend',
-                    '../src/utils/vux/components/x-input/index.min',
+                    '../../utils/vux/components/x-input/index.min',
                 ]
             },
             plugins: [
@@ -140,7 +140,6 @@ let webpackConfig = smp.wrap({
     ]
 })
 
-module.exports = webpackConfig
-// module.exports =  vuxLoader.merge(webpackConfig, {
-//     plugins: ['vux-ui']
-// })
+module.exports =  vuxLoader.merge(webpackConfig, {
+    plugins: ['vux-ui']
+})

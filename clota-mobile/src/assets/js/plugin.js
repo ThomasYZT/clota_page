@@ -3,15 +3,11 @@
  * Created by Sasha on 2018/6/1.
  */
 //按需引入vux组件
-// import {
-//     Group,
-//     XButton
-// } from 'vux';
-import XInput from '../../utils/vux/components/x-input/index.min';
-import XButton from '../../utils/vux/components/x-button/index.min';
-import Group from '../../utils/vux/components/group/index.min';
-//引入vux指令
-import TransferDom from '../../utils/vux/directives/transfer-dom/index.min';
+import {
+    XInput,
+    Group,
+    XButton
+} from 'vux';
 
 
 // // 按需引入 Echarts 图表
@@ -33,8 +29,6 @@ plugin.install = function (Vue, options) {
     Vue.component( 'Group', Group);
     Vue.component( 'XButton', XButton);
 
-    //vux全局指令
-    Vue.directive('transfer-dom', TransferDom);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
