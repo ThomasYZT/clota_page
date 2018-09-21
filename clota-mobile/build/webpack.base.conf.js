@@ -141,5 +141,8 @@ let webpackConfig = smp.wrap({
 })
 
 module.exports =  vuxLoader.merge(webpackConfig, {
-    plugins: ['vux-ui']
+    plugins: ['vux-ui',{
+        name: 'less-theme',
+        path: 'src/assets/theme/vux/index.less' // 相对项目根目录路径
+    }],
 })

@@ -78,12 +78,12 @@
         }
 
         .register-entry {
-            margin-right: 16.5px;
-            color: #046FDB;
-            height: 50.5px;
-            line-height: 50.5px;
-            font-size: 12.5px;
-            text-align: right;
+            /*margin-right: 16.5px;*/
+            /*color: #046FDB;*/
+            /*height: 50.5px;*/
+            /*line-height: 50.5px;*/
+            /*font-size: 12.5px;*/
+            /*text-align: right;*/
         }
 
         .button {
@@ -91,9 +91,9 @@
             max-width: calc(100% - 110px);
             background-color: #0073EB;
             color: #FFF;
-            -webkit-border-radius: 20px;
-            -moz-border-radius: 20px;
-            border-radius: 20px;
+            /*-webkit-border-radius: 20px;*/
+            /*-moz-border-radius: 20px;*/
+            /*border-radius: 20px;*/
         }
 
     }
