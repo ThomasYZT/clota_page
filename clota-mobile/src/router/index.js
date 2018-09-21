@@ -69,7 +69,7 @@ const createRouter = () => new Router({
         {
             path: '/mobile/register',
             name: 'mobileRegister',
-            component: () => import(/* webpackChunkName: "login" */ '../mobile/register/register.vue'),
+            component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
             meta: {
                 noFrame: true
             }

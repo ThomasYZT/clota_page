@@ -25,77 +25,14 @@ import common from './assets/js/common';
 Vue.use(plugin);
 Vue.config.productionTip = true;
 
-router.beforeEach((to, from, next) => {
-    //如果是跳转到登录页面，不做任何权限判断
-    if (to.name === 'login') {
-        next();
-    } else if (to.name === 'mobileLogin'){
-        next();
-    }else {
-        //判断是否已经获取用户信息
-        if (Object.keys(store.getters.userInfo).length > 0 ) {
-            //判断是否已经保存权限信息，如果permissionInfo不为null表示已经获取过权限
-            //这里判断了如果有保存的权限信息，就不再继续判断是否有路由的权限，因为如果没有这个权限会跳转到无权限的页面
-            if (store.getters.permissionInfo !== null) {
-                next();
-            } else {
-                //查询本地存储的用户信息是否还有，如果没有则直接跳转到登录页面
-                let manageOrgs = common.getUserInfo().manageOrgs;
-                if(manageOrgs && Object.keys(manageOrgs).length > 0){
-                    let orgIndex = localStorage.getItem('orgId');
-                    if(orgIndex === '' || orgIndex === null){
-                        orgIndex = manageOrgs[0].id;
-                        localStorage.setItem('orgIndex',manageOrgs[0].id);
-                    }
-                    for(let i = 0,j = manageOrgs.length;i < j;i++){
-                        if(orgIndex === manageOrgs[i].id){
-                            store.commit('updateManageOrgs',manageOrgs[i]);
-                            break;
-                        }
-                    }
-                    store.dispatch('getUserRight', to).then((router) => {
-                        if(router){
-                            next({ ...to, replace: true })
-                        }else{
-                            next({
-                                name: 'login'
-                            });
-                        }
-                    }).catch(() => {
-                        next({
-                            name: 'login'
-                        });
-                    });
-                }else{
-                    next({
-                        name: 'login'
-                    });
-                }
-            }
-        } else {
-            //判断是否本地有存储token，有的话，直接重新获取用户信息
-            if(ajax.getToken()){
-                let userInfo  = common.getUserInfo().userInfo;
-                store.dispatch('getUserInfo',userInfo).then(route => {
-                    if(to.query && Object.keys(to.query).length > 0){
-                        next({
-                            path: to.path,
-                            query : to.query
-                        });
-                    }else{
-                        next({
-                            path: to.path
-                        });
-                    }
-                });
-            }else{
-                next({
-                    name: 'login'
-                });
-            }
-        }
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     //如果是跳转到登录页面，不做任何权限判断
+//     if (to.name === 'login') {
+//         next();
+//     } else if (to.name === 'mobileLogin'){
+//         next();
+//     }
+// });
 
 
 /* eslint-disable no-new */
