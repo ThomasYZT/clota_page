@@ -1,7 +1,7 @@
 <!---->
 
 <template>
-    <div id="app" :class="skinType">
+    <div id="app" >
         <transition name="fade">
             <router-view :key="hashKey">
             </router-view>
@@ -23,7 +23,6 @@
         },
         computed: {
             ...mapGetters({
-                skinType: 'skinType',
                 hashKey : 'hashKey'
             }),
         },
