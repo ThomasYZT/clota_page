@@ -24,12 +24,16 @@ export default {
     /***********************************销售政策***********************************/
     //获取销售政策列表
     'queryPolicy' : '/salePolicy/queryPolicy',
-    //新增销售政策
-    'addPolicy' : '/salePolicy/addPolicy',
+    //获取机构分组列表
+    'queryOrgGroupVoList' : '/salePolicy/queryOrgGroupVoList',
+    //获取有效的假期数据
+    'getNormalHolidaysData' : '/salePolicy/getNormalHolidaysData',
     //获取销售政策详情（包含销售组、产品）
     'getPolicyInfo' : '/salePolicy/getPolicyInfo',
     //获取销售政策详情（基本信息、政策规则）-- 分销的销售政策
     'getPolicyBase' : '/salePolicy/getPolicyBase',
+    //新增销售政策
+    'addPolicy' : '/salePolicy/addPolicy',
     //更新销售政策
     'modifyPolicy' : '/salePolicy/modifyPolicy',
     //更新销售政策状态

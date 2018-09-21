@@ -5,7 +5,7 @@
 -->
 
 <template>
-    <div class="ticket-detail">
+    <div class="sale-policy-detail">
 
         <bread-crumb-head
             :before-router-list="beforeRouterList"
@@ -81,11 +81,15 @@
                         </i-col>
                     </i-row>
                     <i-row>
-                        <i-col span="12">
+                        <i-col span="24">
                             <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
-                                <div v-w-title="detail.productPolicy.playRuleModel.weekSold">{{detail.productPolicy.playRuleModel.weekSold | contentFilter}}</div>
+                                <div v-w-title="detail.productPolicy.playRuleModel.weekSold">
+                                    {{showWeek(detail.productPolicy.playRuleModel.weekSold) | contentFilter}}
+                                </div>
                             </Form-item>
                         </i-col>
+                    </i-row>
+                    <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('checkinTime')+'：'"><!--入园时间控制-->
                                 <div>{{detail.productPolicy.checkinTime | contentFilter}}</div>
@@ -275,166 +279,10 @@
                         router: 'marketingPolicy',
                     }
                 ],
+                //week
+                weekList: ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 //详情数据
-                detail: {
-                    //销售组列表
-                    "policyChannels":[
-                        {
-                            "allocationId":"1040526354644340736",
-                            "createUser":"1037976274619994112",
-                            "createdTime":"2018-09-14 17:03:10",
-                            "groupId":"1040477916850425856",
-                            "groupName":"xt优质销售组1",
-                            "groupchannels":"xt销售渠道1,xt销售渠道2,",
-                            "id":"1040526354963107840",
-                            "isDeleted":"false",
-                            "policyId":"1040526353243443200",
-                            "updateUser":"1037976274619994112",
-                            "updatedTime":"2018-09-14 17:03:10"
-                        },
-                        {
-                            "allocationId":"1040526354644340736",
-                            "createUser":"1037976274619994112",
-                            "createdTime":"2018-09-14 17:03:10",
-                            "groupId":"1040478245901963264",
-                            "groupName":"xt普通销售组2",
-                            "groupchannels":"xt销售渠道3,xt销售渠道4,",
-                            "id":"1040526355269292032",
-                            "isDeleted":"false",
-                            "policyId":"1040526353243443200",
-                            "updateUser":"1037976274619994112",
-                            "updatedTime":"2018-09-14 17:03:10"
-                        }
-                    ],
-                    //产品列表
-                    "policyItems":[
-                        {
-                            allocationId: "1040526354644340736",
-                            createUser: "1037976274619994112",
-                            createdTime: "2018-09-14 17:03:10",
-                            id: "1040526355575476224",
-                            isDeleted: "false",
-                            itemRule: null,
-                            policyId: "1040526353243443200",
-                            printPrice: null,
-                            productId: "1040508543163305984",
-                            productName: "xt测试产品1",
-                            settlePrice: 150,
-                            standardPrice: "100.00",
-                            stockNum: "10000",
-                            stockType: "total",
-                            updateUser: "1037976274619994112",
-                            updatedTime: "2018-09-14 17:03:10",
-                        },
-                        {
-                            allocationId: "1040526354644340736",
-                            createUser: "1037976274619994112",
-                            createdTime: "2018-09-14 17:03:10",
-                            id: "1040526355885854720",
-                            isDeleted: "false",
-                            itemRule: null,
-                            policyId: "1040526353243443200",
-                            printPrice: null,
-                            productId: "1040508701972238336",
-                            productName: "xt测试产品2111111",
-                            settlePrice: 180,
-                            standardPrice: "101.00",
-                            stockNum: "5000",
-                            stockType: "total",
-                            updateUser: "1037976274619994112",
-                            updatedTime: "2018-09-14 17:03:10",
-                        }
-                    ],
-                    //销售政策信息
-                    "productPolicy":{
-                        //改签规则
-                        "alterRuleModel":{
-                            "alterNum":"1",//最晚改签日期（游玩日期前N天）
-                            "befPlayLatestDays":"2",//最晚改签日期（游玩日期前N天）
-                            "type":"noAudit" //改签类型（不允许-notAllow,需要审核-needAudit,不审核-noAudit）
-                        },
-                        //游玩规则
-                        "playRuleModel":{
-                            "afterDay":null,
-                            "beforeDay":null,
-                            "endTime":"2018-10-31",
-                            "specifiedTime":"2018-10-12,2018-10-18",//指定时间（例：2018-10-12,2018-10-18）
-                            "startTime":"2018-10-01",
-                            "type":"specifiedPeriodSold", //期限类型（指定期间-specifiedPeriodSold，指定日期-specifiedDateSold）
-                            "validDates":null,
-                            "weekSold":"1,2,3,4,5,6,7"//指定周数（例：1,2,3,4,5,6,7）
-                        },
-                        //退票规则
-                        "returnRuleModel":{
-                            "rules":[
-                                {
-                                    "befPlayStart": "0",//游玩日期前起始天（0代表当天）
-                                    "befPlayEnd": "0",//游玩日期前截止天（0代表当天）
-                                    "procedureRates": "2"//手续费率
-                                },
-                                {
-                                    "befPlayEnd":"7",
-                                    "befPlayStart":"1",
-                                    "procedureRates":"0.1"
-                                }
-                            ],
-                            "type":"noAudit" //退票类型（不允许-notAllow,需要审核-needAudit,不审核-noAudit ）
-                        },
-                        //销售规则
-                        "saleRuleModel":{
-                            "afterDay":null,
-                            "beforeDay":null,
-                            "endTime":"2018-09-30",
-                            "specifiedTime":"",//指定时间（例：2018-10-12,2018-10-18）
-                            "startTime":"2018-09-01",
-                            "type":"specifiedPeriodSold", //期限类型（游玩日期前M天可售-playBeforeSold，指定期间-specifiedPeriodSold，指定日期-specifiedDateSold）
-                            "validDates":null,
-                            "weekSold":"1,2,3,4,5"//指定周数（例：1,2,3,4,5,6,7）
-                        },
-                        "auditStatus":"auditing",//审核状态 auditing-审核中，rejected-已驳回，not_enabled-未启用，enabled-已启用
-                        "checkinTime":"09:00-18:00",//入园时间范围；格式：mm:ss-mm:ss
-                        "delayValidTime":"5",//下单延迟生效时间（分钟）
-                        "id":"1040526353243443200",//政策ID
-                        "name":"xt销售政策1",//政策名称
-                        "orgId":"1037976274619994113",//所属机构ID
-                        "policyDesc":"xt销售政策1说明43454345",//描述
-                        "productType":"ticket",//业态类型 ticket-票类，repast-餐饮，hotel-酒店，ticket_package-套票
-                        "saleEndTime":"20:00",//每日可售结束时间；格式：mm:ss
-                        "saleStartTime":"08:00",//每日可售开始时间；格式：mm:ss
-                        "todaySaleEndTime":"18:00",//当日票可售结束时间；格式：mm:ss
-                        "todaySaleStartTime":"09:00",//当日票可售开始时间；格式：mm:ss
-                        "isDeleted":"false",
-                        "buyTicketNotes": "购票须知",//购票须知
-                        "createUser":"1037976274619994112",
-                        "createdTime":"2018-09-14 17:03:09",
-                        "productPolicyPlayRule":{
-                            "afterDay":null,
-                            "beforeDay":null,
-                            "endTime":"2018-10-31",
-                            "specifiedTime":"",
-                            "startTime":"2018-10-01",
-                            "type":"specifiedPeriodSold",
-                            "validDates":null,
-                            "weekSold":"1,2,3,4,5,6,7"
-                        },
-                        "productPolicySoldRule":{
-                            "afterDay":null,
-                            "beforeDay":null,
-                            "endTime":"2018-09-30",
-                            "specifiedTime":"",
-                            "startTime":"2018-09-01",
-                            "type":"specifiedPeriodSold",
-                            "validDates":null,
-                            "weekSold":"1,2,3,4,5"
-                        },
-                        "alterRule":"{\"type\":\"noAudit\",\"befPlayLatestDays\":\"2\",\"alterNum\":\"1\"}",
-                        "playRule":"{\"type\":\"specifiedPeriodSold\",\"beforDay\":\"\",\"afterDay\":\"\",\"startTime\":\"2018-10-01\",\"endTime\":\"2018-10-31\",\"weekSold\":\"1,2,3,4,5,6,7\",\"specifiedTime\":\"\"}",
-                        "returnRule":"{\"type\":\"noAudit\",\"rules\":[{\"befPlayStart\":\"0\",\"befPlayEnd\":\"0\",\"procedureRates\":\"0.2\"},{\"befPlayStart\":\"1\",\"befPlayEnd\":\"7\",\"procedureRates\":\"0.1\"}]}",
-                        "saleRule":"{\"type\":\"specifiedPeriodSold\",\"beforDay\":\"\",\"afterDay\":\"\",\"startTime\":\"2018-09-01\",\"endTime\":\"2018-09-30\",\"weekSold\":\"1,2,3,4,5\",\"specifiedTime\":\"\"}",
-                        "updateUser":"1037976274619994112",
-                        "updatedTime":"2018-09-14 17:03:09"
-                    },
-                },
+                detail: {},
                 //产品列表表头
                 productColumn: productColumn,
                 //销售渠道表头
@@ -448,6 +296,18 @@
             }
         },
         methods: {
+
+            //显示星期
+            showWeek ( val ) {
+                if(val){
+                    let list = val.split(',');
+                    return list.map(item => {
+                        return this.$t(this.weekList[Number(item)])
+                    }).join('、');
+                }else{
+                    return '-'
+                }
+            },
 
             //修改
             modify () {
@@ -525,7 +385,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .ticket-detail{
+    .sale-policy-detail{
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;

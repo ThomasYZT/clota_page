@@ -374,11 +374,11 @@ export const policyValidity = [
 //游玩期限
 export const playDeadline = [
     {
-        label : 'specifiedPeriodSold',//指定期间可售
+        label : 'specifiedPeriodPlay',//指定期间可玩
         value : 'specifiedPeriodSold'
     },
     {
-        label: 'specifiedDateSold',//指定日期方案
+        label: 'customPlay',//自定义可玩日期
         value : 'specifiedDateSold'
     }
 ];
@@ -415,4 +415,12 @@ export const alterRule = [
         label: 'noAudit',//允许改签不需要审核
         value : 'noAudit'
     }
+];
+
+//指定日期-节假日
+export const specialHoliday = [
+    {
+        label : 'custom',//自定义
+        value : 'custom'
+    },
 ];

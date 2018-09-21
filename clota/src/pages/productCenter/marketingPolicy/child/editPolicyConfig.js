@@ -28,6 +28,20 @@ export const productColumn = [
 ];
 
 // 销售渠道表头
+export const selectSaleChannelColumn = [
+    {
+        title: 'saleChannelGroup',      // 销售渠道分组
+        minWidth: 400,
+        field: 'channelNames'
+    },
+    {
+        title: 'saleChannels',   // 销售渠道
+        minWidth: 400,
+        field: 'groupName'
+    },
+];
+
+// 销售渠道表头-查看
 export const saleChannelColumn = [
     {
         title: 'saleChannelGroup',      // 销售渠道分组
@@ -83,7 +97,7 @@ export const dateListColumn = [
 export const refundColumn = [
     {
         title: 'returnDeadline',      // 退票申请期限
-        width: 300,
+        width: 500,
         field: 'befPlayStart'
     },
     {
@@ -103,12 +117,12 @@ export const subAccountColumn = [
     {
         title: 'park',      // 园区
         width: 340,
-        field: 'park'
+        field: 'parkName'
     },
     {
         title: 'moneyUnit',   // 金额（元）
         minWidth: 300,
-        field: 'money'
+        field: 'subPrice'
     },
 ];
 

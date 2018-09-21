@@ -679,7 +679,7 @@ export default {
     'revocation': '撤回',
     'marketingPolicyDetail' : '销售政策详情',
     'viewDetail' : '查看详情',
-    'modifySalePolicy': '新建销售政策',
+    'modifySalePolicy': '修改销售政策',
     'Monday': '周一',
     'Tuesday': '周二',
     'Wednesday': '周三',
@@ -750,6 +750,15 @@ export default {
     'minute': '分钟',
     'toList': '切换为日期清单视图',
     'toDate': '切换日历视图增减日期',
+    'aheadDaysNotice': '提前0天表示可售当日票，提前1天表示可售次日票，依次类推',
+    'addMarketLevel': '增加营销等级',
+    'custom': '自定义',
+    'specifiedPeriodPlay': '指定期间可玩',
+    'chooseProduct': '选择产品',
+    'priceSet': '分账设置',
+    'unShareMoney': '未分帐金额',
+    'customPlay': '自定义可玩日期',
+
 
     /*** 财务管理模块 ***/
     'financeManage' : '财务管理',

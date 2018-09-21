@@ -8,7 +8,7 @@
         title="Title"
         v-model="visible"
         :mask-closable="false"
-        class="edit-park-modal"
+        class="edit-product-modal"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
             <span class="title" >
@@ -24,96 +24,111 @@
                   label-position="top">
 
                 <div class="padding-bottom" style="padding: 10px 0;">
-                    <span>{{$t('所属景区')}}：</span>
-                    <span>野生动物园</span>
+                    <span>{{$t('scenePlace')}}：</span>
+                    <span>{{manageOrgs.orgName}}</span>
                 </div>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('选择产品')" prop="saleType"><!--选择产品-->
-                            <Select v-model="formData.saleType"
+                        <FormItem :label="$t('chooseProduct')" prop="productId"><!--选择产品-->
+                            <Select v-model="formData.productId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})" @on-change="changeChooseProduct">
-                                <Option v-for="(item,index) in enumData.saleType"
+                                <Option v-for="(item,index) in list"
                                         :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                                        :value="item.id">
+                                    {{item.productName}}
                                 </Option>
                             </Select>
                         </FormItem>
                     </i-col>
                 </i-row>
 
-                <!--分割线-->
-                <div class="split-line"></div>
+                <template v-if="formData.productId">
 
-                <i-row>
-                    <i-col span="12">
-                        <FormItem :label="$t('限制库存')" prop="saleType"><!--限制库存-->
-                            <Select v-model="formData.saleType"
-                                    :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})" @on-change="changeStock">
-                                <Option v-for="(item,index) in enumData.saleType"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
+                    <!--分割线-->
+                    <div class="split-line"></div>
+
+                    <i-row>
+                        <i-col span="12">
+                            <FormItem :label="$t('stockType')"><!--限制库存-->
+                                <Select v-model="productDetail.productSaleVo.stockType"
+                                        v-if="productDetail.productSaleVo && productDetail.productSaleVo.stockType"
+                                        disabled
+                                        :placeholder="$t('selectField', {msg: ''})">
+                                    <Option v-for="(item,index) in enumData.limitStore"
+                                            :key="index"
+                                            :value="item.value">
+                                        {{$t(item.label)}}
                                 </Option>
-                            </Select>
-                        </FormItem>
-                    </i-col>
-                    <i-col span="12">
-                        <FormItem :label="$t('库存数量')" prop="saleType"><!--库存数量-->
-                            <Input v-model.trim="formData.dayEnterTimes"
-                                   :disabled="type === 'check'"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </FormItem>
-                    </i-col>
-                </i-row>
-                <i-row>
-                    <i-col span="12">
-                        <FormItem :label="$t('景区成本价')" prop="saleType"><!--景区成本价-->
-                            <Input v-model.trim="formData.dayEnterTimes"
-                                   :disabled="type === 'check'"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </FormItem>
-                    </i-col>
-                    <i-col span="12">
-                        <FormItem :label="$t('产品单价')" prop="saleType"><!--产品单价-->
-                            <Input v-model.trim="formData.dayEnterTimes"
-                                   :disabled="type === 'check'"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                        </FormItem>
-                    </i-col>
-                </i-row>
-                <i-row>
-                    <i-col span="24">
-                        <FormItem :label="$t('分账设置')" prop="enterCheckPlace"><!--分账设置-->
-                            <!--入园检票处--核销表格,区分查看与编辑-->
-                            <table-com
-                                :table-com-min-height="250"
-                                :column-data="subAccountColumn"
-                                :table-data="subAccountData"
-                                :border="true">
-                                <el-table-column
-                                    slot="column1"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip
-                                    slot-scope="row">
-                                    <template slot-scope="scope">
-                                        <Input v-model.trim="scope.row.status"
-                                               :disabled="type === 'check'"
-                                               class="short-input"
-                                               :placeholder="$t('inputField', {field: ''})" @on-blur="checkInput(scope.row)"/>
-                                    </template>
-                                </el-table-column>
-                            </table-com>
-                        </FormItem>
-                    </i-col>
-                </i-row>
-                <div><span class="red-span">{{$t('未分帐金额')}}：30{{$t('yuan')}}</span></div>
+                                </Select>
+                            </FormItem>
+                        </i-col>
+                        <i-col span="12">
+                            <FormItem :label="$t('stockNum')" prop="stockNum"><!--库存数量-->
+                                <Input v-model.trim="formData.stockNum"
+                                       :disabled="type === 'check'"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <FormItem :label="$t('standardPrice')"><!--景区成本价-->
+                                <Input v-model.trim="productInfo.standardPrice"
+                                       disabled
+                                       placeholder=""/>
+                            </FormItem>
+                        </i-col>
+                        <i-col span="12">
+                            <FormItem :label="$t('settlePrice')" prop="settlePrice"><!--产品单价-->
+                                <Input v-model.trim="formData.settlePrice"
+                                       :disabled="type === 'check'"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+
+                    <template v-if="formData.itemRule && formData.itemRule.length > 1">
+
+                        <i-row>
+                            <i-col span="24">
+                                <FormItem :label="$t('priceSet')" prop="enterCheckPlace"><!--分账设置-->
+                                    <!--入园检票处--核销表格,区分查看与编辑-->
+                                    <table-com
+                                        :table-com-min-height="250"
+                                        :column-data="subAccountColumn"
+                                        :table-data="formData.itemRule"
+                                        :border="true">
+                                        <el-table-column
+                                            slot="column1"
+                                            :label="row.title"
+                                            :prop="row.field"
+                                            :key="row.index"
+                                            :width="row.width"
+                                            :min-width="row.minWidth"
+                                            show-overflow-tooltip
+                                            slot-scope="row">
+                                            <template slot-scope="scope">
+                                                <InputNumber   class="short-input"
+                                                               :max="formData.settlePrice ? Number(formData.settlePrice) : 9999999999"
+                                                               :min="0"
+                                                               :disabled="type === 'check'"
+                                                               v-model.trim="scope.row.subPrice"
+                                                               :placeholder="$t('inputField', {field: ''})">
+                                                </InputNumber>
+                                            </template>
+                                        </el-table-column>
+                                    </table-com>
+                                </FormItem>
+                            </i-col>
+                        </i-row>
+
+                        <div><span class="red-span">{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
+
+                    </template>
+
+                </template>
+
             </Form>
 
         </div>
@@ -128,12 +143,15 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import titlePark from '../../components/titlePark.vue';
-    import { saleType, authenticationType } from '@/assets/js/constVariable';
+    import { limitStore } from '@/assets/js/constVariable';
     import { subAccountColumn} from './editPolicyConfig';
     import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: {},
+        props: ['list'],
         components: {
             tableCom,
             titlePark,
@@ -160,6 +178,48 @@
                             callback(this.$t(err,{field : this.$t(rule.field)}));
                         }
                     });
+                }else{
+                    callback();
+                }
+            };
+            //校验钱
+            const validateMoney = (rule,value,callback) => {
+                if(value){
+                    common.validateMoney(value).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                        }
+                    });
+                }else{
+                    callback();
+                }
+            };
+            //校验库存数量
+            const validateStockNum = (rule,value,callback) => {
+                if(this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum){
+                    if( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ){
+                        callback(this.$t('errorMaxLength',{field : this.$t('stockNum'),length : this.productDetail.productSaleVo.stockNum}));
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
+                }
+            };
+            //校验单价
+            const validateSettlePrice = (rule,value,callback) => {
+                if(value && this.productInfo.standardPrice){
+                    if( Number(value) < Number(this.productInfo.standardPrice) ){
+                        callback(this.$t('sizeErrorS',{filed1 : this.$t('settlePrice'),filed2 : this.productInfo.standardPrice}));
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
                 }
             };
 
@@ -167,7 +227,7 @@
                 //类型 add/modify
                 type: 'add',
                 //标题信息
-                title : this.$t('add') + this.$t('产品'),
+                title : this.$t('add') + this.$t('product'),
                 //是否显示模态框
                 visible : false,
                 //确认执行的回调函数
@@ -176,106 +236,98 @@
                 cancelCallback : null,
                 //表单数据
                 formData: {
-                    choosePark: '',//选择园区
-                    saleType: 'one',//售票方式
-                    //入园核销
-                    peopleEnterTimes: '',//每人可入园总次数
-                    dayEnterTimes: '',//每日可入园次数
-                    equipmentGroup: '',//设备分组
-                    enterCheckPlace: '',//入园检票处
-                    otherSet: ['fingerprint'],//其他设置
-                    //游玩项目
-                    projectTotalTimes: '',//项目游玩总次数
-                    addProjectGroup: [],//添加项目分组
+                    productId: '',//"产品ID",
+                    productName: '',//"产品名称",
+                    standardPrice: '',//"景区成本价",
+                    stockType: "is_no_limit",//库存限制类型（总量-total,每日-everyday,不限库存-is_no_limit）
+                    stockNum: "",//库存数量
+                    settlePrice: "",//单价
+                    //分账设置表格数据 {orgId: "",parkName: "",subPrice: 0 }
+                    itemRule: [],
                 },
                 ruleValidate: {
-                    choosePark: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('productName')}), trigger: 'change' },     // 不能为空
+                    productId: [
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('chooseProduct')}), trigger: 'change' },     // 不能为空
                     ],
-                    saleType: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleType')}), trigger: 'change' },
-                    ],
-                    peopleEnterTimes: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('peopleEnterTimes')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('peopleEnterTimes'), length: 10}), trigger: 'blur' },
+                    stockNum: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('stockNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                        { validator: validateNumber, trigger: 'blur' },
+                        { validator: validateStockNum, trigger: 'blur' },
                     ],
-                    dayEnterTimes: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('dayEnterTimes')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('dayEnterTimes'), length: 10}), trigger: 'blur' },
+                    settlePrice: [
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('settlePrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
-                    ],
-                    projectTotalTimes: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('projectTotalTimes')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('projectTotalTimes'), length: 10}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                        { validator: validateMoney, trigger: 'blur' },
+                        { validator: validateSettlePrice, trigger: 'blur' },
                     ],
                 },
                 //枚举数据
                 enumData: {
-                    choosePark: [],
-                    //售票方式
-                    saleType: saleType,
-                    //设备分组
-                    group: [],
-                    //认证方式
-                    authenticationType: authenticationType,
+                    //限制库存
+                    limitStore: limitStore,
                 },
-
+                //所选产品
+                productInfo: {},
+                productDetail: {},
                 //分账表头
                 subAccountColumn: subAccountColumn,
-                //分账表格数据
-                subAccountData: [
-                    {
-                        id: '1',
-                        name: '旋转木马',
-                        times: 3,
-                        day: 3,
-                        play: 'true',
-                    },
-                    {
-                        id: '2',
-                        name: '摩天轮',
-                        times: 3,
-                        day: 3,
-                        play: 'false',
-                    },
-                    {
-                        id: '3',
-                        name: '过山车',
-                        times: 0,
-                        day: 0,
-                        play: 'false',
-                    },
-                ],
             }
+        },
+        computed: {
+            ...mapGetters({
+                manageOrgs: 'manageOrgs',
+            }),
+            //未分账金额
+            showCountMoney () {
+                if(this.formData.settlePrice && this.formData.itemRule && this.formData.itemRule.length > 1){
+                    let sum = 0;
+                    this.formData.itemRule.forEach(item => {
+                        sum += Number(item.subPrice)
+                    });
+                    if(this.formData.settlePrice-sum < 0){
+                        this.$Message.warning(this.$t('sizeErrorB', {filed1: this.$t('priceSet'), filed2: this.$t('settlePrice')}),);
+                    }
+                    return this.formData.settlePrice-sum
+                } else {
+                    return 0
+                }
+            },
         },
         methods: {
 
-            //售票方式改变
-            changeSaleType ( val ) {
-                let obj = this.enumData.saleType.find( item => val === item.value );
-                if(obj && val === 'one_ticket'){
-                    this.title = this.$t(this.type) + this.$t('oneTicketPark');
-                } else {
-                    this.title = this.$t(this.type) + this.$t('moreTicketPark');
-                }
-                this.$nextTick(() => {
-                    this.$refs.formValidate.resetFields();
-                });
-            },
-
             //选择产品改变
             changeChooseProduct ( val ) {
-                console.log(val)
+                this.productInfo = this.list.find( item => val === item.id );
+                if(this.productInfo && this.productInfo.id){
+                    this.formData.productName = this.productInfo.productName;
+                    this.formData.standardPrice = this.productInfo.standardPrice;
+                    this.findProductById(this.productInfo);
+                }
             },
 
-            //限制库存改变
-            changeStock ( val ) {
-                console.log(val)
+            // 根据产品Id查明细
+            findProductById( data ) {
+                ajax.post('findProductById', {
+                    productId: data.id
+                }).then(res => {
+                    if(res.success){
+                        this.productDetail = res.data || {};
+                        this.formData.stockType = res.data.productSaleVo.stockType;
+                        if(res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0){
+                            res.data.productPlayRuleVo.forEach( item => {
+                                this.formData.itemRule.push({
+                                    orgId: item.orgId,
+                                    parkName: item.parkName,
+                                    subPrice: 0,
+                                })
+                            } )
+                        }
+                    } else {
+                        this.itemRule = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
 
             //校验表格填入
@@ -289,9 +341,11 @@
             confirm() {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
+                        debugger
                         this.loading = true;
                         if(this.confirmCallback){
-                            this.confirmCallback( this.formData );
+                            let formData = defaultsDeep({},this.formData);
+                            this.confirmCallback( formData );
                             this.cancel();
                         }
                     }
@@ -307,6 +361,7 @@
                 if(this.cancelCallback){
                     this.cancelCallback();
                 }
+                this.resetFunc();
             },
 
             /**
@@ -318,10 +373,9 @@
              * @param cancelCallback
              */
             show ({data,type,title,confirmCallback = null,cancelCallback}) {
-                this.visible = true;
                 this.title = title;
                 this.type = type;
-                if(data && data.id){
+                if(data){
                     this.formData = data;
                 }
                 if(confirmCallback && typeof confirmCallback == 'function'){
@@ -330,6 +384,18 @@
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
                 }
+                this.visible = true;
+            },
+
+            //重置数据
+            resetFunc () {
+                this.formData = {
+                    productId: '',
+                    stockType: "is_no_limit",
+                    stockNum: "",
+                    settlePrice: "",
+                    itemRule: [],
+                };
             },
 
         }
@@ -339,7 +405,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .edit-park-modal {
+    .edit-product-modal {
         & /deep/ .ivu-modal {
             width: 740px !important;
             min-height: 580px;
@@ -385,6 +451,7 @@
             padding: 20px 40px;
             text-align: left;
             max-height: 600px;
+            min-height: 240px;
             overflow: auto;
 
             /deep/ .ivu-form {
