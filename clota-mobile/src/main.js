@@ -13,17 +13,11 @@ import 'core-js/es6';
 //引入多语言配置文件
 import i18n from './assets/lang/lang.config';
 // 样式文件
-import './assets/theme/iviewTheme/index.less';
 import 'klwk-ui/src/lib/css/index.scss';
-import './assets/theme/elementTheme/index.scss';
 import './assets/css/iconfont.css';
-import eleLocale from 'element-ui/lib/locale';
-import eleEnLang from 'element-ui/lib/locale/lang/en';
-import eleZhCnLang from 'element-ui/lib/locale/lang/zh-CN';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
-// eleLocale.use(eleEnLang);
 import common from './assets/js/common';
 
 
@@ -116,24 +110,6 @@ new Vue({
             return store.state.lang;
         }
     },
-    watch: {
-        langCode(val){
-            if(val === 'en'){
-                eleLocale.use(eleEnLang);
-            }else if(val === 'zh-Cn'){
-                eleLocale.use(eleZhCnLang);
-            }
-            Vue.config.lang = val;
-            // document.title = val === 'zh-CN' ? 'BIM数字化平台' : 'BIM Digital Platform';
-        }
-    },
-    mounted () {
-        if(this.langCode === 'en'){
-            eleLocale.use(eleEnLang);
-        }else if(this.langCode === 'zh-Cn'){
-            eleLocale.use(eleZhCnLang);
-        }
-    }
 });
 
 

@@ -2,54 +2,12 @@
  * 项目公用插件
  * Created by Sasha on 2018/6/1.
  */
-//按需引入iview组件
-import {
-    Button,
-    Input,
-    Menu,
-    Select,
-    OptionGroup,
-    Modal,
-    Tree,
-    breadcrumb,
-    Icon,
-    Radio,
-    Switch,
-    Checkbox,
-    DatePicker,
-    Form,
-    TimePicker,
-    Row,
-    Col,
-    Option,
-    Tooltip,
-    Message,
-    InputNumber,
-    Timeline,
-    TimelineItem,
-    Upload,
-    Tabs,
-    Steps,
-    Poptip
-} from 'iview';
 //按需引入vux组件
 import {
     XInput,
     Group,
     XButton
 } from 'vux'
-//按需引入element-ui组件
-import Table from 'element-ui/lib/table';
-import TableColumn from 'element-ui/lib/table-column';
-// import Scrollbar from 'element-ui/lib/scrollbar';
-import Pagination from 'element-ui/lib/pagination';
-import Dropdown from 'element-ui/lib/dropdown';
-import DropdownMenu from 'element-ui/lib/dropdown-menu';
-import DropdownItem from 'element-ui/lib/dropdown-item';
-import scrollbar from 'element-ui/lib/scrollbar';
-import elTree from 'element-ui/lib/tree';
-import elCheckbox from 'element-ui/lib/checkbox';
-import elUpload from 'element-ui/lib/upload';
 
 
 // // 按需引入 Echarts 图表
@@ -65,67 +23,6 @@ import klwkUi from 'klwk-ui';
 
 let plugin = {};
 plugin.install = function (Vue, options) {
-    // 引入iView
-    // Vue.use(iView);
-
-    // element-ui按需引入
-    Vue.use(scrollbar);
-    Vue.use(Table);
-    Vue.use(TableColumn);
-    Vue.use(Pagination);
-    Vue.use(Dropdown);
-    Vue.use(DropdownMenu);
-    Vue.use(DropdownItem);
-    Vue.use(elTree);
-    Vue.use(elCheckbox);
-    Vue.use(elUpload);
-
-    //iview按需引入
-    Vue.component('Button',Button);
-    Vue.component('iButton',Button);
-    Vue.component('Input',Input);
-    Vue.component('iInput',Input);
-    Vue.component('ButtonGroup',Button.Group);
-    Vue.component('MenuGroup',Menu.Group);
-    Vue.component('MenuItem',Menu.Item);
-    Vue.component('iMenu',Menu);
-    Vue.component('Menu',Menu);
-    Vue.component('Submenu',Menu.Sub);
-    Vue.component('Select',Select);
-    Vue.component('OptionGroup',OptionGroup);
-    Vue.component('Modal',Modal);
-    Vue.component('Tree',Tree);
-    Vue.component('Breadcrumb',breadcrumb);
-    Vue.component('BreadcrumbItem',breadcrumb.Item);
-    Vue.component('Icon',Icon);
-    Vue.component('Radio',Radio);
-    Vue.component('RadioGroup',Radio.Group);
-    Vue.component('iSwitch',Switch);
-    Vue.component('Checkbox',Checkbox);
-    Vue.component('CheckboxGroup',Checkbox.Group);
-    Vue.component('DatePicker',DatePicker);
-    Vue.component('TimePicker',TimePicker );
-    Vue.component('Form',Form );
-    Vue.component('iForm',Form );
-    Vue.component('FormItem',Form.Item );
-    Vue.component('TimePicker',TimePicker );
-    Vue.component('Row',Row );
-    Vue.component('i-row',Row );
-    Vue.component('Col',Col );
-    Vue.component('i-col',Col );
-    Vue.component('Option',Option );
-    Vue.component('Tooltip',Tooltip );
-    Vue.component('Message',Message );
-    Vue.component('InputNumber',InputNumber );
-    Vue.component('Timeline',Timeline );
-    Vue.component('TimelineItem',TimelineItem);
-    Vue.component('Upload',Upload);
-    Vue.component('Tabs',Tabs);
-    Vue.component('TabPane',Tabs.Pane);
-    Vue.component('Steps',Steps);
-    Vue.component('Step',Steps.Step);
-    Vue.component('Poptip',Poptip);
-    Vue.prototype.$Message = Message;
 
     //vux按需引入
     Vue.component( 'XInput', XInput);
