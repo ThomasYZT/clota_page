@@ -1,5 +1,9 @@
+<!--
+    会员登录
+    作者：杨泽涛
+-->
 <template>
-    <div data-scope-style class="login">
+    <div class="login" v-transfer-dom>
         <group class="group" label-width="150px">
 
             <x-input title="手机号码"
@@ -18,6 +22,10 @@
                 </div>
             </x-input>
         </group>
+        <div>
+            <p class="register-entry"
+               @click="$router.push('/mobile/register')">去注册</p>
+        </div>
 
         <x-button class="button">登陆</x-button>
     </div>
@@ -47,7 +55,7 @@
 
         .c-input {
             height: 50.5px;
-            font-size: 30px;
+            font-size: 15px;
         }
 
         .verify-input{
@@ -67,22 +75,26 @@
             }
         }
 
+        .register-entry {
+            margin-right: 16.5px;
+            color: #046FDB;
+            height: 50.5px;
+            line-height: 50.5px;
+            font-size: 12.5px;
+            text-align: right;
+        }
+
         .button {
+            margin-top: 150px;
             max-width: calc(100% - 110px);
+            background-color: #0073EB;
+            color: #FFF;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
         }
 
     }
-</style>
-<style lang="scss">
-    .login[data-scope-style] {
-        .weui-cells:before,
-        .weui-cells:after,
-        .weui-cell:before,
-        .weui-cell:after{
-            border: none;
-        }
-    }
-
 </style>
 
 

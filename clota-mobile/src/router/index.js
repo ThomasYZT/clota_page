@@ -65,6 +65,14 @@ const createRouter = () => new Router({
             meta: {
                 noFrame: true
             }
+        },
+        {
+            path: '/mobile/register',
+            name: 'mobileRegister',
+            component: () => import(/* webpackChunkName: "login" */ '../mobile/register/register.vue'),
+            meta: {
+                noFrame: true
+            }
         }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
