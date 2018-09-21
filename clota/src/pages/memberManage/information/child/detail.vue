@@ -140,10 +140,15 @@
                                @change-status="changeStatus">
                     </more-card>
                 </div>
-
+                <!--我的订单-->
+                <div class="content-info">
+                    <div class="title">{{$t("myOrder")}}</div>
+                    <div class="operate"><span class="pointer"  @click="viewCardDetail('myOrder')">{{$t('checkOrderInfo')}}</span></div>
+                </div>
+                <!--卡包信息-->
                 <div class="content-info">
                     <div class="title">{{$t("cardPkgInfo")}}</div>
-                    <div class="operate"><span class="pointer"  @click="viewCardDetail">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
+                    <div class="operate"><span class="pointer"  @click="viewCardDetail('infoCard')">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
                 </div>
 
                 <div class="content-info">
@@ -655,9 +660,9 @@
                 this.$router.push({ name: 'infoInteg', params: {integraDetail: integraData} });
             },
 
-            //查看卡包信息
-            viewCardDetail () {
-                this.$router.push({ name: 'infoCard', params: {cardPkg: this.detail} });
+            //查看卡包信息、我的订单
+            viewCardDetail (routerName) {
+                this.$router.push({ name: routerName, params: {cardPkg: this.detail} });
             },
 
             //查看享受积分、折扣率信息

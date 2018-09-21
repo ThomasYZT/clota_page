@@ -1,7 +1,23 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store/index';
+
 Vue.use(Router);
+
+// export default new Router({
+//     routes: [
+//         //登录页面路由
+//         {
+//             path: '/login',
+//             name: 'login',
+//             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue')
+//             , meta: {
+//                 noFrame: true
+//             }
+//         },
+//     ]
+// })
+
 
 //生成新路由的方法
 const createRouter = () => new Router({
@@ -72,6 +88,22 @@ const createRouter = () => new Router({
             component: () => import(/* webpackChunkName: "login" */ '../pages/home/home.vue'),
             meta: {
                 noFrame: true
+            }
+        },
+        {
+            path : '/account',
+            name : 'account',
+            component : () => import(/* webpackChunkName: "account" */'../pages/account/index.vue'),
+            meta : {
+                title : '账户'
+            }
+        },
+        {
+            path : '/account/recharge',
+            name : 'accountRecharge',
+            component : () => import(/* webpackChunkName: "account" */'../pages/account/child/accountRecharge.vue'),
+            meta : {
+                title : '默认账户充值'
             }
         }
     ],

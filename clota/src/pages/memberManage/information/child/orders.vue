@@ -98,7 +98,7 @@
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
                 filterParam: {
-                    keyword: '',
+                    keyWord: '',
                 },
                 // 表格表头字段名
                 columnData: orderListHead,

@@ -8,6 +8,10 @@ import {
     Group,
     XButton,
     PopupPicker,
+    Swiper,
+    SwiperItem,
+    Radio,
+    XButton,
     Cell
 } from 'vux';
 
@@ -32,6 +36,9 @@ plugin.install = function (Vue, options) {
     Vue.component( 'XButton', XButton);
     Vue.component( 'PopupPicker', PopupPicker);
     Vue.component( 'Cell', Cell);
+    Vue.component('swiper', Swiper);
+    Vue.component('swiper-item', SwiperItem);
+    Vue.component('Radio', Radio);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);

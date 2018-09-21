@@ -394,6 +394,9 @@ export default {
     'entityCardInfo': '实体卡信息',
     'familyAddress': '家庭地址',
     'readCard': '请读卡',
+    'myOrder': '我的订单',
+    'checkOrderInfo': '查看我的订单信息',
+    'orderDetail': '订单详情',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
