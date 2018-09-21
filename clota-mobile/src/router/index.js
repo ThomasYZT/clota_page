@@ -78,6 +78,17 @@ const createRouter = () => new Router({
             path : '/account',
             name : 'account',
             component : () => import(/* webpackChunkName: "account" */'../pages/account/index.vue'),
+            meta : {
+                title : '账户'
+            }
+        },
+        {
+            path : '/account/recharge',
+            name : 'accountRecharge',
+            component : () => import(/* webpackChunkName: "account" */'../pages/account/child/accountRecharge.vue'),
+            meta : {
+                title : '默认账户充值'
+            }
         }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {

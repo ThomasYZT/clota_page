@@ -10,6 +10,7 @@ import {
     PopupPicker,
     Swiper,
     SwiperItem,
+    Radio,
 } from 'vux';
 
 
@@ -34,6 +35,7 @@ plugin.install = function (Vue, options) {
     Vue.component( 'popup-picker', PopupPicker);
     Vue.component('swiper', Swiper);
     Vue.component('swiper-item', SwiperItem);
+    Vue.component('Radio', Radio);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);

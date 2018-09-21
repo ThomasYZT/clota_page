@@ -152,6 +152,19 @@
             }
         }
 
+        /deep/ .vux-slider > .vux-indicator > a,
+        /deep/ .vux-slider .vux-indicator-right > a{
+            margin: 0 4.5px;
+
+            .vux-icon-dot{
+                background: $color_eee;
+
+                &.active{
+                    background: #2C78EE;
+                }
+            }
+        }
+
         .btn-area{
             @include block_outline(unquote('calc(100% - 55px)'),42px);
             margin: 33px auto 0;

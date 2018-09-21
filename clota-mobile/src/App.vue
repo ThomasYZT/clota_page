@@ -31,6 +31,15 @@
         },
         created () {
             // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
+        },
+        watch : {
+            '$route'(newVal,oldVal) {
+                if(newVal && newVal.meta && newVal.meta.title){
+                    document.title = newVal.meta.title;
+                }else{
+                    document.title = 'clota';
+                }
+            }
         }
     }
 </script>
