@@ -17,7 +17,10 @@ import {
     Popup,
     PopupHeader  ,
     TransferDom,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    Tab,
+    TabItem,
+    Sticky,
 } from 'vux';
 
 
@@ -48,7 +51,9 @@ plugin.install = function (Vue, options) {
     Vue.component('Qrcode', Qrcode);
     Vue.component('popup-header', PopupHeader );
     Vue.component('Popup', Popup );
-    Vue.component('Popup', Popup );
+    Vue.component('Tab', Tab );
+    Vue.component('TabItem', TabItem );
+    Vue.component('Sticky', Sticky );
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

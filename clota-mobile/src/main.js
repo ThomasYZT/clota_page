@@ -13,7 +13,7 @@ import 'core-js/es6';
 //引入多语言配置文件
 import i18n from './assets/lang/lang.config';
 // 样式文件
-import 'klwk-ui/src/lib/css/index.scss';
+import './assets/css/mobilePublic.css';
 import './assets/css/iconfont.css';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令

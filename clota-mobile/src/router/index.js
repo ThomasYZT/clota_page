@@ -174,6 +174,33 @@ const createRouter = () => new Router({
             path: '/integralDetail',
             name: 'integralDetail',
             component: () => import(/* webpackChunkName: "memberRight" */'../pages/integralDetail/integralDetail.vue'),
+        },
+        //订单
+        {
+            path : '/order',
+            name : 'order',
+            component : () => import(/* webpackChunkName: "order" */'../pages/order/index.vue'),
+            meta : {
+                title : '我的订单'
+            }
+        },
+        //订单详情
+        {
+            path : '/order/detail',
+            name : 'orderDetail',
+            component : () => import(/* webpackChunkName: "order" */'../pages/order/child/orderDetail.vue'),
+            meta : {
+                title : '订单详情'
+            }
+        },
+        //我的卡包
+        {
+            path : '/card',
+            name : 'card',
+            component : () => import(/* webpackChunkName: "order" */'../pages/card/index.vue'),
+            meta : {
+                title : '我的卡包'
+            }
         }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {

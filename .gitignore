@@ -9,6 +9,7 @@ yarn-error.log*
 selenium-debug.log
 .cache
 /clota/dist/
+/clota-mobile/dist/
 
 # Editor directories and files
 .idea

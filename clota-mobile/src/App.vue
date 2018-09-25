@@ -51,6 +51,7 @@
 <style lang="scss">
     body,html{
         -webkit-tap-highlight-color: transparent;
+        overflow: hidden;
     }
     .vux-pop-out-enter-active,
     .vux-pop-out-leave-active,
