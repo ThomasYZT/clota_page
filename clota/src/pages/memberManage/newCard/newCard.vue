@@ -329,11 +329,10 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        /*var params = {
-                            memberInfo: pick(this.member, ['custName', 'phoneNum','emailAddr','birthDay',
-                                'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
-                                'certificationType','idCardNumber','homeAddr','status']),
-                            memberCard: pick(this.member, ['levelId', 'channelId','tpNo','tpCardNo']),
+                        var params = {
+                            memberInfo: pick(this.newCardParam, ['custName', 'phoneNum','emailAddr','birthDay',
+                                'gender','qq','cityCode','stateCode','hobby','certificationType','idCardNumber','homeAddr']),
+                            memberCard: pick(this.newCardParam, ['levelId','tpNo','tpCardNo']),
                         };
                         params.memberInfo.birthDay = params.memberInfo.birthDay ?
                             new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
@@ -345,7 +344,7 @@
                             params.memberInfo.id = this.info.id;
                             params.memberCard.id = this.info.cardId;
                             this.saveAndEditMember( 'editMemberInfo', params);
-                        }*/
+                        }
                     }
                 })
             },
