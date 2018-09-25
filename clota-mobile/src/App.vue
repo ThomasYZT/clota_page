@@ -2,7 +2,7 @@
 
 <template>
     <div id="app" >
-        <transition :name="viewTransition">
+        <transition name="fade">
             <router-view :key="hashKey">
             </router-view>
         </transition>
