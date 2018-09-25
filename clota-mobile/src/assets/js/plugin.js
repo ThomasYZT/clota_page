@@ -21,6 +21,9 @@ import {
     Tab,
     TabItem,
     Sticky,
+    Previewer,
+    Drawer,
+    CellBox,
 } from 'vux';
 
 
@@ -54,6 +57,9 @@ plugin.install = function (Vue, options) {
     Vue.component('Tab', Tab );
     Vue.component('TabItem', TabItem );
     Vue.component('Sticky', Sticky );
+    Vue.component('previewer', Previewer);
+    Vue.component('drawer', Drawer);
+    Vue.component('cell-box', CellBox);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

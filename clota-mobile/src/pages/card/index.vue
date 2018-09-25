@@ -18,7 +18,13 @@
                 class="swiper-demo-img">
                 <div class="year-card">
                     <div class="card-area">
-                        <div class="card-inner"></div>
+                        <div class="card-inner">
+                            <img class="head-img" src="../../assets/images/icon-ali-pay.svg" @click="previewImg" alt="">
+                            <span class="mem-name">刘木子</span>
+                            <div class="scene-area">北京欢乐谷景区年卡</div>
+                            <div class="card-id">8799  7493  6102</div>
+                            <span class="iconfont icon-alipay" @click="showCode"></span>
+                        </div>
                     </div>
                     <!--年卡信息-->
                     <card-info title="年卡信息">
@@ -38,7 +44,13 @@
                 class="swiper-demo-img">
                 <div class="time-card">
                     <div class="card-area">
-                        <div class="card-inner"></div>
+                        <div class="card-inner">
+                            <img class="head-img" src="../../assets/images/icon-ali-pay.svg" alt="">
+                            <span class="mem-name">刘木子</span>
+                            <div class="scene-area">北京欢乐谷景区年卡</div>
+                            <div class="card-id">8799  7493  6102</div>
+                            <span class="iconfont icon-alipay"></span>
+                        </div>
                     </div>
                     <!--次卡信息-->
                     <card-info title="次卡信息">
@@ -55,6 +67,10 @@
                 </div>
             </swiper-item>
         </swiper>
+        <!--预览图片-->
+        <div v-transfer-dom class="img-preview">
+            <previewer :list="prevList" ref="previewer"></previewer>
+        </div>
     </div>
 </template>
 
@@ -69,7 +85,8 @@
                 //卡包类型
                 cardType : 0,
                 //选中的tap列
-                tabSelected : 0
+                tabSelected : 0,
+                prevList : [],
             }
         },
         components : {
@@ -96,6 +113,38 @@
                 }else if(type === 'pop'){
                     this.cardType = 1;
                 }
+            },
+            /**
+             * 显示二维码
+             */
+            showCode () {
+                this.prevList = [
+                    {
+                        msrc: require('../../assets/images/test.jpg'),
+                        src: require('../../assets/images/test.jpg'),
+                        w: 240,
+                        h: 240
+                    }
+                ];
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0)
+                });
+            },
+            /**
+             * 预览照片
+             */
+            previewImg () {
+                this.prevList = [
+                    {
+                        msrc: require('../../assets/images/onceCard.png'),
+                        src: require('../../assets/images/onceCard.png'),
+                        w: document.body.offsetWidth,
+                        h: 240
+                    }
+                ];
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0)
+                });
             }
         }
     }
@@ -208,11 +257,50 @@
                 background: $color_fff;
 
                 .card-inner{
+                    position: relative;
+                    padding: 19px 22px;
                     @include block_outline(unquote('calc(100% - 50px)'),170px);
                     max-width: 375px;
                     background-size: 100% 170px;
                     margin: 0 auto;
                     background-repeat: no-repeat;
+
+                    .head-img{
+                        display: inline-block;
+                        @include block_outline(33px,33px);
+                        border-radius: 17px;
+                        float: left;
+                        vertical-align: middle;
+                    }
+
+                    .mem-name{
+                        display: inline-block;
+                        vertical-align: middle;
+                        max-width: calc(100% - 100px);
+                        height: 33px;
+                        line-height: 33px;
+                        padding-left: 10px;
+                        @include overflow_tip();
+                        color: $color_fff;
+                        font-size: $font_size_14px;
+                    }
+
+                    .scene-area{
+                        @include absolute_pos(absolute,$bottom : 45px);
+                        font-size: $font_size_12px;
+                        color: $color_fff;
+                    }
+
+                    .card-id{
+                        @include absolute_pos(absolute,$bottom : 19px);
+                        font-size: $font_size_12px;
+                        color: $color_fff;
+                    }
+
+                    .iconfont{
+                        @include absolute_pos(absolute,$bottom : 19px,$right : 27px);
+                        color: $color_fff;
+                    }
                 }
             }
 
@@ -228,5 +316,10 @@
         .year-card .card-inner{
             background: url("../../assets/images/yeaeCard.png");
         }
+    }
+</style>
+<style>
+    .img-preview .pswp__bg{
+        background: rgba(0,0,0,0.7)!important;
     }
 </style>
