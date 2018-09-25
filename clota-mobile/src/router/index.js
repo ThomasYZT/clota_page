@@ -99,12 +99,58 @@ const createRouter = () => new Router({
                 title : '默认账户充值'
             }
         },
+        //个人信息
         {
             path : '/personInfo',
             name : 'personInfo',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/index.vue'),
             meta : {
                 title : '个人信息'
+            }
+        },
+        //个人信息--修改手机号码
+        {
+            path : '/personInfo/changeMobile',
+            name : 'changeMobile',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/changePhone.vue'),
+            meta : {
+                title : '修改手机号'
+            }
+        },
+        //个人信息--修改证件号码
+        {
+            path : '/personInfo/changeId',
+            name : 'changeId',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/changeId.vue'),
+            meta : {
+                title : '修改证件号'
+            }
+        },
+        //个人信息--修改交易密码
+        {
+            path : '/personInfo/changeTradePass',
+            name : 'changeTradePass',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/setTradePass.vue'),
+            meta : {
+                title : '设置交易密码'
+            }
+        },
+        //个人信息--输入密码
+        {
+            path : '/personInfo/inputPass',
+            name : 'inputPass',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/input-pass.vue'),
+            meta : {
+                title : '设置交易密码'
+            }
+        },
+        //会员二维码
+        {
+            path : '/memberCode',
+            name : 'memberCode',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/memberCode/index.vue'),
+            meta : {
+                title : '支付二维码'
             }
         }
     ],
