@@ -239,7 +239,7 @@
                     productId: '',//"产品ID",
                     productName: '',//"产品名称",
                     standardPrice: '',//"景区成本价",
-                    stockType: "is_no_limit",//库存限制类型（总量-total,每日-everyday,不限库存-is_no_limit）
+                    stockType: "",//库存限制类型（总量-total,每日-everyday,不限库存-is_no_limit）
                     stockNum: "",//库存数量
                     settlePrice: "",//单价
                     //分账设置表格数据 {orgId: "",parkName: "",subPrice: 0 }
@@ -297,32 +297,39 @@
         methods: {
 
             //选择产品改变
-            changeChooseProduct ( val ) {
-                this.productInfo = this.list.find( item => val === item.id );
-                if(this.productInfo && this.productInfo.id){
-                    this.formData.productName = this.productInfo.productName;
-                    this.formData.standardPrice = this.productInfo.standardPrice;
-                    this.findProductById(this.productInfo);
+            changeChooseProduct ( val , bool) {
+                if(val){
+                    this.productInfo = this.list.find( item => val === item.id );
+                    if(this.productInfo && this.productInfo.id){
+//                        this.formData.productId = this.productInfo.productId;
+                        this.formData.productName = this.productInfo.productName;
+                        this.formData.standardPrice = this.productInfo.standardPrice;
+                        this.findProductById(this.productInfo, bool);
+                    }
                 }
             },
 
             // 根据产品Id查明细
-            findProductById( data ) {
+            findProductById( data , bool) {
                 ajax.post('findProductById', {
                     productId: data.id
                 }).then(res => {
                     if(res.success){
                         this.productDetail = res.data || {};
                         this.formData.stockType = res.data.productSaleVo.stockType;
-                        if(res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0){
-                            res.data.productPlayRuleVo.forEach( item => {
-                                this.formData.itemRule.push({
-                                    orgId: item.orgId,
-                                    parkName: item.parkName,
-                                    subPrice: 0,
-                                })
-                            } )
+                        if(!bool){
+                            this.formData.itemRule = [];
+                            if(res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0){
+                                res.data.productPlayRuleVo.forEach( item => {
+                                    this.formData.itemRule.push({
+                                        orgId: item.orgId,
+                                        parkName: item.parkName,
+                                        subPrice: 0,
+                                    })
+                                } )
+                            }
                         }
+
                     } else {
                         this.itemRule = [];
                         this.$Message.error(res.message || this.$t('fail'));
@@ -341,7 +348,6 @@
             confirm() {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        debugger
                         this.loading = true;
                         if(this.confirmCallback){
                             let formData = defaultsDeep({},this.formData);
@@ -376,7 +382,10 @@
                 this.title = title;
                 this.type = type;
                 if(data){
-                    this.formData = data;
+                    this.formData = defaultsDeep({}, data);
+                    if(data.productId){
+                        this.changeChooseProduct(data.productId, true);
+                    }
                 }
                 if(confirmCallback && typeof confirmCallback == 'function'){
                     this.confirmCallback = confirmCallback;
@@ -391,11 +400,13 @@
             resetFunc () {
                 this.formData = {
                     productId: '',
-                    stockType: "is_no_limit",
-                    stockNum: "",
-                    settlePrice: "",
+                    stockType: '',
+                    stockNum: '',
+                    settlePrice: '',
                     itemRule: [],
                 };
+                this.productInfo = {};
+                this.productDetail = {};
             },
 
         }

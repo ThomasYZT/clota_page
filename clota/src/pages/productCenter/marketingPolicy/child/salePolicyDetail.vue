@@ -52,7 +52,8 @@
                         <!--政策可售期 = 指定期间可售-->
                         <i-col span="12" v-if="detail.productPolicy.saleRuleModel.type === 'specifiedPeriodSold'">
                             <Form-item :label="$t('specifiedTime')+'：'"><!--指定起止日期-->
-                                <div>{{detail.productPolicy.saleRuleModel.specifiedTime ? JSON.parse(detail.productPolicy.saleRuleModel.specifiedTime).join('~') : '-' | contentFilter}}</div>
+                                <!--<div>{{detail.productPolicy.saleRuleModel.specifiedTime ? JSON.parse(detail.productPolicy.saleRuleModel.specifiedTime).join('~') : '-' | contentFilter}}</div>-->
+                                <div>{{detail.productPolicy.saleRuleModel.startTime}}~{{detail.productPolicy.saleRuleModel.endTime}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -60,7 +61,7 @@
                     <i-row v-if="detail.productPolicy.saleRuleModel.type === 'specifiedPeriodSold'">
                         <i-col span="24">
                             <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
-                                <div v-w-title="detail.productPolicy.saleRuleModel.weekSold">
+                                <div>
                                     {{showWeek(detail.productPolicy.saleRuleModel.weekSold) | contentFilter}}
                                 </div>
                             </Form-item>
@@ -94,7 +95,8 @@
                         <!--游玩期限 = 指定期间可售-->
                         <i-col span="12" v-if="detail.productPolicy.playRuleModel.type === 'specifiedPeriodSold'">
                             <Form-item :label="$t('specifiedTime')+'：'"><!--指定起止日期-->
-                                <div>{{detail.productPolicy.playRuleModel.specifiedTime ? JSON.parse(detail.productPolicy.playRuleModel.specifiedTime).join('~') : '-' | contentFilter}}</div>
+                                <!--<div>{{detail.productPolicy.playRuleModel.specifiedTime ? JSON.parse(detail.productPolicy.playRuleModel.specifiedTime).join('~') : '-' | contentFilter}}</div>-->
+                                <div>{{detail.productPolicy.playRuleModel.startTime}}~{{detail.productPolicy.playRuleModel.endTime}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -102,7 +104,7 @@
                     <i-row v-if="detail.productPolicy.playRuleModel.type === 'specifiedPeriodSold'">
                         <i-col span="24">
                             <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
-                                <div v-w-title="detail.productPolicy.playRuleModel.weekSold">
+                                <div>
                                     {{showWeek(detail.productPolicy.playRuleModel.weekSold) | contentFilter}}
                                 </div>
                             </Form-item>
@@ -190,7 +192,7 @@
 
                 <!--退改规则-->
                 <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel"
-                     :style="{height: (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px'}">
+                     :style="{height: detail.productPolicy.returnRuleModel.rules.length ? (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px' : '280px'}">
                     <Form-item :label="$t('returnAndAlterRule')+'：'"><!--退改规则-->
                         <div>
                             <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
@@ -233,7 +235,7 @@
                         </i-col>
                     </i-row>
                     <i-row>
-                        <i-col span="12">
+                        <i-col span="24">
                             <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
                                 <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
                             </Form-item>
@@ -249,7 +251,7 @@
             <!--已驳回-->
             <template v-if="detail.productPolicy.auditStatus === 'rejected' || detail.productPolicy.auditStatus === 'not_enabled'">
                 <Button type="primary"
-                        @click="auditProduct('enabled')">{{$t('commitCheck')}}</Button><!--提交审核-->
+                        @click="auditProduct('auditing')">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
                         @click="modify">{{$t('modify')}}</Button><!--修  改-->
             </template>
@@ -260,6 +262,7 @@
             <!--待审核-->
             <template v-if="detail.productPolicy.auditStatus === 'auditing'">
                 <Button type="primary" @click="auditProduct('enabled')">{{$t('checkPass')}}</Button><!--审核通过-->
+                <Button type="ghost" class="active-btn" @click="auditProduct('rejected')">{{$t('reject')}}</Button><!--驳回-->
             </template>
             <Button type="ghost" @click="goBack">{{$t('back')}}</Button><!--返回-->
             <!--待审核--填写备注-->
@@ -315,6 +318,8 @@
                 refundColumn: refundColumn,
                 //备注
                 remark: '',
+                //分销id
+                allocationId: '',
             }
         },
         computed: {
@@ -343,6 +348,7 @@
                     params: {
                         type: 'modify',
                         info: this.detail,
+                        allocationId: this.allocationId,
                     }
                 })
             },
@@ -350,14 +356,13 @@
             //审核操作
             auditProduct ( status ) {
                 ajax.post('modifyPolicyStatus',{
-                    policyIds: ids,
+                    policyIds: this.detail.productPolicy.id,
                     status: status,
                     remark: this.remark,
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('updateStatus') + this.$t('success'));
-                        //获取销售政策详情（包含销售组、产品）
-                        this.findProductById(this.detail.productPolicy);
+                        this.goBack();
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
@@ -401,6 +406,7 @@
                 if(params && Object.keys(params).length > 0){
                     //获取销售政策详情（包含销售组、产品）
                     if( params.info ){
+                        this.allocationId = params.info.allocationId;
                         this.getPolicyInfo( params.info );
                     }
                 }

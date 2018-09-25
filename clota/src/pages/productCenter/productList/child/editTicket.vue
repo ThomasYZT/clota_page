@@ -91,7 +91,8 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('isGroup')" prop="isGroup"><!--是否团队产品-->
                             <Select v-model="formData.isGroup"
-                                    :placeholder="$t('selectField', {msg: ''})">
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="isGroupChange">
                                 <Option v-for="(item,index) in enumData.isTeamProduct"
                                         :key="index"
                                         :value="item.value">
@@ -121,6 +122,7 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('needId')" prop="needId"><!--预定时提交身份信息-->
                             <Select v-model="formData.needId"
+                                    :disabled="formData.isGroup === 'true' ? true : false "
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.orderInfo"
                                         :key="index"
@@ -530,6 +532,13 @@
 
         },
         methods: {
+
+            //团队产品默认无需证件
+            isGroupChange ( val ) {
+                if(val === 'true'){
+                    this.formData.needId = 'noRequired';
+                }
+            },
 
             //表单校验
             formValidateFunc () {
