@@ -15,6 +15,7 @@
                 <table-com
                     v-if="tableShow"
                     :column-data="partMentHead"
+                    default-page-layout="total, prev, pager, next"
                     :table-data="tableData"
                     :border="true"
                     :page-no-d.sync="pageNo"

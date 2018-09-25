@@ -14,6 +14,7 @@
             <div class="table-wrap" v-if="isPackUp">
                 <table-com
                     v-if="tableShow"
+                    default-page-layout="total, prev, pager, next"
                     :column-data="companies"
                     :table-data="tableData"
                     :border="true"

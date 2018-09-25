@@ -10,7 +10,7 @@
             <Form :model="formData" ref="formValidate" :rules="ruleValidate">
                 <i-row>
                     <i-col span="10">
-                        <FormItem label="公司/景区名称" :label-width="120">
+                        <FormItem label="公司/景区名称" :label-width="100">
                             <Input :value="manageOrgs.orgName"
                                    disabled
                                    style="width: 280px;"/>
