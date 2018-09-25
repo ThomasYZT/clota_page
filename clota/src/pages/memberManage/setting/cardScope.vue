@@ -228,7 +228,7 @@
             //组织树数组格式数据
             companyData () {
                 if(this.treeData && Object.keys(this.treeData).length > 0){
-                    return [this.treeData];
+                    return this.treeData;
                 }else{
                     return [];
                 }
