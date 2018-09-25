@@ -30,7 +30,9 @@
                 </router-view>
             </transition>
         </drawer>
-        <div class="lang-change" @click="changeLang"></div>
+        <div class="lang-change" @click="changeLang">
+            <span class="iconfont icon-switch"></span>
+        </div>
     </div>
 </template>
 
@@ -58,10 +60,8 @@
              */
             changeLang () {
                 // this.langChing = true;
-                this.drawerVisibility = !this.drawerVisibility;
-                setTimeout(() =>{
-                    this.$store.commit('setLang',this.lang === 'en' ? 'zh-CN' : 'en');
-                },500);
+                // this.drawerVisibility = !this.drawerVisibility;
+                this.$store.commit('setLang',this.lang === 'en' ? 'zh-CN' : 'en');
             }
         },
         computed: {
@@ -106,13 +106,19 @@
 
         .lang-change{
             position: fixed;
-            top : 50%;
-            left: 0;
-            width: 50px;
-            height: 50px;
-            background: red;
+            bottom : 50px;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: #BBC5D5;
             z-index: 9999;
             border-radius: 25px;
+            text-align: center;
+            line-height: 40px;
+
+            .icon-switch{
+                color: #fff;
+            }
         }
 
         .weui-cell{
