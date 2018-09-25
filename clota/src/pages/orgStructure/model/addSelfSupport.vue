@@ -19,13 +19,13 @@
                 <RadioGroup v-model="addChannel.type">
                     <Radio label="online"><span>线上</span></Radio>
                     <Radio label="offline" style="margin-right: 0;"><span>线下</span></Radio>
-                    <Tooltip placement="top">
-                        <i class="iconfont icon-note"></i>
-                        <div slot="content">
-                            <div class="tip-trade">{{$t('创建线下自营渠道（款台）请至组织结构内新增款台节点')}}</div>
-                        </div>
-                    </Tooltip>
                 </RadioGroup>
+                <Tooltip placement="top" transfer>
+                    <i class="iconfont icon-note"></i>
+                    <div slot="content">
+                        <div class="tip-trade">{{$t('创建线下自营渠道（款台）请至组织结构内新增款台节点')}}</div>
+                    </div>
+                </Tooltip>
             </Form-item>
             <!--URL-->
             <Form-item label="URL">
