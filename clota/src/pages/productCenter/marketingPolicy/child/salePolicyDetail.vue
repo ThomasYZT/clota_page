@@ -9,7 +9,7 @@
 
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="$t('marketingPolicyDetail')">
+            :locale-router="localeRouter">
         </bread-crumb-head>
 
         <div class="container">
@@ -22,7 +22,7 @@
             <Form ref="formValidate"
                   :model="detail">
 
-                <div class="form-content">
+                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.saleRuleModel">
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('salePolicyName')+'：'"><!--销售政策名称-->
@@ -41,10 +41,27 @@
                                 <div v-w-title="$t(detail.productPolicy.saleRuleModel.type)">{{$t(detail.productPolicy.saleRuleModel.type) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12">
+                        <!--政策可售期 = 游玩日期前M天可售-->
+                        <i-col span="12" v-if="detail.productPolicy.saleRuleModel.type === 'playBeforeSold'">
                             <Form-item :label="$t('aheadDays')+'：'"><!--提前天数（M）-->
                                 <div>
                                     {{detail.productPolicy.saleRuleModel.beforeDay | contentFilter}} {{$t('To')}} {{detail.productPolicy.saleRuleModel.afterDay | contentFilter}}
+                                </div>
+                            </Form-item>
+                        </i-col>
+                        <!--政策可售期 = 指定期间可售-->
+                        <i-col span="12" v-if="detail.productPolicy.saleRuleModel.type === 'specifiedPeriodSold'">
+                            <Form-item :label="$t('specifiedTime')+'：'"><!--指定起止日期-->
+                                <div>{{detail.productPolicy.saleRuleModel.specifiedTime ? JSON.parse(detail.productPolicy.saleRuleModel.specifiedTime).join('~') : '-' | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <!--政策可售期 = 指定期间可售-->
+                    <i-row v-if="detail.productPolicy.saleRuleModel.type === 'specifiedPeriodSold'">
+                        <i-col span="24">
+                            <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
+                                <div v-w-title="detail.productPolicy.saleRuleModel.weekSold">
+                                    {{showWeek(detail.productPolicy.saleRuleModel.weekSold) | contentFilter}}
                                 </div>
                             </Form-item>
                         </i-col>
@@ -53,34 +70,36 @@
                         <i-col span="12">
                             <Form-item :label="$t('saleDayTime')+'：'"><!--每日可售时间-->
                                 <div>
-                                    {{detail.productPolicy.saleStartTime | contentFilter}} ~ {{detail.productPolicy.saleEndTime | contentFilter}}
+                                    {{detail.productPolicy.saleStartTime | contentFilter}}~{{detail.productPolicy.saleEndTime | contentFilter}}
                                 </div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
                             <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
                                 <div>
-                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}} ~ {{detail.productPolicy.todaySaleEndTime | contentFilter}}
+                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}}~{{detail.productPolicy.todaySaleEndTime | contentFilter}}
                                 </div>
                             </Form-item>
                         </i-col>
                     </i-row>
                 </div>
 
-                <div class="form-content">
+                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.playRuleModel">
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
                                 <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">{{$t(detail.productPolicy.playRuleModel.type) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12">
+                        <!--游玩期限 = 指定期间可售-->
+                        <i-col span="12" v-if="detail.productPolicy.playRuleModel.type === 'specifiedPeriodSold'">
                             <Form-item :label="$t('specifiedTime')+'：'"><!--指定起止日期-->
-                                <div>{{detail.productPolicy.playRuleModel.specifiedTime | contentFilter}}</div>
+                                <div>{{detail.productPolicy.playRuleModel.specifiedTime ? JSON.parse(detail.productPolicy.playRuleModel.specifiedTime).join('~') : '-' | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
-                    <i-row>
+                    <!--游玩期限 = 指定期间可售-->
+                    <i-row v-if="detail.productPolicy.playRuleModel.type === 'specifiedPeriodSold'">
                         <i-col span="24">
                             <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
                                 <div v-w-title="detail.productPolicy.playRuleModel.weekSold">
@@ -105,7 +124,7 @@
                         <i-col span="12">
                             <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
                                 <div>
-                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}} ~ {{detail.productPolicy.todaySaleEndTime | contentFilter}}
+                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}}~{{detail.productPolicy.todaySaleEndTime | contentFilter}}
                                 </div>
                             </Form-item>
                         </i-col>
@@ -113,7 +132,8 @@
                 </div>
 
                 <!--产品列表-->
-                <div class="form-content" :style="{height: detail.policyItems.length > 0 ? (detail.policyItems.length + 1) * 50 + 80+'px' : '280px'}">
+                <div class="form-content" v-if="detail.policyItems"
+                     :style="{height: detail.policyItems.length > 0 ? (detail.policyItems.length + 1) * 50 + 80+'px' : '280px'}">
                     <Form-item :label="$t('productList')+'：'"><!--产品列表-->
                         <div>
                             <table-com
@@ -138,7 +158,8 @@
                 </div>
 
                 <!--销售渠道-->
-                <div class="form-content line" :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
+                <div class="form-content line" v-if="detail.policyChannels"
+                     :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
                     <Form-item :label="$t('saleChannels')+'：'"><!--销售渠道-->
                         <div>
                             <table-com
@@ -168,7 +189,8 @@
                 </div>-->
 
                 <!--退改规则-->
-                <div class="form-content" :style="{height: (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px'}">
+                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel"
+                     :style="{height: (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px'}">
                     <Form-item :label="$t('returnAndAlterRule')+'：'"><!--退改规则-->
                         <div>
                             <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
@@ -197,7 +219,7 @@
                 </div>
 
                 <br/>
-                <div class="form-content line">
+                <div class="form-content line" v-if="detail.productPolicy && detail.productPolicy.alterRuleModel">
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
@@ -212,7 +234,7 @@
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('购票须知')+'：'"><!--购票须知-->
+                            <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
                                 <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -223,7 +245,7 @@
 
         </div>
 
-        <div class="footer">
+        <div class="footer" v-if="detail.productPolicy">
             <!--已驳回-->
             <template v-if="detail.productPolicy.auditStatus === 'rejected' || detail.productPolicy.auditStatus === 'not_enabled'">
                 <Button type="primary"
@@ -294,6 +316,11 @@
                 //备注
                 remark: '',
             }
+        },
+        computed: {
+            localeRouter () {
+                return this.$t('marketingPolicyDetail');      // 销售政策详情
+            },
         },
         methods: {
 
