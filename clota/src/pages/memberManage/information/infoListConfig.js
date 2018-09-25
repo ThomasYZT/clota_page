@@ -60,40 +60,40 @@ export const infoListHead = [
 // 我的订单列表表头
 export const orderListHead = [
     {
-        title: '交易号',      // 交易号
+        title: 'tradeNo',      // 交易号
         minWidth: 150,
         field: 'outOrderNo'
     },
     {
-        title: '景区',        // 景区
+        title: 'scenic',        // 景区
         minWidth: 160,
         enMinWidth : 100,
         field: 'outOrgName'
     },
     {
-        title: '会员方交易流水号',  // 会员方交易流水号
+        title: 'memberTradeNo',  // 会员方交易流水号
         minWidth: 160,
         enMinWidth : 150,
         field: 'orderNo'
     },
     {
-        title: '整单交易金额',    // 整单交易金额
+        title: 'tradeAmount',    // 整单交易金额
         minWidth: 150,
         field: 'amount'
     },
     {
-        title: '订单状态(支付、退款)',      // 订单状态(支付、退款)
+        title: 'orderStatusTags',      // 订单状态(支付、退款)
         minWidth: 180,
         enMinWidth : 200,
         field: 'status'
     },
     {
-        title: '交易时间',    // 交易时间
+        title: 'transactionTime',    // 交易时间
         minWidth: 200,
         field: 'tradeTime'
     },
     {
-        title: '会员系统交易时间',      // 会员系统交易时间
+        title: 'vipsTradeTime',      // 会员系统交易时间
         minWidth: 200,
         field: 'createdTime'
     },
@@ -107,7 +107,7 @@ export const orderListHead = [
 // 我的订单列表表头
 export const cardOwnerHead = [
     {
-        title: '成员序号',       // 成员序号
+        title: 'memberSerialNum',       // 成员序号
         field: 'no'
     },
     {
@@ -115,7 +115,7 @@ export const cardOwnerHead = [
         field: 'name'
     },
     {
-        title: '身份证号',       // 身份证号
+        title: 'identityNo',       // 身份证号
         field: 'idno'
     },
     {
@@ -133,7 +133,7 @@ export const cardOwnerHead = [
 export const byLevelHead = [
     {
         title: 'IntegralRate',       // 积分率
-        field: 'IntegralRate'
+        field: 'scoreRate'
     },
     {
         title: 'discountRate',       // 折扣率
@@ -145,7 +145,7 @@ export const byLevelHead = [
 export const byShopHead = [
     {
         title: 'shop',       // 店铺
-        field: 'shop'
+        field: 'orgName'
     },
     ...byLevelHead
 ];
@@ -154,11 +154,11 @@ export const byShopHead = [
 export const byProductHead = [
     {
         title: 'shop',       // 店铺
-        field: 'shop'
+        field: 'orgName'
     },
     {
-        title: 'goods',       // 商品
-        field: 'goods'
+        title: 'productType',       // 产品类别
+        field: 'typeName'
     },
     ...byLevelHead
 ];
@@ -186,16 +186,16 @@ export const orderStatus = function (status) {
     let statusName = '-';
     switch (status) {
         case 'pay' :
-            statusName = this.$t('pay');        // 支付
+            statusName = 'pay';        // 支付
             break;
         case 'refund' :
-            statusName = this.$t('refund');        // 退款
+            statusName = 'refund';        // 退款
             break;
         case 'cancel_pay' :
-            statusName = this.$t('cancelPay');        // 撤销支付
+            statusName = 'cancelPay';        // 撤销支付
             break;
         case 'cancel_refund' :
-            statusName = this.$t('cancelRefund');        // 撤销退款
+            statusName = 'cancelRefund';        // 撤销退款
             break;
     }
     return statusName;

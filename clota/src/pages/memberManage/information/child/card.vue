@@ -68,7 +68,7 @@
                     <div class="form-item-wrap"><label>{{$t('effectiveEndDate')}}：</label><span>{{annualCard.validTo}}</span></div><!--有效开结束日期-->
                     <div class="form-item-wrap"><label>{{$t('saleDate')}}：</label><span>{{annualCard.saleDate}}</span></div><!--销售日期-->
                     <div class="form-item-wrap"><label>{{$t('cardOpeningUnit')}}：</label><span>{{annualCard.issuser | contentFilter}}</span></div><!--开卡单位-->
-                    <div class="form-item-wrap"><label>{{$t('annualCardStatus')}}：</label><span>{{annualCard.status | cardStatus}}</span></div><!--年卡状态-->
+                    <div class="form-item-wrap"><label>{{$t('annualCardStatus')}}：</label><span>{{cardStatus(annualCard.status)}}</span></div><!--年卡状态-->
                     <div class="form-item-wrap"><label>{{$t('annualCardRemark')}}：</label><span>{{annualCard.note | contentFilter}}</span></div><!--年卡备注-->
                 </div>
                 <div class="label"></div>
@@ -118,7 +118,7 @@
                     <div class="form-item-wrap"><label>{{$t('effectiveEndDate')}}：</label><span>{{timesCard.validTo}}</span></div><!--有效开结束日期-->
                     <div class="form-item-wrap"><label>{{$t('saleDate')}}：</label><span>{{timesCard.saleDate}}</span></div><!--销售日期-->
                     <div class="form-item-wrap"><label>{{$t('cardOpeningUnit')}}：</label><span>{{timesCard.issuser | contentFilter}}</span></div><!--开卡单位-->
-                    <div class="form-item-wrap"><label>{{$t('timesCardStatus')}}：</label><span>{{timesCard.status | cardStatus}}</span></div><!--次卡状态-->
+                    <div class="form-item-wrap"><label>{{$t('timesCardStatus')}}：</label><span>{{cardStatus(timesCard.status)}}</span></div><!--次卡状态-->
                     <div class="form-item-wrap"><label>{{$t('timesCardRemark')}}：</label><span>{{timesCard.note | contentFilter}}</span></div><!--次卡备注-->
                     <div class="form-item-wrap"><label>{{$t('totalTimes')}}：</label><span>{{timesCard.totalTimes | contentFilter}}</span></div><!--总次数-->
                     <div class="form-item-wrap"><label>{{$t('usableTimesNow')}}：</label><span>{{timesCard.leftTime | contentFilter}}</span></div><!--现在可用次数-->
@@ -196,26 +196,6 @@
         },
         created() {
         },
-        filters: {
-            cardStatus(status) {
-                let statusName = '-';
-                switch (status) {
-                    case 'valid' :
-                        statusName = $t('activate');      // 激活
-                        break;
-                    case 'invalid' :
-                        statusName = $t('unactivated');        // 未激活
-                        break;
-                    case 'froze' :
-                        statusName = this.$t('memberStatusFrozen');        // 已冻结
-                        break;
-                    case 'expire' :
-                        statusName = this.$t('overdue');       // 已到期
-                        break;
-                }
-                return statusName;
-            },
-        },
         methods: {
             /**
              * 获取路由参数
@@ -253,6 +233,29 @@
                     }
 
                 });
+            },
+            /**
+             * 年卡、次卡的状态
+             * @param status -- 状态code
+             * @returns {string}
+             */
+            cardStatus(status) {
+                let statusName = '-';
+                switch (status) {
+                    case 'valid' :
+                        statusName = 'activate';      // 激活
+                        break;
+                    case 'invalid' :
+                        statusName = 'unactivated';        // 未激活
+                        break;
+                    case 'froze' :
+                        statusName = 'memberStatusFrozen';        // 已冻结
+                        break;
+                    case 'expire' :
+                        statusName = 'overdue';       // 已到期
+                        break;
+                }
+                return this.$t(statusName);
             },
         },
     }
