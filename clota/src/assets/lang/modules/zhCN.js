@@ -770,6 +770,11 @@ export default {
     'accountPrivaligeError': '账户没有菜单权限，请联系管理员开通权限',
     'cardScopeSetting': '会员卡可用范围设置',
     'productTypeSetting': '产品类别设置',
-    'deleteAccount': '删除账户'
+    'cardUnopened': '未开卡',
+    'cardOpened': '已开卡',
+    'uploadCardError': '导入文件仅支持Excel文件',
+    'proTypeCode': '产品类别编码',
+    'productType': '产品类别',
+    'haveOpenedServices': '已开通服务',
 
 }

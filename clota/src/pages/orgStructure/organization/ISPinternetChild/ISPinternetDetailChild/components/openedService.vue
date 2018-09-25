@@ -3,7 +3,7 @@
 <template>
     <div class="opened-service">
         <div class="pick-up-title" >
-            <span class="label">{{$t('openedService')}}</span>
+            <span class="label">{{$t('haveOpenedServices')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
