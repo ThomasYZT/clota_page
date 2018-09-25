@@ -58,6 +58,7 @@ const createRouter = () => new Router({
             //     }
             // }
         },
+        //会员登陆
         {
             path: '/login',
             name: 'mobileLogin',
@@ -66,6 +67,7 @@ const createRouter = () => new Router({
                 noFrame: true
             }
         },
+        //会员注册
         {
             path: '/register',
             name: 'mobileRegister',
@@ -74,6 +76,7 @@ const createRouter = () => new Router({
                 noFrame: true
             }
         },
+        //会员主页
         {
             path: '/home',
             name: 'home',
@@ -82,6 +85,7 @@ const createRouter = () => new Router({
                 noFrame: true
             }
         },
+        //会员账户
         {
             path : '/account',
             name : 'account',
@@ -99,6 +103,7 @@ const createRouter = () => new Router({
                 title : '默认账户充值'
             }
         },
+        //个人信息
         {
             path : '/personInfo',
             name : 'personInfo',
@@ -106,7 +111,26 @@ const createRouter = () => new Router({
             meta : {
                 title : '个人信息'
             }
+        },
+        //会员权益
+        {
+            path: '/memberRight',
+            name: 'memberRight',
+            component: () => import(/* webpackChunkName: "memberRight" */'../pages/memberRight/memberRight.vue'),
+        },
+        //资金明细
+        {
+            path: '/checkFlow',
+            name: 'checkFlow',
+            component: () => import(/* webpackChunkName: "memberRight" */'../pages/checkFlow/checkFlow.vue'),
+        },
+        //积分明细
+        {
+            path: '/integralDetail',
+            name: 'integralDetail',
+            component: () => import(/* webpackChunkName: "memberRight" */'../pages/integralDetail/integralDetail.vue'),
         }
+
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {

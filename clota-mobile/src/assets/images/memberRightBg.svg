@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="377px" height="8px" viewBox="0 0 377 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 10</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="100%" y1="0%" x2="0%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#EEEEEE" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#E1BE88" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="会员H5页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-10" fill="url(#linearGradient-1)">
+            <g id="Group-3">
+                <g id="Group-2">
+                    <path d="M297.405006,0.0202503101 L377,4 L297.405006,7.97974969 C297.271823,7.99314146 297.136712,8 297,8 C294.790861,8 293,6.209139 293,4 C293,1.790861 294.790861,0 297,0 C297.136712,0 297.271823,0.00685853897 297.405006,0.0202503101 Z" id="Combined-Shape"></path>
+                    <path d="M4.4050062,0.0202503101 L84,4 L4.4050062,7.97974969 C4.2718229,7.99314146 4.1367124,8 4,8 C1.790861,8 0,6.209139 0,4 C0,1.790861 1.790861,0 4,0 C4.1367124,0 4.2718229,0.00685853897 4.4050062,0.0202503101 Z" id="Combined-Shape" transform="translate(42.000000, 4.000000) scale(-1, 1) translate(-42.000000, -4.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
