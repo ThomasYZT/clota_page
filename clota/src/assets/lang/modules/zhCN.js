@@ -788,6 +788,7 @@ export default {
     'priceSet': '分账设置',
     'unShareMoney': '未分帐金额',
     'customPlay': '自定义可玩日期',
+    'newProduct': '新建产品',
 
 
     /*** 财务管理模块 ***/
