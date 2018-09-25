@@ -417,6 +417,14 @@ export default {
     'refund': '退款',
     'cancelPay': '撤销支付',
     'cancelRefund': '撤销退款',
+    'tradeNo': '交易号',
+    'memberTradeNo': '会员方交易流水号',
+    'tradeAmount': '整单交易金额',
+    'orderStatusTags': '订单状态(支付、退款)',
+    'vipsTradeTime': '会员系统交易时间',
+    'memberSerialNum': '成员序号',
+    'identityNo': '身份证号',
+    'rechargeSend': '储值{money}送{integral}',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
