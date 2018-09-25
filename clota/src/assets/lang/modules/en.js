@@ -451,6 +451,8 @@ export default {
     'M008': 'Existing membership card',
     'M009': 'Membership card is frozen',
     'M010': 'Mother card is frozen',
+    'M011': '实体卡已存在',
+    'M012': '卡号由大小写字母+阿拉伯数字组成。 上限值60位',
     'S001': 'The parameter is empty',
     'S002': 'Interface exception',
     'S003': 'Import files only support Excel files',
