@@ -34,7 +34,12 @@ export const integraDetailHead = [
         title: 'transactionTime',      // 交易时间
         width: 180,
         field: 'createdTime'
-    }
+    },
+    {
+        title: 'transactionInfo',      // 交易信息
+        width: 140,
+        field: ''
+    },
 ];
 
 // 按交易类型筛选的条件选项

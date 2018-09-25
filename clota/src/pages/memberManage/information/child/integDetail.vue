@@ -113,6 +113,21 @@
                         <span>{{ scope.row.endingBalance | contentFilter }}</span>
                     </template>
                 </el-table-column>
+                <el-table-column
+                    slot="column6"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    fixed="right"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.operationType === 'adjust_score'">-</span>
+                        <span class="blue-color" v-if="scope.row.evaluateType === 'consume_add' || scope.row.evaluateType === 'consume_reduce'"
+                              @click="goOderDetail(scope.row)">{{$t('details')}}
+                        </span><!--详情-->
+                        <span v-if="scope.row.evaluateType === 'recharge_add'">{{$t('rechargeSend', {money: scope.row.money, integral: scope.row.amount})}}</span>
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
 
@@ -250,6 +265,13 @@
                 this.queryList();
             },
 
+            //路由跳转订单详情页面
+            goOderDetail(scopeRow) {
+                this.$router.push({
+                    name: 'orderDetail',
+                    query: {orderNo: scopeRow.orderNo}
+                });
+            },
 
         }
     }

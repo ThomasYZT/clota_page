@@ -420,7 +420,7 @@ export const alterRule = [
 //指定日期-节假日
 export const specialHoliday = [
     {
-        label : 'custom',//自定义
-        value : 'custom'
+        holidayName : '自定义',//自定义
+        id : 'custom'
     },
 ];

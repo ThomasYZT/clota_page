@@ -53,12 +53,12 @@ export const saleChannelHead = [
     },
     {
         title: '自营渠道名称',   // 自营渠道编码
-        minWidth: 125,
+        minWidth: 150,
         field: 'channelName'
     },
     {
         title: '销售渠道分组',   // 销售渠道分组
-        minWidth: 125,
+        minWidth: 140,
         field: 'saleGroupName'
     },
     {
@@ -73,7 +73,7 @@ export const saleChannelHead = [
     },
     {
         title: '状态',        // 状态
-        minWidth: 120,
+        width: 120,
         field: 'status'
     },
     {

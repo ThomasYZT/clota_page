@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="tap-switch" v-if="resolveResultShow">
-                <Tabs v-model="tapValue" :animated="false">
+                <Tabs v-model="tapValue" :animated="false" @on-click="tapChange">
                     <TabPane :label="sucResolve"  name="successData">
                     </TabPane>
                     <TabPane :label="failResolve" name="errorData">
@@ -37,12 +37,29 @@
             </div>
             <table-com
                 v-if="resolveResultShow"
+                :key="tapValue"
                 :column-data="columns[tapValue]"
                 :table-data="tableData[tapValue]"
                 :border="true"
+                :page-no-d.sync="pageNo"
+                :show-pagination="true"
+                :page-size-d.sync="pageSize"
+                :total-count="totalCount"
                 :row-class-name="rowClassName"
                 :table-com-min-height="400"
-                :auto-height="true">
+                :auto-height="true"
+                @query-data="queryList">
+                <el-table-column
+                    slot="column2"
+                    slot-scope="row"
+                    :label="row.title"
+                    show-overflow-tooltip
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scoped">
+                        {{$t(scoped.row.errorInfo)}}
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
         <div class="btn-area" v-if="resolveResultShow">
@@ -109,7 +126,7 @@
                         },
                         {
                             title: '错误原因',
-                            field: 'error'
+                            field: 'errorInfo'
                         },
                     ]
                 },
@@ -123,7 +140,15 @@
                 //解析成功条数
                 sucSize : '',
                 //解析失败条偶数
-                failSize : ''
+                failSize : '',
+                pageNo : 1,
+                pageSize : 10,
+                totalCount : 0,
+                //上传的数据
+                uploadData : {
+                    successData : [],
+                    errorData : [],
+                }
             }
         },
         methods: {
@@ -132,10 +157,16 @@
              * @param data
              */
             getUploadResult (data){
-                this.tableData['successData'] = data.dataList ? data.dataList : [];
-                this.tableData['errorData'] = data.errorList ? data.errorList : [];
+                this.tapValue = 'successData';
+                this.pageNo = 1;
+                this.pageSize = 10;
+                this.uploadData['successData'] = data.dataList ? data.dataList : [];
+                this.uploadData['errorData'] = data.errorList ? data.errorList : [];
+                this.tableData['successData'] = this.uploadData['successData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
+                this.tableData['errorData'] = this.uploadData['errorData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
                 this.sucSize = data.dataSize;
                 this.failSize = data.errorSize;
+                this.totalCount = this.sucSize;
             },
             /**
              * 取消导入
@@ -150,7 +181,7 @@
              */
             importCard ( ){
                 ajax.post('batchSaveEntityCards',{
-                    entityCards : JSON.stringify(this.tableData['successData'])
+                    entityCards : JSON.stringify(this.uploadData['successData'])
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('导入成功');
@@ -167,6 +198,33 @@
             rowClassName (row) {
                 if(this.tapValue === "errorData"){
                     return 'error-tr';
+                }
+            },
+            /**
+             * tap标签改变
+             * @param value tap的值
+             */
+            tapChange (value) {
+                this.pageNo = 1;
+                this.pageSize = 10;
+                if(value === 'successData'){
+                    this.totalCount = this.sucSize;
+                    this.tableData['successData'] = this.uploadData['successData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
+                }else{
+                    this.totalCount = this.failSize;
+                    this.tableData['errorData'] = this.uploadData['errorData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
+                }
+            },
+            /**
+             * 切换导入数的分页
+             */
+            queryList () {
+                if(this.tapValue === 'successData'){
+                    this.totalCount = this.sucSize;
+                    this.tableData['successData'] = this.uploadData['successData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
+                }else{
+                    this.totalCount = this.failSize;
+                    this.tableData['errorData'] = this.uploadData['errorData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
                 }
             }
         },
@@ -280,7 +338,7 @@
                 .fail-tip{
                     position: absolute;
                     top: 15px;
-                    right: 0;
+                    right: -26px;
                     font-size: $font_size_14px;
                     color: #C5C5C5;
                 }

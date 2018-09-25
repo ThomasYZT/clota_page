@@ -163,22 +163,39 @@ export const byProductHead = [
     ...byLevelHead
 ];
 
+// 年卡、次卡可使用的第三方卡 - 列表表头
+export const cardInfosHead = [
+    {
+        title: 'name',       // 名称
+        field: 'cardName'
+    },
+    {
+        title: 'thirdCardFaceNum',       // 第三方卡面号
+        field: 'displayNo'
+    },
+    {
+        title: 'thirdCardNum',       // 第三方卡号
+        field: 'cardNo'
+    },
+];
+
+
 
 // 订单状态的过滤显示
 export const orderStatus = function (status) {
     let statusName = '-';
     switch (status) {
         case 'pay' :
-            statusName = '支付';
+            statusName = this.$t('pay');        // 支付
             break;
         case 'refund' :
-            statusName = '退款';
+            statusName = this.$t('refund');        // 退款
             break;
         case 'cancel_pay' :
-            statusName = '撤销支付';
+            statusName = this.$t('cancelPay');        // 撤销支付
             break;
         case 'cancel_refund' :
-            statusName = '撤销退款';
+            statusName = this.$t('cancelRefund');        // 撤销退款
             break;
     }
     return statusName;

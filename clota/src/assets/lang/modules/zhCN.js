@@ -397,6 +397,34 @@ export default {
     'myOrder': '我的订单',
     'checkOrderInfo': '查看我的订单信息',
     'orderDetail': '订单详情',
+    'physicalCardNo': '物理卡号',
+    'fingerRegister': '是否指纹注册',
+    'saleDate': '销售日期',
+    'cardOpeningUnit': '开卡单位',
+    'annualCardStatus': '年卡状态',
+    'annualCardRemark': '年卡备注',
+    'timesCardInfo': '次卡信息',
+    'timesCardNo': '次卡编号',
+    'timesCardName': '次卡名称',
+    'timesCardStatus': '次卡状态',
+    'timesCardRemark': '次卡备注',
+    'totalTimes': '总次数',
+    'usableTimesNow': '现在可用次数',
+    'activate': '激活',
+    'unactivated': '未激活',
+    'overdue': '已到期',
+    'pay': '支付',
+    'refund': '退款',
+    'cancelPay': '撤销支付',
+    'cancelRefund': '撤销退款',
+    'tradeNo': '交易号',
+    'memberTradeNo': '会员方交易流水号',
+    'tradeAmount': '整单交易金额',
+    'orderStatusTags': '订单状态(支付、退款)',
+    'vipsTradeTime': '会员系统交易时间',
+    'memberSerialNum': '成员序号',
+    'identityNo': '身份证号',
+    'rechargeSend': '储值{money}送{integral}',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
@@ -423,6 +451,8 @@ export default {
     'M008': '已存在会员卡',
     'M009': '会员卡已冻结',
     'M010': '母卡已冻结',
+    'M011': '实体卡已存在',
+    'M012': '卡号由大小写字母+阿拉伯数字组成。 上限值60位',
     'S001': '参数为空',
     'S002': '接口异常',
     'S003': '导入文件仅支持Excel文件',
@@ -758,6 +788,7 @@ export default {
     'priceSet': '分账设置',
     'unShareMoney': '未分帐金额',
     'customPlay': '自定义可玩日期',
+    'newProduct': '新建产品',
 
 
     /*** 财务管理模块 ***/
@@ -856,5 +887,6 @@ export default {
     'uploadCardError': '导入文件仅支持Excel文件',
     'proTypeCode': '产品类别编码',
     'productType': '产品类别',
+    'haveOpenedServices': '已开通服务',
 
 }

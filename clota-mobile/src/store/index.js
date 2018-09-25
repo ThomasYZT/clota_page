@@ -48,7 +48,6 @@ export default new Vuex.Store({
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
             i18n.locale = state.lang = lang;
-            window.location.reload();
         },
         //改变是否加载中的状态
         changeLoadingStatus (state,loading){

@@ -1,0 +1,217 @@
+@charset "utf-8";
+
+/**,:after,:before {box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; }*/
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd,
+q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr,
+h, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
+}
+
+table{
+    border-collapse: collapse;
+}
+
+a, button, input, select, textarea{
+    outline: none;
+}
+
+a, button{
+    cursor: pointer;
+}
+
+html, body{
+    min-width: 100%;
+    min-height: 100%;
+    overflow: auto;
+}
+
+body {
+    font-family: \5FAE\8F6F\96C5\9ED1, "Microsoft Yahei", "Helvetica Neue", Helvetica, Tahoma, Arial, sans-serif !important;
+    font-size: 14px !important;
+    color: #666666 !important;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none
+}
+
+a:focus {
+    outline: none
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: normal;
+}
+
+ul, ol, li {
+    list-style: none;
+}
+
+img {
+    vertical-align: middle;
+    border: none;
+}
+
+textarea {
+    resize: none;
+}
+
+/*input框及textarea的placeholder字体颜色*/
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: #c5c5c5!important;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    color: #c5c5c5!important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    color: #c5c5c5!important;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    color: #c5c5c5!important;
+}
+
+/* 头像样式 */
+.avatar_bg_1 {background: rgba(123,212,240,1);}
+.avatar_bg_2 {background: rgba(133,147,156,1);}
+.avatar_bg_3 {background: rgba(196,237,93,1);}
+.avatar_bg_4 {background: rgba(242,124,89,1);}
+.avatar_bg_5 {background: rgba(89,206,242,1);}
+.avatar_bg_6 {background: rgba(242,89,129,1);}
+.avatar_bg_7 {background: rgba(69,173,92,1);}
+.avatar_bg_8 {background: rgba(254,203,84,1);}
+.avatar_bg_9 {background: rgba(182,81,219,1);}
+.avatar_bg_0 {background: rgba(87,182,156,1);}
+.avatar_bg_A {background: rgba(81,219,114,1);}
+.avatar_bg_B {background: rgba(123,212,240,1);}
+.avatar_bg_C {background: rgba(68,173,145,1);}
+.avatar_bg_D {background: rgba(196,237,93,1);}
+.avatar_bg_E {background: rgba(242,124,89,1);}
+.avatar_bg_F {background: rgba(89,206,242,1);}
+.avatar_bg_G {background: rgba(242,89,129,1);}
+.avatar_bg_H {background: rgba(118,219,81,1);}
+.avatar_bg_I {background: rgba(254,203,84,1);}
+.avatar_bg_J {background: rgba(182,81,219,1);}
+.avatar_bg_K {background: rgba(154,165,173,1);}
+.avatar_bg_L {background: rgba(81,118,219,1);}
+.avatar_bg_M {background: rgba(89,206,242,1);}
+.avatar_bg_N {background: rgba(96,173,68,1);}
+.avatar_bg_O {background: rgba(68,148,173,1);}
+.avatar_bg_P {background: rgba(200,89,242,1);}
+.avatar_bg_Q {background: rgba(219,81,118,1);}
+.avatar_bg_R {background: rgba(254,203,84,1);}
+.avatar_bg_S {background: rgba(68,173,145,1);}
+.avatar_bg_T {background: rgba(119,135,145,1);}
+.avatar_bg_U {background: rgba(187,219,81,1);}
+.avatar_bg_V {background: rgba(110,202,154,1);}
+.avatar_bg_W {background: rgba(254,203,84,1);}
+.avatar_bg_X {background: rgba(138,170,255,1);}
+.avatar_bg_Y {background: rgba(86,174,255,1);}
+.avatar_bg_Z {background: rgba(81,219,182,1);}
+/* 头像样式 */
+.avatar_bg_1 {background: rgba(123,212,240,1);}
+.avatar_bg_2 {background: rgba(133,147,156,1);}
+.avatar_bg_3 {background: rgba(196,237,93,1);}
+.avatar_bg_4 {background: rgba(242,124,89,1);}
+.avatar_bg_5 {background: rgba(89,206,242,1);}
+.avatar_bg_6 {background: rgba(242,89,129,1);}
+.avatar_bg_7 {background: rgba(69,173,92,1);}
+.avatar_bg_8 {background: rgba(254,203,84,1);}
+.avatar_bg_9 {background: rgba(182,81,219,1);}
+.avatar_bg_0 {background: rgba(87,182,156,1);}
+.avatar_bg_A {background: rgba(81,219,114,1);}
+.avatar_bg_B {background: rgba(123,212,240,1);}
+.avatar_bg_C {background: rgba(68,173,145,1);}
+.avatar_bg_D {background: rgba(196,237,93,1);}
+.avatar_bg_E {background: rgba(242,124,89,1);}
+.avatar_bg_F {background: rgba(89,206,242,1);}
+.avatar_bg_G {background: rgba(242,89,129,1);}
+.avatar_bg_H {background: rgba(118,219,81,1);}
+.avatar_bg_I {background: rgba(254,203,84,1);}
+.avatar_bg_J {background: rgba(182,81,219,1);}
+.avatar_bg_K {background: rgba(154,165,173,1);}
+.avatar_bg_L {background: rgba(81,118,219,1);}
+.avatar_bg_M {background: rgba(89,206,242,1);}
+.avatar_bg_N {background: rgba(96,173,68,1);}
+.avatar_bg_O {background: rgba(68,148,173,1);}
+.avatar_bg_P {background: rgba(200,89,242,1);}
+.avatar_bg_Q {background: rgba(219,81,118,1);}
+.avatar_bg_R {background: rgba(254,203,84,1);}
+.avatar_bg_S {background: rgba(68,173,145,1);}
+.avatar_bg_T {background: rgba(119,135,145,1);}
+.avatar_bg_U {background: rgba(187,219,81,1);}
+.avatar_bg_V {background: rgba(110,202,154,1);}
+.avatar_bg_W {background: rgba(254,203,84,1);}
+.avatar_bg_X {background: rgba(138,170,255,1);}
+.avatar_bg_Y {background: rgba(86,174,255,1);}
+.avatar_bg_Z {background: rgba(81,219,182,1);}
+/*头像样式*/
+.contact_bg_1{background: rgba(123,212,240,1)}
+.contact_bg_2{background: rgba(133,147,156,1)}
+.contact_bg_3{background: rgba(196,237,93,1)}
+.contact_bg_4{background: rgba(242,124,89,1)}
+.contact_bg_5{background: rgba(89,206,242,1)}
+.contact_bg_6{background: rgba(242,89,129,1)}
+.contact_bg_7{background: rgba(69,173,92,1)}
+.contact_bg_8{background: rgba(254,203,84,1)}
+.contact_bg_9{background: rgba(182,81,219,1)}
+.contact_bg_0{background: rgba(87,182,156,1)}
+
+.contact_bg_A{background: rgba(81,219,114,1)}
+.contact_bg_B{background: rgba(123,212,240,1)}
+.contact_bg_C{background: rgba(68,173,145,1)}
+
+.contact_bg_D{background: rgba(196,237,93,1)}
+.contact_bg_E{background: rgba(242,124,89,1)}
+.contact_bg_F{background: rgba(89,206,242,1)}
+.contact_bg_G{background: rgba(242,89,129,1)}
+.contact_bg_H{background: rgba(118,219,81,1)}
+.contact_bg_I{background: rgba(254,203,84,1)}
+.contact_bg_J{background: rgba(182,81,219,1)}
+.contact_bg_K{background: rgba(154,165,173,1)}
+.contact_bg_L{background: rgba(81,118,219,1)}
+.contact_bg_M{background: rgba(89,206,242,1)}
+.contact_bg_N{background: rgba(96,173,68,1)}
+.contact_bg_O{background: rgba(68,148,173,1)}
+.contact_bg_P{background: rgba(200,89,242,1)}
+.contact_bg_Q{background: rgba(219,81,118,1)}
+.contact_bg_R{background: rgba(254,203,84,1)}
+.contact_bg_S{background: rgba(68,173,145,1)}
+.contact_bg_T{background: rgba(119,135,145,1)}
+.contact_bg_U{background: rgba(187,219,81,1)}
+.contact_bg_V{background: rgba(110,202,154,1)}
+.contact_bg_W{background: rgba(254,203,84,1)}
+.contact_bg_X{background: rgba(138,170,255,1)}
+.contact_bg_Y{background: rgba(86,174,255,1)}
+.contact_bg_Z{background: rgba(81,219,182,1)}
+
+[v-cloak] {
+    display: none
+}
+
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+
+
+/*隐藏站长统计页面元素*/
+a[title="站长统计"]{
+    display: none;
+}
+
