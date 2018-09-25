@@ -5,13 +5,13 @@
             <Col span="8">
             <ul>
                 <li>
-                    <!--<span class="field-name">{{$t('交易流水号')}}：</span>{{pItem.itemId | contentFilter}}-->
+                    <span class="field-name">{{$t('交易流水号')}}：</span>{{pItem.id}}
                 </li>
                 <li>
                     <span class="field-name">{{$t('交易方式顺序号')}}：</span>{{pItem.tradeSort}}
                 </li>
                 <li>
-                    <span class="field-name">{{$t('交易方式编号')}}：</span>{{pItem.tradeNo}}
+                    <span class="field-name">{{$t('交易方式编号')}}：</span>{{pItem.tradeType}}
                 </li>
             </ul>
             </Col>
@@ -24,20 +24,20 @@
                     <span class="field-name">{{$t('支付方式名称')}}：</span>{{pItem.tradeTypeName}}
                 </li>
                 <li>
-                    <!--<span class="field-name">{{$t('是否撤销')}}：</span>{{pItem.status}}-->
+                    <span class="field-name">{{$t('是否撤销')}}：</span>{{pItem.status.includes('cancel') ? $t('yes') : $t('no')}}
                 </li>
             </ul>
             </Col>
             <Col span="8">
             <ul>
                 <li>
-                    <!--<span class="field-name">{{$t('支付流水号')}}：</span>{{pItem.discountRate}}-->
+                    <span class="field-name">{{$t('支付流水号')}}：</span>{{pItem.tradeNo}}
                 </li>
                 <li>
-                    <!--<span class="field-name">{{$t('会员卡号')}}：</span>{{pItem.tradeNo}}-->
+                    <span class="field-name">{{$t('会员卡号')}}：</span>{{pItem.cardCode}}
                 </li>
                 <li>
-                    <!--<span class="field-name">{{$t('支付时间')}}：</span>{{pItem.saleNum}}-->
+                    <span class="field-name">{{$t('支付时间')}}：</span>{{pItem.createdTime}}
                 </li>
             </ul>
             </Col>

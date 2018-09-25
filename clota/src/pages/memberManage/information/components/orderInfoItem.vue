@@ -17,14 +17,14 @@
                     <span class="field-name">{{$t('销售数量')}}：</span>{{pItem.amount}}
                 </li>
                 <li>
-                    <!--<span class="field-name">{{$t('原单号')}}：</span>{{infoData.saler}}-->
+                    <span class="field-name">{{$t('原单号')}}：</span>{{pItem.originOrderNo}}
                 </li>
             </ul>
             </Col>
             <Col span="8">
             <ul>
                 <li>
-                    <!--<span class="field-name">{{$t('产品类别')}}：</span>{{pItem.status | orderStatus}}-->
+                    <span class="field-name">{{$t('产品类别')}}：</span>{{pItem.typeName}}
                 </li>
                 <li>
                     <span class="field-name">{{$t('规格单位')}}：</span>{{pItem.unit}}
@@ -50,7 +50,7 @@
                     <span class="field-name">{{$t('交易号')}}：</span>{{pItem.tradeNo}}
                 </li>
                 <li>
-                    <span class="field-name">{{$t('会员交易号')}}：</span>{{pItem.orderId}}
+                    <span class="field-name">{{$t('会员交易号')}}：</span>{{pItem.orderNo}}
                 </li>
                 <li>
                     <span class="field-name">{{$t('销售顺序号')}}：</span>{{pItem.saleNum}}
