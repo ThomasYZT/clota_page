@@ -32,110 +32,21 @@
       </div>
 
       <div class="nav">
-          <cell is-link
-                title="可用积分"
-                link="/component/tabbar-simple"
-                class="cell">
-              <i slot="icon"
-                    style="color:#F46462"
-                    class="icon iconfont icon-my-points"></i>
-              <div class="arrow-wrap">
-                  <span class="info">2789</span>
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="默认账户"
-                link="/component/tabbar-icon"
-                class="cell">
-              <i slot="icon"
-                    style="color: #368CE3"
-                    class="icon iconfont icon-default-account"></i>
-              <div class="arrow-wrap">
-                  <span class="info">278939.63元</span>
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="我的订单"
-                link="/component/tabbar-simple"
-                class="cell">
-              <i slot="icon"
-                    style="color: #FF9700"
-                    class="icon iconfont icon-my-orders"></i>
-              <div class="arrow-wrap">
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="资金明细"
-                link="/component/tabbar-icon"
-                class="cell">
-              <i slot="icon"
-                    style="color: #6F62E5"
-                    class="icon iconfont icon-check-flow"></i>
-              <div class="arrow-wrap">
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="会员二维码"
-                link="/component/tabbar-simple"
-                class="cell">
-              <i slot="icon"
-                    style="color: #F46462"
-                    class="icon iconfont icon-member-code"></i>
-              <div class="arrow-wrap">
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="我的卡包"
-                link="/component/tabbar-icon"
-                class="cell">
-              <i slot="icon"
-                    style="color:#368CE3"
-                    class="icon iconfont icon-my-package"></i>
-
-              <div class="arrow-wrap">
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="会员权益"
-                link="/component/tabbar-simple"
-                class="cell">
-              <i slot="icon"
-                    style="color:#6F62E5"
-                    class="icon iconfont icon-member-rights"></i>
-
-              <div class="arrow-wrap">
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
-          <cell is-link
-                title="安全设置"
-                link="/component/tabbar-icon"
-                class="cell">
-              <i slot="icon"
-                    style="color:#F46462"
-                    class="icon iconfont icon-security-setting"></i>
-
-              <div class="arrow-wrap">
-                  <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-              </div>
-          </cell>
+          <label-item v-for="(item, index) in labelList" :info="item" :key="index"></label-item>
       </div>
   </div>
 </template>
 
 <script>
+    import labelItem from './components/labelItem'
     import onelevelMember from '../../assets/images/1levelMember.png'
     import secondlevelMember from '../../assets/images/2levelMember.png'
     import thirdlevelMember from '../../assets/images/3levelMember.png'
     import fourthlevelMember from '../../assets/images/4levelMember.png'
   export default {
-    components: {},
+    components: {
+        labelItem
+    },
     data() {
       return {
           bgList: [
@@ -143,6 +54,64 @@
               secondlevelMember,
               thirdlevelMember,
               fourthlevelMember
+          ],
+          labelList: [
+              {
+                  title: '可用积分',
+                  link: '/integralDetail',
+                  iconClass: 'icon-my-points',
+                  info: '2789',
+                  iconColor: '#F46462'
+              },
+              {
+                  title: '默认账户',
+                  link: '/integralDetail',
+                  iconClass: 'icon-default-account',
+                  info: '278939.63',
+                  iconColor: '#368CE3'
+              },
+              {
+                  title: '我的订单',
+                  link: '/integralDetail',
+                  iconClass: 'icon-my-orders',
+                  info: '',
+                  iconColor: '#FF9700'
+              },
+              {
+                  title: '资金明细',
+                  link: '/checkFlow',
+                  iconClass: 'icon-check-flow',
+                  info: '',
+                  iconColor: '#6F62E5'
+              },
+              {
+                  title: '会员二维码',
+                  link: '/integralDetail',
+                  iconClass: 'icon-member-code',
+                  info: '',
+                  iconColor: '#F46462'
+              },
+              {
+                  title: '我的卡包',
+                  link: '/integralDetail',
+                  iconClass: 'icon-my-package',
+                  info: '',
+                  iconColor: '#368CE3'
+              },
+              {
+                  title: '会员权益',
+                  link: '/integralDetail',
+                  iconClass: 'icon-member-rights',
+                  info: '',
+                  iconColor: '#6F62E5'
+              }/*,
+              {
+                  title: '安全设置',
+                  link: '/integralDetail',
+                  iconClass: 'icon-my-points',
+                  info: '',
+                  iconColor: '#F46462'
+              }*/
           ]
       }
     },
@@ -219,8 +188,6 @@
                     width: 100%;
                     margin-bottom: 9px;
                     font-size: 12.5px;
-
-
                 }
 
                 .card-info {
@@ -239,45 +206,6 @@
                             }
                         }
                     }
-                }
-            }
-        }
-
-        .nav {
-            .cell {
-                height: 60px;
-                font-size: 14px;
-
-                &:last-child {
-                    &:after {
-                        content: " ";
-                        position: absolute;
-                        left: 0;
-                        bottom: 0;
-                        right: 0;
-                        height: 0.026667rem;
-                        border-top: 0.026667rem solid #D9D9D9;
-                        color: #D9D9D9;
-                        transform-origin: 0 0;
-                        transform: scaleY(0.5);
-                        left: 0.4rem;
-                    }
-                }
-            }
-
-
-
-            i.icon {
-                font-size: 19px;
-                margin-right: 16.25px;
-            }
-
-            .arrow-wrap {
-                text-align: right;
-
-                .info {
-                    color: #353B48;
-                    margin-right: 10px;
                 }
             }
         }

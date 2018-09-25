@@ -89,7 +89,7 @@ export default {
         };
 
         // 如果是登录，则不需要传递token
-        if (urlKey !== 'login') {
+        if (urlKey !== 'login' || urlKey !== 'getCode') {
             myConfig.headers = {
                 token: this.getToken()
             }

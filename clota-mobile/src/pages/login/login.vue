@@ -4,18 +4,18 @@
 -->
 <template>
     <div class="login">
-
-        <x-input title="手机号码"
-                 class="c-input"
+        <!-- 手机号码 -->
+        <x-input class="c-input"
+                 title="手机号码"
                  keyboard="number"
+                 v-model="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>
-
-        <span style="display: block;width: 100px;"></span>
-
-        <x-input title="验证码"
+        <!-- 验证码 -->
+        <x-input class="c-input verify-input"
+                 title="验证码"
+                 v-model="loginInfo.vcode"
                  placeholder="输入验证码"
-                 class="c-input verify-input"
                  :show-clear="false"
                  keyboard="number"
                  label-width="150px">
@@ -25,21 +25,31 @@
                 <p>获取动态码</p>
             </div>
         </x-input>
-
-        <div>
-            <p class="register-entry"
-               @click="$router.push({path: '/register'})">去注册</p>
+        <!-- 注册按钮 -->
+        <div class="bottom-info">
+            <p class="msg">{{msg}}</p>
+            <p class="register-entry">
+                <span @click="$router.push({path: '/register'})">去注册</span>
+            </p>
         </div>
-
-        <x-button class="button">登陆</x-button>
+        <!-- 登陆按钮 -->
+        <x-button class="button"
+                  @click.native="login()">登陆</x-button>
     </div>
 </template>
 
 <script>
-    import MD5 from 'crypto-js/md5';
     export default {
         data() {
-            return {}
+            return {
+                //输入提示信息
+                msg: '',
+                //登陆信息
+                loginInfo: {
+                    phoneNum: '',
+                    vcode: ''
+                }
+            }
         },
         methods: {
             /**
@@ -47,6 +57,34 @@
              */
             getCode() {
                 //todo 获取验证码
+            },
+            /**
+             * 登陆
+             */
+            login() {
+                this.msg = '';
+                this.validate();
+            },
+            /**
+             * 验证输入信息
+             */
+            validate() {
+                //验证手机号不为空 且为 手机号格式
+                if(this.loginInfo.phoneNum === '') {
+                    this.msg = "请输入手机号码";
+                    return;
+                } else {
+                    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                    if(!phoneReg.test(this.loginInfo.phoneNum)) {
+                        this.msg = "请输入正确的手机号";
+                        return;
+                    }
+                }
+                //验证验证码不为空
+                if(this.loginInfo.vcode === '') {
+                    this.msg = "请输入验证码";
+                    return;
+                }
             }
         }
     }
@@ -59,44 +97,32 @@
         margin-top: 15px;
         color: #4A4A4A;
 
-        .c-input {
-            &:before {
-                border: none !important;
-            }
-            height: 50.5px;
-            font-size: 15px;
-            border-bottom: 1px solid #F5F5F5;
-        }
-
         .verify-input{
-
             .code-button {
-                padding-left: 16.5px;
-                margin-left: 16.5px;
-                height: 50.5px;
-                width: 80px;
-                line-height: 50.5px;
-                color: #046FDB;
-                font-size: 12.5px;
-                text-align: center;
-                border-left: 1px solid #E8E8E8;
+                width: 90px;
             }
         }
 
-        .register-entry {
-            margin-right: 16.5px;
-            color: #046FDB;
-            height: 50.5px;
-            line-height: 50.5px;
-            font-size: 12.5px;
-            text-align: right;
-        }
+        .bottom-info {
+            display: flex;
+            .msg {
+                width: 70%;
+                margin-left: 14px;
+                padding: 10px 0;
+                color: #FF8C69;
+                font-size: 12px;
+                font-style: italic;
+            }
 
-        .button {
-            margin-top: 150px;
-            max-width: calc(100% - 110px);
-            background-color: #0073EB;
-            color: #FFF;
+            .register-entry {
+                width: 30%;
+                margin-right: 16.5px;
+                color: #046FDB;
+                height: 50.5px;
+                line-height: 50.5px;
+                font-size: 12.5px;
+                text-align: right;
+            }
         }
     }
 </style>

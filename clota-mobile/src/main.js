@@ -15,10 +15,10 @@ import i18n from './assets/lang/lang.config';
 // 样式文件
 import 'klwk-ui/src/lib/css/index.scss';
 import './assets/css/iconfont.css';
+import './assets/theme/theme.scss'
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
-import common from './assets/js/common';
 
 
 Vue.use(plugin);

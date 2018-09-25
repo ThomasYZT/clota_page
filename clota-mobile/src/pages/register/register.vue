@@ -6,12 +6,15 @@
     <div class="register">
         <x-input title="姓名"
                  class="c-input"
-                 label-width="150px"></x-input>
+                 label-width="150px"
+                 v-model="registerInfo.custName"></x-input>
         <x-input title="手机号码"
+                 v-model="registerInfo.phoneNum"
                  class="c-input"
                  keyboard="number"
                  label-width="150px"></x-input>
         <x-input title="验证码"
+                 v-model="registerInfo.vcode"
                  placeholder="输入验证码"
                  class="c-input verify-input"
                  :show-clear="false"
@@ -19,30 +22,45 @@
                  label-width="150px">
             <div slot="right"
                  class="code-button"
-                 @click="getCode">
-                <p>获取动态码</p>
+                 :class="{active: isGetCode}"
+                 :disabled="true"
+                 @click="getCode()">
+                <p>获取动态码{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
-        <popup-picker title="性别"
-                      :data="sexList"
-                      class="c-input"
-                      v-model="isSexPick"
-                      @on-change="sexValueChange"
-                      :placeholder="'请选择'"></popup-picker>
+        <div>
+            <popup-picker title="性别"
+                          :data="sexList"
+                          v-model="registerInfo.gender"
+                          @on-change="sexValueChange"
+                          class="c-input"
+                          :placeholder="'请选择'"></popup-picker>
+        </div>
+        <p class="msg" v-if="msg != ''">{{msg}}</p>
 
-
-        <x-button class="button">立即开卡</x-button>
-        <p class="register-tip">已有账号，去登陆</p>
+        <x-button class="button"
+                  @click.native="register()">立即开卡</x-button>
+        <p class="register-tip" @click="$router.push({name: 'mobileLogin'})">已有账号，去登陆</p>
     </div>
 </template>
 
 <script>
+    import ajax from '../../api'
     export default {
         data() {
             return {
+                registerInfo: {
+                    custName: '',
+                    phoneNum: '',
+                    gender: [],
+                    vcode: ''
+                },
                 sexList: [['男', '女']],
-                //是否显示性别选择弹窗
-                isSexPick: []
+                msg: '',
+                isGetCode: false,
+                timer: null,
+                //倒计时间
+                countDown: null
             }
         },
         methods: {
@@ -50,13 +68,122 @@
              * 获取验证码
              */
             getCode() {
-                //todo 获取验证码
+                //先验证是否在60s倒计时内
+                if(!this.isGetCode) {
+                    //再验证电话号码是否存在
+                    this.phoneValidate(() => {
+                        this.isGetCode = true;
+                        this.timimg();
+                        ajax.post('getCode', {
+                            phoneNum: this.registerInfo.phoneNum
+                        }).then((res) => {
+                           if(!res.success) {
+                               this.msg = '获取验证码失败！'
+                           }
+                        })
+                    });
+                }
+
             },
             /**
              * 性别取值更新
              */
             sexValueChange(value) {
-                console.log(value)
+                //console.log(value)
+            },
+            /**
+             * 注册会员
+             */
+            register() {
+                this.msg = ''
+                //输入验证
+                this.validate(() => {
+                    console.log({
+                        name: this.registerInfo.custName,
+                        phoneNum: this.registerInfo.phoneNum,
+                        code: this.registerInfo.vcode,
+                        sex: this.registerInfo.gender[0] === '男' ? 'male' : 'female',
+                        companyCode: '000000071' //冰雪世界景区
+                    })
+                    ajax.post('registerMember', {
+                        name: this.registerInfo.custName,
+                        phoneNum: this.registerInfo.phoneNum,
+                        code: this.registerInfo.vcode,
+                        sex: this.registerInfo.gender[0] === '男' ? 'male' : 'female',
+                        companyCode: '000000071' //冰雪世界景区
+                    }).then((res) => {
+                        if(res.success) {
+                            this.$vux.toast.text('注册成功');
+                            this.$router.push({name: 'mobileLogin'})
+                        }else {
+                            this.$vux.toast.text(res.message);
+                        }
+                    })
+                });
+            },
+            /**
+             * 输入验证
+             */
+            validate(callback) {
+                //验证姓名不为空
+                if(this.registerInfo.custName === '') {
+                    this.msg = "请输入姓名";
+                    return;
+                }
+
+                //验证手机号不为空 且为 手机号格式
+                this.phoneValidate()
+
+                //验证验证码不为空
+                if(this.registerInfo.vcode === '') {
+                    this.msg = "请输入验证码";
+                    return;
+                }
+
+                //验证性别不为空
+                if(this.registerInfo.gender.length == 0) {
+                    this.msg = "请选择性别";
+                    return;
+                }
+
+                callback();
+            },
+            /**
+             * 手机号验证 验证手机号不为空 且为 手机号格式
+             * @param callback
+             */
+            phoneValidate(callback) {
+                this.msg = '';
+                if(this.registerInfo.phoneNum === '') {
+                    this.msg = '请输入手机号码'
+                    return;
+                } else {
+                    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                    if(!phoneReg.test(this.registerInfo.phoneNum)) {
+                        this.msg = "请输入正确的手机号";
+                        return;
+                    }else {
+                        if(callback) {
+                            callback();
+                        }
+                    }
+                }
+            },
+            /**
+             * 计时器函数
+             */
+            timimg() {
+                this.countDown = 5000;
+                this.timer = setInterval(() => {
+                    if(this.countDown !== 0) {
+                        this.countDown -= 1000;
+                    }else {
+                        this.isGetCode = false;
+                        this.countDown = null;
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }, 1000)
             }
         }
     }
@@ -66,47 +193,22 @@
     @import '~@/assets/scss/base';
 
     .register {
+        width: 100%;
         margin-top: 15px;
         color: #4A4A4A;
 
-        .c-input {
-            height: 50.5px;
-            font-size: 15px;
-            border-bottom: 1px solid #F5F5F5;
-            &:before {
-                border: none !important;
-            }
-        }
-
         .verify-input{
-
             .code-button {
-                padding-left: 16.5px;
-                margin-left: 16.5px;
-                height: 50.5px;
-                width: 80px;
-                line-height: 50.5px;
-                color: #046FDB;
-                font-size: 12.5px;
-                text-align: center;
-                border-left: 1px solid #E8E8E8;
+                width: 90px;
             }
         }
 
-        .register-entry {
-            margin-right: 16.5px;
-            color: #046FDB;
-            height: 50.5px;
-            line-height: 50.5px;
-            font-size: 12.5px;
-            text-align: right;
-        }
-
-        .button {
-            margin-top: 145px;
-            max-width: calc(100% - 110px);
-            background-color: #0073EB;
-            color: #FFF;
+        .msg {
+            margin-left: 14px;
+            padding: 10px 0;
+            color: #FF8C69;
+            font-size: 12px;
+            font-style: italic;
         }
 
         .register-tip {

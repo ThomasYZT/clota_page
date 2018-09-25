@@ -17,7 +17,8 @@ import {
     Popup,
     PopupHeader  ,
     TransferDom,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    ToastPlugin
 } from 'vux';
 
 
@@ -34,6 +35,9 @@ import klwkUi from 'klwk-ui';
 
 let plugin = {};
 plugin.install = function (Vue, options) {
+
+    //以插件形式引入vux toast组件
+    Vue.use(ToastPlugin,{position: 'middle'});
 
     //vux按需引入
     Vue.component( 'XInput', XInput);

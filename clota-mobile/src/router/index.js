@@ -174,7 +174,13 @@ const createRouter = () => new Router({
             path: '/integralDetail',
             name: 'integralDetail',
             component: () => import(/* webpackChunkName: "memberRight" */'../pages/integralDetail/integralDetail.vue'),
-        }
+        },
+        //安全设置 暂时不做
+        /*{
+            path: '/securitySetting',
+            name: 'securitySetting',
+            component: () => import(/!* webpackChunkName: "securitySetting" *!/'../pages/securitySetting/securitySetting.vue'),
+        }*/
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {

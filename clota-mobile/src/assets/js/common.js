@@ -13,14 +13,14 @@ export default {
      * 退出登录(清空本地记录)
      */
     loginOut() {
-        sessionStorage.removeItem('userInfo');
-        router.push({
-            name : 'login'
-        },() => {
-            store.commit('updatePermissionInfo',null);
-            store.commit('updateUserInfo',{});
-            store.commit('updateRouteInfo',null);
-        });
+        // sessionStorage.removeItem('userInfo');
+        // router.push({
+        //     name : 'login'
+        // },() => {
+        //     store.commit('updatePermissionInfo',null);
+        //     store.commit('updateUserInfo',{});
+        //     store.commit('updateRouteInfo',null);
+        // });
     },
 
     /**
