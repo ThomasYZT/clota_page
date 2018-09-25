@@ -2,27 +2,15 @@
 
 <template>
     <div class="account">
-        <swiper dots-position="center">
-            <swiper-item class="swiper-demo-img" >
+        <swiper dots-position="center"
+                v-model="accountShow"
+                @on-index-change="accountTapChange">
+            <swiper-item
+                class="swiper-demo-img"
+                v-for="(item,i) in accountList"
+                :key="i">
                 <div class="header">
-                    <div class="account-list-chose" @click="showAccount">默认账户</div>
-                    <div class="asset-info">{{266.88}}</div>
-                    <div class="asset-tip">总资产(元)</div>
-                    <div class="account-type">
-                        <div class="account-priciple-left">
-                            <div class="money-num">8,238.38</div>
-                            <div class="money-label">充值余额(元)</div>
-                        </div>
-                        <div class="account-donate-left">
-                            <div class="money-num">8,238.38</div>
-                            <div class="money-label">赠送余额(元)</div>
-                        </div>
-                    </div>
-                </div>
-            </swiper-item>
-            <swiper-item class="swiper-demo-img" >
-                <div class="header">
-                    <div class="account-list-chose" @click="showAccount">默认账户</div>
+                    <div class="account-list-chose" @click="showAccount">{{item.name}}</div>
                     <div class="asset-info">{{266.88}}</div>
                     <div class="asset-tip">总资产(元)</div>
                     <div class="account-type">
@@ -40,14 +28,15 @@
         </swiper>
 
         <div class="btn-area">
-            <x-button>充值</x-button>
+            <x-button @click.native="recharge">充值</x-button>
         </div>
         <popup-picker
             :show.sync="visible"
             :show-cell="false"
-            title="TEST"
-            :data="[menuList]"
-            v-model="visible">
+            :show-name="true"
+            :data="[accountList]"
+            v-model="chosedAccount"
+            @on-change="accountChange">
         </popup-picker>
     </div>
 </template>
@@ -57,7 +46,25 @@
         data() {
             return {
                 visible : false,
-                menuList : ['默认账户','本金账户']
+                //选择的账户信息
+                chosedAccount : [],
+                //账户列表
+                accountList : [
+                    {
+                        name : '默认账户',
+                        value : 0
+                    },
+                    {
+                        name : '本金账户',
+                        value : 1
+                    },
+                    {
+                        name : '同源账户',
+                        value : 2
+                    }
+                ],
+                //当前显示的账户信息
+                accountShow : 0
             }
         },
         methods: {
@@ -66,6 +73,27 @@
              */
             showAccount () {
                 this.visible = true;
+            },
+            /**
+             * 充值
+             */
+            recharge () {
+                this.$router.push({
+                    name : 'accountRecharge'
+                });
+            },
+            /**
+             * 账户列表修改
+             */
+            accountChange ([index]) {
+                this.accountShow = Number(index);
+            },
+            /**
+             * 滑动swiper改变账户
+             * @param value
+             */
+            accountTapChange (value) {
+                this.chosedAccount = [String(value)];
             }
         }
     }

@@ -9,30 +9,65 @@
             </div>
         </div>
         <div class="cell-list">
-            <cell title="姓名" is-link value="姓名">
-                <div class="arrow-wrap">
-                    <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
-                </div>
-            </cell>
-            <cell title="性别" is-link value="女"></cell>
-            <cell title="电话" is-link value="17237387333"></cell>
-            <cell title="交易密码" is-link value="17237387333"></cell>
-            <cell title="证件号码" is-link value="17237387333"></cell>
-            <cell title="微信" disabled is-link value="17237387333"></cell>
-            <cell title="支付宝" is-link value="17237387333"></cell>
-            <cell title="QQ" is-link value="17237387333"></cell>
-            <cell title="E-mail" is-link value="17237387333"></cell>
-            <cell title="成长值" is-link value="17237387333"></cell>
-            <cell title="实体卡卡号" is-link value="17237387333"></cell>
-            <cell title="地址" is-link value="17237387333"></cell>
+            <group>
+                <x-input
+                    title="姓名"
+                    text-align="right"
+                    :show-clear="false"
+                    v-model.trim="formData.name"
+                    placeholder-align="right">
+                </x-input>
+                <popup-picker
+                    title="性别"
+                    show-name
+                    v-model.trim="formData.gender"
+                    :data="[genderEnum]">
+                </popup-picker>
+                <cell
+                    title="电话"
+                    is-link
+                    value="17237387333"
+                    :link="{name : 'changeMobile'}">
+                </cell>
+                <cell
+                    title="交易密码"
+                    is-link
+                    :link="{name : 'changeTradePass'}"
+                    value="17237387333">
+                </cell>
+                <cell
+                    title="证件号码"
+                    is-link
+                    :link="{name : 'changeId'}"
+                    value="17237387333">
+                </cell>
+                <cell title="微信" disabled value="17237387333"></cell>
+                <cell title="支付宝" disabled value="17237387333"></cell>
+                <cell title="QQ" is-link value="17237387333"></cell>
+                <cell title="E-mail" is-link value="17237387333"></cell>
+                <cell title="成长值" disabled value="17237387333"></cell>
+                <cell title="实体卡卡号" is-link value="17237387333"></cell>
+                <cell title="地址" is-link value="17237387333"></cell>
+            </group>
         </div>
     </div>
 </template>
 
 <script>
+    import {genderEnum} from '@/assets/js/constVariable.js';
     export default {
         data() {
-            return {}
+            return {
+                //性别枚举值
+                genderEnum : genderEnum.map(item => ({name : this.$t(item.name),value : item.desc})),
+                //个人信息数据
+                formData : {
+                    //姓名
+                    name : '',
+                    //性别
+                    gender : [],
+                }
+            }
         },
         methods: {}
     }
@@ -89,18 +124,24 @@
             }
 
             /deep/ .weui-cell{
-                height: 45px;
+                height: 49px;
 
                 &:before{
                     background: #e8e8e8;
                 }
 
-                .vux-label{
+                &.vux-cell-disabled .weui-cell__ft{
+                    color: $color_999;
+                }
+
+                .vux-label,
+                .weui-label{
                     font-size: $font_size_14px;
                     color: #172434;
                 }
 
-                .weui-cell__ft{
+                .weui-cell__ft,
+                .weui-input{
                     font-size: $font_size_14px;
                     color: #353B48;
                 }

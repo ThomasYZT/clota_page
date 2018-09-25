@@ -2,7 +2,7 @@
 
 <template>
     <div id="app" >
-        <transition :name="viewTransition">
+        <transition name="fade">
             <router-view :key="hashKey">
             </router-view>
         </transition>
@@ -26,25 +26,32 @@
                 hashKey : 'hashKey'
             }),
             viewTransition () {
-                // return 'vux-pop-in'
+                return 'vux-pop-in'
             }
         },
         created () {
             // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
         },
         watch : {
-            '$route'(newVal,oldVal) {
-                if(newVal && newVal.meta && newVal.meta.title){
-                    document.title = newVal.meta.title;
-                }else{
-                    document.title = 'clota';
-                }
+            '$route': {
+                handler (newVal,oldVal) {
+                    if(newVal && newVal.meta && newVal.meta.title){
+                        document.title = newVal.meta.title;
+                    }else{
+                        document.title = 'clota';
+                    }
+                    this.$store.commit('updateKeyBoardStatus',false);
+                },
+                immediate : true
             }
         }
     }
 </script>
 
 <style lang="scss">
+    body,html{
+        -webkit-tap-highlight-color: transparent;
+    }
     .vux-pop-out-enter-active,
     .vux-pop-out-leave-active,
     .vux-pop-in-enter-active,

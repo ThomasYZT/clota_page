@@ -15,7 +15,9 @@ export default new Vuex.Store({
         //当前正在加载中的接口个数
         promisings : 0,
         //随机数，用于更新组件
-        hashKey : ''
+        hashKey : '',
+        //是否显示键盘
+        showKeyBoard : false
     },
     getters: {
         //当前语言状态
@@ -34,6 +36,10 @@ export default new Vuex.Store({
         },
         hashKey : state => {
             return state.hashKey;
+        },
+        //是否显示键盘
+        showKeyBoard : state => {
+            return state.showKeyBoard;
         }
     },
     mutations: {
@@ -66,6 +72,10 @@ export default new Vuex.Store({
         //更新随机数
         updateHashKey (state) {
             state.hashKey = Math.random();
+        },
+        //更改键盘状态
+        updateKeyBoardStatus (state,status ){
+            state.showKeyBoard = status;
         }
     },
     actions: {

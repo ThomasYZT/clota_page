@@ -13,6 +13,11 @@ import {
     Radio,
     Cell,
     Icon,
+    Qrcode,
+    Popup,
+    PopupHeader  ,
+    TransferDom,
+    ClickOutsideDirective
 } from 'vux';
 
 
@@ -40,9 +45,16 @@ plugin.install = function (Vue, options) {
     Vue.component('Radio', Radio);
     Vue.component('Cell', Cell);
     Vue.component('Icon', Icon);
+    Vue.component('Qrcode', Qrcode);
+    Vue.component('popup-header', PopupHeader );
+    Vue.component('Popup', Popup );
+    Vue.component('Popup', Popup );
+
+    Vue.directive('transfer-dom', TransferDom);
+    Vue.directive('click-outside', ClickOutsideDirective);
 
     // 公用样式，指令及方法
-    Vue.use(klwkUi);
+    // Vue.use(klwkUi);
 
     // 注入全局变量
     Vue.mixin({
