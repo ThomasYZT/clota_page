@@ -181,7 +181,6 @@ const createRouter = () => new Router({
             name: 'securitySetting',
             component: () => import(/!* webpackChunkName: "securitySetting" *!/'../pages/securitySetting/securitySetting.vue'),
         }*/
-        },
         //订单
         {
             path : '/order',

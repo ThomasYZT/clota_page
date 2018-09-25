@@ -15,10 +15,9 @@ import {
     Icon,
     Qrcode,
     Popup,
-    PopupHeader  ,
+    PopupHeader,
     TransferDom,
-    ClickOutsideDirective,
-    ToastPlugin
+    ToastPlugin,
     ClickOutsideDirective,
     Tab,
     TabItem,
