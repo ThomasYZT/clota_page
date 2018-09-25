@@ -3,7 +3,7 @@
 <template>
     <div class="opened-service">
         <div class="pick-up-title" >
-            <span class="label">{{$t('openedService')}}</span>
+            <span class="label">{{$t('haveOpenedServices')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
@@ -22,6 +22,7 @@
                 <table-com
                     v-if="tableShow && type === 'scene'"
                     :column-data="openedServiceHead"
+                    default-page-layout="total, prev, pager, next"
                     :table-data="tableData"
                     :border="true"
                     :page-no-d.sync="pageNo"
@@ -61,6 +62,7 @@
                     :table-data="tableData"
                     :border="true"
                     :page-no-d.sync="pageNo"
+                    default-page-layout="total, prev, pager, next"
                     :show-pagination="true"
                     :page-size-d.sync="pageSize"
                     :total-count="totalCount"
@@ -202,7 +204,7 @@
             queryList () {
                 ajax.post('getOrgServiceList',{
                     orgId : this.searchParams.id,
-                    page : this.pageNo,
+                    pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
                     if(res.success){

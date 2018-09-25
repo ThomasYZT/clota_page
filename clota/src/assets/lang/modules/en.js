@@ -885,4 +885,5 @@ export default {
     'uploadCardError': '导入文件仅支持Excel文件',
     'proTypeCode': '产品类别编码',
     'productType': '产品类别',
+    'haveOpenedServices': '已开通服务',
 }

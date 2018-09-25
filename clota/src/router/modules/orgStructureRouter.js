@@ -28,7 +28,7 @@ export default {
                 meta: {
                     menuName: 'organization', //lang.config.js 里面的语言键值
                     _name: 'org-struct', //
-                    iconClass: 'icon-person',
+                    iconClass: 'icon-orgaization',
                     rightPath : topMenuName + '.' + 'organization',
                     isMenu : true
                 },
@@ -41,7 +41,7 @@ export default {
                 meta: {
                     menuName: 'employee', //lang.config.js 里面的语言键值
                     _name: 'org-emp', //
-                    iconClass: 'icon-orgaization',
+                    iconClass: 'icon-person',
                     rightPath : topMenuName + '.' + 'employee',
                     isMenu : true
                 },
@@ -115,7 +115,7 @@ export default {
                 meta: {
                     menuName: 'channels',
                     _name: 'org-channel',
-                    iconClass: 'icon-market-channel',
+                    iconClass: 'icon-trade-channel',
                     rightPath : topMenuName + '.' + 'channels',
                     isMenu : true
                 },
@@ -128,7 +128,7 @@ export default {
                 meta: {
                     menuName: 'saleChannelsGroup',
                     _name: 'org-sale',
-                    iconClass: 'icon-trade-channel',
+                    iconClass: 'icon-market-channel',
                     rightPath : topMenuName + '.' + 'saleChannelsGroup',
                     isMenu : true
                 },
@@ -141,7 +141,7 @@ export default {
                 meta: {
                     menuName: 'verificateGroup',
                     _name: 'org-checker',
-                    iconClass: 'icon-partner',
+                    iconClass: 'icon-check-group',
                     rightPath : topMenuName + '.' + 'verificateGroup',
                     isMenu : true
                 },

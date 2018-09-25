@@ -180,12 +180,17 @@
             'height' : {
                 type : [Number,String],
                 default : 'auto'
+            },
+            //默认分页参数
+            'default-page-layout' : {
+                type : String,
+                defaut : ''
             }
         },
         data() {
             return {
-                //分页配置
-                pageConfig : configVariable,
+                //分页功能配置
+                pageLayout: this.defaultPageLayout ? this.defaultPageLayout : configVariable.pageLayout,
                 //表格最大高度
                 tableMaxHeight : null,
             }

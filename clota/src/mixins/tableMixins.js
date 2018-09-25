@@ -6,14 +6,6 @@ import {configVariable} from '@/assets/js/constVariable';
 export default {
     data() {
         return {
-            // //表格数据
-            // tableData: [
-            //     {name: 1},
-            //     {name: 1},
-            //     {name: 1},
-            //     {name: 1},
-            //     {name: 1},
-            // ],
             //表格高度
             tableHeight: '0px',
             //是否在加载中
@@ -22,8 +14,6 @@ export default {
             pageSizeConfig: configVariable.pageSizeConfig,
             //每页大小
             pageSize: configVariable.pageDefaultSize,
-            //分页功能配置
-            pageLayout: configVariable.pageLayout,
             //当前页码
             pageNo: 1,
             //查询关键字

@@ -17,6 +17,7 @@
                 </div>
                 <table-com
                     v-if="tableShow"
+                    default-page-layout="total, prev, pager, next"
                     :column-data="employeeColumn"
                     :table-data="tableData"
                     :border="true"

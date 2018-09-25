@@ -53,6 +53,7 @@
                     <CheckboxGroup v-model="formData.openedServices">
                         <Checkbox v-for="item in serviceList"
                                   :key="item.id"
+                                  :disabled="item.runStatus !== 'normal'"
                                   :label="item.id">
                             {{item.serviceName}}
                         </Checkbox>

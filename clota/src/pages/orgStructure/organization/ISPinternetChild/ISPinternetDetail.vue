@@ -81,7 +81,7 @@
                 this.activeNode = {};
                 ajax.post('getOrgTree',{
                     manageType : this.activeTap,
-                    showScene : this.activeTap === 'economic' ? 'privilege' : 'manage',
+                    showScene : this.activeTap === 'manage' ? 'manage' : 'privilege',
                 }).then(res => {
                     if(res.success){
                         this.structureData = res.data ? res.data : {};
