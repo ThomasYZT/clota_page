@@ -912,7 +912,7 @@
                         params.saleRule.weekSold = this.formData.saleRule.weekSold && this.formData.saleRule.weekSold.length > 0 ?
                             this.formData.saleRule.weekSold.join(',') : '';
                         params.saleRule.specifiedTime = this.formData.saleRule.specifiedTime && this.formData.saleRule.specifiedTime.length > 0 ?
-                            this.formData.saleRule.specifiedTime.join(',') : '';
+                            this.formData.saleRule.specifiedTime.map( item => { return new Date(item).format('yyyy-MM-dd')}).join(',') : '';
                             params.saleRule.startTime = this.formData.saleRule.time[0] ? new Date(this.formData.saleRule.time[0]).format('yyyy-MM-dd'): '';
                         params.saleRule.endTime = this.formData.saleRule.time[1] ? new Date(this.formData.saleRule.time[1]).format('yyyy-MM-dd'): '';
                         delete params.saleRule.validDates;
@@ -922,7 +922,7 @@
                         params.playRule.weekSold = this.formData.playRule.weekSold && this.formData.playRule.weekSold.length > 0 ?
                             this.formData.playRule.weekSold.join(',') : '';
                         params.playRule.specifiedTime = this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0 ?
-                            this.formData.playRule.specifiedTime.join(',') : '';
+                            this.formData.playRule.specifiedTime.map( item => { return new Date(item).format('yyyy-MM-dd')}).join(',') : '';
                         params.playRule.startTime = this.formData.playRule.time[0] ? new Date(this.formData.playRule.time[0]).format('yyyy-MM-dd'): '';
                         params.playRule.endTime = this.formData.playRule.time[1] ? new Date(this.formData.playRule.time[1]).format('yyyy-MM-dd'): '';
                         delete params.playRule.validDates;
