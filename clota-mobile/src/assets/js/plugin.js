@@ -25,6 +25,8 @@ import {
     Previewer,
     Drawer,
     CellBox,
+    Confirm ,
+    CheckIcon ,
 } from 'vux';
 
 
@@ -64,6 +66,8 @@ plugin.install = function (Vue, options) {
     Vue.component('previewer', Previewer);
     Vue.component('drawer', Drawer);
     Vue.component('cell-box', CellBox);
+    Vue.component('confirm', Confirm);
+    Vue.component('check-icon', CheckIcon);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

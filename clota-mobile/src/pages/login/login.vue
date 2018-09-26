@@ -21,8 +21,9 @@
                  label-width="150px">
             <div slot="right"
                  class="code-button"
+                 :class="{active: isGetCode}"
                  @click="getCode">
-                <p>获取动态码</p>
+                <p>获取动态码{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <!-- 注册按钮 -->
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+    import ajax from '../../api/index'
     export default {
         data() {
             return {
@@ -48,7 +50,11 @@
                 loginInfo: {
                     phoneNum: '',
                     vcode: ''
-                }
+                },
+                isGetCode: false,
+                timer: null,
+                //倒计时间
+                countDown: null
             }
         },
         methods: {
@@ -56,35 +62,101 @@
              * 获取验证码
              */
             getCode() {
-                //todo 获取验证码
+                //先验证是否在60s倒计时内
+                if(!this.isGetCode) {
+                    //再验证电话号码是否存在
+                    this.phoneValidate(() => {
+                        this.isGetCode = true;
+                        this.timimg();
+                        ajax.post('getCode', {
+                            phoneNum: this.loginInfo.phoneNum
+                        }).then((res) => {
+                            if(!res.success) {
+                                this.msg = '获取验证码失败！'
+                            }
+                        })
+                    });
+                }
             },
             /**
              * 登陆
              */
             login() {
                 this.msg = '';
-                this.validate();
+                this.validate(() => {
+                    ajax.post('login', {
+                        phoneNum: this.loginInfo.phoneNum,
+                        code: this.loginInfo.vcode,
+                        companyCode: '000000071' //冰雪世界
+                    }).then((res) => {
+                        if(res.success) {
+                            //存储token信息
+                            sessionStorage.setItem('token', res.token);
+                            //存储用户信息
+                            sessionStorage.setItem('userInfo', res.data);
+                            //登陆跳转到主页
+                            this.$router.push({ name: 'home'});
+                        } else if(res.toString() === 'Error: Network Error'){
+                            this.$vux.toast.text('网络不好');
+                        }else {
+                            this.$vux.toast.text(res.message);
+                        }
+                    })
+                });
             },
             /**
              * 验证输入信息
              */
-            validate() {
-                //验证手机号不为空 且为 手机号格式
+            validate(callback) {
+                //手机号验证 验证手机号不为空 且为 手机号格式
+                this.phoneValidate();
+
+                //验证验证码不为空
+                if(this.loginInfo.vcode === '') {
+                    this.msg = "请输入验证码";
+                    return;
+                }
+
+                if(callback) {
+                    callback();
+                }
+            },
+            /**
+             * 手机号验证 验证手机号不为空 且为 手机号格式
+             * @param callback
+             */
+            phoneValidate(callback) {
+                this.msg = '';
                 if(this.loginInfo.phoneNum === '') {
-                    this.msg = "请输入手机号码";
+                    this.msg = '请输入手机号码'
                     return;
                 } else {
                     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
                     if(!phoneReg.test(this.loginInfo.phoneNum)) {
                         this.msg = "请输入正确的手机号";
                         return;
+                    }else {
+                        if(callback) {
+                            callback();
+                        }
                     }
                 }
-                //验证验证码不为空
-                if(this.loginInfo.vcode === '') {
-                    this.msg = "请输入验证码";
-                    return;
-                }
+            },
+            /**
+             * 计时器函数
+             */
+            timimg() {
+                this.countDown = 5000;
+                this.timer = setInterval(() => {
+                    if(this.countDown !== 0) {
+                        this.countDown -= 1000;
+                    }else {
+                        this.isGetCode = false;
+                        this.countDown = null;
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }, 1000)
             }
         }
     }

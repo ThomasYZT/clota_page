@@ -79,6 +79,7 @@
     import memberInfo from './child/memberInfo';
     import useArea from './child/useArea';
     import useExplain from './child/use-explain';
+    import ajax from '@/api/index.js';
     export default {
         data() {
             return {
@@ -145,7 +146,18 @@
                 this.$nextTick(() =>{
                     this.$refs.previewer.show(0)
                 });
+            },
+            /**
+             * 获取卡包信息
+             */
+            getCard () {
+                ajax.post('getCardPackage').then(res => {
+                    console.log(res);
+                })
             }
+        },
+        created () {
+            this.getCard();
         }
     }
 </script>
