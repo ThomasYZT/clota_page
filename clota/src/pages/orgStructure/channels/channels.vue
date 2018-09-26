@@ -3,7 +3,7 @@
     <div class="channel">
         <div class="filter-box">
             <Button type="primary" style="float: left;margin-right: 10px" size="default"
-                    @click="newSelfSupportBtn('add')"><span class="add-icon">+ {{$t('新增自营渠道')}}</span>
+                    @click="newSelfSupportBtn('add')"><span class="add-icon">+ {{$t('addSelfChannel')}}</span>
             </Button>
             <!--<Button style="float: left" type="ghost" size="default">批量操作</Button>
             <div class="search">
@@ -26,7 +26,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('请输入任意信息进行查询')"
+                   :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -51,7 +51,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.saleGroupName ? scope.row.saleGroupName : '未分组'}}
+                        {{scope.row.saleGroupName ? scope.row.saleGroupName : $t('noGroup')}}
                     </template>
                 </el-table-column>
 
@@ -62,7 +62,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.type=='online' ? '线上' : '线下'}}
+                        {{scope.row.type=='online' ? $t('online') : $t('offline')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -73,10 +73,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span v-if="scope.row.status=='valid'">
-                            <span class="status-sign valid"></span>已启用
+                            <span class="status-sign valid"></span>{{$t('startingUse')}}
                         </span>
                         <span v-if="scope.row.status=='invalid'">
-                            <span class="status-sign invalid"></span>未启用
+                            <span class="status-sign invalid"></span>{{$t('hasNotStart')}}
                         </span>
                     </template>
                 </el-table-column>
