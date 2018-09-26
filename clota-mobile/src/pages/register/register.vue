@@ -98,13 +98,6 @@
                 this.msg = ''
                 //输入验证
                 this.validate(() => {
-                    console.log({
-                        name: this.registerInfo.custName,
-                        phoneNum: this.registerInfo.phoneNum,
-                        code: this.registerInfo.vcode,
-                        sex: this.registerInfo.gender[0] === '男' ? 'male' : 'female',
-                        companyCode: '000000071' //冰雪世界景区
-                    })
                     ajax.post('registerMember', {
                         name: this.registerInfo.custName,
                         phoneNum: this.registerInfo.phoneNum,
@@ -146,7 +139,9 @@
                     return;
                 }
 
-                callback();
+                if(callback) {
+                    callback();
+                }
             },
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
