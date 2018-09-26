@@ -4,9 +4,9 @@
 -->
 <template>
   <div class="label-item">
-      <cell is-link
+      <cell :is-link="false"
             :title="info.title"
-            :link="info.link"
+            @click.native="toUrl(info.link)"
             class="cell">
           <i slot="icon"
              :style="{color: info.iconColor}"
@@ -33,7 +33,14 @@
     data() {
       return {}
     },
-    methods: {}
+    methods: {
+        /**
+         * 页面导航控制
+         */
+        toUrl(url) {
+            this.$router.push({path: url})
+        }
+    }
   }
 </script>
 

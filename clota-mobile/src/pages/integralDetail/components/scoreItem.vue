@@ -5,11 +5,11 @@
 <template>
     <div class="score-item">
         <div class="info">
-            <p class="ticket-name">{{info.ticketName}}</p>
-            <p class="time">{{info.time}}</p>
+            <p class="ticket-name">{{'默认储值账户'}}</p>
+            <p class="time">{{info.createdTime}}</p>
         </div>
         <div class="check">
-            <p>{{info.check}}</p>
+            <p>{{info.amount + '积分'}}</p>
         </div>
     </div>
 </template>
@@ -56,6 +56,10 @@
             line-height: 70px;
             text-align: right;
             font-size: 18px;
+
+            .add {
+
+            }
         }
 
         .info {

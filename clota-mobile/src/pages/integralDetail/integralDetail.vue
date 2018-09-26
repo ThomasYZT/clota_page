@@ -5,7 +5,7 @@
 <template>
   <div class="integral-detail">
       <div class="score-board">
-          <h5 class="score">{{2789}}</h5>
+          <h5 class="score">{{num}}</h5>
           <p class="name">可用积分</p>
       </div>
 
@@ -20,14 +20,17 @@
 </template>
 
 <script>
-    import scoreItem from './components/scoreItem'
+    import scoreItem from './components/scoreItem';
+    import ajax from '../../api/index';
+    import {mapGetters} from 'vuex'
+
     export default {
         components: {
             scoreItem
         },
         data() {
             return {
-                infoList: [
+                infoList: [],/*[
                     {
                         ticketName: '北京欢乐谷门票',
                         time: '2018.06.02 08:00:00',
@@ -43,10 +46,42 @@
                         time: '2018.06.02 08:00:00',
                         check: 4000
                     }
-                ]
+                ]*/
+                //积分总数
+                num: 0
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取页面信息
+             */
+            getData() {
+                ajax.post('queryOrgAccountChange', {
+                    accountTypeIds: '2',
+                    operType: '',
+                    cardId: this.userInfo.cardId,
+                    pageNo: 1,
+                    pageSize: 20
+                }).then((res) => {
+                    if(res.success) {
+                        this.infoList = res.data.data;
+                        this.num = res.data.data.reduce((preValue, curValue) => {
+                            return preValue + parseInt(curValue.amount)
+                        }, 0);
+                    }else {
+                        this.$vux.toast.text(res.message)
+                    }
+                })
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'userInfo',
+            ])
+        },
+        created() {
+            this.getData();
+        }
     }
 </script>
 

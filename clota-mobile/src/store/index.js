@@ -10,6 +10,8 @@ export default new Vuex.Store({
         lang: i18n.locale,
         //用户信息
         userInfo : {},
+        //会员卡信息
+        cardInfo: {},
         //页面是否显示加载中
         isLoading : false,
         //当前正在加载中的接口个数
@@ -29,6 +31,10 @@ export default new Vuex.Store({
         //用户信息
         userInfo : state => {
             return state.userInfo;
+        },
+        //会员卡信息
+        cardInfo: state => {
+            return state.cardInfo;
         },
         //是否显示页面加载中
         isLoading : state => {
@@ -75,8 +81,28 @@ export default new Vuex.Store({
         //更改键盘状态
         updateKeyBoardStatus (state,status ){
             state.showKeyBoard = status;
+        },
+        //登陆设置用户信息
+        setUserInfo ( state, data ) {
+            state.userInfo = data;
+        },
+        //更新用户信息
+        updateUserinfo( state, data ) {
+            state.userInfo = Object.assign({}, state.userInfo, data)
+        },
+        //登陆设置用户会员卡信息
+        setCardInfo ( state, data ) {
+            state.cardInfo = data;
+        },
+        //更新用户会员卡信息
+        updateCardInfo( state, data ) {
+            state.cardInfo = Object.assign({}, state.cardInfo, data)
         }
     },
     actions: {
+        setCardInfo: ({ commit }, data) => commit('setCardInfo', data),
+        updateCardInfo: ({ commit }, data) => commit('updateCardInfo', data),
+        setUserInfo: ({ commit }, data) => commit('setUserInfo', data),
+        updateUserinfo: ({ commit }, data) => commit('updateUserinfo', data),
     }
 });

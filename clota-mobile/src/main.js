@@ -1,4 +1,5 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import './assets/js/vconsole';
 import "babel-polyfill"
 //移动端html font-size适配方案
 import 'lib-flexible'
@@ -15,7 +16,7 @@ import i18n from './assets/lang/lang.config';
 // 样式文件
 import './assets/css/mobilePublic.css';
 import './assets/css/iconfont.css';
-import './assets/theme/theme.scss'
+import './assets/theme/theme.scss';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'
@@ -25,7 +26,15 @@ Vue.use(plugin);
 Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
-    //todo
+    //防止页面刷新vuex数据被清空
+    if(store.getters.userInfo == {}) {
+        store.commit('setUserInfo', JSON.parse(sessionStorage.getItem('userInfo')));
+    }
+    if(store.getters.userInfo == {}) {
+        store.commit('cardInfo', JSON.parse(sessionStorage.getItem('cardInfo')));
+    }
+
+
     next()
 });
 

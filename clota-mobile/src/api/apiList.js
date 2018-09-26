@@ -11,7 +11,14 @@ const apiList = {
     //会员登录
     login: '/external/member/login2',
     //获取卡包信息
-    getCardPackage: '/external/member/getCardPackage'
+    getCardPackage: '/external/member/getCardPackage',
+    //主页信息
+    queryMemberPage:'/external/memberInfo/queryMemberPage',
+    //资金积分明细接口
+    queryOrgAccountChange: '/external/memberAccount/queryOrgAccountChange',
+    //获取储值账户类型
+    queryMemberAccountDefine: '/external/memberAccount/queryMemberAccountDefine',
+
 };
 
 export default apiList;

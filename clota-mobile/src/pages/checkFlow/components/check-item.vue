@@ -5,11 +5,11 @@
 <template>
   <div class="check-item">
       <div class="info">
-          <p class="ticket-name">{{info.ticketName}}</p>
-          <p class="time">{{info.time}}</p>
+          <p class="ticket-name">{{'北京欢乐谷门票'}}</p>
+          <p class="time">{{info.createdTime}}</p>
       </div>
       <div class="check">
-          <p>{{info.check}}</p>
+          <p>{{info.amount}}</p>
       </div>
   </div>
 </template>

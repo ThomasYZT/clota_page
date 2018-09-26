@@ -41,6 +41,7 @@
 
 <script>
     import ajax from '../../api/index'
+    import {mapActions} from 'vuex'
     export default {
         data() {
             return {
@@ -58,6 +59,9 @@
             }
         },
         methods: {
+            ...mapActions([
+                'setUserInfo'
+            ]),
             /**
              * 获取验证码
              */
@@ -94,6 +98,7 @@
                             sessionStorage.setItem('token', res.data.token);
                             //存储用户信息
                             sessionStorage.setItem('userInfo', JSON.stringify(res.data));
+                            this.setUserInfo(res.data);
                             //登陆跳转到主页
                             this.$router.push({ name: 'home'});
                         } else if(res.toString() === 'Error: Network Error'){
