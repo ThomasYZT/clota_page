@@ -6,6 +6,10 @@
 
 <template>
     <div class="new-card">
+        <!--tpCard - 测试-->
+        <object id="rd" data="./comRD800.dll" WIDTH="0" HEIGHT="0"
+                classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>
+
         <div class="new-card-content">
             <Form ref="formValidate"
                   :model="newCardParam"
@@ -64,7 +68,8 @@
                                 :placeholder="$t('selectField', {msg: $t('memberLevelPri')})"><!--请选择会员初始级别-->
                             <Option v-for="item in enumData.level"
                                     :key="item.id"
-                                    :value="item.id">{{item.levelDesc}}</Option>
+                                    :value="item.id">{{item.levelDesc}}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
@@ -151,9 +156,9 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import { genderEnum, vipLevel, vipChannel } from '@/assets/js/constVariable';
+    import {genderEnum, vipLevel, vipChannel} from '@/assets/js/constVariable';
     import pick from 'lodash/pick';
-    import { validator } from 'klwk-ui';
+    import {validator} from 'klwk-ui';
     import ajax from '@/api/index';
     import minBy from 'lodash/minBy';
     import common from '@/assets/js/common.js';
@@ -164,17 +169,17 @@
         data() {
             let validateMethod = {
 
-                mobile :  (rule, value, callback) => {
+                mobile: (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(this.$t('errorFormat',{field : this.$t('phoneNum')}));
+                        callback(this.$t('errorFormat', {field: this.$t('phoneNum')}));
                     } else {
                         callback();
                     }
                 },
 
-                emoji :  (rule, value, callback) => {
+                emoji: (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error(this.$t('errorIrregular')));    // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -182,42 +187,42 @@
 
             };
             //校验邮箱
-            const validateEmail = (rule,value,callback) => {
-                if(value){
-                    if(validator.isEmail(value)){
+            const validateEmail = (rule, value, callback) => {
+                if (value) {
+                    if (validator.isEmail(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('errorFormat',{field : this.$t('mail')}));
+                    } else {
+                        callback(this.$t('errorFormat', {field: this.$t('mail')}));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验字段长度
-            const validateFileLength = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(value.length > rule.maxLength){
-                        callback(this.$t('errorMaxLength',{field : rule.name,length : rule.maxLength}));
-                    }else{
+            const validateFileLength = (rule, value, callback) => {
+                if (common.isNotEmpty(value)) {
+                    if (value.length > rule.maxLength) {
+                        callback(this.$t('errorMaxLength', {field: rule.name, length: rule.maxLength}));
+                    } else {
                         callback();
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验字符串是否包含数字和字母
-            const validateNumAndStr = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(/^[A-Za-z0-9]{0,}$/g.test(value)){
-                        if(value.length > rule.maxLength){
-                            callback(this.$t('errorMaxLength',{field : rule.name,length : rule.maxLength}));
-                        }else{
+            const validateNumAndStr = (rule, value, callback) => {
+                if (common.isNotEmpty(value)) {
+                    if (/^[A-Za-z0-9]{0,}$/g.test(value)) {
+                        if (value.length > rule.maxLength) {
+                            callback(this.$t('errorMaxLength', {field: rule.name, length: rule.maxLength}));
+                        } else {
                             callback();
                         }
-                    }else{
-                        callback(this.$t('filterError',{field : rule.name}));
+                    } else {
+                        callback(this.$t('filterError', {field: rule.name}));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
@@ -227,7 +232,7 @@
                 type: 'add',
                 loading: false,
                 dateOption: {
-                    disabledDate: function( value ){
+                    disabledDate: function (value) {
                         return value && ( value.format('yyyy-MM-dd') < '1900-01-01' || value.format('yyyy-MM-dd') > new Date().format('yyyy-MM-dd'));
                     }
                 },
@@ -246,65 +251,88 @@
 
                 // 新开卡传参
                 newCardParam: {
-                    "custName":"",//姓名
-                    "phoneNum":"",//手机号
-                    "emailAddr":"",//E-mall
-                    "birthDay":"",//生日
-                    "gender":"",// 性别
-                    "qq":"",//QQ
-                    "cityCode":"",//城市代码
-                    "stateCode":"",//国家代码
-                    "hobby":"",//个人兴趣
-                    "certificationType":"",//证件类型
-                    "idCardNumber":"",//证件号码
-                    "homeAddr":"",//家庭地址
+                    "custName": "",//姓名
+                    "phoneNum": "",//手机号
+                    "emailAddr": "",//E-mall
+                    "birthDay": "",//生日
+                    "gender": "",// 性别
+                    "qq": "",//QQ
+                    "cityCode": "",//城市代码
+                    "stateCode": "",//国家代码
+                    "hobby": "",//个人兴趣
+                    "certificationType": "",//证件类型
+                    "idCardNumber": "",//证件号码
+                    "homeAddr": "",//家庭地址
                     //卡信息
-                    "levelId":"",//会员级别
-                    "tpNo":"",//第三方卡号
-                    "tpCardNo":"",//第三方卡面号
+                    "levelId": "",//会员级别
+                    "tpNo": "",//第三方卡号
+                    "tpCardNo": "",//第三方卡面号
                 },
 
                 // 表单校验规则
                 ruleValidate: {
                     custName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },     // 姓名不能为空
-                        { type: 'string', max: 15, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}), trigger: 'blur' },      // 姓名不能多于15个字符
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur'},     // 姓名不能为空
+                        {
+                            type: 'string',
+                            max: 15,
+                            message: this.$t('errorMaxLength', {field: this.$t('name'), length: 15}),
+                            trigger: 'blur'
+                        },      // 姓名不能多于15个字符
+                        {validator: validateMethod.emoji, trigger: 'blur'}
                     ],
                     phoneNum: [
-                        { required: true, message: this.$t('errorEmpty', {field: this.$t('mobilePhone')}), trigger: 'blur' },       // 手机号不能为空
-                        { validator: validateMethod.mobile, trigger: 'blur'}
+                        {
+                            required: true,
+                            message: this.$t('errorEmpty', {field: this.$t('mobilePhone')}),
+                            trigger: 'blur'
+                        },       // 手机号不能为空
+                        {validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     gender: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'change' },     // 性别不能为空
+                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'change'},     // 性别不能为空
                     ],
-                    emailAddr : [
-                        {validator : validateEmail,trigger : 'blur'},
-                        {  max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },      // 邮箱不能多于100个字符
+                    emailAddr: [
+                        {validator: validateEmail, trigger: 'blur'},
+                        {
+                            max: 100,
+                            message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}),
+                            trigger: 'blur'
+                        },      // 邮箱不能多于100个字符
                     ],
-                    qq : [
-                        {validator : validateFileLength,trigger : 'blur',name : 'qq',maxLength : 50}
+                    qq: [
+                        {validator: validateFileLength, trigger: 'blur', name: 'qq', maxLength: 50}
                     ],
-                    hobby : [
-                        {validator : validateFileLength,trigger : 'blur',name : this.$t('personalInterests'),maxLength : 100}
+                    hobby: [
+                        {
+                            validator: validateFileLength,
+                            trigger: 'blur',
+                            name: this.$t('personalInterests'),
+                            maxLength: 100
+                        }
                     ],
-                    homeAddr : [
-                        {validator : validateFileLength,trigger : 'blur',name : this.$t('address'),maxLength : 100}
+                    homeAddr: [
+                        {validator: validateFileLength, trigger: 'blur', name: this.$t('address'), maxLength: 100}
                     ],
-                    stateCode : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('countryCode'),maxLength : 30}
+                    stateCode: [
+                        {validator: validateNumAndStr, trigger: 'blur', name: this.$t('countryCode'), maxLength: 30}
                     ],
-                    cityCode : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('cityCode'),maxLength : 30}
+                    cityCode: [
+                        {validator: validateNumAndStr, trigger: 'blur', name: this.$t('cityCode'), maxLength: 30}
                     ],
-                    tpNo : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('thirdCardNum'),maxLength : 30}
+                    tpNo: [
+                        {validator: validateNumAndStr, trigger: 'blur', name: this.$t('thirdCardNum'), maxLength: 30}
                     ],
-                    idCardNumber : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('credentialsCode'),maxLength : 40}
+                    idCardNumber: [
+                        {validator: validateNumAndStr, trigger: 'blur', name: this.$t('credentialsCode'), maxLength: 40}
                     ],
-                    tpCardNo : [
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('thirdCardFaceNum'),maxLength : 30}
+                    tpCardNo: [
+                        {
+                            validator: validateNumAndStr,
+                            trigger: 'blur',
+                            name: this.$t('thirdCardFaceNum'),
+                            maxLength: 30
+                        }
                     ]
                 }
             }
@@ -315,35 +343,36 @@
             this.getLevelList();
         },
         mounted() {
+            this.idCardTest(rd);     // rd -- 实体卡SDK
         },
         watch: {},
         methods: {
             //手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
-            customValid(data, field){
-                this.$nextTick(()=>{
-                    this.$refs.formValidate.validateField( field );
+            customValid(data, field) {
+                this.$nextTick(() => {
+                    this.$refs.formValidate.validateField(field);
                 })
             },
 
             //表单校验
-            formValidateFunc () {
+            formValidateFunc() {
                 this.$refs.formValidate.validate((valid) => {
-                    if ( valid ) {
+                    if (valid) {
                         var params = {
-                            memberInfo: pick(this.newCardParam, ['custName', 'phoneNum','emailAddr','birthDay',
-                                'gender','qq','cityCode','stateCode','hobby','certificationType','idCardNumber','homeAddr']),
-                            memberCard: pick(this.newCardParam, ['levelId','tpNo','tpCardNo']),
+                            memberInfo: pick(this.newCardParam, ['custName', 'phoneNum', 'emailAddr', 'birthDay',
+                                'gender', 'qq', 'cityCode', 'stateCode', 'hobby', 'certificationType', 'idCardNumber', 'homeAddr']),
+                            memberCard: pick(this.newCardParam, ['levelId', 'tpNo', 'tpCardNo']),
                         };
                         params.memberInfo.birthDay = params.memberInfo.birthDay ?
                             new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
                         //区分新增与修改
-                        if( this.type === 'add' ){
-                            this.saveAndEditMember( 'saveNewMemberInfo', params);
+                        if (this.type === 'add') {
+                            this.saveAndEditMember('saveNewMemberInfo', params);
                         }
-                        if( this.type === 'modify' ){
+                        if (this.type === 'modify') {
                             params.memberInfo.id = this.info.id;
                             params.memberCard.id = this.info.cardId;
-                            this.saveAndEditMember( 'editMemberInfo', params);
+                            this.saveAndEditMember('editMemberInfo', params);
                         }
                     }
                 })
@@ -356,54 +385,54 @@
                     pageSize: 99999,
                     isDeleted: 'false',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
-                        if(!this.newCardParam.levelId){
+                        if (!this.newCardParam.levelId) {
                             this.newCardParam.levelId = minBy(this.enumData.level, 'levelNum').id;
                         }
                     } else {
-                        this.$Message.warning('queryChannelSet '+ this.$t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet ' + this.$t('queryFailure') + '！');
                     }
                     return res;
                 })
             },
 
             //查询证件类型
-            queryDocument () {
-                ajax.post('queryDocument',{
+            queryDocument() {
+                ajax.post('queryDocument', {
                     isDeleted: 'false',
                     pageNo: 1,
                     pageSize: 99999,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.enumData.idType = res.data.data || [];
                     }
                 })
             },
 
             //新增/编辑会员接口
-            saveAndEditMember( url, params ){
+            saveAndEditMember(url, params) {
                 ajax.post(url, {
                     memberInfo: JSON.stringify(params.memberInfo),
                     memberCard: JSON.stringify(params.memberCard),
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         //区分新增与修改
-                        if(this.type === 'add'){
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));     // 新增会员成功
-                            this.$router.push({ name: 'memberInfo'});
+                        if (this.type === 'add') {
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('add')}));     // 新增会员成功
+                            this.$router.push({name: 'memberInfo'});
                         }
-                        if(this.type === 'modify'){
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));     // 新增会员成功
+                        if (this.type === 'modify') {
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 新增会员成功
                             this.$router.back();
                         }
                     } else {
                         //区分新增与修改
-                        if(this.type === 'add'){
-                            this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t('add')}));
+                        if (this.type === 'add') {
+                            this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('add')}));
                         }
-                        if(this.type === 'modify'){
-                            this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                        if (this.type === 'modify') {
+                            this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('modify')}));
                         }
                     }
                 })
@@ -412,14 +441,58 @@
             //返回
             goBack() {
                 //区分新增与修改
-                if( this.type === 'add' ){
-                    this.$router.push({ name: 'memberInfo'});
+                if (this.type === 'add') {
+                    this.$router.push({name: 'memberInfo'});
                 }
-                if( this.type === 'modify' ){
+                if (this.type === 'modify') {
                     this.$router.back();
                     // this.$router.push({name: this.routerFrom.name});
                 }
             },
+            // 获取实体卡信息
+            idCardTest(rd) {
+                var st; //???????????
+                var lSnr; //??????????????????javascript??????dc_card????????????????
+                var rlen; //??????????????????????javascript??????dc_card????????????????
+                var msg = "";
+
+                if (rd.dc_init) {
+                    st = rd.dc_init(100, 115200);
+                }
+                if (!st || st <= 0) {
+                    msg += this.$t("实体卡初始化出错！");
+                    this.$Message.error(msg);
+                    return;
+                }
+                msg += this.$t("实体卡初始化成功！");
+
+                //******************  ????  **************************
+                //rd.DC_find_i_d();
+                st = rd.DC_start_i_d();
+
+                if (st < 0) {
+                    msg += "?????????????";
+                    this.$Message.error(msg);
+                    return;
+                }
+                /*var name = rd.DC_i_d_query_name();
+                var sex = rd.DC_i_d_query_sex();
+                var nation = rd.DC_i_d_query_nation();
+                var birth = rd.DC_i_d_query_birth();
+                var address = rd.DC_i_d_query_address();
+                var number = rd.DC_i_d_query_id_number();
+                var department = rd.DC_i_d_query_department();
+                var expire = rd.DC_i_d_query_expire_day();
+                //var st = rd.DC_i_d_query_photo_bmp_buffer();
+                var bmp_data_str = rd.get_bstrRBuffer_asc;
+                //rd.put_bstrSBuffer = "c:/me.bmp";
+                st = rd.DC_i_d_query_photo_file();*/
+
+                rd.DC_end_i_d();
+
+                this.newCardParam.tpNo = rd.get_bstrRBuffer_asc;
+                this.newCardParam.tpCardNo = rd.DC_i_d_query_id_number();
+            }
         }
     };
 </script>
@@ -433,13 +506,13 @@
         background-color: $color_fff;
         border-radius: 4px 4px 0 0;
 
-        .content-footer{
+        .content-footer {
             margin: 200px 0 40px 0;
             text-align: center;
 
-            /deep/ .ivu-btn{
+            /deep/ .ivu-btn {
                 width: 108px;
-                &:nth-child(1){
+                &:nth-child(1) {
                     margin-right: 20px;
                 }
             }
@@ -453,7 +526,7 @@
         margin: auto;
         background-color: $color_fff;
 
-        .ivu-form{
+        .ivu-form {
             padding-top: 40px;
             padding-bottom: 20px;
 
@@ -465,7 +538,7 @@
             }
         }
 
-        .ivu-form-item-wrap{
+        .ivu-form-item-wrap {
             position: relative;
             display: inline-block;
             vertical-align: middle;
@@ -474,7 +547,7 @@
             }
         }
 
-        .ivu-form-item{
+        .ivu-form-item {
             width: 280px;
             text-align: left;
 
@@ -483,11 +556,11 @@
             }
 
             .ivu-select-selected-value,
-            .ivu-input{
+            .ivu-input {
                 font-size: 14px;
             }
 
-            .ivu-select-item{
+            .ivu-select-item {
                 font-size: 14px !important;
             }
         }
