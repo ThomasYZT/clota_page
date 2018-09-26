@@ -598,7 +598,7 @@ export default {
     'productList' : 'Product List',
     'ticketType' : 'Ticket',
     'marketingPolicy' : 'Sales policy',
-    'continueYesRoNo': 'is continue ?',
+    'continueYesRoNo': 'confirm delete',
     'irreversible': 'is irreversible',
     'isDoing': 'You are deleting product ',
     'deleteBatch': 'batch delete',
@@ -634,8 +634,8 @@ export default {
     'maxOrderNum' : 'Maximum order per order',
     'needId' : 'Submit identity info when booking',
     'idType' : 'Acceptable  credential type',
-    'limitById' : 'ID card purchase limit',
-    'limitByMobile' : 'Mobile phone purchase limit',
+    'limitByIdDay' : 'ID card purchase limit',
+    'limitByMobileDay' : 'Mobile phone purchase limit',
     'stockType' : 'Restricted inventory',
     'stockNum' : 'Inventory quantity',
     'playPark' : 'Park that can be played',
@@ -731,7 +731,7 @@ export default {
     'ticket': 'Ticket',
     'repast': 'Food',
     'hotel': 'Hotel',
-    'ticket_package': 'Package',
+    'ticket_package': 'Package ticket',
     'updateStatus': 'update Status',
     'To': 'To',
     'policyValidity': 'Policy saleable period',
@@ -790,7 +790,11 @@ export default {
     'unShareMoney': 'Undivided amount',
     'customPlay': 'Customize play date',
     'newProduct': 'New product',
-
+    'effectiveDays': 'effective days',
+    'defaultPolicyType': 'Type of business is ticket',
+    'noMax': 'not exceeding {length} Words。',
+    'appendProduct': 'append Product',
+    'append': 'append',
 
 
     /*** 财务管理模块 ***/

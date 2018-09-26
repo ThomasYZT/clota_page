@@ -598,7 +598,7 @@ export default {
     'productList' : '产品列表',
     'ticketType' : '票类',
     'marketingPolicy' : '销售政策',
-    'continueYesRoNo': '是否继续',
+    'continueYesRoNo': '是否确认删除',
     'irreversible': '本操作不可撤销',
     'isDoing': '您正在',
     'deleteBatch': '批量删除',
@@ -634,8 +634,8 @@ export default {
     'maxOrderNum' : '每订单最大限订数',
     'needId' : '预定时提交游客身份信息',
     'idType' : '可接受证件类型',
-    'limitById' : '身份证件购票限制',
-    'limitByMobile' : '手机号购票限制',
+    'limitByIdDay' : '身份证件购票限制',
+    'limitByMobileDay' : '手机号购票限制',
     'stockType' : '限制库存',
     'stockNum' : '库存数量',
     'playPark' : '可游玩园区',
@@ -790,6 +790,11 @@ export default {
     'unShareMoney': '未分帐金额',
     'customPlay': '自定义可玩日期',
     'newProduct': '新建产品',
+    'effectiveDays': '有效天数',
+    'defaultPolicyType': '业态类型默认为票类',
+    'noMax': '不超过{length}字。',
+    'appendProduct': '添加产品',
+    'append': '添加',
 
 
     /*** 财务管理模块 ***/
