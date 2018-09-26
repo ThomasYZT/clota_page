@@ -81,7 +81,6 @@
                 },
                 // 新增or修改
                 type: 'add',
-                emptyParams: '',
 
                 // 校验规则
                 ruleValidate: {
@@ -98,7 +97,6 @@
         },
         computed: {},
         created() {
-            this.emptyParams = JSON.stringify(this.addChannel);
         },
         watch: {},
         methods: {
@@ -120,7 +118,8 @@
              */
             hide() {
                 this.visible = false;
-                this.addChannel = JSON.parse(this.emptyParams);
+                this.$refs.formValidate.resetFields();
+                this.addChannel.serverUrl = '';
             },
             /**
              * 创建自定义指标表单校验

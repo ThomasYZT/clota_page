@@ -49,6 +49,9 @@
                 </div>
             </confirm>
         </div>
+        <div v-transfer-dom>
+            <loading :show="isLoading" text="加载中"></loading>
+        </div>
     </div>
 </template>
 
@@ -99,12 +102,18 @@
              */
             onConfirm () {
                 this.$store.commit('setLang',this.langType);
+                if(this.$route && this.$route.meta && this.$route.meta.title){
+                    document.title = this.$t(this.$route.meta.title);
+                }else{
+                    document.title = '';
+                }
             }
         },
         computed: {
             ...mapGetters({
                 hashKey : 'hashKey',
                 lang : 'lang',
+                isLoading : 'isLoading',
             }),
             viewTransition () {
                 return 'vux-pop-in'
@@ -117,9 +126,9 @@
             '$route': {
                 handler (newVal,oldVal) {
                     if(newVal && newVal.meta && newVal.meta.title){
-                        document.title = newVal.meta.title;
+                        document.title = this.$t(newVal.meta.title);
                     }else{
-                        document.title = 'clota';
+                        document.title = '';
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
                 },

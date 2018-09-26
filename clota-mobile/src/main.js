@@ -1,5 +1,4 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import './assets/js/vconsole';
 import "babel-polyfill"
 //移动端html font-size适配方案
 import 'lib-flexible'
@@ -26,16 +25,22 @@ Vue.use(plugin);
 Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
-    //防止页面刷新vuex数据被清空
-    if(store.getters.userInfo == {}) {
-        store.commit('setUserInfo', JSON.parse(sessionStorage.getItem('userInfo')));
+    //判断是否保存了用户信息和token，如果没有保存需要重新登录
+    if(to.name === 'mobileLogin'){
+        next();
+    }else{
+        //获取保存到本地的用户信息
+        let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
+        let token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : '';
+        if(token && userInfo && Object.keys(userInfo).length > 0){
+            store.commit('updateUserInfo');
+            next();
+        }else{
+            next({
+                name : 'mobileLogin'
+            });
+        }
     }
-    if(store.getters.userInfo == {}) {
-        store.commit('cardInfo', JSON.parse(sessionStorage.getItem('cardInfo')));
-    }
-
-
-    next()
 });
 
 

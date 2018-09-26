@@ -10,17 +10,17 @@
                 v-for="(item,i) in accountList"
                 :key="i">
                 <div class="header">
-                    <div class="account-list-chose" @click="showAccount">{{item.name}}</div>
-                    <div class="asset-info">{{266.88}}</div>
-                    <div class="asset-tip">总资产(元)</div>
+                    <div class="account-list-chose" @click="showAccount">{{item.accountName}}</div>
+                    <div class="asset-info">{{item.accountBalance | moneyFilter}}</div>
+                    <div class="asset-tip">{{$t('allAssets')}}</div>
                     <div class="account-type">
                         <div class="account-priciple-left">
-                            <div class="money-num">8,238.38</div>
-                            <div class="money-label">充值余额(元)</div>
+                            <div class="money-num">{{item.corpusBalance | moneyFilter}}</div>
+                            <div class="money-label">{{$t('rechargeMoney')}}</div>
                         </div>
                         <div class="account-donate-left">
-                            <div class="money-num">8,238.38</div>
-                            <div class="money-label">赠送余额(元)</div>
+                            <div class="money-num">{{item.donateBalance | moneyFilter}}</div>
+                            <div class="money-label">{{$t('donateMoney')}}</div>
                         </div>
                     </div>
                 </div>
@@ -28,9 +28,11 @@
         </swiper>
 
         <div class="btn-area">
-            <x-button @click.native="recharge">充值</x-button>
+            <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
         </div>
         <popup-picker
+            :cancel-text="$t('cancel')"
+            :confirm-text="$t('complete')"
             :show.sync="visible"
             :show-cell="false"
             :show-name="true"
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
         data() {
             return {
@@ -50,18 +53,7 @@
                 chosedAccount : [],
                 //账户列表
                 accountList : [
-                    {
-                        name : '默认账户',
-                        value : 0
-                    },
-                    {
-                        name : '本金账户',
-                        value : 1
-                    },
-                    {
-                        name : '同源账户',
-                        value : 2
-                    }
+                    {}
                 ],
                 //当前显示的账户信息
                 accountShow : 0
@@ -94,7 +86,31 @@
              */
             accountTapChange (value) {
                 this.chosedAccount = [String(value)];
+            },
+            /**
+             * 获取所有账户信息
+             */
+            listCardAccountInfo () {
+                ajax.post('listCardAccountInfo',{
+                    cardId : '1044778080524177408',
+                    memberId : '1044778079282663424',
+                }).then(res => {
+                    if(res.success){
+                        this.accountList =  res.data ? res.data.map((item,index) => {
+                            return {
+                                ...item,
+                                name : item.accountName,
+                                value : index
+                            }
+                        }) : [];
+                    }else{
+                        this.accountList = [];
+                    }
+                });
             }
+        },
+        created () {
+            this.listCardAccountInfo();
         }
     }
 </script>
@@ -123,7 +139,7 @@
                 color: $color_fff;
                 font-size: $font_size_18px;
                 padding-top: 20px;
-                margin: 0 auto 40px auto;
+                margin: 0 auto 25px auto;
             }
 
             .asset-info{
@@ -202,7 +218,6 @@
                 font-size: 17px;
                 color: $color_fff;
                 border-radius: 100px;
-                letter-spacing: 5px;
             }
         }
 

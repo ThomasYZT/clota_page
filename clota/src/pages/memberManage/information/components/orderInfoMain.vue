@@ -43,7 +43,7 @@
             <Col span="8">
             <ul>
                 <li>
-                    <span class="field-name">{{$t('来源业态')}}：</span>{{infoData.productType}}
+                    <span class="field-name">{{$t('来源业态')}}：</span>{{ $t(transferProductType(infoData.productType)) }}
                 </li>
                 <li>
                     <span class="field-name">{{$t('会员卡号')}}：</span>{{infoData.cardNo}}
@@ -76,6 +76,30 @@
         methods: {
             // 订单状态显示
             orderStatus: orderStatus,
+
+            /**
+             * 来源业态 - code转换
+             * @param type - 来源业态类型code
+             * @returns {string}
+             */
+            transferProductType(type) {
+                let statusName = '-';
+                switch (type) {
+                    case 'ticket' :
+                        statusName = 'ticket';        // 票
+                        break;
+                    case 'catering' :
+                        statusName = 'repast';        // 餐饮
+                        break;
+                    case 'commodity' :
+                        statusName = 'goods';        // 商品
+                        break;
+                    case 'hotel' :
+                        statusName = 'hotel';        // 酒店
+                        break;
+                }
+                return statusName;
+            },
         }
     }
 </script>

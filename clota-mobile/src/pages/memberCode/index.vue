@@ -22,7 +22,7 @@
                     <span class="iconfont icon-checked"></span>
                     {{chosedAccount['accountName']}}
                 </div>
-                <div class="label">优先使用默认账户支付</div>
+                <div class="label">{{$t('payAccountTip')}}</div>
             </div>
             <div class="label-right" @click="showAccountChose">
                 <span class="iconfont icon-arrow"></span>
@@ -32,15 +32,15 @@
                v-transfer-dom
                @on-show="popupShow">
             <popup-header
-                :left-text="$t('取消')"
-                :right-text="$t('完成')"
+                :left-text="$t('cancle')"
+                :right-text="$t('complete')"
                 :title="$t('Please select your card')"
                 :show-bottom-border="false"
                 @on-click-left="visible = false"
                 @on-click-right="choseAccount">
                 <div slot="title">
-                    <div class="popup-title">请选择优先支付方式</div>
-                    <div class="popup-label">优先使用所选账户付款，如付款失败将尝试使用其<br>他账户进行支付完成付款</div>
+                    <div class="popup-title">{{$t('payAccountTipPlease')}}</div>
+                    <div class="popup-label">{{$t('priorityPayAccountTip')}}</div>
                 </div>
             </popup-header>
             <group gutter="0">

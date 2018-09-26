@@ -4,49 +4,28 @@
     <div class="member-info">
         <div class="title">
             <span class="iconfont icon-alipay"></span>
-            <span class="font-label">成员信息</span>
+            <span class="font-label">{{$t('memberInfo')}}</span>
         </div>
         <div class="detail">
-            <ul class="info-detail bottom-dashed">
+            <ul class="info-detail bottom-dashed" v-for="(item,i) in availPersonsArr" :key="i">
                 <li class="field bit-title">
-                    <span class="value">成员01</span>
+                    <span class="value">{{$t('memberInex',{index : item.no })}}</span>
                 </li>
                 <li class="field">
-                    <span class="key">姓名：</span>
-                    <span class="value">王家人</span>
+                    <span class="key">{{$t('name')}}：</span>
+                    <span class="value">{{item.name | contentFilter}}</span>
                 </li>
                 <li class="field">
-                    <span class="key">性别：</span>
-                    <span class="value">男</span>
+                    <span class="key">{{$t('sex')}}：</span>
+                    <span class="value">{{$t(item.gender) | contentFilter}}</span>
                 </li>
                 <li class="field">
-                    <span class="key">电话：</span>
-                    <span class="value">17638263872</span>
+                    <span class="key">{{$t('phone')}}：</span>
+                    <span class="value">{{item.phone | contentFilter}}</span>
                 </li>
                 <li class="field">
-                    <span class="key">证件号：</span>
-                    <span class="value">103039840948394809（身份证）</span>
-                </li>
-            </ul>
-            <ul class="info-detail bottom-dashed">
-                <li class="field bit-title">
-                    <span class="value">成员01</span>
-                </li>
-                <li class="field">
-                    <span class="key">姓名：</span>
-                    <span class="value">王家人</span>
-                </li>
-                <li class="field">
-                    <span class="key">性别：</span>
-                    <span class="value">男</span>
-                </li>
-                <li class="field">
-                    <span class="key">电话：</span>
-                    <span class="value">17638263872</span>
-                </li>
-                <li class="field">
-                    <span class="key">证件号：</span>
-                    <span class="value">103039840948394809（身份证）</span>
+                    <span class="key">{{$t('idCard')}}：</span>
+                    <span class="value">{{item.idno | contentFilter}}（身份证）</span>
                 </li>
             </ul>
         </div>
@@ -55,10 +34,28 @@
 
 <script>
     export default {
+        props : {
+            //成员信息
+            'avail-persons' : {
+                type : String,
+                default : ''
+            }
+        },
         data() {
             return {}
         },
-        methods: {}
+        methods: {
+        },
+        computed : {
+            //成员信息数组
+            availPersonsArr () {
+                if(this.availPersons){
+                    return JSON.parse(this.availPersons);
+                }else{
+                    return [];
+                }
+            }
+        }
     }
 </script>
 
@@ -67,6 +64,7 @@
     .member-info{
         margin-top: 8.5px;
         background: $color_fff;
+        min-height: 50px;
 
         .detail{
             padding: 9.5px 24px;

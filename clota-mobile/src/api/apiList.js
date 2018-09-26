@@ -18,7 +18,8 @@ const apiList = {
     queryOrgAccountChange: '/external/memberAccount/queryOrgAccountChange',
     //获取储值账户类型
     queryMemberAccountDefine: '/external/memberAccount/queryMemberAccountDefine',
-
+    //获取账户信息
+    listCardAccountInfo: '/external/memberAccount/listCardAccountInfo'
 };
 
 export default apiList;

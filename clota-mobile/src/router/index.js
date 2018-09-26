@@ -24,6 +24,9 @@ const createRouter = () => new Router({
     routes: [
         {
             path: '',
+            redirect : {
+                name : 'mobileLogin'
+            }
             //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
             //如果是没有获取到用户信息，那么就直接跳转到登录页面
             // redirect: to => {
@@ -42,6 +45,9 @@ const createRouter = () => new Router({
         },
         {
             path: '/',
+            redirect : {
+                name : 'mobileLogin'
+            }
             //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
             //如果是没有获取到用户信息，那么就直接跳转到登录页面
             // redirect: to => {
@@ -109,7 +115,7 @@ const createRouter = () => new Router({
             name : 'personInfo',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/index.vue'),
             meta : {
-                title : '个人信息'
+                title : 'personInfo'
             }
         },
         //个人信息--修改手机号码
@@ -118,7 +124,7 @@ const createRouter = () => new Router({
             name : 'changeMobile',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/changePhone.vue'),
             meta : {
-                title : '修改手机号'
+                title : 'changePhone'
             }
         },
         //个人信息--修改证件号码
@@ -136,7 +142,7 @@ const createRouter = () => new Router({
             name : 'changeTradePass',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/setTradePass.vue'),
             meta : {
-                title : '设置交易密码'
+                title : 'setTradePass'
             }
         },
         //个人信息--输入密码
@@ -145,7 +151,7 @@ const createRouter = () => new Router({
             name : 'inputPass',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/input-pass.vue'),
             meta : {
-                title : '设置交易密码'
+                title : 'setTradePass'
             }
         },
         //会员二维码
@@ -154,7 +160,7 @@ const createRouter = () => new Router({
             name : 'memberCode',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/memberCode/index.vue'),
             meta : {
-                title : '支付二维码'
+                title : 'payQRcode'
             }
         },
         //会员权益
@@ -187,7 +193,7 @@ const createRouter = () => new Router({
             name : 'order',
             component : () => import(/* webpackChunkName: "order" */'../pages/order/index.vue'),
             meta : {
-                title : '我的订单'
+                title : 'myOrder'
             }
         },
         //订单详情
@@ -196,7 +202,7 @@ const createRouter = () => new Router({
             name : 'orderDetail',
             component : () => import(/* webpackChunkName: "order" */'../pages/order/child/orderDetail.vue'),
             meta : {
-                title : '订单详情'
+                title : 'orderDetail'
             }
         },
         //我的卡包

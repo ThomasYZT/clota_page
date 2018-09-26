@@ -82,13 +82,17 @@ export default new Vuex.Store({
         updateKeyBoardStatus (state,status ){
             state.showKeyBoard = status;
         },
-        //登陆设置用户信息
-        setUserInfo ( state, data ) {
-            state.userInfo = data;
-        },
-        //更新用户信息
-        updateUserinfo( state, data ) {
-            state.userInfo = Object.assign({}, state.userInfo, data)
+        /**
+         * 更新用户信息
+         */
+        updateUserInfo (state) {
+            //获取保存到本地的用户信息
+            let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
+            if(userInfo && Object.keys(userInfo).length > 0){
+                state.userInfo = userInfo;
+            }else{
+                state.userInfo = {};
+            }
         },
         //登陆设置用户会员卡信息
         setCardInfo ( state, data ) {
@@ -100,9 +104,5 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        setCardInfo: ({ commit }, data) => commit('setCardInfo', data),
-        updateCardInfo: ({ commit }, data) => commit('updateCardInfo', data),
-        setUserInfo: ({ commit }, data) => commit('setUserInfo', data),
-        updateUserinfo: ({ commit }, data) => commit('updateUserinfo', data),
     }
 });

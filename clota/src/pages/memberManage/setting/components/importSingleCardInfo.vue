@@ -82,11 +82,11 @@
                 ruleValidate : {
                     faceNum : [
                         {required : true,message : this.$t('inputField',{field : '卡面号'}),trigger : 'blur'},
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('卡面号'),maxLength : 30}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('卡面号'),maxLength : 60}
                     ],
                     physicalNum :[
                         {required : true,message : this.$t('inputField',{field : '物理卡号'}),trigger : 'blur'},
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('物理卡号'),maxLength : 30}
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('物理卡号'),maxLength : 60}
                     ]
                 },
                 //是否在保存中

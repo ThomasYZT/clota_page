@@ -107,14 +107,12 @@
                 protoDate: [],
                 // 新增or修改
                 type: 'add',
-                emptyPartner: '',
             }
         },
         computed: {},
         created() {
             this.getSaleGroup();
             this.getAllPartnerList();
-            this.emptyPartner = JSON.stringify(this.addPartner);
         },
         watch: {},
         methods: {
@@ -137,7 +135,7 @@
              */
             hide() {
                 this.visible = false;
-                this.addPartner = JSON.parse(this.emptyPartner);
+                this.$refs.formValidate.resetFields();
                 this.protoDate = [];
             },
             /**

@@ -3,53 +3,53 @@
 <template>
     <div class="order-detail">
         <div class="trade-info">
-            <div class="title">交易信息</div>
+            <div class="title">{{$t('tradeInfo')}}</div>
             <ul class="info-detail detail-padding">
                 <li class="field">
-                    <span class="key">订单号：</span>
+                    <span class="key">{{$t('orderId')}}：</span>
                     <span class="value">0187978739892</span>
                 </li>
                 <li class="field">
-                    <span class="key">交易日期：</span>
+                    <span class="key">{{$t('tradeDate')}}：</span>
                     <span class="value">2018-03-03 08:00:11</span>
                 </li>
             </ul>
         </div>
         <div class="product-info">
-            <div class="title">产品信息</div>
+            <div class="title">{{$t('productInfo')}}</div>
             <div class="detail">
                 <div class="product-name">北京欢乐谷七夕套餐，买一赠一</div>
                 <ul class="info-detail">
                     <li class="field">
-                        <span class="key">数量：</span>
+                        <span class="key">{{$t('num')}}：</span>
                         <span class="value">0187978739892</span>
                     </li>
                     <li class="field">
-                        <span class="key">单价：</span>
+                        <span class="key">{{$t('unitPrice')}}：</span>
                         <span class="value">¥293.33</span>
                     </li>
                     <li class="field">
-                        <span class="key">总价：</span>
+                        <span class="key">{{$t('totalPrice')}}：</span>
                         <span class="value">¥293.33</span>
                     </li>
                     <li class="field">
-                        <span class="key">实际付款：</span>
+                        <span class="key">{{$t('actualPay')}}：</span>
                         <span class="value">¥293.33</span>
                     </li>
                     <li class="field">
-                        <span class="key">有效期至：</span>
+                        <span class="key">{{$t('validateTime')}}：</span>
                         <span class="value">2018-03-03 08:00:11</span>
                     </li>
                     <li class="field">
-                        <span class="key">游客：</span>
+                        <span class="key">{{$t('tourist')}}：</span>
                         <span class="value">王嘉尔</span>
                     </li>
                     <li class="field">
-                        <span class="key">证件号：</span>
+                        <span class="key">{{$t('idCard')}}：</span>
                         <span class="value">430392029931930088</span>
                     </li>
                     <li class="field">
-                        <span class="key">电话：</span>
+                        <span class="key">{{$t('phone')}}：</span>
                         <span class="value">2018-03-03 08:00:11</span>
                     </li>
                 </ul>
@@ -58,35 +58,35 @@
                 <div class="product-name">北京欢乐谷七夕套餐，买一赠一</div>
                 <ul class="info-detail">
                     <li class="field">
-                        <span class="key">数量：</span>
+                        <span class="key">{{$t('num')}}：</span>
                         <span class="value">0187978739892</span>
                     </li>
                     <li class="field">
-                        <span class="key">单价：</span>
+                        <span class="key">{{$t('unitPrice')}}：</span>
                         <span class="value">¥293.33</span>
                     </li>
                     <li class="field">
-                        <span class="key">总价：</span>
+                        <span class="key">{{$t('totalPrice')}}：</span>
                         <span class="value">¥293.33</span>
                     </li>
                     <li class="field">
-                        <span class="key">实际付款：</span>
+                        <span class="key">{{$t('actualPay')}}：</span>
                         <span class="value">¥293.33</span>
                     </li>
                     <li class="field">
-                        <span class="key">有效期至：</span>
+                        <span class="key">{{$t('validateTime')}}：</span>
                         <span class="value">2018-03-03 08:00:11</span>
                     </li>
                     <li class="field">
-                        <span class="key">游客：</span>
+                        <span class="key">{{$t('tourist')}}：</span>
                         <span class="value">王嘉尔</span>
                     </li>
                     <li class="field">
-                        <span class="key">证件号：</span>
+                        <span class="key">{{$t('idCard')}}：</span>
                         <span class="value">430392029931930088</span>
                     </li>
                     <li class="field">
-                        <span class="key">电话：</span>
+                        <span class="key">{{$t('phone')}}：</span>
                         <span class="value">2018-03-03 08:00:11</span>
                     </li>
                 </ul>
