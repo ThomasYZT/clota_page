@@ -31,6 +31,7 @@
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
+            <span class="tips float-right">{{$t('defaultPolicyType')}}</span><!--业态目前为默认ticket-->
         </div>
 
         <!--暂时隐藏-->
@@ -293,9 +294,19 @@
 
             // 新建销售政策
             addPolicy () {
-                if(this.$refs.addSalePolicyModal){
+
+                //业态目前为默认ticket
+                /* if(this.$refs.addSalePolicyModal){
                     this.$refs.addSalePolicyModal.show();
-                }
+                }*/
+
+                this.$router.push({
+                    name: 'editSalePolicy',
+                    params: {
+                        type: 'add',
+                        productType: 'ticket',
+                    }
+                })
             },
 
             /**
@@ -442,6 +453,11 @@
 
             .float-right{
                 float: right;
+            }
+
+            .tips{
+                font-size: $font_size_12px;
+                color: $color_yellow;
             }
 
         }

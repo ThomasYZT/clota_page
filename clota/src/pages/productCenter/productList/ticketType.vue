@@ -28,14 +28,14 @@
             @sort-change="handleSortChanged"
             @query-data="queryList"
             @selection-change="changeSelection">
+                <!--:filters="filterList"-->
+                <!--:filter-method="filterHandler"-->
+                <!--filter-placement="bottom-end"-->
             <el-table-column
                 slot="column5"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
-                :filters="filterList"
-                :filter-method="filterHandler"
-                filter-placement="bottom-end"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <div>

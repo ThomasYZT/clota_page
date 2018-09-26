@@ -123,7 +123,7 @@
                             </i-col>
                         </i-row>
 
-                        <div><span class="red-span">{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
+                        <div><span class="red-span" v-if="showCountMoney > 0">{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
 
                     </template>
 
@@ -227,7 +227,7 @@
                 //类型 add/modify
                 type: 'add',
                 //标题信息
-                title : this.$t('add') + this.$t('product'),
+                title : this.$t('append') + this.$t('product'),
                 //是否显示模态框
                 visible : false,
                 //确认执行的回调函数
@@ -256,6 +256,7 @@
                         { validator: validateStockNum, trigger: 'blur' },
                     ],
                     settlePrice: [
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('settlePrice')}), trigger: 'change' },     // 不能为空
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('settlePrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' },
@@ -301,7 +302,6 @@
                 if(val){
                     this.productInfo = this.list.find( item => val === item.id );
                     if(this.productInfo && this.productInfo.id){
-//                        this.formData.productId = this.productInfo.productId;
                         this.formData.productName = this.productInfo.productName;
                         this.formData.standardPrice = this.productInfo.standardPrice;
                         this.findProductById(this.productInfo, bool);
@@ -348,11 +348,15 @@
             confirm() {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        this.loading = true;
-                        if(this.confirmCallback){
-                            let formData = defaultsDeep({},this.formData);
-                            this.confirmCallback( formData );
-                            this.cancel();
+                        if(this.showCountMoney == 0){
+                            this.loading = true;
+                            if(this.confirmCallback){
+                                let formData = defaultsDeep({},this.formData);
+                                this.confirmCallback( formData );
+                                this.cancel();
+                            }
+                        }else{
+                            this.$Message.error(this.$t('unShareMoney') + '：' + this.showCountMoney + this.$t('yuan'));
                         }
                     }
                 })

@@ -10,10 +10,13 @@
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="110">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('remark') + '：'" prop="remark"><!--备注-->
-                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: ''})"/>
+                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: $t('remark')})"/>
                     </Form-item>
                 </div>
             </Form>

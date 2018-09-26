@@ -138,7 +138,7 @@
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('limitById')+'：'"><!--身份证购票限制-->
+                            <Form-item :label="$t('limitByIdDay')+'：'"><!--身份证购票限制-->
                                 <div>
                                     <span class="label">{{detail.idLimit ? JSON.parse(detail.idLimit).day : '-'}}</span>
                                     <span class="label">{{$t('maxBuy')}}</span>
@@ -148,7 +148,7 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('limitByMobile')+'：'"><!--手机号购票限制-->
+                            <Form-item :label="$t('limitByMobileDay')+'：'"><!--手机号购票限制-->
                                 <div>
                                     <span class="label">{{detail.mobileLimit ? JSON.parse(detail.mobileLimit).day : '-'}}</span>
                                     <span class="label">{{$t('maxBuy')}}</span>
@@ -557,6 +557,7 @@
                     color: $color-666;
                     flex: 1;
                     display: inline-block;
+                    width: calc(100% - 220px);
                     >div{
                         vertical-align: middle;
                         @include overflow_tip();

@@ -393,12 +393,17 @@
                                         show-overflow-tooltip
                                         slot-scope="row">
                                         <template slot-scope="scope">
-                                            <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
-                                                         :min="0"
-                                                         v-model.trim="scope.row.sumTimes"
-                                                         :placeholder="$t('inputField', {field: ''})"
-                                                         @on-blur="checkTimes(scope.row.sumTimes)">
-                                            </InputNumber>
+                                            <template v-if="type === 'check'">
+                                                {{scope.row.sumTimes | contentFilter}}
+                                            </template>
+                                            <template v-else>
+                                                <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                             :min="0"
+                                                             v-model.trim="scope.row.sumTimes"
+                                                             :placeholder="$t('inputField', {field: ''})"
+                                                             @on-blur="checkTimes(scope.row.sumTimes)">
+                                                </InputNumber>
+                                            </template>
                                         </template>
                                     </el-table-column>
                                     <el-table-column
@@ -411,12 +416,17 @@
                                         show-overflow-tooltip
                                         slot-scope="row">
                                         <template slot-scope="scope">
-                                            <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
-                                                         :min="0"
-                                                         v-model.trim="scope.row.dayTimes"
-                                                         :placeholder="$t('inputField', {field: ''})"
-                                                         @on-blur="checkTimes(scope.row.dayTimes)">
-                                            </InputNumber>
+                                            <template v-if="type === 'check'">
+                                                {{scope.row.dayTimes | contentFilter}}
+                                            </template>
+                                            <template v-else>
+                                                <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                             :min="0"
+                                                             v-model.trim="scope.row.dayTimes"
+                                                             :placeholder="$t('inputField', {field: ''})"
+                                                             @on-blur="checkTimes(scope.row.dayTimes)">
+                                                </InputNumber>
+                                            </template>
                                         </template>
                                     </el-table-column>
                                     <el-table-column
@@ -666,13 +676,19 @@
 
             //设为可玩
             setAblePlay ( data, index ) {
+                let params = defaultsDeep({},this.playPoint[index]);
+                params.playType = 'optional';
+                this.playPoint.splice(index,1);
+                this.playPoint.push(params);
                 this.$Message.success(this.$t('setAblePlay')+this.$t('success'));
-                this.playPoint[index].playType = 'optional';
             },
             //设为必玩
             setMustPlay ( data, index ) {
+                let params = defaultsDeep({},this.playPoint[index]);
+                params.playType = 'required';
+                this.playPoint.splice(index,1);
+                this.playPoint.unshift(params);
                 this.$Message.success(this.$t('setMustPlay')+this.$t('success'));
-                this.playPoint[index].playType = 'required';
             },
 
             //校验表格填入次数与总数
@@ -705,7 +721,7 @@
                             }
                             //校验产品有效性设置与游玩规则数据
                             if(this.data.productEffSet === 'since_the_play' && (this.formData.effDay == '' || this.formData.effDay == 0)){
-                                this.$Message.warning(this.$t('请输入有效天数'));
+                                this.$Message.warning(this.$t('inputField', {field: this.$t('effectiveDays')}));
                                 return
                             }
                             //校验项目分组
@@ -772,11 +788,16 @@
                     this.formData.equipmentGroupIds = data.equipmentGroupIds.split(',');
                     //查看/详情后的修改
                     if(data.checkPoint && data.checkPoint.length > 0){
-                        this.checkPoint = defaultsDeep([], data.checkPoint);
-                        if( this.checkPoint.remove ){
-                            delete this.checkPoint.remove;
-                        }
+                        this.checkPoint = [];
+                        let checkPoint = defaultsDeep([], data.checkPoint);
                         delete this.formData.checkPoint;
+                        checkPoint.forEach( item =>{
+                            if(this.type === 'check' && item.status === 'valid'){
+                                this.checkPoint.push(item);
+                            }else{
+                                this.checkPoint.push(item);
+                            }
+                        } )
                     }
                     if(data.playPoint && data.playPoint.length > 0){
                         this.playPoint = defaultsDeep([], data.playPoint);
@@ -896,17 +917,19 @@
             resetFunc () {
                 this.formData = {
                     parkName: '',
-                    parkId: '',//选择园区
-                    saleType: 'one_ticket',//售票方式
+                    parkId: '',
+                    saleType: 'one_ticket',
                     //入园核销
                     effDay: '1',
                     effTimes: '1',
-                    gardenGroupId: '',//核销设备分组ID
-                    fingerCheck: true,//其他设置
+                    gardenGroupId: '',
+                    fingerCheck: true,
                     //游玩项目
-                    itemCheckTimes: 0,//项目游玩总次数itemCheckTimes
-                    equipmentGroupIds: [],//游玩项目分组ID-多个逗号分隔
+                    itemCheckTimes: 0,
+                    equipmentGroupIds: [],
                 };
+                this.playPoint = [];
+                this.checkPoint = [];
                 this.check = false;
             },
 
