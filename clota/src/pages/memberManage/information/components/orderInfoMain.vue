@@ -24,7 +24,7 @@
             <Col span="8">
             <ul>
                 <li>
-                    <span class="field-name">{{$t('订单状态')}}：</span>{{infoData.status | orderStatus}}
+                    <span class="field-name">{{$t('订单状态')}}：</span>{{ $t(orderStatus(infoData.status)) }}
                 </li>
                 <li>
                     <span class="field-name">{{$t('整单交易金额')}}：</span>{{infoData.amount}}
@@ -52,7 +52,7 @@
                     <span class="field-name">{{$t('款台')}}：</span>{{infoData.outCashName}}
                 </li>
                 <li>
-                    <span class="field-name">{{$t('交易时间')}}：</span>{{infoData.tradeTime}}
+                    <span class="field-name">{{$t('交易时间')}}：</span>{{infoData.tradeTime | contentFilter}}
                 </li>
             </ul>
             </Col>
@@ -73,11 +73,10 @@
         data() {
             return {}
         },
-        filters: {
+        methods: {
             // 订单状态显示
             orderStatus: orderStatus,
-        },
-        methods: {}
+        }
     }
 </script>
 

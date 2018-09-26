@@ -43,7 +43,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span :class="[{'org': scope.row.status=='refund'}]">{{scope.row.status | orderStatus}}</span>
+                        <span :class="[{'org': scope.row.status=='refund'}]">{{ $t(orderStatus(scope.row.status)) }}</span>
                     </template>
                 </el-table-column>
 
@@ -67,7 +67,7 @@
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import ajax from '@/api/index';
-    import {orderListHead} from '../infoListConfig';
+    import {orderListHead, orderStatus} from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {configVariable} from '@/assets/js/constVariable';
     import map from 'lodash/map';
@@ -108,26 +108,6 @@
                 totalCount: 0,
             }
         },
-        filters: {
-            orderStatus(status) {
-                let statusName = '-';
-                switch (status) {
-                    case 'pay' :
-                        statusName = '支付';
-                        break;
-                    case 'refund' :
-                        statusName = '退款';
-                        break;
-                    case 'cancel_pay' :
-                        statusName = '撤销支付';
-                        break;
-                    case 'cancel_refund' :
-                        statusName = '撤销退款';
-                        break;
-                }
-                return statusName;
-            },
-        },
         methods: {
             // 初始化加载获取员工列表数据
             queryList() {
@@ -165,6 +145,9 @@
                     query: {orderId: scopeRow.id}
                 });
             },
+
+            // 订单状态显示
+            orderStatus: orderStatus,
 
         },
         computed: {

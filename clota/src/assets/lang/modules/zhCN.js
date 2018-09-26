@@ -425,6 +425,7 @@ export default {
     'memberSerialNum': '成员序号',
     'identityNo': '身份证号',
     'rechargeSend': '储值{money}送{integral}',
+    'discount': '折',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

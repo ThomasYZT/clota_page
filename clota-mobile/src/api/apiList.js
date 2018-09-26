@@ -10,6 +10,8 @@ const apiList = {
     getCode: '/external/member/getPhoneVerificationCode',
     //会员登录
     login: '/external/member/login2',
+    //获取卡包信息
+    getCardPackage: '/external/member/getCardPackage'
 };
 
 export default apiList;

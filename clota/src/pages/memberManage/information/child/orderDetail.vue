@@ -8,7 +8,7 @@
     <div class="order-detail">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="$t('我的订单')">
+            :locale-router="$t('orderDetail')">
         </bread-crumb-head>
         <!--主表-->
         <order-info-main :info-data="order.memberOrderModel"></order-info-main>
@@ -17,7 +17,7 @@
         <!--支付方式子表-->
         <order-info-pay :info-data="order.payModels"></order-info-pay>
         <!--积分率信息-->
-        <order-info-integral :info-data="order.payModels"></order-info-integral>
+        <order-info-integral :info-data="order.memberOrderModel.scoreRule || {}"></order-info-integral>
 
     </div>
 </template>
@@ -54,10 +54,6 @@
                         name: 'myOrder',   // 我的订单
                         router: {name: 'myOrder'},
                     },
-                    {
-                        name: 'orderDetail',   // 订单详情
-                        router: {name: 'orderDetail'},
-                    },
                 ],
 
                 // 订单详情数据
@@ -66,20 +62,32 @@
                     memberOrderModel: {},
                     payModels: [],
                 },
+
+//                scoreRule: {}
             }
         },
-        computed: {},
+        computed: {
+        },
         created() {
             this.getOrderDetail();
+            /*setTimeout(() => {
+                 this.scoreRule = {
+                    "memberList": {discountRate:0.20,scoreRate:10.00},
+                    "typeList": {"冰雪世界":[{prodDiscountRate:0.80,prodScoreRate:5.00,typeName:'主食'}]},
+                    "storeList": [{deptDiscountRate:0.90,deptScoreRate:10.00,orgName:'冰雪世界'},{deptDiscountRate:0.90,deptScoreRate:10.00,orgName:'室内景区'}],
+                    "staffList": {discountRate:0.30,scoreRate:1.00}
+                }
+            }, 2000);*/
         },
         mounted() {
         },
         watch: {},
         methods: {
             getOrderDetail() {
-                if (this.$route.query.orderId) {
+                if (this.$route.query.orderId || this.$route.query.orderNo) {
                     ajax.post('queryOrderDetail', {
-                        orderId: this.$route.query.orderId
+                        orderId: this.$route.query.orderId,
+                        orderNo: this.$route.query.orderNo
                     }).then(res => {
                         if (res.success && res.data) {
                             this.order = res.data;

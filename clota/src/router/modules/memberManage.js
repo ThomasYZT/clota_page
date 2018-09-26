@@ -37,7 +37,7 @@ export default {
             newCard: {
                 //会员管理--新开卡
                 path: '/memberManage/newCard',
-                name: 'openNewCard',
+                name: 'newCard',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
                 meta: {
                     menuName: 'newCard', //lang.config.js 里面的语言键值
