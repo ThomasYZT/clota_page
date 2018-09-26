@@ -45,6 +45,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         data() {
             return {
@@ -92,8 +93,8 @@
              */
             listCardAccountInfo () {
                 ajax.post('listCardAccountInfo',{
-                    cardId : '1044778080524177408',
-                    memberId : '1044778079282663424',
+                    cardId : this.userInfo.cardInfo,
+                    memberId : this.userInfo.memberId
                 }).then(res => {
                     if(res.success){
                         this.accountList =  res.data ? res.data.map((item,index) => {
@@ -111,6 +112,11 @@
         },
         created () {
             this.listCardAccountInfo();
+        },
+        computed : {
+            ...mapGetters({
+                userInfo : 'userInfo'
+            })
         }
     }
 </script>

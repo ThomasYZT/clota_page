@@ -20,12 +20,13 @@
                 :show-dots="false"
                 @on-index-change="cardTypeChange">
             <swiper-item
+                v-if="tapInfo.includes('yearCard')"
                 class="swiper-demo-img">
                 <div class="year-card">
                     <div class="card-area">
                         <div class="card-inner">
                             <img class="head-img" src="../../assets/images/icon-ali-pay.svg" @click="previewImg" alt="">
-                            <span class="mem-name">刘木子</span>
+                            <span class="mem-name">{{yearyCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{yearyCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-alipay" @click="showCode"></span>
@@ -41,17 +42,18 @@
                     <use-area :avail-orgs="yearyCardInfo.availOrgs">
                     </use-area>
                     <!--使用说明-->
-                    <use-explain>
+                    <use-explain :explain="yearyCardInfo.instructions">
                     </use-explain>
                 </div>
             </swiper-item>
             <swiper-item
+                v-if="tapInfo.includes('timeCard')"
                 class="swiper-demo-img">
                 <div class="time-card">
                     <div class="card-area">
                         <div class="card-inner">
                             <img class="head-img" src="../../assets/images/icon-ali-pay.svg" alt="">
-                            <span class="mem-name">刘木子</span>
+                            <span class="mem-name">{{timeCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{timeCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-alipay"></span>
@@ -67,7 +69,7 @@
                     <use-area :avail-orgs="timeCardInfo.availOrgs">
                     </use-area>
                     <!--使用说明-->
-                    <use-explain>
+                    <use-explain :explain="timeCardInfo.instructions">
                     </use-explain>
                 </div>
             </swiper-item>

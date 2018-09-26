@@ -7,100 +7,105 @@
             <ul class="info-detail detail-padding">
                 <li class="field">
                     <span class="key">{{$t('orderId')}}：</span>
-                    <span class="value">0187978739892</span>
+                    <span class="value">{{orderDetail.orderNo | contentFilter}}</span>
                 </li>
                 <li class="field">
                     <span class="key">{{$t('tradeDate')}}：</span>
-                    <span class="value">2018-03-03 08:00:11</span>
+                    <span class="value">{{orderDetail.createdTime | contentFilter}}</span>
                 </li>
             </ul>
         </div>
-        <div class="product-info">
+        <div class="product-info" v-if="productInfo.length > 0">
             <div class="title">{{$t('productInfo')}}</div>
-            <div class="detail">
-                <div class="product-name">北京欢乐谷七夕套餐，买一赠一</div>
+            <div class="detail"
+                 v-for="item in productInfo"
+                 :key="item.id">
+                <div class="product-name">{{item.itemName | contentFilter}}</div>
                 <ul class="info-detail">
                     <li class="field">
                         <span class="key">{{$t('num')}}：</span>
-                        <span class="value">0187978739892</span>
+                        <span class="value">{{item.amount | contentFilter}}{{item.unit}}</span>
                     </li>
                     <li class="field">
                         <span class="key">{{$t('unitPrice')}}：</span>
-                        <span class="value">¥293.33</span>
+                        <span class="value">{{item.price | moneyFilter(2,'￥') | contentFilter}}</span>
                     </li>
                     <li class="field">
                         <span class="key">{{$t('totalPrice')}}：</span>
-                        <span class="value">¥293.33</span>
+                        <span class="value">{{item.price * item.amount | moneyFilter(2,'￥') | contentFilter }}</span>
                     </li>
                     <li class="field">
                         <span class="key">{{$t('actualPay')}}：</span>
-                        <span class="value">¥293.33</span>
+                        <span class="value">{{item.discountPrice | moneyFilter(2,'￥') | contentFilter}}</span>
                     </li>
                     <li class="field">
                         <span class="key">{{$t('validateTime')}}：</span>
-                        <span class="value">2018-03-03 08:00:11</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('tourist')}}：</span>
-                        <span class="value">王嘉尔</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('idCard')}}：</span>
-                        <span class="value">430392029931930088</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('phone')}}：</span>
-                        <span class="value">2018-03-03 08:00:11</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="detail">
-                <div class="product-name">北京欢乐谷七夕套餐，买一赠一</div>
-                <ul class="info-detail">
-                    <li class="field">
-                        <span class="key">{{$t('num')}}：</span>
-                        <span class="value">0187978739892</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('unitPrice')}}：</span>
-                        <span class="value">¥293.33</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('totalPrice')}}：</span>
-                        <span class="value">¥293.33</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('actualPay')}}：</span>
-                        <span class="value">¥293.33</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('validateTime')}}：</span>
-                        <span class="value">2018-03-03 08:00:11</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('tourist')}}：</span>
-                        <span class="value">王嘉尔</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('idCard')}}：</span>
-                        <span class="value">430392029931930088</span>
-                    </li>
-                    <li class="field">
-                        <span class="key">{{$t('phone')}}：</span>
-                        <span class="value">2018-03-03 08:00:11</span>
+                        <span class="value">{{item.itemValidTo | contentFilter }}</span>
                     </li>
                 </ul>
             </div>
         </div>
+        <!--无数据显示-->
+        <no-data class="page-no-data" v-else>
+        </no-data>
     </div>
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import noData from '@/components/noData/index.vue';
     export default {
-        data() {
-            return {}
+        components : {
+            noData
         },
-        methods: {}
+        mixins : [lifeCycleMixins],
+        data() {
+            return {
+                //订单id
+                orderId : '',
+                //订单编号
+                orderNo : '',
+                //订单详情
+                orderDetail : {},
+                //购买产品信息
+                productInfo : []
+            }
+        },
+        methods: {
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && 'orderId' in  params && 'orderNo' in  params){
+                    this.orderId = params.orderId;
+                    this.orderNo = params.orderNo;
+                    this.queryOrderDetail();
+                }else{
+                    this.$router.push({
+                        name: 'order'
+                    });
+                }
+            },
+            /**
+             * 查询订单详情
+             */
+            queryOrderDetail () {
+                ajax.post('queryOrderDetail',{
+                    orderId : this.orderId,
+                    orderNo : this.orderNo,
+                }).then(res => {
+                    if(res.success){
+                        this.orderDetail =  res.data ? res.data.memberOrderModel : {};
+                        this.productInfo = res.data ? res.data.itemModels : [];
+                    }else{
+                        this.orderDetail = {};
+                        this.productInfo = [];
+                    }
+                });
+            }
+        },
     }
 </script>
 
@@ -109,6 +114,7 @@
     .order-detail{
         @include block_outline();
         background: rgba(242,243,244,1);
+        overflow: auto;
 
         .trade-info{
             @include block_outline($height : 122px);
@@ -152,6 +158,11 @@
                 background: #0073EB;
                 @include absolute_pos(absolute,$left : 20px,$top : 12px);
             }
+        }
+
+        .page-no-data{
+            @include block_outline($height : unquote('calc(100% - 122px)'));
+            background: $color_fff;
         }
 
         .product-info{

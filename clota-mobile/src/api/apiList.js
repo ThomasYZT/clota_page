@@ -19,7 +19,11 @@ const apiList = {
     //获取储值账户类型
     queryMemberAccountDefine: '/external/memberAccount/queryMemberAccountDefine',
     //获取账户信息
-    listCardAccountInfo: '/external/memberAccount/listCardAccountInfo'
+    listCardAccountInfo: '/external/memberAccount/listCardAccountInfo',
+    //查看订单信息
+    queryMemberOrder: '/external/order/queryMemberOrder',
+    //查看订单信息详情
+    queryOrderDetail: '/external/order/queryOrderDetail'
 };
 
 export default apiList;
