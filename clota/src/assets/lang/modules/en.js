@@ -776,4 +776,5 @@ export default {
     'proTypeCode': '产品类别编码',
     'productType': '产品类别',
     'haveOpenedServices': '已开通服务',
+    'accountInvalid': '当前机构或上级机构未启用',
 }
