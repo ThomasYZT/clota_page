@@ -31,6 +31,8 @@
             <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
         </div>
         <popup-picker
+            :cancel-text="$t('cancel')"
+            :confirm-text="$t('complete')"
             :show.sync="visible"
             :show-cell="false"
             :show-name="true"
@@ -94,11 +96,11 @@
                     memberId : '1044778079282663424',
                 }).then(res => {
                     if(res.success){
-                        this.accountList =  res.data ? res.data.map(item => {
+                        this.accountList =  res.data ? res.data.map((item,index) => {
                             return {
                                 ...item,
-                                value : item.accountDefineId,
-                                name : item.accountName
+                                name : item.accountName,
+                                value : index
                             }
                         }) : [];
                     }else{
@@ -137,7 +139,7 @@
                 color: $color_fff;
                 font-size: $font_size_18px;
                 padding-top: 20px;
-                margin: 0 auto 30px auto;
+                margin: 0 auto 25px auto;
             }
 
             .asset-info{
@@ -216,7 +218,6 @@
                 font-size: 17px;
                 color: $color_fff;
                 border-radius: 100px;
-                letter-spacing: 5px;
             }
         }
 

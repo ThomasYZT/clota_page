@@ -27,6 +27,7 @@ import {
     CellBox,
     Confirm ,
     CheckIcon ,
+    Loading  ,
 } from 'vux';
 
 
@@ -68,6 +69,7 @@ plugin.install = function (Vue, options) {
     Vue.component('cell-box', CellBox);
     Vue.component('confirm', Confirm);
     Vue.component('check-icon', CheckIcon);
+    Vue.component('loading', Loading);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

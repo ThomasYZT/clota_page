@@ -25,8 +25,22 @@ Vue.use(plugin);
 Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
-    //todo
-    next()
+    //判断是否保存了用户信息和token，如果没有保存需要重新登录
+    if(to.name === 'mobileLogin'){
+        next();
+    }else{
+        //获取保存到本地的用户信息
+        let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
+        let token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : '';
+        if(token && userInfo && Object.keys(userInfo).length > 0){
+            store.commit('updateUserInfo');
+            next();
+        }else{
+            next({
+                name : 'mobileLogin'
+            });
+        }
+    }
 });
 
 

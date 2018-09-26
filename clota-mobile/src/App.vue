@@ -49,6 +49,9 @@
                 </div>
             </confirm>
         </div>
+        <div v-transfer-dom>
+            <loading :show="isLoading" text="加载中"></loading>
+        </div>
     </div>
 </template>
 
@@ -110,6 +113,7 @@
             ...mapGetters({
                 hashKey : 'hashKey',
                 lang : 'lang',
+                isLoading : 'isLoading',
             }),
             viewTransition () {
                 return 'vux-pop-in'

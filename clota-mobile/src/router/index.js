@@ -24,6 +24,9 @@ const createRouter = () => new Router({
     routes: [
         {
             path: '',
+            redirect : {
+                name : 'mobileLogin'
+            }
             //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
             //如果是没有获取到用户信息，那么就直接跳转到登录页面
             // redirect: to => {
@@ -42,6 +45,9 @@ const createRouter = () => new Router({
         },
         {
             path: '/',
+            redirect : {
+                name : 'mobileLogin'
+            }
             //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
             //如果是没有获取到用户信息，那么就直接跳转到登录页面
             // redirect: to => {

@@ -75,6 +75,18 @@ export default new Vuex.Store({
         //更改键盘状态
         updateKeyBoardStatus (state,status ){
             state.showKeyBoard = status;
+        },
+        /**
+         * 更新用户信息
+         */
+        updateUserInfo (state) {
+            //获取保存到本地的用户信息
+            let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
+            if(userInfo && Object.keys(userInfo).length > 0){
+                state.userInfo = userInfo;
+            }else{
+                state.userInfo = {};
+            }
         }
     },
     actions: {

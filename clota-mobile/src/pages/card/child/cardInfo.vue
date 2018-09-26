@@ -10,15 +10,15 @@
             <ul class="info-detail">
                 <li class="field">
                     <span class="key">{{$t('yearCardCode')}}：</span>
-                    <span class="value">0187978739892</span>
+                    <span class="value">{{cardInfo.vipCardNo | contentFilter}}</span>
                 </li>
                 <li class="field">
                     <span class="key">{{$t('startTime')}}：</span>
-                    <span class="value">2018-08-01 08:00:00</span>
+                    <span class="value">{{cardInfo.validFrom | timeFormat('yyyy-MM-dd HH:mm:ss') | contentFilter}}</span>
                 </li>
                 <li class="field">
                     <span class="key">{{$t('endTime')}}：</span>
-                    <span class="value">2018-08-01 08:00:00</span>
+                    <span class="value">{{cardInfo.validTo | timeFormat('yyyy-MM-dd HH:mm:ss') | contentFilter}}</span>
                 </li>
             </ul>
         </div>
@@ -31,6 +31,11 @@
             //卡标题信息
             'title' : {
                 type : String,
+                default : ''
+            },
+            //卡信息
+            'card-info' : {
+                type : Object,
                 default : ''
             }
         },

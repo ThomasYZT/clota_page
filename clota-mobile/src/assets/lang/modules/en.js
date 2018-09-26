@@ -20,7 +20,7 @@ export default {
     rechargeMoney : 'Recharge amount (RMB)',
     donateMoney : 'Gift amount (RMB)',
     recharge : 'Recharge',
-    cancle : 'cancle',
+    cancel : 'cancle',
     complete : 'done',
     actualToAccount : 'Actual arrival amount ',
     chosePayType : '选择支付方式',
@@ -76,5 +76,8 @@ export default {
     tourist : 'Tourist',
     includeDonate : '（包含赠送金额¥{num}）',
     edit : 'edit',
-    pleaseInputIdNum : '请输入证件号码'
+    pleaseInputIdNum : '请输入证件号码',
+    memberInex : '成员{index}',
+    male : '男',
+    female : '女'
 }

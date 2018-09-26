@@ -3,9 +3,14 @@
 <template>
     <div class="card">
         <div class="tab-wrap">
+            <!--卡包tap列表-->
             <tab v-model="tabSelected">
-                <tab-item @on-item-click="selectCard('year')">年卡</tab-item>
-                <tab-item @on-item-click="selectCard('pop')">次卡</tab-item>
+                <tab-item
+                    v-for="(item,i) in tapInfo"
+                    :key="i"
+                    @on-item-click="selectCard(item)">
+                    {{$t(item)}}
+                </tab-item>
             </tab>
         </div>
         <swiper dots-position="center"
@@ -21,19 +26,19 @@
                         <div class="card-inner">
                             <img class="head-img" src="../../assets/images/icon-ali-pay.svg" @click="previewImg" alt="">
                             <span class="mem-name">刘木子</span>
-                            <div class="scene-area">北京欢乐谷景区年卡</div>
-                            <div class="card-id">8799  7493  6102</div>
+                            <div class="scene-area">{{yearyCardInfo.vipCardName | contentFilter}}</div>
+                            <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-alipay" @click="showCode"></span>
                         </div>
                     </div>
                     <!--年卡信息-->
-                    <card-info title="年卡信息">
+                    <card-info title="年卡信息" :card-info="yearyCardInfo">
                     </card-info>
                     <!--成员信息-->
-                    <member-info>
+                    <member-info :avail-persons="yearyCardInfo.availPersons">
                     </member-info>
                     <!--可用范围-->
-                    <use-area>
+                    <use-area :avail-orgs="yearyCardInfo.availOrgs">
                     </use-area>
                     <!--使用说明-->
                     <use-explain>
@@ -47,19 +52,19 @@
                         <div class="card-inner">
                             <img class="head-img" src="../../assets/images/icon-ali-pay.svg" alt="">
                             <span class="mem-name">刘木子</span>
-                            <div class="scene-area">北京欢乐谷景区年卡</div>
-                            <div class="card-id">8799  7493  6102</div>
+                            <div class="scene-area">{{timeCardInfo.vipCardName | contentFilter}}</div>
+                            <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-alipay"></span>
                         </div>
                     </div>
                     <!--次卡信息-->
-                    <card-info title="次卡信息">
+                    <card-info title="次卡信息" :card-info="timeCardInfo">
                     </card-info>
                     <!--成员信息-->
-                    <member-info>
+                    <member-info :avail-persons="timeCardInfo.availPersons">
                     </member-info>
                     <!--可用范围-->
-                    <use-area>
+                    <use-area :avail-orgs="timeCardInfo.availOrgs">
                     </use-area>
                     <!--使用说明-->
                     <use-explain>
@@ -88,6 +93,12 @@
                 //选中的tap列
                 tabSelected : 0,
                 prevList : [],
+                //tap信息
+                tapInfo : [],
+                //年卡信息
+                yearyCardInfo : {},
+                //次卡信息
+                timeCardInfo : {}
             }
         },
         components : {
@@ -109,9 +120,9 @@
              * @param type
              */
             selectCard (type) {
-                if(type === 'year'){
+                if(type === 'yearCard'){
                     this.cardType = 0;
-                }else if(type === 'pop'){
+                }else if(type === 'timeCard'){
                     this.cardType = 1;
                 }
             },
@@ -152,8 +163,31 @@
              */
             getCard () {
                 ajax.post('getCardPackage').then(res => {
-                    console.log(res);
+                    if(res.success){
+                        this.setCardInfo(res.data ? res.data : []);
+                    }else{
+                        this.tapInfo = [];
+                    }
                 })
+            },
+            /**
+             * 获取卡包信息
+             * @param cardData 卡包信息
+             */
+            setCardInfo (cardData) {
+                this.tapInfo = [];
+                if(cardData.length > 0){
+                    for(let i  =0,j = cardData.length;i < j;i++){
+                        //获取卡包tap栏列表
+                        if(cardData[i].vipType === 'annual'){
+                            this.tapInfo.push('yearCard');
+                            this.yearyCardInfo = cardData[i];
+                        }else if(cardData[i].vipType === 'times'){
+                            this.tapInfo.push('timeCard');
+                            this.timeCardInfo = cardData[i];
+                        }
+                    }
+                }
             }
         },
         created () {

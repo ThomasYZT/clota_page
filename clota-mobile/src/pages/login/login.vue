@@ -94,6 +94,8 @@
                             sessionStorage.setItem('token', res.data.token);
                             //存储用户信息
                             sessionStorage.setItem('userInfo', JSON.stringify(res.data));
+                            //更新用户信息
+                            this.$store.commit('updateUserInfo');
                             //登陆跳转到主页
                             this.$router.push({ name: 'home'});
                         } else if(res.toString() === 'Error: Network Error'){

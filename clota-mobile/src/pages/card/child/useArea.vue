@@ -8,22 +8,38 @@
             <span class="font-label">{{$t('scopeArea')}}</span>
         </div>
         <div class="scene-list">
-            <span class="scene">北京欢乐谷景区</span>
-            <span class="scene">北京欢乐谷景区</span>
-            <span class="scene">北京景区</span>
-            <span class="scene">北京欢乐谷景区北京欢乐谷景区</span>
-            <span class="scene">北京欢乐谷景区</span>
-            <span class="scene">北京欢乐谷景区</span>
+            <span class="scene"
+                  v-for="(item,i) in availOrgsObj"
+                  :key="i">
+                {{item.orgName}}
+            </span>
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        props : {
+            //可用机构
+            'avail-orgs' : {
+                type : String,
+                default : ''
+            }
+        },
         data() {
             return {}
         },
-        methods: {}
+        methods: {},
+        computed : {
+            //可用机构
+            availOrgsObj () {
+                if(this.availOrgs){
+                    return JSON.parse(this.availOrgs);
+                }else{
+                    return [];
+                }
+            }
+        }
     }
 </script>
 
