@@ -13,6 +13,7 @@
                 :ofsetHeight="170"
                 :column-data="byLevelHead"
                 :table-data="infoData.memberList ? [infoData.memberList] : []"
+                :table-com-min-height="300"
                 :border="true">
                 <el-table-column
                     slot="column0"
@@ -44,6 +45,7 @@
                 :ofsetHeight="170"
                 :column-data="byShopHead"
                 :table-data="infoData.storeList"
+                :table-com-min-height="300"
                 :border="true">
                 <el-table-column
                     slot="column1"
@@ -74,6 +76,7 @@
             :ofsetHeight="170"
             :column-data="byProductHead"
             :table-data="typeList"
+            :table-com-min-height="300"
             :border="true">
             <el-table-column
                 slot="column2"

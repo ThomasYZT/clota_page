@@ -47,7 +47,7 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click="showAddMemberModal($event,scoped.row)">{{$t('modify')}}</li>
-                                <li class="red-label" @click="deleteLevelInfo($event,scoped.row)">{{$t('del')}}</li>
+                                <li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -62,6 +62,14 @@
         <!--会员等级晋升规则设置modal-->
         <member-rule-modal ref="memberRule" @modify-success="queryList"></member-rule-modal>
 
+        <!--删除级别模态框-->
+        <del-modal ref="delModal">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
+                <span class="yellow-label">{{currentData ? currentData.levelDesc : ''}}</span></span>
+            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
+        </del-modal>
+
     </div>
 </template>
 
@@ -73,6 +81,7 @@
     import headerTabs from './components/headerTabs.vue';
     import addMemberModal  from '../components/addMemberModal.vue';
     import memberRuleModal  from '../components/memberRuleModal.vue';
+    import delModal from '@/components/delModal/index.vue';
 
     export default {
         components: {
@@ -80,6 +89,7 @@
             addMemberModal,
             memberRuleModal,
             tableCom,
+            delModal,
         },
         data () {
             return {
@@ -89,6 +99,10 @@
                 levelListHead : levelListHead,
                 // 表格数据
                 tableData: [],
+                // 已被创建的会员级别
+                usedLevels: [],
+                //当前操作的数据
+                currentData : {}
             }
         },
         created(){
@@ -98,7 +112,7 @@
         methods: {
 
             showAddMemberModal ( event, data ) {
-                this.$refs.addMember.show( data || null );
+                this.$refs.addMember.show( data || null, this.usedLevels );
             },
 
             showRuleModal () {
@@ -114,6 +128,9 @@
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data.data || [];
+                        this.usedLevels = this.tableData.map(item => {
+                            return item.levelNum;
+                        });
                     } else {
                         console.log(res);
                         this.$Message.warning(res.message || 'queryMemberLevels '+ $t('queryFailure') +'！');
@@ -126,8 +143,23 @@
                 this.$refs.addChannel.show(data);
             },
 
+            /**
+             * 删除会员级别
+             * @param event
+             * @param rowData
+             */
+            delMemberLevel (event, rowData) {
+                this.currentData = rowData;
+                this.$refs.delModal.show({
+                    title : this.$t('删除会员级别'),
+                    confirmCallback : () => {
+                        this.deleteLevelInfo(rowData);
+                    }
+                })
+            },
+
             //删除数据
-            deleteLevelInfo ( event, data ) {
+            deleteLevelInfo ( data ) {
                 ajax.post('deleteMemberLevel', {
                     id: data.id,
                     lowerGrowthValue: data.lowerGrowthValue,
@@ -193,6 +225,26 @@
 
         }
 
+    }
+
+    .content-text {
+        width: 210px;
+        position: relative;
+
+        .delete-icon {
+            position: absolute;
+            left: -27px;
+            margin-right: 12px;
+            color: $color_red;
+        }
+
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
     }
 </style>
 
