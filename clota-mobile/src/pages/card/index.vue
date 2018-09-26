@@ -2,7 +2,7 @@
 
 <template>
     <div class="card">
-        <div class="tab-wrap">
+        <div class="tab-wrap" v-if="tapInfo.length > 0">
             <!--卡包tap列表-->
             <tab v-model="tabSelected">
                 <tab-item
@@ -15,6 +15,7 @@
         </div>
         <swiper dots-position="center"
                 v-model="cardType"
+                v-if="tapInfo.length > 0"
                 :threshold="100"
                 :aspect-ratio="10"
                 :show-dots="false"
@@ -74,6 +75,9 @@
                 </div>
             </swiper-item>
         </swiper>
+        <!--无数据显示-->
+        <no-data class="page-no-data" v-else>
+        </no-data>
         <!--预览图片-->
         <div v-transfer-dom class="img-preview">
             <previewer :list="prevList" ref="previewer"></previewer>
@@ -87,6 +91,7 @@
     import useArea from './child/useArea';
     import useExplain from './child/use-explain';
     import ajax from '@/api/index.js';
+    import noData from '@/components/noData/index.vue';
     export default {
         data() {
             return {
@@ -107,7 +112,8 @@
             cardInfo,
             memberInfo,
             useArea,
-            useExplain
+            useExplain,
+            noData
         },
         methods: {
             /**
@@ -205,6 +211,10 @@
         @include block_outline();
         overflow: hidden;
         background: rgba(242,243,244,1);
+
+        .page-no-data{
+            @include block_outline();
+        }
 
         .tab-wrap{
             position: fixed;

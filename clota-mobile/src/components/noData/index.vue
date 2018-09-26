@@ -22,5 +22,10 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        background: $color_fff;
+
+        img{
+            @include block_outline(120px,120px,false);
+        }
     }
 </style>

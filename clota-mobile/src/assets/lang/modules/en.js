@@ -79,5 +79,6 @@ export default {
     pleaseInputIdNum : '请输入证件号码',
     memberInex : '成员{index}',
     male : '男',
-    female : '女'
+    female : '女',
+    identifyCard : '身份证'
 }
