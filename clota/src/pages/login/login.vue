@@ -117,23 +117,28 @@
                                         },500);
                                     });
                                 });
-                            }else if(res.toString() === 'Error: Network Error'){
+                            }else if(res.toString() === 'Error: Network Error'){//网络错误
                                 this.errMsg = this.$t('serverFail');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'A001'){
+                            }else if(res.code === 'A001'){//账号或密码错误
                                 this.errMsg = this.$t('accoutOrPassErr');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'A002'){
+                            }else if(res.code === 'A002'){//账户未启用，或已关闭
                                 this.errMsg = this.$t('accountFundError');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'A009'){
+                            }else if(res.code === 'A009'){//账户没有菜单权限，请联系管理员开通权限
                                 this.errMsg = this.$t('accountPrivaligeError');
+                                setTimeout(() => {
+                                    this.isLoging = false;
+                                },500);
+                            }else if(res.code === 'O005'){//该机构或上级机构未启用
+                                this.errMsg = this.$t('accountInvalid');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
