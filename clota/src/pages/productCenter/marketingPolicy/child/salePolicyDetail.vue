@@ -67,6 +67,16 @@
                             </Form-item>
                         </i-col>
                     </i-row>
+                    <!--政策可售期 = 指定日期可售-->
+                    <i-row v-if="detail.productPolicy.saleRuleModel.type === 'specifiedDateSold'">
+                        <i-col span="24">
+                            <Form-item :label="$t('specifiedDateSold')+'：'"><!--指定日期-->
+                                <div>
+                                    {{(detail.productPolicy.saleRuleModel.specifiedTime.split(',')).join('、') | contentFilter}}
+                                </div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('saleDayTime')+'：'"><!--每日可售时间-->
@@ -75,7 +85,7 @@
                                 </div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12">
+                        <i-col span="12" v-if="detail.productPolicy.saleRuleModel.beforeDay == 0 || detail.productPolicy.saleRuleModel.afterDay == 0">
                             <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
                                 <div>
                                     {{detail.productPolicy.todaySaleStartTime | contentFilter}}~{{detail.productPolicy.todaySaleEndTime | contentFilter}}
@@ -110,6 +120,16 @@
                             </Form-item>
                         </i-col>
                     </i-row>
+                    <!--游玩期限 = 指定日期可售-->
+                    <i-row v-if="detail.productPolicy.playRuleModel.type === 'specifiedDateSold'">
+                        <i-col span="24">
+                            <Form-item :label="$t('specifiedDateSold')+'：'"><!--指定日期-->
+                                <div>
+                                    {{(detail.productPolicy.playRuleModel.specifiedTime.split(',')).join('、') | contentFilter}}
+                                </div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('checkinTime')+'：'"><!--入园时间控制-->
@@ -120,7 +140,7 @@
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('delayValidTime')+'：'"><!--下单后延迟生效-->
-                                <div>{{detail.productPolicy.delayValidTime | contentFilter}}</div>
+                                <div>{{detail.productPolicy.delayValidTime | contentFilter}} <span class="split">{{$t('minute')}}</span></div>
                             </Form-item>
                         </i-col>
                         <i-col span="12">
@@ -492,6 +512,7 @@
                     color: $color-666;
                     flex: 1;
                     display: inline-block;
+                    width: calc(100% - 220px);
                     >div{
                         vertical-align: middle;
                         @include overflow_tip();

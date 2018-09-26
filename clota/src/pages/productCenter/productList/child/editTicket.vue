@@ -144,8 +144,8 @@
                             </CheckboxGroup>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitById')" prop="limitByIdDay"><!--身份证购票限制-->
+                    <div class="ivu-form-item-wrap" v-if="formData.needId === 'more'">
+                        <Form-item :label="$t('limitByIdDay')" prop="limitByIdDay"><!--身份证购票限制-->
                             <Input v-model.trim="formData.limitByIdDay"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
@@ -156,8 +156,8 @@
                             <span>{{$t('paper')}}</span>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('limitByMobile')" prop="limitByMobileDay"><!--手机号购票限制-->
+                    <div class="ivu-form-item-wrap" v-if="formData.needId === 'more'">
+                        <Form-item :label="$t('limitByMobileDay')" prop="limitByMobileDay"><!--手机号购票限制-->
                             <Input v-model.trim="formData.limitByMobileDay"
                                    class="short-input"
                                    :placeholder="$t('inputField', {field: ''})"/>
@@ -353,7 +353,7 @@
             //校验正整数
             const validateNumber = (rule,value,callback) => {
                 if(value){
-                    common.validateInteger(value).then(() => {
+                    common.validateInteger(value, null, 0, 50).then(() => {
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
@@ -419,7 +419,7 @@
                     ticketRemark: '',//票面说明
                     printRemark: '',//打印说明
                     //购买限制
-                    isGroup : '',//是否团队产品
+                    isGroup : 'true',//是否团队产品
                     inNum : '',//可入园人数
                     minNum : '',//每订单最小起订数
                     maxNum : '',//每订单最大限订数
@@ -501,13 +501,13 @@
                         { validator: validateNumber, trigger: 'blur' }
                     ],
                     limitByIdDay: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitById'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitByIdDay'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateIdBuyTicket, trigger: 'blur' }
                     ],
                     limitByMobileDay: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitByMobile'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitByMobileDay'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMobileBuyTicket, trigger: 'blur' }
