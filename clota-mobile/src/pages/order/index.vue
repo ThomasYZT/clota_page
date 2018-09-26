@@ -12,22 +12,35 @@
            </li>
         </ul>
         <!--订单列表-->
-        <div class="order-info" v-for="item in orderList" :key="item.id">
-            <div class="order-title">暂时没有订单名字</div>
-            <div class="num">{{$t('num')}}：{{item.amount}}</div>
-            <div class="price">{{$t('totalPrice')}}：{{item.amount | moneyFilter(2,'￥') | contentFilter}}</div>
-            <div class="hr"></div>
-            <div class="to-detail">
-                <span class="for-detail" @click="toOrderDetail(item)">{{$t('toDetail')}}</span>
+        <div
+            class="order-list-info"
+            v-if="orderList.length > 0">
+            <div class="order-info"
+                 v-for="item in orderList"
+                 :key="item.id">
+                <div class="order-title">暂时没有订单名字</div>
+                <div class="num">{{$t('num')}}：{{item.amount}}</div>
+                <div class="price">{{$t('totalPrice')}}：{{item.amount | moneyFilter(2,'￥') | contentFilter}}</div>
+                <div class="hr"></div>
+                <div class="to-detail">
+                    <span class="for-detail" @click="toOrderDetail(item)">{{$t('toDetail')}}</span>
+                </div>
             </div>
         </div>
+        <!--无数据显示-->
+        <no-data class="page-no-data" >
+        </no-data>
     </div>
 </template>
 
 <script>
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
+    import noData from '@/components/noData/index.vue';
     export default {
+        components : {
+            noData
+        },
         data() {
             return {
                 pageNo : 1,
@@ -132,6 +145,15 @@
                     margin-top: 10px;
                 }
             }
+        }
+
+        .page-no-data,
+        .order-list-info{
+            @include block_outline($height : unquote('calc(100% - 85px)'));
+        }
+
+        .order-list-info{
+            overflow: auto;
         }
 
         .order-info{

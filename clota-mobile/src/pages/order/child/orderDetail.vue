@@ -162,7 +162,6 @@
 
         .page-no-data{
             @include block_outline($height : unquote('calc(100% - 122px)'));
-            background: $color_fff;
         }
 
         .product-info{
