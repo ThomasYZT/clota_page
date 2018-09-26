@@ -99,6 +99,11 @@
              */
             onConfirm () {
                 this.$store.commit('setLang',this.langType);
+                if(this.$route && this.$route.meta && this.$route.meta.title){
+                    document.title = this.$t(this.$route.meta.title);
+                }else{
+                    document.title = '';
+                }
             }
         },
         computed: {
@@ -117,9 +122,9 @@
             '$route': {
                 handler (newVal,oldVal) {
                     if(newVal && newVal.meta && newVal.meta.title){
-                        document.title = newVal.meta.title;
+                        document.title = this.$t(newVal.meta.title);
                     }else{
-                        document.title = 'clota';
+                        document.title = '';
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
                 },

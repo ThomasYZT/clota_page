@@ -9,13 +9,13 @@
                      keyboard="number">
             </x-input>
             <div class="actual-money">
-                <span class="label">实际到账：</span>
+                <span class="label">{{$t('actualToAccount')}}</span>
                 <span class="account">5,600</span>
-                <span class="other-data">（包含赠送金额¥100）</span>
+                <span class="other-data">{{$t('includeDonate',{num : 888})}}</span>
             </div>
         </div>
         <div class="pay-type-chose">
-            <div class="type-title">选择支付方式</div>
+            <div class="type-title">{{$t('chosePayType')}}</div>
             <div class="type-list">
                 <group title="default">
                     <radio
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="btn-area">
-            <x-button>充值</x-button>
+            <x-button>{{$t('recharge')}}</x-button>
         </div>
     </div>
 </template>
@@ -42,12 +42,12 @@
                     {
                         icon : require('../../../assets/images/icon-wx-pay.svg'),
                         key : 'wx',
-                        value : '微信支付'
+                        value : this.$t('wxPay')
                     },
                     {
                         icon : require('../../../assets/images/icon-ali-pay.svg'),
                         key : 'ali',
-                        value : '支付宝支付'
+                        value : this.$t('aliPay')
                     },
                 ],
                 //支付方式

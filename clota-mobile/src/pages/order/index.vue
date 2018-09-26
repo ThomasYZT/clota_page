@@ -5,38 +5,38 @@
         <ul class="head">
            <li class="order-type">
                <span class="iconfont icon-alipay"></span>
-               <span class="label">票</span>
+               <span class="label">{{$t('ticket')}}</span>
            </li>
             <li class="order-type">
                 <span class="iconfont icon-alipay"></span>
-                <span class="label">票</span>
+                <span class="label">{{$t('repase')}}</span>
             </li>
             <li class="order-type">
                 <span class="iconfont icon-alipay"></span>
-                <span class="label">票</span>
+                <span class="label">{{$t('product')}}</span>
             </li>
             <li class="order-type">
                 <span class="iconfont icon-alipay"></span>
-                <span class="label">票</span>
+                <span class="label">{{$t('hotel')}}</span>
             </li>
         </ul>
         <!--订单列表-->
         <div class="order-info">
             <div class="order-title">北京欢乐谷七夕套餐，买一赠一</div>
-            <div class="num">数量：2</div>
-            <div class="price">总价：¥323.32</div>
+            <div class="num">{{$t('num')}}：2</div>
+            <div class="price">{{$t('totalPrice')}}：¥323.32</div>
             <div class="hr"></div>
             <div class="to-detail">
-                <span class="for-detail" @click="toOrderDetail">查看详情</span>
+                <span class="for-detail" @click="toOrderDetail">{{$t('toDetail')}}</span>
             </div>
         </div>
         <div class="order-info">
             <div class="order-title">北京欢乐谷七夕套餐，买一赠一</div>
-            <div class="num">数量：2</div>
-            <div class="price">总价：¥323.32</div>
+            <div class="num">{{$t('num')}}：2</div>
+            <div class="price">{{$t('totalPrice')}}：¥323.32</div>
             <div class="hr"></div>
             <div class="to-detail">
-                <span class="for-detail">查看详情</span>
+                <span class="for-detail">{{$t('toDetail')}}</span>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <div class="use-explain">
         <div class="title">
             <span class="iconfont icon-alipay"></span>
-            <span class="font-label">使用说明</span>
+            <span class="font-label">{{$t('instructions')}}</span>
         </div>
         <ul class="explain-list">
             <li class="explain">1、仅限年卡成员使用</li>

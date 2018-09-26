@@ -4,33 +4,33 @@
     <div class="change-phone">
         <div class="phone-img">
         </div>
-        <div class="phone-num">当前手机号：18389903830</div>
+        <div class="phone-num">{{$t('localePhone')}}：18389903830</div>
         <group>
             <x-input
-                title="手机号码"
+                :title="$t('mobile')"
                 ref="test"
                 :required="true"
                 text-align="right"
                 :show-clear="false"
                 mask="999 9999 9999"
                 v-model.trim="formData.mobile"
-                placeholder="请输入"
+                :placeholder="$t('pleaseInput')"
                 placeholder-align="right">
             </x-input>
-            <x-input title="验证码"
+            <x-input :title="$t('validCode')"
                      ref="test1"
                      :required="true"
                      class="valid-class"
                      v-model.trim="formData.validCode"
                      text-align="right"
-                     placeholder="请输入验证码" >
+                     :placeholder="$t('pleaseInputValidCode')" >
                 <div slot="right-full-height"
                      class="validate"
-                     @click="getValidCode">获取动态码</div>
+                     @click="getValidCode">{{$t('getValidCode')}}</div>
             </x-input>
         </group>
         <div class="btn-area">
-            <x-button @click.native="save">保存</x-button>
+            <x-button @click.native="save">{{$t('save')}}</x-button>
         </div>
     </div>
 </template>

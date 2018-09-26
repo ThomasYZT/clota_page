@@ -12,15 +12,15 @@
                 <div class="header">
                     <div class="account-list-chose" @click="showAccount">{{item.name}}</div>
                     <div class="asset-info">{{266.88}}</div>
-                    <div class="asset-tip">总资产(元)</div>
+                    <div class="asset-tip">{{$t('allAssets')}}</div>
                     <div class="account-type">
                         <div class="account-priciple-left">
                             <div class="money-num">8,238.38</div>
-                            <div class="money-label">充值余额(元)</div>
+                            <div class="money-label">{{$t('rechargeMoney')}}</div>
                         </div>
                         <div class="account-donate-left">
                             <div class="money-num">8,238.38</div>
-                            <div class="money-label">赠送余额(元)</div>
+                            <div class="money-label">{{$t('donateMoney')}}</div>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
         </swiper>
 
         <div class="btn-area">
-            <x-button @click.native="recharge">充值</x-button>
+            <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
         </div>
         <popup-picker
             :show.sync="visible"
@@ -123,7 +123,7 @@
                 color: $color_fff;
                 font-size: $font_size_18px;
                 padding-top: 20px;
-                margin: 0 auto 40px auto;
+                margin: 0 auto 30px auto;
             }
 
             .asset-info{

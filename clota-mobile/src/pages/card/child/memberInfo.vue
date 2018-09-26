@@ -4,7 +4,7 @@
     <div class="member-info">
         <div class="title">
             <span class="iconfont icon-alipay"></span>
-            <span class="font-label">成员信息</span>
+            <span class="font-label">{{$t('memberInfo')}}</span>
         </div>
         <div class="detail">
             <ul class="info-detail bottom-dashed">
@@ -12,19 +12,19 @@
                     <span class="value">成员01</span>
                 </li>
                 <li class="field">
-                    <span class="key">姓名：</span>
+                    <span class="key">{{$t('name')}}：</span>
                     <span class="value">王家人</span>
                 </li>
                 <li class="field">
-                    <span class="key">性别：</span>
+                    <span class="key">{{$t('sex')}}：</span>
                     <span class="value">男</span>
                 </li>
                 <li class="field">
-                    <span class="key">电话：</span>
+                    <span class="key">{{$t('phone')}}：</span>
                     <span class="value">17638263872</span>
                 </li>
                 <li class="field">
-                    <span class="key">证件号：</span>
+                    <span class="key">{{$t('idCard')}}：</span>
                     <span class="value">103039840948394809（身份证）</span>
                 </li>
             </ul>
@@ -33,19 +33,19 @@
                     <span class="value">成员01</span>
                 </li>
                 <li class="field">
-                    <span class="key">姓名：</span>
+                    <span class="key">{{$t('name')}}：</span>
                     <span class="value">王家人</span>
                 </li>
                 <li class="field">
-                    <span class="key">性别：</span>
+                    <span class="key">{{$t('sex')}}：</span>
                     <span class="value">男</span>
                 </li>
                 <li class="field">
-                    <span class="key">电话：</span>
+                    <span class="key">{{$t('phone')}}：</span>
                     <span class="value">17638263872</span>
                 </li>
                 <li class="field">
-                    <span class="key">证件号：</span>
+                    <span class="key">{{$t('idCards')}}：</span>
                     <span class="value">103039840948394809（身份证）</span>
                 </li>
             </ul>

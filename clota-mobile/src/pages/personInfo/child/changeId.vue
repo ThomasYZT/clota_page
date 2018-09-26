@@ -5,22 +5,22 @@
         <div class="id-area">
             <group>
                 <popup-picker
-                    title="证件类型"
+                    :title="$t('cardType')"
                     show-name
                     v-model.trim="formData.idType"
                     :data="[idLists]">
                 </popup-picker>
-                <x-input title="证件号码"
+                <x-input :title="$t('IdNumber')"
                          type="number"
                          :required="true"
                          class="valid-class"
                          v-model.trim="formData.idCard"
                          text-align="right"
-                         placeholder="请输入证件号码" >
+                         :placeholder="$t('pleaseInputIdNum')" >
                 </x-input>
             </group>
             <div class="btn-area">
-                <x-button @click.native="save">保存</x-button>
+                <x-button @click.native="save">{{$t('save')}}</x-button>
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@
     <div class="use-area">
         <div class="title">
             <span class="iconfont icon-alipay"></span>
-            <span class="font-label">可用范围</span>
+            <span class="font-label">{{$t('scopeArea')}}</span>
         </div>
         <div class="scene-list">
             <span class="scene">北京欢乐谷景区</span>

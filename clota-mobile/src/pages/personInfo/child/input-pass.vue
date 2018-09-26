@@ -3,13 +3,13 @@
 <template>
     <div class="input-pass" @click="hideKeyBoard">
         <div class="area">
-            <div class="label">请输入6位数字支付密码</div>
+            <div class="label">{{$t('tradePassRule')}}</div>
             <ul class="pass-input" @click="showKeyBoard($event)">
                <li v-for="(item,i) in passData" :key="i">{{item}}</li>
             </ul>
 
             <div class="btn-area">
-                <x-button >下一步</x-button>
+                <x-button >{{$t('nextStep')}}</x-button>
             </div>
         </div>
         <!--输入数字键盘-->

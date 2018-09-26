@@ -5,49 +5,49 @@
         <div class="title-info">
             <div class="per-img">
                 <img src="../../assets/images/icon-ali-pay.svg" alt="">
-                <span class="edit">编辑</span>
+                <span class="edit">{{$t('edit')}}</span>
             </div>
         </div>
         <div class="cell-list">
             <group>
                 <x-input
-                    title="姓名"
+                    :title="$t('name')"
                     text-align="right"
                     :show-clear="false"
                     v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>
                 <popup-picker
-                    title="性别"
+                    :title="$t('sex')"
                     show-name
                     v-model.trim="formData.gender"
                     :data="[genderEnum]">
                 </popup-picker>
                 <cell
-                    title="电话"
+                    :title="$t('phone')"
                     is-link
                     value="17237387333"
                     :link="{name : 'changeMobile'}">
                 </cell>
                 <cell
-                    title="交易密码"
+                    :title="$t('tradePass')"
                     is-link
                     :link="{name : 'changeTradePass'}"
                     value="17237387333">
                 </cell>
                 <cell
-                    title="证件号码"
+                    :title="$t('IdNumber')"
                     is-link
                     :link="{name : 'changeId'}"
                     value="17237387333">
                 </cell>
-                <cell title="微信" disabled value="17237387333"></cell>
-                <cell title="支付宝" disabled value="17237387333"></cell>
-                <cell title="QQ" is-link value="17237387333"></cell>
-                <cell title="E-mail" is-link value="17237387333"></cell>
-                <cell title="成长值" disabled value="17237387333"></cell>
-                <cell title="实体卡卡号" is-link value="17237387333"></cell>
-                <cell title="地址" is-link value="17237387333"></cell>
+                <cell :title="$t('wx')" disabled value="17237387333"></cell>
+                <cell :title="$t('ali')" disabled value="17237387333"></cell>
+                <cell :title="$t('qq')" is-link value="17237387333"></cell>
+                <cell :title="$t('email')" is-link value="17237387333"></cell>
+                <cell :title="$t('growth')" disabled value="17237387333"></cell>
+                <cell :title="$t('entityCardId')" is-link value="17237387333"></cell>
+                <cell :title="$t('address')" is-link value="17237387333"></cell>
             </group>
         </div>
     </div>

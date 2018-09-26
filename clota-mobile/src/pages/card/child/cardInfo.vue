@@ -9,15 +9,15 @@
         <div class="detail">
             <ul class="info-detail">
                 <li class="field">
-                    <span class="key">年卡编号：</span>
+                    <span class="key">{{$t('yearCardCode')}}：</span>
                     <span class="value">0187978739892</span>
                 </li>
                 <li class="field">
-                    <span class="key">有效期开始日期：</span>
+                    <span class="key">{{$t('startTime')}}：</span>
                     <span class="value">2018-08-01 08:00:00</span>
                 </li>
                 <li class="field">
-                    <span class="key">有效期结束日期：</span>
+                    <span class="key">{{$t('endTime')}}：</span>
                     <span class="value">2018-08-01 08:00:00</span>
                 </li>
             </ul>

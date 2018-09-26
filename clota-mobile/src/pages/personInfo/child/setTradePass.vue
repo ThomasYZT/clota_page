@@ -5,24 +5,24 @@
         <div class="area">
             <group>
                 <cell
-                    title="当前手机号"
+                    :title="$t('localePhone')"
                     value-align="left"
                     value="17237387333">
                 </cell>
-                <x-input title="验证码"
+                <x-input :title="$t('validCode')"
                          ref="test1"
                          :required="true"
                          class="valid-class"
                          v-model.trim="formData.validCode"
                          text-align="right"
-                         placeholder="请输入验证码" >
+                         :placeholder="$t('pleaseInputValidCode')" >
                     <div slot="right-full-height"
                          class="validate"
-                         @click="getValidCode">获取动态码</div>
+                         @click="getValidCode">{{$t('getValidCode')}}</div>
                 </x-input>
             </group>
             <div class="btn-area">
-                <x-button @click.native="nextStep">下一步</x-button>
+                <x-button @click.native="nextStep">{{$t('nextStep')}}</x-button>
             </div>
         </div>
     </div>
