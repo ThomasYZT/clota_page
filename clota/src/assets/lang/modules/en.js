@@ -216,7 +216,7 @@ export default {
     'goods': 'Product',
     'failure': 'failure',
     'success': 'success',
-    'failureTip': '{tip} failured',
+    'failureTip': '{tip} failure',
     'successTip': '{tip} success',
     'queryFailure': 'Query failed',
     'name': 'name',

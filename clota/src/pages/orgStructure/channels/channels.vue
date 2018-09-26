@@ -230,12 +230,12 @@
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
                     partnerObj.successTip = '您已禁用自营渠道';
-                    partnerObj.failTip = '禁用失败';
+                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('disabled')});    // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'warning';
                 } else if (scopeRow.status=='invalid') {
                     partnerObj.successTip = '您已启用自营渠道';
-                    partnerObj.failTip = '启用失败';
+                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('commissioned')});    // 启用失败
                     partnerObj.status = 'valid';
                     partnerObj.msgType = 'success';
                 }
