@@ -1,7 +1,7 @@
 <!---->
 
 <template>
-    <div id="app" :class="{'change-lang' : langChing}">
+    <div id="app" >
         <drawer
             width="200px;"
             :show.sync="drawerVisibility"
@@ -9,7 +9,7 @@
             :placement="showPlacementValue"
             :drawer-style="{'background-color':'#35495e', width: '200px'}">
 
-            <!-- drawer content -->
+            <!--左侧弹窗，暂时先放着不用-->
             <div slot="drawer">
                 <group>
                     <cell
@@ -17,8 +17,8 @@
                         is-link
                         :border-intent="false"
                         :arrow-direction="showContent001 ? 'up' : 'down'"
-                        @click.native="showContent001 = !showContent001"></cell>
-
+                        @click.native="showContent001 = !showContent001">
+                    </cell>
                     <template v-if="showContent001">
                         <cell-box class="sub-item">中文</cell-box>
                         <cell-box class="sub-item">英文</cell-box>
@@ -33,6 +33,22 @@
         <div class="lang-change" @click="changeLang">
             <span class="iconfont icon-switch"></span>
         </div>
+        <!--切换语言弹窗-->
+        <div v-transfer-dom>
+            <confirm v-model="confirmShow"
+                     title="选择语言"
+                     @on-confirm="onConfirm"
+                     @on-show="onShow">
+                <div class="lang-chose">
+                    <check-icon
+                        :value="langType === 'zh-CN'"
+                        @update:value="preChangeLang('zh-CN')">中文</check-icon>
+                    <check-icon
+                        :value="langType === 'en'"
+                        @update:value="preChangeLang('en')">En</check-icon>
+                </div>
+            </confirm>
+        </div>
     </div>
 </template>
 
@@ -45,13 +61,17 @@
         },
         data() {
             return {
-                langChing : false,
+                //抽屉弹窗是否显示
                 drawerVisibility : false,
                 showMode: 'push',
                 showModeValue: 'push',
                 showPlacement: 'left',
                 showPlacementValue: 'left',
-                showContent001 : true
+                showContent001 : true,
+                //选择语言提示框是否显示
+                confirmShow : false,
+                //当前选择的语言类型
+                langType : ''
             }
         },
         methods: {
@@ -59,9 +79,26 @@
              * 修改语言
              */
             changeLang () {
-                // this.langChing = true;
-                // this.drawerVisibility = !this.drawerVisibility;
-                this.$store.commit('setLang',this.lang === 'en' ? 'zh-CN' : 'en');
+                this.confirmShow = true;
+            },
+            /**
+             * 选择语言的提示框显示
+             */
+            onShow () {
+                this.langType = this.lang;
+            },
+            /**
+             * 选择语言
+             * @param lang 选择的语言
+             */
+            preChangeLang (lang) {
+                this.langType = lang;
+            },
+            /**
+             * 确认切换语言
+             */
+            onConfirm () {
+                this.$store.commit('setLang',this.langType);
             }
         },
         computed: {
@@ -99,11 +136,6 @@
     }
     #app{
 
-        &.change-lang{
-            transform: rotateY(360deg);
-            transition: all 2s;
-        }
-
         .lang-change{
             position: fixed;
             bottom : 50px;
@@ -140,6 +172,19 @@
             &:nth-of-type(2):before{
                 left : 0;
             }
+        }
+    }
+
+    .lang-chose{
+        width: 100%;
+        height: 70px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        .vux-check-icon:nth-of-type(1){
+            margin-right: 30px;
         }
     }
     .vux-pop-out-enter-active,
