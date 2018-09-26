@@ -11,7 +11,9 @@ const apiList = {
     //会员登录
     login: '/external/member/login2',
     //获取卡包信息
-    getCardPackage: '/external/member/getCardPackage'
+    getCardPackage: '/external/member/getCardPackage',
+    //获取账户信息
+    listCardAccountInfo: '/external/memberAccount/listCardAccountInfo'
 };
 
 export default apiList;
