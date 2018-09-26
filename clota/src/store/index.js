@@ -72,7 +72,9 @@ export default new Vuex.Store({
         //当前的皮肤
         skinType : 'blue-theame',
         //随机数，用于更新组件
-        hashKey : ''
+        hashKey : '',
+        //当前账号拥有的所有组织结构信息,
+        manageOrgList : []
     },
     getters: {
         //左侧菜单是否收起
@@ -113,7 +115,11 @@ export default new Vuex.Store({
         manageOrgs : state => {
             return state.manageOrgs;
         },
-        //获取当前的皮肤信息
+        //当前账号拥有的所有组织结构信息
+        manageOrgList : state => {
+           return state.manageOrgList;
+        },
+        // 获取当前的皮肤信息
         skinType : state => {
             let skinType = localStorage.getItem('skinType');
             if (skinType) {
@@ -185,8 +191,11 @@ export default new Vuex.Store({
         },
         //更新随机数
         updateHashKey (state) {
-            console.log('hash')
             state.hashKey = Math.random();
+        },
+        //更新节点信息
+        updatemanageOrgList (state ,manageOrgList) {
+            state.manageOrgList = manageOrgList;
         }
     },
     actions: {
@@ -258,6 +267,23 @@ export default new Vuex.Store({
             return this.dispatch('getUserRight').then(res =>{
                 store.commit('updateHashKey');
                 return res;
+            });
+        },
+        /**
+         * 更新当前账号下的组织结构信息
+         */
+        freshOrgs (store) {
+            ajax.post('getManageOrgs').then(res => {
+                if(res.success){
+                    let manageOrgs = res.data ? res.data : [];
+                    let userInfo = Object.assign({
+                        manageOrgs : manageOrgs
+                    },store.userInfo);
+                    sessionStorage.setItem('userInfo',JSON.stringify(userInfo));
+                    store.commit('updatemanageOrgList',);
+                }else{
+                    store.commit('updatemanageOrgList',{});
+                }
             });
         }
     }

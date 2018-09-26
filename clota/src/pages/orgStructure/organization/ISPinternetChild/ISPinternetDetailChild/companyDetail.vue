@@ -535,6 +535,7 @@
                                 }else{
                                     this.getCompanyDetail();
                                 }
+                                this.$store.dispatch('freshOrgs');
                             }else{
                                 this.$Message.error('修改失败');
                             }

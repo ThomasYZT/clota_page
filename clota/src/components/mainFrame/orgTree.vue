@@ -12,7 +12,7 @@
                 node-key="id"
                 ref="tree"
                 :filter-node-method="filterNode"
-                :data="treeData"
+                :data="manageOrgList"
                 :render-content="menuRenderContent"
                 @node-click="orgChose">
             </el-tree>
@@ -28,8 +28,6 @@
             return {
                 //筛选组织的关键字
                 filterValue : '',
-                //组织树数据
-                treeData: [],
                 //props配置
                 defaultProps: {
                     children: 'children',
@@ -59,7 +57,7 @@
              * 获取组织树列表
              */
             getOrgTree() {
-                this.treeData = common.getOrgTree();
+                this.$store.commit('updatemanageOrgList',common.getOrgTree());
             },
             /**
              * 获取选中的组织
@@ -123,7 +121,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                manageOrgList : 'manageOrgList',
             })
         },
         watch : {
