@@ -91,7 +91,7 @@
                     }).then((res) => {
                         if(res.success) {
                             //存储token信息
-                            sessionStorage.setItem('token', res.token);
+                            sessionStorage.setItem('token', res.data.token);
                             //存储用户信息
                             sessionStorage.setItem('userInfo', res.data);
                             //登陆跳转到主页
