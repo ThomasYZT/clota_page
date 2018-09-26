@@ -32,7 +32,7 @@
                v-transfer-dom
                @on-show="popupShow">
             <popup-header
-                :left-text="$t('cancle')"
+                :left-text="$t('cancel')"
                 :right-text="$t('complete')"
                 :title="$t('Please select your card')"
                 :show-bottom-border="false"
@@ -212,13 +212,6 @@
             colort:$color_000;
         }
 
-        .popup-label{
-            @include block_outline($height : 32px);
-            line-height: 14px;
-            color: $color_999;
-            font-size: $font_size_10px;
-        }
-
         /deep/ .vux-popup-header-left,
         /deep/ .vux-popup-header-right{
             color: $color_blue;
@@ -237,5 +230,12 @@
             }
 
         }
+    }
+
+    .popup-label{
+        @include block_outline($height : 32px);
+        line-height: 14px;
+        color: $color_999;
+        font-size: $font_size_10px;
     }
 </style>

@@ -1,17 +1,23 @@
 <!--无数据组件-->
 
 <template>
-    <div class="no-data">
+    <div class="no-data" v-if="!isLoading">
         <img src="../../assets/images/icon-no-data.svg" alt="">
     </div>
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
     export default {
         data() {
             return {}
         },
-        methods: {}
+        methods: {},
+        computed : {
+            ...mapGetters({
+                isLoading : 'isLoading'
+            })
+        }
     }
 </script>
 

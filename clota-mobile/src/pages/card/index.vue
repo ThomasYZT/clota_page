@@ -30,7 +30,7 @@
                             <span class="mem-name">{{yearyCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{yearyCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
-                            <span class="iconfont icon-alipay" @click="showCode"></span>
+                            <span class="iconfont icon-alipay" @click="showYearCode"></span>
                         </div>
                     </div>
                     <!--年卡信息-->
@@ -57,7 +57,7 @@
                             <span class="mem-name">{{timeCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{timeCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
-                            <span class="iconfont icon-alipay"></span>
+                            <span class="iconfont icon-alipay" @click="showTimeCode"></span>
                         </div>
                     </div>
                     <!--次卡信息-->
@@ -80,8 +80,23 @@
         </no-data>
         <!--预览图片-->
         <div v-transfer-dom class="img-preview">
-            <previewer :list="prevList" ref="previewer"></previewer>
+            <previewer
+                :list="prevList"
+                ref="previewer">
+            </previewer>
         </div>
+        <!--年卡会员二维码-->
+        <qrcode ref="yearQrcode"
+                style="position: absolute;z-index: -1;"
+                :value="yearyCardInfo.physicalCardNo"
+                type="img">
+        </qrcode>
+        <!--次卡会员二维码-->
+        <qrcode ref="timesQrcode"
+                style="position: absolute;z-index: -1;"
+                :value="timeCardInfo.physicalCardNo"
+                type="img">
+        </qrcode>
     </div>
 </template>
 
@@ -135,15 +150,36 @@
                 }
             },
             /**
-             * 显示二维码
+             * 显示年卡二维码
              */
-            showCode () {
+            showYearCode () {
                 this.prevList = [
                     {
-                        msrc: require('../../assets/images/test.jpg'),
-                        src: require('../../assets/images/test.jpg'),
+                        src: this.$refs.yearQrcode.imgData,
                         w: 240,
-                        h: 240
+                        h: 240,
+                        initialPosition : {
+                            x : 100
+                        }
+                    }
+                ];
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0)
+                });
+            },
+            /**
+             * 显示次卡二维码
+             */
+            showTimeCode () {
+                this.prevList = [
+                    {
+                        msrc: this.$refs.timesQrcode.imgData,
+                        src: this.$refs.timesQrcode.imgData,
+                        w: 240,
+                        h: 240,
+                        initialPosition : {
+                            x : 100
+                        }
                     }
                 ];
                 this.$nextTick(() =>{
@@ -379,5 +415,10 @@
 <style>
     .img-preview .pswp__bg{
         background: rgba(0,0,0,0.7)!important;
+    }
+
+    .img-preview .pswp__img{
+        padding: 49px;
+        background: #ffffff;
     }
 </style>
