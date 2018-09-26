@@ -26,23 +26,7 @@
         },
         data() {
             return {
-                infoList: [
-                    {
-                        ticketName: '北京欢乐谷门票',
-                        time: '2018.06.02 08:00:00',
-                        check: -4000
-                    },
-                    {
-                        ticketName: '北京欢乐谷门票',
-                        time: '2018.06.02 08:00:00',
-                        check: -3000
-                    },
-                    {
-                        ticketName: '储值100元',
-                        time: '2018.06.02 08:00:00',
-                        check: 4000
-                    }
-                ],
+                infoList: [],
                 memberAccounts: [],
                 accounts: ''
             }
@@ -69,6 +53,7 @@
                         this.accounts = this.accounts.substring(1);
                     }
                 })
+
                 await ajax.post('queryOrgAccountChange', {
                     accountTypeIds: this.accounts,
                     operType: '',
@@ -77,7 +62,6 @@
                     pageSize: 20
                 }).then((res) => {
                     if(res.success) {
-                        console.log(res.data)
                         this.infoList = res.data.data;
                         this.num = res.data.data.reduce((preValue, curValue) => {
                             return preValue + parseInt(curValue.amount)

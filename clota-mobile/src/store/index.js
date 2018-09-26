@@ -94,13 +94,18 @@ export default new Vuex.Store({
                 state.userInfo = {};
             }
         },
-        //登陆设置用户会员卡信息
-        setCardInfo ( state, data ) {
-            state.cardInfo = data;
-        },
-        //更新用户会员卡信息
-        updateCardInfo( state, data ) {
-            state.cardInfo = Object.assign({}, state.cardInfo, data)
+        /**
+         * 更新会员卡信息
+         * @param state
+         */
+        updateCardInfo ( state ) {
+            //获取保存到本地的会用卡信息
+            let cardInfo = sessionStorage.getItem('cardInfo') ? JSON.parse(sessionStorage.getItem('cardInfo')) : {};
+            if(cardInfo && Object.keys(cardInfo).length > 0){
+                state.cardInfo = cardInfo;
+            }else{
+                state.cardInfo = {};
+            }
         }
     },
     actions: {

@@ -44,7 +44,7 @@
 
 <script>
     import ajax from '../../api/index'
-    import {mapActions} from 'vuex'
+    import {mapMutations} from 'vuex'
     import labelItem from './components/labelItem'
     import onelevelMember from '../../assets/images/1levelMember.png'
     import secondlevelMember from '../../assets/images/2levelMember.png'
@@ -154,8 +154,8 @@
             }
         },
         methods: {
-            ...mapActions([
-                'setCardInfo'
+            ...mapMutations([
+                'updateCardInfo'
             ]),
             /**
              * 获取页面数据
@@ -170,7 +170,7 @@
                         res.data.data[0].levelNum = 4;
                         //存储会员卡信息
                         sessionStorage.setItem('cardInfo', JSON.stringify(res.data.data[0]));
-                        this.setCardInfo(res.data.data[0]);
+                        this.updateCardInfo();
                         this.cardInfo = res.data.data[0];
 
                         //初始化页面数据
