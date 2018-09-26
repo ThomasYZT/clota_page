@@ -275,7 +275,7 @@
         //color: @selected-color;
         background: #fff;
     }
-    &-focus,&-selected:hover{
+    &-selected:hover{
         background: @background-color-select-hover;
         color: #2F70DF!important
     }
@@ -328,4 +328,15 @@
 .ivu-select-disabled .ivu-select-selection{
     background: #fafafa!important;
     color: #c5c5c5;
+}
+.ivu-select-item:hover{
+    color: #2F70DF!important;
+    background: transparent!important;
+}
+.ivu-select-item:not(.ivu-select-item-selected){
+    color: #333333;
+}
+.ivu-select-item-focus{
+    background: transparent!important;
+    color: #333333;
 }
