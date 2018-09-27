@@ -565,7 +565,6 @@
     import { policyValidity, playDeadline, returnRule, alterRule, specialHoliday } from '@/assets/js/constVariable';
     import {configVariable} from '@/assets/js/constVariable';
     import ajax from '@/api/index';
-    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -757,10 +756,8 @@
 
                 //退票规则列表及表头
                 refundColumn: refundColumn,
-
                 //分销id
                 allocationId: '',
-
                 //暂存退票修改数据
                 returnItem: {},
             }
@@ -1220,9 +1217,6 @@
             localeRouter () {
                 return this.type === 'add' ? this.$t('addSalePolicy') : this.$t('modifySalePolicy');      // 新建销售政策 ： 修改销售政策
             },
-            ...mapGetters({
-                manageOrgs: 'manageOrgs',
-            }),
         },
     }
 </script>

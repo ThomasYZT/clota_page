@@ -778,6 +778,8 @@
                     if(type !=='check'){
                         this.selectParkChange(data.parkId);
                     }
+                    //查询核销设备组
+                    this.getOrgGroupList({ id: data.parkId});
                     this.formData = defaultsDeep({}, data);
                     this.copyData = defaultsDeep({}, data);
                     if(data.fingerCheck == 'true' || data.fingerCheck === true){
@@ -785,7 +787,7 @@
                     }else{
                         this.formData.fingerCheck = false;
                     }
-                    this.formData.equipmentGroupIds = data.equipmentGroupIds.split(',');
+                    this.formData.equipmentGroupIds = data.equipmentGroupIds ? data.equipmentGroupIds.split(',') : [];
                     //查看/详情后的修改
                     if(data.checkPoint && data.checkPoint.length > 0){
                         this.checkPoint = [];
