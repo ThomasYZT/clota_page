@@ -9,7 +9,7 @@
             </bread-crumb-head>
         </div>
 
-        <div class="card-content">
+        <div class="card-content" v-if="cardInfo.annual.length > 0 || cardInfo.times.length > 0">
             <!--优惠券信息-->
             <!--<div class="content-info">
                 <div class="title">{{$t('couponInfo')}}</div>
@@ -159,9 +159,13 @@
                     </table-com>
                 </div>
             </div>
-
         </div>
 
+        <div class="no-data-wrap" v-if="cardInfo.annual.length < 1 && cardInfo.times.length < 1">
+            <!--无数据组件-->
+            <no-data >
+            </no-data>
+        </div>
     </div>
 </template>
 
@@ -171,9 +175,10 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import {cardOwnerHead, cardInfosHead} from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
-        components: {breadCrumbHead, tableCom},
+        components: {breadCrumbHead, tableCom, noData},
         mixins : [lifeCycleMixins],
         data () {
             return {
@@ -353,6 +358,11 @@
                 }
 
             }
+        }
+
+        .no-data-wrap {
+            position: relative;
+            height: calc(100% - 50px);
         }
 
     }
