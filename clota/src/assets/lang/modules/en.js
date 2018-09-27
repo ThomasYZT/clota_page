@@ -456,6 +456,8 @@ export default {
     'paymentSN': '支付流水号',
     'paymentTime': '支付时间',
     'integralRateInfo': '积分率信息',
+    'inputOrderSearch': '请输入产品名称、交易号',
+    'levelExistCard': '该会员级别下已存在会员信息，不能删除',
 
     // 检验错误提示
     'errorIrregular': 'Input content is illegal',
@@ -916,7 +918,7 @@ export default {
     'accountPrivaligeError': '账户没有菜单权限，请联系管理员开通权限',
     'cardScopeSetting': '会员卡可用范围设置',
     'deleteAccount': 'deleteAccount',
-    'errorPwdRule': '密码只能由26个英文大小写字母和数字组成',
+    'errorPwdRule': '密码必须是6-20位，只含数字、小写和大写字母',
     'productTypeSetting': '产品类别设置',
     'cardUnopened': '未开卡',
     'cardOpened': '已开卡',

@@ -170,6 +170,8 @@
                         this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));     // 删除成功
                         //查询列表
                         this.queryList();
+                    } else if (res.code == 'M013') {
+                        this.$Message.error(this.$t('levelExistCard'));    // 该会员级别下已存在会员信息，不能删除
                     } else {
                         this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
                     }
