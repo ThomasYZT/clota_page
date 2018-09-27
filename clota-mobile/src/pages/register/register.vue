@@ -4,18 +4,18 @@
 -->
 <template>
     <div class="register">
-        <x-input title="姓名"
+        <x-input :title="$t('name')"
                  class="c-input"
                  label-width="150px"
                  v-model="registerInfo.custName"></x-input>
-        <x-input title="手机号码"
+        <x-input :title="$t('mobile')"
                  v-model="registerInfo.phoneNum"
                  class="c-input"
                  keyboard="number"
                  label-width="150px"></x-input>
-        <x-input title="验证码"
+        <x-input :title="$t('validCode')"
                  v-model="registerInfo.vcode"
-                 placeholder="输入验证码"
+                 :placeholder="$t('pleaseInputValidCode')"
                  class="c-input verify-input"
                  :show-clear="false"
                  keyboard="number"
@@ -25,22 +25,22 @@
                  :class="{active: isGetCode}"
                  :disabled="true"
                  @click="getCode()">
-                <p>获取动态码{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
+                <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <div>
-            <popup-picker title="性别"
+            <popup-picker :title="$t('sex')"
                           :data="sexList"
                           v-model="registerInfo.gender"
                           @on-change="sexValueChange"
                           class="c-input"
-                          :placeholder="'请选择'"></popup-picker>
+                          :placeholder="$t('pleaseChoose')"></popup-picker>
         </div>
         <p class="msg" v-if="msg != ''">{{msg}}</p>
 
         <x-button class="button"
-                  @click.native="register()">立即开卡</x-button>
-        <p class="register-tip" @click="$router.push({name: 'mobileLogin'})">已有账号，去登陆</p>
+                  @click.native="register()">{{$t('getCard')}}</x-button>
+        <p class="register-tip" @click="$router.push({name: 'mobileLogin'})">{{$t('hasAccount')}}</p>
     </div>
 </template>
 
@@ -191,12 +191,6 @@
         width: 100%;
         margin-top: 15px;
         color: #4A4A4A;
-
-        .verify-input{
-            .code-button {
-                width: 90px;
-            }
-        }
 
         .msg {
             margin-left: 14px;

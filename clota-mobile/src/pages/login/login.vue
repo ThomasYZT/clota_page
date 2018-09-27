@@ -6,16 +6,16 @@
     <div class="login">
         <!-- 手机号码 -->
         <x-input class="c-input"
-                 title="手机号码"
+                 :title="$t('mobile')"
                  keyboard="number"
                  v-model="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>
         <!-- 验证码 -->
         <x-input class="c-input verify-input"
-                 title="验证码"
+                 :title="$t('validCode')"
                  v-model="loginInfo.vcode"
-                 placeholder="输入验证码"
+                 :placeholder="$t('enterCode')"
                  :show-clear="false"
                  keyboard="number"
                  label-width="150px">
@@ -23,19 +23,19 @@
                  class="code-button"
                  :class="{active: isGetCode}"
                  @click="getCode">
-                <p>获取动态码{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
+                <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <!-- 注册按钮 -->
         <div class="bottom-info">
             <p class="msg">{{msg}}</p>
             <p class="register-entry">
-                <span @click="$router.push({path: '/register'})">去注册</span>
+                <span @click="$router.push({path: '/register'})">{{$t('register')}}</span>
             </p>
         </div>
         <!-- 登陆按钮 -->
         <x-button class="button"
-                  @click.native="login()">登陆</x-button>
+                  @click.native="login()">{{$t('login')}}</x-button>
     </div>
 </template>
 
@@ -170,12 +170,6 @@
     .login {
         margin-top: 15px;
         color: #4A4A4A;
-
-        .verify-input{
-            .code-button {
-                width: 90px;
-            }
-        }
 
         .bottom-info {
             display: flex;

@@ -105,9 +105,9 @@ plugin.install = function (Vue, options) {
                 }
             },
             //货比格式化
-            moneyFilter(content,places = 2,symbol = '') {
+            moneyFilter(content,places = 2,symbol = '',defaultValue = '-') {
                 if (content === '' || content === null || content === undefined) {
-                    return '-';
+                    return defaultValue;
                 } else {
                     return content === 0 ? '0.00' : Number(content).formatMoney(places,symbol);
                 }

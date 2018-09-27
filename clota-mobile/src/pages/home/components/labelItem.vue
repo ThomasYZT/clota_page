@@ -5,7 +5,7 @@
 <template>
   <div class="label-item">
       <cell :is-link="false"
-            :title="info.title"
+            :title="$t(info.title)"
             @click.native="toUrl(info.link)"
             class="cell">
           <i slot="icon"
@@ -13,7 +13,7 @@
              class="icon iconfont"
              :class="info.iconClass"></i>
           <div class="arrow-wrap">
-              <span class="info">{{info.info}}</span>
+              <span class="info">{{info.info | moneyFilter(2,'￥','','')}}</span>
               <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
           </div>
       </cell>

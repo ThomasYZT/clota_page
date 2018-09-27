@@ -23,17 +23,19 @@ div.c-input {
 div.verify-input{
     position: relative;
     .code-button {
+        padding: 0 5px;
         position: absolute;
         top: 0;
         right: 0;
         margin-left: 16.5px;
         height: 50.5px;
-        width: 100%;
         line-height: 50.5px;
         color: #046FDB;
         font-size: 12.5px;
         text-align: center;
         border-left: 1px solid #E8E8E8;
+        border-bottom: 1px solid #F5F5F5;
+        background-color: #fff;
     }
 
     .active {

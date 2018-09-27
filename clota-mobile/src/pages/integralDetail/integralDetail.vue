@@ -6,7 +6,7 @@
   <div class="integral-detail">
       <div class="score-board">
           <h5 class="score">{{num}}</h5>
-          <p class="name">可用积分</p>
+          <p class="name">{{$t('integralDetail')}}</p>
       </div>
 
       <div class="content">

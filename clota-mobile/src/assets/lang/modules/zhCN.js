@@ -79,5 +79,18 @@ export default {
     memberInex : '成员{index}',
     male : '男',
     female : '女',
-    identifyCard : '身份证'
+    identifyCard : '身份证',
+    register: '去注册',
+    login: '登陆',
+    enterCode: '输入验证码',
+    pleaseChoose: '请选择',
+    getCard: '立即开卡',
+    hasAccount: '已有账号，去登陆',
+    integralDetail : '可用积分',
+    defaultAccount: '默认账户',
+    checkFlow: '资金明细',
+    memberCode: '会员二维码',
+    card: '我的卡包',
+    memberRight: '会员权益'
+
 }

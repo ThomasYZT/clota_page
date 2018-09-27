@@ -3,8 +3,10 @@
     作者：杨泽涛
 -->
 <template>
-  <div class="home">
-      <div class="member-card" :style="{backgroundImage: cardBg}">
+  <div class="home"
+       v-show="!isLoading">
+      <div class="member-card"
+           :style="{backgroundImage: cardBg}">
           <div class="card-content" :style="{color: cardFontColor}">
               <div class="person-info">
                   <div class="left">
@@ -37,14 +39,14 @@
       </div>
 
       <div class="nav">
-          <label-item v-for="(item, index) in labelList" :info="item" :key="index"></label-item>
+          <label-item v-for="(item, index) in labelList" :info.sync="item" :key="index"></label-item>
       </div>
   </div>
 </template>
 
 <script>
     import ajax from '../../api/index'
-    import {mapMutations} from 'vuex'
+    import {mapMutations, mapGetters} from 'vuex'
     import labelItem from './components/labelItem'
     import onelevelMember from '../../assets/images/1levelMember.png'
     import secondlevelMember from '../../assets/images/2levelMember.png'
@@ -69,49 +71,49 @@
         data() {
             let labelList = [
                 {
-                    title: '可用积分',
+                    title: 'integralDetail',
                     link: '/integralDetail',
                     iconClass: 'icon-my-points',
                     info: '',
                     iconColor: '#F46462'
                 },
                 {
-                    title: '默认账户',
-                    link: '/integralDetail',
+                    title: 'defaultAccount',
+                    link: '/account',
                     iconClass: 'icon-default-account',
                     info: '',
                     iconColor: '#368CE3'
                 },
                 {
-                    title: '我的订单',
-                    link: '/integralDetail',
+                    title: 'myOrder',
+                    link: '/order',
                     iconClass: 'icon-my-orders',
                     info: '',
                     iconColor: '#FF9700'
                 },
                 {
-                    title: '资金明细',
+                    title: 'checkFlow',
                     link: '/checkFlow',
                     iconClass: 'icon-check-flow',
                     info: '',
                     iconColor: '#6F62E5'
                 },
                 {
-                    title: '会员二维码',
-                    link: '/integralDetail',
+                    title: 'memberCode',
+                    link: '/memberCode',
                     iconClass: 'icon-member-code',
                     info: '',
                     iconColor: '#F46462'
                 },
                 {
-                    title: '我的卡包',
-                    link: '/integralDetail',
+                    title: 'card',
+                    link: '/card',
                     iconClass: 'icon-my-package',
                     info: '',
                     iconColor: '#368CE3'
                 },
                 {
-                    title: '会员权益',
+                    title: 'memberRight',
                     link: '/memberRight',
                     iconClass: 'icon-member-rights',
                     info: '',
@@ -153,6 +155,11 @@
                 cardFontColor: '#fff'
             }
         },
+        computed: {
+            ...mapGetters({
+                isLoading : 'isLoading',
+            }),
+        },
         methods: {
             ...mapMutations([
                 'updateCardInfo'
@@ -174,8 +181,8 @@
                         this.cardInfo = res.data.data[0];
 
                         //初始化页面数据
-                        this.labelList.getByTitle('可用积分').info = this.cardInfo.pointBalance;
-                        this.labelList.getByTitle('默认账户').info = this.cardInfo.moneyBalance;
+                        this.labelList.getByTitle('integralDetail').info = this.cardInfo.pointBalance;
+                        this.labelList.getByTitle('defaultAccount').info = this.cardInfo.moneyBalance;
 
                         //获取会员卡配色方案
                         this.setCardTheme(res.data.data[0].levelNum)
