@@ -3,7 +3,7 @@
 <template>
     <div class="use-explain">
         <div class="title">
-            <span class="iconfont icon-alipay"></span>
+            <span class="iconfont icon-explain"></span>
             <span class="font-label">{{$t('instructions')}}</span>
         </div>
         <div class="explain-list">

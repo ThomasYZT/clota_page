@@ -3,7 +3,7 @@
 <template>
     <div class="member-info">
         <div class="title">
-            <span class="iconfont icon-alipay"></span>
+            <span class="iconfont icon-members-info"></span>
             <span class="font-label">{{$t('memberInfo')}}</span>
         </div>
         <div class="detail">

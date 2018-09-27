@@ -4,7 +4,7 @@
 
     <div class="use-area">
         <div class="title">
-            <span class="iconfont icon-alipay"></span>
+            <span class="iconfont icon-valid-range"></span>
             <span class="font-label">{{$t('scopeArea')}}</span>
         </div>
         <div class="scene-list">

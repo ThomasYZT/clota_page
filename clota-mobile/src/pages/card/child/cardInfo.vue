@@ -3,7 +3,7 @@
 <template>
     <div class="year-card-info">
         <div class="title">
-            <span class="iconfont icon-alipay"></span>
+            <span class="iconfont icon-year-card-info"></span>
             <span class="font-label">{{title}}</span>
         </div>
         <div class="detail">

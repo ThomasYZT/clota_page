@@ -30,7 +30,8 @@
                             <span class="mem-name">{{yearyCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{yearyCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
-                            <span class="iconfont icon-alipay" @click="showYearCode"></span>
+                            <span class="iconfont icon-code" @click="showYearCode"></span>
+                            <span class="iconfont icon-arrow-right"></span>
                         </div>
                     </div>
                     <!--年卡信息-->
@@ -57,7 +58,8 @@
                             <span class="mem-name">{{timeCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{timeCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
-                            <span class="iconfont icon-alipay" @click="showTimeCode"></span>
+                            <span class="iconfont icon-code" @click="showTimeCode"></span>
+                            <span class="iconfont icon-arrow-right"></span>
                         </div>
                     </div>
                     <!--次卡信息-->
@@ -391,9 +393,15 @@
                         color: $color_fff;
                     }
 
-                    .iconfont{
+                    .icon-code{
                         @include absolute_pos(absolute,$bottom : 19px,$right : 27px);
                         color: $color_fff;
+                    }
+
+                    .icon-arrow-right{
+                        @include absolute_pos(absolute,$bottom : 20px,$right : 13px);
+                        color: $color_fff;
+                        font-size: 12px;
                     }
                 }
             }
