@@ -85,7 +85,7 @@ export default new Vuex.Store({
         /**
          * 更新用户信息
          */
-        updateUserInfo (state) {
+        updateUserInfo ( state ) {
             //获取保存到本地的用户信息
             let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
             if(userInfo && Object.keys(userInfo).length > 0){
