@@ -201,6 +201,7 @@ export default new Vuex.Store({
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
+            store.dispatch('freshOrgs');
             return ajax.post('getPrivilege',{
                 orgId : store.state.manageOrgs.id
             }).then(res =>{
@@ -230,8 +231,6 @@ export default new Vuex.Store({
                     Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
                     return new Promise().reject();
                 }
-            }).then(() => {
-                store.dispatch('freshOrgs');
             }).catch(() => {
                 Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
             });
