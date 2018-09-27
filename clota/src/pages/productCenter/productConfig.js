@@ -3,17 +3,17 @@
 export const ticketTypeHead = [
     {
         title: 'ID',      // ID
-        width: 140,
+        minWidth: 140,
         field: 'id'
     },
     {
         title: 'productCode',   // 产品编码
-        minWidth: 140,
+        minWidth: 150,
         field: 'code'
     },
     {
         title: 'productName',   // 产品名称
-        minWidth: 100,
+        minWidth: 150,
         field: 'productName'
     },
     {
@@ -28,17 +28,17 @@ export const ticketTypeHead = [
     },
     {
         title: 'status',        // 状态
-        minWidth: 100,
+        minWidth: 140,
         field: 'auditStatus'
     },
     {
         title: 'updateTime',      // 更新时间
-        minWidth: 180,
+        minWidth: 190,
         field: 'updatedTime'
     },
     {
         title: 'operate',       // 操作
-        width: 80,
+        width: 110,
         field: ''
     },
 ];

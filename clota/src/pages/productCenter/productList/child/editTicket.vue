@@ -863,7 +863,7 @@
                 text-align: center;
 
                 /deep/ .ivu-btn{
-                    width: 108px;
+                    min-width: 108px;
                     &:nth-child(1){
                         margin-right: 20px;
                     }
