@@ -38,8 +38,8 @@
                 <cell
                     :title="$t('IdNumber')"
                     is-link
-                    :link="{name : 'changeId'}"
-                    :value="formData.idCardNumber + '(' + formData.certificationTypeName + ')'">
+                    :link="{name : 'changeId',params : {certificationType : formData.certificationType,idCardNumber : formData.idCardNumber}}"
+                    :value="idNum">
                 </cell>
                 <cell
                     :title="$t('wx')"
@@ -68,18 +68,20 @@
                 <cell
                     :title="$t('growth')"
                     disabled
-                    value="17237387333">
+                    :value="formData.growth">
                 </cell>
                 <cell
                     :title="$t('entityCardId')"
                     disabled
                     :value="formData.tpNo">
                 </cell>
-                <cell
+                <x-input
                     :title="$t('address')"
-                    is-link
-                    :value="formData.homeAddr">
-                </cell>
+                    text-align="right"
+                    :show-clear="false"
+                    v-model.trim="formData.homeAddr"
+                    placeholder-align="right">
+                </x-input>
             </group>
         </div>
         <div class="btn-area">
@@ -104,6 +106,8 @@
                     name : '',
                     //性别
                     gender : [],
+                    idCardNumber : '',
+                    certificationTypeName : ''
                 }
             }
         },
@@ -116,11 +120,11 @@
                     memberId : this.userInfo.memberId
                 }).then(res => {
                     if(res.success){
-                        this.formData = res.data ?{
+                        this.$set(this,'formData',res.data ? Object.assign(this.formData,{
                             ...res.data,
                             name : res.data.custName,
                             gender : [res.data.gender],
-                        } : {};
+                        }) : {});
                     }else{
                         this.formData = {};
                     }
@@ -141,6 +145,7 @@
                         gender : this.formData.gender[0],
                         qq : this.formData.qq,
                         emailAddr : this.formData.emailAddr,
+                        homeAddr : this.formData.homeAddr,
                     }).then(res => {
                         if(res.success){
                             this.$vux.toast.show({
@@ -220,17 +225,44 @@
                         resolve();
                     }
                 });
+            },
+            /**
+             * 获取成长值
+             */
+            getGrowthBalance () {
+                ajax.post('getGrowthBalance',{
+                    cardId : this.userInfo.cardId
+                }).then(res => {
+                    if(res.success){
+                        this.$set(this.formData,'growth',res.data ? res.data.accountBalance : '');
+                    }else{
+                        this.formData.growth = '';
+                    }
+                });
             }
         },
         beforeRouteEnter (to,from,next){
             next(vm => {
                 vm.getMemberDetail();
+                vm.getGrowthBalance();
             });
         },
         computed : {
             ...mapGetters({
                 userInfo : 'userInfo'
-            })
+            }),
+            //证件号码
+            idNum () {
+                if(this.formData && this.formData.idCardNumber){
+                    if(this.formData.certificationTypeName){
+                        return this.formData.idCardNumber + '(' + this.formData.certificationTypeName + ')'
+                    }else{
+                        return this.formData.idCardNumber;
+                    }
+                }else{
+                    return '';
+                }
+            }
         }
     }
 </script>

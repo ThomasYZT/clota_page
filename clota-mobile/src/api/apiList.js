@@ -33,7 +33,11 @@ const apiList = {
     //设置交易密码
     updateTradePassword: '/external/memberInfo/updateTradePassword',
     //校验验证码是否正确
-    checkCode: '/external/memberInfo/checkCode'
+    checkCode: '/external/memberInfo/checkCode',
+    //获取成长值
+    getGrowthBalance: '/external/memberInfo/getGrowthBalance',
+    //查询所有证件类型
+    queryDocument: '/external//memberInfo/queryDocument'
 };
 
 export default apiList;
