@@ -462,6 +462,7 @@
                                 }else{
                                     this.getSceneDetail();
                                 }
+                                this.$store.dispatch('freshOrgs');
                             }else{
                                 this.$Message.error(res.message | '修改失败');
                             }

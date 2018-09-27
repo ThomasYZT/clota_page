@@ -525,7 +525,7 @@
                         }).then(res => {
                             if(res.success){
                                 this.$Message.success('修改成功');
-                                //修改了节点的名字，需要刷新左侧的组织树
+                                //修改了节点的名字,修改启用、未启用状态，修改管理上级或财务上级，需要刷新左侧的组织树
                                 if(this.formDataCopy.orgName !== this.companyDetail.orgName){
                                     this.freshOrg();
                                 }else if(this.formDataCopy.parentManageId !== this.companyDetail.parentManageId){
@@ -535,6 +535,7 @@
                                 }else{
                                     this.getCompanyDetail();
                                 }
+                                this.$store.dispatch('freshOrgs');
                             }else{
                                 this.$Message.error('修改失败');
                             }
@@ -818,7 +819,10 @@
             @include overflow_tip(100%, 65px);
             padding: 14px 0 0 0;
 
-            .com-min-width{}
+            &.com-min-width{
+                max-width: 1000px;
+                margin: 0 auto;
+            }
 
             /deep/ .ivu-switch{
                 margin-left: 20px;
