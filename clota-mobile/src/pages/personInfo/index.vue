@@ -51,16 +51,20 @@
                     disabled
                     :value="formData.alipayAcct">
                 </cell>
-                <cell
+                <x-input
                     :title="$t('qq')"
-                    is-link
-                    :value="formData.qq">
-                </cell>
-                <cell
+                    text-align="right"
+                    :show-clear="false"
+                    v-model.trim="formData.qq"
+                    placeholder-align="right">
+                </x-input>
+                <x-input
                     :title="$t('email')"
-                    is-link
-                    :value="formData.emailAddr">
-                </cell>
+                    text-align="right"
+                    :show-clear="false"
+                    v-model.trim="formData.emailAddr"
+                    placeholder-align="right">
+                </x-input>
                 <cell
                     :title="$t('growth')"
                     disabled
@@ -68,7 +72,7 @@
                 </cell>
                 <cell
                     :title="$t('entityCardId')"
-                    is-link
+                    disabled
                     :value="formData.tpNo">
                 </cell>
                 <cell
@@ -79,7 +83,7 @@
             </group>
         </div>
         <div class="btn-area">
-            <x-button @click.native="recharge">{{$t('save')}}</x-button>
+            <x-button @click.native="saveInfo">{{$t('save')}}</x-button>
         </div>
     </div>
 </template>
@@ -88,6 +92,7 @@
     import {genderEnum} from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
+    import {validator} from 'klwk-ui';
     export default {
         data() {
             return {
@@ -118,6 +123,101 @@
                         } : {};
                     }else{
                         this.formData = {};
+                    }
+                });
+            },
+            /**
+             * 保存用户信息
+             */
+            saveInfo () {
+                this.validateName().then(() => {
+                    return this.validateQQ();
+                }).then(() =>{
+                    return this.validateEmail();
+                }).then(() => {
+                    ajax.post('updateMemberInfo',{
+                        id : this.userInfo.memberId,
+                        custName : this.formData.name,
+                        gender : this.formData.gender[0],
+                        qq : this.formData.qq,
+                        emailAddr : this.formData.emailAddr,
+                    }).then(res => {
+                        if(res.success){
+                            this.$vux.toast.show({
+                                text: '保存成功'
+                            });
+                            this.getMemberDetail();
+                        }else{
+                            this.$vux.toast.show({
+                                text: '保存失败',
+                                type : 'cancel'
+                            });
+                        }
+                    });
+                });
+            },
+            /**
+             * 校验姓名
+             */
+            validateName () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData && !this.formData.name){
+                        this.$vux.toast.show({
+                            text: '请输入姓名',
+                            type: 'text',
+                            width: '5rem'
+                        });
+                        reject();
+                    }else if(this.formData.name.length > 15){
+                        this.$vux.toast.show({
+                            text: '姓名最多输入15个字符',
+                            type: 'text',
+                            width: '6rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验qq
+             */
+            validateQQ () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData.qq.length > 50){
+                        this.$vux.toast.show({
+                            text: 'qq最多输入50个字符',
+                            type: 'text',
+                            width: '6rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验邮箱
+             */
+            validateEmail () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData.emailAddr.length > 100){
+                        this.$vux.toast.show({
+                            text: 'E-mail最多输入100个字符',
+                            type: 'text',
+                            width: '6rem'
+                        });
+                        reject();
+                    }else  if(this.formData.emailAddr && !validator.isEmail(this.formData.emailAddr)){
+                        this.$vux.toast.show({
+                            text: 'E-mail格式错误',
+                            type: 'text',
+                            width: '6rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
                     }
                 });
             }
@@ -185,6 +285,10 @@
                     color: #353B48;
                     margin-right: 10px;
                 }
+            }
+
+            /deep/.vux-cell-value{
+                color: #353B48;
             }
 
             /deep/ .weui-cell{

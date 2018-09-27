@@ -27,7 +27,9 @@ const apiList = {
     //获取个人信息
     getMemberDetail: '/external/memberInfo/getMemberDetail',
     //修改手机号码
-    updatePhoneNum: '/external/memberInfo/updatePhoneNum'
+    updatePhoneNum: '/external/memberInfo/updatePhoneNum',
+    //修改个人信息
+    updateMemberInfo: '/external/memberInfo/updateMemberInfo'
 };
 
 export default apiList;
