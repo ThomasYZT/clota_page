@@ -1,15 +1,15 @@
 
 /*@import '//at.alicdn.com/t/font_772944_l8eqwm2u4qi.css';*/
-@import '//at.alicdn.com/t/font_848322_6ergkej9vhf.css';
+/*@import '//at.alicdn.com/t/font_848322_6ergkej9vhf.css';*/
 
-.iconfont {
-    font-family: "iconfont" !important;
-    font-size: 15px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    vertical-align: middle;
-}
+/*.iconfont {*/
+    /*font-family: "iconfont" !important;*/
+    /*font-size: 15px;*/
+    /*font-style: normal;*/
+    /*-webkit-font-smoothing: antialiased;*/
+    /*-moz-osx-font-smoothing: grayscale;*/
+    /*vertical-align: middle;*/
+/*}*/
 
 @font-face {
     font-family: 'pingfang';
@@ -24,4 +24,125 @@
 }
 body {
     font-family: 'pingfang'!important;
+}
+@font-face {
+    font-family: 'iconfont';
+    src:  url('../fonts/iconfont.eot?entsm6');
+    src:  url('../fonts/iconfont.eot?entsm6#iefix') format('embedded-opentype'),
+    url('../fonts/iconfont.ttf?entsm6') format('truetype'),
+    url('../fonts/iconfont.woff?entsm6') format('woff'),
+    url('../fonts/iconfont.svg?entsm6#iconfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.iconfont {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'iconfont' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-security-setting:before {
+    content: "\e900";
+    color: #f46462;
+}
+.icon-members-info:before {
+    content: "\e901";
+    color: #f46462;
+}
+.icon-member-code:before {
+    content: "\e902";
+    color: #f46462;
+}
+.icon-member-rights:before {
+    content: "\e904";
+    color: #6f62e5;
+}
+.icon-valid-range:before {
+    content: "\e905";
+    color: #6f62e5;
+}
+.icon-my-points:before {
+    content: "\e906";
+    color: #f46462;
+}
+.icon-default-account:before {
+    content: "\e907";
+    color: #368ce3;
+}
+.icon-year-card-info:before {
+    content: "\e908";
+    color: #ff9700;
+}
+.icon-explain:before {
+    content: "\e909";
+    color: #368ce3;
+}
+.icon-my-orders:before {
+    content: "\e90a";
+    color: #ff9700;
+}
+.icon-my-package:before {
+    content: "\e90b";
+    color: #368ce3;
+}
+.icon-check-flow1:before {
+    content: "\e90c";
+    color: #6f62e5;
+}
+.icon-alipay:before {
+    content: "\e903";
+}
+.icon-level:before {
+    content: "\e918";
+}
+.icon-switch:before {
+    content: "\e919";
+}
+.icon-code:before {
+    content: "\e91d";
+}
+.icon-checked:before {
+    content: "\e91e";
+}
+.icon-member-recharge .path1:before {
+    content: "\e91f";
+    color: rgb(111, 98, 229);
+}
+.icon-member-recharge .path2:before {
+    content: "\e920";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-member-recharge .path3:before {
+    content: "\e921";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-arrow:before {
+    content: "\e922";
+}
+.icon-wx-pay:before {
+    content: "\e923";
+}
+.icon-arrow-right:before {
+    content: "\e924";
+}
+.icon-check-flow .path1:before {
+    content: "\e925";
+    color: rgb(244, 100, 98);
+}
+.icon-check-flow .path2:before {
+    content: "\e926";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
 }

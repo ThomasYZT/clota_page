@@ -30,9 +30,11 @@
                 </router-view>
             </transition>
         </drawer>
-        <div class="lang-change" @click="changeLang">
-            <span class="iconfont icon-switch"></span>
-        </div>
+        <drag>
+            <div class="lang-change" @click="changeLang">
+                <span class="iconfont icon-switch"></span>
+            </div>
+        </drag>
         <!--切换语言弹窗-->
         <div v-transfer-dom>
             <confirm v-model="confirmShow"
@@ -56,11 +58,13 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex';
+    import drag from '@/components/drag/index.vue';
 
     export default {
         name : 'app',
         components: {
+            drag
         },
         data() {
             return {
@@ -145,10 +149,14 @@
     }
     #app{
 
-        .lang-change{
-            position: fixed;
+        .drag-label{
+            width: 40px;
+            height: 40px;
             bottom : 50px;
             right: 0;
+        }
+
+        .lang-change{
             width: 40px;
             height: 40px;
             background: #BBC5D5;

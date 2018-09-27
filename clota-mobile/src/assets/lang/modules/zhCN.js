@@ -91,6 +91,7 @@ export default {
     checkFlow: '资金明细',
     memberCode: '会员二维码',
     card: '我的卡包',
-    memberRight: '会员权益'
+    memberRight: '会员权益',
+    timeCardInfo : '次卡信息'
 
 }

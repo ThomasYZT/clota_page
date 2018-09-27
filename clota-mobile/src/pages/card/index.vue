@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <!--年卡信息-->
-                    <card-info title="年卡信息" :card-info="yearyCardInfo">
+                    <card-info :title="$t('yearCardInfo')" :card-info="yearyCardInfo">
                     </card-info>
                     <!--成员信息-->
                     <member-info :avail-persons="yearyCardInfo.availPersons">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <!--次卡信息-->
-                    <card-info title="次卡信息" :card-info="timeCardInfo">
+                    <card-info :title="$t('timeCardInfo')" :card-info="timeCardInfo">
                     </card-info>
                     <!--成员信息-->
                     <member-info :avail-persons="timeCardInfo.availPersons">

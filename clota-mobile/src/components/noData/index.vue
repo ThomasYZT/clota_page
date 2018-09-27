@@ -30,7 +30,7 @@
         justify-content: center;
 
         img{
-            @include block_outline(120px,120px,false);
+            @include block_outline(150px,150px,false);
         }
     }
 </style>
