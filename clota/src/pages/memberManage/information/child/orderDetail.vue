@@ -17,7 +17,7 @@
         <!--支付方式子表-->
         <order-info-pay :info-data="order.payModels"></order-info-pay>
         <!--积分率信息-->
-        <order-info-integral :info-data="order.memberOrderModel.scoreRule || {}"></order-info-integral>
+        <order-info-integral :info-data="order.memberOrderModel.scoreRule ? JSON.parse(order.memberOrderModel.scoreRule) : {}"></order-info-integral>
 
     </div>
 </template>

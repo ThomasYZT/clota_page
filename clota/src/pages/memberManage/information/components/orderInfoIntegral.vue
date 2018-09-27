@@ -12,7 +12,7 @@
             <table-com
                 :ofsetHeight="170"
                 :column-data="byLevelHead"
-                :table-data="infoData.memberList ? [infoData.memberList] : []"
+                :table-data="infoData.memberList ? [JSON.parse(infoData.memberList)] : []"
                 :table-com-min-height="300"
                 :border="true">
                 <el-table-column
@@ -44,7 +44,7 @@
             <table-com
                 :ofsetHeight="170"
                 :column-data="byShopHead"
-                :table-data="infoData.storeList"
+                :table-data="infoData.storeList ? JSON.parse(infoData.storeList) : []"
                 :table-com-min-height="300"
                 :border="true">
                 <el-table-column
@@ -128,7 +128,7 @@
         }),
         typeList() {
             if (this.infoData.typeList) {
-                let typeEntries = Object.entries(this.infoData.typeList);
+                let typeEntries = Object.entries(JSON.parse(this.infoData.typeList));
                 for (let i=0; i<typeEntries.length; i++) {
                     typeEntries[i] = Object.assign({orgName: typeEntries[i][0]}, typeEntries[i][1][0]);
                 }
