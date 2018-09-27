@@ -72,7 +72,7 @@
                             phoneNum: this.loginInfo.phoneNum
                         }).then((res) => {
                             if(!res.success) {
-                                this.msg = '获取验证码失败！'
+                                this.$vux.toast.text(this.$t('getCodeFailed'))
                             }
                         })
                     });
@@ -99,7 +99,7 @@
                             //登陆跳转到主页
                             this.$router.push({ name: 'home'});
                         } else if(res.toString() === 'Error: Network Error'){
-                            this.$vux.toast.text('网络不好');
+                            this.$vux.toast.text($t('netNotGood'));
                         }else {
                             this.$vux.toast.text(res.message);
                         }
@@ -115,7 +115,7 @@
 
                 //验证验证码不为空
                 if(this.loginInfo.vcode === '') {
-                    this.msg = "请输入验证码";
+                    this.$vux.toast.text(this.$t('pleaseInputValidCode'))
                     return;
                 }
 
@@ -130,12 +130,12 @@
             phoneValidate(callback) {
                 this.msg = '';
                 if(this.loginInfo.phoneNum === '') {
-                    this.msg = '请输入手机号码'
+                    this.$vux.toast.text($t('pleaseEnterMobile'))
                     return;
                 } else {
                     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
                     if(!phoneReg.test(this.loginInfo.phoneNum)) {
-                        this.msg = "请输入正确的手机号";
+                        this.$vux.toast.text($t('pleaseEnterRightMobile'))
                         return;
                     }else {
                         if(callback) {

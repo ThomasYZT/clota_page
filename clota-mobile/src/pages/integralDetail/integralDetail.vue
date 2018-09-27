@@ -8,47 +8,61 @@
           <h5 class="score">{{num}}</h5>
           <p class="name">{{$t('integralDetail')}}</p>
       </div>
-
-      <div class="content">
+      <scroll ref="scroll"
+              :data="infoList"
+              :scrollbar="scrollbar"
+              :pullDownRefresh="pullDownRefreshObj"
+              :pullUpLoad="pullUpLoadObj"
+              @pullingDown="onPullingDown"
+              @pullingUp="onPullingUp">
           <score-item v-for="(item, index) in infoList"
                       :key="index"
                       :info="item">
 
           </score-item>
-      </div>
+      </scroll>
   </div>
 </template>
 
 <script>
+    import Scroll from '../../components/scroll/scroll'
     import scoreItem from './components/scoreItem';
     import ajax from '../../api/index';
     import {mapGetters} from 'vuex'
 
     export default {
         components: {
-            scoreItem
+            scoreItem,
+            Scroll
         },
         data() {
             return {
-                infoList: [],/*[
-                    {
-                        ticketName: '北京欢乐谷门票',
-                        time: '2018.06.02 08:00:00',
-                        check: -4000
-                    },
-                    {
-                        ticketName: '北京欢乐谷门票',
-                        time: '2018.06.02 08:00:00',
-                        check: -3000
-                    },
-                    {
-                        ticketName: '储值100元',
-                        time: '2018.06.02 08:00:00',
-                        check: 4000
-                    }
-                ]*/
+                infoList: [],
                 //积分总数
-                num: 0
+                num: 0,
+                //是否显示滚动条
+                scrollbar: false,
+                //下拉刷新配置
+                pullDownRefreshObj: {
+                    //临界值
+                    threshold: 90,
+                    //刷新完成bubble停留的位置
+                    stop: 40,
+                    //设置加载和加载中显示的文字
+                    txt: '刷新完成'
+                },
+                //上拉加载配置
+                pullUpLoadObj: {
+                    //临界值
+                    threshold: 20,
+                    //设置加载和加载中显示的文字
+                    txt: {more: 'loading', noMore: 'noMoreData'}
+                },
+                //分页设置
+                pageSetting: {
+                    pageNo: 1,
+                    pageSize: 10
+                }
             }
         },
         methods: {
@@ -60,18 +74,43 @@
                     accountTypeIds: '2',
                     operType: '',
                     cardId: this.userInfo.cardId,
-                    pageNo: 1,
-                    pageSize: 20
+                    ...this.pageSetting
                 }).then((res) => {
                     if(res.success) {
-                        this.infoList = res.data.data;
-                        this.num = res.data.data.reduce((preValue, curValue) => {
+                        if(this.pageSetting.pageNo === 1) {
+                            this.infoList = res.data.data;
+                        } else {
+                            if(res.data.data.length !== 0) {
+                                this.infoList = this.infoList.concat(res.data.data);
+                            }else {
+                                this.refresh();
+                            }
+                        }
+                        this.num = this.infoList.reduce((preValue, curValue) => {
                             return preValue + parseInt(curValue.amount)
                         }, 0);
                     }else {
                         this.$vux.toast.text(res.message)
                     }
                 })
+            },
+            /**
+             * 下拉刷新函数
+             */
+            onPullingDown() {
+                this.pageSetting.pageNo = 1;
+                this.getData();
+            },
+            /**
+             * 上拉刷新配置
+             */
+            onPullingUp() {
+                this.pageSetting.pageNo += 1;
+                this.getData();
+            },
+            //强制刷新scroll
+            refresh() {
+                this.$refs.scroll.forceUpdate();
             }
         },
         computed: {

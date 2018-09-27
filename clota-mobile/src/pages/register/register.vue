@@ -78,7 +78,7 @@
                             phoneNum: this.registerInfo.phoneNum
                         }).then((res) => {
                            if(!res.success) {
-                               this.msg = '获取验证码失败！'
+                               this.$t('getCodeFailed')
                            }
                         })
                     });
@@ -106,7 +106,7 @@
                         companyCode: '000000071' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
-                            this.$vux.toast.text('注册成功');
+                            this.$vux.toast.text($t('registSuccess'));
                             this.$router.push({name: 'mobileLogin'})
                         }else {
                             this.$vux.toast.text(res.message);
@@ -120,7 +120,7 @@
             validate(callback) {
                 //验证姓名不为空
                 if(this.registerInfo.custName === '') {
-                    this.msg = "请输入姓名";
+                    this.$vux.toast.text($t('pleaseEnterName'))
                     return;
                 }
 
@@ -129,13 +129,13 @@
 
                 //验证验证码不为空
                 if(this.registerInfo.vcode === '') {
-                    this.msg = "请输入验证码";
+                    this.$vux.toast.text(this.$t('pleaseInputValidCode'))
                     return;
                 }
 
                 //验证性别不为空
                 if(this.registerInfo.gender.length == 0) {
-                    this.msg = "请选择性别";
+                    this.$vux.toast.text($t('pleaseEnterSex'))
                     return;
                 }
 
@@ -150,12 +150,12 @@
             phoneValidate(callback) {
                 this.msg = '';
                 if(this.registerInfo.phoneNum === '') {
-                    this.msg = '请输入手机号码'
+                    this.$vux.toast.text($t('pleaseEnterMobile'))
                     return;
                 } else {
                     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
                     if(!phoneReg.test(this.registerInfo.phoneNum)) {
-                        this.msg = "请输入正确的手机号";
+                        this.$vux.toast.text($t('pleaseEnterRightMobile'))
                         return;
                     }else {
                         if(callback) {

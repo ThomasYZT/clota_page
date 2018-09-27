@@ -18,7 +18,7 @@
                   <div class="right">
                       <div  class="card-level">
                         <i class="iconfont icon-level">{{cardLevel}}</i>
-                        <span class="level-name">{{lvName}}</span>
+                        <span class="level-name">{{cardInfo.levelDesc}}</span>
                       </div>
                   </div>
               </div>
@@ -150,7 +150,7 @@
                 labelList: labelList,
                 cardBg: 'url(' + onelevelMember + ')',
                 cardLevel: 1,
-                lvName: '普通会员',
+                lvName: '',
                 //会员卡字体颜色
                 cardFontColor: '#fff'
             }
@@ -174,6 +174,7 @@
                     pageSize: 100
                 }).then((res) => {
                     if(res.success) {
+                        console.log(res.data.data[0])
                         res.data.data[0].levelNum = 4;
                         //存储会员卡信息
                         sessionStorage.setItem('cardInfo', JSON.stringify(res.data.data[0]));
@@ -207,26 +208,31 @@
                         this.cardFontColor = "#fff";
                         this.cardBg = 'url(' + this.bgList[0] + ')';
                         this.cardLevel = 1;
-                        this.lvName = '普通会员';
+                        this.lvName = 'regularMembers';
                         break;
                     case '2':
                         this.cardFontColor = "#fff";
                         this.cardBg = 'url(' + this.bgList[1] + ')';
                         this.cardLevel = 2;
-                        this.lvName = '黄金会员';
+                        this.lvName = 'goldMember';
                         break;
                     case '3':
                         this.cardFontColor = "#fff";
                         this.cardBg = 'url(' + this.bgList[2] + ')';
                         this.cardLevel = 3;
-                        this.lvName = '铂金会员';
+                        this.lvName = 'platinumMember';
                         break;
                     case '4':
                         this.cardFontColor = "#F0D890";
                         this.cardBg = 'url(' + this.bgList[3] + ')';
                         this.cardLevel = 4;
-                        this.lvName = '钻石会员';
+                        this.lvName = 'diamondMembers';
                         break;
+                    default:
+                        this.cardFontColor = "#fff";
+                        this.cardBg = 'url(' + this.bgList[0] + ')';
+                        this.cardLevel = 1;
+                        this.lvName = 'regularMembers';
                 }
 
             }

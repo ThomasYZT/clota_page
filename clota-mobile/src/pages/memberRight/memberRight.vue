@@ -5,13 +5,25 @@
 <template>
   <div class="member-right">
       <div class="top-tab">
-          <p>{{'会员享受积分、折扣率权益说明'}}</p>
+          <p>{{$t('memberRightInfo')}}</p>
       </div>
 
       <div class="member-right-content">
-          <h3 class="category">按会员级别</h3>
-          <illustration-board v-for="(item, index) in infoList"
-                              :key="index"
+          <h3 class="category">{{$t('memberVos')}}</h3>
+          <illustration-board v-for="(item, index) in memberVos"
+                              :key="item.id"
+                              :info="item">
+          </illustration-board>
+
+          <h3 class="category">{{$t('productMap')}}</h3>
+          <illustration-board v-for="(item, index) in productMap"
+                              :key="item.id"
+                              :info="item">
+          </illustration-board>
+
+          <h3 class="category">{{$t('storeVos')}}</h3>
+          <illustration-board v-for="(item, index) in storeVos"
+                              :key="item.id"
                               :info="item">
           </illustration-board>
       </div>
@@ -20,30 +32,83 @@
 
 <script>
     import illustrationBoard from './components/illustrationBoard'
-  export default {
-    components: {
-        illustrationBoard
-    },
-    data() {
-      return {
-          infoList: [
-              {
-                  name: '白银会员',
-                  IntegralRate: '1:2',
-                  unit: '人名币:积分',
-                  depositRate: '1:2',
-              },
-              {
-                  name: '白银会员',
-                  IntegralRate: '1:2',
-                  unit: '人名币:积分',
-                  depositRate: '1:2',
-              }
-          ]
-      }
-    },
-    methods: {}
-  }
+    import ajax from '../../api/index'
+    import {mapGetters} from 'vuex'
+    export default {
+        components: {
+            illustrationBoard
+        },
+        data() {
+            return {
+                memberVos: [
+                    {
+                        name: '白银会员',
+                        IntegralRate: '1:2',
+                        unit: '人名币:积分',
+                        depositRate: '1:2',
+                    },
+                    {
+                        name: '白银会员',
+                        IntegralRate: '1:2',
+                        unit: '人名币:积分',
+                        depositRate: '1:2',
+                    }
+                ],
+                productMap: [
+                    {
+                        name: '白银会员',
+                        IntegralRate: '1:2',
+                        unit: '人名币:积分',
+                        depositRate: '1:2',
+                    },
+                    {
+                        name: '白银会员',
+                        IntegralRate: '1:2',
+                        unit: '人名币:积分',
+                        depositRate: '1:2',
+                    }
+                ],
+                storeVos: [
+                    {
+                        name: '白银会员',
+                        IntegralRate: '1:2',
+                        unit: '人名币:积分',
+                        depositRate: '1:2',
+                    },
+                    {
+                        name: '白银会员',
+                        IntegralRate: '1:2',
+                        unit: '人名币:积分',
+                        depositRate: '1:2',
+                    }
+                ],
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'userInfo'
+            ])
+        },
+        methods: {
+            /**
+             * 获取页面数据
+             */
+            getData() {
+                ajax.post('listMemberCardRate', {
+                    cardId: this.userInfo.cardId
+                }).then((res) => {
+                    if(res.success) {
+                        console.log(res);
+                    }else {
+                        this.$vux.toast.text(res.message)
+                    }
+                })
+            }
+        },
+        created() {
+            this.getData();
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -68,6 +133,8 @@
         }
 
         .member-right-content {
+            overflow: auto;
+            height: 100%;
             margin-top: 43px;
 
             .category {

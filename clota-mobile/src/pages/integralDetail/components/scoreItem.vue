@@ -9,7 +9,7 @@
             <p class="time">{{info.createdTime}}</p>
         </div>
         <div class="check">
-            <p>{{info.amount + '积分'}}</p>
+            <p>{{info.amount + $t('score')}}</p>
         </div>
     </div>
 </template>
