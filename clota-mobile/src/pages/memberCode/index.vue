@@ -5,14 +5,22 @@
         <div class="code-area">
             <!--一维码-->
             <div class="one-code">
-
+                <barcode
+                    :value="chosedAccount['id'] ? chosedAccount['id'] : '0000000000000000000'"
+                    :options="{ displayValue: true }">
+                </barcode>
             </div>
             <!--二维码-->
             <div class="two-code">
                 <qrcode
-                    :value="chosedAccount['accountName']"
+                    v-if="chosedAccount['id']"
+                    :value="chosedAccount['id']"
                     type="canvas">
                 </qrcode>
+                <img class="pre-qr-code"
+                     src="../../assets/images/icon-pre-qrcode.jpg"
+                     v-else
+                     alt="">
             </div>
         </div>
         <!--账户选择-->
@@ -44,9 +52,9 @@
                 </div>
             </popup-header>
             <group gutter="0">
-                <radio :options="menuList" v-model="accountPreChosed">
+                <radio :options="accountList" v-model="accountPreChosed">
                     <template slot-scope="props" slot="each-item">
-                        {{menuList[props.index]['accountName']}}：{{menuList[props.index]['money'] | moneyFilter}}
+                        {{accountList[props.index]['accountName']}}：{{accountList[props.index]['accountBalance'] | moneyFilter}}
                     </template>
                 </radio>
             </group>
@@ -55,13 +63,15 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         data() {
             return {
                 //是否显示账户选择列表
                 visible : false,
                 //账户列表
-                menuList : [
+                accountList : [
                     {
                         value : '1',
                         accountName : '默认账户',
@@ -76,9 +86,9 @@
                     }
                 ],
                 //选择账户
-                accountChosed : '1',
+                accountChosed : '0',
                 //上拉预选择账户
-                accountPreChosed : ''
+                accountPreChosed : '0'
             }
         },
         methods: {
@@ -100,18 +110,54 @@
              */
             popupShow () {
                 this.accountPreChosed = this.accountChosed;
+            },
+            /**
+             * 获取会员信息
+             */
+            getAccountInfo () {
+                ajax.post('listCardAccountInfo',{
+                    cardId : this.userInfo.cardId,
+                    memberId : this.userInfo.memberId
+                }).then(res => {
+                    if(res.success){
+                        this.accountList = res.data ? res.data.map((item,index) => {
+                            return {
+                                ...item,
+                                value : String(index),
+                                key : String(index),
+                            }
+                        }) : [];
+                    }else{
+                        this.accountList = [];
+                    }
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                this.getAccountInfo();
             }
         },
         computed : {
             //选择的账户信息
             chosedAccount (){
-                for(let i = 0,j = this.menuList.length;i < j;i++){
-                    if(this.menuList[i].key === this.accountChosed){
-                        return this.menuList[i];
+                for(let i = 0,j = this.accountList.length;i < j;i++){
+                    if(this.accountList[i].key === this.accountChosed){
+                        return this.accountList[i];
                     }
                 }
                 return {};
-            }
+            },
+            ...mapGetters({
+                userInfo : 'userInfo'
+            })
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.getParams(to.params);
+            });
         }
     }
 </script>
@@ -133,7 +179,10 @@
 
             .one-code{
                 @include block_outline($height : 100px);
-                background: red;
+
+                canvas{
+                    @include block_outline();
+                }
             }
 
             .two-code{
@@ -153,6 +202,10 @@
                     display: block;
                     width: 150px!important;
                     height: 150px!important;
+                }
+
+                .pre-qr-code{
+                    @include block_outline(150px,150px,false);
                 }
             }
         }
@@ -217,10 +270,6 @@
             color: $color_blue;
         }
 
-        /deep/ .vux-popup-header{
-            @include block_outline($height : 72px);
-        }
-
         /deep/ .weui-cell{
             font-size: $font_size_16px;
             height: 50px;
@@ -237,5 +286,8 @@
         line-height: 14px;
         color: $color_999;
         font-size: $font_size_10px;
+    }
+    .vux-popup-header{
+        height: auto;
     }
 </style>

@@ -93,7 +93,7 @@
              */
             listCardAccountInfo () {
                 ajax.post('listCardAccountInfo',{
-                    cardId : this.userInfo.cardInfo,
+                    cardId : this.userInfo.cardId,
                     memberId : this.userInfo.memberId
                 }).then(res => {
                     if(res.success){

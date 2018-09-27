@@ -41,9 +41,14 @@ require('echarts/lib/component/legendScroll');
 
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
+import VueBarcode from '@xkeshi/vue-barcode';
+
 
 let plugin = {};
 plugin.install = function (Vue, options) {
+
+    //一维码插件
+    Vue.component(VueBarcode.name, VueBarcode);
 
     //以插件形式引入vux toast组件
     Vue.use(ToastPlugin,{position: 'middle'});
