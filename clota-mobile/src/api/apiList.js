@@ -29,7 +29,11 @@ const apiList = {
     //修改手机号码
     updatePhoneNum: '/external/memberInfo/updatePhoneNum',
     //修改个人信息
-    updateMemberInfo: '/external/memberInfo/updateMemberInfo'
+    updateMemberInfo: '/external/memberInfo/updateMemberInfo',
+    //设置交易密码
+    updateTradePassword: '/external/memberInfo/updateTradePassword',
+    //校验验证码是否正确
+    checkCode: '/external/memberInfo/checkCode'
 };
 
 export default apiList;
