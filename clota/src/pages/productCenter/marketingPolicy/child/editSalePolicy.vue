@@ -903,9 +903,6 @@
                 this[field] = val;
             },
 
-            //排序
-            sortNumber (a,b){return a - b},
-
             //获取年月日表格 val-当前选择日期 field-当前操作是销售规则/游玩规则
             getDateList ( val, field ) {
                 let obj = {};
@@ -930,7 +927,7 @@
                             }
                         }
                     })
-                };
+                }
                 this[field] = [];
                 for( let year in obj ){
                     if(year && obj[year]){
@@ -938,7 +935,7 @@
                             this[field].push({
                                 year: year,
                                 month: month,
-                                day: (obj[year][month].sort(this.sortNumber)).join('、')
+                                day: (obj[year][month].sort( (a,b) => {return a - b}) ).join('、')
                             })
                         }
                     }
