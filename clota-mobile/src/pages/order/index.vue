@@ -6,7 +6,8 @@
            <li class="order-type"
                v-for="(item,i) in orderTapList"
                :key="i"
-               :class="{'active' : activeTap === item}">
+               :class="{'active' : activeTap === item}"
+               @click="changeTap(item)">
                <span class="iconfont icon-alipay"></span>
                <span class="label">{{$t(item)}}</span>
            </li>
@@ -18,8 +19,8 @@
             <div class="order-info"
                  v-for="item in orderList"
                  :key="item.id">
-                <div class="order-title">暂时没有订单名字</div>
-                <div class="num">{{$t('num')}}：{{item.amount}}</div>
+                <div class="order-title">{{item.orderName | contentFilter}}</div>
+                <div class="num">{{$t('num')}}：{{item.orderProductNum}}</div>
                 <div class="price">{{$t('totalPrice')}}：{{item.amount | moneyFilter(2,'￥') | contentFilter}}</div>
                 <div class="hr"></div>
                 <div class="to-detail">
@@ -52,7 +53,7 @@
                 //订单类型列表
                 orderTapList : [
                     'ticket',
-                    'repase',
+                    'catering',
                     'commodity',
                     'hotel',
                 ]
@@ -79,7 +80,8 @@
                 ajax.post('queryMemberOrder',{
                     cardId : this.userInfo.cardId,
                     pageNo : this.pageNo,
-                    pageSize : this.pageSize
+                    pageSize : this.pageSize,
+                    productType : this.activeTap
                 }).then(res => {
                     if(res.success){
                         this.orderList = res.data ? res.data.data : [];
@@ -93,6 +95,14 @@
              * @param params
              */
             getParams (params) {
+                this.queryMemberOrder();
+            },
+            /**
+             * 切换tap类别
+             * @param tapType
+             */
+            changeTap (tapType) {
+                this.activeTap = tapType;
                 this.queryMemberOrder();
             }
         },

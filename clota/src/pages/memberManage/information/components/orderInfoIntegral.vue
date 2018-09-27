@@ -6,8 +6,8 @@
 
 <template>
     <div class="order-info">
-        <h3>{{$t('积分率信息')}}</h3>
-        <div class="sub-title">{{$t('按会员级别享受积分、折扣率信息')}}</div>
+        <h3>{{$t('integralRateInfo')}}</h3><!--积分率信息-->
+        <div class="sub-title">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
         <div style="width: 515px;">
             <table-com
                 :ofsetHeight="170"
@@ -39,7 +39,7 @@
             </table-com>
         </div>
 
-        <div class="sub-title">{{$t('按店铺享受积分、折扣率信息')}}</div>
+        <div class="sub-title">{{$t('enjoyCouponByShop')}}</div><!--按店铺享受积分、折扣率信息-->
         <div style="width: 665px;">
             <table-com
                 :ofsetHeight="170"
@@ -71,7 +71,7 @@
             </table-com>
         </div>
 
-        <div class="sub-title">{{$t('按产品享受积分、折扣率信息')}}</div>
+        <div class="sub-title">{{$t('enjoyCouponByProduct')}}</div><!--按产品类别享受积分、折扣率信息-->
         <table-com
             :ofsetHeight="170"
             :column-data="byProductHead"
@@ -85,7 +85,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    1 {{$t('integral')}} = {{scope.row.prodScoreRate}} {{$t('yuan')}}
+                    1 {{$t('integral')}} = {{scope.row.prodScoreRate}} {{$t('yuan')}}   <!--积分率-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -95,7 +95,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="lang == 'zh-CN'">{{scope.row.prodDiscountRate}}{{$t('discount')}}</span>
+                    <span v-if="lang == 'zh-CN'">{{scope.row.prodDiscountRate}}{{$t('discount')}}</span><!--折扣率-->
                     <span v-if="lang != 'zh-CN'">{{(1-scope.row.prodDiscountRate)*100}}{{$t('discount')}}</span>
                 </template>
             </el-table-column>

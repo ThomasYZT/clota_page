@@ -507,7 +507,7 @@
         border-radius: 4px 4px 0 0;
 
         .content-footer {
-            margin: 200px 0 40px 0;
+            margin: 20px 0 40px 0;
             text-align: center;
 
             /deep/ .ivu-btn {

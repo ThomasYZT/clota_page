@@ -14,6 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@xkeshi/vue-barcode": "^1.0.0",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "core-js": "^2.5.7",
@@ -22,6 +23,7 @@
     "fundebug-javascript": "^1.2.3",
     "klwk-ui": "^0.4.1",
     "lib-flexible": "^0.3.2",
+    "px2rem-loader": "^0.1.9",
     "vue": "^2.5.2",
     "vue-i18n": "^8.0.0",
     "vue-router": "^3.0.1",
@@ -83,7 +85,6 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
-    "px2rem-loaders": "^0.1.9",
     "rimraf": "^2.6.0",
     "sass": "^1.10.1",
     "sass-loader": "^7.0.3",

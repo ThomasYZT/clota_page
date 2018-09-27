@@ -1,43 +1,43 @@
 <template>
     <div class="order-info">
-        <h3>{{$t('支付方式子表')}}</h3>
+        <h3>{{$t('paySubTable')}}</h3><!--支付方式子表-->
         <Row :gutter="16" v-for="(pItem,index) in infoData" :key="index">
             <Col span="8">
             <ul>
-                <li>
-                    <span class="field-name">{{$t('交易流水号')}}：</span>{{pItem.id}}
+                <li><!--交易流水号-->
+                    <span class="field-name">{{$t('transactionSN')}}：</span>{{pItem.id}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('交易方式顺序号')}}：</span>{{pItem.tradeSort}}
+                <li><!--交易方式顺序号-->
+                    <span class="field-name">{{$t('tradeSerialNum')}}：</span>{{pItem.tradeSort}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('交易方式编号')}}：</span>{{pItem.tradeType}}
-                </li>
-            </ul>
-            </Col>
-            <Col span="8">
-            <ul>
-                <li>
-                    <span class="field-name">{{$t('支付金额')}}：</span>{{pItem.amount}}
-                </li>
-                <li>
-                    <span class="field-name">{{$t('支付方式名称')}}：</span>{{pItem.tradeTypeName}}
-                </li>
-                <li>
-                    <span class="field-name">{{$t('是否撤销')}}：</span>{{pItem.status.includes('cancel') ? $t('yes') : $t('no')}}
+                <li><!--交易方式编号-->
+                    <span class="field-name">{{$t('tradeTypeNum')}}：</span>{{pItem.tradeType}}
                 </li>
             </ul>
             </Col>
             <Col span="8">
             <ul>
-                <li>
-                    <span class="field-name">{{$t('支付流水号')}}：</span>{{pItem.tradeNo}}
+                <li><!--支付金额-->
+                    <span class="field-name">{{$t('payFund')}}：</span>{{pItem.amount}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('会员卡号')}}：</span>{{pItem.cardCode}}
+                <li><!--支付方式名称-->
+                    <span class="field-name">{{$t('payTypeName')}}：</span>{{pItem.tradeTypeName}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('支付时间')}}：</span>{{pItem.createdTime}}
+                <li><!--是否撤销-->
+                    <span class="field-name">{{$t('isRevoke')}}：</span>{{pItem.status.includes('cancel') ? $t('yes') : $t('no')}}
+                </li>
+            </ul>
+            </Col>
+            <Col span="8">
+            <ul>
+                <li><!--支付流水号-->
+                    <span class="field-name">{{$t('paymentSN')}}：</span>{{pItem.tradeNo}}
+                </li>
+                <li><!--会员卡号-->
+                    <span class="field-name">{{$t('cardNo')}}：</span>{{pItem.cardCode}}
+                </li>
+                <li><!--支付时间-->
+                    <span class="field-name">{{$t('paymentTime')}}：</span>{{pItem.createdTime}}
                 </li>
             </ul>
             </Col>

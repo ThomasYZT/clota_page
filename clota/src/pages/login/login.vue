@@ -109,13 +109,18 @@
                                 sessionStorage.setItem('accountName',this.formInline.user);
                                 sessionStorage.setItem('token',res.data ? res.data.token : '');
                                 this.$store.dispatch('getUserInfo',res.data).then(route => {
-                                    this.$router.push({
-                                        path: route.path
-                                    },() => {
-                                        setTimeout(() => {
-                                            this.isLoging = false;
-                                        },500);
-                                    });
+                                    if(route && route.path){
+                                        this.$router.push({
+                                            path: route.path
+                                        },() => {
+                                            setTimeout(() => {
+                                                this.isLoging = false;
+                                            },500);
+                                        });
+                                    }else{
+                                        this.errMsg = this.$t('loginError');
+                                        this.isLoging = false;
+                                    }
                                 });
                             }else if(res.toString() === 'Error: Network Error'){//网络错误
                                 this.errMsg = this.$t('serverFail');
@@ -149,6 +154,7 @@
                                 },500);
                             }
                         }).catch(err => {
+                            this.isLoging = false;
                             this.errMsg = this.$t('loginError');
                             setTimeout(() => {
                                 this.isLoging = false;

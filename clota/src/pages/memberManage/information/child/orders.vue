@@ -3,7 +3,7 @@
     <div class="channel">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="$t('我的订单')">
+            :locale-router="$t('myOrder')"><!--我的订单-->
         </bread-crumb-head>
 
         <div class="filter-box">
