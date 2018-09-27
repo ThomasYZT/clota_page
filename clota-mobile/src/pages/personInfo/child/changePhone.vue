@@ -136,10 +136,18 @@
                             name : 'personInfo'
                         });
                     }else{
-                        this.$vux.toast.show({
-                            text: '修改失败',
-                            type : 'cancel'
-                        })
+                        if(res.code === 'M014'){
+                            this.$vux.toast.show({
+                                text: '您修改的号码已存在，请更换其它手机号码',
+                                type : 'text',
+                                width : '9rem'
+                            })
+                        }else{
+                            this.$vux.toast.show({
+                                text: '修改失败',
+                                type : 'cancel'
+                            })
+                        }
                     }
                 });
             },

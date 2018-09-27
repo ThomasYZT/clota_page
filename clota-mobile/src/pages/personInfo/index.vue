@@ -32,8 +32,8 @@
                 <cell
                     :title="$t('tradePass')"
                     is-link
-                    :value="formData.passwd"
-                    :link="{name : 'changeTradePass'}">
+                    value="*********"
+                    :link="{name : 'changeTradePass',params : {mobile : formData.phoneNum}}">
                 </cell>
                 <cell
                     :title="$t('IdNumber')"
@@ -241,7 +241,6 @@
         background: rgba(242,243,244,1);
         height: 100%;
         overflow: auto;
-        @include padding_place($height : 8px);
 
         .title-info{
             @include block_outline($height : 122px);
@@ -317,10 +316,12 @@
         }
 
         .btn-area{
-            @include block_outline(unquote('calc(100% - 55px)'),42px);
-            margin: 15px auto 0;
+            @include block_outline(100%,68px);
+            background: $color_fff;
+            padding-top: 15px;
 
             /deep/ .weui-btn_default{
+                width: calc(100% - 55px);
                 background: $color_0073EB;
                 font-size: 17px;
                 color: $color_fff;
