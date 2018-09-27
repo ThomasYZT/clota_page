@@ -94,7 +94,7 @@
                 {
                     title: 'checkFlow',
                     link: '/checkFlow',
-                    iconClass: 'icon-check-flow',
+                    iconClass: 'icon-check-flow1',
                     info: '',
                     iconColor: '#6F62E5'
                 },
