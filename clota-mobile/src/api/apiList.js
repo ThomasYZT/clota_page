@@ -23,7 +23,11 @@ const apiList = {
     //查看订单信息
     queryMemberOrder: '/external/order/queryMemberOrder',
     //查看订单信息详情
-    queryOrderDetail: '/external/order/queryOrderDetail'
+    queryOrderDetail: '/external/order/queryOrderDetail',
+    //获取个人信息
+    getMemberDetail: '/external/memberInfo/getMemberDetail',
+    //修改手机号码
+    updatePhoneNum: '/external/memberInfo/updatePhoneNum'
 };
 
 export default apiList;
