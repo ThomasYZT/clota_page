@@ -6,16 +6,21 @@
             <!--一维码-->
             <div class="one-code">
                 <barcode
+                    ref="barcode"
+                    tag="img"
                     :value="chosedAccount['id'] ? chosedAccount['id'] : '0000000000000000000'"
-                    :options="{ displayValue: true }">
+                    :options="{ displayValue: true }"
+                    @click.native="pre1CodeImage">
                 </barcode>
             </div>
             <!--二维码-->
             <div class="two-code">
                 <qrcode
+                    ref="qrCode"
                     v-if="chosedAccount['id']"
                     :value="chosedAccount['id']"
-                    type="canvas">
+                    type="img"
+                    @click.native="showPreImage">
                 </qrcode>
                 <img class="pre-qr-code"
                      src="../../assets/images/icon-pre-qrcode.jpg"
@@ -59,6 +64,13 @@
                 </radio>
             </group>
         </popup>
+        <!--预览图片-->
+        <div v-transfer-dom class="img-preview" :class="{'img-pre-rotate' : preRotate}">
+            <previewer
+                :list="prevList"
+                ref="previewer">
+            </previewer>
+        </div>
     </div>
 </template>
 
@@ -71,24 +83,15 @@
                 //是否显示账户选择列表
                 visible : false,
                 //账户列表
-                accountList : [
-                    {
-                        value : '1',
-                        accountName : '默认账户',
-                        money : '4323.92',
-                        key : '1',
-                    },
-                    {
-                        value : '2',
-                        accountName : '海友酒店账户',
-                        money : '4323.92',
-                        key :  '2',
-                    }
-                ],
+                accountList : [],
                 //选择账户
                 accountChosed : '0',
                 //上拉预选择账户
-                accountPreChosed : '0'
+                accountPreChosed : '0',
+                //预览图片列表
+                prevList : [],
+                //预览图片是否旋转
+                preRotate : false
             }
         },
         methods: {
@@ -138,6 +141,37 @@
              */
             getParams (params) {
                 this.getAccountInfo();
+            },
+            /**
+             * 显示预览二维码
+             */
+            showPreImage () {
+                this.prevList = [
+                    {
+                        src: this.$refs.qrCode.imgData,
+                        w: 240,
+                        h: 240
+                    }
+                ];
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0)
+                });
+            },
+            /**
+             * 显示预览一维码
+             */
+            pre1CodeImage () {
+                this.preRotate = true;
+                this.prevList = [
+                    {
+                        src: this.$refs.barcode.$el.src,
+                        w: 600,
+                        h: 240
+                    }
+                ];
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0)
+                });
             }
         },
         computed : {
@@ -180,7 +214,7 @@
             .one-code{
                 @include block_outline($height : 100px);
 
-                canvas{
+                img{
                     @include block_outline();
                 }
             }
@@ -289,5 +323,20 @@
     }
     .vux-popup-header{
         height: auto;
+    }
+</style>
+
+<style>
+    .img-preview .pswp__bg{
+        background: rgba(0,0,0,0.7)!important;
+    }
+
+    .img-preview .pswp__img{
+        padding: 49px;
+        background: #ffffff;
+    }
+    .img-pre-rotate .pswp__img{
+        transform: rotate(90deg);
+        padding: 20px;
     }
 </style>

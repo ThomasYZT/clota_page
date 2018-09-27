@@ -159,10 +159,7 @@
                     {
                         src: this.$refs.yearQrcode.imgData,
                         w: 240,
-                        h: 240,
-                        initialPosition : {
-                            x : 100
-                        }
+                        h: 240
                     }
                 ];
                 this.$nextTick(() =>{
