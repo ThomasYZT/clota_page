@@ -26,6 +26,8 @@ const apiList = {
     getPrivilege: '/account/getPrivilege',
     //获取第一个会员的注册时间
     getFirstMemberDate: '/member/getFirstMemberDate',
+    //获取当前账户可用机构
+    getManageOrgs: '/account/getManageOrgs',
     //首页接口
     ...index,
     //会员信息接口

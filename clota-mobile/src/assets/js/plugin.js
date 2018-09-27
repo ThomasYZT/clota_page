@@ -105,11 +105,11 @@ plugin.install = function (Vue, options) {
                 }
             },
             //货比格式化
-            moneyFilter(content) {
+            moneyFilter(content,places = 2,symbol = '') {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
-                    return content === 0 ? '0.00' : Number(content).toCurrency();
+                    return content === 0 ? '0.00' : Number(content).formatMoney(places,symbol);
                 }
             }
         },

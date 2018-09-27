@@ -3,49 +3,60 @@
 <template>
     <div class="order-list">
         <ul class="head">
-           <li class="order-type">
+           <li class="order-type"
+               v-for="(item,i) in orderTapList"
+               :key="i"
+               :class="{'active' : activeTap === item}">
                <span class="iconfont icon-alipay"></span>
-               <span class="label">{{$t('ticket')}}</span>
+               <span class="label">{{$t(item)}}</span>
            </li>
-            <li class="order-type">
-                <span class="iconfont icon-alipay"></span>
-                <span class="label">{{$t('repase')}}</span>
-            </li>
-            <li class="order-type">
-                <span class="iconfont icon-alipay"></span>
-                <span class="label">{{$t('product')}}</span>
-            </li>
-            <li class="order-type">
-                <span class="iconfont icon-alipay"></span>
-                <span class="label">{{$t('hotel')}}</span>
-            </li>
         </ul>
         <!--订单列表-->
-        <div class="order-info">
-            <div class="order-title">北京欢乐谷七夕套餐，买一赠一</div>
-            <div class="num">{{$t('num')}}：2</div>
-            <div class="price">{{$t('totalPrice')}}：¥323.32</div>
-            <div class="hr"></div>
-            <div class="to-detail">
-                <span class="for-detail" @click="toOrderDetail">{{$t('toDetail')}}</span>
+        <div
+            class="order-list-info"
+            v-if="orderList.length > 0">
+            <div class="order-info"
+                 v-for="item in orderList"
+                 :key="item.id">
+                <div class="order-title">暂时没有订单名字</div>
+                <div class="num">{{$t('num')}}：{{item.amount}}</div>
+                <div class="price">{{$t('totalPrice')}}：{{item.amount | moneyFilter(2,'￥') | contentFilter}}</div>
+                <div class="hr"></div>
+                <div class="to-detail">
+                    <span class="for-detail" @click="toOrderDetail(item)">{{$t('toDetail')}}</span>
+                </div>
             </div>
         </div>
-        <div class="order-info">
-            <div class="order-title">北京欢乐谷七夕套餐，买一赠一</div>
-            <div class="num">{{$t('num')}}：2</div>
-            <div class="price">{{$t('totalPrice')}}：¥323.32</div>
-            <div class="hr"></div>
-            <div class="to-detail">
-                <span class="for-detail">{{$t('toDetail')}}</span>
-            </div>
-        </div>
+        <!--无数据显示-->
+        <no-data class="page-no-data" >
+        </no-data>
     </div>
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
+    import noData from '@/components/noData/index.vue';
     export default {
+        components : {
+            noData
+        },
         data() {
-            return {}
+            return {
+                pageNo : 1,
+                pageSize : 10,
+                //订单列表
+                orderList : [],
+                //当前订单的类型
+                activeTap : 'ticket',
+                //订单类型列表
+                orderTapList : [
+                    'ticket',
+                    'repase',
+                    'commodity',
+                    'hotel',
+                ]
+            }
         },
         methods: {
             /**
@@ -54,9 +65,46 @@
              */
             toOrderDetail (data) {
                 this.$router.push({
-                    name : 'orderDetail'
+                    name : 'orderDetail',
+                    params : {
+                        orderId : data.id,
+                        orderNo : data.orderNo,
+                    }
                 });
+            },
+            /**
+             * 获取会员订单信息
+             */
+            queryMemberOrder () {
+                ajax.post('queryMemberOrder',{
+                    cardId : this.userInfo.cardId,
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
+                }).then(res => {
+                    if(res.success){
+                        this.orderList = res.data ? res.data.data : [];
+                    }else{
+                        this.orderList = [];
+                    }
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                this.queryMemberOrder();
             }
+        },
+        computed : {
+            ...mapGetters({
+                userInfo : 'userInfo'
+            })
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.getParams(to.params);
+            });
         }
     }
 </script>
@@ -80,6 +128,11 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
+                opacity: 0.5;
+
+                &.active{
+                    opacity: 1;
+                }
 
                 .icon-alipay{
                     @include block_outline(23px,23px,false);
@@ -92,6 +145,15 @@
                     margin-top: 10px;
                 }
             }
+        }
+
+        .page-no-data,
+        .order-list-info{
+            @include block_outline($height : unquote('calc(100% - 85px)'));
+        }
+
+        .order-list-info{
+            overflow: auto;
         }
 
         .order-info{

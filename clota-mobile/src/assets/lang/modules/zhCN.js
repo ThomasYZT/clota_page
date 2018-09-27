@@ -60,8 +60,8 @@ export default {
     toDetail :'查看详情',
     num : '数量',
     totalPrice : '总价',
-    repase : '餐饮',
-    product : '商品',
+    catering : '餐饮',
+    commodity : '商品',
     hotel : '酒店',
     myOrder : '我的订单',
     orderDetail : '订单详情',
@@ -78,5 +78,6 @@ export default {
     pleaseInputIdNum : '请输入证件号码',
     memberInex : '成员{index}',
     male : '男',
-    female : '女'
+    female : '女',
+    identifyCard : '身份证'
 }

@@ -25,7 +25,7 @@
                 </li>
                 <li class="field">
                     <span class="key">{{$t('idCard')}}：</span>
-                    <span class="value">{{item.idno | contentFilter}}（身份证）</span>
+                    <span class="value">{{item.idno | contentFilter}}（{{$t('identifyCard')}}）</span>
                 </li>
             </ul>
         </div>

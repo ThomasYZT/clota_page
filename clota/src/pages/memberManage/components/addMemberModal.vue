@@ -13,9 +13,17 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('memberGrade') + '：'" prop="levelNum"><!--会员等级-->
-                        <Input v-model.trim="formData.levelNum"
+                        <!--<Input v-model.trim="formData.levelNum"
                                type="text"
-                               :placeholder="$t('inputField', {field: $t('memberGrade')})"/><!--请输入会员等级-->
+                               :placeholder="$t('inputField', {field: $t('memberGrade')})"/>--><!--请输入会员等级-->
+                        <Select v-model="formData.levelNum"
+                                :placeholder="$t('selectField', {msg: ''})"
+                                style="width: 280px;"><!--请选择会员等级-->
+                            <Option v-for="item in 12" :key="item"
+                                    :disabled="usedLevels.includes(item)"
+                                    :value="item">{{item}}
+                            </Option>
+                        </Select>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -120,12 +128,15 @@
                     highestGrowthValue: '',
                     remark: '',
                 },
+                // 已被创建的会员级别
+                usedLevels: [],
+
                 ruleValidate: {
                     levelNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('memberGrade')}), trigger: 'blur' },   // 会员等级不能为空
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('memberGrade'), length: 10}), trigger: 'blur' },  // 会员等级不能超过10字符
-                        { validator: validateMethod.emoji, trigger: 'blur' },   //
-                        { validator: validateNumber, trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('memberGrade')}), type: "number", trigger: 'change' },   // 会员等级不能为空
+//                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('memberGrade'), length: 10}), trigger: 'change' },  // 会员等级不能超过10字符
+//                        { validator: validateMethod.emoji, trigger: 'change' },   //
+                        { validator: validateNumber, trigger: 'change' },
                     ],
                     levelDesc: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('levelSetting')}), trigger: 'blur' }, // 会员级别名称不能为空
@@ -157,7 +168,7 @@
         },
         methods: {
 
-            show ( data ) {
+            show ( data, usedLevels ) {
                 if(data && data.id){
                     this.formData = defaultsDeep({}, data);
                     this.formData.levelNum = this.formData.levelNum > -1 ? this.formData.levelNum+'' : '';
@@ -168,6 +179,8 @@
                         this.$refs.formValidate.validateField('highestGrowthValue');
                     }, 300);
                 }
+
+                this.usedLevels = usedLevels;
                 this.visible = true;
             },
 
@@ -238,6 +251,13 @@
             .split-line{
                 margin: 0 12px;
                 color: $color_585858;
+            }
+
+            /deep/ .ivu-select-item-disabled {
+                color: #bbbec4;
+                &:hover {
+                    color: #bbbec4 !important;
+                }
             }
 
         }

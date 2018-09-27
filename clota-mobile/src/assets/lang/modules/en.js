@@ -61,8 +61,8 @@ export default {
     toDetail :'details',
     num : 'Quantity',
     totalPrice : 'Total price',
-    repase : 'FOOD',
-    product : 'commodity',
+    catering : 'FOOD',
+    commodity : 'commodity',
     hotel : 'Hotel',
     myOrder : 'My Order',
     orderDetail : 'order details',
@@ -79,5 +79,6 @@ export default {
     pleaseInputIdNum : '请输入证件号码',
     memberInex : '成员{index}',
     male : '男',
-    female : '女'
+    female : '女',
+    identifyCard : '身份证'
 }

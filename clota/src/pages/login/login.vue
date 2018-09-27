@@ -177,7 +177,7 @@
         },
         computed: {},
         created() {
-            this.formInline.user =  localStorage.getItem('logName') ? localStorage.getItem('logName') : 'zhanzhan';
+            this.formInline.user =  localStorage.getItem('logName') ? localStorage.getItem('logName') : '';
             this.rememberAccount =  !!localStorage.getItem('logName');
         },
     }

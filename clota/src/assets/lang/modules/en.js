@@ -216,7 +216,7 @@ export default {
     'goods': 'Product',
     'failure': 'failure',
     'success': 'success',
-    'failureTip': '{tip} failured',
+    'failureTip': '{tip} failure',
     'successTip': '{tip} success',
     'queryFailure': 'Query failed',
     'name': 'name',
@@ -893,4 +893,9 @@ export default {
     'productType': '产品类别',
     'haveOpenedServices': '已开通服务',
     'accountInvalid': '当前机构或上级机构未启用',
+    'addSelfChannel': '新增自营渠道',
+    'inputAnywordForSearch': '请输入任意信息进行查询',
+    'noGroup': '未分组',
+    'online': '线上',
+    'offline': '线下',
 }

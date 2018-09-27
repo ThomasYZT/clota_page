@@ -2,7 +2,7 @@
 
 <template>
     <div class="card">
-        <div class="tab-wrap">
+        <div class="tab-wrap" v-if="tapInfo.length > 0">
             <!--卡包tap列表-->
             <tab v-model="tabSelected">
                 <tab-item
@@ -15,20 +15,22 @@
         </div>
         <swiper dots-position="center"
                 v-model="cardType"
+                v-if="tapInfo.length > 0"
                 :threshold="100"
                 :aspect-ratio="10"
                 :show-dots="false"
                 @on-index-change="cardTypeChange">
             <swiper-item
+                v-if="tapInfo.includes('yearCard')"
                 class="swiper-demo-img">
                 <div class="year-card">
                     <div class="card-area">
                         <div class="card-inner">
                             <img class="head-img" src="../../assets/images/icon-ali-pay.svg" @click="previewImg" alt="">
-                            <span class="mem-name">刘木子</span>
+                            <span class="mem-name">{{yearyCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{yearyCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
-                            <span class="iconfont icon-alipay" @click="showCode"></span>
+                            <span class="iconfont icon-alipay" @click="showYearCode"></span>
                         </div>
                     </div>
                     <!--年卡信息-->
@@ -41,20 +43,21 @@
                     <use-area :avail-orgs="yearyCardInfo.availOrgs">
                     </use-area>
                     <!--使用说明-->
-                    <use-explain>
+                    <use-explain :explain="yearyCardInfo.instructions">
                     </use-explain>
                 </div>
             </swiper-item>
             <swiper-item
+                v-if="tapInfo.includes('timeCard')"
                 class="swiper-demo-img">
                 <div class="time-card">
                     <div class="card-area">
                         <div class="card-inner">
                             <img class="head-img" src="../../assets/images/icon-ali-pay.svg" alt="">
-                            <span class="mem-name">刘木子</span>
+                            <span class="mem-name">{{timeCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{timeCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
-                            <span class="iconfont icon-alipay"></span>
+                            <span class="iconfont icon-alipay" @click="showTimeCode"></span>
                         </div>
                     </div>
                     <!--次卡信息-->
@@ -67,15 +70,33 @@
                     <use-area :avail-orgs="timeCardInfo.availOrgs">
                     </use-area>
                     <!--使用说明-->
-                    <use-explain>
+                    <use-explain :explain="timeCardInfo.instructions">
                     </use-explain>
                 </div>
             </swiper-item>
         </swiper>
+        <!--无数据显示-->
+        <no-data class="page-no-data" v-else>
+        </no-data>
         <!--预览图片-->
         <div v-transfer-dom class="img-preview">
-            <previewer :list="prevList" ref="previewer"></previewer>
+            <previewer
+                :list="prevList"
+                ref="previewer">
+            </previewer>
         </div>
+        <!--年卡会员二维码-->
+        <qrcode ref="yearQrcode"
+                style="position: absolute;z-index: -1;"
+                :value="yearyCardInfo.physicalCardNo"
+                type="img">
+        </qrcode>
+        <!--次卡会员二维码-->
+        <qrcode ref="timesQrcode"
+                style="position: absolute;z-index: -1;"
+                :value="timeCardInfo.physicalCardNo"
+                type="img">
+        </qrcode>
     </div>
 </template>
 
@@ -85,6 +106,7 @@
     import useArea from './child/useArea';
     import useExplain from './child/use-explain';
     import ajax from '@/api/index.js';
+    import noData from '@/components/noData/index.vue';
     export default {
         data() {
             return {
@@ -105,7 +127,8 @@
             cardInfo,
             memberInfo,
             useArea,
-            useExplain
+            useExplain,
+            noData
         },
         methods: {
             /**
@@ -127,15 +150,36 @@
                 }
             },
             /**
-             * 显示二维码
+             * 显示年卡二维码
              */
-            showCode () {
+            showYearCode () {
                 this.prevList = [
                     {
-                        msrc: require('../../assets/images/test.jpg'),
-                        src: require('../../assets/images/test.jpg'),
+                        src: this.$refs.yearQrcode.imgData,
                         w: 240,
-                        h: 240
+                        h: 240,
+                        initialPosition : {
+                            x : 100
+                        }
+                    }
+                ];
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0)
+                });
+            },
+            /**
+             * 显示次卡二维码
+             */
+            showTimeCode () {
+                this.prevList = [
+                    {
+                        msrc: this.$refs.timesQrcode.imgData,
+                        src: this.$refs.timesQrcode.imgData,
+                        w: 240,
+                        h: 240,
+                        initialPosition : {
+                            x : 100
+                        }
                     }
                 ];
                 this.$nextTick(() =>{
@@ -203,6 +247,10 @@
         @include block_outline();
         overflow: hidden;
         background: rgba(242,243,244,1);
+
+        .page-no-data{
+            @include block_outline();
+        }
 
         .tab-wrap{
             position: fixed;
@@ -367,5 +415,10 @@
 <style>
     .img-preview .pswp__bg{
         background: rgba(0,0,0,0.7)!important;
+    }
+
+    .img-preview .pswp__img{
+        padding: 49px;
+        background: #ffffff;
     }
 </style>

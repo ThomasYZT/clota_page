@@ -63,7 +63,7 @@
                 <!--</li>-->
             </ul>
             <div class="org-info" @click="toggleOrgStatus" v-clickoutside="closeTree">
-                <span class="org-name">{{manageOrgs.orgName}}</span>
+                <span class="org-name" v-w-title="manageOrgs.orgName">{{manageOrgs.orgName}}</span>
                 <span class="iconfont icon-down"></span>
             </div>
             <transition name="fade">

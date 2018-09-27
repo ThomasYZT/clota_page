@@ -1,4 +1,4 @@
-<!---->
+<!--卡包说明-->
 
 <template>
     <div class="use-explain">
@@ -6,15 +6,21 @@
             <span class="iconfont icon-alipay"></span>
             <span class="font-label">{{$t('instructions')}}</span>
         </div>
-        <ul class="explain-list">
-            <li class="explain">1、仅限年卡成员使用</li>
-            <li class="explain">2、年卡不可与其他优惠同时使用</li>
-        </ul>
+        <div class="explain-list">
+            {{explain}}
+        </div>
     </div>
 </template>
 
 <script>
     export default {
+        props : {
+            //订单说明
+            'explain' : {
+                type : String,
+                default : ''
+            }
+        },
         data() {
             return {}
         },
@@ -32,12 +38,9 @@
 
         .explain-list{
             padding: 10px 24px;
-
-            .explain{
-                font-size: $font_size_12px;
-                color: #4A4A4A;
-                line-height: 18px;
-            }
+            font-size: $font_size_12px;
+            color: #4A4A4A;
+            line-height: 18px;
         }
     }
 </style>

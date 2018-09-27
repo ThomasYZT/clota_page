@@ -222,12 +222,14 @@
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
                     partnerObj.successTip = '您已禁用合作伙伴';
-                    partnerObj.failTip = '禁用失败';
+                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('disabled')});    // 禁用失败
                     partnerObj.status = 'invalid';
+                    partnerObj.msgType = 'warning';
                 } else if (scopeRow.status=='invalid') {
                     partnerObj.successTip = '您已启用合作伙伴';
-                    partnerObj.failTip = '启用失败';
+                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('commissioned')});    // 启用失败
                     partnerObj.status = 'valid';
+                    partnerObj.msgType = 'success';
                 }
 
                 ajax.post('updatePartnerStatus', {
@@ -237,10 +239,10 @@
                     if (res.success) {
                         if (isBatch==true) {
                             // 批量操作提示语
-                            this.$Message.success(partnerObj.successTip + '：' + this.$t('batchOperate'));
+                            this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + this.$t('batchOperate'));
                         } else {
                             // 单个操作提示语
-                            this.$Message.success(partnerObj.successTip + '：' + scopeRow.channelName);
+                            this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + scopeRow.channelName);
                         }
 
                         this.queryList();
