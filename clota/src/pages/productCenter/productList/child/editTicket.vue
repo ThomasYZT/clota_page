@@ -214,7 +214,9 @@
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('playPark')"><!--可游玩园区-->
-                            <span class="blue" @click="addPark">+ {{$t('addPark')}}</span>
+                            <span class="blue"
+                                  v-if="productPlayRuleVo.length < parkListCount"
+                                  @click="addPark" >+ {{$t('addPark')}}</span>
                             <table-com
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
@@ -438,6 +440,7 @@
                 columnData: parkColumn,
                 //可游玩园区列表数据
                 parkList: [],
+                parkListCount: 0,
                 //游玩规则-产品园区列表数据
                 productPlayRuleVo: [],
                 //校验规则
@@ -659,8 +662,20 @@
                     confirmCallback : ( data ) => {
                         console.log(data);
                         this.productPlayRuleVo.push(data);
+                        this.dealParkList(data.parkId);
                     }
                 });
+            },
+            //新增成功，可选园区数组数据-1
+            dealParkList ( id ) {
+                let index = null;
+                this.parkList.forEach( (item, i) => {
+                    if(id === item.id){
+                        index = i;
+                        return
+                    }
+                } )
+                this.parkList.splice(index,1);
             },
 
             //返回
@@ -723,8 +738,10 @@
                 }).then(res => {
                     if(res.success){
                         this.parkList = res.data || [];
+                        this.parkListCount = res.data.length || 0;
                     } else {
                         this.parkList = [];
+                        this.parkListCount = 0;
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 })

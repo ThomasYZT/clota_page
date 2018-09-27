@@ -38,7 +38,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('policyValidity')" prop="policyValidity"><!--政策可售期-->
+                        <Form-item :label="$t('policyValidity')" prop="specifiedSaleDateSold"><!--政策可售期-->
                             <Select v-model="formData.saleRule.type"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.policyValidity"
@@ -108,7 +108,6 @@
                                 </Option>
                             </Select>
                             <!--<br/>-->
-                            <!--:open="false"-->
                             <!--日历视图-->
                             <DatePicker
                                 v-model="formData.saleRule.specifiedTime"
@@ -121,7 +120,9 @@
                                 :transfer="false"
                                 :clearable="false"
                                 :editable="false"
-                                style="width: 280px;display: inline-block;margin-left: 15px;">
+                                :confirm="false"
+                                @on-change="changeSaleSelectTime"
+                                style="width: 230px;display: inline-block;margin-left: 15px;">
                                 <a href="javascript:void(0)"></a>
                             </DatePicker>
                             <!--<span class="blue" v-if="formData.saleRule.dateType === 'custom'">{{$t('toList')}}</span>-->
@@ -159,7 +160,7 @@
 
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
-                        <Form-item :label="$t('playDeadline')"><!--游玩期限-->
+                        <Form-item :label="$t('playDeadline')" prop="specifiedPlayDateSold"><!--游玩期限-->
                             <Select v-model="formData.playRule.type"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.playDeadline"
@@ -186,7 +187,7 @@
                             </Form-item>
                         </div>
                         <div class="ivu-form-item-wrap single">
-                            <Form-item :label="$t('weekSold')"><!--每周可玩日期-->
+                            <Form-item :label="$t('weekPlay')"><!--每周可玩日期-->
                                 <Button v-for="(item,index) in weekList"
                                         v-if="index!==0"
                                         class="week-btn"
@@ -212,19 +213,20 @@
                                 </Option>
                             </Select>
                             <!--<br/>-->
-                            <!--:open="false"-->
                             <!--日历视图-->
                             <DatePicker
+                                class="play-rule-time"
                                 v-model="formData.playRule.specifiedTime"
                                 multiple
                                 format="yyyy-MM-dd"
                                 type="date"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 :disabled="formData.playRule.dateType === 'custom' ? false : true"
-                                :open="true"
+                                :open="open"
                                 :transfer="true"
                                 :clearable="false"
                                 :editable="false"
+                                @on-change="changePlaySelectTime"
                                 style="width: 280px;display: inline-block;margin-left: 15px;">
                                 <a href="javascript:void(0)"></a>
                             </DatePicker>
@@ -263,10 +265,11 @@
                 </div>
 
                 <div class="form-content">
-                    <br/>
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('productList')"><!--产品列表-->
-                            <span class="blue" @click="addProduct">+ {{$t('appendProduct')}}</span><!--新增产品-->
+                            <span class="blue"
+                                  v-if="itemsData.length < productListCount"
+                                  @click="addProduct">+ {{$t('appendProduct')}}</span><!--新增产品-->
                             <table-com
                                 :ofsetHeight="120"
                                 :table-com-min-height="260"
@@ -584,6 +587,42 @@
                 }
             };
 
+            //校验售票规则的指定日期
+            const validateSaleData = (rule,value,callback) => {
+                if(this.formData.saleRule.type === 'playBeforeSold' && !(common.isNotEmpty(this.formData.saleRule.beforeDay) && common.isNotEmpty(this.formData.saleRule.afterDay))){
+                    callback(this.$t('inputField',{field : this.$t('aheadDays')}));
+                }else if(this.formData.saleRule.type === 'specifiedPeriodSold'){
+                    if(!(this.formData.saleRule.time[0] && this.formData.saleRule.time[1])){
+                        callback(this.$t('selectField',{msg : this.$t('specifiedTime')}));
+                    }else if(this.formData.saleRule.weekSold.length < 1){
+                        callback(this.$t('selectField',{msg : this.$t('weekSold')}));
+                    }else{
+                        callback();
+                    }
+                }else if(this.formData.saleRule.type === 'specifiedDateSold' && this.formData.saleRule.specifiedTime.length < 1){
+                    callback(this.$t('selectField',{msg : this.$t('specifiedDateSold')}));
+                }else{
+                    callback();
+                }
+            };
+
+            //校验游玩规则的指定日期
+            const validatePlayData = (rule,value,callback) => {
+                if(this.formData.playRule.type === 'specifiedPeriodSold'){
+                    if(!(this.formData.playRule.time[0] && this.formData.playRule.time[1])){
+                        callback(this.$t('selectField',{msg : this.$t('specifiedTime')}));
+                    }else if(this.formData.playRule.weekSold.length < 1){
+                        callback(this.$t('selectField',{msg : this.$t('weekPlay')}));
+                    }else{
+                        callback();
+                    }
+                }else if(this.formData.playRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime.length < 1){
+                    callback(this.$t('selectField',{msg : this.$t('specifiedDateSold')}));
+                }else{
+                    callback();
+                }
+            };
+
             return {
                 //新增/修改 add/modify
                 type: 'add',
@@ -598,7 +637,7 @@
                 //week
                 weekList: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 //控制点选日期控件显示/隐藏
-                open: false,
+                open: true,
                 //表单数据
                 formData: {
                     productType: 'ticket',//业态类型 ticket-票类，repast-餐饮，hotel-酒店，ticket_package-套票
@@ -666,6 +705,12 @@
                         { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
+                    specifiedSaleDateSold: [
+                        { validator: validateSaleData, trigger: 'change' },
+                    ],
+                    specifiedPlayDateSold: [
+                        { validator: validatePlayData, trigger: 'change' },
+                    ],
                 },
                 //枚举数据
                 enumData: {
@@ -686,6 +731,7 @@
                 itemsData: [],
                 //产品列表--用于新增产品弹窗
                 productList: [],
+                productListCount: 0,
 
                 //销售渠道列表及表头
                 saleChannelColumn: selectSaleChannelColumn,
@@ -736,8 +782,10 @@
                 }).then(res => {
                     if(res.success){
                         this.productList = res.data.data || [];
+                        this.productListCount = res.data.data.length || 0;
                     } else {
                         this.productList = [];
+                        this.productListCount = 0;
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
@@ -823,16 +871,54 @@
                 }
             },
 
+            //SaleRule 指定日期可售
+            changeSaleSelectTime ( val ) {
+                if(this.formData.saleRule.dateType && this.formData.saleRule.dateType !== 'custom'){
+                    let holiday = this.enumData.specialHoliday.find( item => this.formData.saleRule.dateType === item.id );
+                    if(val != holiday.rangeDates){
+                        this.formData.saleRule.dateType = 'custom';
+                    }
+                }
+                this.$refs.formValidate.validateField('specifiedSaleDateSold');
+            },
+
+            //PlayRule 指定日期可玩
+            changePlaySelectTime ( val ) {
+                if(this.formData.playRule.dateType && this.formData.playRule.dateType !== 'custom'){
+                    let holiday = this.enumData.specialHoliday.find( item => this.formData.playRule.dateType === item.id );
+                    if(val != holiday.rangeDates){
+                        this.formData.playRule.dateType = 'custom';
+                    }
+                }
+                this.$refs.formValidate.validateField('specifiedPlayDateSold');
+            },
+
             //新增产品，显示新增产品弹窗
             addProduct () {
                 this.$refs.editProduct.show({
                     title : this.$t('append')+this.$t('product'),
                     type: 'add',
                     confirmCallback : ( data ) => {
-                        console.log(data);
+                        this.open = true;
                         this.itemsData.push(data);
+                        this.dealProductList(data.productId);
+                    },
+                    cancelCallback : () => {
+                        this.open = true;
                     }
                 });
+                this.open = false;
+            },
+            //新增成功，可选产品数组数据-1
+            dealProductList ( id ) {
+                let index = null;
+                this.productList.forEach( (item, i) => {
+                    if(id === item.id){
+                        index = i;
+                        return
+                    }
+                } );
+                this.productList.splice(index,1);
             },
             //修改产品
             modify ( data, index ) {
@@ -841,9 +927,14 @@
                     title : this.$t('modify')+this.$t('product'),
                     type: 'modify',
                     confirmCallback : ( data ) => {
+                        this.open = true;
                         this.$set(this.itemsData, index, data);
+                    },
+                    cancelCallback : () => {
+                        this.open = true;
                     }
                 });
+                this.open = false;
             },
             //删除产品
             del ( data, index ) {
@@ -910,13 +1001,21 @@
             //表单校验
             formValidateFunc () {
 
+                //产品
                 if(this.itemsData && this.itemsData.length < 1){
                     this.$Message.warning(this.$t('selectField', {msg: this.$t('addProduct')}));
                     return
                 }
 
+                //渠道
                 if(this.selectedRow && this.selectedRow.length < 1){
                     this.$Message.warning(this.$t('selectField', {msg: this.$t('saleChannels')}));
+                    return
+                }
+
+                //退票规则
+                if(this.formData.returnRule.type !== 'notAllow' && this.formData.returnRule.rules.length < 1){
+                    this.$Message.warning(this.$t('selectField', {msg: this.$t('addReturnRateRule')}));
                     return
                 }
 
@@ -982,10 +1081,10 @@
 
                         //区分新增与修改
                         if( this.type === 'add' ){
-                            this.saveAndEditPolicy( 'addPolicy', params);
+//                            this.saveAndEditPolicy( 'addPolicy', params);
                         }
                         if( this.type === 'modify' ){
-                            this.saveAndEditPolicy( 'modifyPolicy', params);
+//                            this.saveAndEditPolicy( 'modifyPolicy', params);
                         }
                     }
                 })
@@ -1130,11 +1229,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-
-    /deep/ .ivu-date-picker-transfer {
-        z-index: 1000 !important;
-    }
-
     .edit-sale-policy {
         @include block_outline();
         min-width: $content_min_width;
@@ -1301,5 +1395,4 @@
         }
 
     }
-
 </style>
