@@ -54,12 +54,6 @@
                 return data && data.orgName && data.orgName.indexOf(value) !== -1;
             },
             /**
-             * 获取组织树列表
-             */
-            getOrgTree() {
-                this.$store.commit('updatemanageOrgList',common.getOrgTree());
-            },
-            /**
              * 获取选中的组织
              * @returns {string | null}
              */
@@ -110,9 +104,6 @@
                     }, data.orgName)
                 ])
             },
-        },
-        created () {
-            this.getOrgTree();
         },
         mounted () {
             this.$nextTick(() =>{

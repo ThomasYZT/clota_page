@@ -36,13 +36,6 @@ export default {
     },
 
     /**
-     * 获取组织树列表
-     */
-    getOrgTree () {
-        return sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).manageOrgs : [];
-    },
-
-    /**
      * 获取文件类型
      * @param fileName
      * @returns {*}

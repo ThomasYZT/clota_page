@@ -130,6 +130,7 @@
                             this.$emit('fresh-org',this.activeNode);
                             this.getDepDetail();
                         }
+                        this.$store.dispatch('freshOrgs');
                     }else{
                         this.$Message.error('修改失败');
                     }

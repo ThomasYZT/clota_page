@@ -230,6 +230,8 @@ export default new Vuex.Store({
                     Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
                     return new Promise().reject();
                 }
+            }).then(() => {
+                store.dispatch('freshOrgs');
             }).catch(() => {
                 Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
             });
@@ -276,13 +278,20 @@ export default new Vuex.Store({
             ajax.post('getManageOrgs').then(res => {
                 if(res.success){
                     let manageOrgs = res.data ? res.data : [];
-                    let userInfo = Object.assign({
+                    let userInfo = {
+                        ...store.state.userInfo,
                         manageOrgs : manageOrgs
-                    },store.userInfo);
+                    };
                     sessionStorage.setItem('userInfo',JSON.stringify(userInfo));
-                    store.commit('updatemanageOrgList',);
+                    for(let i = 0,j = manageOrgs.length;i < j;i++){
+                        if(store.getters.manageOrgs.id === manageOrgs[i].id){
+                            store.commit('updateManageOrgs',manageOrgs[i]);
+                            break;
+                        }
+                    }
+                    store.commit('updatemanageOrgList',manageOrgs);
                 }else{
-                    store.commit('updatemanageOrgList',{});
+                    store.commit('updatemanageOrgList',[]);
                 }
             });
         }
