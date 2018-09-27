@@ -65,8 +65,11 @@
             </group>
         </popup>
         <!--预览图片-->
-        <div v-transfer-dom class="img-preview" :class="{'img-pre-rotate' : preRotate}">
+        <div v-transfer-dom
+             class="img-preview"
+             :class="{'img-pre-rotate' : preRotate}">
             <previewer
+                :options="options"
                 :list="prevList"
                 ref="previewer">
             </previewer>
@@ -91,7 +94,22 @@
                 //预览图片列表
                 prevList : [],
                 //预览图片是否旋转
-                preRotate : false
+                preRotate : false,
+                options: {
+                    getThumbBoundsFn : index => {
+                        let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+                        let thumbnail = null;
+                        let rect = null;
+                        console.log(this.$refs)
+                        if(index === 0){
+                            thumbnail = this.$refs.barcode.$el;
+                        }else if(index === 1){
+                            thumbnail = this.$refs.qrCode.$el;
+                        }
+                        rect =thumbnail.getBoundingClientRect();
+                        return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
+                    }
+                }
             }
         },
         methods: {

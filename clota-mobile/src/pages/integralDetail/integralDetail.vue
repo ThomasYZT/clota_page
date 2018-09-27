@@ -120,6 +120,8 @@
         },
         created() {
             this.getData();
+        },
+        mounted () {
         }
     }
 </script>

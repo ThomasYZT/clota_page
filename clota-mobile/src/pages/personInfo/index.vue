@@ -105,9 +105,11 @@
                     //姓名
                     name : '',
                     //性别
-                    gender : [],
+                    gender : ['0'],
                     idCardNumber : '',
-                    certificationTypeName : ''
+                    certificationTypeName : '',
+                    homeAddr : '',
+                    emailAddr : '',
                 }
             }
         },

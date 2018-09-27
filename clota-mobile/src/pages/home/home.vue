@@ -13,7 +13,7 @@
                       <div class="img-wrapper">
                           <img class="default-face" src="../../assets/images/defaut-face.png" alt="">
                       </div>
-                      <span class="username">{{cardInfo.custName+" "}}></span>
+                      <span class="username" @click="toPersonInfo">{{cardInfo.custName+" "}}></span>
                   </div>
                   <div class="right">
                       <div  class="card-level">
@@ -235,6 +235,14 @@
                         this.lvName = 'regularMembers';
                 }
 
+            },
+            /**
+             * 跳转到会员详情
+             */
+            toPersonInfo () {
+                this.$router.push({
+                    name : 'personInfo'
+                });
             }
         },
         created() {

@@ -13,7 +13,7 @@
              class="icon iconfont"
              :class="info.iconClass"></i>
           <div class="arrow-wrap">
-              <span class="info">{{info.info | moneyFilter(2,'￥','','')}}</span>
+              <span class="info">{{info.info | moneyFilter(0,'','')}}</span>
               <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
           </div>
       </cell>
