@@ -26,35 +26,68 @@
                 <cell
                     :title="$t('phone')"
                     is-link
-                    value="17237387333"
-                    :link="{name : 'changeMobile'}">
+                    :value="formData.phoneNum"
+                    :link="{name : 'changeMobile',params : {mobile : formData.phoneNum}}">
                 </cell>
                 <cell
                     :title="$t('tradePass')"
                     is-link
-                    :link="{name : 'changeTradePass'}"
-                    value="17237387333">
+                    :value="formData.passwd"
+                    :link="{name : 'changeTradePass'}">
                 </cell>
                 <cell
                     :title="$t('IdNumber')"
                     is-link
                     :link="{name : 'changeId'}"
+                    :value="formData.idCardNumber + '(' + formData.certificationTypeName + ')'">
+                </cell>
+                <cell
+                    :title="$t('wx')"
+                    disabled
+                    :value="formData.wechatAcct">
+                </cell>
+                <cell
+                    :title="$t('ali')"
+                    disabled
+                    :value="formData.alipayAcct">
+                </cell>
+                <cell
+                    :title="$t('qq')"
+                    is-link
+                    :value="formData.qq">
+                </cell>
+                <cell
+                    :title="$t('email')"
+                    is-link
+                    :value="formData.emailAddr">
+                </cell>
+                <cell
+                    :title="$t('growth')"
+                    disabled
                     value="17237387333">
                 </cell>
-                <cell :title="$t('wx')" disabled value="17237387333"></cell>
-                <cell :title="$t('ali')" disabled value="17237387333"></cell>
-                <cell :title="$t('qq')" is-link value="17237387333"></cell>
-                <cell :title="$t('email')" is-link value="17237387333"></cell>
-                <cell :title="$t('growth')" disabled value="17237387333"></cell>
-                <cell :title="$t('entityCardId')" is-link value="17237387333"></cell>
-                <cell :title="$t('address')" is-link value="17237387333"></cell>
+                <cell
+                    :title="$t('entityCardId')"
+                    is-link
+                    :value="formData.tpNo">
+                </cell>
+                <cell
+                    :title="$t('address')"
+                    is-link
+                    :value="formData.homeAddr">
+                </cell>
             </group>
+        </div>
+        <div class="btn-area">
+            <x-button @click.native="recharge">{{$t('save')}}</x-button>
         </div>
     </div>
 </template>
 
 <script>
     import {genderEnum} from '@/assets/js/constVariable.js';
+    import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         data() {
             return {
@@ -69,7 +102,36 @@
                 }
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取个人信息
+             */
+            getMemberDetail () {
+                ajax.post('getMemberDetail',{
+                    memberId : this.userInfo.memberId
+                }).then(res => {
+                    if(res.success){
+                        this.formData = res.data ?{
+                            ...res.data,
+                            name : res.data.custName,
+                            gender : [res.data.gender],
+                        } : {};
+                    }else{
+                        this.formData = {};
+                    }
+                });
+            }
+        },
+        beforeRouteEnter (to,from,next){
+            next(vm => {
+                vm.getMemberDetail();
+            });
+        },
+        computed : {
+            ...mapGetters({
+                userInfo : 'userInfo'
+            })
+        }
     }
 </script>
 
@@ -77,7 +139,7 @@
 	@import '~@/assets/scss/base';
     .person-info{
         background: rgba(242,243,244,1);
-        min-height: 100%;
+        height: 100%;
         overflow: auto;
         @include padding_place($height : 8px);
 
@@ -113,6 +175,8 @@
         .cell-list{
             margin-top: 8px;
             background: $color_fff;
+            height: calc(100% - 200px);
+            overflow: auto;
 
             .arrow-wrap {
                 text-align: right;
@@ -145,6 +209,18 @@
                     font-size: $font_size_14px;
                     color: #353B48;
                 }
+            }
+        }
+
+        .btn-area{
+            @include block_outline(unquote('calc(100% - 55px)'),42px);
+            margin: 15px auto 0;
+
+            /deep/ .weui-btn_default{
+                background: $color_0073EB;
+                font-size: 17px;
+                color: $color_fff;
+                border-radius: 100px;
             }
         }
     }
