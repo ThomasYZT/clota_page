@@ -771,6 +771,7 @@ export default {
     'playDeadline': '游玩期限',
     'specifiedTime': '指定起止日期',
     'weekSold': '每周可玩日期',
+    'weekPlay': '每周可售日期',
     'checkinTime': '入园时间控制',
     'delayValidTime': '下单后延迟生效',
     'saleChannels': '销售渠道',

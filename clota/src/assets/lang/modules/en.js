@@ -771,6 +771,7 @@ export default {
     'playDeadline': 'Play time limit',
     'specifiedTime': 'Specify start and end date',
     'weekSold': 'Weekly saleable period',
+    'weekPlay': 'Weekly playable period',
     'checkinTime': 'Admission time control',
     'delayValidTime': 'Valid delay after placing the order',
     'saleChannels': 'Sales channel',
