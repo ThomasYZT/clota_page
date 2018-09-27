@@ -9,8 +9,8 @@
         <div class="filter-box">
             <Input v-model.trim="filterParam.keyWord"
                    class="input-field"
-                   :placeholder="$t('请输入产品名称、交易号')"
-                   :style="{width : lang === 'zh-CN' ? '240px' : '400px'}"/>
+                   :placeholder="$t('inputOrderSearch')"
+                   :style="{width : lang === 'zh-CN' ? '240px' : '400px'}"/><!--请输入产品名称、交易号-->
             <Button type="primary" :disabled="!filterParam.keyWord" @click="handleSearch">{{$t("query")}}</Button>
             <Button type="ghost" :disabled="!filterParam.keyWord" @click="reset">{{$t("reset")}}</Button>
         </div>

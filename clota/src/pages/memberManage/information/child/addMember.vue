@@ -107,18 +107,18 @@
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--第三方卡号-->
+                    <!--<div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('thirdCardNum')" prop="tpNo">&lt;!&ndash;第三方卡号&ndash;&gt;
                             <Input v-model.trim="member.tpNo"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--第三方卡面号-->
+                        <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo">&lt;!&ndash;第三方卡面号&ndash;&gt;
                             <Input v-model.trim="member.tpCardNo"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
-                    </div>
+                    </div>-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('credentialsType')" prop="certificationType"><!--证件类型-->
                             <Select v-model="member.certificationType"
@@ -307,8 +307,8 @@
                     //卡信息
                     "levelId":"",//会员级别
 //                    "channelId":"",//会员渠道
-                    "tpNo":"",//第三方卡号
-                    "tpCardNo":"",//第三方卡面号
+//                    "tpNo":"",//第三方卡号
+//                    "tpCardNo":"",//第三方卡面号
                 },
                 ruleValidate: {
                     custName: [
@@ -348,15 +348,15 @@
                     cityCode : [
                         {validator : validateNumAndStr,trigger : 'blur',name : this.$t('cityCode'),maxLength : 30}
                     ],
-                    tpNo : [
+                    /*tpNo : [
                         {validator : validateNumAndStr,trigger : 'blur',name : this.$t('thirdCardNum'),maxLength : 30}
-                    ],
+                    ],*/
                     idCardNumber : [
                         {validator : validateNumAndStr,trigger : 'blur',name : this.$t('credentialsCode'),maxLength : 40}
                     ],
-                    tpCardNo : [
+                    /*tpCardNo : [
                         {validator : validateNumAndStr,trigger : 'blur',name : this.$t('thirdCardFaceNum'),maxLength : 30}
-                    ]
+                    ]*/
                 },
                 //编辑原数据
                 info: {},
@@ -395,7 +395,7 @@
                             memberInfo: pick(this.member, ['custName', 'phoneNum','emailAddr','birthDay',
                                 'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
                                 'certificationType','idCardNumber','homeAddr','status']),
-                            memberCard: pick(this.member, ['levelId', 'channelId','tpNo','tpCardNo']),
+                            memberCard: pick(this.member, ['levelId', 'channelId']),
                         };
                         params.memberInfo.birthDay = params.memberInfo.birthDay ?
                             new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
@@ -517,7 +517,7 @@
                 this.info = JSON.parse(JSON.stringify(data));
                 let memberInfo = pick(data, ['custName', 'phoneNum','emailAddr','birthDay',
                     'gender','qq', 'wechatAcct','alipayAcct','cityCode','stateCode','hobby',
-                    'certificationType','idCardNumber','homeAddr','status','tpNo','tpCardNo','levelId','channelId']);
+                    'certificationType','idCardNumber','homeAddr','status','levelId','channelId']);
                 this.member = defaultsDeep({},memberInfo);
             }
 

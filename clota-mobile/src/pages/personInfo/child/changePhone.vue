@@ -3,23 +3,21 @@
 <template>
     <div class="change-phone">
         <div class="phone-img">
+            <span class="iconfont icon-year-card-info"></span>
         </div>
-        <div class="phone-num">{{$t('localePhone')}}：18389903830</div>
+        <div class="phone-num">{{$t('localePhone')}}：{{orginalMobile}}</div>
         <group>
             <x-input
                 :title="$t('mobile')"
                 ref="test"
-                :required="true"
                 text-align="right"
                 :show-clear="false"
-                mask="999 9999 9999"
                 v-model.trim="formData.mobile"
                 :placeholder="$t('pleaseInput')"
                 placeholder-align="right">
             </x-input>
             <x-input :title="$t('validCode')"
                      ref="test1"
-                     :required="true"
                      class="valid-class"
                      v-model.trim="formData.validCode"
                      text-align="right"
@@ -36,14 +34,21 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import {validator} from 'klwk-ui';
+    import {mapGetters} from 'vuex';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         data() {
             return {
                 //表单数据
                 formData : {
                     mobile : '',
                     validCode : ''
-                }
+                },
+                //原来的手机号码
+                orginalMobile : ''
             }
         },
         methods: {
@@ -51,17 +56,143 @@
              * 获取短信验证码
              */
             getValidCode () {
-
+                this.validateMobile().then(() => {
+                    ajax.post('getCode',{
+                        phoneNum : this.formData.mobile
+                    }).then(res => {
+                        if(res.success){
+                            setTimeout(() =>{
+                                this.$vux.toast.show({
+                                    text: '发送成功'
+                                })
+                            },500);
+                        }else{
+                            setTimeout(() =>{
+                                this.$vux.toast.show({
+                                    text: '发送失败',
+                                    type : 'cancel'
+                                })
+                            },500);
+                        }
+                    });
+                });
             },
             /**
              * 保存新手机号
              */
             save () {
-                console.log(this.$refs.test.validate)
-                // this.$refs.test.forceShowError();
-                this.$refs.test.blur();
-                this.$refs.test1.blur();
+                this.validateMobile().then(() => {
+                    return this.validateCode();
+                }).then(() => {
+                    this.updateMemberInfoByCode();
+                });
+            },
+            /**
+             * 校验是否填写了手机号
+             */
+            validateMobile () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData && !this.formData.mobile){
+                        this.$vux.toast.show({
+                            text : '请输入手机号码',
+                            type : 'text',
+                            width : '5rem'
+                        });
+                        reject();
+                    }else if(!validator.isMobile(this.formData.mobile)){
+                        this.$vux.toast.show({
+                            text : '请输入正确的手机号',
+                            type : 'text',
+                            width : '5rem'
+                        });
+                        reject();
+                    }else if(this.formData.mobile === this.orginalMobile){
+                        this.$vux.toast.show({
+                            text : '新手机号码不能和当前号码相同',
+                            type : 'text',
+                            width : '8rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 修改手机号码
+             */
+            updateMemberInfoByCode () {
+                ajax.post('updatePhoneNum',{
+                    id : this.userInfo.memberId,
+                    phoneNum : this.formData.mobile,
+                    code : this.formData.validCode,
+                    companyId : this.userInfo.companyId,
+                }).then(res => {
+                    if(res.success){
+                        this.$vux.toast.show({
+                            text: '修改成功'
+                        });
+                        this.$router.replace({
+                            name : 'personInfo'
+                        });
+                    }else{
+                        if(res.code === 'M014'){
+                            this.$vux.toast.show({
+                                text: '您修改的号码已存在，请更换其它手机号码',
+                                type : 'text',
+                                width : '9rem'
+                            })
+                        }else{
+                            this.$vux.toast.show({
+                                text: '修改失败',
+                                type : 'cancel'
+                            })
+                        }
+                    }
+                });
+            },
+            /**
+             * 校验验证码
+             */
+            validateCode () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData && !this.formData.validCode) {
+                        this.$vux.toast.show({
+                            text: '请输入验证码',
+                            type: 'text',
+                            width: '5rem'
+                        });
+                        reject();
+                    }else if(this.formData.mobile === this.orginalMobile){
+                        this.$vux.toast.show({
+                            text : '新手机号码不能和当前号码相同',
+                            type : 'text',
+                            width : '8rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params.mobile){
+                    this.orginalMobile = params.mobile;
+                }else{
+                    this.$router.push({
+                        name : 'personInfo'
+                    });
+                }
             }
+        },
+        computed : {
+            ...mapGetters({
+                userInfo : 'userInfo'
+            })
         }
     }
 </script>
@@ -78,6 +209,13 @@
             border-radius: 50px;
             background: rgba(47,112,223,0.05);
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon-year-card-info{
+                font-size: 20px;
+            }
         }
 
         .phone-num{

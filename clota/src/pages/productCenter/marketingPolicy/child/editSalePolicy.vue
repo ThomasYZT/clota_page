@@ -110,6 +110,7 @@
                             <!--<br/>-->
                             <!--日历视图-->
                             <DatePicker
+                                v-if="showSaleDatePicker"
                                 v-model="formData.saleRule.specifiedTime"
                                 multiple
                                 format="yyyy-MM-dd"
@@ -125,14 +126,14 @@
                                 style="width: 230px;display: inline-block;margin-left: 15px;">
                                 <a href="javascript:void(0)"></a>
                             </DatePicker>
-                            <!--<span class="blue" v-if="formData.saleRule.dateType === 'custom'">{{$t('toList')}}</span>-->
-                            <!--<span class="blue" v-else>{{$t('toDate')}}</span>-->
+                            <span class="blue" v-if="showSaleDatePicker" @click="showDateType('showSaleDatePicker', false)">{{$t('toList')}}</span>
+                            <span class="blue" v-else @click="showDateType('showSaleDatePicker', true)">{{$t('toDate')}}</span>
                             <!--列表视图-->
-                            <div class="date-table-wrap" v-if="false">
+                            <div class="date-table-wrap" v-if="!showSaleDatePicker">
                                 <table-com
                                     :table-com-min-height="260"
                                     :column-data="dateListColumn"
-                                    :table-data="dateData"
+                                    :table-data="saleDate"
                                     :border="false">
                                 </table-com>
                             </div>
@@ -215,7 +216,7 @@
                             <!--<br/>-->
                             <!--日历视图-->
                             <DatePicker
-                                class="play-rule-time"
+                                v-if="showPlayDatePicker"
                                 v-model="formData.playRule.specifiedTime"
                                 multiple
                                 format="yyyy-MM-dd"
@@ -230,14 +231,14 @@
                                 style="width: 280px;display: inline-block;margin-left: 15px;">
                                 <a href="javascript:void(0)"></a>
                             </DatePicker>
-                            <!--<span class="blue" v-if="formData.playRule.dateType === 'custom'">{{$t('toList')}}</span>-->
-                            <!--<span class="blue" v-else>{{$t('toDate')}}</span>-->
+                            <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('toList')}}</span>
+                            <span class="blue" v-else @click="showDateType('showPlayDatePicker', true)">{{$t('toDate')}}</span>
                             <!--列表视图-->
-                            <div class="date-table-wrap" v-if="false">
+                            <div class="date-table-wrap" v-if="!showPlayDatePicker">
                                 <table-com
                                     :table-com-min-height="260"
                                     :column-data="dateListColumn"
-                                    :table-data="dateData"
+                                    :table-data="playDate"
                                     :border="false">
                                 </table-com>
                             </div>
@@ -752,7 +753,8 @@
 
                 //日期清单视图列表及表头
                 dateListColumn: dateListColumn,
-                dateData: [ { year: '2018', month: '9', day: '7、8、10、14、20'}],
+                saleDate: [],
+                playDate: [],
 
                 //退票规则列表及表头
                 refundColumn: refundColumn,
@@ -760,6 +762,10 @@
                 allocationId: '',
                 //暂存退票修改数据
                 returnItem: {},
+
+                //显示/隐藏日历控件--默认日历显示
+                showSaleDatePicker: true,
+                showPlayDatePicker: true,
             }
         },
         created() {
@@ -870,24 +876,70 @@
 
             //SaleRule 指定日期可售
             changeSaleSelectTime ( val ) {
-                if(this.formData.saleRule.dateType && this.formData.saleRule.dateType !== 'custom'){
+                if(val && this.formData.saleRule.dateType && this.formData.saleRule.dateType !== 'custom'){
                     let holiday = this.enumData.specialHoliday.find( item => this.formData.saleRule.dateType === item.id );
                     if(val != holiday.rangeDates){
                         this.formData.saleRule.dateType = 'custom';
                     }
                 }
+                this.getDateList(val,'saleDate');
                 this.$refs.formValidate.validateField('specifiedSaleDateSold');
             },
 
             //PlayRule 指定日期可玩
             changePlaySelectTime ( val ) {
-                if(this.formData.playRule.dateType && this.formData.playRule.dateType !== 'custom'){
+                if(val && this.formData.playRule.dateType && this.formData.playRule.dateType !== 'custom'){
                     let holiday = this.enumData.specialHoliday.find( item => this.formData.playRule.dateType === item.id );
                     if(val != holiday.rangeDates){
                         this.formData.playRule.dateType = 'custom';
                     }
                 }
+                this.getDateList(val,'playDate');
                 this.$refs.formValidate.validateField('specifiedPlayDateSold');
+            },
+
+            //显示列表/日历视图
+            showDateType ( field, val ) {
+                this[field] = val;
+            },
+
+            //获取年月日表格 val-当前选择日期 field-当前操作是销售规则/游玩规则
+            getDateList ( val, field ) {
+                let obj = {};
+                if(val){
+                    let list = val.split(',');
+                    list.forEach( item => {
+                        let _year = String(new Date(item).getFullYear());
+                        let _month = String(new Date(item).getMonth()+1);
+                        let _day = new Date(item).getDate();
+                        if(!obj.hasOwnProperty(_year)){
+                            obj[_year] = {};
+                            if (!obj[_year].hasOwnProperty(_month)) {
+                                obj[_year][_month] = [_day];
+                            } else {
+                                obj[_year][_month].push(_day);
+                            }
+                        } else {
+                            if (!obj[_year].hasOwnProperty(_month)) {
+                                obj[_year][_month] = [_day];
+                            } else {
+                                obj[_year][_month].push(_day);
+                            }
+                        }
+                    })
+                }
+                this[field] = [];
+                for( let year in obj ){
+                    if(year && obj[year]){
+                        for ( let month in obj[year] ){
+                            this[field].push({
+                                year: year,
+                                month: month,
+                                day: (obj[year][month].sort( (a,b) => {return a - b}) ).join('、')
+                            })
+                        }
+                    }
+                }
             },
 
             //新增产品，显示新增产品弹窗
@@ -1078,10 +1130,10 @@
 
                         //区分新增与修改
                         if( this.type === 'add' ){
-//                            this.saveAndEditPolicy( 'addPolicy', params);
+                            this.saveAndEditPolicy( 'addPolicy', params);
                         }
                         if( this.type === 'modify' ){
-//                            this.saveAndEditPolicy( 'modifyPolicy', params);
+                            this.saveAndEditPolicy( 'modifyPolicy', params);
                         }
                     }
                 })
@@ -1338,13 +1390,15 @@
                         }
                     }
                     /deep/ .ivu-btn{
-                        width: 70px;
+                        position: relative;
                         &.week-btn{
+                            width: 110px;
                             margin-right: 10px;
                             .iconfont{
                                 font-size: $font_size_20px;
                                 position: absolute;
-                                bottom: 2px;
+                                bottom: 0;
+                                right: 1px;
                             }
                         }
                     }
@@ -1356,6 +1410,7 @@
                         width: calc(100% - 300px);
                         line-height: 14px;
                         padding-left: 8px;
+                        vertical-align: middle;
                     }
 
                     .custom-row{
@@ -1363,7 +1418,7 @@
                     }
 
                     .date-table-wrap{
-                        width: 500px;
+                        width: 400px;
                     }
 
                 }
@@ -1378,7 +1433,7 @@
                 text-align: center;
 
                 /deep/ .ivu-btn{
-                    width: 108px;
+                    min-width: 108px;
                     &:nth-child(1){
                         margin-right: 20px;
                     }

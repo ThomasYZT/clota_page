@@ -8,7 +8,7 @@ export const myPolicyHead = [
     },
     {
         title: 'industryType',   // 业态类型
-        minWidth: 120,
+        minWidth: 130,
         field: 'productTypeDesc'
     },
     {
@@ -28,7 +28,7 @@ export const myPolicyHead = [
     },
     {
         title: 'operate',       // 操作
-        width: 100,
+        width: 110,
         field: ''
     },
 ];
@@ -62,7 +62,7 @@ export const distributePolicyHead = [
     },
     {
         title: 'operate',        // 操作
-        minWidth: 90,
+        minWidth: 110,
         field: ''
     },
 ];

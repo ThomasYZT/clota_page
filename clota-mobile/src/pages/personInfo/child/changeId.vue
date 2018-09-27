@@ -11,8 +11,6 @@
                     :data="[idLists]">
                 </popup-picker>
                 <x-input :title="$t('IdNumber')"
-                         type="number"
-                         :required="true"
                          class="valid-class"
                          v-model.trim="formData.idCard"
                          text-align="right"
@@ -27,27 +25,22 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         data() {
             return {
                 //表单数据
                 formData : {
                     //证件类型
-                    idType : ['1'],
+                    idType : ['0'],
                     //证件号码
                     idCard : ''
                 },
                 //证件类型列表
-                idLists : [
-                    {
-                        value : '1',
-                        name : '身份证'
-                    },
-                    {
-                        value : '2',
-                        name : '军官证'
-                    }
-                ]
+                idLists : []
             }
         },
         methods: {
@@ -55,7 +48,117 @@
              * 保存证件号码
              */
             save () {
+                this.validateIdTpe().then(() => {
+                    return this.validateIdNum();
+                }).then(() => {
+                    this.updateMemberInfo();
+                });
+            },
+            /**
+             * 查询所有的证件类型
+             */
+            queryDocument () {
+                ajax.post('queryDocument').then(res => {
+                    if(res.success){
+                        this.idLists = res.data ? res.data.data.map(item => {
+                            return {
+                                value : item.id,
+                                name : item.name
+                            }
+                        }) : [];
+                    }else{
+                        this.idLists = [];
+                    }
+                });
+            },
+            /**
+             * 校验证件类型
+             */
+            validateIdTpe () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData.idType.length === 0 || this.formData.idType[0] === '0'){
+                        this.$vux.toast.show({
+                            text: '请选择证件类型',
+                            type: 'text',
+                            width: '5rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验证件号是否正确
+             */
+            validateIdNum () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData && !this.formData.idCard){
+                        this.$vux.toast.show({
+                            text: '请输入证件号',
+                            type: 'text',
+                            width: '5rem'
+                        });
+                        reject();
+                    }else if(this.formData.idCard.length > 40){
+                        this.$vux.toast.show({
+                            text: '证件号最多输入40个字符',
+                            type: 'text',
+                            width: '5.2rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 修改证件信息
+             */
+            updateMemberInfo () {
+                ajax.post('updateMemberInfo',{
+                    id : this.userInfo.memberId,
+                    certificationType : this.formData.idType[0],
+                    idCardNumber : this.formData.idCard
+                }).then(res => {
+                    if(res.success){
+                        this.$vux.toast.show({
+                            text: '修改成功'
+                        });
+                        this.$router.push({
+                            name : 'personInfo'
+                        });
+                        this.getMemberDetail();
+                    }else{
+                        this.$vux.toast.show({
+                            text: '修改失败',
+                            type : 'cancel'
+                        });
+                    }
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    if(params.idCardNumber){
+                        this.formData.idType = [String(params.certificationType)];
+                    }
+                    this.formData.idCard = params.idCardNumber;
+                    this.queryDocument();
+                }else{
+                    this.$router.push({
+                        name : 'personInfo'
+                    });
+                }
             }
+        },
+        computed : {
+            ...mapGetters({
+                userInfo : 'userInfo'
+            })
         }
     }
 </script>

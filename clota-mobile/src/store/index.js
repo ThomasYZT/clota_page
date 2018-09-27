@@ -71,7 +71,7 @@ export default new Vuex.Store({
             }else{
                 setTimeout(() => {
                     state.isLoading = false;
-                },200);
+                },100);
             }
         },
         //更新随机数

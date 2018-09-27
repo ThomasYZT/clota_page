@@ -63,14 +63,14 @@
             :column-check="true"
             @query-data="queryMyPolicyList"
             @selection-change="changeSelection">
-            <el-table-column
+            <!--:filters="filterList"-->
+               <!--:filter-method="filterHandler"-->
+               <!--filter-placement="bottom-end"-->
+           <el-table-column
                 slot="column3"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
-                :filters="filterList"
-                :filter-method="filterHandler"
-                filter-placement="bottom-end"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <div>
@@ -362,7 +362,7 @@
                     let ids = this.selectedRow.map(item => item.id).join(',');
                     switch (item) {
                         case 'checked' :
-                            this.modifyPolicyStatus(ids, 'enabled');
+                            this.modifyPolicyStatus(ids, 'auditing');
                             break;
                         case 'up' :
                             this.modifyPolicyStatus(ids, 'enabled');

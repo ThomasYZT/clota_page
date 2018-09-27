@@ -1,3 +1,4 @@
+
 <!--设置交易密码-->
 
 <template>
@@ -7,11 +8,10 @@
                 <cell
                     :title="$t('localePhone')"
                     value-align="left"
-                    value="17237387333">
+                    :value="originPhone">
                 </cell>
                 <x-input :title="$t('validCode')"
                          ref="test1"
-                         :required="true"
                          class="valid-class"
                          v-model.trim="formData.validCode"
                          text-align="right"
@@ -29,33 +29,117 @@
 </template>
 
 <script>
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index.js';
     export default {
+        mixins : [lifeCycleMixins],
         data() {
             return {
                 //表单数据
                 formData : {
                     validCode : ''
-                }
+                },
+                //手机号码
+                originPhone : ''
             }
         },
         methods: {
             /**
-             * 获取短信验证码
-             */
-            getValidCode () {
-
-            },
-            /**
-             * 保存新手机号
-             */
-            save () {
-            },
-            /**
              * 跳转到 下一步
              */
             nextStep () {
-                this.$router.replace({
-                    name : 'inputPass'
+                this.validateCode().then(() => {
+                    return  ajax.post('checkCode',{
+                        phoneNum : this.originPhone,
+                        code : this.formData.validCode
+                    }).then(res => {
+                        if(res.success){
+                            return Promise.resolve();
+                        }else{
+                            if(res.code === 'A005'){
+                                this.$vux.toast.show({
+                                    text: '验证码失效',
+                                    type : 'text'
+                                })
+                            }else if(res.code === 'A003'){
+                                setTimeout(() =>{
+                                    this.$vux.toast.show({
+                                        text: '验证码为空',
+                                        type : 'text'
+                                    })
+                                },500);
+                            }else{
+                                setTimeout(() =>{
+                                    this.$vux.toast.show({
+                                        text: '验证码错误',
+                                        type : 'text'
+                                    })
+                                },500);
+                            }
+                            return Promise.reject();
+                        }
+                    });
+                }).then(() => {
+                    this.$router.replace({
+                        name : 'inputPass',
+                        params : {
+                            mobile : this.originPhone,
+                            code : this.formData.validCode
+                        }
+                    });
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams(params) {
+                if(params && params.mobile){
+                    this.originPhone = params.mobile;
+                }else{
+                    this.$router.push({
+                        name : 'personInfo'
+                    });
+                }
+            },
+            /**
+             * 获取短信验证码
+             */
+            getValidCode () {
+                ajax.post('getCode',{
+                    phoneNum : this.originPhone
+                }).then(res => {
+                    if(res.success){
+                        setTimeout(() =>{
+                            this.$vux.toast.show({
+                                text: '发送成功'
+                            })
+                        },500);
+                    }else{
+                        setTimeout(() =>{
+                            this.$vux.toast.show({
+                                text: '发送失败',
+                                type : 'cancel'
+                            })
+                        },500);
+                    }
+                });
+            },
+            /**
+             * 校验验证码
+             */
+            validateCode () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData && !this.formData.validCode) {
+                        this.$vux.toast.show({
+                            text: '请输入验证码',
+                            type: 'text',
+                            width: '5rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
                 });
             }
         }

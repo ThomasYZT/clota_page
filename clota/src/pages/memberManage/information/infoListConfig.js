@@ -73,7 +73,7 @@ export const orderListHead = [
     {
         title: 'memberTradeNo',  // 会员方交易流水号
         minWidth: 160,
-        enMinWidth : 150,
+        enMinWidth : 180,
         field: 'orderNo'
     },
     {

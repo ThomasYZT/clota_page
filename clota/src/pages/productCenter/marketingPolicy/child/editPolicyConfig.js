@@ -78,17 +78,17 @@ export const marketingColumn = [
 export const dateListColumn = [
     {
         title: 'Year',      // 年
-        width: 90,
+        width: 75,
         field: 'year'
     },
     {
         title: 'Month',   // 月
-        minWidth: 90,
+        width: 85,
         field: 'month'
     },
     {
         title: 'Day',   // 日
-        minWidth: 200,
+        minWidth: 240,
         field: 'day'
     },
 ];
