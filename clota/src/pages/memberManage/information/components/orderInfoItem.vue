@@ -1,59 +1,59 @@
 <template>
     <div class="order-info">
-        <h3>{{$t('产品子表')}}</h3>
+        <h3>{{$t('goodsSubTable')}}</h3><!--产品子表-->
         <Row :gutter="16" v-for="(pItem,index) in infoData" :key="index">
             <Col span="8">
             <ul>
-                <li>
-                    <span class="field-name">{{$t('产品ID')}}：</span>{{pItem.itemId | contentFilter}}
+                <li><!--产品ID-->
+                    <span class="field-name">{{$t('productId')}}：</span>{{pItem.itemId | contentFilter}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('产品编号')}}：</span>{{pItem.itemCode}}
+                <li><!--产品编号-->
+                    <span class="field-name">{{$t('productNum')}}：</span>{{pItem.itemCode}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('商品名称')}}：</span>{{pItem.itemName}}
+                <li><!--商品名称-->
+                    <span class="field-name">{{$t('goodsName')}}：</span>{{pItem.itemName}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('销售数量')}}：</span>{{pItem.amount}}
+                <li><!--销售数量-->
+                    <span class="field-name">{{$t('salesQty')}}：</span>{{pItem.amount}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('原单号')}}：</span>{{pItem.originOrderNo}}
+                <li><!--原单号-->
+                    <span class="field-name">{{$t('originOrderNo')}}：</span>{{pItem.originOrderNo}}
                 </li>
             </ul>
             </Col>
             <Col span="8">
             <ul>
-                <li>
-                    <span class="field-name">{{$t('产品类别')}}：</span>{{pItem.typeName}}
+                <li><!--产品类别-->
+                    <span class="field-name">{{$t('productType')}}：</span>{{pItem.typeName}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('规格单位')}}：</span>{{pItem.unit}}
+                <li><!--规格单位-->
+                    <span class="field-name">{{$t('specUnit')}}：</span>{{pItem.unit}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('售价')}}：</span>{{pItem.price}}
+                <li><!--售价-->
+                    <span class="field-name">{{$t('salesPrice')}}：</span>{{pItem.price}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('会员折扣价')}}：</span>{{pItem.discountPrice}}
+                <li><!--会员折扣价-->
+                    <span class="field-name">{{$t('memberDiscount')}}：</span>{{pItem.discountPrice}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('产品有效期')}}：</span>
+                <li><!--产品有效期-->
+                    <span class="field-name">{{$t('expirationDate')}}：</span>
                     {{new Date(pItem.itemValidFrom).format('yyyy.MM.dd hh:mm:ss')}}--{{new Date(pItem.itemValidTo).format('yyyy.MM.dd hh:mm:ss')}}
                 </li>
             </ul>
             </Col>
             <Col span="8">
             <ul>
-                <li>
-                    <span class="field-name">{{$t('折扣率')}}：</span>{{pItem.discountRate}}
+                <li><!--折扣率-->
+                    <span class="field-name">{{$t('discountRate')}}：</span>{{pItem.discountRate}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('交易号')}}：</span>{{pItem.tradeNo}}
+                <li><!--交易号-->
+                    <span class="field-name">{{$t('tradeNo')}}：</span>{{pItem.tradeNo | contentFilter}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('会员交易号')}}：</span>{{pItem.orderNo}}
+                <li><!--会员交易号-->
+                    <span class="field-name">{{$t('memberTradeNum')}}：</span>{{pItem.orderNo}}
                 </li>
-                <li>
-                    <span class="field-name">{{$t('销售顺序号')}}：</span>{{pItem.saleNum}}
+                <li><!--销售顺序号-->
+                    <span class="field-name">{{$t('salesSerialNum')}}：</span>{{pItem.saleNum}}
                 </li>
             </ul>
             </Col>
