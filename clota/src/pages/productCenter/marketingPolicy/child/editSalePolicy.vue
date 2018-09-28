@@ -228,7 +228,7 @@
                                 :clearable="false"
                                 :editable="false"
                                 @on-change="changePlaySelectTime"
-                                style="width: 280px;display: inline-block;margin-left: 15px;">
+                                style="width: 230px;display: inline-block;margin-left: 15px;">
                                 <a href="javascript:void(0)"></a>
                             </DatePicker>
                             <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('toList')}}</span>
@@ -640,6 +640,7 @@
                 open: true,
                 //表单数据
                 formData: {
+                    id: '',//政策id
                     productType: 'ticket',//业态类型 ticket-票类，repast-餐饮，hotel-酒店，ticket_package-套票
                     name: '',//销售政策名称
                     policyDesc: '',//描述
@@ -701,15 +702,15 @@
                         { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 500}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    buyTicketNotes: [
-                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                    ],
                     specifiedSaleDateSold: [
                         { validator: validateSaleData, trigger: 'change' },
                     ],
                     specifiedPlayDateSold: [
                         { validator: validatePlayData, trigger: 'change' },
+                    ],
+                    buyTicketNotes: [
+                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },
                 //枚举数据
@@ -1189,7 +1190,7 @@
              */
             initData(data) {
                 console.log(data);
-                let formData =  pick(data.productPolicy, ['productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
+                let formData =  pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
                 formData.todaySaleTime = [data.productPolicy.todaySaleStartTime, data.productPolicy.todaySaleEndTime];
@@ -1392,8 +1393,9 @@
                     /deep/ .ivu-btn{
                         position: relative;
                         &.week-btn{
-                            width: 110px;
+                            min-width: 70px;
                             margin-right: 10px;
+                            @include overflow_tip();
                             .iconfont{
                                 font-size: $font_size_20px;
                                 position: absolute;
