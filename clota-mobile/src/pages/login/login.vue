@@ -9,7 +9,7 @@
                  :title="$t('mobile')"
                  keyboard="number"
                  text-align="right"
-                 :placeholder="$t('请输入手机号码')"
+                 :placeholder="$t('pleaseInput',{field : this.$t('mobile') })"
                  v-model.trim="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>

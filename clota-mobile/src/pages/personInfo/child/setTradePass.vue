@@ -58,20 +58,20 @@
                         }else{
                             if(res.code === 'A005'){
                                 this.$vux.toast.show({
-                                    text: '验证码失效',
+                                    text: this.$t('A005'),
                                     type : 'text'
                                 })
                             }else if(res.code === 'A003'){
                                 setTimeout(() =>{
                                     this.$vux.toast.show({
-                                        text: '验证码为空',
+                                        text: this.$t('A006'),
                                         type : 'text'
                                     })
                                 },500);
                             }else{
                                 setTimeout(() =>{
                                     this.$vux.toast.show({
-                                        text: '验证码错误',
+                                        text: this.$t('A003'),
                                         type : 'text'
                                     })
                                 },500);
@@ -112,13 +112,13 @@
                     if(res.success){
                         setTimeout(() =>{
                             this.$vux.toast.show({
-                                text: '发送成功'
+                                text: this.$t('operateSuc',{msg : this.$t('send')})
                             })
                         },500);
                     }else{
                         setTimeout(() =>{
                             this.$vux.toast.show({
-                                text: '发送失败',
+                                text: this.$t('operateFail',{msg : this.$t('send')}),
                                 type : 'cancel'
                             })
                         },500);
@@ -132,7 +132,7 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData && !this.formData.validCode) {
                         this.$vux.toast.show({
-                            text: '请输入验证码',
+                            text: this.$t('pleaseInput',{field : this.$t('validCode')}),
                             type: 'text',
                             width: '5rem'
                         });

@@ -55,7 +55,7 @@
                     gender: [],
                     vcode: ''
                 },
-                sexList: [['男', '女']],
+                sexList: [[this.$t('male'), this.$t('female')]],
                 msg: '',
                 isGetCode: false,
                 timer: null,
@@ -102,7 +102,7 @@
                         name: this.registerInfo.custName,
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
-                        sex: this.registerInfo.gender[0] === '男' ? 'male' : 'female',
+                        sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
                         companyCode: '000000071' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {

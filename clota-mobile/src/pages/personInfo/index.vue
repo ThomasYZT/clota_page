@@ -156,12 +156,12 @@
                     }).then(res => {
                         if(res.success){
                             this.$vux.toast.show({
-                                text: '保存成功'
+                                text: this.$t('operateSuc',{msg : this.$t('save')})
                             });
                             this.getMemberDetail();
                         }else{
                             this.$vux.toast.show({
-                                text: '保存失败',
+                                text: this.$t('operateFail',{msg : this.$t('save')}),
                                 type : 'cancel'
                             });
                         }
@@ -175,14 +175,14 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData && !this.formData.name){
                         this.$vux.toast.show({
-                            text: '请输入姓名',
+                            text: this.$t('pleaseInput',{field : this.$t('name')}),
                             type: 'text',
                             width: '5rem'
                         });
                         reject();
                     }else if(this.formData.name.length > 15){
                         this.$vux.toast.show({
-                            text: '姓名最多输入15个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('name'),length : 15}),
                             type: 'text',
                             width: '6rem'
                         });
@@ -199,7 +199,7 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData.qq.length > 50){
                         this.$vux.toast.show({
-                            text: 'qq最多输入50个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('qq'),length : 50}),
                             type: 'text',
                             width: '6rem'
                         });
@@ -216,14 +216,14 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData.emailAddr.length > 100){
                         this.$vux.toast.show({
-                            text: 'E-mail最多输入100个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('email'),length : 100}),
                             type: 'text',
                             width: '6rem'
                         });
                         reject();
                     }else  if(this.formData.emailAddr && !validator.isEmail(this.formData.emailAddr)){
                         this.$vux.toast.show({
-                            text: 'E-mail格式错误',
+                            text: this.$t('errFormat',{field : this.$t('email')}),
                             type: 'text',
                             width: '6rem'
                         });
@@ -257,7 +257,7 @@
                 param.append('file',file,file.name);//通过append向form对象添加数据
                 if(file.size > 1024 * 1024 * 10){
                     this.$vux.toast.show({
-                        text : '上传文件最大10M',
+                        text : this.$t('uploadErr',{size : 10}),
                         type : 'text',
                         width : '3.5rem'
                     });
@@ -286,13 +286,13 @@
                 }).then(res => {
                     if(res.success){
                         this.$vux.toast.show({
-                            text: '修改头像成功'
+                            text: this.$t('operateSuc',{msg : this.$t('changeImg')})
                         });
                         this.getMemberDetail();
                         this.getGrowthBalance();
                     }else{
                         this.$vux.toast.show({
-                            text: '修改头像失败',
+                            text: this.$t('operateFail',{msg : this.$t('changeImg')}),
                             type : 'cancel'
                         });
                     }

@@ -15,7 +15,7 @@
                 text-align="right"
                 :show-clear="false"
                 v-model.trim="formData.mobile"
-                :placeholder="$t('pleaseInput')"
+                :placeholder="$t('pleaseInputMsg')"
                 placeholder-align="right">
             </x-input>
             <x-input :title="$t('validCode')"
@@ -79,14 +79,14 @@
                         if(res.success){
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: '发送成功'
+                                    text: this.$t('operateSuc',{msg : this.$t('send')})
                                 })
                             },500);
                             this.isTiming = true;
                         }else{
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: '发送失败',
+                                    text: this.$t('operateFail',{msg : this.$t('send')}),
                                     type : 'cancel'
                                 })
                             },500);
@@ -111,21 +111,21 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData && !this.formData.mobile){
                         this.$vux.toast.show({
-                            text : '请输入手机号码',
+                            text : this.$t('pleaseInput',{field : this.$t('mobile')}),
                             type : 'text',
                             width : '5rem'
                         });
                         reject();
                     }else if(!validator.isMobile(this.formData.mobile)){
                         this.$vux.toast.show({
-                            text : '请输入正确的手机号',
+                            text : this.$t('pleaseEnterRightMobile'),
                             type : 'text',
                             width : '5rem'
                         });
                         reject();
                     }else if(this.formData.mobile === this.orginalMobile){
                         this.$vux.toast.show({
-                            text : '新手机号码不能和当前号码相同',
+                            text : this.$t('twPhoneError'),
                             type : 'text',
                             width : '8rem'
                         });
@@ -147,7 +147,7 @@
                 }).then(res => {
                     if(res.success){
                         this.$vux.toast.show({
-                            text: '修改成功'
+                            text: this.$t('operateSuc',{'msg' : this.$t('modify')})
                         });
                         this.$router.replace({
                             name : 'personInfo'
@@ -155,7 +155,7 @@
                     }else{
                         if(res.code === 'M014'){
                             this.$vux.toast.show({
-                                text: '您修改的号码已存在，请更换其它手机号码',
+                                text: this.$t('phoneExitErr'),
                                 type : 'text',
                                 width : '9rem'
                             })
@@ -175,14 +175,14 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData && !this.formData.validCode) {
                         this.$vux.toast.show({
-                            text: '请输入验证码',
+                            text: this.$t('pleaseInput',{field : this.$t('validCode')}),
                             type: 'text',
                             width: '5rem'
                         });
                         reject();
                     }else if(this.formData.mobile === this.orginalMobile){
                         this.$vux.toast.show({
-                            text : '新手机号码不能和当前号码相同',
+                            text : this.$t('twPhoneError'),
                             type : 'text',
                             width : '8rem'
                         });
