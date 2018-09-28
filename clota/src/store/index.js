@@ -276,7 +276,24 @@ export default new Vuex.Store({
         freshOrgs (store) {
             ajax.post('getManageOrgs').then(res => {
                 if(res.success){
-                    let manageOrgs = res.data ? res.data : [];
+                    let filterOrgsArr =  res.data ? res.data.filterOrg : [];
+                    let filterOrgsObj = {};
+                    for(let i = 0,j = filterOrgsArr.length;i < j;i++){
+                        filterOrgsObj[filterOrgsArr[i]['id']] = filterOrgsArr[i];
+                    }
+                    let manageOrgs = res.data ? res.data.allOrg.map(item => {
+                        if(item.id in filterOrgsObj){
+                            return {
+                                ...item,
+                                disabled : false
+                            }
+                        }else{
+                            return {
+                                ...item,
+                                disabled : true
+                            }
+                        }
+                    }) : [];
                     let userInfo = {
                         ...store.state.userInfo,
                         manageOrgs : manageOrgs

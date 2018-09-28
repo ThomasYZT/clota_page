@@ -66,6 +66,7 @@
              * @param node
              */
             orgChose (data,node){
+                if(data.disabled) return;
                 if(data.id !== this.manageOrgs.id){
                     this.$store.dispatch('resetNodeChosed',data).then(route => {
                         this.$router.replace({
@@ -89,6 +90,7 @@
                     },
                     class: {
                         'title-wrap': true,
+                        'disabled' : data.disabled
                     },
                 }, [
                     h('span', {
@@ -159,6 +161,10 @@
 
             /deep/ .is-checked{
                 background: $color_fafa;
+
+                .title-class{
+                    color: $color_blue;
+                }
             }
         }
 
@@ -167,7 +173,15 @@
             padding-left: 20px;
             cursor: pointer;
 
-            &:hover {
+            &.disabled{
+                cursor: not-allowed;
+
+                & .title-class{
+                    color: #C5C5C5;
+                }
+            }
+
+            &:not(.disabled):hover {
                 background: $color_fafa;
 
                 .title-class {
