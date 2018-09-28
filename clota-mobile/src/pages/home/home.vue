@@ -75,6 +75,7 @@
                     link: '/integralDetail',
                     iconClass: 'icon-my-points',
                     info: '',
+                    params: {},
                     iconColor: '#F46462'
                 },
                 {
@@ -186,6 +187,7 @@
                         this.labelList.getByTitle('integralDetail').info = this.cardInfo.pointBalance;
                         this.labelList.getByTitle('defaultAccount').info = this.cardInfo.moneyBalance;
                         this.labelList.getByTitle('memberRight').params.levelDesc = this.cardInfo.levelDesc;
+                        this.labelList.getByTitle('integralDetail').params.num = this.cardInfo.pointBalance;
 
                         //获取会员卡配色方案
                         this.setCardTheme(res.data.data[0].levelNum)

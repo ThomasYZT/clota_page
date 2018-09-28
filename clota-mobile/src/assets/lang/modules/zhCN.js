@@ -113,6 +113,10 @@ export default {
     storeVos: '按店铺',
     home: '主页',
     scoreRate: '积分比例',
-    discountRate: '折扣率'
+    discountRate: '折扣率',
+    adjustScore: '手动修改储值账户',
+    gainByConsuming: '消费所得',
+    scoreResume: '积分消耗',
+    gainByRecharging: '储值所得'
 
 }

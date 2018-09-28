@@ -114,5 +114,9 @@ export default {
     storeVos: '按店铺',
     home: '主页',
     scoreRate: '积分比例',
-    discountRate: '折扣率'
+    discountRate: '折扣率',
+    adjustScore: 'Manually modify the point account',
+    gainByConsuming: 'Consumption income',
+    scoreResume: 'Score resume',
+    gainByRecharging: 'Stored-value income'
 }

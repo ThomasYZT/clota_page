@@ -4,15 +4,38 @@
 -->
 <template>
   <div class="check-flow">
-      <div class="top-tab">
-          <p>2018年6月</p>
-      </div>
 
       <div class="content">
-          <check-item :info="item"
-                      v-for="(item, index) in infoList"
-                      :key="index"></check-item>
+          <div class="account-list-chose" @click="showAccount">
+              <p class="account-name">
+                  {{chosedAccount[0] ? chosedAccount[0] : ''}}
+              </p>
+          </div>
+          <div class="scroll-wrapper">
+              <scroll ref="scroll"
+                      :data="infoList"
+                      :scrollbar="scrollbar"
+                      :pullDownRefresh="pullDownRefreshObj"
+                      :pullUpLoad="pullUpLoadObj"
+                      @pullingDown="onPullingDown"
+                      @pullingUp="onPullingUp">
+                  <check-item :info="item"
+                              v-for="(item, index) in infoList"
+                              :key="index"></check-item>
+              </scroll>
+          </div>
       </div>
+
+      <popup-picker
+          :cancel-text="$t('cancel')"
+          :confirm-text="$t('complete')"
+          :show.sync="visible"
+          :show-cell="false"
+          :show-name="true"
+          :data="[accountList]"
+          v-model="chosedAccount"
+          @on-change="accountChange">
+      </popup-picker>
   </div>
 </template>
 
@@ -20,15 +43,50 @@
     import checkItem from './components/check-item'
     import ajax from '../../api/index'
     import {mapGetters} from 'vuex'
+    import Scroll from '../../components/scroll/scroll'
     export default {
         components: {
-            checkItem
+            checkItem,
+            Scroll
         },
         data() {
             return {
                 infoList: [],
                 memberAccounts: [],
-                accounts: ''
+                accounts: '',
+                //是否显示滚动条
+                scrollbar: false,
+                //下拉刷新配置
+                pullDownRefreshObj: {
+                    //临界值
+                    threshold: 90,
+                    //刷新完成bubble停留的位置
+                    stop: 40,
+                    //设置加载和加载中显示的文字
+                    txt: '刷新完成'
+                },
+                //上拉加载配置
+                pullUpLoadObj: {
+                    //临界值
+                    threshold: 20,
+                    //设置加载和加载中显示的文字
+                    txt: {more: 'loading', noMore: 'noMoreData'}
+                },
+                //分页设置
+                pageSetting: {
+                    pageNo: 1,
+                    pageSize: 10
+                },
+                //页面参数
+                query: null,
+                //是否显示pop
+                visible: false,
+                //选择的账户信息
+                chosedAccount : [],
+                //会员所有账户
+                accountList: [{}],
+                //当前账户id
+                curAccountsId: ''
             }
         },
         computed: {
@@ -43,19 +101,31 @@
                 await ajax.post('queryMemberAccountDefine', {
                     accountType: 'charging',
                     pageNo: 1,
-                    pageSize: 20
+                    pageSize: 200
                 }).then((res) => {
-                    if(res.success) {
-                        this.memberAccounts = res.data.data;
-                        this.memberAccounts.forEach((item) => {
-                            this.accounts = this.accounts + ',' + item.id
-                        });
-                        this.accounts = this.accounts.substring(1);
+                    if(res.success){
+                        this.accountList =  res.data ? res.data.data.map((item,index) => {
+                            return {
+                                ...item,
+                                name : item.accountName,
+                                value : item.accountName
+                            }
+                        }) : [];
+                        this.chosedAccount[0] = this.accountList[0].name
+                        this.curAccountsId = this.accountList[0].id
+                    }else{
+                        this.accountList = [];
                     }
                 })
-
-                await ajax.post('queryOrgAccountChange', {
-                    accountTypeIds: this.accounts,
+                //获取用户账户资金明细
+                await this.getCheckFlow();
+            },
+            /**
+             *  获取资金明细
+             */
+            getCheckFlow() {
+                ajax.post('queryOrgAccountChange', {
+                    accountTypeIds: this.curAccountsId,
                     operType: '',
                     cardId: this.userInfo.cardId,
                     pageNo: 1,
@@ -70,7 +140,43 @@
                         this.$vux.toast.text(res.message)
                     }
                 })
-            }
+            },
+            /**
+             * 下拉刷新操作
+             */
+            onPullingDown() {
+                this.pageSetting.pageNo = 1;
+                this.getCheckFlow();
+            },
+            /**
+             * 上拉刷新操作
+             */
+            onPullingUp() {
+                this.pageSetting.pageNo += 1;
+                this.getCheckFlow();
+            },
+            //强制刷新scroll
+            refresh() {
+                this.$refs.scroll.forceUpdate();
+            },
+            /**
+             * 显示所有账户信息
+             */
+            showAccount () {
+                this.visible = true;
+            },
+            /**
+             * 账户列表修改
+             */
+            accountChange (value) {
+                this.chosedAccount = [String(value)];
+                this.accountList.forEach((item) => {
+                   if(item.name === this.chosedAccount[0]) {
+                       this.curAccountsId = item.id
+                   }
+                })
+                this.getCheckFlow();
+            },
         },
         created() {
             this.getData()
@@ -82,17 +188,19 @@
     @import '~@/assets/scss/base';
 
     .check-flow {
-        .top-tab {
-            width: 100%;
-            height: 30px;
-            color: #8395A7;
-            background-color: #F4F6F9;
+        .account-list-chose{
+            @include block_outline($height : 50px);
+            text-align: center;
 
             p {
-                line-height: 30px;
-                font-size: 13px;
-                margin-left: 19px;
+                line-height: 50px;
+                font-size: 18px;
+                font-weight: bold;
             }
+        }
+        .scroll-wrapper {
+            position: relative;
+            height: calc(100% - 50px);
         }
     }
 

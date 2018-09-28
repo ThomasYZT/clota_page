@@ -5,7 +5,7 @@
 <template>
   <div class="integral-detail">
       <div class="score-board">
-          <h5 class="score">{{num}}</h5>
+          <h5 class="score">{{query.num}}</h5>
           <p class="name">{{$t('integralDetail')}}</p>
       </div>
 
@@ -65,7 +65,9 @@
                 pageSetting: {
                     pageNo: 1,
                     pageSize: 10
-                }
+                },
+                //页面参数
+                query: null
             }
         },
         methods: {
@@ -82,6 +84,24 @@
                     if(res.success) {
                         if(this.pageSetting.pageNo === 1) {
                             this.infoList = res.data ? res.data.data : [];
+                            this.infoList.forEach((item) => {
+                                switch (item.operationType) {
+                                    case 'adjust_score':
+                                        item.purpose = 'adjustScore'
+                                        break;
+                                    case 'consume_add':
+                                        item.purpose = 'gainByConsuming'
+                                        break;
+                                    case 'consume_reduce':
+                                        item.purpose = 'scoreResume';
+                                        break;
+                                    case 'recharge_add':
+                                        item.purpose = 'gainByRecharging'
+                                        break;
+                                    default:
+                                        item.purpose = '-'
+                                }
+                            })
                         } else {
                             if(res.data.data.length !== 0) {
                                 this.infoList = this.infoList.concat(res.data.data);
@@ -89,9 +109,6 @@
                                 this.refresh();
                             }
                         }
-                        this.num = this.infoList.reduce((preValue, curValue) => {
-                            return preValue + parseInt(curValue.amount);
-                        }, 0);
                     }else {
                         this.infoList = [];
                         this.$vux.toast.text(res.message);
@@ -123,6 +140,7 @@
             ])
         },
         created() {
+            this.query = this.$route.query;
             this.getData();
         }
     }

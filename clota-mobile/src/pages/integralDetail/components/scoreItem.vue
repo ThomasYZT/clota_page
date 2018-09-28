@@ -5,7 +5,7 @@
 <template>
     <div class="score-item">
         <div class="info">
-            <p class="ticket-name">{{'默认储值账户'}}</p>
+            <p class="ticket-name">{{$t(info.purpose)}}</p>
             <p class="time">{{info.createdTime}}</p>
         </div>
         <div class="check">
