@@ -4,8 +4,11 @@
     <div class="person-info">
         <div class="title-info">
             <div class="per-img">
-                <img src="../../assets/images/icon-ali-pay.svg" alt="">
-                <span class="edit">{{$t('edit')}}</span>
+                <img :src="formData.portrait" alt="">
+                <span class="edit">
+                    <input class="upload" type="file" accept="image/png,image/gif,image/jpeg"  @change="uploadImg($event)">
+                    <span class="label">{{$t('edit')}}</span>
+                </span>
             </div>
         </div>
         <div class="cell-list">
@@ -241,6 +244,35 @@
                         this.formData.growth = '';
                     }
                 });
+            },
+            /**
+             * 上传图片
+             * @param e
+             */
+            uploadImg (e) {
+                let file = e.target.files[0];
+                let param = new FormData(); //创建form对象
+                param.append('file',file,file.name);//通过append向form对象添加数据
+                if(file.size > 1024 * 10){
+                    this.$vux.toast.show({
+                        text : '上传文件最大10M',
+                        type : 'text',
+                        width : '3.5rem'
+                    });
+                }else{
+                    ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
+                        if(res.success){
+                            this.getMemberDetail();
+                            this.getGrowthBalance();
+                        }else{
+                            this.$vux.toast.show({
+                                text : '上传头像失败',
+                                type : 'text',
+                                width : '3rem'
+                            });
+                        }
+                    });
+                }
             }
         },
         beforeRouteEnter (to,from,next){
@@ -275,6 +307,7 @@
         background: rgba(242,243,244,1);
         height: 100%;
         overflow: auto;
+        -webkit-overflow-scrolling: touch;
 
         .title-info{
             @include block_outline($height : 122px);
@@ -291,9 +324,13 @@
                 img{
                     @include block_outline(100%,100%,false);
                     border-radius: 100px;
+                    opacity: 0.1;
+                    background: #1495EB;
+                    box-shadow: 0 4px 14px 0 rgba(0,0,0,0.20);
                 }
 
                 .edit{
+                    position: relative;
                     @include block_outline($height : 17px);
                     line-height: 17px;
                     background: rgba($color_000,0.5);
@@ -301,6 +338,13 @@
                     text-align: center;
                     font-size: 10px;
                     color: $color_fff;
+
+                    .upload{
+                        position: absolute;
+                        display: inline-block;
+                        width: 74px;
+                        opacity: 0;
+                    }
                 }
             }
         }
@@ -308,7 +352,7 @@
         .cell-list{
             margin-top: 8px;
             background: $color_fff;
-            height: calc(100% - 200px);
+            /*height: calc(100% - 200px);*/
             overflow: auto;
 
             .arrow-wrap {
