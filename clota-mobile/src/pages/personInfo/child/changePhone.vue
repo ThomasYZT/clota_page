@@ -209,7 +209,7 @@
              * 计时完成
              */
             timeFinish () {
-                this.isTiming();
+                this.isTiming = false;
             }
         },
         computed : {

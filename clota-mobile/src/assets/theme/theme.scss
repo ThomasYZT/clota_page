@@ -22,6 +22,7 @@ div.c-input {
  */
 div.verify-input{
     position: relative;
+
     .code-button {
         padding: 0 5px;
         position: absolute;
@@ -138,4 +139,8 @@ div.cell {
 
 .scroller-content{
     top :12px!important;
+}
+.weui-toast{
+    top: 50%!important;
+    transform: translateX(-50%) translateY(-50%)!important;
 }

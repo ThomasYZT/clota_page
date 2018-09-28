@@ -8,19 +8,22 @@
         <x-input class="c-input"
                  :title="$t('mobile')"
                  keyboard="number"
-                 v-model="loginInfo.phoneNum"
+                 text-align="right"
+                 :placeholder="$t('请输入手机号码')"
+                 v-model.trim="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>
         <!-- 验证码 -->
         <x-input class="c-input verify-input"
                  :title="$t('validCode')"
-                 v-model="loginInfo.vcode"
+                 v-model.trim="loginInfo.vcode"
                  :placeholder="$t('enterCode')"
                  :show-clear="false"
+                 text-align="right"
                  keyboard="number"
                  label-width="150px">
-            <div slot="right"
-                 class="code-button"
+            <div slot="right-full-height"
+                 class="validate"
                  :class="{active: isGetCode}"
                  @click="getCode">
                 <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
@@ -40,7 +43,8 @@
 </template>
 
 <script>
-    import ajax from '../../api/index'
+    import ajax from '../../api/index';
+    import {validator} from 'klwk-ui';
     export default {
         data() {
             return {
@@ -99,9 +103,9 @@
                             //登陆跳转到主页
                             this.$router.push({ name: 'home'});
                         } else if(res.toString() === 'Error: Network Error'){
-                            this.$vux.toast.text($t('netNotGood'));
+                            this.$vux.toast.text(this.$t('netNotGood'));
                         }else {
-                            this.$vux.toast.text(res.message);
+                            this.$vux.toast.text(this.$t(res.code));
                         }
                     })
                 });
@@ -111,17 +115,16 @@
              */
             validate(callback) {
                 //手机号验证 验证手机号不为空 且为 手机号格式
-                this.phoneValidate();
-
-                //验证验证码不为空
-                if(this.loginInfo.vcode === '') {
-                    this.$vux.toast.text(this.$t('pleaseInputValidCode'))
-                    return;
-                }
-
-                if(callback) {
-                    callback();
-                }
+                this.phoneValidate(() => {
+                    //验证验证码不为空
+                    if(this.loginInfo.vcode === '') {
+                        this.$vux.toast.text(this.$t('pleaseInputValidCode'));
+                    }else{
+                        if(callback) {
+                            callback();
+                        }
+                    }
+                });
             },
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
@@ -130,17 +133,12 @@
             phoneValidate(callback) {
                 this.msg = '';
                 if(this.loginInfo.phoneNum === '') {
-                    this.$vux.toast.text($t('pleaseEnterMobile'))
-                    return;
+                    this.$vux.toast.text(this.$t('pleaseEnterMobile'));
                 } else {
-                    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
-                    if(!phoneReg.test(this.loginInfo.phoneNum)) {
-                        this.$vux.toast.text($t('pleaseEnterRightMobile'))
-                        return;
-                    }else {
-                        if(callback) {
-                            callback();
-                        }
+                    if(!validator.isMobile(this.loginInfo.phoneNum)){
+                        this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
+                    }else{
+                        callback();
                     }
                 }
             },
@@ -166,10 +164,14 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    $img_base_url : '../../assets/images/';
 
     .login {
         margin-top: 15px;
         color: #4A4A4A;
+        background: get_url('icon-bg.png');
+        background-size: 100% 100%;
+        height: 100%;
 
         .bottom-info {
             display: flex;
@@ -191,6 +193,42 @@
                 font-size: 12.5px;
                 text-align: right;
             }
+        }
+
+        .code-button{
+            padding: 0 10px;
+        }
+
+        .validate{
+            height: 100%;
+            padding: 0 10px;
+            text-align: center;
+            font-size: $font_size_12px;
+            color: #046FDB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid #F5F5F5;
+
+            &.time-counting{
+                color: #C5C5C5;
+            }
+        }
+
+        /deep/ .vux-x-input-right-full{
+            height: 50px;
+        }
+
+        /deep/ .weui-cell__primary{
+            padding-right: 10px;
+        }
+
+        /deep/ .weui-label{
+            font-size: $font_size_15px;
+        }
+
+        /deep/ .weui-input{
+            font-size: $font_size_15px;
         }
     }
 </style>

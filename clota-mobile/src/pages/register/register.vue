@@ -186,11 +186,14 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    $img_base_url : '../../assets/images/';
 
     .register {
         width: 100%;
         margin-top: 15px;
         color: #4A4A4A;
+        background: get_url('icon-bg.png');
+        background-size: 100% 100%;
 
         .msg {
             margin-left: 14px;

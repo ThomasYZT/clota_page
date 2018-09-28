@@ -217,7 +217,7 @@
                 opacity: 0.5;
 
                 .iconfont{
-                    font-size: 18px;
+                    font-size: 23px;
                 }
 
                 &.active{
