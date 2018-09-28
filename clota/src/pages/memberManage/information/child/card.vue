@@ -76,7 +76,8 @@
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardOwnerHead"
-                        :table-data="JSON.parse(annualCard.availPersons) || []"
+                        :table-data="annualCard.availPersons ? JSON.parse(annualCard.availPersons) : []"
+                        :table-com-min-height="300"
                         :border="true">
                         <el-table-column
                             slot="column4"
@@ -92,7 +93,7 @@
                 <!--可使用范围-->
                 <div class="label range"></div>
                 <ul class="range-list">
-                    <li v-for="(range,index) in JSON.parse(annualCard.availOrgs)" :key="index">{{range.orgName}}</li>
+                    <li v-for="(range,index) in annualCard.availOrgs ? JSON.parse(annualCard.availOrgs) : []" :key="index">{{range.orgName}}</li>
                 </ul>
                 <!--使用说明-->
                 <div class="label instruction"></div>
@@ -102,6 +103,7 @@
                         :ofsetHeight="170"
                         :column-data="cardInfosHead"
                         :table-data="JSON.parse(annualCard.cardInfos) || []"
+                        :table-com-min-height="300"
                         :border="true">
                     </table-com>
                 </div>
@@ -128,7 +130,8 @@
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardOwnerHead"
-                        :table-data="JSON.parse(timesCard.availPersons) || []"
+                        :table-data="timesCard.availPersons ? JSON.parse(timesCard.availPersons) : []"
+                        :table-com-min-height="300"
                         :border="true">
                         <el-table-column
                             slot="column4"
@@ -145,7 +148,7 @@
                 <!--可使用范围-->
                 <div class="label range"></div>
                 <ul class="range-list">
-                    <li v-for="(range,index) in JSON.parse(timesCard.availOrgs)" :key="index">{{range.orgName}}</li>
+                    <li v-for="(range,index) in timesCard.availOrgs ? JSON.parse(timesCard.availOrgs) : []" :key="index">{{range.orgName}}</li>
                 </ul>
                 <!--使用说明-->
                 <div class="label instruction"></div>
@@ -154,7 +157,8 @@
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardInfosHead"
-                        :table-data="JSON.parse(timesCard.cardInfos) || []"
+                        :table-data="timesCard.cardInfos ? JSON.parse(timesCard.cardInfos) : []"
+                        :table-com-min-height="300"
                         :border="true">
                     </table-com>
                 </div>
