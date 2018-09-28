@@ -87,7 +87,7 @@
                     ajax.post('login', {
                         phoneNum: this.loginInfo.phoneNum,
                         code: this.loginInfo.vcode,
-                        companyCode: '000000071' //冰雪世界
+                        companyCode: 'C2001' //冰雪世界
                     }).then((res) => {
                         if(res.success) {
                             //存储token信息

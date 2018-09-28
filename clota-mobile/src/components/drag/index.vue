@@ -48,7 +48,7 @@
                 this.defaultPosition.y = touch.clientY;
                 this.dx = this.$el.offsetLeft;
                 this.dy = this.$el.offsetTop;
-                document.addEventListener("touchmove",this.documentMoveEvent, { passive: true });
+                document.addEventListener("touchmove",this.documentMoveEvent, false);
             },
             /**
              * 开始拖动
@@ -78,7 +78,7 @@
              */
             end () {
                 this.startDrag = false;
-                document.removeEventListener("touchmove",this.documentMoveEvent, { passive: true });
+                document.removeEventListener("touchmove",this.documentMoveEvent, false);
             },
             /**
              * 阻止页面滑动默认事件

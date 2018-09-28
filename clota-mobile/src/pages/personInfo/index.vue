@@ -255,7 +255,7 @@
                 let file = e.target.files[0];
                 let param = new FormData(); //创建form对象
                 param.append('file',file,file.name);//通过append向form对象添加数据
-                if(file.size > 1024 * 10){
+                if(file.size > 1024 * 1024 * 10){
                     this.$vux.toast.show({
                         text : '上传文件最大10M',
                         type : 'text',
@@ -264,8 +264,7 @@
                 }else{
                     ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
                         if(res.success){
-                            this.getMemberDetail();
-                            this.getGrowthBalance();
+                            this.modifyHeadImg(res.data);
                         }else{
                             this.$vux.toast.show({
                                 text : '上传头像失败',
@@ -275,6 +274,29 @@
                         }
                     });
                 }
+            },
+            /**
+             * 修改头像信息
+             * @param imgSrc 头像地址
+             */
+            modifyHeadImg (imgSrc) {
+                ajax.post('updateMemberInfo',{
+                    id : this.userInfo.memberId,
+                    portrait : imgSrc
+                }).then(res => {
+                    if(res.success){
+                        this.$vux.toast.show({
+                            text: '修改头像成功'
+                        });
+                        this.getMemberDetail();
+                        this.getGrowthBalance();
+                    }else{
+                        this.$vux.toast.show({
+                            text: '修改头像失败',
+                            type : 'cancel'
+                        });
+                    }
+                });
             }
         },
         beforeRouteEnter (to,from,next){
@@ -326,7 +348,6 @@
                 img{
                     @include block_outline(100%,100%,false);
                     border-radius: 100px;
-                    opacity: 0.1;
                     background: #1495EB;
                     box-shadow: 0 4px 14px 0 rgba(0,0,0,0.20);
                 }
