@@ -98,10 +98,16 @@
             const validateNumber = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
                     this.getTotalAmount();
-                    callback();
+                    if(value == 0){
+                        callback(this.$t('fieldTypeError',{field : this.$t('storageSum')}));
+                    }else{
+                        callback();
+                    }
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
                         callback(this.$t('errorMaxLength',{field : this.$t('storageSum'),length : 10}));
+                    }else if(err === 'moneyError'){
+                        callback(this.$t('fieldTypeError',{field : this.$t('storageSum')}));
                     }else{
                         callback(this.$t(err,{field : this.$t('storageSum')}));
                     }
