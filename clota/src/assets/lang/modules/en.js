@@ -458,6 +458,9 @@ export default {
     'integralRateInfo': '积分率信息',
     'inputOrderSearch': '请输入产品名称、交易号',
     'levelExistCard': '该会员级别下已存在会员信息，不能删除',
+    'noMatchCard': '对不起，找不到该卡的信息，请尝试更换其他的卡',
+    'cardInitError': '实体卡初始化出错',
+    'cardInitSuccess': '实体卡初始化成功',
 
     // 检验错误提示
     'errorIrregular': 'Input content is illegal',

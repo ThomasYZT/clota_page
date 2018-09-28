@@ -129,7 +129,7 @@
                                :placeholder="$t('readCard')"/>
                     </Form-item>
                 </div>
-
+                <!--<div><Button type="primary" @click="fetchCardInfo()">获取实体卡信息</Button></div>-->
             </Form>
         </div>
         <!--footer 按钮-->
@@ -268,6 +268,10 @@
                     "tpNo": "",//第三方卡号
                     "tpCardNo": "",//第三方卡面号
                 },
+                // 所有实体卡信息
+                allEntityCards: [],
+                // D3 SDK 注册后的实例对象
+                rd_D3: {},
 
                 // 表单校验规则
                 ruleValidate: {
@@ -341,9 +345,11 @@
         created() {
             this.queryDocument();
             this.getLevelList();
+            this.getAllEntityCard();
         },
         mounted() {
-            this.idCardTest(rd);     // rd -- 实体卡SDK
+//            this.idCardTest(rd);     // rd -- 实体卡SDK
+            this.rd_D3 = rd;
         },
         watch: {},
         methods: {
@@ -410,6 +416,24 @@
                 })
             },
 
+            /**
+             * 查询所有导入的实体卡信息
+             */
+            getAllEntityCard() {
+                return ajax.post('queryEntityCard',{
+                    cardStatus : '',
+                    pageNo : 1,
+                    pageSize : 99999,
+                }).then(res => {
+                    if (res.success && res.data && res.data.memberEntityCardVoList) {
+                        this.allEntityCards = res.data.memberEntityCardVoList.data || [];
+                    } else {
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('获取实体卡基础数据')}));
+                    }
+                    return res.data;
+                });
+            },
+
             //新增/编辑会员接口
             saveAndEditMember(url, params) {
                 ajax.post(url, {
@@ -446,53 +470,48 @@
                 }
                 if (this.type === 'modify') {
                     this.$router.back();
-                    // this.$router.push({name: this.routerFrom.name});
                 }
             },
-            // 获取实体卡信息
-            idCardTest(rd) {
-                var st; //???????????
-                var lSnr; //??????????????????javascript??????dc_card????????????????
-                var rlen; //??????????????????????javascript??????dc_card????????????????
-                var msg = "";
+            /**
+             * 读取实体卡信息
+             * @param rd -- 实体卡SDK
+             */
+            fetchCardInfo(rd) {
+                if (Array.isArray(this.allEntityCards) && !this.allEntityCards.length) {
+                    this.getAllEntityCard().then(() => {
+                        this.readEntityCard(this.rd_D3);
+                    });
+                } else {
+                    this.readEntityCard(this.rd_D3);
+                }
+            },
+            readEntityCard(rd) {
+                var st; //主要用于返回值
+//                var lSnr; //本用于取序列号，但在javascript只是当成dc_card函数的一个临时变量
+//                var rlen; //用于取一些返回值长度，但在javascript只是当成dc_card函数的一个临时变量
 
                 if (rd.dc_init) {
                     st = rd.dc_init(100, 115200);
                 }
+//                st = 180;   // 测试代码
                 if (!st || st <= 0) {
-                    msg += this.$t("实体卡初始化出错！");
-                    this.$Message.error(msg);
+                    this.$Message.error(this.$t("cardInitError") + '！');    // 实体卡初始化出错
                     return;
                 }
-                msg += this.$t("实体卡初始化成功！");
+                console.info(this.$t("cardInitSuccess") + '！');     // 实体卡初始化成功
 
-                //******************  ????  **************************
-                //rd.DC_find_i_d();
-                st = rd.DC_start_i_d();
-
-                if (st < 0) {
-                    msg += "?????????????";
-                    this.$Message.error(msg);
-                    return;
+                let matchedCard = this.allEntityCards.find((item, i) => {
+                    return rd.get_bstrRBuffer_asc === item.id;
+                });
+                if (matchedCard) {
+                    this.newCardParam.tpNo = rd.get_bstrRBuffer_asc;
+                    this.newCardParam.tpCardNo = matchedCard.faceNum;
+                } else {
+                    this.$Message.warning(this.$t('noMatchCard'));  // 对不起，找不到该卡的信息，请尝试更换其他的卡
                 }
-                /*var name = rd.DC_i_d_query_name();
-                var sex = rd.DC_i_d_query_sex();
-                var nation = rd.DC_i_d_query_nation();
-                var birth = rd.DC_i_d_query_birth();
-                var address = rd.DC_i_d_query_address();
-                var number = rd.DC_i_d_query_id_number();
-                var department = rd.DC_i_d_query_department();
-                var expire = rd.DC_i_d_query_expire_day();
-                //var st = rd.DC_i_d_query_photo_bmp_buffer();
-                var bmp_data_str = rd.get_bstrRBuffer_asc;
-                //rd.put_bstrSBuffer = "c:/me.bmp";
-                st = rd.DC_i_d_query_photo_file();*/
+            },
 
-                rd.DC_end_i_d();
 
-                this.newCardParam.tpNo = rd.get_bstrRBuffer_asc;
-                this.newCardParam.tpCardNo = rd.DC_i_d_query_id_number();
-            }
         }
     };
 </script>
