@@ -162,6 +162,7 @@
     import ajax from '@/api/index';
     import minBy from 'lodash/minBy';
     import common from '@/assets/js/common.js';
+    import isEmpty from 'lodash/isEmpty';
 
     export default {
         components: {},
@@ -477,7 +478,7 @@
              * @param rd -- 实体卡SDK
              */
             fetchCardInfo(rd) {
-                if (Array.isArray(this.allEntityCards) && !this.allEntityCards.length) {
+                if (isEmpty(this.allEntityCards)) {
                     this.getAllEntityCard().then(() => {
                         this.readEntityCard(this.rd_D3);
                     });

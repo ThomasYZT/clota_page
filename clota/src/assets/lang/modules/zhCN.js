@@ -461,6 +461,7 @@ export default {
     'noMatchCard': '对不起，找不到该卡的信息，请尝试更换其他的卡',
     'cardInitError': '实体卡初始化出错',
     'cardInitSuccess': '实体卡初始化成功',
+    'phoneExistCard': '手机号已被注册，请更换手机号',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
