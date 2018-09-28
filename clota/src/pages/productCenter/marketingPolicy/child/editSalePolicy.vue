@@ -272,7 +272,6 @@
                                   v-if="itemsData.length < productListCount"
                                   @click="addProduct">+ {{$t('appendProduct')}}</span><!--新增产品-->
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="productColumn"
                                 :table-data="itemsData"
@@ -307,7 +306,6 @@
                         <Form-item :label="$t('saleChannels')"><!--销售渠道-->
                             <table-com
                                 ref="channelMultiTablePlug"
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="saleChannelColumn"
                                 :table-data="saleChannelList"
@@ -323,7 +321,6 @@
                         <Form-item :label="$t('allPeopleMarket')"><!--全民营销-->
                             <span class="blue">+ {{$t('addMarketLevel')}}</span><!--增加营销等级-->
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
                                 :table-data="marketingData"
@@ -414,7 +411,6 @@
                             <template v-if="formData.returnRule.type!=='notAllow'">
                                 <br/>
                                 <table-com
-                                    :ofsetHeight="120"
                                     :table-com-min-height="260"
                                     :column-data="refundColumn"
                                     :table-data="formData.returnRule.rules"

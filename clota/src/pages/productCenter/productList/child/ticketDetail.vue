@@ -191,7 +191,6 @@
                     <Form-item :label="$t('playPark')+'：'"><!--可游玩园区-->
                         <div>
                             <table-com
-                                :ofsetHeight="755"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="productPlayRuleVo"
