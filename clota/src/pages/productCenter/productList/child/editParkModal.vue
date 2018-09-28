@@ -53,7 +53,8 @@
                         <FormItem :label="$t('saleType')" prop="saleType"><!--售票方式-->
                             <Select v-model="formData.saleType"
                                     :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})" @on-change="changeSaleType">
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="changeSaleType">
                                 <Option v-for="(item,index) in enumData.saleType"
                                         :key="index"
                                         :value="item.value">
@@ -563,7 +564,6 @@
             };
             //校验游玩项目分组
             const validateEquipmentGroup = (rule,value,callback) => {
-                console.log(value)
                 if(value && value.length > 0){
                     callback();
                 }else{

@@ -100,7 +100,7 @@
 
                         <i-row>
                             <i-col span="24">
-                                <FormItem :label="$t('priceSet')" prop="enterCheckPlace"><!--分账设置-->
+                                <FormItem :label="$t('priceSet')"><!--分账设置-->
                                     <!--入园检票处--核销表格,区分查看与编辑-->
                                     <table-com
                                         :table-com-min-height="250"

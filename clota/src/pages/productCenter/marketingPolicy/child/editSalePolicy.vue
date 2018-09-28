@@ -702,15 +702,15 @@
                         { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 500}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    buyTicketNotes: [
-                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                    ],
                     specifiedSaleDateSold: [
                         { validator: validateSaleData, trigger: 'change' },
                     ],
                     specifiedPlayDateSold: [
                         { validator: validatePlayData, trigger: 'change' },
+                    ],
+                    buyTicketNotes: [
+                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },
                 //枚举数据
