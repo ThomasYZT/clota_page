@@ -27,42 +27,12 @@ const createRouter = () => new Router({
             redirect : {
                 name : 'mobileLogin'
             }
-            //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
-            //如果是没有获取到用户信息，那么就直接跳转到登录页面
-            // redirect: to => {
-            //     if(Object.keys(store.getters.userInfo).length > 0){
-            //         if(store.getters.routerInfo.length > 0){
-            //             return {
-            //                 path : store.getters.routerInfo[0].path
-            //             }
-            //         }
-            //     }else{
-            //         return {
-            //             name : 'login'
-            //         }
-            //     }
-            // }
         },
         {
             path: '/',
             redirect : {
                 name : 'mobileLogin'
             }
-            //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
-            //如果是没有获取到用户信息，那么就直接跳转到登录页面
-            // redirect: to => {
-            //     if(Object.keys(store.getters.userInfo).length > 0){
-            //         if(store.getters.routerInfo.length > 0){
-            //             return {
-            //                 path : store.getters.routerInfo[0].path
-            //             }
-            //         }
-            //     }else{
-            //         return {
-            //             name : 'login'
-            //         }
-            //     }
-            // }
         },
         //会员登陆
         {
@@ -70,7 +40,7 @@ const createRouter = () => new Router({
             name: 'mobileLogin',
             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
             meta: {
-                noFrame: true
+                title: 'login'
             }
         },
         //会员注册
@@ -88,7 +58,7 @@ const createRouter = () => new Router({
             name: 'home',
             component: () => import(/* webpackChunkName: "login" */ '../pages/home/home.vue'),
             meta: {
-                noFrame: true
+                title: 'home'
             }
         },
         //会员账户
