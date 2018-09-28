@@ -396,6 +396,18 @@
                     });
                 }
             };
+            //校验票面价格(不超过景区成本价)
+            const validatePrintPrice = (rule,value,callback) => {
+                if(value && this.formData.standardPrice){
+                    if( Number(value) > Number(this.formData.standardPrice) ){
+                        callback(this.$t('sizeErrorB',{filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice')}));
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
+                }
+            };
 
             return {
                 //面包屑上级路由信息
@@ -472,7 +484,8 @@
                     printPrice: [
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('printPrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' }
+                        { validator: validateMoney, trigger: 'blur' },
+                        { validator: validatePrintPrice, trigger: 'blur' }
                     ],
                     ticketRemark: [
                         { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('ticketRemark'), length: 500}), trigger: 'blur' },
