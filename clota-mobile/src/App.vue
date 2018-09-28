@@ -20,8 +20,8 @@
                         @click.native="showContent001 = !showContent001">
                     </cell>
                     <template v-if="showContent001">
-                        <cell-box class="sub-item">中文</cell-box>
-                        <cell-box class="sub-item">英文</cell-box>
+                        <cell-box class="sub-item">{{$t('chinese')}}</cell-box>
+                        <cell-box class="sub-item">{{$t('english')}}</cell-box>
                     </template>
                 </group>
             </div>
@@ -38,7 +38,7 @@
         <!--切换语言弹窗-->
         <div v-transfer-dom>
             <confirm v-model="confirmShow"
-                     title="选择语言"
+                     :title="$t('selectLang')"
                      :confirm-text="$t('complete')"
                      :cancel-text="$t('cancel')"
                      @on-confirm="onConfirm"
@@ -46,15 +46,18 @@
                 <div class="lang-chose">
                     <check-icon
                         :value="langType === 'zh-CN'"
-                        @update:value="preChangeLang('zh-CN')">中文</check-icon>
+                        @update:value="preChangeLang('zh-CN')">{{$t('chinese')}}</check-icon>
                     <check-icon
                         :value="langType === 'en'"
-                        @update:value="preChangeLang('en')">En</check-icon>
+                        @update:value="preChangeLang('en')">{{$t('english')}}</check-icon>
                 </div>
             </confirm>
         </div>
         <div v-transfer-dom>
-            <loading :show="isLoading" text="加载中"></loading>
+            <loading
+                :show="isLoading"
+                :text="$t('loading')">
+            </loading>
         </div>
     </div>
 </template>

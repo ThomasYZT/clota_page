@@ -1,7 +1,6 @@
 
 //英文配置
 export default {
-
     yearCard : 'Year card',
     timeCard : 'Times card',
     yearCardInfo : 'Year card information',
@@ -130,6 +129,9 @@ export default {
     password: '密码',
     uploadErr: '上传文件最大{size}M',
     changeImg: '修改头像',
+    chinese: '中文',
+    english: 'En',
+    selectLang: '选择语言',
     '0004' : '该分组已存在',
     'A009' : '账户没有权限',
     'A008' : '账号不存在',
