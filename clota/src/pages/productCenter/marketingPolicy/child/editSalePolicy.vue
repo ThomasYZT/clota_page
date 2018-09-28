@@ -1393,8 +1393,9 @@
                     /deep/ .ivu-btn{
                         position: relative;
                         &.week-btn{
-                            width: 110px;
+                            min-width: 70px;
                             margin-right: 10px;
+                            @include overflow_tip();
                             .iconfont{
                                 font-size: $font_size_20px;
                                 position: absolute;
