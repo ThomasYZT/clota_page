@@ -201,6 +201,7 @@ export default new Vuex.Store({
     actions: {
         //获取用户权限信息
         getUserRight(store, route) {
+            store.dispatch('freshOrgs');
             return ajax.post('getPrivilege',{
                 orgId : store.state.manageOrgs.id
             }).then(res =>{
@@ -230,8 +231,6 @@ export default new Vuex.Store({
                     Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
                     return new Promise().reject();
                 }
-            }).then(() => {
-                store.dispatch('freshOrgs');
             }).catch(() => {
                 Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
             });
@@ -277,7 +276,24 @@ export default new Vuex.Store({
         freshOrgs (store) {
             ajax.post('getManageOrgs').then(res => {
                 if(res.success){
-                    let manageOrgs = res.data ? res.data : [];
+                    let filterOrgsArr =  res.data ? res.data.filterOrg : [];
+                    let filterOrgsObj = {};
+                    for(let i = 0,j = filterOrgsArr.length;i < j;i++){
+                        filterOrgsObj[filterOrgsArr[i]['id']] = filterOrgsArr[i];
+                    }
+                    let manageOrgs = res.data ? res.data.allOrg.map(item => {
+                        if(item.id in filterOrgsObj){
+                            return {
+                                ...item,
+                                disabled : false
+                            }
+                        }else{
+                            return {
+                                ...item,
+                                disabled : true
+                            }
+                        }
+                    }) : [];
                     let userInfo = {
                         ...store.state.userInfo,
                         manageOrgs : manageOrgs

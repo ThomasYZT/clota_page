@@ -150,6 +150,7 @@
              * 切换组织树的显示状态
              */
             toggleOrgStatus () {
+                if(this.isLoading) return;
                 this.orgTreeShow = !this.orgTreeShow;
             },
             /**
@@ -178,7 +179,8 @@
                 lang: 'lang',
                 routerInfo: 'routerInfo',
                 operateLine : 'operateLine',
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                isLoading : 'isLoading',
             }),
             //当前激活的菜单
             activeMenu() {
