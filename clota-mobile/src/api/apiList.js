@@ -37,9 +37,11 @@ const apiList = {
     //获取成长值
     getGrowthBalance: '/external/memberInfo/getGrowthBalance',
     //查询所有证件类型
-    queryDocument: '/external//memberInfo/queryDocument',
+    queryDocument: '/external/memberInfo/queryDocument',
     //会员权益
-    listMemberCardRate: '/external//memberInfo/listMemberCardRate'
+    listMemberCardRate: '/external/memberInfo/listMemberCardRate',
+    //上传头像
+    uploadMemberImageInfo: '/external/memberInfo/uploadMemberImageInfo'
 };
 
 export default apiList;

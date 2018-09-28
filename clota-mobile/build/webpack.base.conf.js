@@ -114,6 +114,7 @@ let webpackConfig = smp.wrap({
                     'echarts/lib/chart/line',
                     'echarts/lib/component/tooltip',
                     'echarts/lib/component/legend',
+                    'fundebug-javascript'
                 ]
             },
             plugins: [

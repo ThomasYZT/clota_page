@@ -112,4 +112,5 @@ export default {
     memberVos: '按会员级别',
     productMap: '按产品类别',
     storeVos: '按店铺',
+    home: '主页'
 }
