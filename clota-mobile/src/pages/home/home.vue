@@ -117,6 +117,7 @@
                     link: '/memberRight',
                     iconClass: 'icon-member-rights',
                     info: '',
+                    params: {},
                     iconColor: '#6F62E5'
                 }/*,
                     {
@@ -184,6 +185,7 @@
                         //初始化页面数据
                         this.labelList.getByTitle('integralDetail').info = this.cardInfo.pointBalance;
                         this.labelList.getByTitle('defaultAccount').info = this.cardInfo.moneyBalance;
+                        this.labelList.getByTitle('memberRight').params.levelDesc = this.cardInfo.levelDesc;
 
                         //获取会员卡配色方案
                         this.setCardTheme(res.data.data[0].levelNum)
@@ -247,9 +249,6 @@
         },
         created() {
             this.getData();
-        },
-        mounted() {
-            console.log(document.getElementsByClassName())
         }
   }
 </script>

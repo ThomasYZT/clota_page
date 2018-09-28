@@ -112,5 +112,7 @@ export default {
     memberVos: '按会员级别',
     productMap: '按产品类别',
     storeVos: '按店铺',
-    home: '主页'
+    home: '主页',
+    scoreRate: '积分比例',
+    discountRate: '折扣率'
 }

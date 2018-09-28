@@ -6,7 +6,7 @@
   <div class="label-item">
       <cell :is-link="false"
             :title="$t(info.title)"
-            @click.native="toUrl(info.link)"
+            @click.native="toUrl(info.link,info.params)"
             class="cell">
           <i slot="icon"
              :style="{color: info.iconColor}"
@@ -37,8 +37,12 @@
         /**
          * 页面导航控制
          */
-        toUrl(url) {
-            this.$router.push({path: url})
+        toUrl(url,params) {
+            if(params && Object.keys(params).length > 0) {
+                this.$router.push({path: url, query: params})
+            }else{
+                this.$router.push({path: url})
+            }
         }
     }
   }
