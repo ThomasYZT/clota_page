@@ -55,7 +55,7 @@
                     gender: [],
                     vcode: ''
                 },
-                sexList: [['男', '女']],
+                sexList: [[this.$t('male'), this.$t('female')]],
                 msg: '',
                 isGetCode: false,
                 timer: null,
@@ -102,7 +102,7 @@
                         name: this.registerInfo.custName,
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
-                        sex: this.registerInfo.gender[0] === '男' ? 'male' : 'female',
+                        sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
                         companyCode: '000000071' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
@@ -186,11 +186,14 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    $img_base_url : '../../assets/images/';
 
     .register {
         width: 100%;
         margin-top: 15px;
         color: #4A4A4A;
+        background: get_url('icon-bg.png');
+        background-size: 100% 100%;
 
         .msg {
             margin-left: 14px;

@@ -78,7 +78,7 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData.idType.length === 0 || this.formData.idType[0] === '0'){
                         this.$vux.toast.show({
-                            text: '请选择证件类型',
+                            text: this.$t('pleaseSelect',{field : this.$t('cardType')}),
                             type: 'text',
                             width: '5rem'
                         });
@@ -95,14 +95,14 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData && !this.formData.idCard){
                         this.$vux.toast.show({
-                            text: '请输入证件号',
+                            text: this.$t('pleaseInput',{field : this.$t('idCard')}),
                             type: 'text',
                             width: '5rem'
                         });
                         reject();
                     }else if(this.formData.idCard.length > 40){
                         this.$vux.toast.show({
-                            text: '证件号最多输入40个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('idCard'),length : 40}),
                             type: 'text',
                             width: '5.2rem'
                         });
@@ -123,7 +123,7 @@
                 }).then(res => {
                     if(res.success){
                         this.$vux.toast.show({
-                            text: '修改成功'
+                            text: this.$t('operateSuc',{msg : this.$t('modify')})
                         });
                         this.$router.push({
                             name : 'personInfo'
@@ -131,7 +131,7 @@
                         this.getMemberDetail();
                     }else{
                         this.$vux.toast.show({
-                            text: '修改失败',
+                            text: this.$t('operateFail',{msg : this.$t('modify')}),
                             type : 'cancel'
                         });
                     }

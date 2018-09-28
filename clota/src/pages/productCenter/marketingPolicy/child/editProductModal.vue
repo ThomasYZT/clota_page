@@ -30,15 +30,23 @@
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('chooseProduct')" prop="productId"><!--选择产品-->
-                            <Select v-model="formData.productId"
-                                    :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})" @on-change="changeChooseProduct">
-                                <Option v-for="(item,index) in list"
-                                        :key="index"
-                                        :value="item.id">
-                                    {{item.productName}}
-                                </Option>
-                            </Select>
+                            <template v-if="type === 'modify'">
+                                <Input :value="formData.productName"
+                                       disabled
+                                       placeholder=""/>
+                            </template>
+                            <template v-else>
+                                <Select v-model="formData.productId"
+                                        :disabled="type === 'check'"
+                                        :placeholder="$t('selectField', {msg: ''})"
+                                        @on-change="changeChooseProduct">
+                                    <Option v-for="(item,index) in list"
+                                            :key="index"
+                                            :value="item.id">
+                                        {{item.productName}}
+                                    </Option>
+                                </Select>
+                            </template>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -92,7 +100,7 @@
 
                         <i-row>
                             <i-col span="24">
-                                <FormItem :label="$t('priceSet')" prop="enterCheckPlace"><!--分账设置-->
+                                <FormItem :label="$t('priceSet')"><!--分账设置-->
                                     <!--入园检票处--核销表格,区分查看与编辑-->
                                     <table-com
                                         :table-com-min-height="250"
@@ -224,7 +232,7 @@
             };
 
             return {
-                //类型 add/modify
+                //类型 add/modify/check
                 type: 'add',
                 //标题信息
                 title : this.$t('append') + this.$t('product'),
@@ -299,12 +307,16 @@
 
             //选择产品改变
             changeChooseProduct ( val , bool) {
-                if(val){
-                    this.productInfo = this.list.find( item => val === item.id );
-                    if(this.productInfo && this.productInfo.id){
-                        this.formData.productName = this.productInfo.productName;
-                        this.formData.standardPrice = this.productInfo.standardPrice;
-                        this.findProductById(this.productInfo, bool);
+                if(bool){
+                    this.findProductById(this.productInfo, bool);
+                }else{
+                    if(val){
+                        this.productInfo = this.list.find( item => val === item.id );
+                        if(this.productInfo && this.productInfo.id){
+                            this.formData.productName = this.productInfo.productName;
+                            this.formData.standardPrice = this.productInfo.standardPrice;
+                            this.findProductById(this.productInfo);
+                        }
                     }
                 }
             },
@@ -388,6 +400,8 @@
                 if(data){
                     this.formData = defaultsDeep({}, data);
                     if(data.productId){
+                        this.productInfo = data;
+                        this.productInfo.id = data.productId;
                         this.changeChooseProduct(data.productId, true);
                     }
                 }

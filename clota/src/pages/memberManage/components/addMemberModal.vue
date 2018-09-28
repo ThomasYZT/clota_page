@@ -6,6 +6,7 @@
         class-name="add-member-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
+        @on-visible-change="visibleChange"
         @on-cancel="hide"><!--会员级别设置-->
 
         <div class="modal-body">
@@ -114,7 +115,7 @@
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err, {field: ''}));
+                    callback(this.$t(err, {field: this.$t('memberGrowthRange')}));
                 });
             };
 
@@ -162,9 +163,9 @@
             }
         },
         watch: {
-            'formData.lowerGrowthValue': function (newVal) {
-                this.$refs.formValidate.validateField('highestGrowthValue');
-            }
+            // 'formData.lowerGrowthValue': function (newVal) {
+            //     this.$refs.formValidate.validateField('highestGrowthValue');
+            // }
         },
         methods: {
 
@@ -208,7 +209,6 @@
                         this.$emit('modify-success');
                         this.hide();
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message ? this.$t(res.message) :
                             'updateMemberLevel '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');  // 操作失败
                     }
@@ -217,17 +217,20 @@
 
             //关闭模态框
             hide(){
-                this.visible = false;
-                this.$refs.formValidate.resetFields();
                 //重置数据
-                this.formData = {
-                    levelNum: '',
-                    levelDesc: '',
-                    lowerGrowthValue: '',
-                    highestGrowthValue: '',
-                    remark: '',
-                };
+                this.visible = false;
+
             },
+            /**
+             * 模态框状态改变
+             * @param type
+             */
+            visibleChange (type) {
+                if(type === false){
+                    this.formData.lowerGrowthValue = '';
+                    this.$refs.formValidate.resetFields();
+                }
+            }
 
         },
     }

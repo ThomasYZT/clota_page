@@ -71,11 +71,13 @@
                 <cell
                     :title="$t('growth')"
                     disabled
+                    class="padding-right"
                     :value="formData.growth">
                 </cell>
                 <cell
                     :title="$t('entityCardId')"
                     disabled
+                    class="padding-right"
                     :value="formData.tpNo">
                 </cell>
                 <x-input
@@ -154,12 +156,12 @@
                     }).then(res => {
                         if(res.success){
                             this.$vux.toast.show({
-                                text: '保存成功'
+                                text: this.$t('operateSuc',{msg : this.$t('save')})
                             });
                             this.getMemberDetail();
                         }else{
                             this.$vux.toast.show({
-                                text: '保存失败',
+                                text: this.$t('operateFail',{msg : this.$t('save')}),
                                 type : 'cancel'
                             });
                         }
@@ -173,14 +175,14 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData && !this.formData.name){
                         this.$vux.toast.show({
-                            text: '请输入姓名',
+                            text: this.$t('pleaseInput',{field : this.$t('name')}),
                             type: 'text',
                             width: '5rem'
                         });
                         reject();
                     }else if(this.formData.name.length > 15){
                         this.$vux.toast.show({
-                            text: '姓名最多输入15个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('name'),length : 15}),
                             type: 'text',
                             width: '6rem'
                         });
@@ -197,7 +199,7 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData.qq.length > 50){
                         this.$vux.toast.show({
-                            text: 'qq最多输入50个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('qq'),length : 50}),
                             type: 'text',
                             width: '6rem'
                         });
@@ -214,14 +216,14 @@
                 return new Promise((resolve,reject) => {
                     if(this.formData.emailAddr.length > 100){
                         this.$vux.toast.show({
-                            text: 'E-mail最多输入100个字符',
+                            text: this.$t('maxLengthErr',{field : this.$t('email'),length : 100}),
                             type: 'text',
                             width: '6rem'
                         });
                         reject();
                     }else  if(this.formData.emailAddr && !validator.isEmail(this.formData.emailAddr)){
                         this.$vux.toast.show({
-                            text: 'E-mail格式错误',
+                            text: this.$t('errFormat',{field : this.$t('email')}),
                             type: 'text',
                             width: '6rem'
                         });
@@ -253,17 +255,16 @@
                 let file = e.target.files[0];
                 let param = new FormData(); //创建form对象
                 param.append('file',file,file.name);//通过append向form对象添加数据
-                if(file.size > 1024 * 10){
+                if(file.size > 1024 * 1024 * 10){
                     this.$vux.toast.show({
-                        text : '上传文件最大10M',
+                        text : this.$t('uploadErr',{size : 10}),
                         type : 'text',
                         width : '3.5rem'
                     });
                 }else{
                     ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
                         if(res.success){
-                            this.getMemberDetail();
-                            this.getGrowthBalance();
+                            this.modifyHeadImg(res.data);
                         }else{
                             this.$vux.toast.show({
                                 text : '上传头像失败',
@@ -273,6 +274,29 @@
                         }
                     });
                 }
+            },
+            /**
+             * 修改头像信息
+             * @param imgSrc 头像地址
+             */
+            modifyHeadImg (imgSrc) {
+                ajax.post('updateMemberInfo',{
+                    id : this.userInfo.memberId,
+                    portrait : imgSrc
+                }).then(res => {
+                    if(res.success){
+                        this.$vux.toast.show({
+                            text: this.$t('operateSuc',{msg : this.$t('changeImg')})
+                        });
+                        this.getMemberDetail();
+                        this.getGrowthBalance();
+                    }else{
+                        this.$vux.toast.show({
+                            text: this.$t('operateFail',{msg : this.$t('changeImg')}),
+                            type : 'cancel'
+                        });
+                    }
+                });
             }
         },
         beforeRouteEnter (to,from,next){
@@ -324,7 +348,6 @@
                 img{
                     @include block_outline(100%,100%,false);
                     border-radius: 100px;
-                    opacity: 0.1;
                     background: #1495EB;
                     box-shadow: 0 4px 14px 0 rgba(0,0,0,0.20);
                 }
@@ -352,8 +375,15 @@
         .cell-list{
             margin-top: 8px;
             background: $color_fff;
-            /*height: calc(100% - 200px);*/
             overflow: auto;
+
+            .padding-right /deep/ .weui-cell__ft{
+                padding-right: 15px;
+            }
+
+            /deep/ .vux-x-input-placeholder-right{
+                padding-right: 15px;
+            }
 
             .arrow-wrap {
                 text-align: right;

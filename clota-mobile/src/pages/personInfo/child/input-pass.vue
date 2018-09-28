@@ -7,13 +7,13 @@
             <ul class="pass-input" @click="showKeyBoard($event,'first')">
                <li v-for="(item,i) in passData" :key="i">{{item}}</li>
             </ul>
-            <div class="label label-margin">{{$t('请再次输入密码')}}</div>
+            <div class="label label-margin">{{$t('inputPassAgain')}}</div>
             <ul class="pass-input" @click="showKeyBoard($event,'second')">
                 <li v-for="(item,i) in againPassData" :key="i">{{item}}</li>
             </ul>
 
             <div class="btn-area">
-                <x-button @click.native="submit">{{$t('提交')}}</x-button>
+                <x-button @click.native="submit">{{$t('submit')}}</x-button>
             </div>
         </div>
         <!--输入数字键盘-->
@@ -126,7 +126,7 @@
                     if(res.success){
                         setTimeout(() =>{
                             this.$vux.toast.show({
-                                text: '修改成功'
+                                text: this.$t('operateSuc',{msg : this.$t('modify')})
                             });
                             this.$router.push({
                                 name : 'personInfo'
@@ -136,28 +136,28 @@
                         if(res.code === 'A005'){
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: '验证码失效',
+                                    text: this.$t('A005'),
                                     type : 'text'
                                 })
                             },500);
                         }else if(res.code === 'A003'){
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: '验证码为空',
+                                    text: this.$t('A003'),
                                     type : 'text'
                                 })
                             },500);
                         }else if(res.code === 'A004'){
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: '验证码错误',
+                                    text: this.$t('A004'),
                                     type : 'text'
                                 })
                             },500);
                         }else{
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: '修改失败',
+                                    text: this.$t('operateFail',{msg : this.$t('modify')}),
                                     type : 'cancel'
                                 })
                             },500);
@@ -194,21 +194,21 @@
                 return new Promise((resolve,reject) => {
                     if(this.inputData && this.inputData.length !== 6){
                         this.$vux.toast.show({
-                            text: '请输入密码',
+                            text: this.$t('pleaseInput',{field : this.$t('password')}),
                             type: 'text',
                             width: '5rem'
                         });
                         reject();
                     }else if(this.againInputData && this.againInputData.length !== 6){
                         this.$vux.toast.show({
-                            text: '请再次输入密码',
+                            text: this.$t('inputPassAgain'),
                             type: 'text',
                             width: '5rem'
                         });
                         reject();
                     }else if(this.againInputData.join('') !== this.inputData.join('')){
                         this.$vux.toast.show({
-                            text: '2次密码输入不一致',
+                            text: this.$t('twicePassError'),
                             type: 'text',
                             width: '5rem'
                         });

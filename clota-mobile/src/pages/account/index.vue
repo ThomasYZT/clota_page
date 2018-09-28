@@ -123,6 +123,7 @@
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
+    $img_base_url : '../../assets/images/';
     .account{
         @include block_outline();
 
@@ -133,7 +134,8 @@
         .header{
             position: relative;
             @include block_outline($height : 267px);
-            background-image: linear-gradient(-225deg, #4C7FFE 0%, #046FDB 100%);
+            background: get_url('integrateDetialBg.png');
+            background-size: 100%;
             text-align: center;
 
             .account-list-chose{

@@ -41,7 +41,7 @@ const apiList = {
     //会员权益
     listMemberCardRate: '/external/memberInfo/listMemberCardRate',
     //上传头像
-    uploadMemberImageInfo: '/external/memberInfo/uploadMemberImageInfo'
+    uploadMemberImageInfo: '/uploadFile'
 };
 
 export default apiList;

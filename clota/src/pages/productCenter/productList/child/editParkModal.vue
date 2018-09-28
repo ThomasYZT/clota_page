@@ -27,16 +27,23 @@
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('choosePark')" prop="parkId"><!--选择园区-->
-                            <Select v-model="formData.parkId"
-                                    :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})"
-                                    @on-change="selectParkChange">
-                                <Option v-for="(item,index) in parkList"
-                                        :key="index"
-                                        :value="item.id">
-                                    {{item.orgName}}
-                                </Option>
-                            </Select>
+                            <template v-if="type === 'modify'">
+                                <Input :value="formData.parkName"
+                                       disabled
+                                       placeholder=""/>
+                            </template>
+                            <template v-else>
+                                <Select v-model="formData.parkId"
+                                        :disabled="type === 'check'"
+                                        :placeholder="$t('selectField', {msg: ''})"
+                                        @on-change="selectParkChange">
+                                    <Option v-for="(item,index) in parkList"
+                                            :key="index"
+                                            :value="item.id">
+                                        {{item.orgName}}
+                                    </Option>
+                                </Select>
+                            </template>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
                     </i-col>
@@ -46,7 +53,8 @@
                         <FormItem :label="$t('saleType')" prop="saleType"><!--售票方式-->
                             <Select v-model="formData.saleType"
                                     :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})" @on-change="changeSaleType">
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="changeSaleType">
                                 <Option v-for="(item,index) in enumData.saleType"
                                         :key="index"
                                         :value="item.value">
@@ -91,7 +99,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})"><!--设备分组-->
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId"><!--设备分组-->
                             <Select v-model="formData.gardenGroupId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
@@ -256,7 +264,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})"><!--设备分组-->
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId"><!--设备分组-->
                             <Select v-model="formData.gardenGroupId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
@@ -348,12 +356,13 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('addProjectGroup')"><!--添加项目分组-->
+                        <FormItem :label="$t('addProjectGroup')" prop="equipmentGroupIds"><!--添加项目分组-->
                             <Select v-model="formData.equipmentGroupIds"
                                     :disabled="type === 'check'"
                                     :multiple="true"
                                     :clearable="true"
-                                    :placeholder="$t('selectField', {msg: ''})" @on-change="changeProjectGroup">
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="changeProjectGroup">
                                 <Option v-for="(item,index) in enumData.group"
                                         :key="index"
                                         :value="item.id">
@@ -362,102 +371,102 @@
                             </Select>
                             <span class="example" @click="jumpForExample">{{$t('example')}}</span>
                             <!--项目分组表格-->
-                            <div class="table-wrap">
-                                <table-com
-                                    :table-com-min-height="250"
-                                    :column-data="proGroupColumnHead"
-                                    :table-data="playPoint"
-                                    :border="false">
-                                    <el-table-column
-                                        slot="column0"
-                                        :label="row.title"
-                                        :prop="row.field"
-                                        :key="row.index"
-                                        :width="row.width"
-                                        :min-width="row.minWidth"
-                                        show-overflow-tooltip
-                                        slot-scope="row">
-                                        <template slot-scope="scope">
-                                            <span v-if="scope.row.playType === 'required'"
-                                                  class="must-span iconfont icon-must-play"></span>
-                                            <span>{{ scope.$index+1 }}</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        slot="column2"
-                                        :label="row.title"
-                                        :prop="row.field"
-                                        :key="row.index"
-                                        :width="row.width"
-                                        :min-width="row.minWidth"
-                                        show-overflow-tooltip
-                                        slot-scope="row">
-                                        <template slot-scope="scope">
-                                            <template v-if="type === 'check'">
-                                                {{scope.row.sumTimes | contentFilter}}
-                                            </template>
-                                            <template v-else>
-                                                <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
-                                                             :min="0"
-                                                             v-model.trim="scope.row.sumTimes"
-                                                             :placeholder="$t('inputField', {field: ''})"
-                                                             @on-blur="checkTimes(scope.row.sumTimes)">
-                                                </InputNumber>
-                                            </template>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        slot="column3"
-                                        :label="row.title"
-                                        :prop="row.field"
-                                        :key="row.index"
-                                        :width="row.width"
-                                        :min-width="row.minWidth"
-                                        show-overflow-tooltip
-                                        slot-scope="row">
-                                        <template slot-scope="scope">
-                                            <template v-if="type === 'check'">
-                                                {{scope.row.dayTimes | contentFilter}}
-                                            </template>
-                                            <template v-else>
-                                                <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
-                                                             :min="0"
-                                                             v-model.trim="scope.row.dayTimes"
-                                                             :placeholder="$t('inputField', {field: ''})"
-                                                             @on-blur="checkTimes(scope.row.dayTimes)">
-                                                </InputNumber>
-                                            </template>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        slot="column4"
-                                        slot-scope="row"
-                                        :label="row.title"
-                                        :width="row.width"
-                                        :min-width="row.minWidth">
-                                        <template slot-scope="scope">
-                                            <ul class="operate-list">
-                                                <template v-if="type === 'check'">
-                                                    <li class="normal"
-                                                        v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
-                                                    <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
-                                                </template>
-                                                <template v-else>
-                                                    <li class="normal"
-                                                        v-if="scope.row.playType === 'required'"
-                                                        @click="setAblePlay(scope.row, scope.$index)">{{$t('setAblePlay')}}</li><!--设为可玩-->
-                                                    <li class="normal"
-                                                        v-else
-                                                        @click="setMustPlay(scope.row, scope.$index)">{{$t('setMustPlay')}}</li><!--设为必玩-->
-                                                </template>
-                                            </ul>
-                                        </template>
-                                    </el-table-column>
-                                </table-com>
-                            </div>
                         </FormItem>
                     </i-col>
                 </i-row>
+                <div class="table-wrap">
+                    <table-com
+                        :table-com-min-height="250"
+                        :column-data="proGroupColumnHead"
+                        :table-data="playPoint"
+                        :border="false">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                            <template slot-scope="scope">
+                                            <span v-if="scope.row.playType === 'required'"
+                                                  class="must-span iconfont icon-must-play"></span>
+                                <span>{{ scope.$index+1 }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column2"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                            <template slot-scope="scope">
+                                <template v-if="type === 'check'">
+                                    {{scope.row.sumTimes | contentFilter}}
+                                            </template>
+                                <template v-else>
+                                    <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                 :min="0"
+                                                 v-model.trim="scope.row.sumTimes"
+                                                 :placeholder="$t('inputField', {field: ''})"
+                                                 @on-blur="checkTimes(scope.row.sumTimes)">
+                                    </InputNumber>
+                                </template>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column3"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                            <template slot-scope="scope">
+                                <template v-if="type === 'check'">
+                                    {{scope.row.dayTimes | contentFilter}}
+                                            </template>
+                                <template v-else>
+                                    <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                 :min="0"
+                                                 v-model.trim="scope.row.dayTimes"
+                                                 :placeholder="$t('inputField', {field: ''})"
+                                                 @on-blur="checkTimes(scope.row.dayTimes)">
+                                    </InputNumber>
+                                </template>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column4"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                <ul class="operate-list">
+                                    <template v-if="type === 'check'">
+                                        <li class="normal"
+                                            v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
+                                        <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
+                                    </template>
+                                    <template v-else>
+                                        <li class="normal"
+                                            v-if="scope.row.playType === 'required'"
+                                            @click="setAblePlay(scope.row, scope.$index)">{{$t('setAblePlay')}}</li><!--设为可玩-->
+                                        <li class="normal"
+                                            v-else
+                                            @click="setMustPlay(scope.row, scope.$index)">{{$t('setMustPlay')}}</li><!--设为必玩-->
+                                    </template>
+                                </ul>
+                            </template>
+                        </el-table-column>
+                    </table-com>
+                </div>
                 <i-row>
                     <i-col span="24">
                         <Form-item :label="$t('otherSet')"><!--其他设置-->
@@ -522,7 +531,6 @@
                     });
                 }
             };
-
             //校验次数，天数
             const validateTimes = (rule,value,callback) => {
                 common.validateInteger(value).then(() => {
@@ -546,11 +554,27 @@
                     }
                 });
             };
+            //校验核销设备分组
+            const validateGardenGroup = (rule,value,callback) => {
+                if(value){
+                    callback();
+                }else{
+                    callback(this.$t('selectField', {msg: this.$t('equipmentGroup')}));
+                }
+            };
+            //校验游玩项目分组
+            const validateEquipmentGroup = (rule,value,callback) => {
+                if(value && value.length > 0){
+                    callback();
+                }else{
+                    callback(this.$t('selectField', {msg: this.$t('addProjectGroup')}));
+                }
+            };
 
             return {
                 //记录修改的数据
                 index: null,
-                //类型 add/modify
+                //类型 add/modify/check
                 type: 'add',
                 //标题信息
                 title : this.$t('add') + this.$t('oneTicketPark'),
@@ -580,6 +604,12 @@
                     ],
                     saleType: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleType')}), trigger: 'change' },
+                    ],
+                    gardenGroupId: [
+                        { validator: validateGardenGroup, trigger: 'change' }
+                    ],
+                    equipmentGroupIds: [
+                        { validator: validateEquipmentGroup, trigger: 'change' }
                     ],
                     effTimes: [
                         { max: 10, message: this.$t('errorMaxLength', {field: '', length: 10}), trigger: 'blur' },
@@ -641,7 +671,6 @@
 
             //设备分组改变
             changeEquipmentGroup ( val ) {
-                console.log(val);
                 let obj = this.enumData.group.find( item => val === item.id );
                 if(obj){
                     this.checkPoint = [];
@@ -651,7 +680,6 @@
 
             //项目分组改变
             changeProjectGroup ( val ) {
-                console.log(val);
                 if(val && val.length > 0){
                     this.playPoint = [];
                     val.forEach( value => {
@@ -660,6 +688,8 @@
                             this.getCheckItems(obj,true);
                         }
                     })
+                }else{
+                    this.playPoint = [];
                 }
             },
 
@@ -714,19 +744,9 @@
                 if(fromRef){
                     this.$refs[fromRef].validate((valid) => {
                         if ( valid ) {
-                            //校验设备分组
-                            if(this.formData.gardenGroupId == ''){
-                                this.$Message.warning(this.$t('selectField',{msg: this.$t('equipmentGroup')}));
-                                return
-                            }
                             //校验产品有效性设置与游玩规则数据
                             if(this.data.productEffSet === 'since_the_play' && (this.formData.effDay == '' || this.formData.effDay == 0)){
                                 this.$Message.warning(this.$t('inputField', {field: this.$t('effectiveDays')}));
-                                return
-                            }
-                            //校验项目分组
-                            if(this.formData.saleType === 'assort' && this.formData.equipmentGroupIds.length < 1){
-                                this.$Message.warning(this.$t('selectField',{msg: this.$t('addProjectGroup')}));
                                 return
                             }
                             this.loading = true;
@@ -775,9 +795,6 @@
                 this.index = index;
                 if(data){
                     this.check = true;
-                    if(type !=='check'){
-                        this.selectParkChange(data.parkId);
-                    }
                     //查询核销设备组
                     this.getOrgGroupList({ id: data.parkId});
                     this.formData = defaultsDeep({}, data);
@@ -854,6 +871,7 @@
 
             //查询核销设备组
             getOrgGroupList ( data ) {
+                this.enumData.group = [];
                 ajax.post('getOrgGroupList', {
                     orgId: data.id,
                     groupType: 'check',
@@ -1027,7 +1045,7 @@
             }
 
             .table-wrap{
-                padding-top: 20px;
+                padding-bottom: 15px;
             }
 
             .iconfont{
