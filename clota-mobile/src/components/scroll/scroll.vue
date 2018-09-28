@@ -4,53 +4,49 @@
 -->
 <template>
     <div class="flex-box">
-        <div class="main-content">
-            <div class="scroll">
-                <div class="scroll-list-wrap">
-                    <div ref="wrapper" class="list-wrapper">
-                        <div class="scroll-content">
-                            <div ref="listWrapper">
-                                <slot>
-                                    <ul class="list-content">
-                                        <li @click="clickItem($event,item)" class="list-item" v-for="item in data">{{item}}</li>
-                                    </ul>
-                                </slot>
-                            </div>
-                            <slot name="pullup"
-                                  :pullUpLoad="pullUpLoad"
-                                  :isPullUpLoad="isPullUpLoad"
-                            >
-                                <div class="pullup-wrapper" v-if="pullUpLoad">
-                                    <div class="before-trigger" v-if="!isPullUpLoad">
-                                        <span>{{$t(pullUpTxt)}}</span>
-                                    </div>
-                                    <div class="after-trigger" v-else>
-                                        <loading></loading>
-                                    </div>
-                                </div>
-                            </slot>
-                        </div>
-                        <slot name="pulldown"
-                              :pullDownRefresh="pullDownRefresh"
-                              :pullDownStyle="pullDownStyle"
-                              :beforePullDown="beforePullDown"
-                              :isPullingDown="isPullingDown"
-                              :bubbleY="bubbleY"
-                        >
-                            <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
-                                <div class="before-trigger" v-if="beforePullDown">
-                                    <bubble :y="bubbleY"></bubble>
-                                </div>
-                                <div class="after-trigger" v-else>
-                                    <div v-if="isPullingDown" class="loading">
-                                        <loading></loading>
-                                    </div>
-                                    <div v-else><span>{{refreshTxt}}</span></div>
-                                </div>
-                            </div>
+        <div class="scroll">
+            <div ref="wrapper" class="list-wrapper">
+                <div class="scroll-content">
+                    <div ref="listWrapper">
+                        <slot>
+                            <ul class="list-content">
+                                <li @click="clickItem($event,item)" class="list-item" v-for="item in data">{{item}}</li>
+                            </ul>
                         </slot>
                     </div>
+                    <slot name="pullup"
+                          :pullUpLoad="pullUpLoad"
+                          :isPullUpLoad="isPullUpLoad"
+                    >
+                        <div class="pullup-wrapper" v-if="pullUpLoad">
+                            <div class="before-trigger" v-if="!isPullUpLoad">
+                                <span>{{$t(pullUpTxt)}}</span>
+                            </div>
+                            <div class="after-trigger" v-else>
+                                <loading></loading>
+                            </div>
+                        </div>
+                    </slot>
                 </div>
+                <slot name="pulldown"
+                      :pullDownRefresh="pullDownRefresh"
+                      :pullDownStyle="pullDownStyle"
+                      :beforePullDown="beforePullDown"
+                      :isPullingDown="isPullingDown"
+                      :bubbleY="bubbleY"
+                >
+                    <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
+                        <div class="before-trigger" v-if="beforePullDown">
+                            <bubble :y="bubbleY"></bubble>
+                        </div>
+                        <div class="after-trigger" v-else>
+                            <div v-if="isPullingDown" class="loading">
+                                <loading></loading>
+                            </div>
+                            <div v-else><span>{{refreshTxt}}</span></div>
+                        </div>
+                    </div>
+                </slot>
             </div>
         </div>
     </div>
@@ -333,14 +329,14 @@
 
     .flex-box {
         width: 100%;
-        height: calc(100% - 175px);
         position: fixed;
         z-index: 20;
-        top: 175px;
+        height: inherit;
+        bottom: 0;
         left: 0;
         background: #fff;
 
-        .main-content {
+        .scroll {
             width: 100%;
             height: 100%;
             display: flex;
@@ -349,82 +345,60 @@
             -webkit-overflow-scrolling: touch;
             overflow: auto;
 
-            .scroll {
-                flex: 1 1;
-                flex-wrap: wrap;
-                overflow: auto;
-
-                .scroll-list-wrap {
-                    position: relative;
+                .list-wrapper {
                     width: 100%;
                     height: 100%;
-
+                    flex: 1 1;
+                    flex-wrap: wrap;
+                    overflow: auto;
                     border: 1px solid rgba(0, 0, 0, .1);
-                    border-radius: 0.3rem;
+                    border-radius: 1px;
                     transform: rotate(0deg);// fix 子元素超出边框圆角部分不隐藏的问题
+                    background: #fff;
 
-                    .list-wrapper {
+                    .scroll-content {
                         position: relative;
-                        height: 100%;
-                        overflow: hidden;
+                        z-index: 1;
+                    }
+
+                    .list-content {
+                        position: relative;
+                        z-index: 10;
                         background: #fff;
+                    }
 
-                        .scroll-content {
-                            position: relative;
-                            z-index: 1;
+                    .list-item {
+                        height: 60px;
+                        line-height: 60px;
+                        font-size: 18px;
+                        padding-left: 20px;
+                        border-bottom: 1px solid #e5e5e5;
+                    }
+
+                    .pulldown-wrapper {
+                        position: absolute;
+                        width: 100%;
+                        left: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        transition: all;
+                        .after-trigger {
+                            margin-top: 10px
                         }
 
-                        .list-content {
-                            position: relative;
-                            z-index: 10;
-                            background: #fff;
-                        }
+                    }
 
-                        .list-item {
-                            height: 60px;
-                            line-height: 60px;
-                            font-size: 18px;
-                            padding-left: 20px;
-                            border-bottom: 1px solid #e5e5e5;
-                        }
-
-                        .pulldown-wrapper {
-                            position: absolute;
-                            width: 100%;
-                            left: 0;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            transition: all;
-                            .after-trigger {
-                                margin-top: 10px
-                            }
-
-                        }
-
-                        .pullup-wrapper {
-                            width: 100%;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            padding: 16px 0
-                        }
+                    .pullup-wrapper {
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 16px 0
                     }
                 }
 
             }
-        }
     }
-
-
-
-
-
-
-
-
-
-
-
 </style>
 

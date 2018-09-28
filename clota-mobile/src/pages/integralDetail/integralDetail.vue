@@ -8,19 +8,22 @@
           <h5 class="score">{{num}}</h5>
           <p class="name">{{$t('integralDetail')}}</p>
       </div>
-      <scroll ref="scroll"
-              :data="infoList"
-              :scrollbar="scrollbar"
-              :pullDownRefresh="pullDownRefreshObj"
-              :pullUpLoad="pullUpLoadObj"
-              @pullingDown="onPullingDown"
-              @pullingUp="onPullingUp">
-          <score-item v-for="(item, index) in infoList"
-                      :key="index"
-                      :info="item">
 
-          </score-item>
-      </scroll>
+      <div class="scroll-wrapper">
+          <scroll ref="scroll"
+                  :data="infoList"
+                  :scrollbar="scrollbar"
+                  :pullDownRefresh="pullDownRefreshObj"
+                  :pullUpLoad="pullUpLoadObj"
+                  @pullingDown="onPullingDown"
+                  @pullingUp="onPullingUp">
+              <score-item v-for="(item, index) in infoList"
+                          :key="index"
+                          :info="item">
+
+              </score-item>
+          </scroll>
+      </div>
   </div>
 </template>
 
@@ -78,7 +81,7 @@
                 }).then((res) => {
                     if(res.success) {
                         if(this.pageSetting.pageNo === 1) {
-                            this.infoList = res.data.data;
+                            this.infoList = res.data ? res.data.data : [];
                         } else {
                             if(res.data.data.length !== 0) {
                                 this.infoList = this.infoList.concat(res.data.data);
@@ -87,22 +90,23 @@
                             }
                         }
                         this.num = this.infoList.reduce((preValue, curValue) => {
-                            return preValue + parseInt(curValue.amount)
+                            return preValue + parseInt(curValue.amount);
                         }, 0);
                     }else {
-                        this.$vux.toast.text(res.message)
+                        this.infoList = [];
+                        this.$vux.toast.text(res.message);
                     }
-                })
+                });
             },
             /**
-             * 下拉刷新函数
+             * 下拉刷新操作
              */
             onPullingDown() {
                 this.pageSetting.pageNo = 1;
                 this.getData();
             },
             /**
-             * 上拉刷新配置
+             * 上拉刷新操作
              */
             onPullingUp() {
                 this.pageSetting.pageNo += 1;
@@ -120,30 +124,37 @@
         },
         created() {
             this.getData();
-        },
-        mounted () {
         }
     }
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .integral-detail {
+        height: 100%;
 
-    .score-board {
-        width: 100%;
-        height: 175px;
-        background: url("../../assets/images/integrateDetialBg.png");
-        background-size: 100% 100%;
-        color: #fff;
-        text-align: center;
+        .score-board {
+            width: 100%;
+            height: 175px;
+            background: url("../../assets/images/integrateDetialBg.png");
+            background-size: 100% 100%;
+            color: #fff;
+            text-align: center;
 
-        .score {
-            padding-top: 60px;
-            font-size: 34px;
+            .score {
+                padding-top: 60px;
+                font-size: 34px;
+            }
+
+            .name {
+                font-size: 12px;
+            }
         }
 
-        .name {
-            font-size: 12px;
+        .scroll-wrapper {
+            position: relative;
+            height: calc(100% - 175px);
         }
     }
+
 </style>

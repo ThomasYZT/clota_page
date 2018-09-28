@@ -174,7 +174,7 @@
                     pageSize: 100
                 }).then((res) => {
                     if(res.success) {
-                        console.log(res.data.data[0])
+                        //console.log(res.data.data[0])
                         res.data.data[0].levelNum = 4;
                         //存储会员卡信息
                         sessionStorage.setItem('cardInfo', JSON.stringify(res.data.data[0]));
@@ -248,6 +248,9 @@
         created() {
             this.getData();
         },
+        mounted() {
+            console.log(document.getElementsByClassName())
+        }
   }
 </script>
 
@@ -255,6 +258,9 @@
     @import '~@/assets/scss/base';
 
     .home {
+        height: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
         .member-card {
             position: relative;
             width: 100%;

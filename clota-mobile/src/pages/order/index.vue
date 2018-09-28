@@ -16,18 +16,27 @@
         <div
             class="order-list-info"
             v-if="orderList.length > 0">
-            <div class="order-info"
-                 v-for="item in orderList"
-                 :key="item.id">
-                <div class="order-title">{{item.orderName | contentFilter}}</div>
-                <div class="num">{{$t('num')}}：{{item.orderProductNum}}</div>
-                <div class="price">{{$t('totalPrice')}}：{{item.amount | moneyFilter(2,'￥') | contentFilter}}</div>
-                <div class="hr"></div>
-                <div class="to-detail">
-                    <span class="for-detail" @click="toOrderDetail(item)">{{$t('toDetail')}}</span>
+            <scroll ref="scroll"
+                    :data="infoList"
+                    :scrollbar="scrollbar"
+                    :pullDownRefresh="pullDownRefreshObj"
+                    :pullUpLoad="pullUpLoadObj"
+                    @pullingDown="onPullingDown"
+                    @pullingUp="onPullingUp">
+                <div class="order-info"
+                     v-for="item in orderList"
+                     :key="item.id">
+                    <div class="order-title">{{item.orderName | contentFilter}}</div>
+                    <div class="num">{{$t('num')}}：{{item.orderProductNum}}</div>
+                    <div class="price">{{$t('totalPrice')}}：{{item.amount | moneyFilter(2,'￥') | contentFilter}}</div>
+                    <div class="hr"></div>
+                    <div class="to-detail">
+                        <span class="for-detail" @click="toOrderDetail(item)">{{$t('toDetail')}}</span>
+                    </div>
                 </div>
-            </div>
+            </scroll>
         </div>
+
         <!--无数据显示-->
         <no-data class="page-no-data" >
         </no-data>
@@ -38,14 +47,14 @@
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     import noData from '@/components/noData/index.vue';
+    import Scroll from '../../components/scroll/scroll';
     export default {
         components : {
-            noData
+            noData,
+            Scroll
         },
         data() {
             return {
-                pageNo : 1,
-                pageSize : 10,
                 //订单列表
                 orderList : [],
                 //当前订单的类型
@@ -56,7 +65,30 @@
                     'catering',
                     'commodity',
                     'hotel',
-                ]
+                ],
+                //是否显示滚动条
+                scrollbar: false,
+                //下拉刷新配置
+                pullDownRefreshObj: {
+                    //临界值
+                    threshold: 90,
+                    //刷新完成bubble停留的位置
+                    stop: 40,
+                    //设置加载和加载中显示的文字
+                    txt: '刷新完成'
+                },
+                //上拉加载配置
+                pullUpLoadObj: {
+                    //临界值
+                    threshold: 20,
+                    //设置加载和加载中显示的文字
+                    txt: {more: 'loading', noMore: 'noMoreData'}
+                },
+                //分页设置
+                pageSetting: {
+                    pageNo: 1,
+                    pageSize: 10
+                }
             }
         },
         methods: {
@@ -79,12 +111,22 @@
             queryMemberOrder () {
                 ajax.post('queryMemberOrder',{
                     cardId : this.userInfo.cardId,
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize,
-                    productType : this.activeTap
+                    productType : this.activeTap,
+                    ...this.pageSetting
                 }).then(res => {
                     if(res.success){
                         this.orderList = res.data ? res.data.data : [];
+                        //下拉 刷新加载第1页
+                        if(this.pageSetting.pageNo === 1) {
+                            this.orderList = res.data ? res.data.data : [];
+                        //上拉 刷新加载第N页
+                        } else {
+                            if(res.data.data.length !== 0) {
+                                this.orderList = this.orderList.concat(res.data.data);
+                            }else {
+                                this.refresh();
+                            }
+                        }
                     }else{
                         this.orderList = [];
                     }
@@ -104,6 +146,24 @@
             changeTap (tapType) {
                 this.activeTap = tapType;
                 this.queryMemberOrder();
+            },
+            /**
+             * 下拉刷新操作
+             */
+            onPullingDown() {
+                this.pageSetting.pageNo = 1;
+                this.queryMemberOrder();
+            },
+            /**
+             * 上拉刷新操作
+             */
+            onPullingUp() {
+                this.pageSetting.pageNo += 1;
+                this.queryMemberOrder();
+            },
+            //强制刷新scroll
+            refresh() {
+                this.$refs.scroll.forceUpdate();
             }
         },
         computed : {
