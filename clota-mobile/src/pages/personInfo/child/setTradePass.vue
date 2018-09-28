@@ -157,6 +157,12 @@
             padding-top: 26px;
             @include block_outline($height : 374px);
             background: $color_fff;
+
+            /deep/ .vux-cell-align-left,
+            /deep/ .vux-label{
+                color: #353B48;
+                font-size: 15px;
+            }
         }
 
         .validate{

@@ -71,11 +71,13 @@
                 <cell
                     :title="$t('growth')"
                     disabled
+                    class="padding-right"
                     :value="formData.growth">
                 </cell>
                 <cell
                     :title="$t('entityCardId')"
                     disabled
+                    class="padding-right"
                     :value="formData.tpNo">
                 </cell>
                 <x-input
@@ -352,8 +354,15 @@
         .cell-list{
             margin-top: 8px;
             background: $color_fff;
-            /*height: calc(100% - 200px);*/
             overflow: auto;
+
+            .padding-right /deep/ .weui-cell__ft{
+                padding-right: 15px;
+            }
+
+            /deep/ .vux-x-input-placeholder-right{
+                padding-right: 15px;
+            }
 
             .arrow-wrap {
                 text-align: right;

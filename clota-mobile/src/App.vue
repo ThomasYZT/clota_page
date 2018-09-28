@@ -39,6 +39,8 @@
         <div v-transfer-dom>
             <confirm v-model="confirmShow"
                      title="选择语言"
+                     :confirm-text="$t('complete')"
+                     :cancel-text="$t('cancel')"
                      @on-confirm="onConfirm"
                      @on-show="onShow">
                 <div class="lang-chose">

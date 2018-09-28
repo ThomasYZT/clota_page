@@ -88,3 +88,54 @@ div.cell {
         }
     }
 }
+.weui-label{
+    width: auto!important;
+    padding-right: 10px;
+}
+.vux-cell-value{
+    color: #353B48!important;
+}
+
+.weui-cell_access .weui-cell__ft:after{
+    border-width : 2px 2px 0 0!important;
+    width: 9px!important;
+    height: 9px!important;
+    margin-top : -4.5px!important;
+    border-color: rgba(179,189,194,0.70) !important;
+}
+.vux-x-input-placeholder-right{
+    //padding-right: 15px;
+}
+
+.vux-popup-header-left{
+    font-size: 15px!important;
+    color: #666666!important;
+}
+
+.vux-popup-header-right{
+    font-size: 15px!important;
+    color: #046FDB!important;
+}
+.vux-popup-header {
+    background: #F5F6F8!important;
+}
+.scroller-item{
+    color: #8395A7!important;
+    height: 45px!important;
+    line-height: 45px!important;
+}
+.scroller-item-selected{
+    font-size: 16px!important;
+    color: #000000!important;
+}
+.scroller-component{
+    background: #fff;
+}
+
+.scroller-indicator{
+    height: 45px!important;
+}
+
+.scroller-content{
+    top :12px!important;
+}

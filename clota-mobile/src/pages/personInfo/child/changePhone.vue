@@ -26,7 +26,16 @@
                      :placeholder="$t('pleaseInputValidCode')" >
                 <div slot="right-full-height"
                      class="validate"
-                     @click="getValidCode">{{$t('getValidCode')}}</div>
+                     :class="{'time-counting' : isTiming}"
+                     @click="getValidCode">
+                    {{$t('getValidCode')}}
+                    <countdown
+                        v-if="isTiming"
+                        v-model="time"
+                        :start="isTiming"
+                        @on-finish="timeFinish">
+                    </countdown>
+                </div>
             </x-input>
         </group>
         <div class="btn-area">
@@ -50,7 +59,11 @@
                     validCode : ''
                 },
                 //原来的手机号码
-                orginalMobile : ''
+                orginalMobile : '',
+                //是否正在计时
+                isTiming : false,
+                //计时时间
+                time : 60
             }
         },
         methods: {
@@ -58,6 +71,7 @@
              * 获取短信验证码
              */
             getValidCode () {
+                if(this.isTiming) return;
                 this.validateMobile().then(() => {
                     ajax.post('getCode',{
                         phoneNum : this.formData.mobile
@@ -68,6 +82,7 @@
                                     text: '发送成功'
                                 })
                             },500);
+                            this.isTiming = true;
                         }else{
                             setTimeout(() =>{
                                 this.$vux.toast.show({
@@ -189,6 +204,12 @@
                         name : 'personInfo'
                     });
                 }
+            },
+            /**
+             * 计时完成
+             */
+            timeFinish () {
+                this.isTiming();
             }
         },
         computed : {
@@ -229,7 +250,8 @@
         }
 
         .validate{
-            @include block_outline(98px);
+            height: 100%;
+            padding: 0 10px;
             text-align: center;
             font-size: $font_size_12px;
             color: #046FDB;
@@ -237,6 +259,10 @@
             align-items: center;
             justify-content: center;
             border-left: 1px solid #e8e8e8;
+
+            &.time-counting{
+                color: #C5C5C5;
+            }
         }
 
         /deep/ .weui-label{
@@ -288,7 +314,7 @@
                 font-size: 17px;
                 color: $color_fff;
                 border-radius: 100px;
-                letter-spacing: 5px;
+                letter-spacing: 2px;
             }
         }
     }
