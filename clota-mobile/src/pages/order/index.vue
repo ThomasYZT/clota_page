@@ -3,14 +3,38 @@
 <template>
     <div class="order-list">
         <ul class="head">
-           <li class="order-type"
-               v-for="(item,i) in orderTapList"
-               :key="i"
-               :class="{'active' : activeTap === item}"
-               @click="changeTap(item)">
-               <span class="iconfont icon-alipay"></span>
-               <span class="label">{{$t(item)}}</span>
-           </li>
+            <li class="order-type"
+                :class="{'active' : activeTap === 'ticket'}"
+                @click="changeTap('ticket')">
+                <span class="iconfont icon-ticket">
+                <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                </span>
+                <span class="label">{{$t('ticket')}}</span>
+            </li>
+            <li class="order-type"
+                :class="{'active' : activeTap === 'catering'}"
+                @click="changeTap('catering')">
+                <span class="iconfont icon-catering">
+                <span class="path1"></span><span class="path2"></span>
+                </span>
+                <span class="label">{{$t('catering')}}</span>
+            </li>
+            <li class="order-type"
+                :class="{'active' : activeTap === 'commodity'}"
+                @click="changeTap('commodity')">
+              <span class="iconfont icon-commodity">
+                <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                </span>
+                <span class="label">{{$t('commodity')}}</span>
+            </li>
+            <li class="order-type"
+                :class="{'active' : activeTap === 'hotel'}"
+                @click="changeTap('hotel')">
+                <span class="iconfont icon-hotel">
+                <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
+                </span>
+                <span class="label">{{$t('hotel')}}</span>
+            </li>
         </ul>
         <!--订单列表-->
         <div
@@ -50,13 +74,6 @@
                 orderList : [],
                 //当前订单的类型
                 activeTap : 'ticket',
-                //订单类型列表
-                orderTapList : [
-                    'ticket',
-                    'catering',
-                    'commodity',
-                    'hotel',
-                ]
             }
         },
         methods: {
@@ -139,6 +156,10 @@
                 align-items: center;
                 justify-content: center;
                 opacity: 0.5;
+
+                .iconfont{
+                    font-size: 18px;
+                }
 
                 &.active{
                     opacity: 1;

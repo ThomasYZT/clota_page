@@ -3,7 +3,9 @@
 <template>
     <div class="change-phone">
         <div class="phone-img">
-            <span class="iconfont icon-year-card-info"></span>
+            <span class="iconfont icon-mobile">
+            <span class="path1"></span><span class="path2"></span>
+            </span>
         </div>
         <div class="phone-num">{{$t('localePhone')}}：{{orginalMobile}}</div>
         <group>
@@ -207,14 +209,14 @@
         .phone-img{
             @include block_outline(50px,50px);
             border-radius: 50px;
-            background: rgba(47,112,223,0.05);
+            /*background: rgba(47,112,223,0.05);*/
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
 
-            .icon-year-card-info{
-                font-size: 20px;
+            .icon-mobile{
+                font-size: 50px;
             }
         }
 
