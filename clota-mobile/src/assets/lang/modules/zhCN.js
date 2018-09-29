@@ -117,7 +117,7 @@ export default {
     adjustScore: '手动修改储值账户',
     gainByConsuming: '消费所得',
     scoreResume: '积分消耗',
-    gainByRecharging: '储值所得'
+    gainByRecharging: '储值所得',
     pleaseSelect : '请选择{field}',
     operateSuc: '{msg}成功',
     operateFail : '{msg}失败',
