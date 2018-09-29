@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-w-title="detail.wechatAcct">{{detail.wechatAcct || '-'}}</span></div>
+                        <!--<div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-w-title="detail.wechatAcct">{{detail.wechatAcct || '-'}}</span></div>-->
                         <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span v-w-title="detail.alipayAcct">{{detail.alipayAcct || '-'}}</span></div>
                         <div class="form-item-wrap"><label>E-mail：</label><span v-w-title="detail.emailAddr">{{detail.emailAddr || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-w-title="detail.stateCode">{{detail.stateCode || '-'}}</span></div>
