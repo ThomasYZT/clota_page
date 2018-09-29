@@ -117,7 +117,7 @@ export default {
     adjustScore: '手动修改储值账户',
     gainByConsuming: '消费所得',
     scoreResume: '积分消耗',
-    gainByRecharging: '储值所得'
+    gainByRecharging: '储值所得',
     pleaseSelect : '请选择{field}',
     operateSuc: '{msg}成功',
     operateFail : '{msg}失败',
@@ -145,9 +145,8 @@ export default {
     'A004' : '验证码错误',
     'A003' : '验证码错误',
     'A002' : '账户已失效',
-    'A001' : '账号或密码错误',
+    'A001' : '账号或验证码错误',
     'S006' : '账户操作异常',
     'S005' : '上传出错',
     'S002' : '接口异常',
-
 }

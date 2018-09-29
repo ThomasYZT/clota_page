@@ -41,7 +41,9 @@ const apiList = {
     //会员权益
     listMemberCardRate: '/external/memberInfo/listMemberCardRate',
     //上传头像
-    uploadMemberImageInfo: '/uploadFile'
+    uploadMemberImageInfo: '/uploadFile',
+    //获取用户信息
+    getOAuth2UserInfo: '/wechat/mp/getOAuth2UserInfo'
 };
 
 export default apiList;
