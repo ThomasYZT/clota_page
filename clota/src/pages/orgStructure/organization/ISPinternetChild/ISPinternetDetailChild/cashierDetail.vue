@@ -25,7 +25,7 @@
             <div :class="{'form-area' : type === 'edit'}" style="clear: both">
                 <i-row>
                     <i-col span="12">
-                        <FormItem label="款台名称："
+                        <FormItem :label="$t('checkoutName')+'：'"
                                   v-if="type === 'edit'"
                                   :required="true"
                                   prop="channelName"
@@ -33,7 +33,7 @@
                             <Input v-model.trim="formDataCopy.channelName"/>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">款台名称：</span>
+                            <span class="info-key">{{$t('checkoutName')}}：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.channelName">
                                 {{cashierDetail.channelName}}
@@ -41,14 +41,14 @@
                         </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="款台ID："
+                        <FormItem :label="$t('checkoutID')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.partnerId"
                                    disabled/>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">款台ID：</span>
+                            <span class="info-key">{{$t('checkoutID')}}：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.partnerId">
                                 {{cashierDetail.partnerId}}
@@ -64,7 +64,7 @@
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.serverUrl"/>
                             <template slot="label">
-                                <span>服务器名称：</span>
+                                <span>{{$t('serverName')}}：</span>
                                 <Tooltip placement="bottom" transfer>
                                     <div slot="content" class="tips-content">
                                         {{$t('serverNameTips')}}
@@ -75,7 +75,7 @@
                         </FormItem>
                         <div class="node-info" v-else>
                             <span class="info-key">
-                                服务器名称：
+                                {{$t('serverName')}}：
                                  <Tooltip placement="bottom" transfer>
                                     <div slot="content" class="tips-content">
                                         {{$t('serverNameTips')}}
@@ -90,7 +90,7 @@
                         </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="款台类型："
+                        <FormItem :label="$t('cashierType')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.checkerType"
@@ -104,7 +104,7 @@
                             </Select>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">款台类型：</span>
+                            <span class="info-key">{{$t('cashierType')}}：</span>
                             <span class="info-val"
                                   v-w-title="$t(checkerType)">
                                  {{$t(checkerType) | contentFilter}}
@@ -114,7 +114,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="12">
-                        <FormItem label="所属核销设备分组："
+                        <FormItem :label="$t('cashierTypeGroup')+'：'"
                                   v-if="type === 'edit' && (formDataCopy.checkerType === 'check' || formDataCopy.checkerType === 'combine')"
                                   prop="checkGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
@@ -131,15 +131,15 @@
                             </Select>
                         </FormItem>
                         <div class="node-info" v-if="type !== 'edit' && (cashierDetail.checkerType === 'check' || cashierDetail.checkerType === 'combine')">
-                            <span class="info-key">所属核销设备分组：</span>
+                            <span class="info-key">{{$t('cashierTypeGroup')}}：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.checkGroupName">
-                                {{cashierDetail.checkGroupName ? cashierDetail.checkGroupName : '未分组'}}
+                                {{cashierDetail.checkGroupName ? cashierDetail.checkGroupName : $t('noGroup')}}
                             </span>
                         </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="所属销售渠道分组："
+                        <FormItem :label="$t('saleTypeGroup')+'：'"
                                   v-if="type === 'edit' && (formDataCopy.checkerType === 'sale' || formDataCopy.checkerType === 'combine')"
                                   prop="saleGroupId"
                                   :label-width="type === 'edit' ? 0 : 150">
@@ -157,10 +157,10 @@
                         </FormItem>
                         <div class="node-info"
                              v-if="type !== 'edit' && (cashierDetail.checkerType === 'sale' || cashierDetail.checkerType === 'combine')">
-                            <span class="info-key">所属销售渠道分组：</span>
+                            <span class="info-key">{{$t('saleTypeGroup')}}：</span>
                             <span class="info-val"
                                   v-w-title="cashierDetail.saleGroupName">
-                                {{cashierDetail.saleGroupName ? cashierDetail.saleGroupName : '未分组'}}
+                                {{cashierDetail.saleGroupName ? cashierDetail.saleGroupName : $t('noGroup')}}
                             </span>
                         </div>
                     </i-col>
@@ -206,10 +206,10 @@
                                 if(res.data){
                                     callback();
                                 }else{
-                                    callback('服务器名称已存在');
+                                    callback(this.$t('serverNameIsExit'));
                                 }
                             }else{
-                                callback('服务器名称校验失败');
+                                callback(this.$t('serverNameValidFail'));
                             }
                         });
                     }else{
@@ -367,11 +367,11 @@
                     nodeType : 'table'
                 }).then(res => {
                    if(res.success){
-                       this.$Message.success('修改成功');
+                       this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
                        this.getCashierDetail();
                        this.$emit('fresh-org',this.activeNode);
                    }else{
-                       this.$Message.error('修改失败');
+                       this.$Message.error(this.$t('failureTip', {tip: this.$t('modify')}));
                    }
                 });
             },

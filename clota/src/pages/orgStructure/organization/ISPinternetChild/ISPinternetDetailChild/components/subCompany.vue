@@ -3,7 +3,7 @@
 <template>
     <div class="sub-company">
         <div class="pick-up-title" >
-            <span class="label">下属公司</span>
+            <span class="label">{{$t('subCompany')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
             {{$t(isPackUp ? 'backUp' : 'upLoad')}}

@@ -472,7 +472,7 @@
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));     // 新增会员成功
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));     // 修改会员成功
                             this.$router.back();
                         }
                     } else {

@@ -123,7 +123,7 @@
                     <div class="form-item-wrap"><label>{{$t('timesCardStatus')}}：</label><span>{{cardStatus(timesCard.status)}}</span></div><!--次卡状态-->
                     <div class="form-item-wrap"><label>{{$t('timesCardRemark')}}：</label><span>{{timesCard.note | contentFilter}}</span></div><!--次卡备注-->
                     <div class="form-item-wrap"><label>{{$t('totalTimes')}}：</label><span>{{timesCard.totalTimes | contentFilter}}</span></div><!--总次数-->
-                    <div class="form-item-wrap"><label>{{$t('usableTimesNow')}}：</label><span>{{timesCard.leftTime | contentFilter}}</span></div><!--现在可用次数-->
+                    <div class="form-item-wrap"><label>{{$t('usableTimesNow')}}：</label><span>{{timesCard.leftTimes | contentFilter}}</span></div><!--现在可用次数-->
                 </div>
                 <div class="label"></div>
                 <div class="table-wrap">
