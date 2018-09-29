@@ -2,7 +2,7 @@
 
 <template>
     <div class="card">
-        <div class="tab-wrap" v-if="tapInfo.length > 0">
+        <div class="tab-wrap" v-if="tapInfo.length > 1">
             <!--卡包tap列表-->
             <tab v-model="tabSelected">
                 <tab-item
@@ -15,6 +15,7 @@
         </div>
         <swiper dots-position="center"
                 v-model="cardType"
+                :class="{'no-top-padding' : tapInfo.length < 2}"
                 v-if="tapInfo.length > 0"
                 :threshold="100"
                 :aspect-ratio="10"
@@ -192,7 +193,7 @@
             previewImg (imgSrc) {
                 this.prevList = [
                     {
-                        src: imgSrc,
+                        src: imgSrc ? imgSrc : require('../../assets/images/defaut-face.png'),
                         w: document.body.offsetWidth,
                         h: 240
                     }
@@ -287,6 +288,10 @@
             background: rgba(242,243,244,1);
             overflow: auto;
             padding-top: 55px;
+
+            &.no-top-padding{
+                padding-top: 0;
+            }
 
             .vux-swiper{
                 width: 100%;
