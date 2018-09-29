@@ -14,44 +14,44 @@
         </div>
         <ul class="company-info">
             <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">订单号：</span>
+                <div class="info-list1"><!--订单号-->
+                    <span class="info-key">{{$t('orderId')}}：</span>
                     <span class="info-val" v-w-title="noteDetail.orderNo">{{noteDetail.orderNo | contentFilter}}</span>
                 </div>
-                <div class="info-list2">
-                    <span class="info-key">公司/景区名称：</span>
+                <div class="info-list2"><!--公司/景区名称-->
+                    <span class="info-key">{{$t('companyName')}}：</span>
                     <span class="info-val" v-w-title="noteDetail.orgName">{{noteDetail.orgName | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">手机号：</span>
+                <div class="info-list1"><!--手机号-->
+                    <span class="info-key">{{$t('mobilePhone')}}：</span>
                     <span class="info-val" v-w-title="noteDetail.target">{{noteDetail.target | contentFilter}}</span>
                 </div>
-                <div class="info-list2">
-                    <span class="info-key">条数：</span>
+                <div class="info-list2"><!--条数-->
+                    <span class="info-key">{{$t('count')}}：</span>
                     <span class="info-val" v-w-title="noteDetail.amount">{{noteDetail.amount | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">短信服务商：</span>
+                <div class="info-list1"><!--短信服务商-->
+                    <span class="info-key">{{$t('smsService')}}：</span>
                     <span class="info-val" v-w-title="noteDetail.provider">{{noteDetail.provider | contentFilter}}</span>
                 </div>
-                <div class="info-list2">
-                    <span class="info-key">发送时间：</span>
+                <div class="info-list2"><!--发送时间-->
+                    <span class="info-key">{{$t('sendTime')}}：</span>
                     <span class="info-val" v-w-title="noteDetail.createdTime">{{noteDetail.createdTime | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
-                <div class="info-list1">
-                    <span class="info-key">发送状态：</span>
+                <div class="info-list1"><!--发送状态-->
+                    <span class="info-key">{{$t('sendStatus')}}：</span>
                     <span class="info-val">{{$t(noteDetail.status) | contentFilter}}</span>
                 </div>
             </li>
             <li class="list">
-                <div class="info-list3">
-                    <span class="info-key">短信内容：</span>
+                <div class="info-list3"><!--短信内容-->
+                    <span class="info-key">{{$t('smsContent')}}：</span>
                     <span class="info-val">{{noteDetail.content | contentFilter}}</span>
                 </div>
             </li>

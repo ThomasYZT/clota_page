@@ -3,7 +3,7 @@
     <div class="partner">
         <div class="filter-box">
             <Button type="primary" style="float: left;margin-right: 10px" @click="newPartnerBtn('add')"
-                    size="default"><span class="add-icon">+ {{$t('新增合作伙伴')}}</span>
+                    size="default"><span class="add-icon">+ {{$t('addPartner')}}</span>
             </Button>
             <el-dropdown trigger="click"
                          placement="bottom-start"
@@ -22,7 +22,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('请输入任意信息进行查询')"
+                   :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -71,10 +71,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span v-if="scope.row.status=='valid'">
-                            <span class="status-sign valid"></span>已启用
+                            <span class="status-sign valid"></span>{{$t('startingUse')}}
                         </span>
                         <span v-if="scope.row.status=='invalid'">
-                            <span class="status-sign invalid"></span>未启用
+                            <span class="status-sign invalid"></span>{{$t('unStarting')}}
                         </span>
                     </template>
                 </el-table-column>
@@ -109,7 +109,7 @@
             <span class="content-text">
                 <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
                 <span class="yellow-label" v-w-title="name">{{name}}</span>
-                <span style="color: #333;" v-if="partnerIds.length>1">等{{partnerIds.length}}个合作伙伴</span>
+                <span style="color: #333;" v-if="partnerIds.length>1">{{$t('cooperationTip',{num: partnerIds.length})}}</span>
             </span>
             <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span><!--本操作不可撤销，是否确认删除？-->
         </del-modal>
@@ -168,7 +168,7 @@
                 },*/
                 enableValue: true,  //启用，未启用变量
                 name: '', //删除弹窗名字
-                deleteName: '删除合作伙伴', //删除内容名字
+                deleteName: this.$t('delete')+this.$t('cooperation'), //删除内容名字
                 partnerIds: [], //合作伙伴ids
 //                scopeRowData: {}, //当前被操作的行数据
                 // 批量操作下拉选项
@@ -221,12 +221,12 @@
             enable(scopeRow, isBatch) {
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
-                    partnerObj.successTip = '您已禁用合作伙伴';
+                    partnerObj.successTip = this.$t('disabledCooperation');
                     partnerObj.failTip = this.$t('failureTip', {tip: this.$t('disabled')});    // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'warning';
                 } else if (scopeRow.status=='invalid') {
-                    partnerObj.successTip = '您已启用合作伙伴';
+                    partnerObj.successTip = this.$t('ableCooperation');
                     partnerObj.failTip = this.$t('failureTip', {tip: this.$t('commissioned')});    // 启用失败
                     partnerObj.status = 'valid';
                     partnerObj.msgType = 'success';
@@ -305,7 +305,7 @@
             },
             handleCommand(dropItem) {
                 if (this.chosenPartners.length<=0) {
-                    this.$Message.warning('请勾选批量操作项');
+                    this.$Message.warning(this.$t('selectChannelOperate'));
                     return;
                 }
                 switch (dropItem.status) {

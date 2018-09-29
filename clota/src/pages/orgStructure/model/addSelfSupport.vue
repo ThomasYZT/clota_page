@@ -23,7 +23,7 @@
                 <Tooltip placement="top" transfer>
                     <i class="iconfont icon-note"></i>
                     <div slot="content">
-                        <div class="tip-trade">{{$t('创建线下自营渠道（款台）请至组织结构内新增款台节点')}}</div>
+                        <div class="tip-trade">{{$t('createChannelNotice')}}</div>
                     </div>
                 </Tooltip>
             </Form-item>
@@ -85,8 +85,8 @@
                 // 校验规则
                 ruleValidate: {
                     channelName: [
-                        {required: true, message: '请输入自营渠道名称', trigger: 'blur'},
-                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('自营渠道名称'), length: 100}), trigger: 'blur' },  // 自营渠道名称不能超过100字符
+                        {required: true, message: this.$t('inputField', {field: this.$t('selfSaleChannelName')}), trigger: 'blur'},
+                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('selfSaleChannelName'), length: 100}), trigger: 'blur' },  // 自营渠道名称不能超过100字符
                     ],
                     description: [
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
@@ -136,11 +136,11 @@
                 let self = this;
                 let partnerObj = {};
                 if (this.type=='add') {
-                    partnerObj.successTip = '您已成功新增自营渠道';
-                    partnerObj.failTip = '新增自营渠道失败';
+                    partnerObj.successTip = this.$t('addChannelSuccess');
+                    partnerObj.failTip = this.$t('addChannelFail');
                 } else if (this.type=='modify') {
-                    partnerObj.successTip = '您已成功修改自营渠道';
-                    partnerObj.failTip = '修改自营渠道失败';
+                    partnerObj.successTip = this.$t('modifyChannelSuccess');
+                    partnerObj.failTip = this.$t('modifyChannelFail');
                 }
 
                 ajax.post('addOrUpdateSelfChannel', this.addChannel).then(res => {

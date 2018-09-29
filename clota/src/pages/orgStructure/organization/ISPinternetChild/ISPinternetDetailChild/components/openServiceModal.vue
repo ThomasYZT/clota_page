@@ -16,14 +16,14 @@
               :model="formData"
               :rules="ruleValidate"
               :label-width="130">
-            <FormItem label="选择套餐" prop="package">
+            <FormItem :label="$t('selectPackage')" prop="package"><!--选择套餐-->
                 <RadioGroup v-model="formData.packageId" @on-change="packageChange">
                     <Radio :label="item.id"
                            v-for="(item,index) in packageList"
                            :key="index">{{item.comboName}}</Radio>
                 </RadioGroup>
             </FormItem>
-            <FormItem label="选择服务" prop="servers">
+            <FormItem :label="$t('selectService')" prop="servers"><!--选择服务-->
                 <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
                     <Checkbox :label="item.id"
                               v-for="(item,index) in serverList"
@@ -33,7 +33,7 @@
                     </Checkbox>
                 </CheckboxGroup>
             </FormItem>
-            <FormItem label="设置服务开始时间" prop="startTime">
+            <FormItem :label="$t('setServiceStartTIme')" prop="startTime"><!--设置服务开始时间-->
                 <DatePicker type="date"
                             v-model="formData.startTime"
                             :editable="false"
@@ -41,7 +41,7 @@
                             style="width:280px">
                 </DatePicker>
             </FormItem>
-            <FormItem :label="$t('serverTime') + '（月）'" prop="serverTime">
+            <FormItem :label="$t('serverTime') + '（'+$t('Month')+'）'" prop="serverTime">
                 <Select v-model="formData.serverTime" style="width:280px">
                     <Option v-for="item in monthEnum"
                             :value="item.value"
@@ -50,7 +50,7 @@
                     </Option>
                 </Select>
             </FormItem>
-            <FormItem label="预计服务结束时间">
+            <FormItem :label="$t('serviceEndTIme')"><!--预计服务结束时间-->
                 {{serverEndTime}}
             </FormItem>
         </Form>
@@ -176,10 +176,10 @@
                     endTime : new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd 23:59:59'),
                 }).then(res => {
                     if(res.status === 200){
-                        this.$Message.success('开通成功');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('open')}));
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('开通失败');
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('open')}));
                     }
                 }).finally(() => {
                     this.$emit('input', false);

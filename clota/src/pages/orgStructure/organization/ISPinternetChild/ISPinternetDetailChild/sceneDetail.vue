@@ -47,28 +47,28 @@
             <div :class="{'form-area' : type === 'edit'}">
                 <i-row>
                     <i-col span="12">
-                        <FormItem label="公司ID："
+                        <FormItem :label="$t('companyId')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.id"
                                    disabled/>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">公司ID：</span>
+                            <span class="info-key">{{$t('companyId')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.id">
                                 {{sceneDetail.id | contentFilter}}
                             </span>
                         </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="公司编码："
+                        <FormItem :label="$t('companyCode')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.nodeCode"
                                    disabled/>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">公司编码：</span>
+                            <span class="info-key">{{$t('companyCode')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.nodeCode">
                                 {{sceneDetail.nodeCode | contentFilter}}
                             </span>
@@ -79,26 +79,26 @@
                     <i-col span="12">
                         <FormItem prop="checkinCode"
                                   v-if="type === 'edit'"
-                                  label="企业编码(线下核销)："
+                                  :label="$t('enterpriseCode')+'('+$t('offlineVerify')+')：'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.checkinCode"  />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">企业编码(线下核销)：</span>
+                            <span class="info-key">{{$t('enterpriseCode')+'('+$t('offlineVerify')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.checkinCode">
                                 {{sceneDetail.checkinCode | contentFilter}}
                             </span>
                         </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="全民分销邀请码："
+                        <FormItem :label="$t('distributionCode')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.saleCode"
                                    disabled/>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">全民分销邀请码：</span>
+                            <span class="info-key">{{$t('distributionCode')}}：</span>
                             <span class="info-val"
                                   v-w-title="sceneDetail.saleCode">
                                 {{sceneDetail.saleCode | contentFilter}}
@@ -108,31 +108,32 @@
                 </i-row>
                 <i-row>
                     <i-col span="12">
-                        <FormItem label="管理账号："
+                        <FormItem :label="$t('controlAccount')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model.trim="formDataCopy.manager"
                                    disabled/>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">管理账号：</span>
+                            <span class="info-key">{{$t('controlAccount')}}：</span>
                             <span class="info-val">
                             <span class="account-con"
                                   v-w-title="sceneDetail.manager">{{sceneDetail.manager | contentFilter}}</span>
                                 <span class="reset-pass"
                                       v-if="activeNode && activeNode.level !== 1"
-                                      @click="resetPass">重置密码</span>
+                                      @click="resetPass">{{$t('resetPsw')}}</span>
                             </span>
                         </div>
                     </i-col>
                     <i-col span="12">
-                        <FormItem prop="email" label="电子邮箱："
+                        <FormItem prop="email"
+                                  :label="$t('email')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model="formDataCopy.email" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">电子邮箱：</span>
+                            <span class="info-key">{{$t('email')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.email">
                                 {{sceneDetail.email  | contentFilter}}
                             </span>
@@ -141,7 +142,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="12">
-                        <FormItem label="所在地："
+                        <FormItem :label="$t('location')+'：'"
                                   v-if="defaultAddress && type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <city-plugin @select="changeCity"
@@ -149,7 +150,7 @@
                             </city-plugin>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">所在地：</span>
+                            <span class="info-key">{{$t('location')}}：</span>
                             <span class="info-val" v-w-title="companyPlace">
                                  {{companyPlace | contentFilter}}
                             </span>
@@ -157,13 +158,13 @@
                     </i-col>
                     <i-col span="12">
                         <FormItem prop="address"
-                                  label="详细地址："
+                                  :label="$t('detailAddr')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model="formDataCopy.address" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">详细地址：</span>
+                            <span class="info-key">{{$t('detailAddr')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.address">
                                 {{sceneDetail.address | contentFilter}}
                             </span>
@@ -173,13 +174,13 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem prop="telephone"
-                                  label="电话："
+                                  :label="$t('telephone')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model="formDataCopy.telephone" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">电话：</span>
+                            <span class="info-key">{{$t('telephone')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.telephone">
                                 {{sceneDetail.telephone | contentFilter}}
                             </span>
@@ -187,13 +188,13 @@
                     </i-col>
                     <i-col span="12">
                         <FormItem prop="tex"
-                                  label="传真："
+                                  :label="$t('fax')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model="formDataCopy.tex" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">传真：</span>
+                            <span class="info-key">{{$t('fax')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.tex">
                                 {{sceneDetail.tex | contentFilter}}
                             </span>
@@ -203,13 +204,13 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem prop="linkName"
-                                  label="联系人："
+                                  :label="$t('person')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Input v-model="formDataCopy.linkName" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">联系人：</span>
+                            <span class="info-key">{{$t('person')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.linkName">
                                 {{sceneDetail.linkName | contentFilter}}
                             </span>
@@ -217,7 +218,7 @@
                     </i-col>
                     <i-col span="12">
                         <FormItem prop="parentManageId"
-                                  label="管理上级："
+                                  :label="$t('superior')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.parentManageId"
@@ -230,7 +231,7 @@
                             </Select>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">管理上级：</span>
+                            <span class="info-key">{{$t('superior')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.parentManager">
                                 <template v-if="activeNode.level !== 1">
                                     {{sceneDetail.parentManager | contentFilter}}
@@ -243,7 +244,7 @@
                 <i-row>
                     <i-col span="12">
                         <FormItem prop="parentEconomicId"
-                                  label="财务上级："
+                                  :label="$t('fianceSuperior')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <Select v-model="formDataCopy.parentEconomicId"
@@ -256,7 +257,7 @@
                             </Select>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">财务上级：</span>
+                            <span class="info-key">{{$t('fianceSuperior')}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.parentEconomic">
                                 <template v-if="activeNode.level !== 1">
                                     {{sceneDetail.parentEconomic | contentFilter}}
@@ -304,8 +305,7 @@
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
             <div style="padding: 0 20px;word-break: break-all;width: 100%;">
-                您正在重置管理员{{sceneDetail.manager}}的登录密码，我们将以邮件形式将新密码发送到以下邮箱，请注意查收：
-                {{sceneDetail.email}}
+                {{$t('pswNotice', {msg: sceneDetail.manager})}}{{sceneDetail.email}}
             </div>
         </edit-modal>
     </div>
@@ -452,7 +452,7 @@
                             nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
                             if(res.success){
-                                this.$Message.success('修改成功');
+                                this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
                                 if(this.formDataCopy.orgName !== this.sceneDetail.orgName){
                                     this.freshOrg();
                                 }else if(this.formDataCopy.parentManageId !== this.sceneDetail.parentManageId){
@@ -464,7 +464,7 @@
                                 }
                                 this.$store.dispatch('freshOrgs');
                             }else{
-                                this.$Message.error(res.message | '修改失败');
+                                this.$Message.error(res.message | this.$t('failureTip', {tip: this.$t('modify')}));
                             }
                         });
                     }
@@ -489,9 +489,9 @@
                     email : this.sceneDetail.email,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(`重置管理员${this.sceneDetail.manager}密码成功`);
+                        this.$Message.success(this.$t('resetPswSuccess',{msg: this.sceneDetail.manager}));
                     }else{
-                        this.$Message.error(res.message || '重置失败');
+                        this.$Message.error(res.message || this.$t('resetPswFail',{msg: this.companyDetail.manager}));
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();
@@ -502,7 +502,7 @@
              */
             resetPass () {
                 this.$refs.editModal.show({
-                    title : '重置密码',
+                    title : this.$t('resetPsw'),
                     confirmCallback : () => {
                         this.confimChangePass();
                     }

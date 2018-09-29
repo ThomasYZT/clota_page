@@ -86,7 +86,7 @@
                     <i-col span="11">
                         <!--电子邮箱-->
                         <FormItem :label="$t('email')" prop="mail">
-                            <Input v-model.trim="formData.mail" placeholder="重要！用于接收登录密码" style="width: 280px"/>
+                            <Input v-model.trim="formData.mail" :placeholder="$t('emailNotice')" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -136,7 +136,7 @@
                     <i-col span="17">
                         <FormItem :label="$t('enterpriseCode')" prop="companyCode">
                             <Input v-model.trim="formData.companyCode" style="width: 280px"/>
-                            <span class="tips">用于与线下系统对接</span>
+                            <span class="tips">{{$t('comCodeNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -186,13 +186,13 @@
                             if(res.data){
                                 callback();
                             }else{
-                                callback('管理账号已存在');
+                                callback(this.$t('adminAccountIsExit'));
                             }
                         }else{
-                            callback('账号校验失败');
+                            callback(this.$t('accountValidFail'));
                         }
                     }).catch(() => {
-                        callback('管理账号已存在');
+                        callback(this.$t('adminAccountIsExit'));
                     });
                 }
             };
@@ -401,12 +401,12 @@
                     nodeType : 'company',
                 }).then(res => {
                     if(res.status === 200){
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip',{msg: this.$t('add')}));
                         this.$router.push({
                             name : 'ISPinternet'
                         });
                     }else{
-                        this.$Message.error(res.message || '新增失败');
+                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('add')}));
                     }
                 }).finally(() => {
                     this.addLoading = false;
