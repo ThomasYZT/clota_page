@@ -95,7 +95,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../../commonFile/common';
 
     .add-employee {
         @include block_outline();

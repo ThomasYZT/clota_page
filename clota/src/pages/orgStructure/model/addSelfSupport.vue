@@ -158,7 +158,6 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .addChannel {
         /deep/ .ivu-modal-body {

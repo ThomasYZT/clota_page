@@ -349,7 +349,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .channel {
         @include block_outline();

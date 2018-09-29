@@ -80,7 +80,6 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .deleteList {
         .ivu-modal-body {
