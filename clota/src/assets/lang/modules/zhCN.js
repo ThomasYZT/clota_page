@@ -776,7 +776,7 @@ export default {
     'proTypeCode': '产品类别编码',
     'productType': '产品类别',
     'haveOpenedServices': '已开通服务',
-    'accountInvalid': '当前机构或上级机构未启用',
+    'accountInvalid': '对不起，您的账号未启用',
     'addSelfChannel': '新增自营渠道',
     'inputAnywordForSearch': '请输入任意信息进行查询',
     'noGroup': '未分组',
