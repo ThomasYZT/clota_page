@@ -11,7 +11,7 @@
                   {{chosedAccount[0] ? chosedAccount[0] : ''}}
               </p>
           </div>
-          <div class="scroll-wrapper">
+          <div class="scroll-wrapper" v-if="infoList.length !== 0">
               <scroll ref="scroll"
                       :data="infoList"
                       :scrollbar="scrollbar"
@@ -23,6 +23,9 @@
                               v-for="(item, index) in infoList"
                               :key="index"></check-item>
               </scroll>
+          </div>
+          <div class="no-data" v-else>
+              <img src="../../assets/images/icon-no-data.svg" alt="">
           </div>
       </div>
 
@@ -104,7 +107,7 @@
                     pageSize: 200
                 }).then((res) => {
                     if(res.success){
-                        this.accountList =  res.data ? res.data.data.map((item,index) => {
+                        this.accountList =  res.data ? res.data.data.map((item) => {
                             return {
                                 ...item,
                                 name : item.accountName,
@@ -128,14 +131,20 @@
                     accountTypeIds: this.curAccountsId,
                     operType: '',
                     cardId: this.userInfo.cardId,
-                    pageNo: 1,
-                    pageSize: 20
+                    ...this.pageSetting
                 }).then((res) => {
                     if(res.success) {
-                        this.infoList = res.data.data;
-                        this.num = res.data.data.reduce((preValue, curValue) => {
-                            return preValue + parseInt(curValue.amount)
-                        }, 0);
+                        if(this.pageSetting.pageNo === 1) {
+                            this.infoList = res.data ? res.data.data : [];
+                        }else {
+                            if(res.data.data.length !== 0) {
+                                this.infoList = this.infoList.concat(res.data.data);
+                            }else {
+                                //如果下一页数据量为0，则页数回退
+                                this.pageSetting.pageNo -= 1;
+                                this.refresh();
+                            }
+                        }
                     }else {
                         this.$vux.toast.text(res.message)
                     }
@@ -188,20 +197,47 @@
     @import '~@/assets/scss/base';
 
     .check-flow {
-        .account-list-chose{
-            @include block_outline($height : 50px);
-            text-align: center;
+        height: 100%;
+        .content {
+            height: 100%;
+            .account-list-chose{
+                @include block_outline($height : 50px);
+                text-align: center;
 
-            p {
-                line-height: 50px;
-                font-size: 18px;
-                font-weight: bold;
+                p {
+                    line-height: 50px;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            }
+            .scroll-wrapper {
+                position: relative;
+                height: calc(100% - 50px);
+            }
+            .no-data {
+                width: 100%;
+                height: 96px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto auto;
+                text-align: center;
+                img {
+                    width: 150px;
+                    height: 150px;
+                }
             }
         }
-        .scroll-wrapper {
-            position: relative;
-            height: calc(100% - 50px);
+
+        /deep/ .vux-cell-box {
+            &:before {
+                border: none;
+            }
         }
+
+
     }
 
 </style>

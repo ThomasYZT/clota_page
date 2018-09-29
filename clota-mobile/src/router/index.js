@@ -183,7 +183,16 @@ const createRouter = () => new Router({
             meta : {
                 title : '我的卡包'
             }
-        }
+        },
+        //会员卡二维码页面
+        // {
+        //     path : '/cardCode',
+        //     name : 'cardCode',
+        //     component : () => import(/* webpackChunkName: "order" */'../pages/cardCode/cardCode.vue'),
+        //     meta : {
+        //         title : '我的卡包'
+        //     }
+        // }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {

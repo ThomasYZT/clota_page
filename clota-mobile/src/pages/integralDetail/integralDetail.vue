@@ -9,7 +9,7 @@
           <p class="name">{{$t('integralDetail')}}</p>
       </div>
 
-      <div class="scroll-wrapper">
+      <div class="scroll-wrapper" v-if="infoList.length !== 0">
           <scroll ref="scroll"
                   :data="infoList"
                   :scrollbar="scrollbar"
@@ -23,6 +23,9 @@
 
               </score-item>
           </scroll>
+      </div>
+      <div class="no-data" v-else>
+          <img src="../../assets/images/icon-no-data.svg" alt="">
       </div>
   </div>
 </template>
@@ -84,28 +87,16 @@
                     if(res.success) {
                         if(this.pageSetting.pageNo === 1) {
                             this.infoList = res.data ? res.data.data : [];
-                            this.infoList.forEach((item) => {
-                                switch (item.operationType) {
-                                    case 'adjust_score':
-                                        item.purpose = 'adjustScore'
-                                        break;
-                                    case 'consume_add':
-                                        item.purpose = 'gainByConsuming'
-                                        break;
-                                    case 'consume_reduce':
-                                        item.purpose = 'scoreResume';
-                                        break;
-                                    case 'recharge_add':
-                                        item.purpose = 'gainByRecharging'
-                                        break;
-                                    default:
-                                        item.purpose = '-'
-                                }
-                            })
+                            //组装数据
+                            this.packingData(res.data.data);
                         } else {
                             if(res.data.data.length !== 0) {
+                                //组装数据
+                                this.packingData(res.data.data);
                                 this.infoList = this.infoList.concat(res.data.data);
                             }else {
+                                //如果下一页数据为0，则页数回退
+                                this.pageSetting.pageNo -= 1;
                                 this.refresh();
                             }
                         }
@@ -132,6 +123,29 @@
             //强制刷新scroll
             refresh() {
                 this.$refs.scroll.forceUpdate();
+            },
+            /**
+             * 组装数据
+             */
+            packingData(data) {
+                data.forEach((item) => {
+                    switch (item.operationType) {
+                        case 'adjust_score':
+                            item.purpose = 'adjustScore'
+                            break;
+                        case 'consume_add':
+                            item.purpose = 'gainByConsuming'
+                            break;
+                        case 'consume_reduce':
+                            item.purpose = 'scoreResume';
+                            break;
+                        case 'recharge':
+                            item.purpose = 'gainByRecharging'
+                            break;
+                        default:
+                            item.purpose = '-'
+                    }
+                })
             }
         },
         computed: {
@@ -172,6 +186,22 @@
         .scroll-wrapper {
             position: relative;
             height: calc(100% - 175px);
+        }
+
+        .no-data {
+            width: 100%;
+            height: 96px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto auto;
+            text-align: center;
+            img {
+                width: 150px;
+                height: 150px;
+            }
         }
     }
 

@@ -18,7 +18,7 @@
                           :pullUpLoad="pullUpLoad"
                           :isPullUpLoad="isPullUpLoad"
                     >
-                        <div class="pullup-wrapper" v-if="pullUpLoad">
+                        <div class="pullup-wrapper" v-if="pullUpLoad && updating">
                             <div class="before-trigger" v-if="!isPullUpLoad">
                                 <span>{{$t(pullUpTxt)}}</span>
                             </div>
@@ -144,7 +144,9 @@
                 isPullUpLoad: false,
                 pullUpDirty: true,
                 pullDownStyle: '',
-                bubbleY: 0
+                bubbleY: 0,
+                //是否更新中
+                updating: false
             }
         },
         computed: {
@@ -171,6 +173,9 @@
             this.$refs.scroll && this.$refs.scroll.destroy()
         },
         methods: {
+            /**
+             * 初始化scroll组件
+             */
             initScroll() {
                 if (!this.$refs.wrapper) {
                     return
@@ -258,6 +263,9 @@
                     this.isPullUpLoad = false
                     this.scroll.finishPullUp()
                     this.pullUpDirty = dirty
+                    setTimeout(() => {
+                        this.updating = false;
+                    }, 1000)
                     this.refresh()
                 } else {
                     this.refresh()
@@ -289,6 +297,7 @@
             _initPullUpLoad() {
                 this.scroll.on('pullingUp', () => {
                     this.isPullUpLoad = true
+                    this.updating = true;
                     this.$emit('pullingUp')
                 })
             },

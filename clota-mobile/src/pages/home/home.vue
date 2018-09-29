@@ -13,25 +13,25 @@
                       <div class="img-wrapper">
                           <img class="default-face" src="../../assets/images/defaut-face.png" alt="">
                       </div>
-                      <span class="username" @click="toPersonInfo">{{cardInfo.custName+" "}}></span>
+                      <span class="username" @click="toPersonInfo">{{cardInfo.custName+" " | contentFilter}}></span>
                   </div>
                   <div class="right">
                       <div  class="card-level">
-                        <i class="iconfont icon-level">{{cardLevel}}</i>
-                        <span class="level-name">{{cardInfo.levelDesc}}</span>
+                        <i class="iconfont icon-level">{{cardLevel | contentFilter}}</i>
+                        <span class="level-name">{{cardInfo.levelDesc | contentFilter}}</span>
                       </div>
                   </div>
               </div>
 
               <div class="company-info">
-                  <span>{{cardInfo.orgName}}</span>
+                  <span>{{cardInfo.orgName | contentFilter}}</span>
                   <img src="" alt="">
               </div>
 
               <div class="card-info">
                   <div>{{cardInfo.cardCode | formatCardCode}}</div>
                   <div>
-                      <i class="iconfont icon-code"></i>
+                      <i class="iconfont icon-code" @click="toCardCode"></i>
                       <i class="iconfont icon-arrow-right"></i>
                   </div>
               </div>
@@ -150,17 +150,73 @@
                     fourthlevelMember
                 ],
                 labelList: labelList,
-                cardBg: 'url(' + onelevelMember + ')',
                 cardLevel: 1,
-                lvName: '',
-                //会员卡字体颜色
-                cardFontColor: '#fff'
             }
         },
         computed: {
             ...mapGetters({
                 isLoading : 'isLoading',
             }),
+            //会员卡背景图片
+            cardBg() {
+                if(!this.cardLevel) {
+                    return 'url(' + this.bgList[0] + ')';
+                    return;
+                }
+                switch (this.cardLevel) {
+                    case '1':
+                        return 'url(' + this.bgList[0] + ')';
+                        break;
+                    case '2':
+                        return 'url(' + this.bgList[1] + ')';
+                        break;
+                    case '3':
+                        return 'url(' + this.bgList[2] + ')';
+                        break;
+                    case '4':
+                        return 'url(' + this.bgList[3] + ')';
+                        break;
+                    default:
+                        return 'url(' + this.bgList[3] + ')';
+                }
+            },
+            //会员卡文字颜色
+            cardFontColor() {
+                if(!this.cardLevel) {
+                    return '#fff';
+                    return;
+                }
+                switch (this.cardLevel) {
+                    case '4':
+                        return '#F0D890';
+                        break;
+                    default:
+                        return '#fff';
+                }
+            },
+            //会员卡级别名称
+            /*lvName() {
+                if(!this.cardLevel) {
+                    return 'regularMembers';
+                    return;
+                }
+                switch (this.cardLevel) {
+                    case '1':
+                        return 'regularMembers';
+                        break;
+                    case '2':
+                        return 'goldMember';
+                        break;
+                    case '3':
+                        return 'platinumMember';
+                        break;
+                    case '4':
+                        return 'diamondMembers';
+                        break;
+                    default:
+                        return 'regularMembers';
+                }
+            }*/
         },
         methods: {
             ...mapMutations([
@@ -197,48 +253,14 @@
                 })
             },
             /**
-             * 设置会员卡主题
+             * 初始化会员卡主题
              */
             setCardTheme(lvVal) {
                 if(!lvVal) {
-                    this.cardFontColor = "#fff";
-                    this.cardBg = 'url(' + this.bgList[0] + ')';
                     this.cardLevel = 1;
                     return;
                 }
-                lvVal = lvVal.toString();
-                switch(lvVal) {
-                    case '1':
-                        this.cardFontColor = "#fff";
-                        this.cardBg = 'url(' + this.bgList[0] + ')';
-                        this.cardLevel = 1;
-                        this.lvName = 'regularMembers';
-                        break;
-                    case '2':
-                        this.cardFontColor = "#fff";
-                        this.cardBg = 'url(' + this.bgList[1] + ')';
-                        this.cardLevel = 2;
-                        this.lvName = 'goldMember';
-                        break;
-                    case '3':
-                        this.cardFontColor = "#fff";
-                        this.cardBg = 'url(' + this.bgList[2] + ')';
-                        this.cardLevel = 3;
-                        this.lvName = 'platinumMember';
-                        break;
-                    case '4':
-                        this.cardFontColor = "#F0D890";
-                        this.cardBg = 'url(' + this.bgList[3] + ')';
-                        this.cardLevel = 4;
-                        this.lvName = 'diamondMembers';
-                        break;
-                    default:
-                        this.cardFontColor = "#fff";
-                        this.cardBg = 'url(' + this.bgList[0] + ')';
-                        this.cardLevel = 1;
-                        this.lvName = 'regularMembers';
-                }
-
+                this.cardLevel  = lvVal.toString();
             },
             /**
              * 跳转到会员详情
@@ -246,6 +268,14 @@
             toPersonInfo () {
                 this.$router.push({
                     name : 'personInfo'
+                });
+            },
+            /**
+             * 跳转到会员二维码页面
+             */
+            toCardCode() {
+                this.$router.push({
+                    name : 'memberCode'
                 });
             }
         },
@@ -315,18 +345,18 @@
                             }
                         }
                         &.right {
-                            margin-right: 21.2px;
-                            text-align: center;
+                            margin-right: 29.5px;
+                            text-align: right;
                             position: relative;
 
                             .card-level {
                                 margin-top: 8px;
-                                padding: 0 15px;
+                                padding: 0 15px 0 10px;
                                 width: auto;
                                 height: 21px;
                                 display: inline-block;
-                                background-color: rgba(43,44,46,0.1);
-                                border-radius: 10px;
+                                background-color: rgba(43,44,46,0.5);
+                                border-radius: 15px;
                                 font-size: 8px;
                                 line-height: 21px;
                                 i {

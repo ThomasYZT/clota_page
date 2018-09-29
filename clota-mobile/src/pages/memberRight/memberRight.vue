@@ -3,7 +3,7 @@
     作者：杨泽涛
 -->
 <template>
-  <div class="member-right">
+  <div class="member-right" v-show="isShow">
       <div class="top-tab">
           <p>{{$t('memberRightInfo')}}</p>
       </div>
@@ -50,6 +50,8 @@
                 //按店铺分类数据
                 storeVos: [],
                 query: null,
+                //是否显示页面
+                isShow: false,
             }
         },
         computed: {
@@ -71,34 +73,43 @@
                         var productMap = res.data ? (res.data.productMap ? res.data.productMap : []) : [];
                         this.storeVos = res.data ? (res.data.storeVos ? res.data.storeVos : []) : [];
 
-                        this.memberVos.forEach((item) => {
-                            item.name = this.query.name;
-                            item.scoreRate = item.scoreRate;
-                            item.discountRate = item.discountRate;
-                        });
-
-                        this.storeVos.forEach((item) => {
-                            item.name = item.orgName;
-                            item.scoreRate = item.deptScoreRate;
-                            item.discountRate = item.deptDiscountRate;
-                        });
-
-                        for(let item in productMap) {
-                            productMap[item].forEach((item) => {
-                                item.name = item.orgName;
-                                item.scoreRate = item.prodScoreRate;
-                                item.discountRate = item.prodDiscountRate;
-                                this.productArr = this.productArr.concat(item);
-                            })
-                        }
-
+                        this.packageData(this.memberVos, productMap, this.storeVos)
+                        //显示页面
+                        this.isShow = true;
                     }else {
                         this.memberVos = [];
                         this.productArr = [];
                         this.storeVos = [];
-                        this.$vux.toast.text(res.message)
+                        this.$vux.toast.text(res.message);
+                        //显示页面
+                        this.isShow = true;
                     }
                 })
+            },
+            /**
+             * 组装数据
+             */
+            packageData(memberVos,productMap,storeVos) {
+                memberVos.forEach((item) => {
+                    item.name = this.query.name;
+                    item.scoreRate = item.scoreRate;
+                    item.discountRate = item.discountRate;
+                });
+
+                storeVos.forEach((item) => {
+                    item.name = item.orgName;
+                    item.scoreRate = item.deptScoreRate;
+                    item.discountRate = item.deptDiscountRate;
+                });
+
+                for(let item in productMap) {
+                    productMap[item].forEach((item) => {
+                        item.name = item.orgName;
+                        item.scoreRate = item.prodScoreRate;
+                        item.discountRate = item.prodDiscountRate;
+                        this.productArr = this.productArr.concat(item);
+                    })
+                }
             }
         },
         created() {
