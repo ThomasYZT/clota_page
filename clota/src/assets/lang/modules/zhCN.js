@@ -886,7 +886,7 @@ export default {
     'checkoutID' : '款台ID',
     'serverNameIsExit': '服务器名称已存在',
     'serverNameValidFail': '服务器名称校验失败',
-    'distributionCode': '全民分销邀请码',
+    'distributionCode': '全民营销邀请码',
     'resetPsw': '重置密码',
     'detailAddr': '详细地址',
     'smsBuyCount': '短信余量/累计购买',
