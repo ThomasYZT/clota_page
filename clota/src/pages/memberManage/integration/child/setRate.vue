@@ -118,7 +118,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: this.$t('integration'),
+                        name: 'integration',
                         router: {
                             name: 'integration'
                         }

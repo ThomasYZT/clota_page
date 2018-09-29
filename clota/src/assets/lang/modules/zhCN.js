@@ -462,6 +462,9 @@ export default {
     'cardInitError': '实体卡初始化出错',
     'cardInitSuccess': '实体卡初始化成功',
     'phoneExistCard': '手机号已被注册，请更换手机号',
+    'readingCardInfo': '正在读取实体卡信息',
+    'recognizeFailed': '识别失败',
+    'clickReadAgain': '点击重新读取',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
