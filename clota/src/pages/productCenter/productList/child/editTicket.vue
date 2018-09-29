@@ -218,7 +218,6 @@
                                   v-if="productPlayRuleVo.length < parkListCount"
                                   @click="addPark" >+ {{$t('addPark')}}</span>
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="productPlayRuleVo"

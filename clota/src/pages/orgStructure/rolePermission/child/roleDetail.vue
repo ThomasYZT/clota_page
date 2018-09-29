@@ -3,8 +3,8 @@
     <div class="partner">
         <div class="breadcrumb-box">
             <Breadcrumb separator=">">
-                <BreadcrumbItem to="/orgManage/rolePermission">角色权限</BreadcrumbItem>
-                <BreadcrumbItem>详情</BreadcrumbItem>
+                <BreadcrumbItem to="/orgManage/rolePermission">{{$t('rolePermission')}}</BreadcrumbItem>
+                <BreadcrumbItem>{{$t('details')}}</BreadcrumbItem>
             </Breadcrumb>
         </div>
         <div class="org-header">

@@ -9,16 +9,16 @@
         class="add-service"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title" >添加服务</span>
+            <span class="title" >{{$t('addService')}}</span>
         </div>
         <div class="service-body">
             <div class="label-info">
-                <span class="key">上级公司：</span>
+                <span class="key">{{$t('superiroCompany')}}：</span>
                 <span class="val">
                     {{sceneDetail.parentManager | contentFilter}}
                      <Tooltip placement="top">
                         <div slot="content" class="tips-content">
-                            {{$t('请先为上级公司开通服务后，景区才能添加相应服务。')}}
+                            {{$t('addServiceErrorInfo')}}
                         </div>
                          <span class="iconfont icon-note"></span>
                     </Tooltip>
