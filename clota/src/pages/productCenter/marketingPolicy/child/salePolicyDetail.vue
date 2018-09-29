@@ -508,7 +508,7 @@
 
                 /deep/ .ivu-form-item-content{
                     color: $color-666;
-                    flex: 1;
+                    /*flex: 1;*/
                     display: inline-block;
                     width: calc(100% - 220px);
                     >div{

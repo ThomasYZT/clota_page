@@ -397,19 +397,21 @@
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('returnRule')"><!--退票规则-->
-                            <Select v-model="formData.returnRule.type"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.returnRule"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label,{msg: $t('return')})}}
+                            <div style="position: relative;">
+                                <Select v-model="formData.returnRule.type"
+                                        :placeholder="$t('selectField', {msg: ''})">
+                                    <Option v-for="(item,index) in enumData.returnRule"
+                                            :key="index"
+                                            :value="item.value">
+                                        {{$t(item.label,{msg: $t('return')})}}
                                 </Option>
-                            </Select>
-                            <span class="blue float-right"
-                                  v-if="formData.returnRule.type!=='notAllow'"
-                                  @click="addReturnRateRule">+ {{$t('addReturnRateRule')}}</span><!--新增退票手续费率档位-->
+                                </Select>
+                                <span class="blue add-rate"
+                                      v-if="formData.returnRule.type!=='notAllow'"
+                                      @click="addReturnRateRule"><span>+</span> {{$t('addReturnRateRule')}}</span><!--新增退票手续费率档位-->
+                            </div>
                             <template v-if="formData.returnRule.type!=='notAllow'">
-                                <br/>
+                                <!--<br/>-->
                                 <table-com
                                     :table-com-min-height="260"
                                     :column-data="refundColumn"
@@ -1290,6 +1292,13 @@
             .blue{
                 color: $color_blue;
                 cursor: pointer;
+                &.add-rate{
+                    position: relative;
+                    display: inline-table;
+                    width: 180px;
+                    text-align: right;
+                    left: calc(100% - 575px);
+                }
             }
 
             .form-content{
@@ -1345,6 +1354,7 @@
 
                         /deep/ .ivu-select{
                             max-width: 395px;
+                            clear: both;
                         }
 
                         /deep/ .ivu-select-item{
