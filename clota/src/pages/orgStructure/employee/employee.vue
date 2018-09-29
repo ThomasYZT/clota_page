@@ -251,7 +251,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .partner {
         @include block_outline();

@@ -214,7 +214,6 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .addPartner {
         /deep/ .ivu-modal-body {
