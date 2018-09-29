@@ -24,7 +24,7 @@
                  label-width="150px">
             <div slot="right-full-height"
                  class="validate"
-                 :class="{active: isGetCode}"
+                 :class="{'time-counting': isGetCode}"
                  @click="getCode">
                 <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
@@ -75,13 +75,14 @@
                 if(!this.isGetCode) {
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
-                        this.isGetCode = true;
                         this.timimg();
                         ajax.post('getCode', {
                             phoneNum: this.loginInfo.phoneNum
                         }).then((res) => {
                             if(!res.success) {
                                 this.$vux.toast.text(this.$t('getCodeFailed'))
+                            }else{
+                                this.isGetCode = true;
                             }
                         })
                     });
@@ -145,7 +146,7 @@
              * 计时器函数
              */
             timimg() {
-                this.countDown = 5000;
+                this.countDown = 60000;
                 this.timer = setInterval(() => {
                     if(this.countDown !== 0) {
                         this.countDown -= 1000;
@@ -178,9 +179,7 @@
                     companyCode: this.companyCode
                 }).then(res => {
                     if(res.success){
-                        this.dataToLogin({
-                            data : res.data ? JSON.parse(res.data) : {}
-                        });
+                        this.dataToLogin(res);
                     }else{
                         //错误信息为空，表示获取到了用户信息
                         if(!res.errcode){
@@ -214,7 +213,6 @@
              * @param res
              */
             dataToLogin (res) {
-                console.log(res.data)
                 //存储token信息
                 localStorage.setItem('token', res.data.token);
                 //存储用户信息

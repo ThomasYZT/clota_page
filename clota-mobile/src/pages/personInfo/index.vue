@@ -35,7 +35,7 @@
                 <cell
                     :title="$t('tradePass')"
                     is-link
-                    value="*********"
+                    value="●●●●●●"
                     :link="{name : 'changeTradePass',params : {mobile : formData.phoneNum}}">
                 </cell>
                 <cell
@@ -348,7 +348,6 @@
                 img{
                     @include block_outline(100%,100%,false);
                     border-radius: 100px;
-                    background: #1495EB;
                     box-shadow: 0 4px 14px 0 rgba(0,0,0,0.20);
                 }
 

@@ -52,7 +52,7 @@
                 if(data.value === 'del'){
                     this.$emit('del-word');
                 }else if(data.value === 'cancel'){
-                    this.hide('cancel');
+                    this.$emit('cancel');
                 }
             },
             /**

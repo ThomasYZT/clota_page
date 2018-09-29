@@ -166,7 +166,8 @@
         }
 
         .validate{
-            @include block_outline(98px);
+            height: 100%;
+            padding: 0 10px;
             text-align: center;
             font-size: $font_size_12px;
             color: #046FDB;
