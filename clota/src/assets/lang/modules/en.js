@@ -747,7 +747,7 @@ export default {
     'stuff-setting': '特殊会员权益管理',
     'members-coupon': '会员卡券',
     'members-storage': '会员储值',
-    'members-account': '储值账户',
+    'storage-account': '储值账户',
     'storage-detail': '储值详情',
     'storage-manage': '储值管理',
     'init-setting': '初始化设置',

@@ -681,7 +681,6 @@ export default {
     'Sunday': '周日',
 
 
-
     /*** 财务管理模块 ***/
     'financeManage' : '财务管理',
     'rechargeRecord' : '充值记录',
@@ -770,6 +769,7 @@ export default {
     'accountPrivaligeError': '账户没有菜单权限，请联系管理员开通权限',
     'cardScopeSetting': '会员卡可用范围设置',
     'productTypeSetting': '产品类别设置',
+    'deleteAccount': 'deleteAccount',
     'cardUnopened': '未开卡',
     'cardOpened': '已开卡',
     'uploadCardError': '导入文件仅支持Excel文件',
@@ -777,11 +777,9 @@ export default {
     'productType': '产品类别',
     'haveOpenedServices': '已开通服务',
     'accountInvalid': '当前机构或上级机构未启用',
-
     'addSelfChannel': '新增自营渠道',
     'inputAnywordForSearch': '请输入任意信息进行查询',
     'noGroup': '未分组',
     'online': '线上',
     'offline': '线下',
-
 }
