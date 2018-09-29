@@ -95,7 +95,7 @@
                             <div class="selectTop">
                                 <Input class="search-classify-input"
                                        v-model.trim="roleKeyword"
-                                       :placeholder="$t('搜索')"
+                                       :placeholder="$t('search',{msg: ''})"
                                        @on-enter="searchMatched"
                                        @on-click="searchMatched"
                                        icon="ios-search" />
@@ -109,22 +109,22 @@
                                 </div>
 
                             </Checkbox-group>
-                            <div class="no-data" v-if="enumData.privileges.length == 0">暂无数据</div>
-                            <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">暂无搜索结果</div>
+                            <div class="no-data" v-if="enumData.privileges.length == 0">{{$t('noData')}}</div>
+                            <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">{{$t('noSearchResult')}}</div>
                             <!--右侧内容-->
                             <div class="privilege-part">
                                 <div class="part-1">
-                                    <h4>景区权限</h4>
+                                    <h4>{{$t('scenePermission')}}</h4>
                                     <div class="part-content">
                                         <div :class="['part-author', {'active-author': item.orgId==activeRoleInOrg.orgId}]"
                                              v-for="(item,index) in roleInOrg" :key="index"
                                              @click="onActiveAuthor(item)">{{item.orgName}}
                                         </div>
-                                        <p class="no-data" v-if="roleInOrg.length==0">暂无数据</p>
+                                        <p class="no-data" v-if="roleInOrg.length==0">{{$t('noData')}}</p>
                                     </div>
                                 </div>
                                 <div class="part-2">
-                                    <h4>菜单权限
+                                    <h4>{{$t('menuPermission')}}
                                         <span v-if="activeRoleInOrg.orgName">
                                             （<span class="title-desc text-ellipsis" v-w-title="activeRoleInOrg.orgName">{{activeRoleInOrg.orgName}}</span>）
                                         </span>
@@ -135,7 +135,7 @@
                                              @click="">{{$t(item.privCode)}}
                                         </div>
                                         <!--<div>menuInRole</div>-->
-                                        <p class="no-data" v-if="menuInRole.length==0">暂无数据</p>
+                                        <p class="no-data" v-if="menuInRole.length==0">{{$t('noData')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +172,7 @@
 
                 mobile :  (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(new Error('请输入正确的手机号码'));
+                        callback(new Error(this.$t('inputRightMobile')));
                     } else {
                         callback();
                     }
@@ -180,7 +180,7 @@
 
                 orgName : (rule, value, callback) => {
                     if (value && !this.employee.deptId) {
-                        callback(new Error('该部门不存在'));
+                        callback(new Error(this.$t('noOrg')));
                     } else {
                         callback();
                     }
@@ -243,33 +243,33 @@
                 // 表单校验规则
                 ruleValidate: {
                     deptId: [
-                        { required: true, message: '请选择部门', trigger: 'change' },
+                        { required: true, message: this.$t('selectField', {msg: this.$t('department')}), trigger: 'change' },
                         { validator: validateMethod.orgName, trigger: 'change'}
                     ],
                     loginName: [
-                        { required: true, message: '登录名不能为空', trigger: 'blur' },
-                        { type: 'string', max: 20, message: '登录名不能多于20个字符', trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('loginName')}), trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('loginName'), length: 20}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     nickName: [
-                        { required: true, message: '姓名不能为空', trigger: 'blur' },
-                        { type: 'string', max: 20, message: '姓名不能多于20个字符', trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 20}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     password: [
-                        { required: true, message: '密码不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     phone: [
-                        { required: true, message: '手机号不能为空', trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('mobilePhone')}), trigger: 'blur' },
                         { validator: validateMethod.mobile, trigger: 'blur'}
                     ],
                     address: [
-                        { type: 'string', max: 20, message: '籍贯地址不能多于20个字符', trigger: 'blur' },
+                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('nativeAddress'), length: 20}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     descript: [
-                        { type: 'string', max: 100, message: '备注不能多于100个字符', trigger: 'blur' },
+                        { type: 'string', max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
 
@@ -366,14 +366,12 @@
 
                 ajax.post("addOrUpdateEmployee", this.employee).then(function (res) {
                     if(res.success){
-                        self.$Message.success(self.isEdit ? self.$t('编辑员工成功！') : self.$t('新增员工成功！'));
+                        self.$Message.success(self.isEdit ? self.$t('editEmployee')+self.$t('success') : self.$t('newEmployee')+self.$t('success'));
                         self.$router.push({name: 'employee'});
                     }else{
-                        self.$Message.warning( res.data.message ? res.data.message : '网络错误，请稍后重试' );
+                        self.$Message.error( res.data.message || this.$t('failureTip',{tip: this.$t('addOrUpdateEmployee')}) );
                     }
-                }).catch(function (err) {
-                    self.$Message.error('网络错误，请联系客服');
-                });
+                })
             },
             /**
              * 多选角色权限

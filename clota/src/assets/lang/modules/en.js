@@ -805,4 +805,28 @@ export default {
     'selfSaleChannelName': '自营渠道名称',
     'selfSaleChannelType': '自营渠道类型',
     'urlServerName': 'URL/服务器名称',
+    'channelDelNotice': '线下渠道主要是售票闸机等，只能在组织架构内增加/删除，不允许在此页面增加或删除。',
+    'channelNum': '等{length}个渠道',
+    'delChannel': '删除渠道',
+    'disabledChannel': '您已禁用自营渠道',
+    'enabledChannel': '您已启用自营渠道',
+    'selectChannelOperate': '请勾选批量操作项',
+    'toOtherGroup': '移至其它分组',
+    'outGroup': '移出分组',
+    'newEmployee': '新增员工',
+    'editEmployee': '编辑员工',
+    'delEmployee': '删除员工',
+    'empId': '员工ID',
+    'sceneName': '企业/景区名称',
+    'search': '搜索{msg}',
+    'noData': '暂无数据',
+    'noSearchResult': '暂无搜索结果',
+    'scenePermission': '景区权限',
+    'menuPermission': '菜单权限',
+    'inputRightMobile': '请输入正确的手机号码',
+    'noOrg': '该部门不存在',
+
+
+
+
 }
