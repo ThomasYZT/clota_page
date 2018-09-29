@@ -45,6 +45,7 @@
 <script>
     import ajax from '../../api/index';
     import {validator} from 'klwk-ui';
+    import {mapGetters} from 'vuex';
     export default {
         data() {
             return {
@@ -58,7 +59,7 @@
                 isGetCode: false,
                 timer: null,
                 //倒计时间
-                countDown: null
+                countDown: null,
             }
         },
         methods: {
@@ -157,7 +158,58 @@
                         this.timer = null;
                     }
                 }, 1000)
+            },
+            /**
+             * 获取路由信息
+             * @param route
+             */
+            getparms (route) {
+                let queryParams = this.getUrlString(location.href);
+                if(queryParams && queryParams.code){
+                    this.getOAuth2UserInfo(queryParams.code);
+                }
+            },
+            /**
+             * 获取微信用户信息
+             * @param code
+             */
+            getOAuth2UserInfo (code) {
+                ajax.post('getOAuth2UserInfo',{
+                    code : code,
+                    lang : this.lang
+                }).then(res => {
+                    if(res.success){
+                    }
+                });
+            },
+            /**
+             * 获取url的参数
+             * @param url
+             * @returns {Array}
+             */
+            getUrlString (url) {
+                let obj = {};
+                if(url.indexOf('?') !== -1){
+                    let query = url.split("?")[1];
+                    let queryArr = query.split("&");
+                    queryArr.forEach(function(item){
+                        let key = item.split("=")[0];
+                        let value = item.split("=")[1];
+                        obj[key] = value;
+                    });
+                }
+                return obj;
             }
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.getparms(to);
+            });
+        },
+        computed :{
+            ...mapGetters({
+                lang : 'lang'
+            })
         }
     }
 </script>
