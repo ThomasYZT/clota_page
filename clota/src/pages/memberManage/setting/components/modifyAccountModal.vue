@@ -88,11 +88,11 @@
     export default {
         props: ['length','table-data'],
         components: {},
-        watch: {
-            'formData.rateNumerator': function (newVal) {
-                this.$refs.formValidate.validateField('rateDenominator');
-            }
-        },
+        // watch: {
+        //     'formData.rateNumerator': function (newVal) {
+        //         this.$refs.formValidate.validateField('rateDenominator');
+        //     }
+        // },
         data () {
 
             const validateMethod = {
