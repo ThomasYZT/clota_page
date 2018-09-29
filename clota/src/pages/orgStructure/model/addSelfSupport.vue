@@ -5,20 +5,20 @@
         class-name="vertical-center-modal"
         :mask-closable="false"
         :width="560"
-        :title="type=='add' ? $t('新增自营渠道') : $t('修改自营渠道')"
+        :title="type=='add' ? $t('addSelfChannel') : $t('editSelfChannel')"
         @on-cancel="hide">
 
         <!--内容区域-->
         <Form ref="formValidate" :model="addChannel" :rules="ruleValidate" :label-width="120">
             <!--自营渠道名称-->
-            <Form-item label="自营渠道名称" prop="channelName">
+            <Form-item :label="$t('selfSaleChannelName')" prop="channelName">
                 <Input v-model="addChannel.channelName" :placeholder="$t('inputField', {field: ''})" />
             </Form-item>
             <!--自营渠道类型-->
-            <Form-item label="自营渠道类型" prop="type">
+            <Form-item :label="$t('selfSaleChannelType')" prop="type">
                 <RadioGroup v-model="addChannel.type">
-                    <Radio label="online"><span>线上</span></Radio>
-                    <Radio label="offline" style="margin-right: 0;"><span>线下</span></Radio>
+                    <Radio label="online"><span>{{$t('online')}}</span></Radio>
+                    <Radio label="offline" style="margin-right: 0;"><span>{{$t('offline')}}</span></Radio>
                 </RadioGroup>
                 <Tooltip placement="top" transfer>
                     <i class="iconfont icon-note"></i>
@@ -158,7 +158,6 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .addChannel {
         /deep/ .ivu-modal-body {

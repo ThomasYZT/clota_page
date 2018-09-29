@@ -15,14 +15,14 @@
         <Form ref="formValidate"
               :model="formData"
               :label-width="150">
-            <FormItem label="已选服务" prop="package">
+            <FormItem :label="$t('selectedServices')" prop="package">
                 <ul class="service-list">
                     <li class="service-name"
                         v-for="(item,i) in serviceList"
                         :key="i">{{item.serviceName}}</li>
                 </ul>
             </FormItem>
-            <FormItem :label="$t('delayTime') + '（月）'" prop="serverTime">
+            <FormItem :label="$t('delayTime') + '（' + $t('Month') + '）'" prop="serverTime">
                 <Select v-model="formData.serverTime" style="width:280px">
                     <Option v-for="item in monthEnum"
                             :value="item.value"
@@ -31,7 +31,7 @@
                     </Option>
                 </Select>
             </FormItem>
-            <FormItem label="预计服务结束时间">
+            <FormItem :label="$t('serviceEndDatePre')">
                 <ul class="service-list">
                     <li class="service-name"
                         v-for="(item,i) in serviceDelayedInfo"
@@ -122,10 +122,10 @@
                     extensionTime : this.formData.serverTime
                 }).then(res => {
                     if(res.status === 200){
-                        this.$Message.success('延期成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('delay')}));
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('延期失败');
+                        this.$Message.success(this.$t('failureTip',{tip : this.$t('delay')}));
                     }
                 }).finally(() => {
                     this.$emit('input', false);

@@ -60,6 +60,10 @@
                 timer: null,
                 //倒计时间
                 countDown: null,
+                //微信用户信息
+                wxUserInfo :{},
+                //公司编码
+                companyCode : 'C2001'
             }
         },
         methods: {
@@ -92,17 +96,10 @@
                     ajax.post('login', {
                         phoneNum: this.loginInfo.phoneNum,
                         code: this.loginInfo.vcode,
-                        companyCode: 'C2001' //冰雪世界
+                        companyCode: this.companyCode
                     }).then((res) => {
                         if(res.success) {
-                            //存储token信息
-                            sessionStorage.setItem('token', res.data.token);
-                            //存储用户信息
-                            sessionStorage.setItem('userInfo', JSON.stringify(res.data));
-                            //更新用户信息
-                            this.$store.commit('updateUserInfo');
-                            //登陆跳转到主页
-                            this.$router.push({ name: 'home'});
+                            this.dataToLogin(res);
                         } else if(res.toString() === 'Error: Network Error'){
                             this.$vux.toast.text(this.$t('netNotGood'));
                         }else {
@@ -176,9 +173,18 @@
             getOAuth2UserInfo (code) {
                 ajax.post('getOAuth2UserInfo',{
                     code : code,
-                    lang : this.lang
+                    lang : this.lang,
+                    companyCode: this.companyCode
                 }).then(res => {
                     if(res.success){
+                        this.dataToLogin(res);
+                    }else{
+                        //错误信息为空，表示获取到了用户信息
+                        if(!res.errcode){
+                            this.wxUserInfo = res.data ? JSON.parse(res.data) : {};
+                        }else{
+                            this.wxUserInfo = {};
+                        }
                     }
                 });
             },
@@ -199,6 +205,20 @@
                     });
                 }
                 return obj;
+            },
+            /**
+             * 处理登录数据
+             * @param res
+             */
+            dataToLogin (res) {
+                //存储token信息
+                localStorage.setItem('token', res.data.token);
+                //存储用户信息
+                localStorage.setItem('userInfo', JSON.stringify(res.data));
+                //更新用户信息
+                this.$store.commit('updateUserInfo');
+                //登陆跳转到主页
+                this.$router.push({ name: 'home'});
             }
         },
         beforeRouteEnter(to,from,next){

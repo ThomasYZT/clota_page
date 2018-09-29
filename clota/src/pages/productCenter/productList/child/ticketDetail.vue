@@ -137,7 +137,7 @@
                         </i-col>
                     </i-row>
                     <i-row>
-                        <i-col span="12">
+                        <i-col span="12" v-if="detail.needId === 'more'">
                             <Form-item :label="$t('limitByIdDay')+'：'"><!--身份证购票限制-->
                                 <div>
                                     <span class="label">{{detail.idLimit ? JSON.parse(detail.idLimit).day : '-'}}</span>
@@ -147,7 +147,7 @@
                                 </div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12">
+                        <i-col span="12" v-if="detail.needId === 'more'">
                             <Form-item :label="$t('limitByMobileDay')+'：'"><!--手机号购票限制-->
                                 <div>
                                     <span class="label">{{detail.mobileLimit ? JSON.parse(detail.mobileLimit).day : '-'}}</span>
@@ -191,7 +191,6 @@
                     <Form-item :label="$t('playPark')+'：'"><!--可游玩园区-->
                         <div>
                             <table-com
-                                :ofsetHeight="755"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="productPlayRuleVo"
@@ -311,44 +310,7 @@
                 //详情数据
                 detail: {},
                 //产品园区列表数据
-                productPlayRuleVo: [
-                    {
-                        "checkPoint": [
-                            {
-                                "checkId": "1037982966690746369",
-                                "checkType": "garden",
-                                "createUser": "1",
-                                "createdTime": "2018-09-12 13:56:35",
-                                "dayTimes": "2",
-                                "id": "1039754624908791808",
-                                "isDeleted": "false",
-                                "orgId": "1037976274619994113",
-                                "parkId": "1037976274619994113",
-                                "playRuleId": "1039754623965073410",
-                                "playType": "required",
-                                "productId": "1039754623965073408",
-                                "sumTimes": "7",
-                                "updateUser": null,
-                                "updatedTime": "2018-09-12 13:56:35"
-                            }
-                        ],
-                        "checkPoints": null,
-                        "createUser": "1",
-                        "createdTime": "2018-09-12 13:56:35",
-                        "effDay": 1,
-                        "effTimes": 1,
-                        "fingerCheck": "true",
-                        "id": "1039754623965073410",
-                        "itemCheckTimes": "10",
-                        "orgId": "1037976274619994113",
-                        "parkId": "1037976274619994113",
-                        "parkName": "魔法花园",
-                        "productId": "1039754623965073408",
-                        "saleType": "one_ticket",
-                        "updateUser": null,
-                        "updatedTime": "2018-09-12 13:56:35"
-                    }
-                ],
+                productPlayRuleVo: [],
                 //产品日志数据
                 recordsVos: [],
                 //可游玩园区表头
@@ -551,11 +513,12 @@
                     padding-left: 0;
                     padding-right: 0;
                     width: 220px;
+                    display: inline-table;
                 }
 
                 /deep/ .ivu-form-item-content{
                     color: $color-666;
-                    flex: 1;
+                    /*flex: 1;*/
                     display: inline-block;
                     width: calc(100% - 220px);
                     >div{

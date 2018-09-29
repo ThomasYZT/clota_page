@@ -60,13 +60,13 @@
             <div class="content-info" v-for="annualCard in cardInfo.annual" :key="annualCard.id">
                 <div class="title">{{$t('yearCardInfo')}}</div>
                 <div class="form-wrap">
-                    <div class="form-item-wrap"><label>{{$t('yearCardId')}}</label><span>{{annualCard.vipCardNo}}</span></div><!--年卡编号-->
-                    <div class="form-item-wrap"><label>{{$t('yearCardName')}}</label><span>{{annualCard.vipCardName}}</span></div><!--年卡名称-->
+                    <div class="form-item-wrap"><label>{{$t('yearCardId')}}</label><span>{{annualCard.vipCardNo | contentFilter}}</span></div><!--年卡编号-->
+                    <div class="form-item-wrap"><label>{{$t('yearCardName')}}</label><span>{{annualCard.vipCardName | contentFilter}}</span></div><!--年卡名称-->
                     <div class="form-item-wrap"><label>{{$t('physicalCardNo')}}：</label><span>{{annualCard.physicalCardNo | contentFilter}}</span></div><!--物理卡号-->
                     <div class="form-item-wrap"><label>{{$t('fingerRegister')}}：</label><span>{{annualCard.isFingerPrint=='true' ? $t('yes') : $t('no')}}</span></div><!--是否指纹注册-->
-                    <div class="form-item-wrap"><label>{{$t('effectiveStartDate')}}：</label><span>{{annualCard.validFrom}}</span></div><!--有效开始日期-->
-                    <div class="form-item-wrap"><label>{{$t('effectiveEndDate')}}：</label><span>{{annualCard.validTo}}</span></div><!--有效开结束日期-->
-                    <div class="form-item-wrap"><label>{{$t('saleDate')}}：</label><span>{{annualCard.saleDate}}</span></div><!--销售日期-->
+                    <div class="form-item-wrap"><label>{{$t('effectiveStartDate')}}：</label><span>{{annualCard.validFrom | contentFilter}}</span></div><!--有效开始日期-->
+                    <div class="form-item-wrap"><label>{{$t('effectiveEndDate')}}：</label><span>{{annualCard.validTo | contentFilter}}</span></div><!--有效开结束日期-->
+                    <div class="form-item-wrap"><label>{{$t('saleDate')}}：</label><span>{{annualCard.saleDate | contentFilter}}</span></div><!--销售日期-->
                     <div class="form-item-wrap"><label>{{$t('cardOpeningUnit')}}：</label><span>{{annualCard.issuser | contentFilter}}</span></div><!--开卡单位-->
                     <div class="form-item-wrap"><label>{{$t('annualCardStatus')}}：</label><span>{{cardStatus(annualCard.status)}}</span></div><!--年卡状态-->
                     <div class="form-item-wrap"><label>{{$t('annualCardRemark')}}：</label><span>{{annualCard.note | contentFilter}}</span></div><!--年卡备注-->
@@ -76,7 +76,8 @@
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardOwnerHead"
-                        :table-data="JSON.parse(annualCard.availPersons) || []"
+                        :table-data="annualCard.availPersons ? JSON.parse(annualCard.availPersons) : []"
+                        :table-com-min-height="300"
                         :border="true">
                         <el-table-column
                             slot="column4"
@@ -92,7 +93,7 @@
                 <!--可使用范围-->
                 <div class="label range"></div>
                 <ul class="range-list">
-                    <li v-for="(range,index) in JSON.parse(annualCard.availOrgs)" :key="index">{{range.orgName}}</li>
+                    <li v-for="(range,index) in annualCard.availOrgs ? JSON.parse(annualCard.availOrgs) : []" :key="index">{{range.orgName}}</li>
                 </ul>
                 <!--使用说明-->
                 <div class="label instruction"></div>
@@ -102,6 +103,7 @@
                         :ofsetHeight="170"
                         :column-data="cardInfosHead"
                         :table-data="JSON.parse(annualCard.cardInfos) || []"
+                        :table-com-min-height="300"
                         :border="true">
                     </table-com>
                 </div>
@@ -110,13 +112,13 @@
             <div class="content-info" v-for="timesCard in cardInfo.times" :key="timesCard.id">
                 <div class="title">{{$t('timesCardInfo')}}</div><!--次卡信息-->
                 <div class="form-wrap">
-                    <div class="form-item-wrap"><label>{{$t('timesCardNo')}}：</label><span>{{timesCard.vipCardNo}}</span></div><!--次卡编号-->
-                    <div class="form-item-wrap"><label>{{$t('timesCardName')}}：</label><span>{{timesCard.vipCardName}}</span></div><!--次卡名称-->
+                    <div class="form-item-wrap"><label>{{$t('timesCardNo')}}：</label><span>{{timesCard.vipCardNo | contentFilter}}</span></div><!--次卡编号-->
+                    <div class="form-item-wrap"><label>{{$t('timesCardName')}}：</label><span>{{timesCard.vipCardName | contentFilter}}</span></div><!--次卡名称-->
                     <div class="form-item-wrap"><label>{{$t('physicalCardNo')}}：</label><span>{{timesCard.physicalCardNo | contentFilter}}</span></div><!--物理卡号-->
                     <div class="form-item-wrap"><label>{{$t('fingerRegister')}}：</label><span>{{timesCard.isFingerPrint=='true' ? $t('yes') : $t('no')}}</span></div><!--是否指纹注册-->
-                    <div class="form-item-wrap"><label>{{$t('effectiveStartDate')}}：</label><span>{{timesCard.validFrom}}</span></div><!--有效开始日期-->
-                    <div class="form-item-wrap"><label>{{$t('effectiveEndDate')}}：</label><span>{{timesCard.validTo}}</span></div><!--有效开结束日期-->
-                    <div class="form-item-wrap"><label>{{$t('saleDate')}}：</label><span>{{timesCard.saleDate}}</span></div><!--销售日期-->
+                    <div class="form-item-wrap"><label>{{$t('effectiveStartDate')}}：</label><span>{{timesCard.validFrom | contentFilter}}</span></div><!--有效开始日期-->
+                    <div class="form-item-wrap"><label>{{$t('effectiveEndDate')}}：</label><span>{{timesCard.validTo | contentFilter}}</span></div><!--有效开结束日期-->
+                    <div class="form-item-wrap"><label>{{$t('saleDate')}}：</label><span>{{timesCard.saleDate | contentFilter}}</span></div><!--销售日期-->
                     <div class="form-item-wrap"><label>{{$t('cardOpeningUnit')}}：</label><span>{{timesCard.issuser | contentFilter}}</span></div><!--开卡单位-->
                     <div class="form-item-wrap"><label>{{$t('timesCardStatus')}}：</label><span>{{cardStatus(timesCard.status)}}</span></div><!--次卡状态-->
                     <div class="form-item-wrap"><label>{{$t('timesCardRemark')}}：</label><span>{{timesCard.note | contentFilter}}</span></div><!--次卡备注-->
@@ -128,7 +130,8 @@
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardOwnerHead"
-                        :table-data="JSON.parse(timesCard.availPersons) || []"
+                        :table-data="timesCard.availPersons ? JSON.parse(timesCard.availPersons) : []"
+                        :table-com-min-height="300"
                         :border="true">
                         <el-table-column
                             slot="column4"
@@ -145,7 +148,7 @@
                 <!--可使用范围-->
                 <div class="label range"></div>
                 <ul class="range-list">
-                    <li v-for="(range,index) in JSON.parse(timesCard.availOrgs)" :key="index">{{range.orgName}}</li>
+                    <li v-for="(range,index) in timesCard.availOrgs ? JSON.parse(timesCard.availOrgs) : []" :key="index">{{range.orgName}}</li>
                 </ul>
                 <!--使用说明-->
                 <div class="label instruction"></div>
@@ -154,7 +157,8 @@
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardInfosHead"
-                        :table-data="JSON.parse(timesCard.cardInfos) || []"
+                        :table-data="timesCard.cardInfos ? JSON.parse(timesCard.cardInfos) : []"
+                        :table-com-min-height="300"
                         :border="true">
                     </table-com>
                 </div>

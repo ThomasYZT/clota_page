@@ -18,14 +18,14 @@
                 <span class="name" v-html="name" v-w-title="name"></span>
             </div>
             <div class="text">
-                <span class="tips">本操作不可撤销，</span>
-                <span>是否确认删除？</span>
+                <span class="tips">{{$t('operationIrrevocable')}}</span>
+                <span>{{$t('sureToDel')}}</span>
             </div>
         </div>
         <!--自定义页脚-->
         <div slot="footer">
             <template>
-                <i-button class="ivu-btn-error" type="primary" @click="submit">确认</i-button>
+                <i-button class="ivu-btn-error" type="primary" @click="submit">{{$t('confirm')}}</i-button>
                 <i-button type="ghost" @click="hide">{{$t('cancel')}}</i-button>
             </template>
         </div>
@@ -80,7 +80,6 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .deleteList {
         .ivu-modal-body {

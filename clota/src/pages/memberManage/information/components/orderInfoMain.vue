@@ -8,16 +8,16 @@
                     <span class="field-name">{{$t('tradeNo')}}：</span>{{infoData.outOrderNo | contentFilter}}
                 </li>
                 <li><!--本单预计交易积分-->
-                    <span class="field-name">{{$t('expectTradeIntegral')}}：</span>{{infoData.score}}
+                    <span class="field-name">{{$t('expectTradeIntegral')}}：</span>{{infoData.score | contentFilter}}
                 </li>
                 <li><!--景区-->
-                    <span class="field-name">{{$t('scenic')}}：</span>{{infoData.outOrgName}}
+                    <span class="field-name">{{$t('scenic')}}：</span>{{infoData.outOrgName | contentFilter}}
                 </li>
                 <li><!--会员方交易流水号-->
-                    <span class="field-name">{{$t('memberTradeNo')}}：</span>{{infoData.orderNo}}
+                    <span class="field-name">{{$t('memberTradeNo')}}：</span>{{infoData.orderNo | contentFilter}}
                 </li>
                 <li><!--销售员-->
-                    <span class="field-name">{{$t('salesperson')}}：</span>{{infoData.saler}}
+                    <span class="field-name">{{$t('salesperson')}}：</span>{{infoData.saler | contentFilter}}
                 </li>
             </ul>
             </Col>
@@ -27,16 +27,16 @@
                     <span class="field-name">{{$t('orderStatus')}}：</span>{{ $t(orderStatus(infoData.status)) }}
                 </li>
                 <li><!--整单交易金额-->
-                    <span class="field-name">{{$t('tradeAmount')}}：</span>{{infoData.amount}}
+                    <span class="field-name">{{$t('tradeAmount')}}：</span>{{infoData.amount | contentFilter}}
                 </li>
                 <li><!--店铺-->
-                    <span class="field-name">{{$t('shop')}}：</span>{{infoData.outDeptName}}
+                    <span class="field-name">{{$t('shop')}}：</span>{{infoData.outDeptName | contentFilter}}
                 </li>
                 <li><!--会员系统交易时间-->
-                    <span class="field-name">{{$t('vipsTradeTime')}}：</span>{{infoData.createdTime}}
+                    <span class="field-name">{{$t('vipsTradeTime')}}：</span>{{infoData.createdTime | contentFilter}}
                 </li>
                 <li><!--收银员-->
-                    <span class="field-name">{{$t('receiver')}}：</span>{{infoData.cashier}}
+                    <span class="field-name">{{$t('receiver')}}：</span>{{infoData.cashier | contentFilter}}
                 </li>
             </ul>
             </Col>
@@ -46,10 +46,10 @@
                     <span class="field-name">{{$t('sourceState')}}：</span>{{ $t(transferProductType(infoData.productType)) }}
                 </li>
                 <li><!--会员卡号-->
-                    <span class="field-name">{{$t('cardNo')}}：</span>{{infoData.cardNo}}
+                    <span class="field-name">{{$t('cardNo')}}：</span>{{infoData.cardNo | contentFilter}}
                 </li>
                 <li><!--款台-->
-                    <span class="field-name">{{$t('cashDesk')}}：</span>{{infoData.outCashName}}
+                    <span class="field-name">{{$t('cashDesk')}}：</span>{{infoData.outCashName | contentFilter}}
                 </li>
                 <li><!--交易时间-->
                     <span class="field-name">{{$t('transactionTime')}}：</span>{{infoData.tradeTime | contentFilter}}

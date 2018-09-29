@@ -218,7 +218,6 @@
                                   v-if="productPlayRuleVo.length < parkListCount"
                                   @click="addPark" >+ {{$t('addPark')}}</span>
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="productPlayRuleVo"
@@ -714,12 +713,13 @@
             },
 
             /**
-             * 动态给行添加类名
+             * 动态给行添加类名 行数据有误时添加的背景颜色 - 暂不使用
              * @param row
              */
             rowClassName (row){
                 if(!row.row.check){
-                    return 'error-tr';
+                    return ''
+                   /* return 'error-tr';*/
                 }
             },
 

@@ -144,3 +144,11 @@ div.cell {
     top: 50%!important;
     transform: translateX(-50%) translateY(-50%)!important;
 }
+.weui-check__label{
+    height: 50px!important;
+    font-size: 16px!important;
+    color: #353B48!important;
+}
+.weui-cells_radio .weui-check:checked + .weui-icon-checked:before{
+    color: #0073EB!important;
+}

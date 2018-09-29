@@ -26,7 +26,7 @@
                 <div class="year-card">
                     <div class="card-area">
                         <div class="card-inner">
-                            <img class="head-img" :src="yearyCardInfo.pic" @click="previewImg(yearyCardInfo.pic)" alt="">
+                            <img class="head-img" :src="yearyCardInfo.pic | headImgFilter" @click="previewImg(yearyCardInfo.pic)" alt="">
                             <span class="mem-name">{{yearyCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{yearyCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
@@ -54,7 +54,7 @@
                 <div class="time-card">
                     <div class="card-area">
                         <div class="card-inner">
-                            <img class="head-img" :src="timeCardInfo.pic" @click="previewImg(timeCardInfo.pic)" alt="">
+                            <img class="head-img" :src="timeCardInfo.pic | headImgFilter" @click="previewImg(timeCardInfo.pic)" alt="">
                             <span class="mem-name">{{timeCardInfo.issuser | contentFilter}}</span>
                             <div class="scene-area">{{timeCardInfo.vipCardName | contentFilter}}</div>
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
@@ -235,6 +235,15 @@
         },
         created () {
             this.getCard();
+        },
+        filters : {
+            //头像过滤器
+            headImgFilter (content) {
+                if(content) return content;
+                else{
+                    return require('../../assets/images/defaut-face.png');
+                }
+            }
         }
     }
 </script>

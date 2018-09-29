@@ -32,8 +32,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span v-if="lang == 'zh-CN'">{{scope.row.discountRate}}{{$t('discount')}}</span>
-                        <span v-if="lang != 'zh-CN'">{{(1-scope.row.discountRate)*100}}{{$t('discount')}}</span>
+                        <span>{{transferDiscountRate(scope.row.discountRate)}}</span><!--折扣率-->
                     </template>
                 </el-table-column>
             </table-com>
@@ -64,8 +63,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span v-if="lang == 'zh-CN'">{{scope.row.deptDiscountRate}}{{$t('discount')}}</span>
-                        <span v-if="lang != 'zh-CN'">{{(1-scope.row.deptDiscountRate)*100}}{{$t('discount')}}</span>
+                        <span>{{transferDiscountRate(scope.row.deptDiscountRate)}}</span><!--折扣率-->
                     </template>
                 </el-table-column>
             </table-com>
@@ -95,8 +93,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="lang == 'zh-CN'">{{scope.row.prodDiscountRate}}{{$t('discount')}}</span><!--折扣率-->
-                    <span v-if="lang != 'zh-CN'">{{(1-scope.row.prodDiscountRate)*100}}{{$t('discount')}}</span>
+                    <span>{{transferDiscountRate(scope.row.prodDiscountRate)}}</span><!--折扣率-->
                 </template>
             </el-table-column>
         </table-com>
@@ -143,7 +140,19 @@
     mounted() {
     },
     watch: {},
-    methods: {}
+    methods: {
+        transferDiscountRate(rate) {
+            if (this.lang == 'zh-CN') {
+                return rate + this.$t('discount');
+            } else if (this.lang != 'zh-CN') {
+                let discount = this.$t('discount');
+                if (discount.startsWith('%')) {
+                    discount = discount.slice(1);
+                }
+                return Number(1-rate).toPercent() + discount;
+            }
+        },
+    }
   };
 </script>
 

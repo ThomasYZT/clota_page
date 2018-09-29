@@ -13,7 +13,8 @@
              class="icon iconfont"
              :class="info.iconClass"></i>
           <div class="arrow-wrap">
-              <span class="info">{{info.info | moneyFilter(0,'','')}}</span>
+              <span class="info" v-if="info.title ==='defaultAccount'">{{info.info | moneyFilter(2,'','')}}</span>
+              <span class="info" v-if="info.title ==='integralDetail'">{{info.info | moneyFilter(0,'','')}}</span>
               <i class="iconfont icon-arrow" style="color:#B3BDC2"></i>
           </div>
       </cell>
@@ -50,4 +51,16 @@
 
 <style lang="scss" scoped>
   @import '~@/assets/scss/base';
+    .label-item{
+
+        /deep/ .weui-cell{
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .icon{
+            display: inline-block;
+            float: left;
+        }
+    }
 </style>

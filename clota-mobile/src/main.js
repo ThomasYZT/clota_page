@@ -30,8 +30,8 @@ router.beforeEach((to, from, next) => {
         next();
     }else{
         //获取保存到本地的用户信息
-        let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
-        let token = sessionStorage.getItem('token') ? sessionStorage.getItem('token') : '';
+        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
         if(token && userInfo && Object.keys(userInfo).length > 0){
             store.commit('updateUserInfo');
             store.commit('updateCardInfo');
