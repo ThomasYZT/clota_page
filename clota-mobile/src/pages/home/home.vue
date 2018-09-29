@@ -6,14 +6,20 @@
   <div class="home"
        v-show="!isLoading">
       <div class="member-card"
+           :class="[memberVipCardClass]"
            :style="{backgroundImage: cardBg}">
           <div class="card-content" :style="{color: cardFontColor}">
               <div class="person-info">
                   <div class="left">
                       <div class="img-wrapper">
-                          <img class="default-face" src="../../assets/images/defaut-face.png" alt="">
+                          <img class="default-face" :src="memberHeadImg" alt="">
                       </div>
-                      <span class="username" @click="toPersonInfo">{{cardInfo.custName+" "}}></span>
+                      <span class="username" @click="toPersonInfo">
+                          <span class="name">
+                          {{cardInfo.custName}}
+                          </span>
+                          <span class="iconfont icon-arrow"></span>
+                      </span>
                   </div>
                   <div class="right">
                       <div  class="card-level">
@@ -161,6 +167,32 @@
             ...mapGetters({
                 isLoading : 'isLoading',
             }),
+            //vip卡类名
+            memberVipCardClass () {
+                if(this.cardInfo && this.cardInfo.levelNum !== '' && this.cardInfo.levelNum !== null){
+                    if(this.cardInfo.levelNum === 1){
+                        return 'one-level';
+                    }else if(this.cardInfo.levelNum === 2){
+                        return 'two-level';
+                    }else if(this.cardInfo.levelNum === 3){
+                        return 'three-level';
+                    }else if(this.cardInfo.levelNum >= 4){
+                        return 'four-level';
+                    }else{
+                        return '';
+                    }
+                }else{
+                    return ''
+                }
+            },
+            //头像信息
+            memberHeadImg () {
+                if(this.cardInfo && this.cardInfo.portrait){
+                    return this.cardInfo.portrait;
+                }else{
+                    return require('../../assets/images/defaut-face.png');
+                }
+            }
         },
         methods: {
             ...mapMutations([
@@ -171,15 +203,15 @@
              */
             getData() {
                 ajax.post('queryMemberPage', {
-                    cardId: JSON.parse(sessionStorage.getItem('userInfo')).cardId,
+                    cardId: JSON.parse(localStorage.getItem('userInfo')).cardId,
                     pageNo: 1,
                     pageSize: 100
                 }).then((res) => {
                     if(res.success) {
                         //console.log(res.data.data[0])
-                        res.data.data[0].levelNum = 4;
+                        // res.data.data[0].levelNum = 4;
                         //存储会员卡信息
-                        sessionStorage.setItem('cardInfo', JSON.stringify(res.data.data[0]));
+                        localStorage.setItem('cardInfo', JSON.stringify(res.data.data[0]));
                         this.updateCardInfo();
                         this.cardInfo = res.data.data[0];
 
@@ -188,7 +220,6 @@
                         this.labelList.getByTitle('defaultAccount').info = this.cardInfo.moneyBalance;
                         this.labelList.getByTitle('memberRight').params.levelDesc = this.cardInfo.levelDesc;
                         this.labelList.getByTitle('integralDetail').params.num = this.cardInfo.pointBalance;
-
                         //获取会员卡配色方案
                         this.setCardTheme(res.data.data[0].levelNum)
                     }else {
@@ -262,16 +293,30 @@
         height: 100%;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
+
         .member-card {
             position: relative;
             width: 100%;
             height: 167.5px;
             background-size: 100% 100%;
 
+            &.one-level .card-level{
+                background: #A1A5BA;
+            }
+            &.two-level .card-level{
+                background: #ECBB3F;
+            }
+            &.three-level .card-level{
+                background: #E4C3AC;
+            }
+            &.four-level .card-level{
+                background-color:  #2B2C2E;
+            }
+
             .card-content {
                 position: absolute;
                 left: 24px;
-                bottom: 0px;
+                bottom: 0;
                 width: 327-21.2px;
                 height: 150px;
                 margin-left: 21.2px;
@@ -282,11 +327,13 @@
                     display: flex;
                     height: 37px;
                     width: 100%;
+                    display: flex;
 
                     div {
-                        width: 50%;
                         height: 100%;
+
                         &.left {
+                            flex: 1;
                             .img-wrapper {
                                 display: inline-block;
                                 position: relative;
@@ -308,24 +355,36 @@
                             span.username {
                                 margin-left: 5px;
                                 display: inline-block;
+                                width: calc(100% - 60px);
                                 height: 100%;
                                 line-height: 32.65px;
                                 vertical-align: top;
                                 font-size: 14px;
+                                @include overflow_tip();
+
+                                .name{
+                                    vertical-align: middle;
+                                }
+
+                                .icon-arrow{
+                                    font-size: 12px!important;
+                                    vertical-align: middle;
+                                    line-height: 16px;
+                                    margin-top: 8px;
+                                }
                             }
                         }
                         &.right {
-                            margin-right: 21.2px;
-                            text-align: center;
+                            margin-right: 15px;
+                            text-align: right;
                             position: relative;
 
                             .card-level {
-                                margin-top: 8px;
+                                margin-top: 4px;
                                 padding: 0 15px;
                                 width: auto;
                                 height: 21px;
                                 display: inline-block;
-                                background-color: rgba(43,44,46,0.1);
                                 border-radius: 10px;
                                 font-size: 8px;
                                 line-height: 21px;
@@ -356,16 +415,15 @@
                     font-size: 14px;
 
                     div {
-                        width: 50%;
                         &:first-child {
-                            width: auto;
+                            flex: 1;
                             white-space: nowrap;
                         }
                         &:last-child {
                             text-align: right;
 
                             &:last-child {
-                                margin-right: 29.5px;
+                                margin-right: 22.5px;
                             }
                         }
                     }

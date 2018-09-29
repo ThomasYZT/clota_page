@@ -13,8 +13,8 @@ export default {
      * 退出登录(清空本地记录)
      */
     loginOut() {
-        sessionStorage.removeItem('userInfo');
-        sessionStorage.removeItem('cardInfo');
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('cardInfo');
         router.push({
             name : 'mobileLogin'
         },() => {
@@ -27,7 +27,7 @@ export default {
      * 获取用户信息
      */
     getUserInfo() {
-        let userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         let manageOrgs = userInfo && userInfo.manageOrgs ? userInfo.manageOrgs : [];
         return {
             userInfo,
@@ -39,7 +39,7 @@ export default {
      * 获取组织树列表
      */
     getOrgTree () {
-        return sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).manageOrgs : [];
+        return localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).manageOrgs : [];
     },
 
     /**

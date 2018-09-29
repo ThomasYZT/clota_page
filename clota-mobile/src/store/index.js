@@ -87,7 +87,7 @@ export default new Vuex.Store({
          */
         updateUserInfo ( state ) {
             //获取保存到本地的用户信息
-            let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
+            let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
             if(userInfo && Object.keys(userInfo).length > 0){
                 state.userInfo = userInfo;
             }else{
@@ -100,7 +100,7 @@ export default new Vuex.Store({
          */
         updateCardInfo ( state ) {
             //获取保存到本地的会用卡信息
-            let cardInfo = sessionStorage.getItem('cardInfo') ? JSON.parse(sessionStorage.getItem('cardInfo')) : {};
+            let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
             if(cardInfo && Object.keys(cardInfo).length > 0){
                 state.cardInfo = cardInfo;
             }else{
