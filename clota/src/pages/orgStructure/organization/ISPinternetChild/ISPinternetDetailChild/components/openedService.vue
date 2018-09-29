@@ -15,9 +15,9 @@
                 <div class="service-operation" v-if="type === 'scene'">
                     <Button type="primary"
                             :disabled="!canDelService"
-                            @click="delService(selectedService)">删除服务</Button>
+                            @click="delService(selectedService)">{{$t('delService')}}</Button>
                     <Button type="primary"
-                            @click="orgAddService(selectedService)">添加服务</Button>
+                            @click="orgAddService(selectedService)">{{$t('addService')}}</Button>
                 </div>
                 <table-com
                     v-if="tableShow && type === 'scene'"
@@ -100,8 +100,8 @@
         <del-modal ref="delModal">
             <div class="del-tips">
                 <Icon type="help-circled"></Icon>
-                <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>
-                <span>请及时保存。</span>
+                <span class="red-bale">{{$t('delServiceNotice')}}</span>
+                <span>{{$t('saveInTime')}}</span>
             </div>
         </del-modal>
         <!--添加服务模态框-->
@@ -182,7 +182,7 @@
              */
             delService (data) {
                 this.$refs.delModal.show({
-                    title : `删除服务`,
+                    title : this.$t('delService'),
                     confirmCallback : () => {
                         this.comfirmDeletService(data.map(item => item.id));
                     }
@@ -234,10 +234,10 @@
                     }
                 ).then(res => {
                     if(res.success){
-                        this.$Message.success('删除成功');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('successTip') }));
                         this.queryList();
                     }else{
-                        this.$Message.error('删除失败');
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('successTip') }));
                     }
                 });
             },
