@@ -46,7 +46,6 @@
     import ajax from '../../api/index';
     import {validator} from 'klwk-ui';
     import {mapGetters} from 'vuex';
-    import parseurl from 'parseurl'
     export default {
         data() {
             return {
