@@ -45,8 +45,11 @@
 </template>
 
 <script>
-    import ajax from '../../api'
+    import ajax from '../../api';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+
     export default {
+        mixins : [lifeCycleMixins],
         data() {
             return {
                 registerInfo: {
@@ -99,6 +102,7 @@
                 //输入验证
                 this.validate(() => {
                     ajax.post('registerMember', {
+                        openId: this.openId,
                         name: this.registerInfo.custName,
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
@@ -106,8 +110,17 @@
                         companyCode: '000000071' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
+                            console.log(res.data)
+                            //存储token信息
+                            localStorage.setItem('token', res.data.token);
+                            //存储用户信息
+                            localStorage.setItem('userInfo', JSON.stringify(res.data));
+                            //更新用户信息
+                            this.$store.commit('updateUserInfo');
+                            //提示注册成功
                             this.$vux.toast.text($t('registSuccess'));
-                            this.$router.push({name: 'mobileLogin'})
+                            //自动登陆跳转到主页
+                            this.$router.push({ name: 'home'});
                         }else {
                             this.$vux.toast.text(res.message);
                         }
@@ -179,7 +192,20 @@
                         this.timer = null;
                     }
                 }, 1000);
-            }
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && params.openId){
+                    this.openId = params.openId;
+                }else{
+                    this.$router.push({
+                        name: 'login'
+                    });
+                }
+            },
         }
     }
 </script>

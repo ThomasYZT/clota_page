@@ -34,7 +34,7 @@
         <div class="bottom-info">
             <p class="msg">{{msg}}</p>
             <p class="register-entry">
-                <span @click="$router.push({path: '/register'})">{{$t('register')}}</span>
+                <span @click="toRegister()">{{$t('register')}}</span>
             </p>
         </div>
         <!-- 登陆按钮 -->
@@ -185,6 +185,7 @@
                     }else{
                         //错误信息为空，表示获取到了用户信息
                         if(!res.errcode){
+
                             this.wxUserInfo = res.data ? JSON.parse(res.data) : {};
                         }else{
                             this.wxUserInfo = {};
@@ -224,6 +225,17 @@
                 this.$store.commit('updateUserInfo');
                 //登陆跳转到主页
                 this.$router.push({ name: 'home'});
+            },
+            /**
+             * 跳到注册界面
+             */
+            toRegister() {
+                this.$router.replace({
+                    name: 'register',
+                    params: {
+                        openId: this.wxUserInfo.openId
+                    }
+                })
             }
         },
         beforeRouteEnter(to,from,next){
