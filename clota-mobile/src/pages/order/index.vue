@@ -41,7 +41,7 @@
             class="order-list-info"
             v-if="orderList.length > 0">
             <scroll ref="scroll"
-                    :data="infoList"
+                    :data="orderList"
                     :scrollbar="scrollbar"
                     :pullDownRefresh="pullDownRefreshObj"
                     :pullUpLoad="pullUpLoadObj"
