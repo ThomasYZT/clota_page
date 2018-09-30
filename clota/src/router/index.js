@@ -67,6 +67,14 @@ const createRouter = () => new Router({
                 }
             }
         },
+        {
+            path: '/register',
+            name: 'register',
+            component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue')
+            , meta: {
+                noFrame: true
+            }
+        },
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {

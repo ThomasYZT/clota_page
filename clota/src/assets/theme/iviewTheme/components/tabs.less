@@ -25,9 +25,8 @@
     }
 
     &-bar {
-        //border-bottom: 1px solid @border-color-base;
+        border-bottom: 1px solid @border-color-base;
         //margin-bottom: 16px;
-        border-bottom: 1px solid #EBEEF5;
         margin-bottom: 0px;
     }
 
@@ -128,7 +127,7 @@
             text-decoration: none;
             position: relative;
             transition: color .3s @ease-in-out;
-
+            font-size: 22px;
             &:hover {
                 color: @link-hover-color;
             }
@@ -181,29 +180,26 @@
 
     // card style
     &&-card > &-bar &-nav-container {
-        height: 32px;
+        height: 77px;
     }
     &&-card > &-bar &-ink-bar {
         visibility: hidden;
     }
     &&-card > &-bar &-tab {
         margin: 0;
-        margin-right: 4px;
-        height: 31px;
-        padding: 5px 16px 4px;
-        border: 1px solid @border-color-base;
+        height: 77px;
+        padding: 25px 66px;
         border-bottom: 0;
-        border-radius: @btn-border-radius @btn-border-radius 0 0;
         transition: all 0.3s @ease-in-out;
         background: @table-thead-bg;
     }
     &&-card > &-bar &-tab-active {
-        height: 32px;
+        height: 77px;
         padding-bottom: 5px;
         background: #fff;
         transform: translateZ(0);
         border-color: @border-color-base;
-        color: @primary-color;
+        color: #0063BA;
     }
     &&-card > &-bar &-nav-wrap {
         margin-bottom: 0;

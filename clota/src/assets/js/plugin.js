@@ -44,6 +44,7 @@ import scrollbar from 'element-ui/lib/scrollbar';
 import elTree from 'element-ui/lib/tree';
 import elCheckbox from 'element-ui/lib/checkbox';
 import elUpload from 'element-ui/lib/upload';
+import elDialog from 'element-ui/lib/dialog';
 
 
 // // 按需引入 Echarts 图表
@@ -73,6 +74,7 @@ plugin.install = function (Vue, options) {
     Vue.use(elTree);
     Vue.use(elCheckbox);
     Vue.use(elUpload);
+    Vue.use(elDialog);
 
     //iview按需引入
     Vue.component('Button',Button);

@@ -35,6 +35,11 @@
                         </Form-item>
                         <Form-item class="auto-reme">
                             <Checkbox v-model="rememberAccount">{{ $t("rememberAccount") }}</Checkbox>
+                            <p class="register-entry"
+                               @click="toRegist()">
+                                <span class="entry-tip">{{$t('noAccount')}}</span>
+                                {{$t('partnerRegister')}}
+                            </p>
                         </Form-item>
                         <div class="error-area">
                             {{errMsg}}
@@ -179,6 +184,12 @@
                         break;
                     }
                 }
+            },
+            /**
+             * 跳转至合作伙伴注册界面
+             */
+            toRegist() {
+                this.$router.push({name: 'register'})
             }
         },
         computed: {},
@@ -284,6 +295,16 @@
 
             .auto-reme{
                 margin-bottom: 10px;
+            }
+
+            .register-entry {
+                font-size: $font_size_12px;
+                color: $color_0082D5;
+                cursor: pointer;
+                .entry-tip {
+                    color: $color_666;
+                }
+                display: inline-block;
             }
 
         }

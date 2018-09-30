@@ -30,7 +30,7 @@ Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
     //如果是跳转到登录页面，不做任何权限判断
-    if (to.name === 'login') {
+    if (to.name === 'login' || to.name === 'register') {
         next();
     } else {
         //判断是否已经获取用户信息
