@@ -454,10 +454,7 @@
             },
             //获取储值账户-(本金/赠送金额)应用范围
             getSubNode () {
-                ajax.post('getSubNode', {
-                    orgType: 'scenic',
-                    includeMe: 'true',
-                }).then(res => {
+                ajax.post('listApplicationRange').then(res => {
                     if( res.success ) {
                         this.listAmountRangeTable = defaultsDeep([], res.data );
                         this.sendRangeTable = defaultsDeep([], res.data );

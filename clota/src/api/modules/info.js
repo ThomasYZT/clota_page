@@ -151,6 +151,8 @@ export default {
     'listAccount' : '/member/memberAccount/listAccount',
     //判断账户归属是否存在
     'existAccountBelong' : '/member/memberBasicSet/existAccountBelong',
+    //应用范围
+    'listApplicationRange': '/member/memberBasicSet/listApplicationRange',
 
 
     /***********************************会员统计***********************************/
