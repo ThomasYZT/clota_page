@@ -92,8 +92,8 @@
              */
             getNowWeekMemberConsumeSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
-                    endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(-new Date().getDay() === 0 ?  -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '1',
                     accountType : 'charging',
                     operType : 'reduce',
@@ -116,8 +116,8 @@
              */
             getLastWeekMemberConsumeSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay()).addDays(-6).format('yyyy-MM-dd'),
-                    endDate : new Date().addDays(-new Date().getDay()).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(new Date().getDay() === 0 ? -7 : -new Date().getDay()).addDays(-6).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(new Date().getDay() === 0 ? -7 : -new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '1',
                     accountType : 'charging',
                     operType : 'reduce',
@@ -140,8 +140,8 @@
              */
             getNowWeekMemberIntegraSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
-                    endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(-new Date().getDay() === 0 ?  -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '2',
                     accountType : 'score',
                     operType : 'reduce',
@@ -163,8 +163,8 @@
              */
             getLastWeekMemberSendIntegraSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay() + 1).format('yyyy-MM-dd'),
-                    endDate : new Date().addDays(7 - new Date().getDay()).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(-new Date().getDay() === 0 ?  -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '2',
                     accountType : 'score',
                     operType : 'add',
