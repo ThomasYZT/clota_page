@@ -10,25 +10,43 @@
 
       <div class="member-right-content">
           <h3 class="category">{{$t('memberVos')}}</h3>
-          <illustration-board v-for="(item, index) in memberVos"
-                              :key="item.id"
-                              :info="item"
-                              class="ill-item1">
-          </illustration-board>
+          <template v-if="memberVos && memberVos.length > 0">
+              <illustration-board v-for="(item, index) in memberVos"
+                                  :key="item.id"
+                                  :info="item"
+                                  class="ill-item1">
+              </illustration-board>
+          </template>
+          <div class="no-data-area" v-else>
+              <no-data>
+              </no-data>
+          </div>
 
           <h3 class="category">{{$t('storeVos')}}</h3>
-          <illustration-board v-for="(item, index) in storeVos"
-                              :key="item.index"
-                              :info="item"
-                              class="ill-item2">
-          </illustration-board>
+          <template v-if="storeVos && storeVos.length > 0">
+              <illustration-board v-for="(item, index) in storeVos"
+                                  :key="item.index"
+                                  :info="item"
+                                  class="ill-item2">
+              </illustration-board>
+          </template>
+          <div class="no-data-area" v-else>
+              <no-data>
+              </no-data>
+          </div>
 
           <h3 class="category">{{$t('productMap')}}</h3>
-          <illustration-board v-for="(item, index) in productArr"
-                              :key="item.id"
-                              :info="item"
-                              class="ill-item3">
-          </illustration-board>
+          <template v-if="productArr && productArr.length > 0">
+              <illustration-board v-for="(item, index) in productArr"
+                                  :key="item.id"
+                                  :info="item"
+                                  class="ill-item3">
+              </illustration-board>
+          </template>
+          <div class="no-data-area" v-else>
+              <no-data>
+              </no-data>
+          </div>
       </div>
   </div>
 </template>
@@ -36,10 +54,12 @@
 <script>
     import illustrationBoard from './components/illustrationBoard'
     import ajax from '../../api/index'
-    import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex';
+    import noData from '@/components/noData/index.vue';
     export default {
         components: {
-            illustrationBoard
+            illustrationBoard,
+            noData
         },
         data() {
             return {

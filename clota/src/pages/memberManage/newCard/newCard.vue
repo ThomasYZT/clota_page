@@ -7,10 +7,11 @@
 <template>
     <div class="new-card">
         <!--tpCard - 测试-->
-        <object id="rd" data="./comRD800.dll" WIDTH="0" HEIGHT="0"
-                classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>
+        <!--<object id="rd" data="../static/comRD800.dll" WIDTH="0" HEIGHT="0"
+                classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>-->
+        <!--<iframe src="../../../../static/test-1.html" frameborder="0" id="iframe"></iframe>-->
 
-        <div class="new-card-content">
+        <div class="new-card-content ">
             <Form ref="formValidate"
                   :model="newCardParam"
                   :rules="ruleValidate"
@@ -129,8 +130,9 @@
                                :placeholder="$t('readCard')"/>
                     </Form-item>
                 </div>
-                <!--<div><Button type="primary" @click="fetchCardInfo()">获取实体卡信息</Button></div>-->
+
             </Form>
+            <!--<Button type="primary" @click="fetchCardInfo()">获取实体卡信息</Button>-->
         </div>
         <!--footer 按钮-->
         <div class="content-footer">
@@ -350,6 +352,7 @@
         },
         mounted() {
 //            this.idCardTest(rd);     // rd -- 实体卡SDK
+            console.log(rd)
             this.rd_D3 = rd;
         },
         watch: {},
@@ -448,17 +451,23 @@
                             this.$router.push({name: 'memberInfo'});
                         }
                         if (this.type === 'modify') {
-                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 新增会员成功
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 修改会员成功
                             this.$router.back();
                         }
                     } else {
                         //区分新增与修改
-                        if (this.type === 'add') {
-                            this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('add')}));
+                        let errorTip = '';
+                        if (res.message == 'M008' || res.code == '300') {
+                            errorTip = this.$t('phoneExistCard');   // 手机号已被注册，请更换手机号
                         }
-                        if (this.type === 'modify') {
-                            this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('modify')}));
+
+                        if(this.type === 'add'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('add')}));
                         }
+                        if(this.type === 'modify'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('modify')}));
+                        }
+
                     }
                 })
             },
@@ -478,6 +487,9 @@
              * @param rd -- 实体卡SDK
              */
             fetchCardInfo(rd) {
+                let aa = document.getElementById('iframe');
+                this.rd_D3 = aa.contentDocument.getElementById('rd');
+
                 if (isEmpty(this.allEntityCards)) {
                     this.getAllEntityCard().then(() => {
                         this.readEntityCard(this.rd_D3);
@@ -487,6 +499,7 @@
                 }
             },
             readEntityCard(rd) {
+                console.log(rd.data)
                 var st; //主要用于返回值
 //                var lSnr; //本用于取序列号，但在javascript只是当成dc_card函数的一个临时变量
 //                var rlen; //用于取一些返回值长度，但在javascript只是当成dc_card函数的一个临时变量

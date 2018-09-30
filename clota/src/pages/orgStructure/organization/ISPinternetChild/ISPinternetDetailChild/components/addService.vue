@@ -26,7 +26,7 @@
             </div>
             <!--<span class="tip">请先为上级公司开通服务后，景区才能添加相应服务。</span>-->
             <div class="label-info" style="margin-bottom: 10px">
-                <span class="val">上级公司已开通服务：</span>
+                <span class="val">{{$t('superiorOpenedServer')}}：</span>
             </div>
             <table-com
                 v-if="tableShow"
@@ -143,7 +143,7 @@
              */
             confirm() {
                 if(this.selectedService.length < 1){
-                    this.$Message.warning('请选择服务');
+                    this.$Message.warning(this.$t('selectField', {msg: this.$t('service')}));
                 }else{
                     let selectService = [];
                     if(this.openedServices.length === 0){
@@ -222,10 +222,10 @@
                     }
                 ).then(res => {
                     if(res.success){
-                        this.$Message.success('开通成功');
+                        this.$Message.success(this.$t('service')+this.$t('success'));
                         this.$emit('fresh-service');
                     }else{
-                        this.$Message.error('开通失败');
+                        this.$Message.error(this.$t('service')+this.$t('failure'));
                     }
                 }).finally(() => {
                     this.modalShow = false;

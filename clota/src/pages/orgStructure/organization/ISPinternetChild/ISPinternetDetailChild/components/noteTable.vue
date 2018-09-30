@@ -3,7 +3,7 @@
 <template>
     <div class="note-table">
         <div class="table-name">
-            <span class="label">短信</span>
+            <span class="label">{{$t('sms')}}</span>
             <span class="back-up"
                   @click="isPackUpLoad = !isPackUpLoad">
             {{$t(isPackUpLoad ? 'backUp' : 'upLoad')}}
@@ -14,11 +14,11 @@
             <div v-if="isPackUpLoad">
                 <!--短信发送记录-->
                 <div class="employee-account">
-                    <span class="note-record">短信发送记录</span>
+                    <span class="note-record">{{$t('smsSendRecord')}}</span>
                     <div class="note-sended">
                         <Icon type="ios-help"></Icon>
-                        <span class="note-tips">共发送短信数量：<span class="icon-weight">{{sendSmsTotals | contentFilter}}条</span></span>
-                        <span class="note-tips">剩余短信数量：<span class="icon-weight">{{smsSurplusTotal | contentFilter}}条</span></span>
+                        <span class="note-tips">{{$t('sendSmsCount')}}：<span class="icon-weight">{{sendSmsTotals | contentFilter}}{{$t('item')}}</span></span>
+                        <span class="note-tips">{{$t('remainSmsCount')}}：<span class="icon-weight">{{smsSurplusTotal | contentFilter}}{{$t('item')}}</span></span>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <ul class="operate-info">
-                                <li class="normal" @click="watchNoteDetail(scope.row)">查看</li>
+                                <li class="normal" @click="watchNoteDetail(scope.row)">{{$t('check')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -74,10 +74,10 @@
 
                 <!--短信购买记录-->
                 <div class="employee-account" slot="table-title">
-                    <span class="note-record">短信购买记录</span>
+                    <span class="note-record">{{$t('smsBuyRecord')}}</span>
                     <div class="note-sended">
                         <Icon type="ios-help"></Icon>
-                        <span class="note-tips">共购买短信数量：<span class="icon-weight">{{smsBuyTotal | contentFilter}}条</span></span>
+                        <span class="note-tips">{{$t('buySmsTotal')}}：<span class="icon-weight">{{smsBuyTotal | contentFilter}}{{$t('item')}}</span></span>
                     </div>
                 </div>
 

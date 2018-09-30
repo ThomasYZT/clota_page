@@ -38,7 +38,7 @@
         <ul class="department-info">
             <li class="list">
                 <div class="info-list1">
-                    <span class="info-key">部门ID：</span>
+                    <span class="info-key">{{$t('departmentID')}}：</span>
                     <span class="info-val" v-w-title="formData.id">{{formData.id | contentFilter}}</span>
                 </div>
             </li>
@@ -122,7 +122,7 @@
                     nodeType : this.formDataCopy.nodeType,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('修改成功');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
                         //修改了节点的名字，需要刷新左侧的组织树
                         if(this.formDataCopy.orgName !== this.formData.orgName){
                             this.freshOrg();
@@ -132,7 +132,7 @@
                         }
                         this.$store.dispatch('freshOrgs');
                     }else{
-                        this.$Message.error('修改失败');
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('modify')}));
                     }
                 });
             },

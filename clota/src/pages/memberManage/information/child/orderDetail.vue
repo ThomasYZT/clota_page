@@ -105,5 +105,7 @@
     .order-detail {
         height: 100%;
         overflow: auto;
+        background: #fff;
+        border-radius: 5px 5px 0 0;
     }
 </style>

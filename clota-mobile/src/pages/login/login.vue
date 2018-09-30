@@ -97,7 +97,8 @@
                     ajax.post('login', {
                         phoneNum: this.loginInfo.phoneNum,
                         code: this.loginInfo.vcode,
-                        companyCode: this.companyCode
+                        companyCode: this.companyCode,
+                        openId : this.wxUserInfo.openId
                     }).then((res) => {
                         if(res.success) {
                             this.dataToLogin(res);
@@ -178,7 +179,9 @@
                     companyCode: this.companyCode
                 }).then(res => {
                     if(res.success){
-                        this.dataToLogin(res);
+                        this.dataToLogin({
+                            data : res.data ? JSON.parse(res.data) : {}
+                        });
                     }else{
                         //错误信息为空，表示获取到了用户信息
                         if(!res.errcode){
@@ -212,6 +215,7 @@
              * @param res
              */
             dataToLogin (res) {
+                console.log(res.data)
                 //存储token信息
                 localStorage.setItem('token', res.data.token);
                 //存储用户信息

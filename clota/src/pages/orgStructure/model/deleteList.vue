@@ -14,7 +14,7 @@
         <div class="content">
             <i class="iconfont icon-help delete-icon"></i>
             <div class="text">
-                <span>您正在{{deleteName}}：</span>
+                <span>{{$t('isDoing')}}{{deleteName}}：</span>
                 <span class="name" v-html="name" v-w-title="name"></span>
             </div>
             <div class="text">
@@ -70,8 +70,6 @@
              * 创建自定义指标表单校验
              */
             submit() {
-
-
                 this.$emit('deletions')
                 this.visible = false;
             },
