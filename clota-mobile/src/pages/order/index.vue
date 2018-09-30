@@ -131,7 +131,6 @@
                     ...this.pageSetting
                 }).then(res => {
                     if(res.success){
-                        this.orderList = res.data ? res.data.data : [];
                         //下拉 刷新加载第1页
                         if(this.pageSetting.pageNo === 1) {
                             this.orderList = res.data ? res.data.data : [];
@@ -140,6 +139,7 @@
                             if(res.data.data.length !== 0) {
                                 this.orderList = this.orderList.concat(res.data.data);
                             }else {
+                                this.pageSetting.pageNo -= 1;
                                 this.refresh();
                             }
                         }
