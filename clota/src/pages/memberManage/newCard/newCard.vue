@@ -7,10 +7,11 @@
 <template>
     <div class="new-card">
         <!--tpCard - 测试-->
-        <object id="rd" data="./comRD800.dll" WIDTH="0" HEIGHT="0"
-                classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>
+        <!--<object id="rd" data="../static/comRD800.dll" WIDTH="0" HEIGHT="0"
+                classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>-->
+        <iframe src="../../../../static/tpCard.html" frameborder="0" id="iframe" hidden></iframe>
 
-        <div class="new-card-content">
+        <div class="new-card-content ">
             <Form ref="formValidate"
                   :model="newCardParam"
                   :rules="ruleValidate"
@@ -115,20 +116,33 @@
                 </Form-item>
 
                 <h3>{{$t('entityCardInfo')}}</h3><!--实体卡信息-->
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--卡面号-->
-                        <Input v-model.trim="newCardParam.tpNo"
-                               :disabled="true"
-                               :placeholder="$t('readCard')"/>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--物理卡号-->
-                        <Input v-model.trim="newCardParam.tpCardNo"
-                               :disabled="true"
-                               :placeholder="$t('readCard')"/>
-                    </Form-item>
-                </div>
+                <template v-if="newCardParam.tpNo && newCardParam.tpCardNo">
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--卡面号-->
+                            <Input v-model.trim="newCardParam.tpNo"
+                                   :disabled="true"
+                                   :placeholder="$t('readCard')"/>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--物理卡号-->
+                            <Input v-model.trim="newCardParam.tpCardNo"
+                                   :disabled="true"
+                                   :placeholder="$t('readCard')"/>
+                        </Form-item>
+                    </div>
+                </template>
+                <Button v-else style="width: 100%;"
+                        type="dashed"
+                        :disabled="reading"
+                        @click="fetchCardInfo()">
+                    <span v-if="!newCardParam.tpNo && !newCardParam.tpCardNo">{{$t('readCard')}}</span><!--请读卡-->
+                    <span v-if="reading">{{$t('readingCardInfo') + '...'}}</span><!--正在读取实体卡信息...-->
+                    <span class="blue" v-if="!reading && (newCardParam.tpNo && !newCardParam.tpCardNo)">
+                        <span class="red">{{$t('recognizeFailed')}}</span>{{$t('clickReadAgain')}}
+                    </span><!--识别失败！点击重新读取-->
+
+                </Button>
 
             </Form>
         </div>
@@ -137,6 +151,7 @@
             <template v-if="type === 'add'">
                 <Button type="primary"
                         :loading="loading"
+                        :disabled="!newCardParam.tpNo || !newCardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirmAdd')}}
                 </Button>
@@ -144,6 +159,7 @@
             <template v-if="type === 'modify'">
                 <Button type="primary"
                         :loading="loading"
+                        :disabled="!newCardParam.tpNo || !newCardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirm')}}
                 </Button>
@@ -162,6 +178,7 @@
     import ajax from '@/api/index';
     import minBy from 'lodash/minBy';
     import common from '@/assets/js/common.js';
+    import isEmpty from 'lodash/isEmpty';
 
     export default {
         components: {},
@@ -230,7 +247,10 @@
             return {
                 //新增/修改
                 type: 'add',
+                // 新增/修改按钮loading
                 loading: false,
+                // 读卡中: reading
+                reading: false,
                 dateOption: {
                     disabledDate: function (value) {
                         return value && ( value.format('yyyy-MM-dd') < '1900-01-01' || value.format('yyyy-MM-dd') > new Date().format('yyyy-MM-dd'));
@@ -268,6 +288,8 @@
                     "tpNo": "",//第三方卡号
                     "tpCardNo": "",//第三方卡面号
                 },
+                // 所有实体卡信息
+                allEntityCards: [],
 
                 // 表单校验规则
                 ruleValidate: {
@@ -341,9 +363,12 @@
         created() {
             this.queryDocument();
             this.getLevelList();
+//            this.getAllEntityCard();
         },
         mounted() {
-            this.idCardTest(rd);     // rd -- 实体卡SDK
+//            this.idCardTest(rd);     // rd -- 实体卡SDK
+            console.log(rd)
+//            this.rd_D3 = rd;
         },
         watch: {},
         methods: {
@@ -369,11 +394,11 @@
                         if (this.type === 'add') {
                             this.saveAndEditMember('saveNewMemberInfo', params);
                         }
-                        if (this.type === 'modify') {
+                        /*if (this.type === 'modify') {
                             params.memberInfo.id = this.info.id;
                             params.memberCard.id = this.info.cardId;
                             this.saveAndEditMember('editMemberInfo', params);
-                        }
+                        }*/
                     }
                 })
             },
@@ -410,8 +435,30 @@
                 })
             },
 
+            /**
+             * 查询所有导入的实体卡信息
+             */
+            getAllEntityCard() {
+                this.reading = true;
+                return ajax.post('queryEntityCard',{
+                    cardStatus : '',
+                    pageNo : 1,
+                    pageSize : 99999,
+                }).then(res => {
+                    if (res.success && res.data && res.data.memberEntityCardVoList) {
+                        this.allEntityCards = res.data.memberEntityCardVoList.data || [];
+                    } else {
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('获取实体卡基础数据')}));
+                    }
+                    return res.data;
+                }).finally(() => {
+                    this.reading = false;
+                });
+            },
+
             //新增/编辑会员接口
             saveAndEditMember(url, params) {
+                this.loading = true;
                 ajax.post(url, {
                     memberInfo: JSON.stringify(params.memberInfo),
                     memberCard: JSON.stringify(params.memberCard),
@@ -423,18 +470,26 @@
                             this.$router.push({name: 'memberInfo'});
                         }
                         if (this.type === 'modify') {
-                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 新增会员成功
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 修改会员成功
                             this.$router.back();
                         }
                     } else {
                         //区分新增与修改
-                        if (this.type === 'add') {
-                            this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('add')}));
+                        let errorTip = '';
+                        if (res.message == 'M008' || res.code == '300') {
+                            errorTip = this.$t('phoneExistCard');   // 手机号已被注册，请更换手机号
                         }
-                        if (this.type === 'modify') {
-                            this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('modify')}));
+
+                        if(this.type === 'add'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('add')}));
                         }
+                        if(this.type === 'modify'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('modify')}));
+                        }
+
                     }
+                }).finally(() => {
+                    this.loading = false;
                 })
             },
 
@@ -446,53 +501,43 @@
                 }
                 if (this.type === 'modify') {
                     this.$router.back();
-                    // this.$router.push({name: this.routerFrom.name});
                 }
             },
-            // 获取实体卡信息
-            idCardTest(rd) {
-                var st; //???????????
-                var lSnr; //??????????????????javascript??????dc_card????????????????
-                var rlen; //??????????????????????javascript??????dc_card????????????????
-                var msg = "";
+            /**
+             * 读取实体卡信息
+             */
+            fetchCardInfo() {
+                this.newCardParam.tpNo = '';
+                this.newCardParam.tpCardNo = '';
 
-                if (rd.dc_init) {
-                    st = rd.dc_init(100, 115200);
+                let eleIframe = document.getElementById('iframe');
+                eleIframe.contentDocument.getElementById('m1Card').onclick();
+//                console.log(eleIframe.contentDocument.getElementById('sdkD3').value);
+
+                this.newCardParam.tpNo = eleIframe.contentDocument.getElementById('sdkD3').value;
+                this.getAllEntityCard().then(() => {
+                    this.readEntityCard(this.newCardParam.tpNo);
+                });
+                /*if (isEmpty(this.allEntityCards)) {
+                    this.getAllEntityCard().then(() => {
+                        this.readEntityCard(this.newCardParam.tpNo);
+                    });
+                } else {
+                    this.readEntityCard(this.newCardParam.tpNo);
+                }*/
+            },
+            readEntityCard(cardId) {
+                let matchedCard = this.allEntityCards.find((item, i) => {
+                    return cardId === item.id;
+                });
+                if (matchedCard) {
+                    this.newCardParam.tpCardNo = matchedCard.faceNum;
+                } else {
+                    this.$Message.warning(this.$t('noMatchCard'));  // 对不起，找不到该卡的信息，请尝试更换其他的卡
                 }
-                if (!st || st <= 0) {
-                    msg += this.$t("实体卡初始化出错！");
-                    this.$Message.error(msg);
-                    return;
-                }
-                msg += this.$t("实体卡初始化成功！");
+            },
 
-                //******************  ????  **************************
-                //rd.DC_find_i_d();
-                st = rd.DC_start_i_d();
 
-                if (st < 0) {
-                    msg += "?????????????";
-                    this.$Message.error(msg);
-                    return;
-                }
-                /*var name = rd.DC_i_d_query_name();
-                var sex = rd.DC_i_d_query_sex();
-                var nation = rd.DC_i_d_query_nation();
-                var birth = rd.DC_i_d_query_birth();
-                var address = rd.DC_i_d_query_address();
-                var number = rd.DC_i_d_query_id_number();
-                var department = rd.DC_i_d_query_department();
-                var expire = rd.DC_i_d_query_expire_day();
-                //var st = rd.DC_i_d_query_photo_bmp_buffer();
-                var bmp_data_str = rd.get_bstrRBuffer_asc;
-                //rd.put_bstrSBuffer = "c:/me.bmp";
-                st = rd.DC_i_d_query_photo_file();*/
-
-                rd.DC_end_i_d();
-
-                this.newCardParam.tpNo = rd.get_bstrRBuffer_asc;
-                this.newCardParam.tpCardNo = rd.DC_i_d_query_id_number();
-            }
         }
     };
 </script>
@@ -564,6 +609,10 @@
                 font-size: 14px !important;
             }
         }
+
+        .blue { color: $color_blue; }
+
+        .red { color: $color_red; }
 
     }
 </style>

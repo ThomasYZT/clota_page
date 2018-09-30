@@ -3,7 +3,7 @@
 <template>
     <div class="employee-table">
         <div class="pick-up-title" >
-            <span class="label">员工账号</span>
+            <span class="label">{{$t('empAccount')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
             {{$t(isPackUp ? 'backUp' : 'upLoad')}}
@@ -13,7 +13,7 @@
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
                 <div class="employee-account">
-                    员工账号数：{{employeeNumber | contentFilter}}
+                    {{$t('empAccountNo')}}：{{employeeNumber | contentFilter}}
                 </div>
                 <table-com
                     v-if="tableShow"

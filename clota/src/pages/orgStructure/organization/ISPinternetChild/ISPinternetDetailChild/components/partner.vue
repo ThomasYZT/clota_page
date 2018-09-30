@@ -12,7 +12,7 @@
         <!--</table-com>-->
 
         <div class="pick-up-title" >
-            <span class="label">合作伙伴</span>
+            <span class="label">{{$t('org-partner')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
             {{$t(isPackUp ? 'backUp' : 'upLoad')}}

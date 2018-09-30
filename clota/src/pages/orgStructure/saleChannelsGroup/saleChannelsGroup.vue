@@ -258,7 +258,6 @@
 
 <style lang="scss">
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
 
     .saleChannelsGroup {

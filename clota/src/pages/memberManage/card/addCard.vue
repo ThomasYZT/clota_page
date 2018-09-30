@@ -1,5 +1,5 @@
 <template>
-    <!--新增/修改会员信息-->
+    <!--新增/修改卡券信息-->
     <div class="add-card">
 
         <div class="breadcrumb-box">
@@ -67,6 +67,7 @@
                     <Form-item :label="$t('effectiveStartDate')" prop="effectiveTime"><!--有效开始日期-->
                         <Date-picker
                             type="date"
+                            transfer
                             :editable="false"
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
@@ -80,6 +81,7 @@
                         <Date-picker
                             type="date"
                             :editable="false"
+                            transfer
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             :placeholder="$t('selectField', {msg: ''})">
@@ -113,6 +115,7 @@
                     <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
                                 :multiple="true"
+                                transfer
                                 :clearable="true"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in channelSetList"
@@ -173,6 +176,7 @@
                     <Form-item :label="$t('effectiveStartDate')" prop="effectiveTime"><!--有效开始日期-->
                         <Date-picker
                             type="date"
+                            transfer
                             :editable="false"
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
@@ -186,6 +190,7 @@
                         <Date-picker
                             type="date"
                             :editable="false"
+                            transfer
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             :placeholder="$t('selectField', {msg: ''})">
@@ -237,6 +242,7 @@
                     <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
                                 :multiple="true"
+                                transfer
                                 :clearable="true"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in channelSetList"
@@ -282,10 +288,14 @@
                 </div>
                 <div class="ivu-form-item-wrap">
                     <!--有效开始日期-->
-                    <Form-item :label="$t('effectiveStartDate')" prop="effectiveTime"><!--有效开始日期-->
+                    <Form-item
+                        :label="$t('effectiveStartDate')"
+                        transfer
+                        prop="effectiveTime"><!--有效开始日期-->
                         <Date-picker
                             type="date"
                             :editable="false"
+                            transfer
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             :placeholder="$t('selectField', {msg: ''})">
@@ -299,6 +309,7 @@
                             type="date"
                             :editable="false"
                             :options="pickerOptions"
+                            transfer
                             v-model.trim="formData.expireTime"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
@@ -331,6 +342,7 @@
                     <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                         <Select v-model.trim="formData.conditionChannelId"
                                 :multiple="true"
+                                transfer
                                 :clearable="true"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in channelSetList"
@@ -863,7 +875,7 @@
                         {required : true,message : this.$t('selectField',{msg : this.$t('isEffectBeforeDiscount')}),trigger : 'change'}
                     ],
                     conditionProductId : [
-                        {requird :true ,validator : validateProduct ,trigger : 'change'}
+                        {required :true ,validator : validateProduct ,trigger : 'change'}
                     ],
                     singleStoreId : [
                         {required : true,validator : validateSingleStore,trigger : 'change'}

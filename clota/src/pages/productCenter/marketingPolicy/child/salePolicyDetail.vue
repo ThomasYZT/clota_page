@@ -199,7 +199,6 @@
                     <Form-item :label="$t('allPeopleMarket')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
                         <div>
                             <table-com
-                                :ofsetHeight="755"
                                 :show-pagination="true"
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
@@ -217,7 +216,6 @@
                         <div>
                             <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
                             <table-com
-                                :ofsetHeight="755"
                                 :table-com-min-height="260"
                                 :column-data="refundColumn"
                                 :table-data="detail.productPolicy.returnRuleModel.rules"
@@ -510,7 +508,7 @@
 
                 /deep/ .ivu-form-item-content{
                     color: $color-666;
-                    flex: 1;
+                    /*flex: 1;*/
                     display: inline-block;
                     width: calc(100% - 220px);
                     >div{

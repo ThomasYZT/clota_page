@@ -228,7 +228,7 @@
                                 :clearable="false"
                                 :editable="false"
                                 @on-change="changePlaySelectTime"
-                                style="width: 280px;display: inline-block;margin-left: 15px;">
+                                style="width: 230px;display: inline-block;margin-left: 15px;">
                                 <a href="javascript:void(0)"></a>
                             </DatePicker>
                             <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('toList')}}</span>
@@ -272,7 +272,6 @@
                                   v-if="itemsData.length < productListCount"
                                   @click="addProduct">+ {{$t('appendProduct')}}</span><!--新增产品-->
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="productColumn"
                                 :table-data="itemsData"
@@ -307,7 +306,6 @@
                         <Form-item :label="$t('saleChannels')"><!--销售渠道-->
                             <table-com
                                 ref="channelMultiTablePlug"
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="saleChannelColumn"
                                 :table-data="saleChannelList"
@@ -323,7 +321,6 @@
                         <Form-item :label="$t('allPeopleMarket')"><!--全民营销-->
                             <span class="blue">+ {{$t('addMarketLevel')}}</span><!--增加营销等级-->
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
                                 :table-data="marketingData"
@@ -400,21 +397,22 @@
                 <div class="form-content">
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('returnRule')"><!--退票规则-->
-                            <Select v-model="formData.returnRule.type"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.returnRule"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label,{msg: $t('return')})}}
+                            <div style="position: relative;">
+                                <Select v-model="formData.returnRule.type"
+                                        :placeholder="$t('selectField', {msg: ''})">
+                                    <Option v-for="(item,index) in enumData.returnRule"
+                                            :key="index"
+                                            :value="item.value">
+                                        {{$t(item.label,{msg: $t('return')})}}
                                 </Option>
-                            </Select>
-                            <span class="blue float-right"
-                                  v-if="formData.returnRule.type!=='notAllow'"
-                                  @click="addReturnRateRule">+ {{$t('addReturnRateRule')}}</span><!--新增退票手续费率档位-->
+                                </Select>
+                                <span class="blue add-rate"
+                                      v-if="formData.returnRule.type!=='notAllow'"
+                                      @click="addReturnRateRule"><span>+</span> {{$t('addReturnRateRule')}}</span><!--新增退票手续费率档位-->
+                            </div>
                             <template v-if="formData.returnRule.type!=='notAllow'">
-                                <br/>
+                                <!--<br/>-->
                                 <table-com
-                                    :ofsetHeight="120"
                                     :table-com-min-height="260"
                                     :column-data="refundColumn"
                                     :table-data="formData.returnRule.rules"
@@ -640,6 +638,7 @@
                 open: true,
                 //表单数据
                 formData: {
+                    id: '',//政策id
                     productType: 'ticket',//业态类型 ticket-票类，repast-餐饮，hotel-酒店，ticket_package-套票
                     name: '',//销售政策名称
                     policyDesc: '',//描述
@@ -701,15 +700,15 @@
                         { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 500}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
-                    buyTicketNotes: [
-                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                    ],
                     specifiedSaleDateSold: [
                         { validator: validateSaleData, trigger: 'change' },
                     ],
                     specifiedPlayDateSold: [
                         { validator: validatePlayData, trigger: 'change' },
+                    ],
+                    buyTicketNotes: [
+                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
+                        { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },
                 //枚举数据
@@ -1189,7 +1188,7 @@
              */
             initData(data) {
                 console.log(data);
-                let formData =  pick(data.productPolicy, ['productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
+                let formData =  pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
                 formData.todaySaleTime = [data.productPolicy.todaySaleStartTime, data.productPolicy.todaySaleEndTime];
@@ -1293,6 +1292,13 @@
             .blue{
                 color: $color_blue;
                 cursor: pointer;
+                &.add-rate{
+                    position: relative;
+                    display: inline-table;
+                    width: 180px;
+                    text-align: right;
+                    left: calc(100% - 575px);
+                }
             }
 
             .form-content{
@@ -1348,6 +1354,7 @@
 
                         /deep/ .ivu-select{
                             max-width: 395px;
+                            clear: both;
                         }
 
                         /deep/ .ivu-select-item{
@@ -1392,8 +1399,9 @@
                     /deep/ .ivu-btn{
                         position: relative;
                         &.week-btn{
-                            width: 110px;
+                            min-width: 70px;
                             margin-right: 10px;
+                            @include overflow_tip();
                             .iconfont{
                                 font-size: $font_size_20px;
                                 position: absolute;

@@ -82,18 +82,6 @@ export default {
                     rightPath : topMenuName + '.' + 'rolePermission'
                 },
             },
-            roleSceneryDetail: {
-                //组织架构--角色权限--角色详情
-                path: '/orgManage/rolePermission/roleDetail',
-                name: 'roleDetail',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/rolePermission/child/roleDetail.vue'),
-                meta: {
-                    menuName: 'rolePermission', //lang.config.js 里面的语言键值
-                    _name: 'org-role', //
-                    iconClass: 'icon-role-permission',
-                    rightPath : topMenuName + '.' + 'rolePermission'
-                },
-            },
             partner: {
                 //组织架构--合作伙伴
                 path: '/orgManage/partner',

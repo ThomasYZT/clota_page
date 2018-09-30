@@ -7,19 +7,19 @@
                 :class="{'active' : activeTap === 'manage'}"
                 @click="switchTap('manage')">
                 <span class="iconfont icon-finance"></span>
-                经营管理
+                {{$t('operateMange')}}
             </li>
             <li class="tree-title"
                 :class="{'active' : activeTap === 'economic'}"
                 @click="switchTap('economic')">
                 <span class="iconfont icon-manage"></span>
-                财务管理
+                {{$t('financeManage')}}
             </li>
         </ul>
         <div class="search-input">
             <Input
                 v-model.trim="keyWord"
-                placeholder="请输入查找内容"
+                :placeholder="$t('inputKeyword')"
                 icon="ios-search"
                 style="width: 360px"/>
         </div>

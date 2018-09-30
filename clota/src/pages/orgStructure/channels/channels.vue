@@ -106,7 +106,7 @@
                         <Tooltip placement="top-end" :transfer="true" v-if="scope.row.type=='offline'">
                             <span :class="['operate-btn', 'gray']">{{$t('del')}}</span>
                             <div slot="content">
-                                <div class="tip-trade">{{$t('线下渠道主要是售票闸机等，只能在组织架构内增加/删除，不允许在此页面增加或删除。')}}</div>
+                                <div class="tip-trade">{{$t('channelDelNotice')}}</div>
                             </div>
                         </Tooltip>
                     </template>
@@ -122,7 +122,7 @@
             <span class="content-text">
                 <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
                 <span class="yellow-label" v-w-title="name">{{name}}</span>
-                <span style="color: #333;" v-if="rowIds.length>1">等{{rowIds.length}}个渠道</span>
+                <span style="color: #333;" v-if="rowIds.length>1">{{$t('channelNum', {length: rowIds.length})}}</span>
             </span>
             <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span><!--本操作不可撤销，是否确认删除？-->
         </del-modal>
@@ -177,7 +177,7 @@
                 },*/
                 enableValue: true,  //启用，未启用变量
                 name: '', //删除弹窗名字
-                deleteName: '删除渠道', //删除内容名字
+                deleteName: this.$t('delChannel'), //删除内容名字
                 rowIds: [], //自营渠道ids
                 // 批量操作下拉选项
                 batchOperate: batchOperate,
@@ -229,12 +229,12 @@
             enable(scopeRow, isBatch) {
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
-                    partnerObj.successTip = '您已禁用自营渠道';
+                    partnerObj.successTip = this.$t('disabledChannel');
                     partnerObj.failTip = this.$t('failureTip', {tip: this.$t('disabled')});    // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'warning';
                 } else if (scopeRow.status=='invalid') {
-                    partnerObj.successTip = '您已启用自营渠道';
+                    partnerObj.successTip =  this.$t('enabledChannel');
                     partnerObj.failTip = this.$t('failureTip', {tip: this.$t('commissioned')});    // 启用失败
                     partnerObj.status = 'valid';
                     partnerObj.msgType = 'success';
@@ -318,7 +318,7 @@
              */
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {
-                    this.$Message.warning('请勾选批量操作项');
+                    this.$Message.warning(this.$t('selectChannelOperate'));
                     return;
                 }
                 switch (dropItem.status) {
@@ -334,7 +334,7 @@
                         if (onlineData && onlineData.length>0) {
                             this.showDelModal(onlineData, true);
                         } else {
-                            this.$Message.warning('线下渠道主要是售票闸机等，只能在组织架构内增加/删除，不允许在此页面增加或删除。')
+                            this.$Message.warning(this.$t('channelDelNotice'))
                         }
                         break;
                 }
@@ -349,7 +349,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .channel {
         @include block_outline();

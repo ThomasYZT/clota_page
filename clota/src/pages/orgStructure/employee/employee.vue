@@ -4,12 +4,12 @@
 
         <div class="filter-box">
             <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">+ {{$t('新增员工')}}</span>
+                    size="default"><span class="add-icon">+ {{$t('newEmployee')}}</span>
             </Button>
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('请输入任意信息进行查询')"
+                   :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -163,7 +163,7 @@
                 // 数据总条数
                 totalCount: 0,
 
-                deleteName: this.$t('删除员工'),  //删除内容名字
+                deleteName: this.$t('delEmployee'),  //删除内容名字
                 name: '', //删除弹窗名字
                 scopeRowData: {}, //当前被操作的行数据
             }
@@ -251,7 +251,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .partner {
         @include block_outline();

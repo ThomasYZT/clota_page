@@ -89,7 +89,7 @@
                 <title-temp title="buyLimit"></title-temp>
                 <div class="form-content">
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('isGroup')" prop="isGroup"><!--是否团队产品-->
+                        <Form-item :label="$t('isGroup')"><!--是否团队产品-->
                             <Select v-model="formData.isGroup"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="isGroupChange">
@@ -120,7 +120,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('needId')" prop="needId"><!--预定时提交身份信息-->
+                        <Form-item :label="$t('needId')"><!--预定时提交身份信息-->
                             <Select v-model="formData.needId"
                                     :disabled="formData.isGroup === 'true' ? true : false "
                                     :placeholder="$t('selectField', {msg: ''})">
@@ -135,7 +135,7 @@
                     <!--空字段站位用-->
                     <div class="ivu-form-item-wrap"></div>
                     <div class="ivu-form-item-wrap single" v-if="formData.needId !== 'noRequired'">
-                        <Form-item :label="$t('idType')" prop="acceptIdType"><!--可接受证件类型-->
+                        <Form-item :label="$t('idType')"><!--可接受证件类型-->
                             <CheckboxGroup v-model="formData.acceptIdType">
                                 <Checkbox v-for="(item,index) in enumData.idType"
                                           :key="index"
@@ -169,7 +169,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('stockType')" prop="stockType"><!--限制库存-->
+                        <Form-item :label="$t('stockType')"><!--限制库存-->
                             <Select v-model="formData.stockType"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.stockType"
@@ -218,7 +218,6 @@
                                   v-if="productPlayRuleVo.length < parkListCount"
                                   @click="addPark" >+ {{$t('addPark')}}</span>
                             <table-com
-                                :ofsetHeight="120"
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="productPlayRuleVo"
@@ -396,6 +395,26 @@
                     });
                 }
             };
+            //校验票面价格(不超过景区成本价)
+            const validatePrintPrice = (rule,value,callback) => {
+                if(value && this.formData.standardPrice){
+                    if( Number(value) > Number(this.formData.standardPrice) ){
+                        callback(this.$t('sizeErrorB',{filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice')}));
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
+                }
+            };
+            //校验产品有效性设置
+            const validateProductEffSet = (rule,value,callback) => {
+                if(value){
+                    callback();
+                }else{
+                    callback(this.$t('selectField', {msg: this.$t('productEffSet')}));
+                }
+            };
 
             return {
                 //面包屑上级路由信息
@@ -472,7 +491,8 @@
                     printPrice: [
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('printPrice'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' }
+                        { validator: validateMoney, trigger: 'blur' },
+                        { validator: validatePrintPrice, trigger: 'blur' }
                     ],
                     ticketRemark: [
                         { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('ticketRemark'), length: 500}), trigger: 'blur' },
@@ -514,6 +534,9 @@
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMobileBuyTicket, trigger: 'blur' }
+                    ],
+                    productEffSet: [
+                        { validator: validateProductEffSet, trigger: 'change' }
                     ],
                 },
                 //枚举数据
@@ -690,12 +713,13 @@
             },
 
             /**
-             * 动态给行添加类名
+             * 动态给行添加类名 行数据有误时添加的背景颜色 - 暂不使用
              * @param row
              */
             rowClassName (row){
                 if(!row.row.check){
-                    return 'error-tr';
+                    return ''
+                   /* return 'error-tr';*/
                 }
             },
 

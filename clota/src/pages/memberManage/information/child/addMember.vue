@@ -472,17 +472,23 @@
                             this.$router.push({ name: 'memberInfo'});
                         }
                         if(this.type === 'modify'){
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));     // 新增会员成功
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));     // 修改会员成功
                             this.$router.back();
                         }
                     } else {
                         //区分新增与修改
+                        let errorTip = '';
+                        if (res.message == 'M008' || res.code == '300') {
+                            errorTip = this.$t('phoneExistCard');   // 手机号已被注册，请更换手机号
+                        }
+
                         if(this.type === 'add'){
-                            this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t('add')}));
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('add')}));
                         }
                         if(this.type === 'modify'){
-                            this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('modify')}));
                         }
+
                     }
                 })
             },

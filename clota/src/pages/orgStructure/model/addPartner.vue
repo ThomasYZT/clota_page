@@ -8,11 +8,11 @@
         @on-cancel="hide">
         <!--自定义页头-->
         <div slot="header" class="ivu-modal-header-inner">
-            <span>{{type=='add' ? $t('新增合作伙伴') : $t('修改合作伙伴')}}</span>
+            <span>{{type=='add' ? $t('addPartner') : $t('editPartner')}}</span>
         </div>
         <!--内容区域-->
         <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="120">
-            <Form-item label="合作伙伴名称" prop="partnerId">
+            <Form-item :label="$t('partnerName')" prop="partnerId">
                 <Select v-model="addPartner.partnerId"
                         :disabled="type=='modify'"
                         @on-change="handlePartnerChanged">
@@ -20,7 +20,7 @@
                 </Select>
             </Form-item>
 
-            <Form-item label="协议起止日期" prop="startDate">
+            <Form-item :label="$t('protocolStartDate')" prop="startDate">
                 <DatePicker v-model="protoDate"
                             type="daterange"
                             placement="bottom-end"
@@ -31,7 +31,7 @@
                 </DatePicker>
             </Form-item>
 
-            <Form-item label="销售渠道分组" prop="saleGroupId">
+            <Form-item :label="$t('saleChannelsGroup')" prop="saleGroupId">
                 <Select v-model="addPartner.saleGroupId">
                     <Option v-for="item in saleChannels" :value="item.id" :key="item.id">{{ item.groupName }}</Option>
                 </Select>
@@ -41,10 +41,10 @@
                 <Input v-model="addPartner.description" type="textarea" :rows="4" :placeholder="$t('inputField', {field: ''})"/>
             </Form-item>
 
-            <Form-item label="是否启用协议" prop="status">
+            <Form-item :label="$t('ifStartProtocol')" prop="status">
                 <RadioGroup v-model="addPartner.status">
-                    <Radio label="valid"><span>启用</span></Radio>
-                    <Radio label="invalid"><span>暂不启用</span></Radio>
+                    <Radio label="valid"><span>{{$t('commissioned')}}</span></Radio>
+                    <Radio label="invalid"><span>{{$t('nowNoEnabled')}}</span></Radio>
                 </RadioGroup>
             </Form-item>
 
@@ -87,13 +87,13 @@
                 // 表单校验
                 ruleValidate: {
                     partnerId: [
-                        {required: true, message: '请选择合作伙伴', trigger: 'change'},
+                        {required: true, message: this.$t('selectField',{msg : this.$t('org-partner')}), trigger: 'change'},
                     ],
                     startDate: [
-                        {required: true, message: '请选择协议起止日期', trigger: 'change'},
+                        {required: true, message: this.$t('selectField',{msg : this.$t('protocolStartDate')}), trigger: 'change'},
                     ],
                     endDate: [
-                        {required: true, message: '请选择协议起止日期', trigger: 'change'},
+                        {required: true, message: this.$t('selectField',{msg : this.$t('protocolStartDate')}), trigger: 'change'},
                     ],
                     description: [
                         { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
@@ -176,12 +176,12 @@
                 let partnerObj = {};
                 if (this.type=='add') {
                     partnerObj.apiKey = 'addPartner';
-                    partnerObj.successTip = '您已成功新增合作伙伴';
-                    partnerObj.failTip = '新增合作伙伴失败';
+                    partnerObj.successTip = this.$t('successTip',{tip : this.$t('addPartner')});
+                    partnerObj.failTip = this.$t('failureTip',{tip : this.$t('addPartner')});
                 } else if (this.type=='modify') {
                     partnerObj.apiKey = 'updatePartner';
-                    partnerObj.successTip = '您已成功修改合作伙伴';
-                    partnerObj.failTip = '修改合作伙伴失败';
+                    partnerObj.successTip = this.$t('successTip',{tip : this.$t('editPartner')});
+                    partnerObj.failTip = this.$t('failureTip',{tip : this.$t('editPartner')});
                 }
                 this.addPartner.startDate = new Date(this.addPartner.startDate).format('yyyy-MM-dd');
                 this.addPartner.endDate = new Date(this.addPartner.endDate).format('yyyy-MM-dd');
@@ -214,7 +214,6 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    @import '../commonFile/common';
 
     .addPartner {
         /deep/ .ivu-modal-body {

@@ -8,32 +8,32 @@
                     <span class="field-name">{{$t('productId')}}：</span>{{pItem.itemId | contentFilter}}
                 </li>
                 <li><!--产品编号-->
-                    <span class="field-name">{{$t('productNum')}}：</span>{{pItem.itemCode}}
+                    <span class="field-name">{{$t('productNum')}}：</span>{{pItem.itemCode | contentFilter}}
                 </li>
                 <li><!--商品名称-->
-                    <span class="field-name">{{$t('goodsName')}}：</span>{{pItem.itemName}}
+                    <span class="field-name">{{$t('goodsName')}}：</span>{{pItem.itemName | contentFilter}}
                 </li>
                 <li><!--销售数量-->
-                    <span class="field-name">{{$t('salesQty')}}：</span>{{pItem.amount}}
+                    <span class="field-name">{{$t('salesQty')}}：</span>{{pItem.amount | contentFilter}}
                 </li>
                 <li><!--原单号-->
-                    <span class="field-name">{{$t('originOrderNo')}}：</span>{{pItem.originOrderNo}}
+                    <span class="field-name">{{$t('originOrderNo')}}：</span>{{pItem.originOrderNo | contentFilter}}
                 </li>
             </ul>
             </Col>
             <Col span="8">
             <ul>
                 <li><!--产品类别-->
-                    <span class="field-name">{{$t('productType')}}：</span>{{pItem.typeName}}
+                    <span class="field-name">{{$t('productType')}}：</span>{{pItem.typeName | contentFilter}}
                 </li>
                 <li><!--规格单位-->
-                    <span class="field-name">{{$t('specUnit')}}：</span>{{pItem.unit}}
+                    <span class="field-name">{{$t('specUnit')}}：</span>{{pItem.unit | contentFilter}}
                 </li>
                 <li><!--售价-->
-                    <span class="field-name">{{$t('salesPrice')}}：</span>{{pItem.price}}
+                    <span class="field-name">{{$t('salesPrice')}}：</span>{{pItem.price | contentFilter}}
                 </li>
                 <li><!--会员折扣价-->
-                    <span class="field-name">{{$t('memberDiscount')}}：</span>{{pItem.discountPrice}}
+                    <span class="field-name">{{$t('memberDiscount')}}：</span>{{pItem.discountPrice | contentFilter}}
                 </li>
                 <li><!--产品有效期-->
                     <span class="field-name">{{$t('expirationDate')}}：</span>
@@ -44,16 +44,16 @@
             <Col span="8">
             <ul>
                 <li><!--折扣率-->
-                    <span class="field-name">{{$t('discountRate')}}：</span>{{pItem.discountRate}}
+                    <span class="field-name">{{$t('discountRate')}}：</span>{{pItem.discountRate | contentFilter}}
                 </li>
                 <li><!--交易号-->
                     <span class="field-name">{{$t('tradeNo')}}：</span>{{pItem.tradeNo | contentFilter}}
                 </li>
                 <li><!--会员交易号-->
-                    <span class="field-name">{{$t('memberTradeNum')}}：</span>{{pItem.orderNo}}
+                    <span class="field-name">{{$t('memberTradeNum')}}：</span>{{pItem.orderNo | contentFilter}}
                 </li>
                 <li><!--销售顺序号-->
-                    <span class="field-name">{{$t('salesSerialNum')}}：</span>{{pItem.saleNum}}
+                    <span class="field-name">{{$t('salesSerialNum')}}：</span>{{pItem.saleNum | contentFilter}}
                 </li>
             </ul>
             </Col>

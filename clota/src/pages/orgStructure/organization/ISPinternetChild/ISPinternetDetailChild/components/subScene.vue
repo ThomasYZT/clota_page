@@ -3,7 +3,7 @@
 <template>
     <div class="sub-scene">
         <div class="pick-up-title" >
-            <span class="label">下属景区</span>
+            <span class="label">{{$t('subScene')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
