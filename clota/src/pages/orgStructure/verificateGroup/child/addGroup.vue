@@ -11,20 +11,21 @@
         <Button type="primary"
                 icon="ios-plus-empty"
                 class="ivu-btn-108px"
-                @click="addGroup">
-            新增分组
+                @click="addGroup"><!--新增分组-->
+            {{$t('addGroup')}}
         </Button>
         <div slot="content">
             <div class="add-group">
-                <div class="name">新增分组名称</div>
+                <!--新增分组名称-->
+                <div class="name">{{$t('addGroupName')}}</div>
                 <Form ref="formData" :model="formData" :rules="ruleValidate">
                     <FormItem prop="orgName">
                         <Input v-model.trim="formData.orgName" autofocus/>
                     </FormItem>
                 </Form>
                 <div class="btn-area">
-                    <Button type="primary" @click="addOrgName">确定</Button>
-                    <Button type="ghost" @click="addGroupPopVisible = false">取消</Button>
+                    <Button type="primary" @click="addOrgName">{{$t('confirm')}}</Button><!--确定-->
+                    <Button type="ghost" @click="addGroupPopVisible = false">{{$t('cancel')}}</Button><!--取消-->
                 </div>
             </div>
         </div>
@@ -41,8 +42,8 @@
                 //表单校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : '分组名称'}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : '分组名称',length : 100}),trigger : 'blur'},
+                        {required : true,message : this.$t('inputField',{field : this.$t('groupName')}),trigger : 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('groupName')}),length : 100,trigger : 'blur'},
                     ]
                 },
                 //分组信息
@@ -64,10 +65,10 @@
                             groupName : this.formData.orgName
                         }).then(res => {
                             if(res.success){
-                                this.$Message.success(`新增核销设备分组:${this.formData.orgName}成功`);
+                                this.$Message.success(this.$t('successTip',{msg: this.$t('addVerificationGroup')}));
                                 this.$emit('fresh-data');
                             }else{
-                                this.$Message.error(res.code === '0004' ? this.$t('checkNameError',{field : this.formData.orgName}) : '新增失败');
+                                this.$Message.error(res.code === '0004' ? this.$t('checkNameError',{field : this.formData.orgName}) : this.$t('failureTip',{msg: this.$t('add')}));
                             }
                         }).finally(() => {
                             this.addGroupPopVisible = false;
