@@ -81,7 +81,7 @@
                     });
                 }).then(() => {
                     this.$router.replace({
-                        name : 'inputPass',
+                        name : 'payAgreement',
                         params : {
                             mobile : this.originPhone,
                             code : this.formData.validCode

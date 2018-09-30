@@ -115,6 +115,15 @@ const createRouter = () => new Router({
                 title : 'setTradePass'
             }
         },
+        //个人信息--支付协议
+        {
+            path : '/personInfo/payAgreement',
+            name : 'payAgreement',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/payAgreement.vue'),
+            meta : {
+                title : 'payAgreement'
+            }
+        },
         //个人信息--输入密码
         {
             path : '/personInfo/inputPass',

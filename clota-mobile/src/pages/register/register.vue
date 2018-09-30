@@ -178,7 +178,7 @@
                         clearInterval(this.timer);
                         this.timer = null;
                     }
-                }, 1000)
+                }, 1000);
             }
         }
     }
