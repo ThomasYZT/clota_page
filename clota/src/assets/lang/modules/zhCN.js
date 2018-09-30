@@ -849,7 +849,7 @@ export default {
     'sendStatus': '发送状态',
     'smsPackageName': '短信套餐名称',
     'packagePrice': '套餐单价',
-    'packageSmsCount': '套餐短息数量',
+    'packageSmsCount': '套餐短信数量',
     'packageCount': '购买数量',
     'buySmsCount': '购买短信总数',
     'totalPrice': '总价',
