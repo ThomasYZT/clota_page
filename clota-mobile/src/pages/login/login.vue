@@ -25,6 +25,7 @@
             <div slot="right-full-height"
                  class="validate"
                  :class="{active: isGetCode}"
+                 disabled="isGetCode"
                  @click="getCode">
                 <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
