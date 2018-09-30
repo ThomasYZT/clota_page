@@ -11,10 +11,10 @@
         class="add-employee"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('新增员工')}}</span>
+            <span class="title">{{$t('newEmployee')}}</span>
         </div>
         <div class="selection">
-            已选：{{employeeSelected.length}}人
+            {{$t('selected')}}：{{employeeSelected.length}}人
         </div>
         <table-com
             v-if="value"

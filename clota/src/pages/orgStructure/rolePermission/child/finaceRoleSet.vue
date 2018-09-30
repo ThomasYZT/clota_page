@@ -4,7 +4,7 @@
     <div class="finace-role-set">
         <div class="node-list">
             <div class="node-name">
-                财务权限：
+                {{$t('financeAuthority')}}：
             </div>
             <div class="node-info">
                 <el-tree :data="companyData"
@@ -26,7 +26,7 @@
         </div>
         <div class="menu-list">
             <div class="node-name">
-                菜单权限：
+                {{$t('menuPermission')}}：
             </div>
             <div class="node-info">
                 <el-tree :data="menuList"

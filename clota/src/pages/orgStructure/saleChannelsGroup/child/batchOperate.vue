@@ -22,7 +22,8 @@
             </el-dropdown-menu>
         </el-dropdown>
         <div slot="content">
-            <div class="name">将所选销售渠道移至分组</div>
+            <!--将所选销售渠道移至分组-->
+            <div class="name">{{$t('saleChannelToGroup')}}</div>
             <Form ref="formData" :model="formData" :rules="ruleValidate">
                 <FormItem prop="selectOrgId">
                     <Select v-model="formData.selectOrgId" style="width:240px" transfer>
@@ -37,8 +38,8 @@
                 </FormItem>
             </Form>
             <div class="btn-area">
-                <Button type="primary" @click="batchChangeOrg">确定</Button>
-                <Button type="ghost" @click="bathChangeGroupShow = false">取消</Button>
+                <Button type="primary" @click="batchChangeOrg">{{$t('confirm')}}</Button><!--确定-->
+                <Button type="ghost" @click="bathChangeGroupShow = false">{{$t('cancel')}}</Button><!--取消-->
             </div>
         </div>
     </Poptip>
@@ -78,7 +79,7 @@
                 //表单校验规则
                 ruleValidate : {
                     selectOrgId : [
-                        {required : true,message : this.$t('selectField',{msg : '销售分组'}),trigger : 'change'},
+                        {required : true,message : this.$t('selectField',{msg : this.$t('saleGroup')}),trigger : 'change'},
                     ]
                 },
             }

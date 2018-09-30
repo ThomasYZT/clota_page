@@ -27,16 +27,17 @@
         <del-modal ref="delGroupModal">
             <div class="remove-group">
                 <span class="red-bale">
-                <Icon type="help-circled"></Icon>您正在删除分组：
-                <span style="color : #f8a334;">{{currentGroup.groupName}}</span>&nbsp;本组的渠道将被全部移至‘未分组’，<br>
-                <span style="color:#EB6751;">本操作不可撤销</span>，确认删除？
+                <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('delGroup')}}：
+                <span style="color : #f8a334;">{{currentGroup.groupName}}</span>&nbsp;{{$t('moveToNoGroup')}}，<br>
+                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>，{{$t('sureToDel')}}？
                 </span>
             </div>
         </del-modal>
         <!--修改分组名字模态框-->
         <edit-modal ref="editModal">
             <Form ref="formData" :model="formData" :rules="ruleValidate">
-                <FormItem prop="orgName" label="修改分组名称">
+                <!--修改分组名称-->
+                <FormItem prop="orgName" :label="$t('modifyGroupName')">
                     <Input v-model.trim="formData.orgName" style="width: 280px"/>
                 </FormItem>
             </Form>
@@ -71,8 +72,8 @@
                 //表单校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : '分组名称'}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : '分组名称',length : 100}),trigger : 'blur'},
+                        {required : true,message : this.$t('inputField',{field : this.$t('groupName')}),trigger : 'blur'},
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('groupName'),length : 100}),trigger : 'blur'},
                     ]
                 },
                 //分组信息
@@ -113,7 +114,7 @@
                 e.stopPropagation();
                 this.currentGroup = data;
                 this.$refs.delGroupModal.show({
-                    title : `删除分组`,
+                    title : this.$t('delGroup'),
                     confirmCallback : () => {
                         this.delGroup(data);
                     }
@@ -130,7 +131,7 @@
                     groupId : data.id
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(`删除分组:${data.groupName}成功`);
+                        this.$Message.success(this.$t('successTip',{msg: this.$t('delGroup')+data.groupName}));
                         if(data.id === this.groupType){
                             this.groupType = '-1';
                             this.$emit('update:groupType',this.groupType);
@@ -138,7 +139,7 @@
                         this.$emit('fresh-data');
                         this.$emit('fresh-channel');
                     }else{
-                        this.$Message.error('删除失败');
+                        this.$Message.error(this.$t('failureTip',{msg: this.$t('delete')}));
                     }
                 });
             },
@@ -159,11 +160,11 @@
                     groupName : this.formData.orgName
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('修改成功');
+                        this.$Message.success(this.$t('successTip',{msg: this.$t('modify')}));
                         this.$emit('fresh-data');
                         this.$emit('fresh-channel');
                     }else{
-                        this.$Message.error('修改失败');
+                        this.$Message.error(this.$t('failureTip',{msg: this.$t('modify')}));
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();

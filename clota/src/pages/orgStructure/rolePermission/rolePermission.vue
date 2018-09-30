@@ -2,10 +2,10 @@
     <!-- 角色权限 -->
     <div class="partner">
         <div class="orgHeader">
-            <Button type="primary" @click="addRole">新增角色</Button>
+            <Button type="primary" @click="addRole">{{$t('addRole')}}</Button>
             <Input v-model.trim="keyWrod"
                    style="width: 353px;"
-                   placeholder="请输入任意信息进行查询"
+                   :placeholder="$t('inputAnywordForSearch')"
                    icon="ios-search"
                    @on-click="queryList"
                    @on-enter="queryList"/>
@@ -30,7 +30,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scoped">
                         <ul class="operate-list">
-                            <li @click="toDetail(scoped.row)">详情</li>
+                            <li @click="toDetail(scoped.row)">{{$t('details')}}</li>
                         </ul>
                     </template>
                 </el-table-column>

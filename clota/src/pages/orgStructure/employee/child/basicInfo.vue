@@ -192,7 +192,17 @@
                     } else {
                         callback();
                     }
-                }
+                },
+
+                //密码只能由数字+26个英文大、小写字母组成，且6-20位
+                pwdRule: (rule, value, callback) => {
+                    if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
+                        callback();
+                    }else{
+                        callback(new Error( this.$t('errorPwdRule') ));
+                    }
+                },
+
             };
 
             return {
@@ -258,7 +268,8 @@
                     ],
                     password: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                        { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateMethod.pwdRule, trigger: 'blur' }
                     ],
                     phone: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('mobilePhone')}), trigger: 'blur' },
@@ -536,6 +547,7 @@
                 padding: 7px 0;
                 &:hover {
                     background: transparent;
+                    color: #333 !important;
                 }
             }
             .select-content {
