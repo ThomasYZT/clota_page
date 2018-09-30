@@ -73,11 +73,12 @@ export const employeeInfoHead = [
         enMinWidth : 150,
         field: 'deptName'
     },
-    {
+    //按需求暂时去掉
+    /*{
         title: 'rolePermission',//角色权限
         minWidth: 220,
         field: 'roleName'
-    },
+    },*/
     {
         title: 'mobilePhone',
         minWidth: 150,
