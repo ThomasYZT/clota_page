@@ -110,7 +110,7 @@
                     </template>
                 </el-table-column>-->
                 <el-table-column
-                    slot="column7"
+                    slot="column6"
                     slot-scope="row"
                     fixed="right"
                     :label="row.title"
