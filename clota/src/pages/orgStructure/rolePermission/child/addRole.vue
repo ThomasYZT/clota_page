@@ -11,7 +11,7 @@
                 <i-row>
                     <i-col span="10">
                         <!--公司/景区名称-->
-                        <FormItem :label="$t('companyName')" :label-width="100">
+                        <FormItem :label="$t('companyName')" :label-width="120">
                             <Input :value="manageOrgs.orgName"
                                    disabled
                                    style="width: 280px;"/>
@@ -19,7 +19,7 @@
                     </i-col>
                     <i-col span="10">
                         <!--角色名称-->
-                        <FormItem :label="$t('roleName')" :label-width="100" prop="roleName">
+                        <FormItem :label="$t('roleName')" :label-width="120" prop="roleName">
                             <Input v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>
@@ -29,13 +29,21 @@
                     </i-col>
                 </i-row>
             </Form>
-            <!--景区经营权限设置-->
-            <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
-            </manage-role-set>
+            <Tabs class="tabs" value="name1">
+                <TabPane :label="$t('managePermission')" name="name1">
+                    <!--景区经营权限设置-->
+                    <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
+                    </manage-role-set>
+                </TabPane>
+                <TabPane :label="$t('financeAuthority')" name="name2">
+                    <!--财务权限设置-->
+                    <finace-role-set ref="finaceRole" :default-chosed-node-init="economicDefaultChosed">
+                    </finace-role-set>
+                </TabPane>
+            </Tabs>
+
             <div class="gap"></div>
-            <!--财务权限设置-->
-            <finace-role-set ref="finaceRole" :default-chosed-node-init="economicDefaultChosed">
-            </finace-role-set>
+
             <!--员工权限设置-->
             <employee-role-list
                 :role-id="roleId"
@@ -318,6 +326,10 @@
 
             .gap{
                 @include block_outline($height : 7px);
+            }
+
+            .tabs {
+                width: 100%;
             }
         }
 
