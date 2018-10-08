@@ -27,6 +27,7 @@
                         <!-- 个人注册 -->
                         <TabPane :label="$t('personalRegist')" name="personal">
                             <Form :model="formData"
+                                  ref="personalForm"
                                   :label-width="130"
                                   label-position="left"
                                   :rules="personalRuleValidate">
@@ -93,7 +94,7 @@
                                         </FormItem>
 
                                         <div class="modal-footer">
-                                            <Button type="primary" @click="submit()" >{{$t('submit')}}</Button>
+                                            <Button type="primary" @click="personelSubmit()" >{{$t('submit')}}</Button>
                                             <Button type="ghost" @click="reset()" >{{$t("reset")}}</Button>
                                         </div>
                                     </Step>
@@ -189,13 +190,52 @@
 
 <script>
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
-    import ImgUploader from './components/ImgUploader'
+    import ImgUploader from './components/ImgUploader';
+    import {validator} from 'klwk-ui';
     export default {
         components: {
             cityPlugin,
             ImgUploader
         },
         data() {
+            let self= this;
+            const validateMethods = {
+                //校验第二次输入的密码和第一次是否相同
+                isEqNewPwd: (rule, value, callback) => {
+                    if(value != this.formData.password) {
+                        return callback(new Error(this.$t('再次输入的密码与新密码不同')));
+                    }else {
+                        return callback();
+                    }
+                },
+                //校验手机号码
+                mobile: (rule, value, callback) => {
+                    if (!validator.isMobile(value)) {
+                        callback(this.$t('errorFormat', {field: this.$t('phoneNum')}));
+                    } else {
+                        callback();
+                    }
+                },
+                //校验邮箱
+                email: (rule, value, callback) => {
+                    if (value) {
+                        if (validator.isEmail(value)) {
+                            callback();
+                        } else {
+                            callback(this.$t('errorFormat', {field: this.$t('mail')}));
+                        }
+                    } else {
+                        callback();
+                    }
+                },
+                //身份证校验
+                identificationNum: (rule, value, callback) => {
+                    let reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+                    if(!reg.test(value)) {
+                        callback(this.$t('errorFormat', {field: this.$t('identityNo')}))
+                    }
+                }
+            }
             return {
                 //个人注册表单信息
                 formData: {
@@ -261,15 +301,18 @@
                     ],
                     mobile: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('telephone')}), trigger: 'blur' },
+                        { validator: validateMethods.mobile, trigger: 'blur'}
                     ],
                     certificateNumber: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('identityNo')}), trigger: 'blur' },
+                        { validator: validateMethods.identificationNum, trigger: 'blur'}
                     ],
                     dialogImageUrl: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('identiImg')}), trigger: 'blur' },
                     ],
                     email: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('email')}), trigger: 'blur' },
+                        { validator: validateMethods.email, trigger: 'blur'}
                     ],
                     place: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
@@ -282,6 +325,7 @@
                     ],
                     rePassword: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
+                        { validator: validateMethods.isEqNewPwd, trigger: 'blur' },
                     ],
                 },
                 //企业注册表单校验
@@ -330,8 +374,15 @@
             changeLang(lang) {
                 this.$store.commit('setLang',lang);
             },
-            submit() {
+            /**
+             * 个人注册表单提交
+             */
+            personelSubmit() {
+                this.$refs.personalForm.validate((valid) => {
+                    if(valid) {
 
+                    }
+                })
             },
             reset() {
 

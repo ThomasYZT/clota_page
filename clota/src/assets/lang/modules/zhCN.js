@@ -1061,7 +1061,7 @@ export default {
     'cooperationTip': '等{num}个合作伙伴',
     'cooperation': '合作伙伴',
     'disabledCooperation': '您已禁用合作伙伴',
-    'ableCooperation': '您已启用合作伙伴',
+    'ableCooperation': '您已启用合作伙伴'
 
 
 }
