@@ -7,10 +7,12 @@
         <x-input :title="$t('name')"
                  class="c-input"
                  label-width="150px"
+                 text-align="right"
                  v-model="registerInfo.custName"></x-input>
         <x-input :title="$t('mobile')"
                  v-model="registerInfo.phoneNum"
                  class="c-input"
+                 text-align="right"
                  keyboard="number"
                  label-width="150px"></x-input>
         <x-input :title="$t('validCode')"
@@ -107,7 +109,7 @@
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
                         sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
-                        companyCode: '000000071' //冰雪世界景区
+                        companyCode: 'C2001' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
                             console.log(res.data)
@@ -118,11 +120,11 @@
                             //更新用户信息
                             this.$store.commit('updateUserInfo');
                             //提示注册成功
-                            this.$vux.toast.text($t('registSuccess'));
+                            this.$vux.toast.text(this.$t('registSuccess'));
                             //自动登陆跳转到主页
                             this.$router.push({ name: 'home'});
-                        }else {
-                            this.$vux.toast.text(res.message);
+                        } else {
+                            this.this.$vux.toast.text(this.$t(res.code));
                         }
                     })
                 });
@@ -201,9 +203,9 @@
                 if(params && params.openId){
                     this.openId = params.openId;
                 }else{
-                    this.$router.push({
-                        name: 'login'
-                    });
+                    // this.$router.push({
+                    //     name: 'login'
+                    // });
                 }
             },
         }
@@ -215,8 +217,8 @@
     $img_base_url : '../../assets/images/';
 
     .register {
+        height: 100%;
         width: 100%;
-        margin-top: 15px;
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;

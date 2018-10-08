@@ -231,7 +231,7 @@
              */
             toRegister() {
                 this.$router.replace({
-                    name: 'register',
+                    name: 'mobileRegister',
                     params: {
                         openId: this.wxUserInfo.openId
                     }
@@ -256,7 +256,6 @@
     $img_base_url : '../../assets/images/';
 
     .login {
-        margin-top: 15px;
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;

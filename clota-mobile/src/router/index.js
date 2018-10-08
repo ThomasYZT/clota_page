@@ -49,7 +49,7 @@ const createRouter = () => new Router({
             name: 'mobileRegister',
             component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
             meta: {
-                noFrame: true
+                title: 'register'
             }
         },
         //会员主页
