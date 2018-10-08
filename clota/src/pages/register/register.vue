@@ -390,8 +390,8 @@
             /**
              * 上传图片成功
              */
-            uploadSuc() {
-                console.log("111")
+            uploadSuc(data) {
+                console.log(data)
             }
         }
     }

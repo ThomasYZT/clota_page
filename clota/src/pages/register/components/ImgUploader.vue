@@ -5,18 +5,19 @@
 <template>
     <div>
         <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="action"
             list-type="picture-card"
             :show-file-list="true"
             :before-upload="beforeUpload"
             :on-error="uploadFail"
             :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
+            :on-remove="handleRemove"
+            :on-success="uploadSuc">
             <i class="el-icon-plus"></i>
         </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
+        <Modal :title="$t('图片预览')" v-model="dialogVisible">
+            <img :src="dialogImageUrl" style="width: 100%">
+        </Modal>
     </div>
 </template>
 
@@ -57,12 +58,13 @@
              * @param fileList
              */
             uploadSuc (response, file, fileList) {
+                console.log(response)
                 if(response.success){
                     this.$emit('upload-success',response.data);
-                    this.$Message.success('解析成功');
+                    this.$Message.success(this.$t('上传成功'));
                 }else{
                     if(response.code === 'S003'){
-                        this.$Message.error( this.$t('uploadCardError'));
+                        this.$Message.error( this.$t('上传失败'));
                     }else{
                         this.$Message.error( '解析失败' );
                     }
@@ -92,13 +94,7 @@
              * @param fileList
              */
             uploadFail(err, file, fileList) {
-                this.$message.error('解析失败');
-                this.$emit('upload-success',{
-                    dataSize : 0,
-                    errorSize : 0,
-                    dataList : [],
-                    errorList : [],
-                });
+                this.$message.error('图片上传失败');
                 this.$store.commit('changePromisings','del');
             },
             /**
