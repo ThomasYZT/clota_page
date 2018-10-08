@@ -943,6 +943,7 @@
              */
             queryChannelSet () {
                 ajax.post('querySelfOwnedChannel', {
+                    status: 'valid',
                     pageNo: 1,
                     pageSize: 999
                 }).then(res => {
