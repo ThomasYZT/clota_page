@@ -942,9 +942,12 @@
              * 查询渠道
              */
             queryChannelSet () {
-                ajax.post('querySelfChannel').then(res => {
+                ajax.post('querySelfOwnedChannel', {
+                    pageNo: 1,
+                    pageSize: 999
+                }).then(res => {
                     if(res.success){
-                        this.channelSetList = res.data ? res.data : [];
+                        this.channelSetList = res.data.data ? res.data.data : [];
                     }else{
                         this.channelSetList =  [];
                     }
