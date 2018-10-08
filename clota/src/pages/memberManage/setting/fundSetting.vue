@@ -446,9 +446,13 @@
 
             //获取储值赠送金额应用范围
             listAccount () {
-                ajax.post('listAccount', {}).then(res => {
+                ajax.post('queryMemberAccountDefine', {
+                    accountType: 'charging',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
                     if( res.success ) {
-                        this.listAccountTable = res.data || [];
+                        this.listAccountTable = res.data.data || [];
                     }
                 })
             },
