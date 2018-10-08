@@ -13,7 +13,7 @@
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="uploadSuc">
-            <i class="el-icon-plus"></i>
+            <i class="el-icon-plus" ></i>
         </el-upload>
         <Modal :title="$t('图片预览')" v-model="dialogVisible">
             <img :src="dialogImageUrl" style="width: 100%">
@@ -27,11 +27,19 @@
     import ajaxConfig from '@/api/index.js';
 
     export default {
+        props: {
+            quantityLimit: {
+                type: Number,
+                default: 5
+            }
+        },
         components: {},
         data() {
             return {
+                uploadList: [],
                 dialogImageUrl: '',
-                dialogVisible: false
+                dialogVisible: false,
+                limit: false
             }
         },
         computed: {
@@ -57,13 +65,13 @@
              * @param file
              * @param fileList
              */
-            uploadSuc (response, file, fileList) {
-                console.log(response)
-                if(response.success){
-                    this.$emit('upload-success',response.data);
+            uploadSuc (res, file, fileList) {
+                if(res.success){
+                    this.uploadList.push(res.data);
+                    this.$emit('upload-success',this.uploadList);
                     this.$Message.success(this.$t('上传成功'));
                 }else{
-                    if(response.code === 'S003'){
+                    if(res.code === 'S003'){
                         this.$Message.error( this.$t('上传失败'));
                     }else{
                         this.$Message.error( '解析失败' );
@@ -77,7 +85,12 @@
              * @param fileList
              */
             handleRemove(file, fileList) {
-                console.log(file, fileList);
+                if(this.limit) {
+                    this.limit = false;
+                } else {
+                    this.uploadList.splice(fileList.indexOf(file), 1);
+                    this.$emit('remove-img',this.uploadList);
+                }
             },
             /**
              * 点击预览图片
@@ -101,7 +114,14 @@
              * 上传文件之前
              */
             beforeUpload () {
-                this.$store.commit('changePromisings','add');
+                const check = this.uploadList.length < this.quantityLimit;
+                if (!check) {
+                    this.$Message.error(this.$t(`最多上传${this.quantityLimit}`));
+                    this.limit = true;
+                }else {
+                    this.$store.commit('changePromisings','add');
+                }
+                return check;
             },
         }
     }

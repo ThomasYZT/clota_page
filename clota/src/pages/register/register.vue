@@ -56,8 +56,10 @@
                                             <Input v-model="formData.certificateNumber" placeholder="请输入身份证号码"></Input>
                                         </FormItem>
                                         <!-- 身份证照片 -->
-                                        <FormItem label="身份证照片" prop="dialogImageUrl">
-                                            <img-uploader @upload-success="uploadSuc"></img-uploader>
+                                        <FormItem label="身份证照片" prop="attach">
+                                            <img-uploader @upload-success="uploadSuc"
+                                                          @remove-img="removeIDimg"
+                                                          :quantity-limit="2"></img-uploader>
                                         </FormItem>
                                         <!-- 邮箱地址 -->
                                         <FormItem label="邮箱地址" prop="email">
@@ -65,7 +67,7 @@
                                         </FormItem>
                                         <!--地点-->
                                         <FormItem :label="$t('location')" prop="place">
-                                            <city-plugin @select="formData.place = $event" style="width: 280px;">
+                                            <city-plugin @select="placeSelect" style="width: 280px;">
                                             </city-plugin>
                                         </FormItem>
                                         <!-- 详细地址 -->
@@ -76,6 +78,7 @@
                                         <FormItem label="备注" prop="description">
                                             <Input v-model="formData.description" type="textarea" :autosize="{minRows: 5,maxRows: 10}" placeholder="特殊说明，请输入备注"></Input>
                                         </FormItem>
+
                                     </Step>
                                     <Step title="" >
                                         <FormItem :label-width="180" label="设置登陆信息">
@@ -86,27 +89,25 @@
                                         </FormItem>
                                         <!-- 登陆密码 -->
                                         <FormItem label="登陆密码" prop="password">
-                                            <Input v-model="formData.password" placeholder="请输入登陆密码"></Input>
+                                            <Input type="password"  v-model="formData.password" placeholder="请输入登陆密码"></Input>
                                         </FormItem>
                                         <!-- 确认登陆密码 -->
                                         <FormItem label="确认登陆密码" prop="rePassword">
-                                            <Input v-model="formData.rePassword" placeholder="请输入确认登陆密码"></Input>
+                                            <Input type="password"  v-model="formData.rePassword" placeholder="请输入确认登陆密码"></Input>
                                         </FormItem>
 
                                         <div class="modal-footer">
-                                            <Button type="primary" @click="personelSubmit()" >{{$t('submit')}}</Button>
-                                            <Button type="ghost" @click="reset()" >{{$t("reset")}}</Button>
+                                            <i-button type="primary" @click="personelSubmit()" >{{$t('submit')}}</i-button>
+                                            <i-button type="ghost" @click="reset()" >{{$t("reset")}}</i-button>
                                         </div>
                                     </Step>
-
                                 </Steps>
-
                             </Form>
-
                         </TabPane>
                         <!-- 公司注册 -->
                         <TabPane :label="$t('companyRegist')" name="company">
                             <Form :model="formDataCompany"
+                                  ref="companyForm"
                                   :label-width="130"
                                   label-position="left"
                                   :rules="companyRuleValidate">
@@ -136,16 +137,18 @@
                                             <Input v-model="formDataCompany.certificateNumber" placeholder="请输入社会信用代码"></Input>
                                         </FormItem>
                                         <!-- 营业执照附件 -->
-                                        <FormItem label="营业执照附件" prop="enterpriseNumber">
-                                            <img-uploader  @upload-success="uploadSuc"></img-uploader>
+                                        <FormItem label="营业执照附件" prop="attach">
+                                            <img-uploader  @upload-success="uploadSuc2"
+                                                           @remove-img="removeIDimg2"
+                                                           :quantity-limit="1"></img-uploader>
                                         </FormItem>
                                         <!-- 邮箱地址 -->
-                                        <FormItem label="邮箱地址" prop="enterpriseNumber">
+                                        <FormItem label="邮箱地址" prop="email">
                                             <Input v-model="formDataCompany.email" placeholder="请输入邮箱地址"></Input>
                                         </FormItem>
                                         <!--地点-->
                                         <FormItem :label="$t('location')" prop="place">
-                                            <city-plugin @select="formDataCompany.place = $event" style="width: 280px;">
+                                            <city-plugin @select="placeSelect2" style="width: 280px;">
                                             </city-plugin>
                                         </FormItem>
                                         <!-- 详细地址 -->
@@ -166,15 +169,15 @@
                                         </FormItem>
                                         <!-- 登陆密码 -->
                                         <FormItem label="登陆密码" prop="password">
-                                            <Input v-model="formDataCompany.password" placeholder="请输入登陆密码"></Input>
+                                            <Input type="password" v-model="formDataCompany.password" placeholder="请输入登陆密码"></Input>
                                         </FormItem>
                                         <!-- 确认登陆密码 -->
                                         <FormItem label="确认登陆密码" prop="rePassword">
-                                            <Input v-model="formDataCompany.rePassword" placeholder="请输入确认登陆密码"></Input>
+                                            <Input type="password" v-model="formDataCompany.rePassword" placeholder="请输入确认登陆密码"></Input>
                                         </FormItem>
 
                                         <div class="modal-footer">
-                                            <Button type="primary" @click="submit()" >{{$t('submit')}}</Button>
+                                            <Button type="primary" @click="companySubmit()" >{{$t('submit')}}</Button>
                                             <Button type="ghost" @click="reset()" >{{$t("reset")}}</Button>
                                         </div>
                                     </Step>
@@ -192,26 +195,35 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ImgUploader from './components/ImgUploader';
     import {validator} from 'klwk-ui';
+    import ajax from '../../api/index';
+    import MD5 from 'crypto-js/md5';
     export default {
         components: {
             cityPlugin,
             ImgUploader
         },
         data() {
-            let self= this;
             const validateMethods = {
-                //校验第二次输入的密码和第一次是否相同
+                //校验第二次输入的密码和第一次是否相同 个人注册
                 isEqNewPwd: (rule, value, callback) => {
                     if(value != this.formData.password) {
-                        return callback(new Error(this.$t('再次输入的密码与新密码不同')));
+                        callback(new Error(this.$t('再次输入的密码与新密码不同')));
                     }else {
-                        return callback();
+                        callback();
+                    }
+                },
+                //校验第二次输入的密码和第一次是否相同 企业注册
+                isEqNewPwd2: (rule, value, callback) => {
+                    if(value != this.formDataCompany.password) {
+                        callback(new Error(this.$t('再次输入的密码与新密码不同')));
+                    }else {
+                        callback();
                     }
                 },
                 //校验手机号码
                 mobile: (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(this.$t('errorFormat', {field: this.$t('phoneNum')}));
+                        callback(new Error(this.$t('errorFormat', {field: this.$t('phoneNum')})));
                     } else {
                         callback();
                     }
@@ -222,7 +234,7 @@
                         if (validator.isEmail(value)) {
                             callback();
                         } else {
-                            callback(this.$t('errorFormat', {field: this.$t('mail')}));
+                            callback(new Error(this.$t('errorFormat', {field: this.$t('mail')})));
                         }
                     } else {
                         callback();
@@ -232,7 +244,18 @@
                 identificationNum: (rule, value, callback) => {
                     let reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
                     if(!reg.test(value)) {
-                        callback(this.$t('errorFormat', {field: this.$t('identityNo')}))
+                        callback(new Error(this.$t('errorFormat', {field: this.$t('identityNo')})))
+                    }else {
+                        callback();
+                    }
+                },
+                //社会信用代码简单校验
+                socialCode: (rule, value, callback) => {
+                    let reg = /[0-9A-Z]{18}/;
+                    if(!reg.test(value)) {
+                        callback(new Error(this.$t('errorFormat', {field: this.$t('社会信用代码')})))
+                    } else {
+                        callback();
                     }
                 }
             }
@@ -247,10 +270,18 @@
                     mobile: '',
                     //身份证号码
                     certificateNumber: '',
+                    //身份证照片
+                    attach: [],
                     //邮箱
                     email: '',
                     //地址
                     place: '',
+                    //省
+                    province: '',
+                    //市
+                    city: '',
+                    //县、区域
+                    district: '',
                     //详细地址
                     address: '',
                     //备注
@@ -307,8 +338,8 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('identityNo')}), trigger: 'blur' },
                         { validator: validateMethods.identificationNum, trigger: 'blur'}
                     ],
-                    dialogImageUrl: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('identiImg')}), trigger: 'blur' },
+                    attach: [
+                        { required: true, type: 'array', min: 2, message: this.$t('errorEmpty', {msg: this.$t('请上传正反两名的身份证照片')}), trigger: 'blur' }
                     ],
                     email: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('email')}), trigger: 'blur' },
@@ -325,36 +356,36 @@
                     ],
                     rePassword: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
-                        { validator: validateMethods.isEqNewPwd, trigger: 'blur' },
+                        { validator: validateMethods.isEqNewPwd2, trigger: 'blur' },
                     ],
                 },
                 //企业注册表单校验
                 companyRuleValidate: {
                     enterpriseNumber: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('企业编号')}), trigger: 'blur' },
                     ],
                     orgName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('企业名称')}), trigger: 'blur' },
                     ],
                     linkName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('联系人')}), trigger: 'blur' },
                     ],
                     mobile: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('telephone')}), trigger: 'blur' },
+                        { validator: validateMethods.mobile, trigger: 'blur'}
                     ],
                     certificateNumber: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('identityNo')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('社会信用代码')}), trigger: 'blur' },
+                        { validator: validateMethods.socialCode, trigger: 'blur'}
                     ],
-                    dialogImageUrl: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('identiImg')}), trigger: 'blur' },
+                    attach: [
+                        { required: true, type: 'array', min: 1, message: this.$t('errorEmpty', {msg: this.$t('请上传营业执照附件')}), trigger: 'blur' }
                     ],
                     email: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('email')}), trigger: 'blur' },
+                        { validator: validateMethods.email, trigger: 'blur'}
                     ],
                     place: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
-                    ],
-                    address: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
                     ],
                     loginName: [
@@ -365,6 +396,8 @@
                     ],
                     rePassword: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
+                        { validator: validateMethods.isEqNewPwd2, trigger: 'blur' },
+
                     ],
                 }
             }
@@ -378,20 +411,99 @@
              * 个人注册表单提交
              */
             personelSubmit() {
-                this.$refs.personalForm.validate((valid) => {
-                    if(valid) {
-
+                this.$refs['personalForm'].validate((valid) => {
+                    if( valid ) {
+                        this.personalRegist();
                     }
                 })
             },
-            reset() {
-
+            /**
+             * 企业注册表单提交
+             */
+            companySubmit() {
+                this.$refs['companyForm'].validate((valid) => {
+                    if(valid) {
+                        this.companyRegist();
+                    }
+                })
             },
             /**
-             * 上传图片成功
+             *  个人注册
+             */
+            personalRegist() {
+                this.formData.password = MD5(this.formData.password).toString();
+                this.formData.attach = JSON.stringify(this.formData.attach);
+                ajax.post('register', this.formData).then(res => {
+                    if(res.success) {
+                        this.$Message.success(this.$t('注册成功'));
+                    } else {
+                        this.$Message.success(this.$t('注册失败'));
+                    }
+                })
+            },
+            /**
+             * 企业注册
+             */
+            companyRegist() {
+                this.formDataCompany.password = MD5(this.formDataCompany.password).toString();
+                this.formDataCompany.attach = JSON.stringify(this.formDataCompany.attach);
+                ajax.post('register', this.formDataCompany).then(res => {
+                    if(res.success) {
+                        this.$Message.success(this.$t('注册成功'));
+                    } else {
+                        this.$Message.success(this.$t('注册失败'));
+                    }
+                })
+            },
+            /**
+             *  表单充值 个人注册
+             */
+            reset() {
+                this.$refs['personalForm'].resetFields();
+                this.$refs['companyForm'].resetFields();
+            },
+            /**
+             * 上传图片成功 个人注册
              */
             uploadSuc(data) {
-                console.log(data)
+                this.formData.attach = data;
+            },
+            /**
+             * 上传图片成功 企业注册
+             */
+            uploadSuc2(data) {
+                this.formDataCompany.attach = data;
+            },
+            /**
+             * 删除身份证照片 个人注册
+             */
+            removeIDimg(data) {
+                this.formData.attach = data;
+            },
+            /**
+             * 删除身份证照片 企业注册
+             */
+            removeIDimg2(data) {
+                this.formDataCompany.attach = data;
+            },
+            /**
+             * 省市县选择 个人注册
+             */
+            placeSelect(value) {
+                console.log(value)
+                this.formData.place = value.value ? value.value : '';
+                this.formData.province = value.province ? value.province.provinceid : '';
+                this.formData.city = value.city ? value.city.cityid : '';
+                this.formData.district = value.area ? value.area.areaid : '';
+            },
+            /**
+             * 省市县选择 企业注册
+             */
+            placeSelect2(value) {
+                this.formDataCompany.place = value.value ? value.value : '';
+                this.formDataCompany.province = value.province ? value.province.provinceid : '';
+                this.formDataCompany.city = value.city ? value.city.cityid : '';
+                this.formDataCompany.district = value.area ? value.area.areaid : '';
             }
         }
     }

@@ -22,6 +22,8 @@ const apiList = {
     /*****************登录+获取用户信息公用接口****************/
     // 登录
     login: '/account/login',
+    // 注册
+    register: '/partner/signUp',
     //图片上传接口
     imgUpload: '/uploadFile',
     //获取菜单权限
