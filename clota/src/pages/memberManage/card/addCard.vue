@@ -947,7 +947,7 @@
                     pageSize: 999
                 }).then(res => {
                     if(res.success){
-                        this.channelSetList = res.data.data ? res.data.data : [];
+                        this.channelSetList = res.data ? res.data.data : [];
                     }else{
                         this.channelSetList =  [];
                     }
