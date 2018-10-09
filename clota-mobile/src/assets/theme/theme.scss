@@ -122,25 +122,14 @@ div.cell {
 }
 .scroller-item{
     color: #8395A7!important;
-    height: 45px!important;
-    line-height: 45px!important;
 }
 .scroller-item-selected{
-    font-size: 16px!important;
     color: #000000!important;
 }
 .scroller-component{
     background: #fff;
 }
 
-.scroller-indicator{
-    line-height: 45px !important;
-    height: 45px!important;
-}
-
-.scroller-content{
-    top :12px!important;
-}
 .weui-toast{
     top: 50%!important;
     transform: translateX(-50%) translateY(-50%)!important;
