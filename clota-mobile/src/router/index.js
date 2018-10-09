@@ -40,7 +40,7 @@ const createRouter = () => new Router({
             name: 'mobileLogin',
             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
             meta: {
-                title: 'login'
+                title: 'memberLogin'
             }
         },
         //会员注册
