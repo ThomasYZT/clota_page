@@ -850,7 +850,7 @@ export default {
     'openedService' : 'service opened',
     'verifySaleAndCashierType' : 'verification/sale desk',
     'checkoutName' : 'Server name',
-    'serverName' : 'Server name',
+    'serverName' : 'Server Name',
     'opened' : 'opened',
     'paused' : 'paused',
 
