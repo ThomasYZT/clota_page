@@ -20,6 +20,7 @@
                  :placeholder="$t('pleaseInputValidCode')"
                  class="c-input verify-input"
                  :show-clear="false"
+                 text-align="left"
                  keyboard="number"
                  label-width="150px">
             <div slot="right"
