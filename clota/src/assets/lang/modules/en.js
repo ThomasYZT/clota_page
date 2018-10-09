@@ -1088,5 +1088,5 @@ export default {
     'addVerificationGroup': 'new verification equipment group',
     'verificationToGroup': 'Move the selected sales desk to the group',
     'removeVeriGroupNotice': 'After the selected verification desk is removed from this group,it will be included in the ungrouped',
-
+    'scopeLimit': 'Please enter 2 to 8 company code'
 }

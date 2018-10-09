@@ -1086,5 +1086,6 @@ export default {
     'addVerificationGroup': '新增核销设备分组',
     'verificationToGroup': '将所选核销设备移至分组',
     'removeVeriGroupNotice': '将所选核销设备从本分组移出后，将列入未分组',
+    'scopeLimit': '请输入2～8位公司编码'
 
 }

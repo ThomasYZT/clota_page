@@ -260,7 +260,7 @@
                         {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'}
                     ],
                     companyCode : [
-                        {min : 2,max : 8,message : this.$t('rangeError',{field : this.$t('companyCode'),min : 2,max : 8}),trigger : 'blur'}
+                        {min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur'}
                     ],
                     address : [
                         {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'}
