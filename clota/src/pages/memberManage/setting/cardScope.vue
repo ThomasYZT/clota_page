@@ -168,7 +168,7 @@
             saveSetting () {
                 let companyIds = this.$refs.tree ? this.$refs.tree.getCheckedKeys() : [];
                 ajax.post('basicSet',{
-                    channelIds : this.channelSelected.map(item => item.id).join(','),
+                    channelIds : this.channelSelected.map(item => item.partnerId).join(','),
                     parkIds : companyIds.join(','),
                 }).then(res => {
                    if(res.success){
@@ -203,7 +203,7 @@
                                let channelSelected = res.data.channelIds.split(',');
                                this.$nextTick(() => {
                                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                                       if(channelSelected.includes(this.tableData[i].id)){
+                                       if(channelSelected.includes(this.tableData[i].partnerId)){
                                            this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
                                        }
                                    }
