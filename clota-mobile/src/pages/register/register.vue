@@ -109,7 +109,7 @@
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
                         sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
-                        companyCode: 'C2001' //冰雪世界景区
+                        companyCode: '1045244656750825472' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
                             console.log(res.data)
