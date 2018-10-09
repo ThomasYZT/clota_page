@@ -923,7 +923,7 @@ export default {
     'accountPrivaligeError': '账户没有菜单权限，请联系管理员开通权限',
     'cardScopeSetting': '会员卡可用范围设置',
     'deleteAccount': '删除账户',
-    'errorPwdRule': '密码必须是6-20位，只含数字、小写和大写字母',
+    'errorPwdRule': '密码须是6-20位，仅由数字、小写和大写字母组成',
     'productTypeSetting': '产品类别设置',
     'deleteAccount': 'deleteAccount',
     'cardUnopened': '未开卡',
