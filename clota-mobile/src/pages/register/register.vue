@@ -135,7 +135,7 @@
             validate(callback) {
                 //验证姓名不为空
                 if(this.registerInfo.custName === '') {
-                    this.$vux.toast.text($t('pleaseEnterName'))
+                    this.$vux.toast.text(this.$t('pleaseEnterName'))
                     return;
                 }
 
@@ -150,7 +150,7 @@
 
                 //验证性别不为空
                 if(this.registerInfo.gender.length == 0) {
-                    this.$vux.toast.text($t('pleaseEnterSex'))
+                    this.$vux.toast.text(this.$t('pleaseEnterSex'))
                     return;
                 }
 
@@ -165,12 +165,12 @@
             phoneValidate(callback) {
                 this.msg = '';
                 if(this.registerInfo.phoneNum === '') {
-                    this.$vux.toast.text($t('pleaseEnterMobile'))
+                    this.$vux.toast.text(this.$t('pleaseEnterMobile'))
                     return;
                 } else {
                     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
                     if(!phoneReg.test(this.registerInfo.phoneNum)) {
-                        this.$vux.toast.text($t('pleaseEnterRightMobile'))
+                        this.$vux.toast.text(this.$t('pleaseEnterRightMobile'))
                         return;
                     }else {
                         if(callback) {
