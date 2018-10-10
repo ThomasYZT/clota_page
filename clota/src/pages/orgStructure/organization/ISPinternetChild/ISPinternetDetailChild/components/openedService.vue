@@ -12,7 +12,7 @@
         </div>
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
-                <div class="service-operation" v-if="type === 'scene'">
+                <div class="service-operation" v-if="type === 'scene' && canModifyService">
                     <Button type="primary"
                             :disabled="!canDelService"
                             @click="delService(selectedService)">{{$t('delService')}}</Button>
@@ -34,6 +34,7 @@
                     @query-data="queryList"
                     @selection-change="handleSelectionChange">
                     <el-table-column
+                        v-if="canModifyService"
                         :key="type"
                         slot="column0"
                         slot-scope="row"
@@ -236,21 +237,11 @@
                 ).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip', {tip: this.$t('del') }));
-                        //如果是给当前查看的组织机构删除服务，需要重新刷新菜单
-                        if(this.manageOrgs.id === this.sceneDetail.id){
-                            this.resetMenu();
-                        }
                         this.queryList();
                     }else{
                         this.$Message.error(this.$t('failureTip', {tip: this.$t('del') }));
                     }
                 });
-            },
-            /**
-             * 删除服务后重置菜单
-             */
-            resetMenu () {
-                this.$store.dispatch('resetNodeChosed',this.manageOrgs);
             }
         },
         computed : {
@@ -264,7 +255,11 @@
             },
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
-            })
+            }),
+            //是否可以添加和删除服务,当前登录的节点不能操作自己的服务
+            canModifyService () {
+                return this.manageOrgs.id !== this.sceneDetail.id;
+            }
         },
         watch : {
             //默认展开的初始值

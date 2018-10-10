@@ -145,18 +145,14 @@
                     this.$Message.warning(this.$t('selectField', {msg: this.$t('service')}));
                 }else{
                     let selectService = [];
-                    if(this.openedServices.length === 0){
-                        selectService = this.selectedService;
-                    }else{
-                        for(let i = 0,j = this.openedServices.length;i < j;i++){
-                            for(let a = 0,b = this.selectedService.length;a < b;a++){
-                                if(this.openedServices[i].serviceId !== this.selectedService[a].serviceId){
-                                    selectService.push(this.selectedService[a]);
-                                }
-                            }
+                    for(let i = 0,j = this.selectedService.length;i < j;i++){
+                        if(!(this.selectedService[i]['serviceId'] in this.openedServiceObj)){
+                            selectService.push(this.selectedService[i]);
                         }
                     }
-                    this.openScenicServices(selectService);
+                    if(selectService.length > 0){
+                        this.openScenicServices(JSON.parse(JSON.stringify(selectService)));
+                    }
                 }
             },
             /**
@@ -223,10 +219,6 @@
                     if(res.success){
                         this.$Message.success(this.$t('successTip',{tip : this.$t('openedService')}));
                         this.$emit('fresh-service');
-                        //如果是给当前查看的组织机构添加服务，需要重新刷新菜单
-                        if(this.manageOrgs.id === this.sceneDetail.id){
-                            this.resetMenu();
-                        }
                     }else{
                         this.$Message.error(this.$t('failureTip',{tip : this.$t('openedService')}));
                     }
@@ -259,12 +251,6 @@
                     }
                 }
                 return true;
-            },
-            /**
-             * 新增服务后重置菜单
-             */
-            resetMenu () {
-                this.$store.dispatch('resetNodeChosed',this.manageOrgs);
             }
         },
         computed : {
@@ -274,7 +260,17 @@
             },
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
-            })
+            }),
+            //已经开通的服务对象类型
+            openedServiceObj () {
+                let returnObj = {};
+                if(this.openedServices && this.openedServices.length > 0){
+                    for(let i = 0,j = this.openedServices.length;i < j;i++){
+                        returnObj[this.openedServices[i]['serviceId']] = this.openedServices[i];
+                    }
+                }
+                return returnObj;
+            }
         }
     }
 </script>
