@@ -1107,9 +1107,10 @@ export default {
     'reset-password': '重置安全密码',
     'sms-manage': '短信管理',
     'sms-buy': '购买短信',
+    'sms-template': '短信模板',
     'finance-manage': '财务管理',
-    'recharge-record': '付款账户管理',
-    'receivable-account': '收款账户管理',
-    'payment-account-manage': '收款账户管理',
+    'recharge-record': '充值记录',
+    'receivable-account-manage': '收款账户管理',
+    'payment-account-manage': '付款账户管理',
 
 }

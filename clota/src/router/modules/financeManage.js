@@ -41,7 +41,7 @@ export default {
                 name: 'paymentManage',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/paymentManage.vue'),
                 meta: {
-                    _name: 'payment-account', //
+                    _name: 'payment-account-manage',
                     menuName: 'paymentManage', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'paymentManage',
                     iconClass: 'icon-person',
@@ -55,7 +55,7 @@ export default {
                 name: 'collectionManage',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
                 meta: {
-                    _name: 'payment-account-manage',
+                    _name: 'receivable-account-manage', //
                     menuName: 'collectionManage', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'collectionManage',
                     iconClass: 'icon-diamond',
