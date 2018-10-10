@@ -30,6 +30,7 @@ import {
     Loading  ,
     Countdown  ,
     XDialog,
+    WechatPlugin ,
 } from 'vux';
 
 
@@ -82,6 +83,18 @@ plugin.install = function (Vue, options) {
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);
+
+    Vue.use(WechatPlugin);
+    Vue.wechat.config({
+        debug: false,
+        appId: 'wx6ddc1e293024d508',
+        timestamp: 1539161375,
+        nonceStr: 'p4gIyecFvyElpxtN',
+        signature: 'b8ddd848e9d4e7d4e571db140fd5b4858fc5234e',
+        jsApiList: [
+            'chooseImage',
+        ]
+    });
 
     // 公用样式，指令及方法
     // Vue.use(klwkUi);
