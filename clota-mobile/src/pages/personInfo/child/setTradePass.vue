@@ -18,7 +18,14 @@
                          :placeholder="$t('pleaseInputValidCode')" >
                     <div slot="right-full-height"
                          class="validate"
-                         @click="getValidCode">{{$t('getValidCode')}}</div>
+                         :class="{active: isGetCode}"
+                         @click="getValidCode">
+                        {{$t('getValidCode')}}
+                        <countdown v-model="time"
+                                   @on-finish="countFinish"
+                                   :start="isCountStart"
+                                   v-show="isCountStart"></countdown>
+                    </div>
                 </x-input>
             </group>
             <div class="btn-area">
@@ -40,7 +47,13 @@
                     validCode : ''
                 },
                 //手机号码
-                originPhone : ''
+                originPhone : '',
+                //倒计时间
+                time: 1,
+                //是否获取验证码
+                isGetCode: false,
+                //是否开始计时
+                isCountStart: false
             }
         },
         methods: {
@@ -106,24 +119,37 @@
              * 获取短信验证码
              */
             getValidCode () {
-                ajax.post('getCode',{
-                    phoneNum : this.originPhone
-                }).then(res => {
-                    if(res.success){
-                        setTimeout(() =>{
-                            this.$vux.toast.show({
-                                text: this.$t('operateSuc',{msg : this.$t('send')})
-                            })
-                        },500);
-                    }else{
-                        setTimeout(() =>{
-                            this.$vux.toast.show({
-                                text: this.$t('operateFail',{msg : this.$t('send')}),
-                                type : 'cancel'
-                            })
-                        },500);
-                    }
-                });
+                //先验证是否在60s倒计时内
+                if(!this.isGetCode) {
+                    ajax.post('getCode',{
+                        phoneNum : this.originPhone
+                    }).then(res => {
+                        if(res.success){
+                            this.isGetCode = true;
+                            this.isCountStart = true;
+                            setTimeout(() =>{
+                                this.$vux.toast.show({
+                                    text: this.$t('operateSuc',{msg : this.$t('send')})
+                                })
+                            },500);
+                        }else{
+                            setTimeout(() =>{
+                                this.$vux.toast.show({
+                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    type : 'cancel'
+                                })
+                            },500);
+                        }
+                    });
+                }
+
+            },
+            /**
+             *  倒计时结束
+             */
+            countFinish() {
+                this.isGetCode = false;
+                this.isCountStart = false;
             },
             /**
              * 校验验证码
@@ -177,6 +203,10 @@
             align-items: center;
             justify-content: center;
             border-left: 1px solid #e8e8e8;
+        }
+
+        .active {
+            color: gray;
         }
 
         /deep/ .weui-label{

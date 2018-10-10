@@ -24,6 +24,7 @@
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             @query-data="queryList">
+            <!-- 按需求暂时不要 -->
             <!--<el-table-column
                 slot="column5"
                 slot-scope="row"
