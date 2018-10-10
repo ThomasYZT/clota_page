@@ -29,7 +29,7 @@
                     </i-col>
                 </i-row>
             </Form>
-            <Tabs class="tabs" value="name1">
+            <Tabs class="tabs" value="name1" :animated="false">
                 <TabPane :label="$t('managePermission')" name="name1">
                     <!--景区经营权限设置-->
                     <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
@@ -330,6 +330,10 @@
 
             .tabs {
                 width: 100%;
+
+                /deep/ .ivu-tabs-bar{
+                    border-bottom: 0;
+                }
             }
         }
 
