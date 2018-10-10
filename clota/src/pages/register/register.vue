@@ -603,4 +603,35 @@
             }
 
     }
+
+    /deep/ .ivu-steps-vertical .ivu-steps-head {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0,99,186,.2);
+        border-radius: 50%;
+    }
+
+    /deep/ .ivu-steps .ivu-steps-head-inner {
+        position: absolute;
+        top: 9.05px;
+        left: 9.05px;
+        width: 21.9px;
+        height: 21.9px;
+        line-height: 21.9px;
+        border: none;
+        border-radius: 50%;
+    }
+
+    /deep/ .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner{
+        background-color: #2f70df;
+    }
+    /deep/ .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner {
+        background-color: #2f70df;
+    }
+
+    /deep/ .ivu-steps-vertical .ivu-steps-tail {
+        left: 20px;
+        top: 7px;
+    }
 </style>
