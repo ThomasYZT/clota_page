@@ -7,14 +7,16 @@
 <template>
     <div class="marketing-policy">
 
-        <div class="tabs-wrap">
+        <!--tab栏 仅非合作伙伴可见-->
+        <div class="tabs-wrap" v-if="role !== 'partner'">
             <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
                 <TabPane :label="$t('mySalePolicy')" name="created"></TabPane><!--我定义的销售政策-->
-                <!--<TabPane :label="$t('distributeSalePolicy')" name="cancellation"></TabPane>&lt;!&ndash;分销给我的销售政策&ndash;&gt;-->
+                <TabPane :label="$t('distributeSalePolicy')" name="cancellation"></TabPane><!--分销给我的销售政策-->
             </Tabs>
         </div>
 
-        <div class="btn-wrap" v-if="tabsName === 'created'">
+        <!--按钮栏 仅非合作伙伴可见-->
+        <div class="btn-wrap" v-if="tabsName === 'created' && role !== 'partner'">
             <Button type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
             <Button type="error"
                     v-if="selectedRow.length < 1"
@@ -34,8 +36,8 @@
             <span class="tips float-right">{{$t('defaultPolicyType')}}</span><!--业态目前为默认ticket-->
         </div>
 
-        <!--暂时隐藏-->
-        <div class="btn-wrap" v-if="tabsName === 'cancellation'">
+        <!--表格搜索栏 仅合作伙伴可见-->
+        <div class="btn-wrap">
             <span>{{$t('scenePlace')}}：</span>
             <Select v-model="queryParams.scene" @on-change="queryDistPolicyList"> <!--所属景区：-->
                 <Option v-for="(item,index) in enumData.scene" :key="index"
@@ -51,7 +53,7 @@
 
         <!--我定义的销售政策-->
         <table-com
-            v-if="tabsName === 'created'"
+            v-if="tabsName === 'created' && role !== 'partner'"
             :ofsetHeight="170"
             :show-pagination="true"
             :column-data="myPolicyHead"
@@ -96,7 +98,7 @@
             </el-table-column>
         </table-com>
 
-        <!--分销给我的销售政策--暂时隐藏-->
+        <!--分销给我的销售政策-->
         <table-com
             v-if="tabsName === 'cancellation'"
             :ofsetHeight="170"
@@ -144,6 +146,7 @@
     import delModal from '@/components/delModal/index.vue';
     import addSalePolicyModal from './components/addSalePolicyModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
+    import {mapGetters} from 'vuex';
     import {myPolicyHead, distributePolicyHead} from '../policyConfig';
     import ajax from '@/api/index';
 
@@ -156,6 +159,8 @@
         props: {},
         data() {
             return {
+                //当前账号角色
+                role: '',
                 //当前tap值
                 tabsName: 'created',
                 // 表格表头字段名
@@ -204,12 +209,23 @@
                 policyTypeList: [],
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'userInfo'
+            ])
+        },
         created() {
-            /*this.queryDistPolicyList();*/
 
+            //设置当前角色
+            this.role = this.userInfo.accountType;
+            if(this.role === 'partner') {
+                this.changeTab('cancellation');
+            }
             //获取所有销售政策业态类型
             this.getAllPolicyType();
+            //获取分销给我的销售政策列表
+            this.queryDistPolicyList();
+
         },
         mounted() {
         },
