@@ -151,6 +151,7 @@
             width: 100%;
             height: 43px;
             background-color: #F4F6F9;
+            z-index: 888;
 
             p {
                 margin-left: 14px;

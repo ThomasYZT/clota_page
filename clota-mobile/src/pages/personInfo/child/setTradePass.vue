@@ -149,13 +149,15 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .change-phone{
+        height: 100%;
         @include block_outline();
         float: left;
         background: rgba(242,243,244,1);
 
         .area{
+            height: 100%;
             padding-top: 26px;
-            @include block_outline($height : 374px);
+            @include block_outline($height : 100%);
             background: $color_fff;
 
             /deep/ .vux-cell-align-left,

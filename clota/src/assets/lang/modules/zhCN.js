@@ -1095,7 +1095,7 @@ export default {
     'removeVeriGroupNotice': '将所选核销设备从本分组移出后，将列入未分组',
     'scopeLimit': '请输入2～8位公司编码',
     'WriteOffSalesAndDeskName': '核销/销售款台名称',
-    'OwnGroup': '所属分组'
+    'OwnGroup': '所属分组',
     'ableCooperation': '您已启用合作伙伴',
     'A010': '账号名已存在',
     'O002': '该合作伙伴已存在'
