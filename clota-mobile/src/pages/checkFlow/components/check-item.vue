@@ -5,11 +5,11 @@
 <template>
   <div class="check-item">
       <div class="info">
-          <p class="ticket-name">{{'北京欢乐谷门票'}}</p>
+          <p class="ticket-name">{{$t(checkFlowName)}}</p>
           <p class="time">{{info.createdTime}}</p>
       </div>
       <div class="check">
-          <p>{{info.amount}}</p>
+          <p>¥{{info.amount | moneyFilter}}</p>
       </div>
   </div>
 </template>
@@ -24,6 +24,23 @@
         }
       },
       components: {},
+      computed: {
+          checkFlowName() {
+              switch (this.info.operationType) {
+                  case 'adjust_score':
+                      return 'adjustScore'
+                      break;
+                  case 'consume':
+                      return 'consume';
+                      break;
+                  case 'recharge':
+                      return 'gainByRecharging'
+                      break;
+                  default:
+                      return '-'
+              }
+          }
+      },
       data() {
           return {}
       },

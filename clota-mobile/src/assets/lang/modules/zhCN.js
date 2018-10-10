@@ -151,5 +151,6 @@ export default {
     'S005' : '上传出错',
     'S002' : '接口异常',
     'agreement': '我已阅读并同意交易服务协议',
-    payAgreement: '支付协议'
+    payAgreement: '支付协议',
+    'consume': '消费',
 }

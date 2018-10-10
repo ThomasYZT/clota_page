@@ -150,5 +150,6 @@ export default {
     'S005' : 'Upload error',
     'S002' : 'Interface exception',
     'agreement': '我已阅读并同意交易服务协议',
-    payAgreement: '支付协议'
+    payAgreement: '支付协议',
+    'consume': 'consume',
 }
