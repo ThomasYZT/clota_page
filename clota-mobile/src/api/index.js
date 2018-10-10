@@ -7,7 +7,8 @@ import querystring from 'querystring';
 import config from '../config/index.js'
 import common from '../assets/js/common';
 import store from '../store/index';
-import vux from 'vux';
+import Vue from 'vue';
+
 
 let cancelTokenCollection = {};
 let baseUrl = '';
@@ -71,7 +72,7 @@ export default {
             return res.data
         }).catch((err) => {
             if(err === 'Error: Network Error'){
-                vux.toast.text(this.$t('网络错误'));
+                //Vue.$vux.toast.text(Vue.$t('网络错误'));
             }
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err)
         }).finally(() => {
@@ -112,6 +113,8 @@ export default {
             }
             return res.data;
         }).catch((err) => {
+            //console.log(Vue)
+            //Vue.$vux.toast.text(Vue.$t('网络错误'));
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             return err;
         }).finally(() => {
