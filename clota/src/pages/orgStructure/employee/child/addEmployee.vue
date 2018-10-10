@@ -104,7 +104,10 @@
             border-radius: 4px 4px 0 0;
         }
         .add-employee-content{
+            height: calc(100% - 50px);
             background-color: $color_fff;
+            overflow: auto;
+
             .content-footer{
                 text-align: center;
             }
