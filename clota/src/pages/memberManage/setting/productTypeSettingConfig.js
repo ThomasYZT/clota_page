@@ -19,7 +19,8 @@ export const productTypeSettingHead = [
     },
     {
         title: 'operate',
-        minWidth: 80,
+        width: 120,
+        enWidth : 150,
         field: ''
     },
 ];

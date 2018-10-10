@@ -30,8 +30,8 @@
                     slot-scope="row">
                     <template slot-scope="scoped">
                         <ul class="operate-list">
-                            <li class="normal" @click="modify(scoped.row)">修改</li>
-                            <li class="red-label" @click="delProductType(scoped.row)">删除</li>
+                            <li class="normal" @click="modify(scoped.row)">{{$t('modify')}}</li>
+                            <li class="red-label" @click="delProductType(scoped.row)">{{$t('del')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
