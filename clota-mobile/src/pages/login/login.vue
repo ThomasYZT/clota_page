@@ -64,7 +64,7 @@
                 //微信用户信息
                 wxUserInfo :{},
                 //公司编码
-                companyCode : 'C2001'
+                companyCode : '1045244656750825472'
             }
         },
         methods: {
