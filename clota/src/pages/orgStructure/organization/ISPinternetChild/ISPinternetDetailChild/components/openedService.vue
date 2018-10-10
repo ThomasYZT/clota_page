@@ -120,6 +120,7 @@
     import delModal from '@/components/delModal/index.vue';
     import addService from './addService';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //当前查看已开通服务的结构类型，可以为景区和公司，默认为公司
@@ -234,13 +235,23 @@
                     }
                 ).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('successTip') }));
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('del') }));
+                        //如果是给当前查看的组织机构删除服务，需要重新刷新菜单
+                        if(this.manageOrgs.id === this.sceneDetail.id){
+                            this.resetMenu();
+                        }
                         this.queryList();
                     }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('successTip') }));
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del') }));
                     }
                 });
             },
+            /**
+             * 删除服务后重置菜单
+             */
+            resetMenu () {
+                this.$store.dispatch('resetNodeChosed',this.manageOrgs);
+            }
         },
         computed : {
             //是否可以批量删除服务
@@ -250,7 +261,10 @@
             //表格是否显示
             tableShow () {
                 return this.searchParams && this.searchParams.id;
-            }
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            })
         },
         watch : {
             //默认展开的初始值

@@ -44,10 +44,8 @@
                     :disabled="true"
                     :label="row.title"
                     :width="row.width"
+                    :selectable="checkIsValid"
                     :min-width="row.minWidth">
-                    <!--<template slot-scope="scope">-->
-                        <!--<el-checkbox disabled="" :value="selectedService.includes(scope.row)" @input="test(scope.row,$event)"></el-checkbox>-->
-                    <!--</template>-->
                 </el-table-column>
                 <el-table-column
                     slot="column4"
@@ -80,6 +78,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {openedServiceHead} from './openedServiceConfig';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //景区详情
@@ -139,7 +138,7 @@
                 }
             },
             /**
-             * 确认新增
+             * 确认开通服务
              */
             confirm() {
                 if(this.selectedService.length < 1){
@@ -150,7 +149,7 @@
                         selectService = this.selectedService;
                     }else{
                         for(let i = 0,j = this.openedServices.length;i < j;i++){
-                            for(let a = 0,b = this.selectedService.length;i < j;i++){
+                            for(let a = 0,b = this.selectedService.length;a < b;a++){
                                 if(this.openedServices[i].serviceId !== this.selectedService[a].serviceId){
                                     selectService.push(this.selectedService[a]);
                                 }
@@ -193,7 +192,7 @@
                     if(res.success){
                         this.tableData = res.data && res.data.rootServiceList ? res.data.rootServiceList.data : [];
                         this.$nextTick(() => {
-                            // this.setDefaultChosed(this.tableData);
+                            this.setDefaultChosed(this.tableData);
                         });
                     }else{
                         this.tableData = [];
@@ -222,10 +221,14 @@
                     }
                 ).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('service')+this.$t('success'));
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('openedService')}));
                         this.$emit('fresh-service');
+                        //如果是给当前查看的组织机构添加服务，需要重新刷新菜单
+                        if(this.manageOrgs.id === this.sceneDetail.id){
+                            this.resetMenu();
+                        }
                     }else{
-                        this.$Message.error(this.$t('service')+this.$t('failure'));
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('openedService')}));
                     }
                 }).finally(() => {
                     this.modalShow = false;
@@ -239,33 +242,39 @@
                 for(let i = 0,j = this.openedServices.length;i < j;i++){
                     for(let a = 0,b = tableData.length;a < b;a++){
                         if(tableData[a].serviceId === this.openedServices[i].serviceId){
-                            this.$refs.multipleTable.toggleRowSelection(tableData[i]);
+                            this.$refs.multipleTable.toggleRowSelection(tableData[a]);
                         }
                     }
                 }
             },
-            test (data,type) {
-                this.$refs.multipleTable.toggleRowSelection();
-                if(type === false){
-                    for(let i = 0,j = this.selectedService.length;i < j;i++){
-                        if(this.selectedService[i] === data){
-                            this.$refs.multipleTable.toggleRowSelection(this.selectedService[i]);
-                        }
-                    }
-                }else{
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(this.tableData[i] === data){
-                            this.$refs.multipleTable.toggleRowSelection(this.tableData[i]);
-                        }
+            /**
+             * 服务是否可以选择
+             * @param row
+             * @param index
+             */
+            checkIsValid (row,index){
+                for(let i = 0,j = this.openedServices.length;i < j;i++){
+                    if(row.serviceId === this.openedServices[i].serviceId){
+                        return false;
                     }
                 }
+                return true;
             },
+            /**
+             * 新增服务后重置菜单
+             */
+            resetMenu () {
+                this.$store.dispatch('resetNodeChosed',this.manageOrgs);
+            }
         },
         computed : {
             //表格是否显示
             tableShow () {
                 return this.sceneDetail && !!this.sceneDetail.id && this.modalShow;
-            }
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            })
         }
     }
 </script>

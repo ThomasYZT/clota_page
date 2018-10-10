@@ -13,6 +13,11 @@
         padding-left: 20px;
         padding-right: 20px;
         line-height: 22px;
+
+        .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+            background: #f2f6fc!important;
+            border-color: #dcdfe6!important;
+        }
     }
 
     // 拥有多级表头
