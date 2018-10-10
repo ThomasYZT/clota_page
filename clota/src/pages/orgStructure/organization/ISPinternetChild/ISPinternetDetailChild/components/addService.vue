@@ -44,10 +44,8 @@
                     :disabled="true"
                     :label="row.title"
                     :width="row.width"
+                    :selectable="checkIsValid"
                     :min-width="row.minWidth">
-                    <!--<template slot-scope="scope">-->
-                        <!--<el-checkbox disabled="" :value="selectedService.includes(scope.row)" @input="test(scope.row,$event)"></el-checkbox>-->
-                    <!--</template>-->
                 </el-table-column>
                 <el-table-column
                     slot="column4"
@@ -80,6 +78,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {openedServiceHead} from './openedServiceConfig';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //景区详情
@@ -139,25 +138,21 @@
                 }
             },
             /**
-             * 确认新增
+             * 确认开通服务
              */
             confirm() {
                 if(this.selectedService.length < 1){
                     this.$Message.warning(this.$t('selectField', {msg: this.$t('service')}));
                 }else{
                     let selectService = [];
-                    if(this.openedServices.length === 0){
-                        selectService = this.selectedService;
-                    }else{
-                        for(let i = 0,j = this.openedServices.length;i < j;i++){
-                            for(let a = 0,b = this.selectedService.length;i < j;i++){
-                                if(this.openedServices[i].serviceId !== this.selectedService[a].serviceId){
-                                    selectService.push(this.selectedService[a]);
-                                }
-                            }
+                    for(let i = 0,j = this.selectedService.length;i < j;i++){
+                        if(!(this.selectedService[i]['serviceId'] in this.openedServiceObj)){
+                            selectService.push(this.selectedService[i]);
                         }
                     }
-                    this.openScenicServices(selectService);
+                    if(selectService.length > 0){
+                        this.openScenicServices(JSON.parse(JSON.stringify(selectService)));
+                    }
                 }
             },
             /**
@@ -193,7 +188,7 @@
                     if(res.success){
                         this.tableData = res.data && res.data.rootServiceList ? res.data.rootServiceList.data : [];
                         this.$nextTick(() => {
-                            // this.setDefaultChosed(this.tableData);
+                            this.setDefaultChosed(this.tableData);
                         });
                     }else{
                         this.tableData = [];
@@ -222,10 +217,10 @@
                     }
                 ).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('service')+this.$t('success'));
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('openedService')}));
                         this.$emit('fresh-service');
                     }else{
-                        this.$Message.error(this.$t('service')+this.$t('failure'));
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('openedService')}));
                     }
                 }).finally(() => {
                     this.modalShow = false;
@@ -239,32 +234,42 @@
                 for(let i = 0,j = this.openedServices.length;i < j;i++){
                     for(let a = 0,b = tableData.length;a < b;a++){
                         if(tableData[a].serviceId === this.openedServices[i].serviceId){
-                            this.$refs.multipleTable.toggleRowSelection(tableData[i]);
+                            this.$refs.multipleTable.toggleRowSelection(tableData[a]);
                         }
                     }
                 }
             },
-            test (data,type) {
-                this.$refs.multipleTable.toggleRowSelection();
-                if(type === false){
-                    for(let i = 0,j = this.selectedService.length;i < j;i++){
-                        if(this.selectedService[i] === data){
-                            this.$refs.multipleTable.toggleRowSelection(this.selectedService[i]);
-                        }
-                    }
-                }else{
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(this.tableData[i] === data){
-                            this.$refs.multipleTable.toggleRowSelection(this.tableData[i]);
-                        }
+            /**
+             * 服务是否可以选择
+             * @param row
+             * @param index
+             */
+            checkIsValid (row,index){
+                for(let i = 0,j = this.openedServices.length;i < j;i++){
+                    if(row.serviceId === this.openedServices[i].serviceId){
+                        return false;
                     }
                 }
-            },
+                return true;
+            }
         },
         computed : {
             //表格是否显示
             tableShow () {
                 return this.sceneDetail && !!this.sceneDetail.id && this.modalShow;
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            }),
+            //已经开通的服务对象类型
+            openedServiceObj () {
+                let returnObj = {};
+                if(this.openedServices && this.openedServices.length > 0){
+                    for(let i = 0,j = this.openedServices.length;i < j;i++){
+                        returnObj[this.openedServices[i]['serviceId']] = this.openedServices[i];
+                    }
+                }
+                return returnObj;
             }
         }
     }

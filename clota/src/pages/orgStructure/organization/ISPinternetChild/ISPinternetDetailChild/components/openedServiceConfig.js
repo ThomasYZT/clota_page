@@ -2,7 +2,7 @@
 export const openedServiceHead = [
     {
         title: 'index',//序号
-        width: 90,
+        width: 60,
         field: 'index'
     },
     {

@@ -12,7 +12,7 @@
         </div>
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
-                <div class="service-operation" v-if="type === 'scene'">
+                <div class="service-operation" v-if="type === 'scene' && canModifyService">
                     <Button type="primary"
                             :disabled="!canDelService"
                             @click="delService(selectedService)">{{$t('delService')}}</Button>
@@ -34,6 +34,7 @@
                     @query-data="queryList"
                     @selection-change="handleSelectionChange">
                     <el-table-column
+                        v-if="canModifyService"
                         :key="type"
                         slot="column0"
                         slot-scope="row"
@@ -120,6 +121,7 @@
     import delModal from '@/components/delModal/index.vue';
     import addService from './addService';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //当前查看已开通服务的结构类型，可以为景区和公司，默认为公司
@@ -234,13 +236,13 @@
                     }
                 ).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('successTip') }));
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('del') }));
                         this.queryList();
                     }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('successTip') }));
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del') }));
                     }
                 });
-            },
+            }
         },
         computed : {
             //是否可以批量删除服务
@@ -250,6 +252,13 @@
             //表格是否显示
             tableShow () {
                 return this.searchParams && this.searchParams.id;
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            }),
+            //是否可以添加和删除服务,当前登录的节点不能操作自己的服务
+            canModifyService () {
+                return this.manageOrgs.id !== this.sceneDetail.id;
             }
         },
         watch : {
