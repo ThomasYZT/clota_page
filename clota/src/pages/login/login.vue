@@ -101,6 +101,7 @@
                 }else {
                     localStorage.removeItem('logName');
                 }
+                localStorage.removeItem('manageOrg');
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         if(this.isLoging) return;

@@ -15,7 +15,7 @@ export default {
         path: '/productCenter',
         component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/index.vue'),
         meta: {
-            _name: 'members',
+            _name: 'product',
             menuName: 'productCenter',
             rightPath : topMenuName + '.' + 'productCenter',
             isMenu : true
@@ -28,7 +28,7 @@ export default {
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/index.vue'),
                 meta: {
                     menuName: 'productList', //lang.config.js 里面的语言键值
-                    _name: 'members',
+                    _name: 'product-list',
                     iconClass: 'icon-diamond',
                     rightPath : topMenuName + '.' + 'productList',
                     isMenu : true
@@ -41,7 +41,7 @@ export default {
                         component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType.vue'),
                         meta: {
                             menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'members',
+                            _name: 'ticket',
                             rightPath : topMenuName + '.' + 'productList',
                             isMenu : true
                         },
@@ -53,7 +53,7 @@ export default {
                         component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/editTicket.vue'),
                         meta: {
                             menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'point-setting',
+                            _name: 'ticket',
                             rightPath : topMenuName + '.' + 'productList',
                         },
                     },
@@ -64,7 +64,7 @@ export default {
                         component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/ticketDetail.vue'),
                         meta: {
                             menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'point-setting',
+                            _name: 'ticket',
                             rightPath : topMenuName + '.' + 'productList',
                         },
                     },
@@ -77,7 +77,7 @@ export default {
                 name: 'marketingPolicy',
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/list.vue'),
                 meta: {
-                    _name: 'members', //
+                    _name: 'product-policy', //
                     menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                     iconClass: 'icon-person',
@@ -91,7 +91,7 @@ export default {
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
                 meta: {
                     menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
-                    _name: 'point-setting',
+                    _name: 'product-policy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 },
             },
@@ -102,7 +102,7 @@ export default {
                 component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/salePolicyDetail.vue'),
                 meta: {
                     menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
-                    _name: 'point-setting',
+                    _name: 'product-policy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 },
             },

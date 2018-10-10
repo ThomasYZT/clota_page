@@ -15,19 +15,19 @@ export default {
         path: '/financeManage',
         component: () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/index.vue'),
         meta: {
-            _name: 'members',
+            _name: 'finance-manage',
             menuName: 'financeManage',
             rightPath : topMenuName + '.' + 'financeManage',
             isMenu : true
         },
         children: {
             rechargeRecord: {
-                // 系统设置 - 在线支付账户设置
+                // 财务管理 -- 充值记录
                 path: '/financeManage/rechargeRecord',
                 name: 'rechargeRecord',
                 component: () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/rechargeRecord/rechargeRecord.vue'),
                 meta: {
-                    _name: 'members', //
+                    _name: 'recharge-record', //
                     menuName: 'rechargeRecord', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'rechargeRecord',
                     iconClass: 'icon-person',
@@ -36,12 +36,12 @@ export default {
             },
 
             paymentManage: {
-                // 系统设置 - 重置全员密码
+                // 财务管理 -- 付款账户管理
                 path: '/financeManage/payment',
                 name: 'paymentManage',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/paymentManage.vue'),
                 meta: {
-                    _name: 'members', //
+                    _name: 'payment-account-manage',
                     menuName: 'paymentManage', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'paymentManage',
                     iconClass: 'icon-person',
@@ -50,12 +50,12 @@ export default {
             },
 
             collectionManage: {
-                //系统设置--短信管理--三级菜单
+                // 财务管理 -- 收款账户管理
                 path: '/financeManage/collection',
                 name: 'collectionManage',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
                 meta: {
-                    _name: 'members-point',
+                    _name: 'receivable-account-manage', //
                     menuName: 'collectionManage', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'collectionManage',
                     iconClass: 'icon-diamond',

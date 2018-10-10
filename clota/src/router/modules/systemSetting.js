@@ -15,7 +15,7 @@ export default {
         path: '/systemSetting',
         component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/index.vue'),
         meta: {
-            _name: 'members',
+            _name: 'system',
             menuName: 'systemSetting',
             rightPath : topMenuName + '.' + 'systemSetting',
             isMenu : true
@@ -27,7 +27,7 @@ export default {
                 name: 'onlinePaymentSetting',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/onlinePaymentSetting/onlinePayment.vue'),
                 meta: {
-                    _name: 'members', //
+                    _name: 'payment-account', //
                     menuName: 'onlinePaymentSetting', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'onlinePaymentSetting',
                     iconClass: 'icon-person',
@@ -41,7 +41,7 @@ export default {
                 name: 'resetPassword',
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/resetPassword/resetPassword.vue'),
                 meta: {
-                    _name: 'members', //
+                    _name: 'reset-password', //
                     menuName: 'resetPassword', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'resetPassword',
                     iconClass: 'icon-person',
@@ -55,7 +55,7 @@ export default {
                 component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/index.vue'),
                 meta: {
                     menuName: 'smsManage', //lang.config.js 里面的语言键值
-                    _name: 'members-point',
+                    _name: 'sms-manage',
                     iconClass: 'icon-diamond',
                     rightPath : topMenuName + '.' + 'smsManage',
                     isMenu : true
@@ -68,7 +68,7 @@ export default {
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/buySms.vue'),
                         meta: {
                             menuName: 'buySms', //lang.config.js 里面的语言键值
-                            _name: 'point-setting',
+                            _name: 'sms-buy',
                             rightPath : topMenuName + '.' + 'buySms',
                             isMenu : true
                         },
@@ -80,7 +80,7 @@ export default {
                         component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/smsTemplate.vue'),
                         meta: {
                             menuName: 'smsTemplate', //lang.config.js 里面的语言键值
-                            _name: 'stuff-setting',
+                            _name: 'sms-template',
                             rightPath : topMenuName + '.' + 'smsTemplate',
                             isMenu : true
                         },
@@ -92,7 +92,7 @@ export default {
                         component: () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/addSmsTemplate.vue'),
                         meta: {
                             menuName: 'smsTemplate', //lang.config.js 里面的语言键值
-                            _name: 'stuff-setting',
+                            _name: 'sms-template',
                             rightPath : topMenuName + '.' + 'smsTemplate',
                         },
                     },
