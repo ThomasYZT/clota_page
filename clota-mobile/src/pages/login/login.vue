@@ -24,7 +24,8 @@
                  label-width="150px">
             <div slot="right-full-height"
                  class="validate"
-                 :class="{'time-counting': isGetCode}"
+                 :class="{active: isGetCode}"
+                 disabled="isGetCode"
                  @click="getCode">
                 <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
@@ -33,7 +34,7 @@
         <div class="bottom-info">
             <p class="msg">{{msg}}</p>
             <p class="register-entry">
-                <span @click="$router.push({path: '/register'})">{{$t('register')}}</span>
+                <span @click="toRegister()">{{$t('register')}}</span>
             </p>
         </div>
         <!-- 登陆按钮 -->
@@ -63,7 +64,7 @@
                 //微信用户信息
                 wxUserInfo :{},
                 //公司编码
-                companyCode : 'C2001'
+                companyCode : '1045244656750825472'
             }
         },
         methods: {
@@ -183,6 +184,7 @@
                     }else{
                         //错误信息为空，表示获取到了用户信息
                         if(!res.errcode){
+
                             this.wxUserInfo = res.data ? JSON.parse(res.data) : {};
                         }else{
                             this.wxUserInfo = {};
@@ -221,6 +223,17 @@
                 this.$store.commit('updateUserInfo');
                 //登陆跳转到主页
                 this.$router.push({ name: 'home'});
+            },
+            /**
+             * 跳到注册界面
+             */
+            toRegister() {
+                this.$router.replace({
+                    name: 'mobileRegister',
+                    params: {
+                        openId: this.wxUserInfo.openId
+                    }
+                })
             }
         },
         beforeRouteEnter(to,from,next){
@@ -241,7 +254,6 @@
     $img_base_url : '../../assets/images/';
 
     .login {
-        margin-top: 15px;
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;

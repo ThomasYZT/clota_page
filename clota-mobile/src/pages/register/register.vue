@@ -7,10 +7,12 @@
         <x-input :title="$t('name')"
                  class="c-input"
                  label-width="150px"
+                 text-align="right"
                  v-model="registerInfo.custName"></x-input>
         <x-input :title="$t('mobile')"
                  v-model="registerInfo.phoneNum"
                  class="c-input"
+                 text-align="right"
                  keyboard="number"
                  label-width="150px"></x-input>
         <x-input :title="$t('validCode')"
@@ -18,6 +20,7 @@
                  :placeholder="$t('pleaseInputValidCode')"
                  class="c-input verify-input"
                  :show-clear="false"
+                 text-align="left"
                  keyboard="number"
                  label-width="150px">
             <div slot="right"
@@ -45,8 +48,11 @@
 </template>
 
 <script>
-    import ajax from '../../api'
+    import ajax from '../../api';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+
     export default {
+        mixins : [lifeCycleMixins],
         data() {
             return {
                 registerInfo: {
@@ -99,17 +105,27 @@
                 //输入验证
                 this.validate(() => {
                     ajax.post('registerMember', {
+                        openId: this.openId,
                         name: this.registerInfo.custName,
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
                         sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
-                        companyCode: '000000071' //冰雪世界景区
+                        companyCode: '1045244656750825472' //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
-                            this.$vux.toast.text($t('registSuccess'));
-                            this.$router.push({name: 'mobileLogin'})
-                        }else {
-                            this.$vux.toast.text(res.message);
+                            console.log(res.data)
+                            //存储token信息
+                            localStorage.setItem('token', res.data.token);
+                            //存储用户信息
+                            localStorage.setItem('userInfo', JSON.stringify(res.data));
+                            //更新用户信息
+                            this.$store.commit('updateUserInfo');
+                            //提示注册成功
+                            this.$vux.toast.text(this.$t('registSuccess'));
+                            //自动登陆跳转到主页
+                            this.$router.push({ name: 'home'});
+                        } else {
+                            this.this.$vux.toast.text(this.$t(res.code));
                         }
                     })
                 });
@@ -120,7 +136,7 @@
             validate(callback) {
                 //验证姓名不为空
                 if(this.registerInfo.custName === '') {
-                    this.$vux.toast.text($t('pleaseEnterName'))
+                    this.$vux.toast.text(this.$t('pleaseEnterName'))
                     return;
                 }
 
@@ -135,7 +151,7 @@
 
                 //验证性别不为空
                 if(this.registerInfo.gender.length == 0) {
-                    this.$vux.toast.text($t('pleaseEnterSex'))
+                    this.$vux.toast.text(this.$t('pleaseEnterSex'))
                     return;
                 }
 
@@ -150,12 +166,12 @@
             phoneValidate(callback) {
                 this.msg = '';
                 if(this.registerInfo.phoneNum === '') {
-                    this.$vux.toast.text($t('pleaseEnterMobile'))
+                    this.$vux.toast.text(this.$t('pleaseEnterMobile'))
                     return;
                 } else {
                     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
                     if(!phoneReg.test(this.registerInfo.phoneNum)) {
-                        this.$vux.toast.text($t('pleaseEnterRightMobile'))
+                        this.$vux.toast.text(this.$t('pleaseEnterRightMobile'))
                         return;
                     }else {
                         if(callback) {
@@ -178,8 +194,21 @@
                         clearInterval(this.timer);
                         this.timer = null;
                     }
-                }, 1000)
-            }
+                }, 1000);
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && params.openId){
+                    this.openId = params.openId;
+                }else{
+                    // this.$router.push({
+                    //     name: 'login'
+                    // });
+                }
+            },
         }
     }
 </script>
@@ -189,8 +218,8 @@
     $img_base_url : '../../assets/images/';
 
     .register {
+        height: 100%;
         width: 100%;
-        margin-top: 15px;
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;

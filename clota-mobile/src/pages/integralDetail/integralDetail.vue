@@ -190,17 +190,14 @@
 
         .no-data {
             width: 100%;
-            height: 96px;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            height: 150px;
+            @include absolute_pos(absolute, 0px, 0px, 0px, 0px);
             margin: auto auto;
             text-align: center;
+
             img {
-                width: 150px;
                 height: 150px;
+                width: 150px;
             }
         }
     }

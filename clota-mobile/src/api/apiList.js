@@ -43,7 +43,9 @@ const apiList = {
     //上传头像
     uploadMemberImageInfo: '/uploadFile',
     //获取用户信息
-    getOAuth2UserInfo: '/wechat/mp/getOAuth2UserInfo'
+    getOAuth2UserInfo: '/wechat/mp/getOAuth2UserInfo',
+    //查询支付协议
+    getAgreementToPay: '/external/memberAccount/getAgreementToPay'
 };
 
 export default apiList;

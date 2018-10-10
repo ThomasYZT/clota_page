@@ -36,7 +36,7 @@
 
               <div class="card-info">
                   <div>{{cardInfo.cardCode | formatCardCode}}</div>
-                  <div>
+                  <div @click="toMemberCode">
                       <i class="iconfont icon-code"></i>
                       <i class="iconfont icon-arrow-right"></i>
                   </div>
@@ -277,6 +277,14 @@
             toPersonInfo () {
                 this.$router.push({
                     name : 'personInfo'
+                });
+            },
+            /**
+             *  跳转到会员二维码
+             */
+            toMemberCode() {
+                this.$router.push({
+                    name : 'memberCode'
                 });
             }
         },

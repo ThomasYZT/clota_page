@@ -40,7 +40,7 @@ const createRouter = () => new Router({
             name: 'mobileLogin',
             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
             meta: {
-                title: 'login'
+                title: 'memberLogin'
             }
         },
         //会员注册
@@ -49,7 +49,7 @@ const createRouter = () => new Router({
             name: 'mobileRegister',
             component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
             meta: {
-                noFrame: true
+                title: 'register'
             }
         },
         //会员主页
@@ -113,6 +113,15 @@ const createRouter = () => new Router({
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/setTradePass.vue'),
             meta : {
                 title : 'setTradePass'
+            }
+        },
+        //个人信息--支付协议
+        {
+            path : '/personInfo/payAgreement',
+            name : 'payAgreement',
+            component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/payAgreement.vue'),
+            meta : {
+                title : 'payAgreement'
             }
         },
         //个人信息--输入密码

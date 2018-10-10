@@ -80,7 +80,8 @@ export default {
     male : '男',
     female : '女',
     identifyCard : '身份证',
-    register: '去注册',
+    register: '会员注册',
+    memberLogin: '会员登陆',
     login: '登陆',
     enterCode: '输入验证码',
     pleaseChoose: '请选择',
@@ -149,4 +150,6 @@ export default {
     'S006' : '账户操作异常',
     'S005' : '上传出错',
     'S002' : '接口异常',
+    'agreement': '我已阅读并同意交易服务协议',
+    payAgreement: '支付协议'
 }
