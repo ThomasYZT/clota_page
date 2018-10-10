@@ -456,7 +456,7 @@
                         {required : true,message : this.$t('inputField',{field : this.$t('companyBgName')}),trigger : 'blur'}
                     ],
                     checkinCode : [
-                        {min : 2,max : 8,message : this.$t('rangeBitError',{field : this.$t('enterpriseCode'),length : 8,min : 1,max :10}),trigger : 'blur'},
+                        {min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur'},
                     ],
                     smsProvider : [
                         {required : true,message : this.$t('selectField',{msg : this.$t('smsProvider')}),trigger : 'blur'}

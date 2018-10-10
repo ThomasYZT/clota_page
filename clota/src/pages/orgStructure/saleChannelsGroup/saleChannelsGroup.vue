@@ -64,7 +64,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.saleGroupName ? scope.row.saleGroupName : '未分组'}}
+                        {{scope.row.saleGroupName ? scope.row.saleGroupName : $t('noGroup')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -84,7 +84,7 @@
                                     @move-channel-group="moveChannelGroup">
                                 </move-group>
                             </li>
-                            <li :class="{disabled : !scoped.row.saleGroupName}" @click="channelRemove(scoped.row)">移出分组</li>
+                            <li :class="{disabled : !scoped.row.saleGroupName}" @click="channelRemove(scoped.row)">{{$t('outGroup')}}</li><!--移出分组-->
                         </ul>
                     </template>
                 </el-table-column>
@@ -94,7 +94,8 @@
         <del-modal ref="delModal">
             <div class="del-tips">
                 <Icon type="help-circled"></Icon>
-                <span class="red-bale">将所选销售渠道从本分组移出后，将列入未分组</span>
+                <!--将所选销售渠道从本分组移出后，将列入未分组-->
+                <span class="red-bale">{{$t('removeGroupNotice')}}</span>
             </div>
         </del-modal>
     </div>
@@ -186,10 +187,10 @@
                     }
                 }).then(res => {
                    if(res.success){
-                       this.$Message.success('移动成功');
+                       this.$Message.success(this.$t('successTip',{msg: this.$t('move')}));
                        this.queryList();
                    }else{
-                       this.$Message.error('移动失败');
+                       this.$Message.error(this.$t('failureTip',{msg: this.$t('move')}));
                    }
                 });
             },
@@ -199,7 +200,7 @@
              */
             removeGroup (rowData) {
                 this.$refs.delModal.show({
-                    title : `提示`,
+                    title : this.$t('notice'),//提示
                     confirmCallback : () => {
                         this.batchMoveChannelGroup(rowData);
                     }

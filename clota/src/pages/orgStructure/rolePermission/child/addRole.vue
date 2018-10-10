@@ -10,29 +10,40 @@
             <Form :model="formData" ref="formValidate" :rules="ruleValidate">
                 <i-row>
                     <i-col span="10">
-                        <FormItem label="公司/景区名称" :label-width="100">
+                        <!--公司/景区名称-->
+                        <FormItem :label="$t('companyName')" :label-width="120">
                             <Input :value="manageOrgs.orgName"
                                    disabled
                                    style="width: 280px;"/>
                         </FormItem>
                     </i-col>
                     <i-col span="10">
-                        <FormItem label="角色名称" :label-width="100" prop="roleName">
+                        <!--角色名称-->
+                        <FormItem :label="$t('roleName')" :label-width="120" prop="roleName">
                             <Input v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>
                     <i-col span="4" style="text-align: right" v-if="type === 'edit'">
-                        <Button type="primary" @click="copyRole">复制角色</Button>
+                        <!--复制角色-->
+                        <Button type="primary" @click="copyRole">{{$t('copyRole')}}</Button>
                     </i-col>
                 </i-row>
             </Form>
-            <!--景区经营权限设置-->
-            <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
-            </manage-role-set>
+            <Tabs class="tabs" value="name1">
+                <TabPane :label="$t('managePermission')" name="name1">
+                    <!--景区经营权限设置-->
+                    <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
+                    </manage-role-set>
+                </TabPane>
+                <TabPane :label="$t('financeAuthority')" name="name2">
+                    <!--财务权限设置-->
+                    <finace-role-set ref="finaceRole" :default-chosed-node-init="economicDefaultChosed">
+                    </finace-role-set>
+                </TabPane>
+            </Tabs>
+
             <div class="gap"></div>
-            <!--财务权限设置-->
-            <finace-role-set ref="finaceRole" :default-chosed-node-init="economicDefaultChosed">
-            </finace-role-set>
+
             <!--员工权限设置-->
             <employee-role-list
                 :role-id="roleId"
@@ -42,8 +53,8 @@
             </employee-role-list>
         </div>
         <div class="btn-area">
-            <Button type="primary" class="ivu-btn-108px" @click="save">保存</Button>
-            <Button type="ghost" class="ivu-btn-108px" @click="cancel">取消</Button>
+            <Button type="primary" class="ivu-btn-108px" @click="save">{{$t('save')}}</Button>
+            <Button type="ghost" class="ivu-btn-108px" @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </div>
 </template>
@@ -84,8 +95,8 @@
                 ruleValidate : {
                     //角色名称校验规则
                     roleName : [
-                        {required : true,message : this.$t('inputField',{field : '角色名称'}),trigger : 'blur'},
-                        {max : 50,message : this.$t('errorMaxLength',{field : '角色名称',length  : 50}),trigger : 'blur'}
+                        {required : true,message : this.$t('inputField',{field : this.$t('roleName')}),trigger : 'blur'},
+                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('roleName'),length  : 50}),trigger : 'blur'}
                     ],
                 },
                 //当前查看角色的id
@@ -120,7 +131,7 @@
             save () {
                 let privileges = [...this.$refs.mangeRole.getMangePrivalige(),...this.$refs.finaceRole.getMangePrivalige()];
                 if(privileges.length <= 0){
-                    this.$Message.warning('请先添加菜单权限');
+                    this.$Message.warning(this.$t('addMenuAuthority'));
                 }else{
                     this.$refs.formValidate.validate(valid => {
                         if(valid){
@@ -144,12 +155,12 @@
                     accountIds : this.selectedEmployees.map(item => item.id)
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip',{msg: this.$t('add')}));
                         this.$router.push({
                             name : 'rolePermission'
                         });
                     }else{
-                        this.$Message.error(res.message || '新增失败');
+                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('add')}));
                     }
                 })
             },
@@ -245,12 +256,12 @@
                     accountIds : this.selectedEmployees.map(item => item.id)
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('修改成功');
+                        this.$Message.success(this.$t('successTip',{msg: this.$t('modify')}));
                         this.$router.push({
                             name : 'rolePermission'
                         });
                     }else{
-                        this.$Message.error(res.message || '修改失败');
+                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('modify')}));
                     }
                 })
             },
@@ -315,6 +326,10 @@
 
             .gap{
                 @include block_outline($height : 7px);
+            }
+
+            .tabs {
+                width: 100%;
             }
         }
 
