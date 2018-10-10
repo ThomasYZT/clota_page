@@ -12,7 +12,9 @@
               <div class="person-info">
                   <div class="left">
                       <div class="img-wrapper">
-                          <img class="default-face" :src="memberHeadImg" alt="">
+                          <img class="default-face"
+                               :src="userInfo.userImg ? userInfo.userImg : memberHeadImg"
+                               @click="showImg">
                       </div>
                       <span class="username" @click="toPersonInfo">
                           <span class="name">
@@ -47,6 +49,12 @@
       <div class="nav">
           <label-item v-for="(item, index) in labelList" :info.sync="item" :key="index"></label-item>
       </div>
+
+      <x-dialog v-model="isShowImg"
+                hide-on-blur
+                :dialog-style="{'max-width': '100%', width: '100%', height: '50%', 'background-color': 'transparent'}">
+          <img class="default-face" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+      </x-dialog>
   </div>
 </template>
 
@@ -160,12 +168,15 @@
                 cardLevel: 1,
                 lvName: '',
                 //会员卡字体颜色
-                cardFontColor: '#fff'
+                cardFontColor: '#fff',
+                //是否放大显示头像
+                isShowImg: false
             }
         },
         computed: {
             ...mapGetters({
                 isLoading : 'isLoading',
+                userInfo : 'userInfo'
             }),
             //vip卡类名
             memberVipCardClass () {
@@ -286,6 +297,12 @@
                 this.$router.push({
                     name : 'memberCode'
                 });
+            },
+            /**
+             *  放大显示头像
+             */
+            showImg() {
+                this.isShowImg = true;
             }
         },
         created() {

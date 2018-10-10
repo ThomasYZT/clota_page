@@ -49,7 +49,7 @@
                 //手机号码
                 originPhone : '',
                 //倒计时间
-                time: 1,
+                time: 60,
                 //是否获取验证码
                 isGetCode: false,
                 //是否开始计时
@@ -94,7 +94,7 @@
                     });
                 }).then(() => {
                     this.$router.replace({
-                        name : 'payAgreement',
+                        name : 'inputPass',
                         params : {
                             mobile : this.originPhone,
                             code : this.formData.validCode
@@ -181,7 +181,6 @@
         background: rgba(242,243,244,1);
 
         .area{
-            height: 100%;
             padding-top: 26px;
             @include block_outline($height : 100%);
             background: $color_fff;

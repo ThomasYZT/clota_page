@@ -5,13 +5,6 @@
 <template>
     <div class="pay-agreement">
         <p class="content">{{txt}}</p>
-
-        <div class="btn-area">
-            <check-icon class="agree-button" :value.sync="isChoesd">({{$t('agreement')}})</check-icon>
-            <x-button :class="{disabled: !isChoesd}"
-                      :disabled="!isChoesd"
-                      @click.native="nextStep">{{$t('nextStep')}}</x-button>
-        </div>
     </div>
 </template>
 
@@ -24,8 +17,6 @@
         data() {
             return {
                 txt: '',
-                //是否同意协议
-                isChoesd: false,
                 //手机号码
                 mobile : '',
                 //验证码
@@ -78,29 +69,31 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .pay-agreement {
+        height: 100%;
 
-    .content {
-        padding: 10px 20px;
+        .content {
+            padding: 10px 20px;
+            height: 100%;
+            overflow: auto;
+        }
+        .btn-area{
+            @include block_outline(unquote('calc(100% - 55px)'),42px);
+            margin: 10px auto 0;
+            text-align: center ;
+
+            .agree-button {
+                margin-bottom: 10px;
+            }
+
+            /deep/ .weui-btn_default{
+                background: $color_0073EB;
+                font-size: 17px;
+                color: $color_fff;
+                border-radius: 100px;
+                letter-spacing: 5px;
+            }
+        }
     }
-    .btn-area{
-        @include block_outline(unquote('calc(100% - 55px)'),42px);
-        margin: 10px auto 0;
-        text-align: center ;
 
-        .agree-button {
-            margin-bottom: 10px;
-        }
-
-        .disabled {
-            background: gray !important;
-        }
-
-        /deep/ .weui-btn_default{
-            background: $color_0073EB;
-            font-size: 17px;
-            color: $color_fff;
-            border-radius: 100px;
-            letter-spacing: 5px;
-        }
-    }
 </style>

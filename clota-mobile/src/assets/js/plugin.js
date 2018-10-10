@@ -29,6 +29,7 @@ import {
     CheckIcon ,
     Loading  ,
     Countdown  ,
+    XDialog,
 } from 'vux';
 
 
@@ -76,7 +77,8 @@ plugin.install = function (Vue, options) {
     Vue.component('confirm', Confirm);
     Vue.component('check-icon', CheckIcon);
     Vue.component('loading', Loading);
-    Vue.component('countdown', Countdown)
+    Vue.component('countdown', Countdown);
+    Vue.component('x-dialog', XDialog);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

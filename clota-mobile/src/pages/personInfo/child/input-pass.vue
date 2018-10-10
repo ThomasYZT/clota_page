@@ -13,7 +13,12 @@
             </ul>
 
             <div class="btn-area">
-                <x-button @click.native="submit">{{$t('submit')}}</x-button>
+                <x-button @click.native="submit"
+                          :disabled="!isChoesd"
+                          :class="{disabled: !isChoesd}">{{$t('submit')}}</x-button>
+                <check-icon class="agree-button"
+                            :value.sync="isChoesd"></check-icon>
+                <span @click="toAgreement">({{$t('agreement')}})</span>
             </div>
         </div>
         <!--输入数字键盘-->
@@ -23,6 +28,8 @@
             @del-word="delPassWord"
             @cancel="cancelInput">
         </num-key-board>
+
+
     </div>
 </template>
 
@@ -46,7 +53,9 @@
                 //验证码
                 code : '',
                 //当前输入密码类型
-                passType : ''
+                passType : '',
+                //支付协议是否被选择
+                isChoesd: false
             }
         },
         methods: {
@@ -215,6 +224,14 @@
                         resolve();
                     }
                 });
+            },
+            /**
+             * 前往支付协议
+             */
+            toAgreement() {
+                this.$router.push({
+                    name: 'payAgreement'
+                })
             }
         },
         computed : {
@@ -281,7 +298,7 @@
         background: rgba(242,243,244,1);
 
         .area{
-            @include block_outline($height : 464px);
+            @include block_outline($height : 100%);
             background:$color_fff;
             padding-top: 35px;
 
@@ -327,6 +344,7 @@
             .btn-area{
                 @include block_outline(unquote('calc(100% - 55px)'),42px);
                 margin: 82px auto 0;
+                text-align: center;
 
                 /deep/ .weui-btn_default{
                     background: $color_0073EB;
@@ -334,6 +352,15 @@
                     color: $color_fff;
                     border-radius: 100px;
                     letter-spacing: 5px;
+                }
+
+                .agree-button {
+                    margin-top: 10px;
+                }
+
+
+                .disabled {
+                    background: gray !important;
                 }
             }
         }
