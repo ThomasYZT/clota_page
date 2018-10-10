@@ -17,6 +17,7 @@
         <div class="selectionTable">
 
             <table-com
+                v-if="cardId"
                 :ofsetHeight="170"
                 :show-pagination="true"
                 :column-data="columnData"
@@ -108,13 +109,15 @@
                 tableData: [],
                 // 数据总条数
                 totalCount: 0,
+                //会员id
+                cardId : ''
             }
         },
         methods: {
             // 初始化加载获取员工列表数据
-            queryList(cardId) {
+            queryList() {
                 ajax.post('queryMemberOrder', {
-                    cardId: cardId,
+                    cardId: this.cardId,
                     ...this.queryParams
                 }).then(res => {
                     if (res.success) {
@@ -133,9 +136,8 @@
              * @param params
              */
             getParams (params) {
-                console.log(params)
                 if(params && Object.keys(params).length > 0){
-                    this.queryList(params.cardPkg.cardId);
+                    this.cardId = params.cardPkg.cardId;
                 }else{
                     this.$router.push({
                         name : 'infoDetail'
