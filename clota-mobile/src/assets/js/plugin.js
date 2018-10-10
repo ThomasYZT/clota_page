@@ -86,11 +86,11 @@ plugin.install = function (Vue, options) {
 
     Vue.use(WechatPlugin);
     Vue.wechat.config({
-        debug: false,
+        debug: true,
         appId: 'wx6ddc1e293024d508',
-        timestamp: 1539161375,
-        nonceStr: 'p4gIyecFvyElpxtN',
-        signature: 'b8ddd848e9d4e7d4e571db140fd5b4858fc5234e',
+        timestamp: 1539171889,
+        nonceStr: '82bPxecf5HaddrW0',
+        signature: '10916c8b4b38f609581f3bae54e3c7ddeb14e54c',
         jsApiList: [
             'chooseImage',
         ]

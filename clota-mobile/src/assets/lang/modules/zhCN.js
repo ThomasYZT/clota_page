@@ -153,4 +153,8 @@ export default {
     'agreement': '我已阅读并同意交易服务协议',
     payAgreement: '支付协议',
     'consume': '消费',
+    'decimalError': '{field}小数位最多2位',
+    'moneyError': '{field}必须为非负数',
+    'errorMaxLength': '{field}不能超过{length}个字符',
+    rechargeNum : '充值金额'
 }
