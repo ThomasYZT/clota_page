@@ -24,7 +24,7 @@
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             @query-data="queryList">
-            <el-table-column
+            <!--<el-table-column
                 slot="column5"
                 slot-scope="row"
                 :label="row.title"
@@ -33,9 +33,9 @@
                 <template slot-scope="scope">
                         <div class="role-privilege" v-w-title="scope.row.rolePrivilege">{{scope.row.rolePrivilege}}</div>
                 </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
-                slot="column7"
+                slot="column6"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"

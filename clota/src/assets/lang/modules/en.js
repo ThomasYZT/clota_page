@@ -1063,7 +1063,8 @@ export default {
     'cooperation': '合作伙伴',
     'disabledCooperation': '您已禁用合作伙伴',
     'ableCooperation': '您已启用合作伙伴',
-
+    'A010': '账号名已存在',
+    'O002': '该合作伙伴已存在'
 
 
 

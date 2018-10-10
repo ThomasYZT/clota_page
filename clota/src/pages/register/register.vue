@@ -356,7 +356,7 @@
                     ],
                     rePassword: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
-                        { validator: validateMethods.isEqNewPwd2, trigger: 'blur' },
+                        { validator: validateMethods.isEqNewPwd, trigger: 'blur' },
                     ],
                 },
                 //企业注册表单校验
@@ -436,8 +436,9 @@
                 ajax.post('register', this.formData).then(res => {
                     if(res.success) {
                         this.$Message.success(this.$t('注册成功'));
+                        //this.$router.replace
                     } else {
-                        this.$Message.success(this.$t('注册失败'));
+                        this.$Message.error(this.$t(res.code));
                     }
                 })
             },
@@ -451,7 +452,7 @@
                     if(res.success) {
                         this.$Message.success(this.$t('注册成功'));
                     } else {
-                        this.$Message.success(this.$t('注册失败'));
+                        this.$Message.error(this.$t(res.code));
                     }
                 })
             },
