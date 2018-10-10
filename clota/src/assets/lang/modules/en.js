@@ -836,8 +836,6 @@ export default {
     'appendProduct': 'append Product',
     'append': 'append',
 
-
-
     /*** 财务管理模块 ***/
     'financeManage' : 'financial view',
     'rechargeRecord' : 'recharge record',
@@ -1091,13 +1089,27 @@ export default {
     'scopeLimit': 'Please enter 2 to 8 company code',
     'WriteOffSalesAndDeskName': 'Write-off/sales Desk Name',
     'OwnGroup': 'Own Group',
+    'A010': '账号名已存在',
+    'O002': '该合作伙伴已存在',
     'noAccount': '没有账号?',
-    'partnerRegister': '合作',
-    'personalRegist': '个人注',
+    'partnerRegister': '合作伙伴注册',
+    'personalRegist': '个人注册',
     'companyRegist': '公司注册',
     'submit': '提交',
-    'reset': '重置',
     'identiImg': '身份证照片',
-    'A010': '账号名已存在',
-    'O002': '该合作伙伴已存在'
+    'product-list': '产品列表',
+    'product-policy': '销售政策',
+    'product-type': '产品类别设置',
+    'card-range': '会员卡可用范围设置',
+    'members-card': '新开卡',
+    'system': '系统设置',
+    'payment-account': '在线支付账户设置',
+    'reset-password': '重置安全密码',
+    'sms-manage': '短信管理',
+    'sms-buy': '购买短信',
+    'finance-manage': '财务管理',
+    'recharge-record': '付款账户管理',
+    'receivable-account': '收款账户管理',
+    'payment-account-manage': '收款账户管理',
+
 }
