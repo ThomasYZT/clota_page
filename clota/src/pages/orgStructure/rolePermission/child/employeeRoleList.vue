@@ -3,10 +3,10 @@
 <template>
     <div class="employee-privalige-set">
         <div class="btn-area">
-            <Button type="primary" @click="addEmployee" style="margin-right: 7px;">增加员工</Button>
+            <Button type="primary" @click="addEmployee" style="margin-right: 7px;">{{$t('appendEmployee')}}</Button>
             <Button type="error"
                     @click="del(employeeChosed)"
-                    :disabled="employeeChosed.length < 1">批量删除</Button>
+                    :disabled="employeeChosed.length < 1">{{$t('deleteBatch')}}</Button>
         </div>
         <table-com
             :column-data="columns"
@@ -33,7 +33,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scoped">
                     <ul class="operate-list">
-                        <li @click="del([scoped.row])">删除</li>
+                        <li @click="del([scoped.row])">{{$t('delete')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -48,8 +48,8 @@
         <del-modal ref="delModal">
             <div class="del-tips">
                 <Icon type="help-circled"></Icon>
-                <span class="red-bale">您将解除员工：<span style="color: #F7981C;">{{delEmployees.map(item => item.nickName).join(',')}}</span>等{{delEmployees.length}}位员工权限。<span style="color:#ed3f14 ;">本操作不可撤销，</span></span>
-                <span>是否确认删除？</span>
+                <span class="red-bale">{{$t('removeEmp')}}：<span style="color: #F7981C;">{{delEmployees.map(item => item.nickName).join(',')}}</span>{{$t('removeAuthority',{num: delEmployees.length})}}<span style="color:#ed3f14 ;">{{$t('irreversible')}}，</span></span>
+                <span>{{$t('sureToDel')}}？</span>
             </div>
         </del-modal>
     </div>
@@ -138,7 +138,7 @@
             del (rowData) {
                 this.delEmployees = rowData;
                 this.$refs.delModal.show({
-                    title : `删除员工`,
+                    title : this.$t('delEmployee'),
                     confirmCallback : () => {
                         this.confirmDel(rowData);
                     }
@@ -167,11 +167,11 @@
                     accountIds : delIds.join(',')
                 }).then(res => {
                     if(res.success){
-                       this.$Message.success('删除成功');
+                       this.$Message.success(this.$t('successTip',{msg: this.$t('delete')}));
                        this.tableData = leftTableData;
                         this.$emit('updateSelected',this.tableData);
                     }else{
-                        this.$Message.error(res.message || '删除失败');
+                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('delete')}));
                     }
                 });
             },

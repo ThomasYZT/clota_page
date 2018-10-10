@@ -72,8 +72,10 @@
     import {configVariable} from '@/assets/js/constVariable';
     import map from 'lodash/map';
     import {mapGetters} from 'vuex';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
             breadCrumbHead,
             tableCom
@@ -110,9 +112,11 @@
         },
         methods: {
             // 初始化加载获取员工列表数据
-            queryList() {
-
-                ajax.post('queryMemberOrder', this.queryParams).then(res => {
+            queryList(cardId) {
+                ajax.post('queryMemberOrder', {
+                    cardId: cardId,
+                    ...this.queryParams
+                }).then(res => {
                     if (res.success) {
                         if (res.data && res.data.data) {
                             this.tableData = res.data.data;
@@ -124,7 +128,20 @@
                     }
                 });
             },
-
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                console.log(params)
+                if(params && Object.keys(params).length > 0){
+                    this.queryList(params.cardPkg.cardId);
+                }else{
+                    this.$router.push({
+                        name : 'infoDetail'
+                    });
+                }
+            },
             // 搜索员工
             handleSearch() {
                 this.queryParams.pageNo = 1;

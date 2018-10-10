@@ -7,9 +7,11 @@
             transfer
             popper-class="select-group"
             @on-popper-hide="popperHide">
-        <span @click="$emit('input',true)">移至其它分组</span>
+        <!--移至其它分组-->
+        <span @click="$emit('input',true)">{{$t('toOtherGroup')}}</span>
         <div slot="content">
-            <div class="name">将所选核销设备移至分组</div>
+            <!--将所选核销设备移至分组-->
+            <div class="name">{{$t('verificationToGroup')}}</div>
             <Form ref="formData" :model="formData" :rules="ruleValidate">
                 <FormItem prop="selectOrgId">
                     <Select v-model="formData.selectOrgId" style="width:240px" transfer>
@@ -22,8 +24,8 @@
                 </FormItem>
             </Form>
             <div class="btn-area">
-                <Button type="primary" @click="changeOrg">确定</Button>
-                <Button type="ghost" @click="$emit('input',false)">取消</Button>
+                <Button type="primary" @click="changeOrg">{{$t('confirm')}}</Button><!--确定-->
+                <Button type="ghost" @click="$emit('input',false)">{{$t('cancel')}}</Button><!--取消-->
             </div>
         </div>
     </Poptip>
@@ -56,7 +58,7 @@
                 //表单校验规则
                 ruleValidate : {
                     selectOrgId : [
-                        {required : true,message : this.$t('selectField',{msg : '销售分组'}),trigger : 'change'},
+                        {required : true,message : this.$t('selectField',{msg : this.$t('saleGroup')}),trigger : 'change'},
                     ]
                 },
                 //分组信息

@@ -5,11 +5,11 @@
         <div class="area">
             <div class="label">{{$t('tradePassRule')}}</div>
             <ul class="pass-input" @click="showKeyBoard($event,'first')">
-               <li v-for="(item,i) in passData" :key="i">{{item}}</li>
+               <li :class="{active : activeLi === ('first'+i)}" v-for="(item,i) in passData" :key="i">{{item}}</li>
             </ul>
             <div class="label label-margin">{{$t('inputPassAgain')}}</div>
             <ul class="pass-input" @click="showKeyBoard($event,'second')">
-                <li v-for="(item,i) in againPassData" :key="i">{{item}}</li>
+                <li :class="{active : activeLi === ('second'+i)}" v-for="(item,i) in againPassData" :key="i">{{item}}</li>
             </ul>
 
             <div class="btn-area">
@@ -28,12 +28,10 @@
 
 <script>
     import numKeyBoard from '@/components/numKeyBoard/index.vue';
-    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     import MD5 from 'crypto-js/md5';
     export default {
-        mixins : [lifeCycleMixins],
         components : {
             numKeyBoard
         },
@@ -60,18 +58,18 @@
                 if(this.passType === 'first'){
                     if(this.inputData.length === 5){
                         this.inputData.push(data);
-                        this.$refs.numKeyBoard.hide();
+                        this.passType = 'second';
                     }else if(this.inputData.length >= 6){
-                        this.$refs.numKeyBoard.hide();
+                        this.passType = 'second';
                     }else{
                         this.inputData.push(data);
                     }
                 }else{
                     if(this.againInputData.length === 5){
                         this.againInputData.push(data);
-                        this.$refs.numKeyBoard.hide();
+                        this.$store.commit('updateKeyBoardStatus',false);
                     }else if(this.againInputData.length >= 6){
-                        this.$refs.numKeyBoard.hide();
+                        this.$store.commit('updateKeyBoardStatus',false);
                     }else{
                         this.againInputData.push(data);
                     }
@@ -225,7 +223,7 @@
                 let result = [];
                 for(let i = 0,j = 6;i < j;i++){
                     if(this.inputData[i] !== undefined){
-                        result.push('*');
+                        result.push('●');
                     }else{
                         result.push('');
                     }
@@ -237,7 +235,7 @@
                 let result = [];
                 for(let i = 0,j = 6;i < j;i++){
                     if(this.againInputData[i] !== undefined){
-                        result.push('*');
+                        result.push('●');
                     }else{
                         result.push('');
                     }
@@ -245,8 +243,33 @@
                 return result;
             },
             ...mapGetters({
-                userInfo : 'userInfo'
-            })
+                userInfo : 'userInfo',
+            }),
+            //当前激活的li
+            activeLi (){
+                if(this.$store.state.showKeyBoard){
+                    if(this.passType === 'first'){
+                        if(this.inputData.length === 0){
+                            return 'first' + (this.inputData.length  );
+                        }else{
+                            return 'first' + (this.inputData.length - 1 );
+                        }
+                    }else if(this.passType === 'second'){
+                        if(this.againInputData.length === 0){
+                            return 'second' + (this.againInputData.length);
+                        }else{
+                            return 'second' + (this.againInputData.length - 1);
+                        }
+                    }
+                }else{
+                    return '';
+                }
+            }
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm => {
+                vm.getParams(to.params)
+            });
         }
     }
 </script>
@@ -294,6 +317,10 @@
                     justify-content: center;
                     font-size: $font_size_24px;
                     color: $color_000;
+
+                    &.active{
+                        border: 1px solid #0073EB;
+                    }
                 }
             }
 

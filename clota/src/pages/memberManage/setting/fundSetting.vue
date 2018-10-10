@@ -446,18 +446,19 @@
 
             //获取储值赠送金额应用范围
             listAccount () {
-                ajax.post('listAccount', {}).then(res => {
+                ajax.post('queryMemberAccountDefine', {
+                    accountType: 'charging',
+                    pageNo: 1,
+                    pageSize: 99999,
+                }).then(res => {
                     if( res.success ) {
-                        this.listAccountTable = res.data || [];
+                        this.listAccountTable = res.data.data || [];
                     }
                 })
             },
             //获取储值账户-(本金/赠送金额)应用范围
             getSubNode () {
-                ajax.post('getSubNode', {
-                    orgType: 'scenic',
-                    includeMe: 'true',
-                }).then(res => {
+                ajax.post('listApplicationRange').then(res => {
                     if( res.success ) {
                         this.listAmountRangeTable = defaultsDeep([], res.data );
                         this.sendRangeTable = defaultsDeep([], res.data );

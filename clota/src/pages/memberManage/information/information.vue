@@ -228,11 +228,9 @@
 
             // 获取会员渠道列表
             getChannelList() {
-                ajax.post('queryChannelSet', {
-                    companyId: '',
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
+                ajax.post('querySelfOwnedChannel',{
+                    pageNo : 1,
+                    pageSize : 999
                 }).then(res => {
                     if(res.success){
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));

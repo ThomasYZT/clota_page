@@ -9,7 +9,7 @@
         <!--tpCard - 测试-->
         <!--<object id="rd" data="../static/comRD800.dll" WIDTH="0" HEIGHT="0"
                 classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>-->
-        <!--<iframe src="../../../../static/test-1.html" frameborder="0" id="iframe"></iframe>-->
+        <iframe src="../../../../static/tpCard.html" frameborder="0" id="iframe" hidden></iframe>
 
         <div class="new-card-content ">
             <Form ref="formValidate"
@@ -116,29 +116,42 @@
                 </Form-item>
 
                 <h3>{{$t('entityCardInfo')}}</h3><!--实体卡信息-->
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--卡面号-->
-                        <Input v-model.trim="newCardParam.tpNo"
-                               :disabled="true"
-                               :placeholder="$t('readCard')"/>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--物理卡号-->
-                        <Input v-model.trim="newCardParam.tpCardNo"
-                               :disabled="true"
-                               :placeholder="$t('readCard')"/>
-                    </Form-item>
-                </div>
+                <template v-if="newCardParam.tpNo && newCardParam.tpCardNo">
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--卡面号-->
+                            <Input v-model.trim="newCardParam.tpNo"
+                                   :disabled="true"
+                                   :placeholder="$t('readCard')"/>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo"><!--物理卡号-->
+                            <Input v-model.trim="newCardParam.tpCardNo"
+                                   :disabled="true"
+                                   :placeholder="$t('readCard')"/>
+                        </Form-item>
+                    </div>
+                </template>
+                <Button v-else style="width: 100%;"
+                        type="dashed"
+                        :disabled="reading"
+                        @click="fetchCardInfo()">
+                    <span v-if="!newCardParam.tpNo && !newCardParam.tpCardNo">{{$t('readCard')}}</span><!--请读卡-->
+                    <span v-if="reading">{{$t('readingCardInfo') + '...'}}</span><!--正在读取实体卡信息...-->
+                    <span class="blue" v-if="!reading && (newCardParam.tpNo && !newCardParam.tpCardNo)">
+                        <span class="red">{{$t('recognizeFailed')}}</span>{{$t('clickReadAgain')}}
+                    </span><!--识别失败！点击重新读取-->
+
+                </Button>
 
             </Form>
-            <!--<Button type="primary" @click="fetchCardInfo()">获取实体卡信息</Button>-->
         </div>
         <!--footer 按钮-->
         <div class="content-footer">
             <template v-if="type === 'add'">
                 <Button type="primary"
                         :loading="loading"
+                        :disabled="!newCardParam.tpNo || !newCardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirmAdd')}}
                 </Button>
@@ -146,6 +159,7 @@
             <template v-if="type === 'modify'">
                 <Button type="primary"
                         :loading="loading"
+                        :disabled="!newCardParam.tpNo || !newCardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirm')}}
                 </Button>
@@ -233,7 +247,10 @@
             return {
                 //新增/修改
                 type: 'add',
+                // 新增/修改按钮loading
                 loading: false,
+                // 读卡中: reading
+                reading: false,
                 dateOption: {
                     disabledDate: function (value) {
                         return value && ( value.format('yyyy-MM-dd') < '1900-01-01' || value.format('yyyy-MM-dd') > new Date().format('yyyy-MM-dd'));
@@ -273,8 +290,6 @@
                 },
                 // 所有实体卡信息
                 allEntityCards: [],
-                // D3 SDK 注册后的实例对象
-                rd_D3: {},
 
                 // 表单校验规则
                 ruleValidate: {
@@ -348,12 +363,12 @@
         created() {
             this.queryDocument();
             this.getLevelList();
-            this.getAllEntityCard();
+//            this.getAllEntityCard();
         },
         mounted() {
 //            this.idCardTest(rd);     // rd -- 实体卡SDK
             console.log(rd)
-            this.rd_D3 = rd;
+//            this.rd_D3 = rd;
         },
         watch: {},
         methods: {
@@ -379,11 +394,11 @@
                         if (this.type === 'add') {
                             this.saveAndEditMember('saveNewMemberInfo', params);
                         }
-                        if (this.type === 'modify') {
+                        /*if (this.type === 'modify') {
                             params.memberInfo.id = this.info.id;
                             params.memberCard.id = this.info.cardId;
                             this.saveAndEditMember('editMemberInfo', params);
-                        }
+                        }*/
                     }
                 })
             },
@@ -424,6 +439,7 @@
              * 查询所有导入的实体卡信息
              */
             getAllEntityCard() {
+                this.reading = true;
                 return ajax.post('queryEntityCard',{
                     cardStatus : '',
                     pageNo : 1,
@@ -435,11 +451,14 @@
                         this.$Message.error(this.$t('failureTip', {tip: this.$t('获取实体卡基础数据')}));
                     }
                     return res.data;
+                }).finally(() => {
+                    this.reading = false;
                 });
             },
 
             //新增/编辑会员接口
             saveAndEditMember(url, params) {
+                this.loading = true;
                 ajax.post(url, {
                     memberInfo: JSON.stringify(params.memberInfo),
                     memberCard: JSON.stringify(params.memberCard),
@@ -469,6 +488,8 @@
                         }
 
                     }
+                }).finally(() => {
+                    this.loading = false;
                 })
             },
 
@@ -484,41 +505,32 @@
             },
             /**
              * 读取实体卡信息
-             * @param rd -- 实体卡SDK
              */
-            fetchCardInfo(rd) {
-                let aa = document.getElementById('iframe');
-                this.rd_D3 = aa.contentDocument.getElementById('rd');
+            fetchCardInfo() {
+                this.newCardParam.tpNo = '';
+                this.newCardParam.tpCardNo = '';
 
-                if (isEmpty(this.allEntityCards)) {
+                let eleIframe = document.getElementById('iframe');
+                eleIframe.contentDocument.getElementById('m1Card').onclick();
+//                console.log(eleIframe.contentDocument.getElementById('sdkD3').value);
+
+                this.newCardParam.tpNo = eleIframe.contentDocument.getElementById('sdkD3').value;
+                this.getAllEntityCard().then(() => {
+                    this.readEntityCard(this.newCardParam.tpNo);
+                });
+                /*if (isEmpty(this.allEntityCards)) {
                     this.getAllEntityCard().then(() => {
-                        this.readEntityCard(this.rd_D3);
+                        this.readEntityCard(this.newCardParam.tpNo);
                     });
                 } else {
-                    this.readEntityCard(this.rd_D3);
-                }
+                    this.readEntityCard(this.newCardParam.tpNo);
+                }*/
             },
-            readEntityCard(rd) {
-                console.log(rd.data)
-                var st; //主要用于返回值
-//                var lSnr; //本用于取序列号，但在javascript只是当成dc_card函数的一个临时变量
-//                var rlen; //用于取一些返回值长度，但在javascript只是当成dc_card函数的一个临时变量
-
-                if (rd.dc_init) {
-                    st = rd.dc_init(100, 115200);
-                }
-//                st = 180;   // 测试代码
-                if (!st || st <= 0) {
-                    this.$Message.error(this.$t("cardInitError") + '！');    // 实体卡初始化出错
-                    return;
-                }
-                console.info(this.$t("cardInitSuccess") + '！');     // 实体卡初始化成功
-
+            readEntityCard(cardId) {
                 let matchedCard = this.allEntityCards.find((item, i) => {
-                    return rd.get_bstrRBuffer_asc === item.id;
+                    return cardId === item.id;
                 });
                 if (matchedCard) {
-                    this.newCardParam.tpNo = rd.get_bstrRBuffer_asc;
                     this.newCardParam.tpCardNo = matchedCard.faceNum;
                 } else {
                     this.$Message.warning(this.$t('noMatchCard'));  // 对不起，找不到该卡的信息，请尝试更换其他的卡
@@ -597,6 +609,10 @@
                 font-size: 14px !important;
             }
         }
+
+        .blue { color: $color_blue; }
+
+        .red { color: $color_red; }
 
     }
 </style>
