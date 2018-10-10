@@ -182,7 +182,12 @@ export default new Vuex.Store({
         },
         //更改组织机构
         updateManageOrgs(state,org) {
-            state.manageOrgs = org;
+            let orgInfoStorage = localStorage.getItem('manageOrg');
+            if(Object.keys(state.manageOrgs).length < 1 && orgInfoStorage){
+                state.manageOrgs = JSON.parse(orgInfoStorage);
+            }else{
+                state.manageOrgs = org;
+            }
         },
         //更改皮肤
         updateSkin (state,skin) {
@@ -265,6 +270,7 @@ export default new Vuex.Store({
         //重新选择登录的机构
         resetNodeChosed (store,orgInfo ) {
             store.state.manageOrgs = orgInfo;
+            localStorage.setItem('manageOrg',JSON.stringify(orgInfo));
             return this.dispatch('getUserRight').then(res =>{
                 store.commit('updateHashKey');
                 return res;

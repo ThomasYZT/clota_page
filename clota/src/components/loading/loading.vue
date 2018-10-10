@@ -49,9 +49,7 @@
         position:absolute;
         left:50%;
         margin-left:-10px;
-        -webkit-animation:3s infinite linear;
-        -moz-animation:3s infinite linear;
-        -o-animation:3s infinite linear;
+        animation : 3s infinite linear;
 
     }
 
@@ -60,9 +58,7 @@
         width: 10px;
         height: 10px;
         background:#ee4141;
-        -webkit-animation:kiri 1.2s infinite linear;
-        -moz-animation:kiri 1.2s infinite linear;
-        -o-animation:kiri 1.2s infinite linear;
+        animation: kiri 1.2s infinite linear;
 
     }
     .loader span:nth-child(3){
@@ -75,9 +71,7 @@
         width: 10px;
         height: 10px;
         background:#2f70df;
-        -webkit-animation:kanan 1.2s infinite linear;
-        -moz-animation:kanan 1.2s infinite linear;
-        -o-animation:kanan 1.2s infinite linear;
+        animation: kanan 1.2s infinite linear;
     }
 
 </style>
