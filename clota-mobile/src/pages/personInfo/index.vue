@@ -317,10 +317,15 @@
              */
             getBase64ToServer (data) {
                 let extension = data ? data.match(/data:image\/(.*);{1,}/) : [];
-                let file = data ? data.split(',')[1] : '';
+                let file = '';
+                if(extension){
+                    file = data ? data.split(',')[1] : '';
+                }else{
+                    file = data;
+                }
                 ajax.post('uploadBase64File',{
                     file : file,
-                    extension : extension[1]
+                    extension : extension ? extension[1] : 'jpg'
                 }).then(res => {
                     if(res.success){
                         this.savePortrait(res.data);

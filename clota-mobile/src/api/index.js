@@ -15,7 +15,7 @@ let baseUrl = '';
 
 //如果是开发环境则打开代理
 if(process.env.NODE_ENV === 'development'){
-    baseUrl = ''
+    baseUrl = 'api'
 }else{
     baseUrl = '';
 }
