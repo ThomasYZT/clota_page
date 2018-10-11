@@ -10,7 +10,10 @@
                 v-for="(item,i) in accountList"
                 :key="i">
                 <div class="header">
-                    <div class="account-list-chose" @click="showAccount">{{item.accountName}}</div>
+                    <div class="account-list-chose" @click="showAccount">
+                        {{item.accountName}}
+                        <span class="iconfont icon-arrow-right"></span>
+                    </div>
                     <div class="asset-info">{{item.accountBalance | moneyFilter}}</div>
                     <div class="asset-tip">{{$t('allAssets')}}</div>
                     <div class="account-type">
@@ -152,6 +155,12 @@
                 font-size: $font_size_18px;
                 padding-top: 20px;
                 margin: 0 auto 25px auto;
+
+                .icon-arrow-right{
+                    display: inline-block;
+                    transform: rotate(90deg);
+                    font-size: $font_size_15px;
+                }
             }
 
             .asset-info{
