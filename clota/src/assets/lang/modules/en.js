@@ -1112,5 +1112,7 @@ export default {
     'recharge-record': '充值记录',
     'receivable-account-manage': '收款账户管理',
     'payment-account-manage': '付款账户管理',
+    'orderCenter': '预定中心',
+    'createOrder': '新建订单',
 
 }

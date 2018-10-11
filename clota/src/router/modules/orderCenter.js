@@ -9,17 +9,31 @@
  * isStaticMenu 表示不需要权限的菜单，如果配置了这个属性，可以不用再配置是_name
  */
 //一级菜单的menuname
-let topMenuName = 'order';
+let topMenuName = 'orderCenter';
 export default {
     memberMange: {
         path: '/order',
-        component: () => import(/* webpackChunkName: "memberManageInit" */ '../../pages/memberManage/index.vue'),
+        component: () => import(/* webpackChunkName: "orderCenterInit" */ '../../pages/orderCenter/index.vue'),
         meta: {
-            _name: 'members',
-            menuName: 'order',
-            rightPath: topMenuName + '.' + 'order',
+            _name: 'org',
+            menuName: 'orderCenter',
+            rightPath: topMenuName + '.' + 'orderCenter',
             isMenu: true
         },
+        children : {
+            //新建订单
+            createOrder : {
+                path: '/order/create',
+                name: 'createOrder',
+                component: () => import(/* webpackChunkName: "orderCenterInit" */ '../../pages/orderCenter/createOrder/index.vue'),
+                meta: {
+                    menuName: 'createOrder',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'createOrder',
+                    isMenu: true
+                },
+            }
+        }
     }
 
 }

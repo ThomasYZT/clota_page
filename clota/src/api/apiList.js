@@ -16,6 +16,8 @@ import product from './modules/product';
 import account from './modules/account';
 //财务管理接口
 import finance from './modules/finance';
+//预订单中心接口
+import orderCenter from './modules/orderCenter';
 
 const apiList = {
 
@@ -45,7 +47,9 @@ const apiList = {
     //个人中心接口
     ...account,
     //财务管理接口
-    ...finance
+    ...finance,
+    //预定中心接口
+    ...orderCenter
 };
 
 export default apiList;

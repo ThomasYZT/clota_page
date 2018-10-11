@@ -13,6 +13,8 @@ import personalCenterRouter from './modules/personalCenter';
 import productCenterRouter from './modules/productCenter';
 // 财务管理路由
 import financeManageRouter from './modules/financeManage';
+// 预定中心路由
+import orderCenter from './modules/orderCenter';
 
 
 export default {
@@ -22,4 +24,5 @@ export default {
     ...personalCenterRouter,
     ...productCenterRouter,
     ...financeManageRouter,
+    ...orderCenter,
 }

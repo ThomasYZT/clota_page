@@ -424,3 +424,15 @@ export const specialHoliday = [
         id : 'custom'
     },
 ];
+
+//订单类型
+export const orderType = [
+    {
+        label : 'team',//团队
+        value : 'team'
+    },
+    {
+        label : 'Fit',//散客
+        value : 'individual'
+    },
+];
