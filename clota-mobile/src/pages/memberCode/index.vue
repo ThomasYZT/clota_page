@@ -334,10 +334,11 @@
     }
 
     .popup-label{
-        @include block_outline($height : 32px);
+        @include block_outline($height : auto);
         line-height: 14px;
         color: $color_999;
         font-size: $font_size_10px;
+        padding-bottom: 5px;
     }
     .vux-popup-header{
         height: auto;

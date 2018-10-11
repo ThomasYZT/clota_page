@@ -67,7 +67,7 @@ const createRouter = () => new Router({
             name : 'account',
             component : () => import(/* webpackChunkName: "account" */'../pages/account/index.vue'),
             meta : {
-                title : '账户'
+                title : 'account'
             }
         },
         //账户充值
@@ -76,7 +76,7 @@ const createRouter = () => new Router({
             name : 'accountRecharge',
             component : () => import(/* webpackChunkName: "account" */'../pages/account/child/accountRecharge.vue'),
             meta : {
-                title : '默认账户充值'
+                title : ''
             }
         },
         //个人信息
@@ -103,7 +103,7 @@ const createRouter = () => new Router({
             name : 'changeId',
             component : () => import(/* webpackChunkName: "personInfo" */'../pages/personInfo/child/changeId.vue'),
             meta : {
-                title : '修改证件号'
+                title : 'changeIdNum'
             }
         },
         //个人信息--修改交易密码
@@ -190,7 +190,7 @@ const createRouter = () => new Router({
             name : 'card',
             component : () => import(/* webpackChunkName: "order" */'../pages/card/index.vue'),
             meta : {
-                title : '我的卡包'
+                title : 'card'
             }
         },
         //会员卡二维码页面

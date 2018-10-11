@@ -74,7 +74,8 @@
                 this.$router.push({
                     name : 'accountRecharge',
                     params : {
-                        accountTypeId : this.accountList[this.chosedAccount[0]] ? this.accountList[this.chosedAccount[0]].accountDefineId : ''
+                        accountTypeId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountDefineId : '',
+                        accountName : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountName : '',
                     }
                 });
             },

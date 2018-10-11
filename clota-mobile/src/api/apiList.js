@@ -47,7 +47,11 @@ const apiList = {
     //查询支付协议
     getAgreementToPay: '/external/memberAccount/getAgreementToPay',
     //充值时获取实际所得金额
-    getRechargeActMoney: '/external/memberAccount/getRechargeActMoney'
+    getRechargeActMoney: '/external/memberAccount/getRechargeActMoney',
+    //获取微信配置信息
+    getWxConfig: '/wechat/mp/getConfig',
+    //上传头像
+    uploadBase64File: '/uploadBase64File',
 };
 
 export default apiList;

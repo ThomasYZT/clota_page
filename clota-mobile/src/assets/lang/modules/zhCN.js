@@ -156,5 +156,10 @@ export default {
     'decimalError': '{field}小数位最多2位',
     'moneyError': '{field}必须为非负数',
     'errorMaxLength': '{field}不能超过{length}个字符',
-    rechargeNum : '充值金额'
+    rechargeNum : '充值金额',
+    RMB : '人民币',
+    delete : '删除',
+    account : '账户',
+    changeIdNum : '修改证件号',
+    rechartAccount : '{account}充值',
 }

@@ -5,8 +5,8 @@
 <template>
   <div class="illustration-board">
       <h5 class="title">{{info.name}}</h5>
-      <p class="item"><span class="item-title">{{$t('scoreRate')}}：</span>1 : {{info.scoreRate}} ({{'积分 ： 人民币'}})</p>
-      <p class="item"><span class="item-title">{{$t('discountRate')}}：</span>{{info.discountRate}} ({{'积分 ： 人民币'}})</p>
+      <p class="item"><span class="item-title">{{$t('scoreRate')}}：</span>1 : {{info.scoreRate}} ({{$t('score')}} ： {{$t('RMB')}})</p>
+      <p class="item"><span class="item-title">{{$t('discountRate')}}：</span>{{info.discountRate}} ({{$t('score')}} ： {{$t('RMB')}})</p>
 
   </div>
 </template>

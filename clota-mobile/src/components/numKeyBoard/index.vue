@@ -116,7 +116,7 @@
                     ],
                     [
                         {
-                            label : '取消',
+                            label : this.$t('cancel'),
                             value : 'cancel',
                             static : true
                         },
@@ -125,7 +125,7 @@
                             value : 0
                         },
                         {
-                            label : '删除',
+                            label : this.$t('delete'),
                             value : 'del',
                             static : true
                         }

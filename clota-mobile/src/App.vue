@@ -66,6 +66,7 @@
     import {mapGetters} from 'vuex';
     import drag from '@/components/drag/index.vue';
     import Vue from 'vue';
+    import ajax from '@/api/index.js';
 
     export default {
         name : 'app',
@@ -117,6 +118,28 @@
                 }else{
                     document.title = '';
                 }
+            },
+            /**
+             * 获取微信配置
+             */
+            getWxConfig () {
+                ajax.post('getWxConfig',{
+                    url : location.href.split('#')[0]
+                }).then(res => {
+                    if(res.success){
+                        this.$wechat.config({
+                            appId: res.data.appId,
+                            timestamp: res.data.timestamp,
+                            nonceStr: res.data.nonceStr,
+                            signature: res.data.signature,
+                            jsApiList: [
+                                'chooseImage',
+                                'getLocalImgData',
+                                'uploadImage'
+                            ]
+                        });
+                    }
+                });
             }
         },
         computed: {
@@ -130,8 +153,7 @@
             }
         },
         created () {
-            console.log(this)
-            // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
+            this.getWxConfig();
         },
         watch : {
             '$route': {

@@ -161,7 +161,7 @@
                             })
                         }else{
                             this.$vux.toast.show({
-                                text: '修改失败',
+                                text: this.$t('operateFail',{msg : this.$t('modify')}),
                                 type : 'cancel'
                             })
                         }

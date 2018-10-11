@@ -4,10 +4,11 @@
     <div class="person-info">
         <div class="title-info">
             <div class="per-img">
-                <img :src="formData.portrait" alt="">
+                <img :src="formData.portrait" v-if="formData.portrait" alt="">
+                <span clsss="img-span" v-else></span>
                 <span class="edit">
-                    <input class="upload" type="file" accept="image/*" @change="uploadImg($event)">
-                    <span class="label">{{$t('edit')}}</span>
+                    <!--<input class="upload" type="file" accept="image/*" @change="uploadImg($event)">-->
+                    <span class="label" @click="editHeadImg">{{$t('edit')}}</span>
                 </span>
             </div>
         </div>
@@ -44,28 +45,21 @@
                     :link="{name : 'changeId',params : {certificationType : formData.certificationType,idCardNumber : formData.idCardNumber}}"
                     :value="idNum">
                 </cell>
-                <cell
-                    :title="$t('wx')"
-                    disabled
-                    :value="formData.wechatAcct">
-                </cell>
-                <cell
-                    :title="$t('ali')"
-                    disabled
-                    :value="formData.alipayAcct">
-                </cell>
+                <!--<cell-->
+                    <!--:title="$t('wx')"-->
+                    <!--disabled-->
+                    <!--:value="formData.wechatAcct">-->
+                <!--</cell>-->
+                <!--<cell-->
+                    <!--:title="$t('ali')"-->
+                    <!--disabled-->
+                    <!--:value="formData.alipayAcct">-->
+                <!--</cell>-->
                 <x-input
                     :title="$t('qq')"
                     text-align="right"
                     :show-clear="false"
                     v-model.trim="formData.qq"
-                    placeholder-align="right">
-                </x-input>
-                <x-input
-                    :title="$t('email')"
-                    text-align="right"
-                    :show-clear="false"
-                    v-model.trim="formData.emailAddr"
                     placeholder-align="right">
                 </x-input>
                 <cell
@@ -131,6 +125,7 @@
                             ...res.data,
                             name : res.data.custName,
                             gender : [res.data.gender],
+                            qq : res.data.qq ? res.data.qq : ''
                         }) : {});
                     }else{
                         this.formData = {};
@@ -247,42 +242,82 @@
                     }
                 });
             },
+            // /**
+            //  * 上传图片
+            //  * @param e
+            //  */
+            // uploadImg (e) {
+            //     let file = e.target.files[0];
+            //     let param = new FormData(); //创建form对象
+            //     param.append('file',file,file.name);//通过append向form对象添加数据
+            //     if(file.size > 1024 * 1024 * 10){
+            //         this.$vux.toast.show({
+            //             text : this.$t('uploadErr',{size : 10}),
+            //             type : 'text',
+            //             width : '3.5rem'
+            //         });
+            //     }else{
+            //         ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
+            //             if(res.success){
+            //                 this.modifyHeadImg(res.data);
+            //             }else{
+            //                 this.$vux.toast.show({
+            //                     text : '上传头像失败',
+            //                     type : 'text',
+            //                     width : '3rem'
+            //                 });
+            //             }
+            //         });
+            //     }
+            // },
+            // /**
+            //  * 修改头像信息
+            //  * @param imgSrc 头像地址
+            //  */
+            // modifyHeadImg (imgSrc) {
+            //     ajax.post('updateMemberInfo',{
+            //         id : this.userInfo.memberId,
+            //         portrait : imgSrc
+            //     }).then(res => {
+            //         if(res.success){
+            //             this.$vux.toast.show({
+            //                 text: this.$t('operateSuc',{msg : this.$t('changeImg')})
+            //             });
+            //             this.getMemberDetail();
+            //             this.getGrowthBalance();
+            //         }else{
+            //             this.$vux.toast.show({
+            //                 text: this.$t('operateFail',{msg : this.$t('changeImg')}),
+            //                 type : 'cancel'
+            //             });
+            //         }
+            //     });
+            // },
             /**
-             * 上传图片
-             * @param e
+             * 上传头像
              */
-            uploadImg (e) {
-                let file = e.target.files[0];
-                let param = new FormData(); //创建form对象
-                param.append('file',file,file.name);//通过append向form对象添加数据
-                if(file.size > 1024 * 1024 * 10){
-                    this.$vux.toast.show({
-                        text : this.$t('uploadErr',{size : 10}),
-                        type : 'text',
-                        width : '3.5rem'
-                    });
-                }else{
-                    ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
-                        if(res.success){
-                            this.modifyHeadImg(res.data);
-                        }else{
-                            this.$vux.toast.show({
-                                text : '上传头像失败',
-                                type : 'text',
-                                width : '3rem'
-                            });
-                        }
-                    });
-                }
+            editHeadImg () {
+                this.$wechat.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    success : res => {
+                        this.$wechat.getLocalImgData({
+                            localId : res.localIds[0],
+                            success : data => {
+                                this.getBase64ToServer(data.localData);
+                            }
+                        });
+                    }
+                });
             },
             /**
-             * 修改头像信息
-             * @param imgSrc 头像地址
+             * 将图片base64编码发送到服务器
+             * @param data
              */
-            modifyHeadImg (imgSrc) {
-                ajax.post('updateMemberInfo',{
-                    id : this.userInfo.memberId,
-                    portrait : imgSrc
+            getBase64ToServer (data) {
+                ajax.post('uploadBase64File',{
+                    file : data
                 }).then(res => {
                     if(res.success){
                         this.$vux.toast.show({
@@ -336,19 +371,23 @@
         .title-info{
             @include block_outline($height : 122px);
             background: $color_fff;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
 
             .per-img{
                 position: relative;
-                @include block_outline(74px,94px,false);
-                margin: 0 auto;
-                padding-top: 20px;
+                float: left;
+                @include block_outline(74px,74px,false);
+                margin: 20px auto 0;
                 border-radius: 100px;
                 overflow: hidden;
+                box-shadow: 0 4px 14px 0 rgba(0,0,0,0.20);
 
+                .img-span,
                 img{
                     @include block_outline(100%,100%,false);
                     border-radius: 100px;
-                    box-shadow: 0 4px 14px 0 rgba(0,0,0,0.20);
                 }
 
                 .edit{

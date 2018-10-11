@@ -66,7 +66,9 @@
                 //账户类型id
                 accountTypeId  : '',
                 //赠送金额
-                donateMoney : ''
+                donateMoney : '',
+                //账户名称
+                accountTypeName : ''
             }
         },
         methods: {
@@ -96,6 +98,8 @@
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
                     this.accountTypeId = params.accountTypeId;
+                    this.accountTypeName = params.accountName;
+                    this.setTitle();
                 }else{
                     this.$router.push({
                         name: 'account'
@@ -124,6 +128,12 @@
                         reject();
                     });
                 });
+            },
+            /**
+             * 设置标题
+             */
+            setTitle () {
+                document.title = this.$t('rechartAccount',{'account' : this.accountTypeName });
             }
         }
     }
@@ -244,7 +254,7 @@
                 font-size: 17px;
                 color: $color_fff;
                 border-radius: 100px;
-                letter-spacing: 5px;
+                letter-spacing: 2px;
             }
         }
     }
