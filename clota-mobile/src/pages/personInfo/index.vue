@@ -5,7 +5,7 @@
         <div class="title-info">
             <div class="per-img">
                 <img :src="formData.portrait" v-if="formData.portrait" alt="">
-                <span clsss="img-span" v-else></span>
+                <img clsss="img-span" v-else src="../../assets/images/defaut-face.png">
                 <span class="edit">
                     <!--<input class="upload" type="file" accept="image/*" @change="uploadImg($event)">-->
                     <span class="label" @click="editHeadImg">{{$t('edit')}}</span>
@@ -316,20 +316,37 @@
              * @param data
              */
             getBase64ToServer (data) {
+                let extension = data ? data.match(/data:image\/(.*);{1,}/) : [];
+                let file = data ? data.split(',')[1] : '';
                 ajax.post('uploadBase64File',{
-                    file : data
+                    file : file,
+                    extension : extension[1]
                 }).then(res => {
                     if(res.success){
                         this.$vux.toast.show({
                             text: this.$t('operateSuc',{msg : this.$t('changeImg')})
                         });
-                        this.getMemberDetail();
-                        this.getGrowthBalance();
+                        this.savePortrait(res.data);
                     }else{
                         this.$vux.toast.show({
                             text: this.$t('operateFail',{msg : this.$t('changeImg')}),
                             type : 'cancel'
                         });
+                    }
+                });
+            },
+            /**
+             * 保存头像
+             * @param portrait
+             */
+            savePortrait (portrait) {
+                ajax.post('updateMemberInfo',{
+                    id : this.userInfo.memberId,
+                    portrait : portrait,
+                }).then(res => {
+                    if(res.success){
+                        this.getMemberDetail();
+                        this.getGrowthBalance();
                     }
                 });
             }
