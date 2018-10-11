@@ -11,7 +11,7 @@
             <!--<Button type="primary" @click="$router.push({name: 'addSmsTemplate'})">{{$t('add')}}</Button>-->
             <!--<Button type="primary" :disabled="selectedTpl.length < 1">{{$t('批量删除')}}</Button>-->
             <Input class="input-field"
-                   v-model.trim="filterParam.name"
+                   v-model.trim="filterParam.keyword"
                    icon="ios-search"
                    :placeholder="$t('inputField', {field: $t('模板名称')})"
                    @on-enter="handleSearch"
@@ -69,6 +69,7 @@
             return {
                 // 获取数据的请求参数
                 queryParams: {
+                    keyword: '',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },

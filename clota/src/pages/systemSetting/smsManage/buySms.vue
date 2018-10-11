@@ -8,7 +8,7 @@
     <div class="buy-sms">
         <div class="filter-box">
             <Input class="input-field"
-                   v-model.trim="filterParam.name"
+                   v-model.trim="filterParam.keyword"
                    icon="ios-search"
                    :placeholder="$t('inputField', {field: '请输入套餐名称'})"
                    @on-enter="handleSearch"
@@ -64,6 +64,7 @@
             return {
                 // 获取数据的请求参数
                 queryParams: {
+                    keyword: '',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
