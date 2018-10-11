@@ -229,8 +229,8 @@
              * 前往支付协议
              */
             toAgreement() {
-                this.$router.push({
-                    name: 'payAgreement'
+                this.$router.replace({
+                    path: '/personInfo/payAgreement'
                 })
             }
         },

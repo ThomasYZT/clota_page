@@ -37,6 +37,7 @@
         height: 123px;
         color: #353B48;
         font-size: 12px;
+        text-align: left;
 
         .title {
             font-size: 14px;

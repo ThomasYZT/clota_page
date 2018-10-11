@@ -133,11 +133,8 @@
                         case 'adjust_score':
                             item.purpose = 'adjustScore'
                             break;
-                        case 'consume_add':
-                            item.purpose = 'gainByConsuming'
-                            break;
-                        case 'consume_reduce':
-                            item.purpose = 'scoreResume';
+                        case 'consume':
+                            item.evaluateType === 'consume_add' ? item.purpose = 'gainByConsuming' : item.purpose = 'scoreResume'
                             break;
                         case 'recharge':
                             item.purpose = 'gainByRecharging'

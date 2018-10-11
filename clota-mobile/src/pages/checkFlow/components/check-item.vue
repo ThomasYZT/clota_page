@@ -31,7 +31,11 @@
                       return 'adjustScore'
                       break;
                   case 'consume':
-                      return 'consume';
+                      if(this.info.evaluateType === 'consume_add') {
+                          return 'gainByConsuming';
+                      }else {
+                          return 'scoreResume';
+                      }
                       break;
                   case 'recharge':
                       return 'gainByRecharging'

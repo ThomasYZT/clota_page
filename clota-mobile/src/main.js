@@ -34,7 +34,6 @@ router.beforeEach((to, from, next) => {
         let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
         if(token && userInfo && Object.keys(userInfo).length > 0){
             store.commit('updateUserInfo');
-            store.commit('updateCardInfo');
             next();
         }else{
             next({

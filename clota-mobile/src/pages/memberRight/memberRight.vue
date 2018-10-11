@@ -5,7 +5,7 @@
 <template>
   <div class="member-right" v-show="isShow">
       <div class="top-tab">
-          <p>{{$t('memberRightInfo')}}</p>
+          <p :class="{small: isEn}">{{$t('memberRightInfo')}}</p>
       </div>
 
       <div class="member-right-content">
@@ -77,7 +77,10 @@
         computed: {
             ...mapGetters([
                 'userInfo'
-            ])
+            ]),
+            isEn() {
+                return this.$store.state.lang === 'en';
+            }
         },
         methods: {
             /**
@@ -159,21 +162,28 @@
                 line-height: 43px;
                 color: #8395A7;
                 font-size: 14px;
+                white-space:nowrap;
+            }
+
+            .small {
+                font-size: 10px;
             }
         }
 
         .member-right-content {
             height: 100%;
             margin-top: 43px;
+            text-align: center;
 
             .category {
+                display: inline-block;
                 margin: 0 auto;
-                padding: 14px 0 14px 0;
-                width: 45%;
+                padding: 14px 70px 14px 70px;
+                width: auto;
                 text-align: center;
                 font-size: 15px;
                 color: #C29F6B;
-                background: url("../../assets/images/memberRightBg.svg");
+                background: url("../../assets/images/memberRightBg.svg") no-repeat center;
                 background-size: 100% 100%;
             }
 

@@ -9,11 +9,9 @@
 </template>
 
 <script>
-    import ajax from '../../../api/index'
-    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '../../../api/index';
     export default {
         components: {},
-        mixins : [lifeCycleMixins],
         data() {
             return {
                 txt: '',
@@ -32,32 +30,6 @@
                         this.$vux.toast.text(res.message)
                     }
                 })
-            },
-            /**
-             * 获取路由参数
-             * @param params
-             */
-            getParams(params) {
-                if(params && params.mobile && params.code) {
-                    this.mobile = params.mobile;
-                    this.code = params.code;
-                }else{
-                    this.$router.push({
-                        name : 'personInfo'
-                    });
-                }
-            },
-            /**
-             * 跳转到 下一步
-             */
-            nextStep () {
-                this.$router.replace({
-                    name : 'inputPass',
-                    params : {
-                        mobile : this.mobile,
-                        code : this.code
-                    }
-                });
             }
         },
         created() {
