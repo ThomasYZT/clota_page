@@ -323,9 +323,6 @@
                     extension : extension[1]
                 }).then(res => {
                     if(res.success){
-                        this.$vux.toast.show({
-                            text: this.$t('operateSuc',{msg : this.$t('changeImg')})
-                        });
                         this.savePortrait(res.data);
                     }else{
                         this.$vux.toast.show({
@@ -347,6 +344,14 @@
                     if(res.success){
                         this.getMemberDetail();
                         this.getGrowthBalance();
+                        this.$vux.toast.show({
+                            text: this.$t('operateSuc',{msg : this.$t('changeImg')})
+                        });
+                    }else{
+                        this.$vux.toast.show({
+                            text: this.$t('operateFail',{msg : this.$t('changeImg')}),
+                            type : 'cancel'
+                        });
                     }
                 });
             }
