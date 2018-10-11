@@ -53,7 +53,7 @@
       <x-dialog v-model="isShowImg"
                 hide-on-blur
                 :dialog-style="{'max-width': '100%', width: '100%', height: '50%', 'background-color': 'transparent'}">
-          <img class="default-face" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+          <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
       </x-dialog>
   </div>
 </template>
@@ -454,6 +454,10 @@
                     }
                 }
             }
+        }
+
+        .person-img {
+            width: 50%;
         }
     }
 </style>
