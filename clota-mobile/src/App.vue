@@ -25,10 +25,15 @@
                     </template>
                 </group>
             </div>
-            <transition name="fade">
-                <router-view :key="hashKey">
-                </router-view>
-            </transition>
+            <template v-if="pageShow">
+                <transition name="fade">
+                    <router-view :key="hashKey" >
+                    </router-view>
+                </transition>
+            </template>
+            <template v-else>
+                <div>请在微信中打开连接</div>
+            </template>
         </drawer>
         <drag>
             <div class="lang-change" @click="changeLang">
@@ -85,7 +90,9 @@
                 //选择语言提示框是否显示
                 confirmShow : false,
                 //当前选择的语言类型
-                langType : ''
+                langType : '',
+                //页面是否显示
+                pageShow : false
             }
         },
         methods: {
@@ -123,23 +130,40 @@
              * 获取微信配置
              */
             getWxConfig () {
-                ajax.post('getWxConfig',{
-                    url : location.href.split('#')[0]
-                }).then(res => {
-                    if(res.success){
-                        this.$wechat.config({
-                            appId: res.data.appId,
-                            timestamp: res.data.timestamp,
-                            nonceStr: res.data.nonceStr,
-                            signature: res.data.signature,
-                            jsApiList: [
-                                'chooseImage',
-                                'getLocalImgData',
-                                'uploadImage'
-                            ]
-                        });
-                    }
-                });
+                if(this.is_weixn()){
+                    this.pageShow = true;
+                    ajax.post('getWxConfig',{
+                        url : location.href.split('#')[0]
+                    }).then(res => {
+                        if(res.success){
+                            this.$wechat.config({
+                                appId: res.data.appId,
+                                timestamp: res.data.timestamp,
+                                nonceStr: res.data.nonceStr,
+                                signature: res.data.signature,
+                                jsApiList: [
+                                    'chooseImage',
+                                    'getLocalImgData',
+                                    'uploadImage'
+                                ]
+                            });
+                        }
+                    });
+                }else{
+                    this.pageShow = false;
+                }
+            },
+            /**
+             * 判断是否在微信中
+             * @returns {boolean}
+             */
+            is_weixn(){
+                var ua = navigator.userAgent.toLowerCase();
+                if(ua.match(/MicroMessenger/i)=="micromessenger") {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         },
         computed: {

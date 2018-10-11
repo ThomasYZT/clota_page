@@ -83,10 +83,16 @@
                             phoneNum: this.loginInfo.phoneNum
                         }).then((res) => {
                             if(!res.success) {
-                                this.$vux.toast.text(this.$t('getCodeFailed'))
+                                this.$vux.toast.show({
+                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    type : 'cancel'
+                                });
                             }else{
                                 this.timimg();
                                 this.isGetCode = true;
+                                this.$vux.toast.show({
+                                    text: this.$t('operateSuc',{msg : this.$t('send')})
+                                })
                             }
                         })
                     });
@@ -290,7 +296,7 @@
 
         .validate{
             height: 100%;
-            padding: 0 10px;
+            padding: 0 15px 0 18px;
             text-align: center;
             font-size: $font_size_12px;
             color: #046FDB;

@@ -24,7 +24,8 @@
                         <countdown v-model="time"
                                    @on-finish="countFinish"
                                    :start="isCountStart"
-                                   v-show="isCountStart"></countdown>
+                                   v-show="isCountStart">
+                        </countdown>
                     </div>
                 </x-input>
             </group>
@@ -148,6 +149,7 @@
              *  倒计时结束
              */
             countFinish() {
+                this.time = 60;
                 this.isGetCode = false;
                 this.isCountStart = false;
             },
