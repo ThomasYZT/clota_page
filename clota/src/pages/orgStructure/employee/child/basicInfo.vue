@@ -472,7 +472,6 @@
 
     .new-employee-info{
         width: 850px;
-        height: 100%;
         margin: auto;
         background-color: #FFFFFF;
         /*border-radius: 4px;*/

@@ -65,6 +65,7 @@
 <script>
     import {mapGetters} from 'vuex';
     import drag from '@/components/drag/index.vue';
+    import Vue from 'vue';
 
     export default {
         name : 'app',
@@ -129,6 +130,7 @@
             }
         },
         created () {
+            console.log(this)
             // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
         },
         watch : {

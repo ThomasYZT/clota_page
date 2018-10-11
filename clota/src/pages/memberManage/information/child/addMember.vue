@@ -263,7 +263,7 @@
                 beforeRouterList: [
                     {
                         name: 'memberInfo',   // 会员信息
-                        router: 'info',
+                        router: 'infoList',
                     }
                 ],
                 //新增/修改

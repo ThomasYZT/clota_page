@@ -6,7 +6,7 @@
             <div class="per-img">
                 <img :src="formData.portrait" alt="">
                 <span class="edit">
-                    <input class="upload" type="file" accept="image/png,image/gif,image/jpeg"  @change="uploadImg($event)">
+                    <input class="upload" type="file" accept="image/*" @change="uploadImg($event)">
                     <span class="label">{{$t('edit')}}</span>
                 </span>
             </div>
@@ -197,7 +197,7 @@
              */
             validateQQ () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.qq.length > 50){
+                    if(this.formData.qq && this.formData.qq.length > 50){
                         this.$vux.toast.show({
                             text: this.$t('maxLengthErr',{field : this.$t('qq'),length : 50}),
                             type: 'text',
@@ -214,7 +214,7 @@
              */
             validateEmail () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.emailAddr.length > 100){
+                    if(this.formData.emailAddr && this.formData.emailAddr.length > 100){
                         this.$vux.toast.show({
                             text: this.$t('maxLengthErr',{field : this.$t('email'),length : 100}),
                             type: 'text',

@@ -45,7 +45,9 @@ const apiList = {
     //获取用户信息
     getOAuth2UserInfo: '/wechat/mp/getOAuth2UserInfo',
     //查询支付协议
-    getAgreementToPay: '/external/memberAccount/getAgreementToPay'
+    getAgreementToPay: '/external/memberAccount/getAgreementToPay',
+    //充值时获取实际所得金额
+    getRechargeActMoney: '/external/memberAccount/getRechargeActMoney'
 };
 
 export default apiList;

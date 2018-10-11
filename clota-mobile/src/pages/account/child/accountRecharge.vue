@@ -4,14 +4,17 @@
     <div class="account-recharege">
         <div class="recharge-title">
             <x-input title="¥"
+                     v-model="rechargeMoney"
                      :show-clear="false"
                      label-width="20px"
-                     keyboard="number">
+                     :debounce="500"
+                     keyboard="number"
+                     @on-change="getTrueMoney">
             </x-input>
             <div class="actual-money">
                 <span class="label">{{$t('actualToAccount')}}</span>
-                <span class="account">5,600</span>
-                <span class="other-data">{{$t('includeDonate',{num : 888})}}</span>
+                <span class="account">{{actualMoney | moneyFilter | contentFilter}}</span>
+                <span class="other-data">{{$t('includeDonate',{num : donateMoney})}}</span>
             </div>
         </div>
         <div class="pay-type-chose">
@@ -22,7 +25,7 @@
                         v-model="payType"
                         title=""
                         :options="commonList"
-                        @on-change="change">
+                        @on-change="rechageTypechange">
                     </radio>
                 </group>
             </div>
@@ -34,7 +37,11 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
+    import lifeCycle from '@/mixins/lifeCycleMixins.js';
+    import common from '@/assets/js/common';
     export default {
+        mixins : [lifeCycle],
         data() {
             return {
                 //可选中支付方式
@@ -51,10 +58,74 @@
                     },
                 ],
                 //支付方式
-                payType : 'wx'
+                payType : 'wx',
+                //实际到账金额
+                actualMoney : '',
+                //充值金额
+                rechargeMoney : '',
+                //账户类型id
+                accountTypeId  : '',
+                //赠送金额
+                donateMoney : ''
             }
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取实际到账金额
+             */
+            getTrueMoney () {
+                this.validateRechargeMoney().then(()=>{
+                    ajax.post('getRechargeActMoney',{
+                        accountTypeId : this.accountTypeId,
+                        amount : this.rechargeMoney,
+                    }).then(res => {
+                        if(res.success){
+                            this.actualMoney =  res.data ? res.data.actMoney : '';
+                            this.donateMoney =  res.data ? res.data.gift : '';
+                        }else{
+                            this.actualMoney = '';
+                            this.donateMoney = '';
+                        }
+                    });
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if(params && Object.keys(params).length > 0){
+                    this.accountTypeId = params.accountTypeId;
+                }else{
+                    this.$router.push({
+                        name: 'account'
+                    });
+                }
+            },
+            /**
+             * 充值类型改变
+             */
+            rechageTypechange () {
+
+            },
+            /**
+             * 校验充值金额
+             */
+            validateRechargeMoney () {
+                return new Promise((resolve,reject) => {
+                    common.validateMoney(this.rechargeMoney).then(() => {
+                        resolve();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            this.$vux.toast.text(this.$t('errorMaxLength',{field : this.$t('rechargeNum'),length : 10}));
+                        }else{
+                            this.$vux.toast.text(this.$t(err,{field : this.$t('rechargeNum')}));
+                        }
+                        reject();
+                    });
+                });
+            }
+        }
     }
 </script>
 
