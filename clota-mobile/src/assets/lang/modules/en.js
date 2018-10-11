@@ -150,6 +150,7 @@ export default {
     'S006' : 'Account operation is abnormal',
     'S005' : 'Upload error',
     'S002' : 'Interface exception',
+    'M008' : 'Membership card already exists',
     'agreement': 'I have read and agreed to the transaction service agreement.',
     payAgreement: 'Payment agreement',
     'consume': 'Consume',
