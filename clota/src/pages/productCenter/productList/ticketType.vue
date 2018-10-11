@@ -6,7 +6,7 @@
 
 <template>
     <div class="ticket-type">
-        <div class="operation-box">
+        <div class="operation-box" v-if="role === 'scenic'">
             <Button type="primary"
                     @click="$router.push({name: 'addTicket', params: { type: 'add'}})">+ {{$t('add')}}</Button>
             <Button type="error"
@@ -23,7 +23,7 @@
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
-            :column-check="true"
+            :column-check="role === 'scenic'"
             :default-sort="{prop: 'updatedTime', order: 'descending'}"
             @sort-change="handleSortChanged"
             @query-data="queryList"
@@ -59,6 +59,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                v-if="role === 'scenic'"
                 slot="column7"
                 slot-scope="row"
                 fixed="right"
@@ -88,11 +89,17 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {ticketTypeHead} from '../productConfig';
     import ajax from '@/api/index';
+    import {mapGetters} from 'vuex';
 
     export default {
         components: {
             tableCom,
             delModal,
+        },
+        computed: {
+            ...mapGetters([
+                'manageOrgs'
+            ])
         },
         props: {},
         data() {
@@ -216,6 +223,10 @@
                 return row.status === value;
             },
 
+        },
+        created() {
+            //设置角色权限
+            this.role = this.manageOrgs.nodeType;
         }
     };
 </script>

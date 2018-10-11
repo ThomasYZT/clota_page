@@ -43,7 +43,7 @@ export const distributePolicyHead = [
     {
         title: 'scenePlace',   // 所属景区
         minWidth: 150,
-        field: 'orgName'
+        field: 'scenicName'
     },
     {
         title: 'industryType',   // 业态类型
@@ -58,7 +58,7 @@ export const distributePolicyHead = [
     {
         title: 'superiorDistribution',      // 上级分销商
         minWidth: 100,
-        field: 'superiorDistribution'
+        field: 'parentDistributor'
     },
     {
         title: 'operate',        // 操作

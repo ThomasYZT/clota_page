@@ -11,7 +11,10 @@
         <div class="tabs-wrap" v-if="role !== 'partner'">
             <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
                 <TabPane :label="$t('mySalePolicy')" name="created"></TabPane><!--我定义的销售政策-->
-                <TabPane :label="$t('distributeSalePolicy')" name="cancellation"></TabPane><!--分销给我的销售政策-->
+                <!--仅公司不可见-->
+                <TabPane :label="$t('distributeSalePolicy')"
+                         name="cancellation"
+                         v-if="role !== 'company'"></TabPane><!--分销给我的销售政策-->
             </Tabs>
         </div>
 
@@ -39,13 +42,13 @@
         <!--表格搜索栏 仅合作伙伴可见-->
         <div class="btn-wrap">
             <span>{{$t('scenePlace')}}：</span>
-            <Select v-model="queryParams.scene" @on-change="queryDistPolicyList"> <!--所属景区：-->
+            <Select v-model="chooseOrgId" @on-change="queryDistPolicyList"> <!--所属景区：-->
                 <Option v-for="(item,index) in enumData.scene" :key="index"
                         :value="item.name">{{$t(item.desc)}}
                 </Option>
             </Select>
             <div class="float-right">
-                <Input v-model.trim="queryParams.keyWord"
+                <Input v-model.trim="keywords"
                        :placeholder="$t('inputField',{field: $t('salePolicyName')})"/>
                 <Button type="primary" @click="queryDistPolicyList">{{$t("query")}}</Button>
             </div>
@@ -108,8 +111,7 @@
             :total-count="dTotal"
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
-            :border="true"
-            @query-data="queryDistPolicyList">
+            :border="true">
             <el-table-column
                 slot="column5"
                 slot-scope="row"
@@ -169,6 +171,10 @@
                 // 列表数据
                 myPolicyData: [],
                 distPolicyData: [],
+                //关键字
+                keywords: '',
+                //所属景区
+                chooseOrgId: '',
                 // 获取我的销售政策列表数据请求参数
                 myPolicyParams: {
                     selectType: 'from',
@@ -177,8 +183,7 @@
                 },
                 // 获取分销列表数据的请求参数
                 queryParams: {
-                    scene: '',
-                    keyWord: '',
+                    selectType: 'to',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
@@ -211,21 +216,21 @@
         },
         computed: {
             ...mapGetters([
-                'userInfo'
+                'manageOrgs'
             ])
         },
         created() {
 
             //设置当前角色
-            this.role = this.userInfo.accountType;
+            this.role = this.manageOrgs.nodeType;
             if(this.role === 'partner') {
-                this.changeTab('cancellation');
+                this.tabsName = 'cancellation';
+            }
+            if(this.role === 'partner' || this.role === 'scenic') {
+                this.queryDistPolicyList();
             }
             //获取所有销售政策业态类型
             this.getAllPolicyType();
-            //获取分销给我的销售政策列表
-            this.queryDistPolicyList();
-
         },
         mounted() {
         },
@@ -254,7 +259,11 @@
 
             // 查询我定义的销售政策列表
             queryMyPolicyList() {
-                ajax.post('queryPolicy', this.myPolicyParams).then(res => {
+                ajax.post('queryPolicy', {
+                    ...this.myPolicyParams,
+                    keyword: this.keywords,
+                    chooseOrgId: this.chooseOrgId
+                }).then(res => {
                     this.selectedRow = [];
                     if(res.success){
                         this.myPolicyData = res.data.data || [];
@@ -269,42 +278,13 @@
 
             // 查询分销给我的销售政策列表
             queryDistPolicyList() {
-                this.distPolicyData = [
-                    {
-                        'id': '00002103965',
-                        'productCode': '星火旅行社1',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '野生动物园',
-                        'status': '已启用',
-                        'updateTime': '2018-08-20 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社2',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '冰雪世界',
-                        'status': '已启用',
-                        'updateTime': '2018-06-01 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社3',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '野生动物园',
-                        'status': '已启用',
-                        'updateTime': '2018-04-17 15:31:00',
-                    },{
-                        'id': '00002103965',
-                        'productCode': '星火旅行社4',
-                        'productName': '票内业态',
-                        'productDesc': '银科环企智慧旅游平台】尊敬的$name(先生科环发快递了了二)',
-                        'sellingOrg': '冰雪世界',
-                        'status': '已启用',
-                        'updateTime': '2018-03-17 15:31:00',
-                    },
-
-                ];
+                ajax.post('queryPolicy', {
+                    ...this.queryParams,
+                    keyword: this.keywords,
+                    chooseOrgId: this.chooseOrgId
+                }).then((res) => {
+                    this.distPolicyData = res.data ? res.data.data : [];
+                })
                 this.dTotal = this.distPolicyData.length;
             },
 
