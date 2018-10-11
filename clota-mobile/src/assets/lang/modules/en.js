@@ -162,4 +162,5 @@ export default {
     account : 'account',
     changeIdNum : 'change certificate number',
     rechartAccount : '{account} recharge',
+    pointDetail : 'Points details',
 }

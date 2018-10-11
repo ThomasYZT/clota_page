@@ -162,4 +162,5 @@ export default {
     account : '账户',
     changeIdNum : '修改证件号',
     rechartAccount : '{account}充值',
+    pointDetail : '积分明细',
 }

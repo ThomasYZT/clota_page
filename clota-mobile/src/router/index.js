@@ -147,18 +147,27 @@ const createRouter = () => new Router({
             path: '/memberRight',
             name: 'memberRight',
             component: () => import(/* webpackChunkName: "memberRight" */'../pages/memberRight/memberRight.vue'),
+            meta : {
+                title : 'memberRight'
+            }
         },
         //资金明细
         {
             path: '/checkFlow',
             name: 'checkFlow',
             component: () => import(/* webpackChunkName: "memberRight" */'../pages/checkFlow/checkFlow.vue'),
+            meta : {
+                title : 'checkFlow'
+            }
         },
         //积分明细
         {
             path: '/integralDetail',
             name: 'integralDetail',
             component: () => import(/* webpackChunkName: "memberRight" */'../pages/integralDetail/integralDetail.vue'),
+            meta : {
+                title : 'pointDetail'
+            }
         },
         //安全设置 暂时不做
         /*{
