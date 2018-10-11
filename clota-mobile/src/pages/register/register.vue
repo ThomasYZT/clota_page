@@ -78,13 +78,14 @@
                 if(!this.isGetCode) {
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
-                        this.isGetCode = true;
-                        this.timimg();
                         ajax.post('getCode', {
                             phoneNum: this.registerInfo.phoneNum
                         }).then((res) => {
                            if(!res.success) {
                                this.$t('getCodeFailed')
+                           }else {
+                               this.timimg();
+                               this.isGetCode = true;
                            }
                         })
                     });
@@ -184,7 +185,7 @@
              * 计时器函数
              */
             timimg() {
-                this.countDown = 5000;
+                this.countDown = 60000;
                 this.timer = setInterval(() => {
                     if(this.countDown !== 0) {
                         this.countDown -= 1000;

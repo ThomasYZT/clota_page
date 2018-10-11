@@ -78,13 +78,13 @@
                 if(!this.isGetCode) {
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
-                        this.timimg();
                         ajax.post('getCode', {
                             phoneNum: this.loginInfo.phoneNum
                         }).then((res) => {
                             if(!res.success) {
                                 this.$vux.toast.text(this.$t('getCodeFailed'))
                             }else{
+                                this.timimg();
                                 this.isGetCode = true;
                             }
                         })
