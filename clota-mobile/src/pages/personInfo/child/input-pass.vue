@@ -38,7 +38,9 @@
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     import MD5 from 'crypto-js/md5';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             numKeyBoard
         },
@@ -283,11 +285,11 @@
                 }
             }
         },
-        beforeRouteEnter(to,from,next){
-            next(vm => {
-                vm.getParams(to.params)
-            });
-        }
+        // beforeRouteEnter(to,from,next){
+        //     next(vm => {
+        //         vm.getParams(to.params)
+        //     });
+        // }
     }
 </script>
 
