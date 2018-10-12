@@ -72,6 +72,7 @@
 <script>
     import {mapGetters} from 'vuex';
     import drag from '@/components/drag/index.vue';
+    import headNav from '@/components/headNav/index'
     import Vue from 'vue';
     import ajax from '@/api/index.js';
 
