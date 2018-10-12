@@ -19,7 +19,9 @@ export default new Vuex.Store({
         //随机数，用于更新组件
         hashKey : '',
         //是否显示键盘
-        showKeyBoard : false
+        showKeyBoard : false,
+        //显示网路错误提示框
+        showNetworkError : false
     },
     getters: {
         //当前语言状态
@@ -46,6 +48,10 @@ export default new Vuex.Store({
         //是否显示键盘
         showKeyBoard : state => {
             return state.showKeyBoard;
+        },
+        //是否显示网路错误提示框
+        showNetworkError : state => {
+            return state.showNetworkError;
         }
     },
     mutations: {
@@ -106,6 +112,12 @@ export default new Vuex.Store({
             }else{
                 state.cardInfo = {};
             }
+        },
+        /**
+         * 更新网络状态提示
+         */
+        updateShowNetworkError (state,status) {
+            state.showNetworkError = status;
         }
     },
     actions: {

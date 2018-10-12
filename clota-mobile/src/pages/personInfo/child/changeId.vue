@@ -128,7 +128,6 @@
                         this.$router.push({
                             name : 'personInfo'
                         });
-                        this.getMemberDetail();
                     }else{
                         this.$vux.toast.show({
                             text: this.$t('operateFail',{msg : this.$t('modify')}),

@@ -95,7 +95,7 @@ export default {
     memberRight: '会员权益',
     timeCardInfo : '次卡信息',
     getCodeFailed: '获取验证码失败',
-    netNotGood: '网络不好',
+    netNotGood: '网络错误',
     pleaseEnterMobile: '请输入手机号码',
     pleaseEnterRightMobile: '请输入正确的手机号码',
     registSuccess: '注册成功',
@@ -164,4 +164,5 @@ export default {
     changeIdNum : '修改证件号',
     rechartAccount : '{account}充值',
     pointDetail : '积分明细',
+    systemError : '系统错误'
 }

@@ -164,4 +164,5 @@ export default {
     changeIdNum : 'Change certificate number',
     rechartAccount : '{account} recharge',
     pointDetail : 'Points details',
+    systemError : 'System Error'
 }

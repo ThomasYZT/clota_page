@@ -171,6 +171,7 @@
                 hashKey : 'hashKey',
                 lang : 'lang',
                 isLoading : 'isLoading',
+                showNetworkError : 'showNetworkError'
             }),
             viewTransition () {
                 return 'vux-pop-in'
@@ -190,6 +191,14 @@
                     this.$store.commit('updateKeyBoardStatus',false);
                 },
                 immediate : true
+            },
+            showNetworkError (newVal) {
+                if(newVal){
+                    this.$vux.toast.show({
+                        text: this.$t(newVal),
+                        type: 'text',
+                    });
+                }
             }
         }
     }
