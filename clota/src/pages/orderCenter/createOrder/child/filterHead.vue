@@ -158,9 +158,11 @@
                     this.formData.orderTakeList = [];
                     if(res.success){
                         this.belongScene = res.data ? res.data : [];
-                        if(!this.formData.scenicOrgId){
+                        if(!this.formData.scenicOrgId && this.belongScene.length > 0){
                             this.formData.scenicOrgId = this.belongScene[0].id;
                             this.sceneChange();
+                        }else{
+                            this.search();
                         }
                     }else{
                         this.belongScene = [];
