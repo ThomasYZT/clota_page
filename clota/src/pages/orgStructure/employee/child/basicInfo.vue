@@ -92,8 +92,9 @@
                 <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})">
                     <Option :value="''">
                         <div class="select-content" @click.stop="">
-                            <div class="selectTop">
+                            <div class="selectTop" @click="$refs.roleSearcher.focus()">
                                 <Input class="search-classify-input"
+                                       ref="roleSearcher"
                                        v-model.trim="roleKeyword"
                                        :placeholder="$t('search',{msg: ''})"
                                        @on-enter="searchMatched"
