@@ -127,7 +127,7 @@
 
                 for(let item in productMap) {
                     productMap[item].forEach((item) => {
-                        item.name = item.orgName;
+                        item.name = item.typeName;
                         item.scoreRate = item.prodScoreRate;
                         item.discountRate = item.prodDiscountRate;
                         this.productArr = this.productArr.concat(item);
