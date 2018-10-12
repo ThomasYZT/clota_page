@@ -66,7 +66,8 @@
                 this.validateCode().then(() => {
                     return  ajax.post('checkCode',{
                         phoneNum : this.originPhone,
-                        code : this.formData.validCode
+                        code : this.formData.validCode,
+                        type : 'member_mod_trade_password'
                     }).then(res => {
                         if(res.success){
                             return Promise.resolve();
@@ -175,7 +176,7 @@
             }
         },
         computed : {
-            ...companyCode({
+            ...mapGetters({
                 companyCode : 'companyCode'
             })
         }

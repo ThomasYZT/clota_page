@@ -238,6 +238,10 @@
         background: get_url('icon-bg.png');
         background-size: 100% 100%;
 
+        /deep/ .weui-cell__primary{
+            padding-right: 10px;
+        }
+
         .msg {
             margin-left: 14px;
             padding: 10px 0;
