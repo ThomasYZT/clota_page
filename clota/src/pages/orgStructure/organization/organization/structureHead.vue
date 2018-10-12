@@ -5,13 +5,15 @@
         <ul class="head">
             <li class="tree-title"
                 :class="{'active' : activeTap === 'manage'}"
-                @click="switchTap('manage')">
+                @click="switchTap('manage')"
+                v-w-title="$t('operateMange')">
                 <span class="iconfont icon-finance"></span>
                 {{$t('operateMange')}}
             </li>
             <li class="tree-title"
                 :class="{'active' : activeTap === 'economic'}"
-                @click="switchTap('economic')">
+                @click="switchTap('economic')"
+                v-w-title="$t('financeManage')">
                 <span class="iconfont icon-manage"></span>
                 {{$t('financeManage')}}
             </li>
@@ -39,8 +41,8 @@
         </div>
         <!--删除节点模态框-->
         <del-modal ref="delModal">
-            <span style="" class="red-bale">本操作将同步删除本节点的全部下级节点，并不可撤销，</span>
-            <span>是否继续删除？</span>
+            <span style="" class="red-bale">{{$t('delOrgWarn')}}</span>
+            <span>{{$t('sureToDel')}}</span>
         </del-modal>
         <edit-modal ref="delModalTip">
             <div style="padding: 0 20px">{{$t('S007')}}</div>
@@ -208,7 +210,7 @@
                                 e.stopPropagation();
                                 this.currentNode = data;
                                 this.$refs.delModal.show({
-                                    title : `删除${data.orgName}`,
+                                    title : `${this.$t('del')}${data.orgName}`,
                                     confirmCallback : () => {
                                         this.delNode(data);
                                     }
@@ -292,10 +294,10 @@
                     parentEconomicId : this.currentNode.id,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
                         this.getStructureData();
                     }else{
-                        this.$Message.error('新增失败');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                     }
                 });
             },
@@ -308,15 +310,15 @@
                     orgId : data.id
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('del')}));
                         this.$emit('switch-tap',this.activeTap);
                     }else{
                         if(res.code === 'S007'){
                             this.$refs.delModalTip.show({
-                                title : '提示',
+                                title : this.$t('notice'),
                             });
                         }else{
-                            this.$Message.error('删除失败');
+                            this.$Message.error(this.$t('failureTip',{tip : this.$t('del')}));
                         }
                     }
                 })
@@ -395,6 +397,7 @@
             .tree-title {
                 float: left;
                 @include block_outline($width: 50%, $height: 25px);
+                @include overflow_tip();
                 font-size: $font_size_16px;
                 color: $color_666;
                 text-align: center;

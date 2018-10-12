@@ -43,11 +43,13 @@
     @import '~@/assets/scss/base';
     .pay-agreement {
         height: 100%;
+        -webkit-overflow-scrolling: touch;
 
         .content {
             padding: 10px 20px;
             height: 100%;
             overflow: auto;
+            word-break: break-all;
         }
         .btn-area{
             @include block_outline(unquote('calc(100% - 55px)'),42px);

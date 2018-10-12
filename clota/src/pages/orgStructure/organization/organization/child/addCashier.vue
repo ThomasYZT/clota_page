@@ -26,7 +26,7 @@
                             </div>
                             <span class="iconfont icon-note"></span>
                         </Tooltip>
-                        <span>服务器名称：</span>
+                        <span>{{$t('serverName')}}：</span>
                     </template>
                     <Input v-model.trim="formData.serverName" style="width: 280px"/>
                 </FormItem>
@@ -82,11 +82,11 @@
         <div slot="footer">
             <Button type="ghost"
                 class="ivu-btn-90px"
-                @click="cancel">取消</Button>
+                @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     :loading="saveIng"
                     class="ivu-btn-90px"
-                    @click="save">保存</Button>
+                    @click="save">{{$t('save')}}</Button>
         </div>
     </Modal>
 </template>
@@ -131,10 +131,10 @@
                             if(res.data){
                                 callback();
                             }else{
-                                callback('服务器名称已存在');
+                                callback(this.$t('serverNameIsExit'));
                             }
                         }else{
-                            callback('服务器名称校验失败');
+                            callback(this.$t('serverNameValidFail'));
                         }
                     });
                 }else{
@@ -271,9 +271,9 @@
                 }).then(res => {
                    if(res.success){
                        this.$emit('fresh-structure-data');
-                       this.$Message.success('新增成功');
+                       this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
                    }else{
-                        this.$Message.error('新增失败');
+                       this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                    }
                 }).finally(() => {
                     this.saveIng = false;

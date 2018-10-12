@@ -74,7 +74,9 @@
                 if(this.isTiming) return;
                 this.validateMobile().then(() => {
                     ajax.post('getCode',{
-                        phoneNum : this.formData.mobile
+                        phoneNum : this.formData.mobile,
+                        type : 'member_mod_phone',
+                        companyCode : this.companyCode
                     }).then(res => {
                         if(res.success){
                             setTimeout(() =>{
@@ -161,7 +163,8 @@
                             })
                         }else{
                             this.$vux.toast.show({
-                                text: '修改失败',
+                                // text: '修改失败',
+                                text: this.$t('operateFail',{msg : this.$t('modify')}),
                                 type : 'cancel'
                             })
                         }
@@ -210,11 +213,13 @@
              */
             timeFinish () {
                 this.isTiming = false;
+                this.time = 60;
             }
         },
         computed : {
             ...mapGetters({
-                userInfo : 'userInfo'
+                userInfo : 'userInfo',
+                companyCode :'companyCode'
             })
         }
     }
@@ -226,6 +231,7 @@
         @include block_outline();
         padding-top: 24px;
         float: left;
+        background: $color_fff;
 
         .phone-img{
             @include block_outline(50px,50px);

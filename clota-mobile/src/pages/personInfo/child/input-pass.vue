@@ -4,12 +4,16 @@
     <div class="input-pass" @click="hideKeyBoard">
         <div class="area">
             <div class="label">{{$t('tradePassRule')}}</div>
-            <ul class="pass-input" @click="showKeyBoard($event,'first')">
-               <li :class="{active : activeLi === ('first'+i)}" v-for="(item,i) in passData" :key="i">{{item}}</li>
+            <ul class="pass-input"
+                :class="{active : activeLi === 'first'}"
+                @click="showKeyBoard($event,'first')">
+               <li  v-for="(item,i) in passData" :key="i">{{item}}</li>
             </ul>
             <div class="label label-margin">{{$t('inputPassAgain')}}</div>
-            <ul class="pass-input" @click="showKeyBoard($event,'second')">
-                <li :class="{active : activeLi === ('second'+i)}" v-for="(item,i) in againPassData" :key="i">{{item}}</li>
+            <ul class="pass-input"
+                :class="{active : activeLi === 'second'}"
+                @click="showKeyBoard($event,'second')">
+                <li  v-for="(item,i) in againPassData" :key="i">{{item}}</li>
             </ul>
 
             <div class="btn-area">
@@ -17,7 +21,8 @@
                           :disabled="!isChoesd"
                           :class="{disabled: !isChoesd}">{{$t('submit')}}</x-button>
                 <check-icon class="agree-button"
-                            :value.sync="isChoesd"></check-icon>
+                            :value.sync="isChoesd">
+                </check-icon>
                 <span @click="toAgreement">({{$t('agreement')}})</span>
             </div>
         </div>
@@ -38,7 +43,9 @@
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     import MD5 from 'crypto-js/md5';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             numKeyBoard
         },
@@ -229,7 +236,7 @@
              * 前往支付协议
              */
             toAgreement() {
-                this.$router.replace({
+                this.$router.push({
                     path: '/personInfo/payAgreement'
                 })
             }
@@ -262,32 +269,20 @@
             ...mapGetters({
                 userInfo : 'userInfo',
             }),
-            //当前激活的li
+            //当前激活的ul
             activeLi (){
                 if(this.$store.state.showKeyBoard){
-                    if(this.passType === 'first'){
-                        if(this.inputData.length === 0){
-                            return 'first' + (this.inputData.length  );
-                        }else{
-                            return 'first' + (this.inputData.length - 1 );
-                        }
-                    }else if(this.passType === 'second'){
-                        if(this.againInputData.length === 0){
-                            return 'second' + (this.againInputData.length);
-                        }else{
-                            return 'second' + (this.againInputData.length - 1);
-                        }
-                    }
+                    return this.passType;
                 }else{
                     return '';
                 }
             }
         },
-        beforeRouteEnter(to,from,next){
-            next(vm => {
-                vm.getParams(to.params)
-            });
-        }
+        // beforeRouteEnter(to,from,next){
+        //     next(vm => {
+        //         vm.getParams(to.params)
+        //     });
+        // }
     }
 </script>
 
@@ -318,11 +313,16 @@
             .pass-input{
                 display: flex;
                 @include block_outline(348px, 58px);
-                border-left: 1px solid #BDC4C8;
-                border-bottom: 1px solid #BDC4C8;
-                border-top: 1px solid #BDC4C8;
+                border: 1px solid #BDC4C8;
                 margin: 0 auto;
                 box-sizing: border-box;
+                border-radius: 4px;
+
+                &.active{
+                    background: #FFFFFF;
+                    border: 1px solid #0082D5;
+                    box-shadow: 0 0 5px 0 rgba(0,130,213,0.50);
+                }
 
                 li{
                     flex: 1;
@@ -332,11 +332,11 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: $font_size_24px;
+                    font-size: $font_size_15px;
                     color: $color_000;
 
-                    &.active{
-                        border: 1px solid #0073EB;
+                    &:nth-last-of-type(1){
+                        border-right: 0;
                     }
                 }
             }
@@ -355,7 +355,15 @@
                 }
 
                 .agree-button {
+                    width: 20px;
+                    height: 20px;
                     margin-top: 10px;
+                    margin-right: 5px;
+
+                    /deep/ .weui-icon{
+                        font-size: 20px;
+                        padding-top: 5px;
+                    }
                 }
 
 

@@ -42,6 +42,14 @@ instance.interceptors.response.use(function (response) {
     // Do something with response error
     return Promise.reject(error);
 });
+//网络错误提示
+function showNetWorkError (err) {
+    if(err.toString() === 'Error: Network Error'){
+        store.commit('updateShowNetworkError','netNotGood');
+    }else{
+        store.commit('updateShowNetworkError','systemError');
+    }
+}
 
 //通过axios发送请求
 export default {
@@ -71,9 +79,7 @@ export default {
             }
             return res.data
         }).catch((err) => {
-            if(err === 'Error: Network Error'){
-                //Vue.$vux.toast.text(Vue.$t('网络错误'));
-            }
+            showNetWorkError(err);
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err)
         }).finally(() => {
             store.commit('changePromisings','del');
@@ -113,8 +119,7 @@ export default {
             }
             return res.data;
         }).catch((err) => {
-            //console.log(Vue)
-            //Vue.$vux.toast.text(Vue.$t('网络错误'));
+            showNetWorkError(err);
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             return err;
         }).finally(() => {
@@ -174,6 +179,7 @@ export default {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
+            showNetWorkError(err);
             return res.data;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);

@@ -99,7 +99,7 @@
                 //解决select必须点击一次才能消失的问题
                 document.body.click();
                 this.$refs.editModal.show({
-                    title : '修改分组名称',
+                    title : this.$t('modifyGroupName'),
                     confirmCallback : () => {
                         this.confirmChangeOrgname();
                     }
@@ -178,23 +178,23 @@
                 if(this.orgGroupList && this.orgGroupList.length > 0){
                     orgGroupList = JSON.parse(JSON.stringify(this.orgGroupList));
                     orgGroupList.push({
-                        groupName : '未分组',
+                        groupName : this.$t('noGroup'),
                         id : '-2',
                         stay : true
                     });
                     orgGroupList.unshift({
-                        groupName : '全部分组',
+                        groupName : this.$t('allGroup'),
                         id : '-1',
                         stay : true
                     });
                 }else{
                     orgGroupList.push({
-                        groupName : '未分组',
+                        groupName : this.$t('noGroup'),
                         id : '-2',
                         stay : true
                     });
                     orgGroupList.unshift({
-                        groupName : '全部分组',
+                        groupName : this.$t('allGroup'),
                         id : '-1',
                         stay : true
                     });

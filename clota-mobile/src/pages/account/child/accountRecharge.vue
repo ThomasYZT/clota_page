@@ -4,6 +4,7 @@
     <div class="account-recharege">
         <div class="recharge-title">
             <x-input title="¥"
+                     ref="money"
                      v-model="rechargeMoney"
                      :show-clear="false"
                      label-width="20px"
@@ -66,7 +67,9 @@
                 //账户类型id
                 accountTypeId  : '',
                 //赠送金额
-                donateMoney : ''
+                donateMoney : 0,
+                //账户名称
+                accountTypeName : ''
             }
         },
         methods: {
@@ -96,6 +99,8 @@
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
                     this.accountTypeId = params.accountTypeId;
+                    this.accountTypeName = params.accountName;
+                    this.setTitle();
                 }else{
                     this.$router.push({
                         name: 'account'
@@ -124,7 +129,18 @@
                         reject();
                     });
                 });
+            },
+            /**
+             * 设置标题
+             */
+            setTitle () {
+                document.title = this.$t('rechartAccount',{'account' : this.accountTypeName });
             }
+        },
+        mounted () {
+            this.$nextTick(() => {
+                this.$refs.money.focus();
+            });
         }
     }
 </script>
@@ -146,8 +162,10 @@
             }
 
             /deep/ .weui-cell__hd{
-                height: 36px;
-                line-height: 40px;
+                font-size: 25px;
+                height: 100%;
+                display: flex;
+                align-items: center;
             }
 
             /deep/ .weui-cell__hd{
@@ -157,13 +175,19 @@
 
             /deep/ .weui-input{
                 height: 35px;
-                line-height: 40px;
-                font-size: 20px;
+                font-size: 28px;
                 color: #353B48;
             }
 
             /deep/ .weui-cell__primary{
                 height: 100%;
+
+                input{
+                    height: 100%;
+                    display: block;
+                    /*height: 35px;*/
+                    padding: 0!important;
+                }
             }
 
             .actual-money{
@@ -244,7 +268,7 @@
                 font-size: 17px;
                 color: $color_fff;
                 border-radius: 100px;
-                letter-spacing: 5px;
+                letter-spacing: 2px;
             }
         }
     }

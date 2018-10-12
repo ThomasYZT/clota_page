@@ -24,7 +24,8 @@
                         <countdown v-model="time"
                                    @on-finish="countFinish"
                                    :start="isCountStart"
-                                   v-show="isCountStart"></countdown>
+                                   v-show="isCountStart">
+                        </countdown>
                     </div>
                 </x-input>
             </group>
@@ -38,6 +39,7 @@
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         data() {
@@ -64,7 +66,8 @@
                 this.validateCode().then(() => {
                     return  ajax.post('checkCode',{
                         phoneNum : this.originPhone,
-                        code : this.formData.validCode
+                        code : this.formData.validCode,
+                        type : 'member_mod_trade_password'
                     }).then(res => {
                         if(res.success){
                             return Promise.resolve();
@@ -122,7 +125,9 @@
                 //先验证是否在60s倒计时内
                 if(!this.isGetCode) {
                     ajax.post('getCode',{
-                        phoneNum : this.originPhone
+                        phoneNum : this.originPhone,
+                        type : 'member_mod_trade_password',
+                        companyCode : this.companyCode
                     }).then(res => {
                         if(res.success){
                             this.isGetCode = true;
@@ -148,6 +153,7 @@
              *  倒计时结束
              */
             countFinish() {
+                this.time = 60;
                 this.isGetCode = false;
                 this.isCountStart = false;
             },
@@ -168,6 +174,11 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters({
+                companyCode : 'companyCode'
+            })
         }
     }
 </script>

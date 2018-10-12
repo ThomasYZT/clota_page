@@ -6,7 +6,7 @@
 const apiList = {
     //会员注册
     registerMember: '/external/member/registerMember2',
-    //会员注册 获取验证码
+    //获取验证码
     getCode: '/external/member/getPhoneVerificationCode',
     //会员登录
     login: '/external/member/login2',
@@ -47,7 +47,11 @@ const apiList = {
     //查询支付协议
     getAgreementToPay: '/external/memberAccount/getAgreementToPay',
     //充值时获取实际所得金额
-    getRechargeActMoney: '/external/memberAccount/getRechargeActMoney'
+    getRechargeActMoney: '/external/memberAccount/getRechargeActMoney',
+    //获取微信配置信息
+    getWxConfig: '/wechat/mp/getConfig',
+    //上传头像
+    uploadBase64File: '/uploadBase64File',
 };
 
 export default apiList;

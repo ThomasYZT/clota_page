@@ -85,16 +85,6 @@ plugin.install = function (Vue, options) {
     Vue.directive('click-outside', ClickOutsideDirective);
 
     Vue.use(WechatPlugin);
-    Vue.wechat.config({
-        debug: true,
-        appId: 'wx6ddc1e293024d508',
-        timestamp: 1539171889,
-        nonceStr: '82bPxecf5HaddrW0',
-        signature: '10916c8b4b38f609581f3bae54e3c7ddeb14e54c',
-        jsApiList: [
-            'chooseImage',
-        ]
-    });
 
     // 公用样式，指令及方法
     // Vue.use(klwkUi);

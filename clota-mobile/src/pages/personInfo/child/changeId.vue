@@ -128,7 +128,6 @@
                         this.$router.push({
                             name : 'personInfo'
                         });
-                        this.getMemberDetail();
                     }else{
                         this.$vux.toast.show({
                             text: this.$t('operateFail',{msg : this.$t('modify')}),
@@ -168,7 +167,7 @@
     .change-id{
         @include block_outline();
         float: left;
-        background: rgba(242,243,244,1);
+        background: $color_fff;
 
         .id-area{
             @include block_outline($height : 364px);

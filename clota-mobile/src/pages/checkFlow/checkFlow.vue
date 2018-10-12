@@ -66,7 +66,7 @@
                     //刷新完成bubble停留的位置
                     stop: 40,
                     //设置加载和加载中显示的文字
-                    txt: '刷新完成'
+                    txt: this.$t('freshComplete')
                 },
                 //上拉加载配置
                 pullUpLoadObj: {

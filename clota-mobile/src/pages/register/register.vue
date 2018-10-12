@@ -20,11 +20,11 @@
                  :placeholder="$t('pleaseInputValidCode')"
                  class="c-input verify-input"
                  :show-clear="false"
-                 text-align="left"
+                 text-align="right"
                  keyboard="number"
                  label-width="150px">
-            <div slot="right"
-                 class="code-button"
+            <div slot="right-full-height"
+                 class="validate"
                  :class="{active: isGetCode}"
                  :disabled="true"
                  @click="getCode()">
@@ -50,6 +50,7 @@
 <script>
     import ajax from '../../api';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -79,13 +80,21 @@
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
-                            phoneNum: this.registerInfo.phoneNum
+                            phoneNum: this.registerInfo.phoneNum,
+                            type : 'member_register',
+                            companyCode : this.companyCode
                         }).then((res) => {
                            if(!res.success) {
-                               this.$t('getCodeFailed')
+                               this.$vux.toast.show({
+                                   text: this.$t('operateFail',{msg : this.$t('send')}),
+                                   type : 'cancel'
+                               });
                            }else {
                                this.timimg();
                                this.isGetCode = true;
+                               this.$vux.toast.show({
+                                   text: this.$t('operateSuc',{msg : this.$t('send')})
+                               })
                            }
                         })
                     });
@@ -102,7 +111,7 @@
              * 注册会员
              */
             register() {
-                this.msg = ''
+                this.msg = '';
                 //输入验证
                 this.validate(() => {
                     ajax.post('registerMember', {
@@ -111,10 +120,9 @@
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
                         sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
-                        companyCode: '1045244656750825472' //冰雪世界景区
+                        companyCode: this.companyCode //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
-                            console.log(res.data)
                             //存储token信息
                             localStorage.setItem('token', res.data.token);
                             //存储用户信息
@@ -126,7 +134,7 @@
                             //自动登陆跳转到主页
                             this.$router.push({ name: 'home'});
                         } else {
-                            this.this.$vux.toast.text(this.$t(res.code));
+                            this.$vux.toast.text(this.$t(res.code));
                         }
                     })
                 });
@@ -210,6 +218,11 @@
                     // });
                 }
             },
+        },
+        computed :{
+            ...mapGetters({
+                companyCode : 'companyCode'
+            })
         }
     }
 </script>
@@ -224,6 +237,10 @@
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;
+
+        /deep/ .weui-cell__primary{
+            padding-right: 10px;
+        }
 
         .msg {
             margin-left: 14px;
@@ -242,6 +259,22 @@
 
         /deep/ .weui-cell.vux-tap-active.weui-cell_access {
             height: 100% !important;
+        }
+
+        .validate{
+            height: 100%;
+            padding: 0 18px;
+            text-align: center;
+            font-size: $font_size_12px;
+            color: #046FDB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid #F5F5F5;
+
+            &.time-counting{
+                color: #C5C5C5;
+            }
         }
     }
 </style>

@@ -445,7 +445,6 @@
 
             .title-wrap{
                 padding: 15px 35px 0px;
-                font-size: $font_size_20px;
                 color: $color_000_085;
 
                 .blue-span{

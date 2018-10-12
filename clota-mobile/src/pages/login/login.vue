@@ -65,8 +65,6 @@
                 countDown: null,
                 //微信用户信息
                 wxUserInfo :{},
-                //公司编码
-                companyCode : '1045244656750825472'
             }
         },
         methods: {
@@ -79,13 +77,21 @@
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
-                            phoneNum: this.loginInfo.phoneNum
+                            phoneNum: this.loginInfo.phoneNum,
+                            type : 'member_login',
+                            companyCode : this.companyCode
                         }).then((res) => {
                             if(!res.success) {
-                                this.$vux.toast.text(this.$t('getCodeFailed'))
+                                this.$vux.toast.show({
+                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    type : 'cancel'
+                                });
                             }else{
                                 this.timimg();
                                 this.isGetCode = true;
+                                this.$vux.toast.show({
+                                    text: this.$t('operateSuc',{msg : this.$t('send')})
+                                })
                             }
                         })
                     });
@@ -95,14 +101,6 @@
              * 登陆
              */
             login() {
-                // this.$wechat.chooseImage({
-                //     count: 1, // 默认9
-                //     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                //     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                //     success: function (res) {
-                //         console.log(res);
-                //     }
-                // });
                 this.msg = '';
                 this.validate(() => {
                     ajax.post('login', {
@@ -253,7 +251,8 @@
         },
         computed :{
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                companyCode : 'companyCode',
             })
         }
     }
@@ -297,7 +296,7 @@
 
         .validate{
             height: 100%;
-            padding: 0 10px;
+            padding: 0 15px 0 18px;
             text-align: center;
             font-size: $font_size_12px;
             color: #046FDB;
