@@ -70,7 +70,8 @@
     export default {
         name : 'app',
         components: {
-            drag
+            drag,
+            headNav
         },
         data() {
             return {
@@ -84,7 +85,9 @@
                 //选择语言提示框是否显示
                 confirmShow : false,
                 //当前选择的语言类型
-                langType : ''
+                langType : '',
+                //是否显示顶部返回首页的图标
+                showTopBanner: true
             }
         },
         methods: {
@@ -142,6 +145,12 @@
                         document.title = '';
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
+
+                    if(newVal.name === 'mobileLogin' ||
+                       newVal.name === 'mobileRegister' ||
+                       newVal.name === 'home') {
+                        this.showTopBanner = false;
+                    }
                 },
                 immediate : true
             }
