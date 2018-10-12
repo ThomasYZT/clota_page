@@ -25,17 +25,20 @@
                     </template>
                 </group>
             </div>
-            <template v-if="pageShow">
+            <template >
+
+                <!--<headNav v-if="showTopBanner"></headNav>-->
                 <transition name="fade">
                     <router-view :key="hashKey" >
+
                     </router-view>
                 </transition>
             </template>
-            <template v-else>
-                <div class="invlid-url">
-                    <img src="./assets/images/icon-invalid-url.png" alt="">
-                </div>
-            </template>
+            <!--<template v-else>-->
+                <!--<div class="invlid-url">-->
+                    <!--<img src="./assets/images/icon-invalid-url.png" alt="">-->
+                <!--</div>-->
+            <!--</template>-->
         </drawer>
         <drag>
             <div class="lang-change" @click="changeLang">
@@ -72,7 +75,7 @@
 <script>
     import {mapGetters} from 'vuex';
     import drag from '@/components/drag/index.vue';
-    import headNav from '@/components/headNav/index'
+    // import headNav from '@/components/headNav/index'
     import Vue from 'vue';
     import ajax from '@/api/index.js';
 
@@ -80,7 +83,6 @@
         name : 'app',
         components: {
             drag,
-            headNav
         },
         data() {
             return {
@@ -99,7 +101,7 @@
                 pageShow : false,
                 langType : '',
                 //是否显示顶部返回首页的图标
-                showTopBanner: true
+                //showTopBanner: true
             }
         },
         methods: {
@@ -197,11 +199,13 @@
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
 
-                    if(newVal.name === 'mobileLogin' ||
+                    /*if(newVal.name === 'mobileLogin' ||
                        newVal.name === 'mobileRegister' ||
                        newVal.name === 'home') {
                         this.showTopBanner = false;
-                    }
+                    }else {
+                        this.showTopBanner = true;
+                    }*/
                 },
                 immediate : true
             },

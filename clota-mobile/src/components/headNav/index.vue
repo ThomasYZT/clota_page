@@ -4,7 +4,8 @@
 -->
 <template>
     <div class="head-nav">
-        <img src="../../assets/images/backToHome.svg" alt="">
+        <img @click="toHome()"
+             src="../../assets/images/backToHome.svg" alt="">
     </div>
 </template>
 
@@ -15,7 +16,13 @@
         data() {
             return {}
         },
-        methods: {}
+        methods: {
+            toHome() {
+                this.$router.push({
+                    name: 'home'
+                })
+            }
+        }
     }
 </script>
 

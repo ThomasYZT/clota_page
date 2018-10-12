@@ -205,6 +205,7 @@
                 text-align: center;
 
                 p {
+                    height: 50px;
                     line-height: 50px;
                     font-size: 18px;
                     font-weight: bold;
