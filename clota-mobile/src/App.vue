@@ -25,8 +25,7 @@
                     </template>
                 </group>
             </div>
-            <template >
-
+            <template v-if="pageShow">
                 <!--<headNav v-if="showTopBanner"></headNav>-->
                 <transition name="fade">
                     <router-view :key="hashKey" >
@@ -34,11 +33,11 @@
                     </router-view>
                 </transition>
             </template>
-            <!--<template v-else>-->
-                <!--<div class="invlid-url">-->
-                    <!--<img src="./assets/images/icon-invalid-url.png" alt="">-->
-                <!--</div>-->
-            <!--</template>-->
+            <template v-else>
+                <div class="invlid-url">
+                    <img src="./assets/images/icon-invalid-url.png" alt="">
+                </div>
+            </template>
         </drawer>
         <drag>
             <div class="lang-change" @click="changeLang">
