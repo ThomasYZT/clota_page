@@ -142,6 +142,8 @@
                 }).then(() =>{
                     return this.validateEmail();
                 }).then(() => {
+                    return this.validateAddress();
+                }).then(() => {
                     ajax.post('updateMemberInfo',{
                         id : this.userInfo.memberId,
                         custName : this.formData.name,
@@ -220,6 +222,23 @@
                     }else  if(this.formData.emailAddr && !validator.isEmail(this.formData.emailAddr)){
                         this.$vux.toast.show({
                             text: this.$t('errFormat',{field : this.$t('email')}),
+                            type: 'text',
+                            width: '6rem'
+                        });
+                        reject();
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验地址长度
+             */
+            validateAddress () {
+                return new Promise((resolve,reject) => {
+                    if(this.formData.homeAddr && this.formData.emailAddr.homeAddr > 100){
+                        this.$vux.toast.show({
+                            text: this.$t('maxLengthErr',{field : this.$t('address'),length : 100}),
                             type: 'text',
                             width: '6rem'
                         });
