@@ -32,7 +32,9 @@
                 </transition>
             </template>
             <template v-else>
-                <div>请在微信中打开连接</div>
+                <div class="invlid-url">
+                    <img src="./assets/images/icon-invalid-url.png" alt="">
+                </div>
             </template>
         </drawer>
         <drag>
@@ -216,6 +218,18 @@
             height: 40px;
             bottom : 50px;
             right: 0;
+        }
+
+        .invlid-url{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+
+            img{
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
         }
 
         .lang-change{

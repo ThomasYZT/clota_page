@@ -53,15 +53,15 @@
             }
         }
 
-        &:after {
-            position: absolute;
-            bottom: 14px;
-            display: block;
-            margin-top: 14px;
-            content: ' ';
-            width: calc(100% - 25px);
-            border-bottom: 1px dashed #E8E8E8;
-        }
+        /*&:after {*/
+            /*position: absolute;*/
+            /*bottom: 14px;*/
+            /*display: block;*/
+            /*margin-top: 14px;*/
+            /*content: ' ';*/
+            /*width: calc(100% - 25px);*/
+            /*border-bottom: 1px dashed #E8E8E8;*/
+        /*}*/
     }
 
 

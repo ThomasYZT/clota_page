@@ -270,7 +270,7 @@
 
         /deep/ .vux-tab-ink-bar{
             background: #046FDB;
-            height: 1.5px!important;
+            height: 2px!important;
         }
 
         /deep/ .vux-tab-item{
@@ -402,6 +402,7 @@
                         @include absolute_pos(absolute,$bottom : 19px);
                         font-size: $font_size_12px;
                         color: $color_fff;
+                        font-weight: bold;
                     }
 
                     .icon-code{

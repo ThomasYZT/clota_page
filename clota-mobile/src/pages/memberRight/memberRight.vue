@@ -171,9 +171,12 @@
         }
 
         .member-right-content {
-            height: 100%;
+            height: calc(100% - 43px);
             margin-top: 43px;
             text-align: center;
+            -webkit-overflow-scrolling: touch;
+            overflow: auto;
+            background: $color_fff;
 
             .category {
                 display: inline-block;

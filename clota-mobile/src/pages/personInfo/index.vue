@@ -34,6 +34,7 @@
                     :link="{name : 'changeMobile',params : {mobile : formData.phoneNum}}">
                 </cell>
                 <cell
+                    class="trade-pass"
                     :title="$t('tradePass')"
                     is-link
                     value="●●●●●●"
@@ -441,6 +442,10 @@
             margin-top: 8px;
             background: $color_fff;
             overflow: auto;
+
+            .trade-pass /deep/ .weui-cell__ft{
+                font-size: $font_size_10px!important;
+            }
 
             .padding-right /deep/ .weui-cell__ft{
                 padding-right: 15px;

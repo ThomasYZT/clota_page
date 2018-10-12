@@ -228,6 +228,7 @@
         @include block_outline();
         padding-top: 24px;
         float: left;
+        background: $color_fff;
 
         .phone-img{
             @include block_outline(50px,50px);

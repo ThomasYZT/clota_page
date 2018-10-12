@@ -37,7 +37,7 @@
               </div>
 
               <div class="card-info">
-                  <div>{{cardInfo.cardCode | formatCardCode}}</div>
+                  <div style="font-weight: bold">{{cardInfo.cardCode | formatCardCode}}</div>
                   <div @click="toMemberCode">
                       <i class="iconfont icon-code"></i>
                       <i class="iconfont icon-arrow-right"></i>
@@ -458,6 +458,10 @@
 
         .person-img {
             width: 50%;
+        }
+
+        .level-name{
+            font-size: $font_size_11px;
         }
     }
 </style>
