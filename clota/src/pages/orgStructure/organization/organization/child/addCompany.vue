@@ -96,11 +96,11 @@
         <div slot="footer">
             <Button type="ghost"
                 class="ivu-btn-90px"
-                @click="cancel">取消</Button>
+                @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     :loading="savIng"
                 class="ivu-btn-90px"
-                @click="save">保存</Button>
+                @click="save">{{$t('save')}}</Button>
         </div>
     </Modal>
 </template>
@@ -149,13 +149,13 @@
                             if(res.data){
                                 callback();
                             }else{
-                                callback('管理账号已存在');
+                                callback(this.$t('adminAccountIsExit'));
                             }
                         }else{
-                            callback('账号校验失败');
+                            callback(this.$t('accountValidFail'));
                         }
                     }).catch(() => {
-                        callback('管理账号已存在');
+                        callback(this.$t('accountValidFail'));
                     });
                 }else{
                     callback(this.$t('inputField', {field: this.$t('controlAccount')}));
@@ -413,9 +413,9 @@
                     if(res.success){
                         this.$emit('fresh-structure-data');
                         this.$emit('input', false);
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
                     }else{
-                        this.$Message.error(res.message || '新增失败');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                     }
                 }).finally(() => {
                     this.savIng = false;

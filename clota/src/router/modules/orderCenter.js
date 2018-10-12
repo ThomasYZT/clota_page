@@ -11,7 +11,7 @@
 //一级菜单的menuname
 let topMenuName = 'orderCenter';
 export default {
-    memberMange: {
+    order: {
         path: '/order',
         component: () => import(/* webpackChunkName: "orderCenterInit" */ '../../pages/orderCenter/index.vue'),
         meta: {

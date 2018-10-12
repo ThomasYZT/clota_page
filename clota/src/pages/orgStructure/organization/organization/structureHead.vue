@@ -310,7 +310,7 @@
                     orgId : data.id
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('删除成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('del')}));
                         this.$emit('switch-tap',this.activeTap);
                     }else{
                         if(res.code === 'S007'){

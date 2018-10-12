@@ -194,7 +194,7 @@
                         stay : true
                     });
                     orgGroupList.unshift({
-                        groupName : '全部分组',
+                        groupName : this.$t('allGroup'),
                         id : '-1',
                         stay : true
                     });
