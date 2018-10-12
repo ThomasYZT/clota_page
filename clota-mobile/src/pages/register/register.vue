@@ -50,6 +50,7 @@
 <script>
     import ajax from '../../api';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -79,7 +80,9 @@
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
-                            phoneNum: this.registerInfo.phoneNum
+                            phoneNum: this.registerInfo.phoneNum,
+                            type : 'member_register',
+                            companyCode : this.companyCode
                         }).then((res) => {
                            if(!res.success) {
                                this.$vux.toast.show({
@@ -108,7 +111,7 @@
              * 注册会员
              */
             register() {
-                this.msg = ''
+                this.msg = '';
                 //输入验证
                 this.validate(() => {
                     ajax.post('registerMember', {
@@ -117,7 +120,7 @@
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
                         sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
-                        companyCode: '1045244656750825472' //冰雪世界景区
+                        companyCode: this.companyCode //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
                             //存储token信息
@@ -215,6 +218,11 @@
                     // });
                 }
             },
+        },
+        computed :{
+            ...mapGetters({
+                companyCode : 'companyCode'
+            })
         }
     }
 </script>

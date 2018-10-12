@@ -39,6 +39,7 @@
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         data() {
@@ -123,7 +124,9 @@
                 //先验证是否在60s倒计时内
                 if(!this.isGetCode) {
                     ajax.post('getCode',{
-                        phoneNum : this.originPhone
+                        phoneNum : this.originPhone,
+                        type : 'member_mod_trade_password',
+                        companyCode : this.companyCode
                     }).then(res => {
                         if(res.success){
                             this.isGetCode = true;
@@ -170,6 +173,11 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...companyCode({
+                companyCode : 'companyCode'
+            })
         }
     }
 </script>

@@ -65,9 +65,6 @@
                 countDown: null,
                 //微信用户信息
                 wxUserInfo :{},
-                //公司编码
-                companyCode : '1045244656750825472'
-                // companyCode : 'C2001'
             }
         },
         methods: {
@@ -80,7 +77,9 @@
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
-                            phoneNum: this.loginInfo.phoneNum
+                            phoneNum: this.loginInfo.phoneNum,
+                            type : 'member_login',
+                            companyCode : this.companyCode
                         }).then((res) => {
                             if(!res.success) {
                                 this.$vux.toast.show({
@@ -252,7 +251,8 @@
         },
         computed :{
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                companyCode : 'companyCode',
             })
         }
     }

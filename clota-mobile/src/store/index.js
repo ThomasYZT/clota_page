@@ -21,7 +21,9 @@ export default new Vuex.Store({
         //是否显示键盘
         showKeyBoard : false,
         //显示网路错误提示框
-        showNetworkError : false
+        showNetworkError : false,
+        //公司id
+        companyCode : '1045244656750825472'
     },
     getters: {
         //当前语言状态
@@ -52,6 +54,10 @@ export default new Vuex.Store({
         //是否显示网路错误提示框
         showNetworkError : state => {
             return state.showNetworkError;
+        },
+        //公司id
+        companyCode : state => {
+            return state.companyCode;
         }
     },
     mutations: {
@@ -118,6 +124,10 @@ export default new Vuex.Store({
          */
         updateShowNetworkError (state,status) {
             state.showNetworkError = status;
+        },
+        //更新公司编码
+        updateCompanyCode (state,companyCode) {
+            state.showNetworkError = companyCode;
         }
     },
     actions: {

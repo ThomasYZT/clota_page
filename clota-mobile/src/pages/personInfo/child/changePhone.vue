@@ -74,7 +74,9 @@
                 if(this.isTiming) return;
                 this.validateMobile().then(() => {
                     ajax.post('getCode',{
-                        phoneNum : this.formData.mobile
+                        phoneNum : this.formData.mobile,
+                        type : 'member_mod_phone',
+                        companyCode : this.companyCode
                     }).then(res => {
                         if(res.success){
                             setTimeout(() =>{
@@ -216,7 +218,8 @@
         },
         computed : {
             ...mapGetters({
-                userInfo : 'userInfo'
+                userInfo : 'userInfo',
+                companyCode :'companyCode'
             })
         }
     }
