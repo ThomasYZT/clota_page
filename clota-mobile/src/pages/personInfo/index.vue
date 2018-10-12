@@ -236,7 +236,7 @@
              */
             validateAddress () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.homeAddr && this.formData.emailAddr.homeAddr > 100){
+                    if(this.formData.homeAddr && this.formData.homeAddr > 100){
                         this.$vux.toast.show({
                             text: this.$t('maxLengthErr',{field : this.$t('address'),length : 100}),
                             type: 'text',
