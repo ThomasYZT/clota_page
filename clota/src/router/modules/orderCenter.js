@@ -32,6 +32,17 @@ export default {
                     rightPath: topMenuName + '.' + 'createOrder',
                     isMenu: true
                 },
+            },
+            //订单填写
+            writeOrder : {
+                path: '/order/create/write',
+                name: 'writeOrder',
+                component: () => import(/* webpackChunkName: "orderCenterInit" */ '../../pages/orderCenter/createOrder/orderWrite/index.vue'),
+                meta: {
+                    menuName: 'writeOrder',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'createOrder',
+                },
             }
         }
     }

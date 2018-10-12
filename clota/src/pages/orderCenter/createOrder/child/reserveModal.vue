@@ -45,12 +45,15 @@
                         <template slot-scope="scope">
                             <InputNumber
                                 :min="1"
-                                v-model="scope.row.num"
+                                :value="scope.row.num"
+                                @input="changeProductNum(scope.$index,$event)"
                                 style="width: 100px">
                             </InputNumber>
                         </template>
                     </el-table-column>
                 </table-com>
+                <div class="predict-money">预计订单总额: <span class="money">{{predictMoney | moneyFilter }}</span></div>
+                <div class="left-money">下单企业可用额度: <span class="money">{{validatMoney | moneyFilter}}</span></div>
             </div>
             <div slot="footer">
                 <Button type="primary"
@@ -73,6 +76,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './reserveConfig';
     import ticketInfo from './ticketInfo';
+    import ajax from '@/api/index.js';
     export default {
         components : {
             tableCom,
@@ -90,6 +94,13 @@
                 default () {
                     return [];
                 }
+            },
+            //查询参数
+            'search-params' :{
+                type :Object,
+                default () {
+                    return {};
+                }
             }
         },
         data() {
@@ -103,7 +114,9 @@
                 //购票须知对应的id
                 ticketInfoPolicyId : '',
                 //购票景区
-                ticketInfoOrgname : ''
+                ticketInfoOrgname : '',
+                //下单企业可用余额
+                validatMoney : 0
             }
         },
         methods: {
@@ -118,14 +131,20 @@
              * @param type
              */
             visibleChange(type) {
-                if(type === false){
+                if(type === true){
+                    this.queryLeftMoney();
                 }
             },
             /**
              * 确定填写数量
              */
             save () {
-
+                this.$router.push({
+                    name :'writeOrder',
+                    params :{
+                        productList : this.tableData
+                    }
+                });
             },
             /**
              * 取消预定
@@ -146,11 +165,44 @@
                 this.ticketInfoPolicyId = data.policyId;
                 this.ticketInfoOrgname = data.saleOrgName;
                 this.ticketModalShow = true;
+            },
+            /**
+             * 修改数量
+             * @param index
+             * @param num
+             */
+            changeProductNum (index,num) {
+                this.$set(this.tableData[index],'num',num)
+            },
+            /**
+             * 查询下单企业剩余金额
+             */
+            queryLeftMoney() {
+                ajax.post('findByOrgIdAndPeerId',{
+                    orgId : this.searchParams.saleOrgId,
+                    peerOrgId :this.searchParams.orderOrgId
+                }).then(res =>{
+                    if(res.success){
+                        this.validatMoney = (res.data.accountBalance ? res.data.accountBalance :0) + (res.data.creditBalance ? res.data.creditBalance : 0);
+                    }else{
+                        this.validatMoney = 0;
+                    }
+                });
             }
         },
         watch : {
             productList () {
                 this.tableData = JSON.parse(JSON.stringify(this.productList));
+            }
+        },
+        computed : {
+            //预计总额
+            predictMoney () {
+                let amount = 0;
+                for(let i = 0,j = this.tableData.length;i < j;i++){
+                    amount += this.tableData[i]['settlePrice'] * this.tableData[i]['num'];
+                }
+                return amount;
             }
         }
     }
@@ -175,7 +227,21 @@
         }
 
         .target-body{
-            max-height: 284px;
+            max-height: 324px;
+            overflow: auto;
+
+            .predict-money,
+            .left-money{
+                height: 44px;
+                float: left;
+                padding: 10px;
+                font-size: $font_size_15px;
+
+            }
+
+            .money{
+                color: $color_yellow;
+            }
 
             .product-name{
                 display: flex;
@@ -201,7 +267,7 @@
         }
 
         /deep/ .ivu-modal-body{
-            padding: 30px 28px;
+            padding: 30px 28px 0 28px;
         }
 
         /deep/ .el-table th{

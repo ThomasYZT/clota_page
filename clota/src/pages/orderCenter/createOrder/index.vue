@@ -50,6 +50,7 @@
         </table-com>
         <!--预定模态框-->
         <reserve-modal v-model="showReserveModal"
+                       :search-params="queryParams"
                        :product-list="productList">
         </reserve-modal>
     </div>

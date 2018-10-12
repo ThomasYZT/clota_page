@@ -7,4 +7,6 @@ export default {
     'queryOrderOptionList' : '/order/queryOrderOptionList',
     //查询预订产品列表
     'queryReserveProductList' : '/order/queryReserveProductList',
+    //获取下单企业可用余额
+    'findByOrgIdAndPeerId' : '/organize/findByOrgIdAndPeerId',
 }
