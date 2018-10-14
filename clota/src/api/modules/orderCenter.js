@@ -13,4 +13,8 @@ export default {
     'addIndividualOrder' : '/order/addIndividualOrder',
     //查询产品销售规则
     'findProductSaleRule' : '/product/findProductSaleRules',
+    //查询下单企业
+    'getOrderOrgList' : '/order/getOrderOrgList',
+    //查询团队审核订单
+    'queryTeamOrder' : '/order/queryTeamOrder',
 }
