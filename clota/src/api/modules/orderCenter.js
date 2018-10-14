@@ -9,4 +9,8 @@ export default {
     'queryReserveProductList' : '/order/queryReserveProductList',
     //获取下单企业可用余额
     'findByOrgIdAndPeerId' : '/organize/findByOrgIdAndPeerId',
+    //新建散客订单
+    'addIndividualOrder' : '/order/addIndividualOrder',
+    //查询产品销售规则
+    'findProductSaleRule' : '/product/findProductSaleRules',
 }

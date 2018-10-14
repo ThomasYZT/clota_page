@@ -17,7 +17,7 @@
             <div class="target-body">
                 <table-com
                     :column-data="columnData"
-                    :table-data="tableData"
+                    :table-data="productListDelal"
                     :border="false"
                     :height="254"
                     @query-data="queryList">
@@ -44,7 +44,9 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <InputNumber
-                                :min="1"
+                                :min="scope.row.min"
+                                :max="scope.row.max"
+                                :disabled="scope.row.disabled"
                                 :value="scope.row.num"
                                 @input="changeProductNum(scope.$index,$event)"
                                 style="width: 100px">
@@ -116,7 +118,9 @@
                 //购票景区
                 ticketInfoOrgname : '',
                 //下单企业可用余额
-                validatMoney : 0
+                validatMoney : 0,
+                //产品政策
+                productPolicy : {}
             }
         },
         methods: {
@@ -133,6 +137,7 @@
             visibleChange(type) {
                 if(type === true){
                     this.queryLeftMoney();
+                    this.findProductSaleRule();
                 }
             },
             /**
@@ -142,7 +147,7 @@
                 this.$router.push({
                     name :'writeOrder',
                     params :{
-                        productList : this.tableData
+                        productList : this.productListDelal
                     }
                 });
             },
@@ -188,21 +193,80 @@
                         this.validatMoney = 0;
                     }
                 });
+            },
+            /**
+             * 获取产品下所有证件类型
+             */
+            findProductSaleRule () {
+                ajax.post('findProductSaleRule',{
+                    productIds : this.tableData.map(item => item.productId).join(',')
+                }).then(res => {
+                    if(res.success){
+                        this.productPolicy = res.data ? res.data : {};
+                    }else{
+                        this.productPolicy = {};
+                    }
+                });
             }
         },
         watch : {
             productList () {
-                this.tableData = JSON.parse(JSON.stringify(this.productList));
+                this.tableData = JSON.parse(JSON.stringify(this.productList.map(item => {
+                    return {
+                        ...item,
+                        num : 0
+                    }
+                })));
             }
         },
         computed : {
             //预计总额
             predictMoney () {
                 let amount = 0;
-                for(let i = 0,j = this.tableData.length;i < j;i++){
-                    amount += this.tableData[i]['settlePrice'] * this.tableData[i]['num'];
+                for(let i = 0,j = this.productListDelal.length;i < j;i++){
+                    amount += this.productListDelal[i]['settlePrice'] * this.productListDelal[i]['num'];
                 }
                 return amount;
+            },
+            //对产品数据进行处理，保证每个产品都有最大数量和最小数量
+            productListDelal () {
+                if(this.productPolicy && Object.keys(this.productPolicy).length > 0){
+                    return this.tableData.map(item => {
+                        let numCount = item.num;
+                        if(this.productPolicy[item.productId] &&
+                            this.productPolicy[item.productId].minNum !== null &&
+                            this.productPolicy[item.productId].minNum !== '' &&
+                            this.productPolicy[item.productId].minNum !== undefined){
+                            if(item.num < this.productPolicy[item.productId].minNum){
+                                numCount = this.productPolicy[item.productId].minNum;
+                            }
+                        }
+                        if(this.productPolicy[item.productId] &&
+                            this.productPolicy[item.productId].maxNum !== null &&
+                            this.productPolicy[item.productId].maxNum !== '' &&
+                            this.productPolicy[item.productId].maxNum !== undefined){
+                            if(item.num > this.productPolicy[item.productId].maxNum){
+                                numCount = this.productPolicy[item.productId].maxNum;
+                            }
+                        }
+                        return {
+                            ...item,
+                            disabled : false,
+                            max : this.productPolicy[item.productId] ? this.productPolicy[item.productId].maxNum ? Number(this.productPolicy[item.productId].maxNum) : 0 : 0,
+                            min : this.productPolicy[item.productId] ? this.productPolicy[item.productId].minNum ? Number(this.productPolicy[item.productId].minNum) : 0 : 0,
+                            num : Number(numCount)
+                        }
+                    });
+                }else{
+                    return this.tableData.map(item => {
+                        return {
+                            ...item,
+                            disabled : true,
+                            max : 0,
+                            min : 0
+                        }
+                    });
+                }
             }
         }
     }

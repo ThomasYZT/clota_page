@@ -436,3 +436,5 @@ export const orderType = [
         value : 'individual'
     },
 ];
+
+

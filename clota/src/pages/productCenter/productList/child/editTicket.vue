@@ -395,11 +395,11 @@
                     });
                 }
             };
-            //校验票面价格(不超过景区成本价)
+            //校验票面价格(大于景区成本价)
             const validatePrintPrice = (rule,value,callback) => {
                 if(value && this.formData.standardPrice){
-                    if( Number(value) > Number(this.formData.standardPrice) ){
-                        callback(this.$t('sizeErrorB',{filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice')}));
+                    if( Number(value) < Number(this.formData.standardPrice) ){
+                        callback(this.$t('sizeErrorS',{filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice')}));
                     }else{
                         callback();
                     }

@@ -3,18 +3,18 @@
 export const columnData = [
     {
         title: '所属景区',
-        width: 130,
+        minwidth: 130,
         enWidth : 180,
         field: 'scenicOrgName'
     },
     {
         title: '产品名称',
-        width: 200,
+        minwidth: 200,
         field: 'productName'
     },
     {
         title: '游玩日期',
-        minWidth: 120,
+        width: 120,
         field: 'playDate'
     },
     {
@@ -24,7 +24,7 @@ export const columnData = [
     },
     {
         title: '数量',
-        width: 150,
+        width: 100,
         field: 'num'
     },
     {

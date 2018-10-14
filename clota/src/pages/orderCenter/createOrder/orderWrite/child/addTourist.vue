@@ -1,0 +1,580 @@
+
+<!--添加游客-->
+
+<template>
+    <Modal
+        title="Title"
+        :mask-closable="false"
+        :value="value"
+        :width="860"
+        @on-visible-change="visibleChange"
+        @input="changeValue"
+        class="add-tourist"
+        class-name="vertical-center-modal">
+        <div slot="header" class="target-class">
+            <span class="title">{{$t('添加游客信息')}}</span>
+        </div>
+        <Form ref="formInline" :model="formData" label-position="left" >
+            <i-row>
+                <i-col span="11">
+                    <FormItem prop="name" label="姓名" :label-width="75" :rules="rules.name">
+                        <Input type="text" v-model.trim="formData.name" style="width: 280px;"/>
+                    </FormItem>
+                </i-col>
+                <i-col span="11">
+                    <FormItem prop="phone" label="手机号码" :label-width="100" :rules="rules.phone">
+                        <Input type="text" v-model.trim="formData.phone" style="width: 280px"/>
+                    </FormItem>
+                </i-col>
+            </i-row>
+
+            <div class="add-id-card">
+                <span class="add-btn" @click="addCardInfo"><Icon type="ios-plus-empty"></Icon>添加证件</span>
+            </div>
+            <table-com
+                :column-data="idColumns"
+                :table-data="idTableData"
+                :auto-height="true"
+                :table-com-min-height="250">
+                <el-table-column
+                    slot="column0"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.editType === 'edit'">
+                            <FormItem>
+                                <Select v-model.trim="scope.row.type" transfer>
+                                    <Option v-for="item in acceptCertificateType.all"
+                                            :key="item.value"
+                                            :value="item.value">
+                                        {{$t(item.label)}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </template>
+                        <template v-else>
+                            {{$t(scope.row[row.field])}}
+                        </template>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    show-overflow-tooltip
+                    slot="column1"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.editType === 'edit'">
+                            <FormItem >
+                                <Input type="text" v-model.trim="scope.row.data" />
+                            </FormItem>
+                        </template>
+                        <template v-else>
+                            {{scope.row[row.field]}}
+                        </template>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column2"
+                    slot-scope="row"
+                    show-overflow-tooltip
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <ul class="operate-list">
+                            <template v-if="scope.row.editType !== 'edit'">
+                                <li @click="modifyIdfo(scope.$index)" >{{$t('modify')}}</li>
+                                <li class="red-label" @click="delIdInfo(scope.$index)">{{$t('del')}}</li>
+                            </template>
+                            <template v-else>
+                                <li @click="saveCardInfo(scope.$index)">{{$t('save')}}</li>
+                                <li class="cancel" @click="cancelEdit(scope.$index)">{{$t('cancel')}}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </el-table-column>
+            </table-com>
+
+            <div class="title-label">
+                取票信息
+            </div>
+
+            <table-com
+                :column-data="ticketColumnData"
+                class="get-ticket"
+                :table-data="productListDeal"
+                :auto-height="true"
+                :table-com-min-height="250">
+                <el-table-column
+                    slot="column3"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.needId !== 'noRequired'">
+                            <FormItem :prop="'idType' + scope.$index" :rules="rules.idType(scope.row)">
+                                <Select v-model.trim="scope.row.idType" :disabled="scope.row.takeNum < 1" transfer>
+                                    <Option v-for="item in acceptCertificateType[scope.row.productId]"
+                                            :key="item.productId"
+                                            :value="item.value">
+                                        {{$t(item.label)}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </template>
+                        <template v-else>
+                            无需证件
+                        </template>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    show-overflow-tooltip
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <InputNumber
+                            :min="scope.row.min"
+                            :max="scope.row.max"
+                            :disabled="scope.row.disabled"
+                            v-model.trim="scope.row.takeNum"
+                            @on-change="takeNumChange(scope.row)">
+                        </InputNumber>
+                    </template>
+                </el-table-column>
+            </table-com>
+        </Form>
+
+        <div slot="footer">
+            <Button type="primary"
+                    class="ivu-btn-90px"
+                    @click="confirm">{{$t('confirm')}}</Button>
+            <Button type="ghost"
+                    class="ivu-btn-90px"
+                    @click="cancel">{{$t('cancel')}}</Button>
+        </div>
+    </Modal>
+</template>
+
+<script>
+    import {validator} from 'klwk-ui';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {idColumns,ticketColumnData} from './addTouristConfig';
+    import ajax from '@/api/index.js';
+    import {idType} from '@/assets/js/constVariable.js';
+    import common from '@/assets/js/common';
+
+    export default {
+        props : {
+            //绑定modal的v-modal值
+            value : {
+                type : Boolean,
+                default : false
+            },
+            //产品列表
+            'product-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
+        components : {
+            tableCom
+        },
+        data() {
+            //校验手机号码
+            const validatePhone =  (rule,value,callback) => {
+                if(value && validator.isMobile(value)){
+                    callback();
+                }else{
+                    callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
+                }
+            };
+            const validateIdType = (rule,value,callback) => {
+                if(rule['rowData']['takeNum'] <= 0){
+                    callback();
+                }else{
+                    if(rule['rowData']['needId'] !== 'noRequired' ){
+                        for(let i = 0,j = this.idTableData.length;i < j;i++){
+                            if(this.idTableData[i]['type'] === rule['rowData']['idType'] &&
+                                this.idTableData[i]['editType'] !== 'edit'){
+                                callback();
+                            }
+                        }
+                        callback('请填写证件信息');
+                    }else{
+                        callback();
+                    }
+                }
+            };
+            return {
+                //表单数据
+                formData : {
+                    //姓名
+                    name : '',
+                    phone : '',
+                    //证件类型
+                    idType : '',
+                    //证件号码
+                    idNum :''
+                },
+                //校验规则
+                rules : {
+                    name : [
+                        { required: true, message: this.$t('inputField',{field : this.$t('name')}), trigger: 'blur' },
+                        { max : 20, message: this.$t('errorMaxLength', { field : this.$t('name') , length : 20}), trigger: 'blur' },
+                    ],
+                    phone: [
+                        { required: true, message: this.$t('inputField',{field : this.$t('mobilePhone')}), trigger: 'blur' },
+                        {validator :validatePhone,trigger : 'blur'}
+                    ],
+                    idType  (rowData) {
+                        return  [
+                            { validator : validateIdType ,trigger : 'change',rowData : rowData }
+                        ]
+                    }
+                },
+                //证件列表表头配置
+                idColumns : idColumns,
+                //证件数据
+                idTableData : [],
+                ticketColumnData : ticketColumnData,
+                //取票信息数据
+                ticketTableData : [],
+                //产品政策
+                productPolicy : {},
+                //修改证件信息时，保存原始数据
+                originalIDInfo : []
+            }
+        },
+        methods: {
+            /**
+             * 模态框状态改变
+             */
+            changeValue(data) {
+                this.$emit('input', data);
+            },
+            /**
+             * 确定新增游客
+             */
+            confirm () {
+                this.$refs.formInline.validate(valid => {
+                    if(valid){
+                        this.validateIdType().then(() =>{
+                            this.$emit('add-tourist',{
+                                name : this.formData.name,
+                                phone : this.formData.phone,
+                                idTableData : this.idTableData,
+                                productInfo : this.productListDeal
+                            });
+                            this.$emit('input', false);
+                        }).catch(err => {
+                            this.$Message.warning('请先保存正在编辑的证件类型')
+                        });
+                    }
+                });
+            },
+            /**
+             * 取消新增游客
+             */
+            cancel () {
+                this.$emit('input',false);
+            },
+            /**
+             * 修改证件类型
+             * @param index
+             */
+            modifyIdfo (index) {
+                this.originalIDInfo[index] = JSON.parse(JSON.stringify(this.idTableData[index]));
+                this.$set(this.idTableData[index],'editType','edit');
+                this.$set(this.idTableData[index],'modifyType','modify');
+            },
+            /**
+             * 删除证件类型
+             * @param index
+             */
+            delIdInfo (index) {
+                this.idTableData.splice(index,1);
+            },
+            /**
+             * 添加证件类型
+             */
+            addCardInfo () {
+                if(this.idTableData.length >= this.acceptCertificateType.all.length){
+                    this.$Message.error(`最多添加${this.acceptCertificateType.all.length}个证件`);
+                }else{
+                    this.idTableData.push({
+                        type : '',
+                        data : '',
+                        editType : 'edit',
+                        modifyType : 'add'
+                    });
+                }
+            },
+            /**
+             * 保存证件类型
+             * @param index
+             */
+            saveCardInfo (index){
+                for(let i = 0,j = this.idTableData.length;i < j;i++){
+                    if(i !== index && this.idTableData[index]['type'] !== '' && this.idTableData[index]['type'] === this.idTableData[i]['type']){
+                        this.$Message.error(`${this.$t(this.idTableData[index]['type'])}已经填写，请选择其它证件类型`);
+                        return;
+                    }
+                }
+                if(!this.idTableData[index]['type']){
+                    this.$Message.error('请选择证件类型');
+                }else if(!common.isNotEmpty(this.idTableData[index]['data'])){
+                    this.$Message.error('请输入证件号');
+                }else{
+                    this.$set(this.idTableData[index],'editType','');
+                    for(let i = 0,j = this.productList.length;i < j;i++){
+                        if(this.productPolicy[this.productList[i].productId]['needId'] !== 'noRequired'){
+                            this.$refs.formInline.validateField('idType' + i);
+                        }
+                    }
+                }
+            },
+            /**
+             * 取消保存
+             * @param index
+             */
+            cancelEdit (index) {
+                if(this.idTableData[index]['modifyType'] === 'add'){
+                    this.delIdInfo(index);
+                }else{
+                    // this.idTableData[index] = this.originalIDInfo.splice(index,1);
+                    this.$set(this.idTableData,index,this.originalIDInfo[index]);
+                }
+            },
+            /**
+             * 获取产品下所有证件类型
+             */
+            findProductSaleRule () {
+                ajax.post('findProductSaleRule',{
+                    productIds : this.ticketTableData.map(item => item.productId).join(',')
+                }).then(res => {
+                    if(res.success){
+                        this.productPolicy = res.data ? res.data : {};
+                    }else{
+                        this.productPolicy = {};
+                    }
+                });
+            },
+            /**
+             * 模态框显示或隐藏
+             * @param type
+             */
+            visibleChange(type) {
+                if(type === true){
+                    this.findProductSaleRule();
+                }
+            },
+            /**
+             * 校验证件状态
+             */
+            validateIdType ( ) {
+                return new Promise((resolve,reject) => {
+                    for(let i = 0 ,j = this.idTableData.length;i < j;i++ ){
+                        if(this.idTableData[i]['editType'] === 'edit'){
+                            reject();
+                        }
+                    }
+                    resolve();
+                });
+            },
+            /**
+             * 取票数量改变
+             * @param rowData
+             */
+            takeNumChange (rowData) {
+                if(rowData.takeNum > 0){
+                    if(!rowData.idType){
+                        rowData.idType = this.productPolicy[rowData.productId].acceptIdType ? this.productPolicy[rowData.productId].acceptIdType.split(',')[0] : '';
+                    }
+                }else{
+                    rowData.idType = '';
+                }
+            }
+        },
+        watch : {
+            productList (newVal,oldVal){
+                if(newVal){
+                    this.ticketTableData = JSON.parse(JSON.stringify(newVal));
+                }else{
+                    this.ticketTableData = [];
+                }
+            }
+        },
+        computed : {
+            //产品接受的证件类型
+            acceptCertificateType () {
+                let result = [];
+                let arrTmp = [];
+                let accpet = [];
+                let productIdsList = {};
+                for(let item in this.productPolicy){
+                    arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
+                    for(let i = 0,j = arrTmp.length;i < j;i++){
+                        if(!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired'){
+                            result.push(arrTmp[i]);
+                        }
+                    }
+                    productIdsList[item] = [];
+                    for(let i = 0,j = idType.length;i < j;i++){
+                        if(arrTmp.includes(idType[i]['value'])){
+                            productIdsList[item].push(idType[i])
+                        }
+                    }
+                }
+                for(let i = 0,j = idType.length;i < j;i++){
+                    if(result.includes(idType[i]['value'])){
+                        accpet.push(idType[i]);
+                    }
+                }
+                return {
+                    all : accpet,
+                    acceptArr : result,
+                    ...productIdsList
+                };
+            },
+            //产品数量限制
+            productListDeal () {
+                if(this.productPolicy && Object.keys(this.productPolicy).length > 0){
+                    return this.ticketTableData.map(item => {
+                        let numCount = item.takeNum;
+                        let needId = this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : '';
+                        let max = item.num;
+                        if(numCount > item.num){
+                            numCount = item.num;
+                        }
+                        //一个证件只能购买一张票
+                        if(needId === 'one'){
+                            max = 1;
+                            numCount = 1;
+                        }else{
+                            numCount = item.num;
+                        }
+                        return {
+                            ...item,
+                            disabled : false,
+                            max : max,
+                            min : 0,
+                            takeNum : Number(numCount),
+                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
+                            needId : needId
+                        }
+                    });
+                }else{
+                    return this.ticketTableData.map(item => {
+                        return {
+                            ...item,
+                            disabled : true,
+                            max : 0,
+                            min : 0,
+                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
+                            needId : this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : ''
+                        }
+                    });
+                }
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+	@import '~@/assets/scss/base';
+    .add-tourist{
+
+        .target-class {
+            height: 23px;
+            line-height: 23px;
+
+            .title {
+                font-size: $font_size_16px;
+                color: #354052;
+                letter-spacing: 1px;
+                text-align: left;
+                width: 100%;
+                display: inline-block;
+                @include overflow_tip();
+            }
+        }
+
+        .title-label{
+            position: relative;
+            padding: 16px 0 10px 0;
+            @include block_outline($height : 54px);
+            font-size: $font_size_16px;
+            color: $color_333;
+            line-height: 30px;
+
+            &::before{
+                content : '';
+                @include block_outline(absolute,2px);
+                @include block_outline(4px,16px);
+                background: $color_blue;
+                display: inline-block;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+        }
+
+        .add-id-card{
+            @include block_outline($height : 40px);
+            padding: 14px 0 10px 0;
+
+            /deep/ .ivu-icon{
+                font-weight: bold;
+                font-size: $font_size_18px;
+                margin-right: 8px;
+                color: $color_blue;
+            }
+
+            .add-btn{
+                font-size: $font_size_12px;
+                color: $color_blue;
+                cursor: pointer;
+                display: inline-flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .ivu-form{
+            max-height: 475px;
+            overflow: auto;
+            padding: 30px;
+
+            .ivu-form-item{
+                margin-bottom: 0;
+            }
+
+            .get-ticket /deep/ .ivu-form-item-error-tip{
+                position: relative;
+            }
+
+            /deep/ .el-table th, /deep/ .el-table td{
+                padding: 8px 0;
+            }
+
+            .cancel{
+                color: #3F3F3F;
+            }
+        }
+
+        /deep/ .ivu-modal-body{
+            padding: 0;
+        }
+    }
+</style>

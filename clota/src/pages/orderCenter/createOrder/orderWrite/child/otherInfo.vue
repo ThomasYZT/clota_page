@@ -1,0 +1,75 @@
+<!--下单其它信息-->
+
+<template>
+    <div class="other-info">
+        <div class="title">
+            其它
+        </div>
+        <ul class="per-info">
+            <li class="list">
+                <span class="key">下单企业：</span>
+                <span class="value">小星星旅行社</span>
+            </li>
+            <li class="list">
+                <span class="key">发售机构：</span>
+                <span class="value">华谊旅行社</span>
+            </li>
+        </ul>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {}
+        },
+        methods: {}
+    }
+</script>
+
+<style lang="scss" scoped>
+	@import '~@/assets/scss/base';
+    .other-info{
+        padding: 0 30px;
+        margin-bottom: 25px;
+
+        .title{
+            position: relative;
+            padding: 16px 0;
+            @include block_outline($height : 60px);
+            font-size: $font_size_16px;
+            color: $color_333;
+            line-height: 30px;
+
+            &::before{
+                content : '';
+                @include block_outline(absolute,2px);
+                @include block_outline(4px,16px);
+                background: $color_blue;
+                display: inline-block;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+        }
+
+        .per-info{
+            @include block_outline($height : 25px);
+            padding-left: 20px;
+
+            .list{
+                float: left;
+                font-size: $font_size_14px;
+                margin-right: 100px;
+                line-height: 25px;
+
+                .key{
+                    color: $color_999;
+                }
+
+                .value{
+                    color: $color_333;
+                }
+            }
+        }
+    }
+</style>
