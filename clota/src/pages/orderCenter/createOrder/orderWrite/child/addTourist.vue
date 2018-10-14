@@ -34,6 +34,7 @@
             <table-com
                 :column-data="idColumns"
                 :table-data="idTableData"
+                class="get-ticket"
                 :auto-height="true"
                 :table-com-min-height="250">
                 <el-table-column
@@ -69,7 +70,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <template v-if="scope.row.editType === 'edit'">
-                            <FormItem >
+                            <FormItem prop="idCard" :rules="rules.idCard(scope.row.data)">
                                 <Input type="text" v-model.trim="scope.row.data" />
                             </FormItem>
                         </template>
@@ -217,6 +218,18 @@
                     }
                 }
             };
+            //校验证件号码
+            const validateIdCard = (rule,value,callback) => {
+                if(rule.value){
+                    if(rule.value.length > 100){
+                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100}));
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
+                }
+            };
             return {
                 //表单数据
                 formData : {
@@ -241,6 +254,12 @@
                     idType  (rowData) {
                         return  [
                             { validator : validateIdType ,trigger : 'change',rowData : rowData }
+                        ]
+                    },
+                    idCard (rowData) {
+                        return [
+                            {validator : validateIdCard,trigger: 'blur',value : rowData}
+                            // { max : 100, message: this.$t('errorMaxLength', { field : this.$t('identificationNum') , length : 100}), trigger: 'blur' },
                         ]
                     }
                 },
