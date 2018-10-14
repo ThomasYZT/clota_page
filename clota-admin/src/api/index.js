@@ -13,7 +13,8 @@ let baseUrl = '';
 let cancelTokenCollection = {};
 //如果是开发环境则打开代理
 if(process.env.NODE_ENV === 'development'){
-    baseUrl = '/clota_dev/'
+    // baseUrl = '/clota_dev/'
+    baseUrl = ''
 }else{
     baseUrl = '';
 }
