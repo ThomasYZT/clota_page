@@ -1117,4 +1117,10 @@ export default {
     'delOrgWarn': '本操作将同步删除本节点的全部下级节点，并不可撤销，',
     'allGroup': '全部分组',
 
+    /*** 预定中心模块 ***/
+    'auditCenter': '审核中心',
+    'auditGroupOrder': '团队订单预审核',
+    'auditBulkRefund': '散客退票审核',
+    'auditBulkChange': '散客改签审核',
+
 }
