@@ -208,29 +208,13 @@
              * 查询数据
              */
             search () {
-                this.$emit('set-params',{
-                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
-                    orderType : this.formData.orderType,
-                    saleOrgId : this.formData.saleOrgId,
-                    orderOrgId : this.formData.orderOrgId,
-                    type : this.formData.type,
-                    productName : this.formData.productName,
-                    scenicOrgId : this.formData.scenicOrgId,
-                });
+                this.$emit('set-params',this.paramsObj);
             },
             /**
              * 触发查询产品列表
              */
             searchProductList () {
-                this.$emit('search-product',{
-                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
-                    orderType : this.formData.orderType,
-                    saleOrgId : this.formData.saleOrgId,
-                    orderOrgId : this.formData.orderOrgId,
-                    type : this.formData.type,
-                    productName : this.formData.productName,
-                    scenicOrgId : this.formData.scenicOrgId,
-                });
+                this.$emit('search-product',this.paramsObj);
             },
             /**
              * 重置筛选条件
@@ -253,7 +237,47 @@
         computed :{
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
-            })
+            }),
+            //发售机构名字
+            saleOrgName () {
+                if(this.saleOrgList && this.saleOrgList.length > 0){
+                    for(let i = 0, j = this.saleOrgList.length;i < j;i++){
+                        if(this.formData.saleOrgId === this.saleOrgList[i]['id']){
+                            return this.saleOrgList[i]['orgName'];
+                        }
+                    }
+                    return '';
+                }else{
+                    return '';
+                }
+            },
+            //下单企业名字
+            orderOrgName () {
+                if(this.orderTakeList && this.orderTakeList.length > 0){
+                    for(let i = 0, j = this.orderTakeList.length;i < j;i++){
+                        if(this.formData.orderOrgId === this.orderTakeList[i]['id']){
+                            return this.orderTakeList[i]['orgName'];
+                        }
+                    }
+                    return '';
+                }else{
+                    return '';
+                }
+            },
+            //查询条件列表
+            paramsObj () {
+                return {
+                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
+                    orderType : this.formData.orderType,
+                    saleOrgId : this.formData.saleOrgId,
+                    orderOrgId : this.formData.orderOrgId,
+                    type : this.formData.type,
+                    productName : this.formData.productName,
+                    scenicOrgId : this.formData.scenicOrgId,
+                    saleOrgName : this.saleOrgName,
+                    orderOrgName : this.orderOrgName,
+                };
+            }
         }
     }
 </script>

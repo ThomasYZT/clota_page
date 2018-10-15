@@ -147,7 +147,13 @@
                 this.$router.push({
                     name :'writeOrder',
                     params :{
-                        productList : this.productListDelal
+                        productList : this.productListDelal,
+                        saleOrgName : this.searchParams.saleOrgName,
+                        scenicOrgId : this.searchParams.scenicOrgId,
+                        saleOrgId : this.searchParams.saleOrgId,
+                        orderOrgName : this.searchParams.orderOrgName,
+                        orderOrgId : this.searchParams.orderOrgId,
+                        validatMoney : this.validatMoney,
                     }
                 });
             },

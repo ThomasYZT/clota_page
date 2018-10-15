@@ -5,23 +5,49 @@
         <div class="content">
             <div class="account-left">
                 <span class="label">账户可用额度：</span>
-                <span class="value">500</span>
+                <span class="value">{{accountInfo.validatMoney | moneyFilter | contentFilter}}</span>
+                <span class="warning-label" v-if="limitEnough">可用额度不足！</span>
             </div>
             <div class="account-right">
                 <span class="label">订单总金额：</span>
-                <span class="value">1000.00</span>
+                <span class="value">{{accountInfo.totalPrice | moneyFilter | contentFilter}}</span>
             </div>
-            <Button type="warning" class="ivu-btn-108px">付款</Button>
+            <Button type="warning"
+                    :disabled="limitEnough"
+                    class="ivu-btn-108px"
+                    @click="payOrder">付款</Button>
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        props : {
+            //账户信息
+            'account-info'  : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         data() {
             return {}
         },
-        methods: {}
+        methods: {
+            /**
+             * 付款
+             */
+            payOrder() {
+                this.$emit('pay-order');
+            }
+        },
+        computed : {
+            //账户余额是否充足
+            limitEnough () {
+                return this.accountInfo.validatMoney < this.accountInfo.totalPrice;
+            }
+        }
     }
 </script>
 
@@ -39,7 +65,6 @@
                 font-size: $font_size_16px;
                 height: 22px;
                 line-height: 22px;
-                font-weight: bold;
                 float: left;
 
                 .label{
@@ -49,12 +74,17 @@
                 .value{
                     color: $color_blue;
                 }
+
+                .warning-label{
+                    color: $color_yellow;
+                    display: inline-block;
+                    margin-left: 20px;
+                }
             }
 
             .account-right{
                 height: 33px;
                 line-height: 22px;
-                font-weight: bold;
                 float: right;
 
                 .label{

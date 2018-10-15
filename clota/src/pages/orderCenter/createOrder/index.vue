@@ -125,7 +125,7 @@
                     return {
                         ...item,
                         playDate : this.queryParams.playDate,
-                        num : 1
+                        num : 0,
                     }
                 });
                 this.showReserveModal = true;
@@ -153,7 +153,7 @@
                     return {
                         ...item,
                         playDate : this.queryParams.playDate,
-                        num : 1
+                        num : 0,
                     }
                 });
                 this.showReserveModal = true;

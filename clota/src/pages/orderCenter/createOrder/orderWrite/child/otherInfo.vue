@@ -8,11 +8,11 @@
         <ul class="per-info">
             <li class="list">
                 <span class="key">下单企业：</span>
-                <span class="value">小星星旅行社</span>
+                <span class="value">{{infoData.orderOrgName | contentFilter}}</span>
             </li>
             <li class="list">
                 <span class="key">发售机构：</span>
-                <span class="value">华谊旅行社</span>
+                <span class="value">{{infoData.saleOrgName | contentFilter}}</span>
             </li>
         </ul>
     </div>
@@ -20,6 +20,15 @@
 
 <script>
     export default {
+        props : {
+            //其它下单信息
+            'info-data' : {
+                type : Object,
+                default () {
+                    return  {}
+                }
+            }
+        },
         data() {
             return {}
         },

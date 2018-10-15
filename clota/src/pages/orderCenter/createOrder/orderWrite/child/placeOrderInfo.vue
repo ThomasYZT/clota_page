@@ -8,8 +8,10 @@
         <Form ref="formInline" :model="formData" label-position="right" :label-width="110">
             <i-row>
                 <i-col span="11">
-                    <FormItem label="请选择下单人" @on-change="payerChange">
-                        <Select v-model="formData.payerType" style="width: 280px;">
+                    <FormItem label="请选择下单人" >
+                        <Select v-model="formData.payerType"
+                                style="width: 280px;"
+                                @on-change="payerChange">
                             <Option v-for="item in payPersonListFilter"
                                     :value="item.value"
                                     :key="item.value">
@@ -20,7 +22,9 @@
                 </i-col>
                 <i-col span="11">
                     <FormItem prop="phone" label="手机号" :rules="ruleInline.phone">
-                        <Input v-model="formData.phone" :disabled="true" style="width: 280px"/>
+                        <Input v-model="formData.phone"
+                               :disabled="formData.payerType !== 'other'"
+                               style="width: 280px"/>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -99,10 +103,74 @@
         },
         methods: {
             /**
-             * 下单人改变
+             * 下单人改变,选择其它，重新设置下单人信息
              */
-            payerChange () {
-
+            payerChange (data) {
+                if(data === 'other'){
+                    this.formData.payer = '';
+                    this.formData.phone = '';
+                    this.formData.idNum = '';
+                }else{
+                    for(let i = 0,j = this.payPersonListFilter.length;i < j;i++){
+                        if(data === this.payPersonListFilter[i]['value']){
+                            this.formData.phone = this.payPersonListFilter[i]['phone'];
+                        }
+                    }
+                }
+                this.$refs.formInline.validate();
+            },
+            /**
+             * 获取下单人信息
+             */
+            getPlaceOrderInfo () {
+                return new Promise((resolve,reject) => {
+                    this.$refs.formInline.validate(valid => {
+                        if(valid){
+                            //下单人姓名
+                            let visitorName = '';
+                            if(this.payerType === 'other'){
+                                visitorName = this.formData.payer;
+                            }else{
+                                visitorName = this.formData.payerType;
+                            }
+                            resolve({
+                                documentInfo : this.getPlaceOrderDocumentInfo(),
+                                phoneNumber : this.formData.phone,
+                                visitorName : visitorName,
+                                visitorType : 'payer',
+                            });
+                        }else{
+                            reject();
+                        }
+                    });
+                });
+            },
+            /**
+             * 获取下单人证件信息
+             */
+            getPlaceOrderDocumentInfo () {
+                //证件信息
+                let documentInfo = '';
+                if(this.payerType === 'other'){
+                    documentInfo = JSON.stringify([{
+                        data : this.formData.idNum,
+                        type : 'identity'
+                    }])
+                }else{
+                    for(let i = 0,j = this.payPersonListFilter.length;i < j;i++){
+                        if(this.formData.payerType === this.payPersonListFilter[i]['value']){
+                            //游客证件信息
+                            let idTableData = this.payPersonListFilter[i]['idTableData'];
+                            documentInfo = JSON.stringify(idTableData.map(item => {
+                                return {
+                                    data : item.data,
+                                    type : item.type,
+                                }
+                            }))
+                        }
+                    }
+                }
+                return documentInfo;
             }
         },
         computed : {
@@ -110,17 +178,20 @@
             payPersonListFilter () {
                 return [...this.payPersonList,{
                     label : '其它',
-                    value :'other'
+                    value :'other',
+                    phone : ''
                 }]
             }
         },
         watch : {
-            payPersonList :{
+            payPersonListFilter :{
                 handler (newVal,oldVal){
                     if(newVal && newVal.length > 0){
                         this.formData.payerType = newVal[0]['value'];
+                        this.formData.phone = newVal[0]['phone'];
                     }else{
                         this.formData.payerType = '';
+                        this.formData.phone = '';
                     }
                 },
                 deep :true,

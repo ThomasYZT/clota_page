@@ -6,63 +6,44 @@
             游客信息
             <Button type="primary" @click="addTourist">添加游客</Button>
         </div>
-        <div class="person-info-list">
+        <div class="person-info-list" v-for="(item,index) of touristInfo" :key="item.phone">
             <div class="name">
-                张三  /  189262626226
+                {{item.name}}  /  {{item.phone}}
                 <ul class="right-menu">
                     <li class="modify">{{$t('modify')}}</li>
-                    <li class="del">{{$t('del')}}</li>
+                    <li class="del" @click="delTouristInfo(index)">{{$t('del')}}</li>
                 </ul>
             </div>
             <div class="card-info">
                 <ul class="per-info">
-                    <li class="list">
-                        <span class="key">身份证：</span>
-                        <span class="value">11021510212021626</span>
-                    </li>
-                    <li class="list">
-                        <span class="key">身份证：</span>
-                        <span class="value">11021510212021626</span>
+                    <li class="list" v-for="list of item.idTableData" :key="list.type">
+                        <span class="key">{{$t(list.type)}}：</span>
+                        <span class="value">{{list.data}}</span>
                     </li>
                 </ul>
                 <table-com
                     :column-data="columnData"
-                    :table-data="tableData"
+                    :table-data="item.productInfo"
                     :auto-height="true"
                     :table-com-min-height="250">
+                    <el-table-column
+                        slot="column2"
+                        show-overflow-tooltip
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(scope.row['idType'])}}
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
         </div>
-        <div class="person-info-list">
-            <div class="name">
-                张三  /  189262626226
-                <ul class="right-menu">
-                    <li class="modify">{{$t('modify')}}</li>
-                    <li class="del">{{$t('del')}}</li>
-                </ul>
-            </div>
-            <div class="card-info">
-                <ul class="per-info">
-                    <li class="list">
-                        <span class="key">身份证：</span>
-                        <span class="value">11021510212021626</span>
-                    </li>
-                    <li class="list">
-                        <span class="key">身份证：</span>
-                        <span class="value">11021510212021626</span>
-                    </li>
-                    <li class="list right">
-                        <span class="modify">{{$t('modify')}}</span>
-                        <span class="del">{{$t('del')}}</span>
-                    </li>
-                </ul>
-                <table-com
-                    :column-data="columnData"
-                    :table-data="tableData"
-                    :auto-height="true"
-                    :table-com-min-height="250">
-                </table-com>
-            </div>
+        <!--无数据状态-->
+        <div class="no-data-wrap" v-if="touristInfo.length < 1">
+            <no-data>
+            </no-data>
         </div>
         <!--添加游客模态框-->
         <add-tourist v-model="addTouristShow"
@@ -75,6 +56,8 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
     import addTourist from './addTourist';
+    import noData from '@/components/noDataTip/noData-tip.vue';
+
     export default {
         props :{
             //选择的产品列表
@@ -87,7 +70,8 @@
         },
         components : {
             tableCom,
-            addTourist
+            addTourist,
+            noData
         },
         data() {
             return {
@@ -100,26 +84,21 @@
                     },
                     {
                         title: '数量',
-                        minwidth: 130,
-                        field: 'num'
+                        width: 130,
+                        field: 'takeNum'
                     },
                     {
                         title: '取票证件',
-                        minwidth: 130,
-                        field: 'scenicOrgName'
+                        width: 130,
+                        field: 'idType'
                     },
-                ],
-                //表格数据
-                tableData :[
-                    {
-                        productName : 'test',
-                        num : '10'
-                    }
                 ],
                 //添加游客模态框是否显示
                 addTouristShow : false,
                 //产品取票信息
-                productListFilter : []
+                // productListFilter : [],
+                //游客信息
+                touristInfo : []
             }
         },
         methods: {
@@ -128,19 +107,72 @@
              */
             addTourist () {
                 this.addTouristShow = true;
-                this.productListFilter = this.productList.map(item => {
-                    return {
-                        ...item,
-                        takeNum : 0
-                    }
-                });
             },
             /**
              * 获取新增游客信息
              * @param data
              */
             getTouristInfo (data) {
-                console.log(data)
+                this.touristInfo.push(data);
+                this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+            },
+            /**
+             * 删除游客信息
+             * @param index
+             */
+            delTouristInfo(index) {
+                this.touristInfo.splice(index,1);
+                this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+            },
+            /**
+             * 判断所选择的产品是否都分配完毕
+             */
+            ticketIsAllocated () {
+                return new Promise((resolve,reject) => {
+                    let leftTicket = [];
+                    for(let i = 0,j = this.productListFilter.length;i < j;i++){
+                        if(this.productListFilter[i]['leftNum'] > 0){
+                            leftTicket.push(this.productListFilter[i]);
+                        }
+                    }
+                    if(leftTicket.length > 0){
+                        reject({
+                            type : 'ticketErr',
+                            data : leftTicket
+                        });
+                    }else{
+                        resolve();
+                    }
+                });
+            }
+        },
+        computed : {
+            //对产品信息进行过滤，获取产品剩余值
+            productListFilter () {
+                return this.productList.map(item => {
+                    return {
+                        ...item,
+                        takeNum : 0,
+                        leftNum : this.productChosedInfo[item.productId] ? item.num - this.productChosedInfo[item.productId] : item.num
+                    }
+                });
+            },
+            //游客已经选择的票信息
+            productChosedInfo () {
+                let result = {};
+                for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                    if(this.touristInfo[i]['productInfo'] && this.touristInfo[i]['productInfo'].length > 0){
+                        let productInfo = this.touristInfo[i]['productInfo'];
+                        for(let a = 0,b = productInfo.length;a < b;a++){
+                            if(productInfo[a]['productId'] in result){
+                                result[productInfo[a]['productId']] += productInfo[a]['takeNum'];
+                            }else{
+                                result[productInfo[a]['productId']] = productInfo[a]['takeNum'];
+                            }
+                        }
+                    }
+                }
+                return result;
             }
         }
     }
@@ -150,6 +182,11 @@
 	@import '~@/assets/scss/base';
     .tourist-info{
         padding: 0 30px;
+
+        .no-data-wrap{
+            position: relative;
+            height: 250px;
+        }
 
         .title{
             position: relative;

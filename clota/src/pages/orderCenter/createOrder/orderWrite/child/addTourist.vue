@@ -289,7 +289,7 @@
             confirm () {
                 this.$refs.formInline.validate(valid => {
                     if(valid){
-                        this.validateIdType().then(() =>{
+                        Promise.all([this.validateIdType(),this.validateGetTicketNum()]).then(() => {
                             this.$emit('add-tourist',{
                                 name : this.formData.name,
                                 phone : this.formData.phone,
@@ -298,8 +298,26 @@
                             });
                             this.$emit('input', false);
                         }).catch(err => {
-                            this.$Message.warning('请先保存正在编辑的证件类型')
+                            if(err === 'ticketErr'){
+                                this.$Message.error('最少选择一张票');
+                            }else if(err === 'idTypeErr'){
+                                this.$Message.warning('请先保存正在编辑的证件类型')
+                            }
                         });
+                        // this.validateIdType().then(() => {
+                        //     return this.validateGetTicketNum();
+                        // }).then(() =>{
+                        //     this.$emit('add-tourist',{
+                        //         name : this.formData.name,
+                        //         phone : this.formData.phone,
+                        //         idTableData : this.idTableData,
+                        //         productInfo : this.productListDeal
+                        //     });
+                        //     this.$emit('input', false);
+                        // }).catch(err => {
+                        //     console.log(err);
+                        //     this.$Message.warning('请先保存正在编辑的证件类型')
+                        // });
                     }
                 });
             },
@@ -329,16 +347,16 @@
              * 添加证件类型
              */
             addCardInfo () {
-                if(this.idTableData.length >= this.acceptCertificateType.all.length){
-                    this.$Message.error(`最多添加${this.acceptCertificateType.all.length}个证件`);
-                }else{
+                // if(this.idTableData.length >= this.acceptCertificateType.all.length){
+                //     this.$Message.error(`最多添加${this.acceptCertificateType.all.length}个证件`);
+                // }else{
                     this.idTableData.push({
                         type : '',
                         data : '',
                         editType : 'edit',
                         modifyType : 'add'
                     });
-                }
+                // }
             },
             /**
              * 保存证件类型
@@ -397,6 +415,13 @@
             visibleChange(type) {
                 if(type === true){
                     this.findProductSaleRule();
+                }else{
+                    this.$refs.formInline.resetFields();
+                    this.idTableData = [];
+                    // name : this.formData.name,
+                    //     phone : this.formData.phone,
+                    //     idTableData : this.idTableData,
+                    //     productInfo : this.productListDeal
                 }
             },
             /**
@@ -406,7 +431,7 @@
                 return new Promise((resolve,reject) => {
                     for(let i = 0 ,j = this.idTableData.length;i < j;i++ ){
                         if(this.idTableData[i]['editType'] === 'edit'){
-                            reject();
+                            reject('idTypeErr');
                         }
                     }
                     resolve();
@@ -424,6 +449,22 @@
                 }else{
                     rowData.idType = '';
                 }
+            },
+            /**
+             * 校验总的取票数量是否正确
+             */
+            validateGetTicketNum () {
+                return new Promise((resolve,reject) => {
+                    let num = 0;
+                    for(let i = 0,j = this.productListDeal.length;i < j;i++){
+                        num += this.productListDeal[i]['takeNum'];
+                    }
+                    if(num <= 0){
+                        reject('ticketErr');
+                    }else{
+                        resolve();
+                    }
+                });
             }
         },
         watch : {
@@ -473,16 +514,16 @@
                     return this.ticketTableData.map(item => {
                         let numCount = item.takeNum;
                         let needId = this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : '';
-                        let max = item.num;
-                        if(numCount > item.num){
-                            numCount = item.num;
-                        }
+                        let max = item.leftNum;
                         //一个证件只能购买一张票
                         if(needId === 'one'){
-                            max = 1;
+                            max = max >= 1 ? 1 : 0;
                             numCount = 1;
                         }else{
                             numCount = item.num;
+                        }
+                        if(numCount > max){
+                            numCount = max;
                         }
                         return {
                             ...item,

@@ -2,7 +2,6 @@
 
 <template>
     <div class="order-write">
-
         <bread-crumb-head
             :locale-router="'订单预定'"
             :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
@@ -11,16 +10,20 @@
         <product-info :product-list="productList">
         </product-info>
         <!--游客信息-->
-        <tourist-info :product-list="productList" >
+        <tourist-info :product-list="productList"
+                      ref="tourist"
+                      @reset-tourist-info="getTouristInfo">
         </tourist-info>
         <!--下单人信息-->
-        <place-orderInfo :pay-person-list="payPersonList">
+        <place-orderInfo ref="placeOrder"
+                         :pay-person-list="payPersonList">
         </place-orderInfo>
         <!--其它信息-->
-        <other-info>
+        <other-info :info-data="otherInfo">
         </other-info>
         <!--账户信息 -->
-        <account-info>
+        <account-info :account-info="accountInfo"
+                      @pay-order="payOrder">
         </account-info>
     </div>
 </template>
@@ -33,6 +36,8 @@
     import placeOrderInfo from './child/placeOrderInfo';
     import otherInfo from './child/otherInfo';
     import accountInfo from './child/accountInfo';
+    import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -57,13 +62,18 @@
                 ],
                 //产品列表
                 productList : [],
-                //下单人列表
-                payPersonList : [
-                    {
-                        label : '张三',
-                        value : '张三',
-                    }
-                ]
+                //下单其它信息
+                otherInfo : {
+                    saleOrgName : '',
+                    orderOrgName : '',
+                    saleOrgId : '',
+                    orderOrgId : '',
+                    scenicOrgId : '',
+                },
+                //下单可用额度
+                validatMoney : 0,
+                //游客列表
+                touristList : []
             }
         },
         methods: {
@@ -74,6 +84,14 @@
             getParams (params) {
                 if(params && params.productList){
                     this.productList = params.productList;
+                    this.otherInfo = {
+                        saleOrgName : params.saleOrgName,
+                        orderOrgName : params.orderOrgName,
+                        saleOrgId : params.saleOrgId,
+                        orderOrgId : params.orderOrgId,
+                        scenicOrgId : params.scenicOrgId,
+                    };
+                    this.queryLeftMoney();
                 }else{
                     this.$router.push({
                         name : 'createOrder'
@@ -85,13 +103,164 @@
              * @param data
              */
             getTouristInfo (data) {
-                console.log(data);
-            }
+                this.touristList = data;
+            },
+            /**
+             * 付款
+             */
+            payOrder () {
+                let OrderVisitorProductVos = this.OrderVisitorProductVos;
+                Promise.all([
+                    this.$refs.placeOrder.getPlaceOrderInfo(),
+                    this.$refs.tourist.ticketIsAllocated()
+                ]).then(([placeOrder]) =>{
+                    OrderVisitorProductVos.push(placeOrder);
+                    ajax.post('addIndividualOrder',{
+                        //产品信息
+                        productInfos : JSON.stringify(this.productList.map(item => {
+                            return {
+                                productId : item.productId,
+                                policyId : item.policyId,
+                                allocationId : item.allocationId,
+                                quantity : item.num,
+                                price : item.settlePrice,
+                                actPrice : item.settlePrice,
+                            }
+                        })),
+                        //下单企业
+                        channelId : this.otherInfo.orderOrgId,
+                        //订单金额
+                        orderAmount : this.accountInfo.totalPrice,
+                        //发售机构id
+                        orgSaleId : this.otherInfo.saleOrgId,
+                        //订单渠道
+                        orderChannel : this.orderChannel,
+                        //所属景区
+                        scenicId : this.otherInfo.scenicOrgId,
+                        //游客信息以及下单人信息
+                        OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos)
+                    })
+                }).catch(err => {
+                    if(err.type === 'ticketErr'){
+
+                    }
+                });
+                // if(this.$refs.placeOrder){
+                //     this.$refs.placeOrder.getPlaceOrderInfo().then(placeOrder => {
+                //         OrderVisitorProductVos = OrderVisitorProductVos.concat([placeOrder]);
+                //         return this.$refs.tourist.ticketIsAllocated();
+                //     }).then(() => {
+                //         ajax.post('addIndividualOrder',{
+                //             //产品信息
+                //             productInfos : JSON.stringify(this.productList.map(item => {
+                //                 return {
+                //                     productId : item.productId,
+                //                     policyId : item.policyId,
+                //                     allocationId : item.allocationId,
+                //                     quantity : item.num,
+                //                     price : item.settlePrice,
+                //                     actPrice : item.settlePrice,
+                //                 }
+                //             })),
+                //             //下单企业
+                //             channelId : this.otherInfo.orderOrgId,
+                //             //订单金额
+                //             orderAmount : this.accountInfo.totalPrice,
+                //             //发售机构id
+                //             orgSaleId : this.otherInfo.saleOrgId,
+                //             //订单渠道
+                //             orderChannel : this.orderChannel,
+                //             //所属景区
+                //             scenicId : this.otherInfo.scenicOrgId,
+                //             //游客信息以及下单人信息
+                //             OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos)
+                //         })
+                //     });
+                // }
+            },
+            /**
+             * 查询下单企业剩余金额
+             */
+            queryLeftMoney() {
+                ajax.post('findByOrgIdAndPeerId',{
+                    orgId : this.otherInfo.saleOrgId,
+                    peerOrgId :this.otherInfo.orderOrgId
+                }).then(res =>{
+                    if(res.success){
+                        this.validatMoney = (res.data.accountBalance ? res.data.accountBalance :0) + (res.data.creditBalance ? res.data.creditBalance : 0);
+                    }else{
+                        this.validatMoney = 0;
+                    }
+                });
+            },
         },
         computed : {
-            //游客选择产品信息统计
-            productInfoCount () {
-
+            //账户可用余额，订单总金额
+            accountInfo () {
+                return {
+                    validatMoney : this.validatMoney,
+                    totalPrice : this.productList.reduce((price,item) => price += item.settlePrice * item.num,0)
+                }
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            }),
+            //订单渠道
+            orderChannel () {
+                if(this.manageOrgs && Object.keys(this.manageOrgs).length > 0){
+                    if(this.manageOrgs.nodeType === "scenic"){
+                        return 'scenic';
+                    }else if(this.manageOrgs.nodeType === "partner"){
+                        return 'tour';
+                    }else{
+                        return '';
+                    }
+                }else{
+                    return '';
+                }
+            },
+            //游客以及下单人信息
+            OrderVisitorProductVos () {
+                return this.touristList.map(item => {
+                    return {
+                        phoneNumber : item.phone,
+                        visitorType : 'visitor',
+                        visitorName : item.name,
+                        documentInfo : JSON.stringify(item.idTableData.map(docInfo =>{
+                            return {
+                                data : docInfo.data,
+                                type : docInfo.type,
+                            }
+                        })),
+                        productModels : item.productInfo.map(product => {
+                            return {
+                                documentId : item.idTableData.reduce((key,documentlist) => {
+                                    if(product.idType === documentlist['type']){
+                                        return documentlist['data'];
+                                    }else {
+                                        return '';
+                                    }
+                                },''),
+                                documentType : product.idType,
+                                originVisitDate : product.playDate,
+                                productId : product.productId,
+                                productName : product.productName,
+                                quantity : product.takeNum,
+                            }
+                        })
+                    }
+                });
+            },
+            //下单人列表
+            payPersonList () {
+                return this.touristList.map(item => {
+                    return {
+                        label : item.name,
+                        value : item.phone,
+                        phone : item.phone,
+                        idTableData : item.idTableData
+                    }
+                });
             }
         }
     }
