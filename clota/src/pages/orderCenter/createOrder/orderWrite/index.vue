@@ -74,6 +74,7 @@
                     saleOrgId : '',
                     orderOrgId : '',
                     scenicOrgId : '',
+                    playDate : '',
                 },
                 //下单可用额度
                 validatMoney : 0,
@@ -99,6 +100,7 @@
                         saleOrgId : params.saleOrgId,
                         orderOrgId : params.orderOrgId,
                         scenicOrgId : params.scenicOrgId,
+                        playDate : params.playDate,
                     };
                     this.queryLeftMoney();
                 }else{
@@ -147,8 +149,21 @@
                         //所属景区
                         scenicId : this.otherInfo.scenicOrgId,
                         //游客信息以及下单人信息
-                        OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos)
-                    })
+                        OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos),
+                        //下单日期
+                        playDate : this.otherInfo.playDate
+                    }).then(res => {
+                        if(res.success){
+                            this.$router.replace({
+                                name : 'successSubmit',
+                                params : {
+                                    success : true
+                                }
+                            });
+                        }else{
+
+                        }
+                    });
                 }).catch(err => {
                     if(err && err.type === 'ticketErr'){
                         this.leftProductInfo = err.data;

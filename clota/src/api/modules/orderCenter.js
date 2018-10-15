@@ -17,4 +17,6 @@ export default {
     'getOrderOrgList' : '/order/getOrderOrgList',
     //查询团队审核订单
     'queryTeamOrder' : '/order/queryTeamOrder',
+    //校验订单产品售卖规则
+    'checkProductSaleRule' : 'order/checkProductSaleRule',
 }

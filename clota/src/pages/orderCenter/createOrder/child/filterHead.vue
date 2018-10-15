@@ -25,7 +25,7 @@
                             <Option v-for="item in orderType"
                                     :key="item.value"
                                     :value="item.value">
-                                {{item.label}}
+                                {{$t(item.label)}}
                             </Option>
                         </Select>
                     </FormItem>

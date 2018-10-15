@@ -10,7 +10,7 @@
             <div class="name">
                 {{item.name}}  /  {{item.phone}}
                 <ul class="right-menu">
-                    <li class="modify">{{$t('modify')}}</li>
+                    <li class="modify" @click="modifyTouristInfo(index)">{{$t('modify')}}</li>
                     <li class="del" @click="delTouristInfo(index)">{{$t('del')}}</li>
                 </ul>
             </div>
@@ -47,7 +47,10 @@
         </div>
         <!--添加游客模态框-->
         <add-tourist v-model="addTouristShow"
+                     :default-info="modifyIngTouristInfo"
+                     :added-tourist-info="touristInfo"
                      :product-list="productListFilter"
+                     @modify-tourist="confirmModifyTouristInfo"
                      @add-tourist="getTouristInfo">
         </add-tourist>
     </div>
@@ -98,7 +101,9 @@
                 //产品取票信息
                 // productListFilter : [],
                 //游客信息
-                touristInfo : []
+                touristInfo : [],
+                //当前修改的游客信息
+                modifyIngTouristInfo : {}
             }
         },
         methods: {
@@ -106,6 +111,7 @@
              * 添加游客
              */
             addTourist () {
+                this.modifyIngTouristInfo = {};
                 this.addTouristShow = true;
             },
             /**
@@ -144,6 +150,24 @@
                         resolve();
                     }
                 });
+            },
+            /**
+             * 修改游客信息
+             * @param index
+             */
+            modifyTouristInfo(index) {
+                this.modifyIngTouristInfo = JSON.parse(JSON.stringify(Object.assign({
+                    index : index,
+                    ...this.touristInfo[index]
+                })));
+                this.addTouristShow = true;
+            },
+            /**
+             * 获取修改后的游客信息
+             * @param data
+             */
+            confirmModifyTouristInfo (data) {
+                this.touristInfo[data.index] = data.data;
             }
         },
         computed : {

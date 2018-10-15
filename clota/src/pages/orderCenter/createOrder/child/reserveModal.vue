@@ -154,6 +154,7 @@
                         orderOrgName : this.searchParams.orderOrgName,
                         orderOrgId : this.searchParams.orderOrgId,
                         validatMoney : this.validatMoney,
+                        playDate : this.playDate,
                     }
                 });
             },

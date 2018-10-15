@@ -1122,5 +1122,7 @@ export default {
     'auditGroupOrder': '团队订单预审核',
     'auditBulkRefund': '散客退票审核',
     'auditBulkChange': '散客改签审核',
+    'team': '团队',
+    'Fit': '散客',
 
 }
