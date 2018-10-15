@@ -179,7 +179,8 @@
                 return [...this.payPersonList,{
                     label : '其它',
                     value :'other',
-                    phone : ''
+                    phone : '',
+                    idTableData : []
                 }]
             }
         },
@@ -187,8 +188,18 @@
             payPersonListFilter :{
                 handler (newVal,oldVal){
                     if(newVal && newVal.length > 0){
-                        this.formData.payerType = newVal[0]['value'];
-                        this.formData.phone = newVal[0]['phone'];
+                        if(!this.formData.payerType){
+                            this.formData.payerType = newVal[0]['value'];
+                            this.formData.phone = newVal[0]['phone'];
+                        }else if(this.payerType === 'other' && this.formData.payer === '' && this.formData.phone === '' && this.formData.idNum === ''){
+                            this.formData.payerType = newVal[0]['value'];
+                            this.formData.phone = newVal[0]['phone'];
+                        }else if(oldVal.length > newVal.length){
+                            this.formData.payerType = newVal[0]['value'];
+                            this.formData.phone = newVal[0]['phone'];
+                            this.formData.payer = '';
+                            this.formData.idNum = '';
+                        }
                     }else{
                         this.formData.payerType = '';
                         this.formData.phone = '';

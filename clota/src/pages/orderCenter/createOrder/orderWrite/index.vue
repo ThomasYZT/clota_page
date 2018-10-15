@@ -25,6 +25,9 @@
         <account-info :account-info="accountInfo"
                       @pay-order="payOrder">
         </account-info>
+        <!--产品没有分配完提示框-->
+        <product-err-hit-modal v-model="errHintShow" :left-product-info="leftProductInfo">
+        </product-err-hit-modal>
     </div>
 </template>
 
@@ -38,6 +41,7 @@
     import accountInfo from './child/accountInfo';
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
+    import productErrHitModal from './child/productErrHintModal';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -48,6 +52,7 @@
             placeOrderInfo,
             otherInfo,
             accountInfo,
+            productErrHitModal
         },
         data() {
             return {
@@ -73,7 +78,11 @@
                 //下单可用额度
                 validatMoney : 0,
                 //游客列表
-                touristList : []
+                touristList : [],
+                //错误提示框是否显示
+                errHintShow : false,
+                //剩余产品信息
+                leftProductInfo : []
             }
         },
         methods: {
@@ -111,9 +120,9 @@
             payOrder () {
                 let OrderVisitorProductVos = this.OrderVisitorProductVos;
                 Promise.all([
+                    this.$refs.tourist.ticketIsAllocated(),
                     this.$refs.placeOrder.getPlaceOrderInfo(),
-                    this.$refs.tourist.ticketIsAllocated()
-                ]).then(([placeOrder]) =>{
+                ]).then(([placeholder,placeOrder]) =>{
                     OrderVisitorProductVos.push(placeOrder);
                     ajax.post('addIndividualOrder',{
                         //产品信息
@@ -141,42 +150,11 @@
                         OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos)
                     })
                 }).catch(err => {
-                    if(err.type === 'ticketErr'){
-
+                    if(err && err.type === 'ticketErr'){
+                        this.leftProductInfo = err.data;
+                        this.errHintShow = true;
                     }
                 });
-                // if(this.$refs.placeOrder){
-                //     this.$refs.placeOrder.getPlaceOrderInfo().then(placeOrder => {
-                //         OrderVisitorProductVos = OrderVisitorProductVos.concat([placeOrder]);
-                //         return this.$refs.tourist.ticketIsAllocated();
-                //     }).then(() => {
-                //         ajax.post('addIndividualOrder',{
-                //             //产品信息
-                //             productInfos : JSON.stringify(this.productList.map(item => {
-                //                 return {
-                //                     productId : item.productId,
-                //                     policyId : item.policyId,
-                //                     allocationId : item.allocationId,
-                //                     quantity : item.num,
-                //                     price : item.settlePrice,
-                //                     actPrice : item.settlePrice,
-                //                 }
-                //             })),
-                //             //下单企业
-                //             channelId : this.otherInfo.orderOrgId,
-                //             //订单金额
-                //             orderAmount : this.accountInfo.totalPrice,
-                //             //发售机构id
-                //             orgSaleId : this.otherInfo.saleOrgId,
-                //             //订单渠道
-                //             orderChannel : this.orderChannel,
-                //             //所属景区
-                //             scenicId : this.otherInfo.scenicOrgId,
-                //             //游客信息以及下单人信息
-                //             OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos)
-                //         })
-                //     });
-                // }
             },
             /**
              * 查询下单企业剩余金额
