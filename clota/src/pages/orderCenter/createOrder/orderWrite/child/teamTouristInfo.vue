@@ -323,7 +323,9 @@
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
-                this.$refs.table.toggleRowSelection(this.tableData[index]);
+                if(this.selectedTouristInfo.includes(this.tableData[index])){
+                    this.$refs.table.toggleRowSelection(this.tableData[index]);
+                }
             },
             /**
              * 删除游客信息

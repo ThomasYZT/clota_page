@@ -42,8 +42,8 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <template v-if="scope.row.editType === 'edit'">
-                            <FormItem :prop="'name' + scope.$index" :rules="rules.name(scope.row)">
-                                <Input type="text" v-model.trim="scope.row.name" />
+                            <FormItem :prop="'staffName' + scope.$index" :rules="rules.staffName(scope.row)">
+                                <Input type="text" v-model.trim="scope.row.staffName" />
                             </FormItem>
                         </template>
                         <template v-else>
@@ -61,7 +61,7 @@
                     <template slot-scope="scope">
                         <template v-if="scope.row.editType === 'edit'">
                             <FormItem :prop="'idCard' + scope.$index" :rules="rules.idCard(scope.row)">
-                                <Input type="text" v-model.trim="scope.row.idNum" />
+                                <Input type="text" v-model.trim="scope.row.documentNo" />
                             </FormItem>
                         </template>
                         <template v-else>
@@ -109,6 +109,12 @@
                 </li>
             </ul>
         </del-modal>
+        <!--添加司机模态框-->
+        <add-tour-guide-or-driver-modal v-model="addDriverShow"
+                                        modal-type="driver"
+                                        :default-info="tableData"
+                                        @set-info="getChosedInfo">
+        </add-tour-guide-or-driver-modal>
     </div>
 </template>
 
@@ -118,16 +124,19 @@
     import ajax from '@/api/index.js';
     import {idType} from '@/assets/js/constVariable.js';
     import delModal from '@/components/delModal/index.vue';
+    import addTourGuideOrDriverModal from './addTourGuideOrDriverModal';
+    import {mapGetters} from 'vuex';
     export default {
         components : {
             tableCom,
-            delModal
+            delModal,
+            addTourGuideOrDriverModal
         },
         data() {
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
-                if(rule.rowData.idNum){
-                    if(rule.rowData.idNum.length > 10){
+                if(rule.rowData.documentNo){
+                    if(rule.rowData.documentNo.length > 10){
                         callback(this.$t('errorMaxLength', { field : this.$t('车牌号'), length : 10}));
                     }else{
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
@@ -142,8 +151,8 @@
             };
             //校验司机姓名
             const validateName = (rule,value,callback) => {
-                if(rule.rowData.name){
-                    if(rule.rowData.name.length > 20){
+                if(rule.rowData.staffName){
+                    if(rule.rowData.staffName.length > 20){
                         callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20}));
                     }else{
                         callback();
@@ -166,7 +175,7 @@
                             {validator : validateIdCard,trigger: 'blur',rowData : rowData}
                         ]
                     },
-                    name (rowData) {
+                    staffName (rowData) {
                         return [
                             {validator : validateName,trigger : 'blur',rowData : rowData}
                         ];
@@ -174,6 +183,8 @@
                 },
                 //修改司机信息时，保存原始数据
                 originalTableData : [],
+                //添加司机模态框是否显示
+                addDriverShow : false
             }
         },
         methods: {
@@ -188,13 +199,18 @@
              * 添加司机
              */
             addTourGuide () {
-                this.tableData.push({
-                    editType : 'edit',
-                    name : '',
-                    idNum :'',
-                    phone : '',
-                    modifyType : 'add'
-                });
+                //分销商下单，直接编辑导游信息
+                if(this.manageOrgs.nodeType === 'partner'){
+                    this.addDriverShow = true;
+                }else if(this.manageOrgs.nodeType === 'scenic'){
+                    this.tableData.push({
+                        editType : 'edit',
+                        staffName : '',
+                        documentNo :'',
+                        phoneNumber : '',
+                        modifyType : 'add'
+                    });
+                }
             },
             /**
              * 校验证件是否已经存在
@@ -203,7 +219,7 @@
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
                     for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(cardInfo !== this.tableData[i] && this.tableData[i]['idNum'] === cardInfo['idNum']){
+                        if(cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']){
                             reject();
                         }
                     }
@@ -218,7 +234,9 @@
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
-                this.$refs.table.toggleRowSelection(this.tableData[index]);
+                if(this.selectedTourGuideInfo.includes(this.tableData[index])){
+                    this.$refs.table.toggleRowSelection(this.tableData[index]);
+                }
             },
             /**
              * 删除司机信息
@@ -235,7 +253,7 @@
             saveCardInfo (index) {
                 //判断证件类型和证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
                 Promise.all([new Promise((resolve,reject) => {//校验司机姓名
-                    this.$refs.formInline.validateField('name' + index,valid => {
+                    this.$refs.formInline.validateField('staffName' + index,valid => {
                         if(valid){
                             reject();
                         }else{
@@ -260,7 +278,7 @@
              */
             cancelEdit (index) {
                 if(this.tableData[index]['modifyType'] === 'add'){
-                    this.delIdInfo(index);
+                    this.tableData.splice(index,1);
                 }else{
                     this.$set(this.tableData,index,this.originalTableData[index]);
                 }
@@ -307,16 +325,23 @@
                         }
                         result.push({
                             documentInfo : JSON.stringify({
-                                data : this.tableData[i].idNum,
+                                data : this.tableData[i].documentNo,
                                 type : 'license'
                             }),
                             phoneNumber : '',
-                            visitorName : this.tableData[i].name,
+                            visitorName : this.tableData[i].staffName,
                             visitorType : 'driver',
                         });
                     }
                     resolve(result);
                 });
+            },
+            /**
+             * 获取选择添加的司机信息
+             * @param data
+             */
+            getChosedInfo (data) {
+                this.tableData =  data;
             }
         },
         computed : {
@@ -324,16 +349,19 @@
             delingTouristInfo () {
                 if(this.selectedTourGuideInfo.length > 2){
                     return {
-                        data : this.selectedTourGuideInfo.map(item => item.name).slice(0,2).join(','),
+                        data : this.selectedTourGuideInfo.map(item => item.staffName).slice(0,2).join(','),
                         showMore : true
                     }
                 }else{
                     return {
-                        data : this.selectedTourGuideInfo.map(item => item.name).slice(0,2).join(','),
+                        data : this.selectedTourGuideInfo.map(item => item.staffName).slice(0,2).join(','),
                         showMore : false
                     }
                 }
-            }
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            }),
         }
     }
 </script>

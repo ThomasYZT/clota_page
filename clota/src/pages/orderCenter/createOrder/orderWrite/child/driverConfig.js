@@ -5,12 +5,12 @@ export const columnData = [
     {
         title: '司机姓名',
         minwidth: 234,
-        field: 'name'
+        field: 'staffName'
     },
     {
         title: '车牌号',
         minwidth: 254,
-        field: 'idNum'
+        field: 'documentNo'
     },
     {
         title: '操作',

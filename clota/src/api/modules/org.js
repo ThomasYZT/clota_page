@@ -108,5 +108,9 @@ export default {
     'batchMoveItemGroup' : '/organize/batchMoveItemGroup',
     //删除核销设备分组
     'deleteItemGroup' : '/organize/deleteItemGroup',
+    //查询导游和司机
+    'queryPagedOrgStaff' : '/organize/queryPagedOrgStaff',
+    //新增导游或司机
+    'addOrUpdateOrgStaff' : '/organize/addOrUpdateOrgStaff',
 
 }
