@@ -33,13 +33,24 @@ export default {
                     isMenu: true
                 },
             },
-            //订单填写
-            writeOrder : {
-                path: '/order/create/write',
-                name: 'writeOrder',
-                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/index.vue'),
+            //散客订单填写
+            individualWriteOrder : {
+                path: '/order/create/individual',
+                name: 'individualOrder',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/individualOrder.vue'),
                 meta: {
-                    menuName: 'writeOrder',
+                    menuName: 'individualOrder',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'createOrder',
+                },
+            },
+            //团队订单填写
+            teamWriteOrder : {
+                path: '/order/create/team',
+                name: 'teamOrder',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/teamOrder.vue'),
+                meta: {
+                    menuName: 'teamOrder',
                     _name: 'org',
                     rightPath: topMenuName + '.' + 'createOrder',
                 },

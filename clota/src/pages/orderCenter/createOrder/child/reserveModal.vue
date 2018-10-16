@@ -144,8 +144,14 @@
              * 确定填写数量
              */
             save () {
+                let routeName = '';
+                if(this.searchParams.orderType === 'team'){
+                    routeName = 'teamOrder';
+                }else if(this.searchParams.orderType === 'individual'){
+                    routeName = 'individualOrder';
+                }
                 this.$router.push({
-                    name :'writeOrder',
+                    name :routeName,
                     params :{
                         productList : this.productListDelal,
                         saleOrgName : this.searchParams.saleOrgName,

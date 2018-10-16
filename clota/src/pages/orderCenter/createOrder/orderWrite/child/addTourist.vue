@@ -442,11 +442,11 @@
                     });
                 })]).then(() => {
                     this.$set(this.idTableData[index],'editType','');
-                    for(let i = 0,j = this.productList.length;i < j;i++){
-                        if(this.productPolicy[this.productList[i].productId]['needId'] !== 'noRequired'){
-                            this.$refs.formInline.validateField('idType' + i);
-                        }
-                    }
+                    // for(let i = 0,j = this.productList.length;i < j;i++){
+                    //     if(this.productPolicy[this.productList[i].productId]['needId'] !== 'noRequired'){
+                    //         this.$refs.formInline.validateField('idType' + i);
+                    //     }
+                    // }
                 });
             },
             /**

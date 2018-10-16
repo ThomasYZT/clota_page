@@ -35,10 +35,10 @@
     import lifeCycelMixins from '@/mixins/lifeCycleMixins.js'
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import productInfo from './child/productInfo';
-    import touristInfo from './child/touristInfo';
+    import touristInfo from './child/individualTouristInfo.';
     import placeOrderInfo from './child/placeOrderInfo';
     import otherInfo from './child/otherInfo';
-    import accountInfo from './child/accountInfo';
+    import accountInfo from './child/individualAccountInfo';
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     import productErrHitModal from './child/productErrHintModal';
@@ -266,5 +266,6 @@
         background: $color_fff;
         overflow: auto;
         @include padding_place();
+        border-radius : 4px;
     }
 </style>

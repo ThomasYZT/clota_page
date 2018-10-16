@@ -1,4 +1,4 @@
-<!--账户余额信息-->
+<!--散客付款方式-->
 
 <template>
     <div class="account-money-info">

@@ -13,7 +13,7 @@
         <div slot="header" class="target-class">
             <span class="title">{{$t('提示')}}</span>
         </div>
-        <div class="targe-body">
+        <div class="target-body">
             <ul class="pro-list">
                 <li v-for="item in leftProductInfo"
                     :key="item.productId"
@@ -99,7 +99,7 @@
             padding: 0;
         }
 
-        .targe-body{
+        .target-body{
             @include block_outline($height : 164px);
             font-size: $font_size_14px;
             padding: 0 30px 0 50px;
