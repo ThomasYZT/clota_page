@@ -12,43 +12,43 @@ export const groupOrderHead = [
     },
     {
         title: '下单时间',
-        width: 200,
+        minWidth: 200,
         field: 'orderTime'
     },
     {
         title: '下单企业',
-        width: 130,
+        width: 150,
         enWidth : 180,
         field: 'orderOrgName'
     },
     {
         title: '下单渠道',
         width: 130,
-        enWidth : 180,
+        enWidth : 150,
         field: 'orderChannel'
     },
     {
         title: '产品名称',
-        width: 130,
+        width: 150,
         enWidth : 180,
         field: 'productName'
     },
     {
         title: '游客人数',
-        width: 130,
+        width: 100,
         enWidth : 180,
         field: 'quantity'
     },
     {
         title: '下单企业订单金额',
-        width: 130,
+        width: 160,
         enWidth : 180,
         field: 'orderAmount'
     },
     {
         title: '支付状态',
-        width: 130,
-        enWidth : 180,
+        width: 110,
+        enWidth : 130,
         field: 'paymentStatus'
     },
     {
@@ -73,5 +73,12 @@ export const bulkChangeHead = [
 export const orderChannelEnum = [
     {label: '景点', value: 'scenic'},
     {label: 'OTA', value: 'ota'},
-    {label: '旅行社', value: 'tour'},
+    {label: '旅行社', value: 'travel'},
+];
+
+// 支付状态，枚举
+export const paymentStatusEnum = [
+    {label: '全部', value: 'all'},
+    {label: '已支付', value: 'true'},
+    {label: '未支付', value: 'false'},
 ];

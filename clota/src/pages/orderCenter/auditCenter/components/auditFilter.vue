@@ -14,9 +14,10 @@
                 <i-col span="9">
                     <!--下单时间-->
                     <FormItem :label="$t('下单时间')">
-                        <DatePicker type="daterange"
+                        <DatePicker v-model="orderTimeRange"
+                                    type="daterange"
                                     style="width: 300px"
-                                    @on-change="">
+                                    @on-change="changeOrderTime">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -38,9 +39,10 @@
                 <i-col span="9">
                     <!--游玩日期-->
                     <FormItem :label="$t('游玩日期')">
-                        <DatePicker type="daterange"
+                        <DatePicker v-model="visitDateRange"
+                                    type="daterange"
                                     style="width: 300px"
-                                    @on-change="">
+                                    @on-change="changeVisitDate">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -48,7 +50,7 @@
                     <!--下单企业-->
                     <FormItem :label="$t('下单企业')" >
                         <Select v-model="formData.channelId" style="width: 160px">
-                            <Option v-for="item  in orderEnterprise"
+                            <Option v-for="item in orderEnterprise"
                                     :key="item.id"
                                     :value="item.id">
                                 {{item.orgName}}
@@ -60,8 +62,8 @@
                     <!--支付状态-->
                     <FormItem :label="$t('支付状态')" >
                         <Select v-model="formData.paymentStatus" style="width: 160px"
-                                @on-change="">
-                            <Option v-for="item  in paymentList"
+                                @on-change="changePayStatus">
+                            <Option v-for="item in paymentList"
                                     :key="item.value"
                                     :value="item.value">
                                 {{$t(item.label)}}
@@ -94,7 +96,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {orderChannelEnum} from '../auditConfig';
+    import {orderChannelEnum, paymentStatusEnum} from '../auditConfig';
     import {mapGetters} from 'vuex';
     import ajax from '@/api/index';
 
@@ -135,16 +137,18 @@
                 // 下单渠道列表
                 orderChannelList: orderChannelEnum,
                 // 支付状态
-                paymentList: [
-                    {label: 'all', value: 'all'},
-                    {label: '已支付', value: 'true'},
-                    {label: '未支付', value: 'false'},
-                ],
+                paymentList: paymentStatusEnum,
+                // 下单时间范围
+                orderTimeRange: [],
+                // 游玩日期范围
+                visitDateRange: [],
 
                 //表单校验规则
                 formRule : {
 
                 },
+                // 重置使用的初始筛选条件
+                resetFormData: {}
             }
         },
         computed: {
@@ -154,11 +158,42 @@
         },
         created() {
             this.queryOrderOrgList();
+            this.resetFormData = JSON.stringify(this.formData);
         },
         mounted() {
         },
         watch: {},
         methods: {
+            /**
+             * 下单时间选择变化后的处理
+             * @param date   范围日期
+             * @param dateType   日期格式
+             */
+            changeOrderTime(date, dateType) {
+                this.formData.orderStartDate = date[0];
+                this.formData.orderEndDate = date[1];
+            },
+            /**
+             * 游玩日期选择变化后的处理
+             * @param date   范围日期
+             * @param dateType   日期格式
+             */
+            changeVisitDate(date, dateType) {
+                this.formData.visitStartDate = date[0];
+                this.formData.visitEndDate = date[1];
+            },
+            /**
+             * 当选择的支付状态为全部时（此时code为'all'），需将‘支付状态’筛选字段的值改为空。
+             * @param statusCode   支付状态code
+             */
+            changePayStatus(statusCode) {
+                if (statusCode == 'all') {
+                    this.formData.paymentStatus = '';
+                }
+            },
+            /**
+             * 查询下单企业
+             */
             queryOrderOrgList() {
                 ajax.post('getOrderOrgList', {
                     allocationStatus: false,   // 是否分销：true/false
@@ -173,13 +208,16 @@
              * emit事件：on-filter，在父组件查询审核列表
              */
             searchAuditList() {
-                this.$emit('on-filter');
+                this.$emit('on-filter', this.formData);
             },
             /**
              * 重置筛选条件
              */
             reset() {
-
+                this.$refs.formCustom.resetFields();
+                this.formData = JSON.parse(this.resetFormData);
+                this.orderTimeRange = [];
+                this.visitDateRange = [];
                 this.searchAuditList();
             }
         }

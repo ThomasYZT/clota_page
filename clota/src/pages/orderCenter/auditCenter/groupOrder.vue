@@ -8,7 +8,7 @@
     <div class="group-order">
         <!--筛选条件-->
         <audit-filter :audit-name="'group'"
-                      @on-filter="">
+                      @on-filter="filterAuditList">
         </audit-filter>
         <!--批量审核-->
 
@@ -25,7 +25,36 @@
             :column-check="true"
             @query-data="queryList"
             @selection-change="changeSelection">
-
+            <el-table-column
+                slot="column4"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{transOrderOrg(scope.row.orderChannel)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column7"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.orderAmount | moneyFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column8"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{transPaymentStatus(scope.row.paymentStatus)}}
+                </template>
+            </el-table-column>
             <el-table-column
                 slot="column9"
                 slot-scope="row"
@@ -34,7 +63,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="">{{$t('通过')}}</span>
+                    <span class="operate-btn blue" @click="auditPass(scope.row)">{{$t('通过')}}</span>
                     <span class="divide-line"></span>
                     <span class="operate-btn red" @click="">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
@@ -47,12 +76,17 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {groupOrderHead} from './auditConfig';
+    import {groupOrderHead, orderChannelEnum, paymentStatusEnum} from './auditConfig';
     import ajax from '@/api/index.js';
     import {configVariable} from '@/assets/js/constVariable.js';
+    import auditPassModal from './components/auditPassModal.vue';
 
     export default {
-        components: { auditFilter, tableCom },
+        components: {
+            auditFilter,
+            tableCom,
+            auditPassModal,
+        },
         props: {},
         data() {
             return {
@@ -80,8 +114,6 @@
         computed: {},
         created() {
         },
-        mounted() {
-        },
         methods: {
             /**
              * 查询所有团队订单审核信息
@@ -90,8 +122,8 @@
                 ajax.post('queryTeamOrder',{
                     ...this.queryParams
                 }).then(res => {
-                    if(res.success){
-                        this.tableData = res.data ? res.data : [];
+                    if(res.success && res.data){
+                        this.tableData = res.data.data || [];
                         this.totalCount = res.data.totalRow;
                     }else{
                         this.tableData = [];
@@ -105,6 +137,46 @@
              */
             changeSelection(selection) {
                 this.chosenRowData = selection;
+            },
+            /**
+             * 下单渠道的code转换
+             * @param value 下单渠道code
+             * @returns {string}
+             */
+            transOrderOrg(value) {
+                let orderChannel = orderChannelEnum.find((channel, i) => {
+                    return value === channel.value;
+                });
+
+                return orderChannel ? orderChannel.label : '-';
+            },
+            /**
+             * 支付状态的code转换
+             * @param status  支付状态code
+             * @returns {string}
+             */
+            transPaymentStatus(status) {
+                let paymentStatus = paymentStatusEnum.find((payment, i) => {
+                    return status === payment.value;
+                });
+
+                return paymentStatus ? paymentStatus.label : '-';
+            },
+            /**
+             * 按筛选条件获取审核列表数据
+             * @param paramsObj   筛选条件
+             */
+            filterAuditList(paramsObj) {
+                Object.assign(this.queryParams, paramsObj);
+                this.queryList();
+            },
+            /**
+             * 单个/批量 通过审核
+             * @param type - 通过审核 类型
+             * @param scopeRow - 修改时的行数据
+             **/
+            auditPass(type, scopeRow) {
+//                this.$refs.auditPassModal.show(obj);
             },
         }
     };
