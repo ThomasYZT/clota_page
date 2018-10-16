@@ -18,12 +18,12 @@
             <Form ref="formInline" :model="formData" label-position="left" >
                 <i-row>
                     <i-col span="11">
-                        <FormItem prop="name" label="姓名" :label-width="75" :rules="rules.name">
+                        <FormItem prop="name" label="姓名:" :label-width="75" :rules="rules.name">
                             <Input type="text" v-model.trim="formData.name" style="width: 280px;"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
-                        <FormItem prop="phone" label="手机号码" :label-width="100" :rules="rules.phone">
+                        <FormItem prop="phone" label="手机号码:" :label-width="100" :rules="rules.phone">
                             <Input type="text" v-model.trim="formData.phone" style="width: 280px"/>
                         </FormItem>
                     </i-col>
@@ -35,7 +35,7 @@
                 <table-com
                     :column-data="idColumns"
                     :table-data="idTableData"
-                    class="get-ticket"
+                    class="id-class"
                     :auto-height="true"
                     :table-com-min-height="250">
                     <el-table-column
@@ -58,7 +58,9 @@
                                 </FormItem>
                             </template>
                             <template v-else>
-                                {{$t(scope.row[row.field])}}
+                                <div class="row-class">
+                                    {{$t(scope.row[row.field])}}
+                                </div>
                             </template>
                         </template>
                     </el-table-column>
@@ -751,7 +753,7 @@
 
         .add-id-card{
             @include block_outline($height : 40px);
-            padding: 14px 0 10px 0;
+            padding: 14px 0 10px 14px;
 
             /deep/ .ivu-icon{
                 font-weight: bold;
@@ -779,8 +781,26 @@
                 margin-bottom: 0;
             }
 
-            .get-ticket /deep/ .ivu-form-item-error-tip{
+            .get-ticket /deep/ .ivu-form-item-error-tip,
+            .id-class /deep/ .ivu-form-item-error-tip{
                 position: relative;
+            }
+
+            .id-class /deep/ .el-table td{
+                padding: 5px 0;
+            }
+
+            .get-ticket /deep/ .el-table td{
+                padding: 5px 0;
+            }
+
+            .id-class .row-class{
+                padding: 4px 0;
+            }
+
+            .id-class /deep/ .ivu-form-item-content,
+            .get-ticket /deep/ .ivu-form-item-content{
+                line-height: 30px;
             }
 
             /deep/ .el-table th, /deep/ .el-table td{
@@ -790,6 +810,10 @@
             .cancel{
                 color: #3F3F3F;
             }
+        }
+
+        /deep/ .table-com{
+            border-top: 1px solid #EBEEF5;
         }
 
         /deep/ .ivu-modal-body{
