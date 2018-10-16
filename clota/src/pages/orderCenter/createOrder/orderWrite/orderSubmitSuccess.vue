@@ -4,6 +4,9 @@
     <div class="order-submit-suc">
         <div class="img-area"></div>
         <div class="submit-log">订单提交成功！</div>
+        <div class="audit-log" v-if="type === 'team'">
+            团队订单的审核结果我们将以短信发送通知导游，请耐心等待。
+        </div>
         <Button type="primary">查看详情</Button>
         <div class="text-wrap">
             <span class="continue-btn" @click="continueReserve">继续预定</span>
@@ -14,7 +17,9 @@
 <script>
     export default {
         data() {
-            return {}
+            return {
+                type : ''
+            }
         },
         methods: {
             /**
@@ -30,7 +35,9 @@
              * @param params
              */
             getParams (params) {
-                if(!params || !params.success){
+                if(params && params.type){
+                    this.type = params.type;
+                }else{
                     this.$router.push({
                         name : 'createOrder'
                     });
@@ -63,7 +70,16 @@
             font-size: $font_size_20px;
             color: $color_333;
             text-align: center;
-            margin-bottom: 59px;
+            margin-bottom: 15px;
+        }
+
+        .audit-log{
+            font-size: $font_size_14px;
+            color: #353B48;
+        }
+
+        /deep/ .ivu-btn-primary{
+            margin-top: 44px;
         }
 
         .text-wrap{

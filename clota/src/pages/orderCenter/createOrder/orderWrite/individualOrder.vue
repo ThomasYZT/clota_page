@@ -157,7 +157,7 @@
                             this.$router.replace({
                                 name : 'successSubmit',
                                 params : {
-                                    success : true
+                                    type : 'individual'
                                 }
                             });
                         }else{

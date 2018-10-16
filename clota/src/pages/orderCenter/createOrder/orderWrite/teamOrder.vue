@@ -128,39 +128,11 @@
                     this.$refs.tourGuide.getTourGuideInfo(),
                     this.$refs.driver.getDriverInfo(),
                 ]).then(([tourist,tourGuide,driver]) => {
-                    ajax.post('addTeamOrder',{
-                        //产品信息
-                        productInfos : JSON.stringify(this.productList.map(item => {
-                            return {
-                                productId : item.productId,
-                                productName : item.productName,
-                                policyId : item.policyId,
-                                allocationId : item.allocationId,
-                                quantity : item.num,
-                                price : item.settlePrice,
-                                actPrice : item.settlePrice,
-                                originVisitDate : this.otherInfo.playDate,
-                            }
-                        })),
-                        //游客，司机，导游信息
-                        visitorModels : JSON.stringify([
-                            ...tourist,
-                            ...tourGuide,
-                            ...driver,
-                        ]),
-                        //订单渠道
-                        orderChannel : this.orderChannel,
-                        //下单企业
-                        channelId : this.otherInfo.orderOrgId,
-                        //订单金额
-                        orderAmount : this.accountInfo.totalPrice,
-                        //发售机构id
-                        orgSaleId : this.otherInfo.saleOrgId,
-                        //所属景区
-                        scenicId : this.otherInfo.scenicOrgId,
-                        //付款方式
-                        paymentType : payType
-                    })
+                    this.createOrder(payType,[
+                        ...tourist,
+                        ...tourGuide,
+                        ...driver,
+                    ]);
                 }).catch(err => {
                     if(err === 'touristErr'){
                         this.$Message.warning('请先保存游客信息');
@@ -168,6 +140,51 @@
                         this.$Message.warning('请先保存导游信息');
                     }else if(err === 'driverErr'){
                         this.$Message.warning('请先保存司机信息');
+                    }
+                });
+            },
+            /**
+             * 下单
+             * @param payType
+             * @param visitorModels
+             */
+            createOrder (payType,visitorModels) {
+                ajax.post('addTeamOrder',{
+                    //产品信息
+                    productInfos : JSON.stringify(this.productList.map(item => {
+                        return {
+                            productId : item.productId,
+                            productName : item.productName,
+                            policyId : item.policyId,
+                            allocationId : item.allocationId,
+                            quantity : item.num,
+                            price : item.settlePrice,
+                            actPrice : item.settlePrice,
+                            originVisitDate : this.otherInfo.playDate,
+                        }
+                    })),
+                    //游客，司机，导游信息
+                    visitorModels : JSON.stringify(visitorModels),
+                    //订单渠道
+                    orderChannel : this.orderChannel,
+                    //下单企业
+                    channelId : this.otherInfo.orderOrgId,
+                    //订单金额
+                    orderAmount : this.accountInfo.totalPrice,
+                    //发售机构id
+                    orgSaleId : this.otherInfo.saleOrgId,
+                    //所属景区
+                    scenicId : this.otherInfo.scenicOrgId,
+                    //付款方式
+                    paymentType : payType
+                }).then(res => {
+                    if(res.success){
+                        this.$router.replace({
+                            name : 'successSubmit',
+                            params : {
+                                type : 'team'
+                            }
+                        });
                     }
                 });
             }

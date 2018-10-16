@@ -262,6 +262,7 @@
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
+                this.$Message.success('导游信息已删除');
             },
             /**
              * 保存导游信息
@@ -336,6 +337,7 @@
                         this.tableData.splice(i,1);
                     }
                 }
+                this.$Message.success('导游信息已删除');
             },
             /**
              * 获取填写的导游信息
