@@ -179,7 +179,6 @@
     import {idColumns,ticketColumnData} from './addTouristConfig';
     import ajax from '@/api/index.js';
     import {idType} from '@/assets/js/constVariable.js';
-    import common from '@/assets/js/common';
     import addTouristErrModal from './addTouristErrModal';
 
     export default {
@@ -310,7 +309,14 @@
                 //证件列表表头配置
                 idColumns : idColumns,
                 //证件数据
-                idTableData : [],
+                idTableData : [
+                    {
+                        type : 'identity',
+                        data : '',
+                        editType : 'edit',
+                        modifyType : 'add'
+                    }
+                ],
                 ticketColumnData : ticketColumnData,
                 //取票信息数据
                 ticketTableData : [],
@@ -478,7 +484,14 @@
                     this.findProductSaleRule();
                 }else{
                     this.$refs.formInline.resetFields();
-                    this.idTableData = [];
+                    this.idTableData = [
+                        {
+                            type : 'identity',
+                            data : '',
+                            editType : 'edit',
+                            modifyType : 'add'
+                        }
+                    ];
                 }
             },
             /**
