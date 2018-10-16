@@ -21,4 +21,8 @@ export default {
     'checkProductSaleRule' : 'order/checkProductSaleRule',
     //新建团队订单
     'addTeamOrder' : 'order/addTeamOrder',
+    //查询订单下的产品
+    'queryOrderProductByOrderId' : '/order/queryOrderProductByOrderId',
+    //审核团队订单
+    'auditTeamOrder' : '/order/auditTeamOrder',
 }

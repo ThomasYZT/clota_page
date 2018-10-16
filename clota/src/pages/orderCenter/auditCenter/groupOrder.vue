@@ -11,7 +11,21 @@
                       @on-filter="filterAuditList">
         </audit-filter>
         <!--批量审核-->
+        <div class="batch-audit">
+            <el-dropdown trigger="click"
+                         placement="bottom-start"
+                         @command="handleCommand">
+                <Button type="ghost" style="float: left" size="default">{{$t('批量审核')}}</Button>
 
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-for="(item,index) in batchAudit"
+                                      :key="index"
+                                      :disabled="chosenRowData.length <= 0"
+                                      :command="item">{{$t(item.label)}}
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </div>
         <!--审核列表-->
         <table-com
             :ofsetHeight="170"
@@ -63,29 +77,36 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="auditPass(scope.row)">{{$t('通过')}}</span>
+                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('通过')}}</span>
                     <span class="divide-line"></span>
-                    <span class="operate-btn red" @click="">{{$t('reject')}}</span>
+                    <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
                     <span class="operate-btn blue" @click="">{{$t('details')}}</span>
                 </template>
             </el-table-column>
         </table-com>
+
+        <!--通过模态框-->
+        <audit-pass-modal ref="auditPassModal" @on-audit-pass="queryList"></audit-pass-modal>
+        <!--驳回模态框-->
+        <audit-reject-modal ref="auditRejectModal" @on-audit-pass="queryList"></audit-reject-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {groupOrderHead, orderChannelEnum, paymentStatusEnum} from './auditConfig';
+    import {groupOrderHead, orderChannelEnum, paymentStatusEnum, batchAudit} from './auditConfig';
     import ajax from '@/api/index.js';
     import {configVariable} from '@/assets/js/constVariable.js';
-    import auditPassModal from './components/auditPassModal.vue';
+    import auditPassModal from './components/groupAuditPassModal.vue';
+    import auditRejectModal from './components/groupAuditRejectModal.vue';
 
     export default {
         components: {
             auditFilter,
             tableCom,
             auditPassModal,
+            auditRejectModal
         },
         props: {},
         data() {
@@ -108,7 +129,9 @@
                 //是否显示预定模态框
                 showReserveModal : false,
                 //选择的产品列表
-                productList : []
+                productList: [],
+                //批量审核
+                batchAudit: batchAudit
             }
         },
         computed: {},
@@ -137,6 +160,20 @@
              */
             changeSelection(selection) {
                 this.chosenRowData = selection;
+            },
+            handleCommand(dropItem) {
+                if (this.chosenRowData.length<=0) {
+                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    return;
+                }
+                switch (dropItem.value) {
+                    case 'success' :
+                        this.showAuditModal(this.chosenRowData, true, 'pass');
+                        break;
+                    case 'reject' :
+                        this.showAuditModal(this.chosenRowData, true, 'reject');
+                        break;
+                }
             },
             /**
              * 下单渠道的code转换
@@ -171,12 +208,26 @@
                 this.queryList();
             },
             /**
-             * 单个/批量 通过审核
-             * @param type - 通过审核 类型
-             * @param scopeRow - 修改时的行数据
+             * 单个/批量 通过审核（驳回申请）的模态框
+             * @param data - 被审核的行数据
+             * @param isBatch - 是否批量操作  Boolean
+             * @param type - 类型  'pass' | 'reject'
              **/
-            auditPass(type, scopeRow) {
-//                this.$refs.auditPassModal.show(obj);
+            showAuditModal(data, isBatch, type) {
+                let auditModal = '';
+                switch (type) {
+                    case 'pass' :
+                        auditModal = 'auditPassModal';
+                        break;
+                    case 'reject' :
+                        auditModal = 'auditRejectModal';
+                        break;
+                }
+
+                this.$refs[auditModal].show({
+                    items: isBatch ? data : [data],
+                    isBatch: isBatch
+                });
             },
         }
     };
@@ -192,6 +243,11 @@
             margin: 0 5px;
             margin-bottom: -2px;
             background: #E1E1E1;
+        }
+        .batch-audit {
+            @include block_outline($height : 50px);
+            padding-top: 10px;
+            padding-left: 30px;
         }
 
         .operate-btn {
