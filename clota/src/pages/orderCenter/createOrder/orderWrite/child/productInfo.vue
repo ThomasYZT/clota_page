@@ -23,7 +23,7 @@
             </el-table-column>
         </table-com>
         <div class="total-info">
-            合计：{{totalPrice | moneyFilter}}
+            合计：<span class="total-amount">{{totalPrice | moneyFilter}}</span>
         </div>
     </div>
 </template>
@@ -103,8 +103,12 @@
             padding-right: 40px;
             text-align: right;
             font-size: $font_size_16px;
-            color: $color_yellow;
             border-bottom: 1px solid $color_eee;
+            color: #303133;
+
+            .total-amount{
+                color: $color_yellow;
+            }
         }
     }
 </style>
