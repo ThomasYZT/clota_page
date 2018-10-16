@@ -19,4 +19,6 @@ export default {
     'queryTeamOrder' : '/order/queryTeamOrder',
     //校验订单产品售卖规则
     'checkProductSaleRule' : 'order/checkProductSaleRule',
+    //新建团队订单
+    'addTeamOrder' : 'order/addTeamOrder',
 }

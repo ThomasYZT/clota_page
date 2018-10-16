@@ -99,7 +99,7 @@
         &:after {
             content: '';
             display: block;
-            @include absolute_pos(absolute, 4px, -10px);
+            @include absolute_pos(absolute, unquote('calc(50% - 7.5px)'), -10px);
             @include block_outline(1px, 15px);
             background: $color_E1E1E1;
         }

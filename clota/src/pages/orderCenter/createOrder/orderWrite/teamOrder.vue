@@ -1,3 +1,4 @@
+
 <!--团队订单-->
 
 <template>
@@ -10,9 +11,16 @@
         <product-info :product-list="productList">
         </product-info>
         <!--游客信息-->
-        <team-tourist-info v-if="productList && productList.length > 0"
+        <team-tourist-info ref="tourist"
+                           v-if="productList && productList.length > 0"
                            :product-list="productList">
         </team-tourist-info>
+        <!--导游信息-->
+        <tour-guide-info ref="tourGuide">
+        </tour-guide-info>
+        <!--司机信息-->
+        <driver-info ref="driver">
+        </driver-info>
         <!--其它信息-->
         <other-info :info-data="otherInfo">
         </other-info>
@@ -31,6 +39,9 @@
     import otherInfo from './child/otherInfo';
     import teamPayAccount from './child/teamPayAccount';
     import teamTouristInfo from './child/teamTouristInfo';
+    import tourGuideInfo from './child/tourGuideInfo';
+    import driverInfo from './child/driverInfo';
+    import {mapGetters} from 'vuex';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -39,7 +50,9 @@
             breadCrumbHead,
             otherInfo,
             teamPayAccount,
-            teamTouristInfo
+            teamTouristInfo,
+            tourGuideInfo,
+            driverInfo
         },
         data() {
             return {
@@ -107,12 +120,83 @@
             },
             /**
              * 确认付款
+             * @param payType 付款方式
              */
-            payOrder () {
-
+            payOrder ({payType}) {
+                Promise.all([
+                    this.$refs.tourist.getTouristInfo(),
+                    this.$refs.tourGuide.getTourGuideInfo(),
+                    this.$refs.driver.getDriverInfo(),
+                ]).then(([tourist,tourGuide,driver]) => {
+                    ajax.post('addTeamOrder',{
+                        //产品信息
+                        productInfos : JSON.stringify(this.productList.map(item => {
+                            return {
+                                productId : item.productId,
+                                productName : item.productName,
+                                policyId : item.policyId,
+                                allocationId : item.allocationId,
+                                quantity : item.num,
+                                price : item.settlePrice,
+                                actPrice : item.settlePrice,
+                                originVisitDate : this.otherInfo.playDate,
+                            }
+                        })),
+                        //游客，司机，导游信息
+                        visitorModels : JSON.stringify([
+                            ...tourist,
+                            ...tourGuide,
+                            ...driver,
+                        ]),
+                        //订单渠道
+                        orderChannel : this.orderChannel,
+                        //下单企业
+                        channelId : this.otherInfo.orderOrgId,
+                        //订单金额
+                        orderAmount : this.accountInfo.totalPrice,
+                        //发售机构id
+                        orgSaleId : this.otherInfo.saleOrgId,
+                        //所属景区
+                        scenicId : this.otherInfo.scenicOrgId,
+                        //付款方式
+                        paymentType : payType
+                    })
+                }).catch(err => {
+                    if(err === 'touristErr'){
+                        this.$Message.warning('请先保存游客信息');
+                    }else if(err === 'tourguideErr'){
+                        this.$Message.warning('请先保存导游信息');
+                    }else if(err === 'driverErr'){
+                        this.$Message.warning('请先保存司机信息');
+                    }
+                });
             }
         },
         computed : {
+            //账户可用余额，订单总金额
+            accountInfo () {
+                return {
+                    validatMoney : this.validatMoney,
+                    totalPrice : this.productList.reduce((price,item) => price += item.settlePrice * item.num,0)
+                }
+            },
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            }),
+            //订单渠道
+            orderChannel () {
+                if(this.manageOrgs && Object.keys(this.manageOrgs).length > 0){
+                    if(this.manageOrgs.nodeType === "scenic"){
+                        return 'scenic';
+                    }else if(this.manageOrgs.nodeType === "partner"){
+                        return 'tour';
+                    }else{
+                        return '';
+                    }
+                }else{
+                    return '';
+                }
+            },
             //账户可用余额，订单总金额
             accountInfo () {
                 return {

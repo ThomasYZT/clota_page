@@ -1,19 +1,19 @@
-<!--团队游客信息-->
+<!--团队导游信息-->
 
 <template>
-    <div class="team-tourist-info">
+    <div class="guide-info">
         <div class="title">
-            游客信息
+            导游信息
             <Button type="ghost"
                     class="ivu-btn-108px"
-                    :disabled="selectedTouristInfo.length < 1"
-                    @click="delTourist">批量删除</Button>
+                    :disabled="selectedTourGuideInfo.length < 1"
+                    @click="delTourGuide">批量删除</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
-                    @click="addTourist">添加游客</Button>
+                    @click="addTourGuide">添加导游</Button>
         </div>
 
-        <Form ref="formInline" :model="formData" label-position="left" >
+        <Form ref="formInline" >
             <table-com
                 border
                 ref="table"
@@ -60,32 +60,6 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <template v-if="scope.row.editType === 'edit'">
-                            <FormItem :prop="'idTypeIn' + scope.$index" :rules="rules.idTypeIn(scope.row)">
-                                <Select v-model.trim="scope.row.type" transfer>
-                                    <Option v-for="item in acceptCertificateType.all"
-                                            :key="item.value"
-                                            :value="item.value">
-                                        {{$t(item.label)}}
-                                    </Option>
-                                </Select>
-                            </FormItem>
-                        </template>
-                        <template v-else>
-                            <div class="row-class">
-                                {{$t(scope.row[row.field])}}
-                            </div>
-                        </template>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    slot="column3"
-                    show-overflow-tooltip
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <template v-if="scope.row.editType === 'edit'">
                             <FormItem :prop="'idCard' + scope.$index" :rules="rules.idCard(scope.row)">
                                 <Input type="text" v-model.trim="scope.row.idNum" />
                             </FormItem>
@@ -96,7 +70,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column4"
+                    slot="column3"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -114,7 +88,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column5"
+                    slot="column4"
                     slot-scope="row"
                     show-overflow-tooltip
                     :label="row.title"
@@ -123,7 +97,7 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <template v-if="scope.row.editType !== 'edit'">
-                                <li @click="modifyIdfo(scope.$index)" >{{$t('modify')}}</li>
+                                <li @click="modifyInfo(scope.$index)" >{{$t('modify')}}</li>
                                 <li class="red-label" @click="delIdInfo(scope.$index)">{{$t('del')}}</li>
                             </template>
                             <template v-else>
@@ -135,12 +109,12 @@
                 </el-table-column>
             </table-com>
         </Form>
-        <!--删除游客模态框-->
+        <!--删除导游模态框-->
         <del-modal ref="delModal" class="del-modal-lift">
             <ul class="pro-list">
                 <li class="detail">
                     <span class="content-text">
-                        {{$t('isDoing')}}{{$t('delete')}}游客：
+                        {{$t('isDoing')}}{{$t('delete')}}导游：
                         <span class="yellow-label">{{delingTouristInfo.data}}</span>
                         <span v-if="delingTouristInfo.showMore">等</span>
                     </span>
@@ -158,7 +132,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './teamTouristConfig';
+    import {columnData} from './tourGuideConfig';
     import ajax from '@/api/index.js';
     import {idType} from '@/assets/js/constVariable.js';
     import {validator} from 'klwk-ui';
@@ -168,24 +142,7 @@
             tableCom,
             delModal
         },
-        props : {
-            //产品列表
-            'product-list' : {
-                type : Array,
-                default () {
-                    return []
-                }
-            }
-        },
         data() {
-            //校验是否选择了证件
-            const validateidTypeIn =(rule,value,callback) => {
-                if(rule.rowData.type){
-                    callback();
-                }else{
-                    callback('请选择证件类型');
-                }
-            };
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
                 if(rule.rowData.idNum){
@@ -202,7 +159,7 @@
                     callback('请输入证件号');
                 }
             };
-            //校验游客姓名
+            //校验导游姓名
             const validateName = (rule,value,callback) => {
                 if(rule.rowData.name){
                     if(rule.rowData.name.length > 20){
@@ -231,15 +188,10 @@
                 columnData : columnData,
                 //表格数据
                 tableData : [],
-                //选择的游客信息
-                selectedTouristInfo : [],
+                //选择的导游信息
+                selectedTourGuideInfo : [],
                 //校验规则
                 rules : {
-                    idTypeIn (rowData) {
-                        return [
-                            {validator : validateidTypeIn,trigger: 'change',rowData : rowData}
-                        ]
-                    },
                     idCard (rowData) {
                         return [
                             {validator : validateIdCard,trigger: 'blur',rowData : rowData}
@@ -256,59 +208,38 @@
                         ];
                     }
                 },
-                //表单数据
-                formData : {
-
-                },
-                //产品政策
-                productPolicy : {},
-                //修改游客信息时，保存原始数据
+                //修改导游信息时，保存原始数据
                 originalTableData : [],
             }
         },
         methods: {
             /**
-             * 选择的游客信息
+             * 选择的导游信息
              * @param val
              */
             handleSelectionChange(val) {
-                this.selectedTouristInfo = val;
+                this.selectedTourGuideInfo = val;
             },
             /**
-             * 获取产品下所有证件类型
+             * 添加导游
              */
-            findProductSaleRule () {
-                ajax.post('findProductSaleRule',{
-                    productIds : this.productList.map(item => item.productId).join(',')
-                }).then(res => {
-                    if(res.success){
-                        this.productPolicy = res.data ? res.data : {};
-                    }else{
-                        this.productPolicy = {};
-                    }
-                });
-            },
-            /**
-             * 添加游客
-             */
-            addTourist () {
+            addTourGuide () {
                 this.tableData.push({
                     editType : 'edit',
                     name : '',
-                    type : '',
                     idNum :'',
                     phone : '',
                     modifyType : 'add'
                 });
             },
             /**
-             * 校验证件是否已经填写
+             * 校验证件是否已经存在
              * @param cardInfo
              */
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
                     for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(cardInfo !== this.tableData[i] && this.tableData[i]['idNum'] === cardInfo['idNum'] && this.tableData[i]['type'] === cardInfo['type']){
+                        if(cardInfo !== this.tableData[i] && this.tableData[i]['idNum'] === cardInfo['idNum']){
                             reject();
                         }
                     }
@@ -316,29 +247,29 @@
                 });
             },
             /**
-             * 修改游客信息
+             * 修改导游信息
              * @param index
              */
-            modifyIdfo (index) {
+            modifyInfo (index) {
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
                 this.$refs.table.toggleRowSelection(this.tableData[index]);
             },
             /**
-             * 删除游客信息
+             * 删除导游信息
              * @param index
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
             },
             /**
-             * 保存游客信息
+             * 保存导游信息
              * @param index
              */
             saveCardInfo (index) {
                 //判断证件类型和证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
-                Promise.all([new Promise((resolve,reject) => {//校验游客姓名
+                Promise.all([new Promise((resolve,reject) => {//校验导游姓名
                     this.$refs.formInline.validateField('name' + index,valid => {
                         if(valid){
                             reject();
@@ -346,7 +277,7 @@
                             resolve();
                         }
                     });
-                }),new Promise((resolve,reject) => {//校验证件类型
+                }),new Promise((resolve,reject) => {//校验证件号码
                     this.$refs.formInline.validateField('idCard' + index,valid => {
                         if(valid){
                             reject();
@@ -354,15 +285,7 @@
                             resolve();
                         }
                     });
-                }),new Promise((resolve,reject) => {//校验证件号码
-                    this.$refs.formInline.validateField('idTypeIn' + index,valid => {
-                        if(valid){
-                            reject();
-                        }else{
-                            resolve();
-                        }
-                    });
-                }),new Promise((resolve,reject) => {//校验证件
+                }),new Promise((resolve,reject) => {//校验手机号码
                     this.$refs.formInline.validateField('phone' + index,valid => {
                         if(valid){
                             reject();
@@ -386,9 +309,9 @@
                 }
             },
             /**
-             * 批量删除游客
+             * 批量删除导游
              */
-            delTourist () {
+            delTourGuide () {
                 this.$refs.delModal.show({
                     title : this.$t('删除'),
                     confirmCallback : () => {
@@ -397,7 +320,7 @@
                 })
             },
             /**
-             * 判断当前游客是否可以选择
+             * 判断当前导游是否可以选择
              * @param row
              * @param index
              */
@@ -405,24 +328,24 @@
                 return row['editType'] !== 'edit'
             },
             /**
-             * 确认删除游客信息
+             * 确认删除导游信息
              */
             confirmDelTouristInfo () {
                 for(let i = this.tableData.length,j = 0; i >= j;i--){
-                    if(this.selectedTouristInfo.includes(this.tableData[i])){
+                    if(this.selectedTourGuideInfo.includes(this.tableData[i])){
                         this.tableData.splice(i,1);
                     }
                 }
             },
             /**
-             * 获取填写的游客信息
+             * 获取填写的导游信息
              */
-            getTouristInfo () {
+            getTourGuideInfo () {
                 return new Promise((resolve,reject) => {
                     let result = [];
                     for(let i = 0,j = this.tableData.length;i < j;i++){
                         if(this.tableData[i]['editType'] === 'edit'){
-                            reject('touristErr');
+                            reject('tourguideErr');
                         }
                         result.push({
                             documentInfo : JSON.stringify({
@@ -431,58 +354,24 @@
                             }),
                             phoneNumber : this.tableData[i].phone,
                             visitorName : this.tableData[i].name,
-                            visitorType : 'visitor',
+                            visitorType : 'driver',
                         });
                     }
                     resolve(result);
                 });
             }
         },
-        created () {
-            this.findProductSaleRule();
-        },
         computed : {
-            //产品接受的证件类型
-            acceptCertificateType () {
-                let result = [];
-                let arrTmp = [];
-                let accpet = [];
-                let productIdsList = {};
-                for(let item in this.productPolicy){
-                    arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
-                    for(let i = 0,j = arrTmp.length;i < j;i++){
-                        if(!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired'){
-                            result.push(arrTmp[i]);
-                        }
-                    }
-                    productIdsList[item] = [];
-                    for(let i = 0,j = idType.length;i < j;i++){
-                        if(arrTmp.includes(idType[i]['value'])){
-                            productIdsList[item].push(idType[i])
-                        }
-                    }
-                }
-                for(let i = 0,j = idType.length;i < j;i++){
-                    if(result.includes(idType[i]['value'])){
-                        accpet.push(idType[i]);
-                    }
-                }
-                return {
-                    all : accpet,
-                    acceptArr : result,
-                    ...productIdsList
-                };
-            },
-            //将要删除的游客信息
+            //将要删除的导游信息
             delingTouristInfo () {
-                if(this.selectedTouristInfo.length > 2){
+                if(this.selectedTourGuideInfo.length > 2){
                     return {
-                        data : this.selectedTouristInfo.map(item => item.name).slice(0,2).join(','),
+                        data : this.selectedTourGuideInfo.map(item => item.name).slice(0,2).join(','),
                         showMore : true
                     }
                 }else{
                     return {
-                        data : this.selectedTouristInfo.map(item => item.name).slice(0,2).join(','),
+                        data : this.selectedTourGuideInfo.map(item => item.name).slice(0,2).join(','),
                         showMore : false
                     }
                 }
@@ -492,8 +381,8 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
-    .team-tourist-info{
+    @import '~@/assets/scss/base';
+    .guide-info{
         .title{
             position: relative;
             padding: 18px 30px;

@@ -6,8 +6,8 @@
             <div class="account-left">
                 <span class="pay-type-label">支付方式：</span>
                 <RadioGroup v-model="payType">
-                    <Radio label="1">定存</Radio>
-                    <Radio label="2">到付</Radio>
+                    <Radio label="deposit">定存</Radio>
+                    <Radio label="collect">到付</Radio>
                 </RadioGroup>
             </div>
             <div class="account-right">
@@ -20,8 +20,8 @@
                 <span class="warning-label" v-if="limitEnough">可用额度不足！</span>
             </div>
             <Button type="warning"
-                    :disabled="limitEnough"
                     class="ivu-btn-108px"
+                    :disabled="canPayOrder"
                     @click="payOrder">付款</Button>
         </div>
     </div>
@@ -41,7 +41,7 @@
         data() {
             return {
                 //支付方式
-                payType : '1'
+                payType : 'deposit'
             }
         },
         methods: {
@@ -49,11 +49,21 @@
              * 付款
              */
             payOrder() {
-                this.$emit('pay-order');
+                this.$emit('pay-order',{
+                    payType : this.payType
+                });
             }
         },
         computed : {
-            //账户余额是否充足
+            //判断是否能付款,定存需要有足够的余额，到付可以直接下单
+            canPayOrder () {
+                if(this.payType === 'deposit'){
+                    return this.accountInfo.validatMoney < this.accountInfo.totalPrice;
+                }else {
+                    return false;
+                }
+            },
+            //余额是否充足
             limitEnough () {
                 return this.accountInfo.validatMoney < this.accountInfo.totalPrice;
             }
