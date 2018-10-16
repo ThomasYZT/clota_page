@@ -25,4 +25,8 @@ export default {
     'queryOrderProductByOrderId' : '/order/queryOrderProductByOrderId',
     //审核团队订单
     'auditTeamOrder' : '/order/auditTeamOrder',
+    //查询退票/改签待审核订单列表
+    'queryOrderRefundAlterAuditList' : '/order/queryOrderRefundAlterAuditList',
+    //订单(单个)批量退票改签审核
+    'auditBatchOrderProduct' : '/order/auditBatchOrderProduct',
 }

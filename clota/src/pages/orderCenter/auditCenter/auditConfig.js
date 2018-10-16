@@ -83,7 +83,7 @@ export const orderProductHead = [
     },
 ];
 
-// 团队订单--批量审核--订单下列表表头
+// 团队订单--批量审核--订单列表表头
 export const batchAuditHead = [
     {
         title: '订单号',
@@ -111,7 +111,110 @@ export const batchAuditHead = [
 
 // 散客退票审核列表表头
 export const bulkRefundHead = [
+    {
+        title: '订单号',
+        width: 200,
+        field: 'orderNo'
+    },
+    {
+        title: '订单明细编号',
+        width: 200,
+        field: 'orderDetailNo'
+    },
+    {
+        title: '游玩日期',
+        minWidth: 200,
+        field: 'visitDate'
+    },
+    {
+        title: '下单时间',
+        minWidth: 200,
+        field: 'orderTime'
+    },
+    {
+        title: '下单企业',
+        width: 150,
+        enWidth : 180,
+        field: 'channel'
+    },
+    {
+        title: '下单渠道',
+        width: 130,
+        enWidth : 150,
+        field: 'orderChannel'
+    },
+    {
+        title: '第三方订单号',
+        width: 200,
+        field: 'thirdOrderNo'
+    },
+    {
+        title: '产品名称 / 预定数量',
+        width: 150,
+        enWidth : 180,
+        field: 'productName / quantity'
+    },
+    {
+        title: '产品单价 / 小计金额',
+        width: 160,
+        enWidth : 180,
+        field: 'price / amount'
+    },
+    {
+        title: '游客 / 手机号',
+        width: 100,
+        enWidth : 180,
+        field: 'visitorName / phoneNumber'
+    },
+    {
+        title: '申请数量',
+        width: 100,
+        enWidth : 130,
+        field: 'reqNum'
+    },
+    {
+        title: '申请时间',
+        width: 200,
+        field: 'reqTime'
+    },
+    {
+        title: '同步状态',
+        width: 100,
+        enWidth : 130,
+        field: 'syncStatus'
+    },
+    {
+        title: '操作',
+        width: 180,
+        enWidth : 180,
+    }
+];
 
+// 散客订单--批量审核--订单列表表头
+export const bulkBatchAuditHead = [
+    {
+        title: '订单明细编号',
+        width: 200,
+        field: 'orderDetailNo'
+    },
+    {
+        title: '下单企业',
+        width: 150,
+        enWidth : 180,
+        field: 'channel'
+    },
+    {
+        title: '产品名称',
+        width: 150,
+        enWidth : 180,
+        field: 'productName'
+    },
+    {
+        title: '申请数量',
+        width: 100,
+        enWidth : 130,
+        field: 'reqNum'
+    },
 ];
 
 // 散客改签审核列表表头

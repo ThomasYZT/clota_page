@@ -94,7 +94,6 @@
 <script>
 
     import ajax from '@/api/index';
-    import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {orderProductHead, batchAuditHead} from '../auditConfig';
     import sum from 'lodash/sum';
