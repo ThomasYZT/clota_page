@@ -78,9 +78,9 @@
                 //表单数据
                 formData: {
                     //账户
-                    account: 'test',
+                    account: '',
                     //密码
-                    password: 'Aa123456',
+                    password: '',
                     //验证码
                     verifyCode: ''
                 },
@@ -93,7 +93,9 @@
                 //记住账号
                 rememberAccount : false,
                 //验证码地址
-                verifyCode : ''
+                verifyCode : '',
+                //验证码key
+                verifyKey: '',
             }
         },
         methods: {
@@ -107,10 +109,14 @@
                 this.$refs.formValidate.validate(valid => {
                     if(valid){
                         this.saveAccount();
-                        ajax.post('login',{
+                        ajax.post('login', {
                             loginName : this.formData.account,
                             password : this.formData.password,
-                            validateCode : this.formData.verifyCode,
+                            validateCode : this.formData.verifyCode
+                        }, {
+                            headers: {
+                                validateKey : this.verifyKey,
+                            }
                         }).then(res => {
                             if(res.status === 200){
                                 localStorage.setItem('token',res.data.token);
@@ -155,7 +161,11 @@
              */
             changeCode () {
                 ajax.get('getValidateCode').then(res => {
-                    this.verifyCode = 'data:image/jpeg;base64,' + res;
+                    if (res.status == 200 && res.data) {
+                        this.verifyCode = 'data:image/jpeg;base64,' + res.data.base64Code;
+                        this.verifyKey = res.data.validateKey || '';
+                    }
+
                 });
             },
             /**
