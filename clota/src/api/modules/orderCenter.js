@@ -33,4 +33,6 @@ export default {
     'getRecentVisitors' : '/order/getRecentVisitors',
     //获取订单列表
     'getOrderList' : '/order/getOrderList',
+    //查询二级散客订单详情
+    'querySecondIndividualOrderDetail' : '/order/querySecondIndividualOrderDetail',
 }

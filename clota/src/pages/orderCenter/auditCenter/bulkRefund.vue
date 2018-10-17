@@ -102,7 +102,7 @@
                     <span class="divide-line"></span>
                     <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
-                    <span class="operate-btn blue" @click="">{{$t('details')}}</span>
+                    <span class="operate-btn blue" @click="goBulkDetail(scope.row)">{{$t('details')}}</span>
                 </template>
             </el-table-column>
         </table-com>
@@ -242,6 +242,13 @@
                     items: isBatch ? data : [data],
                     isBatch: isBatch,
                     type: type
+                });
+            },
+            goBulkDetail(scopeRow) {
+                this.$router.push({
+                    name: 'bulkDetail',
+                    query: {reqType: 'refund'},
+                    params: {visitorPid: scopeRow.visitorProductId}
                 });
             },
         }

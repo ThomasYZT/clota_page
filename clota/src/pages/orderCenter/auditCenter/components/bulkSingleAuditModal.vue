@@ -69,6 +69,8 @@
         props: {},
         data() {
             return {
+                visible: false,
+                title: '',
                 //订单数据
                 orderData: {
                     items: [],  //表格数据
