@@ -29,4 +29,6 @@ export default {
     'queryOrderRefundAlterAuditList' : '/order/queryOrderRefundAlterAuditList',
     //订单(单个)批量退票改签审核
     'auditBatchOrderProduct' : '/order/auditBatchOrderProduct',
+    //景区给旅行社下单查询上次导游和司机信息
+    'getRecentVisitors' : '/order/getRecentVisitors',
 }

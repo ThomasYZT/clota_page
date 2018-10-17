@@ -128,6 +128,15 @@
     import addTourGuideOrDriverModal from './addTourGuideOrDriverModal';
     import {mapGetters} from 'vuex';
     export default {
+        props :{
+            //查询参数
+            'search-params': {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         components : {
             tableCom,
             delModal,
@@ -396,6 +405,27 @@
                         break;
                     }
                 }
+            },
+            /**
+             * 查询上次景区给旅行社下单的司机信息
+             */
+            getRecentVisitors () {
+                ajax.post('getRecentVisitors',{
+                    visitorType : 'driver',
+                    orderOrgId : this.searchParams.orderOrgId
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data ? res.data.map(item => {
+                            return {
+                                ...item,
+                                documentNo : item.documentInfo ? JSON.parse(item.documentInfo)[0]['data'] : '',
+                                staffName : item.visitorName
+                            }
+                        }) : [];
+                    }else{
+                        this.tableData = [];
+                    }
+                });
             }
         },
         computed : {
@@ -416,6 +446,16 @@
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
+        },
+        watch :{
+            'searchParams.orderOrgId' (newVal,oldVal){
+                if(newVal){
+                    //当前登录的是景区的话，要查询上次填写的司机信息
+                    if(this.manageOrgs.nodeType === 'scenic'){
+                        this.getRecentVisitors();
+                    }
+                }
+            }
         }
     }
 </script>

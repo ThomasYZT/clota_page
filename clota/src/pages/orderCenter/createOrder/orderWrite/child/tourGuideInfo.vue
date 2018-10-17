@@ -147,6 +147,15 @@
     import {mapGetters} from 'vuex';
     import addTourGuideOrDriverModal from './addTourGuideOrDriverModal';
     export default {
+        props :{
+            //查询参数
+            'search-params': {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         components : {
             tableCom,
             delModal,
@@ -375,22 +384,26 @@
              */
             getTourGuideInfo () {
                 return new Promise((resolve,reject) => {
-                    let result = [];
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(this.tableData[i]['editType'] === 'edit'){
-                            reject('tourguideErr');
+                    if(this.tableData.length === 0){
+                        reject('tourguideNumErr');
+                    }else{
+                        let result = [];
+                        for(let i = 0,j = this.tableData.length;i < j;i++){
+                            if(this.tableData[i]['editType'] === 'edit'){
+                                reject('tourguideErr');
+                            }
+                            result.push({
+                                documentInfo : JSON.stringify({
+                                    data : this.tableData[i].documentNo,
+                                    type : 'identity'
+                                }),
+                                phoneNumber : this.tableData[i].phoneNumber,
+                                visitorName : this.tableData[i].staffName,
+                                visitorType : 'driver',
+                            });
                         }
-                        result.push({
-                            documentInfo : JSON.stringify({
-                                data : this.tableData[i].documentNo,
-                                type : 'identity'
-                            }),
-                            phoneNumber : this.tableData[i].phoneNumber,
-                            visitorName : this.tableData[i].staffName,
-                            visitorType : 'driver',
-                        });
+                        resolve(result);
                     }
-                    resolve(result);
                 });
             },
             /**
@@ -441,6 +454,27 @@
                         break;
                     }
                 }
+            },
+            /**
+             * 查询上次景区给旅行社下单的导游信息
+             */
+            getRecentVisitors () {
+                ajax.post('getRecentVisitors',{
+                    visitorType : 'guide',
+                    orderOrgId : this.searchParams.orderOrgId
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data ? res.data.map(item => {
+                            return {
+                                ...item,
+                                documentNo : item.documentInfo ? JSON.parse(item.documentInfo)[0]['data'] : '',
+                                staffName : item.visitorName
+                            }
+                        }) : [];
+                    }else{
+                        this.tableData = [];
+                    }
+                });
             }
         },
         computed : {
@@ -461,6 +495,18 @@
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
+        },
+        created () {
+        },
+        watch :{
+            'searchParams.orderOrgId' (newVal,oldVal){
+                if(newVal){
+                    //当前登录的是景区的话，要查询上次填写的导游信息
+                    if(this.manageOrgs.nodeType === 'scenic'){
+                        this.getRecentVisitors();
+                    }
+                }
+            }
         }
     }
 </script>

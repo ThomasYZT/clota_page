@@ -16,10 +16,12 @@
                            :product-list="productList">
         </team-tourist-info>
         <!--导游信息-->
-        <tour-guide-info ref="tourGuide">
+        <tour-guide-info ref="tourGuide"
+                         :search-params="otherInfo">
         </tour-guide-info>
         <!--司机信息-->
-        <driver-info ref="driver">
+        <driver-info ref="driver"
+                     :search-params="otherInfo">
         </driver-info>
         <!--其它信息-->
         <other-info :info-data="otherInfo">
@@ -140,6 +142,8 @@
                         this.$Message.warning('请先保存导游信息');
                     }else if(err === 'driverErr'){
                         this.$Message.warning('请先保存司机信息');
+                    }else if(err === 'tourguideNumErr'){
+                        this.$Message.warning('最少添加一名导游信息');
                     }
                 });
             },
