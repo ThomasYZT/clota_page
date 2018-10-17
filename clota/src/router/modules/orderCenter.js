@@ -66,6 +66,18 @@ export default {
                     rightPath: topMenuName + '.' + 'createOrder',
                 },
             },
+            //订单详情
+            orderDetail : {
+                path: '/order/detail',
+                name: 'reserverOrderDetail',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/index.vue'),
+                meta: {
+                    menuName: 'reserveOrderDetail',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'reserveOrderDetail',
+                    isMenu: true
+                },
+            },
             //审核中心
             auditCenter : {
                 path: '/order/audit',

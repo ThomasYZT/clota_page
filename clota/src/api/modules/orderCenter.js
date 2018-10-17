@@ -31,4 +31,6 @@ export default {
     'auditBatchOrderProduct' : '/order/auditBatchOrderProduct',
     //景区给旅行社下单查询上次导游和司机信息
     'getRecentVisitors' : '/order/getRecentVisitors',
+    //获取订单列表
+    'getOrderList' : '/order/getOrderList',
 }

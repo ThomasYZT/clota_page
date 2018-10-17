@@ -1124,5 +1124,6 @@ export default {
     'auditBulkChange': '散客改签审核',
     'team': 'team',
     'Fit': '散客',
+    'reserveOrderDetail': '订单查询',
 
 }

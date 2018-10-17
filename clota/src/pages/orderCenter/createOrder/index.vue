@@ -121,14 +121,20 @@
              * @param rowData
              */
             reserve (rowData) {
-                this.productList = [rowData].map(item =>{
-                    return {
-                        ...item,
-                        playDate : this.queryParams.playDate,
-                        num : 0,
-                    }
-                });
-                this.showReserveModal = true;
+                if(!this.queryParams.saleOrgId){
+                    this.$Message.warning('请选择发售机构');
+                }else if(!this.queryParams.orderOrgId){
+                    this.$Message.warning('请选择下单企业');
+                }else{
+                    this.productList = [rowData].map(item =>{
+                        return {
+                            ...item,
+                            playDate : this.queryParams.playDate,
+                            num : 0,
+                        }
+                    });
+                    this.showReserveModal = true;
+                }
             },
             /**
              * 产品多选改变
@@ -149,14 +155,20 @@
              * 批量预定
              */
             batchReserve () {
-                this.productList = this.selectedProduct.map(item =>{
-                    return {
-                        ...item,
-                        playDate : this.queryParams.playDate,
-                        num : 0,
-                    }
-                });
-                this.showReserveModal = true;
+                if(!this.queryParams.saleOrgId){
+                    this.$Message.warning('请选择发售机构');
+                }else if(!this.queryParams.orderOrgId){
+                    this.$Message.warning('请选择下单企业');
+                }else{
+                    this.productList = this.selectedProduct.map(item =>{
+                        return {
+                            ...item,
+                            playDate : this.queryParams.playDate,
+                            num : 0,
+                        }
+                    });
+                    this.showReserveModal = true;
+                }
             }
         }
     }

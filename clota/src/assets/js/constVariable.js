@@ -437,4 +437,130 @@ export const orderType = [
     },
 ];
 
+//取票状态
+export const takeTicketStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : '未核销',
+        value : 'none' //未核销
+    },
+    {
+        label : '部分取票',
+        value : 'some'//部分取票
+    },
+    {
+        label : '全部取票',
+        value : 'all'//全部取票
+    }
+];
+//退票状态
+export const refundStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : '待审核',
+        value : 'wait' //待审核
+    },
+    {
+        label : '未退票',
+        value : 'none' //未退票
+    },
+    {
+        label : '部分取票',
+        value : 'some'//部分退票
+    },
+    {
+        label : '全部取票',
+        value : 'all'//全部退票
+    }
+];
+
+//改签状态
+export const rescheduleStatus = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : '待审核',
+        value : 'wait' //待审核
+    },
+    {
+        label : '未改签',
+        value : 'none' //未改签
+    },
+    {
+        label : '部分改签',
+        value : 'some'//部分改签
+    },
+    {
+        label : '全部改签',
+        value : 'all'//全部改签
+    }
+];
+
+//同步状态
+export const synchronizationList = [
+    {
+        label : 'all',
+        value : 'all'
+    },
+    {
+        label : '同步成功',
+        value : 'success'
+    },
+    {
+        label : '同步失败',
+        value : 'failure'
+    }
+];
+
+//核销状态列表
+export const verifyStatusList  = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : '未核销',
+        value : 'none' //未核销
+    },
+    {
+        label : '部分核销',
+        value : 'some'//部分核销
+    },
+    {
+        label : '全部核销',
+        value : 'all'//全部核销
+    }
+];
+
+// 下单渠道
+export const orderChannelList = [
+    {
+        label : 'all',
+        value : 'all'
+    },
+    {
+        label : 'market',//全民营销
+        value : 'market'
+    },
+    {
+        label : 'OTA',//ota
+        value : 'OTA'
+    },
+    {
+        label : 'tour',//旅行社
+        value : 'tour'
+    },
+    {
+        label : 'scenic',//景区
+        value : 'scenic'
+    }
+];
 

@@ -346,6 +346,7 @@
                 this.$refs.formInline.validate(valid => {
                     if(valid){
                         Promise.all([this.validateIdType(),this.validateGetTicketNum(),this.checkProductSaleRule()]).then(() => {
+                            //如果有默认信息表示是修改游客信息，没有表示新增游客信息
                             if(this.defaultInfo && Object.keys(this.defaultInfo).length > 0){
                                 this.$emit('modify-tourist',{
                                     index : this.defaultInfo['index'],
@@ -353,7 +354,7 @@
                                         name : this.formData.name,
                                         phone : this.formData.phone,
                                         idTableData : this.idTableData,
-                                        productInfo : this.productListDeal
+                                        productInfo : this.productListDeal.filter(item => item.takeNum > 0)
                                     }
                                 });
                             }else{
@@ -361,7 +362,7 @@
                                     name : this.formData.name,
                                     phone : this.formData.phone,
                                     idTableData : this.idTableData,
-                                    productInfo : this.productListDeal
+                                    productInfo : this.productListDeal.filter(item => item.takeNum > 0)
                                 });
                             }
                             this.$emit('input', false);
@@ -552,7 +553,7 @@
                                 productName : item.productName,
                                 visitorName : this.formData.name
                             }
-                        }))
+                        }).filter(item => item.takeNum > 0))
                     }).then(res => {
                         if(res.success){
                             if(res.data && res.data.length > 0){
