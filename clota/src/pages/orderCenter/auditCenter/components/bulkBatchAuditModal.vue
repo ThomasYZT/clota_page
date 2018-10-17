@@ -4,7 +4,7 @@
         v-model="visible"
         :title="$t(title)"
         class-name="add-account-modal vertical-center-modal"
-        width="560"
+        width="700"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -13,28 +13,8 @@
                 <table-com
                     :table-com-min-height="450"
                     :column-data="batchColumnData"
-                    :table-data="tableData"
+                    :table-data="orderData.items"
                     :border="false">
-                    <el-table-column
-                        slot="column2"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-                            {{scope.row.price | moneyFilter}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column3"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-                            {{scope.row.actPrice | moneyFilter}}
-                        </template>
-                    </el-table-column>
                 </table-com>
             </div>
             <!--备注-->
@@ -62,7 +42,6 @@
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {bulkBatchAuditHead} from '../auditConfig';
-    import sum from 'lodash/sum';
 
     export default {
         props: [],
@@ -75,11 +54,9 @@
                 title: '',
                 //批量表头配置
                 batchColumnData : bulkBatchAuditHead,
-                //表格数据
-                tableData: [],
                 //订单数据
                 orderData: {
-                    items: [],
+                    items: [],  //表格数据
                     isBatch: false,
                     type: ''
                 },
@@ -88,20 +65,12 @@
             }
         },
         computed: {
-            orderAmountSum() {
-                if (this.orderData.isBatch && this.orderData.items.length) {
-                    return sum(this.orderData.items.map(item => item.orderAmount));
-                } else {
-                    return '-';
-                }
-            },
         },
         methods: {
 
             show ( data ) {
                 if (data) {
                     this.orderData = data;
-                    this.tableData = data.items || [];
                     if (data.type == 'pass') {
                         this.title = '批量通过';
                     } else if (data.type == 'reject') {
@@ -115,13 +84,12 @@
             hide() {
                 this.auditRemark = this.orderData.type = '';
                 this.orderData.items = [];
-                this.tableData = [];
                 this.visible = false;
             },
 
             bulkBatchAudit() {
-                ajax.post('auditTeamOrder', {
-                    productRefundAlterIds: this.orderData.items.map(item => item.id).join(','),
+                ajax.post('auditBatchOrderProduct', {
+                    productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
                     remark: this.auditRemark,
                     auditStatus: this.orderData.type,
                     reqType: 'refund'
@@ -134,7 +102,7 @@
                             this.$Message.success(this.$t('订单已批量驳回'));
                         }
 
-//                        this.$emit('on-audit-pass');
+                        this.$emit('on-audited');
                     }
                 });
             },

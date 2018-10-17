@@ -1125,5 +1125,7 @@ export default {
     'team': '团队',
     'Fit': '散客',
     'reserveOrderDetail': '订单查询',
+    'synchronized': '已同步',
+    'syncFailed': '同步失败',
 
 }

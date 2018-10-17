@@ -46,7 +46,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{transOrderOrg(scope.row.orderChannel)}}
+                    {{ $t(transOrderOrg(scope.row.orderChannel)) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -66,7 +66,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{transPaymentStatus(scope.row.paymentStatus)}}
+                    {{ $t(transPaymentStatus(scope.row.paymentStatus)) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -121,6 +121,7 @@
 //                tableShow : false,
                 // 获取数据的请求参数
                 queryParams: {
+                    auditStatus: 'audit',   // 只查询待审核的订单
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },

@@ -150,20 +150,20 @@ export const bulkRefundHead = [
     },
     {
         title: '产品名称 / 预定数量',
-        width: 150,
-        enWidth : 180,
+        width: 180,
+        enWidth : 200,
         field: 'productName / quantity'
     },
     {
         title: '产品单价 / 小计金额',
-        width: 160,
-        enWidth : 180,
+        width: 180,
+        enWidth : 200,
         field: 'price / amount'
     },
     {
         title: '游客 / 手机号',
-        width: 100,
-        enWidth : 180,
+        width: 130,
+        enWidth : 150,
         field: 'visitorName / phoneNumber'
     },
     {
@@ -199,13 +199,13 @@ export const bulkBatchAuditHead = [
     },
     {
         title: '下单企业',
-        width: 150,
+        minWidth: 150,
         enWidth : 180,
         field: 'channel'
     },
     {
         title: '产品名称',
-        width: 150,
+        minWidth: 150,
         enWidth : 180,
         field: 'productName'
     },
@@ -241,4 +241,20 @@ export const paymentStatusEnum = [
 export const batchAudit = [
     {label: '通过', value: 'success'},
     {label: '驳回', value: 'reject'},
+];
+
+//订单同步状态
+export const orderSyncStatus = [
+    {
+        label : '-',//团队
+        value : 'wait'
+    },
+    {
+        label : 'synchronized',  //已同步
+        value : 'success'
+    },
+    {
+        label : 'syncFailed', //同步失败
+        value : 'failure'
+    },
 ];

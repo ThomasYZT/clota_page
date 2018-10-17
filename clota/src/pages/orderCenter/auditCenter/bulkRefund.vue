@@ -40,13 +40,23 @@
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ $t(transOrderOrg(scope.row.orderChannel)) }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column7"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.productName}} / {{scope.row.quantity}}
+                    {{scope.row.productName | contentFilter}} / {{scope.row.quantity | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -56,7 +66,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.price}} / {{scope.row.amount}}
+                    {{scope.row.price | contentFilter}} / {{scope.row.amount | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -66,7 +76,17 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.visitorName}} / {{scope.row.phoneNumber}}
+                    {{scope.row.visitorName | contentFilter}} / {{scope.row.phoneNumber | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column12"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ $t(transSyncStatus(scope.row.syncStatus)) }}
                 </template>
             </el-table-column>
 
@@ -88,24 +108,26 @@
         </table-com>
 
         <!--批量（通过/驳回）模态框-->
-        <bulk-batch-audit-modal ref="bulkBatchAuditModal" @on-audit-pass="queryList"></bulk-batch-audit-modal>
+        <bulk-batch-audit-modal ref="bulkBatchAuditModal" @on-audited="queryList"></bulk-batch-audit-modal>
+        <!--单个（通过/驳回）模态框-->
+        <bulk-single-audit-modal ref="bulkSingleAuditModal" @on-audited="queryList"></bulk-single-audit-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, orderChannelEnum, paymentStatusEnum, batchAudit} from './auditConfig';
+    import {bulkRefundHead, orderChannelEnum, batchAudit, orderSyncStatus} from './auditConfig';
     import ajax from '@/api/index.js';
     import {configVariable} from '@/assets/js/constVariable.js';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
-//    import bulkSingleAuditModal from './components/bulkSingleAuditModal.vue';
+    import bulkSingleAuditModal from './components/bulkSingleAuditModal.vue';
 
     export default {
         components: {
             auditFilter,
             tableCom,
             bulkBatchAuditModal,
-            auditRejectModal
+            bulkSingleAuditModal
         },
         props: {},
         data() {
@@ -120,6 +142,7 @@
 //                tableShow : false,
                 // 获取数据的请求参数
                 queryParams: {
+                    reqType: 'refund',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
@@ -187,16 +210,16 @@
                 return orderChannel ? orderChannel.label : '-';
             },
             /**
-             * 支付状态的code转换
-             * @param status  支付状态code
+             * 同步状态的code转换
+             * @param status  同步状态code: wait|success|failure
              * @returns {string}
              */
-            transPaymentStatus(status) {
-                let paymentStatus = paymentStatusEnum.find((payment, i) => {
+            transSyncStatus(status) {
+                let syncStatus = orderSyncStatus.find((payment, i) => {
                     return status === payment.value;
                 });
 
-                return paymentStatus ? paymentStatus.label : '-';
+                return syncStatus ? syncStatus.label : '-';
             },
             /**
              * 按筛选条件获取审核列表数据

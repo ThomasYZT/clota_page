@@ -177,7 +177,7 @@
                     if(res.success){
                         this.hide();
                         this.$Message.success(this.$t('订单已驳回'));
-//                        this.$emit('on-audit-pass');
+                        this.$emit('on-audit-pass');
                     }
                 });
             },
