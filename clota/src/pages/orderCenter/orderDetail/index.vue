@@ -3,7 +3,9 @@
 <template>
     <div class="order-detail">
         <!--过滤表头-->
-        <filter-head>
+        <filter-head :tableShow.sync="tableShow"
+                     @set-params="setParams"
+                     @search-product="searchProduct">
         </filter-head>
         <table-com
             v-if="tableShow"
@@ -49,13 +51,11 @@
         data() {
             return {
                 //表格是否显示
-                tableShow : true,
+                tableShow : false,
                 //表头配置
                 columnData : columnData,
                 //表格数据
-                tableData : [
-                    {}
-                ],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //筛选条件
@@ -70,6 +70,31 @@
              * 查询所有订单
              */
             queryList () {
+                ajax.post('getOrderList',{
+                    ...this.queryParams
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data ? res.data.data : [];
+                    }else{
+                        this.tableData = [];
+                    }
+                });
+            },
+            /**
+             * 设置查询参数
+             * @param params
+             */
+            setParams (params) {
+                Object.assign(this.queryParams,params);
+                this.tableShow = true;
+            },
+            /**
+             * 手动触发查询
+             * @param params
+             */
+            searchProduct (params) {
+                Object.assign(this.queryParams,params);
+                this.queryList();
             },
         }
     }

@@ -11,6 +11,7 @@
                     <!--下单时间-->
                     <FormItem label="下单日期">
                         <DatePicker v-model="formData.orderDate"
+                                    transfer
                                     type="daterange"
                                     placement="bottom-end"
                                     placeholder="请选择"
@@ -22,6 +23,7 @@
                     <!--游玩日期-->
                     <FormItem label="游玩日期">
                         <DatePicker v-model="formData.visitDate"
+                                    transfer
                                     type="daterange"
                                     placement="bottom-end"
                                     placeholder="请选择"
@@ -47,7 +49,8 @@
                     <!--是否分销-->
                     <FormItem label="是否分销" >
                         <Select v-model="formData.allocationStatus"
-                                style="max-width: 100px">
+                                style="max-width: 100px"
+                                @on-change="orderTypeChange">
                             <Option v-for="item in tOfSelectList"
                                     :key="item.value"
                                     :value="item.value">
@@ -101,8 +104,7 @@
                 <i-col span="6">
                     <FormItem label="下单企业" >
                         <Select v-model="formData.orderOrgId"
-                                style="max-width: 200px"
-                                :disabled="orderTaskDisabled">
+                                style="max-width: 200px">
                             <Option v-for="item  in orderTakeList"
                                     :key="item.id"
                                     :value="item.id">
@@ -117,8 +119,7 @@
                     <!--下单渠道-->
                     <FormItem label="下单渠道" >
                         <Select v-model="formData.orderChannel"
-                                style="max-width: 200px"
-                                :disabled="saleDisabled">
+                                style="max-width: 200px">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
@@ -169,6 +170,73 @@
             </i-row>
             <i-row>
                 <i-col span="6">
+                    <!--营销状态-->
+                    <FormItem label="营销状态" >
+                        <Select v-model="formData.orderChannel"
+                                style="max-width: 200px">
+                            <Option v-for="item  in orderChannelList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="6">
+                    <!--营销级别-->
+                    <FormItem label="营销级别" >
+                        <Select v-model="formData.verifyStatus"
+                                style="max-width: 200px">
+                            <Option v-for="item  in verifyStatusList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="6">
+                    <!--退票状态-->
+                    <FormItem label="退票状态" >
+                        <Select v-model="formData.syncStatus"
+                                style="max-width: 200px">
+                            <Option v-for="item  in synchronizationList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="6">
+                    <!--支付状态-->
+                    <FormItem label="支付状态" >
+                        <Select v-model="formData.rescheduleStatus"
+                                style="max-width: 200px">
+                            <Option v-for="item  in rescheduleStatus"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="6">
+                    <!--审核状态-->
+                    <FormItem label="审核状态" >
+                        <Select v-model="formData.rescheduleStatus"
+                                style="max-width: 200px">
+                            <Option v-for="item  in rescheduleStatus"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="6">
                     <!--业态类型-->
                     <FormItem label="业态类型" >
                         <Select v-model="formData.productType"
@@ -177,16 +245,12 @@
                         </Select>
                     </FormItem>
                 </i-col>
-                <i-col span="9">
+                <i-col span="12">
                     <FormItem label="关键字" >
                         <Input v-model.trim="formData.productName"
-                               style="width: 280px"
-                               placeholder="输入产品名称" />
+                               style="max-width: 380px"
+                               placeholder="输入游客姓名/手机号/订单明细编号" />
                     </FormItem>
-                </i-col>
-                <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
                 </i-col>
             </i-row>
             <i-row>
@@ -194,6 +258,10 @@
                     <FormItem :label-width="0">
                         <Checkbox v-model="formData.abnormalStatus">仅显示异常订单</Checkbox>
                     </FormItem>
+                </i-col>
+                <i-col span="6" style="text-align: right;float: right">
+                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
+                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
                 </i-col>
             </i-row>
         </Form>
@@ -225,21 +293,21 @@
                     //游玩日期
                     visitDate : [new Date(),new Date()],
                     //取票状态
-                    pickStatus : '',
+                    pickStatus : 'all',
                     //是否分销
                     allocationStatus : 'true',
                     //退票状态
-                    refundStatus : '',
+                    refundStatus : 'all',
                     //所属景区
                     scenicOrgId : '',
                     //下单渠道
-                    orderChannel : '',
+                    orderChannel : 'all',
                     //同步状态
-                    syncStatus : '',
+                    syncStatus : 'all',
                     //改签状态
-                    rescheduleStatus : '',
+                    rescheduleStatus : 'all',
                     //核销状态
-                    verifyStatus : '',
+                    verifyStatus : 'all',
                     //下单企业
                     orderOrgId : '',
                     //业态类型
@@ -257,10 +325,6 @@
                 saleOrgList : [],
                 //下单企业列表
                 orderTakeList : [],
-                //发送机构是否禁用
-                saleDisabled : false,
-                //下单企业是否禁用
-                orderTaskDisabled : false,
                 //取票状态
                 takeTicketStatusList : takeTicketStatusList,
                 //退票状态
@@ -281,13 +345,9 @@
              */
             orderTypeChange () {
                 ajax.post('getScenicList',{
-                    allocationStatus : this.allocationStatus,
+                    allocationStatus : this.formData.allocationStatus,
                     orderType : this.formData.orderType
                 }).then(res => {
-                    this.formData.scenicOrgId = '';
-                    this.formData.orderOrgId = '';
-                    this.formData.saleOrgList = [];
-                    this.formData.orderTakeList = [];
                     if(res.success){
                         this.belongScene = res.data ? res.data : [];
                         if(!this.formData.scenicOrgId && this.belongScene.length > 0){
@@ -380,12 +440,25 @@
             //查询条件列表
             paramsObj () {
                 return {
+                    orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd'),
+                    orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd'),
+                    visitStartDate : this.formData.visitDate[0].format('yyyy-MM-dd'),
+                    visitEndDate : this.formData.visitDate[1].format('yyyy-MM-dd'),
                     orderType : this.formData.orderType,
-                    orderOrgId : this.formData.orderOrgId,
-                    type : this.formData.type,
-                    productName : this.formData.productName,
+                    allocationStatus : this.formData.allocationStatus,
+                    pickStatus : this.formData.pickStatus,
+                    refundStatus : this.formData.refundStatus,
+                    verifyStatus : this.formData.verifyStatus,
+                    rescheduleStatus : this.formData.rescheduleStatus,
                     scenicOrgId : this.formData.scenicOrgId,
-                    orderOrgName : this.orderOrgName,
+                    channelId : this.formData.channelId,
+                    orderChannel : this.formData.orderChannel,
+                    productType : this.formData.productType,
+                    syncStatus : this.formData.syncStatus,
+                    auditStatus : this.formData.auditStatus,
+                    paymentStatus : this.formData.paymentStatus,
+                    abnormalStatus : this.formData.abnormalStatus,
+                    // orderOrgName : this.orderOrgName,
                 };
             },
             //订单类型
@@ -416,7 +489,7 @@
     @import '~@/assets/scss/base';
     .filter-head{
         padding: 14px 30px 15px 30px;
-        border: 1px solid #EEEEEE;
+        /*border: 1px solid #EEEEEE;*/
 
         /deep/ .ivu-date-picker{
             width: 100%;

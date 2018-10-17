@@ -286,7 +286,7 @@
 	@import '~@/assets/scss/base';
     .filter-head{
         padding: 14px 30px 5px 30px;
-        border: 1px solid #EEEEEE;
+        border-bottom: 1px solid #EEEEEE;
 
         /deep/ .ivu-form-item{
             margin-bottom: 7px;

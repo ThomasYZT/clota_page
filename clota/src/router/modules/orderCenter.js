@@ -68,8 +68,8 @@ export default {
             },
             //订单详情
             orderDetail : {
-                path: '/order/detail',
-                name: 'reserverOrderDetail',
+                path: '/ordert/detail',
+                name: 'reserveOrderDetail',
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/index.vue'),
                 meta: {
                     menuName: 'reserveOrderDetail',
