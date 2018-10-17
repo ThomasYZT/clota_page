@@ -383,7 +383,7 @@
              */
             cancelEdit (index) {
                 if(this.tableData[index]['modifyType'] === 'add'){
-                    this.delIdInfo(index);
+                    this.tableData.splice(index,1);
                 }else{
                     this.$set(this.tableData,index,this.originalTableData[index]);
                 }

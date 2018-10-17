@@ -52,6 +52,12 @@
                 this.$emit('pay-order',{
                     payType : this.payType
                 });
+            },
+            /**
+             * 获取支付类型
+             */
+            getPayType () {
+                return this.payType;
             }
         },
         computed : {

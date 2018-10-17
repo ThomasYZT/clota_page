@@ -75,8 +75,10 @@
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
                     }else{
                         this.tableData = [];
+                        this.totalCount = 0;
                     }
                 });
             },

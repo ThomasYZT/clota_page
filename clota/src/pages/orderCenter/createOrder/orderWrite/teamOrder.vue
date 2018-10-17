@@ -27,9 +27,16 @@
         <other-info :info-data="otherInfo">
         </other-info>
         <!--账户信息 -->
-        <team-pay-account :account-info="accountInfo"
-                      @pay-order="payOrder">
+        <team-pay-account ref="teamPayAccount"
+                          :account-info="accountInfo"
+                            @pay-order="payOrder">
         </team-pay-account>
+        <!--下单失败提示框-->
+        <create-order-fail-modal v-model="failModalShow"
+                                 :product-list="failCreatedProductList"
+                                 :can-remove-product="canRemoveProduct"
+                                 @del-failed-product="delCreatedFailProduct">
+        </create-order-fail-modal>
     </div>
 </template>
 
@@ -43,6 +50,7 @@
     import teamTouristInfo from './child/teamTouristInfo';
     import tourGuideInfo from './child/tourGuideInfo';
     import driverInfo from './child/driverInfo';
+    import createOrderFailModal from './child/createOrderFailModal';
     import {mapGetters} from 'vuex';
 
     export default {
@@ -54,7 +62,8 @@
             teamPayAccount,
             teamTouristInfo,
             tourGuideInfo,
-            driverInfo
+            driverInfo,
+            createOrderFailModal
         },
         data() {
             return {
@@ -80,6 +89,12 @@
                 },
                 //下单可用额度
                 validatMoney : 0,
+                //下单失败模态框是否显示
+                failModalShow : false,
+                //不可下单的产品列表
+                failCreatedProductList : [],
+                //下单失败原因
+                createOrderFailType : ''
             }
         },
         methods: {
@@ -189,7 +204,46 @@
                                 type : 'team'
                             }
                         });
+                    }else{
+                        if(res.code === 'OD002'){
+                            this.getFailedProductInfo(res.data ? res.data :[]);
+                            this.failModalShow = true;
+                            this.createOrderFailType = 'balanceNotEnough';
+                        }else if(res.code === 'OD003'){
+                            this.getFailedProductInfo(res.data ? res.data :[]);
+                            this.failModalShow = true;
+                            this.createOrderFailType = 'inventoryNotEnough';
+                        }else{
+                            this.$Message.error('下单失败');
+                        }
                     }
+                });
+            },
+            /**
+             * 获取下单失败的产品列表
+             * @param data 下单失败的产品id
+             */
+            getFailedProductInfo (data) {
+                this.failCreatedProductList = [];
+                for(let i = 0,j = this.productList.length;i < j;i++){
+                    if(data.includes(this.productList[i]['productId'])){
+                        this.failCreatedProductList.push(this.productList[i]);
+                    }
+                }
+            },
+            /**
+             * 删除下单失败的产品,然后继续下单
+             * @param data 需要删除的产品信息
+             */
+            delCreatedFailProduct (data) {
+                for(let i = this.productList.length,j = 0;i >= j;i--){
+                    if(data.includes(this.productList[i]['productId'])){
+                        this.productList.splice(i,1);
+                    }
+                }
+                let payType = this.$refs.teamPayAccount.getPayType();
+                this.payOrder({
+                    payType
                 });
             }
         },
@@ -225,6 +279,10 @@
                     totalPrice : this.productList.reduce((price,item) => price += item.settlePrice * item.num,0)
                 }
             },
+            //是否可以移除产品
+            canRemoveProduct () {
+                return this.failCreatedProductList.length !== this.productList.length;
+            }
         }
     }
 </script>

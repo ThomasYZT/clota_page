@@ -26,8 +26,16 @@
                       @pay-order="payOrder">
         </account-info>
         <!--产品没有分配完提示框-->
-        <product-err-hit-modal v-model="errHintShow" :left-product-info="leftProductInfo">
+        <product-err-hit-modal v-model="errHintShow"
+                               :left-product-info="leftProductInfo">
         </product-err-hit-modal>
+
+        <!--下单失败提示框-->
+        <create-order-fail-modal v-model="failModalShow"
+                                 :product-list="failCreatedProductList"
+                                 :can-remove-product="canRemoveProduct"
+                                 @del-failed-product="delCreatedFailProduct">
+        </create-order-fail-modal>
     </div>
 </template>
 
@@ -42,6 +50,7 @@
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     import productErrHitModal from './child/productErrHintModal';
+    import createOrderFailModal from './child/createOrderFailModal';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -52,7 +61,8 @@
             placeOrderInfo,
             otherInfo,
             accountInfo,
-            productErrHitModal
+            productErrHitModal,
+            createOrderFailModal
         },
         data() {
             return {
@@ -83,7 +93,11 @@
                 //错误提示框是否显示
                 errHintShow : false,
                 //剩余产品信息
-                leftProductInfo : []
+                leftProductInfo : [],
+                //下单失败模态框是否显示
+                failModalShow : false,
+                //不可下单的产品列表
+                failCreatedProductList : [],
             }
         },
         methods: {
@@ -161,7 +175,17 @@
                                 }
                             });
                         }else{
-
+                            if(res.code === 'OD002'){
+                                this.getFailedProductInfo(res.data ? res.data :[]);
+                                this.failModalShow = true;
+                                this.createOrderFailType = 'balanceNotEnough';
+                            }else if(res.code === 'OD003'){
+                                this.getFailedProductInfo(res.data ? res.data :[]);
+                                this.failModalShow = true;
+                                this.createOrderFailType = 'inventoryNotEnough';
+                            }else{
+                                this.$Message.error('下单失败');
+                            }
                         }
                     });
                 }).catch(err => {
@@ -185,6 +209,30 @@
                         this.validatMoney = 0;
                     }
                 });
+            },
+            /**
+             * 删除下单失败的产品,然后继续下单
+             * @param data 需要删除的产品信息
+             */
+            delCreatedFailProduct (data) {
+                for(let i = this.productList.length,j = 0;i >= j;i--){
+                    if(data.includes(this.productList[i]['productId'])){
+                        this.productList.splice(i,1);
+                    }
+                }
+                this.payOrder();
+            },
+            /**
+             * 获取下单失败的产品列表
+             * @param data 下单失败的产品id
+             */
+            getFailedProductInfo (data) {
+                this.failCreatedProductList = [];
+                for(let i = 0,j = this.productList.length;i < j;i++){
+                    if(data.includes(this.productList[i]['productId'])){
+                        this.failCreatedProductList.push(this.productList[i]);
+                    }
+                }
             },
         },
         computed : {
@@ -254,6 +302,10 @@
                         idTableData : item.idTableData
                     }
                 });
+            },
+            //是否可以移除产品
+            canRemoveProduct () {
+                return this.failCreatedProductList.length !== this.productList.length;
             }
         }
     }
