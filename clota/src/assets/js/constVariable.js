@@ -471,11 +471,11 @@ export const refundStatusList = [
         value : 'none' //未退票
     },
     {
-        label : '部分取票',
+        label : '部分退票',
         value : 'some'//部分退票
     },
     {
-        label : '全部取票',
+        label : '全部退票',
         value : 'all'//全部退票
     }
 ];
@@ -508,7 +508,7 @@ export const rescheduleStatus = [
 export const synchronizationList = [
     {
         label : 'all',
-        value : 'all'
+        value : 'allStatus'
     },
     {
         label : '同步成功',
@@ -540,11 +540,31 @@ export const verifyStatusList  = [
     }
 ];
 
-// 下单渠道
-export const orderChannelList = [
+// 下单渠道--分销商下的下单渠道
+export const distributorChannelList = [
     {
         label : 'all',
-        value : 'all'
+        value : 'allStatus'
+    },
+    {
+        label : 'OTA',//ota
+        value : 'OTA'
+    },
+    {
+        label : 'tour',//旅行社
+        value : 'tour'
+    },
+    {
+        label : 'scenic',//景区
+        value : 'scenic'
+    }
+];
+
+// 下单渠道--非分销商下的下单渠道
+export const notDistributorChannelList = [
+    {
+        label : 'all',
+        value : 'allStatus'
     },
     {
         label : 'market',//全民营销
@@ -564,3 +584,34 @@ export const orderChannelList = [
     }
 ];
 
+//审核状态列表
+export const auditStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : '已审核',//已审核
+        value : 'true'
+    },
+    {
+        label : '未审核',//未审核
+        value : 'scenic'
+    }
+];
+
+//支付状态列表
+export const payStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : '已支付',//已支付
+        value : 'true'
+    },
+    {
+        label : '未支付',//未支付
+        value : 'scenic'
+    }
+];

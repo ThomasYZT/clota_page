@@ -12,7 +12,8 @@
                     <FormItem label="游玩日期">
                         <DatePicker v-model="formData.playDate"
                                     type="date"
-                                    style="width: 280px">
+                                    style="width: 280px"
+                                    @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -48,7 +49,10 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="发售机构" >
-                        <Select v-model="formData.saleOrgId" style="width: 160px" :disabled="saleDisabled">
+                        <Select v-model="formData.saleOrgId"
+                                style="width: 160px"
+                                :disabled="saleDisabled"
+                                @on-change="searchProductList">
                             <Option v-for="item  in saleOrgList"
                                     :key="item.id"
                                     :value="item.id">
@@ -59,7 +63,10 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="下单企业" >
-                        <Select v-model="formData.orderOrgId" style="width: 160px" :disabled="orderTaskDisabled">
+                        <Select v-model="formData.orderOrgId"
+                                style="width: 160px"
+                                :disabled="orderTaskDisabled"
+                                @on-change="searchProductList">
                             <Option v-for="item  in orderTakeList"
                                     :key="item.id"
                                     :value="item.id">
@@ -79,7 +86,9 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="业态类型" >
-                        <Select v-model="formData.type" style="width: 160px">
+                        <Select v-model="formData.type"
+                                style="width: 160px"
+                                @on-change="searchProductList">
                             <Option value="ticket">票</Option>
                         </Select>
                     </FormItem>

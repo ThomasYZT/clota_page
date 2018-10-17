@@ -19,7 +19,118 @@
             :page-size-d.sync="queryParams.pageSize"
             @query-data="queryList">
             <el-table-column
-                slot="column19"
+                slot="column2"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.visitDate | timeFormat('yyyy-MM-dd')}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column10"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="status-suc" v-if="scope.row.smsStatus === 'success'">已发送</span>
+                    <span class="status-wait" v-else-if="scope.row.smsStatus === 'wait'">未发送</span>
+                    <span class="status-wait" v-else-if="scope.row.smsStatus === 'doing'">发送中</span>
+                    <span class="status-fail" v-else>发送失败</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column11"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="status-suc" v-if="scope.row.syncStatus === 'success'">已发送</span>
+                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'wait'">-</span>
+                    <span class="status-fail" v-else>发送失败</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column12"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="status-suc" v-if="scope.row.paymentStatus === 'true'">已支付</span>
+                    <span class="status-fail" v-else>未支付</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column13"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="status-suc" v-if="scope.row.auditStatus === 'success'">审核通过</span>
+                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'audit'">待审核</span>
+                    <span class="status-fail" v-else>审核不通过</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column14"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="token-ticket">已取票：{{scope.row.quantityPicked ? scope.row.quantityPicked : 0}}</span>
+                    <span class="not-token-ticket">未取票：{{scope.row.quantity - scope.row.quantityPicked}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column15"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="token-ticket">已核销：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
+                    <span class="not-token-ticket">未核销：{{scope.row.quantity - scope.row.quantityVerified}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column16"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="token-ticket">已退：{{scope.row.quantityRefunded ? scope.row.quantityRefunded : 0}}</span>
+                    <span class="not-token-ticket">待审：{{scope.row.quantityAuditRefunded ? scope.row.quantityAuditRefunded : 0}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column17"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="token-ticket">已改：{{scope.row.quantityRescheduled ? scope.row.quantityRescheduled : 0}}</span>
+                    <span class="not-token-ticket">待审：{{scope.row.quantityAuditRescheduled ? scope.row.quantityAuditRescheduled : 0}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column18"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -28,7 +139,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="reserve(scope.row)">{{$t('退票')}}</li>
+                        <li v-if="returnTicketMenuShow" @click="reserve(scope.row)">{{$t('退票')}}</li>
                         <li @click="reserve(scope.row)">{{$t('改签')}}</li>
                         <li @click="reserve(scope.row)">{{$t('详情')}}</li>
                     </ul>
@@ -98,6 +209,19 @@
                 Object.assign(this.queryParams,params);
                 this.queryList();
             },
+        },
+        computed : {
+            //如何判断是全民营销
+            //是否可以显示退票按钮
+            returnTicketMenuShow () {
+                // if(this.queryParams.orderType === 'individual' && this.queryParams.allocationStatus === 'true'){
+                //     return true;
+                // }else if(){
+				//
+                // }else{
+                //     return false;
+                // }
+            }
         }
     }
 </script>
@@ -110,5 +234,23 @@
         overflow: auto;
         background: $color_fff;
         border-radius : 4px;
+
+        .status-suc,
+        .token-ticket{
+            color: $color_blue;
+        }
+
+        .status-wait{
+            color: $color_yellow;
+        }
+
+        .status-fail{
+            color: $color_err;
+        }
+
+        .not-token-ticket{
+            color: $color_999;
+            margin-left: 15px;
+        }
     }
 </style>

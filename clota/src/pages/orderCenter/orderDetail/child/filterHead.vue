@@ -50,7 +50,7 @@
                     <FormItem label="是否分销" >
                         <Select v-model="formData.allocationStatus"
                                 style="max-width: 100px"
-                                @on-change="orderTypeChange">
+                                @on-change="allocationStatusChange">
                             <Option v-for="item in tOfSelectList"
                                     :key="item.value"
                                     :value="item.value">
@@ -172,7 +172,7 @@
                 <i-col span="6">
                     <!--营销状态-->
                     <FormItem label="营销状态" >
-                        <Select v-model="formData.orderChannel"
+                        <Select v-model="formData.marketTypeId"
                                 style="max-width: 200px">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
@@ -185,7 +185,7 @@
                 <i-col span="6">
                     <!--营销级别-->
                     <FormItem label="营销级别" >
-                        <Select v-model="formData.verifyStatus"
+                        <Select v-model="formData.marketLevelId"
                                 style="max-width: 200px">
                             <Option v-for="item  in verifyStatusList"
                                     :key="item.value"
@@ -196,11 +196,11 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <!--退票状态-->
-                    <FormItem label="退票状态" >
-                        <Select v-model="formData.syncStatus"
+                    <!--审核状态-->
+                    <FormItem label="审核状态" >
+                        <Select v-model="formData.auditStatus"
                                 style="max-width: 200px">
-                            <Option v-for="item  in synchronizationList"
+                            <Option v-for="item  in auditStatusList"
                                     :key="item.value"
                                     :value="item.value">
                                 {{$t(item.label)}}
@@ -211,9 +211,9 @@
                 <i-col span="6">
                     <!--支付状态-->
                     <FormItem label="支付状态" >
-                        <Select v-model="formData.rescheduleStatus"
+                        <Select v-model="formData.paymentStatus"
                                 style="max-width: 200px">
-                            <Option v-for="item  in rescheduleStatus"
+                            <Option v-for="item  in payStatusList"
                                     :key="item.value"
                                     :value="item.value">
                                 {{$t(item.label)}}
@@ -223,19 +223,6 @@
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="6">
-                    <!--审核状态-->
-                    <FormItem label="审核状态" >
-                        <Select v-model="formData.rescheduleStatus"
-                                style="max-width: 200px">
-                            <Option v-for="item  in rescheduleStatus"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
                 <i-col span="6">
                     <!--业态类型-->
                     <FormItem label="业态类型" >
@@ -252,6 +239,10 @@
                                placeholder="输入游客姓名/手机号/订单明细编号" />
                     </FormItem>
                 </i-col>
+                <i-col span="6" style="text-align: right;float: right">
+                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
+                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
+                </i-col>
             </i-row>
             <i-row>
                 <i-col span="9" className="abnormal-order">
@@ -259,17 +250,24 @@
                         <Checkbox v-model="formData.abnormalStatus">仅显示异常订单</Checkbox>
                     </FormItem>
                 </i-col>
-                <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
-                </i-col>
             </i-row>
         </Form>
     </div>
 </template>
 
 <script>
-    import {orderType,takeTicketStatusList,refundStatusList,rescheduleStatus,synchronizationList,verifyStatusList,orderChannelList} from '@/assets/js/constVariable.js';
+    import {
+        orderType,
+        takeTicketStatusList,
+        refundStatusList,
+        rescheduleStatus,
+        synchronizationList,
+        verifyStatusList,
+        distributorChannelList,
+        notDistributorChannelList,
+        auditStatusList,
+        payStatusList,
+    } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     export default {
@@ -293,36 +291,42 @@
                     //游玩日期
                     visitDate : [new Date(),new Date()],
                     //取票状态
-                    pickStatus : 'all',
+                    pickStatus : 'allStatus',
                     //是否分销
                     allocationStatus : 'true',
                     //退票状态
-                    refundStatus : 'all',
+                    refundStatus : 'allStatus',
                     //所属景区
                     scenicOrgId : '',
                     //下单渠道
-                    orderChannel : 'all',
+                    orderChannel : 'allStatus',
                     //同步状态
-                    syncStatus : 'all',
+                    syncStatus : 'allStatus',
                     //改签状态
-                    rescheduleStatus : 'all',
+                    rescheduleStatus : 'allStatus',
                     //核销状态
-                    verifyStatus : 'all',
+                    verifyStatus : 'allStatus',
                     //下单企业
                     orderOrgId : '',
                     //业态类型
-                    productType : '',
+                    productType : 'ticket',
                     //产品名称
                     productName : '',
                     //订单类型
-                    orderType : 'all',
+                    orderType : 'allStatus',
                     //是否是异常订单
-                    abnormalStatus : false
+                    abnormalStatus : false,
+                    //审核状态
+                    auditStatus : 'allStatus',
+                    //支付状态
+                    paymentStatus : 'allStatus',
+                    //营销类别
+                    marketTypeId : '',
+                    //营销级别
+                    marketLevelId : '',
                 },
                 //所属景区列表
                 belongScene : [],
-                //发售机构列表
-                saleOrgList : [],
                 //下单企业列表
                 orderTakeList : [],
                 //取票状态
@@ -335,8 +339,10 @@
                 synchronizationList : synchronizationList,
                 //核销状态
                 verifyStatusList : verifyStatusList,
-                //下单渠道
-                orderChannelList : orderChannelList,
+                //审核状态
+                auditStatusList : auditStatusList,
+                //支付状态
+                payStatusList : payStatusList,
             }
         },
         methods: {
@@ -362,7 +368,7 @@
                 });
             },
             /**
-             * 所属景区改变，查询发售机构和下单企业信息
+             * 所属景区改变，查询下单企业信息
              */
             sceneChange () {
                 if(!this.formData.scenicOrgId) return;
@@ -371,10 +377,8 @@
                     orderType : this.formData.orderType
                 }).then(res => {
                     if(res.success){
-                        this.saleOrgList = res.data ? res.data.saleList : [];
                         this.orderTakeList = res.data ? res.data.orderList : [];
                     }else{
-                        this.saleOrgList = [];
                         this.orderTakeList = [];
                     }
                     //如果所属景区是当前登录的景区，那么发售机构是当前机构，不可修改，
@@ -415,6 +419,13 @@
                 this.formData.orderType = 'team';
                 this.orderTypeChange();
                 this.searchProductList();
+            },
+            /**
+             * 是否分销状态修改
+             */
+            allocationStatusChange () {
+                this.formData.orderChannel = 'allStatus';
+                this.orderTypeChange();
             }
         },
         created () {
@@ -444,20 +455,22 @@
                     orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd'),
                     visitStartDate : this.formData.visitDate[0].format('yyyy-MM-dd'),
                     visitEndDate : this.formData.visitDate[1].format('yyyy-MM-dd'),
-                    orderType : this.formData.orderType,
+                    orderType : this.formData.orderType === 'allStatus' ? '' : this.formData.orderType,
                     allocationStatus : this.formData.allocationStatus,
-                    pickStatus : this.formData.pickStatus,
-                    refundStatus : this.formData.refundStatus,
-                    verifyStatus : this.formData.verifyStatus,
-                    rescheduleStatus : this.formData.rescheduleStatus,
+                    pickStatus : this.formData.pickStatus === 'allStatus' ? '' : this.formData.pickStatus,
+                    refundStatus : this.formData.refundStatus === 'allStatus' ? '' : this.formData.refundStatus,
+                    verifyStatus : this.formData.verifyStatus === 'allStatus' ? '' : this.formData.verifyStatus,
+                    rescheduleStatus : this.formData.rescheduleStatus === 'allStatus' ? '' : this.formData.rescheduleStatus,
                     scenicOrgId : this.formData.scenicOrgId,
-                    channelId : this.formData.channelId,
-                    orderChannel : this.formData.orderChannel,
+                    channelId : this.formData.orderOrgId,
+                    orderChannel : this.formData.orderChannel === 'allStatus' ? '' : this.formData.orderChannel,
                     productType : this.formData.productType,
-                    syncStatus : this.formData.syncStatus,
-                    auditStatus : this.formData.auditStatus,
-                    paymentStatus : this.formData.paymentStatus,
+                    syncStatus : this.formData.syncStatus === 'allStatus' ? '' : this.formData.syncStatus,
+                    auditStatus : this.formData.auditStatus === 'allStatus' ? '' : this.formData.auditStatus,
+                    paymentStatus : this.formData.paymentStatus === 'allStatus' ? '' : this.formData.paymentStatus,
                     abnormalStatus : this.formData.abnormalStatus,
+                    marketTypeId : this.formData.marketTypeId,
+                    marketLevelId : this.formData.marketLevelId,
                     // orderOrgName : this.orderOrgName,
                 };
             },
@@ -465,7 +478,7 @@
             orderType () {
                 return [].concat([{
                     label : 'all',
-                    value : 'all'
+                    value : 'allStatus'
                 }],orderType);
             },
             //正误选择
@@ -480,6 +493,10 @@
                         value : 'false'
                     }
                 ];
+            },
+            //下单渠道
+            orderChannelList () {
+                return this.formData.allocationStatus === 'true' ? distributorChannelList : notDistributorChannelList;
             }
         }
     }
