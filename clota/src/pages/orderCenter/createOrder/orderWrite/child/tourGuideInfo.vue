@@ -131,7 +131,8 @@
         <add-tour-guide-or-driver-modal v-model="addTourGideShow"
                                         modal-type="guide"
                                         :default-info="tableData"
-                                        @set-info="getChosedInfo">
+                                        @set-info="getChosedInfo"
+                                        @modify-data="modifyChoosedData">
         </add-tour-guide-or-driver-modal>
     </div>
 </template>
@@ -235,7 +236,7 @@
              * 添加导游
              */
             addTourGuide () {
-                //分销商下单，直接编辑导游信息
+                //旅行社下单，直接从保存的导游信息中添加导游
                 if(this.manageOrgs.nodeType === 'partner'){
                     this.addTourGideShow = true;
                 }else if(this.manageOrgs.nodeType === 'scenic'){
@@ -270,6 +271,7 @@
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
+                //设置已经选择的导游在模态框中默认选中
                 if(this.selectedTourGuideInfo.includes(this.tableData[index])){
                     this.$refs.table.toggleRowSelection(this.tableData[index]);
                 }
@@ -313,7 +315,18 @@
                         }
                     });
                 })]).then(() => {
-                    this.$set(this.tableData[index],'editType','');
+                    //景区直接保存修改结果，旅行社需要保存到数据库中
+                    if(this.manageOrgs.nodeType === 'partner'){
+                        this.addOrUpdateOrgStaff({
+                            id : this.tableData[index]['id'],
+                            staffName : this.tableData[index]['staffName'],
+                            documentNo : this.tableData[index]['documentNo'],
+                            phoneNumber : this.tableData[index]['phoneNumber'],
+                            index : index
+                        });
+                    }else if(this.manageOrgs.nodeType === 'scenic'){
+                        this.$set(this.tableData[index],'editType','');
+                    }
                 });
             },
             /**
@@ -386,6 +399,48 @@
              */
             getChosedInfo (data) {
                 this.tableData =  data;
+            },
+            /**
+             * 修改导游信息
+             * @param id
+             * @param staffName 导游姓名
+             * @param documentNo 证件号
+             * @param phoneNumber 手机号
+             * @param index
+             */
+            addOrUpdateOrgStaff ({id,staffName,documentNo,phoneNumber,index}) {
+                return ajax.post('addOrUpdateOrgStaff',{
+                    id : id,
+                    staffName : staffName,
+                    staffType : 'guide',
+                    documentType : 'id',
+                    documentNo : documentNo,
+                    phoneNumber : phoneNumber,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('修改导游信息成功');
+                        this.$set(this.tableData[index],'editType','');
+                    }else{
+                        this.$Message.err('修改导游信息失败');
+                    }
+                });
+            },
+            /**
+             * 判断模态框中修改的信息是否在当前页面已存在，如果存在要修改为修改后的信息
+             * @param data
+             * @param type 操作类型
+             */
+            modifyChoosedData({data,type}) {
+                for(let i = 0,j = this.tableData.length;i < j;i++){
+                    if(this.tableData[i]['id'] === data['id']){
+                        if(type === 'modify'){
+                            this.$set(this.tableData,i,data)
+                        }else if(type === 'del'){
+                            this.tableData.splice(i,1);
+                        }
+                        break;
+                    }
+                }
             }
         },
         computed : {

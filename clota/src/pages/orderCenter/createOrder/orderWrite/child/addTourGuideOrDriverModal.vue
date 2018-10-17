@@ -15,7 +15,9 @@
         </div>
         <Form ref="formInline">
             <div class="add-wrap">
-                <span class="add-btn" @click="addTourist"><Icon type="ios-plus-empty"></Icon>{{modalType === 'guide' ? $t('新增导游') : $t('新增司机')}}</span>
+                <span class="add-btn" @click="addTourist">
+                    <Icon type="ios-plus-empty"></Icon>{{modalType === 'guide' ? $t('新增导游') : $t('新增司机')}}
+                </span>
             </div>
             <table-com
                 ref="table"
@@ -31,7 +33,6 @@
                     :width="row.width"
                     :min-width="row.minWidth"
                     type="selection"
-                    :selectable="selectableFunc"
                     slot-scope="row">
                 </el-table-column>
                 <el-table-column
@@ -260,14 +261,6 @@
                 this.selectedTouristInfo = data;
             },
             /**
-             * 判断当前导游是否可以选择
-             * @param row
-             * @param index
-             */
-            selectableFunc (row,index){
-                return row['editType'] !== 'edit'
-            },
-            /**
              * 修改导游信息
              * @param index
              */
@@ -275,17 +268,13 @@
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
-                if(this.selectedTouristInfo.includes(this.tableData[index])){
-                    this.$refs.table.toggleRowSelection(this.tableData[index]);
-                }
             },
             /**
              * 删除导游信息
              * @param index
              */
             delIdInfo (index) {
-                this.tableData.splice(index,1);
-                this.$Message.success('导游信息已删除');
+                this.delOrgStaff(this.tableData[index]['id'],index);
             },
             /**
              * 保存游客信息
@@ -310,13 +299,17 @@
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验手机号码
-                    this.$refs.formInline.validateField('phoneNumber' + index,valid => {
-                        if(valid){
-                            reject();
-                        }else{
-                            resolve();
-                        }
-                    });
+                    if(this.modalType === 'guide'){
+                        this.$refs.formInline.validateField('phoneNumber' + index,valid => {
+                            if(valid){
+                                reject();
+                            }else{
+                                resolve();
+                            }
+                        });
+                    }else if(this.modalType === 'driver'){
+                        resolve();
+                    }
                 })]).then(() => {
                     this.addOrUpdateOrgStaff({
                         id : this.tableData[index]['id'],
@@ -327,6 +320,7 @@
                         if(res.success){
                             this.$set(this.tableData[index],'editType','');
                             this.$Message.success('保存导游信息成功');
+                            this.freshData(index,'modify');
                         }else{
                             this.$Message.error('保存导游信息失败');
                         }
@@ -413,7 +407,48 @@
                         }
                     }
                 });
-            }
+            },
+            /**
+             * 删除导游或司机
+             * @param id
+             * @param index
+             */
+            delOrgStaff (id,index) {
+                ajax.post('batchDeleteOrgStaff',[
+                    {
+                        id : id
+                    }
+                ],
+                {
+                    headers : {
+                        'Content-Type' : 'application/json;charset-UTF-8'
+                    }
+                }).then(res => {
+                    if(res.success){
+                        if(this.modalType === 'guide'){
+                            this.$Message.success('导游信息已删除');
+                        }else if(this.modalType === 'driver'){
+                            this.$Message.success('司机信息已删除');
+                        }
+                        this.freshData(index,'del');
+                        this.queryPagedOrgStaff();
+                    }else{
+                        this.$Message.error('删除失败');
+                    }
+                });
+            },
+            /**
+             * 根据修改的信息是否已选择判断是否传递数据给上一个组件
+             * @param index 数据序号
+             * @param type 操作类型
+             */
+            freshData (index,type) {
+                this.$emit('modify-data',{
+                    data :this.tableData[index],
+                    type : type
+                });
+            },
+
         },
         computed : {
             //证件类型
@@ -440,6 +475,29 @@
 	@import '~@/assets/scss/base';
     .add-tourist-modal{
 
+        /deep/ .table-com{
+            border-top: 1px solid #ebeef5;
+
+            .el-table th{
+                padding: 8px 0;
+            }
+
+            .ivu-form-item-content{
+                line-height: 30px;
+            }
+
+            .el-table td{
+                padding: 4px 0;
+
+                .cell{
+                    line-height: 31px;
+                }
+            }
+
+            .ivu-form-item-error-tip{
+                position: relative;
+            }
+        }
 
         .add-wrap{
             height: 50px;
@@ -453,6 +511,11 @@
                 display: inline-flex;
                 flex-direction: row;
                 align-items: center;
+
+                /deep/ .ivu-icon-ios-plus-empty{
+                    margin-right: 10px;
+                    font-size: $font_size_18px;
+                }
             }
         }
 

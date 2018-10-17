@@ -113,7 +113,8 @@
         <add-tour-guide-or-driver-modal v-model="addDriverShow"
                                         modal-type="driver"
                                         :default-info="tableData"
-                                        @set-info="getChosedInfo">
+                                        @set-info="getChosedInfo"
+                                        @modify-data="modifyChoosedData">
         </add-tour-guide-or-driver-modal>
     </div>
 </template>
@@ -269,7 +270,18 @@
                         }
                     });
                 })]).then(() => {
-                    this.$set(this.tableData[index],'editType','');
+                    //景区直接保存修改结果，旅行社需要保存到数据库中
+                    if(this.manageOrgs.nodeType === 'partner'){
+                        this.addOrUpdateOrgStaff({
+                            id : this.tableData[index]['id'],
+                            staffName : this.tableData[index]['staffName'],
+                            documentNo : this.tableData[index]['documentNo'],
+                            phoneNumber : '',
+                            index : index
+                        });
+                    }else if(this.manageOrgs.nodeType === 'scenic'){
+                        this.$set(this.tableData[index],'editType','');
+                    }
                 });
             },
             /**
@@ -342,6 +354,48 @@
              */
             getChosedInfo (data) {
                 this.tableData =  data;
+            },
+            /**
+             * 修改司机信息
+             * @param id
+             * @param staffName 司机姓名
+             * @param documentNo 车牌号
+             * @param phoneNumber 手机号
+             * @param index
+             */
+            addOrUpdateOrgStaff ({id,staffName,documentNo,phoneNumber,index}) {
+                return ajax.post('addOrUpdateOrgStaff',{
+                    id : id,
+                    staffName : staffName,
+                    staffType : 'driver',
+                    documentType : 'license',
+                    documentNo : documentNo,
+                    phoneNumber : phoneNumber,
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('修改司机信息成功');
+                        this.$set(this.tableData[index],'editType','');
+                    }else{
+                        this.$Message.error('修改司机信息失败');
+                    }
+                });
+            },
+            /**
+             * 判断模态框中修改的信息是否在当前页面已存在，如果存在要修改为修改后的信息
+             * @param data
+             * @param type 操作类型
+             */
+            modifyChoosedData({data,type}) {
+                for(let i = 0,j = this.tableData.length;i < j;i++){
+                    if(this.tableData[i]['id'] === data['id']){
+                        if(type === 'modify'){
+                            this.$set(this.tableData,i,data)
+                        }else if(type === 'del'){
+                            this.tableData.splice(i,1);
+                        }
+                        break;
+                    }
+                }
             }
         },
         computed : {

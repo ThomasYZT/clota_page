@@ -112,5 +112,7 @@ export default {
     'queryPagedOrgStaff' : '/organize/queryPagedOrgStaff',
     //新增导游或司机
     'addOrUpdateOrgStaff' : '/organize/addOrUpdateOrgStaff',
+    //删除导游或司机
+    'batchDeleteOrgStaff' : '/organize/batchDeleteOrgStaff',
 
 }
