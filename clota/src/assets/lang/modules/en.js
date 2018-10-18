@@ -1127,5 +1127,10 @@ export default {
     'reserveOrderDetail': '订单查询',
     'synchronized': '已同步',
     'syncFailed': '同步失败',
+    'order.market': '全民营销',
+    'order.all': '全部',
+    'order.tour': '旅行社',
+    'order.OTA': 'OTA',
+    'order.scenic': '景区',
 
 }

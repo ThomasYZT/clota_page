@@ -4,14 +4,14 @@
     <div class="filter-head">
         <Form ref="formCustom"
               :model="formData"
-              :rules="ruleCustom"
               :label-width="80">
             <i-row>
                 <i-col span="7">
                     <!--下单时间-->
                     <FormItem label="下单日期">
-                        <DatePicker v-model="formData.orderDate"
+                        <DatePicker v-model.trim="formData.orderDate"
                                     transfer
+                                    :editable="false"
                                     type="daterange"
                                     placement="bottom-end"
                                     placeholder="请选择"
@@ -22,8 +22,9 @@
                 <i-col span="7">
                     <!--游玩日期-->
                     <FormItem label="游玩日期">
-                        <DatePicker v-model="formData.visitDate"
+                        <DatePicker v-model.trim="formData.visitDate"
                                     transfer
+                                    :editable="false"
                                     type="daterange"
                                     placement="bottom-end"
                                     placeholder="请选择"
@@ -34,7 +35,7 @@
                 <i-col span="4">
                     <!--订单类型-->
                     <FormItem label="订单类型" >
-                        <Select v-model="formData.orderType"
+                        <Select v-model.trim="formData.orderType"
                                 style="max-width: 100px"
                                 @on-change="orderTypeChange">
                             <Option v-for="item in orderType"
@@ -48,7 +49,7 @@
                 <i-col span="4">
                     <!--是否分销-->
                     <FormItem label="是否分销" >
-                        <Select v-model="formData.allocationStatus"
+                        <Select v-model.trim="formData.allocationStatus"
                                 style="max-width: 100px"
                                 @on-change="allocationStatusChange">
                             <Option v-for="item in tOfSelectList"
@@ -64,7 +65,7 @@
                 <i-col span="6">
                     <!--取票状态-->
                     <FormItem label="取票状态">
-                        <Select v-model="formData.pickStatus"
+                        <Select v-model.trim="formData.pickStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in takeTicketStatusList"
                                     :key="item.value"
@@ -77,7 +78,7 @@
                 <i-col span="6">
                     <!--退票状态-->
                     <FormItem label="退票状态">
-                        <Select v-model="formData.refundStatus"
+                        <Select v-model.trim="formData.refundStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in refundStatusList"
                                     :key="item.value"
@@ -90,7 +91,7 @@
                 <i-col span="6">
                     <!--所属景区-->
                     <FormItem label="所属景区">
-                        <Select v-model="formData.scenicOrgId"
+                        <Select v-model.trim="formData.scenicOrgId"
                                 style="max-width: 200px"
                                 @on-change="sceneChange">
                             <Option v-for="item  in belongScene"
@@ -103,7 +104,7 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="下单企业" >
-                        <Select v-model="formData.orderOrgId"
+                        <Select v-model.trim="formData.orderOrgId"
                                 style="max-width: 200px">
                             <Option v-for="item  in orderTakeList"
                                     :key="item.id"
@@ -118,12 +119,12 @@
                 <i-col span="6">
                     <!--下单渠道-->
                     <FormItem label="下单渠道" >
-                        <Select v-model="formData.orderChannel"
+                        <Select v-model.trim="formData.orderChannel"
                                 style="max-width: 200px">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
-                                {{$t(item.label)}}
+                                {{$t('order.' + item.label)}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -131,7 +132,7 @@
                 <i-col span="6">
                     <!--核销状态-->
                     <FormItem label="核销状态" >
-                        <Select v-model="formData.verifyStatus"
+                        <Select v-model.trim="formData.verifyStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in verifyStatusList"
                                     :key="item.value"
@@ -144,7 +145,7 @@
                 <i-col span="6">
                     <!--是否同步-->
                     <FormItem label="是否同步" >
-                        <Select v-model="formData.syncStatus"
+                        <Select v-model.trim="formData.syncStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in synchronizationList"
                                     :key="item.value"
@@ -157,7 +158,7 @@
                 <i-col span="6">
                     <!--改签状态-->
                     <FormItem label="改签状态" >
-                        <Select v-model="formData.rescheduleStatus"
+                        <Select v-model.trim="formData.rescheduleStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in rescheduleStatus"
                                     :key="item.value"
@@ -169,36 +170,36 @@
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="6">
-                    <!--营销状态-->
-                    <FormItem label="营销状态" >
-                        <Select v-model="formData.marketTypeId"
-                                style="max-width: 200px">
-                            <Option v-for="item  in orderChannelList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
-                <i-col span="6">
-                    <!--营销级别-->
-                    <FormItem label="营销级别" >
-                        <Select v-model="formData.marketLevelId"
-                                style="max-width: 200px">
-                            <Option v-for="item  in verifyStatusList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
+                <!--<i-col span="6">-->
+                    <!--&lt;!&ndash;营销状态&ndash;&gt;-->
+                    <!--<FormItem label="营销状态" >-->
+                        <!--<Select v-model.trim="formData.marketTypeId"-->
+                                <!--style="max-width: 200px">-->
+                            <!--<Option v-for="item  in orderChannelList"-->
+                                    <!--:key="item.value"-->
+                                    <!--:value="item.value">-->
+                                <!--{{$t(item.label)}}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
+                    <!--</FormItem>-->
+                <!--</i-col>-->
+                <!--<i-col span="6">-->
+                    <!--&lt;!&ndash;营销级别&ndash;&gt;-->
+                    <!--<FormItem label="营销级别" >-->
+                        <!--<Select v-model.trim="formData.marketLevelId"-->
+                                <!--style="max-width: 200px">-->
+                            <!--<Option v-for="item  in verifyStatusList"-->
+                                    <!--:key="item.value"-->
+                                    <!--:value="item.value">-->
+                                <!--{{$t(item.label)}}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
+                    <!--</FormItem>-->
+                <!--</i-col>-->
                 <i-col span="6">
                     <!--审核状态-->
                     <FormItem label="审核状态" >
-                        <Select v-model="formData.auditStatus"
+                        <Select v-model.trim="formData.auditStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in auditStatusList"
                                     :key="item.value"
@@ -211,7 +212,7 @@
                 <i-col span="6">
                     <!--支付状态-->
                     <FormItem label="支付状态" >
-                        <Select v-model="formData.paymentStatus"
+                        <Select v-model.trim="formData.paymentStatus"
                                 style="max-width: 200px">
                             <Option v-for="item  in payStatusList"
                                     :key="item.value"
@@ -226,7 +227,7 @@
                 <i-col span="6">
                     <!--业态类型-->
                     <FormItem label="业态类型" >
-                        <Select v-model="formData.productType"
+                        <Select v-model.trim="formData.productType"
                                 style="max-width: 200px">
                             <Option value="ticket">票</Option>
                         </Select>
@@ -234,7 +235,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="关键字" >
-                        <Input v-model.trim="formData.productName"
+                        <Input v-model.trim="formData.keyword"
                                style="max-width: 380px"
                                placeholder="输入游客姓名/手机号/订单明细编号" />
                     </FormItem>
@@ -280,10 +281,6 @@
         },
         data() {
             return {
-                //表单校验规则
-                ruleCustom : {
-
-                },
                 //表单数据
                 formData : {
                     //下单时间
@@ -297,7 +294,7 @@
                     //退票状态
                     refundStatus : 'allStatus',
                     //所属景区
-                    scenicOrgId : '',
+                    scenicOrgId : 'all',
                     //下单渠道
                     orderChannel : 'allStatus',
                     //同步状态
@@ -310,8 +307,6 @@
                     orderOrgId : '',
                     //业态类型
                     productType : 'ticket',
-                    //产品名称
-                    productName : '',
                     //订单类型
                     orderType : 'allStatus',
                     //是否是异常订单
@@ -324,6 +319,8 @@
                     marketTypeId : '',
                     //营销级别
                     marketLevelId : '',
+                    //关键字
+                    keyword :''
                 },
                 //所属景区列表
                 belongScene : [],
@@ -355,9 +352,11 @@
                     orderType : this.formData.orderType
                 }).then(res => {
                     if(res.success){
-                        this.belongScene = res.data ? res.data : [];
-                        if(!this.formData.scenicOrgId && this.belongScene.length > 0){
-                            this.formData.scenicOrgId = this.belongScene[0].id;
+                        this.belongScene = res.data ? [].concat([{
+                            id : 'all',
+                            orgName : this.$t('all')
+                        }],res.data) : [];
+                        if(this.formData.scenicOrgId !== 'all'){
                             this.sceneChange();
                         }else{
                             this.search();
@@ -372,12 +371,12 @@
              */
             sceneChange () {
                 if(!this.formData.scenicOrgId) return;
-                ajax.post('queryOrderOptionList',{
+                ajax.post('getOrderOrgList',{
                     scenicId : this.formData.scenicOrgId,
-                    orderType : this.formData.orderType
+                    allocationStatus : this.formData.allocationStatus
                 }).then(res => {
                     if(res.success){
-                        this.orderTakeList = res.data ? res.data.orderList : [];
+                        this.orderTakeList = res.data ? res.data : [];
                     }else{
                         this.orderTakeList = [];
                     }
@@ -415,7 +414,6 @@
                 this.formData.scenicOrgId = '';
                 this.formData.orderOrgId = '';
                 this.formData.type = '';
-                this.formData.productName = '';
                 this.formData.orderType = 'team';
                 this.orderTypeChange();
                 this.searchProductList();
@@ -425,6 +423,7 @@
              */
             allocationStatusChange () {
                 this.formData.orderChannel = 'allStatus';
+                this.formData.scenicOrgId = 'all';
                 this.orderTypeChange();
             }
         },
@@ -461,7 +460,7 @@
                     refundStatus : this.formData.refundStatus === 'allStatus' ? '' : this.formData.refundStatus,
                     verifyStatus : this.formData.verifyStatus === 'allStatus' ? '' : this.formData.verifyStatus,
                     rescheduleStatus : this.formData.rescheduleStatus === 'allStatus' ? '' : this.formData.rescheduleStatus,
-                    scenicOrgId : this.formData.scenicOrgId,
+                    scenicOrgId : this.formData.scenicOrgId !== 'all' ? this.formData.scenicOrgId : '',
                     channelId : this.formData.orderOrgId,
                     orderChannel : this.formData.orderChannel === 'allStatus' ? '' : this.formData.orderChannel,
                     productType : this.formData.productType,

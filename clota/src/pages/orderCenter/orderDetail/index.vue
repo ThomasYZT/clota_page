@@ -14,10 +14,21 @@
             :border="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="225"
+            :ofset-height="315"
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             @query-data="queryList">
+            <el-table-column
+                slot="column0"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderNo}}</span>
+                </template>
+            </el-table-column>
             <el-table-column
                 slot="column2"
                 show-overflow-tooltip
@@ -27,6 +38,17 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     {{scope.row.visitDate | timeFormat('yyyy-MM-dd')}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t('order.' + scope.row.orderChannel)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -51,9 +73,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.syncStatus === 'success'">已发送</span>
-                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'wait'">-</span>
-                    <span class="status-fail" v-else>发送失败</span>
+                    <span class="status-suc" v-if="scope.row.syncStatus === 'success'">已同步</span>
+                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'wait'">同步中</span>
+                    <span class="status-fail" v-else>同步失败</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -77,7 +99,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span class="status-suc" v-if="scope.row.auditStatus === 'success'">审核通过</span>
-                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'audit'">待审核</span>
+                    <span class="status-wait" v-else-if="scope.row.auditStatus === 'audit'">待审核</span>
                     <span class="status-fail" v-else>审核不通过</span>
                 </template>
             </el-table-column>
@@ -135,17 +157,19 @@
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
-                :width="row.width"
-                :min-width="row.minWidth">
+                :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow" @click="reserve(scope.row)">{{$t('退票')}}</li>
-                        <li @click="reserve(scope.row)">{{$t('改签')}}</li>
+                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('退票')}}</li>
+                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>
                         <li @click="reserve(scope.row)">{{$t('详情')}}</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
+        <!--申请退票-->
+        <apply-refund-ticket v-model="refundTicketModalShow">
+        </apply-refund-ticket>
     </div>
 </template>
 
@@ -153,11 +177,14 @@
     import filterHead from './child/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './orderConfig';
+    import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
+
     export default {
         components : {
             filterHead,
-            tableCom
+            tableCom,
+            applyRefundTicket
         },
         data() {
             return {
@@ -172,8 +199,30 @@
                 //筛选条件
                 queryParams : {
                     pageNo :1,
-                    pageSize : 10
+                    pageSize : 10,
+                    orderStartDate : '',
+                    orderEndDate : '',
+                    visitStartDate : '',
+                    visitEndDate : '',
+                    orderType : '',
+                    allocationStatus : '',
+                    pickStatus : '',
+                    refundStatus : '',
+                    verifyStatus : '',
+                    rescheduleStatus : '',
+                    scenicOrgId : '',
+                    channelId : '',
+                    orderChannel : '',
+                    productType : '',
+                    syncStatus : '',
+                    auditStatus : '',
+                    paymentStatus : '',
+                    abnormalStatus : '',
+                    marketTypeId : '',
+                    marketLevelId : '',
                 },
+                //退款模态框是否显示
+                refundTicketModalShow : false
             }
         },
         methods: {
@@ -209,18 +258,39 @@
                 Object.assign(this.queryParams,params);
                 this.queryList();
             },
+            /**
+             * 获取订单详情
+             * @param data
+             */
+            toOrderDetail (data) {
+                this.$router.push({
+                    name : 'teamOrderDetail',
+                    params : {
+                        orderId : data.orderId
+                    }
+                });
+            }
         },
         computed : {
-            //如何判断是全民营销
-            //是否可以显示退票按钮
+            //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
-                // if(this.queryParams.orderType === 'individual' && this.queryParams.allocationStatus === 'true'){
-                //     return true;
-                // }else if(){
-				//
-                // }else{
-                //     return false;
-                // }
+                //散客非分销订单
+                if(this.queryParams.orderType === 'individual' && this.queryParams.allocationStatus === 'false'){
+                    return {
+                        show : true,
+                        width : 170,
+                    };
+                }else if(this.queryParams.orderType === 'individual' && this.queryParams.orderChannel === 'market'){
+                    return {
+                        show : true,
+                        width : 170,
+                    };
+                }else{//散客全民营销订单
+                    return {
+                        show : false,
+                        width : 80,
+                    };
+                }
             }
         }
     }
@@ -236,7 +306,8 @@
         border-radius : 4px;
 
         .status-suc,
-        .token-ticket{
+        .token-ticket,
+        .to-one-level{
             color: $color_blue;
         }
 
@@ -251,6 +322,10 @@
         .not-token-ticket{
             color: $color_999;
             margin-left: 15px;
+        }
+
+        .to-one-level{
+            cursor: pointer;
         }
     }
 </style>

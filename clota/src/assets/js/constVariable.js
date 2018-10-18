@@ -596,7 +596,7 @@ export const auditStatusList = [
     },
     {
         label : '未审核',//未审核
-        value : 'scenic'
+        value : 'false'
     }
 ];
 
@@ -612,6 +612,6 @@ export const payStatusList = [
     },
     {
         label : '未支付',//未支付
-        value : 'scenic'
+        value : 'false'
     }
 ];

@@ -13,12 +13,12 @@ export const columnData = [
     },
     {
         title: '游玩日期',
-        minWidth: 200,
+        minWidth: 120,
         field: 'visitDate'
     },
     {
         title: '下单时间',
-        width: 230,
+        width: 190,
         field: 'orderTime'
     },
     {

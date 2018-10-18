@@ -78,6 +78,17 @@ export default {
                     isMenu: true
                 },
             },
+            //团队订单详情
+            teamOrderDetail : {
+                path: '/ordert/detail/team',
+                name: 'teamOrderDetail',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/teamOrderDetail.vue'),
+                meta: {
+                    menuName: 'teamOrderDetail',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'reserveOrderDetail'
+                },
+            },
             //审核中心
             auditCenter : {
                 path: '/order/audit',

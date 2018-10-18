@@ -208,6 +208,7 @@
                             endTime : item.endTime,
                             serviceId : item.serviceId,
                             serviceName : item.serviceName,
+                            runStatus : item.runStatus,
                         }
                     }),
                     {
