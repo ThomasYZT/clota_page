@@ -1117,5 +1117,21 @@ export default {
     'people': '人',
     'delOrgWarn': '本操作将同步删除本节点的全部下级节点，并不可撤销，',
     'allGroup': '全部分组',
+    'checkMySalePolicy': '查看我的分销',
+    'mySalePrice': '我的分销单价',
+    'setMySaleChannels': '设置我的销售渠道',
+    'deleteSalePrice': '删除此分销单价',
+    'stock': '库存',
+    'parentDistributePrice': '上级分销单价',
+    'distributeDetail': '分销政策详情',
+    'distributePolicy': '分销政策',
+    'myDistribute': '我的分销',
+    'productNameAndSaleGroup': '产品名称/销售渠道组',
+    'bestSaleStrategy': '最优价格销售策略',
+    'saleAndPlayPolicy': '售卖和游玩政策',
+    'distributeName': '分销名称',
+    'distributePrice': '分销价格',
+    'distributeSccuess': '分销成功',
+    'distributeFail': '分销失败'
 
 }

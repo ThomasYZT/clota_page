@@ -106,7 +106,17 @@ export default {
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 },
             },
-
+            distributeDetail: {
+                //产品中心--销售政策--分销详情
+                path: '/productCenter/distributeDetail',
+                name: 'distributeDetail',
+                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/distributeDetail.vue'),
+                meta: {
+                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
+                    _name: 'product-policy',
+                    rightPath : topMenuName + '.' + 'marketingPolicy',
+                }
+            }
         }
     }
 }

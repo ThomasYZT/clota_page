@@ -31,8 +31,29 @@
                 <!--:filters="filterList"-->
                 <!--:filter-method="filterHandler"-->
                 <!--filter-placement="bottom-end"-->
+            <el-table-column v-if="role !== 'partner'"
+                             slot="column3"
+                             slot-scope="row"
+                             :label="row.title"
+                             :width="row.width"
+                             :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.standardPrice}}
+                </template>
+            </el-table-column>
+            <el-table-column v-if="role === 'partner'"
+                             slot="column4"
+                             slot-scope="row"
+                             :label="row.title"
+                             :width="row.width"
+                             :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.printPrice}}
+                </template>
+            </el-table-column>
             <el-table-column
-                slot="column5"
+                v-if="role !== 'partner'"
+                slot="column6"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -47,7 +68,8 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column6"
+                v-if="role !== 'partner'"
+                slot="column7"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -59,8 +81,8 @@
                 </template>
             </el-table-column>
             <el-table-column
-                v-if="role === 'scenic'"
-                slot="column7"
+                v-if="role === 'scenic' || role === 'partner'"
+                slot="column8"
                 slot-scope="row"
                 fixed="right"
                 :label="row.title"

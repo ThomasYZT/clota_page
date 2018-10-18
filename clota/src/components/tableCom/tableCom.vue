@@ -13,12 +13,15 @@
                   :max-height="tableMaxHeight !== 'auto' ? parseInt(tableMaxHeight) : 'auto'"
                   :row-class-name="rowClassName"
                   :default-sort="defaultSort"
+                  :header-cell-class-name="headerClickable ? 'header-clickable' : ''"
+                  @header-click="headerClick"
                   @sort-change="handleSortChanged"
                   @row-click="classDetailLink"
                   @selection-change="handleSelectionChange">
                    <el-table-column
                         v-if="columnCheck"
                         type="selection"
+                        :selectable="selectable"
                         :width="selectionWidth">
                    </el-table-column>
                    <template
@@ -185,6 +188,16 @@
             'default-page-layout' : {
                 type : String,
                 defaut : ''
+            },
+            //表头单元格是否可点击
+            'header-clickable': {
+                type: Boolean,
+                default: false
+            },
+            //表格选择框是否禁用
+            'selectable': {
+                type: Function,
+                default: new Function('return true')
             }
         },
         data() {
@@ -292,7 +305,13 @@
                 }else if(this.lang === 'zh-CN'){
                     return columnData.minWidth;
                 }
-            }
+            },
+            /**
+             * 当某一列的表头点击事件
+             */
+            headerClick(column, event) {
+                this.$emit('headerClick', column, event);
+            },
         },
         created () {
             this.queryList();
