@@ -12,7 +12,8 @@
                     <FormItem label="游玩日期">
                         <DatePicker v-model="formData.playDate"
                                     type="date"
-                                    style="width: 280px">
+                                    style="width: 280px"
+                                    @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -25,7 +26,7 @@
                             <Option v-for="item in orderType"
                                     :key="item.value"
                                     :value="item.value">
-                                {{item.label}}
+                                {{$t(item.label)}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -48,7 +49,10 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="发售机构" >
-                        <Select v-model="formData.saleOrgId" style="width: 160px" :disabled="saleDisabled">
+                        <Select v-model="formData.saleOrgId"
+                                style="width: 160px"
+                                :disabled="saleDisabled"
+                                @on-change="searchProductList">
                             <Option v-for="item  in saleOrgList"
                                     :key="item.id"
                                     :value="item.id">
@@ -59,7 +63,10 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="下单企业" >
-                        <Select v-model="formData.orderOrgId" style="width: 160px" :disabled="orderTaskDisabled">
+                        <Select v-model="formData.orderOrgId"
+                                style="width: 160px"
+                                :disabled="orderTaskDisabled"
+                                @on-change="searchProductList">
                             <Option v-for="item  in orderTakeList"
                                     :key="item.id"
                                     :value="item.id">
@@ -79,7 +86,9 @@
                 </i-col>
                 <i-col span="6">
                     <FormItem label="业态类型" >
-                        <Select v-model="formData.type" style="width: 160px">
+                        <Select v-model="formData.type"
+                                style="width: 160px"
+                                @on-change="searchProductList">
                             <Option value="ticket">票</Option>
                         </Select>
                     </FormItem>
@@ -158,9 +167,11 @@
                     this.formData.orderTakeList = [];
                     if(res.success){
                         this.belongScene = res.data ? res.data : [];
-                        if(!this.formData.scenicOrgId){
+                        if(!this.formData.scenicOrgId && this.belongScene.length > 0){
                             this.formData.scenicOrgId = this.belongScene[0].id;
                             this.sceneChange();
+                        }else{
+                            this.search();
                         }
                     }else{
                         this.belongScene = [];
@@ -206,29 +217,13 @@
              * 查询数据
              */
             search () {
-                this.$emit('set-params',{
-                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
-                    orderType : this.formData.orderType,
-                    saleOrgId : this.formData.saleOrgId,
-                    orderOrgId : this.formData.orderOrgId,
-                    type : this.formData.type,
-                    productName : this.formData.productName,
-                    scenicOrgId : this.formData.scenicOrgId,
-                });
+                this.$emit('set-params',this.paramsObj);
             },
             /**
              * 触发查询产品列表
              */
             searchProductList () {
-                this.$emit('search-product',{
-                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
-                    orderType : this.formData.orderType,
-                    saleOrgId : this.formData.saleOrgId,
-                    orderOrgId : this.formData.orderOrgId,
-                    type : this.formData.type,
-                    productName : this.formData.productName,
-                    scenicOrgId : this.formData.scenicOrgId,
-                });
+                this.$emit('search-product',this.paramsObj);
             },
             /**
              * 重置筛选条件
@@ -251,7 +246,47 @@
         computed :{
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
-            })
+            }),
+            //发售机构名字
+            saleOrgName () {
+                if(this.saleOrgList && this.saleOrgList.length > 0){
+                    for(let i = 0, j = this.saleOrgList.length;i < j;i++){
+                        if(this.formData.saleOrgId === this.saleOrgList[i]['id']){
+                            return this.saleOrgList[i]['orgName'];
+                        }
+                    }
+                    return '';
+                }else{
+                    return '';
+                }
+            },
+            //下单企业名字
+            orderOrgName () {
+                if(this.orderTakeList && this.orderTakeList.length > 0){
+                    for(let i = 0, j = this.orderTakeList.length;i < j;i++){
+                        if(this.formData.orderOrgId === this.orderTakeList[i]['id']){
+                            return this.orderTakeList[i]['orgName'];
+                        }
+                    }
+                    return '';
+                }else{
+                    return '';
+                }
+            },
+            //查询条件列表
+            paramsObj () {
+                return {
+                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
+                    orderType : this.formData.orderType,
+                    saleOrgId : this.formData.saleOrgId,
+                    orderOrgId : this.formData.orderOrgId,
+                    type : this.formData.type,
+                    productName : this.formData.productName,
+                    scenicOrgId : this.formData.scenicOrgId,
+                    saleOrgName : this.saleOrgName,
+                    orderOrgName : this.orderOrgName,
+                };
+            }
         }
     }
 </script>
@@ -260,7 +295,7 @@
 	@import '~@/assets/scss/base';
     .filter-head{
         padding: 14px 30px 5px 30px;
-        border: 1px solid #EEEEEE;
+        border-bottom: 1px solid #EEEEEE;
 
         /deep/ .ivu-form-item{
             margin-bottom: 7px;

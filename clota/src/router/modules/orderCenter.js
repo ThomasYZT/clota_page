@@ -32,7 +32,138 @@ export default {
                     rightPath: topMenuName + '.' + 'createOrder',
                     isMenu: true
                 },
-            }
+            },
+            //散客订单填写
+            individualWriteOrder : {
+                path: '/order/create/individual',
+                name: 'individualOrder',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/individualOrder.vue'),
+                meta: {
+                    menuName: 'individualOrder',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'createOrder',
+                },
+            },
+            //团队订单填写
+            teamWriteOrder : {
+                path: '/order/create/team',
+                name: 'teamOrder',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/teamOrder.vue'),
+                meta: {
+                    menuName: 'teamOrder',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'createOrder',
+                },
+            },
+            //订单提交成功
+            orderSubmitSuc : {
+                path: '/order/create/success',
+                name: 'successSubmit',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/orderSubmitSuccess.vue'),
+                meta: {
+                    menuName: 'successSubmit',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'createOrder',
+                },
+            },
+            //订单详情
+            orderDetail : {
+                path: '/ordert/detail',
+                name: 'reserveOrderDetail',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/index.vue'),
+                meta: {
+                    menuName: 'reserveOrderDetail',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'reserveOrderDetail',
+                    isMenu: true
+                },
+            },
+            //团队订单详情
+            teamOrderDetail : {
+                path: '/ordert/detail/team',
+                name: 'teamOrderDetail',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/teamOrderDetail.vue'),
+                meta: {
+                    menuName: 'teamOrderDetail',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'reserveOrderDetail'
+                },
+            },
+            //审核中心
+            auditCenter : {
+                path: '/order/audit',
+                name: 'auditCenter',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/index.vue'),
+                meta: {
+                    menuName: 'auditCenter',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'auditCenter',
+                    isMenu: true
+                },
+                children: {
+                    groupOrder: {
+                        //预定中心--审核中心--团队订单预审核
+                        path: '/order/audit/group',
+                        name: 'auditGroupOrder',
+                        component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/groupOrder.vue'),
+                        meta: {
+                            menuName: 'auditGroupOrder', //lang.config.js 里面的语言键值
+                            _name: 'point-setting',
+                            rightPath: topMenuName + '.' + 'auditGroupOrder',
+                            isMenu: true
+                        },
+                    },
+                    bulkRefund: {
+                        //预定中心--审核中心--散客退票审核
+                        path: '/order/audit/bulkRefund',
+                        name: 'auditBulkRefund',
+                        component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/bulkRefund.vue'),
+                        meta: {
+                            menuName: 'auditBulkRefund', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath: topMenuName + '.' + 'auditBulkRefund',
+                            isMenu: true
+                        },
+                    },
+                    bulkRefundDetail: {
+                        //预定中心--审核中心--散客（退票）审核详情
+                        path: '/order/audit/bulkDetail',
+                        name: 'bulkDetail',
+                        component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/child/bulkOrderDetail.vue'),
+                        meta: {
+                            menuName: 'auditBulkRefund', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath: topMenuName + '.' + 'auditBulkRefund',
+                            isMenu: false
+                        },
+                    },
+                    bulkChangeDetail: {
+                        //预定中心--审核中心--散客（改签）审核详情
+                        path: '/order/audit/bulkDetail',
+                        name: 'bulkDetail',
+                        component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/child/bulkOrderDetail.vue'),
+                        meta: {
+                            menuName: 'auditBulkChange', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath: topMenuName + '.' + 'auditBulkChange',
+                            isMenu: false
+                        },
+                    },
+                    bulkChange: {
+                        //预定中心--审核中心--散客改签审核
+                        path: '/order/audit/bulkChange',
+                        name: 'auditBulkChange',
+                        component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/bulkChange.vue'),
+                        meta: {
+                            menuName: 'auditBulkChange', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath: topMenuName + '.' + 'auditBulkChange',
+                            isMenu: true
+                        },
+                    },
+                }
+            },
+
         }
     }
 

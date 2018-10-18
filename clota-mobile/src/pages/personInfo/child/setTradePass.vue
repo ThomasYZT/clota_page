@@ -77,13 +77,6 @@
                                     text: this.$t('A005'),
                                     type : 'text'
                                 })
-                            }else if(res.code === 'A003'){
-                                setTimeout(() =>{
-                                    this.$vux.toast.show({
-                                        text: this.$t('A006'),
-                                        type : 'text'
-                                    })
-                                },500);
                             }else{
                                 setTimeout(() =>{
                                     this.$vux.toast.show({

@@ -1133,4 +1133,20 @@ export default {
     'distributePrice': '分销价格',
     'distributeSccuess': '分销成功',
     'distributeFail': '分销失败'
+    /*** 预定中心模块 ***/
+    'auditCenter': '审核中心',
+    'auditGroupOrder': '团队订单预审核',
+    'auditBulkRefund': '散客退票审核',
+    'auditBulkChange': '散客改签审核',
+    'team': '团队',
+    'Fit': '散客',
+    'reserveOrderDetail': '订单查询',
+    'synchronized': '已同步',
+    'syncFailed': '同步失败',
+    'order.market': '全民营销',
+    'order.all': '全部',
+    'order.tour': '旅行社',
+    'order.OTA': 'OTA',
+    'order.scenic': '景区',
+
 }

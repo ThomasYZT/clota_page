@@ -7,7 +7,10 @@
                      @search-product="searchProduct">
         </filter-head>
         <div class="batch-reserve">
-            <Button type="primary" :disabled="selectedProduct.length < 1">批量预定</Button>
+            <Button
+                type="primary"
+                :disabled="selectedProduct.length < 1"
+                @click="batchReserve">批量预定</Button>
         </div>
         <table-com
             v-if="tableShow"
@@ -45,6 +48,11 @@
                 </template>
             </el-table-column>
         </table-com>
+        <!--预定模态框-->
+        <reserve-modal v-model="showReserveModal"
+                       :search-params="queryParams"
+                       :product-list="productList">
+        </reserve-modal>
     </div>
 </template>
 
@@ -53,10 +61,12 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './orderColumnConfig';
     import ajax from '@/api/index.js';
+    import reserveModal from './child/reserveModal';
     export default {
         components : {
             filterHead,
-            tableCom
+            tableCom,
+            reserveModal
         },
         data() {
             return {
@@ -74,7 +84,11 @@
                     pageSize : 10
                 },
                 //选择的产品
-                selectedProduct : []
+                selectedProduct : [],
+                //是否显示预定模态框
+                showReserveModal : false,
+                //选择的产品列表
+                productList : []
             }
         },
         methods: {
@@ -107,7 +121,20 @@
              * @param rowData
              */
             reserve (rowData) {
-
+                if(!this.queryParams.saleOrgId){
+                    this.$Message.warning('请选择发售机构');
+                }else if(!this.queryParams.orderOrgId){
+                    this.$Message.warning('请选择下单企业');
+                }else{
+                    this.productList = [rowData].map(item =>{
+                        return {
+                            ...item,
+                            playDate : this.queryParams.playDate,
+                            num : 0,
+                        }
+                    });
+                    this.showReserveModal = true;
+                }
             },
             /**
              * 产品多选改变
@@ -123,6 +150,25 @@
             searchProduct (params) {
                 Object.assign(this.queryParams,params);
                 this.queryList();
+            },
+            /**
+             * 批量预定
+             */
+            batchReserve () {
+                if(!this.queryParams.saleOrgId){
+                    this.$Message.warning('请选择发售机构');
+                }else if(!this.queryParams.orderOrgId){
+                    this.$Message.warning('请选择下单企业');
+                }else{
+                    this.productList = this.selectedProduct.map(item =>{
+                        return {
+                            ...item,
+                            playDate : this.queryParams.playDate,
+                            num : 0,
+                        }
+                    });
+                    this.showReserveModal = true;
+                }
             }
         }
     }

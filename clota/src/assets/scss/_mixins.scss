@@ -99,7 +99,7 @@
         &:after {
             content: '';
             display: block;
-            @include absolute_pos(absolute, 4px, -10px);
+            @include absolute_pos(absolute, unquote('calc(50% - 7.5px)'), -10px);
             @include block_outline(1px, 15px);
             background: $color_E1E1E1;
         }
@@ -373,4 +373,16 @@
     @if $fontsize != null {
         font-size: $fontsize;
     }
+}
+
+/**
+  信息块的标题
+ */
+@mixin info-block-title($height, $lineHeight, $fontSize, $paddingLeft:0, $borderColor:$color_blue, $borderWidth:2px, $color:#333) {
+    height: $height;
+    line-height: $lineHeight;
+    font-size: $fontSize;
+    padding-left: $paddingLeft;
+    border-left: $borderWidth solid $borderColor;
+    color: $color;
 }
