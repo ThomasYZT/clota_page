@@ -10,6 +10,10 @@
         <bulk-order-base :module-info="detailData.baseInfo"></bulk-order-base>
         <!--游客信息-->
         <visitor-info :module-info="detailData.visitor"></visitor-info>
+        <!--产品明细-->
+        <product-detail :module-info="detailData.ticketList"
+                        :base-info="detailData.baseInfo">
+        </product-detail>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -17,12 +21,14 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import bulkOrderBase from './bulkOrderBase.vue';
     import visitorInfo from '../../components/visitorInfo.vue';
+    import productDetail from '../../components/productDetail.vue';
 
     export default {
         mixins : [lifeCycleMixins],
         components: {
             bulkOrderBase,
             visitorInfo,
+            productDetail,
         },
         props: {},
         data() {
@@ -32,6 +38,7 @@
                     visitor: {
                         documentInfo: {}
                     },
+                    ticketList: [],
                 },
             }
         },
@@ -72,8 +79,6 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .bulk-order-detail {
-        /deep/ .block-title {
-            @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
-        }
+
     }
 </style>

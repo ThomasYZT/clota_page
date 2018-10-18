@@ -42,6 +42,10 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
+    .block-title {
+        @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
+    }
+
     .form-wrap{
         width: 100%;
         margin-top: 15px;

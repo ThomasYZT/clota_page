@@ -221,7 +221,7 @@ export const bulkBatchAuditHead = [
 export const productListHead = [
     {
         title: '产品明细编号',
-        width: 200,
+        minWidth: 200,
         field: 'id'
     },
     {
@@ -231,36 +231,36 @@ export const productListHead = [
     },
     {
         title: '取票状态',
-        width: 100,
+        minWidth: 100,
         enWidth : 130,
         field: 'pickStatus'
     },
     {
         title: '核销状态',
-        width: 100,
+        minWidth: 100,
         enWidth : 130,
         field: 'verifyStatus'
     },
     {
         title: '退票状态',
-        width: 100,
+        minWidth: 100,
         enWidth : 130,
         field: 'refundStatus'
     },
     {
         title: '改签状态',
-        width: 100,
+        minWidth: 100,
         enWidth : 130,
         field: 'rescheduleStatus'
     },
     {
         title: '串码',
-        width: 150,
+        minWidth: 150,
         field: 'serialNo'
     },
     {
         title: '同步状态',
-        width: 100,
+        minWidth: 100,
         enWidth : 130,
         field: 'syncStatus'
     },
