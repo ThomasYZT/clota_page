@@ -37,4 +37,8 @@ export default {
     'querySecondIndividualOrderDetail' : '/order/querySecondIndividualOrderDetail',
     //查询团队订单详情
     'queryTeamOrderDetail' : '/order/queryTeamOrderDetail',
+    //获取订单明细信息
+    'queryOrderTicketDetail' : '/order/queryOrderTicketDetail',
+    //给导游重发短信
+    'noticeGuidesAuditResult' : '/sms/noticeGuidesAuditResult',
 }

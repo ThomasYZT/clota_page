@@ -197,8 +197,8 @@
              */
             queryLeftMoney() {
                 ajax.post('findByOrgIdAndPeerId',{
-                    orgId : this.searchParams.saleOrgId,
-                    peerOrgId :this.searchParams.orderOrgId
+                    orgId : this.searchParams.orderOrgId,
+                    peerOrgId :this.searchParams.saleOrgId
                 }).then(res =>{
                     if(res.success){
                         this.validatMoney = (res.data.accountBalance ? res.data.accountBalance :0) + (res.data.creditBalance ? res.data.creditBalance : 0);

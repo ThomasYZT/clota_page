@@ -15,16 +15,21 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './productInfoConfig';
+    import {columnData1,columnData3,columnData2} from './productInfoConfig';
     export default {
         props : {
             //产品信息
-          'product-info-list' : {
+            'product-info-list' : {
               type : Array,
               default () {
                   return [];
               }
-          }
+            },
+            //视图类型
+            'view-type' : {
+                type : String,
+                default : ''
+            }
         },
         components :{
             tableCom
@@ -35,7 +40,19 @@
                 columnData : columnData
             }
         },
-        methods: {}
+        methods: {},
+        computed : {
+            columnData () {
+                //下单企业
+                if(this.viewType === 'channel') {
+                    return columnData1;
+                }else if(this.viewType === 'scenic'){//景区
+                    return columnData2;
+                }else if(this.viewType === 'allocation'){//中间分销商
+                    return columnData3;
+                }
+            }
+        }
     }
 </script>
 
