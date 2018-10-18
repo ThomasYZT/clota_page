@@ -48,6 +48,8 @@ export default {
     'savePolicyAllocation' : '/salePolicy/savePolicyAllocation',
     //删除分销
     'deletePolicyAllocation' : '/salePolicy/deletePolicyAllocation',
+    //获取分销已选择销售组列表
+    'queryHaveAllocationSaleGroups': '/salePolicy/queryHaveAllocationSaleGroups'
 
 
 

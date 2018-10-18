@@ -111,6 +111,7 @@
             :total-count="dTotal"
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
+            @query-data="queryDistPolicyList"
             :border="true">
             <el-table-column
                 slot="column5"
@@ -121,8 +122,8 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li class="normal">{{$t('check')}}</li><!--查看-->
-                        <li class="normal">{{$t('distribution')}}</li><!--分销-->
+                        <li class="normal" @click="check(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li class="normal" @click="distribute(scope.row)">{{$t('distribution')}}</li><!--分销-->
                     </ul>
                 </template>
             </el-table-column>
@@ -140,6 +141,13 @@
                                @close-modal="queryMyPolicyList">
         </add-sale-policy-modal>
 
+        <!-- 查看分销政策 分销给我的销售政策 -->
+        <check-sale-policy-modal ref="checkSalePolicyModal"></check-sale-policy-modal>
+
+        <!-- 分销 -->
+        <distribution-modal @refresh="refresh()"
+                            ref="distributionModal"f></distribution-modal>
+
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -148,6 +156,8 @@
     import delModal from '@/components/delModal/index.vue';
     import addSalePolicyModal from './components/addSalePolicyModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
+    import checkSalePolicyModal from './components/checkSalePolicyModal';
+    import distributionModal from './components/distributionModal'
     import {mapGetters} from 'vuex';
     import {myPolicyHead, distributePolicyHead} from '../policyConfig';
     import ajax from '@/api/index';
@@ -157,6 +167,8 @@
             tableCom,
             delModal,
             addSalePolicyModal,
+            checkSalePolicyModal,
+            distributionModal
         },
         props: {},
         data() {
@@ -283,9 +295,9 @@
                     keyword: this.keywords,
                     chooseOrgId: this.chooseOrgId
                 }).then((res) => {
+                    this.dTotal = res.data.totalRow || 0;
                     this.distPolicyData = res.data ? res.data.data : [];
-                })
-                this.dTotal = this.distPolicyData.length;
+                });
             },
 
             // 新建销售政策
@@ -388,7 +400,7 @@
                 });
             },
 
-            // 查看详情
+            // 查看政策详情 -- 自己定义的分销政策
             viewDetail ( data ) {
                 this.$router.push({
                     name: 'salePolicyDetail',
@@ -397,6 +409,34 @@
                     }
                 })
             },
+            /**
+             * 查看分销详情 -- 分配给我的分销政策
+             */
+            check(data) {
+                this.$router.push({
+                    name: 'distributeDetail',
+                    params: {
+                        listItem: data
+                    }
+                })
+                //this.$refs.checkSalePolicyModal.toggle(data);
+            },
+            /**
+             *  分销操作
+             */
+            distribute(data) {
+                this.$refs.distributionModal.toggle(data);
+            },
+            /**
+             * 刷新页面
+             */
+            refresh() {
+                if(this.tabsName === 'cancellation') {
+                    this.queryDistPolicyList();
+                } else {
+                    this.queryMyPolicyList();
+                }
+            }
 
         }
     };
