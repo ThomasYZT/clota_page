@@ -149,19 +149,19 @@ export const bulkRefundHead = [
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称 / 预定数量',
+        title: '产品名称/预定数量',
         width: 180,
         enWidth : 200,
-        field: 'productName / quantity'
+        field: 'productName/quantity'
     },
     {
-        title: '产品单价 / 小计金额',
+        title: '产品单价/小计金额',
         width: 180,
         enWidth : 200,
-        field: 'price / amount'
+        field: 'price/amount'
     },
     {
-        title: '游客 / 手机号',
+        title: '游客/手机号',
         width: 130,
         enWidth : 150,
         field: 'visitorName / phoneNumber'
@@ -215,6 +215,59 @@ export const bulkBatchAuditHead = [
         enWidth : 130,
         field: 'reqNum'
     },
+];
+
+// 散客订单--审核详情--产品列表表头
+export const productListHead = [
+    {
+        title: '产品明细编号',
+        width: 200,
+        field: 'id'
+    },
+    {
+        title: '游玩日期',
+        minWidth: 200,
+        field: 'visitDate'
+    },
+    {
+        title: '取票状态',
+        width: 100,
+        enWidth : 130,
+        field: 'pickStatus'
+    },
+    {
+        title: '核销状态',
+        width: 100,
+        enWidth : 130,
+        field: 'verifyStatus'
+    },
+    {
+        title: '退票状态',
+        width: 100,
+        enWidth : 130,
+        field: 'refundStatus'
+    },
+    {
+        title: '改签状态',
+        width: 100,
+        enWidth : 130,
+        field: 'rescheduleStatus'
+    },
+    {
+        title: '串码',
+        width: 150,
+        field: 'serialNo'
+    },
+    {
+        title: '同步状态',
+        width: 100,
+        enWidth : 130,
+        field: 'syncStatus'
+    },
+    {
+        title: 'operate',
+        width: 80,
+    }
 ];
 
 // 散客改签审核列表表头

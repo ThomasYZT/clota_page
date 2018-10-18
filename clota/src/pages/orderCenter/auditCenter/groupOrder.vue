@@ -15,7 +15,7 @@
             <el-dropdown trigger="click"
                          placement="bottom-start"
                          @command="handleCommand">
-                <Button type="ghost" style="float: left" size="default">{{$t('批量审核')}}</Button>
+                <Button type="primary" style="float: left" size="default">{{$t('批量审核')}}</Button>
 
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in batchAudit"
