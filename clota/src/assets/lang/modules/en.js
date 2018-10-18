@@ -1131,7 +1131,7 @@ export default {
     'distributeName': '分销名称',
     'distributePrice': '分销价格',
     'distributeSccuess': '分销成功',
-    'distributeFail': '分销失败'
+    'distributeFail': '分销失败',
 
     /*** 预定中心模块 ***/
     'auditCenter': '审核中心',
