@@ -4,20 +4,12 @@
     <div class="order-operate-log">
         <div class="title">订单操作日志</div>
         <Steps direction="vertical" size="small" class="ivu-steps-clota">
-            <Step icon="blue" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
-            </Step>
-            <Step icon="red" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
-            </Step>
-            <Step icon="green" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
-            </Step>
-            <Step icon="blue" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
+            <Step v-for="item in orderRecordList"
+                  :key="item.createdTime"
+                  icon="clota"
+                  class="red-status"
+                  :title="item.contents" >
+                <span class="time">{{item.createdTime}}</span>
                 <span class="operater">操作者：广州长隆旅行社 张三 </span>
             </Step>
         </Steps>
@@ -26,10 +18,24 @@
 
 <script>
     export default {
+        props :{
+            //操作记录
+            'order-record-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         data() {
             return {}
         },
-        methods: {}
+        methods: {
+
+            getClass (data) {
+
+            }
+        }
     }
 </script>
 

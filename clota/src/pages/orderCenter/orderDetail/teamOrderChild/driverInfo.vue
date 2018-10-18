@@ -5,8 +5,9 @@
         <div class="title">司机信息</div>
         <table-com
             :column-data="columnData"
-            :table-data="tableData"
+            :table-data="driverList"
             :border="true"
+            :table-com-min-height="250"
             :auto-height="true">
         </table-com>
     </div>
@@ -16,16 +17,20 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './driverInfoConfig';
     export default {
+        props : {
+            //司机列表
+            'driver-list' : {
+                type : Array,
+                default ( ){
+                    return [];
+                }
+            }
+        },
         components :{
             tableCom
         },
         data() {
             return {
-                //表格数据
-                tableData : [
-                    {
-                    }
-                ],
                 //表头配置
                 columnData : columnData
             }

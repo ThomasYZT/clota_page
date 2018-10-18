@@ -399,7 +399,7 @@
                                 }),
                                 phoneNumber : this.tableData[i].phoneNumber,
                                 visitorName : this.tableData[i].staffName,
-                                visitorType : 'driver',
+                                visitorType : 'guide',
                             });
                         }
                         resolve(result);

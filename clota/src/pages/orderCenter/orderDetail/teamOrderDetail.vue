@@ -11,22 +11,22 @@
             <base-info>
             </base-info>
             <!--产品信息-->
-            <product-info>
+            <product-info :product-info-list="productInfoList">
             </product-info>
             <!--游客信息-->
-            <tourist-info>
+            <tourist-info :visitor-list="visitorList">
             </tourist-info>
             <!--导游信息-->
-            <tour-guide-info>
+            <tour-guide-info :guide-list="guideList">
             </tour-guide-info>
             <!--司机信息-->
-            <driver-info>
+            <driver-info :driver-list="driverList">
             </driver-info>
             <!--订单明细-->
             <order-particulars>
             </order-particulars>
             <!--订单操作日志-->
-            <order-operate-log>
+            <order-operate-log :order-record-list="orderRecordList">
             </order-operate-log>
         </div>
     </div>
@@ -42,6 +42,7 @@
     import driverInfo from './teamOrderChild/driverInfo';
     import orderParticulars from './teamOrderChild/orderParticulars';
     import orderOperateLog from './teamOrderChild/orderOperateLog';
+    import ajax from '@/api/index.js';
     export default {
         mixins :[lifeCycelMixins],
         components : {
@@ -67,6 +68,8 @@
                         }
                     }
                 ],
+                //订单详情
+                orderDetailInfo : {}
             }
         },
         methods: {
@@ -75,13 +78,91 @@
              * @param params
              */
             getParams(params) {
-                // if(params && params.orderId){
-                //     this.orderId = params.orderId;
-                // }else{
-                //     this.$router.push({
-                //         name : 'reserveOrderDetail'
-                //     });
-                // }
+                if(params && params.orderId){
+                    this.orderId = params.orderId;
+                    this.queryTeamOrderDetail();
+                }else{
+                    this.$router.push({
+                        name : 'reserveOrderDetail'
+                    });
+                }
+            },
+            /**
+             * 查询团队订单详情
+             */
+            queryTeamOrderDetail () {
+                ajax.post('queryTeamOrderDetail',{
+                    orderId : this.orderId
+                }).then(res => {
+                    if(res.success){
+                        this.orderDetailInfo = res.data ? res.data : {};
+                    }else{
+                        this.orderDetailInfo = {};
+                    }
+                });
+            }
+        },
+        computed : {
+            //产品列表
+            productInfoList () {
+                if(this.orderDetailInfo && this.orderDetailInfo.productInfoList){
+                    return this.orderDetailInfo.productInfoList;
+                }else{
+                    return [];
+                }
+            },
+            //游客信息
+            visitorList () {
+                if(this.orderDetailInfo && this.orderDetailInfo.visitorList){
+                    return this.orderDetailInfo.visitorList.map(item =>{
+                        let documentInfo = item.documentInfo ? JSON.parse(item.documentInfo) : {};
+                        return {
+                            ...item,
+                            idNum :documentInfo['data'],
+                            idType :documentInfo['type'],
+                        }
+                    });
+                }else{
+                    return [];
+                }
+            },
+            //导游信息
+            guideList () {
+                if(this.orderDetailInfo && this.orderDetailInfo.guideList){
+                    return this.orderDetailInfo.guideList.map(item => {
+                        let documentInfo = item.documentInfo ? JSON.parse(item.documentInfo) : {};
+                        return {
+                            ...item,
+                            idNum :documentInfo['data'],
+                            idType :documentInfo['type'],
+                        }
+                    });
+                }else{
+                    return [];
+                }
+            },
+            //司机信息
+            driverList () {
+                if(this.orderDetailInfo && this.orderDetailInfo.driverList){
+                    return this.orderDetailInfo.driverList.map(item => {
+                        let documentInfo = item.documentInfo ? JSON.parse(item.documentInfo) : {};
+                        return {
+                            ...item,
+                            idNum :documentInfo['data'],
+                            idType :documentInfo['type'],
+                        }
+                    });
+                }else{
+                    return [];
+                }
+            },
+            //订单操作日志
+            orderRecordList () {
+                if(this.orderDetailInfo && this.orderDetailInfo.orderRecordList){
+                    return this.orderDetailInfo.orderRecordList;
+                }else{
+                    return [];
+                }
             }
         }
     }

@@ -13,11 +13,11 @@ export const columnData = [
     {
         title: '证件类型',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'idType'
     },
     {
         title: '证件号码',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'idNum'
     },
 ]

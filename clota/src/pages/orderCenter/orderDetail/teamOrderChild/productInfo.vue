@@ -5,8 +5,9 @@
         <div class="title">产品信息</div>
         <table-com
             :column-data="columnData"
-            :table-data="tableData"
+            :table-data="productInfoList"
             :border="true"
+            :table-com-min-height="250"
             :auto-height="true">
         </table-com>
     </div>
@@ -16,17 +17,20 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './productInfoConfig';
     export default {
+        props : {
+            //产品信息
+          'product-info-list' : {
+              type : Array,
+              default () {
+                  return [];
+              }
+          }
+        },
         components :{
             tableCom
         },
         data() {
             return {
-                //表格数据
-                tableData : [
-                    {
-                        productName : '1'
-                    }
-                ],
                 //表头配置
                 columnData : columnData
             }

@@ -5,27 +5,44 @@
         <div class="title">游客信息</div>
         <table-com
             :column-data="columnData"
-            :table-data="tableData"
+            :table-data="visitorList"
+            :table-com-min-height="250"
             :border="true"
             :auto-height="true">
+            <el-table-column
+                slot="column2"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                fixed="right"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row.idType)}}
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './productInfoConfig';
+    import {columnData} from './touristInfoConfig';
     export default {
+        props :{
+            //游客列表
+            'visitor-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         components :{
             tableCom
         },
         data() {
             return {
-                //表格数据
-                tableData : [
-                    {
-                    }
-                ],
                 //表头配置
                 columnData : columnData
             }
