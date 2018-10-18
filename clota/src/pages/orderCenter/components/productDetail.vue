@@ -23,7 +23,7 @@
             :ofsetHeight="170"
             :show-pagination="false"
             :column-data="columnData"
-            :table-data="tableData"
+            :table-data="moduleInfo"
             :border="true"
             :column-check="true"
             @selection-change="changeSelection">
@@ -31,12 +31,12 @@
         <div class="table-bottom">
             <i class="iconfont icon-note"></i>
             <ul>
-                <li>{{$t('未取票')}}：<b>0</b></li>
-                <li>{{$t('已取票')}}：<b>0</b></li>
-                <li>{{$t('未核销')}}：<b>0</b></li>
-                <li>{{$t('已核销')}}：<b>0</b></li>
-                <li>{{$t('已退票')}}：<b>0</b></li>
-                <li>{{$t('已改签')}}：<b>0</b></li>
+                <li>{{$t('未取票')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</b></li>
+                <li>{{$t('已取票')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
+                <li>{{$t('未核销')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</b></li>
+                <li>{{$t('已核销')}}：<b>{{baseInfo.quantityVerified | contentFilter}}</b></li>
+                <li>{{$t('已退票')}}：<b>{{baseInfo.quantityRefunded | contentFilter}}</b></li>
+                <li>{{$t('已改签')}}：<b>{{baseInfo.quantityRescheduled | contentFilter}}</b></li>
             </ul>
             <div class="reserve-num">{{$t('已改签')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
         </div>
@@ -57,8 +57,6 @@
             return {
                 //表头配置
                 columnData : productListHead,
-                //表格数据
-                tableData: [],
                 // 已勾选的数据
                 chosenRowData: [],
             }

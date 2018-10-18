@@ -270,6 +270,59 @@ export const productListHead = [
     }
 ];
 
+// 散客订单--审核详情--退票/改签日志列表表头
+export const refundAlterLogHead = [
+    {
+        title: '申请退票数量',
+        minWidth: 150,
+        enWidth : 180,
+        field: 'reqNum'
+    },
+    {
+        title: '申请人/时间',
+        minWidth: 280,
+        field: 'reqAccOrg/reqAccName/reqTime'
+    },
+    {
+        title: '退票审核通过',
+        minWidth: 150,
+        enWidth : 180,
+        field: 'passNum'
+    },
+    {
+        title: '操作员/时间',
+        minWidth: 280,
+        field: 'auditAccOrg/auditAccName/auditTime'
+    },
+    {
+        title: '产品明细编号',
+        minWidth: 150,
+        enWidth : 180,
+        field: 'passOrderTicketIds'
+    },
+];
+
+// 散客订单--审核详情--核销日志列表表头
+export const verifyLogHead = [
+    {
+        title: '核销数量',
+        minWidth: 150,
+        enWidth : 180,
+        field: 'verifyNum'
+    },
+    {
+        title: '操作员/时间',
+        minWidth: 280,
+        field: 'orgName/operator/operatedTime'
+    },
+    {
+        title: '产品明细编号',
+        minWidth: 150,
+        enWidth : 180,
+        field: 'ticketIds'
+    },
+];
+
 // 散客改签审核列表表头
 export const bulkChangeHead = [
 

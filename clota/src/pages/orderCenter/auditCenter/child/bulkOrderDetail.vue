@@ -14,6 +14,14 @@
         <product-detail :module-info="detailData.ticketList"
                         :base-info="detailData.baseInfo">
         </product-detail>
+        <!--分销信息-->
+        <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
+        <!--退票日志-->
+        <refund-alter-log :module-info="detailData.refundAlterList"></refund-alter-log>
+        <!--核销日志-->
+        <verify-log :module-info="detailData.verifyTicketLogList"></verify-log>
+        <!--操作日志-->
+        <operate-log></operate-log>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -22,6 +30,10 @@
     import bulkOrderBase from './bulkOrderBase.vue';
     import visitorInfo from '../../components/visitorInfo.vue';
     import productDetail from '../../components/productDetail.vue';
+    import allocationInfo from './allocationInfo.vue';
+    import refundAlterLog from '../../components/refundAlterLog.vue';
+    import verifyLog from '../../components/verifyLog.vue';
+    import operateLog from '../../orderDetail/teamOrderChild/orderOperateLog.vue';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -29,6 +41,10 @@
             bulkOrderBase,
             visitorInfo,
             productDetail,
+            allocationInfo,
+            refundAlterLog,
+            verifyLog,
+            operateLog,
         },
         props: {},
         data() {
@@ -36,9 +52,19 @@
                 detailData: {
                     baseInfo: {},
                     visitor: {
-                        documentInfo: {}
+                        documentInfo: {},   // 证件信息：type-证件类型，data-证件号
+                        phoneNumber: '',
+                        visitorName: '',
                     },
                     ticketList: [],
+                    allocationInfo: {
+                        allocationCommission: 0,    // 分销佣金
+                        policyName: '',    // 政策名称
+                        settleLink: [],    // 分销链
+                    },
+                    refundAlterList: [],    // 退票改签日志
+                    verifyTicketLogList: [],    // 核销日志
+                    orderOperationRecordList: [],    // 操作日志
                 },
             }
         },
