@@ -262,6 +262,8 @@
             return {
                 //个人注册表单信息
                 formData: {
+                    //合作伙伴类型
+                    partnerType: 'person',
                     //姓名，企业名称
                     orgName: '',
                     //性别
@@ -295,6 +297,8 @@
                 },
                 //企业注册表单信息
                 formDataCompany: {
+                    //合作伙伴类型
+                    partnerType: 'company',
                     //企业编号
                     enterpriseNumber: '',
                     //姓名，企业名称

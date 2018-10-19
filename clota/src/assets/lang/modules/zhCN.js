@@ -1156,6 +1156,14 @@ export default {
     'courier': '导游',
     'driver': '司机',
     'addDriver': '新增司机',
-    'licence': '车牌号'
-
+    'licence': '车牌号',
+    'channalType': '所属渠道类型',
+    'attach': '附件',
+    'distributionUnit': '分销商',
+    'SocialCreditCode':'社会信用代码',
+    'Appendixofbusinesslicense': '营业执照附件',
+    'AuthorityInfo': '权限信息',
+    'Offlineverificationcode': '线下核销编码',
+    'Universaldistributioninvitationcode': '全民分销邀请码',
+    'SMSallowance':'短信余量(条)'
 }

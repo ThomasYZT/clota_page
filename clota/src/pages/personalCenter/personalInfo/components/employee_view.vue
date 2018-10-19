@@ -5,39 +5,42 @@
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('姓名')}}：</span>{{accountInfo.nickName}}
+                        <span class="field-name">{{$t('name')}}：</span>{{accountInfo.nickName}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('登录名')}}：</span>{{accountInfo.loginName}}
+                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('籍贯')}}：</span>{{accountInfo.provinceName}}
+                        <span class="field-name">{{$t('nativePlace')}}：</span>{{accountInfo.provinceName}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('备注')}}：</span>{{accountInfo.descript}}
-                    </li>
-                </ul>
-            </Col>
-            <Col span="8">
-                <ul>
-                    <li>
-                        <span class="field-name">{{$t('性别')}}：</span>{{accountInfo.sex == "female" ? '男' : '女'}}
+                        <span class="field-name">{{$t('remark')}}：</span>{{accountInfo.descript}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('手机号')}}：</span>{{accountInfo.phone}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('籍贯地址')}}：</span>{{accountInfo.address}}
+                        <span class="field-name">{{$t('AuthorityInfo')}}：</span>{{accountInfo.descript}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('部门名称')}}：</span>{{accountInfo.deptName}}
+                        <span class="field-name">{{$t('gender')}}：</span>{{accountInfo.sex == "male" ? '男' : '女'}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('生日')}}：</span>{{accountInfo.birthday}}
+                        <span class="field-name">{{$t('mobilePhone')}}：</span>{{accountInfo.phone}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('nativeAddress')}}：</span>{{accountInfo.address}}
+                    </li>
+                </ul>
+            </Col>
+            <Col span="8">
+                <ul>
+                    <li>
+                        <span class="field-name">{{$t('departName')}}：</span>{{accountInfo.deptName}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('birthday')}}：</span>{{accountInfo.birthday}}
                     </li>
                 </ul>
             </Col>
