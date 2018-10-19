@@ -15,12 +15,13 @@
                 </ul>
             </div>
             <div class="card-info">
-                <ul class="per-info">
+                <ul class="per-info" v-if="item.idTableData && item.idTableData.length > 0">
                     <li class="list" v-for="list of item.idTableData" :key="list.type">
                         <span class="key">{{$t(list.type)}}：</span>
                         <span class="value">{{list.data}}</span>
                     </li>
                 </ul>
+                <div class="hr" v-else></div>
                 <table-com
                     :column-data="columnData"
                     :table-data="item.productInfo"
@@ -34,7 +35,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row['idType'])}}
+                            {{$t(scope.row['idType']) | contentFilter}}
                         </template>
                     </el-table-column>
                 </table-com>
@@ -167,7 +168,72 @@
              * @param data
              */
             confirmModifyTouristInfo (data) {
-                this.touristInfo[data.index] = data.data;
+                this.$set(this.touristInfo,data.index,data.data);
+                this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+            },
+            /**
+             * 删除不能下单的产品
+             * @param data
+             */
+            deleteProduct(data) {
+                for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                    let productInfo = this.touristInfo[i]['productInfo'];
+                    for(let a = productInfo.length - 1,b = 0; a >= b;a--){
+                        if(data.includes(productInfo[a]['productId'])){
+                            this.touristInfo[i]['productInfo'].splice(a,1);
+                        }
+                    }
+                }
+                this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+            },
+            /**
+             * 判断每位游客是否都添加了产品信息
+             */
+            touristHasTicket () {
+                return new Promise((resolve,reject) => {
+                    let result = [];
+                    for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                        let productInfo = this.touristInfo[i]['productInfo'];
+                        if(productInfo.length < 1){
+                            result.push(this.touristInfo[i]);
+                        }
+                    }
+                    if(result.length > 0){
+                        reject({
+                            type : 'touristInfoErr',
+                            data : result
+                        })
+                    }else{
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 获取需要校验的游客的产品信息
+             */
+            getChcekProducts () {
+                let result = [];
+                for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                    let productInfo = this.touristInfo[i]['productInfo'];
+                    let idTableData = this.touristInfo[i]['idTableData'];
+                    //证件信息转对象
+                    let idsObj = {};
+                    for(let i = 0,j = idTableData.length;i < j;i++){
+                        idsObj[idTableData[i]['type']] = idTableData[i];
+                    }
+                    for(let a = productInfo.length - 1,b = 0; a >= b;a--){
+                        result.push({
+                            productId : productInfo[a].productId,
+                            documentType : productInfo[a].idType,
+                            documentId : idsObj[productInfo[a].idType] ? idsObj[productInfo[a].idType]['data'] : '',
+                            mobile : this.touristInfo[i].phone,
+                            count : productInfo[a].takeNum,
+                            productName : productInfo[a].productName,
+                            visitorName : this.touristInfo[i].name
+                        });
+                    }
+                }
+                return result;
             }
         },
         computed : {
@@ -181,7 +247,7 @@
                     }
                 });
             },
-            //游客已经选择的票信息
+            //游客已经选择的产品信息
             productChosedInfo () {
                 let result = {};
                 for(let i = 0,j = this.touristInfo.length;i < j;i++){
@@ -291,6 +357,10 @@
                             color: $color_333;
                         }
                     }
+                }
+
+                .hr{
+                    height: 24px;
                 }
 
                 /deep/ .el-table{

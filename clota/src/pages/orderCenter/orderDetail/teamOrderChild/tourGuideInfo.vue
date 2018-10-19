@@ -5,8 +5,9 @@
         <div class="title">导游信息</div>
         <table-com
             :column-data="columnData"
-            :table-data="tableData"
+            :table-data="guideList"
             :border="true"
+            :table-com-min-height="250"
             :auto-height="true">
         </table-com>
     </div>
@@ -16,16 +17,20 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './tourGuideInfoConfig';
     export default {
+        props :{
+            //导游列表
+            'guide-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         components :{
             tableCom
         },
         data() {
             return {
-                //表格数据
-                tableData : [
-                    {
-                    }
-                ],
                 //表头配置
                 columnData : columnData
             }

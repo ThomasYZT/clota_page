@@ -28,86 +28,87 @@
                         </FormItem>
                     </i-col>
                 </i-row>
-
-                <div class="add-id-card">
-                    <span class="add-btn" @click="addCardInfo"><Icon type="ios-plus-empty"></Icon>添加证件</span>
-                </div>
-                <table-com
-                    :column-data="idColumns"
-                    :table-data="idTableData"
-                    class="id-class"
-                    :auto-height="true"
-                    :table-com-min-height="250">
-                    <el-table-column
-                        slot="column0"
-                        show-overflow-tooltip
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-                            <template v-if="scope.row.editType === 'edit'">
-                                <FormItem :prop="'idTypeIn' + scope.$index" :rules="rules.idTypeIn(scope.row)">
-                                    <Select v-model.trim="scope.row.type" transfer>
-                                        <Option v-for="item in acceptCertificateType.all"
-                                                :key="item.value"
-                                                :value="item.value">
-                                            {{$t(item.label)}}
-                                        </Option>
-                                    </Select>
-                                </FormItem>
-                            </template>
-                            <template v-else>
-                                <div class="row-class">
-                                    {{$t(scope.row[row.field])}}
-                                </div>
-                            </template>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        show-overflow-tooltip
-                        slot="column1"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-                            <template v-if="scope.row.editType === 'edit'">
-                                <FormItem :prop="'idCard' + scope.$index" :rules="rules.idCard(scope.row)">
-                                    <Input type="text" v-model.trim="scope.row.data" />
-                                </FormItem>
-                            </template>
-                            <template v-else>
-                                {{scope.row[row.field]}}
-                            </template>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column2"
-                        slot-scope="row"
-                        show-overflow-tooltip
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-                            <ul class="operate-list">
-                                <template v-if="scope.row.editType !== 'edit'">
-                                    <li @click="modifyIdfo(scope.$index)" >{{$t('modify')}}</li>
-                                    <li class="red-label" @click="delIdInfo(scope.$index)">{{$t('del')}}</li>
+                <!--不需要证件时，不需要显示证件列表-->
+                <template v-if="acceptCertificateType.all.length > 0">
+                    <div class="add-id-card">
+                        <span class="add-btn" @click="addCardInfo"><Icon type="ios-plus-empty"></Icon>添加证件</span>
+                    </div>
+                    <table-com
+                        v-if="acceptCertificateType.all.length > 0"
+                        :column-data="idColumns"
+                        :table-data="idTableData"
+                        class="id-class"
+                        :auto-height="true"
+                        :table-com-min-height="250">
+                        <el-table-column
+                            slot="column0"
+                            show-overflow-tooltip
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                <template v-if="scope.row.editType === 'edit'">
+                                    <FormItem :prop="'idTypeIn' + scope.$index" :rules="rules.idTypeIn(scope.row)">
+                                        <Select v-model.trim="scope.row.type" transfer>
+                                            <Option v-for="item in acceptCertificateType.all"
+                                                    :key="item.value"
+                                                    :value="item.value">
+                                                {{$t(item.label)}}
+                                            </Option>
+                                        </Select>
+                                    </FormItem>
                                 </template>
                                 <template v-else>
-                                    <li @click="saveCardInfo(scope.$index)">{{$t('save')}}</li>
-                                    <li class="cancel" @click="cancelEdit(scope.$index)">{{$t('cancel')}}</li>
+                                    <div class="row-class">
+                                        {{$t(scope.row[row.field])}}
+                                    </div>
                                 </template>
-                            </ul>
-                        </template>
-                    </el-table-column>
-                </table-com>
-
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            show-overflow-tooltip
+                            slot="column1"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                <template v-if="scope.row.editType === 'edit'">
+                                    <FormItem :prop="'idCard' + scope.$index" :rules="rules.idCard(scope.row)">
+                                        <Input type="text" v-model.trim="scope.row.data" />
+                                    </FormItem>
+                                </template>
+                                <template v-else>
+                                    {{scope.row[row.field]}}
+                                </template>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column2"
+                            slot-scope="row"
+                            show-overflow-tooltip
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                <ul class="operate-list">
+                                    <template v-if="scope.row.editType !== 'edit'">
+                                        <li @click="modifyIdfo(scope.$index)" >{{$t('modify')}}</li>
+                                        <li class="red-label" @click="delIdInfo(scope.$index)">{{$t('del')}}</li>
+                                    </template>
+                                    <template v-else>
+                                        <li @click="saveCardInfo(scope.$index)">{{$t('save')}}</li>
+                                        <li class="cancel" @click="cancelEdit(scope.$index)">{{$t('cancel')}}</li>
+                                    </template>
+                                </ul>
+                            </template>
+                        </el-table-column>
+                    </table-com>
+                </template>
                 <div class="title-label">
                     取票信息
                 </div>
-
                 <table-com
                     :column-data="ticketColumnData"
                     class="get-ticket"
@@ -134,7 +135,7 @@
                                 </FormItem>
                             </template>
                             <template v-else>
-                                无需证件
+                                -
                             </template>
                         </template>
                     </el-table-column>
@@ -168,7 +169,8 @@
             </div>
         </Modal>
         <!--添加游客报错提示框-->
-        <add-tourist-err-modal v-model="addTouristModalShow" :tourist-err-list="touristErrList">
+        <add-tourist-err-modal v-model="addTouristModalShow"
+                               :tourist-err-list="touristErrList">
         </add-tourist-err-modal>
     </div>
 </template>
@@ -309,14 +311,7 @@
                 //证件列表表头配置
                 idColumns : idColumns,
                 //证件数据
-                idTableData : [
-                    {
-                        type : 'identity',
-                        data : '',
-                        editType : 'edit',
-                        modifyType : 'add'
-                    }
-                ],
+                idTableData : [],
                 ticketColumnData : ticketColumnData,
                 //取票信息数据
                 ticketTableData : [],
@@ -368,7 +363,7 @@
                             this.$emit('input', false);
                         }).catch(err => {
                             if(err === 'ticketErr'){
-                                this.$Message.error('最少选择一张票');
+                                this.$Message.error('最少选择一种产品信息');
                             }else if(err === 'idTypeErr'){
                                 this.$Message.warning('请先保存正在编辑的证件类型')
                             }
@@ -485,14 +480,7 @@
                     this.findProductSaleRule();
                 }else{
                     this.$refs.formInline.resetFields();
-                    this.idTableData = [
-                        {
-                            type : 'identity',
-                            data : '',
-                            editType : 'edit',
-                            modifyType : 'add'
-                        }
-                    ];
+                    this.idTableData = [];
                 }
             },
             /**
@@ -541,19 +529,10 @@
              * 校验填写的游客是否可以购票
              */
             checkProductSaleRule () {
+                let checkProducts = this.getChcekProducts();
                 return new Promise((resolve,reject) => {
                     ajax.post('checkProductSaleRule',{
-                        productSaleVo : JSON.stringify(this.productListDeal.map(item =>{
-                            return {
-                                productId : item.productId,
-                                documentType : item.idType,
-                                documentId : item.documentId,
-                                mobile : item.phone,
-                                count : item.takeNum,
-                                productName : item.productName,
-                                visitorName : this.formData.name
-                            }
-                        }).filter(item => item.takeNum > 0))
+                        productSaleVo : JSON.stringify(checkProducts)
                     }).then(res => {
                         if(res.success){
                             if(res.data && res.data.length > 0){
@@ -621,6 +600,27 @@
                         resolve();
                     }
                 });
+            },
+            /**
+             * 获取需要校验的产品信息
+             */
+            getChcekProducts () {
+                //证件信息转对象
+                let idsObj = {};
+                for(let i = 0,j = this.idTableData.length;i < j;i++){
+                    idsObj[this.idTableData[i]['type']] = this.idTableData[i];
+                }
+                return this.productListDeal.map(item =>{
+                    return {
+                        productId : item.productId,
+                        documentType : item.idType,
+                        documentId : idsObj[item.idType] ? idsObj[item.idType]['data'] : '',
+                        mobile : this.formData.phone,
+                        count : item.takeNum,
+                        productName : item.productName,
+                        visitorName : this.formData.name
+                    }
+                }).filter(item => item.count > 0);
             }
         },
         watch : {
@@ -634,14 +634,42 @@
             //如果默认信息不为空表示在修改游客信息
             defaultInfo (newVal){
                 if(newVal && Object.keys(newVal).length > 0){
+                    let productInfo = {};
                     this.formData.name = newVal.name;
                     this.formData.phone = newVal.phone;
                     this.idTableData = newVal.idTableData;
-                    this.ticketTableData = newVal.productInfo;
+                    for(let i = 0,j = newVal.productInfo.length;i < j;i++){
+                        productInfo[newVal.productInfo[i]['productId']] = newVal.productInfo[i];
+                    }
+                    this.ticketTableData = this.productList.map(item => {
+                        return {
+                            ...item,
+                            takeNum : productInfo[item.productId] ? '' : item.takeNum,
+                            leftNum : productInfo[item.productId] ? (productInfo[item.productId]['takeNum'] + item.leftNum) : item.leftNum,
+                        }
+                    });
                     this.type =  'edit';
                 }else{
                     this.ticketTableData = JSON.parse(JSON.stringify(this.productList));
                     this.type =  'add';
+                }
+            },
+            acceptCertificateType (newVal) {
+                if(!this.defaultInfo || Object.keys(this.defaultInfo).length < 1){
+                    if(newVal && newVal.all){
+                        if(newVal.all.length > 0 && this.idTableData.length < 1){
+                            this.idTableData =  [
+                                {
+                                    type : 'identity',
+                                    data : '',
+                                    editType : 'edit',
+                                    modifyType : 'add'
+                                }
+                            ];
+                        }else{
+                            this.idTableData =  [];
+                        }
+                    }
                 }
             }
         },
@@ -706,7 +734,7 @@
                             max : max,
                             min : 0,
                             takeNum : Number(numCount),
-                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
+                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType && this.productPolicy[item.productId].needId !== 'noRequired' ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
                             needId : needId
                         }
                     });
@@ -717,7 +745,7 @@
                             disabled : true,
                             max : 0,
                             min : 0,
-                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
+                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType && this.productPolicy[item.productId].needId !== 'noRequired' ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
                             needId : this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : ''
                         }
                     });

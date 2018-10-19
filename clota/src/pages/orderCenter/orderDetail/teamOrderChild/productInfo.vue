@@ -5,8 +5,9 @@
         <div class="title">产品信息</div>
         <table-com
             :column-data="columnData"
-            :table-data="tableData"
+            :table-data="productInfoList"
             :border="true"
+            :table-com-min-height="250"
             :auto-height="true">
         </table-com>
     </div>
@@ -14,24 +15,44 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './productInfoConfig';
+    import {columnData1,columnData3,columnData2} from './productInfoConfig';
     export default {
+        props : {
+            //产品信息
+            'product-info-list' : {
+              type : Array,
+              default () {
+                  return [];
+              }
+            },
+            //视图类型
+            'view-type' : {
+                type : String,
+                default : ''
+            }
+        },
         components :{
             tableCom
         },
         data() {
             return {
-                //表格数据
-                tableData : [
-                    {
-                        productName : '1'
-                    }
-                ],
                 //表头配置
                 columnData : columnData
             }
         },
-        methods: {}
+        methods: {},
+        computed : {
+            columnData () {
+                //下单企业
+                if(this.viewType === 'channel') {
+                    return columnData1;
+                }else if(this.viewType === 'scenic'){//景区
+                    return columnData2;
+                }else if(this.viewType === 'allocation'){//中间分销商
+                    return columnData3;
+                }
+            }
+        }
     }
 </script>
 

@@ -1,0 +1,49 @@
+<!--
+内容：核销日志
+作者：
+日期：
+-->
+
+<template>
+    <div class="">
+        <div class="block-title">{{$t('核销日志')}}</div>
+        <table-com
+            :table-com-min-height="300"
+            :ofsetHeight="170"
+            :show-pagination="false"
+            :column-data="columnData"
+            :table-data="moduleInfo"
+            :border="true"
+            :column-check="false">
+        </table-com>
+
+    </div>
+</template>
+<script type="text/ecmascript-6">
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import {verifyLogHead} from '../auditCenter/auditConfig';
+
+    export default {
+        components: {tableCom},
+        props: {
+            moduleInfo: Array
+        },
+        data() {
+            return {
+                //表头配置
+                columnData : verifyLogHead,
+            }
+        },
+
+    };
+</script>
+
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
+
+    .block-title {
+        @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
+        margin-bottom: 10px;
+    }
+
+</style>

@@ -2,17 +2,17 @@
 export const columnData = [
     {
         title: '导游姓名',
-        width: 215,
+        minWidth: 115,
         field: 'visitorName'
     },
     {
         title: '手机号',
-        width: 200,
+        width: 150,
         field: 'phoneNumber'
     },
     {
         title: '身份证号码',
-        minWidth: 120,
-        field: 'documentInfo'
+        minWidth: 222,
+        field: 'idNum'
     }
 ]

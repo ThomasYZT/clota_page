@@ -160,9 +160,9 @@
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('退票')}}</li>
-                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>
-                        <li @click="reserve(scope.row)">{{$t('详情')}}</li>
+                        <!--<li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('退票')}}</li>-->
+                        <!--<li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>-->
+                        <!--<li @click="reserve(scope.row)">{{$t('详情')}}</li>-->
                     </ul>
                 </template>
             </el-table-column>

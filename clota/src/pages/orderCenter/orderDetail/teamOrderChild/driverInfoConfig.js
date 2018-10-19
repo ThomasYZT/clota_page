@@ -2,12 +2,12 @@
 export const columnData = [
     {
         title: '司机姓名',
-        minwidth: 215,
+        minWidth: 215,
         field: 'visitorName'
     },
     {
         title: '车牌号',
-        width: 200,
-        field: 'phoneNumber'
+        minWidth: 200,
+        field: 'idNum'
     }
 ]

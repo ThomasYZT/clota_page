@@ -4,20 +4,12 @@
     <div class="order-operate-log">
         <div class="title">订单操作日志</div>
         <Steps direction="vertical" size="small" class="ivu-steps-clota">
-            <Step icon="blue" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
-            </Step>
-            <Step icon="red" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
-            </Step>
-            <Step icon="green" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
-            </Step>
-            <Step icon="blue" title="已完成" content="这里是该步骤的描述信息">
-                <span class="time">2016-10-11  11:30:10</span>
+            <Step v-for="item in orderRecordList"
+                  :key="item.createdTime"
+                  icon="clota"
+                  :class="getClass(item)"
+                  :title="item.contents" >
+                <span class="time">{{item.createdTime}}</span>
                 <span class="operater">操作者：广州长隆旅行社 张三 </span>
             </Step>
         </Steps>
@@ -26,10 +18,47 @@
 
 <script>
     export default {
+        props :{
+            //操作记录
+            'order-record-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         data() {
             return {}
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取步骤类名
+             * @param data
+             */
+            getClass (data) {
+                switch(data.operationStatus){
+                    //订单退票申请
+                    case 'ORDER_REFUND_APPLY' : return 'blue-status';
+                    //订单退票审核
+                    case 'ORDER_REFUND_AUDIT' : return 'green-status';
+                    //订单改签申请
+                    case 'ORDER_ALTER_APPLY' : return 'green-status';
+                    //订单改签审核
+                    case 'ORDER_ALTER_AUDIT' : return 'green-status';
+                    //新建订单
+                    case 'ORDER_NEW_ORDER' : return 'blue-status';
+                    //新增票券
+                    case 'ORDER_NEW_TICKET' : return 'blue-status';
+                    //"团队订单审核驳回
+                    case 'ORDER_AUDIT_REJECT' : return 'red-status';
+                    //"团队订单审核通过
+                    case 'ORDER_AUDIT_PASS' : return 'green-status';
+                    //核销
+                    case 'ORDER_VERIFY_TICKET' : return 'green-status';
+                    default : return 'blue-status'
+                }
+            }
+        }
     }
 </script>
 
