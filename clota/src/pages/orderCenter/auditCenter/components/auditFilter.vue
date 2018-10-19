@@ -29,7 +29,7 @@
                             <Option v-for="item in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
-                                {{item.label}}
+                                {{$t(item.label)}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -53,7 +53,7 @@
                             <Option v-for="item in orderEnterprise"
                                     :key="item.id"
                                     :value="item.id">
-                                {{item.orgName}}
+                                {{$t(item.orgName)}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -83,7 +83,8 @@
                 <i-col span="6">
                     <FormItem :label="$t('业态类型')" >
                         <Select v-model="formData.productType" style="width: 160px">
-                            <Option value="ticket">票</Option>
+                            <Option value="all">{{$t('all')}}</Option>
+                            <Option value="ticket">{{$t('票')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
@@ -97,6 +98,7 @@
 </template>
 <script type="text/ecmascript-6">
     import {orderChannelEnum, paymentStatusEnum} from '../auditConfig';
+    import {distributorChannelList} from '@/assets/js/constVariable';
     import {mapGetters} from 'vuex';
     import ajax from '@/api/index';
 
@@ -123,17 +125,17 @@
                     // 支付状态（全部、已支付、未支付）
                     paymentStatus: 'all',
                     // 下单企业ID
-                    channelId: '',
+                    channelId: 'all',
                     // 下单渠道
-                    orderChannel: '',
+                    orderChannel: 'all',
                     // 业态类型
-                    productType : '',
+                    productType : 'all',
                     // 关键字查询：游客姓名/手机号/订单号/订单明细编号
                     keyword : '',
                 },
 
                 // 下单企业列表
-                orderEnterprise: [],
+                orderEnterprise: [{id: 'all', orgName: this.$t('all')}],
                 // 下单渠道列表
                 orderChannelList: orderChannelEnum,
                 // 支付状态
@@ -200,7 +202,7 @@
                     scenicId: this.manageOrgs.id,
                 }).then(res => {
                     if (res.success) {
-                        this.orderEnterprise = res.data || [];
+                        this.orderEnterprise = this.orderEnterprise.concat(res.data || []);
                     }
                 });
             },
@@ -208,7 +210,15 @@
              * emit事件：on-filter，在父组件查询审核列表
              */
             searchAuditList() {
-                this.$emit('on-filter', this.formData);
+                let keys = ['channelId', 'orderChannel', 'productType'];
+                let queryParams = Object.assign({}, this.formData);
+                keys.forEach((key, i) => {
+                    if (queryParams[key] == 'all') {
+                        queryParams[key] = '';
+                    }
+                });
+
+                this.$emit('on-filter', queryParams);
             },
             /**
              * 重置筛选条件

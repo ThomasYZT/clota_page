@@ -13,8 +13,14 @@
             <!--产品单价-->
             <span style="margin-left: 40px;">{{$t('settlePrice')}}：{{baseInfo.price | contentFilter}}</span>
             <div class="audit-btn">
-                <Button type="primary" style="width: 88px; margin-right: 5px;">{{$t('通过')}}</Button>
-                <Button type="error" style="width: 88px; background-color: #EB6751;">{{$t('全部驳回')}}</Button>
+                <Button type="primary"
+                        style="width: 88px; margin-right: 5px;"
+                        @click="showAuditModal()">{{$t('通过')}}
+                </Button>
+                <Button type="error"
+                        style="width: 88px; background-color: #EB6751;"
+                        @click="showAuditModal()">{{$t('全部驳回')}}
+                </Button>
             </div>
         </div>
         <!--产品列表-->
@@ -27,6 +33,17 @@
             :border="true"
             :column-check="true"
             @selection-change="changeSelection">
+            <el-table-column
+                slot="column8"
+                slot-scope="row"
+                :label="row.title"
+                fixed="right"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="operate-btn blue" @click="">{{$t('details')}}</span>
+                </template>
+            </el-table-column>
         </table-com>
         <div class="table-bottom">
             <i class="iconfont icon-note"></i>
@@ -40,18 +57,25 @@
             </ul>
             <div class="reserve-num">{{$t('已改签')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
         </div>
+        <!--审核确认弹框-->
+        <confirm-audit-modal ref="confirmAuditModal"
+                             :base-info="baseInfo"
+                             :visitor-info="visitorInfo">
+        </confirm-audit-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {productListHead} from '../auditCenter/auditConfig';
     import ajax from '@/api/index';
+    import confirmAuditModal from '../auditCenter/child/confirmAuditModal.vue';
 
     export default {
-        components: {tableCom},
+        components: {tableCom, confirmAuditModal},
         props: {
             moduleInfo: Array,
-            baseInfo: Object
+            baseInfo: Object,
+            visitorInfo: Object,
         },
         data() {
             return {
@@ -75,6 +99,16 @@
             changeSelection(selection) {
                 this.chosenRowData = selection;
             },
+            /**
+             * 弹出审核确认的模态框
+             **/
+            showAuditModal() {
+
+                this.$refs['confirmAuditModal'].show({
+                    productList: this.moduleInfo || [],
+                    passList: this.chosenRowData
+                });
+            },
         }
     };
 </script>
@@ -84,6 +118,12 @@
 
     .block-title {
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
+    }
+
+    .table-top {
+        .audit-btn {
+            float: right;
+        }
     }
 
     .table-bottom {
@@ -116,5 +156,9 @@
             color: $color_red;
             line-height: 30px;
         }
+    }
+
+    .blue {
+        color: $color_blue;
     }
 </style>

@@ -6,13 +6,19 @@
 
 <template>
     <div class="bulk-order-detail">
+        <bread-crumb-head
+            :before-router-list="beforeRouterList"
+            :locale-router="localeRouter">
+        </bread-crumb-head>
+
         <!--散客订单基本信息-->
         <bulk-order-base :module-info="detailData.baseInfo"></bulk-order-base>
         <!--游客信息-->
         <visitor-info :module-info="detailData.visitor"></visitor-info>
         <!--产品明细-->
         <product-detail :module-info="detailData.ticketList"
-                        :base-info="detailData.baseInfo">
+                        :base-info="detailData.baseInfo"
+                        :visitor-info="detailData.visitor">
         </product-detail>
         <!--分销信息-->
         <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
@@ -21,10 +27,11 @@
         <!--核销日志-->
         <verify-log :module-info="detailData.verifyTicketLogList"></verify-log>
         <!--操作日志-->
-        <operate-log></operate-log>
+        <operate-log :order-record-list="detailData.orderOperationRecordList"></operate-log>
     </div>
 </template>
 <script type="text/ecmascript-6">
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
     import ajax from '@/api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import bulkOrderBase from './bulkOrderBase.vue';
@@ -49,6 +56,14 @@
         props: {},
         data() {
             return {
+                // 面包屑上级路由信息
+                beforeRouterList: [
+                    {
+                        name: '散客退票审核',   // 散客退票审核
+                        router: 'employee',
+                    }
+                ],
+                // 订单审核详情
                 detailData: {
                     baseInfo: {},
                     visitor: {
@@ -68,13 +83,29 @@
                 },
             }
         },
-        computed: {},
+        computed: {
+            breadRouterList() {
+
+            },
+        },
         created() {
         },
         mounted() {
         },
         watch: {},
         methods: {
+            init() {
+                if (this.$route.name == 'auditBulkRefund') {
+                    return [{
+                        name: '散客退票审核',   // 散客退票审核
+                        router: 'auditBulkRefund'
+                    }]
+                } else if (this.$route.name == 'auditBulkChange') {
+                    return [{
+                        name: '散客改签审核',   // 散客改签审核
+                        router: 'auditBulkChange'}]
+                }
+            },
             /**
              * 查询散客订单详情
              */
@@ -94,6 +125,7 @@
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
                     this.getBulkOrderDetail(params.visitorPid);
+//                    this.getBulkOrderDetail('1051793405354577920');
                 }else{
                     this.$router.go(-1);
                 }

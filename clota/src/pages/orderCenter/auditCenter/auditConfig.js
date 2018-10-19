@@ -331,9 +331,10 @@ export const bulkChangeHead = [
 
 // 下单渠道，枚举
 export const orderChannelEnum = [
+    {label: 'all', value: 'all'},
     {label: '景点', value: 'scenic'},
     {label: 'OTA', value: 'ota'},
-    {label: '旅行社', value: 'travel'},
+    {label: '旅行社', value: 'tour'},
 ];
 
 // 支付状态，枚举
