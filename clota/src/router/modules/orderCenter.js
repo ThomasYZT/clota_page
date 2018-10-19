@@ -163,7 +163,30 @@ export default {
                     },
                 }
             },
-
+            //核销管理
+            verifyManage : {
+                path: '/order/verifyManage',
+                name: 'verifyManage',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/verifyManage/verifyManage.vue'),
+                meta: {
+                    menuName: 'verifyManage',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'verifyManage',
+                    isMenu: true
+                }
+            },
+            verifySuccess: {
+                //核销管理--核销成功
+                path: '/order/verifyManage/success',
+                name: 'verifySuccess',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/verifyManage/child/verifySuccess.vue'),
+                meta: {
+                    menuName: 'verifyManage', //lang.config.js 里面的语言键值
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'verifyManage',
+                    isMenu: false
+                },
+            }
         }
     }
 

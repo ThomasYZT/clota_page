@@ -39,6 +39,12 @@ export default {
     'queryTeamOrderDetail' : '/order/queryTeamOrderDetail',
     //获取订单明细信息
     'queryOrderTicketDetail' : '/order/queryOrderTicketDetail',
+    //根据串码（取票串码、每张门票的核销串码）查询订单记录
+    'queryOrderInfoBySerialNo' : '/order/queryOrderInfoBySerialNo',
+    //根据核销串码核销
+    'checkByCheckSerialNo' : '/order/checkByCheckSerialNo',
+    //根据取票串码核销
+    'checkByPickSerialNo' : '/order/checkByPickSerialNo',
     //给导游重发短信
     'noticeGuidesAuditResult' : '/sms/noticeGuidesAuditResult',
 }

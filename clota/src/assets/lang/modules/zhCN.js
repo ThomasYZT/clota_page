@@ -1165,5 +1165,6 @@ export default {
     'AuthorityInfo': '权限信息',
     'Offlineverificationcode': '线下核销编码',
     'Universaldistributioninvitationcode': '全民分销邀请码',
-    'SMSallowance':'短信余量(条)'
+    'SMSallowance':'短信余量(条)',
+    'verifyManage': '核销管理',
 }

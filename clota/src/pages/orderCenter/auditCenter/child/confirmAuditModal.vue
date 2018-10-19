@@ -9,71 +9,48 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="single-org" v-if="!orderData.isBatch">
+            <div class="single-org">
                 <div class="form-wrap">
                     <div class="form-item-wrap">
-                        <label>{{$t("游客姓名")}}：</label><span>{{moduleInfo.visitorName | contentFilter}}</span>
+                        <label>{{$t("游客姓名")}}：</label><span>{{visitorInfo.visitorName | contentFilter}}</span>
                     </div>
                     <div class="form-item-wrap">
-                        <label>{{$t("mobilePhone")}}：</label><span>{{moduleInfo.phoneNumber | contentFilter}}</span>
+                        <label>{{$t("mobilePhone")}}：</label><span>{{visitorInfo.phoneNumber | contentFilter}}</span>
                     </div>
                     <div class="form-item-wrap">
-                        <label>{{$t("productName")}}：</label><span>{{moduleInfo.productName | contentFilter}}</span>
+                        <label>{{$t("productName")}}：</label><span>{{visitorInfo.productName | contentFilter}}</span>
                     </div>
                 </div>
             </div>
             <div class="table-wrap">
-                <template v-if="!orderData.isBatch">
-                    <table-com
-                        :height="165"
-                        :column-data="columnData"
-                        :table-data="tableData"
-                        :border="false">
-                        <el-table-column
-                            slot="column2"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                {{scope.row.price | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                    </table-com>
-                    <div class="table-bottom">
-                        <ul>
-                            <li>{{$t('申请数量')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
-                            <li>{{$t('通过数量')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
-                            <li>{{$t('驳回数量')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
-                        </ul>
-                        <div class="reserve-num">{{$t('已改签')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
-                    </div>
+                <table-com
+                    :height="165"
+                    :column-data="columnData"
+                    :table-data="tableData"
+                    :border="false">
+                    <!--<el-table-column
+                        slot="column2"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{scope.row.price | moneyFilter}}
+                        </template>
+                    </el-table-column>-->
+                </table-com>
+                <div class="table-bottom">
+                    <ul>
+                        <li>{{$t('申请数量')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
+                        <li>{{$t('通过数量')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
+                        <li>{{$t('驳回数量')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
+                    </ul>
+                    <div class="reserve-num">{{$t('已改签')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
+                </div>
 
-                    <div class="order-amount">
-                        {{$t('订单金额')}}：<span class="blue">{{(orderData.items[0] ? orderData.items[0].orderAmount : '-') | moneyFilter}}</span>
-                    </div>
-                </template>
-                <template v-else>
-                    <table-com
-                        :table-com-min-height="450"
-                        :column-data="batchColumnData"
-                        :table-data="tableData"
-                        :border="false">
-                        <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                {{scope.row.orderAmount | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                    </table-com>
-                    <div class="order-amount">
-                        {{$t('订单金额合计')}}：<span class="blue">{{orderAmountSum | moneyFilter}}</span>
-                    </div>
-                </template>
+                <div class="order-amount">
+                    <!--{{$t('订单金额')}}：<span class="blue">{{(orderData.items[0] ? orderData.items[0].orderAmount : '-') | moneyFilter}}</span>-->
+                </div>
             </div>
             <!--备注-->
             <div>
@@ -88,7 +65,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="auditPass()" >{{$t("审核通过")}}</Button>
+            <Button type="primary" @click="auditPass()" >{{$t("通过")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -102,14 +79,17 @@
     import sum from 'lodash/sum';
 
     export default {
-        props: [],
+        props: {
+            baseInfo: Object,
+            visitorInfo: Object,
+        },
         components: {
             tableCom,
         },
         data () {
             return {
                 visible: false,
-                title: '',
+                title: '审核结果确认',
                 //表头配置
                 columnData : [
                     {
@@ -125,40 +105,19 @@
                         field: 'passOrderTicketIds'
                     },
                 ],
-                //批量表头配置
-                batchColumnData : batchAuditHead,
                 //表格数据
                 tableData: [],
-                //订单数据
-                orderData: {
-                    items: [],
-                    isBatch: false
-                },
                 //审核备注
                 auditRemark: ''
             }
         },
         computed: {
-            orderAmountSum() {
-                if (this.orderData.isBatch && this.orderData.items.length) {
-                    return sum(this.orderData.items.map(item => item.orderAmount));
-                } else {
-                    return '-';
-                }
-            },
         },
         methods: {
 
             show ( data ) {
                 if (data) {
-                    this.orderData = data;
-                    if (data.isBatch) {
-                        this.tableData = data.items;
-                        this.title = '团队订单批量审核通过';
-                    } else {
-                        this.title = '审核通过';
-                        this.getOrderProducts(data.items[0].id);
-                    }
+                    this.tableData = data;
                 }
 
                 this.visible = true;

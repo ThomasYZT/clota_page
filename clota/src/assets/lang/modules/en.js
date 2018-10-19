@@ -1151,6 +1151,7 @@ export default {
     'sumBiggerThenDaySum': '每日可游玩次数不能大于累计可游玩次数',
     'courierManager': '导游管理',
     'driverManager': '司机管理',
-    'generalEmployeeManager': '普通员工管理'
+    'generalEmployeeManager': '普通员工管理',
+    'verifyManage': '核销管理',
 
 }
