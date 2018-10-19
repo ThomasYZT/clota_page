@@ -1,0 +1,179 @@
+<!--
+    会员注册
+    作者：杨泽涛
+-->
+<template>
+    <Modal v-model="visible"
+           :title="$t('addNewCourier')"
+           class-name="add-remark-modal vertical-center-modal"
+           width="560"
+           :mask-closable="false"
+           @on-cancel="hide">
+        <Form ref="form"
+              :model="formData"
+              :rules="ruleValidate"
+              :label-width="100"
+              class="form"
+              >
+            <FormItem :label="$t('name')" prop="staffName">
+                <Row>
+                    <Col span="15">
+                        <Input type="text" v-model="formData.staffName" :placeholder="$t('inputField',{field: $t('name')})"></Input>
+                    </Col>
+                </Row>
+            </FormItem>
+            <FormItem :label="$t('identityNo')" prop="documentNo">
+                <Row>
+                    <Col span="15">
+                        <Input type="text" v-model="formData.documentNo" :placeholder="$t('inputField',{field: $t('identityNo')})"></Input>
+                    </Col>
+                </Row>
+            </FormItem>
+            <FormItem :label="$t('mobilePhone')" prop="phoneNumber">
+                <Row>
+                    <Col span="15">
+                        <Input type="text" v-model="formData.phoneNumber" :placeholder="$t('inputField',{field: $t('mobilePhone')})"></Input>
+                    </Col>
+                </Row>
+            </FormItem>
+        </Form>
+
+        <div slot="footer" class="modal-footer">
+            <Button type="primary" @click="formValidate" >{{$t("confirm")}}</Button>
+            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
+        </div>
+    </Modal>
+</template>
+
+<script>
+    import {validator} from 'klwk-ui';
+    import ajax from '@/api/index';
+    export default {
+        components: {},
+        data() {
+            const validateMethods = {
+                //身份证校验
+                identificationNum: (rule, value, callback) => {
+                    let reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+                    if(!reg.test(value)) {
+                        callback(new Error(this.$t('errorFormat', {field: this.$t('identityNo')})))
+                    }else {
+                        callback();
+                    }
+                },
+                //校验手机号码
+                mobile: (rule, value, callback) => {
+                    if (!validator.isMobile(value)) {
+                        callback(new Error(this.$t('errorFormat', {field: this.$t('phoneNum')})));
+                    } else {
+                        callback();
+                    }
+                },
+            };
+            return {
+                visible: false,
+                formData: {
+                    //姓名
+                    staffName: '',
+                    //员工类型
+                    staffType: 'guide',
+                    //证件类型
+                    documentType: 'id',
+                    //证件号
+                    documentNo: '',
+                    //手机号
+                    phoneNumber: ''
+                },
+                ruleValidate: {
+                    staffName: [
+                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('name')}), trigger: 'blur' }
+                    ],
+                    documentNo: [
+                        { validator: validateMethods.identificationNum, trigger: 'blur'}
+                    ],
+                    phoneNumber: [
+                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('name')}), trigger: 'blur' },
+                        { validator: validateMethods.mobile, trigger: 'blur'}
+
+                    ]
+                }
+            }
+        },
+        methods: {
+            /**
+             * 显示弹窗
+             * @param type
+             * @param scopeRow
+             */
+            show({type, scopeRow}) {
+                if(scopeRow) {
+                    this.formData.id = scopeRow.id;
+                    this.formData.staffName = scopeRow.staffName;
+                    this.formData.documentNo = scopeRow.documentNo;
+                    this.formData.phoneNumber = scopeRow.phoneNumber;
+                }
+                this.type = type;
+                this.visible = true;
+            },
+            /**
+             * 隐藏弹窗
+             */
+            hide() {
+                this.formData = {
+                    staffName: '',
+                    staffType: 'guide',
+                    documentType: 'id',
+                    documentNo: '',
+                    phoneNumber: ''
+                };
+                delete this.formData.id;
+                this.visible = false;
+            },
+            /**
+             * 校验表单
+             */
+            formValidate() {
+                this.$refs.form.validate(valid => {
+                    if(valid) {
+                        this.saveGuide();
+                    }
+                });
+            },
+            /**
+             * 新增导游
+             */
+            saveGuide() {
+                ajax.post('addOrUpdateOrgStaff',this.formData).then(res => {
+                    if(res.success) {
+                        this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
+                        this.hide();
+                        this.$emit('refresh');
+                    }
+                })
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
+    .add-remark-modal{
+        .form {
+            width: 70%;
+            margin: 0 auto;
+        }
+        .modal-body{
+            padding: 50px 40px;
+
+            /deep/ .ivu-input-wrapper{
+                width: 280px;
+            }
+        }
+
+        .modal-footer{
+            /deep/ .ivu-btn{
+                padding: 5px 30px;
+            }
+        }
+    }
+</style>

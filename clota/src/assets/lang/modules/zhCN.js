@@ -774,7 +774,7 @@ export default {
     'updateStatus': '更新状态',
     'To': '至',
     'policyValidity': '政策可售期',
-    'aheadDays': '提前天数（M）',
+    'aheadDays': '提前天数(M)',
     'saleDayTime': '每日可售时间',
     'saleTodayTime': '当日票可售时间',
     'playDeadline': '游玩期限',
@@ -1148,5 +1148,14 @@ export default {
     'order.tour': '旅行社',
     'order.OTA': 'OTA',
     'order.scenic': '景区',
+    'sumBiggerThenDaySum': '每日可游玩次数不能大于累计可游玩次数',
+    'courierManager': '导游管理',
+    'driverManager': '司机管理',
+    'generalEmployeeManager': '普通员工管理',
+    'addNewCourier': '新增导游',
+    'courier': '导游',
+    'driver': '司机',
+    'addDriver': '新增司机',
+    'licence': '车牌号'
 
 }

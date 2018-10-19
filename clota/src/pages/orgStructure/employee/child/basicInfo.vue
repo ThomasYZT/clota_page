@@ -379,7 +379,7 @@
                 ajax.post("addOrUpdateEmployee", this.employee).then(function (res) {
                     if(res.success){
                         self.$Message.success(self.isEdit ? self.$t('editEmployee')+self.$t('success') : self.$t('newEmployee')+self.$t('success'));
-                        self.$router.push({name: 'employee'});
+                        self.$router.push({name: 'generalEmployeeManager'});
                     }else{
                         self.$Message.error( res.data.message || this.$t('failureTip',{tip: this.$t('addOrUpdateEmployee')}) );
                     }

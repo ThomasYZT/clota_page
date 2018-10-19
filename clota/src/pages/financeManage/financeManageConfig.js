@@ -2,14 +2,14 @@
 // 充值记录表头
 export const rechargeHead = [
     {
-        title: '付款方',      // 付款方
-        width: 160,
-        field: 'peerOrgName'
-    },
-    {
-        title: '收款方',   // 收款方
+        title: '付款方',   // 付款方
         minWidth: 150,
         field: 'orgName'
+    },
+    {
+        title: '收款方',      // 收款方
+        width: 160,
+        field: 'peerOrgName'
     },
     {
         title: '充值金额',   // 充值金额

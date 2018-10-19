@@ -375,97 +375,101 @@
                     </i-col>
                 </i-row>
                 <div class="table-wrap">
-                    <table-com
-                        :table-com-min-height="250"
-                        :column-data="proGroupColumnHead"
-                        :table-data="playPoint"
-                        :border="false">
-                        <el-table-column
-                            slot="column0"
-                            :label="row.title"
-                            :prop="row.field"
-                            :key="row.index"
-                            :width="row.width"
-                            :min-width="row.minWidth"
-                            show-overflow-tooltip
-                            slot-scope="row">
-                            <template slot-scope="scope">
-                                            <span v-if="scope.row.playType === 'required'"
-                                                  class="must-span iconfont icon-must-play"></span>
-                                <span>{{ scope.$index+1 }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column2"
-                            :label="row.title"
-                            :prop="row.field"
-                            :key="row.index"
-                            :width="row.width"
-                            :min-width="row.minWidth"
-                            show-overflow-tooltip
-                            slot-scope="row">
-                            <template slot-scope="scope">
-                                <template v-if="type === 'check'">
-                                    {{scope.row.sumTimes | contentFilter}}
-                                            </template>
-                                <template v-else>
-                                    <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
-                                                 :min="0"
-                                                 v-model.trim="scope.row.sumTimes"
-                                                 :placeholder="$t('inputField', {field: ''})"
-                                                 @on-blur="checkTimes(scope.row.sumTimes)">
-                                    </InputNumber>
+
+                    <Form-item prop="timesCheck">
+                        <table-com
+                            :table-com-min-height="250"
+                            :column-data="proGroupColumnHead"
+                            :table-data="playPoint"
+                            :border="false">
+                            <el-table-column
+                                slot="column0"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                                <span v-if="scope.row.playType === 'required'"
+                                                      class="must-span iconfont icon-must-play"></span>
+                                    <span>{{ scope.$index+1 }}</span>
                                 </template>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column3"
-                            :label="row.title"
-                            :prop="row.field"
-                            :key="row.index"
-                            :width="row.width"
-                            :min-width="row.minWidth"
-                            show-overflow-tooltip
-                            slot-scope="row">
-                            <template slot-scope="scope">
-                                <template v-if="type === 'check'">
-                                    {{scope.row.dayTimes | contentFilter}}
-                                            </template>
-                                <template v-else>
-                                    <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
-                                                 :min="0"
-                                                 v-model.trim="scope.row.dayTimes"
-                                                 :placeholder="$t('inputField', {field: ''})"
-                                                 @on-blur="checkTimes(scope.row.dayTimes)">
-                                    </InputNumber>
-                                </template>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column4"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                <ul class="operate-list">
+                            </el-table-column>
+                            <el-table-column
+                                slot="column2"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                                <template slot-scope="scope">
                                     <template v-if="type === 'check'">
-                                        <li class="normal"
-                                            v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
-                                        <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
-                                    </template>
+                                        {{scope.row.sumTimes | contentFilter}}
+                                                </template>
                                     <template v-else>
-                                        <li class="normal"
-                                            v-if="scope.row.playType === 'required'"
-                                            @click="setAblePlay(scope.row, scope.$index)">{{$t('setAblePlay')}}</li><!--设为可玩-->
-                                        <li class="normal"
-                                            v-else
-                                            @click="setMustPlay(scope.row, scope.$index)">{{$t('setMustPlay')}}</li><!--设为必玩-->
+                                        <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                     :min="0"
+                                                     v-model.trim="scope.row.sumTimes"
+                                                     :placeholder="$t('inputField', {field: ''})"
+                                                     @on-blur="checkTimes(scope.row.sumTimes)">
+                                        </InputNumber>
                                     </template>
-                                </ul>
-                            </template>
-                        </el-table-column>
-                    </table-com>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                slot="column3"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                    <template v-if="type === 'check'">
+                                        {{scope.row.dayTimes | contentFilter}}
+                                                </template>
+                                    <template v-else>
+                                            <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
+                                                         :min="0"
+                                                         v-model.trim="scope.row.dayTimes"
+                                                         :placeholder="$t('inputField', {field: ''})"
+                                                         @on-blur="checkTimes(scope.row.dayTimes)">
+                                            </InputNumber>
+                                    </template>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                slot="column4"
+                                slot-scope="row"
+                                :label="row.title"
+                                :width="row.width"
+                                :min-width="row.minWidth">
+                                <template slot-scope="scope">
+                                    <ul class="operate-list">
+                                        <template v-if="type === 'check'">
+                                            <li class="normal"
+                                                v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
+                                            <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
+                                        </template>
+                                        <template v-else>
+                                            <li class="normal"
+                                                v-if="scope.row.playType === 'required'"
+                                                @click="setAblePlay(scope.row, scope.$index)">{{$t('setAblePlay')}}</li><!--设为可玩-->
+                                            <li class="normal"
+                                                v-else
+                                                @click="setMustPlay(scope.row, scope.$index)">{{$t('setMustPlay')}}</li><!--设为必玩-->
+                                        </template>
+                                    </ul>
+                                </template>
+                            </el-table-column>
+                        </table-com>
+
+                    </Form-item>
                 </div>
                 <i-row>
                     <i-col span="24">
@@ -571,6 +575,16 @@
                 }
             };
 
+            const timesCheck = (rule, value, callback) => {
+                this.playPoint.forEach(item => {
+                    if (item.dayTimes > item.sumTimes) {
+                        callback(this.$t('sumBiggerThenDaySum'));
+                    }else {
+                        callback();
+                    }
+                })
+            }
+
             return {
                 //记录修改的数据
                 index: null,
@@ -620,8 +634,11 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('projectTotalTimes')}), trigger: 'blur' },
                         { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('projectTotalTimes'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                        { validator: validateNumber, trigger: 'blur' },
                     ],
+                    timesCheck: [
+                        { validator: timesCheck, trigger: 'blur' },
+                    ]
                 },
                 //枚举数据
                 enumData: {
@@ -790,6 +807,7 @@
              * @param cancelCallback
              */
             show ({index,data,type,title,confirmCallback = null,cancelCallback}) {
+                console.log(title)
                 this.title = title;
                 this.type = type;
                 this.index = index;

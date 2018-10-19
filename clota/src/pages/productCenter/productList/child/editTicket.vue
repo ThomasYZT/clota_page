@@ -666,7 +666,7 @@
                 this.$refs.editPark.show({
                     index: index,
                     data: data,
-                    title : this.$t('modify')+this.$t('oneTicketPark'),
+                    title : this.$t('modify')+ (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type: 'modify',
                     confirmCallback : ( data, index ) => {
                         this.$set(this.productPlayRuleVo, index, data);
@@ -752,6 +752,7 @@
                 formData.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : '';
                 formData.printPrice = data.printPrice ? String(data.printPrice) : '0';
                 formData.standardPrice = data.standardPrice ? String(data.standardPrice) : '0';
+                formData.id = data.saleId ? String(data.saleId) : '';
                 this.formData = defaultsDeep({},formData);
             },
 

@@ -39,12 +39,12 @@
             <span class="tips float-right">{{$t('defaultPolicyType')}}</span><!--业态目前为默认ticket-->
         </div>
 
-        <!--表格搜索栏 仅合作伙伴可见-->
-        <div class="btn-wrap">
+        <!--表格搜索栏 仅合作伙伴、景区可见--分销给我的销售政策列表-->
+        <div class="btn-wrap" v-if="(role === 'partner' || role === 'scenic') && tabsName === 'cancellation'">
             <span>{{$t('scenePlace')}}：</span>
             <Select v-model="chooseOrgId" @on-change="queryDistPolicyList"> <!--所属景区：-->
                 <Option v-for="(item,index) in enumData.scene" :key="index"
-                        :value="item.name">{{$t(item.desc)}}
+                        :value="item.id">{{$t(item.orgName)}}
                 </Option>
             </Select>
             <div class="float-right">
@@ -243,6 +243,9 @@
             }
             //获取所有销售政策业态类型
             this.getAllPolicyType();
+
+            //获取所属景区列表
+            this.queryPolicyFromScenic();
         },
         mounted() {
         },
@@ -298,6 +301,19 @@
                     this.dTotal = res.data.totalRow || 0;
                     this.distPolicyData = res.data ? res.data.data : [];
                 });
+            },
+
+            //获取所属景区列表
+            queryPolicyFromScenic() {
+                ajax.post('queryPolicyFromScenic',{
+                    selectType: 'to',
+                    pageNo: 1,
+                    pageSize: 999
+                }).then(res => {
+                    if(res.success) {
+                        this.enumData.scene = res.data;
+                    }
+                })
             },
 
             // 新建销售政策

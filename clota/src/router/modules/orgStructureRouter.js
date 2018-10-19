@@ -36,8 +36,7 @@ export default {
             employee: {
                 //组织架构--员工
                 path: '/orgManage/employee',
-                name: 'employee',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
+                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/index.vue'),
                 meta: {
                     menuName: 'employee', //lang.config.js 里面的语言键值
                     _name: 'org-emp', //
@@ -45,18 +44,59 @@ export default {
                     rightPath : topMenuName + '.' + 'employee',
                     isMenu : true
                 },
-            },
-            addEmployee: {
-                //组织架构--员工--新增员工
-                path: '/orgManage/addEmployee',
-                name: 'addEmployee',
-                component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
-                meta: {
-                    menuName: 'employee', //lang.config.js 里面的语言键值
-                    _name: 'org-emp', //
-                    iconClass: 'icon-orgaization',
-                    rightPath : topMenuName + '.' + 'employee'
-                },
+                children: {
+                    generalEmployeeManager: {
+                        //组织架构--普通员工列表
+                        path: '/orgManage/employee/generalEmployee/List',
+                        name: 'generalEmployeeManager',
+                        component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
+                        meta: {
+                            menuName: 'generalEmployeeManager', //lang.config.js 里面的语言键值
+                            _name: 'org-emp', //
+                            lightMenu: 'employee',
+                            rightPath : topMenuName + '.' + 'employee',
+                            isMenu : true
+                        },
+                    },
+                    addEmployee: {
+                        //组织架构--普通员工--新增普通员工
+                        path: '/orgManage/employee/generalEmployee/addEmployee',
+                        name: 'addEmployee',
+                        component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
+                        meta: {
+                            menuName: 'employee', //lang.config.js 里面的语言键值
+                            _name: 'org-emp', //
+                            lightMenu: 'employee',
+                            rightPath : topMenuName + '.' + 'employee'
+                        },
+                    },
+                    courierManager: {
+                        //组织架构--导游管理
+                        path: '/orgManage/employee/courierManager/list',
+                        name: 'courierManager',
+                        component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/courierManager/courierList.vue'),
+                        meta: {
+                            menuName: 'courierManager',
+                            _name: 'org-emp',//'org-guide',
+                            lightMenu: 'employee',
+                            rightPath : topMenuName + '.' + 'courierManager',
+                            isMenu : true
+                        },
+                    },
+                    driverManager: {
+                        //组织架构--司机管理
+                        path: '/orgManage/employee/driverManager/list',
+                        name: 'driverManager',
+                        component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/driverManager/driverList.vue'),
+                        meta: {
+                            menuName: 'driverManager',
+                            _name: 'org-emp',//'org-driver',
+                            lightMenu: 'employee',
+                            rightPath : topMenuName + '.' + 'driverManager',
+                            isMenu : true
+                        },
+                    },
+                }
             },
             rolePermission: {
                 //组织架构--角色权限

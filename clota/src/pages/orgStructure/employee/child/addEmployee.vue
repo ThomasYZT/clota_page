@@ -19,7 +19,7 @@
 
             <div class="content-footer">
                 <i-button type="primary" :loading="loading" @click="confirmModify">{{type=='add' ? $t('confirmAdd') : $t('confirm')}}</i-button>
-                <router-link :to="{name: 'employee'}">
+                <router-link :to="{name: 'generalEmployeeManager'}">
                     <i-button type="ghost">{{$t('cancel')}}</i-button>
                 </router-link>
             </div>

@@ -387,7 +387,7 @@
                     remark: this.remark,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('checked') + this.$t('success'));
+                        this.$Message.success(this.$t('operate') + this.$t('success'));
                         //根据产品Id查明细
                         this.findProductById(this.detail);
                     } else {
