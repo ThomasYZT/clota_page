@@ -32,6 +32,7 @@
 
         <!--下单失败提示框-->
         <create-order-fail-modal v-model="failModalShow"
+                                 :type="createOrderFailType"
                                  :product-list="failCreatedProductList"
                                  :can-remove-product="canRemoveProduct"
                                  @del-failed-product="delCreatedFailProduct">
@@ -40,6 +41,11 @@
         <tourist-err-modal v-model="touristWithoutProductModalShow"
                            :tourist-without-product="touristWithourProductList">
         </tourist-err-modal>
+
+        <!--添加游客报错提示框-->
+        <add-tourist-err-modal v-model="addTouristModalShow"
+                               :tourist-err-list="touristErrList">
+        </add-tourist-err-modal>
     </div>
 </template>
 
@@ -56,6 +62,7 @@
     import productErrHitModal from './child/productErrHintModal';
     import createOrderFailModal from './child/createOrderFailModal';
     import touristErrModal from './child/touristErrModal';
+    import addTouristErrModal from './child/addTouristErrModal';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -68,7 +75,8 @@
             accountInfo,
             productErrHitModal,
             createOrderFailModal,
-            touristErrModal
+            touristErrModal,
+            addTouristErrModal
         },
         data() {
             return {
@@ -107,7 +115,13 @@
                 //游客缺少产品报错模态框是否显示
                 touristWithoutProductModalShow : false,
                 //缺少产品的游客信息
-                touristWithourProductList : []
+                touristWithourProductList : [],
+                //下单失败类型
+                createOrderFailType : '',
+                //游客下单不符合销售政策模态框是否显示
+                addTouristModalShow :false,
+                //下单失败游客信息
+                touristErrList : []
             }
         },
         methods: {
@@ -150,6 +164,7 @@
                     this.$refs.tourist.touristHasTicket(),
                     this.$refs.placeOrder.getPlaceOrderInfo(),
                 ]).then(([placeholder,hasTicket,placeOrder]) =>{
+                    let productSaleVo = this.$refs.tourist.getChcekProducts();
                     OrderVisitorProductVos.push(placeOrder);
                     ajax.post('addIndividualOrder',{
                         //产品信息
@@ -176,7 +191,9 @@
                         //游客信息以及下单人信息
                         OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos),
                         //下单日期
-                        playDate : this.otherInfo.playDate
+                        playDate : this.otherInfo.playDate,
+                        //校验产品信息
+                        saleRuleVos : JSON.stringify(productSaleVo)
                     }).then(res => {
                         if(res.success){
                             this.$router.replace({
@@ -186,14 +203,17 @@
                                 }
                             });
                         }else{
-                            if(res.code === 'OD002'){
+                            if(res.code === 'OD002'){//上级分销商余额不足
                                 this.getFailedProductInfo(res.data ? res.data :[]);
                                 this.failModalShow = true;
                                 this.createOrderFailType = 'balanceNotEnough';
-                            }else if(res.code === 'OD003'){
+                            }else if(res.code === 'OD003'){//产品库存不足
                                 this.getFailedProductInfo(res.data ? res.data :[]);
                                 this.failModalShow = true;
                                 this.createOrderFailType = 'inventoryNotEnough';
+                            }else if(res.code === 'OD006'){//不符合下单规则
+                                this.addTouristModalShow = true;
+                                this.touristErrList = res.data ? res.data : [];
                             }else{
                                 this.$Message.error('下单失败');
                             }
