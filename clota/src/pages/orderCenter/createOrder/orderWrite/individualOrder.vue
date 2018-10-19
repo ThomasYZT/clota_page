@@ -36,6 +36,10 @@
                                  :can-remove-product="canRemoveProduct"
                                  @del-failed-product="delCreatedFailProduct">
         </create-order-fail-modal>
+        <!--游客缺少产品信息报错模态框-->
+        <tourist-err-modal v-model="touristWithoutProductModalShow"
+                           :tourist-without-product="touristWithourProductList">
+        </tourist-err-modal>
     </div>
 </template>
 
@@ -51,6 +55,7 @@
     import {mapGetters} from 'vuex';
     import productErrHitModal from './child/productErrHintModal';
     import createOrderFailModal from './child/createOrderFailModal';
+    import touristErrModal from './child/touristErrModal';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -62,7 +67,8 @@
             otherInfo,
             accountInfo,
             productErrHitModal,
-            createOrderFailModal
+            createOrderFailModal,
+            touristErrModal
         },
         data() {
             return {
@@ -98,6 +104,10 @@
                 failModalShow : false,
                 //不可下单的产品列表
                 failCreatedProductList : [],
+                //游客缺少产品报错模态框是否显示
+                touristWithoutProductModalShow : false,
+                //缺少产品的游客信息
+                touristWithourProductList : []
             }
         },
         methods: {
@@ -137,8 +147,9 @@
                 let OrderVisitorProductVos = this.OrderVisitorProductVos;
                 Promise.all([
                     this.$refs.tourist.ticketIsAllocated(),
+                    this.$refs.tourist.touristHasTicket(),
                     this.$refs.placeOrder.getPlaceOrderInfo(),
-                ]).then(([placeholder,placeOrder]) =>{
+                ]).then(([placeholder,hasTicket,placeOrder]) =>{
                     OrderVisitorProductVos.push(placeOrder);
                     ajax.post('addIndividualOrder',{
                         //产品信息
@@ -189,9 +200,12 @@
                         }
                     });
                 }).catch(err => {
-                    if(err && err.type === 'ticketErr'){
+                    if(err && err.type === 'ticketErr'){//产品下单失败错误
                         this.leftProductInfo = err.data;
                         this.errHintShow = true;
+                    }else if(err && err.type === 'touristInfoErr'){//游客添加产品信息错误
+                        this.touristWithoutProductModalShow = true;
+                        this.touristWithourProductList = err.data;
                     }
                 });
             },
@@ -215,12 +229,13 @@
              * @param data 需要删除的产品信息
              */
             delCreatedFailProduct (data) {
-                for(let i = this.productList.length,j = 0;i >= j;i--){
+                for(let i = this.productList.length - 1,j = 0;i >= j;i--){
                     if(data.includes(this.productList[i]['productId'])){
                         this.productList.splice(i,1);
                     }
                 }
-                this.payOrder();
+                //删除不能下单的产品
+                this.$refs.tourist.deleteProduct(data);
             },
             /**
              * 获取下单失败的产品列表

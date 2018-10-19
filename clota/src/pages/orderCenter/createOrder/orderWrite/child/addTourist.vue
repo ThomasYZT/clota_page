@@ -103,11 +103,9 @@
                         </template>
                     </el-table-column>
                 </table-com>
-
                 <div class="title-label">
                     取票信息
                 </div>
-
                 <table-com
                     :column-data="ticketColumnData"
                     class="get-ticket"
@@ -368,7 +366,7 @@
                             this.$emit('input', false);
                         }).catch(err => {
                             if(err === 'ticketErr'){
-                                this.$Message.error('最少选择一张票');
+                                this.$Message.error('最少选择一种产品信息');
                             }else if(err === 'idTypeErr'){
                                 this.$Message.warning('请先保存正在编辑的证件类型')
                             }
@@ -634,10 +632,22 @@
             //如果默认信息不为空表示在修改游客信息
             defaultInfo (newVal){
                 if(newVal && Object.keys(newVal).length > 0){
+                    let productInfo = {};
                     this.formData.name = newVal.name;
                     this.formData.phone = newVal.phone;
                     this.idTableData = newVal.idTableData;
-                    this.ticketTableData = newVal.productInfo;
+                    // this.ticketTableData = newVal.productInfo;
+                    for(let i = 0,j = newVal.productInfo.length;i < j;i++){
+                        productInfo[newVal.productInfo[i]['productId']] = newVal.productInfo[i];
+                    }
+                    this.ticketTableData = this.productList.map(item => {
+                        console.log(item.leftNum,productInfo[item.productId]['takeNum'])
+                        return {
+                            ...item,
+                            takeNum : productInfo[item.productId] ? '' : item.takeNum,
+                            leftNum : productInfo[item.productId] ? (productInfo[item.productId]['takeNum'] + item.leftNum) : item.leftNum,
+                        }
+                    });
                     this.type =  'edit';
                 }else{
                     this.ticketTableData = JSON.parse(JSON.stringify(this.productList));

@@ -129,7 +129,7 @@
              */
             reSendMsg () {
                 ajax.post('reSendMsg',{
-                    visitorProductId : ''
+                    visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
                     if(res.success){
                         this.$Message.success('发送成功');

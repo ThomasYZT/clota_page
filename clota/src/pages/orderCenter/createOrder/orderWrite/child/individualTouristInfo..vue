@@ -167,7 +167,44 @@
              * @param data
              */
             confirmModifyTouristInfo (data) {
-                this.touristInfo[data.index] = data.data;
+                this.$set(this.touristInfo,data.index,data.data);
+                this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+            },
+            /**
+             * 删除不能下单的产品
+             * @param data
+             */
+            deleteProduct(data) {
+                for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                    let productInfo = this.touristInfo[i]['productInfo'];
+                    for(let a = productInfo.length - 1,b = 0; a >= b;a--){
+                        if(data.includes(productInfo[a]['productId'])){
+                            this.touristInfo[i]['productInfo'].splice(a,1);
+                        }
+                    }
+                }
+            },
+            /**
+             * 判断每位游客是否都添加了产品信息
+             */
+            touristHasTicket () {
+                return new Promise((resolve,reject) => {
+                    let result = [];
+                    for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                        let productInfo = this.touristInfo[i]['productInfo'];
+                        if(productInfo.length < 1){
+                            result.push(this.touristInfo[i]);
+                        }
+                    }
+                    if(result.length > 0){
+                        reject({
+                            type : 'touristInfoErr',
+                            data : result
+                        })
+                    }else{
+                        resolve();
+                    }
+                });
             }
         },
         computed : {
@@ -181,7 +218,7 @@
                     }
                 });
             },
-            //游客已经选择的票信息
+            //游客已经选择的产品信息
             productChosedInfo () {
                 let result = {};
                 for(let i = 0,j = this.touristInfo.length;i < j;i++){

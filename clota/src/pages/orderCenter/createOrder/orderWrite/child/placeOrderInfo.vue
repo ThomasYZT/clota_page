@@ -11,11 +11,11 @@
                     <FormItem label="请选择下单人" >
                         <Select v-model="formData.payerType"
                                 style="width: 280px;"
+                                :key="JSON.stringify(payPersonListFilter)"
                                 @on-change="payerChange">
-                            <Option v-for="item in payPersonListFilter"
+                            <Option v-for="(item,index) in payPersonListFilter"
                                     :value="item.value"
-                                    :key="item.value">
-                                {{item.label}}
+                                    :label="payPersonListFilter[index]['label']">
                             </Option>
                         </Select>
                     </FormItem>
