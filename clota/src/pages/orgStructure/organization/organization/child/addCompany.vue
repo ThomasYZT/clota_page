@@ -19,23 +19,18 @@
                   :label-width="190">
                 <!--财务上级-->
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
-                    <Select v-model="formData.fianceSuperior" style="width:280px">
-                        <Option v-for="item in parentEconomics  "
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.orgName }}
-                        </Option>
-                    </Select>
+                    <select-tree v-model="formData.fianceSuperior"
+                                 :tree="parentEconomics"
+                                 width="278px">
+                    </select-tree>
                 </FormItem>
                 <!--管理上级-->
                 <FormItem :label="$t('manageSuperior')" required>
-                    <Select v-model="formData.manageSuperior" disabled style="width:280px">
-                        <Option v-for="item in parentManages"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.orgName }}
-                        </Option>
-                    </Select>
+                    <select-tree v-model="formData.manageSuperior"
+                                 :tree="parentManages"
+                                 disabled
+                                 width="278px">
+                    </select-tree>
                 </FormItem>
                 <!--管理账号-->
                 <FormItem :label="$t('controlAccount')" prop="controlAccount">
@@ -91,6 +86,17 @@
                 <FormItem :label="$t('address')" prop="address">
                     <Input v-model.trim="formData.address" style="width: 280px"/>
                 </FormItem>
+                <!--详细地址-->
+                <FormItem :label="$t('address')" prop="address">
+                    <Input v-model.trim="formData.address" style="width: 280px"/>
+                </FormItem>
+                <!--是否启用-->
+                <FormItem :label="$t('isStarted')" prop="address">
+                    <RadioGroup v-model="formData.status">
+                        <Radio label="open">{{$t('yes')}}</Radio>
+                        <Radio label="close">{{$t('no')}}</Radio>
+                    </RadioGroup>
+                </FormItem>
             </Form>
         </div>
         <div slot="footer">
@@ -109,10 +115,12 @@
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
+    import selectTree from '@/components/selectTree/index.vue';
 
     export default {
         components: {
-            cityPlugin
+            cityPlugin,
+            selectTree
         },
         props: {
             //绑定的模态框是否显示的变量
@@ -222,6 +230,8 @@
                     place: {},
                     //联系人
                     person: '',
+                    //启用状态
+                    status : 'open'
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -408,7 +418,8 @@
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.manageSuperior,
-                    nodeType : 'company'
+                    nodeType : 'company',
+                    status : this.formData.status
                 }).then(res => {
                     if(res.success){
                         this.$emit('fresh-structure-data');
@@ -517,7 +528,6 @@
 
                 .ivu-form-item {
                     margin-bottom: 15px;
-                    padding-right: 110px;
                     position: relative;
 
                     .ivu-form-item-error-tip {
