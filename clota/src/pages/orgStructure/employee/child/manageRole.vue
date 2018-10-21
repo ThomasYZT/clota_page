@@ -3,9 +3,6 @@
 <template>
     <div class="manage-role-set">
         <div class="node-list">
-            <div class="node-name">
-                {{$t('managePermission')}}：
-            </div>
             <div class="node-info">
                 <el-tree :data="companyData"
                          node-key="id"
@@ -18,6 +15,7 @@
                          :expand-on-click-node="false"
                          v-if="companyData.length > 0"
                          @check="treeCheck"
+                         @check-change="checkChange"
                          :render-content="renderContent">
                 </el-tree>
                 <no-data v-else>
@@ -25,9 +23,6 @@
             </div>
         </div>
         <div class="menu-list">
-            <div class="node-name">
-                {{$t('menuPermission')}}：
-            </div>
             <div class="node-info">
                 <el-tree :data="menuList"
                          node-key="privCode"
@@ -51,13 +46,20 @@
 <script>
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         props : {
-            //默认选中的节点
-            'default-chosed-node-init' : {
-                type : Object,
+            // //默认选中的节点
+            // 'default-chosed-node-init' : {
+            //     type : Object,
+            //     default () {
+            //         return {};
+            //     }
+            // },
+            'rolePrivaliges' : {
+                type : Object ,
                 default () {
-                    return {};
+                    return {}   ;
                 }
             }
         },
@@ -85,7 +87,9 @@
                 //当前选择的组织节点
                 chosedOrgList : [],
                 //当前左侧选择的组织节点和右侧菜单权限对应
-                privaligeInfo : {}
+                privaligeInfo : {},
+                //默认选中的菜单
+                defaultChosedMenu : {}
             }
         },
         components : {
@@ -96,6 +100,11 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
+                if(data.id in this.defaultChosedNodeInit){
+                    this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
+                }
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -129,7 +138,9 @@
              */
             menuRenderContent (h, {root, node, data}) {
                 //没有选择节点不可选择菜单权限
-                if(!this.chosedOrgList.includes(this.activeNodeId)){
+                let test = this.defaultChosedDisabledPrivaliges[this.activeNodeId] ? this.defaultChosedDisabledPrivaliges[this.activeNodeId] : [];
+                // console.log(test,data['privCode'],test.includes(data['privCode']));
+                if(!this.chosedOrgList.includes(this.activeNodeId) || (test.includes(data['privCode']))){
                     this.$set(data,'disabled',true);
                 }else{
                     this.$set(data,'disabled',false);
@@ -198,14 +209,12 @@
              * @param checkedKeys
              */
             treeCheck (data,{checkedNodes,checkedKeys}) {
-                // debugger
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes([]);
                     });
                 }
-                this.chosedOrgList = checkedKeys;
             },
             /**
              * 组织机构选择的对应的菜单权限改变
@@ -261,6 +270,19 @@
                     }
                 }
                 return returnValige;
+            },
+            checkChange (data,select) {
+                console.log(data);
+                if(select){
+                    this.chosedOrgList.push(data['id']);
+                }else{
+                    for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                        if(this.chosedOrgList[i] === data['id']){
+                            this.chosedOrgList.splice(i,1);
+                            break;
+                        }
+                    }
+                }
             }
         },
         computed : {
@@ -271,6 +293,50 @@
                 }else{
                     return [];
                 }
+            },
+            //默认选中的不可选择的菜单权限
+            defaultChosedDisabledPrivaliges () {
+                let result = {};
+                for(let orgId in this.defaultChosedNodeInit){
+                    let orgInfo = this.defaultChosedNodeInit[orgId];
+                    for(let i = 0,j = orgInfo.length;i < j;i++){
+                        if(!result[orgId]){
+                            result[orgId] = [];
+                        }
+                        result[orgId].push(orgInfo[i]['privCode']);
+                    }
+                }
+                return result;
+            },
+            defaultChosedNodeInit () {
+                let result = {};
+                for(let item in this.rolePrivaliges){
+                    for(let i = 0,j = this.rolePrivaliges[item].length;i < j;i++){
+                        let data = this.rolePrivaliges[item];
+                        if(data[i].orgType === 'manage'){
+                            if(!result[data[i].privOrg]){
+                                result[data[i].privOrg] = [{
+                                    path : data[i].path,
+                                    privCode : data[i].privCode,
+                                    privType : data[i].privType,
+                                    ranges : data[i].ranges,
+                                    choseStatus : data[i].choseStatus,
+                                    defaultChosed : true
+                                }];
+                            }else{
+                                result[data[i].privOrg].push({
+                                    path : data[i].path,
+                                    privCode : data[i].privCode,
+                                    privType : data[i].privType,
+                                    ranges : data[i].ranges,
+                                    choseStatus : data[i].choseStatus,
+                                    defaultChosed : true
+                                });
+                            }
+                        }
+                    }
+                }
+                return result;
             }
         },
         created () {
@@ -278,48 +344,72 @@
         },
         watch : {
             //设置默认选中的节点
-            defaultChosedNodeInit (newVal,oldVal) {
-                if(newVal && Object.keys(newVal).length > 0){
-                    this.privaligeInfo = newVal;
-                    let data = [];
-                    for(let item in this.defaultChosedNodeInit){
-                        data.push(item);
+            defaultChosedNodeInit :{
+                handler (newVal,oldVal) {
+                    if(newVal && Object.keys(newVal).length > 0){
+                        let data = [];
+                        for(let item in this.defaultChosedNodeInit){
+                            data.push(item);
+                        }
+                        if(Object.keys(newVal).length > Object.keys(oldVal).length){
+                            for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                                if(!(this.chosedOrgList[i] in newVal)){
+                                    data.push(this.chosedOrgList[i]);
+                                }
+                            }
+                            defaultsDeep(this.privaligeInfo,newVal);
+                        }else{
+                            for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                                if(!(this.chosedOrgList[i] in oldVal)){
+                                    data.push(this.chosedOrgList[i]);
+                                }
+                                if(this.chosedOrgList[i] in oldVal && !(this.chosedOrgList[i] in newVal)){
+                                    delete this.privaligeInfo[this.chosedOrgList[i]];
+                                }
+                            }
+                        }
+                        this.$nextTick(() => {
+                            this.$refs.nodeTree.setCheckedKeys(data);
+                            this.setDefaultMenuChosed();
+                        });
+                    }else{
+                        let disChecked = [];
+                        for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                            if(!(this.chosedOrgList[i] in oldVal)){
+                                disChecked.push(this.chosedOrgList[i]);
+                            }else{
+                                delete this.privaligeInfo[this.chosedOrgList[i]];
+                            }
+                        }
+                        this.$nextTick(() => {
+                            this.$refs.nodeTree.setCheckedKeys(disChecked);
+                            this.setDefaultMenuChosed();
+                        });
                     }
-                    this.chosedOrgList = data;
-                    this.$nextTick(() => {
-                        this.$refs.nodeTree.setCheckedKeys(data);
-                    });
-                }
+                },
+                deep : true
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .manage-role-set{
-        @include block_outline($height : 310px);
+        @include block_outline($height : unquote('calc(100% - 37px)'));
         border-bottom: 1px solid $color_E1E1E1;
         border-top: 1px solid $color_E1E1E1;
 
-        .node-name{
-            @include block_outline($height : 45px);
-            padding: 20px 0 7px 0;
-            line-height: 20px;
-            font-size: $font_size_14px;
-            color: $color_333;
-        }
-
         .node-list{
             position: relative;
-            @include block_outline(50%,100%);
+            @include block_outline(380px,100%);
             float: left;
             border-right: 1px dashed #E1E1E1;
 
         }
 
         .node-info{
-            @include block_outline($height : unquote('calc(100% - 45px)'));
+            height: 100%;
             overflow: auto;
         }
 
@@ -378,9 +468,8 @@
 
         .menu-list{
             position: relative;
-            @include block_outline(50%,100%);
+            @include block_outline(unquote('calc(100% - 380px)'),100%);
             float: left;
-            padding-left: 30px;
         }
     }
 </style>

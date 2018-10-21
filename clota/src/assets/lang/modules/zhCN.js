@@ -1116,7 +1116,6 @@ export default {
     'people': '人',
     'delOrgWarn': '本操作将同步删除本节点的全部下级节点，并不可撤销，',
     'allGroup': '全部分组',
-
     'checkMySalePolicy': '查看我的分销',
     'mySalePrice': '我的分销单价',
     'setMySaleChannels': '设置我的销售渠道',
@@ -1133,6 +1132,7 @@ export default {
     'distributePrice': '分销价格',
     'distributeSccuess': '分销成功',
     'distributeFail': '分销失败',
+
     /*** 预定中心模块 ***/
     'auditCenter': '审核中心',
     'auditGroupOrder': '团队订单预审核',

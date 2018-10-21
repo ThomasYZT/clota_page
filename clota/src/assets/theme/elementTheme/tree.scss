@@ -10,3 +10,7 @@
     font-size: 14px;
     color: #A8ACB4;
 }
+.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+    background-color: #f2f6fc!important;
+    border-color: #dcdfe6!important;
+}

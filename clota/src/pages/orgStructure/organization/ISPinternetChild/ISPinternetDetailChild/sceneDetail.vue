@@ -221,14 +221,11 @@
                                   :label="$t('superior')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Select v-model="formDataCopy.parentManageId"
-                                    :disabled="activeNode && activeNode.level === 1">
-                                <Option v-for="item in superiorList"
-                                        :value="item.id"
-                                        :key="item.id">
-                                    {{ item.orgName }}
-                                </Option>
-                            </Select>
+                            <select-tree v-model="formDataCopy.parentManageId"
+                                         :disabled="activeNode && activeNode.level === 1"
+                                         :tree="superiorList"
+                                         width="278px">
+                            </select-tree>
                         </FormItem>
                         <div class="node-info" v-else>
                             <span class="info-key">{{$t('superior')}}：</span>
@@ -247,14 +244,11 @@
                                   :label="$t('fianceSuperior')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Select v-model="formDataCopy.parentEconomicId"
-                                    :disabled="activeNode && activeNode.level === 1">
-                                <Option v-for="item in fianceSuperiorList"
-                                        :value="item.id"
-                                        :key="item.id">
-                                    {{ item.orgName }}
-                                </Option>
-                            </Select>
+                            <select-tree v-model="formDataCopy.parentEconomicId"
+                                         :disabled="activeNode && activeNode.level === 1"
+                                         :tree="fianceSuperiorList"
+                                         width="278px">
+                            </select-tree>
                         </FormItem>
                         <div class="node-info" v-else>
                             <span class="info-key">{{$t('fianceSuperior')}}：</span>
@@ -322,6 +316,7 @@
     import editModal from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
     import {validator} from 'klwk-ui';
+    import selectTree from '@/components/selectTree/index.vue';
 
     export default {
         props : {
@@ -345,7 +340,8 @@
             subDepartment,
             partner,
             cityPlugin,
-            editModal
+            editModal,
+            selectTree
         },
         data() {
             //校验邮箱

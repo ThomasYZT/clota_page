@@ -113,33 +113,35 @@
                             <div class="no-data" v-if="enumData.privileges.length == 0">{{$t('noData')}}</div>
                             <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">{{$t('noSearchResult')}}</div>
                             <!--右侧内容-->
-                            <div class="privilege-part">
-                                <div class="part-1">
-                                    <h4>{{$t('scenePermission')}}</h4>
-                                    <div class="part-content">
-                                        <div :class="['part-author', {'active-author': item.orgId==activeRoleInOrg.orgId}]"
-                                             v-for="(item,index) in roleInOrg" :key="index"
-                                             @click="onActiveAuthor(item)">{{item.orgName}}
-                                        </div>
-                                        <p class="no-data" v-if="roleInOrg.length==0">{{$t('noData')}}</p>
-                                    </div>
-                                </div>
-                                <div class="part-2">
-                                    <h4>{{$t('menuPermission')}}
-                                        <span v-if="activeRoleInOrg.orgName">
-                                            （<span class="title-desc text-ellipsis" v-w-title="activeRoleInOrg.orgName">{{activeRoleInOrg.orgName}}</span>）
-                                        </span>
-                                    </h4>
-                                    <div class="part-content">
-                                        <div :class="['part-author']"
-                                             v-for="(item,index) in menuInRole" :key="index"
-                                             @click="">{{$t(item.privCode)}}
-                                        </div>
-                                        <!--<div>menuInRole</div>-->
-                                        <p class="no-data" v-if="menuInRole.length==0">{{$t('noData')}}</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <privalige-chose-com :chose-roles="rolePrivileges">
+                            </privalige-chose-com>
+                            <!--<div class="privilege-part">-->
+                                <!--<div class="part-1">-->
+                                    <!--<h4>{{$t('scenePermission')}}</h4>-->
+                                    <!--<div class="part-content">-->
+                                        <!--<div :class="['part-author', {'active-author': item.orgId==activeRoleInOrg.orgId}]"-->
+                                             <!--v-for="(item,index) in roleInOrg" :key="index"-->
+                                             <!--@click="onActiveAuthor(item)">{{item.orgName}}-->
+                                        <!--</div>-->
+                                        <!--<p class="no-data" v-if="roleInOrg.length==0">{{$t('noData')}}</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="part-2">-->
+                                    <!--<h4>{{$t('menuPermission')}}-->
+                                        <!--<span v-if="activeRoleInOrg.orgName">-->
+                                            <!--（<span class="title-desc text-ellipsis" v-w-title="activeRoleInOrg.orgName">{{activeRoleInOrg.orgName}}</span>）-->
+                                        <!--</span>-->
+                                    <!--</h4>-->
+                                    <!--<div class="part-content">-->
+                                        <!--<div :class="['part-author']"-->
+                                             <!--v-for="(item,index) in menuInRole" :key="index"-->
+                                             <!--@click="">{{$t(item.privCode)}}-->
+                                        <!--</div>-->
+                                        <!--&lt;!&ndash;<div>menuInRole</div>&ndash;&gt;-->
+                                        <!--<p class="no-data" v-if="menuInRole.length==0">{{$t('noData')}}</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </Option>
                 </Select>
@@ -163,10 +165,13 @@
     import {genderEnum} from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
     import map from 'lodash/map';
+    import privaligeChoseCom from './privaligeChoseCom';
 
     export default {
         props: ['employeeInfo'],
-        components: {},
+        components: {
+            privaligeChoseCom
+        },
         data () {
 
             var validateMethod = {
@@ -340,8 +345,6 @@
                 fields.forEach((item, i) => {
                     this.getFieldInitData(item.apiKey, item.dataKey);
                 });
-
-//                this.getAllPrivilege();
             },
             /**
              * 获取部门名称、籍贯、角色权限 下拉列表数据
@@ -356,14 +359,6 @@
                             this.matchedData = JSON.parse(JSON.stringify(this.enumData[dataKey]));
                         }
                     }
-                });
-            },
-            //
-            getAllPrivilege() {
-                ajax.post('getAllPrivilege', {
-                    orgId: this.$store.state.manageOrgs.id
-                }).then(res => {
-
                 });
             },
             //新增员工接口

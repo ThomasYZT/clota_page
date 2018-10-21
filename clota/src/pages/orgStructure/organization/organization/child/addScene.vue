@@ -19,25 +19,18 @@
                   :label-width="190">
                 <!--财务上级-->
                 <FormItem :label="$t('fianceSuperior')" prop="fianceSuperior">
-                    <Select v-model="formData.fianceSuperior" style="width:280px">
-                        <Option v-for="item in fianceSuperiorList"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.orgName }}
-                        </Option>
-                    </Select>
+                    <select-tree v-model="formData.fianceSuperior"
+                                 :tree="fianceSuperiorList"
+                                 width="278px">
+                    </select-tree>
                 </FormItem>
                 <!--管理上级-->
                 <FormItem :label="$t('manageSuperior')" prop="manageSuperior">
-                    <Select v-model="formData.manageSuperior"
-                            disabled
-                            style="width:280px">
-                        <Option v-for="item in manageSuperiorList"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.orgName }}
-                        </Option>
-                    </Select>
+                    <select-tree v-model="formData.manageSuperior"
+                                 :tree="manageSuperiorList"
+                                 disabled
+                                 width="278px">
+                    </select-tree>
                 </FormItem>
                 <!--开通服务-->
                 <FormItem  prop="openedServices">
@@ -105,6 +98,13 @@
                 <FormItem :label="$t('address')" prop="address">
                     <Input v-model="formData.address" style="width: 280px"/>
                 </FormItem>
+                <!--是否启用-->
+                <FormItem :label="$t('isStarted')" prop="address">
+                    <RadioGroup v-model="formData.status">
+                        <Radio label="open">{{$t('yes')}}</Radio>
+                        <Radio label="close">{{$t('no')}}</Radio>
+                    </RadioGroup>
+                </FormItem>
             </Form>
         </div>
         <div slot="footer">
@@ -123,10 +123,12 @@
     import {validator} from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
+    import selectTree from '@/components/selectTree/index.vue';
 
     export default {
         components: {
-            cityPlugin
+            cityPlugin,
+            selectTree
         },
         props: {
             //绑定的模态框是否显示的变量
@@ -235,7 +237,9 @@
                     //地点
                     place: {},
                     //联系人
-                    person : ''
+                    person : '',
+                    //启用状态
+                    status : 'open'
                 },
                 //表单校验规则
                 ruleValidate: {
@@ -363,6 +367,7 @@
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.manageSuperior,
                     nodeType : 'scenic',
+                    status : this.formData.status,
                     openService : this.formData.openedServices.join(',')
                 }).then(res => {
                     if(res.success){

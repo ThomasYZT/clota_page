@@ -1,11 +1,8 @@
-<!--景区经营权限设置-->
+<!--财务权限设置-->
 
 <template>
-    <div class="manage-role-set">
+    <div class="finace-role-set">
         <div class="node-list">
-            <div class="node-name">
-                {{$t('managePermission')}}：
-            </div>
             <div class="node-info">
                 <el-tree :data="companyData"
                          node-key="id"
@@ -25,9 +22,6 @@
             </div>
         </div>
         <div class="menu-list">
-            <div class="node-name">
-                {{$t('menuPermission')}}：
-            </div>
             <div class="node-info">
                 <el-tree :data="menuList"
                          node-key="privCode"
@@ -150,7 +144,7 @@
                         directives: [
                             {
                                 name: 'w-title',
-                                value: this.$t(data.privCode)
+                                value: data.orgName
                             }
                         ],
                     }, this.$t(data.privCode))
@@ -161,7 +155,7 @@
              */
             getOrgTree () {
                 ajax.post('getOrgTree',{
-                    manageType : 'manage',
+                    manageType : 'economic',
                     showScene : 'privilege',
                 }).then(res => {
                     if(res.success){
@@ -212,7 +206,6 @@
              * @param data
              * @param checkedKeys
              * @param checkedNodes
-             * @param halfCheckedNodes
              */
             menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
                 this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
@@ -243,7 +236,7 @@
                 }
             },
             /**
-             * 获取选择的经营权限
+             * 获取选择的财务权限
              */
             getMangePrivalige () {
                 let returnValige = [];
@@ -255,7 +248,7 @@
                             privType : this.privaligeInfo[item][i].privType,
                             path : this.privaligeInfo[item][i].path,
                             ranges : this.privaligeInfo[item][i].ranges,
-                            orgType : 'manage',
+                            orgType : 'economic',
                             choseStatus : this.privaligeInfo[item][i].choseStatus
                         });
                     }
@@ -296,30 +289,22 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
-    .manage-role-set{
-        @include block_outline($height : 310px);
+    @import '~@/assets/scss/base';
+    .finace-role-set{
+        @include block_outline($height : unquote('calc(100% - 37px)'));
         border-bottom: 1px solid $color_E1E1E1;
         border-top: 1px solid $color_E1E1E1;
 
-        .node-name{
-            @include block_outline($height : 45px);
-            padding: 20px 0 7px 0;
-            line-height: 20px;
-            font-size: $font_size_14px;
-            color: $color_333;
-        }
-
         .node-list{
             position: relative;
-            @include block_outline(50%,100%);
+            @include block_outline(380px,100%);
             float: left;
             border-right: 1px dashed #E1E1E1;
 
         }
 
         .node-info{
-            @include block_outline($height : unquote('calc(100% - 45px)'));
+            height: 100%;
             overflow: auto;
         }
 
@@ -378,9 +363,8 @@
 
         .menu-list{
             position: relative;
-            @include block_outline(50%,100%);
+            @include block_outline(unquote('calc(100% - 380px)'),100%);
             float: left;
-            padding-left: 30px;
         }
     }
 </style>

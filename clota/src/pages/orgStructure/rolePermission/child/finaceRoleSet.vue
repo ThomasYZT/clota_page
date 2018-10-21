@@ -150,7 +150,7 @@
                         directives: [
                             {
                                 name: 'w-title',
-                                value: data.orgName
+                                value: this.$t(data.privCode)
                             }
                         ],
                     }, this.$t(data.privCode))
