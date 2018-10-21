@@ -15,6 +15,7 @@
                                 @on-change="payerChange">
                             <Option v-for="(item,index) in payPersonListFilter"
                                     :value="item.value"
+                                    :key="index"
                                     :label="payPersonListFilter[index]['label']">
                             </Option>
                         </Select>
