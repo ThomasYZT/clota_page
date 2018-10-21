@@ -47,4 +47,8 @@ export default {
     'checkByPickSerialNo' : '/order/checkByPickSerialNo',
     //给导游重发短信
     'noticeGuidesAuditResult' : '/sms/noticeGuidesAuditResult',
+    //查询一级散客订单详情
+    'queryFirstIndividualOrderDetail': '/order/queryFirstIndividualOrderDetail',
+    //查询三级散客订单详情
+    'queryThirdIndividualOrderDetail': '/order/order/queryThirdIndividualOrderDetail',
 }

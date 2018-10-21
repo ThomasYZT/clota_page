@@ -263,12 +263,24 @@
              * @param data
              */
             toOrderDetail (data) {
-                this.$router.push({
-                    name : 'teamOrderDetail',
-                    params : {
-                        orderId : data.orderId
-                    }
-                });
+                if(true/*data['orderOrgType'] === 'individual'*/) {
+                    // 散客订单详情
+                    this.$router.push({
+                        name : 'individualFirstLevel',
+                        params : {
+                            orderId : data.orderId
+                        }
+                    });
+                }else {
+                    // 团队订单详情
+                    this.$router.push({
+                        name : 'teamOrderDetail',
+                        params : {
+                            orderId : data.orderId
+                        }
+                    });
+                }
+
             }
         },
         computed : {

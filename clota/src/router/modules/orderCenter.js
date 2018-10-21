@@ -89,6 +89,28 @@ export default {
                     rightPath: topMenuName + '.' + 'reserveOrderDetail'
                 },
             },
+            //散客一级订单详情
+            individualFirstLevel : {
+                path: '/ordert/detail/individualFirstLevel',
+                name: 'individualFirstLevel',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/individualOrderDetail1Level.vue'),
+                meta: {
+                    menuName: 'individualFirstLevel',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'reserveOrderDetail'
+                },
+            },
+            //散客二级订单详情
+            individualSecondLevel : {
+                path: '/ordert/detail/individualSecondLevel',
+                name: 'individualSecondLevel',
+                component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/individualOrderDetail2Level.vue'),
+                meta: {
+                    menuName: 'individualSecondLevel',
+                    _name: 'org',
+                    rightPath: topMenuName + '.' + 'reserveOrderDetail'
+                },
+            },
             //审核中心
             auditCenter : {
                 path: '/order/audit',
