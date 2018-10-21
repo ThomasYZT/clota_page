@@ -284,9 +284,9 @@
                 //表单数据
                 formData : {
                     //下单时间
-                    orderDate : [new Date(),new Date()],
+                    orderDate : [new Date().addMonths(-1),new Date()],
                     //游玩日期
-                    visitDate : [new Date(),new Date()],
+                    visitDate : [],
                     //取票状态
                     pickStatus : 'allStatus',
                     //是否分销
@@ -452,8 +452,8 @@
                 return {
                     orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd'),
                     orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd'),
-                    visitStartDate : this.formData.visitDate[0].format('yyyy-MM-dd'),
-                    visitEndDate : this.formData.visitDate[1].format('yyyy-MM-dd'),
+                    visitStartDate : this.formData.visitDate[0] ?this.formData.visitDate[0].format('yyyy-MM-dd') : '',
+                    visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd') : '',
                     orderType : this.formData.orderType === 'allStatus' ? '' : this.formData.orderType,
                     allocationStatus : this.formData.allocationStatus,
                     pickStatus : this.formData.pickStatus === 'allStatus' ? '' : this.formData.pickStatus,
