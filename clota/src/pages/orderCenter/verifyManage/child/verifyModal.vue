@@ -21,9 +21,9 @@
                 <li v-for="(item, index) in verify.list" :key="index">{{item.serialNo}}</li>
             </ul>
             <!--备注-->
-            <div>
-                <span style="float: left; color: #585858;">{{$t('remark')}}：</span>
-                <div style="margin-left: 48px">
+            <div style="position: relative;">
+                <span style="position: absolute; left: -20px; color: #585858;">{{$t('remark')}}：</span>
+                <div style="margin-left: 28px">
                     <Input v-model.trim="remark"
                            type="textarea"
                            :rows="3"
@@ -114,11 +114,16 @@
 
         .sn-count {
             line-height: 1;
+            .icon-warn {
+                margin-right: 10px;
+                font-size: 14px;
+                color: #F3B13F;
+            }
         }
         .sn-box {
             max-height: 60px;
             overflow: auto;
-            margin-bottom: 20px;
+            margin: 10px 0 20px 24px;
             >li {
                 line-height: 24px;
             }

@@ -8,7 +8,7 @@ export const orderTicketHead = [
     },
     {
         title: '游玩日期',
-        minWidth: 120,
+        minWidth: 190,
         field: 'visitDate'
     },
     {
@@ -39,7 +39,7 @@ export const orderTicketHead = [
     },
     {
         title: '产品名称|预定数量',
-        width: 180,
+        minWidth: 180,
         enWidth : 200,
         field: 'productName|quantity'
     },
@@ -118,7 +118,7 @@ export const orderVerifyHead = [
     },
     {
         title: '游玩日期',
-        minWidth: 120,
+        minWidth: 190,
         field: 'visitDate'
     },
     {
