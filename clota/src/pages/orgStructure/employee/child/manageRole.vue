@@ -211,9 +211,11 @@
             treeCheck (data,{checkedNodes,checkedKeys}) {
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
-                    this.$nextTick(() => {
-                        this.$refs.menuTree.setCheckedNodes([]);
-                    });
+                    if(this.activeNodeId === data['id']){
+                        this.$nextTick(() => {
+                            this.$refs.menuTree.setCheckedNodes([]);
+                        });
+                    }
                 }
             },
             /**
@@ -272,7 +274,6 @@
                 return returnValige;
             },
             checkChange (data,select) {
-                console.log(data);
                 if(select){
                     this.chosedOrgList.push(data['id']);
                 }else{
@@ -438,7 +439,7 @@
             }
 
             .title-class {
-                @include overflow_tip(unquote('calc(100% - 40px)'), 36px);
+                @include overflow_tip(unquote('calc(100% - 2px)'), 36px);
                 display: inline-block;
                 padding: 7px 0;
                 line-height: 22px;
