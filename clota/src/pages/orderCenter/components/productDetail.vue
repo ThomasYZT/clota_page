@@ -31,8 +31,17 @@
             :column-data="columnData"
             :table-data="moduleInfo"
             :border="true"
-            :column-check="true"
             @selection-change="changeSelection">
+            <el-table-column
+                slot="column0"
+                slot-scope="row"
+                :label="row.title"
+                fixed="left"
+                type="selection"
+                :width="row.width"
+                :min-width="row.minWidth"
+                :selectable="handleSelectable">
+            </el-table-column>
             <el-table-column
                 slot="column8"
                 slot-scope="row"
@@ -108,6 +117,17 @@
                     productList: this.moduleInfo || [],
                     passList: this.chosenRowData
                 });
+            },
+            /**
+             * 根据判断每个产品的id是否在发起申请订单里，来设置CheckBox 是否可以勾选
+             * @param row   // 行数据
+             * @param index // 序号
+             */
+            handleSelectable(row, index) {
+                let bulkDetail = JSON.parse(sessionStorage.getItem('bulkDetail'));
+                if (bulkDetail && bulkDetail.rowData) {
+                    return bulkDetail.rowData.reqOrderTicketIds.includes(row.id);
+                }
             },
         }
     };

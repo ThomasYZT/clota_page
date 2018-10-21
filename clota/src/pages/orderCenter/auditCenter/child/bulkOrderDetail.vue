@@ -8,7 +8,7 @@
     <div class="bulk-order-detail">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="localeRouter">
+            :locale-router="'订单明细详情'">
         </bread-crumb-head>
 
         <!--散客订单基本信息-->
@@ -45,6 +45,7 @@
     export default {
         mixins : [lifeCycleMixins],
         components: {
+            breadCrumbHead,
             bulkOrderBase,
             visitorInfo,
             productDetail,
@@ -124,7 +125,7 @@
              */
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
-                    this.getBulkOrderDetail(params.visitorPid);
+                    this.getBulkOrderDetail(params.rowData.visitorProductId);
 //                    this.getBulkOrderDetail('1051793405354577920');
                 }else{
                     this.$router.go(-1);

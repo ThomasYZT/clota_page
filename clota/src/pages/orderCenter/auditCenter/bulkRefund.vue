@@ -248,7 +248,7 @@
                 this.$router.push({
                     name: 'bulkDetail',
                     query: {reqType: 'refund'},
-                    params: {visitorPid: scopeRow.visitorProductId}
+                    params: {rowData: scopeRow}
                 });
             },
         }

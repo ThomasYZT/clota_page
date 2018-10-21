@@ -220,6 +220,11 @@ export const bulkBatchAuditHead = [
 // 散客订单--审核详情--产品列表表头
 export const productListHead = [
     {
+        title: '',
+        minWidth: 50,
+        field: ''
+    },
+    {
         title: '产品明细编号',
         minWidth: 200,
         field: 'id'
