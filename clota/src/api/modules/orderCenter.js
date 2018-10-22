@@ -51,4 +51,6 @@ export default {
     'queryFirstIndividualOrderDetail': '/order/queryFirstIndividualOrderDetail',
     //查询三级散客订单详情
     'queryThirdIndividualOrderDetail': '/order/order/queryThirdIndividualOrderDetail',
+    //查询订单下产品详情
+    'queryOrderTicketList': '/order/queryOrderTicketList',
 }

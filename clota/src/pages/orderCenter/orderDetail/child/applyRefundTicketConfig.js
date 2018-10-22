@@ -8,41 +8,41 @@ export const columnData = [
     {
         title: '产品明细编号',
         width: 200,
-        field: 'productCode'
+        field: 'id'
     },
     {
         title: '游玩日期',
         minWidth: 200,
-        field: 'productName'
+        field: 'visitDate'
     },
     {
         title: '取票状态',
         minWidth: 200,
-        field: 'productName'
+        field: 'pickStatus'
     },
     {
         title: '核销状态',
         minWidth: 200,
-        field: 'productName'
+        field: 'verifyStatus'
     },
     {
         title: '退票状态',
         minWidth: 200,
-        field: 'productName'
+        field: 'refundStatus'
     },
     {
         title: '改签状态',
         minWidth: 200,
-        field: 'productName'
+        field: 'rescheduleStatus'
     },
     {
         title: '串码',
         minWidth: 200,
-        field: 'productName'
+        field: 'serialNo'
     },
     {
         title: '同步状态',
         minWidth: 200,
-        field: 'productName'
+        field: 'syncStatus'
     },
 ];
