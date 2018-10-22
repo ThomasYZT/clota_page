@@ -4,14 +4,15 @@
         v-model="visible"
         :title="$t(title)"
         class-name="add-account-modal vertical-center-modal"
-        width="700"
+        width="600"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
             <div class="table-wrap">
                 <table-com
-                    :table-com-min-height="450"
+                    :height="250"
+                    :table-com-min-height="250"
                     :column-data="batchColumnData"
                     :table-data="orderData.items"
                     :border="false">
@@ -19,18 +20,19 @@
             </div>
             <!--备注-->
             <div>
-                <span style="float: left;">{{$t('remark')}}：</span>
-                <Input v-model.trim="auditRemark"
-                       style="margin-left: 30px"
-                       type="textarea"
-                       :rows="3"
-                       :placeholder="$t('请填写备注，不超过500个字符')" />
+                <span class="label-remark">{{$t('remark')}}：</span>
+                <div style="margin-left: 45px">
+                    <Input v-model.trim="auditRemark"
+                           type="textarea"
+                           :rows="3"
+                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("审核通过")}}</Button>
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
+            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("通过")}}</Button>
+            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -65,6 +67,14 @@
             }
         },
         computed: {
+            // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
+            reqType() {
+                if (this.$route.name=='auditBulkRefund') {
+                    return 'refund';
+                } else if (this.$route.name=='auditBulkChange') {
+                    return 'alter';
+                }
+            }
         },
         methods: {
 
@@ -75,6 +85,12 @@
                         this.title = '批量通过';
                     } else if (data.type == 'reject') {
                         this.title = '批量驳回';
+                    }
+
+                    if (this.reqType=='refund') {
+                        this.batchColumnData = bulkBatchAuditHead.filter(item => {
+                            return item.field !== 'rescheduleAfterVisitDate';
+                        })
                     }
                 }
 
@@ -92,7 +108,7 @@
                     productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
                     remark: this.auditRemark,
                     auditStatus: this.orderData.type,
-                    reqType: 'refund'
+                    reqType: this.reqType
                 }).then(res => {
                     if(res.success){
                         this.hide();
@@ -116,8 +132,11 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 14px;
-            height: 450px;
+            padding: 14px 4px;
+
+            .table-wrap {
+                margin-bottom: 20px;
+            }
 
             .order-amount {
                 margin: 15px 20px;
@@ -131,6 +150,12 @@
                     @include overflow_tip();
                     vertical-align: middle;
                 }
+            }
+
+            .label-remark {
+                float: left;
+                font-size: 14px;
+                color: #585858;
             }
         }
 

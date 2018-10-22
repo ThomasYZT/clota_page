@@ -199,18 +199,18 @@ export const bulkRefundHead = [
 export const bulkBatchAuditHead = [
     {
         title: '订单明细编号',
-        width: 200,
+        width: 190,
         field: 'orderDetailNo'
     },
     {
         title: '下单企业',
-        minWidth: 150,
+        minWidth: 130,
         enWidth : 180,
         field: 'channel'
     },
     {
         title: '产品名称',
-        minWidth: 150,
+        minWidth: 130,
         enWidth : 180,
         field: 'productName'
     },
@@ -219,6 +219,11 @@ export const bulkBatchAuditHead = [
         width: 100,
         enWidth : 130,
         field: 'reqNum'
+    },
+    {
+        title: '申请改签后游玩日期',
+        minWidth: 150,
+        field: 'rescheduleAfterVisitDate'
     },
 ];
 

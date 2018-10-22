@@ -15,7 +15,7 @@
             <el-dropdown trigger="click"
                          placement="bottom-start"
                          @command="handleCommand">
-                <Button type="ghost" style="float: left" size="default">{{$t('批量审核')}}</Button>
+                <Button type="primary" style="float: left" size="default">{{$t('批量审核')}}</Button>
 
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in batchAudit"
@@ -40,6 +40,16 @@
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
+                slot="column0"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="order-num blue">{{scope.row.orderNo}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column5"
                 slot-scope="row"
                 :label="row.title"
@@ -56,7 +66,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.productName | contentFilter}} / {{scope.row.quantity | contentFilter}}
+                    {{scope.row.productName | contentFilter}} | {{scope.row.quantity | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -66,7 +76,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.price | contentFilter}} / {{scope.row.amount | contentFilter}}
+                    <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
+                    <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -76,7 +87,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.visitorName | contentFilter}} / {{scope.row.phoneNumber | contentFilter}}
+                    {{scope.row.visitorName | contentFilter}} | {{scope.row.phoneNumber | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -121,6 +132,7 @@
     import {configVariable} from '@/assets/js/constVariable.js';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
     import bulkSingleAuditModal from './components/bulkSingleAuditModal.vue';
+    import {transOrderOrg, transSyncStatus} from '../commFun';
 
     export default {
         components: {
@@ -133,7 +145,9 @@
         data() {
             return {
                 //表头配置
-                columnData : bulkRefundHead,
+                columnData : bulkRefundHead.filter(item => {
+                    return item.field !== 'rescheduleAfterVisitDate';
+                }),
                 //表格数据
                 tableData: [],
                 //总条数
@@ -199,28 +213,12 @@
             },
             /**
              * 下单渠道的code转换
-             * @param value 下单渠道code
-             * @returns {string}
              */
-            transOrderOrg(value) {
-                let orderChannel = orderChannelEnum.find((channel, i) => {
-                    return value === channel.value;
-                });
-
-                return orderChannel ? orderChannel.label : '-';
-            },
+            transOrderOrg: transOrderOrg,
             /**
              * 同步状态的code转换
-             * @param status  同步状态code: wait|success|failure
-             * @returns {string}
              */
-            transSyncStatus(status) {
-                let syncStatus = orderSyncStatus.find((payment, i) => {
-                    return status === payment.value;
-                });
-
-                return syncStatus ? syncStatus.label : '-';
-            },
+            transSyncStatus: transSyncStatus,
             /**
              * 按筛选条件获取审核列表数据
              * @param paramsObj   筛选条件
@@ -246,7 +244,7 @@
             },
             goBulkDetail(scopeRow) {
                 this.$router.push({
-                    name: 'bulkDetail',
+                    name: 'bulkRefundDetail',
                     query: {reqType: 'refund'},
                     params: {rowData: scopeRow}
                 });
@@ -267,12 +265,17 @@
             background: #E1E1E1;
         }
         .batch-audit {
-            @include block_outline($height : 50px);
-            padding-top: 10px;
-            padding-left: 30px;
+            @include block_outline();
+            padding-bottom: 4px;
+            padding-left: 20px;
         }
 
         .operate-btn {
+            cursor: pointer;
+        }
+
+        .order-num {
+            text-decoration: underline;
             cursor: pointer;
         }
 
@@ -282,5 +285,10 @@
         .red {
             color: $color_red;
         }
+    }
+
+    /deep/.el-dropdown-menu__item {
+        width: 88px;
+        text-align: center;
     }
 </style>

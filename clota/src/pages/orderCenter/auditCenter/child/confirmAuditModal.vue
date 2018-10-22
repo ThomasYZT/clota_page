@@ -228,7 +228,7 @@
 
         .modal-body{
             padding: 0 14px;
-            height: 450px;
+            /*height: 450px;*/
 
             .refund-fee {
                 margin: 15px 20px;
