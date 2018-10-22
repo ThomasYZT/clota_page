@@ -204,10 +204,22 @@
 
                 //密码只能由数字+26个英文大、小写字母组成，且6-20位
                 pwdRule: (rule, value, callback) => {
-                    if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
-                        callback();
+                    if(this.passwordOrigin){
+                        if(value !== this.passwordOrigin){
+                            if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
+                                callback();
+                            }else{
+                                callback(new Error( this.$t('errorPwdRule') ));
+                            }
+                        }else{
+                            callback();
+                        }
                     }else{
-                        callback(new Error( this.$t('errorPwdRule') ));
+                        if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
+                            callback();
+                        }else{
+                            callback(new Error( this.$t('errorPwdRule') ));
+                        }
                     }
                 },
 
@@ -259,6 +271,8 @@
                 roleNames: '',
                 //除角色下的权限外的权限
                 extraPrivs :  [],
+                //修改时原生的密码
+                passwordOrigin : '',
 
                 // 表单校验规则
                 ruleValidate: {
@@ -411,6 +425,7 @@
                                 }
                             }
                         }
+                        this.passwordOrigin = res.data ? res.data.password : '';
                         // this.employee = Object.assign(this.employee, res.data || {});
                         this.rolePrivileges = map(res.data.roles, 'id');   // 角色权限列表
                         this.$set(this.employee, 'roleIds', this.rolePrivileges.join(','));
