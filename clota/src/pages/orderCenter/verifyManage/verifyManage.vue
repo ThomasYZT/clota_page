@@ -185,7 +185,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <span>{{scope.row.productName | contentFilter}}</span> |
-                            <span>{{$t('quantity')}}：{{scope.row.quantity | contentFilter}}</span>
+                            <span>{{$t('quantity')}}：{{1}}</span> <!--每张门票的核销，故此处预定数量: 1-->
                         </template>
                     </el-table-column>
                     <el-table-column

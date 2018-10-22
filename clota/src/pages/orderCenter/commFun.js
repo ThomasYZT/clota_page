@@ -1,7 +1,7 @@
 /**
  * 预定中心的一些公用功能方法
  */
-import {orderChannelEnum, paymentStatusEnum, orderSyncStatus} from './auditCenter/auditConfig';
+import {orderChannelEnum, paymentStatusEnum, orderSyncStatus, batchAudit} from './auditCenter/auditConfig';
 import {takeTicketStatusList, refundStatusList, rescheduleStatus, verifyStatusList} from '@/assets/js/constVariable';
 
 /**
@@ -94,3 +94,18 @@ export const transVerifyStatus = (status) => {
 
     return currentStatus ? currentStatus.label : '-';
 };
+
+/**
+ * 审核状态的code转换
+ * @param status
+ * @returns {string}
+ */
+export const transAudit = (status) => {
+    let currentStatus = batchAudit.find((item, i) => {
+        return status === item.value;
+    });
+
+    return currentStatus ? currentStatus.label : '-';
+};
+
+// var transfers = ['transOrderOrg', 'transPaymentStatus', 'transSyncStatus', 'transPickStatus', 'transRefundStatus', 'transRescheduleStatus', 'transVerifyStatus'];

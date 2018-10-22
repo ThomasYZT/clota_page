@@ -149,28 +149,33 @@ export const bulkRefundHead = [
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称/预定数量',
+        title: '产品名称|预定数量',
         width: 180,
         enWidth : 200,
-        field: 'productName/quantity'
+        field: 'productName|quantity'
     },
     {
-        title: '产品单价/小计金额',
+        title: '产品单价|小计金额',
         width: 180,
         enWidth : 200,
-        field: 'price/amount'
+        field: 'price|amount'
     },
     {
-        title: '游客/手机号',
+        title: '游客|手机号',
         width: 130,
         enWidth : 150,
-        field: 'visitorName / phoneNumber'
+        field: 'visitorName|phoneNumber'
     },
     {
         title: '申请数量',
         width: 100,
         enWidth : 130,
         field: 'reqNum'
+    },
+    {
+        title: '申请改签后游玩日期',
+        minWidth: 200,
+        field: 'rescheduleAfterVisitDate'
     },
     {
         title: '申请时间',
