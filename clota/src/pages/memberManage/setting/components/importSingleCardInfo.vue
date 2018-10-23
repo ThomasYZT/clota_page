@@ -11,14 +11,17 @@
         class="import-single-card"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title" >单个导入</span>
+            <span class="title" >{{$t('singleImport')}}</span>
         </div>
         <div class="target-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="100">
-                <FormItem label="卡面号" prop="faceNum">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 100 : 180">
+                <FormItem :label="$t('cardFaceNum')" prop="faceNum">
                     <Input v-model.trim="formData.faceNum"/>
                 </FormItem>
-                <FormItem label="物理卡号" prop="physicalNum">
+                <FormItem :label="$t('physicalCardNo')" prop="physicalNum">
                     <Input v-model.trim="formData.physicalNum"/>
                 </FormItem>
             </Form>
@@ -27,10 +30,10 @@
             <Button type="primary"
                     :loading="saveIng"
                     class="ivu-btn-90px"
-                    @click="save">保存</Button>
+                    @click="save">{{$t('save')}}</Button>
             <Button type="ghost"
                     class="ivu-btn-90px"
-                    @click="cancel">取消</Button>
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -38,6 +41,7 @@
 <script>
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //模态框是否显示
@@ -81,17 +85,22 @@
                 //表单校验规则
                 ruleValidate : {
                     faceNum : [
-                        {required : true,message : this.$t('inputField',{field : '卡面号'}),trigger : 'blur'},
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('卡面号'),maxLength : 60}
+                        {required : true,message : this.$t('inputField',{field : this.$t('cardFaceNum')}),trigger : 'blur'},
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('cardFaceNum'),maxLength : 60}
                     ],
                     physicalNum :[
-                        {required : true,message : this.$t('inputField',{field : '物理卡号'}),trigger : 'blur'},
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('物理卡号'),maxLength : 60}
+                        {required : true,message : this.$t('inputField',{field : this.$t('physicalCardNo')}),trigger : 'blur'},
+                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('physicalCardNo'),maxLength : 60}
                     ]
                 },
                 //是否在保存中
                 saveIng : false
             }
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang'
+            })
         },
         methods: {
             /**
@@ -142,14 +151,14 @@
                     faceNum : this.formData.faceNum,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
                         this.$emit('fresh-data');
                         this.cancel();
                     }else{
                         if(res.code === 'M011'){
-                            this.$Message.error('实体卡已存在');
+                            this.$Message.error(this.$t('M011'));
                         }else{
-                            this.$Message.error('新增失败');
+                            this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                             this.cancel();
                         }
                     }
@@ -167,14 +176,14 @@
                     faceNum : this.formData.faceNum,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('修改成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));
                         this.$emit('fresh-data');
                         this.cancel();
                     }else{
                         if(res.code === 'M011'){
-                            this.$Message.error('实体卡已存在');
+                            this.$Message.error(this.$t('M011'));
                         }else{
-                            this.$Message.error('修改失败');
+                            this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                             this.cancel();
                         }
                     }

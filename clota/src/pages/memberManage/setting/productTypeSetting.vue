@@ -8,7 +8,7 @@
         </header-tabs>
         <div class="content">
             <div class="btn-area">
-                <Button type="primary" icon="ios-plus-empty" @click="addProductType">新增产品类别</Button>
+                <Button type="primary" icon="ios-plus-empty" @click="addProductType">{{$t('addProductType')}}</Button>
             </div>
             <table-com
                 :column-data="columnData"
@@ -46,7 +46,7 @@
         </add-product-type-modal>
         <!--删除模态框-->
         <del-modal ref="delModal">
-            <span class="content-text">您正在删除产品类别：<span class="yellow-label">{{currentData ? currentData.typeName : ''}}</span></span>
+            <span class="content-text">{{$t('deletingProductType')}}<span class="yellow-label">{{currentData ? currentData.typeName : ''}}</span></span>
             <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
         </del-modal>
     </div>
@@ -106,7 +106,7 @@
             delProductType (rowData) {
                 this.currentData = rowData;
                 this.$refs.delModal.show({
-                    title : '删除产品类别',
+                    title : this.$t('deleteProductType'),
                     confirmCallback : () => {
                         this.deleteProductType();
                     }
@@ -137,10 +137,10 @@
                     id : this.currentData.id
                 }).then(res =>{
                     if(res.success){
-                        this.$Message.success('删除成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('del')}));
                         this.queryList();
                     }else{
-                        this.$Message.error('删除失败');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('del')}));
                     }
                 });
             }

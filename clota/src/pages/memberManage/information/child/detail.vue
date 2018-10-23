@@ -4,7 +4,7 @@
 
         <div class="breadcrumb-box">
             <bread-crumb-head
-                :before-router-list="[{name: 'memberInfo', router: {name : 'memberInfo'}}]"
+                :before-router-list="[{name: 'memberInfo', router: {name  : 'memberInfo'}}]"
                 :locale-router="'memberDetail'">
             </bread-crumb-head>
         </div>
@@ -80,7 +80,7 @@
 
                 <div class="content-info" v-for="(item, index) in accountData">
                     <div class="title">
-                        {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
+                        {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : (item.accountType === 'score' ? $t('integralAccount') : item.accountName) }}
                         <span>{{$t("information")}}</span>
                         <span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"
                               class="add"

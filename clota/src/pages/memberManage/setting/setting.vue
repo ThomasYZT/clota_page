@@ -253,15 +253,15 @@
                     </div>
                 </div>
                 <div class="content-item">
-                    <div class="title">{{$t('实体卡管理')}}</div>
+                    <div class="title">{{$t('cardManagement')}}</div>
                     <div class="main">
-                        <span class="a-link-el" @click="toEntityCardDetail">实体卡管理</span>
+                        <span class="a-link-el" @click="toEntityCardDetail">{{$t('cardManagement')}}</span>
                     </div>
                 </div>
                 <div class="content-item">
-                    <div class="title">{{$t('支付协议设置')}}</div>
+                    <div class="title">{{$t('paymentSetting')}}</div>
                     <div class="main">
-                        <span class="a-link-el" @click="toSetPayProtocol">支付协议设置</span>
+                        <span class="a-link-el" @click="toSetPayProtocol">{{$t('paymentSetting')}}</span>
                     </div>
                 </div>
 

@@ -3,7 +3,7 @@
 <template>
     <div class="import-entity-card">
         <bread-crumb-head
-            :locale-router="'批量导入'"
+            :locale-router="$t('batchImport')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div  class="content">
@@ -22,7 +22,7 @@
                         <img  src="../../../assets/images/icon-download.png" alt="">
                     </div>
                     <span class="font-label">
-                        <a :href="downloadUrl">下载标准模板</a>
+                        <a :href="downloadUrl">{{$t('downloadStandardTemplate')}}</a>
                     </span>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <TabPane :label="failResolve" name="errorData">
                     </TabPane>
                 </Tabs>
-                <span class="fail-tip">解析失败的数据将不会被导入</span>
+                <span class="fail-tip">{{$t('analysisFailedWillnotImport')}}</span>
             </div>
             <table-com
                 v-if="resolveResultShow"
@@ -65,10 +65,10 @@
         <div class="btn-area" v-if="resolveResultShow">
             <Button type="primary"
                     class="ivu-btn-108px"
-                    @click="importCard">导入</Button>
+                    @click="importCard">{{$t('import')}}</Button>
             <Button type="ghost"
                     class="ivu-btn-108px"
-                    @click="cancel">取消</Button>
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </div>
 </template>
@@ -97,7 +97,7 @@
                         }
                     },
                     {
-                        name: '实体卡管理',
+                        name: 'cardManagement',
                         router: {
                             name: 'entityCard'
                         }
@@ -107,25 +107,25 @@
                 columns : {
                     successData : [
                         {
-                            title: '物理卡号',
+                            title: 'physicalCardNo',
                             field: 'physicalNum'
                         },
                         {
-                            title: '卡面号',
+                            title: 'cardFaceNum',
                             field: 'faceNum'
                         },
                     ],
                     errorData : [
                         {
-                            title: '物理卡号',
+                            title: 'physicalCardNo',
                             field: 'physicalNum'
                         },
                         {
-                            title: '卡面号',
+                            title: 'cardFaceNum',
                             field: 'faceNum'
                         },
                         {
-                            title: '错误原因',
+                            title: 'errReason',
                             field: 'errorInfo'
                         },
                     ]
@@ -184,10 +184,10 @@
                     entityCards : JSON.stringify(this.uploadData['successData'])
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('导入成功');
+                        this.$Message.success(this.$t('successTip',{tip : this.$t('import')}));
                         this.cancel();
                     }else{
-                        this.$Message.error('导入失败');
+                        this.$Message.error(this.$t('failureTip',{tip : this.$t('import')}));
                     }
                 });
             },
@@ -235,11 +235,11 @@
             },
             //解析成功label
             sucResolve() {
-                return `解析成功 · ${this.sucSize}`;
+                return `${this.$t('analysisSuc')} · ${this.sucSize}`;
             },
             //解析失败label
             failResolve () {
-                return `解析失败 · ${this.failSize}`;
+                return `${this.$t('analysisFail')} · ${this.failSize}`;
             },
             //解析结果是否显示
             resolveResultShow () {
