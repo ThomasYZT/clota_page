@@ -27,8 +27,10 @@ export default {
     'auditTeamOrder' : '/order/auditTeamOrder',
     //查询退票/改签待审核订单列表
     'queryOrderRefundAlterAuditList' : '/order/queryOrderRefundAlterAuditList',
-    //订单(单个)批量退票改签审核
+    //订单批量退票改签审核
     'auditBatchOrderProduct' : '/order/auditBatchOrderProduct',
+    //订单单个退票改签审核
+    'auditSingleOrderProduct' : '/order/auditSingleOrderProduct',
     //景区给旅行社下单查询上次导游和司机信息
     'getRecentVisitors' : '/order/getRecentVisitors',
     //获取订单列表
@@ -50,6 +52,11 @@ export default {
     //查询一级散客订单详情
     'queryFirstIndividualOrderDetail': '/order/queryFirstIndividualOrderDetail',
     //查询三级散客订单详情
+    'queryThirdIndividualOrderDetail': '/order/order/queryThirdIndividualOrderDetail',
+    //查询订单下产品详情
+    'queryOrderTicketList': '/order/queryOrderTicketList',
+    //获取订单退票手续费
+    'getRefundProcedureFee': '/order/getRefundProcedureFee',
     'queryThirdIndividualOrderDetail': '/order/queryThirdIndividualOrderDetail',
     //查询产品明细列表--退票、审核用
     'queryOrderTicketList': '/order/queryOrderTicketList',

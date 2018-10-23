@@ -11,10 +11,10 @@
                          show-checkbox
                          :default-expand-all="true"
                          :props="defaultProps"
-                         :default-expanded-keys="defaultExpandedKeys"
                          :expand-on-click-node="false"
                          v-if="companyData.length > 0"
                          @check="treeCheck"
+                         @check-change="checkChange"
                          :render-content="renderContent">
                 </el-tree>
                 <no-data v-else>
@@ -29,7 +29,6 @@
                          show-checkbox
                          :default-expand-all="true"
                          :props="menuDefaultProps"
-                         :default-expanded-keys="menuDefaultChosed"
                          :expand-on-click-node="false"
                          v-show="menuList.length > 0"
                          :render-content="menuRenderContent"
@@ -53,6 +52,14 @@
                 default () {
                     return {};
                 }
+            },
+            //默认手动选择的权限
+            //修改的员工数据包含的手动选择权限
+            'extra-privalige' : {
+                type : Array,
+                default () {
+                    return [];
+                }
             }
         },
         data() {
@@ -62,24 +69,23 @@
                     children: 'subNodes',
                     label : 'orgName'
                 },
+                //菜单权限配置
                 menuDefaultProps : {
                     children: 'subNode',
                     label : 'org'
                 },
-                //默认选择的节点
-                defaultExpandedKeys : [],
                 //节点数据
                 treeData: {},
                 //菜单权限列表
                 menuList : [],
-                //菜单默认选中的项
-                menuDefaultChosed : [],
-                // 当前激活的nodeid
+                // 当前激活的节点id
                 activeNodeId : '',
                 //当前选择的组织节点
                 chosedOrgList : [],
-                //当前左侧选择的组织节点和右侧菜单权限对应
-                privaligeInfo : {}
+                //左侧选择的组织节点和右侧菜单权限对应表
+                privaligeInfo : {},
+                //手动选取的其它菜单权限
+                handlerChosedMenu : {}
             }
         },
         components : {
@@ -90,6 +96,12 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
+                //如果当前节点是在选择角色下的节点，那么是默认选中，且不可取消
+                if(data.id in this.defaultChosedNodeInit){
+                    this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
+                }
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -122,8 +134,10 @@
              * 菜单组织树
              */
             menuRenderContent (h, {root, node, data}) {
-                //没有选择节点不可选择菜单权限
-                if(!this.chosedOrgList.includes(this.activeNodeId)){
+                let roleMenus = this.defaultChosedDisabledPrivaliges[this.activeNodeId] ? this.defaultChosedDisabledPrivaliges[this.activeNodeId] : [];
+                //如果左侧节点没有勾选，那么右侧节点下的菜单权限不可勾选
+                //角色下的菜单权限不可修改状态
+                if(!this.chosedOrgList.includes(this.activeNodeId) || (roleMenus.includes(data['privCode']))){
                     this.$set(data,'disabled',true);
                 }else{
                     this.$set(data,'disabled',false);
@@ -144,7 +158,7 @@
                         directives: [
                             {
                                 name: 'w-title',
-                                value: data.orgName
+                                value: this.$t(data.privCode)
                             }
                         ],
                     }, this.$t(data.privCode))
@@ -174,6 +188,10 @@
              */
             getMenuPrivalige (data) {
                 this.activeNodeId = data.id;
+                this.$emit('set-org-name',{
+                    type : 'finance',
+                    data : data.orgName
+                });
                 ajax.post('getAllPrivilege',{
                     orgId : data.id
                 }).then(res => {
@@ -187,31 +205,39 @@
                 });
             },
             /**
-             * 节点选择变化
+             * 节点权限变化，菜单权限也跟着变化
              * @param data
              * @param checkedKeys
              */
             treeCheck (data,{checkedNodes,checkedKeys}) {
-                // debugger
+                //如果节点取消选择，那么右侧的菜单权限也要全部取消选择
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
-                    this.$nextTick(() => {
-                        this.$refs.menuTree.setCheckedNodes([]);
-                    });
+                    if(this.activeNodeId === data['id']){
+                        this.$nextTick(() => {
+                            this.$refs.menuTree.setCheckedNodes([]);
+                        });
+                    }
                 }
-                this.chosedOrgList = checkedKeys;
             },
             /**
              * 组织机构选择的对应的菜单权限改变
              * @param data
              * @param checkedKeys
              * @param checkedNodes
+             * @param halfCheckedNodes
              */
             menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
+                this.handlerChosedMenu[this.activeNodeId] = [];
                 this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
+                    //将不是默认选中的权限保存为手动选择的额外权限
+                    if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
+                        !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
+                        this.handlerChosedMenu[this.activeNodeId].push(item);
+                    }
                     return {
                         ...item,
-                        choseStatus : ''
+                        choseStatus : '',
                     }
                 }),...halfCheckedNodes.map(item => {
                     return {
@@ -224,36 +250,48 @@
              * 设置右侧默认选中的菜单节点
              */
             setDefaultMenuChosed () {
-                if(this.activeNodeId in this.privaligeInfo){
-                    let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
-                    this.$nextTick(() => {
-                        this.$refs.menuTree.setCheckedNodes(chosedNode);
-                    });
+                //将角色下的菜单权限和手动选择的菜单权限全部默认选中
+                let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
+                let handlerChoseNode = this.handlerChosedMenu[this.activeNodeId] ? this.handlerChosedMenu[this.activeNodeId] : [];
+                this.$nextTick(() => {
+                    this.$refs.menuTree.setCheckedNodes(chosedNode.concat(handlerChoseNode));
+                });
+            },
+            /**
+             * 节点的复选框选择状态改变
+             * @param data
+             * @param select
+             */
+            checkChange (data,select) {
+                if(select){
+                    this.chosedOrgList.push(data['id']);
                 }else{
-                    this.$nextTick(() => {
-                        this.$refs.menuTree.setCheckedNodes([]);
-                    });
+                    for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                        if(this.chosedOrgList[i] === data['id']){
+                            this.chosedOrgList.splice(i,1);
+                            break;
+                        }
+                    }
                 }
             },
             /**
-             * 获取选择的财务权限
+             * 获取手动选择的菜单权限
              */
-            getMangePrivalige () {
-                let returnValige = [];
-                for(let item in this.privaligeInfo){
-                    for(let i = 0,j = this.privaligeInfo[item].length;i < j;i++){
-                        returnValige.push({
+            getHandlerChosedMenu () {
+                let result = [];
+                for(let item in this.handlerChosedMenu){
+                    for(let i = 0,j = this.handlerChosedMenu[item].length;i < j;i++){
+                        result.push({
                             privOrg : item,
-                            privCode : this.privaligeInfo[item][i].privCode,
-                            privType : this.privaligeInfo[item][i].privType,
-                            path : this.privaligeInfo[item][i].path,
-                            ranges : this.privaligeInfo[item][i].ranges,
+                            privCode : this.handlerChosedMenu[item][i].privCode,
+                            privType : this.handlerChosedMenu[item][i].privType,
+                            path : this.handlerChosedMenu[item][i].path,
+                            ranges : this.handlerChosedMenu[item][i].ranges,
                             orgType : 'economic',
-                            choseStatus : this.privaligeInfo[item][i].choseStatus
                         });
                     }
                 }
-                return returnValige;
+                return result;
             }
         },
         computed : {
@@ -264,25 +302,103 @@
                 }else{
                     return [];
                 }
-            }
+            },
+            //角色节点下的所有菜单权限不可手动勾选和取消勾选
+            defaultChosedDisabledPrivaliges () {
+                let result = {};
+                for(let orgId in this.defaultChosedNodeInit){
+                    let orgInfo = this.defaultChosedNodeInit[orgId];
+                    for(let i = 0,j = orgInfo.length;i < j;i++){
+                        if(!result[orgId]){
+                            result[orgId] = [];
+                        }
+                        result[orgId].push(orgInfo[i]['privCode']);
+                    }
+                }
+                return result;
+            },
         },
         created () {
             this.getOrgTree();
         },
         watch : {
             //设置默认选中的节点
-            defaultChosedNodeInit (newVal,oldVal) {
-                if(newVal && Object.keys(newVal).length > 0){
-                    this.privaligeInfo = newVal;
-                    let data = [];
-                    for(let item in this.defaultChosedNodeInit){
-                        data.push(item);
+            defaultChosedNodeInit :{
+                handler (newVal,oldVal) {
+                    if(newVal && Object.keys(newVal).length > 0){
+                        let data = [];
+                        for(let item in this.defaultChosedNodeInit){
+                            data.push(item);
+                        }
+                        for(let item in this.handlerChosedMenu){
+                            data.push(item);
+                        }
+                        if(Object.keys(newVal).length > Object.keys(oldVal).length){
+                            for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                                if(!(this.chosedOrgList[i] in newVal)){
+                                    data.push(this.chosedOrgList[i]);
+                                }
+                            }
+                        }else{
+                            for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                                if(!(this.chosedOrgList[i] in oldVal)){
+                                    data.push(this.chosedOrgList[i]);
+                                }
+                            }
+                        }
+                        this.privaligeInfo = JSON.parse(JSON.stringify(newVal));
+                        this.$nextTick(() => {
+                            this.$refs.nodeTree.setCheckedKeys(data);
+                            this.setDefaultMenuChosed();
+                        });
+                    }else{
+                        let disChecked = [];
+                        for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
+                            if(!(this.chosedOrgList[i] in oldVal)){
+                                disChecked.push(this.chosedOrgList[i]);
+                            }else{
+                                delete this.privaligeInfo[this.chosedOrgList[i]];
+                            }
+                        }
+                        this.$nextTick(() => {
+                            this.$refs.nodeTree.setCheckedKeys(disChecked);
+                            this.setDefaultMenuChosed();
+                        });
                     }
-                    this.chosedOrgList = data;
-                    this.$nextTick(() => {
-                        this.$refs.nodeTree.setCheckedKeys(data);
-                    });
-                }
+                },
+                deep : true
+            },
+            //如果有默认的手动选择权限，那么需要勾选上
+            extraPrivalige :{
+                handler (newVal,oldVal) {
+                    if(newVal){
+                        for(let i = 0,j = newVal.length;i < j;i++){
+                            if(newVal[i]['orgType'] === 'economic'){
+                                if(this.handlerChosedMenu[newVal[i]['privOrg']]){
+                                    this.handlerChosedMenu[newVal[i]['privOrg']].push({
+                                        path : newVal[i]['path'],
+                                        privCode : newVal[i]['privCode'],
+                                        privType : newVal[i]['privType'],
+                                        ranges :newVal[i]['ranges'],
+                                    });
+                                }else{
+                                    this.handlerChosedMenu[newVal[i]['privOrg']] = [{
+                                        path : newVal[i]['path'],
+                                        privCode : newVal[i]['privCode'],
+                                        privType : newVal[i]['privType'],
+                                        ranges :newVal[i]['ranges'],
+                                    }];
+                                }
+                            }
+                        }
+                        this.$nextTick(() => {
+                            for(let item in this.handlerChosedMenu){
+                                this.$refs.nodeTree.setChecked(item,true);
+                            }
+                        });
+                    }
+                },
+                deep : true
             }
         }
     }
@@ -333,7 +449,7 @@
             }
 
             .title-class {
-                @include overflow_tip(unquote('calc(100% - 40px)'), 36px);
+                @include overflow_tip(unquote('calc(100% - 2px)'), 36px);
                 display: inline-block;
                 padding: 7px 0;
                 line-height: 22px;

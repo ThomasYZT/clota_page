@@ -15,7 +15,7 @@
         </div>
         <div class="wrapper">
             <!--取票串码查询结果列表-->
-            <div class="result-container" v-if="tableData.orderTicketList && tableData.orderTicketList.length>0">
+            <div class="result-container" v-if="tableData.orderInfoList && tableData.orderInfoList.length>0">
                 <div class="list-sign">{{$t('取票串码查询结果列表')}}
                     <Button type="primary"
                             class="batch-verify"
@@ -26,10 +26,117 @@
                     :ofsetHeight="170"
                     :show-pagination="false"
                     :column-data="ticketColumnData"
-                    :table-data="tableData.orderTicketList"
+                    :table-data="tableData.orderInfoList"
                     :column-check="true"
                     :border="true"
                     @selection-change="changeTicketSelection">
+                    <el-table-column
+                        slot="column5"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transOrderOrg(scope.row.orderChannel))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column7"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.productName | contentFilter}}</span> |
+                            <span>{{$t('quantity')}}：{{scope.row.quantity | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column8"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column9"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.visitorName | contentFilter}}</span> |
+                            <span>{{scope.row.phoneNumber | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column11"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span class="blue" style="margin-right: 20px;">{{$t('已取票')}}：{{scope.row.quantityPicked | contentFilter}}</span>
+                            <span class="gray">{{$t('未取票')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityPicked)}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column12"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span class="blue" style="margin-right: 20px;">{{$t('已核销')}}：{{scope.row.quantityVerified | contentFilter}}</span>
+                            <span class="gray">{{$t('未核销')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column13"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span class="red" style="margin-right: 20px;">{{$t('已退')}}：{{scope.row.quantityRefunded | contentFilter}}</span>
+                            <span class="yellow">{{$t('待审')}}：{{scope.row.quantityAuditRefunded | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column14"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span class="blue" style="margin-right: 20px;">{{$t('已改')}}：{{scope.row.quantityRescheduled | contentFilter}}</span>
+                            <span class="yellow">{{$t('待审')}}：{{scope.row.quantityAuditRescheduled | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column15"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <!--{{$t(transOrderOrg(scope.row.smsStatus))}}-->
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column16"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transSyncStatus(scope.row.syncStatus))}}
+                        </template>
+                    </el-table-column>
 
                     <el-table-column
                         slot="column17"
@@ -45,7 +152,7 @@
                 </table-com>
             </div>
             <!--每张门票的核销串码查询结果列表-->
-            <div class="result-container" v-if="tableData.orderInfoList && tableData.orderInfoList.length>0">
+            <div class="result-container" v-if="tableData.orderTicketList && tableData.orderTicketList.length>0">
                 <div class="list-sign">{{$t('每张门票的核销串码查询结果列表')}}
                     <Button type="primary"
                             class="batch-verify"
@@ -56,10 +163,103 @@
                     :ofsetHeight="170"
                     :show-pagination="false"
                     :column-data="verifyColumnData"
-                    :table-data="tableData.orderInfoList"
+                    :table-data="tableData.orderTicketList"
                     :column-check="true"
                     :border="true"
                     @selection-change="changeVerifySelection">
+                    <el-table-column
+                        slot="column6"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transOrderOrg(scope.row.orderChannel))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column8"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.productName | contentFilter}}</span> |
+                            <span>{{$t('quantity')}}：{{1}}</span> <!--每张门票的核销，故此处预定数量: 1-->
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column9"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column10"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.visitorName | contentFilter}}</span> |
+                            <span>{{scope.row.phoneNumber | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column12"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transPickStatus(scope.row.pickStatus))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column13"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transVerifyStatus(scope.row.verifyStatus))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column14"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transRefundStatus(scope.row.refundStatus))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column15"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transRescheduleStatus(scope.row.rescheduleStatus))}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column16"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(transSyncStatus(scope.row.syncStatus))}}
+                        </template>
+                    </el-table-column>
 
                     <el-table-column
                         slot="column17"
@@ -89,6 +289,7 @@
     import {orderTicketHead, orderVerifyHead} from './verifyConfig';
     import ajax from '@/api/index'
     import verifyModal from './child/verifyModal.vue';
+    import {transOrderOrg, transSyncStatus, transPickStatus, transRefundStatus, transRescheduleStatus, transVerifyStatus} from '../commFun';
 
     export default {
         components: {tableCom, noDataTip, verifyModal},
@@ -177,6 +378,10 @@
                 }
                 this.showModal(this.chosenRowData[type], true, type);
             },
+            // 下单渠道code转换
+            transOrderOrg: transOrderOrg,
+            // 同步状态code转换
+            transSyncStatus: transSyncStatus,
         }
     };
 </script>
@@ -225,6 +430,19 @@
         .batch-verify {
             float: right;
         }
+    }
+
+    .blue {
+        color: $color_blue;
+    }
+    .red {
+        color: $color_red;
+    }
+    .yellow {
+        color: $color_yellow;
+    }
+    .gray {
+        color: $color_999;
     }
 
 </style>

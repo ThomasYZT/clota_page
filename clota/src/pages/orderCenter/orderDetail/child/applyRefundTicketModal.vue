@@ -15,15 +15,26 @@
         </div>
         <div class="target-body">
             <ul class="tourist-info">
-                <li><span class="key">游客姓名：</span><span class="value">王</span></li>
-                <li><span class="key">手机号：</span><span class="value">王</span></li>
+                <li><span class="key">游客姓名：</span><span class="value">{{orderDetail.visitorName | contentFilter}}</span></li>
+                <li><span class="key">手机号：</span><span class="value">{{orderDetail.phoneNumber | contentFilter}}</span></li>
             </ul>
             <table-com
                 :column-data="columnData"
                 :table-data="tableData"
-                :height="164">
+                :height="164"
+                @selection-change="handleSelectionChange">
+                <el-table-column
+                    slot="column0"
+                    slot-scope="row"
+                    :selectable="selectableFunc"
+                    :label="row.title"
+                    fixed="left"
+                    type="selection"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                </el-table-column>
             </table-com>
-            <div class="service-charge">退票手续费：<span class="charge">25.00元</span></div>
+            <div class="service-charge">退票手续费：<span class="charge">{{refundFee | moneyFilter}}元</span></div>
             <div class="err-message">您申请退票的数量已超过可退票数量</div>
         </div>
         <div slot="footer">
@@ -40,12 +51,18 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './applyRefundTicketConfig';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //绑定modal的v-modal值
             value : {
                 type : Boolean,
                 default : false
+            },
+            //订单详情
+            orderDetail : {
+                type : Object,
+                default : ''
             }
         },
         components : {
@@ -56,11 +73,9 @@
                 //表头配置
                 columnData : columnData,
                 //表格数据
-                tableData : [
-                    {
-
-                    }
-                ]
+                tableData : [],
+                //选择的产品信息
+                selectedTicket : []
             }
         },
         methods: {
@@ -82,10 +97,61 @@
              */
             visibleChange(type) {
                 if(type === true){
-                    this.queryLeftMoney();
-                    this.findProductSaleRule();
+                    this.queryOrderTicketList();
                 }
             },
+            /**
+             * 确定退票
+             */
+            confirm () {
+
+            },
+            /**
+             * 查询订单详情
+             */
+            queryOrderTicketList () {
+                ajax.post('queryOrderTicketList',{
+                    visitorProductId : this.orderDetail.visitorProductId
+                }).then(res => {
+                    if(res.success){
+                        this.tableData = res.data ? res.data : [];
+                    }else{
+                        this.tableData = [];
+                    }
+                });
+            },
+            /**
+             * 选择的产品信息
+             * @param data
+             */
+            handleSelectionChange(data) {
+                this.selectedTicket = data;
+            },
+            /**
+             * 判断一个产品是否可选
+             * @param data
+             * @returns {boolean}
+             */
+            selectableFunc(data){
+                //同步失败，已核销，已退票/退票待审核,已改签/改签待审核,不可选择
+                if(data.syncStatus !== 'success'){
+                    return false;
+                }else if(data.rescheduleStatus !== "no_alter"){
+                    return false;
+                }else if(data.refundStatus !== 'no_refund'){
+                    return false;
+                }else if(data.verifyStatus !== 'true'){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        },
+        computed : {
+            //退票费
+            refundFee () {
+                return this.selectedTicket.reduce((price,item) => price += item.refundProcedureFee,0);
+            }
         }
     }
 </script>

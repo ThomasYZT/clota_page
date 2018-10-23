@@ -149,28 +149,33 @@ export const bulkRefundHead = [
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称/预定数量',
+        title: '产品名称|预定数量',
         width: 180,
         enWidth : 200,
-        field: 'productName/quantity'
+        field: 'productName|quantity'
     },
     {
-        title: '产品单价/小计金额',
+        title: '产品单价|小计金额',
         width: 180,
         enWidth : 200,
-        field: 'price/amount'
+        field: 'price|amount'
     },
     {
-        title: '游客/手机号',
+        title: '游客|手机号',
         width: 130,
         enWidth : 150,
-        field: 'visitorName / phoneNumber'
+        field: 'visitorName|phoneNumber'
     },
     {
         title: '申请数量',
         width: 100,
         enWidth : 130,
         field: 'reqNum'
+    },
+    {
+        title: '申请改签后游玩日期',
+        minWidth: 200,
+        field: 'rescheduleAfterVisitDate'
     },
     {
         title: '申请时间',
@@ -194,18 +199,18 @@ export const bulkRefundHead = [
 export const bulkBatchAuditHead = [
     {
         title: '订单明细编号',
-        width: 200,
+        width: 190,
         field: 'orderDetailNo'
     },
     {
         title: '下单企业',
-        minWidth: 150,
+        minWidth: 130,
         enWidth : 180,
         field: 'channel'
     },
     {
         title: '产品名称',
-        minWidth: 150,
+        minWidth: 130,
         enWidth : 180,
         field: 'productName'
     },
@@ -215,10 +220,20 @@ export const bulkBatchAuditHead = [
         enWidth : 130,
         field: 'reqNum'
     },
+    {
+        title: '申请改签后游玩日期',
+        minWidth: 150,
+        field: 'rescheduleAfterVisitDate'
+    },
 ];
 
 // 散客订单--审核详情--产品列表表头
 export const productListHead = [
+    {
+        title: '',
+        minWidth: 50,
+        field: ''
+    },
     {
         title: '产品明细编号',
         minWidth: 200,

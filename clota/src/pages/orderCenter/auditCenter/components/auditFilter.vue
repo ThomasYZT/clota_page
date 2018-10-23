@@ -9,59 +9,34 @@
         <Form ref="formCustom"
               :model="formData"
               :rules="formRule"
-              :label-width="80">
+              :label-width="90" :label-position="'left'">
             <i-row>
-                <i-col span="9">
+                <i-col span="11">
                     <!--下单时间-->
                     <FormItem :label="$t('下单时间')">
                         <DatePicker v-model="orderTimeRange"
                                     type="daterange"
-                                    style="width: 300px"
+                                    style="width: 100%"
                                     @on-change="changeOrderTime">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-                <i-col span="6">
-                    <!--下单渠道-->
-                    <FormItem :label="$t('下单渠道')">
-                        <Select v-model="formData.orderChannel"
-                                style="width: 160px">
-                            <Option v-for="item in orderChannelList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="9">
-                    <!--游玩日期-->
-                    <FormItem :label="$t('游玩日期')">
+                <i-col span="12">
+                    <!--游玩时间-->
+                    <FormItem :label="$t('游玩时间')">
                         <DatePicker v-model="visitDateRange"
                                     type="daterange"
-                                    style="width: 300px"
+                                    style="width: 100%"
                                     @on-change="changeVisitDate">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-                <i-col span="6">
-                    <!--下单企业-->
-                    <FormItem :label="$t('下单企业')" >
-                        <Select v-model="formData.channelId" style="width: 160px">
-                            <Option v-for="item in orderEnterprise"
-                                    :key="item.id"
-                                    :value="item.id">
-                                {{$t(item.orgName)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
+            </i-row>
+            <i-row>
                 <i-col span="6" v-if="auditName=='group'">
                     <!--支付状态-->
                     <FormItem :label="$t('支付状态')" >
-                        <Select v-model="formData.paymentStatus" style="width: 160px"
+                        <Select v-model="formData.paymentStatus" style="width: 100%"
                                 @on-change="changePayStatus">
                             <Option v-for="item in paymentList"
                                     :key="item.value"
@@ -71,29 +46,60 @@
                         </Select>
                     </FormItem>
                 </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="9">
-                    <FormItem :label="$t('关键字')" >
-                        <Input v-model.trim="formData.keyword"
-                               style="width: 300px"
-                               :placeholder="$t('请输入游客姓名/手机号/订单号/订单明细编号')" />
+                <i-col span="6">
+                    <!--下单企业-->
+                    <FormItem :label="$t('下单企业')" >
+                        <Select v-model="formData.channelId" style="width: 100%">
+                            <Option v-for="item in orderEnterprise"
+                                    :key="item.id"
+                                    :value="item.id">
+                                {{$t(item.orgName)}}
+                            </Option>
+                        </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="6">
+                    <!--下单渠道-->
+                    <FormItem :label="$t('下单渠道')">
+                        <Select v-model="formData.orderChannel"
+                                style="width: 100%">
+                            <Option v-for="item in orderChannelList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="7">
                     <FormItem :label="$t('业态类型')" >
-                        <Select v-model="formData.productType" style="width: 160px">
+                        <Select v-model="formData.productType" style="width: 100%">
                             <Option value="all">{{$t('all')}}</Option>
                             <Option value="ticket">{{$t('票')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
-                <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('搜索')}}</Button><!--搜索-->
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
+                <i-col span="9">
+                    <FormItem :label="$t('关键字')" >
+                        <Input v-model.trim="formData.keyword"
+                               style="width: 100%"
+                               :placeholder="$t('请输入关键字')" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
+                    </FormItem>
                 </i-col>
             </i-row>
+            <!--<i-row>
+
+
+                <i-col span="6" style="text-align: right;float: right">
+                    <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('搜索')}}</Button>&lt;!&ndash;搜索&ndash;&gt;
+                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button>&lt;!&ndash;重置&ndash;&gt;
+                </i-col>
+            </i-row>-->
         </Form>
+        <div style="position: absolute; right: 36px; top: 60px;">
+            <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('搜索')}}</Button><!--搜索-->
+            <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -237,11 +243,19 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .audit-filter {
-        padding: 14px 30px 5px 30px;
-        border: 1px solid #EEEEEE;
+        padding: 15px 30px 3px 10px;
+        /*border: 1px solid #EEEEEE;*/
+        position: relative;
+
+        .ivu-form {
+            max-width: 1170px;
+        }
 
         /deep/ .ivu-form-item{
             margin-bottom: 7px;
+            .ivu-form-item-label {
+                padding-left: 20px;
+            }
         }
 
         .reset{

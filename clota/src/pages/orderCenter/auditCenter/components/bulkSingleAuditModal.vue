@@ -9,12 +9,12 @@
         v-model="visible"
         :title="$t(title)"
         class-name="add-account-modal vertical-center-modal"
-        width="560"
+        width="600"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
                 <!--订单明细编号-->
                 <Form-item :label="$t('订单明细编号') + '：'" prop="">
                     <span>{{formData.orderDetailNo}}</span>
@@ -31,18 +31,24 @@
                 <Form-item :label="$t('mobilePhone') + '：'" prop="">
                     <span>{{formData.phoneNumber | contentFilter}}</span>
                 </Form-item>
+                <!--申请改签后的游玩日期-->
+                <Form-item :label="$t('申请改签后的游玩日期') + '：'" prop="" v-if="reqType=='alter'">
+                    <span>{{formData.rescheduleAfterVisitDate | contentFilter}}</span>
+                </Form-item>
                 <!--申请数量-->
                 <Form-item :label="$t('申请数量') + '：'" prop="">
                     <span>{{formData.reqNum | contentFilter}}</span>
                 </Form-item>
-                <!--退票 - （通过/驳回）数量-->
-                <Form-item :label="$t('通过数量') + '：'" prop="">
-                    <span>{{formData.quantityRefunded | contentFilter}}</span>
+                <!--通过 - （退票/改签）数量-->
+                <Form-item :label="$t('通过数量') + '：'" prop="" v-if="orderData.type=='pass'">
+                    <span class="green" v-if="reqType=='refund'">{{formData.quantityRefunded | contentFilter}}</span>
+                    <span class="green" v-if="reqType=='alter'">{{Number(formData.quantity) - Number(formData.quantityRefunded)}}</span>
                 </Form-item>
-                <!--改签 - （通过/驳回）数量-->
-                <!--<Form-item :label="$t('通过数量') + '：'" prop="">
-                    <span>{{orderData.quantityRescheduled | contentFilter}}</span>
-                </Form-item>-->
+                <!--驳回 - （退票/改签）数量-->
+                <Form-item :label="$t('驳回数量') + '：'" prop="" v-if="orderData.type=='reject'">
+                    <span class="red" v-if="reqType=='refund'">{{formData.quantityRefunded | contentFilter}}</span>
+                    <span class="red" v-if="reqType=='alter'">{{Number(formData.quantity) - Number(formData.quantityRescheduled)}}</span>
+                </Form-item>
                 <!--备注-->
                 <Form-item :label="$t('remark') + '：'" prop="">
                     <Input v-model.trim="formData.auditRemark"
@@ -54,8 +60,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("审核通过")}}</Button>
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
+            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("通过")}}</Button>
+            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -87,7 +93,16 @@
                 },
             }
         },
-        computed: {},
+        computed: {
+            // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
+            reqType() {
+                if (this.$route.name=='auditBulkRefund') {
+                    return 'refund';
+                } else if (this.$route.name=='auditBulkChange') {
+                    return 'alter';
+                }
+            }
+        },
         created() {
         },
         mounted() {
@@ -124,7 +139,7 @@
                     productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
                     remark: this.formData.auditRemark,
                     auditStatus: this.orderData.type,
-                    reqType: 'refund'
+                    reqType: this.reqType
                 }).then(res => {
                     if(res.success){
                         this.hide();
@@ -142,6 +157,23 @@
     };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
+    .modal-body{
+        padding: 0 60px 0 20px;
+    }
+
+    /deep/ .ivu-form-item-label {
+        color: #585858;
+    }
+
+    /deep/ .ivu-form-item-content {
+        color: #333;
+    }
+
+    .modal-footer{
+        /deep/ .ivu-btn{
+            width: 88px;
+        }
+    }
 </style>

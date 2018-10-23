@@ -160,15 +160,17 @@
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <!--<li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('退票')}}</li>-->
-                        <!--<li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>-->
-                        <!--<li @click="reserve(scope.row)">{{$t('详情')}}</li>-->
+                        <li v-if="returnTicketMenuShow.show" @click="refundTicket(scope.row)">{{$t('退票')}}</li>
+                        <!--<li @click="refundTicket(scope.row)">{{$t('退票')}}</li>-->
+                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>
+                        <li @click="reserve(scope.row)">{{$t('详情')}}</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
         <!--申请退票-->
-        <apply-refund-ticket v-model="refundTicketModalShow">
+        <apply-refund-ticket v-model="refundTicketModalShow"
+                             :orderDetail="currentData">
         </apply-refund-ticket>
     </div>
 </template>
@@ -222,7 +224,9 @@
                     marketLevelId : '',
                 },
                 //退款模态框是否显示
-                refundTicketModalShow : false
+                refundTicketModalShow : false,
+                //当前操作的订单信息
+                currentData : {}
             }
         },
         methods: {
@@ -263,7 +267,7 @@
              * @param data
              */
             toOrderDetail (data) {
-                if(true/*data['orderOrgType'] === 'individual'*/) {
+                if(data['orderOrgType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
                         name : 'individualFirstLevel',
@@ -281,6 +285,14 @@
                     });
                 }
 
+            },
+            /**
+             * 退票
+             * @param data
+             */
+            refundTicket (data) {
+                this.currentData = data;
+                this.refundTicketModalShow = true;
             }
         },
         computed : {

@@ -54,7 +54,7 @@ export default {
                             menuName: 'generalEmployeeManager', //lang.config.js 里面的语言键值
                             _name: 'org-emp', //
                             lightMenu: 'employee',
-                            rightPath : topMenuName + '.' + 'employee',
+                            rightPath : topMenuName + '.' + 'generalEmployeeManager',
                             isMenu : true
                         },
                     },
@@ -67,7 +67,7 @@ export default {
                             menuName: 'employee', //lang.config.js 里面的语言键值
                             _name: 'org-emp', //
                             lightMenu: 'employee',
-                            rightPath : topMenuName + '.' + 'employee'
+                            rightPath : topMenuName + '.' + 'generalEmployeeManager'
                         },
                     },
                     courierManager: {

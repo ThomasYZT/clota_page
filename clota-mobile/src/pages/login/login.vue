@@ -192,8 +192,7 @@
                     }else{
                         //错误信息为空，表示获取到了用户信息
                         if(!res.errcode){
-
-                            this.wxUserInfo = res.data ? JSON.parse(res.data) : {};
+                            this.wxUserInfo = res.data ? res.data : {};
                         }else{
                             this.wxUserInfo = {};
                         }

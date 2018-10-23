@@ -2,10 +2,6 @@
     <!--新增/修改员工信息-->
     <div class="add-employee">
         <div class="breadcrumb-box">
-            <!--<Breadcrumb separator=">">
-                <BreadcrumbItem to="/orgManage/rolePermission">员工</BreadcrumbItem>
-                <BreadcrumbItem>{{ type === 'add' ? '新增员工' : '修改员工信息'}}</BreadcrumbItem>
-            </Breadcrumb>-->
 
             <bread-crumb-head
                 :before-router-list="beforeRouterList"
@@ -46,7 +42,7 @@
                 beforeRouterList: [
                     {
                         name: 'employee',   // 员工
-                        router: 'employee',
+                        router: 'generalEmployeeManager',
                     }
                 ],
                 //新增/修改

@@ -1167,6 +1167,7 @@ export default {
     'Universaldistributioninvitationcode': '全民分销邀请码',
     'SMSallowance':'短信余量(条)',
     'verifyManage': '核销管理',
+    'quantity': '数量',
     'maybeLoss': '低于上级分销单价，可能造成亏损',
     'giveUp': '放弃',
     'haveSomeUnsavedData': '您还有未保存的信息，是否放弃修改'

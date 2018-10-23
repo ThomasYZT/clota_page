@@ -1,4 +1,4 @@
-<template>
+1<template>
     <div class="new-employee-info">
         <Form ref="formValidate"
               :model="employee"
@@ -113,7 +113,9 @@
                             <div class="no-data" v-if="enumData.privileges.length == 0">{{$t('noData')}}</div>
                             <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">{{$t('noSearchResult')}}</div>
                             <!--右侧内容-->
-                            <privalige-chose-com :chose-roles="rolePrivileges">
+                            <privalige-chose-com ref="privalige"
+                                                 :extra-privalige="extraPrivs"
+                                                 :chose-roles="rolePrivileges">
                             </privalige-chose-com>
                             <!--<div class="privilege-part">-->
                                 <!--<div class="part-1">-->
@@ -202,10 +204,22 @@
 
                 //密码只能由数字+26个英文大、小写字母组成，且6-20位
                 pwdRule: (rule, value, callback) => {
-                    if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
-                        callback();
+                    if(this.passwordOrigin){
+                        if(value !== this.passwordOrigin){
+                            if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
+                                callback();
+                            }else{
+                                callback(new Error( this.$t('errorPwdRule') ));
+                            }
+                        }else{
+                            callback();
+                        }
                     }else{
-                        callback(new Error( this.$t('errorPwdRule') ));
+                        if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)){
+                            callback();
+                        }else{
+                            callback(new Error( this.$t('errorPwdRule') ));
+                        }
                     }
                 },
 
@@ -255,6 +269,10 @@
                 activeRoleInOrg: {},
                 // 已勾选的角色名称
                 roleNames: '',
+                //除角色下的权限外的权限
+                extraPrivs :  [],
+                //修改时原生的密码
+                passwordOrigin : '',
 
                 // 表单校验规则
                 ruleValidate: {
@@ -368,15 +386,18 @@
                 if (self.oldPwd !== self.employee.password) {
                     this.employee.password = MD5(this.employee.password).toString();
                 }
+                let privileges = this.$refs.privalige.getHandlerChosedPrivaliges();
                 // 生日日期格式化
                 this.employee.birthday = new Date(this.employee.birthday).format('yyyy-MM-dd');
 
-                ajax.post("addOrUpdateEmployee", this.employee).then(function (res) {
+                ajax.post("addOrUpdateEmployee", Object.assign({
+                    privileges : JSON.stringify(privileges),
+                },this.employee)).then(function (res) {
                     if(res.success){
                         self.$Message.success(self.isEdit ? self.$t('editEmployee')+self.$t('success') : self.$t('newEmployee')+self.$t('success'));
                         self.$router.push({name: 'generalEmployeeManager'});
                     }else{
-                        self.$Message.error( res.data.message || this.$t('failureTip',{tip: this.$t('addOrUpdateEmployee')}) );
+                        self.$Message.error( res.message || this.$t('failureTip',{tip: this.$t('addOrUpdateEmployee')}) );
                     }
                 })
             },
@@ -397,12 +418,20 @@
                     employeeId: id
                 }).then(res => {
                     if(res.success){
-                        this.employee = Object.assign(this.employee, res.data || {});
-                        this.rolePrivileges = map(this.employee.roles, 'id');   // 角色权限列表
+                        if(res.data){
+                            for(let item in this.employee){
+                                if(item in res.data){
+                                    this.employee[item] = res.data[item];
+                                }
+                            }
+                        }
+                        this.passwordOrigin = res.data ? res.data.password : '';
+                        // this.employee = Object.assign(this.employee, res.data || {});
+                        this.rolePrivileges = map(res.data.roles, 'id');   // 角色权限列表
                         this.$set(this.employee, 'roleIds', this.rolePrivileges.join(','));
-                        this.roleNames = map(this.employee.roles || [], 'roleName').join(',');
-
+                        this.roleNames = map(res.data.roles || [], 'roleName').join(',');
                         this.oldPwd = this.employee.password;
+                        this.extraPrivs = res.data ? res.data.extraPrivs : [];
                     }
                 })
             },

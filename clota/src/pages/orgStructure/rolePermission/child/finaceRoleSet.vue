@@ -198,12 +198,13 @@
              * @param checkedKeys
              */
             treeCheck (data,{checkedNodes,checkedKeys}) {
-                // debugger
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
-                    this.$nextTick(() => {
-                        this.$refs.menuTree.setCheckedNodes([]);
-                    });
+                    if(this.activeNodeId === data.id){
+                        this.$nextTick(() => {
+                            this.$refs.menuTree.setCheckedNodes([]);
+                        });
+                    }
                 }
                 this.chosedOrgList = checkedKeys;
             },

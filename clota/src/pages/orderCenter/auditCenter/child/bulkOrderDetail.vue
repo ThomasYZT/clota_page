@@ -8,7 +8,7 @@
     <div class="bulk-order-detail">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="localeRouter">
+            :locale-router="'订单明细详情'">
         </bread-crumb-head>
 
         <!--散客订单基本信息-->
@@ -18,7 +18,8 @@
         <!--产品明细-->
         <product-detail :module-info="detailData.ticketList"
                         :base-info="detailData.baseInfo"
-                        :visitor-info="detailData.visitor">
+                        :visitor-info="detailData.visitor"
+                        @confirm-audit="handleConfirmAudit">
         </product-detail>
         <!--分销信息-->
         <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
@@ -45,6 +46,7 @@
     export default {
         mixins : [lifeCycleMixins],
         components: {
+            breadCrumbHead,
             bulkOrderBase,
             visitorInfo,
             productDetail,
@@ -56,13 +58,6 @@
         props: {},
         data() {
             return {
-                // 面包屑上级路由信息
-                beforeRouterList: [
-                    {
-                        name: '散客退票审核',   // 散客退票审核
-                        router: 'employee',
-                    }
-                ],
                 // 订单审核详情
                 detailData: {
                     baseInfo: {},
@@ -84,8 +79,19 @@
             }
         },
         computed: {
-            breadRouterList() {
-
+            // 面包屑上级路由信息
+            beforeRouterList() {
+                if (this.$route.name == 'bulkRefundDetail') {
+                    return [{
+                        name: '散客退票审核',   // 散客退票审核
+                        router: {name: 'auditBulkRefund'}
+                    }]
+                } else if (this.$route.name == 'bulkChangeDetail') {
+                    return [{
+                        name: '散客改签审核',   // 散客改签审核
+                        router: {name: 'auditBulkChange'}
+                    }]
+                }
             },
         },
         created() {
@@ -94,18 +100,6 @@
         },
         watch: {},
         methods: {
-            init() {
-                if (this.$route.name == 'auditBulkRefund') {
-                    return [{
-                        name: '散客退票审核',   // 散客退票审核
-                        router: 'auditBulkRefund'
-                    }]
-                } else if (this.$route.name == 'auditBulkChange') {
-                    return [{
-                        name: '散客改签审核',   // 散客改签审核
-                        router: 'auditBulkChange'}]
-                }
-            },
             /**
              * 查询散客订单详情
              */
@@ -124,11 +118,18 @@
              */
             getParams (params) {
                 if(params && Object.keys(params).length > 0){
-                    this.getBulkOrderDetail(params.visitorPid);
+                    this.getBulkOrderDetail(params.rowData.visitorProductId);
 //                    this.getBulkOrderDetail('1051793405354577920');
                 }else{
                     this.$router.go(-1);
                 }
+            },
+            /**
+             * 单个订单审核确认OK后，刷新订单详情数据
+             * @param visitorProductId
+             */
+            handleConfirmAudit(visitorProductId) {
+                this.getBulkOrderDetail(visitorProductId);
             },
         }
     };
@@ -137,6 +138,6 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .bulk-order-detail {
-
+        padding: 15px 20px;
     }
 </style>

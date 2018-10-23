@@ -19,15 +19,20 @@
                 </ul>
             </div>
             <div class="menu-title">
-                <div class="scene-title">菜单权限（欢乐世界）</div>
+                <div class="scene-title">菜单权限（{{orgName[tapType]}}）</div>
             </div>
         </div>
         <finace-role v-show="tapType === 'finance'"
-                     :default-chosed-node-init="economicDefaultChosed">
+                     ref="finaceRole"
+                     :extra-privalige="extraPrivalige"
+                     :default-chosed-node-init="economicDefaultChosed"
+                     @set-org-name="getOrgname">
         </finace-role>
         <manage-role v-show="tapType === 'manage'"
-                     :rolePrivaliges="rolePrivaligesChosed"
-                     :default-chosed-node-init="manageDefaultChosed">
+                     ref="manageRole"
+                     :extra-privalige="extraPrivalige"
+                     :default-chosed-node-init="manageDefaultChosed"
+                     @set-org-name="getOrgname">
         </manage-role>
     </div>
 </template>
@@ -35,12 +40,19 @@
 <script>
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
-    import finaceRole from './finaceRole';
+    import finaceRole from './financeRole';
     import manageRole from './manageRole';
     export default {
         props :{
             //选择的角色信息
             'chose-roles' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
+            //手动选择的权限
+            'extra-privalige' : {
                 type : Array,
                 default () {
                     return [];
@@ -63,7 +75,14 @@
                 //存储当前选择的角色id
                 rolePrivaliges : {},
                 //当前选择的角色下的权限信息
-                rolePrivaligesChosed : {}
+                rolePrivaligesChosed : {},
+                //手动选择的权限
+                handlerChosedPrivalilges : [],
+                //当前选择节点名称
+                orgName : {
+                    manage : '',
+                    finance : '',
+                },
             }
         },
         methods: {
@@ -75,22 +94,7 @@
                 this.tapType = type;
             },
             /**
-             * 查询角色详情
-             * @params roleId
-             */
-            queryRoleDetail (roleId) {
-                ajax.post('findById',{
-                    id : roleId
-                }).then(res => {
-                    if(res.success){
-                        this.rolePrivaliges[roleId] = res.data ? res.data.privModelList : [];
-                        this.getMangePrivalige(res.data.privModelList);
-                    }else{
-                    }
-                });
-            },
-            /**
-             * 获取景区经营权限节点列表
+             * 获取景区权限节点列表
              * @param data
              */
             getMangePrivalige (data) {
@@ -175,6 +179,22 @@
                     }
                 }
                 return result;
+            },
+            /**
+             * 获取手动选择的权限信息
+             */
+            getHandlerChosedPrivaliges () {
+                let manageRoles = this.$refs.manageRole.getHandlerChosedMenu();
+                let finaceRoles = this.$refs.finaceRole.getHandlerChosedMenu();
+                return [...manageRoles,...finaceRoles];
+            },
+            /**
+             * 获取节点名称
+             * @param type
+             * @param data
+             */
+            getOrgname ({type,data}) {
+                this.orgName[type] = data;
             }
         },
         watch :{
@@ -209,6 +229,7 @@
             .org-title{
                 float: left;
                 width: 380px;
+                border-right: 1px dashed $color_E1E1E1;
 
                 .tap{
                     float: right;
@@ -218,6 +239,7 @@
                         float: left;
                         margin-left: 25px;
                         cursor: pointer;
+                        line-height: 38px;
 
                         &.active{
                             color: $color_blue;
@@ -226,6 +248,7 @@
                                 content : '';
                                 @include block_outline(100%,3px,false);
                                 background: $color_blue;
+                                margin-top: -4px;
                             }
                         }
                     }
@@ -245,10 +268,6 @@
         .org-title{
             @include block_outline($height : 37px);
             padding: 0 20px;
-
-            &:nth-of-type(1){
-                border-bottom: 1px solid #EBEEF5;
-            }
 
             .scene-title{
                 padding: 7px 0 7px 0;
