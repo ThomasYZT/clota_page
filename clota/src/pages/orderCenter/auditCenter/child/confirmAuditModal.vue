@@ -242,6 +242,13 @@
                     vertical-align: middle;
                 }
             }
+
+            .table-bottom {
+                ul > li {
+                    float: right;
+                    margin-right: 20px;
+                }
+            }
         }
 
         .modal-footer{

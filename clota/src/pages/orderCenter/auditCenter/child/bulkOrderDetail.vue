@@ -138,6 +138,6 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .bulk-order-detail {
-
+        padding: 15px 20px;
     }
 </style>
