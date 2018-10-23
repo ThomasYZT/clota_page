@@ -1197,4 +1197,5 @@ export default {
     'analysisFail': 'parsing failure',
     'selectCardFileImport': 'select physical text file upload',
     'integralAccount': 'integral account',
+    'timesNo': '第{field}次',
 }

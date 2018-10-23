@@ -14,7 +14,7 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="180">
                 <!--订单明细编号-->
                 <Form-item :label="$t('订单明细编号') + '：'" prop="">
                     <span>{{formData.orderDetailNo}}</span>

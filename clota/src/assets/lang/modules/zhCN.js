@@ -1197,4 +1197,5 @@ export default {
     'analysisFail': '解析失败',
     'selectCardFileImport': '选择实体卡文件上传',
     'integralAccount': '积分账户',
+    'timesNo': '第{field}次',
 }

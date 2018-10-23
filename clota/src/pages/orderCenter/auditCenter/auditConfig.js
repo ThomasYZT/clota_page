@@ -222,7 +222,7 @@ export const bulkBatchAuditHead = [
     },
     {
         title: '申请改签后游玩日期',
-        minWidth: 150,
+        minWidth: 200,
         field: 'rescheduleAfterVisitDate'
     },
 ];
@@ -264,9 +264,14 @@ export const productListHead = [
     },
     {
         title: '改签状态',
-        minWidth: 100,
-        enWidth : 130,
+        minWidth: 150,
+        enWidth : 150,
         field: 'rescheduleStatus'
+    },
+    {
+        title: '申请改签后游玩日期',
+        minWidth: 200,
+        field: 'rescheduleAfterVisitDate'
     },
     {
         title: '串码',
