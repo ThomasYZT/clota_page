@@ -81,7 +81,7 @@
                     <span class="divide-line"></span>
                     <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
-                    <span class="operate-btn blue" @click="">{{$t('details')}}</span>
+                    <span class="operate-btn blue" @click="goTeamOrderDetail(scope.row)">{{$t('details')}}</span>
                 </template>
             </el-table-column>
         </table-com>
@@ -230,6 +230,16 @@
                     isBatch: isBatch
                 });
             },
+            /**
+             * 跳转至团队订单详情
+             * @param scopeRow
+             */
+            goTeamOrderDetail(scopeRow) {
+                this.$router.push({
+                    name: 'teamOrderDetail',
+                    params: {orderId: scopeRow.id},
+                });
+            },
         }
     };
 </script>
@@ -260,6 +270,19 @@
         }
         .red {
             color: $color_red;
+        }
+    }
+
+    /deep/.el-dropdown-menu__item {
+        width: 88px;
+        text-align: center;
+
+        &:not(.is-disabled) {
+            color: $color_333;
+        }
+        &:not(.is-disabled):hover, &:focus {
+            background-color: #f1f4f8;
+            color: $color_blue;
         }
     }
 </style>

@@ -130,7 +130,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/groupOrder.vue'),
                         meta: {
                             menuName: 'auditGroupOrder', //lang.config.js 里面的语言键值
-                            _name: 'point-setting',
+                            _name: 'org',
                             rightPath: topMenuName + '.' + 'auditGroupOrder',
                             isMenu: true
                         },
@@ -142,7 +142,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/bulkRefund.vue'),
                         meta: {
                             menuName: 'auditBulkRefund', //lang.config.js 里面的语言键值
-                            _name: 'stuff-setting',
+                            _name: 'org',
                             rightPath: topMenuName + '.' + 'auditBulkRefund',
                             isMenu: true
                         },
@@ -154,7 +154,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/child/bulkOrderDetail.vue'),
                         meta: {
                             menuName: 'auditBulkRefund', //lang.config.js 里面的语言键值
-                            _name: 'stuff-setting',
+                            _name: 'org',
                             rightPath: topMenuName + '.' + 'auditBulkRefund',
                             isMenu: false
                         },
@@ -166,7 +166,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/bulkChange.vue'),
                         meta: {
                             menuName: 'auditBulkChange', //lang.config.js 里面的语言键值
-                            _name: 'stuff-setting',
+                            _name: 'org',
                             rightPath: topMenuName + '.' + 'auditBulkChange',
                             isMenu: true
                         },
@@ -178,7 +178,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/child/bulkOrderDetail.vue'),
                         meta: {
                             menuName: 'auditBulkChange', //lang.config.js 里面的语言键值
-                            _name: 'stuff-setting',
+                            _name: 'org',
                             rightPath: topMenuName + '.' + 'auditBulkChange',
                             isMenu: false
                         },

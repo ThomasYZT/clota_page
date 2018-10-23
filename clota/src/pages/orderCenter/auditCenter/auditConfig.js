@@ -88,23 +88,23 @@ export const batchAuditHead = [
     {
         title: '订单号',
         minWidth: 150,
-        enWidth : 180,
+        // enWidth : 180,
         field: 'orderNo'
     },
     {
         title: '下单企业',
-        width: 150,
-        enWidth : 180,
+        miWidth: 150,
+        enWidth : 160,
         field: 'orderOrgName'
     },
     {
         title: '游玩日期',
-        minWidth: 200,
+        width: 130,
         field: 'originVisitDate'
     },
     {
         title: '订单金额',
-        width: 100,
+        width: 120,
         field: 'orderAmount'
     },
 ];
