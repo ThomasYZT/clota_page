@@ -126,30 +126,46 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save()" >{{$t("save")}}</Button>
+            <Button v-if="editable" type="primary" @click="save()" >{{$t("save")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
+
+        <tipModal ref="tipModal"
+                  @giveUp="giveUp()"
+                  @noGiveUp="noGiveUp()"> </tipModal>
     </Modal>
 </template>
 
 <script>
     import ajax from '@/api/index';
+    import {validator} from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
+    import tipModal from '../../components/tipModal';
     import {saleChannelColumn, detailParentDistributePriceConfig} from '../child/detailConfig';
     export default {
         components: {
-            tableCom
+            tableCom,
+            tipModal
         },
         data() {
             const validateMethod = {
                 productPrice: (rule,value,callback) => {
-                    console.log(value)
+                    //校验非空必填以及不可低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
                             if(item.price === ''){
                                 callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
                             }else {
-                                callback();
+                                if(validator.isNumber(item.price)) {
+                                    if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
+                                        callback(new Error(this.$t('maybeLoss')));
+                                    } else {
+                                        callback();
+                                    }
+                                } else {
+                                    callback(this.$t('numError',{field : this.$t('mySalePrice')}));
+                                }
+
                             }
                         })
                     }
@@ -295,14 +311,16 @@
                         //去除其他分销选择过的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
-                                if(this.haveSaleGroups[j].id === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
-                                    this.haveSaleGroups.splice(j,1);
-                                    j--;
-                                    jlen--;
-                                    this.tempData.splice(i,1);
-                                    i--;
-                                    len--;
-                                    continue;
+                                if(len > 0 && jlen > 0) {
+                                    if(this.haveSaleGroups[j].id === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
+                                        this.haveSaleGroups.splice(j,1);
+                                        j--;
+                                        jlen--;
+                                        this.tempData.splice(i,1);
+                                        i--;
+                                        len--;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -361,7 +379,12 @@
              * 关闭模态框
              */
             hide(){
-                this.toggle();
+                if(this.editable) {
+                    this.show = false;
+                    this.$refs.tipModal.show();
+                }else {
+                    this.toggle();
+                }
             },
             /**
              *  table selectable属性
@@ -392,6 +415,19 @@
                     this.formData.productPrices.push(_obj);
                 });
                 this.changeSelectable();
+            },
+            /**
+             * 放弃保存编辑过后的信息
+             */
+            giveUp() {
+                this.show = true;
+                this.toggle();
+            },
+            /**
+             * 不放弃编辑后的信息
+             */
+            noGiveUp() {
+                this.show = true;
             }
         },
         created() {

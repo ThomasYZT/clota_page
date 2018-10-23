@@ -145,7 +145,7 @@
         <check-sale-policy-modal ref="checkSalePolicyModal"></check-sale-policy-modal>
 
         <!-- 分销 -->
-        <distribution-modal @refresh="refresh()"
+        <distribution-modal @complete="distributeComplete($event)"
                             ref="distributionModal"f></distribution-modal>
 
     </div>
@@ -452,8 +452,18 @@
                 } else {
                     this.queryMyPolicyList();
                 }
+            },
+            /**
+             * 分销成功
+             */
+            distributeComplete(data) {
+                this.$router.push({
+                    name: 'distributeDetail',
+                    params: {
+                        listItem: data
+                    }
+                });
             }
-
         }
     };
 </script>

@@ -99,7 +99,7 @@
                             :min-width="120"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                                {{scope.row.settlePrice | moneyFilter}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -143,6 +143,7 @@
 
 <script>
     import ajax from '@/api/index';
+    import {validator} from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
     import {detailParentDistributePriceConfig, saleChannelColumn} from '../child/detailConfig'
     export default {
@@ -152,12 +153,22 @@
         data() {
             const validateMethod = {
                 productPrice: (rule,value,callback) => {
+                    //校验非空必填以及不可低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
                             if(item.price === ''){
                                 callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
                             }else {
-                                callback();
+                                if(validator.isNumber(item.price)) {
+                                    if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
+                                        callback(new Error(this.$t('maybeLoss')));
+                                    } else {
+                                        callback();
+                                    }
+                                } else {
+                                    callback(this.$t('numError',{field : this.$t('mySalePrice')}));
+                                }
+
                             }
                         })
                     }
@@ -243,6 +254,7 @@
                             let _obj = {};
 
                             _obj.productId = item.productId;
+                            _obj.settlePrice = item.settlePrice;
                             _obj.price = '';
                             this.formData.productPrices.push(_obj);
                         });
@@ -269,14 +281,17 @@
                         this.haveSaleGroups = res.data;
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
-                                if(this.haveSaleGroups[j].id === this.tempData[i].id) {
-                                    this.haveSaleGroups.splice(j,1);
-                                    j--;
-                                    jlen--;
-                                    this.tempData.splice(i,1);
-                                    i--;
-                                    len--;
-                                    continue;
+                                if(len > 0 && jlen > 0) {
+                                    if(this.haveSaleGroups[j].id === this.tempData[i].id) {
+                                        this.haveSaleGroups.splice(j,1);
+                                        j--;
+                                        jlen--;
+                                        this.tempData.splice(i,1);
+                                        i--;
+                                        len--;
+                                        break;
+
+                                    }
                                 }
                             }
                         }
@@ -310,8 +325,8 @@
                         }).then((res) => {
                             if(res.success) {
                                 this.$Message.success(this.$t('distributeSccuess'));
+                                this.$emit('complete', this.detail);
                                 this.toggle();
-                                this.$emit('refresh');
                             } else {
                                 this.$Message.error(this.$t('distributeFail'));
                             }

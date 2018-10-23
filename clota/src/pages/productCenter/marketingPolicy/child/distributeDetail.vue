@@ -83,6 +83,10 @@
                 <span>{{$t('myDistribute')}}</span>
             </div>
 
+            <div class="button-wrapper">
+                <span @click="distribute" class="btn">+ {{ $t('add') + $t('distribution')}}</span>
+            </div>
+
             <!-- 我的分销表格信息 -->
             <div class="table-wrapper2">
                 <tableCom v-if="myAllocationLists.length !== 0"
@@ -106,6 +110,10 @@
                              @refresh="refresh()">
 
         </editDistributeModal>
+
+        <!-- 分销 -->
+        <distribution-modal @complete="refresh()"
+                            ref="distributionModal"f></distribution-modal>
     </div>
 </template>
 
@@ -113,7 +121,8 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import policyDetail from '../components/policyDetailModal.vue'
+    import policyDetail from '../components/policyDetailModal.vue';
+    import distributionModal from '../components/distributionModal'
     import {detailParentDistributePriceConfig, myDistributeConfig} from './detailConfig'
     import ajax from '@/api/index';
     import editDistributeModal from '../components/editDistributionModal'
@@ -124,7 +133,8 @@
             breadCrumbHead,
             tableCom,
             policyDetail,
-            editDistributeModal
+            editDistributeModal,
+            distributionModal
         },
         data() {
             return {
@@ -210,6 +220,7 @@
                 if(params && Object.keys(params).length > 0) {
                     if(params.listItem) {
                         this.listItem = params.listItem;
+                        //console.log(this.listItem)
                     }
                 }
                 //获取页面数据
@@ -271,7 +282,13 @@
              */
             refresh() {
                 this.getData();
-            }
+            },
+            /**
+             *  分销操作
+             */
+            distribute() {
+                this.$refs.distributionModal.toggle(this.listItem);
+            },
         }
     }
 </script>
@@ -401,6 +418,16 @@
                         width: 150px;
                         height: 150px;
                     }
+                }
+            }
+
+            .button-wrapper {
+                width: 80%;
+                margin: 10px auto;
+                .btn {
+                    font-size: $font_size_14px;
+                    color: #2F70DF;
+                    cursor: pointer;
                 }
             }
         }

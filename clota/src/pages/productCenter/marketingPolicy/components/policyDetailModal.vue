@@ -5,6 +5,7 @@
 <template>
     <Modal :title="$t('marketingPolicyDetail')"
            width="900"
+           class="modal"
            :mask-closable="false"
            v-model="show">
         <div class="content">
@@ -272,7 +273,12 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-
+    .modal {
+        /deep/ .ivu-modal-body {
+            height: 500px;
+            overflow: auto;
+        }
+    }
     .content {
         width: 80%;
         margin: 0 auto;

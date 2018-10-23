@@ -50,5 +50,10 @@ export default {
     //查询一级散客订单详情
     'queryFirstIndividualOrderDetail': '/order/queryFirstIndividualOrderDetail',
     //查询三级散客订单详情
-    'queryThirdIndividualOrderDetail': '/order/order/queryThirdIndividualOrderDetail',
+    'queryThirdIndividualOrderDetail': '/order/queryThirdIndividualOrderDetail',
+    //查询产品明细列表--退票、审核用
+    'queryOrderTicketList': '/order/queryOrderTicketList',
+    //查询订单退票手续费
+    'getRefundProcedureFee': '/order/getRefundProcedureFee'
+
 }
