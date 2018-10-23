@@ -43,13 +43,14 @@
     @import '~@/assets/scss/base';
 
     .block-title {
-        padding: 15px 0;
+        margin: 15px 0;
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
     }
 
     .form-wrap{
         width: 100%;
         margin-top: 15px;
+        padding: 0 28px;
         @include clearfix();
 
         .form-item-wrap{
