@@ -628,7 +628,9 @@
                 beforeRouterList: [
                     {
                         name: 'marketingPolicy',   //  销售政策列表
-                        router: 'marketingPolicy',
+                        router: {
+                            name : 'marketingPolicy'
+                        },
                     }
                 ],
                 loading: false,

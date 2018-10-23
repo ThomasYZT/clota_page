@@ -144,7 +144,9 @@
                 beforeRouterList: [
                     {
                         name: 'marketingPolicy',   // 产品列表--票类列表
-                        router: 'marketingPolicy',
+                        router: {
+                            name : 'marketingPolicy'
+                        },
                     }
                 ],
                 //上级分销单价表格数据

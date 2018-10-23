@@ -52,7 +52,9 @@
                 beforeRouterList: [
                     {
                         name: 'memberSetting',   // 基础设置
-                        router: {name: 'memberSetting'},
+                        router: {
+                            name: 'memberSetting'
+                        },
                     },
                 ],
                 // 是否编辑协议标记

@@ -263,7 +263,9 @@
                 beforeRouterList: [
                     {
                         name: 'memberInfo',   // 会员信息
-                        router: 'infoList',
+                        router: {
+                            name :'memberInfo'
+                        },
                     }
                 ],
                 //新增/修改

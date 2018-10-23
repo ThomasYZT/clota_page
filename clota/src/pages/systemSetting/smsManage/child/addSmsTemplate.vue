@@ -110,7 +110,9 @@
                 beforeRouterList: [
                     {
                         name: '短信模板',   // 短信模板
-                        router: 'smsTemplate',
+                        router: {
+                            name : 'smsTemplate'
+                        },
                     }
                 ],
                 // 新增/修改
@@ -227,10 +229,6 @@
 
 <style lang="scss" scoped>
     @import "~@/assets/scss/base";
-
-    /deep/ .ivu-breadcrumb{
-        padding-left: 30px;
-    }
 
     .add-member-content{
 

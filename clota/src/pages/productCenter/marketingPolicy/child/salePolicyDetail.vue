@@ -319,7 +319,9 @@
                 beforeRouterList: [
                     {
                         name: 'marketingPolicy',   // 产品列表--票类列表
-                        router: 'marketingPolicy',
+                        router: {
+                            name : 'marketingPolicy'
+                        },
                     }
                 ],
                 //week
