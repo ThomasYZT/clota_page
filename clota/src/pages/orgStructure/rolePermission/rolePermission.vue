@@ -2,7 +2,9 @@
     <!-- 角色权限 -->
     <div class="partner">
         <div class="orgHeader">
-            <Button type="primary" @click="addRole">{{$t('addRole')}}</Button>
+            <Button type="primary"
+                    v-if="hasAddRolePermission"
+                    @click="addRole">{{$t('addRole')}}</Button>
             <Input v-model.trim="keyWrod"
                    style="width: 353px;"
                    :placeholder="$t('inputAnywordForSearch')"
@@ -44,6 +46,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {roleHead} from './rolePermissionConfig';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         components: {
             tableCom
@@ -98,6 +101,7 @@
              * 新增角色权限
              */
             addRole () {
+                if(!this.hasAddRolePermission) return;
                 this.$router.push({
                     name : 'addRole',
                     params : {
@@ -106,6 +110,15 @@
                 });
             }
         },
+        computed : {
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            }),
+            //是否有新增/复制角色的权限
+            hasAddRolePermission () {
+                return this.permissionInfo && 'addRole' in this.permissionInfo;
+            }
+        }
     }
 </script>
 

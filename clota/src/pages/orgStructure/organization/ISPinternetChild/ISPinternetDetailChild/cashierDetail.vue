@@ -10,16 +10,33 @@
               :label-position="type === 'edit' ? 'top' : 'left'"
               inline>
             <div class="com-name">
-                <span class="name"
-                      v-w-title="cashierDetail.channelName">
-                    {{cashierDetail.channelName | contentFilter}}
-                </span>
-                <span class="edit"
-                      v-if="type === 'watch'"
-                      @click="edit">
-                    <span class="iconfont icon-edit"></span>
-                    {{$t('modify')}}
-                </span>
+                    <span class="name"
+                          v-w-title="cashierDetail.channelName">
+                        {{cashierDetail.channelName | contentFilter}}
+                    </span>
+                <template v-if="type === 'watch'">
+                    <span class="edit"
+                          v-if="'modifyNode' in permissionInfo"
+                          @click="edit">
+                        <span class="iconfont icon-edit"></span>
+                        {{$t('modify')}}
+                    </span>
+                    <span :class="{'started' :cashierDetail.status === 'open' ,'not-started' : cashierDetail.status !== 'open'}">
+                    {{$t(cashierDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
+                    </span>
+                </template>
+                <template v-else>
+                    <i-row>
+                        <i-col span="5" style="margin-left:20px;width: 73px;" v-if="activeNode.level !== 1">
+                            <FormItem>
+                                <i-switch v-model="formDataCopy.isStart"></i-switch>
+                                <span :class="{'started' :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
+                                {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+                            </span>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                </template>
             </div>
 
             <div :class="{'form-area' : type === 'edit'}" style="clear: both">
@@ -185,7 +202,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
     import {cashierType} from '@/assets/js/constVariable.js';
-    import common from '@/assets/js/common.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //节点信息
@@ -364,7 +381,8 @@
                     serverUrl : this.formDataCopy.serverUrl,
                     checkGroupId : this.formDataCopy.checkGroupId ? this.formDataCopy.checkGroupId : 0,
                     saleGroupId : this.formDataCopy.saleGroupId ? this.formDataCopy.saleGroupId : 0,
-                    nodeType : 'table'
+                    nodeType : 'table',
+                    status : this.formDataCopy.isStart ? 'open' : 'close',
                 }).then(res => {
                    if(res.success){
                        this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
@@ -404,7 +422,10 @@
                     }
                 }
                 return '';
-            }
+            },
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            })
         }
     }
 </script>
@@ -480,6 +501,26 @@
             @include overflow_tip(100%, 65px);
             padding: 14px 0;
             float: left;
+
+            .started,
+            .not-started,
+            .edit {
+                @include block_outline(60px);
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 28px;
+                font-size: $font_size_14px;
+            }
+
+            .started {
+                padding-left: 10px;
+                color: $color_22BB5F;
+            }
+
+            .not-started{
+                padding-left: 10px;
+                color: $color_yellow;
+            }
 
             .iconfont{
                 vertical-align: middle;

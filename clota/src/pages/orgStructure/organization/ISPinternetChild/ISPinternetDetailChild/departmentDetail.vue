@@ -26,6 +26,7 @@
                     {{formData.orgName | contentFilter}}
                 </span>
                 <span class="edit"
+                      v-if="'modifyNode' in permissionInfo"
                       @click="edit">
                     <span class="iconfont icon-edit"></span>
                     {{$t('modify')}}
@@ -65,6 +66,7 @@
     import employeeTable from './components/employeeTable';
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
+    import {mapGetters} from 'vuex';
     export default {
         props : {
             //节点信息
@@ -166,6 +168,11 @@
                 deep : true,
                 immediate : true
             }
+        },
+        computed :{
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            })
         }
     }
 </script>

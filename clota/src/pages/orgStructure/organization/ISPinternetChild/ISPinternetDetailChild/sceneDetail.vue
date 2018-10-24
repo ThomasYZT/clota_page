@@ -33,6 +33,7 @@
                         {{sceneDetail.orgName}}
                     </span>
                     <span class="edit"
+                          v-if="'modifyNode' in permissionInfo"
                           @click="edit">
                         <span class="iconfont icon-edit"></span>
                         {{$t('modify')}}
@@ -120,7 +121,7 @@
                             <span class="account-con"
                                   v-w-title="sceneDetail.manager">{{sceneDetail.manager | contentFilter}}</span>
                                 <span class="reset-pass"
-                                      v-if="activeNode && activeNode.level !== 1"
+                                      v-if="activeNode && activeNode.level !== 1  && 'resetNodePassword' in permissionInfo"
                                       @click="resetPass">{{$t('resetPsw')}}</span>
                             </span>
                         </div>
@@ -317,6 +318,7 @@
     import ajax from '@/api/index.js';
     import {validator} from 'klwk-ui';
     import selectTree from '@/components/selectTree/index.vue';
+    import {mapGetters} from 'vuex';
 
     export default {
         props : {
@@ -629,7 +631,10 @@
                 }else{
                     return false;
                 }
-            }
+            },
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            })
         },
         created () {
             this.getParentManages();
