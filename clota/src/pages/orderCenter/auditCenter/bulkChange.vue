@@ -127,7 +127,7 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, orderChannelEnum, batchAudit, orderSyncStatus} from './auditConfig';
+    import {bulkRefundHead, batchAudit, orderSyncStatus} from './auditConfig';
     import ajax from '@/api/index.js';
     import {configVariable} from '@/assets/js/constVariable.js';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
@@ -197,7 +197,7 @@
             },
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {
-                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 switch (dropItem.value) {

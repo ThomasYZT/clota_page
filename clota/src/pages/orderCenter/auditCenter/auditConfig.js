@@ -349,21 +349,6 @@ export const bulkChangeHead = [
 ];
 
 
-// 下单渠道，枚举
-export const orderChannelEnum = [
-    {label: 'all', value: 'all'},
-    {label: '景点', value: 'scenic'},
-    {label: 'OTA', value: 'ota'},
-    {label: '旅行社', value: 'tour'},
-];
-
-// 支付状态，枚举
-export const paymentStatusEnum = [
-    {label: '全部', value: 'all'},
-    {label: '已支付', value: 'true'},
-    {label: '未支付', value: 'false'},
-];
-
 // 批量审核
 export const batchAudit = [
     {label: '通过', value: 'success'},
@@ -373,7 +358,7 @@ export const batchAudit = [
 //订单同步状态
 export const orderSyncStatus = [
     {
-        label : '-',//团队
+        label : '-',    //无状态
         value : 'wait'
     },
     {

@@ -615,3 +615,23 @@ export const payStatusList = [
         value : 'false'
     }
 ];
+
+//短信发送状态
+export const smsStatusList = [
+    {
+        label : '待发送',  // 待发送
+        value : 'wait'
+    },
+    {
+        label : 'success',  // 成功
+        value : 'success'
+    },
+    {
+        label : 'failure',  // 失败
+        value : 'failure'
+    },
+    {
+        label : '发送中',  // 发送中
+        value : 'doing'
+    },
+];

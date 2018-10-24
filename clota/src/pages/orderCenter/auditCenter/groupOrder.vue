@@ -95,9 +95,9 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {groupOrderHead, orderChannelEnum, paymentStatusEnum, batchAudit} from './auditConfig';
-    import ajax from '@/api/index.js';
-    import {configVariable} from '@/assets/js/constVariable.js';
+    import {groupOrderHead, batchAudit} from './auditConfig';
+    import ajax from '@/api/index';
+    import {configVariable, notDistributorChannelList, payStatusList} from '@/assets/js/constVariable';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
 
@@ -164,7 +164,7 @@
             },
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {
-                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 switch (dropItem.value) {
@@ -182,11 +182,11 @@
              * @returns {string}
              */
             transOrderOrg(value) {
-                let orderChannel = orderChannelEnum.find((channel, i) => {
+                let orderChannel = notDistributorChannelList.find((channel, i) => {
                     return value === channel.value;
                 });
 
-                return orderChannel ? orderChannel.label : '-';
+                return orderChannel ? `order.${orderChannel.label}` : '-';
             },
             /**
              * 支付状态的code转换
@@ -194,7 +194,7 @@
              * @returns {string}
              */
             transPaymentStatus(status) {
-                let paymentStatus = paymentStatusEnum.find((payment, i) => {
+                let paymentStatus = payStatusList.find((payment, i) => {
                     return status === payment.value;
                 });
 

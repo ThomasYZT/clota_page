@@ -36,8 +36,7 @@
                 <i-col span="6" v-if="auditName=='group'">
                     <!--支付状态-->
                     <FormItem :label="$t('支付状态')" >
-                        <Select v-model="formData.paymentStatus" style="width: 100%"
-                                @on-change="changePayStatus">
+                        <Select v-model="formData.paymentStatus" style="width: 100%">
                             <Option v-for="item in paymentList"
                                     :key="item.value"
                                     :value="item.value">
@@ -66,7 +65,7 @@
                             <Option v-for="item in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
-                                {{$t(item.label)}}
+                                {{$t('order.' + item.label)}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -103,8 +102,8 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {orderChannelEnum, paymentStatusEnum} from '../auditConfig';
-    import {distributorChannelList} from '@/assets/js/constVariable';
+//    import {orderChannelEnum, paymentStatusEnum} from '../auditConfig';
+    import {notDistributorChannelList, payStatusList} from '@/assets/js/constVariable';
     import {mapGetters} from 'vuex';
     import ajax from '@/api/index';
 
@@ -129,11 +128,11 @@
                     // 游玩结束日期
                     visitEndDate : '',
                     // 支付状态（全部、已支付、未支付）
-                    paymentStatus: 'all',
+                    paymentStatus: 'allStatus',
                     // 下单企业ID
                     channelId: 'all',
                     // 下单渠道
-                    orderChannel: 'all',
+                    orderChannel: 'allStatus',
                     // 业态类型
                     productType : 'all',
                     // 关键字查询：游客姓名/手机号/订单号/订单明细编号
@@ -143,9 +142,9 @@
                 // 下单企业列表
                 orderEnterprise: [{id: 'all', orgName: this.$t('all')}],
                 // 下单渠道列表
-                orderChannelList: orderChannelEnum,
+                orderChannelList: notDistributorChannelList,
                 // 支付状态
-                paymentList: paymentStatusEnum,
+                paymentList: payStatusList,
                 // 下单时间范围
                 orderTimeRange: [],
                 // 游玩日期范围
@@ -194,11 +193,11 @@
              * 当选择的支付状态为全部时（此时code为'all'），需将‘支付状态’筛选字段的值改为空。
              * @param statusCode   支付状态code
              */
-            changePayStatus(statusCode) {
-                if (statusCode == 'all') {
+            /*changePayStatus(statusCode) {
+                if (statusCode.includes('all')) {
                     this.formData.paymentStatus = '';
                 }
-            },
+            },*/
             /**
              * 查询下单企业
              */
@@ -216,10 +215,10 @@
              * emit事件：on-filter，在父组件查询审核列表
              */
             searchAuditList() {
-                let keys = ['channelId', 'orderChannel', 'productType'];
+                let keys = ['channelId', 'orderChannel', 'productType', 'paymentStatus'];
                 let queryParams = Object.assign({}, this.formData);
                 keys.forEach((key, i) => {
-                    if (queryParams[key] == 'all') {
+                    if (queryParams[key].includes('all')) {
                         queryParams[key] = '';
                     }
                 });
