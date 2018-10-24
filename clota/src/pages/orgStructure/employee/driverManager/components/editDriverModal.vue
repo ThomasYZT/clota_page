@@ -4,7 +4,7 @@
 -->
 <template>
     <Modal v-model="visible"
-           :title="$t('addDriver')"
+           :title="title"
            class-name="add-remark-modal vertical-center-modal"
            width="560"
            :mask-closable="false"
@@ -75,7 +75,8 @@
                         { required: true, message: this.$t('errorEmpty',{msg: this.$t('licence')}), trigger: 'blur' },
                         { validator: validateMethods.license, trigger: 'blur'}
                     ]
-                }
+                },
+                title: this.$t('addDriver')
             }
         },
         methods: {
@@ -90,6 +91,7 @@
                     this.formData.staffName = scopeRow.staffName;
                     this.formData.documentNo = scopeRow.documentNo;
                     this.formData.phoneNumber = scopeRow.phoneNumber;
+                    this.title = this.$t('editDriverInfo');
                 }
                 this.type = type;
                 this.visible = true;
@@ -106,6 +108,7 @@
                     phoneNumber: ''
                 };
                 delete this.formData.id;
+                this.title = this.$t('addDriver');
                 this.visible = false;
             },
             /**
