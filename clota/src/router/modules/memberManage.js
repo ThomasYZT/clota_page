@@ -483,8 +483,64 @@ export default {
                             rightPath: topMenuName + '.' + 'memberSetting'
                         },
                     },
+                    integralMall: {
+                        //会员管理--初始化设置--积分商城
+                        path: '/memberManage/integralMall',
+                        name: 'integralMall',
+                        component: () => import(/* webpackChunkName: "memberSetting" */'../../pages/memberManage/setting/integralMall.vue'),
+                        meta: {
+                            menuName: 'integralMall', //lang.config.js 里面的语言键值
+                            //todo 未配置权限
+                            _name: 'init-setting',
+                            rightPath: topMenuName + '.' + 'memberSetting',
+                            isMenu: true
+                        },
+                    }
                 }
             },
+            inventoryManage: {
+                //会员管理--进销存管理
+                path: '/memberManage/inventoryManage',
+                name: 'inventoryManage',
+                component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/index.vue'),
+                meta: {
+                    //todo 未配置权限
+                    _name: 'members-index',
+                    menuName: 'inventoryManage',
+                    iconClass: 'icon-home',
+                    rightPath: topMenuName + '.' + 'memberHome',
+                    isMenu: true
+                },
+                children: [
+                    {
+                        //会员管理--进销存管理--商品管理
+                        path: '/memberManage/inventoryManage/goodsManage',
+                        name: 'goodsManage',
+                        component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/goodsManage.vue'),
+                        meta: {
+                            //todo 未配置权限
+                            _name: 'members-index',
+                            menuName: 'goodsManage',
+                            rightPath: topMenuName + '.' + 'memberHome',
+                            isMenu: true
+                        },
+
+                    },
+                    {
+                        //会员管理--进销存管理--库存盘点
+                        path: '/memberManage/inventoryManage/stocking',
+                        name: 'stocking',
+                        component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/stocking.vue'),
+                        meta: {
+                            //todo 未配置权限
+                            _name: 'members-index',
+                            menuName: 'stocking',
+                            rightPath: topMenuName + '.' + 'memberHome',
+                            isMenu: true
+                        }
+                    }
+                ]
+            }
         }
     }
 
