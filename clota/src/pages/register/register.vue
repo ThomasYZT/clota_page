@@ -450,7 +450,7 @@
                             name: 'login'
                         });
                     } else {
-                        this.$Message.error(this.$t(res.code));
+                        this.$Message.error(this.$t(res.message));
                     }
                 })
             },
@@ -467,7 +467,7 @@
                             name: 'login'
                         });
                     } else {
-                        this.$Message.error(this.$t(res.code));
+                        this.$Message.error(this.$t(res.message));
                     }
                 })
             },
