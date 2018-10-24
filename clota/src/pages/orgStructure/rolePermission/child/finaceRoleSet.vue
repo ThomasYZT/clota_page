@@ -35,7 +35,6 @@
                          show-checkbox
                          :default-expand-all="true"
                          :props="menuDefaultProps"
-                         :default-expanded-keys="menuDefaultChosed"
                          :expand-on-click-node="false"
                          v-show="menuList.length > 0"
                          :render-content="menuRenderContent"
@@ -78,14 +77,14 @@
                 treeData: {},
                 //菜单权限列表
                 menuList : [],
-                //菜单默认选中的项
-                menuDefaultChosed : [],
                 // 当前激活的nodeid
                 activeNodeId : '',
                 //当前选择的组织节点
                 chosedOrgList : [],
                 //当前左侧选择的组织节点和右侧菜单权限对应
-                privaligeInfo : {}
+                privaligeInfo : {},
+                //选择的菜单权限节点
+                choosedNodes : []
             }
         },
         components : {
@@ -134,6 +133,14 @@
                 }else{
                     this.$set(data,'disabled',false);
                 }
+                //如果当前选择的节点有被其它节点关联，那么当前节点不可以取消选择
+                for(let i = 0,j = this.choosedNodes.length;i < j;i++){
+                    if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
+                        this.$set(data,'disabled',true);
+                        // break;
+                    }
+                }
+                console.log(JSON.stringify(this.choosedNodes))
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -213,19 +220,30 @@
              * @param data
              * @param checkedKeys
              * @param checkedNodes
+             * @param halfCheckedNodes
              */
             menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
-                this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
-                    return {
-                        ...item,
-                        choseStatus : ''
+                this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
+                if(checkedKeys.includes(data.privCode)){
+                    //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
+                    if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
+                        this.$refs.menuTree.setCheckedKeys([data.privCode,data.linkedPrivCode],true);
                     }
-                }),...halfCheckedNodes.map(item => {
-                    return {
-                        ...item,
-                        choseStatus : 'half'
-                    }
-                })];
+                }
+                this.$nextTick(() => {
+                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();;
+                    this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : ''
+                        }
+                    }),...halfCheckedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : 'half'
+                        }
+                    })];
+                });
             },
             /**
              * 设置右侧默认选中的菜单节点
@@ -233,6 +251,7 @@
             setDefaultMenuChosed () {
                 if(this.activeNodeId in this.privaligeInfo){
                     let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
+                    this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes(chosedNode);
                     });
@@ -256,7 +275,8 @@
                             path : this.privaligeInfo[item][i].path,
                             ranges : this.privaligeInfo[item][i].ranges,
                             orgType : 'economic',
-                            choseStatus : this.privaligeInfo[item][i].choseStatus
+                            choseStatus : this.privaligeInfo[item][i].choseStatus,
+                            linkedPrivCode : this.privaligeInfo[item][i].linkedPrivCode,
                         });
                     }
                 }

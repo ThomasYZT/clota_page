@@ -1198,4 +1198,10 @@ export default {
     'selectCardFileImport': 'select physical text file upload',
     'integralAccount': 'integral account',
     'timesNo': '第{field}次',
+    'workbench': 'workbench',
+    'addNode': 'add node',
+    'deleteNode': '删除节点',
+    'modifyNode': '修改节点信息',
+    'resetNodePassword': '工作台',
+    'orgStructQuery': '查询',
 }

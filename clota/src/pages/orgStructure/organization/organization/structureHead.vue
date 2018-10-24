@@ -90,6 +90,7 @@
     import addCashier from './child/addCashier';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: {
@@ -197,7 +198,9 @@
                             iconfont: 'true',
                             'icon-delete': true,
                             //财务管理不允许删除节点
-                            'hidden' : this.activeTap === 'economic' || node.level === 1
+                            'hidden' : this.activeTap === 'economic'
+                            || node.level === 1
+                            ||!('deleteNode' in this.permissionInfo)
                         },
                         style : {
                             paddingRight : '5px',
@@ -208,6 +211,9 @@
                         on: {
                             click: (e) => {
                                 e.stopPropagation();
+                                if(this.activeTap === 'economic'
+                                    || node.level === 1
+                                    ||!('deleteNode' in this.permissionInfo))return;
                                 this.currentNode = data;
                                 this.$refs.delModal.show({
                                     title : `${this.$t('del')}${data.orgName}`,
@@ -225,7 +231,9 @@
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
-                            || (data.nodeType === 'department') || data.nodeType === 'table'
+                            || (data.nodeType === 'department')
+                            || data.nodeType === 'table'
+                            || !('addNode' in this.permissionInfo)
                         },
                         style : {
                             paddingRight : '5px',
@@ -234,6 +242,10 @@
                         on: {
                             click: (e) => {
                                 e.stopPropagation();
+                                if(this.activeTap === 'economic'
+                                    || (data.nodeType === 'department')
+                                    || data.nodeType === 'table'
+                                    || !('addNode' in this.permissionInfo)) return;
                                 this.currentNode = data;
                                 this.addModalShow = true;
                             }
@@ -367,7 +379,10 @@
                 }else{
                     return []
                 }
-            }
+            },
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            })
         },
         watch : {
             //监视查询关键字，如果改变就进行查找

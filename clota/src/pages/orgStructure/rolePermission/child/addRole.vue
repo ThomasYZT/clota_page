@@ -20,10 +20,10 @@
                     <i-col span="10">
                         <!--角色名称-->
                         <FormItem :label="$t('roleName')" :label-width="120" prop="roleName">
-                            <Input v-model="formData.roleName" style="width: 280px;" />
+                            <Input :disabled="!hasAddRolePermission" v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>
-                    <i-col span="4" style="text-align: right" v-if="type === 'edit'">
+                    <i-col span="4" style="text-align: right" v-if="type === 'edit' && hasAddRolePermission">
                         <!--复制角色-->
                         <Button type="primary" @click="copyRole">{{$t('copyRole')}}</Button>
                     </i-col>
@@ -32,12 +32,16 @@
             <Tabs class="tabs" value="name1" :animated="false">
                 <TabPane :label="$t('managePermission')" name="name1">
                     <!--景区经营权限设置-->
-                    <manage-role-set ref="mangeRole" :default-chosed-node-init="manageDefaultChosed">
+                    <manage-role-set ref="mangeRole"
+                                     :disabled="!hasModifyRolePermission"
+                                     :default-chosed-node-init="manageDefaultChosed">
                     </manage-role-set>
                 </TabPane>
                 <TabPane :label="$t('financeAuthority')" name="name2">
                     <!--财务权限设置-->
-                    <finace-role-set ref="finaceRole" :default-chosed-node-init="economicDefaultChosed">
+                    <finace-role-set ref="finaceRole"
+                                     :disabled="!hasModifyRolePermission"
+                                     :default-chosed-node-init="economicDefaultChosed">
                     </finace-role-set>
                 </TabPane>
             </Tabs>
@@ -52,9 +56,14 @@
                 @updateSelected="setSelectedEmployee">
             </employee-role-list>
         </div>
-        <div class="btn-area">
-            <Button type="primary" class="ivu-btn-108px" @click="save">{{$t('save')}}</Button>
-            <Button type="ghost" class="ivu-btn-108px" @click="cancel">{{$t('cancel')}}</Button>
+        <div class="btn-area"
+             v-if="hasModifyRolePermission">
+            <Button type="primary"
+                    class="ivu-btn-108px"
+                    @click="save">{{$t('save')}}</Button>
+            <Button type="ghost"
+                    class="ivu-btn-108px"
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </div>
 </template>
@@ -129,6 +138,7 @@
              * 保存权限
              */
             save () {
+                if(!this.hasModifyRolePermission) return;
                 let privileges = [...this.$refs.mangeRole.getMangePrivalige(),...this.$refs.finaceRole.getMangePrivalige()];
                 if(privileges.length <= 0){
                     this.$Message.warning(this.$t('addMenuAuthority'));
@@ -155,12 +165,12 @@
                     accountIds : this.selectedEmployees.map(item => item.id)
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip',{msg: this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{tip: this.$t('add')}));
                         this.$router.push({
                             name : 'rolePermission'
                         });
                     }else{
-                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{tip: this.$t('add')}));
                     }
                 })
             },
@@ -213,6 +223,7 @@
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
                                 choseStatus : data[i].choseStatus,
+                                linkedPrivCode : data[i].linkedPrivCode,
                             }];
                         }else{
                             this.manageDefaultChosed[data[i].privOrg].push({
@@ -221,6 +232,7 @@
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
                                 choseStatus : data[i].choseStatus,
+                                linkedPrivCode : data[i].linkedPrivCode,
                             });
                         }
                     }else if(data[i].orgType === 'economic'){
@@ -231,6 +243,7 @@
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
                                 choseStatus : data[i].choseStatus,
+                                linkedPrivCode : data[i].linkedPrivCode,
                             }];
                         }else{
                             this.economicDefaultChosed[data[i].privOrg].push({
@@ -239,6 +252,7 @@
                                 privType : data[i].privType,
                                 ranges : data[i].ranges,
                                 choseStatus : data[i].choseStatus,
+                                linkedPrivCode : data[i].linkedPrivCode,
                             });
                         }
                     }
@@ -256,12 +270,12 @@
                     accountIds : this.selectedEmployees.map(item => item.id)
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip',{msg: this.$t('modify')}));
+                        this.$Message.success(this.$t('successTip',{tip: this.$t('modify')}));
                         this.$router.push({
                             name : 'rolePermission'
                         });
                     }else{
-                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('modify')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{tip: this.$t('modify')}));
                     }
                 })
             },
@@ -269,6 +283,7 @@
              * 复制角色
              */
             copyRole () {
+                if(!this.hasAddRolePermission) return;
                 this.type = 'copy';
                 this.roleId = '';
                 this.formData.roleName = '';
@@ -285,7 +300,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                permissionInfo : 'permissionInfo'
             }),
             //面包屑上当前菜单名
             localeRouter () {
@@ -298,6 +314,22 @@
                 }else{
                     return '';
                 }
+            },
+            //是否有新增和修改角色的权限
+            hasModifyRolePermission () {
+                if(this.type === 'edit'){//是否有修改角色的权限
+                    return this.permissionInfo && 'modifyRole' in this.permissionInfo;
+                }else{//是否有新增角色的权限
+                    return this.permissionInfo && 'addRole' in this.permissionInfo;
+                }
+            },
+            //是否有新增/复制角色的权限
+            hasAddRolePermission () {
+                return this.permissionInfo && 'addRole' in this.permissionInfo;
+            },
+            //是否有编辑角色的权限
+            hasModifyRolePermission (){
+                return this.permissionInfo && 'modifyRole' in this.permissionInfo;
             }
         }
     }

@@ -1198,4 +1198,12 @@ export default {
     'selectCardFileImport': '选择实体卡文件上传',
     'integralAccount': '积分账户',
     'timesNo': '第{field}次',
+    'workbench': '工作台',
+    'addNode': '新增节点',
+    'deleteNode': '删除节点',
+    'modifyNode': '修改节点信息',
+    'resetNodePassword': '工作台',
+    'orgStructQuery': '查询',
+    'modifyRole': '修改角色',
+    'roleQuery': '查询',
 }

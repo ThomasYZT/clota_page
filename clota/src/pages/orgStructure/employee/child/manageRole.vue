@@ -85,7 +85,9 @@
                 //左侧选择的组织节点和右侧菜单权限对应表
                 privaligeInfo : {},
                 //手动选取的其它菜单权限
-                handlerChosedMenu : {}
+                handlerChosedMenu : {},
+                //选择的菜单权限节点
+                choosedNodes : []
             }
         },
         components : {
@@ -142,6 +144,14 @@
                 }else{
                     this.$set(data,'disabled',false);
                 }
+                //如果当前选择的节点有被其它节点关联，那么当前节点不可以取消选择
+                for(let i = 0,j = this.choosedNodes.length;i < j;i++){
+                    if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
+                        this.$set(data,'disabled',true);
+                        // break;
+                    }
+                }
+                console.log(JSON.stringify(this.choosedNodes))
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -228,23 +238,49 @@
              * @param halfCheckedNodes
              */
             menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
+                this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
                 this.handlerChosedMenu[this.activeNodeId] = [];
-                this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
-                    //将不是默认选中的权限保存为手动选择的额外权限
-                    if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
-                        !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
-                        this.handlerChosedMenu[this.activeNodeId].push(item);
+                if(checkedKeys.includes(data.privCode)){
+                    //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
+                    if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
+                        this.$refs.menuTree.setCheckedKeys([data.privCode,data.linkedPrivCode],true);
                     }
-                    return {
-                        ...item,
-                        choseStatus : '',
-                    }
-                }),...halfCheckedNodes.map(item => {
-                    return {
-                        ...item,
-                        choseStatus : 'half'
-                    }
-                })];
+                }
+                this.$nextTick(() => {
+                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();;
+                    this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
+                        //将不是默认选中的权限保存为手动选择的额外权限
+                        if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
+                            !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
+                            this.handlerChosedMenu[this.activeNodeId].push(item);
+                        }
+                        return {
+                            ...item,
+                            choseStatus : ''
+                        }
+                    }),...halfCheckedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : 'half'
+                        }
+                    })];
+                });
+                // this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
+                //     //将不是默认选中的权限保存为手动选择的额外权限
+                //     if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
+                //         !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
+                //         this.handlerChosedMenu[this.activeNodeId].push(item);
+                //     }
+                //     return {
+                //         ...item,
+                //         choseStatus : '',
+                //     }
+                // }),...halfCheckedNodes.map(item => {
+                //     return {
+                //         ...item,
+                //         choseStatus : 'half'
+                //     }
+                // })];
             },
             /**
              * 设置右侧默认选中的菜单节点
@@ -288,6 +324,7 @@
                             path : this.handlerChosedMenu[item][i].path,
                             ranges : this.handlerChosedMenu[item][i].ranges,
                             orgType : 'manage',
+                            linkedPrivCode : this.privaligeInfo[item][i].linkedPrivCode,
                         });
                     }
                 }
@@ -392,9 +429,11 @@
                             }
                         }
                         this.$nextTick(() => {
+                            let keys = [];
                             for(let item in this.handlerChosedMenu){
-                                this.$refs.nodeTree.setChecked(item,true);
+                                keys.push(item);
                             }
+                            this.$refs.nodeTree.setCheckedKeys(keys);
                         });
                     }
                 },
