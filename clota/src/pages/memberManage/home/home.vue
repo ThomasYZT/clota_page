@@ -6,8 +6,11 @@
 
             <!--会员数据概览-->
             <div class="data-show-left">
-                <data-total :member-sum-count="memberSumCount">
-                </data-total>
+                <!--<data-total :member-sum-count="memberSumCount">-->
+                <!--</data-total>-->
+                <!--热高会员数据概览-->
+                <member-data-overview>
+                </member-data-overview>
             </div>
 
             <!--会员分布数据-->
@@ -45,12 +48,14 @@
     import chartPie from '../components/chartPie.vue';
     import chartLine from '../components/chartLine.vue';
     import ajax from '@/api/index.js';
+    import memberDataOverview from  '../components/memberDataOverview';
 
     export default {
         components: {
             dataTotal,
             chartPie,
             chartLine,
+            memberDataOverview
         },
         data () {
             return {

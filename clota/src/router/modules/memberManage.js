@@ -198,6 +198,18 @@ export default {
                             isMenu: true
                         },
                     },
+                    //节假日特殊时期积分、折扣率设置
+                    activityIntegration: {
+                        path: '/memberManage/point/activity',
+                        name: 'activityIntegrate',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/activityIntegration.vue'),
+                        meta: {
+                            menuName: 'activityIntegrate', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath: topMenuName + '.' + 'activityIntegrate',
+                            isMenu: true
+                        },
+                    },
                     setRate: {
                         //会员管理--会员积分--设置积分、折扣率
                         path: '/memberManage/point/memberRate',
@@ -411,16 +423,27 @@ export default {
                     //         isMenu : true
                     //     },
                     // },
+                    //会员管理--会员类别设置
+                    categorySetting: {
+                        path: '/memberManage/category',
+                        name: 'memCardManagement',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/categorySetting.vue'),
+                        meta: {
+                            menuName: 'memCardManagement', //lang.config.js 里面的语言键值
+                            _name: 'member-level',
+                            rightPath: topMenuName + '.' + 'memCardManagement',
+                            isMenu: true
+                        },
+                    },
                     levelSetting: {
                         //会员管理--会员级别
-                        path: '/memberManage/level',
+                        path: '/memberManage/category/level',
                         name: 'levelSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/levelSetting.vue'),
                         meta: {
                             menuName: 'levelSetting', //lang.config.js 里面的语言键值
                             _name: 'member-level',
-                            rightPath: topMenuName + '.' + 'levelSetting',
-                            isMenu: true
+                            rightPath: topMenuName + '.' + 'memCardManagement',
                         },
                     },
                     growthSetting: {

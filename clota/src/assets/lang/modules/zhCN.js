@@ -1235,5 +1235,7 @@ export default {
     'receiveState': '领取状态',
     'editTime': '编辑时间',
     'editNum': '编辑数量',
-    'editReason': '编辑原因'
+    'editReason': '编辑原因',
+    'addMemberCardCategory': '新增会员卡类别',
+    'memCardManagement' : '会员卡管理'
 }

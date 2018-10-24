@@ -1,44 +1,29 @@
 <template>
-    <!--会员管理--会员级别-->
+    <!--会员管理--会员类别-->
     <div class="setting">
 
-        <bread-crumb-head
-            :locale-router="$t('memberGrade')"
-            :before-router-list="beforeRouterList">
-        </bread-crumb-head>
+        <!--头部tab组件-->
+        <header-tabs :router-name="routerName"></header-tabs>
 
         <div class="content">
 
             <div class="btn-wrap">
+                <!--新增会员类别-->
                 <Button type="primary"
                         :disabled="tableData.length > 11 ? true : false"
-                        @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
-                <Button type="primary"
-                        :disabled="tableData.length > 0 ? false : true"
-                        @click="showRuleModal">{{$t('promotionSetting')}}</Button><!--晋级设置-->
+                        @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
                 <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
             </div>
             <div class="table-wrap">
                 <table-com
                     :ofsetHeight="180"
-                    :column-data="levelListHead"
+                    :column-data="columnData"
                     :table-data="tableData"
-                    :border="true">
+                    :border="true"
+                    :row-click-able="true"
+                    @row-click="toDetail">
                     <el-table-column
                         slot="column3"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{scoped.row.lowerGrowthValue}} - {{scoped.row.highestGrowthValue}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column5"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -48,7 +33,7 @@
                         slot-scope="row">
                         <template slot-scope="scoped">
                             <ul class="operate-list">
-                                <li class="blue-label" @click="showAddMemberModal($event,scoped.row)">{{$t('modify')}}</li>
+                                <li class="blue-label" @click="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
                                 <li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
                             </ul>
                         </template>
@@ -58,12 +43,6 @@
 
         </div>
 
-        <!--新增会员modal-->
-        <add-member-modal ref="addMember" @modify-success="queryList"></add-member-modal>
-
-        <!--会员等级晋升规则设置modal-->
-        <member-rule-modal ref="memberRule" @modify-success="queryList"></member-rule-modal>
-
         <!--删除级别模态框-->
         <del-modal ref="delModal">
             <span class="content-text">
@@ -72,6 +51,12 @@
             <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
         </del-modal>
 
+        <!--新增会员卡类别模态框-->
+        <add-card-category-modal v-model="showAddModal"
+                                 :card-default-info="currentData"
+                                 @fresh-data="queryList">
+        </add-card-category-modal>
+
     </div>
 </template>
 
@@ -79,41 +64,32 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {levelListHead} from './levelConfig';
-    import addMemberModal  from '../components/addMemberModal.vue';
-    import memberRuleModal  from '../components/memberRuleModal.vue';
+    import {columnData} from './categorySettingConfig';
+    import headerTabs from './components/headerTabs.vue';
     import delModal from '@/components/delModal/index.vue';
-    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import addCardCategoryModal from './components/addCardCategoryModal';
 
     export default {
-        mixins : [lifeCycleMixins],
         components: {
-            addMemberModal,
-            memberRuleModal,
+            headerTabs,
             tableCom,
             delModal,
-            breadCrumbHead
+            addCardCategoryModal
         },
         data () {
             return {
+                //当前页面路由名称
+                routerName: 'memCardManagement',
                 //列表表头
-                levelListHead : levelListHead,
+                columnData : columnData,
                 // 表格数据
                 tableData: [],
                 // 已被创建的会员级别
                 usedLevels: [],
                 //当前操作的数据
                 currentData : {},
-                //上级路由列表
-                beforeRouterList: [
-                    {
-                        name: 'memCardManagement',
-                        router: {
-                            name: 'memCardManagement'
-                        }
-                    }
-                ],
+                //是否显示新增会员卡类别名称
+                showAddModal : false,
             }
         },
         created(){
@@ -121,13 +97,21 @@
             this.queryList();
         },
         methods: {
-
-            showAddMemberModal ( event, data ) {
-                this.$refs.addMember.show( data || null, this.usedLevels );
+            /**
+             * 显示新增模态框
+             */
+            showAddMemberModal ( ) {
+                this.currentData =  {};
+                this.showAddModal = true;
             },
 
-            showRuleModal () {
-                this.$refs.memberRule.show( this.tableData );
+            /**
+             * 编辑会员卡类别信息
+             * @param rowData 行数据
+             */
+            showEditMemberModal (rowData) {
+                this.currentData =  rowData;
+                this.showAddModal = true;
             },
 
             //查询列表(查询表格取统一的方法名)
@@ -189,17 +173,16 @@
                 })
             },
             /**
-             * 获取路由参数
-             * @param params
+             * 跳转到会员级别详情的页面
+             * @param data
              */
-            getParams(params) {
-                if(params && Object.keys(params).length > 0){
+            toDetail (data) {
+                this.$router.push({
+                    name : 'levelSetting',
+                    params : {
 
-                }else{
-                    this.$router.push({
-                        name : 'memCardManagement'
-                    });
-                }
+                    }
+                });
             }
         }
     }
