@@ -1205,5 +1205,7 @@ export default {
     'modifyNode': '修改节点信息',
     'resetNodePassword': '工作台',
     'orgStructQuery': '查询',
+    'modifyRole': '修改角色',
+    'roleQuery': '查询',
     'editCourierInfo': '修改导游信息',
 }

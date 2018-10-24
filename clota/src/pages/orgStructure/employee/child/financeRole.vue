@@ -151,7 +151,6 @@
                         // break;
                     }
                 }
-                console.log(JSON.stringify(this.choosedNodes))
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -289,6 +288,7 @@
                 //将角色下的菜单权限和手动选择的菜单权限全部默认选中
                 let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
                 let handlerChoseNode = this.handlerChosedMenu[this.activeNodeId] ? this.handlerChosedMenu[this.activeNodeId] : [];
+                this.choosedNodes = JSON.parse(JSON.stringify(chosedNode.concat(handlerChoseNode)));
                 this.$nextTick(() => {
                     this.$refs.menuTree.setCheckedNodes(chosedNode.concat(handlerChoseNode));
                 });
@@ -324,7 +324,7 @@
                             path : this.handlerChosedMenu[item][i].path,
                             ranges : this.handlerChosedMenu[item][i].ranges,
                             orgType : 'economic',
-                            linkedPrivCode : this.privaligeInfo[item][i].linkedPrivCode,
+                            linkedPrivCode : this.handlerChosedMenu[item][i].linkedPrivCode,
                         });
                     }
                 }
@@ -397,10 +397,12 @@
                                 delete this.privaligeInfo[this.chosedOrgList[i]];
                             }
                         }
-                        this.$nextTick(() => {
-                            this.$refs.nodeTree.setCheckedKeys(disChecked);
-                            this.setDefaultMenuChosed();
-                        });
+                        if(disChecked.length > 0){
+                            this.$nextTick(() => {
+                                this.$refs.nodeTree.setCheckedKeys(disChecked);
+                                this.setDefaultMenuChosed();
+                            });
+                        }
                     }
                 },
                 deep : true
@@ -417,6 +419,7 @@
                                         privCode : newVal[i]['privCode'],
                                         privType : newVal[i]['privType'],
                                         ranges :newVal[i]['ranges'],
+                                        linkedPrivCode :newVal[i]['linkedPrivCode'],
                                     });
                                 }else{
                                     this.handlerChosedMenu[newVal[i]['privOrg']] = [{
@@ -424,13 +427,18 @@
                                         privCode : newVal[i]['privCode'],
                                         privType : newVal[i]['privType'],
                                         ranges :newVal[i]['ranges'],
+                                        linkedPrivCode :newVal[i]['linkedPrivCode'],
                                     }];
                                 }
                             }
                         }
                         this.$nextTick(() => {
+                            let keys = [];
                             for(let item in this.handlerChosedMenu){
-                                this.$refs.nodeTree.setChecked(item,true);
+                                keys.push(item);
+                            }
+                            if(keys.length > 0){
+                                this.$refs.nodeTree.setCheckedKeys(keys);
                             }
                         });
                     }
