@@ -17,7 +17,7 @@
             <!--游客信息-->
             <visitor-info :module-info="detailData.visitor"></visitor-info>
             <!--产品明细-->
-            <product-detail :module-info="detailData.ticketList"
+            <product-detail :module-info="orderTicketList"
                             :base-info="detailData.baseInfo"
                             :visitor-info="detailData.visitor"
                             @confirm-audit="handleConfirmAudit">
@@ -78,6 +78,8 @@
                     verifyTicketLogList: [],    // 核销日志
                     orderOperationRecordList: [],    // 操作日志
                 },
+                // 订单审核详情里面的产品明细列表
+                orderTicketList: [],
             }
         },
         computed: {
@@ -115,6 +117,18 @@
                 });
             },
             /**
+             * 获取订单审核详情里面的产品明细列表
+             */
+            getOrderTicketList (id) {
+                ajax.post('queryOrderTicketList',{
+                    visitorProductId: id
+                }).then(res => {
+                    if(res.success){
+                        this.orderTicketList = res.data || [];
+                    }
+                });
+            },
+            /**
              * 获取路由参数
              * @param params
              */
@@ -122,6 +136,7 @@
                 if(params && Object.keys(params).length > 0){
                     this.getBulkOrderDetail(params.rowData.visitorProductId);
 //                    this.getBulkOrderDetail('1051793405354577920');
+                    this.getOrderTicketList(params.rowData.visitorProductId);
                 }else{
                     this.$router.go(-1);
                 }

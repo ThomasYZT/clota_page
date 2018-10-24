@@ -9,15 +9,15 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <div class="single-org" v-if="!orderData.isBatch">
+            <div class="single-org" v-if="!orderData.isBatch && orderData.items.length>0">
                 <span style="float: left;margin-right: 60px;">
                     {{$t('下单企业')}}：
-                    <span class="org-name" v-w-title="orderData.items[0] ? orderData.items[0].orderOrgName : '-'">
-                        {{orderData.items[0] ? orderData.items[0].orderOrgName : '-'}}
+                    <span class="org-name" v-w-title="orderData.items[0].orderOrgName">
+                        {{orderData.items[0].orderOrgName | contentFilter}}
                     </span>
                 </span>
                 <span>{{$t('游玩日期')}}：
-                    <span class="org-name">{{orderData.items[0] ? new Date(orderData.items[0].originVisitDate).format('yyyy-MM-dd') : '-'}}</span>
+                    <span class="org-name">{{orderData.items[0].originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
                 </span>
             </div>
             <div class="table-wrap">
@@ -50,7 +50,7 @@
                         </el-table-column>
                     </table-com>
                     <div class="order-amount">
-                        {{$t('订单金额')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : '-') | moneyFilter}} {{$t('yuan')}}</span>
+                        {{$t('订单金额')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : null) | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
                 <template v-else>
@@ -67,7 +67,7 @@
                             :width="row.width"
                             :min-width="row.minWidth">
                             <template slot-scope="scope">
-                                {{new Date(scope.row.originVisitDate).format('yyyy-MM-dd') | contentFilter}}
+                                {{scope.row.originVisitDate | timeFormat('yyyy-MM-dd')}}
                             </template>
                         </el-table-column>
                         <el-table-column

@@ -86,7 +86,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red" v-if="scope.row.rescheduleStatus=='alter_audit'">{{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('改签待审核')}}</span>
+                    <span class="red"
+                          v-if="scope.row.rescheduleStatus=='alter_audit'">
+                        {{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('改签待审核')}}
+                    </span>
                     <span v-if="scope.row.rescheduleStatus=='alter'">{{$t('已改签')}}</span>
                     <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('未改签')}}</span>
                 </template>
@@ -98,7 +101,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>
+                    <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>-->
+                    <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('未改签'))}}</span>
                 </template>
             </el-table-column>
             <el-table-column
