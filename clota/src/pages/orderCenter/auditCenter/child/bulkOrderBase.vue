@@ -31,13 +31,14 @@
             </div><div class="form-item-wrap">
                 <label>{{$t("串码")}}：</label><span class="serial-num" v-w-title="moduleInfo.serialNo">{{moduleInfo.serialNo | contentFilter}}</span>
             </div><div class="form-item-wrap">
-                <label>{{$t("短信发送状态")}}：</label><span>{{moduleInfo.smsStatus | contentFilter}}</span>
+                <label>{{$t("短信发送状态")}}：</label><span>{{$t(transSMSStatus(moduleInfo.smsStatus))}}</span>
             </div>
         </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {transOrderOrg} from '../../commFun';
+    import {transOrderOrg, transSMSStatus} from '../../commFun';
+    import {smsStatusList} from '@/assets/js/constVariable';
 
     export default {
         components: {},
@@ -50,6 +51,8 @@
         methods: {
             // 下单渠道code转换
             transOrderOrg: transOrderOrg,
+            // 短信发送状态code转换
+            transSMSStatus: transSMSStatus,
         },
 
     };
