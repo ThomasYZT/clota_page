@@ -103,6 +103,8 @@
                 //没有新增或修改权限不可以编辑组织树
                 if(this.disabled){
                     this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
                 }
                 return h('div', {
                     style: {
@@ -146,12 +148,13 @@
                 for(let i = 0,j = this.choosedNodes.length;i < j;i++){
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
-                        // break;
                     }
                 }
                 //没有新增或修改权限不可以编辑组织树
                 if(this.disabled){
                     this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
                 }
                 return h('div', {
                     style: {
@@ -322,7 +325,7 @@
                         this.$refs.nodeTree.setCheckedKeys(data);
                     });
                 }
-            }
+            },
         }
     }
 </script>

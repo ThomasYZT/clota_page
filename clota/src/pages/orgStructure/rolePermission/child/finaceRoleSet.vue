@@ -58,6 +58,11 @@
                 default () {
                     return {};
                 }
+            },
+            //是否禁用组织树复选框选择
+            'disabled' : {
+                type : Boolean,
+                default : false
             }
         },
         data() {
@@ -95,6 +100,12 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
+                //没有新增或修改权限不可以编辑组织树
+                if(this.disabled){
+                    this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
+                }
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -137,10 +148,14 @@
                 for(let i = 0,j = this.choosedNodes.length;i < j;i++){
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
-                        // break;
                     }
                 }
-                console.log(JSON.stringify(this.choosedNodes))
+                //没有新增或修改权限不可以编辑组织树
+                if(this.disabled){
+                    this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
+                }
                 return h('div', {
                     style: {
                         display: 'inline-block',

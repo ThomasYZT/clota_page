@@ -20,7 +20,7 @@
                     <i-col span="10">
                         <!--角色名称-->
                         <FormItem :label="$t('roleName')" :label-width="120" prop="roleName">
-                            <Input :disabled="!hasAddRolePermission" v-model="formData.roleName" style="width: 280px;" />
+                            <Input :disabled="!hasSavePermission" v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>
                     <i-col span="4" style="text-align: right" v-if="type === 'edit' && hasAddRolePermission">
@@ -33,14 +33,14 @@
                 <TabPane :label="$t('managePermission')" name="name1">
                     <!--景区经营权限设置-->
                     <manage-role-set ref="mangeRole"
-                                     :disabled="!hasModifyRolePermission"
+                                     :disabled="!hasSavePermission"
                                      :default-chosed-node-init="manageDefaultChosed">
                     </manage-role-set>
                 </TabPane>
                 <TabPane :label="$t('financeAuthority')" name="name2">
                     <!--财务权限设置-->
                     <finace-role-set ref="finaceRole"
-                                     :disabled="!hasModifyRolePermission"
+                                     :disabled="!hasSavePermission"
                                      :default-chosed-node-init="economicDefaultChosed">
                     </finace-role-set>
                 </TabPane>
@@ -57,7 +57,7 @@
             </employee-role-list>
         </div>
         <div class="btn-area"
-             v-if="hasModifyRolePermission">
+             v-if="hasSavePermission">
             <Button type="primary"
                     class="ivu-btn-108px"
                     @click="save">{{$t('save')}}</Button>
@@ -138,7 +138,7 @@
              * 保存权限
              */
             save () {
-                if(!this.hasModifyRolePermission) return;
+                if(!this.hasSavePermission) return;
                 let privileges = [...this.$refs.mangeRole.getMangePrivalige(),...this.$refs.finaceRole.getMangePrivalige()];
                 if(privileges.length <= 0){
                     this.$Message.warning(this.$t('addMenuAuthority'));
@@ -315,11 +315,11 @@
                     return '';
                 }
             },
-            //是否有新增和修改角色的权限
-            hasModifyRolePermission () {
-                if(this.type === 'edit'){//是否有修改角色的权限
+            //是否有保存按钮的权限
+            hasSavePermission () {
+                if(this.type === 'edit'){
                     return this.permissionInfo && 'modifyRole' in this.permissionInfo;
-                }else{//是否有新增角色的权限
+                }else{
                     return this.permissionInfo && 'addRole' in this.permissionInfo;
                 }
             },
