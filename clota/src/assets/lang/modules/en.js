@@ -1198,4 +1198,5 @@ export default {
     'selectCardFileImport': 'select physical text file upload',
     'integralAccount': 'integral account',
     'timesNo': '第{field}次',
+    'upLevelStockName':'上级库存数量',
 }

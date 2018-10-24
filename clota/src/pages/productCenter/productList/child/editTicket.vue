@@ -519,7 +519,6 @@
                         { validator: validateNumber, trigger: 'blur' }
                     ],
                     stockNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('stockNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],

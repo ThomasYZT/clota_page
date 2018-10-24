@@ -211,7 +211,7 @@
                 if(this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum){
                     if( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ){
                         console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
-                        callback(this.$t('errorMaxLength',{field : this.$t('stockNum'),length : this.productDetail.productSaleVo.stockNum}));
+                        callback(this.$t('errorGreaterThan',{small : this.$t('stockNum'),big : this.$t('upLevelStockName')+ this.productDetail.productSaleVo.stockNum }));
                     }else{
                         callback();
                     }
@@ -259,7 +259,6 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('chooseProduct')}), trigger: 'change' },     // 不能为空
                     ],
                     stockNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('stockNum'), length: 10}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateStockNum, trigger: 'blur' },

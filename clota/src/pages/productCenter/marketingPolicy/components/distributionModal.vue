@@ -202,6 +202,7 @@
                 ruleValidate: {
                     name: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('distributeName')}), trigger: 'blur' },     // 不能为空
+                        { type: 'string', max: 40, message: this.$t('errorMaxLength', {field: this.$t('distributeName'), length: 40}), trigger: 'blur' },
                     ],
                     productPrices: [
                         { validator: validateMethod.productPrice, trigger: 'blur' },     // 不能为空
