@@ -4,7 +4,29 @@
 -->
 <template>
     <div class="individual-order-detail">
-        <baseInfo> </baseInfo>
+        <div class="content">
+            <!--订单基本信息-->
+            <baseInfo :baseInfo="baseInfo"> </baseInfo>
+
+            <!--游客信息-->
+            <touristInfo :visitor="visitor"></touristInfo>
+
+            <!--产品明细-->
+            <productDetail  :ticketList="ticketList"
+                            :productName="productDetail.productName"
+                            :productPrice="productDetail.amount"
+                            :baseInfo="baseInfo"
+                            :visitorProductId="baseInfo.visitorProductId"></productDetail>
+
+            <!--退票日志-->
+            <refundLog :refundAlterList="refundAlterList"></refundLog>
+
+            <!--核销日志-->
+            <vertificationLog :verifyTicketLogList="verifyTicketLogList"></vertificationLog>
+
+            <!--操作日志-->
+            <operateLog :orderOperationRecordList="orderOperationRecordList"></operateLog>
+        </div>
     </div>
 </template>
 
@@ -32,7 +54,9 @@
                 //产品订单明细数据--路由数据
                 productDetail: {},
                 //二级订单详情接口数据
-                orderDetailInfo: {}
+                orderDetailInfo: {},
+                //产品明细列表数据
+                ticketList: [],
             }
         },
         methods: {
@@ -44,6 +68,7 @@
                 if(params && params.productDetail){
                     this.productDetail = params.productDetail;
                     this.getSecondLevelOrderDetailInfo();
+                    this.getOrderTicketList();
                 }else{
                     this.$router.push({
                         name : 'individualFirstLevel'
@@ -63,6 +88,20 @@
                         this.orderDetailInfo = {};
                     }
                 })
+            },
+            /**
+             * 获取产品明细列表
+             */
+            getOrderTicketList() {
+                ajax.post('queryOrderTicketList', {
+                    visitorProductId: this.productDetail.visitorProductId
+                }).then(res => {
+                    if(res.success) {
+                        this.ticketList = res.data;
+                    }else {
+                        this.ticketList = [];
+                    }
+                })
             }
         },
         computed: {
@@ -73,6 +112,7 @@
                     return {};
                 }
             },
+            //基本信息
             baseInfo() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
                     return this.orderDetailInfo.baseInfo;
@@ -80,25 +120,20 @@
                     return {};
                 }
             },
+            //操作记录信息
             orderOperationRecordList() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOperationRecordList) {
                     return this.orderDetailInfo.orderOperationRecordList;
                 }else {
-                    return {};
+                    return [];
                 }
             },
+            //退票日志列表信息
             refundAlterList() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.refundAlterList) {
                     return this.orderDetailInfo.refundAlterList;
                 }else {
-                    return {};
-                }
-            },
-            ticketList() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.ticketList) {
-                    return this.orderDetailInfo.ticketList;
-                }else {
-                    return {};
+                    return [];
                 }
             },
             totalRefundFee() {
@@ -108,13 +143,15 @@
                     return {};
                 }
             },
+            //核销日志列表信息
             verifyTicketLogList() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.verifyTicketLogList) {
                     return this.orderDetailInfo.verifyTicketLogList;
                 }else {
-                    return {};
+                    return [];
                 }
             },
+            //游客信息
             visitor() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.visitor) {
                     return this.orderDetailInfo.visitor;

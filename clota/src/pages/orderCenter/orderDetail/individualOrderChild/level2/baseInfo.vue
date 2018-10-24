@@ -9,9 +9,9 @@
         <ul class="order-detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
+                    <li class="col">订单明细编号：{{baseInfo.orderDetailNo | contentFilter}}</li>
                     <li class="col">OTA订单号：{{baseInfo.thirdOrderNo | contentFilter}}</li>
+                    <li class="col">下单时间：{{baseInfo.thirdOrderNo | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
@@ -24,7 +24,6 @@
             <li class="row">
                 <ul class="list">
                     <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
-                    <li class="col">订单金额：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
                     <li class="col">串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
                 </ul>
             </li>
@@ -53,7 +52,6 @@
     @import '~@/assets/scss/base';
 
     .individual-order-base-info{
-        background: #F5F7FA;
         border-radius: 2px;
         margin: 10px 0 6px;
         padding: 2px 0 16px 0;
