@@ -1203,7 +1203,7 @@ export default {
     'addNode': 'add node',
     'deleteNode': '删除节点',
     'modifyNode': '修改节点信息',
-    'resetNodePassword': '工作台',
+    'resetNodePassword': '重置下级节点密码',
     'orgStructQuery': '查询',
     'modifyRole': '修改角色',
     'roleQuery': '查询',
