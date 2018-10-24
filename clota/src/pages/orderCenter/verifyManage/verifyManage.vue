@@ -373,7 +373,7 @@
             },
             handleCommand(type) {
                 if (this.chosenRowData[type].length<=0) {
-                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 this.showModal(this.chosenRowData[type], true, type);
