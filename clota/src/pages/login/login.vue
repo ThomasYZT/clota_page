@@ -288,7 +288,7 @@
             }
 
             .error-area{
-                @include block_outline($height : 25px);
+                @include block_outline();
                 line-height: 25px;
                 text-align: center;
                 color: $color_red;
