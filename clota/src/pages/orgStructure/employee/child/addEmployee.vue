@@ -42,7 +42,9 @@
                 beforeRouterList: [
                     {
                         name: 'employee',   // 员工
-                        router: 'generalEmployeeManager',
+                        router: {
+                            name: 'generalEmployeeManager'
+                        }
                     }
                 ],
                 //新增/修改

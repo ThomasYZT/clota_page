@@ -9,7 +9,7 @@
         :format="['xlsx']"
         :action="action"
         :show-file-list="false">
-        <span>选择实体卡文件上传</span>
+        <span>{{$t('selectCardFileImport')}}</span>
     </el-upload>
 </template>
 <script>
@@ -47,12 +47,12 @@
             uploadSuc (response, file, fileList) {
                 if(response.success){
                     this.$emit('upload-success',response.data);
-                    this.$Message.success('解析成功');
+                    this.$Message.success(this.$t('analysisSuc'));
                 }else{
                     if(response.code === 'S003'){
                         this.$Message.error( this.$t('uploadCardError') );
                     }else{
-                        this.$Message.error( '解析失败' );
+                        this.$Message.error( this.$t('analysisFail') );
                     }
                 }
                 this.$store.commit('changePromisings','del');
@@ -64,7 +64,7 @@
              * @param fileList
              */
             uploadFail(err, file, fileList) {
-                this.$message.error('解析失败');
+                this.$Message.error( this.$t('analysisFail') );
                 this.$emit('upload-success',{
                     dataSize : 0,
                     errorSize : 0,

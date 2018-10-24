@@ -4,24 +4,35 @@
         v-model="visible"
         :title="$t(title)"
         class-name="add-account-modal vertical-center-modal"
-        width="560"
+        width="600"
         :mask-closable="false"
         @on-cancel="hide">
 
         <div class="modal-body">
             <div class="single-org" v-if="!orderData.isBatch">
-                <div style="float: left;">
+                <!--<div style="float: left;">
                     {{$t('下单企业')}}：
                     <span class="org-name" v-w-title="orderData.items[0] ? orderData.items[0].orderOrgName : '-'">
                         {{orderData.items[0] ? orderData.items[0].orderOrgName : '-'}}
                     </span>
                 </div>
-                <div style="text-align: right;">{{$t('游玩日期')}}：{{orderData.items[0] ? orderData.items[0].originVisitDate : '-'}}</div>
+                <div style="text-align: right;">{{$t('游玩日期')}}：{{orderData.items[0] ? orderData.items[0].originVisitDate : '-'}}</div>-->
+
+                <span style="float: left;margin-right: 60px;">
+                    {{$t('下单企业')}}：
+                    <span class="org-name" v-w-title="orderData.items[0] ? orderData.items[0].orderOrgName : '-'">
+                        {{orderData.items[0] ? orderData.items[0].orderOrgName : '-'}}
+                    </span>
+                </span>
+                <span>{{$t('游玩日期')}}：
+                    <span class="org-name">{{orderData.items[0] ? new Date(orderData.items[0].originVisitDate).format('yyyy-MM-dd') : '-'}}</span>
+                </span>
             </div>
             <div class="table-wrap">
                 <template v-if="!orderData.isBatch">
                     <table-com
-                        :table-com-min-height="450"
+                        :height="250"
+                        :table-com-min-height="250"
                         :column-data="columnData"
                         :table-data="tableData"
                         :border="false">
@@ -47,15 +58,26 @@
                         </el-table-column>
                     </table-com>
                     <div class="order-amount">
-                        {{$t('订单金额')}}：<span class="blue">{{(orderData.items[0] ? orderData.items[0].orderAmount : '-') | moneyFilter}}</span>
+                        {{$t('订单金额')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : '-') | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
                 <template v-else>
                     <table-com
-                        :table-com-min-height="450"
+                        :height="250"
+                        :table-com-min-height="250"
                         :column-data="batchColumnData"
                         :table-data="tableData"
                         :border="false">
+                        <el-table-column
+                            slot="column2"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                {{new Date(scope.row.originVisitDate).format('yyyy-MM-dd') | contentFilter}}
+                            </template>
+                        </el-table-column>
                         <el-table-column
                             slot="column3"
                             slot-scope="row"
@@ -68,23 +90,33 @@
                         </el-table-column>
                     </table-com>
                     <div class="order-amount">
-                        {{$t('订单金额合计')}}：<span class="blue">{{orderAmountSum | moneyFilter}}</span>
+                        {{$t('订单金额合计')}}：<span class="yellow">{{orderAmountSum | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
             </div>
             <!--备注-->
-            <div>
+            <!--<div>
                 <span style="float: left;">{{$t('remark')}}：</span>
                 <Input v-model.trim="auditRemark"
                        style="margin-left: 30px"
                        type="textarea"
                        :rows="3"
                        :placeholder="$t('请填写备注，不超过500个字符')" />
+            </div>-->
+
+            <div style="padding: 0 20px;">
+                <span class="label-remark">{{$t('remark')}}：</span>
+                <div style="margin-left: 45px">
+                    <Input v-model.trim="auditRemark"
+                           type="textarea"
+                           :rows="3"
+                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="auditPass()" >{{$t("驳回")}}</Button>
+            <Button type="error" @click="auditPass()" >{{$t("驳回")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -191,32 +223,42 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 14px;
-            height: 450px;
+            padding: 4px;
 
             .order-amount {
                 margin: 15px 20px;
-                text-align: right;
+                color: $color_333;
             }
             .single-org {
-                margin-bottom: 16px;
+                margin-bottom: 15px;
+                font-size: 14px;
                 .org-name {
                     display: inline-block;
                     max-width: 150px;
                     @include overflow_tip();
                     vertical-align: middle;
+                    color: $color_333;
                 }
+            }
+
+            .label-remark {
+                float: left;
+                font-size: 14px;
+                color: #585858;
             }
         }
 
         .modal-footer{
             /deep/ .ivu-btn{
-                padding: 5px 30px;
+                width: 88px;
             }
         }
 
         .blue {
             color: $color_blue;
+        }
+        .yellow {
+            color: $color_yellow;
         }
     }
 </style>

@@ -45,7 +45,74 @@
                 :selectable="handleSelectable">
             </el-table-column>
             <el-table-column
-                slot="column9"
+                slot="column3"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.pickStatus=='true'">{{$t('已取票')}}</span>
+                    <span v-if="scope.row.pickStatus=='false'">{{$t('未取票')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column4"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <!--<span class="blue">{{$t(transVerifyStatus(moduleInfo.verifyStatus))}}</span>-->
+                    <span v-if="scope.row.verifyStatus=='true'">{{$t('已核销')}}</span>
+                    <span v-if="scope.row.verifyStatus=='false'">{{$t('未核销')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="red" v-if="scope.row.refundStatus=='refund_audit'">{{$t('退票待审核')}}</span>
+                    <span v-if="scope.row.refundStatus=='refund'">{{$t('已退票')}}</span>
+                    <span v-if="scope.row.refundStatus=='no_refund'">{{$t('未退票')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column6"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="red" v-if="scope.row.rescheduleStatus=='alter_audit'">{{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('改签待审核')}}</span>
+                    <span v-if="scope.row.rescheduleStatus=='alter'">{{$t('已改签')}}</span>
+                    <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('未改签')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column v-if="isAlter"
+                slot="column7"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                :slot="isAlter ? 'column9' : 'column10'"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{$t(transSyncStatus(scope.row.syncStatus))}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                :slot="isAlter ? 'column10' : 'column9'"
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
@@ -66,7 +133,7 @@
                 <li>{{$t('已退票')}}：<b>{{baseInfo.quantityRefunded | contentFilter}}</b></li>
                 <li>{{$t('已改签')}}：<b>{{baseInfo.quantityRescheduled | contentFilter}}</b></li>
             </ul>
-            <div class="reserve-num">{{$t('已改签')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
+            <div class="reserve-num">{{$t('产品预定数量')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
         </div>
         <!--审核确认弹框-->
         <confirm-audit-modal ref="confirmAuditModal"
@@ -81,6 +148,7 @@
     import {productListHead} from '../auditCenter/auditConfig';
     import ajax from '@/api/index';
     import confirmAuditModal from '../auditCenter/child/confirmAuditModal.vue';
+    import {transSyncStatus} from '../commFun';
 
     export default {
         components: {tableCom, confirmAuditModal},
@@ -96,15 +164,23 @@
         },
         data() {
             return {
-                //表头配置
-                columnData : productListHead,
                 // 已勾选的数据
                 chosenRowData: [],
                 //发起申请的产品
                 reqOrderTickets: [],
             }
         },
-        computed: {},
+        computed: {
+            isAlter() {
+                return this.$route.name == 'bulkChangeDetail';
+            },
+            //表头配置 --- 如果是退票审核详情，则无'申请改签后游玩日期' 这一列
+            columnData() {
+                return this.isAlter ? productListHead : productListHead.filter(item => {
+                    return item.field !== 'rescheduleAfterVisitDate';
+                });
+            },
+        },
         created() {
         },
         mounted() {
@@ -170,6 +246,8 @@
                     }
                 });
             },
+            // 同步状态code转换
+            transSyncStatus: transSyncStatus,
         }
     };
 </script>
@@ -178,14 +256,21 @@
     @import '~@/assets/scss/base';
 
     .block-title {
-        padding: 15px 0;
+        margin: 15px 0;
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
     }
 
     .table-top {
+        padding: 0 28px;
+        line-height: 30px;
+        margin-bottom: 10px;
         .audit-btn {
             float: right;
         }
+    }
+
+    .operate-btn {
+        cursor: pointer;
     }
 
     .table-bottom {
@@ -222,5 +307,8 @@
 
     .blue {
         color: $color_blue;
+    }
+    .red {
+        color: $color_red;
     }
 </style>

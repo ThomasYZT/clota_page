@@ -11,24 +11,26 @@
             :locale-router="'订单明细详情'">
         </bread-crumb-head>
 
-        <!--散客订单基本信息-->
-        <bulk-order-base :module-info="detailData.baseInfo"></bulk-order-base>
-        <!--游客信息-->
-        <visitor-info :module-info="detailData.visitor"></visitor-info>
-        <!--产品明细-->
-        <product-detail :module-info="detailData.ticketList"
-                        :base-info="detailData.baseInfo"
-                        :visitor-info="detailData.visitor"
-                        @confirm-audit="handleConfirmAudit">
-        </product-detail>
-        <!--分销信息-->
-        <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
-        <!--退票日志-->
-        <refund-alter-log :module-info="detailData.refundAlterList"></refund-alter-log>
-        <!--核销日志-->
-        <verify-log :module-info="detailData.verifyTicketLogList"></verify-log>
-        <!--操作日志-->
-        <operate-log :order-record-list="detailData.orderOperationRecordList"></operate-log>
+        <div class="detail-container">
+            <!--散客订单基本信息-->
+            <bulk-order-base :module-info="detailData.baseInfo"></bulk-order-base>
+            <!--游客信息-->
+            <visitor-info :module-info="detailData.visitor"></visitor-info>
+            <!--产品明细-->
+            <product-detail :module-info="detailData.ticketList"
+                            :base-info="detailData.baseInfo"
+                            :visitor-info="detailData.visitor"
+                            @confirm-audit="handleConfirmAudit">
+            </product-detail>
+            <!--分销信息-->
+            <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
+            <!--退票日志-->
+            <refund-alter-log :module-info="detailData.refundAlterList"></refund-alter-log>
+            <!--核销日志-->
+            <verify-log :module-info="detailData.verifyTicketLogList"></verify-log>
+            <!--操作日志-->
+            <operate-log :order-record-list="detailData.orderOperationRecordList"></operate-log>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -138,6 +140,11 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .bulk-order-detail {
+
+    }
+
+    .detail-container {
+        height: calc(100% - 50px);
         padding: 15px 20px;
     }
 </style>

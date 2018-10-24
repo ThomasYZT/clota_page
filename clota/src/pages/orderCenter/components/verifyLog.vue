@@ -15,6 +15,17 @@
             :table-data="moduleInfo"
             :border="true"
             :column-check="false">
+            <el-table-column
+                slot="column1"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.orgName | contentFilter}}</span>
+                    <span>{{scope.row.operator | contentFilter}}/{{scope.row.operatedTime | contentFilter}}</span>
+                </template>
+            </el-table-column>
         </table-com>
 
     </div>
@@ -42,7 +53,7 @@
     @import '~@/assets/scss/base';
 
     .block-title {
-        padding: 15px 0;
+        margin: 15px 0;
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
         /*margin-bottom: 10px;*/
     }

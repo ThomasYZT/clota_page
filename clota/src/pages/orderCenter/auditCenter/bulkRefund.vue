@@ -46,7 +46,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="order-num blue">{{scope.row.orderNo}}</span>
+                    <span class="order-num blue" @click="goBulkLevel1Detail(scope.row)">{{scope.row.orderNo}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -242,11 +242,25 @@
                     type: type
                 });
             },
+            /**
+             * 跳转至散客退票审核详情
+             * @param scopeRow
+             */
             goBulkDetail(scopeRow) {
                 this.$router.push({
                     name: 'bulkRefundDetail',
                     query: {reqType: 'refund'},
                     params: {rowData: scopeRow}
+                });
+            },
+            /**
+             * 跳转至散客一级订单详情
+             * @param scopeRow
+             */
+            goBulkLevel1Detail(scopeRow) {
+                this.$router.push({
+                    name: 'individualFirstLevel',
+                    params: {orderId: scopeRow.orderId},
                 });
             },
         }
@@ -290,5 +304,13 @@
     /deep/.el-dropdown-menu__item {
         width: 88px;
         text-align: center;
+
+        &:not(.is-disabled) {
+            color: $color_333;
+        }
+        &:not(.is-disabled):hover, &:focus {
+            background-color: #f1f4f8;
+            color: $color_blue;
+        }
     }
 </style>

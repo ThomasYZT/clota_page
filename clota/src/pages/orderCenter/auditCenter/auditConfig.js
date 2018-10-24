@@ -88,23 +88,23 @@ export const batchAuditHead = [
     {
         title: '订单号',
         minWidth: 150,
-        enWidth : 180,
+        // enWidth : 180,
         field: 'orderNo'
     },
     {
         title: '下单企业',
-        width: 150,
-        enWidth : 180,
+        miWidth: 150,
+        enWidth : 160,
         field: 'orderOrgName'
     },
     {
         title: '游玩日期',
-        minWidth: 200,
+        width: 130,
         field: 'originVisitDate'
     },
     {
         title: '订单金额',
-        width: 100,
+        width: 120,
         field: 'orderAmount'
     },
 ];
@@ -222,7 +222,7 @@ export const bulkBatchAuditHead = [
     },
     {
         title: '申请改签后游玩日期',
-        minWidth: 150,
+        minWidth: 200,
         field: 'rescheduleAfterVisitDate'
     },
 ];
@@ -264,9 +264,14 @@ export const productListHead = [
     },
     {
         title: '改签状态',
-        minWidth: 100,
-        enWidth : 130,
+        minWidth: 150,
+        enWidth : 150,
         field: 'rescheduleStatus'
+    },
+    {
+        title: '申请改签后游玩日期',
+        minWidth: 200,
+        field: 'rescheduleAfterVisitDate'
     },
     {
         title: '串码',

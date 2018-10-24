@@ -304,7 +304,9 @@
                 beforeRouterList: [
                     {
                         name: 'ticketType',   // 产品列表--票类列表
-                        router: 'ticketType',
+                        router: {
+                            name : 'ticketType'
+                        },
                     }
                 ],
                 //详情数据

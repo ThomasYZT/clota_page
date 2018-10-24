@@ -188,9 +188,19 @@
             return {
                 // 面包屑路由列表
                 breadRouterList: [
-                    {name: 'memberInfo', router: 'info'},       // 会员信息
-                    {name: 'memberDetail', router: 'detail'}    // 会员详情
-                    ],
+                    {
+                        name: 'memberInfo',
+                        router: {
+                            name : 'memberInfo'// 会员信息
+                        }
+                    },
+                    {
+                        name: 'memberDetail',
+                        router: {
+                            name : 'infoDetail'// 会员信息
+                        }
+                    }    // 会员详情
+                ],
 
                 // 年卡、次卡信息数据
                 cardInfo: {

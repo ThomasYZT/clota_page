@@ -2,38 +2,39 @@
 //实体卡管理表头配置
 export const cardHead = [
     {
-        title: '导入日期',
+        title: 'importDate',
         minWidth: 200,
         field: 'createdTime'
     },
     {
-        title: '卡状态',
+        title: 'cardStatus',
         minWidth: 300,
         field: 'cardStatus'
     },
     {
-        title: '物理卡号',
+        title: 'physicalCardNo',
         minWidth: 200,
         field: 'physicalNum'
     },
     {
-        title: '卡面号',
+        title: 'cardFaceNum',
         minWidth: 200,
         field: 'faceNum'
     },
     {
-        title: '开卡时间',
+        title: 'openCardDate',
         minWidth: 200,
         field: 'openTime'
     },
     {
-        title: '持卡人信息',
+        title: 'cardOwnerInfo',
         minWidth: 200,
         field: 'custName'
     },
     {
         title: 'operate',
         minWidth: 80,
+        enMinWidth: 110,
         field: ''
     },
 ];

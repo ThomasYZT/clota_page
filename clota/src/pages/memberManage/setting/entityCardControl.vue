@@ -3,7 +3,7 @@
 <template>
     <div class="entity-card-controle">
         <bread-crumb-head
-            :locale-router="'实体卡管理'"
+            :locale-router="$t('cardManagement')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
@@ -12,24 +12,24 @@
                     <Select v-model="cardStatus"
                             style="width:200px"
                             @on-change="statusChange">
-                        <Option value="all">全部实体卡类型</Option>
-                        <Option value="open">已开卡</Option>
-                        <Option value="wait">未开卡</Option>
+                        <Option value="all">{{$t('allCardType')}}</Option>
+                        <Option value="open">{{$t('cardOpened')}}</Option>
+                        <Option value="wait">{{$t('cardUnopened')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
                            style="width: 240px;margin-left: 15px;margin-right: 15px;"
-                           placeholder="请输入物理卡号、卡面号"/>
+                           :placeholder="$t('pleaseInputNumbers')"/>
                     <Button type="primary"
                             @click="search"
-                            style="margin-right: 5px;">查询</Button>
-                    <Button type="ghost" @click="reset">重置</Button>
+                            style="margin-right: 5px;">{{$t('query')}}</Button>
+                    <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
                     <ul class="member-count">
                         <li>
-                            <span class="label">未开卡数据：</span>
+                            <span class="label">{{$t('notOpenData')}}</span>
                             <span class="count">{{unOpenCardsNum | contentFilter}}</span>
                         </li>
                         <li>
-                            <span class="label">已开卡数据：</span>
+                            <span class="label">{{$t('openedData')}}</span>
                             <span class="count">{{openCardsNum | contentFilter}}</span>
                         </li>
                     </ul>
@@ -38,10 +38,10 @@
                     <Button type="primary"
                             class="ivu-btn-108px"
                             style="margin-right: 5px;"
-                            @click="importSingle">单个导入</Button>
+                            @click="importSingle">{{$t('singleImport')}}</Button>
                     <Button type="primary"
                             class="ivu-btn-108px"
-                            @click="batchImport">批量导入</Button>
+                            @click="batchImport">{{$t('batchImport')}}</Button>
                 </div>
             </div>
             <table-com
@@ -68,6 +68,7 @@
                     slot="column6"
                     slot-scope="row"
                     :label="row.title"
+                    fixed="right"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">

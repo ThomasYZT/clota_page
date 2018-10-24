@@ -7,7 +7,7 @@
             :router-name="routerName">
         </header-tabs>
         <div class="content">
-            <div class="title">会员卡可用渠道选择</div>
+            <div class="title">{{$t('memberChannelChoose')}}</div>
             <table-com
                 ref="tableCom"
                 :column-data="columns"
@@ -30,7 +30,7 @@
                     :min-width="row.minWidth">
                 </el-table-column>
             </table-com>
-            <div class="title">会员卡可用景区选择</div>
+            <div class="title">{{$t('memberAreaChoose')}}</div>
             <el-tree :data="companyData"
                      node-key="id"
                      ref="tree"

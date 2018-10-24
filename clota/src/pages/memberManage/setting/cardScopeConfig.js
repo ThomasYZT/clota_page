@@ -8,7 +8,7 @@ export const cardScopeHead = [
         field: 'check',
     },
     {
-        title: '渠道名称',
+        title: 'channelName',
         minWidth: 150,
         field: 'channelName'
     },

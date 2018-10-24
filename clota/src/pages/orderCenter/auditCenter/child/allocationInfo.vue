@@ -68,7 +68,7 @@
     @import '~@/assets/scss/base';
 
     .block-title {
-        padding: 15px 0;
+        margin: 15px 0;
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
     }
 

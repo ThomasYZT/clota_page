@@ -151,11 +151,15 @@
                 beforeRouterList: [
                     {
                         name: 'memberInfo',   // 会员信息
-                        router: 'info',
+                        router: {
+                            name : 'memberInfo'
+                        },
                     },
                     {
                         name: 'memberDetail',   // 会员详情
-                        router: 'detail',
+                        router: {
+                            name : 'infoDetail'
+                        },
                     },
                 ],
                 localeRouter: 'enjoyIntegraAndDiscount',   // 享受积分、折扣率信息

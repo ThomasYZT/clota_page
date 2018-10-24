@@ -24,12 +24,12 @@
                 <label>{{$t("发售机构")}}：</label><span>{{moduleInfo.saleOrg | contentFilter}}</span>
             </div>
             <div class="form-item-wrap">
-                <label>{{$t("下单渠道")}}：</label><span>{{moduleInfo.orderChannel | contentFilter}}</span>
+                <label>{{$t("下单渠道")}}：</label><span>{{$t(transOrderOrg(moduleInfo.orderChannel))}}</span>
             </div>
             <div class="form-item-wrap">
                 <label>{{$t("下单企业")}}：</label><span>{{moduleInfo.channel | contentFilter}}</span>
             </div><div class="form-item-wrap">
-                <label>{{$t("串码")}}：</label><span v-w-title="moduleInfo.serialNo">{{moduleInfo.serialNo | contentFilter}}</span>
+                <label>{{$t("串码")}}：</label><span class="serial-num" v-w-title="moduleInfo.serialNo">{{moduleInfo.serialNo | contentFilter}}</span>
             </div><div class="form-item-wrap">
                 <label>{{$t("短信发送状态")}}：</label><span>{{moduleInfo.smsStatus | contentFilter}}</span>
             </div>
@@ -37,6 +37,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
+    import {transOrderOrg} from '../../commFun';
 
     export default {
         components: {},
@@ -46,6 +47,10 @@
         data() {
             return {}
         },
+        methods: {
+            // 下单渠道code转换
+            transOrderOrg: transOrderOrg,
+        },
 
     };
 </script>
@@ -54,13 +59,14 @@
     @import '~@/assets/scss/base';
 
     .block-title {
-        padding: 15px 0;
+        margin: 15px 0;
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
     }
 
     .form-wrap{
         width: 100%;
         margin-top: 15px;
+        padding: 0 28px;
         @include clearfix();
 
         .form-item-wrap{
@@ -81,6 +87,10 @@
                 vertical-align: middle;
                 @include overflow_tip();
             }
+        }
+
+        .serial-num {
+            color: $color_yellow;
         }
     }
 </style>
