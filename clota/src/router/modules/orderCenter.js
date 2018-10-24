@@ -15,7 +15,7 @@ export default {
         path: '/order',
         component: () => import(/* webpackChunkName: "orderCenterInit" */ '../../pages/orderCenter/index.vue'),
         meta: {
-            _name: 'org',
+            _name: 'order',
             menuName: 'orderCenter',
             rightPath: topMenuName + '.' + 'orderCenter',
             isMenu: true
@@ -28,7 +28,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenterInit" */ '../../pages/orderCenter/createOrder/index.vue'),
                 meta: {
                     menuName: 'createOrder',
-                    _name: 'org',
+                    _name: 'order-addOrder',
                     rightPath: topMenuName + '.' + 'createOrder',
                     isMenu: true
                 },
@@ -40,7 +40,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/individualOrder.vue'),
                 meta: {
                     menuName: 'individualOrder',
-                    _name: 'org',
+                    _name: 'order-addOrder',
                     rightPath: topMenuName + '.' + 'createOrder',
                 },
             },
@@ -51,7 +51,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/teamOrder.vue'),
                 meta: {
                     menuName: 'teamOrder',
-                    _name: 'org',
+                    _name: 'order-addOrder',
                     rightPath: topMenuName + '.' + 'createOrder',
                 },
             },
@@ -62,7 +62,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/createOrder/orderWrite/orderSubmitSuccess.vue'),
                 meta: {
                     menuName: 'successSubmit',
-                    _name: 'org',
+                    _name: 'order-addOrder',
                     rightPath: topMenuName + '.' + 'createOrder',
                 },
             },
@@ -73,7 +73,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/index.vue'),
                 meta: {
                     menuName: 'reserveOrderDetail',
-                    _name: 'org',
+                    _name: 'order-list',
                     rightPath: topMenuName + '.' + 'reserveOrderDetail',
                     isMenu: true
                 },
@@ -85,7 +85,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/teamOrderDetail.vue'),
                 meta: {
                     menuName: 'teamOrderDetail',
-                    _name: 'org',
+                    _name: 'order-list',
                     rightPath: topMenuName + '.' + 'reserveOrderDetail'
                 },
             },
@@ -96,7 +96,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/individualOrderDetail1Level.vue'),
                 meta: {
                     menuName: 'individualFirstLevel',
-                    _name: 'org',
+                    _name: 'order-list',
                     rightPath: topMenuName + '.' + 'reserveOrderDetail'
                 },
             },
@@ -107,7 +107,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/individualOrderDetail2Level.vue'),
                 meta: {
                     menuName: 'individualSecondLevel',
-                    _name: 'org',
+                    _name: 'order-list',
                     rightPath: topMenuName + '.' + 'reserveOrderDetail'
                 },
             },
@@ -118,7 +118,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/index.vue'),
                 meta: {
                     menuName: 'auditCenter',
-                    _name: 'org',
+                    _name: 'order-auditCenter',
                     rightPath: topMenuName + '.' + 'auditCenter',
                     isMenu: true
                 },
@@ -130,7 +130,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/groupOrder.vue'),
                         meta: {
                             menuName: 'auditGroupOrder', //lang.config.js 里面的语言键值
-                            _name: 'org',
+                            _name: 'teamOrder-audit',
                             rightPath: topMenuName + '.' + 'auditGroupOrder',
                             isMenu: true
                         },
@@ -142,7 +142,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/bulkRefund.vue'),
                         meta: {
                             menuName: 'auditBulkRefund', //lang.config.js 里面的语言键值
-                            _name: 'org',
+                            _name: 'individual-refund',
                             rightPath: topMenuName + '.' + 'auditBulkRefund',
                             isMenu: true
                         },
@@ -154,7 +154,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/child/bulkOrderDetail.vue'),
                         meta: {
                             menuName: 'auditBulkRefund', //lang.config.js 里面的语言键值
-                            _name: 'org',
+                            _name: 'individual-refund',
                             rightPath: topMenuName + '.' + 'auditBulkRefund',
                             isMenu: false
                         },
@@ -166,7 +166,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/bulkChange.vue'),
                         meta: {
                             menuName: 'auditBulkChange', //lang.config.js 里面的语言键值
-                            _name: 'org',
+                            _name: 'individual-alter',
                             rightPath: topMenuName + '.' + 'auditBulkChange',
                             isMenu: true
                         },
@@ -178,7 +178,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/child/bulkOrderDetail.vue'),
                         meta: {
                             menuName: 'auditBulkChange', //lang.config.js 里面的语言键值
-                            _name: 'org',
+                            _name: 'individual-alter',
                             rightPath: topMenuName + '.' + 'auditBulkChange',
                             isMenu: false
                         },
@@ -192,7 +192,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/verifyManage/verifyManage.vue'),
                 meta: {
                     menuName: 'verifyManage',
-                    _name: 'org',
+                    _name: 'order-checkerManage',
                     rightPath: topMenuName + '.' + 'verifyManage',
                     isMenu: true
                 }
@@ -204,7 +204,7 @@ export default {
                 component: () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/verifyManage/child/verifySuccess.vue'),
                 meta: {
                     menuName: 'verifyManage', //lang.config.js 里面的语言键值
-                    _name: 'org',
+                    _name: 'order-checkerManage',
                     rightPath: topMenuName + '.' + 'verifyManage',
                     isMenu: false
                 },

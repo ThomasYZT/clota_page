@@ -98,8 +98,7 @@
                             this.totalCount = 0;
                         }
                     }
-                })
-                this.totalCount = this.tableData.length;
+                });
             },
 
             // 搜索员工

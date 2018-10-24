@@ -294,6 +294,9 @@
     }
 
     .yellow-label{
+        display: inline-block;
+        width: 200px;
+        vertical-align: top;
         color: $color_yellow;
     }
 

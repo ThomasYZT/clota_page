@@ -352,6 +352,9 @@
                     place: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
                     ],
+                    description: [
+                        {max : 200,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 200}),trigger : 'blur'}
+                    ],
                     loginName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('loginName')}), trigger: 'blur' },
                     ],
@@ -391,6 +394,9 @@
                     ],
                     place: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
+                    ],
+                    description: [
+                        {max : 200,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 200}),trigger : 'blur'}
                     ],
                     loginName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('loginName')}), trigger: 'blur' },
@@ -440,9 +446,11 @@
                 ajax.post('register', this.formData).then(res => {
                     if(res.success) {
                         this.$Message.success(this.$t('注册成功'));
-                        //this.$router.replace
+                        this.$router.replace({
+                            name: 'login'
+                        });
                     } else {
-                        this.$Message.error(this.$t(res.code));
+                        this.$Message.error(this.$t(res.message));
                     }
                 })
             },
@@ -455,8 +463,11 @@
                 ajax.post('register', this.formDataCompany).then(res => {
                     if(res.success) {
                         this.$Message.success(this.$t('注册成功'));
+                        this.$router.replace({
+                            name: 'login'
+                        });
                     } else {
-                        this.$Message.error(this.$t(res.code));
+                        this.$Message.error(this.$t(res.message));
                     }
                 })
             },
@@ -495,7 +506,6 @@
              * 省市县选择 个人注册
              */
             placeSelect(value) {
-                console.log(value)
                 this.formData.place = value.value ? value.value : '';
                 this.formData.province = value.province ? value.province.provinceid : '';
                 this.formData.city = value.city ? value.city.cityid : '';

@@ -197,7 +197,7 @@
                             </Form-item>
                         </div>
                     </template>
-                    <!--游玩期限 = 指定日期可玩-->
+                    <!--游玩期限 = 自定义可玩日期-->
                     <div class="ivu-form-item-wrap single" v-if="formData.playRule.type === 'specifiedDateSold'">
                         <Form-item :label="$t('specifiedDateSold')"><!--指定日期-->
                             <Select v-model="formData.playRule.dateType"
@@ -220,13 +220,11 @@
                                 type="date"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 :disabled="formData.playRule.dateType === 'custom' ? false : true"
-                                :open="open"
-                                :transfer="true"
+                                transfer
                                 :clearable="false"
                                 :editable="false"
                                 @on-change="changePlaySelectTime"
-                                style="width: 230px;display: inline-block;margin-left: 15px;">
-                                <a href="javascript:void(0)"></a>
+                                style="width: 230px;margin-left: 15px;">
                             </DatePicker>
                             <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('toList')}}</span>
                             <span class="blue" v-else @click="showDateType('showPlayDatePicker', true)">{{$t('toDate')}}</span>

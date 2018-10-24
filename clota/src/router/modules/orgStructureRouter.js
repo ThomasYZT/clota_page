@@ -52,7 +52,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                         meta: {
                             menuName: 'generalEmployeeManager', //lang.config.js 里面的语言键值
-                            _name: 'org-emp', //
+                            _name: 'org-emp-common', //
                             lightMenu: 'employee',
                             rightPath : topMenuName + '.' + 'generalEmployeeManager',
                             isMenu : true
@@ -65,7 +65,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                         meta: {
                             menuName: 'employee', //lang.config.js 里面的语言键值
-                            _name: 'org-emp', //
+                            _name: 'org-emp-common', //
                             lightMenu: 'employee',
                             rightPath : topMenuName + '.' + 'generalEmployeeManager'
                         },
@@ -77,7 +77,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/courierManager/courierList.vue'),
                         meta: {
                             menuName: 'courierManager',
-                            _name: 'org-emp',//'org-guide',
+                            _name: 'org-emp-guide',//'org-guide',
                             lightMenu: 'employee',
                             rightPath : topMenuName + '.' + 'courierManager',
                             isMenu : true
@@ -90,7 +90,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/driverManager/driverList.vue'),
                         meta: {
                             menuName: 'driverManager',
-                            _name: 'org-emp',//'org-driver',
+                            _name: 'org-emp-driver',//'org-driver',
                             lightMenu: 'employee',
                             rightPath : topMenuName + '.' + 'driverManager',
                             isMenu : true

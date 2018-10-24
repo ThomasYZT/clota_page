@@ -31,8 +31,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-account normal" v-if="scope.row.status=='normal'">{{$t('正常')}}</span>
-                    <span class="status-account warning" v-if="scope.row.status=='warning'">{{$t('预警')}}</span>
+                    <span class="status-account normal" v-if="scope.row.whetherAlarm=='true'">{{$t('正常')}}</span>
+                    <span class="status-account warning" v-else>{{$t('预警')}}</span>
                 </template>
             </el-table-column>
             <el-table-column

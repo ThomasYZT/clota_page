@@ -1,9 +1,13 @@
-<template>
+1<template>
     <!-- 新增员工页面 -->
     <div class="partner">
 
         <div class="filter-box">
-            <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="getNewPartner('add')"
+            <Button type="primary"
+                    v-if="canAddEmployee"
+                    icon="md-add"
+                    style="float: left;margin-right: 10px"
+                    @click="getNewPartner('add')"
                     size="default"><span class="add-icon">+ {{$t('newEmployee')}}</span>
             </Button>
             <Input class="input-field"
@@ -14,116 +18,44 @@
                    @on-click="handleSearch" />
         </div>
 
-        <div>
-            <!--<el-table
-                :data="tableData"
-                :border="true"
-                style="width: 100%">
-                <el-table-column
-                    prop="date"
-                    label="员工ID">
-                    <template slot-scope="scope">
-                        <div class="cellText">309287482</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="登录名">
-                    <template slot-scope="scope">
-                        <div>adminclota01</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="姓名">
-                    <template slot-scope="scope">
-                        <div>张贝贝</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="企业/景区名称">
-                    <template slot-scope="scope">
-                        <div>银科环企有限公司</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="部门名称">
-                    <template slot-scope="scope">
-                        <div>销售部门</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="角色权限">
-                    <template slot-scope="scope">
-                        <div>长隆欢乐园管理员、深圳…</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="电话">
-                    <template slot-scope="scope">
-                        <div>1722727378</div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="date"
-                    label="操作">
-                    <template slot-scope="scope">
-                        <div class="operation">
-                            <span>{{$t('modify')}}</span>
-                            <span @click="deleteEmployeeBtn">{{$t('del')}}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="pagination">
-                <el-pagination
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
-                </el-pagination>
-            </div>-->
-
-            <table-com
-                :ofsetHeight="120"
-                :show-pagination="true"
-                :column-data="columnData"
-                :table-data="tableData"
-                :total-count="totalCount"
-                :page-no-d.sync="queryParams.pageNo"
-                :page-size-d.sync="queryParams.pageSize"
-                :border="true"
-                @query-data="queryList">
-                <!--依需求暂时去掉角色权限字段-->
-                <!--<el-table-column
-                    slot="column5"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <div class="role-privilege" v-w-title="scope.row.rolePrivilege">{{scope.row.rolePrivilege}}</div>
-                    </template>
-                </el-table-column>-->
-                <el-table-column
-                    slot="column6"
-                    slot-scope="row"
-                    fixed="right"
-                    :label="row.title"
-                    :width="130"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <span class="modify-info" @click="getNewPartner('modify', scope.row)">{{$t('modify')}}</span>
-                        <span class="divide-line"></span>
-                        <span class="del-info" @click="deleteEmployee(scope.row)">{{$t('del')}}</span>
-                    </template>
-                </el-table-column>
-            </table-com>
-        </div>
+        <table-com
+            :ofsetHeight="120"
+            :show-pagination="true"
+            :column-data="columnData"
+            :table-data="tableData"
+            :total-count="totalCount"
+            :page-no-d.sync="queryParams.pageNo"
+            :page-size-d.sync="queryParams.pageSize"
+            :border="true"
+            @query-data="queryList">
+            <!--依需求暂时去掉角色权限字段-->
+            <!--<el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <div class="role-privilege" v-w-title="scope.row.rolePrivilege">{{scope.row.rolePrivilege}}</div>
+                </template>
+            </el-table-column>-->
+            <el-table-column
+                v-if="canModifyEmployee || canDelEmployee"
+                slot="column6"
+                slot-scope="row"
+                fixed="right"
+                :label="row.title"
+                :min-width="operateColumnWidth.minWidth">
+                <template slot-scope="scope">
+                    <ul class="operate-list">
+                        <li  v-if="canModifyEmployee" @click="getNewPartner('modify', scope.row)">{{$t('modify')}}</li>
+                        <li class="red-label"
+                            v-if="canDelEmployee"
+                            @click="deleteEmployee(scope.row)">{{$t('del')}}</li>
+                    </ul>
+                </template>
+            </el-table-column>
+        </table-com>
 
 
         <delete-list ref="delListModal" @deletions="handleDeletions" :deleteName="deleteName" :name="name"></delete-list>
@@ -138,6 +70,7 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {employeeInfoHead} from '../../systemSetting/resetPassword/resetPwdConfig';
     import ajax from '@/api/index';
+    import {mapGetters} from 'vuex';
 
     export default {
         components: {
@@ -226,12 +159,14 @@
             },
             //删除员工
             deleteEmployee(scopeRow) {
+                if(!this.canDelEmployee) return;
                 this.scopeRowData = scopeRow;
                 this.name = scopeRow.nickName;
                 this.$refs.delListModal.show();
             },
             //确认删除
             handleDeletions() {
+                if(!this.canDelEmployee) return;
                 ajax.post('deletedEmployee', {
                     accountIds: this.scopeRowData.id
                 }).then(res => {
@@ -243,7 +178,35 @@
             },
 
         },
-        computed: {},
+        computed: {
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            }),
+            //是否有新增员工的权限
+            canAddEmployee () {
+                return this.permissionInfo && 'addEmployee' in this.permissionInfo;
+            },
+            //是否有删除员工的权限
+            canDelEmployee () {
+                return this.permissionInfo && 'deleteEmployee' in this.permissionInfo;
+            },
+            //是否有编辑员工的权限
+            canModifyEmployee () {
+                return this.permissionInfo && 'modifyEmployee' in this.permissionInfo;
+            },
+            //操作列宽度
+            operateColumnWidth (){
+                if(this.canDelEmployee && this.canModifyEmployee){
+                    return {
+                        minWidth : 120
+                    }
+                }else if(this.canDelEmployee || this.canModifyEmployee){
+                    return {
+                        minWidth : 80
+                    }
+                }
+            }
+        },
         created() {
         },
     }
@@ -268,25 +231,6 @@
 
         .role-privilege {
             @include overflow_tip();
-        }
-
-        .modify-info {
-            color: $color_blue;
-            cursor: pointer;
-        }
-
-        .del-info {
-            color: $color_red;
-            cursor: pointer;
-        }
-
-        .divide-line {
-            display: inline-block;
-            width: 1px;
-            height: 14px;
-            margin: 0 5px;
-            margin-bottom: -2px;
-            background: #E1E1E1;
         }
     }
 </style>

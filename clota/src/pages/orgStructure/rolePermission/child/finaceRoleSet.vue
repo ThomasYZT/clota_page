@@ -58,6 +58,11 @@
                 default () {
                     return {};
                 }
+            },
+            //是否禁用组织树复选框选择
+            'disabled' : {
+                type : Boolean,
+                default : false
             }
         },
         data() {
@@ -95,6 +100,12 @@
              * 组织树render函数
              */
             renderContent(h, {root, node, data}) {
+                //没有新增或修改权限不可以编辑组织树
+                if(this.disabled){
+                    this.$set(data,'disabled',true);
+                }else{
+                    this.$set(data,'disabled',false);
+                }
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -128,7 +139,8 @@
              */
             menuRenderContent (h, {root, node, data}) {
                 //没有选择节点不可选择菜单权限
-                if(!this.chosedOrgList.includes(this.activeNodeId)){
+                //没有新增或修改权限不可以编辑组织树
+                if(!this.chosedOrgList.includes(this.activeNodeId) || this.disabled){
                     this.$set(data,'disabled',true);
                 }else{
                     this.$set(data,'disabled',false);
@@ -137,10 +149,8 @@
                 for(let i = 0,j = this.choosedNodes.length;i < j;i++){
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
-                        // break;
                     }
                 }
-                console.log(JSON.stringify(this.choosedNodes))
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -227,7 +237,7 @@
                 if(checkedKeys.includes(data.privCode)){
                     //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
                     if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
-                        this.$refs.menuTree.setCheckedKeys([data.privCode,data.linkedPrivCode],true);
+                        this.$refs.menuTree.setChecked(data.linkedPrivCode,true);
                     }
                 }
                 this.$nextTick(() => {

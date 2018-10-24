@@ -148,10 +148,8 @@
                 for(let i = 0,j = this.choosedNodes.length;i < j;i++){
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
-                        // break;
                     }
                 }
-                console.log(JSON.stringify(this.choosedNodes))
                 return h('div', {
                     style: {
                         display: 'inline-block',
@@ -243,22 +241,35 @@
                 if(checkedKeys.includes(data.privCode)){
                     //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
                     if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
-                        this.$refs.menuTree.setCheckedKeys([data.privCode,data.linkedPrivCode],true);
+                        this.$refs.menuTree.setChecked(data.linkedPrivCode,true);
                     }
                 }
                 this.$nextTick(() => {
-                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();;
+                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();
                     this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
                         //将不是默认选中的权限保存为手动选择的额外权限
                         if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
                             !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
-                            this.handlerChosedMenu[this.activeNodeId].push(item);
+                            this.handlerChosedMenu[this.activeNodeId].push({
+                                ...item,
+                                choseStatus : ''
+                            });
                         }
                         return {
                             ...item,
                             choseStatus : ''
                         }
                     }),...halfCheckedNodes.map(item => {
+                        if(!item.disabled){
+                            //将不是默认选中的权限保存为手动选择的额外权限
+                            if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
+                                !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
+                                this.handlerChosedMenu[this.activeNodeId].push({
+                                    ...item,
+                                    choseStatus : 'half'
+                                });
+                            }
+                        }
                         return {
                             ...item,
                             choseStatus : 'half'
@@ -289,6 +300,7 @@
                 //将角色下的菜单权限和手动选择的菜单权限全部默认选中
                 let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
                 let handlerChoseNode = this.handlerChosedMenu[this.activeNodeId] ? this.handlerChosedMenu[this.activeNodeId] : [];
+                this.choosedNodes = JSON.parse(JSON.stringify(chosedNode.concat(handlerChoseNode)));
                 this.$nextTick(() => {
                     this.$refs.menuTree.setCheckedNodes(chosedNode.concat(handlerChoseNode));
                 });
@@ -324,7 +336,8 @@
                             path : this.handlerChosedMenu[item][i].path,
                             ranges : this.handlerChosedMenu[item][i].ranges,
                             orgType : 'manage',
-                            linkedPrivCode : this.privaligeInfo[item][i].linkedPrivCode,
+                            linkedPrivCode : this.handlerChosedMenu[item][i].linkedPrivCode,
+                            choseStatus : this.handlerChosedMenu[item][i].choseStatus,
                         });
                     }
                 }
@@ -397,10 +410,12 @@
                                 delete this.privaligeInfo[this.chosedOrgList[i]];
                             }
                         }
-                        this.$nextTick(() => {
-                            this.$refs.nodeTree.setCheckedKeys(disChecked);
-                            this.setDefaultMenuChosed();
-                        });
+                        if(disChecked.length > 0){
+                            this.$nextTick(() => {
+                                this.$refs.nodeTree.setCheckedKeys(disChecked);
+                                this.setDefaultMenuChosed();
+                            });
+                        }
                     }
                 },
                 deep : true
@@ -417,6 +432,7 @@
                                         privCode : newVal[i]['privCode'],
                                         privType : newVal[i]['privType'],
                                         ranges :newVal[i]['ranges'],
+                                        linkedPrivCode :newVal[i]['linkedPrivCode'],
                                     });
                                 }else{
                                     this.handlerChosedMenu[newVal[i]['privOrg']] = [{
@@ -424,6 +440,7 @@
                                         privCode : newVal[i]['privCode'],
                                         privType : newVal[i]['privType'],
                                         ranges :newVal[i]['ranges'],
+                                        linkedPrivCode :newVal[i]['linkedPrivCode'],
                                     }];
                                 }
                             }
@@ -433,7 +450,9 @@
                             for(let item in this.handlerChosedMenu){
                                 keys.push(item);
                             }
-                            this.$refs.nodeTree.setCheckedKeys(keys);
+                            if(keys.length > 0){
+                                this.$refs.nodeTree.setCheckedKeys(keys);
+                            }
                         });
                     }
                 },

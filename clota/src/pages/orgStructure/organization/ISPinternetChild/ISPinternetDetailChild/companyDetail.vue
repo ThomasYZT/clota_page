@@ -33,7 +33,7 @@
                     {{companyDetail.orgName}}
                 </span>
                 <span class="edit"
-                      v-if="'modifyNode' in permissionInfo"
+                      v-if="canModifyNode"
                   @click="edit">
                     <span class="iconfont icon-edit"></span>
                     {{$t('modify')}}
@@ -146,7 +146,7 @@
                             <span class="account-con"
                                   v-w-title="companyDetail.manager">{{companyDetail.manager | contentFilter}}</span>
                             <span class="reset-pass"
-                                  v-if="activeNode && activeNode.level !== 1 && 'resetNodePassword' in permissionInfo"
+                                  v-if="activeNode && activeNode.level !== 1 && canResetPassword"
                                   @click="resetPass">{{$t('resetPsw')}}</span>
                         </span>
                     </div>
@@ -716,7 +716,15 @@
             },
             ...mapGetters({
                 permissionInfo : 'permissionInfo'
-            })
+            }),
+            //是否可以编辑节点信息
+            canModifyNode () {
+                return this.permissionInfo && 'modifyNode' in this.permissionInfo
+            },
+            //是否重置管理员密码
+            canResetPassword () {
+                return this.permissionInfo && 'resetNodePassword' in this.permissionInfo
+            }
         },
         watch : {
             //节点更换，重新请求节点数据

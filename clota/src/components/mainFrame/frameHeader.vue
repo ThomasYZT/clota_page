@@ -321,6 +321,12 @@
                         line-height: 60px;
                         margin: 0 20px;
                         cursor: pointer;
+                        transition: color 0.3s;
+
+                        &:hover{
+                            color: $color_fff;
+                            transition: color 0.3s;
+                        }
 
                         .bar {
                             display: none;

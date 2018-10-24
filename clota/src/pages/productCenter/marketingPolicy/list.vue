@@ -558,5 +558,4 @@
     .red-label {
         color: $color_red;
     }
-
 </style>
