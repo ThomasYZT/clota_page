@@ -107,8 +107,7 @@
                             slot-scope="row"
                             :label="$t('mySalePrice')"
                             :width="140"
-                            :min-width="120"
-                            show-overflow-tooltip>
+                            :min-width="120">
                             <template slot-scope="scope">
                                 <Input v-model="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
                             </template>
