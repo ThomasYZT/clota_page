@@ -246,18 +246,31 @@
                     }
                 }
                 this.$nextTick(() => {
-                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();;
+                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();
                     this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
                         //将不是默认选中的权限保存为手动选择的额外权限
                         if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
                             !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
-                            this.handlerChosedMenu[this.activeNodeId].push(item);
+                            this.handlerChosedMenu[this.activeNodeId].push({
+                                ...item,
+                                choseStatus : ''
+                            });
                         }
                         return {
                             ...item,
                             choseStatus : ''
                         }
                     }),...halfCheckedNodes.map(item => {
+                        if(!item.disabled){
+                            //将不是默认选中的权限保存为手动选择的额外权限
+                            if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
+                                !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
+                                this.handlerChosedMenu[this.activeNodeId].push({
+                                    ...item,
+                                    choseStatus : 'half'
+                                });
+                            }
+                        }
                         return {
                             ...item,
                             choseStatus : 'half'
@@ -325,6 +338,7 @@
                             ranges : this.handlerChosedMenu[item][i].ranges,
                             orgType : 'manage',
                             linkedPrivCode : this.handlerChosedMenu[item][i].linkedPrivCode,
+                            choseStatus : this.handlerChosedMenu[item][i].choseStatus,
                         });
                     }
                 }

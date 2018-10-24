@@ -52,7 +52,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/employee.vue'),
                         meta: {
                             menuName: 'generalEmployeeManager', //lang.config.js 里面的语言键值
-                            _name: 'org-emp', //
+                            _name: 'org-emp-common', //
                             lightMenu: 'employee',
                             rightPath : topMenuName + '.' + 'generalEmployeeManager',
                             isMenu : true
@@ -65,7 +65,7 @@ export default {
                         component: () => import(/* webpackChunkName: "orgStructure" */ '../../pages/orgStructure/employee/child/addEmployee.vue'),
                         meta: {
                             menuName: 'employee', //lang.config.js 里面的语言键值
-                            _name: 'org-emp', //
+                            _name: 'org-emp-common', //
                             lightMenu: 'employee',
                             rightPath : topMenuName + '.' + 'generalEmployeeManager'
                         },

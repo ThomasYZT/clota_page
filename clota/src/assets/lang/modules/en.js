@@ -1209,4 +1209,9 @@ export default {
     'roleQuery': '查询',
     'editCourierInfo': '修改导游信息',
     'editDriverInfo': '编辑司机信息',
+    'org-emp-common': '普通员工管理',
+    'addEmployee': '新增员工',
+    'modifyEmployee': '编辑员工',
+    'deleteEmployee': '删除员工',
+    'empQuery': '查询',
 }

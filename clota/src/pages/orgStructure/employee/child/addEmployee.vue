@@ -13,8 +13,13 @@
             <!--基本信息-->
             <basic-form ref="basicForm" :employee-info="employeeData"></basic-form>
 
-            <div class="content-footer">
-                <i-button type="primary" :loading="loading" @click="confirmModify">{{type=='add' ? $t('confirmAdd') : $t('confirm')}}</i-button>
+            <div class="content-footer"
+                 v-if="canSaveEmployee">
+                <i-button type="primary"
+                          :loading="loading"
+                          @click="confirmModify">
+                    {{type=='add' ? $t('confirmAdd') : $t('confirm')}}
+                </i-button>
                 <router-link :to="{name: 'generalEmployeeManager'}">
                     <i-button type="ghost">{{$t('cancel')}}</i-button>
                 </router-link>
@@ -29,6 +34,7 @@
     import basicForm from './basicInfo.vue';
     import MD5 from 'crypto-js/md5';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
+    import {mapGetters} from 'vuex';
 
     export default {
         components: {
@@ -58,6 +64,21 @@
             localeRouter () {
                 return (this.type === 'add' ? this.$t('add') : this.$t('edit')) + this.$t('employee');      // 新增 ： 修改
             },
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            }),
+            //是否有编辑员工的权限
+            canModifyEmployee () {
+                return this.permissionInfo && 'modifyEmployee' in this.permissionInfo;
+            },
+            //是否有新增员工的权限
+            canAddEmployee () {
+                return this.permissionInfo && 'addEmployee' in this.permissionInfo;
+            },
+            //是否能保存员工信息
+            canSaveEmployee () {
+                return this.canModifyEmployee || this.canAddEmployee;
+            }
         },
         created() {
             this.init();
@@ -72,7 +93,11 @@
 
             //确认修改按钮回调，需校验表单
             confirmModify(){
-                this.$refs.basicForm.formValidateFunc();
+                if(this.type === 'add' && this.canAddEmployee){
+                    this.$refs.basicForm.formValidateFunc();
+                }else if(this.type === "modify" && this.canModifyEmployee){
+                    this.$refs.basicForm.formValidateFunc();
+                }
             },
             /**
              * 获取路由参数

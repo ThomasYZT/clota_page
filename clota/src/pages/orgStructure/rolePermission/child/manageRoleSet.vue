@@ -139,7 +139,8 @@
              */
             menuRenderContent (h, {root, node, data}) {
                 //没有选择节点不可选择菜单权限
-                if(!this.chosedOrgList.includes(this.activeNodeId)){
+                //没有新增或修改权限不可以编辑组织树
+                if(!this.chosedOrgList.includes(this.activeNodeId) || this.disabled){
                     this.$set(data,'disabled',true);
                 }else{
                     this.$set(data,'disabled',false);
@@ -149,12 +150,6 @@
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
                     }
-                }
-                //没有新增或修改权限不可以编辑组织树
-                if(this.disabled){
-                    this.$set(data,'disabled',true);
-                }else{
-                    this.$set(data,'disabled',false);
                 }
                 return h('div', {
                     style: {
