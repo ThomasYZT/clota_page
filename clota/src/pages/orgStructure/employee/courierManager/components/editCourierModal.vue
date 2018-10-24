@@ -4,7 +4,7 @@
 -->
 <template>
     <Modal v-model="visible"
-           :title="$t('addNewCourier')"
+           :title="title"
            class-name="add-remark-modal vertical-center-modal"
            width="560"
            :mask-closable="false"
@@ -72,6 +72,7 @@
             };
             return {
                 visible: false,
+                title: this.$t('addNewCourier'),
                 formData: {
                     //姓名
                     staffName: '',
@@ -92,7 +93,7 @@
                         { validator: validateMethods.identificationNum, trigger: 'blur'}
                     ],
                     phoneNumber: [
-                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('name')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('phoneNum')}), trigger: 'blur' },
                         { validator: validateMethods.mobile, trigger: 'blur'}
 
                     ]
@@ -107,6 +108,7 @@
              */
             show({type, scopeRow}) {
                 if(scopeRow) {
+                    this.title = this.$t('editCourierInfo');
                     this.formData.id = scopeRow.id;
                     this.formData.staffName = scopeRow.staffName;
                     this.formData.documentNo = scopeRow.documentNo;
@@ -128,6 +130,7 @@
                 };
                 delete this.formData.id;
                 this.visible = false;
+                this.title = this.$t('addNewCourier');
             },
             /**
              * 校验表单

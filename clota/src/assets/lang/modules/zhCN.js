@@ -1207,4 +1207,5 @@ export default {
     'orgStructQuery': '查询',
     'modifyRole': '修改角色',
     'roleQuery': '查询',
+    'editCourierInfo': '修改导游信息',
 }
