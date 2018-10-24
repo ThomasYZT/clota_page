@@ -24,6 +24,8 @@
 
             <!--表单信息-->
             <Form ref="formValidate"
+                  :label-width="250"
+                  label-position="right"
                   :model="detail">
 
                 <!--基本信息-->
@@ -420,6 +422,7 @@
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
                     if(params.info){
+                        console.log(params.info)
                         //根据产品Id查明细
                         this.findProductById(params.info);
                         //查询权限下的园区
@@ -502,30 +505,13 @@
                     margin: 0 auto;
                     text-align: left;
                     width: 100%;
-                    float: left;
-                    margin-right: 10px;
-                    height: 30px;
                     line-height: 30px;
                     font-size: $font_size_14px;
-                    display: flex;
                 }
 
                 /deep/ .ivu-form-item-label{
-                    padding-left: 0;
-                    padding-right: 0;
-                    width: 220px;
-                    display: inline-table;
-                }
-
-                /deep/ .ivu-form-item-content{
-                    color: $color-666;
-                    /*flex: 1;*/
-                    display: inline-block;
-                    width: calc(100% - 220px);
-                    >div{
-                        vertical-align: middle;
-                        @include overflow_tip();
-                    }
+                    width: auto;
+                    white-space: nowrap;
                 }
 
                 /deep/ .ivu-checkbox-wrapper{
