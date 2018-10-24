@@ -16,7 +16,7 @@
                 <h3>{{$t('distributePolicy')}}</h3>
 
                 <span class="sub-operator"
-                      @click="viewDetail(listItem)">{{$t('viewDetail')}}</span>
+                      @click="viewDetail()">{{$t('viewDetail')}}</span>
             </div>
 
             <!--列表信息-->
@@ -229,9 +229,9 @@
             /**
              * 查看销售政策详情
              */
-            viewDetail(data) {
+            viewDetail() {
                 //显示弹窗
-                this.$refs.detailView.toggle(data);
+                this.$refs.detailView.toggle(this.listItem);
             },
             /**
              * 表格头点击事件

@@ -11,37 +11,35 @@
         <div class="content">
             <Form ref="formValidate"
                   :model="detail"
+                  label-position="right"
+                  :label-width="200"
                   v-if="detail && detail.productPolicy">
-                <div class="form-content">
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('salePolicyName')+'：'"><!--销售政策名称-->
-                                <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('scenePlace')+'：'"><!--所属景区-->
-                                <div v-w-title="detail.productPolicy.scenicName">{{detail.productPolicy.scenicName | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                </div>
-                <div class="form-content">
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('desc')+'：'"><!--描述-->
-                                <div v-w-title="detail.productPolicy.policyDesc">{{detail.productPolicy.policyDesc | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                </div>
+                <i-row>
+                    <i-col span="12">
+                        <Form-item :label="$t('salePolicyName')+'：'"><!--销售政策名称-->
+                            <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
+                        </Form-item>
+                    </i-col>
+                    <i-col span="12">
+                        <Form-item :label="$t('scenePlace')+'：'"><!--所属景区-->
+                            <div v-w-title="detail.scenicName">{{detail.scenicName | contentFilter}}</div>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <Form-item :label="$t('desc')+'：'"><!--描述-->
+                            <div v-w-title="detail.policyDesc">{{detail.policyDesc | contentFilter}}</div>
+                        </Form-item>
+                    </i-col>
+                </i-row>
 
                 <!-- 售卖游玩政策 -->
                 <div class="divider-header">
                     <span>{{$t('saleAndPlayPolicy')}}</span>
                 </div>
 
-                <div class="form-content">
+                <div>
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('policyValidity')+'：'"><!--政策可售期-->
@@ -102,7 +100,7 @@
                     </i-row>
                 </div>
 
-                <div class="form-content">
+                <div>
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
@@ -196,6 +194,30 @@
                         </template>
                     </el-table-column>
                 </table-com>
+
+                <!--改签规则-->
+                <br/>
+                <div class="line" v-if="detail.productPolicy && detail.productPolicy.alterRuleModel">
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
+                                <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                                <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="24">
+                            <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
+                                <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                </div>
             </Form>
         </div>
 
@@ -249,6 +271,8 @@
                 if(data) {
                     this.listItem = data;
                     this.getPolicyDetailData()
+                }else {
+                    this.listItem = {};
                 }
                 this.show = !this.show;
             },
@@ -355,7 +379,98 @@
                 font-weight: bold;
             }
         }
+
+        .form-content{
+            border-top: 1px dashed $color_979797_020;
+            width: 85%;
+            margin: 0 auto;
+            padding: 20px 0;
+
+            &:first-child{
+                border-top: none;
+            }
+
+            &.line{
+                border-top: none;
+                padding-top: 0px;
+            }
+
+            .ivu-input-icon{
+                z-index: 2;
+            }
+
+            .ivu-form-item{
+                margin: 0 auto;
+                text-align: left;
+                width: 100%;
+                float: left;
+                margin-right: 10px;
+                height: 30px;
+                line-height: 30px;
+                font-size: $font_size_14px;
+                display: flex;
+            }
+
+            /deep/ .ivu-form-item-label{
+                padding-left: 0;
+                padding-right: 0;
+                width: 220px;
+            }
+
+            /deep/ .ivu-form-item-content{
+                color: $color-666;
+                /*flex: 1;*/
+                display: inline-block;
+                width: calc(100% - 220px);
+                >div{
+                    vertical-align: middle;
+                    @include overflow_tip();
+                }
+            }
+
+            /deep/ .ivu-checkbox-wrapper{
+                margin-right: 24px;
+                &:last-child{
+                    margin-right: 0;
+                }
+            }
+
+            /deep/ .ivu-checkbox{
+                margin-right: 5px;
+            }
+
+            .label{
+                margin-right: 5px;
+            }
+
+            /deep/ .ivu-timeline{
+                text-align: left;
+                padding-left: 12%;
+                color: $color_666;
+
+                .time{
+                    color: $color_999;
+                }
+                .name{
+                    color: $color_3F3F3F;
+                    margin-right: 5px;
+                }
+            }
+
+            /deep/ .ivu-timeline-item-head{
+                background-color: $color_DFDFDF;
+                width: 10px;
+                height: 10px;
+            }
+
+            /deep/ .ivu-timeline-item-tail{
+                left: 5px;
+            }
+
+        }
     }
+
+
     .modal-footer{
         /deep/ .ivu-btn{
             padding: 5px 30px;

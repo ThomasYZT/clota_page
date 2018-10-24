@@ -210,6 +210,7 @@
             const validateStockNum = (rule,value,callback) => {
                 if(this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum){
                     if( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ){
+                        console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
                         callback(this.$t('errorMaxLength',{field : this.$t('stockNum'),length : this.productDetail.productSaleVo.stockNum}));
                     }else{
                         callback();

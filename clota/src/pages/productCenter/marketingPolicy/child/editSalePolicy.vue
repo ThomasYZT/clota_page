@@ -49,7 +49,7 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <!--政策可售期 = 游玩日期前M天可售-->
+                    <!--政策可售期 == 游玩日期前N天可售-->
                     <div class="ivu-form-item-wrap single" v-if="formData.saleRule.type === 'playBeforeSold'">
                         <Form-item :label="$t('aheadDays')"><!--提前天数(M)-->
                             <InputNumber :max="365"
@@ -66,7 +66,7 @@
                             <span class="notice">{{$t('aheadDaysNotice')}}</span>
                         </Form-item>
                     </div>
-                    <!--政策可售期 = 指定期间可售-->
+                    <!--政策可售期 == 指定期间可售-->
                     <template v-if="formData.saleRule.type === 'specifiedPeriodSold'">
                         <div class="ivu-form-item-wrap single">
                             <Form-item :label="$t('specifiedTime')"><!--指定起止日期-->
@@ -110,21 +110,18 @@
                             <!--<br/>-->
                             <!--日历视图-->
                             <DatePicker
-                                v-if="showSaleDatePicker"
                                 v-model="formData.saleRule.specifiedTime"
                                 multiple
                                 format="yyyy-MM-dd"
                                 type="date"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 :disabled="formData.saleRule.dateType === 'custom' ? false : true"
-                                :open="true"
-                                :transfer="false"
+                                transfer
                                 :clearable="false"
                                 :editable="false"
                                 :confirm="false"
                                 @on-change="changeSaleSelectTime"
-                                style="width: 230px;display: inline-block;margin-left: 15px;">
-                                <a href="javascript:void(0)"></a>
+                                style="width: 230px;margin-left: 15px;">
                             </DatePicker>
                             <span class="blue" v-if="showSaleDatePicker" @click="showDateType('showSaleDatePicker', false)">{{$t('toList')}}</span>
                             <span class="blue" v-else @click="showDateType('showSaleDatePicker', true)">{{$t('toDate')}}</span>
@@ -986,7 +983,8 @@
             },
             //删除产品
             del ( data, index ) {
-                this.itemsData.splice(index,1);
+                //console.log(this.itemsData.splice(index,1))
+                this.productList.splice(0,0,this.itemsData.splice(index,1)[0]);
             },
 
             //新增退票手续费率档位

@@ -615,7 +615,7 @@
                             //销售
                             saleRuleJson : JSON.stringify({
                                 acceptIdType: this.formData.acceptIdType.length > 0 ? this.formData.acceptIdType.join(',') : '',
-                                id: this.formData.id || '',
+                                id: this.formData.saleId || '',
                                 idLimit: JSON.stringify({
                                     day: this.formData.limitByIdDay || '',
                                     quantity: this.formData.limitByIdNum || '',
@@ -752,7 +752,9 @@
                 formData.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : '';
                 formData.printPrice = data.printPrice ? String(data.printPrice) : '0';
                 formData.standardPrice = data.standardPrice ? String(data.standardPrice) : '0';
-                formData.id = data.saleId ? String(data.saleId) : '';
+                formData.id = data.id ? String(data.id) : '';
+                formData.saleId = data.saleId ? String(data.saleId) : '';
+
                 this.formData = defaultsDeep({},formData);
             },
 
