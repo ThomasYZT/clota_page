@@ -24,13 +24,13 @@
         </div>
         <finace-role v-show="tapType === 'finance'"
                      ref="finaceRole"
-                     :extra-privalige="extraPrivalige"
+                     :extra-privalige="extraPrivaligeDeal"
                      :default-chosed-node-init="economicDefaultChosed"
                      @set-org-name="getOrgname">
         </finace-role>
         <manage-role v-show="tapType === 'manage'"
                      ref="manageRole"
-                     :extra-privalige="extraPrivalige"
+                     :extra-privalige="extraPrivaligeDeal"
                      :default-chosed-node-init="manageDefaultChosed"
                      @set-org-name="getOrgname">
         </manage-role>
@@ -209,6 +209,10 @@
             }
         },
         computed :{
+            //额外菜单权限中不包括半选的菜单
+            extraPrivaligeDeal () {
+                return this.extraPrivalige.filter(item => item.choseStatus !== 'half');
+            }
         }
     }
 </script>
