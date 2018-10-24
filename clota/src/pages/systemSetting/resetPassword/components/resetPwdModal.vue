@@ -43,6 +43,7 @@
 
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import MD5 from 'crypto-js/md5';
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
@@ -96,9 +97,9 @@
             show ( data ) {
                 if( data ){
                     this.formData = defaultsDeep(this.formData, data.item);
+                    this.formData.accountId = data.item.id;
                 }
                 this.visible = true;
-                console.log(this.formData)
             },
 
             //表单校验
@@ -125,8 +126,8 @@
 
             // 重置密码
             resetPwd ( params ) {
+                params.password = MD5(params.password).toString();
                 ajax.post('resetAccountPassword', params).then((res) => {
-                    console.log(res)
                     if( res.success ) {
                         this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
                         this.hide();
