@@ -89,6 +89,14 @@
                     visitorProductId: this.baseInfo.visitorProductId,
                     productId: this.baseInfo.productId,
                     reqOrderTicketIds: this.orderTicketIds,
+                }).then(res => {
+                    if(res.success) {
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('return')}));
+                        this.toggle();
+                    }else {
+                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('return')}));
+                        this.toggle();
+                    }
                 })
             }
         }

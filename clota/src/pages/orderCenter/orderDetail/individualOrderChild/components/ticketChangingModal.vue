@@ -13,7 +13,13 @@
                 {{num}}
             </FormItem>
             <FormItem label="申请改签至">
-                <DatePicker v-model="afterAlterDate" type="date" placeholder="选择日期" style="width: 200px"></DatePicker>
+                <DatePicker v-model="afterAlterDate"
+                            format="yyyy-MM-dd"
+                            type="date"
+                            :clearable="false"
+                            :editable="false"
+                            transfer>
+                </DatePicker>
             </FormItem>
         </Form>
 
@@ -25,7 +31,7 @@
 </template>
 
 <script>
-
+    import ajax from '@/api/index'
     export default {
         components: {},
         data() {
@@ -70,8 +76,16 @@
                     visitorProductId: this.baseInfo.visitorProductId,
                     productId: this.baseInfo.productId,
                     reqOrderTicketIds: this.orderTicketIds,
-                    afterAlterDate: this.afterAlterDate
-            })
+                    afterAlterDate: new Date(this.afterAlterDate).format('yyyy-MM-dd')
+                }).then(res => {
+                    if(res.success) {
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('return')}));
+                        this.toggle();
+                    }else {
+                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('return')}));
+                        this.toggle();
+                    }
+                })
             }
         }
     }
