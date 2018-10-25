@@ -161,7 +161,6 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li v-if="returnTicketMenuShow.show" @click="refundTicket(scope.row)">{{$t('退票')}}</li>
-                        <!--<li @click="refundTicket(scope.row)">{{$t('退票')}}</li>-->
                         <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>
                         <li @click="reserve(scope.row)">{{$t('详情')}}</li>
                     </ul>
@@ -170,6 +169,7 @@
         </table-com>
         <!--申请退票-->
         <apply-refund-ticket v-model="refundTicketModalShow"
+                             :product-info="orderProductInfo"
                              :orderDetail="currentData">
         </apply-refund-ticket>
     </div>
@@ -226,7 +226,9 @@
                 //退款模态框是否显示
                 refundTicketModalShow : false,
                 //当前操作的订单信息
-                currentData : {}
+                currentData : {},
+                //订单下产品信息
+                orderProductInfo : {}
             }
         },
         methods: {
@@ -292,8 +294,29 @@
              */
             refundTicket (data) {
                 this.currentData = data;
-                this.refundTicketModalShow = true;
-            }
+                this.queryOrderTicketList(data);
+            },
+            /**
+             * 查询订单详情
+             * @param  data 订单信息
+             */
+            queryOrderTicketList (data) {
+                ajax.post('queryRefundAndAlterTicketList',{
+                    visitorProductId : data.visitorProductId
+                }).then(res => {
+                    if(res.success){
+                        if(res.data.allowRefund === 'true'){
+                            this.orderProductInfo = res.data;
+                            // this.orderProductInfo = res.data ? res.data.ticketList : [];
+                            this.refundTicketModalShow = true;
+                        }else{
+                            this.$Message.warning(`订单${data.orderNo}下产品不可退票`);
+                        }
+                    }else{
+                        this.orderProductInfo = {};
+                    }
+                });
+            },
         },
         computed : {
             //是否可以显示退票按钮和改签按钮，

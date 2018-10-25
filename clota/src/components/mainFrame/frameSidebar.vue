@@ -22,13 +22,18 @@
                               v-else
                               :key="item.name"
                               @click.native="changeMenuItem">
-                        <span v-if="item.meta.iconClass"
-                              class="iconfont"
-                              :class="[item.meta.iconClass]"></span>
+                        <Tooltip :content="$t(`${item.meta.menuName}`)"
+                                 :disabled="!menuIsPackUp"
+                                 placement="right"
+                                 transfer>
+                            <span v-if="item.meta.iconClass"
+                                  class="iconfont"
+                                  :class="[item.meta.iconClass]"></span>
+                        </Tooltip>
                         <span class="menu-name"
                               v-w-title="$t(`${item.meta.menuName}`)">
-                            {{$t(`${item.meta.menuName}`)}}
-                        </span>
+                                {{$t(`${item.meta.menuName}`)}}
+                            </span>
                     </MenuItem>
                 </template>
             </Menu>
