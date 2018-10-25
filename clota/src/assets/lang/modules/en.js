@@ -1214,4 +1214,5 @@ export default {
     'modifyEmployee': '编辑员工',
     'deleteEmployee': '删除员工',
     'empQuery': '查询',
+    'distributeTip':'{field}是上级分销商，已从选中的销售渠道中删除',
 }

@@ -1220,4 +1220,5 @@ export default {
     'order.no_alter': '未改签',
     'order.alter_audit': '改签待审',
     'order.altered': '已改签',
+    'distributeTip':'{field}是上级分销商，已从选中的销售渠道中删除'
 }

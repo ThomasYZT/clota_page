@@ -130,6 +130,7 @@
                         @selection-change="colomnSelect($event)">
                     </table-com>
                 </Form-item>
+                <div v-if="isTipShow" class="distribute-tip">{{$t('distributeTip',{field: detail.parentDistributor})}}</div>
             </Form>
         </div>
 
@@ -210,6 +211,8 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleChannels')}), trigger: 'blur' },     // 不能为空
                     ]
                 },
+                //是否显示分销提示
+                isTipShow: false
             }
         },
         methods: {
@@ -306,10 +309,16 @@
              * 表格选择框事件
              */
             colomnSelect(data) {
+                this.isTipShow = false;
                 this.formData.groupIds = '';
                 data.forEach((item) => {
-                    this.formData.groupIds += item.id + ','
+                    this.formData.groupIds += item.id + ',';
+                    //政策不能在分销给上级分销商,后台会做过滤处理，此处给出提示
+                    if(item.channelNames.indexOf(this.detail.parentDistributor) > -1) {
+                        this.isTipShow = true;
+                    }
                 })
+
             },
             /**
              * 保存分销设置
@@ -335,7 +344,9 @@
                 });
 
             },
-            //关闭模态框
+            /**
+             * 关闭模态框
+             */
             hide(){
                 this.toggle();
             },
@@ -425,6 +436,10 @@
                 width: 50%;
                 transform: translateY(50%);
             }
+        }
+
+        .distribute-tip {
+            color: $color_F7981C_080;
         }
     }
 
