@@ -5,7 +5,7 @@
 <template>
     <div class="individual-order-base-info">
         <div class="title">散客订单基本信息</div>
-        <!--下单企业视图-->
+        <!--下单企业和景区视图内容只相差一个字段，因此只和分销商做区分-->
         <ul class="order-detail">
             <li class="row">
                 <ul class="list">
@@ -24,7 +24,14 @@
             <li class="row">
                 <ul class="list">
                     <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
-                    <li class="col">串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
+                    <!--仅下单企业和景区视图可见字段-->
+                    <li v-if="orderOrgType === 'channel' || orderOrgType === 'scenic'"
+                        class="col">串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
+                    <!--仅景区视图字段-->
+                    <li v-if="orderOrgType === 'scenic'" class="col">短信发送状态：{{transSMSStatus(baseInfo.smsStatus) | contentFilter}}</li>
+                    <!--仅分销商视图字段-->
+                    <li v-if="orderOrgType === 'allocation'" class="col">预定数量：{{transSMSStatus(baseInfo.quantity) | contentFilter}}</li>
+
                 </ul>
             </li>
         </ul>
@@ -32,7 +39,7 @@
 </template>
 
 <script>
-
+    import {transSMSStatus} from '../../../commFun'
     export default {
         props: {
             'baseInfo': {
@@ -40,9 +47,21 @@
                 default: {}
             }
         },
-        components: {},
+        computed: {
+            //机构对应订单角色
+            orderOrgType() {
+                if(Object.keys(this.baseInfo).length > 0 && this.baseInfo.orderOrgType) {
+                    return this.baseInfo.orderOrgType;
+                }else {
+                    return '';
+                }
+            }
+        },
         data() {
-            return {}
+            return {
+                //转换短信发送状态
+                transSMSStatus: transSMSStatus
+            }
         },
         methods: {}
     }

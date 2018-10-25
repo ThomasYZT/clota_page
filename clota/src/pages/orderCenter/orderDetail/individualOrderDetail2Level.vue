@@ -9,23 +9,39 @@
             <baseInfo :baseInfo="baseInfo"> </baseInfo>
 
             <!--游客信息-->
-            <touristInfo :visitor="visitor"></touristInfo>
+            <!--分销商不可见-->
+            <touristInfo v-if="orderOrgType !== 'allocation'"
+                         :visitor="visitor"></touristInfo>
 
             <!--产品明细-->
+            <!--
+                需要传入产品名称、产品单价、产品明细列表数据、基础信息(包含产品明细id，退票、改签时用到)、机构对应订单角色(用于判断是否可对所有产品进行改签和退票)
+            -->
             <productDetail  :ticketList="ticketList"
+                            :orderOrgType="orderOrgType"
                             :productName="productDetail.productName"
                             :productPrice="productDetail.amount"
-                            :baseInfo="baseInfo"
-                            :visitorProductId="baseInfo.visitorProductId"></productDetail>
+                            :baseInfo="baseInfo"></productDetail>
+
+            <!--分销信息-->
+            <!--下单企业不可见-->
+            <distributionInfo v-if="orderOrgType !== 'channel'"
+                              :allocationInfo="allocationInfo"></distributionInfo>
 
             <!--退票日志-->
-            <refundLog :refundAlterList="refundAlterList"></refundLog>
+            <!--分销商不可见-->
+            <refundLog v-if="orderOrgType !== 'allocation'"
+                       :refundAlterList="refundAlterList"></refundLog>
 
             <!--核销日志-->
-            <vertificationLog :verifyTicketLogList="verifyTicketLogList"></vertificationLog>
+            <!--分销商不可见-->
+            <vertificationLog v-if="orderOrgType !== 'allocation'"
+                              :verifyTicketLogList="verifyTicketLogList"></vertificationLog>
 
             <!--操作日志-->
-            <operateLog :orderOperationRecordList="orderOperationRecordList"></operateLog>
+            <!--分销商不可见-->
+            <operateLog v-if="orderOrgType !== 'allocation'"
+                        :orderOperationRecordList="orderOperationRecordList"></operateLog>
         </div>
     </div>
 </template>
@@ -39,6 +55,7 @@
     import refundLog from './individualOrderChild/level2/refundLog';
     import touristInfo from './individualOrderChild/level2/touristInfo';
     import vertificationLog from './individualOrderChild/level2/vertificationLog';
+    import distributionInfo from './individualOrderChild/level2/distributionInfo'
     export default {
         mixins: [lifeCycelMixins],
         components: {
@@ -48,6 +65,7 @@
             refundLog,
             touristInfo,
             vertificationLog,
+            distributionInfo
         },
         data() {
             return {
@@ -159,6 +177,22 @@
                     return {};
                 }
             },
+            //机构对应订单角色
+            orderOrgType() {
+                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
+                    return this.orderDetailInfo.baseInfo.orderOrgType;
+                }else {
+                    return '';
+                }
+            },
+            //分销信息
+            allocationInfo() {
+                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
+                    return this.orderDetailInfo.allocationInfo;
+                }else {
+                    return {};
+                }
+            }
         }
     }
 </script>

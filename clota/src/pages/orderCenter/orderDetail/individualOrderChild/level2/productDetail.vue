@@ -23,12 +23,14 @@
         </div>
 
         <div class="table-wrapper">
-            <tableCom :column-data="tableColumn"
+            <tableCom ref="productTable"
+                      :column-data="tableColumn"
                       :table-data="ticketList"
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
                       :columnCheck="true"
+                      :selectable="selectable"
                       @selection-change="selectionChange">
                 <el-table-column
                     slot="column2"
@@ -38,7 +40,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.pickStatus ? '已取票' : '未取票'}}</span>
+                        <span>{{transPickStatus(scope.row.pickStatus) | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -49,7 +51,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.verifyStatus ? '已核销' : '未核销'}}</span>
+                        <span>{{transVerifyStatus(scope.row.verifyStatus) | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -60,7 +62,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.refundStatus ? '已退票' : '未退票'}}</span>
+                        <span>{{transRefundStatus(scope.row.refundStatus) | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -71,7 +73,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.rescheduleStatus ? '已改签' : '未改签'}}</span>
+                        <span>{{transRescheduleStatus(scope.row.rescheduleStatus) | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -82,7 +84,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.rescheduleStatus ? '已改签' : '未改签'}}</span>
+                        <span>{{scope.row.serialNo | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <!--操作-->
@@ -100,11 +102,24 @@
                     </template>
                 </el-table-column>
             </tableCom>
+
+            <div class="data-pandect">
+                <div class="left">
+                    <span class="iconfont icon-note"></span>
+                    <span>未取票：{{countData.noRefundNum}}</span>
+                    <span>未核销：{{countData.noVerifyNum}}</span>
+                    <span>已核销：{{countData.verifyNum}}</span>
+                    <span>已退票：{{countData.refundNum}}</span>
+                    <span>已改签：{{countData.rescheduleNum}}</span>
+                </div>
+                <div class="right">
+                    <span class="warn">产品预定数量：{{baseInfo.quantity}}</span>
+                </div>
+            </div>
         </div>
 
         <!--散客产品明细模态框-->
         <productDetailModal ref="productDetailModal"></productDetailModal>
-
         <!--退票申请 模态框-->
         <refundModal ref="refundModal"></refundModal>
         <!--改签申请 模态框-->
@@ -117,7 +132,8 @@
     import refundModal from '../components/refundModal';
     import ticketChangingModal from '../components/ticketChangingModal'
     import tableCom from '@/components/tableCom/tableCom';
-    import {productDetailInfo} from './secondLevelDetailConfig'
+    import {productDetailInfo} from './secondLevelDetailConfig';
+    import {transPickStatus, transRefundStatus, transRescheduleStatus, transVerifyStatus} from '../../../commFun'
     export default {
         components: {
             tableCom,
@@ -141,15 +157,15 @@
                 type: String,
                 default: ''
             },
-            //产品明细id
-            visitorProductId: {
-                type: String,
-                default: ''
-            },
             //订单基本信息
             baseInfo: {
                 type: Object,
                 default: {}
+            },
+            //机构对应订单角色
+            orderOrgType: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -158,7 +174,60 @@
                 tableColumn: productDetailInfo,
                 //已选择的行数据
                 chosedData: [],
+                //取票状态转换
+                transPickStatus: transPickStatus,
+                //退票状态转换
+                transRefundStatus: transRefundStatus,
+                //改签状态转换
+                transRescheduleStatus: transRescheduleStatus,
+                //核销状态转换
+                transVerifyStatus: transVerifyStatus,
+
             }
+        },
+        computed: {
+            /**
+             * 统计数据
+             */
+            countData() {
+                //统计数据
+                let _obj = {
+                    //未取票数量
+                    noRefundNum: 0,
+                    //未核销数量
+                    noVerifyNum: 0,
+                    //已核销数量
+                    verifyNum: 0,
+                    //已退票数量
+                    refundNum: 0,
+                    //已改签数量
+                    rescheduleNum: 0,
+                };
+
+                //计算未取票数量、未核销数量、已核销数量、已退票数量、已改签数量
+                this.ticketList.forEach(item => {
+                    //未取票
+                    if(item.pickStatus == "false") {
+                        _obj.noRefundNum += 1;
+                    }
+                    //未核销
+                    if(item.verifyStatus == "false") {
+                        _obj.noVerifyNum += 1;
+                    }else {
+                        _obj.verifyNum += 1;
+                    }
+                    //已退票
+                    if(item.refundStatus == 'refunded') {
+                        _obj.refundNum += 1;
+                    }
+                    //已改签
+                    if(item.rescheduleStatus == 'altered') {
+                        _obj.rescheduleNum += 1;
+                    }
+                });
+                return _obj;
+            }
+
         },
         methods: {
             /**
@@ -195,7 +264,29 @@
              */
             selectionChange(data) {
                 this.chosedData = data;
-            }
+            },
+            /**
+             *  table selectable属性
+             * @return {boolean}
+             */
+            selectable: (data) => {
+                //旅行社按销售政策的退改规则，只能勾选 已同步的 未取票或未核销 产品申请退改
+                //景区可勾选所有产品明细申请退票或改签，包括已核销的产品
+                if(this.orderOrgType === 'channel') {
+                    // 未取票、未核销、已同步的能够被勾选
+                    if(data.pickStatus == "false" && data.verifyStatus == "false" && data.syncStatus == 'success' ) {
+                        return false;
+                    }else {
+                        return true;
+                    }
+                }else {
+                    return true;
+                }
+
+            },
+        },
+        mounted() {
+
         }
     }
 </script>
@@ -223,6 +314,42 @@
                 display: inline-block;
                 margin-right: 14px;
                 vertical-align: middle;
+            }
+        }
+
+        .table-wrapper {
+            .data-pandect {
+                display: flex;
+                margin-top: 10px;
+                padding-left: 16px;
+                height: 30px;
+                line-height: 30px;
+                background-color: #E8F7FF;
+                border-radius: 5px;
+
+                .left {
+                    flex: 1 0;
+
+                    span.icon-note {
+                        color: #2F70DF;
+                        margin-right: 15px;
+                    }
+
+                    span {
+                        margin-right: 40px;
+                    }
+                }
+
+                .right {
+                    flex: 1 0;
+                    margin-right: 30px;
+                    text-align: right;
+
+                    .warn {
+                        color: #EB6751;
+                    }
+                }
+
             }
         }
 

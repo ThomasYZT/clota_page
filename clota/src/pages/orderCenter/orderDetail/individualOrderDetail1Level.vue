@@ -9,7 +9,8 @@
             <baseInfo :base-info="baseInfo" ></baseInfo>
 
             <!--订单明细-->
-            <orderDetailList :orderDetailList="orderDetailList"></orderDetailList>
+            <orderDetailList :orderOrgType="orderOrgType"
+                             :orderDetailList="orderDetailList"></orderDetailList>
 
             <!--下单人-->
             <orderPlacer :orderVisitor="orderVisitor"></orderPlacer>
@@ -46,6 +47,7 @@
             getParams(params) {
                 if(params && params.orderId){
                     this.orderId = params.orderId;
+                    //路由中获取到参数后立马调用数据接口
                     this.queryindividualOrderDetail();
                 }else{
                     this.$router.push({
@@ -78,7 +80,7 @@
                     return {};
                 }
             },
-            //订单详情列表信息
+            //订单明细列表数据
             orderDetailList() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderDetailList) {
                     return this.orderDetailInfo.orderDetailList;
@@ -92,6 +94,14 @@
                     return this.orderDetailInfo.orderVisitor;
                 }else {
                     return {};
+                }
+            },
+            //机构对应订单角色
+            orderOrgType() {
+                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOrgType) {
+                    return this.orderDetailInfo.orderOrgType;
+                } else {
+                    return '';
                 }
             }
         }

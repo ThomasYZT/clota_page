@@ -419,10 +419,8 @@
                 }).then(res => {
                     if(res.success){
                         if(res.data){
-                            for(let item in this.employee){
-                                if(item in res.data){
-                                    this.employee[item] = res.data[item];
-                                }
+                            for(let item in res.data) {
+                                this.employee[item] = res.data[item];
                             }
                         }
                         this.passwordOrigin = res.data ? res.data.password : '';

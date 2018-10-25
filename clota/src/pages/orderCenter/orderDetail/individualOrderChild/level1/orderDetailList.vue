@@ -11,7 +11,7 @@
             :table-com-min-height="250"
             :border="true"
             :auto-height="true">
-            <!--订单号-->
+            <!--订单明细编号-->
             <el-table-column
                 slot="column0"
                 show-overflow-tooltip
@@ -20,10 +20,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderNo}}</span>
+                    <span class="to-one-level" @click="toSecondLevelOrderDetail(scope.row)">{{scope.row.orderDetailNo | contentFilter}}</span>
                 </template>
             </el-table-column>
-            <!--订单明细编号-->
+            <!--游玩日期-->
             <el-table-column
                 slot="column1"
                 show-overflow-tooltip
@@ -32,10 +32,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderDetailNo}}</span>
+                    <span>{{scope.row.visitDate | contentFilter}}</span>
                 </template>
             </el-table-column>
-            <!--游玩日期-->
+            <!--第三方订单编号-->
             <el-table-column
                 slot="column2"
                 show-overflow-tooltip
@@ -44,10 +44,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.visitDate}}</span>
+                    <span>{{scope.row.thirdOrderNo | contentFilter}}</span>
                 </template>
             </el-table-column>
-            <!--下单时间-->
+            <!--游客手机号-->
             <el-table-column
                 slot="column3"
                 show-overflow-tooltip
@@ -56,10 +56,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderTime}}</span>
+                    <span>{{scope.row.phoneNumber | contentFilter}}</span>
                 </template>
             </el-table-column>
-            <!--所属景区-->
+            <!--产品名称/预定数量-->
             <el-table-column
                 slot="column4"
                 show-overflow-tooltip
@@ -68,12 +68,14 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.scenic}}</span>
+                    <span>{{scope.row.productName}} / {{scope.row.quantity}}</span>
                 </template>
             </el-table-column>
 
-            <!--下单渠道-->
+            <!--产品单价/小计金额-->
+            <!-- 该数据中间分销商不可见 -->
             <el-table-column
+                v-if="orderOrgType !== 'allocation'"
                 slot="column5"
                 show-overflow-tooltip
                 slot-scope="row"
@@ -81,10 +83,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderChannel}}</span>
+                    <span>{{scope.row.price | moneyFilter}} / {{scope.row.amount | moneyFilter}}</span>
                 </template>
             </el-table-column>
-            <!--所属企业-->
+            <!--串码-->
             <el-table-column
                 slot="column6"
                 show-overflow-tooltip
@@ -93,10 +95,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.channel}}</span>
+                    <span>{{scope.row.serialNo | contentFilter}}</span>
                 </template>
             </el-table-column>
-            <!--第三方订单号-->
+            <!--取票数量-->
             <el-table-column
                 slot="column7"
                 show-overflow-tooltip
@@ -105,12 +107,118 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.thirdOrderNo | contentFilter}}</span>
+                    <span>{{scope.row.quantityPicked | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--核销数量-->
+            <el-table-column
+                slot="column8"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.quantityVerified | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--退票数量-->
+            <el-table-column
+                slot="column9"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.quantityRefunded | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--改签数量-->
+            <el-table-column
+                slot="column10"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.quantityRescheduled | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--短信发送状态-->
+            <!--该数据只有景区可见-->
+            <el-table-column
+                v-if="orderOrgType === 'scenic'"
+                slot="column11"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{$t(transSMSStatus(scope.row.smsStatus)) | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--同步状态-->
+            <!--该数据只有景区可见-->
+            <el-table-column
+                v-if="orderOrgType === 'scenic'"
+                slot="column12"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{$t(transSyncStatus(scope.row.syncStatus)) | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--进货单价/小计金额-->
+            <!--该数据只有中间分销商可见-->
+            <el-table-column
+                v-if="orderOrgType === 'allocation'"
+                slot="column13"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.inPrice | moneyFilter}} / {{scope.row.inAmount | moneyFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--分销单价/小计金额-->
+            <!--该数据只有中间分销商可见-->
+            <el-table-column
+                v-if="orderOrgType === 'allocation'"
+                slot="column14"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.settlePrice | moneyFilter}} / {{scope.row.settleAmount | moneyFilter}}</span>
+                </template>
+            </el-table-column>
+            <!--预计分销佣金-->
+            <!--该数据只有中间分销商可见-->
+            <el-table-column
+                v-if="orderOrgType === 'allocation'"
+                slot="column15"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.allocationCommission | contentFilter}}</span>
                 </template>
             </el-table-column>
             <!--操作-->
             <el-table-column
-                slot="column8"
+                slot="column16"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -129,6 +237,7 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './orderDetailListConfig.js';
+    import {transSyncStatus, transSMSStatus} from '../../../commFun.js'
 
     export default {
         props :{
@@ -136,12 +245,21 @@
             orderDetailList : {
                 type : Array,
                 default: []
+            },
+            //机构对应订单角色
+            orderOrgType : {
+                type: String,
+                default: ''
             }
         },
         data() {
             return {
                 //表头配置
                 columnData : columnData,
+                //同步状态转换
+                transSyncStatus: transSyncStatus,
+                //短信发送状态转换
+                transSMSStatus: transSMSStatus
             }
         },
         components :{
@@ -189,6 +307,11 @@
 
         /deep/ .ivu-form-item{
             margin-bottom: 10px;
+        }
+
+        .to-one-level{
+            color: $color_blue;
+            cursor: pointer;
         }
     }
 </style>

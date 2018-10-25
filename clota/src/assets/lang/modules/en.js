@@ -1154,7 +1154,7 @@ export default {
     'generalEmployeeManager': '普通员工管理',
     'addNewCourier': '新增导游',
     'courier': '导游',
-    'driver': '司机',
+    'driverRole': '司机',
     'addDriver': '新增司机',
     'licence': '车牌号',
     'channalType': '所属渠道类型',
