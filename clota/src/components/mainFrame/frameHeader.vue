@@ -28,9 +28,9 @@
                     </div>
                 </div>
             </div>
-            <div class="navigate_next">
-                <i class="ivu-icon ivu-icon-ios-arrow-forward"></i>
-            </div>
+            <!--<div class="navigate_next">-->
+                <!--<i class="ivu-icon ivu-icon-ios-arrow-forward"></i>-->
+            <!--</div>-->
         </div>
         <div class="menu-area">
             <!--<div class="menu-li">-->

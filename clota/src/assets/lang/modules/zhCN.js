@@ -1214,4 +1214,10 @@ export default {
     'modifyEmployee': '编辑员工',
     'deleteEmployee': '删除员工',
     'empQuery': '查询',
+    'order.no_refund': '未退票',
+    'order.refunded': '已退票',
+    'order.refund_audit': '退票待审',
+    'order.no_alter': '未改签',
+    'order.alter_audit': '改签待审',
+    'order.altered': '已改签',
 }
