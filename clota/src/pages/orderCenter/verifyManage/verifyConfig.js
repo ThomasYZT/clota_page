@@ -39,20 +39,18 @@ export const orderTicketHead = [
     },
     {
         title: '产品名称|预定数量',
-        minWidth: 180,
+        width: 180,
         enWidth : 200,
         field: 'productName|quantity'
     },
     {
         title: '产品单价|小计金额',
-        width: 180,
-        enWidth : 200,
+        width: 230,
         field: 'price|amount'
     },
     {
         title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     /*{
@@ -68,22 +66,22 @@ export const orderTicketHead = [
     },
     {
         title: '取票数量',
-        width: 130,
+        width: 200,
         field: 'quantityPicked'
     },
     {
         title: '核销数量',
-        width: 130,
+        width: 200,
         field: 'quantityVerified'
     },
     {
         title: '退票数量',
-        width: 130,
+        width: 200,
         field: 'quantityRefunded'
     },
     {
         title: '改签数量',
-        width: 130,
+        width: 200,
         field: 'quantityRescheduled'
     },
     {
@@ -155,14 +153,12 @@ export const orderVerifyHead = [
     },
     {
         title: '产品单价|小计金额',
-        width: 180,
-        enWidth : 200,
+        width: 230,
         field: 'price|amount'
     },
     {
         title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     {
