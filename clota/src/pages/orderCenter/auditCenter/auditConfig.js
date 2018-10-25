@@ -156,14 +156,13 @@ export const bulkRefundHead = [
     },
     {
         title: '产品单价|小计金额',
-        width: 180,
+        width: 230,
         enWidth : 200,
         field: 'price|amount'
     },
     {
         title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     {

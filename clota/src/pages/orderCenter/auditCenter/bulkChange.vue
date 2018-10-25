@@ -66,7 +66,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.productName | contentFilter}} | {{scope.row.quantity | contentFilter}}
+                    <span class="col-ellipsis-name" v-w-title="scope.row.productName">{{scope.row.productName | contentFilter}}</span> |
+                    <span>{{scope.row.quantity | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -76,8 +77,14 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
-                    <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                    <!--<span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |-->
+                    <!--<span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>-->
+                    <span>
+                        {{$t('单价')}}：<span class="col-ellipsis-number" v-w-title="scope.row.price">{{scope.row.price | moneyFilter}}</span>
+                    </span> |
+                    <span>
+                        {{$t('小计')}}：<span class="col-ellipsis-number" v-w-title="scope.row.amount">{{scope.row.amount | moneyFilter}}</span>
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -291,6 +298,18 @@
         .order-num {
             text-decoration: underline;
             cursor: pointer;
+        }
+
+        .col-ellipsis-name {
+            float: left;
+            max-width: 75px;
+            @include overflow_tip();
+        }
+
+        .col-ellipsis-number {
+            display: inline-block;
+            max-width: 46px;
+            @include overflow_tip();
         }
 
         .blue {
