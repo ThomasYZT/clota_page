@@ -33,6 +33,7 @@
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-code" @click="showYearCode"></span>
                             <span class="iconfont icon-arrow-right"></span>
+                            <span class="label-title">{{$t('yearCard')}}</span>
                         </div>
                     </div>
                     <!--年卡信息-->
@@ -61,6 +62,7 @@
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-code" @click="showTimeCode"></span>
                             <span class="iconfont icon-arrow-right"></span>
+                            <span class="label-title">{{$t('timeCard')}}</span>
                         </div>
                     </div>
                     <!--次卡信息-->
@@ -371,6 +373,18 @@
                     background-size: 100% 170px;
                     margin: 0 auto;
                     background-repeat: no-repeat;
+
+                    .label-title{
+                        display: inline-block;
+                        @include overflow_tip(60px,21px);
+                        @include absolute_pos(absolute,$right : 22px);
+                        color: #39479B;
+                        font-size: $font_size_12px;
+                        line-height: 21px;
+                        background: $color_fff;
+                        text-align: center;
+                        border-radius: 50px;
+                    }
 
                     .head-img{
                         display: inline-block;
