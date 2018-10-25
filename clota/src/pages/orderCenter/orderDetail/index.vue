@@ -160,9 +160,13 @@
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow.show" @click="refundTicket(scope.row)">{{$t('退票')}}</li>
-                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>
-                        <li @click="reserve(scope.row)">{{$t('详情')}}</li>
+                        <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
+                            :class="{disabled : !judgeCanReturn(scope.row)}"
+                            @click="refundTicket(scope.row)">{{$t('退票')}}</li>
+                        <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
+                            :class="{disabled : !judgeCanAlter(scope.row)}"
+                            @click="alterTicket(scope.row)">{{$t('改签')}}</li>
+                        <li @click="toDetail(scope.row)">{{$t('详情')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -170,8 +174,15 @@
         <!--申请退票-->
         <apply-refund-ticket v-model="refundTicketModalShow"
                              :product-info="orderProductInfo"
-                             :orderDetail="currentData">
+                             :orderDetail="currentData"
+                             @fresh-data="queryList">
         </apply-refund-ticket>
+        <!--申请改签-->
+        <apply-alter-ticket-modal v-model="alterTicketModalShow"
+                                  :product-info="orderProductInfo"
+                                  :orderDetail="currentData"
+                                  @fresh-data="queryList">
+        </apply-alter-ticket-modal>
     </div>
 </template>
 
@@ -181,12 +192,14 @@
     import {columnData} from './orderConfig';
     import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
+    import applyAlterTicketModal from './child/applyAlterTicketModal';
 
     export default {
         components : {
             filterHead,
             tableCom,
-            applyRefundTicket
+            applyRefundTicket,
+            applyAlterTicketModal
         },
         data() {
             return {
@@ -222,13 +235,17 @@
                     abnormalStatus : '',
                     marketTypeId : '',
                     marketLevelId : '',
+                    //关键字
+                    keyword :''
                 },
                 //退款模态框是否显示
                 refundTicketModalShow : false,
                 //当前操作的订单信息
                 currentData : {},
                 //订单下产品信息
-                orderProductInfo : {}
+                orderProductInfo : {},
+                //改签模态框是否显示
+                alterTicketModalShow : false
             }
         },
         methods: {
@@ -293,21 +310,13 @@
              * @param data
              */
             refundTicket (data) {
+                if(!this.judgeCanReturn(data)) return;
                 this.currentData = data;
-                this.queryOrderTicketList(data);
-            },
-            /**
-             * 查询订单详情
-             * @param  data 订单信息
-             */
-            queryOrderTicketList (data) {
-                ajax.post('queryRefundAndAlterTicketList',{
-                    visitorProductId : data.visitorProductId
-                }).then(res => {
+                this.queryOrderTicketList(data).then((res) => {
                     if(res.success){
-                        if(res.data.allowRefund === 'true'){
+                        if(res.data.orderOrgType === 'scenic' ||
+                            (res.data.orderOrgType === 'channel' && res.data.allowRefund === 'true')){
                             this.orderProductInfo = res.data;
-                            // this.orderProductInfo = res.data ? res.data.ticketList : [];
                             this.refundTicketModalShow = true;
                         }else{
                             this.$Message.warning(`订单${data.orderNo}下产品不可退票`);
@@ -317,17 +326,91 @@
                     }
                 });
             },
+            /**
+             * 查询订单详情
+             * @param  data 订单信息
+             */
+            queryOrderTicketList (data) {
+                return ajax.post('queryRefundAndAlterTicketList',{
+                    visitorProductId : data.visitorProductId
+                });
+            },
+            /**
+             * 改签
+             * @param  data 订单信息
+             */
+            alterTicket (data) {
+                if(!this.judgeCanAlter(data)) return;
+                this.currentData = data;
+                this.queryOrderTicketList(data).then((res) => {
+                    if(res.success){
+                        if(res.data.orderOrgType === 'scenic' ||
+                            (res.data.orderOrgType === 'channel' && res.data.allowAlter === 'true')){
+                            this.orderProductInfo = res.data;
+                            this.refundTicketModalShow = true;
+                        }else{
+                            this.$Message.warning(`订单${data.orderNo}下产品不可改签`);
+                        }
+                    }else{
+                        this.orderProductInfo = {};
+                    }
+                });
+            },
+            /**
+             * 判断是否可以退票
+             * @param rowData
+             */
+            judgeCanReturn (rowData) {
+                //下单企业下，按照销售政策不可退的不可以退票
+                if(rowData.orderOrgType === 'channel'){
+                    return rowData.returnRule === 'allow';
+                }
+                return true;
+            },
+            /**
+             * 判断是否可以改签
+             * @param rowData
+             */
+            judgeCanAlter (rowData) {
+                //下单企业下，按照销售政策不可改签的不可以改签
+                if(rowData.orderOrgType === 'channel'){
+                    return rowData.alterRule === 'allow';
+                }
+                return true;
+            },
+            /**
+             * 跳转到订单详情
+             * @param rowData
+             */
+            toDetail(rowData) {
+                if(rowData.orderType === 'team'){
+                    this.$router.push({
+                        name : 'teamOrderDetail',
+                        params :{
+                            orderId : rowData.orderId
+                        }
+                    });
+                }else if(rowData.orderType === 'individual'){
+                    this.$router.push({
+                        name : 'individualSecondLevel',
+                        params : {
+                            productDetail : rowData
+                        }
+                    });
+                }
+            }
         },
         computed : {
             //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
                 //散客非分销订单
-                if(this.queryParams.orderType === 'individual' && this.queryParams.allocationStatus === 'false'){
+                if((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
+                    && this.queryParams.allocationStatus === 'false'){
                     return {
                         show : true,
                         width : 170,
                     };
-                }else if(this.queryParams.orderType === 'individual' && this.queryParams.orderChannel === 'market'){
+                }else if((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')  && this.queryParams.orderChannel === 'market'){
                     return {
                         show : true,
                         width : 170,

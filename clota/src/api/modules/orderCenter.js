@@ -59,6 +59,8 @@ export default {
     'getRefundProcedureFee': '/order/getRefundProcedureFee',
     //查询产品明细列表--退票、审核用
     'queryOrderTicketList': '/order/queryOrderTicketList',
+    //查询退票改签票信息列表
+    'queryRefundAndAlterTicketList': '/order/queryRefundAndAlterTicketList',
     //新增订单退票改签申请
     'saveOrderProductRefundAlter': '/order/saveOrderProductRefundAlter'
 

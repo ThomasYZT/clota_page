@@ -111,12 +111,12 @@
                     reqType: this.reqType
                 }).then(res => {
                     if(res.success){
-                        this.hide();
                         if (this.orderData.type === 'pass') {
                             this.$Message.success(this.$t('订单已批量审核通过'));
                         } else if (this.orderData.type === 'reject') {
                             this.$Message.success(this.$t('订单已批量驳回'));
                         }
+                        this.hide();
 
                         this.$emit('on-audited');
                     }

@@ -15,7 +15,8 @@
                                     type="daterange"
                                     placement="bottom-end"
                                     placeholder="请选择"
-                                    style="max-width: 260px">
+                                    style="max-width: 260px"
+                                    @on-change="search">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -28,7 +29,8 @@
                                     type="daterange"
                                     placement="bottom-end"
                                     placeholder="请选择"
-                                    style="max-width: 260px">
+                                    style="max-width: 260px"
+                                    @on-change="search">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -411,10 +413,26 @@
              * 重置筛选条件
              */
             reset () {
-                this.formData.scenicOrgId = '';
-                this.formData.orderOrgId = '';
-                this.formData.type = '';
-                this.formData.orderType = 'team';
+                //下单时间
+                this.formData.orderDate = [new Date().addMonths(-1),new Date()];
+                this.formData.visitDate = [];
+                this.formData.pickStatus =  'allStatus';
+                this.formData.allocationStatus =  'true';
+                this.formData.refundStatus =  'allStatus';
+                this.formData.scenicOrgId =  'all';
+                this.formData.orderChannel =  'allStatus';
+                this.formData.syncStatus =  'allStatus';
+                this.formData.rescheduleStatus =  'allStatus';
+                this.formData.verifyStatus =  'allStatus';
+                this.formData.orderOrgId =  '';
+                this.formData.productType =  'ticket';
+                this.formData.orderType =  'allStatus';
+                this.formData.abnormalStatus =  false;
+                this.formData.auditStatus =  'allStatus';
+                this.formData.paymentStatus =  'allStatus';
+                this.formData.marketTypeId =  '';
+                this.formData.marketLevelId =  '';
+                this.formData.keyword =  '';
                 this.orderTypeChange();
                 this.searchProductList();
             },
@@ -450,10 +468,10 @@
             //查询条件列表
             paramsObj () {
                 return {
-                    orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd'),
-                    orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd'),
-                    visitStartDate : this.formData.visitDate[0] ?this.formData.visitDate[0].format('yyyy-MM-dd') : '',
-                    visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd') : '',
+                    orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd 00:00:00'),
+                    orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd 23:59:59'),
+                    visitStartDate : this.formData.visitDate[0] ?this.formData.visitDate[0].format('yyyy-MM-dd 00:00:00') : '',
+                    visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd 23:59:59') : '',
                     orderType : this.formData.orderType === 'allStatus' ? '' : this.formData.orderType,
                     allocationStatus : this.formData.allocationStatus,
                     pickStatus : this.formData.pickStatus === 'allStatus' ? '' : this.formData.pickStatus,
@@ -470,6 +488,7 @@
                     abnormalStatus : this.formData.abnormalStatus,
                     marketTypeId : this.formData.marketTypeId,
                     marketLevelId : this.formData.marketLevelId,
+                    keyword : this.formData.keyword,
                     // orderOrgName : this.orderOrgName,
                 };
             },
