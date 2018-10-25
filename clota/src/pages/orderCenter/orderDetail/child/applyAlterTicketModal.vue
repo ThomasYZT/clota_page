@@ -141,7 +141,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
-    import {transSyncStatus} from '../../commFun';
+    import {transSyncStatus,canAlterTicket} from '../../commFun';
 
     export default {
         props : {
@@ -244,19 +244,7 @@
              * @returns {boolean}
              */
             selectableFunc(data){
-                //景区下，已核销、已退票、退票待审核，已改签/改签待审核，同步失败的不可改签
-                if(this.productInfo.orderOrgType === 'scenic'){
-                    return data.syncStatus === 'success' &&
-                        data.rescheduleStatus === 'no_alter' &&
-                        data.refundStatus === 'no_refund' &&
-                        data.verifyStatus === 'false';
-                }else if(this.productInfo.orderOrgType === 'channel'){
-                    //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核、同步失败的不可改签
-                    return data.syncStatus === 'success' &&
-                        data.rescheduleStatus === 'no_alter' &&
-                        data.refundStatus === 'no_refund' &&
-                        data.verifyStatus === 'false';
-                }
+                return canAlterTicket(this.productInfo.orderOrgType,data);
             },
             //同步状态
             transSyncStatus : transSyncStatus,
