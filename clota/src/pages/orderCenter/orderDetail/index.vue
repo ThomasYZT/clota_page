@@ -267,7 +267,7 @@
              * @param data
              */
             toOrderDetail (data) {
-                if(data['orderOrgType'] === 'individual') {
+                if(data['orderType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
                         name : 'individualFirstLevel',
