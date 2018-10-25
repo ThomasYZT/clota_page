@@ -13,12 +13,7 @@
 
 @font-face {
     font-family: 'pingfang';
-    src: url('../fonts/PingFang-Regular.eot');
-    src:
-        url('../fonts/PingFang-Regular.eot?#font-spider') format('embedded-opentype'),
-        url('../fonts/PingFang-Regular.woff') format('woff'),
-        url('../fonts/PingFang-Regular.ttf') format('truetype'),
-        url('../fonts/PingFang-Regular.svg') format('svg');
+    src:url('../fonts/PingFang-Regular.woff') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
