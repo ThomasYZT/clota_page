@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="240"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
