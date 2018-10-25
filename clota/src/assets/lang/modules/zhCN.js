@@ -389,7 +389,7 @@ export default {
     'accountInteg': '账户积分',
     'integAdjust': '积分账户调整值',
     'defaultAccountMoney': '默认账户余额',
-    'newCard': '新开卡',
+    'newCard': '新开会员卡',
     'cardOwnerInfo': '持卡人信息',
     'entityCardInfo': '实体卡信息',
     'familyAddress': '家庭地址',
@@ -465,6 +465,10 @@ export default {
     'readingCardInfo': '正在读取实体卡信息',
     'recognizeFailed': '识别失败',
     'clickReadAgain': '点击重新读取',
+    'newOwnerCard': '新开业主卡',
+    'newEnterpriseCard': '新开企业会员卡',
+    'newBatchCard': '批量开卡',
+    'refundedCard': '退卡',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',

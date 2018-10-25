@@ -465,6 +465,10 @@ export default {
     'readingCardInfo': 'reading card information',
     'recognizeFailed': 'identification failure',
     'clickReadAgain': 'click to re-read',
+    'newOwnerCard': '新开业主卡',
+    'newEnterpriseCard': '新开企业会员卡',
+    'newBatchCard': '批量开卡',
+    'refundedCard': '退卡',
 
     // 检验错误提示
     'errorIrregular': 'Iinput content is illegal',
