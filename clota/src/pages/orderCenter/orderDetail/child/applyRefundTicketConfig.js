@@ -12,27 +12,27 @@ export const columnData = [
     },
     {
         title: '游玩日期',
-        minWidth: 200,
+        minWidth: 140,
         field: 'visitDate'
     },
     {
         title: '取票状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'pickStatus'
     },
     {
         title: '核销状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'verifyStatus'
     },
     {
         title: '退票状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'refundStatus'
     },
     {
         title: '改签状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'rescheduleStatus'
     },
     {
@@ -42,7 +42,7 @@ export const columnData = [
     },
     {
         title: '同步状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'syncStatus'
     },
 ];

@@ -1,4 +1,4 @@
-<!--申请退票-->
+<!--申请改签-->
 
 <template>
     <Modal
@@ -11,11 +11,11 @@
         class="refund-ticket"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('申请退票')}}</span>
+            <span class="title">{{$t('申请改签')}}</span>
         </div>
         <div class="target-body">
             <ul class="tourist-info">
-                <li><span class="key">您正在申请对以下产品进行退票：</span></li>
+                <li><span class="key">您正在申请对以下产品进行改签：</span></li>
             </ul>
             <table-com
                 :column-data="columnData"
@@ -115,7 +115,15 @@
                     </template>
                 </el-table-column>
             </table-com>
-            <div class="service-charge">退票手续费：<span class="charge">{{refundFee | moneyFilter}}元</span></div>
+            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
+                <FormItem label="申请改签至" prop="alterDate">
+                    <DatePicker type="date"
+                                :options="dateOptions"
+                                style="width: 180px"
+                                v-model.trim="formData.alterDate">
+                    </DatePicker>
+                </FormItem>
+            </Form>
             <div class="err-message" v-if="errMsg">{{errMsg}}</div>
         </div>
         <div slot="footer">
@@ -165,7 +173,23 @@
                 //选择的产品信息
                 selectedTicket : [],
                 //错误信息
-                errMsg : ''
+                errMsg : '',
+                //表单校验规则
+                ruleValidate : {
+                    alterDate : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('改签日期')})}
+                    ]
+                },
+                //表单数据
+                formData :{
+                    alterDate : ''
+                },
+                //日期插件参数
+                dateOptions : {
+                    disabledDate (date) {
+                        return date && date.valueOf() < Date.now() - 86400000;
+                    }
+                }
             }
         },
         methods: {
@@ -193,11 +217,15 @@
              * 确定退票
              */
             confirm () {
-                if(this.selectedTicket.length > 0){
-                    this.saveOrderProductRefundAlter();
-                }else{
-                    this.$Message.warning('请选择需要退票的产品');
-                }
+                this.$refs.formValidate.validate(valid => {
+                    if(valid){
+                        if(this.selectedTicket.length > 0){
+                            this.saveOrderProductRefundAlter();
+                        }else{
+                            this.$Message.warning('请选择需要退票的产品');
+                        }
+                    }
+                });
             },
             /**
              * 选择的产品信息
@@ -206,12 +234,8 @@
             handleSelectionChange(data) {
                 this.selectedTicket = data;
                 this.errMsg = '';
-                for(let i = 0,j = data.length;i < j;i++){
-                    //如果景区退票的时候选择了已核销的产品需要给出提示
-                    if(data[i]['verifyStatus'] === 'true'){
-                        this.errMsg = '提示：您申请退票的产品中包含已核销的产品';
-                        break;
-                    }
+                if(this.productInfo.allowAlter === 'false'){
+                    this.errMsg = '提示：您申请改签的产品中包含按产品规则不允许改签的产品。';
                 }
             },
             /**
@@ -220,13 +244,14 @@
              * @returns {boolean}
              */
             selectableFunc(data){
-                //景区下，已退票、退票待审核，已改签/改签待审核，同步失败的不可退票
+                //景区下，已核销、已退票、退票待审核，已改签/改签待审核，同步失败的不可改签
                 if(this.productInfo.orderOrgType === 'scenic'){
                     return data.syncStatus === 'success' &&
                         data.rescheduleStatus === 'no_alter' &&
-                        data.refundStatus === 'no_refund';
+                        data.refundStatus === 'no_refund' &&
+                        data.verifyStatus === 'false';
                 }else if(this.productInfo.orderOrgType === 'channel'){
-                    //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核、同步失败
+                    //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核、同步失败的不可改签
                     return data.syncStatus === 'success' &&
                         data.rescheduleStatus === 'no_alter' &&
                         data.refundStatus === 'no_refund' &&
@@ -244,23 +269,20 @@
                     visitorProductId : this.orderDetail.visitorProductId,
                     productId : this.selectedTicket[0]['productId'],
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
-                    reqType : 'refund'
+                    reqType : 'alter',
+                    afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd'),
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('发起退票申请成功');
+                        this.$Message.success('发起改签申请成功');
                         this.cancel();
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('发起退票申请失败');
+                        this.$Message.error('发起改签申请失败');
                     }
                 });
             }
         },
         computed : {
-            //退票费
-            refundFee () {
-                return this.selectedTicket.reduce((price,item) => price += item.refundProcedureFee,0);
-            },
             //订单下的产品信息
             tableData () {
                 if(this.productInfo && this.productInfo.ticketList){
@@ -274,7 +296,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .refund-ticket{
 
         /deep/ .ivu-modal-body{
@@ -303,6 +325,10 @@
 
         .target-body{
             padding: 0 30px;
+
+            /deep/ .ivu-form-item{
+                margin-top: 20px;
+            }
 
             .blue-lable{
                 color: $color_blue;
