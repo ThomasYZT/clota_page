@@ -75,7 +75,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span class="red" v-if="scope.row.refundStatus=='refund_audit'">{{$t('退票待审核')}}</span>
-                    <span v-if="scope.row.refundStatus=='refund'">{{$t('已退票')}}</span>
+                    <span v-if="scope.row.refundStatus=='refunded'">{{$t('已退票')}}</span>
                     <span v-if="scope.row.refundStatus=='no_refund'">{{$t('未退票')}}</span>
                 </template>
             </el-table-column>
@@ -94,19 +94,21 @@
                     <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('未改签')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column v-if="isAlter"
-                slot="column7"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>-->
-                    <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('未改签'))}}</span>
-                </template>
-            </el-table-column>
+            <template v-if="isAlter">
+                <el-table-column
+                    slot="column7"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>-->
+                        <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('未改签'))}}</span>
+                    </template>
+                </el-table-column>
+            </template>
             <el-table-column
-                :slot="isAlter ? 'column9' : 'column10'"
+                :slot="isAlter ? 'column9' : 'column8'"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
