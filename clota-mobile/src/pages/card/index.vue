@@ -33,7 +33,7 @@
                             <div class="card-id">{{yearyCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-code" @click="showYearCode"></span>
                             <span class="iconfont icon-arrow-right"></span>
-                            <span class="label-title">{{$t('yearCard')}}</span>
+                            <span class="label-title"><span class="iconfont icon-visa-log"></span>{{$t('yearCard')}}</span>
                         </div>
                     </div>
                     <!--年卡信息-->
@@ -62,7 +62,7 @@
                             <div class="card-id">{{timeCardInfo.physicalCardNo | contentFilter}}</div>
                             <span class="iconfont icon-code" @click="showTimeCode"></span>
                             <span class="iconfont icon-arrow-right"></span>
-                            <span class="label-title">{{$t('timeCard')}}</span>
+                            <span class="label-title"><span class="iconfont icon-visa-log"></span>{{$t('timeCard')}}</span>
                         </div>
                     </div>
                     <!--次卡信息-->
@@ -384,6 +384,10 @@
                         background: $color_fff;
                         text-align: center;
                         border-radius: 50px;
+
+                        .icon-visa-log{
+                            font-size: $font_size_10px;
+                        }
                     }
 
                     .head-img{

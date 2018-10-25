@@ -56,6 +56,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-visa-log:before {
+    content: "\e927";
+    color: #384699;
+}
 .icon-catering .path1:before {
     content: "\e90d";
     color: rgb(247, 152, 28);
