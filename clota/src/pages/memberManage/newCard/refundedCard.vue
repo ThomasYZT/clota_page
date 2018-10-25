@@ -6,51 +6,44 @@
 
 <template>
     <div class="refunded-card">
-        <div class="block-title">{{$t('个人信息')}}</div>
-        <div class="info-content">
-            <i-row>
-                <i-col span="9">
-                    <div class="form-item-wrap">
-                        <label>{{$t("name")}}：</label><span>{{}}</span>
-                    </div>
-                    <div class="form-item-wrap">
-                        <label>{{$t("手机号")}}：</label><span>{{}}</span>
-                    </div>
-                    <div class="form-item-wrap">
-                        <label>{{$t("证件类型")}}：</label><span>{{}}</span>
-                    </div>
-                    <div class="form-item-wrap">
-                        <label>{{$t("生日")}}：</label><span>{{}}</span>
-                    </div>
-                </i-col>
-                <i-col span="9">
-                    <div class="form-item-wrap">
-                        <label>{{$t("gender")}}：</label><span>{{}}</span>
-                    </div>
-                    <div class="form-item-wrap">
-                        <label>{{$t("年龄")}}：</label><span>{{}}</span>
-                    </div>
-                    <div class="form-item-wrap">
-                        <label>{{$t("证件号码")}}：</label><span>{{}}</span>
-                    </div>
-                    <div class="form-item-wrap">
-                        <label>{{$t("家庭住址")}}：</label><span>{{}}</span>
-                    </div>
-                </i-col>
-                <i-col span="6">
-                    <img src="" alt="">
-                </i-col>
-            </i-row>
+        <div class="search-box">
+            <Input v-model.trim="filterParams.keyword"
+                   style="width: 280px;"
+                   :placeholder="$t('请输入关键字')" /><!--请输入姓名、手机号、会员编号、证件编号-->
+            <Button type="primary" class="ivu-btn-90px" @click="">{{$t('搜索')}}</Button><!--搜索-->
         </div>
+
+        <div class="detail-container">
+            <!--持卡人的个人信息-->
+            <cardholder-info></cardholder-info>
+            <!--会员卡信息-->
+            <card-info></card-info>
+        </div>
+
     </div>
 </template>
 <script type="text/ecmascript-6">
+    import {configVariable} from '@/assets/js/constVariable';
+    import cardholderInfo from './components/cardholderInfo.vue';
+    import cardInfo from './components/cardInfo.vue';
 
     export default {
-        components: {},
+        components: {
+            cardholderInfo,
+            cardInfo,
+        },
         props: {},
         data() {
-            return {}
+            return {
+                // 获取数据的请求参数
+                queryParams: {
+                    pageNo: 1,                                      // 当前页码数
+                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                },
+                filterParams: {
+                    keyword: '',   //
+                },
+            }
         },
         computed: {},
         created() {
@@ -63,5 +56,34 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "~@/assets/scss/base";
 
+    .search-box {
+        margin: 20px 20px 0;
+        .ivu-btn-90px {
+            margin-left: 8px;
+        }
+    }
+
+    .detail-container {
+        height: calc(100% - 50px);
+        padding: 15px 20px;
+    }
+
+    /deep/ .form-item-wrap{
+        display: flex;
+        height: 30px;
+        line-height: 30px;
+        font-size: $font_size_14px;
+        color: $color-666;
+        >label{
+            color: $color-333;
+        }
+        >span{
+            flex: 1;
+            display: inline-block;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
+    }
 </style>
