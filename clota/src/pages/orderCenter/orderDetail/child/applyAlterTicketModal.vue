@@ -118,6 +118,7 @@
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
                 <FormItem label="申请改签至" prop="alterDate">
                     <DatePicker type="date"
+                                :editable="false"
                                 :options="dateOptions"
                                 style="width: 180px"
                                 v-model.trim="formData.alterDate">
@@ -184,12 +185,8 @@
                 formData :{
                     alterDate : ''
                 },
-                //日期插件参数
-                dateOptions : {
-                    disabledDate (date) {
-                        return date && date.valueOf() < Date.now() - 86400000;
-                    }
-                }
+                //可以改签的日期
+                canAlterDate : []
             }
         },
         methods: {
@@ -212,6 +209,8 @@
             visibleChange(type) {
                 if(type === true){
                     this.getProductPolicyPlayDate();
+                }else{
+                    this.$refs.formValidate.resetFields();
                 }
             },
             /**
@@ -223,7 +222,7 @@
                         if(this.selectedTicket.length > 0){
                             this.saveOrderProductRefundAlter();
                         }else{
-                            this.$Message.warning('请选择需要退票的产品');
+                            this.$Message.warning('请选择需要改签的产品');
                         }
                     }
                 });
@@ -277,7 +276,11 @@
                 ajax.post('getProductPolicyPlayDate',{
                     visitorProductId : this.orderDetail.visitorProductId,
                 }).then(res => {
-                    console.log(res);
+                    if(res.success){
+                        this.canAlterDate = res.data ? res.data : [];
+                    }else{
+                        this.canAlterDate = [];
+                    }
                 });
             }
         },
@@ -288,6 +291,17 @@
                     return this.productInfo.ticketList;
                 }else{
                     return  [];
+                }
+            },
+            //日期插件配置参数
+            dateOptions () {
+                return {
+                    disabledDate : (date) =>  {
+                        if(date){
+                            return !this.canAlterDate.includes(date.format('yyyy-MM-dd 00:00:00'));
+                        }
+                        return true;
+                    }
                 }
             }
         },

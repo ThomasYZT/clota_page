@@ -106,6 +106,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: auto;
 
             .pro-list{
                 max-width: 100%;

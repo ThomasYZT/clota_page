@@ -1224,5 +1224,6 @@ export default {
     'systemErr' : '系统错误',
     'payType.deposit' : '定存',
     'payType.collect' : '到付',
-    'ticketDesc': '购票须知'
+    'ticketDesc': '购票须知',
+    'tour' : '旅行社',
 }
