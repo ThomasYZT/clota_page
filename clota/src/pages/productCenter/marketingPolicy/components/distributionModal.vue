@@ -145,7 +145,7 @@
     import ajax from '@/api/index';
     import {validator} from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import {detailParentDistributePriceConfig, saleChannelColumn} from '../child/detailConfig'
+    import {detailParentDistributePriceConfig, setSaleChannelColumn} from '../child/detailConfig'
     export default {
         components: {
             tableCom
@@ -186,7 +186,7 @@
                 //产品列表表头
                 detailParentDistributePriceConfig: Array.from(detailParentDistributePriceConfig),
                 //销售渠道表头
-                saleChannelColumn: saleChannelColumn,
+                saleChannelColumn: setSaleChannelColumn,
                 //表单数据
                 formData: {
                     //分销名称
@@ -285,6 +285,7 @@
                         //过滤没有销售渠道的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             if(this.tempData[i].channelNames === null) {
+                                console.log(this.tempData[i].groupName,this.tempData[i].channelNames)
                                 this.tempData.splice(i,1);
                                 len--;
                                 i--;
