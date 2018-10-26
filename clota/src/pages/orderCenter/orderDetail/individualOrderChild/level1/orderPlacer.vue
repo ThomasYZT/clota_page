@@ -9,9 +9,9 @@
         <ul class="detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">下单人姓名：{{orderVisitor.visitorName | contentFilter}}</li>
-                    <li class="col">下单人身份证：{{documentInfo | contentFilter}}</li>
-                    <li class="col">下单人手机号：{{orderVisitor.phoneNumber | contentFilter}}</li>
+                    <li class="col">姓名：{{orderVisitor.visitorName | contentFilter}}</li>
+                    <li class="col">手机号：{{orderVisitor.phoneNumber | contentFilter}}</li>
+                    <li class="col">身份证号码：{{documentInfo | contentFilter}}</li>
                 </ul>
             </li>
         </ul>
