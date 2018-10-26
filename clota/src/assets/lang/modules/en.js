@@ -1214,9 +1214,16 @@ export default {
     'modifyEmployee': '编辑员工',
     'deleteEmployee': '删除员工',
     'empQuery': '查询',
+    'order.no_refund': '未退票',
+    'order.refunded': '已退票',
+    'order.refund_audit': '退票待审',
+    'order.no_alter': '未改签',
+    'order.alter_audit': '改签待审',
+    'order.altered': '已改签',
     'distributeTip':'{field}是上级分销商，已从选中的销售渠道中删除',
     'systemErr' : 'system error',
     'payType.deposit' : '定存',
     'payType.collect' : '到付',
-    'ticketDesc': '购票须知'
+    'tour' : '旅行社',
+    'ticketDesc': '购票须知',
 }

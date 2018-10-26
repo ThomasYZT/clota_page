@@ -57,6 +57,8 @@
     import orderOperateLog from './teamOrderChild/orderOperateLog';
     import commission from './teamOrderChild/commission';
     import ajax from '@/api/index.js';
+    import common from '@/assets/js/common.js';
+
     export default {
         mixins :[lifeCycelMixins],
         components : {
@@ -197,7 +199,7 @@
             },
             // 分销佣金
             allocationCommission () {
-                if(this.orderDetailInfo && this.orderDetailInfo.allocationCommission){
+                if(this.orderDetailInfo && common.isNotEmpty(this.orderDetailInfo.allocationCommission)){
                     return this.orderDetailInfo.allocationCommission;
                 }else{
                     return '';

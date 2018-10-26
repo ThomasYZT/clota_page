@@ -375,7 +375,7 @@
             judgeCanReturn (rowData) {
                 //下单企业下，按照销售政策不可退的不可以退票
                 if(rowData.orderOrgType === 'channel'){
-                    return rowData.returnRule === 'allow';
+                    return rowData.returnRule === 'true';
                 }
                 return true;
             },
@@ -386,7 +386,7 @@
             judgeCanAlter (rowData) {
                 //下单企业下，按照销售政策不可改签的不可以改签
                 if(rowData.orderOrgType === 'channel'){
-                    return rowData.alterRule === 'allow';
+                    return rowData.alterRule === 'true';
                 }
                 return true;
             },
