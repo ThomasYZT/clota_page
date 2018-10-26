@@ -257,7 +257,7 @@ export const productListHead = [
     },
     {
         title: '退票状态',
-        minWidth: 100,
+        minWidth: 120,
         enWidth : 130,
         field: 'refundStatus'
     },
@@ -293,24 +293,24 @@ export const productListHead = [
 export const refundAlterLogHead = [
     {
         title: '申请退票数量',
-        minWidth: 150,
+        width: 150,
         enWidth : 180,
         field: 'reqNum'
     },
     {
         title: '申请人/时间',
-        minWidth: 280,
+        width: 300,
         field: 'reqAccOrg/reqAccName/reqTime'
     },
     {
         title: '退票审核通过',
-        minWidth: 150,
+        width: 150,
         enWidth : 180,
         field: 'passNum'
     },
     {
         title: '操作员/时间',
-        minWidth: 280,
+        width: 300,
         field: 'auditAccOrg/auditAccName/auditTime'
     },
     {

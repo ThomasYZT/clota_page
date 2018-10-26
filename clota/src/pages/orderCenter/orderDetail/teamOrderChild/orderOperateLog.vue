@@ -10,7 +10,7 @@
                   :class="getClass(item)"
                   :title="item.contents" >
                 <span class="time">{{item.createdTime}}</span>
-                <span class="operater">操作者：广州长隆旅行社 张三 </span>
+                <span class="operater">操作者：{{item.createOrg}} {{item.createName}} </span>
             </Step>
         </Steps>
     </div>

@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="240"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -256,9 +256,9 @@
             background: #E1E1E1;
         }
         .batch-audit {
-            @include block_outline($height : 50px);
-            padding-top: 10px;
-            padding-left: 30px;
+            @include block_outline();
+            padding-bottom: 4px;
+            padding-left: 20px;
         }
 
         .operate-btn {

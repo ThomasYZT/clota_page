@@ -133,7 +133,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
-    import {transSyncStatus} from '../../commFun';
+    import {transSyncStatus,canRefundTicket} from '../../commFun';
 
     export default {
         props : {
@@ -165,7 +165,9 @@
                 //选择的产品信息
                 selectedTicket : [],
                 //错误信息
-                errMsg : ''
+                errMsg : '',
+                //退票费
+                refundFee : 0
             }
         },
         methods: {
@@ -220,18 +222,7 @@
              * @returns {boolean}
              */
             selectableFunc(data){
-                //景区下，已退票、退票待审核，已改签/改签待审核，同步失败的不可退票
-                if(this.productInfo.orderOrgType === 'scenic'){
-                    return data.syncStatus === 'success' &&
-                        data.rescheduleStatus === 'no_alter' &&
-                        data.refundStatus === 'no_refund';
-                }else if(this.productInfo.orderOrgType === 'channel'){
-                    //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核、同步失败
-                    return data.syncStatus === 'success' &&
-                        data.rescheduleStatus === 'no_alter' &&
-                        data.refundStatus === 'no_refund' &&
-                        data.verifyStatus === 'false';
-                }
+                return canRefundTicket(this.productInfo.orderOrgType,data);
             },
             //同步状态
             transSyncStatus : transSyncStatus,
@@ -254,19 +245,39 @@
                         this.$Message.error('发起退票申请失败');
                     }
                 });
+            },
+            /**
+             * 获取退票手续费
+             */
+            getRefundProcedureFee () {
+                ajax.post('getRefundProcedureFee',{
+                    orderProductId : this.selectedTicket[0]['orderProductId'],
+                    orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
+                }).then(res => {
+                    if(res.success){
+                        this.refundFee = res.data ? res.data : 0;
+                    }else{
+                        this.refundFee = 0;
+                    }
+                });
             }
         },
         computed : {
-            //退票费
-            refundFee () {
-                return this.selectedTicket.reduce((price,item) => price += item.refundProcedureFee,0);
-            },
             //订单下的产品信息
             tableData () {
                 if(this.productInfo && this.productInfo.ticketList){
                     return this.productInfo.ticketList;
                 }else{
                     return  [];
+                }
+            },
+        },
+        watch : {
+            selectedTicket (newVal){
+                if(newVal && newVal.length > 0){
+                    this.getRefundProcedureFee();
+                }else{
+                    this.refundFee = 0;
                 }
             }
         }

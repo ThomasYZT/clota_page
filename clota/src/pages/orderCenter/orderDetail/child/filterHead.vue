@@ -16,7 +16,7 @@
                                     placement="bottom-end"
                                     placeholder="请选择"
                                     style="max-width: 260px"
-                                    @on-change="search">
+                                    @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -30,7 +30,7 @@
                                     placement="bottom-end"
                                     placeholder="请选择"
                                     style="max-width: 260px"
-                                    @on-change="search">
+                                    @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>

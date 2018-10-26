@@ -32,11 +32,16 @@ const instance = axios.create({
 
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
-    if (response.data.message === '请先登录') {
-        common.loginOut();
+    if(response.status !== 200){
+        store.dispatch('showErrToast','systemErr');
+    }else{
+        if (response.data.message === '请先登录') {
+            common.loginOut();
+        }
+        return response;
     }
-    return response;
 }, function (error) {
+    store.dispatch('showErrToast','systemErr');
     // Do something with response error
     return Promise.reject(error);
 });
@@ -69,7 +74,8 @@ export default {
             }
             return res.data
         }).catch((err) => {
-            console.error(`接口名: ${api[urlKey]}, 错误信息: `, err)
+            console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
+            store.dispatch('showErrToast','systemErr');
         }).finally(() => {
             store.commit('changePromisings','del');
         });
@@ -109,6 +115,7 @@ export default {
             return res.data;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
+            store.dispatch('showErrToast','systemErr');
             return err;
         }).finally(() => {
             store.commit('changePromisings','del');
@@ -170,6 +177,7 @@ export default {
             return res.data;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
+            store.dispatch('showErrToast','systemErr');
             return err;
         })
     },

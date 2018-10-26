@@ -137,3 +137,44 @@ export const transSMSStatus = (status) => {
 // };
 
 // var transfers = ['transOrderOrg', 'transPaymentStatus', 'transSyncStatus', 'transPickStatus', 'transRefundStatus', 'transRescheduleStatus', 'transVerifyStatus'];
+
+
+/**
+ * 判断一个产品是否可以退票
+ * @param orderOrgType 订单角色
+ * @param rowData 产品数据
+ * @returns {boolean}
+ */
+export const canRefundTicket = (orderOrgType,rowData) => {
+    //景区下，已退票、退票待审核，已改签/改签待审核，同步失败的不可退票
+    if(orderOrgType === 'scenic'){
+        return rowData.rescheduleStatus === 'no_alter' &&
+            rowData.refundStatus === 'no_refund';
+    }else if(orderOrgType.orderOrgType === 'channel'){
+        //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核不可退票
+        return rowData.rescheduleStatus === 'no_alter' &&
+            rowData.refundStatus === 'no_refund' &&
+            rowData.verifyStatus === 'false';
+    }
+    return true;
+};
+
+/**
+ * 判断一个产品是否可以改签
+ * @param orderOrgType 订单角色
+ * @param rowData 产品数据
+ * @returns {boolean}
+ */
+export const canAlterTicket = (orderOrgType,rowData) => {
+    //景区下,已退票、退票待审核，已改签/改签待审核的不可改签
+    if(orderOrgType.orderOrgType === 'scenic'){
+        return rowData.rescheduleStatus === 'no_alter' &&
+            rowData.refundStatus === 'no_refund';
+    }else if(orderOrgType.orderOrgType === 'channel'){
+        //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核、同步失败的不可改签
+        return rowData.rescheduleStatus === 'no_alter' &&
+            rowData.refundStatus === 'no_refund' &&
+            rowData.verifyStatus === 'false';
+    }
+    return true;
+};

@@ -23,8 +23,12 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.reqAccOrg | contentFilter}}</span>
-                    <span>{{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter}}</span>
+                    <!--<span class="col-ellipsis-name" v-w-title="scope.row.reqAccOrg">{{scope.row.reqAccOrg | contentFilter}}</span>
+                    <span>{{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter}}</span>-->
+                    <div class="col-ellipsis-name" v-w-title="`${scope.row.reqAccOrg} ${scope.row.reqAccName}/${scope.row.reqTime}`">
+                        {{scope.row.reqAccOrg | contentFilter}}&nbsp;
+                        {{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter}}
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
@@ -34,8 +38,12 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.auditAccOrg | contentFilter}}</span>
-                    <span>{{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>
+                    <!--<span class="col-ellipsis-name" v-w-title="scope.row.auditAccOrg">{{scope.row.auditAccOrg | contentFilter}}</span>
+                    <span>{{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>-->
+                    <div class="col-ellipsis-name" v-w-title="`${scope.row.auditAccOrg}  ${scope.row.auditAccName}/${scope.row.auditTime}`">
+                        {{scope.row.auditAccOrg | contentFilter}}&nbsp;
+                        {{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}
+                    </div>
                 </template>
             </el-table-column>
         </table-com>
@@ -73,6 +81,10 @@
         margin: 15px 0;
         @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
         /*margin-bottom: 10px;*/
+    }
+
+    .col-ellipsis-name {
+        @include overflow_tip();
     }
 
 </style>

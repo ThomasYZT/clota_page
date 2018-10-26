@@ -444,8 +444,8 @@ export const takeTicketStatusList = [
         value : 'allStatus' //全部状态
     },
     {
-        label : '未核销',
-        value : 'none' //未核销
+        label : '未取票',
+        value : 'none' //未取票
     },
     {
         label : '部分取票',

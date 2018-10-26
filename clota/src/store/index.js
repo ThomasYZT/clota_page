@@ -6,6 +6,7 @@ import router,{resetRouter} from '../router/index';
 import routerClect from '../router/routerClect';
 import ajax from '@/api/index.js';
 import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
+import debounce from 'lodash/debounce'
 
 Vue.use(Vuex);
 //子路由深度复制
@@ -74,7 +75,7 @@ export default new Vuex.Store({
         //随机数，用于更新组件
         hashKey : '',
         //当前账号拥有的所有组织结构信息,
-        manageOrgList : []
+        manageOrgList : [],
     },
     getters: {
         //左侧菜单是否收起
@@ -233,11 +234,13 @@ export default new Vuex.Store({
                         console.log(err)
                     });
                 }else{
-                    Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
+                    store.dispatch('showErrToast','rightGetError');
+                    // Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
                     return new Promise().reject();
                 }
             }).catch(() => {
-                Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
+                store.dispatch('showErrToast','rightGetError');
+                // Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
             });
         },
         //获取用户信息
@@ -316,6 +319,14 @@ export default new Vuex.Store({
                     store.commit('updatemanageOrgList',[]);
                 }
             });
-        }
+        },
+        /**
+         * 显示错误提示信息
+         * @param store
+         * @param msg
+         */
+        showErrToast : debounce((store,msg) => {
+            Vue.prototype.$Message.error(i18n.messages[i18n.locale][msg]);
+        },1000)
     }
 });

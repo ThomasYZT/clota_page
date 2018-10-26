@@ -59,10 +59,12 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.smsStatus === 'success'">已发送</span>
-                    <span class="status-wait" v-else-if="scope.row.smsStatus === 'wait'">未发送</span>
-                    <span class="status-wait" v-else-if="scope.row.smsStatus === 'doing'">发送中</span>
-                    <span class="status-fail" v-else>发送失败</span>
+                    <span
+                        :class="{ 'status-suc' : scope.row.smsStatus === 'success' ,
+                        'status-wait' : scope.row.smsStatus === 'wait' || scope.row.smsStatus === 'doing',
+                        'status-fail' : scope.row.smsStatus === 'failure'}">
+                        {{$t(transSMSStatus(scope.row.smsStatus))}}
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -73,9 +75,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.syncStatus === 'success'">已同步</span>
-                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'wait'">同步中</span>
-                    <span class="status-fail" v-else>同步失败</span>
+                    <span :class="{'status-suc' : scope.row.syncStatus === 'success', 'status-fail' : scope.row.syncStatus === 'failure'}">
+                        {{$t(transSyncStatus(scope.row.syncStatus))}}
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -86,8 +88,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.paymentStatus === 'true'">已支付</span>
-                    <span class="status-fail" v-else>未支付</span>
+                    <span :class="{'status-suc' : scope.row.paymentStatus === 'true','status-fail' : scope.row.paymentStatus !== 'true'}">
+                        {{$t(transPaymentStatus(scope.row.paymentStatus))}}
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -193,6 +196,7 @@
     import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
     import applyAlterTicketModal from './child/applyAlterTicketModal';
+    import {transSyncStatus,transSMSStatus,transPaymentStatus} from '../commFun.js'
 
     export default {
         components : {
@@ -398,7 +402,13 @@
                         }
                     });
                 }
-            }
+            },
+            //同步状态状态过滤
+            transSyncStatus : transSyncStatus,
+            //短信发送状态过滤
+            transSMSStatus : transSMSStatus,
+            //支付状态过滤
+            transPaymentStatus : transPaymentStatus,
         },
         computed : {
             //是否可以显示退票按钮和改签按钮，
