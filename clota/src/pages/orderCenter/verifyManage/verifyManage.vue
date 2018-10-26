@@ -84,7 +84,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已取票')}}：{{scope.row.quantityPicked | contentFilter}}</span>
+                            <span class="blue" style="margin-right: 20px;">{{$t('已取票')}}：{{Number(scope.row.quantityPicked) | contentFilter}}</span>
                             <span class="gray">{{$t('未取票')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityPicked)}}</span>
                         </template>
                     </el-table-column>
@@ -96,7 +96,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已核销')}}：{{scope.row.quantityVerified | contentFilter}}</span>
+                            <span class="blue" style="margin-right: 20px;">{{$t('已核销')}}：{{Number(scope.row.quantityVerified) | contentFilter}}</span>
                             <span class="gray">{{$t('未核销')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
                         </template>
                     </el-table-column>
@@ -127,6 +127,7 @@
                     <el-table-column
                         slot="column15"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -137,6 +138,7 @@
                     <el-table-column
                         slot="column16"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">

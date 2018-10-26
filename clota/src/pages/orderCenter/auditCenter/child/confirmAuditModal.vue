@@ -40,11 +40,11 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <div class="table-bottom">
+                <div class="table-bottom clearfix">
                     <ul>
-                        <li>{{$t('申请数量')}}：<b style="color: #333;">{{baseInfo.reqNum | contentFilter}}</b></li>
-                        <li>{{$t('通过数量')}}：<b class="green">{{passedProducts.length | contentFilter}}</b></li>
-                        <li>{{$t('驳回数量')}}：<b class="red">{{rejectProducts.length | contentFilter}}</b></li>
+                        <li>{{$t('驳回数量')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li>
+                        <li>{{$t('通过数量')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li>
+                        <li>{{$t('申请数量')}}：<span style="color: #333;">{{Number(baseInfo.reqNum) | contentFilter}}</span></li>
                     </ul>
                 </div>
 
@@ -55,11 +55,12 @@
             <!--备注-->
             <div>
                 <span style="float: left;">{{$t('remark')}}：</span>
-                <div style="margin-left: 30px">
+                <div style="margin-left: 45px; position:relative;">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('请输入')" />
+                    <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
@@ -215,7 +216,9 @@
                     auditParams.reqType = 'alter';
                 }
 
-                this.$emit('on-audit-confirmed', auditParams);
+                if (this.auditRemark.length<=500) {
+                    this.$emit('on-audit-confirmed', auditParams);
+                }
             },
 
         },
@@ -227,11 +230,11 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 14px;
-            /*height: 450px;*/
+            padding: 10px 14px;
+            font-size: 14px;
 
             .refund-fee {
-                margin: 15px 20px;
+                margin: 10px 0;
             }
             .single-org {
                 margin-bottom: 16px;
@@ -244,10 +247,19 @@
             }
 
             .table-bottom {
+                margin-top: 10px;
                 ul > li {
                     float: right;
                     margin-right: 20px;
                 }
+            }
+
+            .error-tip {
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                font-size: 12px;
+                color: $color_red;
             }
         }
 
@@ -269,7 +281,6 @@
 
         .form-wrap{
             width: 100%;
-            margin-top: 15px;
             @include clearfix();
 
             .form-item-wrap{

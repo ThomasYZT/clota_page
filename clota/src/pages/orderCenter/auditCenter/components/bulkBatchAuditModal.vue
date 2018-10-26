@@ -21,11 +21,12 @@
             <!--备注-->
             <div>
                 <span class="label-remark">{{$t('remark')}}：</span>
-                <div style="margin-left: 45px">
+                <div style="margin-left: 45px; position:relative;">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('请输入')" />
+                    <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
@@ -104,6 +105,9 @@
             },
 
             bulkBatchAudit() {
+                if (this.auditRemark.length>500) {
+                    return;
+                }
                 ajax.post('auditBatchOrderProduct', {
                     productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
                     remark: this.auditRemark,
@@ -156,6 +160,14 @@
                 float: left;
                 font-size: 14px;
                 color: #585858;
+            }
+
+            .error-tip {
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                font-size: 12px;
+                color: $color_red;
             }
         }
 

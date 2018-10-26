@@ -50,11 +50,11 @@
                     <span class="red" v-if="reqType=='alter'">{{Number(formData.quantity) - Number(formData.quantityRescheduled)}}</span>
                 </Form-item>
                 <!--备注-->
-                <Form-item :label="$t('remark') + '：'" prop="">
+                <Form-item :label="$t('remark') + '：'" prop="auditRemark">
                     <Input v-model.trim="formData.auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('请输入')" />
                 </Form-item>
             </Form>
         </div>
@@ -89,7 +89,12 @@
                 },
                 //校验规则
                 ruleValidate: {
-
+                    auditRemark: {
+                        type: 'string',
+                        max: 500,
+                        message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 500}),
+                        trigger: 'blur'
+                    },
                 },
             }
         },
@@ -129,38 +134,48 @@
             hide() {
                 this.formData.auditRemark = this.orderData.type = '';
                 this.orderData.items = [];
+                this.$refs.formValidate.resetFields();
                 this.visible = false;
             },
             /**
              * 单个订单退票的审核通过/驳回
              */
             bulkBatchAudit() {
-                ajax.post('auditBatchOrderProduct', {
-                    productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
-                    remark: this.formData.auditRemark,
-                    auditStatus: this.orderData.type,
-                    reqType: this.reqType
-                }).then(res => {
-                    if(res.success){
-                        if (this.orderData.type === 'pass') {
-                            this.$Message.success(this.$t('订单已审核通过'));
-                        } else if (this.orderData.type === 'reject') {
-                            this.$Message.success(this.$t('订单已驳回'));
-                        }
-                        this.hide();
+                this.$refs.formValidate.validate((valid) => {
+                    if ( valid ) {
+                        ajax.post('auditBatchOrderProduct', {
+                            productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
+                            remark: this.formData.auditRemark,
+                            auditStatus: this.orderData.type,
+                            reqType: this.reqType
+                        }).then(res => {
+                            if(res.success){
+                                if (this.orderData.type === 'pass') {
+                                    this.$Message.success(this.$t('订单已审核通过'));
+                                } else if (this.orderData.type === 'reject') {
+                                    this.$Message.success(this.$t('订单已驳回'));
+                                }
+                                this.hide();
 
-                        this.$emit('on-audited');
+                                this.$emit('on-audited');
+                            }
+                        });
                     }
-                });
+                })
             },
         }
     };
 </script>
 
 <style lang="scss" scoped>
+    @import '~@/assets/scss/base';
 
     .modal-body{
-        padding: 0 60px 0 20px;
+        padding: 5px 60px 14px 20px;
+    }
+
+    /deep/ .ivu-form-item {
+        margin-bottom: 0;
     }
 
     /deep/ .ivu-form-item-label {
@@ -175,5 +190,12 @@
         /deep/ .ivu-btn{
             width: 88px;
         }
+    }
+
+    .green {
+        color: $color_green;
+    }
+    .red {
+        color: $color_red;
     }
 </style>
