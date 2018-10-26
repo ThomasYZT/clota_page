@@ -634,7 +634,6 @@
                             //游玩
                             playRuleJson: JSON.stringify(rule),
                         };
-                        console.log(params)
                         //区分新增与修改
                         if( this.type === 'add' ){
                             this.saveAndEditTicket( 'addProduct', params);
@@ -665,6 +664,7 @@
                 this.$refs.editPark.show({
                     index: index,
                     data: data,
+                    parkList: this.parkList,
                     list: this.productPlayRuleVo,
                     title : this.$t('modify')+ (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type: 'modify',
@@ -676,17 +676,13 @@
             //删除可游玩园区
             del ( data, index ) {
                 this.productPlayRuleVo.splice(index,1);
+
             },
             //新增可游玩园区
             addPark () {
-                let saleType = 'oneTicketPark';
-                if(this.productPlayRuleVo.length !== 0) {
-                    if(this.productPlayRuleVo[0].saleType !== 'one_ticket') {
-                        saleType = 'moreTicketPark';
-                    }
-                }
                 this.$refs.editPark.show({
-                    title : this.$t('add')+this.$t(saleType),
+                    title : this.$t('add')+this.$t('one_ticket'),
+                    parkList: Array.from(this.parkList),
                     type: 'add',
                     list: this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
@@ -705,7 +701,6 @@
                         continue;
                     }
                 }
-                console.log(this.parkList,"11111111")
             },
 
             //返回

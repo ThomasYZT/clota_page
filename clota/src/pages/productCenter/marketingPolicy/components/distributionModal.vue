@@ -113,6 +113,7 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <span v-if="isLossTipShow" class="loss-tip">{{this.$t('maybeLoss')}}</span>
                 </Form-item>
 
                 <!-- 设置我的销售渠道 -->
@@ -161,7 +162,8 @@
                             }else {
                                 if(validator.isNumber(item.price)) {
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
-                                        callback(new Error(this.$t('maybeLoss')));
+                                        this.isLossTipShow = true;
+                                        callback();
                                     } else {
                                         callback();
                                     }
@@ -212,7 +214,9 @@
                     ]
                 },
                 //是否显示分销提示
-                isTipShow: false
+                isTipShow: false,
+                //是否显示亏损提示
+                isLossTipShow: false
             }
         },
         methods: {
@@ -451,6 +455,11 @@
 
         .distribute-tip {
             color: $color_F7981C_080;
+        }
+
+        .loss-tip {
+            color: $color_red;
+            font-size: 12px;
         }
     }
 

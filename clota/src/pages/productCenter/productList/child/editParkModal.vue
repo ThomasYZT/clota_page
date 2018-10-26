@@ -369,7 +369,7 @@
                                     {{item.groupName}}
                                     </Option>
                             </Select>
-                            <span class="example" @click="jumpForExample">{{$t('example')}}</span>
+                            <!--<span class="example" @click="jumpForExample">{{$t('example')}}</span>-->
                             <!--项目分组表格-->
                         </FormItem>
                     </i-col>
@@ -506,7 +506,7 @@
     import ajax from '@/api/index';
 
     export default {
-        props: ['parkList','data'],
+        props: ['data'],
         components: {
             tableCom,
             titlePark,
@@ -661,6 +661,8 @@
                 //复制数据，用于修改初次赋值
                 copyData: {},
                 check: false,
+                //可游玩园区
+                parkList: []
             }
         },
         methods: {
@@ -744,9 +746,9 @@
             },
 
             //跳转进入示例页面
-            jumpForExample () {
-                console.log('跳转进入示例页面');
-            },
+            // jumpForExample () {
+            //     console.log('跳转进入示例页面');
+            // },
 
             /**
              * 确认
@@ -806,18 +808,21 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({index,list,data,type,title,confirmCallback = null,cancelCallback}) {
+            show ({index,list,parkList,data,type,title,confirmCallback = null,cancelCallback}) {
                 this.title = title;
                 this.type = type;
                 this.index = index;
-                //不能在同一景区同时新建一票制和多票制产品
-                if((!data && list.length > 0) || (data && list.length > 1)) {
-                    for(let i=0,len=this.enumData.saleType.length; i<len; i++) {
-                        if (this.enumData.saleType[i].value !== list[0].saleType) {
-                            this.enumData.saleType.splice(i,1);
-                            len--;
-                            i--;
-                            continue;
+                this.parkList = parkList;
+                //去除已新增的园区
+                if(list) {
+                    for(let i=0,len=this.parkList.length; i<len; i++) {
+                        for(let j=0,jlen=list.length; j<jlen; j++) {
+                            if(this.parkList[i].id === list[j].parkId) {
+                                this.parkList.splice(i,1);
+                                i--;
+                                len--;
+                                break;
+                            }
                         }
                     }
                 }
@@ -990,6 +995,7 @@
                 this.playPoint = [];
                 this.checkPoint = [];
                 this.check = false;
+                this.parkList = [];
             },
 
         }

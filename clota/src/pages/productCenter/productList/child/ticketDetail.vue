@@ -330,7 +330,6 @@
              * 查看可游玩园区详情
              */
             viewParkDetail ( data ) {
-                console.log(data)
                 this.$refs.viewPark.show({
                     data: data,
                     title : this.$t('check')+this.$t(data.saleType),
