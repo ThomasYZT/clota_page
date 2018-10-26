@@ -309,26 +309,29 @@
              * 表头渲染
              */
             headerRender(h, { column, $index }) {
-                return h("Tooltip",
-                    {
-                        props: {
-                            placement: 'top',
-                            content: column.label,
-                            transfer: true
-                        },
-                    },
-                    [
-                        h(
-                            'div',
-                            {
-                                style: {
-                                    width: "100px"
-                                }
+                    return h("Tooltip",
+                        {
+                            props: {
+                                placement: 'top',
+                                content: column.label,
+                                transfer: true
                             },
-                            [column.label]
-                        )
-                    ]
-                );
+                        },
+                        [
+                            h(
+                                'div',
+                                {
+                                    style: {
+                                        maxWidth: "100px"
+                                    }
+                                },
+                                [column.label]
+                            ),
+                            h('i',{
+                                class: ['iconfont icon-edit']
+                            })
+                        ]
+                    );
             }
         }
     }
@@ -468,6 +471,8 @@
                                     overflow: unset;
 
                                     div {
+                                        display: inline-block;
+                                        vertical-align: middle;
                                         padding: 0;
                                         line-height: 22px;
                                     }
