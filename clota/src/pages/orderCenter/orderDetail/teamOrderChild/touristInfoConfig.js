@@ -20,4 +20,4 @@ export const columnData = [
         minWidth: 120,
         field: 'idNum'
     },
-]
+];

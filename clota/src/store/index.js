@@ -327,6 +327,6 @@ export default new Vuex.Store({
          */
         showErrToast : debounce((store,msg) => {
             Vue.prototype.$Message.error(i18n.messages[i18n.locale][msg]);
-        },1000)
+        },500)
     }
 });

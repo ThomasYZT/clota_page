@@ -1221,5 +1221,7 @@ export default {
     'order.alter_audit': '改签待审',
     'order.altered': '已改签',
     'distributeTip':'{field}是上级分销商，已从选中的销售渠道中删除',
-    'systemErr' : '系统错误'
+    'systemErr' : '系统错误',
+    'payType.deposit' : '定存',
+    'payType.collect' : '到付',
 }
