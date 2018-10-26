@@ -43,43 +43,43 @@
                     <el-table-column
                         slot="column7"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="col-ellipsis-name" v-w-title="scope.row.productName">{{scope.row.productName | contentFilter}}</span> |
+                            <span>{{scope.row.productName | contentFilter}}</span> |
                             <span>{{$t('quantity')}}：{{scope.row.quantity | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column8"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>
-                                {{$t('单价')}}：<span class="col-ellipsis-number" v-w-title="scope.row.price">{{scope.row.price | moneyFilter}}</span>
-                            </span> |
-                            <span>
-                                {{$t('小计')}}：<span class="col-ellipsis-number" v-w-title="scope.row.amount">{{scope.row.amount | moneyFilter}}</span>
-                            </span>
+                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column9"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="col-ellipsis-name" v-w-title="scope.row.visitorName">{{scope.row.visitorName | contentFilter}}</span> |
+                            <span>{{scope.row.visitorName | contentFilter}}</span> |
                             <span>{{scope.row.phoneNumber | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column11"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -91,6 +91,7 @@
                     <el-table-column
                         slot="column12"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -102,6 +103,7 @@
                     <el-table-column
                         slot="column13"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -113,6 +115,7 @@
                     <el-table-column
                         slot="column14"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -184,37 +187,36 @@
                     <el-table-column
                         slot="column8"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="col-ellipsis-name" v-w-title="scope.row.productName">{{scope.row.productName | contentFilter}}</span> |
+                            <span>{{scope.row.productName | contentFilter}}</span> |
                             <span>{{$t('quantity')}}：{{1}}</span> <!--每张门票的核销，故此处预定数量: 1-->
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column9"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>
-                                {{$t('单价')}}：<span class="col-ellipsis-number" v-w-title="scope.row.price">{{scope.row.price | moneyFilter}}</span>
-                            </span> |
-                            <span>
-                                {{$t('小计')}}：<span class="col-ellipsis-number" v-w-title="scope.row.amount">{{scope.row.amount | moneyFilter}}</span>
-                            </span>
+                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column10"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="col-ellipsis-name" v-w-title="scope.row.visitorName">{{scope.row.visitorName | contentFilter}}</span> |
+                            <span{{scope.row.visitorName | contentFilter}}</span> |
                             <span>{{scope.row.phoneNumber | contentFilter}}</span>
                         </template>
                     </el-table-column>
@@ -337,8 +339,11 @@
         methods: {
             queryList() {
                 ajax.post('queryOrderInfoBySerialNo', this.queryParams).then((res) => {
-                    if (res.success && res.data) {
-                        this.tableData = res.data;
+                    if (res.success) {
+                        this.tableData = res.data || {orderInfoList: [], orderTicketList: []};
+                    } else {
+                        this.tableData.orderInfoList = [];
+                        this.tableData.orderTicketList = [];
                     }
                 })
             },
@@ -449,7 +454,7 @@
             float: right;
         }
 
-        .col-ellipsis-name {
+        /*.col-ellipsis-name {
             float: left;
             max-width: 75px;
             @include overflow_tip();
@@ -459,7 +464,7 @@
             display: inline-block;
             max-width: 46px;
             @include overflow_tip();
-        }
+        }*/
     }
 
     .blue {

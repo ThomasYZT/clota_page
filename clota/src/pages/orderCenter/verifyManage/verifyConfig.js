@@ -39,8 +39,7 @@ export const orderTicketHead = [
     },
     {
         title: '产品名称|预定数量',
-        width: 180,
-        enWidth : 200,
+        width: 200,
         field: 'productName|quantity'
     },
     {
@@ -147,8 +146,7 @@ export const orderVerifyHead = [
     },
     {
         title: '产品名称|预定数量',
-        width: 180,
-        enWidth : 200,
+        width: 200,
         field: 'productName|quantity'
     },
     {
