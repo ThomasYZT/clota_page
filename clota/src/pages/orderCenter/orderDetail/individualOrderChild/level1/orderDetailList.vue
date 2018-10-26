@@ -107,7 +107,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.quantityPicked | contentFilter}}</span>
+                    <span class="token-ticket">已取票：{{scope.row.quantityPicked ? scope.row.quantityPicked : 0}}</span>
+                    <span class="not-token-ticket">未取票：{{scope.row.quantity - scope.row.quantityPicked}}</span>
                 </template>
             </el-table-column>
             <!--核销数量-->
@@ -119,7 +120,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.quantityVerified | contentFilter}}</span>
+                    <span class="token-ticket">已核销：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
+                    <span class="not-token-ticket">未核销：{{scope.row.quantity - scope.row.quantityVerified}}</span>
                 </template>
             </el-table-column>
             <!--退票数量-->
@@ -131,7 +133,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.quantityRefunded | contentFilter}}</span>
+                    <span class="token-ticket">已退：{{scope.row.quantityRefunded ? scope.row.quantityRefunded : 0}}</span>
+                    <span class="not-token-ticket">待审：{{scope.row.quantityAuditRefunded ? scope.row.quantityAuditRefunded : 0}}</span>
                 </template>
             </el-table-column>
             <!--改签数量-->
@@ -143,7 +146,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.quantityRescheduled | contentFilter}}</span>
+                    <span class="token-ticket">已改：{{scope.row.quantityRescheduled ? scope.row.quantityRescheduled : 0}}</span>
+                    <span class="not-token-ticket">待审：{{scope.row.quantityAuditRescheduled ? scope.row.quantityAuditRescheduled : 0}}</span>
                 </template>
             </el-table-column>
             <!--短信发送状态-->
@@ -307,6 +311,26 @@
 
         /deep/ .ivu-form-item{
             margin-bottom: 10px;
+        }
+
+
+        .not-token-ticket{
+            color: $color_999;
+            margin-left: 15px;
+        }
+
+        .status-suc,
+        .token-ticket,
+        .to-one-level{
+            color: $color_blue;
+        }
+
+        .status-wait{
+            color: $color_yellow;
+        }
+
+        .status-fail{
+            color: $color_err;
         }
 
         .to-one-level{

@@ -328,7 +328,8 @@
                 border-radius: 5px;
 
                 .left {
-                    flex: 1 0;
+                    width: auto;
+                    flex: 1 1 70%;
 
                     span.icon-note {
                         color: #2F70DF;
@@ -341,7 +342,7 @@
                 }
 
                 .right {
-                    flex: 1 0;
+                    flex: 1 1;
                     margin-right: 30px;
                     text-align: right;
 

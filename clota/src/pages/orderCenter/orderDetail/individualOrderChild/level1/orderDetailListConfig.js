@@ -37,22 +37,22 @@ export const columnData = [
     },
     {
         title: '取票数量',
-        minWidth: 150,
+        minWidth: 200,
         field: 'quantityPicked'
     },
     {
         title: '核销数量',
-        minWidth: 150,
+        minWidth: 200,
         field: 'quantityVerified'
     },
     {
         title: '退票数量',
-        minWidth: 150,
+        minWidth: 200,
         field: 'quantityRefunded'
     },
     {
         title: '改签数量',
-        minWidth: 150,
+        minWidth: 200,
         field: 'quantityRescheduled'
     },
     {

@@ -11,14 +11,14 @@
                 <ul class="list">
                     <li class="col">订单明细编号：{{baseInfo.orderDetailNo | contentFilter}}</li>
                     <li class="col">OTA订单号：{{baseInfo.thirdOrderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.thirdOrderNo | contentFilter}}</li>
+                    <li class="col">下单时间：{{baseInfo.thirdOrderNo | timeFormat('yyyy-MM-dd')}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
                     <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
                     <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
+                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
@@ -93,7 +93,7 @@
                 //景区下，审核成功，取票前可重发短信
                 return this.viewType === 'scenic' &&
                     this.baseInfo.auditStatus === 'success' &&
-                    this.productInfoList.every(item => item.quantity > item.quantityPicked) ;
+                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) ;
             },
             //查看上级订单
             toUpDetail() {

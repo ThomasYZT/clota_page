@@ -18,7 +18,7 @@
                 <ul class="list">
                     <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
                     <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
+                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
