@@ -228,7 +228,6 @@
                     this.formData.groupIds = this.detail.groupIds;
                     //获取模态框数据
                     this.getData();
-                    console.log(this.detail,"this.detail");
                 }else {
                     //关闭模态框
                     this.$refs.policyform.resetFields();
@@ -283,7 +282,16 @@
                     allocationId: this.detail.listItem.allocationId
                 }).then(res => {
                     if(res.success) {
-                        //
+                        //过滤没有销售渠道的销售组
+                        for(let i=0,len=this.tempData.length; i<len; i++) {
+                            if(this.tempData[i].channelNames === null) {
+                                this.tempData.splice(i,1);
+                                len--;
+                                i--;
+                                continue;
+                            }
+                        }
+
                         this.haveSaleGroups = res.data;
 
                         //设置销售渠道组列表数据

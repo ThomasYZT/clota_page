@@ -13,7 +13,6 @@
         </bread-crumb-head>
 
         <div class="container">
-
             <div class="title-wrap">
                 <span>{{$t('ticketDetail')}}</span>
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
@@ -37,7 +36,7 @@
                                 <div v-w-title="detail.productName">{{detail.productName | contentFilter}}</div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12">
+                        <i-col span="12" v-if="$store.state.manageOrgs.nodeType !== 'partner'">
                             <Form-item :label="$t('standardPrice')+'：'"><!--景区成本价-->
                                 <div>{{detail.standardPrice | contentFilter}}</div>
                             </Form-item>
@@ -226,7 +225,7 @@
                 </div>
 
                 <!--产品日志-->
-                <template v-if="recordsVos && recordsVos.length > 0">
+                <template v-if="recordsVos && recordsVos.length > 0 && $store.state.manageOrgs.nodeType !== 'partner'">
                     <title-temp title="productLog"></title-temp>
                     <div class="form-content">
                         <Timeline>

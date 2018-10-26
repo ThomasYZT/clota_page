@@ -91,7 +91,7 @@ export const saleChannelColumn = [
     {
         title: 'selectedSaleChannel',   // 已选中的销售渠道
         minWidth: 300,
-        field: 'channelNames'
+        field: 'groupchannels'
     }
 ];
 

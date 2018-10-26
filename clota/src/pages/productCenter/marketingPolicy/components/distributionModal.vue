@@ -282,6 +282,17 @@
                 }).then(res => {
                     if(res.success) {
                         this.haveSaleGroups = res.data;
+
+                        //过滤没有销售渠道的销售组
+                        for(let i=0,len=this.tempData.length; i<len; i++) {
+                            if(this.tempData[i].channelNames === null) {
+                                this.tempData.splice(i,1);
+                                len--;
+                                i--;
+                                continue;
+                            }
+                        }
+
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
                                 if(len > 0 && jlen > 0) {
