@@ -16,6 +16,7 @@
                     <FormItem :label="$t('下单时间')">
                         <DatePicker v-model="orderTimeRange"
                                     type="daterange"
+                                    :editable="false"
                                     style="width: 100%"
                                     @on-change="changeOrderTime">
                         </DatePicker>
@@ -26,6 +27,7 @@
                     <FormItem :label="$t('游玩时间')">
                         <DatePicker v-model="visitDateRange"
                                     type="daterange"
+                                    :editable="false"
                                     style="width: 100%"
                                     @on-change="changeVisitDate">
                         </DatePicker>
@@ -82,7 +84,7 @@
                     <FormItem :label="$t('关键字')" >
                         <Input v-model.trim="formData.keyword"
                                style="width: 100%"
-                               :placeholder="$t('请输入关键字')" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
+                               :placeholder="$t('请输入关键词')" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
                     </FormItem>
                 </i-col>
             </i-row>
@@ -242,7 +244,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .audit-filter {
-        padding: 15px 30px 3px 10px;
+        padding: 15px 30px 0 10px;
         /*border: 1px solid #EEEEEE;*/
         position: relative;
 
@@ -251,14 +253,19 @@
         }
 
         /deep/ .ivu-form-item{
-            margin-bottom: 7px;
+            margin-bottom: 10px;
             .ivu-form-item-label {
-                padding-left: 20px;
+                padding: 8px 10px 8px 20px;
+            }
+            .ivu-form-item-content {
+                line-height: 30px;
             }
         }
 
         .reset{
             margin-left: 15px;
+            border-color: #0055B8;
+            color: #0055B8;
         }
     }
 </style>

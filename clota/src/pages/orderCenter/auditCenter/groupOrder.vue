@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="240"
+            :ofsetHeight="235"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -42,6 +42,7 @@
             <el-table-column
                 slot="column4"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -52,6 +53,7 @@
             <el-table-column
                 slot="column7"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -148,8 +150,8 @@
                 }).then(res => {
                     if(res.success && res.data){
                         this.tableData = res.data.data || [];
-                        this.totalCount = res.data.totalRow;
-                    }else{
+                        this.totalCount = res.data.totalRow || 0;
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -257,8 +259,9 @@
         }
         .batch-audit {
             @include block_outline();
-            padding-bottom: 4px;
+            margin-bottom: 10px;
             padding-left: 20px;
+            line-height: 1;
         }
 
         .operate-btn {

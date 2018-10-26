@@ -19,31 +19,29 @@
             <el-table-column
                 slot="column1"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <!--<span class="col-ellipsis-name" v-w-title="scope.row.reqAccOrg">{{scope.row.reqAccOrg | contentFilter}}</span>
-                    <span>{{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter}}</span>-->
-                    <div class="col-ellipsis-name" v-w-title="`${scope.row.reqAccOrg} ${scope.row.reqAccName}/${scope.row.reqTime}`">
+                    <span>{{scope.row.reqAccOrg | contentFilter}}</span>
+                    <span>{{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter}}</span>
+                    <!--<div class="col-ellipsis-name" v-w-title="`${scope.row.reqAccOrg} ${scope.row.reqAccName}/${scope.row.reqTime}`">
                         {{scope.row.reqAccOrg | contentFilter}}&nbsp;
                         {{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter}}
-                    </div>
+                    </div>-->
                 </template>
             </el-table-column>
             <el-table-column
                 slot="column3"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <!--<span class="col-ellipsis-name" v-w-title="scope.row.auditAccOrg">{{scope.row.auditAccOrg | contentFilter}}</span>
-                    <span>{{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>-->
-                    <div class="col-ellipsis-name" v-w-title="`${scope.row.auditAccOrg}  ${scope.row.auditAccName}/${scope.row.auditTime}`">
-                        {{scope.row.auditAccOrg | contentFilter}}&nbsp;
-                        {{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}
-                    </div>
+                    <span>{{scope.row.auditAccOrg | contentFilter}}</span>
+                    <span>{{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>
                 </template>
             </el-table-column>
         </table-com>
