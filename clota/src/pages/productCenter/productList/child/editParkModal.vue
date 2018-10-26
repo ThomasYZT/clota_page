@@ -643,7 +643,7 @@
                 //枚举数据
                 enumData: {
                     //售票方式
-                    saleType: saleType,
+                    saleType: Array.from(saleType),
                     //设备分组
                     group: [],
                     //认证方式
@@ -806,11 +806,21 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({index,data,type,title,confirmCallback = null,cancelCallback}) {
-                console.log(title)
+            show ({index,list,data,type,title,confirmCallback = null,cancelCallback}) {
                 this.title = title;
                 this.type = type;
                 this.index = index;
+                //不能在同一景区同时新建一票制和多票制产品
+                if((!data && list.length > 0) || (data && list.length > 1)) {
+                    for(let i=0,len=this.enumData.saleType.length; i<len; i++) {
+                        if (this.enumData.saleType[i].value !== list[0].saleType) {
+                            this.enumData.saleType.splice(i,1);
+                            len--;
+                            i--;
+                            continue;
+                        }
+                    }
+                }
                 if(data){
                     this.check = true;
                     //查询核销设备组
@@ -860,6 +870,7 @@
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
                 }
+
                 this.visible = true;
             },
 
@@ -880,7 +891,9 @@
 
             //选择园区改变，联动查询设备分组
             selectParkChange ( val ) {
+                console.log(this.parkList)
                 let obj = this.parkList.find( item => val === item.id );
+                console.log(obj)
                 if(obj){
                     this.formData.parkName = obj.orgName;
                     this.getOrgGroupList(obj);
@@ -966,6 +979,14 @@
                     itemCheckTimes: 0,
                     equipmentGroupIds: [],
                 };
+                this.enumData = {
+                    //售票方式
+                    saleType: Array.from(saleType),
+                    //设备分组
+                    group: [],
+                    //认证方式
+                    authenticationType: authenticationType,
+                },
                 this.playPoint = [];
                 this.checkPoint = [];
                 this.check = false;

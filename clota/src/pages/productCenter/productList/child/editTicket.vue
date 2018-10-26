@@ -665,6 +665,7 @@
                 this.$refs.editPark.show({
                     index: index,
                     data: data,
+                    list: this.productPlayRuleVo,
                     title : this.$t('modify')+ (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type: 'modify',
                     confirmCallback : ( data, index ) => {
@@ -678,11 +679,17 @@
             },
             //新增可游玩园区
             addPark () {
+                let saleType = 'oneTicketPark';
+                if(this.productPlayRuleVo.length !== 0) {
+                    if(this.productPlayRuleVo[0].saleType !== 'one_ticket') {
+                        saleType = 'moreTicketPark';
+                    }
+                }
                 this.$refs.editPark.show({
-                    title : this.$t('add')+this.$t('oneTicketPark'),
+                    title : this.$t('add')+this.$t(saleType),
                     type: 'add',
+                    list: this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
-                        console.log(data);
                         this.productPlayRuleVo.push(data);
                         this.dealParkList(data.parkId);
                     }
@@ -690,14 +697,15 @@
             },
             //新增成功，可选园区数组数据-1
             dealParkList ( id ) {
-                let index = null;
-                this.parkList.forEach( (item, i) => {
-                    if(id === item.id){
-                        index = i;
-                        return
+                for(let i=0,len=this.parkList.length; i<len; i++) {
+                    if(id === this.parkList[i].id){
+                        this.parkList.splice(i,1);
+                        i--;
+                        len--;
+                        continue;
                     }
-                } )
-                this.parkList.splice(index,1);
+                }
+                console.log(this.parkList,"11111111")
             },
 
             //返回
