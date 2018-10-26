@@ -60,8 +60,8 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
-                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                            <span>{{$t('unitPrice')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('subtotal')}}：{{scope.row.amount | moneyFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -206,8 +206,8 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
-                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                            <span>{{$t('unitPrice')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('subtotal')}}：{{scope.row.amount | moneyFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column

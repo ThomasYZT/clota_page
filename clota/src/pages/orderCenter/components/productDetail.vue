@@ -16,7 +16,7 @@
                 <Button type="primary"
                         style="width: 88px; margin-right: 5px;"
                         :disabled="!moduleInfo || reqOrderTickets.length<1"
-                        @click="showAuditModal('pass')">{{$t('通过')}}
+                        @click="showAuditModal('pass')">{{$t('passed')}}
                 </Button>
                 <Button type="error"
                         style="width: 88px; background-color: #EB6751;"

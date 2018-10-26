@@ -15,7 +15,7 @@
             <el-dropdown trigger="click"
                          placement="bottom-start"
                          @command="handleCommand">
-                <Button type="primary" style="float: left" size="default">{{$t('批量审核')}}</Button>
+                <Button type="primary" style="float: left" size="default">{{$t('batchAudit')}}</Button><!--批量审核-->
 
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in batchAudit"
@@ -79,7 +79,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('通过')}}</span>
+                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span><!--通过-->
                     <span class="divide-line"></span>
                     <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>

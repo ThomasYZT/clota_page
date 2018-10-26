@@ -13,7 +13,7 @@
             <i-row>
                 <i-col span="11">
                     <!--下单时间-->
-                    <FormItem :label="$t('下单时间')">
+                    <FormItem :label="$t('orderTime')">
                         <DatePicker v-model="orderTimeRange"
                                     type="daterange"
                                     :editable="false"
@@ -24,7 +24,7 @@
                 </i-col>
                 <i-col span="12">
                     <!--游玩时间-->
-                    <FormItem :label="$t('游玩时间')">
+                    <FormItem :label="$t('visitTime')">
                         <DatePicker v-model="visitDateRange"
                                     type="daterange"
                                     :editable="false"
@@ -37,7 +37,7 @@
             <i-row>
                 <i-col span="6" v-if="auditName=='group'">
                     <!--支付状态-->
-                    <FormItem :label="$t('支付状态')" >
+                    <FormItem :label="$t('paymentStatus')" >
                         <Select v-model="formData.paymentStatus" style="width: 100%">
                             <Option v-for="item in paymentList"
                                     :key="item.value"
@@ -49,7 +49,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--下单企业-->
-                    <FormItem :label="$t('下单企业')" >
+                    <FormItem :label="$t('orderOrg')" >
                         <Select v-model="formData.channelId" style="width: 100%">
                             <Option v-for="item in orderEnterprise"
                                     :key="item.id"
@@ -61,30 +61,31 @@
                 </i-col>
                 <i-col span="6">
                     <!--下单渠道-->
-                    <FormItem :label="$t('下单渠道')">
+                    <FormItem :label="$t('orderChannel')">
                         <Select v-model="formData.orderChannel"
                                 style="width: 100%">
                             <Option v-for="item in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
-                                {{$t('order.' + item.label)}}
+                                {{$t(item.label=='all' ? item.label : 'order.' + item.label)}}
                             </Option>
                         </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="7">
-                    <FormItem :label="$t('业态类型')" >
+                    <!--业态类型-->
+                    <FormItem :label="$t('industryType')" >
                         <Select v-model="formData.productType" style="width: 100%">
                             <Option value="all">{{$t('all')}}</Option>
-                            <Option value="ticket">{{$t('票')}}</Option>
+                            <Option value="ticket">{{$t('tickets')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="9">
-                    <FormItem :label="$t('关键字')" >
+                    <FormItem :label="$t('keywords')" >
                         <Input v-model.trim="formData.keyword"
                                style="width: 100%"
-                               :placeholder="$t('请输入关键词')" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
+                               :placeholder="$t('inputField', {field: $t('keywords')})" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
                     </FormItem>
                 </i-col>
             </i-row>
@@ -98,7 +99,7 @@
             </i-row>-->
         </Form>
         <div style="position: absolute; right: 36px; top: 60px;">
-            <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('搜索')}}</Button><!--搜索-->
+            <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
             <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
         </div>
     </div>

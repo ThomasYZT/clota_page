@@ -1,58 +1,58 @@
 // 团队订单审核列表表头
 export const groupOrderHead = [
     {
-        title: '订单号',
+        title: 'orderId',   // 订单号
         width: 200,
         field: 'orderNo'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',  // 游玩日期
         minWidth: 200,
         field: 'originVisitDate'
     },
     {
-        title: '下单时间',
+        title: 'orderTime',  // 下单时间
         minWidth: 200,
         field: 'orderTime'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',      // 下单企业
         width: 150,
         enWidth : 180,
         field: 'orderOrgName'
     },
     {
-        title: '下单渠道',
+        title: 'orderChannel',      // 下单渠道
         width: 130,
         enWidth : 150,
         field: 'orderChannel'
     },
     {
-        title: '产品名称',
+        title: 'productName',      // 产品名称
         width: 150,
         enWidth : 180,
         field: 'productName'
     },
     {
-        title: '游客人数',
+        title: 'visitorNum',      // 游客人数
         width: 100,
         enWidth : 180,
         field: 'quantity'
     },
     {
-        title: '下单企业订单金额',
+        title: 'orderOrgAmount',  // 下单企业订单金额
         width: 160,
         enWidth : 180,
         field: 'orderAmount'
     },
     {
-        title: '支付状态',
+        title: 'paymentStatus',      // 支付状态
         width: 110,
         enWidth : 130,
         field: 'paymentStatus'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 180,
         enWidth : 180,
     }
@@ -61,23 +61,23 @@ export const groupOrderHead = [
 // 团队订单--单个审核--订单下的产品列表表头
 export const orderProductHead = [
     {
-        title: '产品名称',
+        title: 'productName',      // 产品名称
         minWidth: 150,
         enWidth : 180,
         field: 'productName'
     },
     {
-        title: '预订数量',
+        title: 'reserveNum',       // 预订数量
         width: 100,
         field: 'quantity'
     },
     {
-        title: '产品单价',
+        title: 'settlePrice',       // 产品单价
         width: 100,
         field: 'price'
     },
     {
-        title: '产品小计',
+        title: 'productActPrice',       // 产品小计
         width: 100,
         field: 'actPrice'
     },
@@ -86,24 +86,24 @@ export const orderProductHead = [
 // 团队订单--批量审核--订单列表表头
 export const batchAuditHead = [
     {
-        title: '订单号',
+        title: 'orderId',
         minWidth: 150,
         // enWidth : 180,
         field: 'orderNo'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',
         miWidth: 150,
         enWidth : 160,
         field: 'orderOrgName'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         width: 130,
         field: 'originVisitDate'
     },
     {
-        title: '订单金额',
+        title: 'orderAmount',       // 订单金额
         width: 120,
         field: 'orderAmount'
     },
@@ -112,44 +112,44 @@ export const batchAuditHead = [
 // 散客退票审核列表表头
 export const bulkRefundHead = [
     {
-        title: '订单号',
+        title: 'orderId',
         width: 200,
         field: 'orderNo'
     },
     {
-        title: '订单明细编号',
+        title: 'orderDetailNo',     // 订单明细编号
         width: 200,
         field: 'orderDetailNo'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         minWidth: 200,
         field: 'visitDate'
     },
     {
-        title: '下单时间',
+        title: 'orderTime',
         minWidth: 200,
         field: 'orderTime'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',
         width: 150,
         enWidth : 180,
         field: 'channel'
     },
     {
-        title: '下单渠道',
+        title: 'orderChannel',
         width: 130,
         enWidth : 150,
         field: 'orderChannel'
     },
     {
-        title: '第三方订单号',
+        title: 'thirdOrderNo',      // 第三方订单号
         width: 200,
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称|预定数量',
+        title: '产品名称|预定数量',     // 产品名称|预定数量
         width: 180,
         enWidth : 200,
         field: 'productName|quantity'
