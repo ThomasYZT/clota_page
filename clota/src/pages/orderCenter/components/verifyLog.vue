@@ -18,6 +18,7 @@
             <el-table-column
                 slot="column1"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">

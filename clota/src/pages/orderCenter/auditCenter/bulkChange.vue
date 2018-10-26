@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="240"
+            :ofsetHeight="235"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -42,6 +42,7 @@
             <el-table-column
                 slot="column0"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -52,6 +53,7 @@
             <el-table-column
                 slot="column5"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -62,34 +64,31 @@
             <el-table-column
                 slot="column7"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="col-ellipsis-name" v-w-title="scope.row.productName">{{scope.row.productName | contentFilter}}</span> |
+                    <span>{{scope.row.productName | contentFilter}}</span> |
                     <span>{{scope.row.quantity | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
                 slot="column8"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <!--<span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |-->
-                    <!--<span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>-->
-                    <span>
-                        {{$t('单价')}}：<span class="col-ellipsis-number" v-w-title="scope.row.price">{{scope.row.price | moneyFilter}}</span>
-                    </span> |
-                    <span>
-                        {{$t('小计')}}：<span class="col-ellipsis-number" v-w-title="scope.row.amount">{{scope.row.amount | moneyFilter}}</span>
-                    </span>
+                    <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
+                    <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
                 slot="column9"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -100,6 +99,7 @@
             <el-table-column
                 slot="column13"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -287,8 +287,9 @@
         }
         .batch-audit {
             @include block_outline();
-            padding-bottom: 4px;
+            margin-bottom: 10px;
             padding-left: 20px;
+            line-height: 1;
         }
 
         .operate-btn {
@@ -300,7 +301,7 @@
             cursor: pointer;
         }
 
-        .col-ellipsis-name {
+        /*.col-ellipsis-name {
             float: left;
             max-width: 75px;
             @include overflow_tip();
@@ -310,7 +311,7 @@
             display: inline-block;
             max-width: 46px;
             @include overflow_tip();
-        }
+        }*/
 
         .blue {
             color: $color_blue;

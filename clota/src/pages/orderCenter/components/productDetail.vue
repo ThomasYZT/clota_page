@@ -125,7 +125,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="">{{$t('details')}}</span>
+                    <span class="operate-btn blue" @click="orderProductDetail(scope.row)">{{$t('details')}}</span>
                 </template>
             </el-table-column>
         </table-com>
@@ -147,6 +147,8 @@
                              :visitor-info="visitorInfo"
                              @on-audit-confirmed="onAuditConfirmed">
         </confirm-audit-modal>
+        <!--散客产品明细模态框-->
+        <product-detail-modal ref="productDetailModal"></product-detail-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -154,10 +156,11 @@
     import {productListHead} from '../auditCenter/auditConfig';
     import ajax from '@/api/index';
     import confirmAuditModal from '../auditCenter/child/confirmAuditModal.vue';
+    import productDetailModal from '../orderDetail/individualOrderChild/components/productDetailModal.vue'
     import {transSyncStatus} from '../commFun';
 
     export default {
-        components: {tableCom, confirmAuditModal},
+        components: {tableCom, confirmAuditModal, productDetailModal},
         props: {
             moduleInfo: {
                 type: Array,
@@ -254,6 +257,13 @@
             },
             // 同步状态code转换
             transSyncStatus: transSyncStatus,
+            /**
+             * 查看散客订单下产品明细详情
+             * @param data
+             */
+            orderProductDetail(data) {
+                this.$refs.productDetailModal.toggle(data);
+            },
         }
     };
 </script>
