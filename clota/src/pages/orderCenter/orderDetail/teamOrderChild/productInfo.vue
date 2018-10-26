@@ -36,8 +36,6 @@
         },
         data() {
             return {
-                //表头配置
-                columnData : columnData
             }
         },
         methods: {},

@@ -145,7 +145,7 @@
                 saleOrgList : [],
                 //下单企业列表
                 orderTakeList : [],
-                //发送机构是否禁用
+                //发售机构是否禁用
                 saleDisabled : false,
                 //下单企业是否禁用
                 orderTaskDisabled : false

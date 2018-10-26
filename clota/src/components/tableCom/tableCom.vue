@@ -49,6 +49,22 @@
                                 </span>
                         </template>
                     </el-table-column>
+                    <el-table-column
+                        v-if="item.type === 'money'"
+                        :label="$t(item.title)"
+                        show-overflow-tooltip
+                        :prop="item.field"
+                        :key="index"
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
+                        <template slot-scope="scoped">
+                            <span
+                                class="detail-hover"
+                                v-w-title="scoped.row[item.field]">
+                                {{scoped.row[item.field] | moneyFilter | contentFilter}}
+                            </span>
+                        </template>
+                    </el-table-column>
                     <!--普通列-->
                     <el-table-column
                         v-else

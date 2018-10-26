@@ -9,6 +9,7 @@
         <div class="content">
             <!--基本信息-->
             <base-info :base-info="baseInfo"
+                       :product-info-list="productInfoList"
                        :view-type="viewType">
             </base-info>
             <!--产品信息-->
@@ -188,7 +189,6 @@
             },
             //视图
             viewType () {
-                return 'scenic';
                 if(this.orderDetailInfo && this.orderDetailInfo.orderOrgType){
                     return this.orderDetailInfo.orderOrgType;
                 }else{

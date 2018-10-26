@@ -34,7 +34,7 @@ export default {
     //景区给旅行社下单查询上次导游和司机信息
     'getRecentVisitors' : '/order/getRecentVisitors',
     //获取订单列表
-    'getOrderList' : '/order/getOrderList1',
+    'getOrderList' : '/order/getOrderList',
     //查询团队订单详情
     'queryTeamOrderDetail' : '/order/queryTeamOrderDetail',
     //获取订单明细信息
@@ -62,6 +62,8 @@ export default {
     //查询退票改签票信息列表
     'queryRefundAndAlterTicketList': '/order/queryRefundAndAlterTicketList',
     //新增订单退票改签申请
-    'saveOrderProductRefundAlter': '/order/saveOrderProductRefundAlter'
+    'saveOrderProductRefundAlter': '/order/saveOrderProductRefundAlter',
+    //获取产品可预定日期
+    'getProductPolicyPlayDate': '/order/getProductPolicyPlayDate'
 
 }

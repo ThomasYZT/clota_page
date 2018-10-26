@@ -211,6 +211,7 @@
              */
             visibleChange(type) {
                 if(type === true){
+                    this.getProductPolicyPlayDate();
                 }
             },
             /**
@@ -268,6 +269,16 @@
                         this.$Message.error('发起改签申请失败');
                     }
                 });
+            },
+            /**
+             * 获取产品可预定日期
+             */
+            getProductPolicyPlayDate () {
+                ajax.post('getProductPolicyPlayDate',{
+                    visitorProductId : this.orderDetail.visitorProductId,
+                }).then(res => {
+                    console.log(res);
+                });
             }
         },
         computed : {
@@ -279,6 +290,8 @@
                     return  [];
                 }
             }
+        },
+        created () {
         }
     }
 </script>

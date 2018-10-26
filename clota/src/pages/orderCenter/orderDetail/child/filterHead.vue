@@ -68,7 +68,8 @@
                     <!--取票状态-->
                     <FormItem label="取票状态">
                         <Select v-model.trim="formData.pickStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in takeTicketStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -81,7 +82,8 @@
                     <!--退票状态-->
                     <FormItem label="退票状态">
                         <Select v-model.trim="formData.refundStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in refundStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -107,7 +109,9 @@
                 <i-col span="6">
                     <FormItem label="下单企业" >
                         <Select v-model.trim="formData.orderOrgId"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                :disabled="orderTaskDisabled"
+                                @on-change="searchProductList">
                             <Option v-for="item  in orderTakeList"
                                     :key="item.id"
                                     :value="item.id">
@@ -122,7 +126,8 @@
                     <!--下单渠道-->
                     <FormItem label="下单渠道" >
                         <Select v-model.trim="formData.orderChannel"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
@@ -135,7 +140,8 @@
                     <!--核销状态-->
                     <FormItem label="核销状态" >
                         <Select v-model.trim="formData.verifyStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in verifyStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -148,7 +154,8 @@
                     <!--是否同步-->
                     <FormItem label="是否同步" >
                         <Select v-model.trim="formData.syncStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in synchronizationList"
                                     :key="item.value"
                                     :value="item.value">
@@ -161,7 +168,8 @@
                     <!--改签状态-->
                     <FormItem label="改签状态" >
                         <Select v-model.trim="formData.rescheduleStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in rescheduleStatus"
                                     :key="item.value"
                                     :value="item.value">
@@ -202,7 +210,8 @@
                     <!--审核状态-->
                     <FormItem label="审核状态" >
                         <Select v-model.trim="formData.auditStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in auditStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -215,7 +224,8 @@
                     <!--支付状态-->
                     <FormItem label="支付状态" >
                         <Select v-model.trim="formData.paymentStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in payStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -230,7 +240,8 @@
                     <!--业态类型-->
                     <FormItem label="业态类型" >
                         <Select v-model.trim="formData.productType"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option value="ticket">票</Option>
                         </Select>
                     </FormItem>
@@ -239,7 +250,8 @@
                     <FormItem label="关键字" >
                         <Input v-model.trim="formData.keyword"
                                style="max-width: 380px"
-                               placeholder="输入游客姓名/手机号/订单明细编号" />
+                               placeholder="输入游客姓名/手机号/订单明细编号"
+                               @on-enter="searchProductList"/>
                     </FormItem>
                 </i-col>
                 <i-col span="6" style="text-align: right;float: right">
@@ -250,7 +262,8 @@
             <i-row>
                 <i-col span="9" className="abnormal-order">
                     <FormItem :label-width="0">
-                        <Checkbox v-model="formData.abnormalStatus">仅显示异常订单</Checkbox>
+                        <Checkbox v-model="formData.abnormalStatus"
+                                  @on-change="searchProductList">仅显示异常订单</Checkbox>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -342,6 +355,8 @@
                 auditStatusList : auditStatusList,
                 //支付状态
                 payStatusList : payStatusList,
+                //下单企业是否禁用
+                orderTaskDisabled : false
             }
         },
         methods: {
@@ -373,6 +388,7 @@
              */
             sceneChange () {
                 if(!this.formData.scenicOrgId) return;
+                this.formData.orderOrgId = '';
                 ajax.post('getOrderOrgList',{
                     scenicId : this.formData.scenicOrgId,
                     allocationStatus : this.formData.allocationStatus
@@ -385,16 +401,14 @@
                     //如果所属景区是当前登录的景区，那么发售机构是当前机构，不可修改，
                     //如果所属景区不是当前登录景区，那么下单企业必须是当前景区，且不可修改
                     if(this.formData.scenicOrgId === this.manageOrgs.id){
-                        this.saleDisabled = true;
                         this.orderTaskDisabled = false;
                     }else{
-                        this.saleDisabled = false;
                         this.orderTaskDisabled = true;
                         if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
                             this.formData.orderOrgId = this.orderTakeList[0].id;
-                            this.search();
                         }
                     }
+                    this.searchProductList();
                 });
             },
             /**

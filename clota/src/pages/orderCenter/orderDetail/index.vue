@@ -197,6 +197,7 @@
     import ajax from '@/api/index.js';
     import applyAlterTicketModal from './child/applyAlterTicketModal';
     import {transSyncStatus,transSMSStatus,transPaymentStatus} from '../commFun.js'
+    import debounce from 'lodash/debounce';
 
     export default {
         components : {
@@ -257,6 +258,12 @@
              * 查询所有订单
              */
             queryList () {
+
+            },
+            /**
+             * 查询订单ajax请求
+             */
+            queryListAjax () {
                 ajax.post('getOrderList',{
                     ...this.queryParams
                 }).then(res => {
@@ -276,6 +283,7 @@
             setParams (params) {
                 Object.assign(this.queryParams,params);
                 this.tableShow = true;
+                this.queryList();
             },
             /**
              * 手动触发查询
@@ -351,7 +359,7 @@
                         if(res.data.orderOrgType === 'scenic' ||
                             (res.data.orderOrgType === 'channel' && res.data.allowAlter === 'true')){
                             this.orderProductInfo = res.data;
-                            this.refundTicketModalShow = true;
+                            this.alterTicketModalShow = true;
                         }else{
                             this.$Message.warning(`订单${data.orderNo}下产品不可改签`);
                         }
@@ -432,6 +440,9 @@
                     };
                 }
             }
+        },
+        created () {
+            this.queryList = debounce(this.queryListAjax,200);
         }
     }
 </script>
