@@ -65,6 +65,17 @@
                           :table-data="parentDistributeData"
                           :border="false">
                     <el-table-column
+                        slot="column0"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span class="item-click" @click="checkProductDetail(scope.row)">{{scope.row.productName | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column3"
                         slot-scope="row"
                         :label="row.title"
@@ -309,30 +320,39 @@
              * 表头渲染
              */
             headerRender(h, { column, $index }) {
-                    return h("Tooltip",
-                        {
-                            props: {
-                                placement: 'top',
-                                content: column.label,
-                                transfer: true
-                            },
+                return h("Tooltip",
+                    {
+                        props: {
+                            placement: 'top',
+                            content: column.label,
+                            transfer: true
                         },
-                        [
-                            h(
-                                'div',
-                                {
-                                    style: {
-                                        maxWidth: "100px"
-                                    }
-                                },
-                                [column.label]
-                            ),
-                            h('i',{
-                                class: ['iconfont icon-edit']
-                            })
-                        ]
-                    );
-            }
+                    },
+                    [
+                        h(
+                            'div',
+                            {
+                                style: {
+                                    maxWidth: "100px"
+                                }
+                            },
+                            [column.label]
+                        ),
+                        h('i',{
+                            class: ['iconfont icon-edit']
+                        })
+                    ]
+                );
+            },
+            //查看产品详情
+            checkProductDetail ( data ) {
+                this.$router.push({
+                    name: 'ticketDetail',
+                    params: {
+                        info: data
+                    }
+                })
+            },
         }
     }
 </script>
@@ -440,6 +460,11 @@
             .table-wrapper {
                 width: 80%;
                 margin: 0 auto;
+
+                .item-click {
+                    cursor: pointer;
+                    color: $color_blue;
+                }
             }
 
             .table-wrapper2 {

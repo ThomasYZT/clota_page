@@ -31,7 +31,7 @@
                         v-if="detail && detail.productList"
                         :table-com-min-height="260"
                         :column-data="detailParentDistributePriceConfig"
-                        :table-data="info.policyItems"
+                        :table-data="info.parentAllocationProductList"
                         :border="false">
                         <el-table-column
                             slot="column0"
@@ -74,7 +74,7 @@
                             :min-width="120"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                                {{scope.row.settlePrice | moneyFilter}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -153,10 +153,13 @@
                     //校验非空必填以及不可低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
+                            console.log(item)
                             if(item.price === ''){
                                 callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
                             }else {
                                 if(validator.isNumber(item.price)) {
+                                    console.log(item.settlePrice)
+                                    console.log(parseFloat(item.price),parseFloat(item.settlePrice))
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
                                         callback(new Error(this.$t('maybeLoss')));
                                     } else {
@@ -250,7 +253,7 @@
              */
             async getData(){
                 //获取分销详情数据
-                await ajax.post('getPolicyInfo', {
+                await ajax.post('getPolicyAllocationInfo', {
                     allocationId: this.detail.listItem.allocationId
                 }).then((res) => {
                     if(res.success) {
@@ -258,10 +261,15 @@
 
                         //初始化产品分销单价数据
                         this.detail.productList.forEach((item,index) => {
-                            let _obj = {};
-                            _obj.productId = item.productId;
-                            _obj.price = item.settlePrice;
-                            this.formData.productPrices.push(_obj);
+                            this.info.parentAllocationProductList.forEach((pitem, pindex) => {
+                                if(index === pindex) {
+                                    let _obj = {};
+                                    _obj.productId = item.productId;
+                                    _obj.price = item.settlePrice;
+                                    _obj.settlePrice = pitem.settlePrice;
+                                    this.formData.productPrices.push(_obj);
+                                }
+                            })
                         });
 
                         //关闭模态框

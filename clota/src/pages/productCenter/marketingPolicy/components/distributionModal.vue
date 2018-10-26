@@ -255,7 +255,6 @@
                         //初始化产品分销单价数据
                         this.info.parentAllocationProductList.forEach((item) => {
                             let _obj = {};
-
                             _obj.productId = item.productId;
                             _obj.settlePrice = item.settlePrice;
                             _obj.price = '';
