@@ -29,6 +29,9 @@
                 </ul>
             </li>
         </ul>
+        <div class="audit-result">
+            <img :src="auditResultImg" alt="">
+        </div>
     </div>
 </template>
 
@@ -44,6 +47,18 @@
         components: {},
         data() {
             return {}
+        },
+        computed: {
+            //审核结果图片
+            auditResultImg () {
+                if(this.baseInfo.auditStatus === 'success'){
+                    return require('../../../../../assets/images/icon-audit-success.svg');
+                }else if(this.baseInfo.auditStatus === 'audit'){
+                    return require('../../../../../assets/images/icon-wait-audit.svg');
+                }else{
+                    return require('../../../../../assets/images/icon-audit-fail.svg');
+                }
+            }
         },
         methods: {}
     }
@@ -101,6 +116,14 @@
 
         .ivu-btn-108px{
             @include absolute_pos(absolute,20px,24px)
+        }
+
+        .audit-result{
+            @include absolute_pos(absolute,$right : 0,$bottom : 0);
+
+            img{
+                @include block_outline(100,100,false);
+            }
         }
 
     }

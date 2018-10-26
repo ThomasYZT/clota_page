@@ -6,7 +6,8 @@
     <div class="individual-order-detail">
         <div class="content">
             <!--订单基本信息-->
-            <baseInfo :baseInfo="baseInfo"> </baseInfo>
+            <baseInfo :baseInfo="baseInfo"
+                      :viewType="orderOrgType"> </baseInfo>
 
             <!--游客信息-->
             <!--分销商不可见-->

@@ -59,6 +59,7 @@
                     this.chosedData = [];
                     this.num = 0;
                     this.baseInfo = {};
+                    this.orderTicketIds = '';
                 }
                 this.visible = !this.visible;
             },

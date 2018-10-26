@@ -35,16 +35,30 @@
                 </ul>
             </li>
         </ul>
+
+        <div class="buttun-wrapper">
+            <Button type="primary"  @click.native="toUpDetail">查看上级订单</Button>
+            <Button v-if="canResendMsg" type="primary" @click="reSendMsg">重发短信</Button>
+        </div>
+
+        <div class="audit-result">
+            <img :src="auditResultImg" alt="">
+        </div>
     </div>
 </template>
 
 <script>
+    import ajax from '../../../../../api/index'
     import {transSMSStatus} from '../../../commFun'
     export default {
         props: {
             'baseInfo': {
                 type: Object,
                 default: {}
+            },
+            'view-type': {
+                type: String,
+                default: ''
             }
         },
         computed: {
@@ -55,7 +69,17 @@
                 }else {
                     return '';
                 }
-            }
+            },
+            //审核结果图片
+            auditResultImg () {
+                if(this.baseInfo.auditStatus === 'success'){
+                    return require('../../../../../assets/images/icon-audit-success.svg');
+                }else if(this.baseInfo.auditStatus === 'audit'){
+                    return require('../../../../../assets/images/icon-wait-audit.svg');
+                }else{
+                    return require('../../../../../assets/images/icon-audit-fail.svg');
+                }
+            },
         },
         data() {
             return {
@@ -63,7 +87,38 @@
                 transSMSStatus: transSMSStatus
             }
         },
-        methods: {}
+        methods: {
+            //是否可以重发短信
+            canResendMsg () {
+                //景区下，审核成功，取票前可重发短信
+                return this.viewType === 'scenic' &&
+                    this.baseInfo.auditStatus === 'success' &&
+                    this.productInfoList.every(item => item.quantity > item.quantityPicked) ;
+            },
+            //查看上级订单
+            toUpDetail() {
+                this.$router.push({
+                    name: 'individualFirstLevel',
+                    params : {
+                        orderId : this.baseInfo.orderId
+                    }
+                })
+            },
+            /**
+             * 给导游重发短信
+             */
+            reSendMsg () {
+                ajax.post('noticeGuidesAuditResult',{
+                    visitorProductId : this.baseInfo.visitorProductId
+                }).then(res => {
+                    if(res.success){
+                        this.$Message.success('发送成功');
+                    }else{
+                        this.$Message.error('发送失败');
+                    }
+                });
+            },
+        }
     }
 </script>
 
@@ -115,11 +170,19 @@
                 }
             }
         }
-
-        .ivu-btn-108px{
+        .buttun-wrapper {
             @include absolute_pos(absolute,20px,24px)
+            .ivu-btn-108px{
+            }
         }
 
+        .audit-result{
+            @include absolute_pos(absolute,$right : 0,$bottom : 0);
+
+            img{
+                @include block_outline(100,100,false);
+            }
+        }
     }
 </style>
 

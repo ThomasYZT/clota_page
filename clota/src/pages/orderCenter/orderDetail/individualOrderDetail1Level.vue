@@ -45,6 +45,7 @@
              * @param params
              */
             getParams(params) {
+                console.log(params)
                 if(params && params.orderId){
                     this.orderId = params.orderId;
                     //路由中获取到参数后立马调用数据接口

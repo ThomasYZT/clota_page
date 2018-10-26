@@ -406,7 +406,7 @@
                     this.$router.push({
                         name : 'individualSecondLevel',
                         params : {
-                            productDetail : rowData
+                            orderId : rowData.orderId
                         }
                     });
                 }
