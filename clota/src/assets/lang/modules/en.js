@@ -1218,4 +1218,5 @@ export default {
     'systemErr' : 'system error',
     'payType.deposit' : '定存',
     'payType.collect' : '到付',
+    'ticketDesc': '购票须知'
 }

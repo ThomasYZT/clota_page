@@ -424,8 +424,10 @@
                         console.log(params.info)
                         //根据产品Id查明细
                         this.findProductById(params.info);
-                        //查询权限下的园区
-                        this.queryScenicOrgByAccountRole();
+                        if(this.$store.state.manageOrgs.nodeType !== 'partner') {
+                            //查询权限下的园区
+                            this.queryScenicOrgByAccountRole();
+                        }
                     }
                 }
             },

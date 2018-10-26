@@ -346,10 +346,11 @@
             },
             //查看产品详情
             checkProductDetail ( data ) {
+                let _obj = Object.assign({},data,{id: data.productId});
                 this.$router.push({
                     name: 'ticketDetail',
                     params: {
-                        info: data
+                        info: _obj
                     }
                 })
             },

@@ -198,25 +198,28 @@
                 <!--改签规则-->
                 <br/>
                 <div class="line" v-if="detail.productPolicy && detail.productPolicy.alterRuleModel">
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
-                                <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
-                                <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="24">
-                            <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
-                                <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
+                   <Form :label-width="120"
+                         label-position="right">
+                       <i-row>
+                           <i-col span="12">
+                               <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
+                                   <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
+                               </Form-item>
+                           </i-col>
+                           <i-col span="12">
+                               <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                                   <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
+                               </Form-item>
+                           </i-col>
+                       </i-row>
+                       <i-row>
+                           <i-col span="24">
+                               <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
+                                   <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
+                               </Form-item>
+                           </i-col>
+                       </i-row>
+                   </Form>
                 </div>
             </Form>
         </div>

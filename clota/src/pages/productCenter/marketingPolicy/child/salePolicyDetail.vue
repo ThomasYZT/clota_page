@@ -20,6 +20,8 @@
 
             <!--表单信息-->
             <Form ref="formValidate"
+                  :label-width="250"
+                  label-position="right"
                   :model="detail">
 
                 <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.saleRuleModel">
@@ -210,12 +212,12 @@
                 </div>-->
 
                 <!--退改规则-->
-                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel"
-                     :style="{height: detail.productPolicy.returnRuleModel.rules.length ? (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px' : '280px'}">
+                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel">
                     <Form-item :label="$t('returnAndAlterRule')+'：'"><!--退改规则-->
                         <div>
                             <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
                             <table-com
+                                v-if="detail.productPolicy.returnRuleModel.type !== 'notAllow'"
                                 :table-com-min-height="260"
                                 :column-data="refundColumn"
                                 :table-data="detail.productPolicy.returnRuleModel.rules"
@@ -494,29 +496,13 @@
                     margin: 0 auto;
                     text-align: left;
                     width: 100%;
-                    float: left;
-                    margin-right: 10px;
-                    height: 30px;
                     line-height: 30px;
                     font-size: $font_size_14px;
-                    display: flex;
                 }
 
                 /deep/ .ivu-form-item-label{
-                    padding-left: 0;
-                    padding-right: 0;
-                    width: 220px;
-                }
-
-                /deep/ .ivu-form-item-content{
-                    color: $color-666;
-                    /*flex: 1;*/
-                    display: inline-block;
-                    width: calc(100% - 220px);
-                    >div{
-                        vertical-align: middle;
-                        @include overflow_tip();
-                    }
+                    width: auto;
+                    white-space: nowrap;
                 }
 
                 /deep/ .ivu-checkbox-wrapper{
