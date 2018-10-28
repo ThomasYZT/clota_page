@@ -4,6 +4,10 @@
 -->
 <template>
     <div class="individual-order-detail">
+        <bread-crumb-head
+            :locale-router="'订单详情'"
+            :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
+        </bread-crumb-head>
         <div class="content">
             <!--散客订单基本信息-->
             <baseInfo :base-info="baseInfo" ></baseInfo>
@@ -23,13 +27,15 @@
     import orderDetailList from './individualOrderChild/level1/orderDetailList';
     import orderPlacer  from './individualOrderChild/level1/orderPlacer';
     import lifeCycelMixins from '@/mixins/lifeCycleMixins.js';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import ajax from '@/api/index.js';
     export default {
         mixins: [lifeCycelMixins],
         components: {
             baseInfo,
             orderDetailList,
-            orderPlacer
+            orderPlacer,
+            breadCrumbHead
         },
         data() {
             return {
@@ -37,6 +43,15 @@
                 orderDetailInfo: {},
                 //订单id
                 orderId : '',
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: '订单查询',
+                        router: {
+                            name: 'reserveOrderDetail'
+                        }
+                    }
+                ],
             }
         },
         methods: {
@@ -45,7 +60,6 @@
              * @param params
              */
             getParams(params) {
-                console.log(params)
                 if(params && params.orderId){
                     this.orderId = params.orderId;
                     //路由中获取到参数后立马调用数据接口

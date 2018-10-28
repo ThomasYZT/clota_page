@@ -158,9 +158,9 @@
             },
             //产品信息
             'product-info' : {
-                type : Object,
+                type : Array,
                 default () {
-                    return {};
+                    return [];
                 }
             }
         },
@@ -244,7 +244,7 @@
              * @returns {boolean}
              */
             selectableFunc(data){
-                return canAlterTicket(this.productInfo.orderOrgType,data);
+                return data.alterRule === 'true';
             },
             //同步状态
             transSyncStatus : transSyncStatus,
@@ -287,8 +287,8 @@
         computed : {
             //订单下的产品信息
             tableData () {
-                if(this.productInfo && this.productInfo.ticketList){
-                    return this.productInfo.ticketList;
+                if(this.productInfo && this.productInfo.length > 0){
+                    return this.productInfo;
                 }else{
                     return  [];
                 }

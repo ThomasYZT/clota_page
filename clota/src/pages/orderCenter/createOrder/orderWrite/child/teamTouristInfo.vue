@@ -7,7 +7,7 @@
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTouristInfo.length < 1"
-                    @click="delTourist">批量删除</Button>
+                    @click="delTourist">{{$t('deleteBatch')}}</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
                     @click="addTourist">添加游客</Button>
@@ -403,7 +403,7 @@
              */
             delTourist () {
                 this.$refs.delModal.show({
-                    title : this.$t('删除'),
+                    title : this.$t('del'),
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }

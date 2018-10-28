@@ -5,6 +5,7 @@
 <template>
     <Modal v-model="visible"
            title="申请改签"
+           class-name="vertical-center-modal"
            width="420">
 
         <Form :label-width="150"
@@ -16,6 +17,7 @@
                 <DatePicker v-model="afterAlterDate"
                             format="yyyy-MM-dd"
                             type="date"
+                            :options="dateOptions"
                             :clearable="false"
                             :editable="false"
                             transfer>
@@ -45,8 +47,9 @@
                 baseInfo: {},
                 //改签日期
                 afterAlterDate: '',
-                orderTicketIds: ''
-
+                orderTicketIds: '',
+                //可以改签的日期
+                canAlterDate : []
             }
         },
         methods: {
@@ -58,6 +61,7 @@
                     data.chosedData.forEach(item => {
                         this.orderTicketIds += item.id + ',';
                     });
+                    this.getProductPolicyPlayDate();
                 }else {
                     this.chosedData = [];
                     this.num = 0;
@@ -79,13 +83,41 @@
                     afterAlterDate: new Date(this.afterAlterDate).format('yyyy-MM-dd')
                 }).then(res => {
                     if(res.success) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('return')}));
+                        this.$Message.success('发起改签申请成功');
                         this.toggle();
+                        this.$emit('fresh-data');
                     }else {
-                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('return')}));
+                        this.$Message.error('发起改签申请失败');
                         this.toggle();
                     }
                 })
+            },
+            /**
+             * 获取产品可预定日期
+             */
+            getProductPolicyPlayDate () {
+                ajax.post('getProductPolicyPlayDate',{
+                    visitorProductId : this.baseInfo.visitorProductId,
+                }).then(res => {
+                    if(res.success){
+                        this.canAlterDate = res.data ? res.data : [];
+                    }else{
+                        this.canAlterDate = [];
+                    }
+                });
+            }
+        },
+        computed : {
+            //日期插件配置参数
+            dateOptions () {
+                return {
+                    disabledDate : (date) =>  {
+                        if(date){
+                            return !this.canAlterDate.includes(date.format('yyyy-MM-dd 00:00:00'));
+                        }
+                        return true;
+                    }
+                }
             }
         }
     }

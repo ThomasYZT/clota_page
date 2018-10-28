@@ -64,6 +64,8 @@ export default {
     //新增订单退票改签申请
     'saveOrderProductRefundAlter': '/order/saveOrderProductRefundAlter',
     //获取产品可预定日期
-    'getProductPolicyPlayDate': '/order/getProductPolicyPlayDate'
+    'getProductPolicyPlayDate': '/order/getProductPolicyPlayDate',
+    //通知游客取票
+    'noticeVisitorToPick': '/sms/noticeVisitorToPick'
 
 }

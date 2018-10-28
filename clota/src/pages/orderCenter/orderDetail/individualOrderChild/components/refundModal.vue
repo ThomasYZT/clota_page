@@ -5,6 +5,7 @@
 <template>
     <Modal v-model="visible"
            title="申请退票"
+           class-name="vertical-center-modal"
            width="420">
 
         <Form :label-width="150"
@@ -67,10 +68,7 @@
              * 获取退票手续费
              */
             getFee(chosedData) {
-                chosedData.forEach(item => {
-                    this.orderTicketIds += item.id + ',';
-                });
-
+                this.orderTicketIds = chosedData.map(item => item.id).join(',');
                 ajax.post('getRefundProcedureFee', {
                     orderProductId: chosedData[0].orderProductId,
                     orderTicketIds: this.orderTicketIds
@@ -92,10 +90,11 @@
                     reqOrderTicketIds: this.orderTicketIds,
                 }).then(res => {
                     if(res.success) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('return')}));
+                        this.$Message.success('发起退票申请成功');
                         this.toggle();
+                        this.$emit('fresh-data');
                     }else {
-                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('return')}));
+                        this.$Message.error('发起退票申请失败');
                         this.toggle();
                     }
                 })

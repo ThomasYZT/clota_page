@@ -93,14 +93,14 @@
                         </Col>
                         <Col span="10">
                             <FormItem label="游玩日期：">
-                                {{ticketInfo.visitDate | contentFilter}}
+                                {{ticketInfo.visitDate | timeFormat('yyyy-MM-dd') | contentFilter}}
                             </FormItem>
                         </Col>
                     </Row>
                     <Row>
                         <Col span="10">
                             <FormItem label="产品单价：">
-                                {{ticketInfo.price | contentFilter}}
+                                {{ticketInfo.price | moneyFilter | contentFilter}}
                             </FormItem>
                         </Col>
                         <Col span="10">
@@ -112,7 +112,7 @@
                     <Row>
                         <Col span="10">
                             <FormItem label="取票状态：">
-                                {{ticketInfo.pickStatus ? '已取票' : '未取票' | contentFilter}}
+                                {{ticketInfo.pickStatus === 'true' ? '已取票' : '未取票' | contentFilter}}
                             </FormItem>
                         </Col>
                         <Col span="10">
@@ -124,7 +124,7 @@
                     <Row>
                         <Col span="10">
                             <FormItem label="核销状态：">
-                                {{ticketInfo.verifyStatus ? '已核销' : '未核销' | contentFilter}}
+                                {{ticketInfo.verifyStatus === 'true' ? '已核销' : '未核销' | contentFilter}}
                             </FormItem>
                         </Col>
                         <Col span="10">
@@ -136,7 +136,9 @@
                     <Row>
                         <Col span="10">
                             <FormItem label="退票状态：">
-                                {{ticketInfo.refundStatus === 'no_refund' ? '未退票' : '已退票' | contentFilter}}
+                                <template v-if="ticketInfo.refundStatus === 'refunded'">{{$t('已退票')}}</template>
+                                <template v-else-if="ticketInfo.refundStatus === 'refund_audit'">{{$t('退票待审核')}}</template>
+                                <template v-else-if="ticketInfo.refundStatus === 'no_refund'">{{$t('未退票')}}</template>
                             </FormItem>
                         </Col>
                         <Col span="10">
@@ -148,7 +150,9 @@
                     <Row>
                         <Col span="10">
                             <FormItem label="改签状态：">
-                                {{ticketInfo.rescheduleStatus === 'no_after' ? '未改签' : '已改签' | contentFilter}}
+                                <template v-if="ticketInfo.rescheduleStatus === 'alter_audit'">{{$t('改签待审核')}}</template>
+                                <template v-else-if="ticketInfo.rescheduleStatus === 'alter'">{{$t('已改签')}}</template>
+                                <template v-else-if="ticketInfo.rescheduleStatus === 'no_alter'">{{$t('未改签')}}</template>
                             </FormItem>
                         </Col>
                         <Col span="10">
@@ -157,10 +161,13 @@
                             </FormItem>
                         </Col>
                     </Row>
-                    <Row>
+                    <!--只有景区可见同步状态和同步时间-->
+                    <Row v-if="viewType === 'scenic'">
                         <Col span="10">
                             <FormItem label="同步状态：">
-                                {{ticketInfo.syncStatus | contentFilter}}
+                                <template v-if="ticketInfo.syncStatus === 'success'">{{$t('synchronized')}}</template>
+                                <template v-else-if="ticketInfo.syncStatus === 'failure'">{{$t('syncFailed')}}</template>
+                                <template v-else>-</template>
                             </FormItem>
                         </Col>
                         <Col span="10">
@@ -225,7 +232,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="default" @click="toggle()">取消</Button>
+            <Button type="ghost" @click="toggle()">取消</Button>
         </div>
     </Modal>
 </template>
@@ -234,6 +241,13 @@
 
     import ajax from '@/api/index'
     export default {
+        props :{
+            //当前查看详情角色
+            'view-type': {
+                type: String,
+                default: ''
+            }
+        },
         components: {},
         data() {
             return {
@@ -403,9 +417,13 @@
         }
     }
 
-    .content {
-        height: 650px;
+    /deep/ .ivu-modal-body{
+        height: 500px;
         overflow: auto;
+    }
+
+    .content {
+
         .list {
             width: 90%;
             margin: 0 auto;

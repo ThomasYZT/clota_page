@@ -11,14 +11,14 @@
         class="product-err"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('提示')}}</span>
+            <span class="title">{{$t('notice')}}</span>
         </div>
         <div class="target-body">
             <ul class="pro-list">
                 <li class="detail title">
-                    以下产品下单失败
+                    {{$t('placeOrderFail')}}
                 </li>
-                <li class="product-name">产品名称：</li>
+                <li class="product-name">{{$t('productName')}}：</li>
                 <li v-for="item in productList"
                     :key="item.productId"
                     v-w-title="item.productName"
@@ -27,7 +27,7 @@
                     <Icon type="information-circled"></Icon>
                 </li>
                 <li class="detail error" v-if="type === 'balanceNotEnough'">
-                    原因：上级分销商可用额度不足
+                    {{$t('balanceLeftNotEnought')}}
                 </li>
                 <li class="detail error" v-else>
                     原因：产品库存不足

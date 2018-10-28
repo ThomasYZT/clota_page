@@ -11,7 +11,7 @@
                 <ul class="list">
                     <li class="col">订单明细编号：{{baseInfo.orderDetailNo | contentFilter}}</li>
                     <li class="col">OTA订单号：{{baseInfo.thirdOrderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.thirdOrderNo | timeFormat('yyyy-MM-dd')}}</li>
+                    <li class="col">下单时间：{{baseInfo.orderTime}}</li>
                 </ul>
             </li>
             <li class="row">
@@ -30,7 +30,7 @@
                     <!--仅景区视图字段-->
                     <li v-if="orderOrgType === 'scenic'" class="col">短信发送状态：{{transSMSStatus(baseInfo.smsStatus) | contentFilter}}</li>
                     <!--仅分销商视图字段-->
-                    <li v-if="orderOrgType === 'allocation'" class="col">预定数量：{{transSMSStatus(baseInfo.quantity) | contentFilter}}</li>
+                    <li v-if="orderOrgType === 'allocation'" class="col">预定数量：{{baseInfo.quantity | contentFilter}}</li>
 
                 </ul>
             </li>
@@ -70,15 +70,17 @@
                     return '';
                 }
             },
-            //审核结果图片
+            //是否异常显示
             auditResultImg () {
-                if(this.baseInfo.auditStatus === 'success'){
-                    return require('../../../../../assets/images/icon-audit-success.svg');
-                }else if(this.baseInfo.auditStatus === 'audit'){
-                    return require('../../../../../assets/images/icon-wait-audit.svg');
-                }else{
-                    return require('../../../../../assets/images/icon-audit-fail.svg');
+                if(this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure'){
+                    return require('../../../../../assets/images/icon-abnormal.svg');
                 }
+            },
+            //是否可以重发短信
+            canResendMsg () {
+                //景区下，审核成功，取票前可重发短信
+                return this.viewType === 'scenic' &&
+                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) ;
             },
         },
         data() {
@@ -88,13 +90,6 @@
             }
         },
         methods: {
-            //是否可以重发短信
-            canResendMsg () {
-                //景区下，审核成功，取票前可重发短信
-                return this.viewType === 'scenic' &&
-                    this.baseInfo.auditStatus === 'success' &&
-                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) ;
-            },
             //查看上级订单
             toUpDetail() {
                 this.$router.push({
@@ -108,7 +103,7 @@
              * 给导游重发短信
              */
             reSendMsg () {
-                ajax.post('noticeGuidesAuditResult',{
+                ajax.post('noticeVisitorToPick',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
                     if(res.success){

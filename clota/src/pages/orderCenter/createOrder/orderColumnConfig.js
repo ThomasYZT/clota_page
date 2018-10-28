@@ -7,46 +7,46 @@ export const columnData = [
         field: ''
     },
     {
-        title: '产品编码',
+        title: 'productCode',
         width: 200,
         field: 'productCode'
     },
     {
-        title: '产品名称',
+        title: 'productName',
         minWidth: 200,
         field: 'productName'
     },
     {
-        title: '销售政策名称',
+        title: 'salePolicyName',
         width: 230,
         field: 'policyName'
     },
     {
-        title: '所属景区',
+        title: 'scenePlace',
         width: 130,
         enWidth : 180,
         field: 'scenicOrgName'
     },
     {
-        title: '产品类型',
+        title: 'productType',
         width: 130,
         enWidth : 180,
         field: 'productType'
     },
     {
-        title: '发售机构',
+        title: 'sellingOrg',
         width: 130,
         enWidth : 180,
         field: 'saleOrgName'
     },
     {
-        title: '产品单价',
+        title: 'settlePrice',
         width: 130,
         enWidth : 180,
         field: 'settlePrice'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 130,
         enWidth : 180,
     }

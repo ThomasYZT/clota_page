@@ -7,10 +7,15 @@
         <div class="title">分销信息</div>
 
         <div class="content">
-            <span>销售政策： {{allocationInfo.policyName}}</span>
+            <span class="info-list">销售政策： {{allocationInfo.policyName}}</span>
+            <!--中间分销商可见-->
+            <template v-if="viewType === 'allocation'">
+                <span class="info-list" >预计分销佣金： {{allocationInfo.allocationCommission | moneyFilter | contentFilter}}</span>
+                <span class="info-list">退票手续费收入： {{totalRefundFee | moneyFilter | contentFilter}}</span>
+            </template>
 
             <div class="rank-wrapper">
-                <div class="rank-progress" v-for="(item,index) in allocationInfo.settleLink"
+                <div class="rank-progress" v-for="(item,index) in distributionLinks"
                      :key="index">
                     <img v-if="index !== 0" src="../../../../../assets/images/arrow.svg">
                     <div class="price-board">
@@ -18,7 +23,7 @@
                             <span>{{item.settlePrice | moneyFilter}}</span>
                         </div>
                         <div>
-                            <span>{{item.orgSettleName}}分销单价</span>
+                            <span>{{item.content}}</span>
                         </div>
                     </div>
                 </div>
@@ -34,12 +39,47 @@
             allocationInfo: {
                 type: Object,
                 default: {}
+            },
+            //退票手续费收入
+            totalRefundFee : {
+                type : [String,Number],
+                default : 0
+            },
+            //当前查看详情角色
+            'view-type': {
+                type: String,
+                default: ''
             }
         },
         data() {
             return {}
         },
-        methods: {}
+        methods: {},
+        computed : {
+            //分销价格链路表
+            distributionLinks () {
+                if(this.allocationInfo && this.allocationInfo.settleLink){
+                    let settleLink = this.allocationInfo.settleLink;
+                    if(settleLink.length > 0){
+                        let costPriceInfo = {
+                            ...settleLink[0],
+                            settlePrice : settleLink[0]['inPrice'],
+                            content : this.viewType === 'scenic' ? '景区分配单价' :'我的进货价格'
+                        };
+                        return [].concat(costPriceInfo,settleLink.map(item => {
+                            return {
+                                ...item,
+                                content : item.orgName + '的分销价格'
+                            }
+                        }));
+                    }else{
+                        return [];
+                    }
+                }else{
+                    return [];
+                }
+            }
+        }
     }
 </script>
 
@@ -74,6 +114,11 @@
             padding: 15px 15px;
             background: #FAFAFA;
             border-radius: 5px;
+
+            .info-list{
+                display: inline-block;
+                margin-right: 40px;
+            }
 
             .rank-wrapper {
                 display: flex;

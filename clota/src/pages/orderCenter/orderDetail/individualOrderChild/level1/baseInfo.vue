@@ -25,13 +25,9 @@
                 <ul class="list">
                     <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
                     <li class="col">订单金额：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
-                    <li class="col">串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
                 </ul>
             </li>
         </ul>
-        <div class="audit-result">
-            <img :src="auditResultImg" alt="">
-        </div>
     </div>
 </template>
 
@@ -49,16 +45,6 @@
             return {}
         },
         computed: {
-            //审核结果图片
-            auditResultImg () {
-                if(this.baseInfo.auditStatus === 'success'){
-                    return require('../../../../../assets/images/icon-audit-success.svg');
-                }else if(this.baseInfo.auditStatus === 'audit'){
-                    return require('../../../../../assets/images/icon-wait-audit.svg');
-                }else{
-                    return require('../../../../../assets/images/icon-audit-fail.svg');
-                }
-            }
         },
         methods: {}
     }
@@ -116,14 +102,6 @@
 
         .ivu-btn-108px{
             @include absolute_pos(absolute,20px,24px)
-        }
-
-        .audit-result{
-            @include absolute_pos(absolute,$right : 0,$bottom : 0);
-
-            img{
-                @include block_outline(100,100,false);
-            }
         }
 
     }

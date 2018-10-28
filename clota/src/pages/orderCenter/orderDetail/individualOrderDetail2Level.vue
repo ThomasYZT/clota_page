@@ -4,6 +4,10 @@
 -->
 <template>
     <div class="individual-order-detail">
+        <bread-crumb-head
+            :locale-router="'订单明细详情'"
+            :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
+        </bread-crumb-head>
         <div class="content">
             <!--订单基本信息-->
             <baseInfo :baseInfo="baseInfo"
@@ -20,13 +24,17 @@
             -->
             <productDetail  :ticketList="ticketList"
                             :orderOrgType="orderOrgType"
+                            :viewType="orderOrgType"
                             :productName="productDetail.productName"
                             :productPrice="productDetail.amount"
-                            :baseInfo="baseInfo"></productDetail>
+                            :baseInfo="baseInfo"
+                            @fresh-data="freshData"></productDetail>
 
             <!--分销信息-->
             <!--下单企业不可见-->
             <distributionInfo v-if="orderOrgType !== 'channel'"
+                              :viewType="orderOrgType"
+                              :totalRefundFee="totalRefundFee"
                               :allocationInfo="allocationInfo"></distributionInfo>
 
             <!--退票日志-->
@@ -57,6 +65,7 @@
     import touristInfo from './individualOrderChild/level2/touristInfo';
     import vertificationLog from './individualOrderChild/level2/vertificationLog';
     import distributionInfo from './individualOrderChild/level2/distributionInfo'
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     export default {
         mixins: [lifeCycelMixins],
         components: {
@@ -66,7 +75,8 @@
             refundLog,
             touristInfo,
             vertificationLog,
-            distributionInfo
+            distributionInfo,
+            breadCrumbHead
         },
         data() {
             return {
@@ -112,7 +122,7 @@
              * 获取产品明细列表
              */
             getOrderTicketList() {
-                ajax.post('queryOrderTicketList', {
+                ajax.post('queryRefundAndAlterTicketList', {
                     visitorProductId: this.productDetail.visitorProductId
                 }).then(res => {
                     if(res.success) {
@@ -121,9 +131,25 @@
                         this.ticketList = [];
                     }
                 })
+            },
+            /**
+             * 刷新页面数据
+             */
+            freshData () {
+                this.getSecondLevelOrderDetailInfo();
+                this.getOrderTicketList();
             }
         },
         computed: {
+            //退票手续费收入
+            totalRefundFee () {
+                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.totalRefundFee) {
+                    return this.orderDetailInfo.totalRefundFee;
+                }else {
+                    return 0;
+                }
+            },
+            //分销信息
             allocationInfo() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
                     return this.orderDetailInfo.allocationInfo;
@@ -153,13 +179,6 @@
                     return this.orderDetailInfo.refundAlterList;
                 }else {
                     return [];
-                }
-            },
-            totalRefundFee() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.totalRefundFee) {
-                    return this.orderDetailInfo.totalRefundFee;
-                }else {
-                    return {};
                 }
             },
             //核销日志列表信息
@@ -193,6 +212,26 @@
                 }else {
                     return {};
                 }
+            },
+            //面包屑路由信息
+            beforeRouterList () {
+                return [
+                    {
+                        name: '订单查询',
+                        router: {
+                            name: 'reserveOrderDetail'
+                        }
+                    },
+                    {
+                        name: '订单详情',
+                        router: {
+                            name: 'individualFirstLevel',
+                            params : {
+                                orderId : this.productDetail.orderId
+                            }
+                        }
+                    }
+                ];
             }
         }
     }

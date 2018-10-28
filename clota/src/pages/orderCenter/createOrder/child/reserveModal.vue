@@ -31,7 +31,7 @@
                         <template slot-scope="scope">
                             <div class="product-name">
                                 <span class="product-name-info" v-w-title="scope.row.productName">{{scope.row.productName}}</span>
-                                <span class="ticket-info" @click="showTickInfo(scope.row)">购票须知</span>
+                                <span class="ticket-info" @click="showTickInfo(scope.row)">{{$t('buyTicketNotes')}}</span>
                             </div>
                         </template>
                     </el-table-column>

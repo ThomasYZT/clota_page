@@ -107,6 +107,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
+                    <!--下单企业-->
                     <FormItem label="下单企业" >
                         <Select v-model.trim="formData.orderOrgId"
                                 style="max-width: 200px"
@@ -373,6 +374,7 @@
                             id : 'all',
                             orgName : this.$t('all')
                         }],res.data) : [];
+                        this.orderTakeList = [];
                         if(this.formData.scenicOrgId !== 'all'){
                             this.sceneChange();
                         }else{
@@ -387,7 +389,10 @@
              * 所属景区改变，查询下单企业信息
              */
             sceneChange () {
-                if(!this.formData.scenicOrgId) return;
+                if(!this.formData.scenicOrgId) {
+                    this.orderTakeList = [];
+                    return ;
+                }
                 this.formData.orderOrgId = '';
                 ajax.post('getOrderOrgList',{
                     scenicId : this.formData.scenicOrgId,
@@ -398,14 +403,22 @@
                     }else{
                         this.orderTakeList = [];
                     }
-                    //如果所属景区是当前登录的景区，那么发售机构是当前机构，不可修改，
-                    //如果所属景区不是当前登录景区，那么下单企业必须是当前景区，且不可修改
+                    //如果所属景区不是当前登录景区,且是否分销选择了否，那么下单企业必须是当前景区，且不可修改
                     if(this.formData.scenicOrgId === this.manageOrgs.id){
                         this.orderTaskDisabled = false;
                     }else{
-                        this.orderTaskDisabled = true;
-                        if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
-                            this.formData.orderOrgId = this.orderTakeList[0].id;
+                        if(this.formData.allocationStatus === 'false'){
+                            if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
+                                this.formData.orderOrgId = this.orderTakeList[0].id;
+                            }
+                            //所属景区不为全部，下单企业不可选
+                            if(this.formData.scenicOrgId !== 'all'){
+                                this.orderTaskDisabled = true;
+                            }else{
+                                this.orderTaskDisabled = false;
+                            }
+                        }else{
+                            this.orderTaskDisabled = false;
                         }
                     }
                     this.searchProductList();
@@ -456,6 +469,8 @@
             allocationStatusChange () {
                 this.formData.orderChannel = 'allStatus';
                 this.formData.scenicOrgId = 'all';
+                this.orderTaskDisabled = false;
+                this.formData.orderOrgId = '';
                 this.orderTypeChange();
             }
         },

@@ -11,18 +11,28 @@
                 <li class="row">
                     <ul class="list">
                         <li class="col">产品名称： {{productName}}</li>
-                        <li class="col">产品单价： {{productPrice | moneyFilter}}</li>
+                        <template v-if="viewType === 'allocation'">
+                            <li class="col">预定数量： {{baseInfo.quantity | contentFilter}}</li>
+                            <li class="col">已核销： {{countData.verifyNum | contentFilter}}</li>
+                            <li class="col">已退票： {{countData.refundNum | contentFilter}}</li>
+                        </template>
+                        <!--中间分销商不可见产品单价-->
+                        <li class="col" v-if="viewType !== 'allocation'">产品单价： {{productPrice | moneyFilter}}</li>
                     </ul>
                 </li>
             </ul>
-
-            <div class="btn-wrapper">
-                <Button class="ivu-btn-88px" @click="applyChange()">申请改签</Button>
-                <Button class="ivu-btn-88px" @click="applyRefund()">申请退票</Button>
+            <!--中间分销商不可退票和改签-->
+            <div class="btn-wrapper" v-if="viewType !== 'allocation'">
+                <Button class="ivu-btn-88px ivu-hollow-out-blue"
+                        :disabled="!canAlterTicket"
+                        @click="applyChange()">申请改签</Button>
+                <Button class="ivu-btn-88px ivu-hollow-out-blue"
+                        :disabled="!canRefundTicket"
+                        @click="applyRefund()">申请退票</Button>
             </div>
         </div>
 
-        <div class="table-wrapper">
+        <div class="table-wrapper" v-if="viewType !== 'allocation'">
             <tableCom ref="productTable"
                       :column-data="tableColumn"
                       :table-data="ticketList"
@@ -33,6 +43,17 @@
                       :selectable="selectable"
                       @selection-change="selectionChange">
                 <el-table-column
+                    slot="column1"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.visitDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column2"
                     show-overflow-tooltip
                     slot-scope="row"
@@ -40,7 +61,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{transPickStatus(scope.row.pickStatus) | contentFilter}}</span>
+                        {{scope.row.pickStatus === 'true' ? '已取票' : '未取票'}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -51,7 +72,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{transVerifyStatus(scope.row.verifyStatus) | contentFilter}}</span>
+                        {{scope.row.verifyStatus === 'true' ? '已核销' : '未核销'}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -62,7 +83,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{transRefundStatus(scope.row.refundStatus) | contentFilter}}</span>
+                        <span class="yellow-label" v-if="scope.row.refundStatus === 'refund_audit'">{{$t('退票待审核')}}</span>
+                        <span class="red" v-else-if="scope.row.refundStatus === 'refunded'">{{$t('已退票')}}</span>
+                        <span v-else-if="scope.row.refundStatus === 'no_refund'">{{$t('未退票')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -73,7 +96,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{transRescheduleStatus(scope.row.rescheduleStatus) | contentFilter}}</span>
+                        <span class="yellow-label" v-if="scope.row.rescheduleStatus === 'alter_audit'">{{$t('改签待审核')}}</span>
+                        <span class="red" v-else-if="scope.row.rescheduleStatus === 'alter'">{{$t('已改签')}}</span>
+                        <span v-else-if="scope.row.rescheduleStatus === 'no_alter'">{{$t('未改签')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -106,11 +131,11 @@
             <div class="data-pandect">
                 <div class="left">
                     <span class="iconfont icon-note"></span>
-                    <span>未取票：{{countData.noRefundNum}}</span>
-                    <span>未核销：{{countData.noVerifyNum}}</span>
-                    <span>已核销：{{countData.verifyNum}}</span>
-                    <span>已退票：{{countData.refundNum}}</span>
-                    <span>已改签：{{countData.rescheduleNum}}</span>
+                    <span>未取票：{{countData.noRefundNum  | contentFilter}}</span>
+                    <span>未核销：{{countData.noVerifyNum  | contentFilter}}</span>
+                    <span>已核销：{{countData.verifyNum  | contentFilter}}</span>
+                    <span>已退票：{{countData.refundNum  | contentFilter}}</span>
+                    <span>已改签：{{countData.rescheduleNum  | contentFilter}}</span>
                 </div>
                 <div class="right">
                     <span class="warn">产品预定数量：{{baseInfo.quantity}}</span>
@@ -119,11 +144,16 @@
         </div>
 
         <!--散客产品明细模态框-->
-        <productDetailModal ref="productDetailModal"></productDetailModal>
+        <productDetailModal ref="productDetailModal"
+                            :viewType="viewType"></productDetailModal>
         <!--退票申请 模态框-->
-        <refundModal ref="refundModal"></refundModal>
+        <refundModal ref="refundModal"
+                     @fresh-data="$emit('fresh-data')">
+        </refundModal>
         <!--改签申请 模态框-->
-        <ticketChangingModal ref="ticketChangingModal"></ticketChangingModal>
+        <ticketChangingModal ref="ticketChangingModal"
+                             @fresh-data="$emit('fresh-data')">
+        </ticketChangingModal>
     </div>
 </template>
 
@@ -133,7 +163,7 @@
     import ticketChangingModal from '../components/ticketChangingModal'
     import tableCom from '@/components/tableCom/tableCom';
     import {productDetailInfo} from './secondLevelDetailConfig';
-    import {transPickStatus, transRefundStatus, transRescheduleStatus, transVerifyStatus} from '../../../commFun'
+    import {transRescheduleStatus, transVerifyStatus} from '../../../commFun'
     export default {
         components: {
             tableCom,
@@ -166,6 +196,11 @@
             orderOrgType: {
                 type: String,
                 default: ''
+            },
+            //当前查看详情角色
+            'view-type': {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -174,10 +209,6 @@
                 tableColumn: productDetailInfo,
                 //已选择的行数据
                 chosedData: [],
-                //取票状态转换
-                transPickStatus: transPickStatus,
-                //退票状态转换
-                transRefundStatus: transRefundStatus,
                 //改签状态转换
                 transRescheduleStatus: transRescheduleStatus,
                 //核销状态转换
@@ -226,6 +257,22 @@
                     }
                 });
                 return _obj;
+            },
+            //选择的票是否能退
+            canRefundTicket () {
+                if(!this.chosedData || this.chosedData.length < 1){
+                    return false;
+                }else{
+                    return this.chosedData.every(item => item.returnRule === 'true');
+                }
+            },
+            //选择的票是否能改签
+            canAlterTicket () {
+                if(!this.chosedData || this.chosedData.length < 1){
+                    return false;
+                }else{
+                    return this.chosedData.every(item => item.alterRule === 'true');
+                }
             }
 
         },
@@ -370,9 +417,9 @@
                         height: 31px;
                         padding: 6px 0;
                         float: left;
-                        width: 310px;
                         color: $color_666;
                         @include overflow_tip();
+                        margin-right: 40px;
 
                         .code{
                             color: $color_yellow;
@@ -389,17 +436,15 @@
         }
 
         .ivu-btn-88px{
-            width: 88px;
-            height: 32px;
-            margin: 0 5px;
-            border: 1px solid #2F70DF;
-            background-color: $color_fff;
-            color: #2F70DF;
-
-            &:last-child {
-                margin-right: 0;
-            }
+            margin-left: 10px;
         }
 
+        .red {
+            color: $color_red;
+        }
+
+        .yellow-label{
+            color: $color_yellow;
+        }
     }
 </style>

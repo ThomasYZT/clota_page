@@ -248,7 +248,7 @@
                 //当前操作的订单信息
                 currentData : {},
                 //订单下产品信息
-                orderProductInfo : {},
+                orderProductInfo : [],
                 //改签模态框是否显示
                 alterTicketModalShow : false
             }
@@ -326,13 +326,8 @@
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
                     if(res.success){
-                        if(res.data.orderOrgType === 'scenic' ||
-                            (res.data.orderOrgType === 'channel' && res.data.allowRefund === 'true')){
-                            this.orderProductInfo = res.data;
-                            this.refundTicketModalShow = true;
-                        }else{
-                            this.$Message.warning(`订单${data.orderNo}下产品不可退票`);
-                        }
+                        this.orderProductInfo = res.data;
+                        this.refundTicketModalShow = true;
                     }else{
                         this.orderProductInfo = {};
                     }
@@ -356,13 +351,8 @@
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
                     if(res.success){
-                        if(res.data.orderOrgType === 'scenic' ||
-                            (res.data.orderOrgType === 'channel' && res.data.allowAlter === 'true')){
-                            this.orderProductInfo = res.data;
-                            this.alterTicketModalShow = true;
-                        }else{
-                            this.$Message.warning(`订单${data.orderNo}下产品不可改签`);
-                        }
+                        this.orderProductInfo = res.data;
+                        this.alterTicketModalShow = true;
                     }else{
                         this.orderProductInfo = {};
                     }
@@ -373,22 +363,14 @@
              * @param rowData
              */
             judgeCanReturn (rowData) {
-                //下单企业下，按照销售政策不可退的不可以退票
-                if(rowData.orderOrgType === 'channel'){
-                    return rowData.returnRule === 'true';
-                }
-                return true;
+                return rowData.returnRule === 'true';
             },
             /**
              * 判断是否可以改签
              * @param rowData
              */
             judgeCanAlter (rowData) {
-                //下单企业下，按照销售政策不可改签的不可以改签
-                if(rowData.orderOrgType === 'channel'){
-                    return rowData.alterRule === 'true';
-                }
-                return true;
+                return rowData.alterRule === 'true';
             },
             /**
              * 跳转到订单详情
@@ -406,7 +388,7 @@
                     this.$router.push({
                         name : 'individualSecondLevel',
                         params : {
-                            orderId : rowData.orderId
+                            productDetail : rowData
                         }
                     });
                 }

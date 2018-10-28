@@ -11,6 +11,20 @@
             :table-com-min-height="250"
             :border="true"
             :auto-height="true">
+            <!--预计分销佣金-->
+            <!--该数据只有中间分销商可见-->
+            <el-table-column
+                v-if="orderOrgType === 'allocation'"
+                slot="column15"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.allocationCommission | contentFilter}}</span>
+                </template>
+            </el-table-column>
             <!--订单明细编号-->
             <el-table-column
                 slot="column0"
@@ -32,7 +46,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.visitDate | contentFilter}}</span>
+                    <span>{{scope.row.visitDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
                 </template>
             </el-table-column>
             <!--第三方订单编号-->
@@ -204,20 +218,6 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span>{{scope.row.settlePrice | moneyFilter}} / {{scope.row.settleAmount | moneyFilter}}</span>
-                </template>
-            </el-table-column>
-            <!--预计分销佣金-->
-            <!--该数据只有中间分销商可见-->
-            <el-table-column
-                v-if="orderOrgType === 'allocation'"
-                slot="column15"
-                show-overflow-tooltip
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <span>{{scope.row.allocationCommission | contentFilter}}</span>
                 </template>
             </el-table-column>
             <!--操作-->

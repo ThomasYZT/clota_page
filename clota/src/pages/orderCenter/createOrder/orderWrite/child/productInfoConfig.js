@@ -2,33 +2,33 @@
 //表头配置
 export const columnData = [
     {
-        title: '所属景区',
+        title: 'scenePlace',
         minwidth: 130,
         enWidth : 180,
         field: 'scenicOrgName'
     },
     {
-        title: '产品名称',
+        title: 'productName',
         minwidth: 200,
         field: 'productName'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         width: 120,
         field: 'playDate'
     },
     {
-        title: '产品单价',
+        title: 'settlePrice',
         width: 100,
         field: 'settlePrice'
     },
     {
-        title: '数量',
+        title: 'amount',
         width: 100,
         field: 'num'
     },
     {
-        title: '小计',
+        title: 'subtotal',
         width: 150,
         field: 'policyName'
     },

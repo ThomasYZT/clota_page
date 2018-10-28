@@ -2,14 +2,16 @@
 
 <template>
     <div class="order-submit-suc">
-        <div class="img-area"></div>
-        <div class="submit-log">订单提交成功！</div>
-        <div class="audit-log" v-if="type === 'team'">
-            团队订单的审核结果我们将以短信发送通知导游，请耐心等待。
+        <div class="img-area">
+            <img src="../../../../assets/images/verify-ok-img.png" alt="">
         </div>
-        <Button type="primary">查看详情</Button>
+        <div class="submit-log">{{$t('productSubmitSuc')}}</div>
+        <div class="audit-log" v-if="type === 'team'">
+            {{$t('teamProductTips')}}
+        </div>
+        <Button type="primary" @click="toOrderDetail">{{$t('viewDetail')}}</Button>
         <div class="text-wrap">
-            <span class="continue-btn" @click="continueReserve">继续预定</span>
+            <span class="continue-btn" @click="continueReserve">{{$t('continueReserve')}}</span>
         </div>
     </div>
 </template>
@@ -18,7 +20,9 @@
     export default {
         data() {
             return {
-                type : ''
+                type : '',
+                //订单id
+                orderId : ''
             }
         },
         methods: {
@@ -37,9 +41,30 @@
             getParams (params) {
                 if(params && params.type){
                     this.type = params.type;
+                    this.orderId = params.orderId;
                 }else{
                     this.$router.push({
                         name : 'createOrder'
+                    });
+                }
+            },
+            /**
+             * 跳转到订单详情
+             */
+            toOrderDetail () {
+                if(this.type === 'team'){
+                    this.$router.push({
+                        name : 'teamOrderDetail',
+                        params :{
+                            orderId : this.orderId
+                        }
+                    });
+                }else if(this.type === 'individual'){
+                    this.$router.push({
+                        name : 'individualFirstLevel',
+                        params : {
+                            orderId :this.orderId
+                        }
                     });
                 }
             }
@@ -62,8 +87,12 @@
         text-align: center;
 
         .img-area{
-            @include block_outline(200px,200px);
-            margin: 100px auto 0;
+            @include block_outline(150px,100px);
+            margin: 150px auto 0;
+
+            img{
+                @include block_outline($height : auto,$is_block : false);
+            }
         }
 
         .submit-log{

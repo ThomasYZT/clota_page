@@ -44,7 +44,7 @@ export const transSyncStatus = (status) => {
 };
 
 /**
- * 取票状态的code转换
+ * 订单中所有票的状态的code转换
  * @param status
  * @returns {string}
  */
@@ -55,6 +55,7 @@ export const transPickStatus = (status) => {
 
     return currentStatus ? currentStatus.label : '-';
 };
+
 
 /**
  * 退票状态的code转换

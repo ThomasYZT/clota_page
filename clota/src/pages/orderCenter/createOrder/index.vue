@@ -2,18 +2,16 @@
 
 <template>
     <div class="create-order">
-        <filter-head :tableShow.sync="tableShow"
-                     @set-params="setParams"
+        <filter-head @set-params="setParams"
                      @search-product="searchProduct">
         </filter-head>
         <div class="batch-reserve">
             <Button
                 type="primary"
                 :disabled="selectedProduct.length < 1"
-                @click="batchReserve">批量预定</Button>
+                @click="batchReserve">{{$t('batchReserve')}}</Button>
         </div>
         <table-com
-            v-if="tableShow"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -43,7 +41,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="reserve(scope.row)">{{$t('立即预定')}}</li>
+                        <li @click="reserve(scope.row)">{{$t('reserveRight')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -76,8 +74,6 @@
                 tableData: [],
                 //总条数
                 totalCount : 0,
-                //表格是否显示
-                tableShow : false,
                 //筛选条件
                 queryParams : {
                     pageNo :1,
@@ -114,7 +110,7 @@
              */
             setParams (params) {
                 Object.assign(this.queryParams,params);
-                this.tableShow = true;
+                this.queryList();
             },
             /**
              * 立即预定
@@ -122,9 +118,9 @@
              */
             reserve (rowData) {
                 if(!this.queryParams.saleOrgId){
-                    this.$Message.warning('请选择发售机构');
+                    this.$Message.warning(this.$t('selectField',{msg : this.$t('sellingOrg')}));
                 }else if(!this.queryParams.orderOrgId){
-                    this.$Message.warning('请选择下单企业');
+                    this.$Message.warning(this.$t('selectField',{msg : this.$t('orderOrg')}));
                 }else{
                     this.productList = [rowData].map(item =>{
                         return {
@@ -156,9 +152,9 @@
              */
             batchReserve () {
                 if(!this.queryParams.saleOrgId){
-                    this.$Message.warning('请选择发售机构');
+                    this.$Message.warning(this.$t('selectField',{msg : this.$t('sellingOrg')}));
                 }else if(!this.queryParams.orderOrgId){
-                    this.$Message.warning('请选择下单企业');
+                    this.$Message.warning(this.$t('selectField',{msg : this.$t('orderOrg')}));
                 }else{
                     this.productList = this.selectedProduct.map(item =>{
                         return {

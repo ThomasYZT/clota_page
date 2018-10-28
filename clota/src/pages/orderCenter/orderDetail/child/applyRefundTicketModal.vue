@@ -133,7 +133,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {columnData} from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
-    import {transSyncStatus,canRefundTicket} from '../../commFun';
+    import {transSyncStatus} from '../../commFun';
 
     export default {
         props : {
@@ -149,9 +149,9 @@
             },
             //产品信息
             'product-info' : {
-                type : Object,
+                type : Array,
                 default () {
-                    return {};
+                    return [];
                 }
             }
         },
@@ -222,7 +222,7 @@
              * @returns {boolean}
              */
             selectableFunc(data){
-                return canRefundTicket(this.productInfo.orderOrgType,data);
+                return data.returnRule === 'true';
             },
             //同步状态
             transSyncStatus : transSyncStatus,
@@ -265,8 +265,8 @@
         computed : {
             //订单下的产品信息
             tableData () {
-                if(this.productInfo && this.productInfo.ticketList){
-                    return this.productInfo.ticketList;
+                if(this.productInfo && this.productInfo.length > 0){
+                    return this.productInfo;
                 }else{
                     return  [];
                 }

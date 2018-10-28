@@ -6,8 +6,8 @@
             <div class="account-left">
                 <span class="pay-type-label">支付方式：</span>
                 <RadioGroup v-model="payType">
-                    <Radio label="deposit">定存</Radio>
-                    <Radio label="collect">到付</Radio>
+                    <Radio label="deposit">{{$t('payType.deposit')}}</Radio>
+                    <Radio label="collect">{{$t('payType.collect')}}</Radio>
                 </RadioGroup>
             </div>
             <div class="account-right">

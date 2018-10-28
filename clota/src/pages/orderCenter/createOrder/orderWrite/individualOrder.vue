@@ -3,7 +3,7 @@
 <template>
     <div class="order-write">
         <bread-crumb-head
-            :locale-router="'订单预定'"
+            :locale-router="$t('orderReserve')"
             :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
         </bread-crumb-head>
         <!--产品信息 -->
@@ -199,7 +199,8 @@
                             this.$router.replace({
                                 name : 'successSubmit',
                                 params : {
-                                    type : 'individual'
+                                    type : 'individual',
+                                    orderId : res.data
                                 }
                             });
                         }else{

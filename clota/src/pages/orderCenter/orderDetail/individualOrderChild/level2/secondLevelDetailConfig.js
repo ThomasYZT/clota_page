@@ -8,17 +8,18 @@ export const productDetailInfo = [
     },
     {
         title: '游玩日期',
-        width: 200,
-        field: 'visitDate'
+        width: 150,
+        field: 'visitDate',
+        type : 'time'
     },
     {
         title: '取票状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'pickStatus'
     },
     {
         title: '核销状态',
-        minWidth: 200,
+        minWidth: 100,
         field: 'verifyStatus'
     },
     {
@@ -33,7 +34,7 @@ export const productDetailInfo = [
     },
     {
         title: '串码',
-        minWidth: 150,
+        minWidth: 200,
         field: 'serialNo'
     },
     {
@@ -51,23 +52,23 @@ export const refundAlterListHead = [
         field: 'reqNum'
     },
     {
-        title: '操作员/时间',
+        title: '申请操作员/时间',
         width: 250,
         field: ''
     },
     {
-        title: '核定退票数量',
+        title: '退票审核通过',
         minWidth: 200,
         field: 'passNum'
     },
     {
-        title: '操作员/时间',
+        title: '审核操作员/时间',
         minWidth: 250,
         field: ''
     },
     {
         title: '产品明细编号',
-        minWidth: 150,
+        minWidth: 200,
         field: 'passOrderTicketIds'
     }
 ];
@@ -76,7 +77,7 @@ export const refundAlterListHead = [
 export const verifyTicketLogListHead = [
     {
         title: '核销数量',
-        field: 'reqNum'
+        field: 'verifyNum'
     },
     {
         title: '操作员/时间',
@@ -84,6 +85,6 @@ export const verifyTicketLogListHead = [
     },
     {
         title: '产品明细编号',
-        field: 'passOrderTicketIds'
+        field: 'ticketIds'
     }
 ];

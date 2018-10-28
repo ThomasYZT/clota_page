@@ -82,12 +82,12 @@
                 //表头配置
                 columnData : [
                     {
-                        title: '产品名称',
+                        title: 'productName',
                         minwidth: 130,
                         field: 'productName'
                     },
                     {
-                        title: '数量',
+                        title: 'quantity',
                         width: 130,
                         field: 'takeNum'
                     },
