@@ -167,7 +167,7 @@
     };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "~@/assets/scss/base";
 
     .recharge-record {
@@ -205,7 +205,8 @@
     .filter-box {
         padding: 15px 30px 15px;
         overflow: hidden;
-        .input-field {
+
+        /deep/ .input-field {
             width: 350px;
             float: right;
         }

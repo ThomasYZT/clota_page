@@ -8,7 +8,7 @@ export const orderTicketHead = [
     },
     {
         title: '游玩日期',
-        minWidth: 190,
+        minWidth: 120,
         field: 'visitDate'
     },
     {
@@ -60,7 +60,7 @@ export const orderTicketHead = [
     },*/
     {
         title: '取票串码',
-        minWidth: 150,
+        minWidth: 200,
         field: 'serialNo'
     },
     {

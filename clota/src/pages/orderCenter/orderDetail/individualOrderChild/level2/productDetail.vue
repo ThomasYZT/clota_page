@@ -132,6 +132,7 @@
                 <div class="left">
                     <span class="iconfont icon-note"></span>
                     <span>未取票：{{countData.noRefundNum  | contentFilter}}</span>
+                    <span>已取票：{{countData.takenNum  | contentFilter}}</span>
                     <span>未核销：{{countData.noVerifyNum  | contentFilter}}</span>
                     <span>已核销：{{countData.verifyNum  | contentFilter}}</span>
                     <span>已退票：{{countData.refundNum  | contentFilter}}</span>
@@ -225,6 +226,8 @@
                 let _obj = {
                     //未取票数量
                     noRefundNum: 0,
+                    //已取票数据
+                    takenNum : 0,
                     //未核销数量
                     noVerifyNum: 0,
                     //已核销数量
@@ -240,6 +243,8 @@
                     //未取票
                     if(item.pickStatus == "false") {
                         _obj.noRefundNum += 1;
+                    }else if(item.pickStatus == "true") {//已取票
+                        _obj.takenNum += 1;
                     }
                     //未核销
                     if(item.verifyStatus == "false") {

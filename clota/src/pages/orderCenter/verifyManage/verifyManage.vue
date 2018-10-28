@@ -10,7 +10,11 @@
             <Input v-model.trim="filterParam.serialNos"
                    class="input-field"
                    :placeholder="$t('输入订单串码、多个串码用; 隔开')" /><!--输入订单串码、多个串码用；隔开-->
-            <Button type="primary" :disabled="!filterParam.serialNos" @click="handleSearch">{{$t("search", {msg: ''})}}</Button>
+            <Button type="primary"
+                    :disabled="!filterParam.serialNos"
+                    @click="handleSearch">
+                {{$t("search", {msg: ''})}}
+            </Button>
             <!--<Button type="ghost" :disabled="!filterParam.serialNos" @click="reset">{{$t("reset")}}</Button>-->
         </div>
         <div class="wrapper">
@@ -30,6 +34,16 @@
                     :column-check="true"
                     :border="true"
                     @selection-change="changeTicketSelection">
+                    <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{scope.row.visitDate | timeFormat('yyyy-MM-dd')}}
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         slot="column5"
                         slot-scope="row"
@@ -218,7 +232,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span{{scope.row.visitorName | contentFilter}}</span> |
+                            <span>{{scope.row.visitorName | contentFilter}}</span> |
                             <span>{{scope.row.phoneNumber | contentFilter}}</span>
                         </template>
                     </el-table-column>

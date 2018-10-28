@@ -26,6 +26,7 @@
                 <div style="margin-left: 28px">
                     <Input v-model.trim="remark"
                            type="textarea"
+                           :maxlength="500"
                            :rows="3"
                            :placeholder="$t('请填写备注，不超过500个字符')" />
                 </div>
@@ -98,6 +99,8 @@
                     if(res.success){
                         this.hide();
                         this.$router.push({name: 'verifySuccess'});
+                    }else{
+                        this.$Message.error('核销失败');
                     }
                 });
             },

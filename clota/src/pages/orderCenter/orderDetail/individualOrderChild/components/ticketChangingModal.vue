@@ -58,9 +58,7 @@
                     this.chosedData = data.chosedData;
                     this.baseInfo = data.baseInfo;
                     this.num = this.chosedData.length;
-                    data.chosedData.forEach(item => {
-                        this.orderTicketIds += item.id + ',';
-                    });
+                    this.orderTicketIds = data.chosedData.map(item => item.id).join(',');
                     this.getProductPolicyPlayDate();
                 }else {
                     this.chosedData = [];
