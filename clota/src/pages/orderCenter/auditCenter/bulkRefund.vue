@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="235"
+            :ofsetHeight="240"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -155,7 +155,7 @@
             return {
                 //表头配置
                 columnData : bulkRefundHead.filter(item => {
-                    return item.field !== 'rescheduleAfterVisitDate';
+                    return item.field !== 'afterAlterDate';
                 }),
                 //表格数据
                 tableData: [],

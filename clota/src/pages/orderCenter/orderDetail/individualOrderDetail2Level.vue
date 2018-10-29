@@ -50,7 +50,8 @@
             <!--操作日志-->
             <!--分销商不可见-->
             <operateLog v-if="orderOrgType !== 'allocation'"
-                        :orderOperationRecordList="orderOperationRecordList"></operateLog>
+                        :order-record-list="orderOperationRecordList"></operateLog>
+
         </div>
     </div>
 </template>
@@ -59,13 +60,14 @@
     import lifeCycelMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index.js';
     import baseInfo from './individualOrderChild/level2/baseInfo';
-    import operateLog from './individualOrderChild/level2/operateLog';
     import productDetail from './individualOrderChild/level2/productDetail';
     import refundLog from './individualOrderChild/level2/refundLog';
     import touristInfo from './individualOrderChild/level2/touristInfo';
     import vertificationLog from './individualOrderChild/level2/vertificationLog';
     import distributionInfo from './individualOrderChild/level2/distributionInfo'
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import operateLog from '../components/operateLog';
+
     export default {
         mixins: [lifeCycelMixins],
         components: {

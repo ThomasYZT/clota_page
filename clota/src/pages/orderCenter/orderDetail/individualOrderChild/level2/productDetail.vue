@@ -176,7 +176,9 @@
             //产品明细列表数据
             ticketList: {
                 type: Array,
-                default: []
+                default(){
+                    return [];
+                }
             },
             //产品价格
             productPrice: {
@@ -191,7 +193,9 @@
             //订单基本信息
             baseInfo: {
                 type: Object,
-                default: {}
+                default (){
+                    return {};
+                }
             },
             //机构对应订单角色
             orderOrgType: {

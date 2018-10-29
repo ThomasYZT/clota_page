@@ -12,7 +12,7 @@
             <!--产品名称-->
             <span>{{$t('productName')}}：{{baseInfo.productName | contentFilter}}</span>
             <!--产品单价-->
-            <span style="margin-left: 40px;">{{$t('settlePrice')}}：{{baseInfo.price | contentFilter}}</span>
+            <span style="margin-left: 40px;">{{$t('settlePrice')}}：{{baseInfo.inPrice | moneyFilter | contentFilter}}</span>
             <div class="audit-btn">
                 <Button type="primary"
                         style="width: 88px; margin-right: 5px;"
@@ -75,8 +75,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red" v-if="scope.row.refundStatus=='refund_audit'">{{$t('refundToBeReviewed')}}</span><!--退票待审核-->
-                    <span v-if="scope.row.refundStatus=='refunded'">{{$t('order.refunded')}}</span><!--已退票-->
+                    <span class="yellow-label" v-if="scope.row.refundStatus=='refund_audit'">{{$t('refundToBeReviewed')}}</span><!--退票待审核-->
+                    <span class="red-label" v-if="scope.row.refundStatus=='refunded'">{{$t('order.refunded')}}</span><!--已退票-->
                     <span v-if="scope.row.refundStatus=='no_refund'">{{$t('order.no_refund')}}</span><!--未退票-->
                 </template>
             </el-table-column>
@@ -87,11 +87,11 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red"
+                    <span class="yellow-label"
                           v-if="scope.row.rescheduleStatus=='alter_audit'">
                         {{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('ModificationToBeReviewed')}}<!--改签待审核-->
                     </span>
-                    <span v-if="scope.row.rescheduleStatus=='alter'">{{$t('order.altered')}}</span><!--已改签-->
+                    <span class="red-label" v-if="scope.row.rescheduleStatus=='altered'">{{$t('order.altered')}}</span><!--已改签-->
                     <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('order.no_alter')}}</span><!--未改签-->
                 </template>
             </el-table-column>
@@ -133,12 +133,12 @@
         <div class="table-bottom">
             <i class="iconfont icon-note"></i>
             <ul>
-                <li>{{$t('noHaveTickets')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</b></li>
-                <li>{{$t('haveTickets')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
-                <li>{{$t('noConsumed')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</b></li>
-                <li>{{$t('consumed')}}：<b>{{baseInfo.quantityVerified | contentFilter}}</b></li>
-                <li>{{$t('order.refunded')}}：<b>{{baseInfo.quantityRefunded | contentFilter}}</b></li>
-                <li>{{$t('order.altered')}}：<b>{{baseInfo.quantityRescheduled | contentFilter}}</b></li>
+                <li>{{$t('noHaveTickets')}}：{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</li>
+                <li>{{$t('haveTickets')}}：{{Number(baseInfo.quantityPicked) | contentFilter}}</li>
+                <li>{{$t('noConsumed')}}：{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</li>
+                <li>{{$t('consumed')}}：{{Number(baseInfo.quantityVerified) | contentFilter}}</li>
+                <li>{{$t('order.refunded')}}：{{Number(baseInfo.quantityRefunded) | contentFilter}}</li>
+                <li>{{$t('order.altered')}}：{{Number(baseInfo.quantityRescheduled) | contentFilter}}</li>
             </ul>
             <!--产品预定数量-->
             <div class="reserve-num">{{$t('productReserveNum')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
@@ -310,9 +310,7 @@
                 margin-right: 40px;
                 line-height: 30px;
                 color: rgba(0,0,0,0.65);
-                b {
-                    color: #000;
-                }
+                color: #000;
             }
         }
         .reserve-num {
@@ -326,7 +324,10 @@
     .blue {
         color: $color_blue;
     }
-    .red {
+    .red-label {
         color: $color_red;
+    }
+    .yellow-label{
+        color: $color_yellow;
     }
 </style>

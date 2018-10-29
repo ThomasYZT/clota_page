@@ -54,7 +54,7 @@
     import tourGuideInfo from './teamOrderChild/tourGuideInfo';
     import driverInfo from './teamOrderChild/driverInfo';
     import orderParticulars from './teamOrderChild/orderParticulars';
-    import orderOperateLog from './teamOrderChild/orderOperateLog';
+    import orderOperateLog from '../components/operateLog';
     import commission from './teamOrderChild/commission';
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';

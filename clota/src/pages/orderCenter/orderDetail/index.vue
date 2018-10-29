@@ -3,12 +3,10 @@
 <template>
     <div class="order-detail">
         <!--过滤表头-->
-        <filter-head :tableShow.sync="tableShow"
-                     @set-params="setParams"
+        <filter-head @set-params="setParams"
                      @search-product="searchProduct">
         </filter-head>
         <table-com
-            v-if="tableShow"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -49,6 +47,17 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     {{$t('order.' + scope.row.orderChannel)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column7"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getProductName(scope.row)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -208,8 +217,6 @@
         },
         data() {
             return {
-                //表格是否显示
-                tableShow : false,
                 //表头配置
                 columnData : columnData,
                 //表格数据
@@ -282,7 +289,6 @@
              */
             setParams (params) {
                 Object.assign(this.queryParams,params);
-                this.tableShow = true;
                 this.queryList();
             },
             /**
@@ -399,6 +405,17 @@
             transSMSStatus : transSMSStatus,
             //支付状态过滤
             transPaymentStatus : transPaymentStatus,
+            /**
+             * 获取产品名称
+             * @param rowData 订单详情数据
+             */
+            getProductName(rowData) {
+                if(rowData.orderType === 'team'){
+                    return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+                }else{
+                    return rowData.productName;
+                }
+            }
         },
         computed : {
             //是否可以显示退票按钮和改签按钮，
@@ -424,7 +441,7 @@
             }
         },
         created () {
-            this.queryList = debounce(this.queryListAjax,200);
+            this.queryList = debounce(this.queryListAjax,300);
         }
     }
 </script>

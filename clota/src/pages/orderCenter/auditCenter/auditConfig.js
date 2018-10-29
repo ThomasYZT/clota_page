@@ -37,7 +37,7 @@ export const groupOrderHead = [
         title: 'visitorNum',      // 游客人数
         width: 100,
         enWidth : 180,
-        field: 'quantity'
+        field: 'visitorNum'
     },
     {
         title: 'orderOrgAmount',  // 下单企业订单金额
@@ -123,8 +123,9 @@ export const bulkRefundHead = [
     },
     {
         title: 'playDate',
-        minWidth: 200,
-        field: 'visitDate'
+        minWidth: 150,
+        field: 'visitDate',
+        type : 'date'
     },
     {
         title: 'orderTime',
@@ -150,8 +151,7 @@ export const bulkRefundHead = [
     },
     {
         title: 'pNameAndReverseNum',     // 产品名称|预定数量
-        width: 180,
-        enWidth : 200,
+        width: 300,
         field: 'productName|quantity'
     },
     {
@@ -174,7 +174,8 @@ export const bulkRefundHead = [
     {
         title: 'visitDateAfterAlter',     // 申请改签后游玩日期
         minWidth: 200,
-        field: 'rescheduleAfterVisitDate'
+        field: 'afterAlterDate',
+        type : 'date'
     },
     {
         title: 'requestTime',      // 申请时间
@@ -240,18 +241,19 @@ export const productListHead = [
     },
     {
         title: 'playDate',
-        minWidth: 200,
-        field: 'visitDate'
+        minWidth: 150,
+        field: 'visitDate',
+        type : 'date'
     },
     {
         title: 'takeTicketStatus',    // 取票状态
-        minWidth: 100,
+        minWidth: 120,
         enWidth : 130,
         field: 'pickStatus'
     },
     {
         title: 'verifyStatus',      // 核销状态
-        minWidth: 100,
+        minWidth: 120,
         enWidth : 130,
         field: 'verifyStatus'
     },
@@ -270,11 +272,12 @@ export const productListHead = [
     {
         title: 'visitDateAfterAlter',     // 申请改签后游玩日期
         minWidth: 200,
-        field: 'rescheduleAfterVisitDate'
+        field: 'rescheduleAfterVisitDate',
+        type : 'date'
     },
     {
         title: 'SN',    // 串码
-        minWidth: 150,
+        minWidth: 200,
         field: 'serialNo'
     },
     {

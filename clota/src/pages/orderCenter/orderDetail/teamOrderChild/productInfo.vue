@@ -4,6 +4,7 @@
     <div class="product-info">
         <div class="title">产品信息</div>
         <table-com
+            v-if="viewType === 'scenic'"
             :column-data="columnData"
             :table-data="productInfoList"
             :border="true"
@@ -42,6 +43,14 @@
                     {{scope.row.thirdAllocation}} {{scope.row.thirdAllocationPrice | moneyFilter}}
                 </template>
             </el-table-column>
+        </table-com>
+        <table-com
+            v-else
+            :column-data="columnData"
+            :table-data="productInfoList"
+            :border="true"
+            :table-com-min-height="250"
+            :auto-height="true">
         </table-com>
     </div>
 </template>

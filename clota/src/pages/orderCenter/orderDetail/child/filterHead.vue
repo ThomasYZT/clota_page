@@ -288,13 +288,6 @@
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     export default {
-        props : {
-            //表格是否显示
-            tableShow : {
-                type : Boolean,
-                default : false
-            }
-        },
         data() {
             return {
                 //表单数据

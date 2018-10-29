@@ -23,7 +23,11 @@
                             @confirm-audit="handleConfirmAudit">
             </product-detail>
             <!--分销信息-->
-            <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
+            <!--<allocation-info :module-info="detailData.allocationInfo"></allocation-info>-->
+            <!--分销信息-->
+            <!--下单企业不可见-->
+            <distributionInfo viewType="scenic"
+                              :allocationInfo="detailData.allocationInfo"></distributionInfo>
             <!--退票日志-->
             <refund-alter-log :module-info="detailData.refundAlterList"></refund-alter-log>
             <!--核销日志-->
@@ -43,8 +47,9 @@
     import allocationInfo from './allocationInfo.vue';
     import refundAlterLog from '../../components/refundAlterLog.vue';
     import verifyLog from '../../components/verifyLog.vue';
-    import operateLog from '../../orderDetail/teamOrderChild/orderOperateLog.vue';
+    import operateLog from '../../components/operateLog';
     import assignWith from 'lodash/assignWith';
+    import distributionInfo from '../../orderDetail/individualOrderChild/level2/distributionInfo'
 
     export default {
         mixins : [lifeCycleMixins],
@@ -57,6 +62,7 @@
             refundAlterLog,
             verifyLog,
             operateLog,
+            distributionInfo
         },
         props: {},
         data() {
@@ -129,6 +135,8 @@
                 }).then(res => {
                     if(res.success){
                         this.orderTicketList = res.data || [];
+                    }else{
+                        this.orderTicketList = [];
                     }
                 });
             },
