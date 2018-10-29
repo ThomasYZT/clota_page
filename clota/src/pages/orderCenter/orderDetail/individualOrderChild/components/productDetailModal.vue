@@ -149,10 +149,10 @@
                     </Row>
                     <Row>
                         <Col span="10">
-                            <FormItem :label="$t('rescheduleStatus')+'：'">
-                                <template v-if="ticketInfo.rescheduleStatus === 'alter_audit'">{{$t('ModificationToBeReviewed')}}</template>
-                                <template v-else-if="ticketInfo.rescheduleStatus === 'alter'">{{$t('order.altered')}}</template>
-                                <template v-else-if="ticketInfo.rescheduleStatus === 'no_alter'">{{$t('order.no_alter')}}</template>
+                            <FormItem label="改签状态：">
+                                <template v-if="ticketInfo.rescheduleStatus === 'alter_audit'">{{$t('改签待审核')}}</template>
+                                <template v-else-if="ticketInfo.rescheduleStatus === 'altered'">{{$t('已改签')}}</template>
+                                <template v-else-if="ticketInfo.rescheduleStatus === 'no_alter'">{{$t('未改签')}}</template>
                             </FormItem>
                         </Col>
                         <Col span="10">

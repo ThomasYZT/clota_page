@@ -178,7 +178,7 @@
                 //表单校验规则
                 ruleValidate : {
                     alterDate : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('alterDate')})}
+                        {required : true,message : this.$t('selectField',{msg : this.$t('改签日期')}),trigger : 'change',type : 'date'}
                     ]
                 },
                 //表单数据

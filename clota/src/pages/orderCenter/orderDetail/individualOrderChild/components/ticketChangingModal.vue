@@ -6,17 +6,21 @@
     <Modal v-model="visible"
            :title="$t('applyForUpgrade')"
            class-name="vertical-center-modal"
+           @on-visible-change="visibleChange"
            width="420">
+
         <Form :label-width="150"
+              ref="formRef"
+              :model="formData"
+              :rules="ruleValidate"
               label-position="right">
 
             <!-- 申请改签数量 -->
             <FormItem :label="$('applyForUpgradeNum')">
                 {{num}}
             </FormItem>
-
-            <FormItem :label="$t('applyForUpgradeTo')">
-                <DatePicker v-model="afterAlterDate"
+            <FormItem label="申请改签至" prop="afterAlterDate">
+                <DatePicker v-model="formData.afterAlterDate"
                             format="yyyy-MM-dd"
                             type="date"
                             :options="dateOptions"
@@ -47,11 +51,20 @@
                 //申请改签数量
                 num: 0,
                 baseInfo: {},
-                //改签日期
-                afterAlterDate: '',
                 orderTicketIds: '',
                 //可以改签的日期
-                canAlterDate : []
+                canAlterDate : [],
+                //表单校验规则
+                ruleValidate : {
+                    afterAlterDate : [
+                        {required : true,message : this.$t('selectField',{msg : this.$t('改签日期')}),trigger : 'change',type : 'date'}
+                    ]
+                },
+                //表单数据
+                formData : {
+                    //改签日期
+                    afterAlterDate: '',
+                }
             }
         },
         methods: {
@@ -74,23 +87,27 @@
              * 确认改签
              */
             save() {
-                ajax.post('saveOrderProductRefundAlter', {
-                    reqType: 'alter',
-                    orderId: this.baseInfo.orderId,
-                    visitorProductId: this.baseInfo.visitorProductId,
-                    productId: this.baseInfo.productId,
-                    reqOrderTicketIds: this.orderTicketIds,
-                    afterAlterDate: new Date(this.afterAlterDate).format('yyyy-MM-dd')
-                }).then(res => {
-                    if(res.success) {
-                        this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));
-                        this.toggle();
-                        this.$emit('fresh-data');
-                    }else {
-                        this.$Message.error(this.$t('TheApplicationForAlterationFail'));
-                        this.toggle();
+                this.$refs.formRef.validate(valid => {
+                    if(valid) {
+                        ajax.post('saveOrderProductRefundAlter', {
+                            reqType: 'alter',
+                            orderId: this.baseInfo.orderId,
+                            visitorProductId: this.baseInfo.visitorProductId,
+                            productId: this.baseInfo.productId,
+                            reqOrderTicketIds: this.orderTicketIds,
+                            afterAlterDate: this.formData.afterAlterDate.format('yyyy-MM-dd')
+                        }).then(res => {
+                            if(res.success) {
+                                this.$Message.success('发起改签申请成功');
+                                this.toggle();
+                                this.$emit('fresh-data');
+                            }else {
+                                this.$Message.error('发起改签申请失败');
+                                this.toggle();
+                            }
+                        })
                     }
-                })
+                });
             },
             /**
              * 获取产品可预定日期
@@ -105,7 +122,17 @@
                         this.canAlterDate = [];
                     }
                 });
-            }
+            },
+            /**
+             * 模态框显示或隐藏
+             * @param type
+             */
+            visibleChange(type) {
+                if(type === false){
+                    this.$refs.formRef.resetFields();
+                }else{
+                }
+            },
         },
         computed : {
             //日期插件配置参数
