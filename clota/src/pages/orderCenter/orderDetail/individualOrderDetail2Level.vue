@@ -126,7 +126,7 @@
                     visitorProductId: this.productDetail.visitorProductId
                 }).then(res => {
                     if(res.success) {
-                        this.ticketList = res.data;
+                        this.ticketList = res.data ? res.data.ticketList : [];
                     }else {
                         this.ticketList = [];
                     }

@@ -27,7 +27,7 @@
                             </FormItem>
                         </Col>
                         <Col span="10">
-                            <FormItem :label="$('orderTime')+'：'">
+                            <FormItem :label="$t('orderTime')+'：'">
                                 {{orderInfo.orderTime | contentFilter}}
                             </FormItem>
                         </Col>
@@ -92,7 +92,7 @@
                             </FormItem>
                         </Col>
                         <Col span="10">
-                            <FormItem :label="$('playDate')+'：'">
+                            <FormItem :label="$t('playDate')+'：'">
                                 {{ticketInfo.visitDate | timeFormat('yyyy-MM-dd') | contentFilter}}
                             </FormItem>
                         </Col>
@@ -156,7 +156,7 @@
                             </FormItem>
                         </Col>
                         <Col span="10">
-                            <FormItem :label="$('modifyTime')+'：'">
+                            <FormItem :label="$t('modifyTime')+'：'">
                                 {{ticketInfo.rescheduleTime | contentFilter}}
                             </FormItem>
                         </Col>
@@ -188,7 +188,7 @@
                       :label-width="160">
                     <Row>
                         <Col span="10">
-                            <FormItem :label="$('touristName')+'：'">
+                            <FormItem :label="$t('touristName')+'：'">
                                 {{visitor.visitorName | contentFilter}}
                             </FormItem>
                         </Col>

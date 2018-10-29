@@ -16,7 +16,7 @@
               label-position="right">
 
             <!-- 申请改签数量 -->
-            <FormItem :label="$('applyForUpgradeNum')">
+            <FormItem :label="$t('applyForUpgradeNum')">
                 {{num}}
             </FormItem>
             <FormItem label="申请改签至" prop="afterAlterDate">

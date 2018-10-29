@@ -22,7 +22,7 @@
                 </i-col>
                 <i-col span="7">
                     <!--游玩日期-->
-                    <FormItem :label="$('playDate')">
+                    <FormItem :label="$t('playDate')">
                         <DatePicker v-model.trim="formData.visitDate"
                                     transfer
                                     :editable="false"
