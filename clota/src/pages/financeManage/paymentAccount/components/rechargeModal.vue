@@ -2,7 +2,7 @@
     <!--重置密码-->
     <Modal
         v-model="visible"
-        :title="'充值'"
+        :title="$t('topUp')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -16,15 +16,15 @@
                     <span>{{formData.orgName}}</span>
                 </Form-item>
                 <!--充值金额-->
-                <Form-item :label="$t('充值金额')" prop="rechargeAmount">
-                    <Input v-model.trim="formData.rechargeAmount" :placeholder="$t('inputField', {field: $t('充值金额')})" />
+                <Form-item :label="$t('rechargeAmount')" prop="rechargeAmount">
+                    <Input v-model.trim="formData.rechargeAmount" :placeholder="$t('inputField', {field: $t('rechargeAmount')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
                 <!--支付方式-->
-                <Form-item :label="$t('支付方式')" prop="">
+                <Form-item :label="$t('payType')" prop="">
                     <RadioGroup v-model="formData.payType">
                         <Radio label="zfb">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                        <Radio label="wx">{{$t('微信支付')}}</Radio><!--微信支付-->
+                        <Radio label="wx">{{$t('wechatPay')}}</Radio><!--微信支付-->
                     </RadioGroup>
                 </Form-item>
                 <!--备注-->
@@ -73,7 +73,7 @@
                 //校验规则
                 ruleValidate: {
                     rechargeAmount: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('充值金额')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('rechargeAmount')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
 
@@ -123,11 +123,11 @@
                     remark: this.formData.remark
                 }).then(res => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('topUp')}));
                         this.hide();
                         this.$emit('update-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('topUp')}));
                     }
                 })
             },

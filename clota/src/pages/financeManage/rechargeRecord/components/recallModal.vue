@@ -2,7 +2,7 @@
     <!--撤回充值申请-->
     <Modal
         v-model="visible"
-        :title="'撤回充值申请'"
+        :title="$t('withdrawRechargeRequest')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -10,13 +10,13 @@
 
         <div class="modal-body">
 
-            <p>{{$t('是否撤回充值申请？')}}</p>
+            <p>{{$t('isWithdrawRechargeRequest')}}?</p>
 
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="buyNow()">{{$t('审核通过')}}</Button>
-            <Button type="error" @click="buyNow()">{{$t('驳回')}}</Button>
+            <Button type="primary" @click="buyNow()">{{$t('checkPass')}}</Button>
+            <Button type="error" @click="buyNow()">{{$t('reject')}}</Button>
         </div>
 
     </Modal>

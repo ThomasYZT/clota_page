@@ -1375,5 +1375,21 @@ export default {
     'inputPasswordAgain': '请再次输入密码',
     'confirmNewPassword': '确认新密码',
     'newPassword': '新密码',
-    'paswordMustBeEqual': '请输入相同的密码'
+    'paswordMustBeEqual': '请输入相同的密码',
+    'warning': '预警',
+    'normal': '正常',
+    'payer': '付款方',
+    'payee': '收款方',
+    'rechargeAmount': '充值金额',
+    'rechargeType': '充值方式',
+    'transactionSerialNumber': '交易流水号',
+    'availableCredit': '可用额度',
+    'creditBalance': '信用额度',
+    'topUp': '充值',
+    'rechargeAudit': '充值审核',
+    'warningLines': '预警额度',
+    'withdrawRechargeRequest': '撤回充值申请',
+    'isWithdrawRechargeRequest': '是否撤回充值申请',
+    'ModifyLine': '修改额度',
+    'onliShowTip': '仅当使用微信支付或支付宝时展示交易流水号'
 }

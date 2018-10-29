@@ -10,7 +10,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.name"
                    icon="ios-search"
-                   :placeholder="$t('请输入任意信息进行查询')"
+                   :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -31,8 +31,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-account normal" v-if="scope.row.whetherAlarm === 'true'">{{$t('正常')}}</span>
-                    <span class="status-account warning" v-else>{{$t('预警')}}</span>
+                    <span class="status-account normal" v-if="scope.row.whetherAlarm === 'true'">{{$t('normal')}}</span>
+                    <span class="status-account warning" v-else>{{$t('warning')}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -74,7 +74,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span class="operate"
-                          @click="handleRecharge(scope.row)">{{$t('充值')}}
+                          @click="handleRecharge(scope.row)">{{$t('topUp')}}
                     </span>
                 </template>
             </el-table-column>
