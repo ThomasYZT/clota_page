@@ -476,6 +476,7 @@
 
         .to-one-level{
             cursor: pointer;
+            text-decoration: underline;
         }
     }
 </style>
