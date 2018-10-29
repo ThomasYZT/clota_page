@@ -6,7 +6,8 @@
 
 <template>
     <div class="">
-        <div class="block-title">{{$t('核销日志')}}</div>
+        <!--核销日志-->
+        <div class="block-title">{{$t('verifyLog')}}</div>
         <table-com
             :table-com-min-height="300"
             :ofsetHeight="170"

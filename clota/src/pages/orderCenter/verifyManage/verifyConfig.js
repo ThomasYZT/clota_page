@@ -98,6 +98,7 @@ export const orderTicketHead = [
     {
         title: '操作',
         width: 100,
+        enWidth: 120,
     }
 ];
 
@@ -193,5 +194,6 @@ export const orderVerifyHead = [
     {
         title: '操作',
         width: 100,
+        enWidth: 120,
     }
 ];

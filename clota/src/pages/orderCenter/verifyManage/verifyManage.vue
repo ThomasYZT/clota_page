@@ -9,22 +9,22 @@
         <div class="filter-box">
             <Input v-model.trim="filterParam.serialNos"
                    class="input-field"
-                   :placeholder="$t('输入订单串码、多个串码用; 隔开')" /><!--输入订单串码、多个串码用；隔开-->
+                   :placeholder="$t('orderSNPlaceholder')" /><!--输入订单串码、多个串码用；隔开-->
             <Button type="primary"
                     :disabled="!filterParam.serialNos"
                     @click="handleSearch">
-                {{$t("search", {msg: ''})}}
+                {{$t("searching", {msg: ''})}}
             </Button>
             <!--<Button type="ghost" :disabled="!filterParam.serialNos" @click="reset">{{$t("reset")}}</Button>-->
         </div>
         <div class="wrapper">
             <!--取票串码查询结果列表-->
             <div class="result-container" v-if="tableData.orderInfoList && tableData.orderInfoList.length>0">
-                <div class="list-sign">{{$t('取票串码查询结果列表')}}
+                <div class="list-sign">{{$t('listForTicketSN')}}
                     <Button type="primary"
                             class="batch-verify"
                             :disabled="chosenRowData.ticket.length<=0"
-                            @click="handleCommand('ticket')">{{$t('批量核销')}}</Button>
+                            @click="handleCommand('ticket')">{{$t('batchVerify')}}</Button><!--批量核销-->
                 </div>
                 <table-com
                     :ofsetHeight="170"
@@ -98,8 +98,10 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已取票')}}：{{Number(scope.row.quantityPicked) | contentFilter}}</span>
-                            <span class="gray">{{$t('未取票')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityPicked)}}</span>
+                            <!--已取票-->
+                            <span class="blue" style="margin-right: 20px;">{{$t('haveTickets')}}：{{Number(scope.row.quantityPicked) | contentFilter}}</span>
+                            <!--未取票-->
+                            <span class="gray">{{$t('noHaveTickets')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityPicked)}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -110,8 +112,10 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已核销')}}：{{Number(scope.row.quantityVerified) | contentFilter}}</span>
-                            <span class="gray">{{$t('未核销')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
+                            <!--已核销-->
+                            <span class="blue" style="margin-right: 20px;">{{$t('consumed')}}：{{Number(scope.row.quantityVerified) | contentFilter}}</span>
+                            <!--未核销-->
+                            <span class="gray">{{$t('noConsumed')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -122,8 +126,10 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="red" style="margin-right: 20px;">{{$t('已退')}}：{{scope.row.quantityRefunded | contentFilter}}</span>
-                            <span class="yellow">{{$t('待审')}}：{{scope.row.quantityAuditRefunded | contentFilter}}</span>
+                            <!--已退-->
+                            <span class="red" style="margin-right: 20px;">{{$t('retired')}}：{{Number(scope.row.quantityRefunded) | contentFilter}}</span>
+                            <!--待审-->
+                            <span class="yellow">{{$t('pendingTrial')}}：{{Number(scope.row.quantityAuditRefunded) | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -134,8 +140,10 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已改')}}：{{scope.row.quantityRescheduled | contentFilter}}</span>
-                            <span class="yellow">{{$t('待审')}}：{{scope.row.quantityAuditRescheduled | contentFilter}}</span>
+                            <!--已改-->
+                            <span class="blue" style="margin-right: 20px;">{{$t('hasChanged')}}：{{Number(scope.row.quantityRescheduled) | contentFilter}}</span>
+                            <!--待审-->
+                            <span class="yellow">{{$t('pendingTrial')}}：{{Number(scope.row.quantityAuditRescheduled) | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -169,18 +177,19 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="operate-btn blue" @click="showModal(scope.row, false, 'ticket')">{{$t('核销')}}</span>
+                            <!--核销-->
+                            <span class="operate-btn blue" @click="showModal(scope.row, false, 'ticket')">{{$t('verification')}}</span>
                         </template>
                     </el-table-column>
                 </table-com>
             </div>
             <!--每张门票的核销串码查询结果列表-->
             <div class="result-container" v-if="tableData.orderTicketList && tableData.orderTicketList.length>0">
-                <div class="list-sign">{{$t('每张门票的核销串码查询结果列表')}}
+                <div class="list-sign">{{$t('listForVerifySN')}}
                     <Button type="primary"
                             class="batch-verify"
                             :disabled="chosenRowData.verify.length<=0"
-                            @click="handleCommand('verify')">{{$t('批量核销')}}</Button>
+                            @click="handleCommand('verify')">{{$t('batchVerify')}}</Button><!--批量核销-->
                 </div>
                 <table-com
                     :ofsetHeight="170"
@@ -295,7 +304,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="operate-btn" @click="showModal(scope.row, false, 'verify')">{{$t('核销')}}</span>
+                            <span class="operate-btn" @click="showModal(scope.row, false, 'verify')">{{$t('verification')}}</span>
                         </template>
                     </el-table-column>
                 </table-com>

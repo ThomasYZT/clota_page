@@ -6,7 +6,7 @@
 
 <template>
     <div class="">
-        <div class="block-title">{{$t('退票日志')}}</div>
+        <div class="block-title">{{$t('refundLog')}}</div>
         <!--退票/改签 日志-->
         <table-com
             :table-com-min-height="300"

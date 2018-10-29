@@ -253,7 +253,7 @@
             }
 
             .table-bottom {
-                margin-top: 10px;
+                margin: 10px 0;
                 ul > li {
                     float: right;
                     margin-right: 20px;

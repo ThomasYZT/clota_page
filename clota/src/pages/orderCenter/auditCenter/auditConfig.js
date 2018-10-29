@@ -286,6 +286,7 @@ export const productListHead = [
     {
         title: 'operate',
         width: 80,
+        enWidth: 110,
     }
 ];
 

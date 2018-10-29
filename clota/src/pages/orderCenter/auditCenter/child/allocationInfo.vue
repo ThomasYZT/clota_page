@@ -6,9 +6,11 @@
 
 <template>
     <div class="">
-        <div class="block-title">{{$t('分销信息')}}</div>
+        <!--分销信息-->
+        <div class="block-title">{{$t('allowcationInfo')}}</div>
         <div class="content-wrap">
-            <div>{{$t('销售政策')}}：<span>{{moduleInfo.policyName | contentFilter}}</span></div>
+            <!--销售政策-->
+            <div>{{$t('marketingPolicy')}}：<span>{{moduleInfo.policyName | contentFilter}}</span></div>
             <div class="settle-link clearfix">
                 <div class="link-item" v-for="(item, index) in moduleInfo.settleLink" :key="index">
                     <div class="link-item-desc">
