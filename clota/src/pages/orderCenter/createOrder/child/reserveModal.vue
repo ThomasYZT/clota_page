@@ -12,7 +12,8 @@
             class="reserve-modal"
             class-name="vertical-center-modal">
             <div slot="header" class="target-class">
-                <span class="title">{{$t('请填写购买数量')}}</span>
+                <!--请填写购买数量-->
+                <span class="title">{{$t('fillBuyNum')}}</span>
             </div>
             <div class="target-body">
                 <table-com
@@ -54,8 +55,10 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <div class="predict-money">预计订单总额: <span class="money">{{predictMoney | moneyFilter }}</span></div>
-                <div class="left-money">下单企业可用额度: <span class="money">{{validatMoney | moneyFilter}}</span></div>
+                <!--预计订单总额-->
+                <div class="predict-money">{{$t('predictOrderAmount')}}: <span class="money">{{predictMoney | moneyFilter }}</span></div>
+                <!--下单企业可用额度-->
+                <div class="left-money">{{$t('orderOrgUsableAmount')}}: <span class="money">{{validatMoney | moneyFilter}}</span></div>
             </div>
             <div slot="footer">
                 <Button type="primary"
