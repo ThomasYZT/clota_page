@@ -97,7 +97,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="yellow-label" v-if="scope.row.rescheduleStatus === 'alter_audit'">{{$t('改签待审核')}}</span>
-                        <span class="red" v-else-if="scope.row.rescheduleStatus === 'alter'">{{$t('已改签')}}</span>
+                        <span class="red" v-else-if="scope.row.rescheduleStatus === 'altered'">{{$t('已改签')}}</span>
                         <span v-else-if="scope.row.rescheduleStatus === 'no_alter'">{{$t('未改签')}}</span>
                     </template>
                 </el-table-column>

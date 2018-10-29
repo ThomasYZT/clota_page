@@ -151,7 +151,7 @@
                         <Col span="10">
                             <FormItem label="改签状态：">
                                 <template v-if="ticketInfo.rescheduleStatus === 'alter_audit'">{{$t('改签待审核')}}</template>
-                                <template v-else-if="ticketInfo.rescheduleStatus === 'alter'">{{$t('已改签')}}</template>
+                                <template v-else-if="ticketInfo.rescheduleStatus === 'altered'">{{$t('已改签')}}</template>
                                 <template v-else-if="ticketInfo.rescheduleStatus === 'no_alter'">{{$t('未改签')}}</template>
                             </FormItem>
                         </Col>

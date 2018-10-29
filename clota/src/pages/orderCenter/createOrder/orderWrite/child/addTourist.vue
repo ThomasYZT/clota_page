@@ -123,7 +123,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <template v-if="scope.row.needId !== 'noRequired'">
+                            <template v-if="scope.row.acceptIdType">
                                 <FormItem :prop="'idType' + scope.$index" :rules="rules.idType(scope.row)">
                                     <Select v-model.trim="scope.row.idType" :disabled="scope.row.takeNum < 1" transfer>
                                         <Option v-for="item in acceptCertificateType[scope.row.productId]"
