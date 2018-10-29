@@ -10,13 +10,15 @@
 
         <div class="modal-body">
             <div class="single-org" v-if="!orderData.isBatch && orderData.items.length>0">
+                <!--下单企业-->
                 <span style="float: left;margin-right: 60px;">
-                    {{$t('下单企业')}}：
+                    {{$t('orderOrg')}}：
                     <span class="org-name" v-w-title="orderData.items[0].orderOrgName">
                         {{orderData.items[0].orderOrgName | contentFilter}}
                     </span>
                 </span>
-                <span>{{$t('游玩日期')}}：
+                <!--游玩日期-->
+                <span>{{$t('playDate')}}：
                     <span class="org-name">{{orderData.items[0].originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
                 </span>
             </div>
@@ -49,8 +51,9 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                        <!--订单金额-->
                     <div class="order-amount">
-                        {{$t('订单金额')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : null) | moneyFilter}} {{$t('yuan')}}</span>
+                        {{$t('orderAmount')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : null) | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
                 <template v-else>
@@ -81,26 +84,27 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <!--订单金额合计-->
                     <div class="order-amount">
-                        {{$t('订单金额合计')}}：<span class="yellow">{{orderAmountSum | moneyFilter}} {{$t('yuan')}}</span>
+                        {{$t('totalOrderAmount')}}：<span class="yellow">{{orderAmountSum | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
             </div>
             <!--备注-->
             <div style="padding: 0 20px;">
                 <span class="label-remark">{{$t('remark')}}：</span>
-                <div style="margin-left: 45px">
+                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :maxlength="500"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('inputPlaceholder')" /><!--请输入-->
+                    <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="auditPass()" >{{$t("通过")}}</Button>
+            <Button type="primary" @click="auditPass()" >{{$t("passed")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -113,6 +117,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {orderProductHead, batchAuditHead} from '../auditConfig';
     import sum from 'lodash/sum';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: [],
@@ -139,6 +144,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
             orderAmountSum() {
                 if (this.orderData.isBatch && this.orderData.items.length) {
                     return sum(this.orderData.items.map(item => item.orderAmount));
@@ -154,9 +162,9 @@
                     this.orderData = data;
                     if (data.isBatch) {
                         this.tableData = data.items;
-                        this.title = '团队订单批量审核通过';
+                        this.title = 'teamBatchCheckPass';  // 团队订单批量审核通过
                     } else {
-                        this.title = '审核通过';
+                        this.title = 'checkPass';   // 审核通过
                         this.getOrderProducts(data.items[0].id);
                     }
                 }
@@ -179,22 +187,28 @@
                 ajax.post('queryOrderProductByOrderId', {
                     orderId: id
                 }).then(res => {
-                    if(res.success && res.data){
+                    if(res.success){
                         this.tableData = res.data || [];
+                    } else {
+                        this.tableData = [];
                     }
                 });
             },
             auditPass() {
+                if (this.auditRemark.length>500) {
+                    return;
+                }
+
                 ajax.post('auditTeamOrder', {
                     orderIds: this.orderData.items.map(item => item.id).join(','),
                     remark: this.auditRemark,
                     auditStatus: 'success',
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('订单审核通过'));
+                        this.$Message.success(this.$t('orderCheckPassed'));     // 订单审核通过
                         this.$emit('on-audit-pass');
                     }else{
-                        this.$Message.error(this.$t('订单审核失败'));
+                        this.$Message.error(this.$t('orderCheckFailure'));      // 订单审核失败
                     }
                     this.hide();
                 });
@@ -231,6 +245,14 @@
                 float: left;
                 font-size: 14px;
                 color: #585858;
+            }
+
+            .error-tip {
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                font-size: 12px;
+                color: $color_red;
             }
         }
 

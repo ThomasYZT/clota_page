@@ -1348,7 +1348,7 @@ export default {
     'requestTime' : '申请时间',
     'totalOrderAmount' : '订单金额合计',
     'teamBatchCheckPass' : '团队订单批量审核通过',
-    'orderCheckPassed' : '订单已审核通过',
+    'orderCheckPassed' : '订单审核通过',
     'pNameAndReverseNum' : '产品名称|预定数量',
     'unitPriceAndSubtotal' : '产品单价|小计金额',
     'visitorAndMobilePhone' : '游客|手机号',
@@ -1391,5 +1391,13 @@ export default {
     'withdrawRechargeRequest': '撤回充值申请',
     'isWithdrawRechargeRequest': '是否撤回充值申请',
     'ModifyLine': '修改额度',
-    'onliShowTip': '仅当使用微信支付或支付宝时展示交易流水号'
+    'onliShowTip': '仅当使用微信支付或支付宝时展示交易流水号',
+    'teamBatchCheckReject' : '团队订单批量驳回申请',
+    'orderRejected' : '订单已驳回',
+    'passedNum' : '通过数量',
+    'rejectedNum' : '驳回数量',
+    'rejectAll' : '全部驳回',
+    'auditResult' : '审核结果',
+    'confirmAuditRes' : '审核结果确认',
+    'orderCheckFailure' : '订单审核失败',
 }
