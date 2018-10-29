@@ -6,7 +6,8 @@
 
 <template>
     <div class="product-detail">
-        <div class="block-title">{{$t('产品明细')}}</div>
+        <!--产品明细-->
+        <div class="block-title">{{$t('productDetail')}}</div>
         <div class="table-top">
             <!--产品名称-->
             <span>{{$t('productName')}}：{{baseInfo.productName | contentFilter}}</span>
@@ -21,8 +22,8 @@
                 <Button type="error"
                         style="width: 88px; background-color: #EB6751;"
                         :disabled="!moduleInfo || reqOrderTickets.length<1"
-                        @click="showAuditModal('reject')">{{$t('全部驳回')}}
-                </Button>
+                        @click="showAuditModal('reject')">{{$t('rejectAll')}}
+                </Button><!--全部驳回-->
             </div>
         </div>
         <!--产品列表-->
@@ -51,8 +52,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.pickStatus=='true'">{{$t('已取票')}}</span>
-                    <span v-if="scope.row.pickStatus=='false'">{{$t('未取票')}}</span>
+                    <span v-if="scope.row.pickStatus=='true'">{{$t('haveTickets')}}</span><!--已取票-->
+                    <span v-if="scope.row.pickStatus=='false'">{{$t('noHaveTickets')}}</span><!--未取票-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -63,8 +64,8 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <!--<span class="blue">{{$t(transVerifyStatus(moduleInfo.verifyStatus))}}</span>-->
-                    <span v-if="scope.row.verifyStatus=='true'">{{$t('已核销')}}</span>
-                    <span v-if="scope.row.verifyStatus=='false'">{{$t('未核销')}}</span>
+                    <span v-if="scope.row.verifyStatus=='true'">{{$t('consumed')}}</span><!--已核销-->
+                    <span v-if="scope.row.verifyStatus=='false'">{{$t('noConsumed')}}</span><!--未核销-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -74,9 +75,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red" v-if="scope.row.refundStatus=='refund_audit'">{{$t('退票待审核')}}</span>
-                    <span v-if="scope.row.refundStatus=='refunded'">{{$t('已退票')}}</span>
-                    <span v-if="scope.row.refundStatus=='no_refund'">{{$t('未退票')}}</span>
+                    <span class="red" v-if="scope.row.refundStatus=='refund_audit'">{{$t('refundToBeReviewed')}}</span><!--退票待审核-->
+                    <span v-if="scope.row.refundStatus=='refunded'">{{$t('order.refunded')}}</span><!--已退票-->
+                    <span v-if="scope.row.refundStatus=='no_refund'">{{$t('order.no_refund')}}</span><!--未退票-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -88,10 +89,10 @@
                 <template slot-scope="scope">
                     <span class="red"
                           v-if="scope.row.rescheduleStatus=='alter_audit'">
-                        {{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('改签待审核')}}
+                        {{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('ModificationToBeReviewed')}}<!--改签待审核-->
                     </span>
-                    <span v-if="scope.row.rescheduleStatus=='alter'">{{$t('已改签')}}</span>
-                    <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('未改签')}}</span>
+                    <span v-if="scope.row.rescheduleStatus=='alter'">{{$t('order.altered')}}</span><!--已改签-->
+                    <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('order.no_alter')}}</span><!--未改签-->
                 </template>
             </el-table-column>
             <template v-if="isAlter">
@@ -102,8 +103,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>-->
-                        <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('未改签'))}}</span>
+                        <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('order.no_alter')}}</span>-->
+                        <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('order.no_alter'))}}</span>
                     </template>
                 </el-table-column>
             </template>
@@ -132,14 +133,15 @@
         <div class="table-bottom">
             <i class="iconfont icon-note"></i>
             <ul>
-                <li>{{$t('未取票')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</b></li>
-                <li>{{$t('已取票')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
-                <li>{{$t('未核销')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</b></li>
-                <li>{{$t('已核销')}}：<b>{{baseInfo.quantityVerified | contentFilter}}</b></li>
-                <li>{{$t('已退票')}}：<b>{{baseInfo.quantityRefunded | contentFilter}}</b></li>
-                <li>{{$t('已改签')}}：<b>{{baseInfo.quantityRescheduled | contentFilter}}</b></li>
+                <li>{{$t('noHaveTickets')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</b></li>
+                <li>{{$t('haveTickets')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
+                <li>{{$t('noConsumed')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</b></li>
+                <li>{{$t('consumed')}}：<b>{{baseInfo.quantityVerified | contentFilter}}</b></li>
+                <li>{{$t('order.refunded')}}：<b>{{baseInfo.quantityRefunded | contentFilter}}</b></li>
+                <li>{{$t('order.altered')}}：<b>{{baseInfo.quantityRescheduled | contentFilter}}</b></li>
             </ul>
-            <div class="reserve-num">{{$t('产品预定数量')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
+            <!--产品预定数量-->
+            <div class="reserve-num">{{$t('productReserveNum')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
         </div>
         <!--审核确认弹框-->
         <confirm-audit-modal ref="confirmAuditModal"

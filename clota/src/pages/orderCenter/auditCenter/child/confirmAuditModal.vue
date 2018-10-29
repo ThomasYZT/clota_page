@@ -11,8 +11,9 @@
         <div class="modal-body">
             <div class="single-org">
                 <div class="form-wrap">
+                    <!--游客姓名-->
                     <div class="form-item-wrap">
-                        <label>{{$t("游客姓名")}}：</label><span v-w-title="visitorInfo.visitorName">{{visitorInfo.visitorName | contentFilter}}</span>
+                        <label>{{$t("touristName")}}：</label><span v-w-title="visitorInfo.visitorName">{{visitorInfo.visitorName | contentFilter}}</span>
                     </div>
                     <div class="form-item-wrap">
                         <label>{{$t("mobilePhone")}}：</label><span>{{visitorInfo.phoneNumber | contentFilter}}</span>
@@ -42,24 +43,24 @@
                 </table-com>
                 <div class="table-bottom clearfix">
                     <ul>
-                        <li>{{$t('驳回数量')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li>
-                        <li>{{$t('通过数量')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li>
-                        <li>{{$t('申请数量')}}：<span style="color: #333;">{{Number(baseInfo.reqNum) | contentFilter}}</span></li>
+                        <li>{{$t('rejectedNum')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li><!--驳回数量-->
+                        <li>{{$t('passedNum')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li><!--通过数量-->
+                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{Number(baseInfo.reqNum) | contentFilter}}</span></li><!--申请数量-->
                     </ul>
                 </div>
-
+                <!--退票手续费-->
                 <div class="refund-fee" v-if="isRefund">
-                    {{$t('退票手续费')}}：<span class="yellow">{{(refundProcedureFee || '-') | moneyFilter}} {{$t('yuan')}}</span>
+                    {{$t('cancellationCharge')}}：<span class="yellow">{{(refundProcedureFee || '-') | moneyFilter}} {{$t('yuan')}}</span>
                 </div>
             </div>
             <!--备注-->
             <div>
                 <span style="float: left;">{{$t('remark')}}：</span>
-                <div style="margin-left: 45px; position:relative;">
+                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请输入')" />
+                           :placeholder="$t('inputPlaceholder')" />
                     <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
@@ -79,6 +80,7 @@
     import {orderProductHead, batchAuditHead} from '../auditConfig';
     import sum from 'lodash/sum';
     import {transAudit} from '../../commFun';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: {
@@ -91,19 +93,19 @@
         data () {
             return {
                 visible: false,
-                title: '审核结果确认',
+                title: 'confirmAuditRes',   // 审核结果确认
                 //表头配置
                 columnData : [
                     {
-                        title: '产品明细编号',
+                        title: 'productDetailNo',      // 产品明细编号
                         minWidth: 150,
-                        enWidth : 180,
+//                        enWidth : 180,
                         field: 'id'
                     },
                     {
-                        title: '审核结果',
+                        title: 'auditResult',      // 审核结果
                         minWidth: 150,
-                        enWidth : 180,
+//                        enWidth : 180,
                         field: 'auditStatus'
                     },
                 ],
@@ -118,6 +120,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
             // 是否散客退票
             isRefund() {
                 return (this.$route.query.reqType=='refund') || (this.$route.name=='bulkRefundDetail');

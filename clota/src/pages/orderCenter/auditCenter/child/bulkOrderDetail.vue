@@ -8,7 +8,7 @@
     <div class="bulk-order-detail">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="'订单明细详情'">
+            :locale-router="'orderDetailInfo'"><!--订单明细详情-->
         </bread-crumb-head>
 
         <div class="detail-container">
@@ -44,6 +44,7 @@
     import refundAlterLog from '../../components/refundAlterLog.vue';
     import verifyLog from '../../components/verifyLog.vue';
     import operateLog from '../../orderDetail/teamOrderChild/orderOperateLog.vue';
+    import assignWith from 'lodash/assignWith';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -87,12 +88,12 @@
             beforeRouterList() {
                 if (this.$route.name == 'bulkRefundDetail') {
                     return [{
-                        name: '散客退票审核',   // 散客退票审核
+                        name: 'auditBulkRefund',   // 散客退票审核
                         router: {name: 'auditBulkRefund'}
                     }]
                 } else if (this.$route.name == 'bulkChangeDetail') {
                     return [{
-                        name: '散客改签审核',   // 散客改签审核
+                        name: 'auditBulkChange',   // 散客改签审核
                         router: {name: 'auditBulkChange'}
                     }]
                 }
@@ -112,7 +113,10 @@
                     visitorProductId: id
                 }).then(res => {
                     if(res.success){
-                        this.detailData = res.data || {};
+//                        this.detailData = res.data || {};
+                        this.detailData = assignWith(this.detailData, res.data, (objValue, srcValue) => {
+                            return srcValue ? srcValue : objValue;
+                        });
                     }
                 });
             },
