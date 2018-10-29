@@ -154,7 +154,7 @@
         data() {
             const validateMethod = {
                 productPrice: (rule,value,callback) => {
-                    //校验非空必填以及不可低于上级分销单价
+                    //校验非空必填以及提示低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
                             if(item.price === ''){

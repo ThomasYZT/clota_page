@@ -98,6 +98,7 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <span v-if="isLossTipShow" class="loss-tip">{{this.$t('maybeLoss')}}</span>
                 </Form-item>
 
                 <!-- 设置我的销售渠道 -->
@@ -170,7 +171,8 @@
                                     console.log(item.settlePrice)
                                     console.log(parseFloat(item.price),parseFloat(item.settlePrice))
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
-                                        callback(new Error(this.$t('maybeLoss')));
+                                        this.isLossTipShow = true;
+                                        callback();
                                     } else {
                                         callback();
                                     }
@@ -222,7 +224,9 @@
                 //已选中的渠道组
                 selectedRow: [],
                 //是否处于编辑状态
-                editable: false
+                editable: false,
+                //是否显示亏损提示
+                isLossTipShow: false
 
             }
         },
@@ -553,6 +557,11 @@
             /deep/ .ivu-btn.ivu-btn-error {
                 background-color: #EB6751;
             }
+        }
+
+        .loss-tip {
+            color: $color_red;
+            font-size: 12px;
         }
     }
 
