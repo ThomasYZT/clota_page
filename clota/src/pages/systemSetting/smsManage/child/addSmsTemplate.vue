@@ -22,33 +22,33 @@
                       label-position="top">
 
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('模板名称')" prop="templateName"><!--模板名称-->
+                        <Form-item :label="$t('templateName')" prop="templateName"><!--模板名称-->
                             <Input v-model.trim="smsForm.templetName"
-                                   :placeholder="$t('inputField', {field: '模板名称'})"/>
+                                   :placeholder="$t('inputField', {field: 'templateName'})"/>
                         </Form-item>
                     </div>
 
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('模版类型')" prop="templateType"><!-- 模版类型-->
+                        <Form-item :label="$t('templateType')" prop="templateType"><!-- 模版类型-->
                             <Select v-model="smsForm.templetType" :placeholder="$t('selectField', {msg: $t('type')})">
                                 <!--<Option v-for="(item,index) in enumData.genderEnum"
                                         :key="index"
                                         :value="item.name">
                                     {{$t(item.desc)}}
                                 </Option>-->
-                                <Option value="1">自定义</Option>
+                                <Option value="1">{{$t('custom')}}</Option>
                             </Select>
                         </Form-item>
                     </div>
 
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('模版内容')" prop="templateContent"><!-- 模版内容-->
+                        <Form-item :label="$t('templateContent')" prop="templateContent"><!-- 模版内容-->
                             <Input v-model.trim="smsForm.templetContent"
                                    type="textarea"
                                    :rows="5"
-                                   :placeholder="$t('短信内容不能超过320个字符')"/>
+                                   :placeholder="$t('inputField', {feild: $t('templateContent')})"/>
                         </Form-item>
-                        <p class="edit-tip" @click="$refs.exampleTplModal.show()">{{ $t('如何编辑短信模版内容？') }}</p>
+                        <p class="edit-tip" @click="$refs.exampleTplModal.show()">{{ $t('howToEditSmsTemplateContent') }}?</p>
                     </div>
                 </Form>
             </div>
@@ -127,20 +127,20 @@
                 // 校验规则
                 ruleValidate: {
                     templetName: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('模板名称')}), trigger: 'blur'},     // 模板名称不能为空
+                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('templateName')}), trigger: 'blur'},     // 模板名称不能为空
                         {
                             type: 'string',
                             max: 15,
-                            message: this.$t('errorMaxLength', {field: this.$t('模板名称'), length: 15}),
+                            message: this.$t('errorMaxLength', {field: this.$t('templateName'), length: 15}),
                             trigger: 'blur'
                         },      // 模板名称不能超过15个字符
                         {validator: validateMethod.emoji, trigger: 'blur'}
                     ],
                     templetType: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('模板类型')}), trigger: 'change'},     // 模板类型不能为空
+                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('templateType')}), trigger: 'change'},     // 模板类型不能为空
                     ],
                     templetContent: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('模板内容')}), trigger: 'blur'},     // 模板内容不能为空
+                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('templateContent')}), trigger: 'blur'},     // 模板内容不能为空
                         {
                             type: 'string',
                             max: 15,
@@ -216,10 +216,10 @@
                 }).then((res) => {
                     console.log(res)
                     if(res.success){
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
                         this.$router.push({ name: 'smsTemplate'});
                     }else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
                     }
                 })
             }
