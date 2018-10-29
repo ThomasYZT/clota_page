@@ -6,42 +6,42 @@ export const columnData = [
         field: ''
     },
     {
-        title: '产品明细编号',
+        title: 'productDetailNo',
         width: 200,
         field: 'id'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         minWidth: 140,
         field: 'visitDate'
     },
     {
-        title: '取票状态',
+        title: 'takeTicketStatus',
         minWidth: 100,
         field: 'pickStatus'
     },
     {
-        title: '核销状态',
+        title: 'verifyStatus',
         minWidth: 100,
         field: 'verifyStatus'
     },
     {
-        title: '退票状态',
+        title: 'refundStatus',
         minWidth: 100,
         field: 'refundStatus'
     },
     {
-        title: '改签状态',
+        title: 'rescheduleStatus',
         minWidth: 100,
         field: 'rescheduleStatus'
     },
     {
-        title: '串码',
+        title: 'SN',
         minWidth: 200,
         field: 'serialNo'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',
         minWidth: 100,
         field: 'syncStatus'
     },

@@ -4,16 +4,18 @@
 -->
 <template>
     <Modal v-model="visible"
-           title="申请改签"
+           :title="$t('applyForUpgrade')"
            class-name="vertical-center-modal"
            width="420">
-
         <Form :label-width="150"
               label-position="right">
-            <FormItem label="申请改签数量">
+
+            <!-- 申请改签数量 -->
+            <FormItem :label="$('applyForUpgradeNum')">
                 {{num}}
             </FormItem>
-            <FormItem label="申请改签至">
+
+            <FormItem :label="$t('applyForUpgradeTo')">
                 <DatePicker v-model="afterAlterDate"
                             format="yyyy-MM-dd"
                             type="date"
@@ -26,8 +28,8 @@
         </Form>
 
         <div class="btn-wrapper" slot="footer">
-            <Button class="btn-88px" type="primary" @click="save">确定</Button>
-            <Button class="btn-88px" type="default" @click="toggle">取消</Button>
+            <Button class="btn-88px" type="primary" @click="save">{{$t('confirm')}}</Button>
+            <Button class="btn-88px" type="default" @click="toggle">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -81,11 +83,11 @@
                     afterAlterDate: new Date(this.afterAlterDate).format('yyyy-MM-dd')
                 }).then(res => {
                     if(res.success) {
-                        this.$Message.success('发起改签申请成功');
+                        this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));
                         this.toggle();
                         this.$emit('fresh-data');
                     }else {
-                        this.$Message.error('发起改签申请失败');
+                        this.$Message.error(this.$t('TheApplicationForAlterationFail'));
                         this.toggle();
                     }
                 })

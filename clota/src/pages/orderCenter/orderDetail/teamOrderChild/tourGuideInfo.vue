@@ -2,7 +2,7 @@
 
 <template>
     <div class="tour-guide-info">
-        <div class="title">导游信息</div>
+        <div class="title">{{$t('courierInfo')}}</div>
         <table-com
             :column-data="columnData"
             :table-data="guideList"

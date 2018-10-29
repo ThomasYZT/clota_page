@@ -4,41 +4,41 @@
 -->
 <template>
     <div class="individual-order-base-info">
-        <div class="title">散客订单基本信息</div>
+        <div class="title">{{$t('individualOrderBaseInfo')}}</div>
         <!--下单企业和景区视图内容只相差一个字段，因此只和分销商做区分-->
         <ul class="order-detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单明细编号：{{baseInfo.orderDetailNo | contentFilter}}</li>
-                    <li class="col">OTA订单号：{{baseInfo.thirdOrderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.orderTime}}</li>
+                    <li class="col">{{$t('orderDetailNo')}}：{{baseInfo.orderDetailNo | contentFilter}}</li>
+                    <li class="col">{{$t('OTAOrderNo')}}：{{baseInfo.thirdOrderNo | contentFilter}}</li>
+                    <li class="col">{{$t('orderTime')}}：{{baseInfo.orderTime}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
-                    <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
+                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
+                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
+                    <li class="col">{{$t('orderChannel')}}：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
+                    <li class="col">{{$t('orderOrg')}}：{{baseInfo.channel | contentFilter}}</li>
                     <!--仅下单企业和景区视图可见字段-->
                     <li v-if="orderOrgType === 'channel' || orderOrgType === 'scenic'"
-                        class="col">串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
+                        class="col">{{$t('SN')}}：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
                     <!--仅景区视图字段-->
-                    <li v-if="orderOrgType === 'scenic'" class="col">短信发送状态：{{transSMSStatus(baseInfo.smsStatus) | contentFilter}}</li>
+                    <li v-if="orderOrgType === 'scenic'" class="col">{{$t('smsStatus')}}：{{transSMSStatus(baseInfo.smsStatus) | contentFilter}}</li>
                     <!--仅分销商视图字段-->
-                    <li v-if="orderOrgType === 'allocation'" class="col">预定数量：{{baseInfo.quantity | contentFilter}}</li>
+                    <li v-if="orderOrgType === 'allocation'" class="col">{{$t('reserveNum')}}：{{baseInfo.quantity | contentFilter}}</li>
 
                 </ul>
             </li>
         </ul>
 
         <div class="buttun-wrapper">
-            <Button type="primary"  @click.native="toUpDetail">查看上级订单</Button>
-            <Button v-if="canResendMsg" type="primary" @click="reSendMsg">重发短信</Button>
+            <Button type="primary"  @click.native="toUpDetail">{{$t('CheckOrdersFromSuperiors')}}</Button>
+            <Button v-if="canResendMsg" type="primary" @click="reSendMsg">{{$t('reSending')}}</Button>
         </div>
 
         <div class="audit-result">
@@ -107,9 +107,9 @@
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('发送成功');
+                        this.$Message.success(this.$t('successTip',{tip: this.$t('sending')}));
                     }else{
-                        this.$Message.error('发送失败');
+                        this.$Message.error(this.$t('failureTip',{tip: this.$t('sending')}));
                     }
                 });
             },

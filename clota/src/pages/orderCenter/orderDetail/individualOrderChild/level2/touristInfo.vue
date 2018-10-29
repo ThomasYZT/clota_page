@@ -4,19 +4,19 @@
 -->
 <template>
     <div class="individual-order-base-info">
-        <div class="title">游客信息</div>
+        <div class="title">{{$t('touristInfo')}}</div>
         <!--下单企业视图-->
         <ul class="order-detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">游客姓名：{{visitor.visitorName | contentFilter}}</li>
-                    <li class="col">手机号：{{visitor.phoneNumber | contentFilter}}</li>
+                    <li class="col">{{$t('touristName')}}：{{visitor.visitorName | contentFilter}}</li>
+                    <li class="col">{{$t('mobilePhone')}}：{{visitor.phoneNumber | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">证件类型：{{cardType | contentFilter}}</li>
-                    <li class="col">证件号码：{{cardNum | contentFilter}} </li>
+                    <li class="col">{{$t('credentialsType')}}：{{$t(cardType) | contentFilter}}</li>
+                    <li class="col">{{$t('IdentificationNumber')}}：{{cardNum | contentFilter}} </li>
                 </ul>
             </li>
         </ul>
@@ -41,22 +41,22 @@
                     if(type.length != 0){
                         switch (type[0].type) {
                             case 'identity':
-                                return '身份证';
+                                return 'identity';
                                 break;
                             case 'passport':
-                                return '护照';
+                                return 'passport';
                                 break;
                             case 'driver':
-                                return '驾驶证';
+                                return 'driverLisence';
                                 break;
                             case 'officer':
-                                return '军官证';
+                                return 'officer';
                                 break;
                             case 'police':
-                                return '警官证';
+                                return 'police';
                                 break;
                             case 'license':
-                                return '车牌号';
+                                return 'licence';
                                 break;
                         }
                     } else {

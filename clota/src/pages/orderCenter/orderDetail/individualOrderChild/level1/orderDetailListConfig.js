@@ -1,87 +1,87 @@
 //表头配置
 export const columnData = [
     {
-        title: '订单明细编号',
+        title: 'orderDetailNo',
         width: 220,
         field: 'orderDetailNo'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         minWidth: 200,
         field: 'visitDate'
     },
     {
-        title: '第三方订单号',
+        title: 'thirdOrderNo',
         minWidth: 150,
         field: 'thirdOrderNo'
     },
     {
-        title: '游客手机号',
+        title: 'touristPhoneNumber',
         minWidth: 150,
         field: 'phoneNumber'
     },
     {
-        title: '产品名称/预定数量',
+        title: 'productNameAndReserveNum',
         minWidth: 180,
         field: ''
     },
     {
-        title: '产品单价/小计金额',
+        title: 'productUnitPriceAndSubTotal',
         minWidth: 180,
         field: ''
     },
     {
-        title: '串码',
+        title: 'SN',
         minWidth: 220,
         field: 'serialNo'
     },
     {
-        title: '取票数量',
+        title: 'ticketPickNum',
         minWidth: 200,
         field: 'quantityPicked'
     },
     {
-        title: '核销数量',
+        title: 'verificationNum',
         minWidth: 200,
         field: 'quantityVerified'
     },
     {
-        title: '退票数量',
+        title: 'quantityRefunded',
         minWidth: 200,
         field: 'quantityRefunded'
     },
     {
-        title: '改签数量',
+        title: 'quantityRescheduled',
         minWidth: 200,
         field: 'quantityRescheduled'
     },
     {
-        title: '短信发送状态',
+        title: 'smsStatus',
         minWidth: 150,
         field: 'smsStatus'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',
         minWidth: 150,
         field: 'syncStatus'
     },
     {
-        title: '进货单价/小计金额',
+        title: 'stockPriceAndSubtotalAmount',
         minWidth: 180,
         field: ''
     },
     {
-        title: '分销单价/小计金额',
+        title: 'allowcationPriceAndSubtotalAmount',
         minWidth: 180,
         field: ''
     },
     {
-        title: '预计分销佣金',
+        title: 'EstimatedDistributionCommission',
         minWidth: 150,
         field: 'allocationCommission'
     },
     {
-        title: '操作',
+        title: 'operate',
         minWidth: 120,
         field: ''
     }

@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="vertification-log">
-        <div class="title">核销日志</div>
+        <div class="title">{{$t('verifyLog')}}</div>
 
         <tableCom :column-data="verifyTicketLogListHead"
                   :table-data="verifyTicketLogList"

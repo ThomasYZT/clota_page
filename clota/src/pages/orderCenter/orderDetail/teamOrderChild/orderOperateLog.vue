@@ -2,7 +2,7 @@
 
 <template>
     <div class="order-operate-log">
-        <div class="title">订单操作日志</div>
+        <div class="title">{{$t('orderOperateLog')}}</div>
         <Steps direction="vertical" size="small" class="ivu-steps-clota">
             <Step v-for="item in orderRecordList"
                   :key="item.createdTime"
@@ -10,7 +10,7 @@
                   :class="getClass(item)"
                   :title="item.contents" >
                 <span class="time">{{item.createdTime}}</span>
-                <span class="operater">操作者：{{item.createOrg}} {{item.createName}} </span>
+                <span class="operater">{{$t('operator')}}：{{item.createOrg}} {{item.createName}} </span>
             </Step>
         </Steps>
     </div>

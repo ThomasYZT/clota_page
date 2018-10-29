@@ -4,20 +4,20 @@
 -->
 <template>
     <div class="product-detail">
-        <div class="title">产品明细</div>
+        <div class="title">{{$t('productDetail')}}</div>
 
         <div class="tool-box">
             <ul class="table-info">
                 <li class="row">
                     <ul class="list">
-                        <li class="col">产品名称： {{productName}}</li>
+                        <li class="col">{{$t('productName')}}： {{productName}}</li>
                         <template v-if="viewType === 'allocation'">
-                            <li class="col">预定数量： {{baseInfo.quantity | contentFilter}}</li>
-                            <li class="col">已核销： {{countData.verifyNum | contentFilter}}</li>
-                            <li class="col">已退票： {{countData.refundNum | contentFilter}}</li>
+                            <li class="col">{{$t('reserveNum')}}： {{baseInfo.quantity | contentFilter}}</li>
+                            <li class="col">{{$t('consumed')}}： {{countData.verifyNum | contentFilter}}</li>
+                            <li class="col">{{$t('order.refunded')}}： {{countData.refundNum | contentFilter}}</li>
                         </template>
                         <!--中间分销商不可见产品单价-->
-                        <li class="col" v-if="viewType !== 'allocation'">产品单价： {{productPrice | moneyFilter}}</li>
+                        <li class="col" v-if="viewType !== 'allocation'">{{$t('settlePrice')}}： {{productPrice | moneyFilter}}</li>
                     </ul>
                 </li>
             </ul>
@@ -25,10 +25,10 @@
             <div class="btn-wrapper" v-if="viewType !== 'allocation'">
                 <Button class="ivu-btn-88px ivu-hollow-out-blue"
                         :disabled="!canAlterTicket"
-                        @click="applyChange()">申请改签</Button>
+                        @click="applyChange()">{{$t('applyForUpgrade')}}</Button>
                 <Button class="ivu-btn-88px ivu-hollow-out-blue"
                         :disabled="!canRefundTicket"
-                        @click="applyRefund()">申请退票</Button>
+                        @click="applyRefund()">{{$t('ApplyForRefund')}}</Button>
             </div>
         </div>
 
@@ -61,7 +61,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.pickStatus === 'true' ? '已取票' : '未取票'}}
+                        {{scope.row.pickStatus === 'true' ? $t('haveTickets') : $t('noHaveTickets')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -72,7 +72,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.verifyStatus === 'true' ? '已核销' : '未核销'}}
+                        {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -83,9 +83,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="yellow-label" v-if="scope.row.refundStatus === 'refund_audit'">{{$t('退票待审核')}}</span>
-                        <span class="red" v-else-if="scope.row.refundStatus === 'refunded'">{{$t('已退票')}}</span>
-                        <span v-else-if="scope.row.refundStatus === 'no_refund'">{{$t('未退票')}}</span>
+                        <span class="yellow-label" v-if="scope.row.refundStatus === 'refund_audit'">{{$t('refundToBeReviewed')}}</span>
+                        <span class="red" v-else-if="scope.row.refundStatus === 'refunded'">{{$t('order.refunded')}}</span>
+                        <span v-else-if="scope.row.refundStatus === 'no_refund'">{{$t('order.no_refund')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -96,9 +96,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="yellow-label" v-if="scope.row.rescheduleStatus === 'alter_audit'">{{$t('改签待审核')}}</span>
-                        <span class="red" v-else-if="scope.row.rescheduleStatus === 'alter'">{{$t('已改签')}}</span>
-                        <span v-else-if="scope.row.rescheduleStatus === 'no_alter'">{{$t('未改签')}}</span>
+                        <span class="yellow-label" v-if="scope.row.rescheduleStatus === 'alter_audit'">{{$t('ModificationToBeReviewed')}}</span>
+                        <span class="red" v-else-if="scope.row.rescheduleStatus === 'alter'">{{$t('order.altered')}}</span>
+                        <span v-else-if="scope.row.rescheduleStatus === 'no_alter'">{{$t('order.no_alter')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -122,7 +122,7 @@
                     fixed="right">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="thirdLevelOrderDetail(scope.row)">{{$t('查看')}}</li>
+                            <li @click="thirdLevelOrderDetail(scope.row)">{{$t('check')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -131,15 +131,15 @@
             <div class="data-pandect">
                 <div class="left">
                     <span class="iconfont icon-note"></span>
-                    <span>未取票：{{countData.noRefundNum  | contentFilter}}</span>
-                    <span>已取票：{{countData.takenNum  | contentFilter}}</span>
-                    <span>未核销：{{countData.noVerifyNum  | contentFilter}}</span>
-                    <span>已核销：{{countData.verifyNum  | contentFilter}}</span>
-                    <span>已退票：{{countData.refundNum  | contentFilter}}</span>
-                    <span>已改签：{{countData.rescheduleNum  | contentFilter}}</span>
+                    <span>{{$t('noHaveTickets')}}：{{countData.noRefundNum  | contentFilter}}</span>
+                    <span>{{$t('haveTickets')}}：{{countData.takenNum  | contentFilter}}</span>
+                    <span>{{$t('noConsumed')}}：{{countData.noVerifyNum  | contentFilter}}</span>
+                    <span>{{$t('consumed')}}：{{countData.verifyNum  | contentFilter}}</span>
+                    <span>{{$t('order.refunded')}}：{{countData.refundNum  | contentFilter}}</span>
+                    <span>{{$t('order.altered')}}：{{countData.rescheduleNum  | contentFilter}}</span>
                 </div>
                 <div class="right">
-                    <span class="warn">产品预定数量：{{baseInfo.quantity}}</span>
+                    <span class="warn">{{$t('productReserveNum')}}：{{baseInfo.quantity}}</span>
                 </div>
             </div>
         </div>

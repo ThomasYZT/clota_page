@@ -2,9 +2,9 @@
 
 <template>
     <div class="order-particular">
-        <div class="title">订单明细信息</div>
+        <div class="title">{{$t('orderDetailInformation')}}</div>
         <Form ref="formInline" :model="formData" :rules="ruleInline" inline>
-            <FormItem prop="user" label="产品名称" :label-width="80">
+            <FormItem prop="user" :label="$t('productName')" :label-width="80">
                 <Select v-model="formData.productId"
                         style="width: 180px"
                         @on-change="queryOrderTicketDetail">

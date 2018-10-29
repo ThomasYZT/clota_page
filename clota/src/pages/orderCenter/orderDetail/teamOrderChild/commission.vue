@@ -2,9 +2,9 @@
 
 <template>
     <div class="commission">
-        <div class="title">分销佣金</div>
+        <div class="title">{{$t('distributionBrokerage')}}</div>
         <div class="money-detail">
-            预计分销佣金：{{allocationCommission | moneyFilter | contentFilter}}
+            {{$t('EstimatedDistributionBrokerage')}}：{{allocationCommission | moneyFilter | contentFilter}}
         </div>
     </div>
 </template>

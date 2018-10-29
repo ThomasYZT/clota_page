@@ -11,11 +11,11 @@
         class="refund-ticket"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('申请改签')}}</span>
+            <span class="title">{{$t('applyForUpgrade')}}</span>
         </div>
         <div class="target-body">
             <ul class="tourist-info">
-                <li><span class="key">您正在申请对以下产品进行改签：</span></li>
+                <li><span class="key">{{$t('YouAreApplyingToChangeTheFollowingProducts')}}：</span></li>
             </ul>
             <table-com
                 :column-data="columnData"
@@ -54,7 +54,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.pickStatus === 'true'}">
-                            {{scope.row.pickStatus === 'true' ? $t('已取票') : $t('未取票')}}
+                            {{scope.row.pickStatus === 'true' ? $t('haveTickets') : $t('noHaveTickets')}}
                         </span>
                     </template>
                 </el-table-column>
@@ -68,7 +68,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.verifyStatus === 'true'}">
-                            {{scope.row.verifyStatus === 'true' ? $t('已核销') : $t('未核销')}}
+                            {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
                         </span>
                     </template>
                 </el-table-column>
@@ -116,7 +116,7 @@
                 </el-table-column>
             </table-com>
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
-                <FormItem label="申请改签至" prop="alterDate">
+                <FormItem :label="$t('applyForUpgradeTo')" prop="alterDate">
                     <DatePicker type="date"
                                 :editable="false"
                                 :options="dateOptions"
@@ -178,7 +178,7 @@
                 //表单校验规则
                 ruleValidate : {
                     alterDate : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('改签日期')})}
+                        {required : true,message : this.$t('selectField',{msg : this.$t('alterDate')})}
                     ]
                 },
                 //表单数据
@@ -222,7 +222,7 @@
                         if(this.selectedTicket.length > 0){
                             this.saveOrderProductRefundAlter();
                         }else{
-                            this.$Message.warning('请选择需要改签的产品');
+                            this.$Message.warning(this.$t('PleaseSelectTheProductToBeModified'));
                         }
                     }
                 });
@@ -261,11 +261,11 @@
                     afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd'),
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('发起改签申请成功');
+                        this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));
                         this.cancel();
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('发起改签申请失败');
+                        this.$Message.error(this.$t('TheApplicationForAlterationFail'));
                     }
                 });
             },

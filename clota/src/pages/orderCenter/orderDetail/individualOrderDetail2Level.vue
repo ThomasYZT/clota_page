@@ -5,7 +5,7 @@
 <template>
     <div class="individual-order-detail">
         <bread-crumb-head
-            :locale-router="'订单明细详情'"
+            :locale-router="$t('orderDetailInfo')"
             :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
         </bread-crumb-head>
         <div class="content">

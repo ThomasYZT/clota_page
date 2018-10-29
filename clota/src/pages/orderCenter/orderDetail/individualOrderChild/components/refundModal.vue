@@ -4,23 +4,23 @@
 -->
 <template>
     <Modal v-model="visible"
-           title="申请退票"
+           :title="$t('ApplyForRefund')"
            class-name="vertical-center-modal"
            width="420">
 
         <Form :label-width="150"
               label-position="right">
-            <FormItem label="申请退票数量">
+            <FormItem :label="$t('ApplyForRefundNum')">
                 {{num}}
             </FormItem>
-            <FormItem label="退票手续费">
+            <FormItem :label="$t('cancellationCharge')">
                 {{fee | moneyFilter}}
             </FormItem>
         </Form>
 
         <div class="btn-wrapper" slot="footer">
-            <Button class="btn-88px" type="primary" @click="save">确定</Button>
-            <Button class="btn-88px" type="default" @click="toggle">取消</Button>
+            <Button class="btn-88px" type="primary" @click="save">{{$t('confirm')}}</Button>
+            <Button class="btn-88px" type="default" @click="toggle">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -90,11 +90,11 @@
                     reqOrderTicketIds: this.orderTicketIds,
                 }).then(res => {
                     if(res.success) {
-                        this.$Message.success('发起退票申请成功');
+                        this.$Message.success(this.$t('ApplicationForRefundSuccess'));
                         this.toggle();
                         this.$emit('fresh-data');
                     }else {
-                        this.$Message.error('发起退票申请失败');
+                        this.$Message.error(this.$t('ApplicationForRefundFail'));
                         this.toggle();
                     }
                 })

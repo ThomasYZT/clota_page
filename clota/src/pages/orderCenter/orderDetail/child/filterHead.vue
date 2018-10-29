@@ -8,13 +8,13 @@
             <i-row>
                 <i-col span="7">
                     <!--下单时间-->
-                    <FormItem label="下单日期">
+                    <FormItem :label="$t('orderDate')">
                         <DatePicker v-model.trim="formData.orderDate"
                                     transfer
                                     :editable="false"
                                     type="daterange"
                                     placement="bottom-end"
-                                    placeholder="请选择"
+                                    :placeholder="$t('selectField',{msg: ''})"
                                     style="max-width: 260px"
                                     @on-change="searchProductList">
                         </DatePicker>
@@ -22,13 +22,13 @@
                 </i-col>
                 <i-col span="7">
                     <!--游玩日期-->
-                    <FormItem label="游玩日期">
+                    <FormItem :label="$('playDate')">
                         <DatePicker v-model.trim="formData.visitDate"
                                     transfer
                                     :editable="false"
                                     type="daterange"
                                     placement="bottom-end"
-                                    placeholder="请选择"
+                                    :placeholder="$t('selectField',{msg: ''})"
                                     style="max-width: 260px"
                                     @on-change="searchProductList">
                         </DatePicker>
@@ -94,7 +94,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--所属景区-->
-                    <FormItem label="所属景区">
+                    <FormItem :label="$t('scenePlace')">
                         <Select v-model.trim="formData.scenicOrgId"
                                 style="max-width: 200px"
                                 @on-change="sceneChange">

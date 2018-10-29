@@ -4,27 +4,27 @@
 -->
 <template>
     <div class="individual-order-base-info">
-        <div class="title">散客订单基本信息</div>
+        <div class="title">{{$t('individualOrderBaseInfo')}}</div>
         <!--下单企业视图-->
         <ul class="order-detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">OTA订单号：{{baseInfo.thirdOrderNo | contentFilter}}</li>
+                    <li class="col">{{$t('orderNo')}}：{{baseInfo.orderNo | contentFilter}}</li>
+                    <li class="col">{{$t('orderTime')}}：{{baseInfo.createdTime | contentFilter}}</li>
+                    <li class="col">{{$t('OTAOrderNo')}}：{{baseInfo.thirdOrderNo | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
-                    <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
+                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
+                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
+                    <li class="col">{{$t('orderChannel')}}：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
-                    <li class="col">订单金额：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
+                    <li class="col">{{$t('orderOrg')}}：{{baseInfo.channel | contentFilter}}</li>
+                    <li class="col">{{$t('orderAmount')}}：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
                 </ul>
             </li>
         </ul>

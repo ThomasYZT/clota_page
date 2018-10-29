@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="operate-log">
-        <div class="title">操作日志</div>
+        <div class="title">{{$t('operateLog')}}</div>
 
         <Steps direction="vertical" size="small" class="ivu-steps-clota">
             <Step v-for="item in orderOperationRecordList"
@@ -13,7 +13,7 @@
                   :class="getClass(item)"
                   :title="item.contents" >
                 <span class="time">{{item.createdTime}}</span>
-                <span class="operater">操作者：{{item.createOrg}} {{item.createName}} </span>
+                <span class="operater">{{$t('operator')}}：{{item.createOrg}} {{item.createName}} </span>
             </Step>
         </Steps>
     </div>

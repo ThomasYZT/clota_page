@@ -4,14 +4,14 @@
 -->
 <template>
     <div class="distribution-info">
-        <div class="title">分销信息</div>
+        <div class="title">{{$t('allowcationInfo')}}</div>
 
         <div class="content">
-            <span class="info-list">销售政策： {{allocationInfo.policyName}}</span>
+            <span class="info-list">{{$t('marketingPolicy')}}： {{allocationInfo.policyName}}</span>
             <!--中间分销商可见-->
             <template v-if="viewType === 'allocation'">
-                <span class="info-list" >预计分销佣金： {{allocationInfo.allocationCommission | moneyFilter | contentFilter}}</span>
-                <span class="info-list">退票手续费收入： {{totalRefundFee | moneyFilter | contentFilter}}</span>
+                <span class="info-list" >{{$t('EstimatedDistributionBrokerage')}}： {{allocationInfo.allocationCommission | moneyFilter | contentFilter}}</span>
+                <span class="info-list">{{$t('RefundFeeIncome')}}： {{totalRefundFee | moneyFilter | contentFilter}}</span>
             </template>
 
             <div class="rank-wrapper">
@@ -64,12 +64,12 @@
                         let costPriceInfo = {
                             ...settleLink[0],
                             settlePrice : settleLink[0]['inPrice'],
-                            content : this.viewType === 'scenic' ? '景区分配单价' :'我的进货价格'
+                            content : this.viewType === 'scenic' ? this.$t('scenicUnitPrice') :this.$t('myPrimeCost')
                         };
                         return [].concat(costPriceInfo,settleLink.map(item => {
                             return {
                                 ...item,
-                                content : item.orgName + '的分销价格'
+                                content : item.orgName + this.$t('allowcationPriceOf')
                             }
                         }));
                     }else{
