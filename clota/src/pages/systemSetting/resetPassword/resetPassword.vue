@@ -42,7 +42,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                        <span class="reset" @click="handleReset(scope.row)">重置</span>
+                        <span class="reset" @click="handleReset(scope.row)">{{$t('reset')}}</span>
                 </template>
             </el-table-column>
         </table-com>
