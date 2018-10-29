@@ -7,7 +7,7 @@ export const groupOrderHead = [
     },
     {
         title: 'playDate',  // 游玩日期
-        minWidth: 200,
+        minWidth: 130,
         field: 'originVisitDate'
     },
     {
@@ -17,7 +17,7 @@ export const groupOrderHead = [
     },
     {
         title: 'orderOrg',      // 下单企业
-        width: 150,
+        width: 200,
         enWidth : 180,
         field: 'orderOrgName'
     },
@@ -29,8 +29,8 @@ export const groupOrderHead = [
     },
     {
         title: 'productName',      // 产品名称
-        width: 150,
-        enWidth : 180,
+        width: 230,
+        enWidth : 280,
         field: 'productName'
     },
     {

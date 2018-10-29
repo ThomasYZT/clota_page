@@ -179,6 +179,7 @@
             getRefundProcedureFee() {
                 if (this.tableData.length) {
                     ajax.post('getRefundProcedureFee', {
+                        orderId : this.baseInfo.orderId,
                         orderProductId: this.tableData[0].orderProductId,
                         orderTicketIds: this.passedProducts.map(item => item.id).join(','),  // 只传审核结果为通过的id
                     }).then(res => {

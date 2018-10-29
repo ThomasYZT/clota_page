@@ -9,6 +9,39 @@
             :border="true"
             :table-com-min-height="250"
             :auto-height="true">
+            <el-table-column
+                slot="column3"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.firstAllocation}} {{scope.row.firstAllocationPrice | moneyFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column4"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.secondAllocation}} {{scope.row.secondAllocationPrice | moneyFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.thirdAllocation}} {{scope.row.thirdAllocationPrice | moneyFilter}}
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>

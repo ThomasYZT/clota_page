@@ -252,6 +252,7 @@
             getRefundProcedureFee () {
                 ajax.post('getRefundProcedureFee',{
                     orderProductId : this.selectedTicket[0]['orderProductId'],
+                    orderId : this.orderDetail.orderId,
                     orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
                     if(res.success){
@@ -279,7 +280,7 @@
                 }else{
                     this.refundFee = 0;
                 }
-            }
+            },
         }
     }
 </script>

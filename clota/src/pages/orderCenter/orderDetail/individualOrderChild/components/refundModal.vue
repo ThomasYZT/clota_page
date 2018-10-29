@@ -71,7 +71,8 @@
                 this.orderTicketIds = chosedData.map(item => item.id).join(',');
                 ajax.post('getRefundProcedureFee', {
                     orderProductId: chosedData[0].orderProductId,
-                    orderTicketIds: this.orderTicketIds
+                    orderTicketIds: this.orderTicketIds,
+                    orderId: this.baseInfo.orderId,
                 }).then(res => {
                     if(res.success) {
                         this.fee = res.data;

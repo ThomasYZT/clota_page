@@ -1278,7 +1278,7 @@ export default {
     'syncStatus': '同步状态',
     'stockPriceAndSubtotalAmount': '进货单价/小计金额',
     'allowcationPriceAndSubtotalAmount': '分销单价/小计金额',
-    'EstimatedDistributionCommission': '预计分销单价',
+    'EstimatedDistributionCommission': '预计分销佣金',
     'orderPlacer': '下单人',
     'orderDetailInformation': '订单明细信息',
     'haveTickets': '已取票',

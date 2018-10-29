@@ -93,6 +93,7 @@
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
+                           :maxlength="500"
                            :placeholder="$t('请填写备注，不超过500个字符')" />
                 </div>
             </div>
@@ -190,10 +191,12 @@
                     auditStatus: 'success',
                 }).then(res => {
                     if(res.success){
-                        this.hide();
-                        this.$Message.success(this.$t('订单已审核通过'));
+                        this.$Message.success(this.$t('订单审核通过'));
                         this.$emit('on-audit-pass');
+                    }else{
+                        this.$Message.error(this.$t('订单审核失败'));
                     }
+                    this.hide();
                 });
             },
 
