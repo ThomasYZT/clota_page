@@ -21,6 +21,15 @@
                      v-else>
                     <Button type="default" @click="cancelEdit" >{{$t("giveUpModify")}}</Button>
                 </div>
+
+                <i-row class="first-row">
+                    <i-col span="10">
+                        <Form-item :label="$t('distributeName')+'：'" prop="name"><!--分销名称-->
+                            <Input :disabled="!editable"  v-model="formData.name" :placeholder="$t('distributeName')"></Input>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+
                 <!-- 我的分销单价 -->
                 <div class="divider-header">
                     <span>{{$t('mySalePrice')}}</span>

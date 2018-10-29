@@ -249,7 +249,7 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                            <Form-item v-if="detail.productPolicy.alterRuleModel.type !== 'notAllow'"  :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
                                 <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -449,6 +449,7 @@
         border-radius: 4px;
 
         .container{
+            margin-bottom: 100px;
 
             .title-wrap{
                 padding: 15px 35px 0px;
@@ -542,6 +543,12 @@
 
                 /deep/ .ivu-timeline-item-tail{
                     left: 5px;
+                }
+
+                /deep/ .ivu-form-item-content {
+                    div {
+                        word-break: break-all;
+                    }
                 }
 
             }
