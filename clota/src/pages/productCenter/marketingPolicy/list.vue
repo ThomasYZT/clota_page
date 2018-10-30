@@ -37,7 +37,7 @@
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
-            <span class="tips float-right">{{$t('defaultPolicyType')}}</span><!--业态目前为默认ticket-->
+            <!--<span class="tips float-right">{{$t('defaultPolicyType')}}</span>&lt;!&ndash;业态目前为默认ticket&ndash;&gt;-->
         </div>
 
         <!--表格搜索栏 仅合作伙伴、景区可见--分销给我的销售政策列表-->
