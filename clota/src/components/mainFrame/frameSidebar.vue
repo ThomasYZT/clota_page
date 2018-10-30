@@ -22,13 +22,18 @@
                               v-else
                               :key="item.name"
                               @click.native="changeMenuItem">
-                        <span v-if="item.meta.iconClass"
-                              class="iconfont"
-                              :class="[item.meta.iconClass]"></span>
+                        <Tooltip :content="$t(`${item.meta.menuName}`)"
+                                 :disabled="!menuIsPackUp"
+                                 placement="right"
+                                 transfer>
+                            <span v-if="item.meta.iconClass"
+                                  class="iconfont"
+                                  :class="[item.meta.iconClass]"></span>
+                        </Tooltip>
                         <span class="menu-name"
                               v-w-title="$t(`${item.meta.menuName}`)">
-                            {{$t(`${item.meta.menuName}`)}}
-                        </span>
+                                {{$t(`${item.meta.menuName}`)}}
+                            </span>
                     </MenuItem>
                 </template>
             </Menu>
@@ -128,7 +133,7 @@
         },
         watch: {
             //监听路由变化，更新激活菜单
-            '$route'(newVal,oldVal) {
+            '$route'() {
                 this.$nextTick(() => {
                     let menu = this.$refs.menu;
                     if (menu) {
@@ -136,7 +141,7 @@
                     }
                 });
             },
-            menuIsPackUp (newVal,oldVal){
+            menuIsPackUp (newVal){
                 if(newVal === true){
                     this.openedNames = [];
                 }else{

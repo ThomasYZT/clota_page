@@ -10,7 +10,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.name"
                    icon="ios-search"
-                   :placeholder="$t('请输入任意信息进行查询')"
+                   :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -57,7 +57,7 @@
                     </span>
                     <span class="operate"
                           v-else
-                          @click="handleAudit(scope.row)">{{$t('审核')}}
+                          @click="handleAudit(scope.row)">{{$t('checked')}}
                     </span>
                 </template>
             </el-table-column>
@@ -131,13 +131,13 @@
                 let statusHtml = ``;
                 switch (status) {
                     case 'valid' :
-                        statusHtml = `<span class="status-recharge pass">${this.$t('审核通过')}</span>`;
+                        statusHtml = `<span class="status-recharge pass">${this.$t('checkPass')}</span>`;
                         break;
                     case 'pending_audit' :
-                        statusHtml = `<span class="status-recharge pending">${this.$t('待审核')}</span>`;
+                        statusHtml = `<span class="status-recharge pending">${this.$t('waitChecking')}</span>`;
                         break;
                     case 'rejected' :
-                        statusHtml = `<span class="status-recharge reject">${this.$t('已驳回')}</span>`;
+                        statusHtml = `<span class="status-recharge reject">${this.$t('rejected')}</span>`;
                         break;
                 }
                 return statusHtml;
@@ -167,7 +167,7 @@
     };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "~@/assets/scss/base";
 
     .recharge-record {
@@ -205,7 +205,8 @@
     .filter-box {
         padding: 15px 30px 15px;
         overflow: hidden;
-        .input-field {
+
+        /deep/ .input-field {
             width: 350px;
             float: right;
         }

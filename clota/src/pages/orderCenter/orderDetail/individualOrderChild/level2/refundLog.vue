@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="refund-log">
-        <div class="title">退票日志</div>
+        <div class="title">{{$t('refundLog')}}</div>
 
         <tableCom :column-data="refundAlterListHead"
                   :table-data="refundAlterList"
@@ -45,7 +45,9 @@
         props: {
             refundAlterList: {
                 type: Array,
-                default: []
+                default () {
+                    return [];
+                }
             }
         },
         components: {

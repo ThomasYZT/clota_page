@@ -11,12 +11,14 @@
         class="add-tourist-modal"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{modalType === 'guide' ? $t('添加导游') : $t('添加司机')}}</span>
+            <!--添加导游 or 添加司机-->
+            <span class="title">{{modalType === 'guide' ? $t('addGuides') : $t('addDrivers')}}</span>
         </div>
         <Form ref="formInline">
             <div class="add-wrap">
                 <span class="add-btn" @click="addTourist">
-                    <Icon type="ios-plus-empty"></Icon>{{modalType === 'guide' ? $t('新增导游') : $t('新增司机')}}
+                    <!--新增导游 or 新增司机-->
+                    <Icon type="ios-plus-empty"></Icon>{{modalType === 'guide' ? $t('addNewCourier') : $t('addDriver')}}
                 </span>
             </div>
             <table-com
@@ -161,7 +163,7 @@
                         callback();
                     }
                 }else{
-                    callback('请输入姓名');
+                    callback(this.$t('inputField', {field: this.$t('name')}));      // 请输入姓名
                 }
             };
             //校验手机号
@@ -173,7 +175,7 @@
                         callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
                     }
                 }else{
-                    callback('请输入手机号');
+                    callback(this.$t('inputField', {field: this.$t('mobilePhone')}));  // '请输入手机号'
                 }
             };
             //校验证件号码
@@ -185,11 +187,11 @@
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback('证件已存在');
+                            callback(this.$t('existID'));   // 证件已存在
                         });
                     }
                 }else{
-                    callback('请输入证件号');
+                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
                 }
             };
             return {
@@ -319,10 +321,10 @@
                     }).then(res => {
                         if(res.success){
                             this.$set(this.tableData[index],'editType','');
-                            this.$Message.success('保存导游信息成功');
+                            this.$Message.success( this.$t('successTip', {tip: this.$t('saveGuideInfo')}) );    // 保存导游信息成功
                             this.freshData(index,'modify');
                         }else{
-                            this.$Message.error('保存导游信息失败');
+                            this.$Message.error( this.$t('failureTip', {tip: this.$t('saveGuideInfo')}) );    // 保存导游信息失败
                         }
                     });
                 });
@@ -426,14 +428,14 @@
                 }).then(res => {
                     if(res.success){
                         if(this.modalType === 'guide'){
-                            this.$Message.success('导游信息已删除');
+                            this.$Message.success(this.$t('deletedField', {field: this.$t('courierInfo')}));      // 导游信息已删除
                         }else if(this.modalType === 'driver'){
-                            this.$Message.success('司机信息已删除');
+                            this.$Message.success(this.$t('deletedField', {field: this.$t('driverInfo')}));   // 司机信息已删除
                         }
                         this.freshData(index,'del');
                         this.queryPagedOrgStaff();
                     }else{
-                        this.$Message.error('删除失败');
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
                     }
                 });
             },

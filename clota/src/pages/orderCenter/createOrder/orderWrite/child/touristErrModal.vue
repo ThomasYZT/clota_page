@@ -11,7 +11,7 @@
         class="product-err"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('提示')}}</span>
+            <span class="title">{{$t('notice')}}</span>
         </div>
         <div class="target-body">
             <ul class="pro-list">

@@ -1,23 +1,23 @@
 //表头配置
 export const columnData = [
     {
-        title: '游客姓名',
+        title: 'touristName',
         width: 215,
         field: 'visitorName'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',
         width: 200,
         field: 'phoneNumber'
     },
     {
-        title: '证件类型',
+        title: 'credentialsType',
         minWidth: 120,
         field: 'idType'
     },
     {
-        title: '证件号码',
+        title: 'IdentificationNumber',
         minWidth: 120,
         field: 'idNum'
     },
-]
+];

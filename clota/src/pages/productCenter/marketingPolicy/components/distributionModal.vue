@@ -107,13 +107,13 @@
                             slot-scope="row"
                             :label="$t('mySalePrice')"
                             :width="140"
-                            :min-width="120"
-                            show-overflow-tooltip>
+                            :min-width="120">
                             <template slot-scope="scope">
                                 <Input v-model="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
                             </template>
                         </el-table-column>
                     </table-com>
+                    <span v-if="isLossTipShow" class="loss-tip">{{this.$t('maybeLoss')}}</span>
                 </Form-item>
 
                 <!-- 设置我的销售渠道 -->
@@ -131,6 +131,7 @@
                         @selection-change="colomnSelect($event)">
                     </table-com>
                 </Form-item>
+                <div v-if="isTipShow" class="distribute-tip">{{$t('distributeTip',{field: detail.parentDistributor})}}</div>
             </Form>
         </div>
 
@@ -145,7 +146,7 @@
     import ajax from '@/api/index';
     import {validator} from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import {detailParentDistributePriceConfig, saleChannelColumn} from '../child/detailConfig'
+    import {detailParentDistributePriceConfig, setSaleChannelColumn} from '../child/detailConfig'
     export default {
         components: {
             tableCom
@@ -153,7 +154,7 @@
         data() {
             const validateMethod = {
                 productPrice: (rule,value,callback) => {
-                    //校验非空必填以及不可低于上级分销单价
+                    //校验非空必填以及提示低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
                             if(item.price === ''){
@@ -161,7 +162,8 @@
                             }else {
                                 if(validator.isNumber(item.price)) {
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
-                                        callback(new Error(this.$t('maybeLoss')));
+                                        this.isLossTipShow = true;
+                                        callback();
                                     } else {
                                         callback();
                                     }
@@ -186,7 +188,7 @@
                 //产品列表表头
                 detailParentDistributePriceConfig: Array.from(detailParentDistributePriceConfig),
                 //销售渠道表头
-                saleChannelColumn: saleChannelColumn,
+                saleChannelColumn: setSaleChannelColumn,
                 //表单数据
                 formData: {
                     //分销名称
@@ -211,6 +213,10 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleChannels')}), trigger: 'blur' },     // 不能为空
                     ]
                 },
+                //是否显示分销提示
+                isTipShow: false,
+                //是否显示亏损提示
+                isLossTipShow: false
             }
         },
         methods: {
@@ -253,7 +259,6 @@
                         //初始化产品分销单价数据
                         this.info.parentAllocationProductList.forEach((item) => {
                             let _obj = {};
-
                             _obj.productId = item.productId;
                             _obj.settlePrice = item.settlePrice;
                             _obj.price = '';
@@ -280,6 +285,18 @@
                 }).then(res => {
                     if(res.success) {
                         this.haveSaleGroups = res.data;
+
+                        //过滤没有销售渠道的销售组
+                        for(let i=0,len=this.tempData.length; i<len; i++) {
+                            if(this.tempData[i].channelNames === null) {
+                                console.log(this.tempData[i].groupName,this.tempData[i].channelNames)
+                                this.tempData.splice(i,1);
+                                len--;
+                                i--;
+                                continue;
+                            }
+                        }
+
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
                                 if(len > 0 && jlen > 0) {
@@ -307,10 +324,16 @@
              * 表格选择框事件
              */
             colomnSelect(data) {
+                this.isTipShow = false;
                 this.formData.groupIds = '';
                 data.forEach((item) => {
-                    this.formData.groupIds += item.id + ','
+                    this.formData.groupIds += item.id + ',';
+                    //政策不能在分销给上级分销商,后台会做过滤处理，此处给出提示
+                    if(item.channelNames.indexOf(this.detail.parentDistributor) > -1) {
+                        this.isTipShow = true;
+                    }
                 })
+
             },
             /**
              * 保存分销设置
@@ -336,7 +359,9 @@
                 });
 
             },
-            //关闭模态框
+            /**
+             * 关闭模态框
+             */
             hide(){
                 this.toggle();
             },
@@ -426,6 +451,15 @@
                 width: 50%;
                 transform: translateY(50%);
             }
+        }
+
+        .distribute-tip {
+            color: $color_F7981C_080;
+        }
+
+        .loss-tip {
+            color: $color_red;
+            font-size: 12px;
         }
     }
 

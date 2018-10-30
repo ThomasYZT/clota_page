@@ -15,7 +15,7 @@
             <el-dropdown trigger="click"
                          placement="bottom-start"
                          @command="handleCommand">
-                <Button type="primary" style="float: left" size="default">{{$t('批量审核')}}</Button>
+                <Button type="primary" style="float: left" size="default">{{$t('batchAudit')}}</Button><!--批量审核-->
 
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in batchAudit"
@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="235"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -40,8 +40,20 @@
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
+                slot="column1"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ scope.row.originVisitDate | timeFormat('yyyy-MM-dd') }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column4"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -50,8 +62,20 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column5"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ getProductName(scope.row) }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column7"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -77,7 +101,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('通过')}}</span>
+                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span><!--通过-->
                     <span class="divide-line"></span>
                     <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
@@ -95,9 +119,9 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {groupOrderHead, orderChannelEnum, paymentStatusEnum, batchAudit} from './auditConfig';
-    import ajax from '@/api/index.js';
-    import {configVariable} from '@/assets/js/constVariable.js';
+    import {groupOrderHead, batchAudit} from './auditConfig';
+    import ajax from '@/api/index';
+    import {configVariable, notDistributorChannelList, payStatusList} from '@/assets/js/constVariable';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
 
@@ -148,8 +172,8 @@
                 }).then(res => {
                     if(res.success && res.data){
                         this.tableData = res.data.data || [];
-                        this.totalCount = res.data.totalRow;
-                    }else{
+                        this.totalCount = res.data.totalRow || 0;
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -164,7 +188,7 @@
             },
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {
-                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 switch (dropItem.value) {
@@ -182,11 +206,11 @@
              * @returns {string}
              */
             transOrderOrg(value) {
-                let orderChannel = orderChannelEnum.find((channel, i) => {
+                let orderChannel = notDistributorChannelList.find((channel, i) => {
                     return value === channel.value;
                 });
 
-                return orderChannel ? orderChannel.label : '-';
+                return orderChannel ? `order.${orderChannel.label}` : '-';
             },
             /**
              * 支付状态的code转换
@@ -194,7 +218,7 @@
              * @returns {string}
              */
             transPaymentStatus(status) {
-                let paymentStatus = paymentStatusEnum.find((payment, i) => {
+                let paymentStatus = payStatusList.find((payment, i) => {
                     return status === payment.value;
                 });
 
@@ -240,6 +264,13 @@
                     params: {orderId: scopeRow.id},
                 });
             },
+            /**
+             * 获取产品名称
+             * @param rowData 订单详情数据
+             */
+            getProductName(rowData) {
+                return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+            }
         }
     };
 </script>
@@ -256,9 +287,10 @@
             background: #E1E1E1;
         }
         .batch-audit {
-            @include block_outline($height : 50px);
-            padding-top: 10px;
-            padding-left: 30px;
+            @include block_outline();
+            margin-bottom: 10px;
+            padding-left: 20px;
+            line-height: 1;
         }
 
         .operate-btn {

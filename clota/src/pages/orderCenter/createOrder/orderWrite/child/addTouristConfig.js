@@ -2,7 +2,7 @@
 //证件信息表头
 export const idColumns = [
     {
-        title: '证件类型',
+        title: 'credentialsType',
         minwidth: 130,
         field: 'type'
     },{
@@ -10,7 +10,7 @@ export const idColumns = [
         minwidth: 130,
         field: 'data'
     },{
-        title: '操作',
+        title: 'operate',
         width: 130,
     },
 ];
@@ -18,15 +18,15 @@ export const idColumns = [
 //取票信息表头
 export const ticketColumnData = [
     {
-        title: '产品名称',
+        title: 'productName',
         minwidth: 130,
         field: 'productName'
     },{
-        title: '游玩日期',
+        title: 'playDate',
         minwidth: 130,
         field: 'playDate'
     },{
-        title: '产品单价',
+        title: 'settlePrice',
         width: 130,
         field: 'settlePrice'
     },{
@@ -34,7 +34,7 @@ export const ticketColumnData = [
         width: 180,
         field: 'scenicOrgName'
     },{
-        title: '数量',
+        title: 'quantity',
         width: 130,
         field: 'takeNum'
     },

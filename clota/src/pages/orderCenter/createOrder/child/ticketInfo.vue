@@ -11,10 +11,10 @@
         class="ticket-info"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">购票须知</span>
+            <span class="title">{{$t('buyTicketNotes')}}</span>
         </div>
         <div class="target-body">
-            <div class="ticket-title" v-w-title="$t(`${orgName}购票须知`)">{{$t(`${orgName}购票须知`)}}</div>
+            <div class="ticket-title" v-w-title="$t(`${orgName} ${$t('buyTicketNotes')}`)">{{$t(`${orgName} ${$t('buyTicketNotes')}`)}}</div>
             <div class="ticket-info-detail">
                 {{policyText | contentFilter}}
             </div>

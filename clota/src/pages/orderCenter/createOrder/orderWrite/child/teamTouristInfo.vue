@@ -7,7 +7,7 @@
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTouristInfo.length < 1"
-                    @click="delTourist">批量删除</Button>
+                    @click="delTourist">{{$t('deleteBatch')}}</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
                     @click="addTourist">添加游客</Button>
@@ -52,6 +52,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="acceptCertificateType.all.length > 0"
                     slot="column2"
                     show-overflow-tooltip
                     slot-scope="row"
@@ -78,6 +79,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="acceptCertificateType.all.length > 0"
                     slot="column3"
                     show-overflow-tooltip
                     slot-scope="row"
@@ -350,22 +352,30 @@
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验证件类型
-                    this.$refs.formInline.validateField('idCard' + index,valid => {
-                        if(valid){
-                            reject();
-                        }else{
-                            resolve();
-                        }
-                    });
+                    if(this.acceptCertificateType.all.length > 0){
+                        this.$refs.formInline.validateField('idCard' + index,valid => {
+                            if(valid){
+                                reject();
+                            }else{
+                                resolve();
+                            }
+                        });
+                    }else{
+                        resolve();
+                    }
                 }),new Promise((resolve,reject) => {//校验证件号码
-                    this.$refs.formInline.validateField('idTypeIn' + index,valid => {
-                        if(valid){
-                            reject();
-                        }else{
-                            resolve();
-                        }
-                    });
-                }),new Promise((resolve,reject) => {//校验证件
+                    if(this.acceptCertificateType.all.length > 0){
+                        this.$refs.formInline.validateField('idTypeIn' + index,valid => {
+                            if(valid){
+                                reject();
+                            }else{
+                                resolve();
+                            }
+                        });
+                    }else{
+                        resolve();
+                    }
+                }),new Promise((resolve,reject) => {//校验手机号
                     this.$refs.formInline.validateField('phone' + index,valid => {
                         if(valid){
                             reject();
@@ -393,7 +403,7 @@
              */
             delTourist () {
                 this.$refs.delModal.show({
-                    title : this.$t('删除'),
+                    title : this.$t('del'),
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }
@@ -429,10 +439,10 @@
                             reject('touristErr');
                         }
                         result.push({
-                            documentInfo : JSON.stringify({
+                            documentInfo : this.tableData[i].idNum !== '' ? JSON.stringify({
                                 data : this.tableData[i].idNum,
                                 type : 'identity'
-                            }),
+                            }) : '',
                             phoneNumber : this.tableData[i].phone,
                             visitorName : this.tableData[i].name,
                             visitorType : 'visitor',

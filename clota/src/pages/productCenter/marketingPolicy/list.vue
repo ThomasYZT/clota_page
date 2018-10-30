@@ -551,7 +551,13 @@
 
     }
 
+    .content-text {
+        margin: 0 15px;
+    }
+
     .yellow-label{
+        margin: 0 15px;
+        word-break:break-all;
         color: $color_yellow;
     }
 

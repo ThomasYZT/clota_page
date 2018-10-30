@@ -634,7 +634,6 @@
                             //游玩
                             playRuleJson: JSON.stringify(rule),
                         };
-                        console.log(params)
                         //区分新增与修改
                         if( this.type === 'add' ){
                             this.saveAndEditTicket( 'addProduct', params);
@@ -665,6 +664,8 @@
                 this.$refs.editPark.show({
                     index: index,
                     data: data,
+                    parkList: this.parkList,
+                    list: this.productPlayRuleVo,
                     title : this.$t('modify')+ (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type: 'modify',
                     confirmCallback : ( data, index ) => {
@@ -675,14 +676,16 @@
             //删除可游玩园区
             del ( data, index ) {
                 this.productPlayRuleVo.splice(index,1);
+
             },
             //新增可游玩园区
             addPark () {
                 this.$refs.editPark.show({
-                    title : this.$t('add')+this.$t('oneTicketPark'),
+                    title : this.$t('add')+this.$t('one_ticket'),
+                    parkList: Array.from(this.parkList),
                     type: 'add',
+                    list: this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
-                        console.log(data);
                         this.productPlayRuleVo.push(data);
                         this.dealParkList(data.parkId);
                     }
@@ -690,14 +693,14 @@
             },
             //新增成功，可选园区数组数据-1
             dealParkList ( id ) {
-                let index = null;
-                this.parkList.forEach( (item, i) => {
-                    if(id === item.id){
-                        index = i;
-                        return
+                for(let i=0,len=this.parkList.length; i<len; i++) {
+                    if(id === this.parkList[i].id){
+                        this.parkList.splice(i,1);
+                        i--;
+                        len--;
+                        continue;
                     }
-                } )
-                this.parkList.splice(index,1);
+                }
             },
 
             //返回

@@ -91,6 +91,20 @@ export const saleChannelColumn = [
     {
         title: 'selectedSaleChannel',   // 已选中的销售渠道
         minWidth: 300,
+        field: 'groupchannels'
+    }
+];
+
+//设置销售渠道表头
+export const setSaleChannelColumn = [
+    {
+        title: 'chooseSaleChannelGroup',      // 选择销售渠道分组
+        width: 200,
+        field: 'groupName'
+    },
+    {
+        title: 'selectedSaleChannel',   // 已选中的销售渠道
+        minWidth: 300,
         field: 'channelNames'
     }
 ];

@@ -2,42 +2,43 @@
 //产品明细表格配置
 export const productDetailInfo = [
     {
-        title: '产品明细编号',
+        title: 'productDetailNo',
         width: 215,
         field: 'id'
     },
     {
-        title: '游玩日期',
-        width: 200,
-        field: 'visitDate'
+        title: 'playDate',
+        width: 150,
+        field: 'visitDate',
+        type : 'time'
     },
     {
-        title: '取票状态',
-        minWidth: 200,
+        title: 'takeTicketStatus',
+        minWidth: 100,
         field: 'pickStatus'
     },
     {
-        title: '核销状态',
-        minWidth: 200,
+        title: 'verifyStatus',
+        minWidth: 100,
         field: 'verifyStatus'
     },
     {
-        title: '退票状态',
+        title: 'refundStatus',
         minWidth: 150,
         field: 'refundStatus'
     },
     {
-        title: '改签状态',
+        title: 'rescheduleStatus',
         minWidth: 150,
         field: 'rescheduleStatus'
     },
     {
-        title: '串码',
-        minWidth: 150,
+        title: 'SN',
+        minWidth: 200,
         field: 'serialNo'
     },
     {
-        title: '操作',
+        title: 'operate',
         minWidth: 120,
         field: ''
     }
@@ -46,28 +47,28 @@ export const productDetailInfo = [
 //退票日志表格配置
 export const refundAlterListHead = [
     {
-        title: '申请退票数量',
+        title: 'ApplyForRefundNum',
         width: 215,
         field: 'reqNum'
     },
     {
-        title: '操作员/时间',
+        title: 'oparaterAndTime',
         width: 250,
         field: ''
     },
     {
-        title: '核定退票数量',
+        title: 'TicketRefundsApproved',
         minWidth: 200,
         field: 'passNum'
     },
     {
-        title: '操作员/时间',
+        title: 'AuoditorAndTime',
         minWidth: 250,
         field: ''
     },
     {
-        title: '产品明细编号',
-        minWidth: 150,
+        title: 'productDetailNo',
+        minWidth: 200,
         field: 'passOrderTicketIds'
     }
 ];
@@ -75,15 +76,15 @@ export const refundAlterListHead = [
 //核销日志表格配置
 export const verifyTicketLogListHead = [
     {
-        title: '核销数量',
-        field: 'reqNum'
+        title: 'verificationNum',
+        field: 'verifyNum'
     },
     {
-        title: '操作员/时间',
+        title: 'operatorAndTime',
         field: ''
     },
     {
-        title: '产品明细编号',
-        field: 'passOrderTicketIds'
+        title: 'productDetailNo',
+        field: 'ticketIds'
     }
 ];

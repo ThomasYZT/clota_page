@@ -22,7 +22,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="11">
-                    <FormItem prop="phone" label="手机号" :rules="ruleInline.phone">
+                    <FormItem prop="phone" :label="$t('mobilePhone')" :rules="ruleInline.phone">
                         <Input v-model="formData.phone"
                                :disabled="formData.payerType !== 'other'"
                                style="width: 280px"/>
@@ -132,7 +132,9 @@
                             if(this.payerType === 'other'){
                                 visitorName = this.formData.payer;
                             }else{
-                                visitorName = this.formData.payerType;
+                                visitorName = this.payPersonListFilter.find((item, i) => {
+                                    return this.formData.payerType === item.value;
+                                })['label'];
                             }
                             resolve({
                                 documentInfo : this.getPlaceOrderDocumentInfo(),

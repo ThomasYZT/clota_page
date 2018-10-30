@@ -369,7 +369,7 @@
                                     {{item.groupName}}
                                     </Option>
                             </Select>
-                            <span class="example" @click="jumpForExample">{{$t('example')}}</span>
+                            <!--<span class="example" @click="jumpForExample">{{$t('example')}}</span>-->
                             <!--项目分组表格-->
                         </FormItem>
                     </i-col>
@@ -506,7 +506,7 @@
     import ajax from '@/api/index';
 
     export default {
-        props: ['parkList','data'],
+        props: ['data'],
         components: {
             tableCom,
             titlePark,
@@ -643,7 +643,7 @@
                 //枚举数据
                 enumData: {
                     //售票方式
-                    saleType: saleType,
+                    saleType: Array.from(saleType),
                     //设备分组
                     group: [],
                     //认证方式
@@ -661,6 +661,8 @@
                 //复制数据，用于修改初次赋值
                 copyData: {},
                 check: false,
+                //可游玩园区
+                parkList: []
             }
         },
         methods: {
@@ -744,9 +746,9 @@
             },
 
             //跳转进入示例页面
-            jumpForExample () {
-                console.log('跳转进入示例页面');
-            },
+            // jumpForExample () {
+            //     console.log('跳转进入示例页面');
+            // },
 
             /**
              * 确认
@@ -806,11 +808,24 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({index,data,type,title,confirmCallback = null,cancelCallback}) {
-                console.log(title)
+            show ({index,list,parkList,data,type,title,confirmCallback = null,cancelCallback}) {
                 this.title = title;
                 this.type = type;
                 this.index = index;
+                this.parkList = parkList;
+                //去除已新增的园区
+                if(list) {
+                    for(let i=0,len=this.parkList.length; i<len; i++) {
+                        for(let j=0,jlen=list.length; j<jlen; j++) {
+                            if(this.parkList[i].id === list[j].parkId) {
+                                this.parkList.splice(i,1);
+                                i--;
+                                len--;
+                                break;
+                            }
+                        }
+                    }
+                }
                 if(data){
                     this.check = true;
                     //查询核销设备组
@@ -860,6 +875,7 @@
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
                 }
+
                 this.visible = true;
             },
 
@@ -880,7 +896,9 @@
 
             //选择园区改变，联动查询设备分组
             selectParkChange ( val ) {
+                console.log(this.parkList)
                 let obj = this.parkList.find( item => val === item.id );
+                console.log(obj)
                 if(obj){
                     this.formData.parkName = obj.orgName;
                     this.getOrgGroupList(obj);
@@ -966,9 +984,18 @@
                     itemCheckTimes: 0,
                     equipmentGroupIds: [],
                 };
+                this.enumData = {
+                    //售票方式
+                    saleType: Array.from(saleType),
+                    //设备分组
+                    group: [],
+                    //认证方式
+                    authenticationType: authenticationType,
+                },
                 this.playPoint = [];
                 this.checkPoint = [];
                 this.check = false;
+                this.parkList = [];
             },
 
         }

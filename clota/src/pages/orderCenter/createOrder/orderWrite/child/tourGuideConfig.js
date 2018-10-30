@@ -8,17 +8,17 @@ export const columnData = [
         field: 'staffName'
     },
     {
-        title: '身份证号',
+        title: 'identityNo',
         minwidth: 254,
         field: 'documentNo'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',
         minwidth: 254,
         field: 'phoneNumber'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 130,
     },
 ];

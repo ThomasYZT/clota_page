@@ -7,11 +7,11 @@
         </div>
         <ul class="per-info">
             <li class="list">
-                <span class="key">下单企业：</span>
+                <span class="key">{{$t('orderOrg')}}：</span>
                 <span class="value">{{infoData.orderOrgName | contentFilter}}</span>
             </li>
             <li class="list">
-                <span class="key">发售机构：</span>
+                <span class="key">{{$t('sellingOrg')}}：</span>
                 <span class="value">{{infoData.saleOrgName | contentFilter}}</span>
             </li>
         </ul>

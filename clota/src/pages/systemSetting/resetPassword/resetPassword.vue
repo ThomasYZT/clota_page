@@ -10,7 +10,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputField', {field: '姓名 / 登录名'})"
+                   :placeholder="$t('inputField', {field: $t('name') + ' / ' + $t('loginName')})"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -42,7 +42,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                        <span class="reset" @click="handleReset(scope.row)">重置</span>
+                        <span class="reset" @click="handleReset(scope.row)">{{$t('reset')}}</span>
                 </template>
             </el-table-column>
         </table-com>

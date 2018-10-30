@@ -8,7 +8,7 @@ export const orderTicketHead = [
     },
     {
         title: '游玩日期',
-        minWidth: 190,
+        minWidth: 120,
         field: 'visitDate'
     },
     {
@@ -39,20 +39,17 @@ export const orderTicketHead = [
     },
     {
         title: '产品名称|预定数量',
-        minWidth: 180,
-        enWidth : 200,
+        width: 200,
         field: 'productName|quantity'
     },
     {
         title: '产品单价|小计金额',
-        width: 180,
-        enWidth : 200,
+        width: 230,
         field: 'price|amount'
     },
     {
         title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     /*{
@@ -63,27 +60,27 @@ export const orderTicketHead = [
     },*/
     {
         title: '取票串码',
-        minWidth: 150,
+        minWidth: 200,
         field: 'serialNo'
     },
     {
         title: '取票数量',
-        width: 130,
+        width: 200,
         field: 'quantityPicked'
     },
     {
         title: '核销数量',
-        width: 130,
+        width: 200,
         field: 'quantityVerified'
     },
     {
         title: '退票数量',
-        width: 130,
+        width: 200,
         field: 'quantityRefunded'
     },
     {
         title: '改签数量',
-        width: 130,
+        width: 200,
         field: 'quantityRescheduled'
     },
     {
@@ -101,6 +98,7 @@ export const orderTicketHead = [
     {
         title: '操作',
         width: 100,
+        enWidth: 120,
     }
 ];
 
@@ -149,20 +147,17 @@ export const orderVerifyHead = [
     },
     {
         title: '产品名称|预定数量',
-        width: 180,
-        enWidth : 200,
+        width: 200,
         field: 'productName|quantity'
     },
     {
         title: '产品单价|小计金额',
-        width: 180,
-        enWidth : 200,
+        width: 230,
         field: 'price|amount'
     },
     {
         title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     {
@@ -199,5 +194,6 @@ export const orderVerifyHead = [
     {
         title: '操作',
         width: 100,
+        enWidth: 120,
     }
 ];

@@ -3,12 +3,10 @@
 <template>
     <div class="order-detail">
         <!--过滤表头-->
-        <filter-head :tableShow.sync="tableShow"
-                     @set-params="setParams"
+        <filter-head @set-params="setParams"
                      @search-product="searchProduct">
         </filter-head>
         <table-com
-            v-if="tableShow"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -52,6 +50,17 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column7"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getProductName(scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column10"
                 show-overflow-tooltip
                 slot-scope="row"
@@ -59,10 +68,12 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.smsStatus === 'success'">已发送</span>
-                    <span class="status-wait" v-else-if="scope.row.smsStatus === 'wait'">未发送</span>
-                    <span class="status-wait" v-else-if="scope.row.smsStatus === 'doing'">发送中</span>
-                    <span class="status-fail" v-else>发送失败</span>
+                    <span
+                        :class="{ 'status-suc' : scope.row.smsStatus === 'success' ,
+                        'status-wait' : scope.row.smsStatus === 'wait' || scope.row.smsStatus === 'doing',
+                        'status-fail' : scope.row.smsStatus === 'failure'}">
+                        {{$t(transSMSStatus(scope.row.smsStatus))}}
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -73,9 +84,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.syncStatus === 'success'">已同步</span>
-                    <span class="status-wait" v-else-if="scope.row.syncStatus === 'wait'">同步中</span>
-                    <span class="status-fail" v-else>同步失败</span>
+                    <span :class="{'status-suc' : scope.row.syncStatus === 'success', 'status-fail' : scope.row.syncStatus === 'failure'}">
+                        {{$t(transSyncStatus(scope.row.syncStatus))}}
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -86,8 +97,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.paymentStatus === 'true'">已支付</span>
-                    <span class="status-fail" v-else>未支付</span>
+                    <span :class="{'status-suc' : scope.row.paymentStatus === 'true','status-fail' : scope.row.paymentStatus !== 'true'}">
+                        {{$t(transPaymentStatus(scope.row.paymentStatus))}}
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -160,18 +172,29 @@
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow.show" @click="refundTicket(scope.row)">{{$t('退票')}}</li>
-                        <!--<li @click="refundTicket(scope.row)">{{$t('退票')}}</li>-->
-                        <li v-if="returnTicketMenuShow.show" @click="reserve(scope.row)">{{$t('改签')}}</li>
-                        <li @click="reserve(scope.row)">{{$t('详情')}}</li>
+                        <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
+                            :class="{disabled : !judgeCanReturn(scope.row)}"
+                            @click="refundTicket(scope.row)">{{$t('退票')}}</li>
+                        <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
+                            :class="{disabled : !judgeCanAlter(scope.row)}"
+                            @click="alterTicket(scope.row)">{{$t('改签')}}</li>
+                        <li @click="toDetail(scope.row)">{{$t('详情')}}</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
         <!--申请退票-->
         <apply-refund-ticket v-model="refundTicketModalShow"
-                             :orderDetail="currentData">
+                             :product-info="orderProductInfo"
+                             :orderDetail="currentData"
+                             @fresh-data="queryList">
         </apply-refund-ticket>
+        <!--申请改签-->
+        <apply-alter-ticket-modal v-model="alterTicketModalShow"
+                                  :product-info="orderProductInfo"
+                                  :orderDetail="currentData"
+                                  @fresh-data="queryList">
+        </apply-alter-ticket-modal>
     </div>
 </template>
 
@@ -181,17 +204,19 @@
     import {columnData} from './orderConfig';
     import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
+    import applyAlterTicketModal from './child/applyAlterTicketModal';
+    import {transSyncStatus,transSMSStatus,transPaymentStatus} from '../commFun.js'
+    import debounce from 'lodash/debounce';
 
     export default {
         components : {
             filterHead,
             tableCom,
-            applyRefundTicket
+            applyRefundTicket,
+            applyAlterTicketModal
         },
         data() {
             return {
-                //表格是否显示
-                tableShow : false,
                 //表头配置
                 columnData : columnData,
                 //表格数据
@@ -222,11 +247,17 @@
                     abnormalStatus : '',
                     marketTypeId : '',
                     marketLevelId : '',
+                    //关键字
+                    keyword :''
                 },
                 //退款模态框是否显示
                 refundTicketModalShow : false,
                 //当前操作的订单信息
-                currentData : {}
+                currentData : {},
+                //订单下产品信息
+                orderProductInfo : [],
+                //改签模态框是否显示
+                alterTicketModalShow : false
             }
         },
         methods: {
@@ -234,6 +265,12 @@
              * 查询所有订单
              */
             queryList () {
+
+            },
+            /**
+             * 查询订单ajax请求
+             */
+            queryListAjax () {
                 ajax.post('getOrderList',{
                     ...this.queryParams
                 }).then(res => {
@@ -252,7 +289,7 @@
              */
             setParams (params) {
                 Object.assign(this.queryParams,params);
-                this.tableShow = true;
+                this.queryList();
             },
             /**
              * 手动触发查询
@@ -267,7 +304,7 @@
              * @param data
              */
             toOrderDetail (data) {
-                if(data['orderOrgType'] === 'individual') {
+                if(data['orderType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
                         name : 'individualFirstLevel',
@@ -291,20 +328,106 @@
              * @param data
              */
             refundTicket (data) {
+                if(!this.judgeCanReturn(data)) return;
                 this.currentData = data;
-                this.refundTicketModalShow = true;
+                this.queryOrderTicketList(data).then((res) => {
+                    if(res.success){
+                        this.orderProductInfo = res.data;
+                        this.refundTicketModalShow = true;
+                    }else{
+                        this.orderProductInfo = {};
+                    }
+                });
+            },
+            /**
+             * 查询订单详情
+             * @param  data 订单信息
+             */
+            queryOrderTicketList (data) {
+                return ajax.post('queryRefundAndAlterTicketList',{
+                    visitorProductId : data.visitorProductId
+                });
+            },
+            /**
+             * 改签
+             * @param  data 订单信息
+             */
+            alterTicket (data) {
+                if(!this.judgeCanAlter(data)) return;
+                this.currentData = data;
+                this.queryOrderTicketList(data).then((res) => {
+                    if(res.success){
+                        this.orderProductInfo = res.data;
+                        this.alterTicketModalShow = true;
+                    }else{
+                        this.orderProductInfo = {};
+                    }
+                });
+            },
+            /**
+             * 判断是否可以退票
+             * @param rowData
+             */
+            judgeCanReturn (rowData) {
+                return rowData.returnRule === 'true';
+            },
+            /**
+             * 判断是否可以改签
+             * @param rowData
+             */
+            judgeCanAlter (rowData) {
+                return rowData.alterRule === 'true';
+            },
+            /**
+             * 跳转到订单详情
+             * @param rowData
+             */
+            toDetail(rowData) {
+                if(rowData.orderType === 'team'){
+                    this.$router.push({
+                        name : 'teamOrderDetail',
+                        params :{
+                            orderId : rowData.orderId
+                        }
+                    });
+                }else if(rowData.orderType === 'individual'){
+                    this.$router.push({
+                        name : 'individualSecondLevel',
+                        params : {
+                            productDetail : rowData
+                        }
+                    });
+                }
+            },
+            //同步状态状态过滤
+            transSyncStatus : transSyncStatus,
+            //短信发送状态过滤
+            transSMSStatus : transSMSStatus,
+            //支付状态过滤
+            transPaymentStatus : transPaymentStatus,
+            /**
+             * 获取产品名称
+             * @param rowData 订单详情数据
+             */
+            getProductName(rowData) {
+                if(rowData.orderType === 'team'){
+                    return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+                }else{
+                    return rowData.productName;
+                }
             }
         },
         computed : {
             //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
                 //散客非分销订单
-                if(this.queryParams.orderType === 'individual' && this.queryParams.allocationStatus === 'false'){
+                if((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
+                    && this.queryParams.allocationStatus === 'false'){
                     return {
                         show : true,
                         width : 170,
                     };
-                }else if(this.queryParams.orderType === 'individual' && this.queryParams.orderChannel === 'market'){
+                }else if((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')  && this.queryParams.orderChannel === 'market'){
                     return {
                         show : true,
                         width : 170,
@@ -316,6 +439,9 @@
                     };
                 }
             }
+        },
+        created () {
+            this.queryList = debounce(this.queryListAjax,300);
         }
     }
 </script>
@@ -350,6 +476,7 @@
 
         .to-one-level{
             cursor: pointer;
+            text-decoration: underline;
         }
     }
 </style>

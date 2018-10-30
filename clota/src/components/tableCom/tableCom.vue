@@ -38,7 +38,7 @@
                         :label="$t(item.title)"
                         show-overflow-tooltip
                         :prop="item.field"
-                        :key="index"
+                        :key="item.field"
                         :width="getColumnWidth(item)"
                         :min-width="getColumnMinWidth(item)">
                         <template slot-scope="scoped">
@@ -47,6 +47,57 @@
                                     v-w-title="scoped.row[item.field]">
                                     {{scoped.row[item.field] | contentFilter}}
                                 </span>
+                        </template>
+                    </el-table-column>
+                        <!--货比格式化列-->
+                    <el-table-column
+                        v-if="item.type === 'money'"
+                        :label="$t(item.title)"
+                        show-overflow-tooltip
+                        :prop="item.field"
+                        :key="index"
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
+                        <template slot-scope="scoped">
+                            <span
+                                class="detail-hover"
+                                v-w-title="scoped.row[item.field]">
+                                {{scoped.row[item.field] | moneyFilter | contentFilter}}
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <!--日期格式化列-->
+                    <el-table-column
+                        v-else-if="item.type === 'date'"
+                        :label="$t(item.title)"
+                        show-overflow-tooltip
+                        :prop="item.field"
+                        :key="index"
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
+                        <template slot-scope="scoped">
+                        <span
+                            class="detail-hover"
+                            v-w-title="scoped.row[item.field]">
+                            {{scoped.row[item.field] | timeFormat('yyyy-MM-dd') | contentFilter}}
+                        </span>
+                        </template>
+                    </el-table-column>
+                    <!--时间格式化列-->
+                    <el-table-column
+                        v-else-if="item.type === 'time'"
+                        :label="$t(item.title)"
+                        show-overflow-tooltip
+                        :prop="item.field"
+                        :key="index"
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
+                        <template slot-scope="scoped">
+                            <span
+                                class="detail-hover"
+                                v-w-title="scoped.row[item.field]">
+                                {{scoped.row[item.field] | timeFormat('yyyy-MM-dd HH:mm:ss') | contentFilter}}
+                            </span>
                         </template>
                     </el-table-column>
                     <!--普通列-->

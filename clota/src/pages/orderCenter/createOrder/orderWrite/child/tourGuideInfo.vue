@@ -7,7 +7,7 @@
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTourGuideInfo.length < 1"
-                    @click="delTourGuide">批量删除</Button>
+                    @click="delTourGuide">{{$t('deleteBatch')}}</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
                     @click="addTourGuide">添加导游</Button>
@@ -354,7 +354,7 @@
              */
             delTourGuide () {
                 this.$refs.delModal.show({
-                    title : this.$t('删除'),
+                    title : this.$t('del'),
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }
@@ -467,7 +467,7 @@
                         this.tableData = res.data ? res.data.map(item => {
                             return {
                                 ...item,
-                                documentNo : item.documentInfo ? JSON.parse(item.documentInfo)[0]['data'] : '',
+                                documentNo : item.documentInfo ? JSON.parse(item.documentInfo)['data'] : '',
                                 staffName : item.visitorName
                             }
                         }) : [];

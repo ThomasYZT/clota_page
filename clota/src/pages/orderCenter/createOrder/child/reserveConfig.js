@@ -2,22 +2,22 @@
 //表头配置
 export const columnData = [
     {
-        title: '产品名称',
+        title: 'productName',
         width: 200,
         field: 'productName'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         minWidth: 120,
         field: 'playDate'
     },
     {
-        title: '产品单价',
+        title: 'settlePrice',
         width: 100,
         field: 'settlePrice'
     },
     {
-        title: '数量',
+        title: 'quantity',
         width: 150,
         field: 'policyName'
     },

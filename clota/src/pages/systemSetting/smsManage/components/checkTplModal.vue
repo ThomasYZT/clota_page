@@ -2,7 +2,7 @@
     <!--查看短信模板-->
     <Modal
         v-model="visible"
-        :title="'票类业态短信模版信息'"
+        :title="$t('TicketTypeMessageTemplateInformation')"
         class-name="add-account-modal vertical-center-modal"
         width="600"
         :mask-closable="false"
@@ -13,15 +13,15 @@
 
             <ul>
                 <li>
-                    <span>{{$t('模板名称')}}：</span>
-                    <div class="field-desc">{{'票类业态模版'}}</div>
+                    <span>{{$t('templateName')}}：</span>
+                    <div class="field-desc">{{'TicketTypeMessageTemplate'}}</div>
                 </li>
                 <li>
-                    <span>{{$t('模板类型')}}：</span>
-                    <div class="field-desc">{{'票类业态'}}</div>
+                    <span>{{$t('templateType')}}：</span>
+                    <div class="field-desc">{{'TicketType'}}</div>
                 </li>
                 <li>
-                    <span>{{$t('模板内容')}}：</span>
+                    <span>{{$t('templateContent')}}：</span>
                     <div class="field-desc">{{'【银科环企智慧旅游平台】尊敬的$name(先生/女士),你已成功支付$proname（$num张）,请凭此信息在$sdate至$edate检票入园，串码【$code】本信息为有效入园凭证，请勿删除。祝您游玩愉快！点击链接获取二维码http://qrcode.galasystrip.com/?ID=$code。'}}</div>
                 </li>
             </ul>

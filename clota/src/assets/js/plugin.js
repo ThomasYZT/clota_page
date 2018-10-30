@@ -131,7 +131,7 @@ plugin.install = function (Vue, options) {
         components: {},
         filters: {
             // 时间格式化过滤器
-            timeFormat(value, format = 'yyyy/MM/dd', emptyVal = '') {
+            timeFormat(value, format = 'yyyy/MM/dd', emptyVal = '-') {
                 if (!value) {
                     return emptyVal;
                 } else if (value instanceof Date) {

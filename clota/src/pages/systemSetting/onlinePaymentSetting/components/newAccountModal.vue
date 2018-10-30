@@ -15,6 +15,7 @@
                 <Form-item :label="$t('accountType')" prop="accountType">
                     <Select v-model="formData.accountType" @on-change="handleAccountChanged">
                         <Option v-for="(item, index) in accountList"
+                                :placeholder="$t('selectField',{msg: ''})"
                                 :value="item.accountType"
                                 :key="index">
                             {{ item.payTypeName }}

@@ -9,12 +9,12 @@
                 <ul class="list">
                     <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
                     <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">支付状态：{{baseInfo.paymentStatus | contentFilter}}</li>
+                    <li class="col">支付状态：{{$t(transPaymentStatus(baseInfo.paymentStatus)) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">支付方式：{{baseInfo.paymentType | contentFilter}} </li>
+                    <li class="col">支付方式：{{$t('payType.' + baseInfo.paymentType) | contentFilter}} </li>
                     <li class="col">支付时间：{{baseInfo.paymentTime | contentFilter}}</li>
                     <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
                 </ul>
@@ -22,7 +22,7 @@
             <li class="row">
                 <ul class="list">
                     <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
+                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                     <li class="col">订单金额：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
                 </ul>
             </li>
@@ -39,12 +39,12 @@
                 <ul class="list">
                     <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
                     <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">支付状态：{{baseInfo.paymentStatus | contentFilter}}</li>
+                    <li class="col">支付状态：{{$t(transPaymentStatus(baseInfo.paymentStatus)) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">支付方式：{{baseInfo.paymentType | contentFilter}} </li>
+                    <li class="col">支付方式：{{$t('payType.' + baseInfo.paymentType) | contentFilter}} </li>
                     <li class="col">支付时间：{{baseInfo.paymentTime | contentFilter}}</li>
                     <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
                 </ul>
@@ -52,7 +52,7 @@
             <li class="row">
                 <ul class="list">
                     <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
+                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                     <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
                 </ul>
             </li>
@@ -65,7 +65,7 @@
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">短信发送状态：{{baseInfo.smsStatus | contentFilter}}</li>
+                    <li class="col">短信发送状态：{{$t(transSMSStatus(baseInfo.smsStatus)) | contentFilter}}</li>
                 </ul>
             </li>
         </ul>
@@ -76,12 +76,12 @@
                 <ul class="list">
                     <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
                     <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">支付状态：{{baseInfo.paymentStatus | contentFilter}}</li>
+                    <li class="col">支付状态：{{$t(transPaymentStatus(baseInfo.paymentStatus)) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">支付方式：{{baseInfo.paymentType | contentFilter}} </li>
+                    <li class="col">支付方式：{{$t('payType.' + baseInfo.paymentType) | contentFilter}} </li>
                     <li class="col">支付时间：{{baseInfo.paymentTime | contentFilter}}</li>
                     <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
                 </ul>
@@ -90,7 +90,7 @@
                 <ul class="list">
                     <li class="col">游玩日期：{{baseInfo.originVisitDate | contentFilter}}</li>
                     <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
+                    <li class="col">下单渠道：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
@@ -100,11 +100,16 @@
             </li>
         </ul>
 
-        <Button  type="primary" class="ivu-btn-108px" @click="reSendMsg">重发短信</Button>
+        <Button  v-if="canResendMsg" type="primary" class="ivu-btn-108px" @click="reSendMsg">重发短信</Button>
+        <div class="audit-result">
+            <img :src="auditResultImg" alt="">
+        </div>
     </div>
 </template>
 
 <script>
+    import {transPaymentStatus,transSMSStatus} from '../../commFun';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //基本信息
@@ -118,7 +123,14 @@
             'view-type' : {
                 type : String,
                 default : ''
-            }
+            },
+            //产品信息
+            'product-info-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
         },
         data() {
             return {}
@@ -128,7 +140,7 @@
              * 给导游重发短信
              */
             reSendMsg () {
-                ajax.post('reSendMsg',{
+                ajax.post('noticeGuidesAuditResult',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
                     if(res.success){
@@ -137,12 +149,29 @@
                         this.$Message.error('发送失败');
                     }
                 });
-            }
+            },
+            //支付状态过滤
+            transPaymentStatus : transPaymentStatus,
+            //短信发送状态
+            transSMSStatus : transSMSStatus
         },
         computed : {
             //是否可以重发短信
             canResendMsg () {
-
+                //景区下，审核成功，取票前可重发短信
+                return this.viewType === 'scenic' &&
+                    this.baseInfo.auditStatus === 'success' &&
+                    this.productInfoList.every(item => item.quantity > item.quantityPicked) ;
+            },
+            //审核结果图片
+            auditResultImg () {
+                if(this.baseInfo.auditStatus === 'success'){
+                    return require('../../../../assets/images/icon-audit-success.svg');
+                }else if(this.baseInfo.auditStatus === 'audit'){
+                    return require('../../../../assets/images/icon-wait-audit.svg');
+                }else{
+                    return require('../../../../assets/images/icon-audit-fail.svg');
+                }
             }
         }
     }
@@ -199,6 +228,14 @@
 
         .ivu-btn-108px{
             @include absolute_pos(absolute,20px,24px)
+        }
+
+        .audit-result{
+            @include absolute_pos(absolute,$right : 0,$bottom : 0);
+
+            img{
+                @include block_outline(100,100,false);
+            }
         }
     }
 </style>

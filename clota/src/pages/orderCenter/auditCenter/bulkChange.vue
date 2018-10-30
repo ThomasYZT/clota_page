@@ -15,7 +15,7 @@
             <el-dropdown trigger="click"
                          placement="bottom-start"
                          @command="handleCommand">
-                <Button type="primary" style="float: left" size="default">{{$t('批量审核')}}</Button>
+                <Button type="primary" style="float: left" size="default">{{$t('batchAudit')}}</Button><!--批量审核-->
 
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in batchAudit"
@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="170"
+            :ofsetHeight="240"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -42,6 +42,7 @@
             <el-table-column
                 slot="column0"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -52,6 +53,7 @@
             <el-table-column
                 slot="column5"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -62,27 +64,31 @@
             <el-table-column
                 slot="column7"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.productName | contentFilter}} | {{scope.row.quantity | contentFilter}}
+                    <span>{{scope.row.productName | contentFilter}}</span> |
+                    <span>{{scope.row.quantity | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
                 slot="column8"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
-                    <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                    <span>{{$t('unitPrice')}}：{{scope.row.price | moneyFilter}}</span> |
+                    <span>{{$t('subtotal')}}：{{scope.row.amount | moneyFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
                 slot="column9"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -93,6 +99,7 @@
             <el-table-column
                 slot="column13"
                 slot-scope="row"
+                show-overflow-tooltip
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -109,7 +116,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('通过')}}</span>
+                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span>
                     <span class="divide-line"></span>
                     <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
@@ -127,7 +134,7 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, orderChannelEnum, batchAudit, orderSyncStatus} from './auditConfig';
+    import {bulkRefundHead, batchAudit, orderSyncStatus} from './auditConfig';
     import ajax from '@/api/index.js';
     import {configVariable} from '@/assets/js/constVariable.js';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
@@ -197,7 +204,7 @@
             },
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {
-                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 switch (dropItem.value) {
@@ -280,8 +287,9 @@
         }
         .batch-audit {
             @include block_outline();
-            padding-bottom: 4px;
+            margin-bottom: 10px;
             padding-left: 20px;
+            line-height: 1;
         }
 
         .operate-btn {
@@ -292,6 +300,18 @@
             text-decoration: underline;
             cursor: pointer;
         }
+
+        /*.col-ellipsis-name {
+            float: left;
+            max-width: 75px;
+            @include overflow_tip();
+        }
+
+        .col-ellipsis-number {
+            display: inline-block;
+            max-width: 46px;
+            @include overflow_tip();
+        }*/
 
         .blue {
             color: $color_blue;

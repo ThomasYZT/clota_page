@@ -13,7 +13,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputField', {field: $t('模板名称')})"
+                   :placeholder="$t('inputField', {field: $t('templateName')})"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>

@@ -21,6 +21,15 @@
                      v-else>
                     <Button type="default" @click="cancelEdit" >{{$t("giveUpModify")}}</Button>
                 </div>
+
+                <i-row class="first-row">
+                    <i-col span="10">
+                        <Form-item :label="$t('distributeName')+'：'" prop="name"><!--分销名称-->
+                            <Input :disabled="!editable"  v-model="formData.name" :placeholder="$t('distributeName')"></Input>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+
                 <!-- 我的分销单价 -->
                 <div class="divider-header">
                     <span>{{$t('mySalePrice')}}</span>
@@ -31,7 +40,7 @@
                         v-if="detail && detail.productList"
                         :table-com-min-height="260"
                         :column-data="detailParentDistributePriceConfig"
-                        :table-data="info.policyItems"
+                        :table-data="info.parentAllocationProductList"
                         :border="false">
                         <el-table-column
                             slot="column0"
@@ -74,7 +83,7 @@
                             :min-width="120"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                                {{scope.row.settlePrice | moneyFilter}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -89,6 +98,7 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <span v-if="isLossTipShow" class="loss-tip">{{this.$t('maybeLoss')}}</span>
                 </Form-item>
 
                 <!-- 设置我的销售渠道 -->
@@ -153,12 +163,16 @@
                     //校验非空必填以及不可低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
+                            console.log(item)
                             if(item.price === ''){
                                 callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
                             }else {
                                 if(validator.isNumber(item.price)) {
+                                    console.log(item.settlePrice)
+                                    console.log(parseFloat(item.price),parseFloat(item.settlePrice))
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
-                                        callback(new Error(this.$t('maybeLoss')));
+                                        this.isLossTipShow = true;
+                                        callback();
                                     } else {
                                         callback();
                                     }
@@ -210,7 +224,9 @@
                 //已选中的渠道组
                 selectedRow: [],
                 //是否处于编辑状态
-                editable: false
+                editable: false,
+                //是否显示亏损提示
+                isLossTipShow: false
 
             }
         },
@@ -228,7 +244,6 @@
                     this.formData.groupIds = this.detail.groupIds;
                     //获取模态框数据
                     this.getData();
-                    console.log(this.detail,"this.detail");
                 }else {
                     //关闭模态框
                     this.$refs.policyform.resetFields();
@@ -251,7 +266,7 @@
              */
             async getData(){
                 //获取分销详情数据
-                await ajax.post('getPolicyInfo', {
+                await ajax.post('getPolicyAllocationInfo', {
                     allocationId: this.detail.listItem.allocationId
                 }).then((res) => {
                     if(res.success) {
@@ -259,10 +274,15 @@
 
                         //初始化产品分销单价数据
                         this.detail.productList.forEach((item,index) => {
-                            let _obj = {};
-                            _obj.productId = item.productId;
-                            _obj.price = item.settlePrice;
-                            this.formData.productPrices.push(_obj);
+                            this.info.parentAllocationProductList.forEach((pitem, pindex) => {
+                                if(index === pindex) {
+                                    let _obj = {};
+                                    _obj.productId = item.productId;
+                                    _obj.price = item.settlePrice;
+                                    _obj.settlePrice = pitem.settlePrice;
+                                    this.formData.productPrices.push(_obj);
+                                }
+                            })
                         });
 
                         //关闭模态框
@@ -283,7 +303,16 @@
                     allocationId: this.detail.listItem.allocationId
                 }).then(res => {
                     if(res.success) {
-                        //
+                        //过滤没有销售渠道的销售组
+                        for(let i=0,len=this.tempData.length; i<len; i++) {
+                            if(this.tempData[i].channelNames === null) {
+                                this.tempData.splice(i,1);
+                                len--;
+                                i--;
+                                continue;
+                            }
+                        }
+
                         this.haveSaleGroups = res.data;
 
                         //设置销售渠道组列表数据
@@ -528,6 +557,11 @@
             /deep/ .ivu-btn.ivu-btn-error {
                 background-color: #EB6751;
             }
+        }
+
+        .loss-tip {
+            color: $color_red;
+            font-size: 12px;
         }
     }
 

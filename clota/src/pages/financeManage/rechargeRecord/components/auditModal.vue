@@ -2,7 +2,7 @@
     <!--充值审核-->
     <Modal
         v-model="visible"
-        :title="'充值审核'"
+        :title="$t('rechargeAudit')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -12,24 +12,24 @@
 
             <Form ref="formValidate" :model="formData"  :label-width="130">
                 <!--付款方-->
-                <Form-item :label="$t('付款方') + '：'" prop="">
+                <Form-item :label="$t('payer') + '：'" prop="">
                     <span>{{formData.peerOrgName}}</span>
                 </Form-item>
                 <!--支付方式-->
-                <Form-item :label="$t('支付方式') + '：'" prop="">
+                <Form-item :label="$t('payType') + '：'" prop="">
                     <span>{{formData.paymentType | contentFilter}}</span>
                 </Form-item>
                 <!--充值金额-->
-                <Form-item :label="$t('充值金额') + '：'" prop="">
+                <Form-item :label="$t('rechargeAmount') + '：'" prop="">
                     <span>{{formData.amount | moneyFilter}}</span>
                 </Form-item>
                 <!--交易流水号-->
-                <Form-item :label="$t('交易流水号') + '：'" prop="">
+                <Form-item :label="$t('transactionSerialNumber') + '：'" prop="">
                     <span>{{formData.tpOrderNo | contentFilter}}</span>
                     <Tooltip placement="top">
                         <i class="iconfont icon-help"></i>
                         <div slot="content">
-                            <div class="tip-trade">{{$t('仅当使用微信支付或支付宝时展示交易流水号。')}}</div>
+                            <div class="tip-trade">{{$t('onliShowTip')}}</div>
                         </div>
                     </Tooltip>
                 </Form-item>
@@ -42,8 +42,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="confirm()" >{{$t('审核通过')}}</Button>
-            <Button type="error" @click="cancel()" >{{$t('驳回')}}</Button>
+            <Button type="primary" @click="confirm()" >{{$t('checkPass')}}</Button>
+            <Button type="error" @click="cancel()" >{{$t('reject')}}</Button>
         </div>
 
     </Modal>

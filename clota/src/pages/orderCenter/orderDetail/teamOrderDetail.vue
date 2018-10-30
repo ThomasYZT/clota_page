@@ -9,6 +9,7 @@
         <div class="content">
             <!--基本信息-->
             <base-info :base-info="baseInfo"
+                       :product-info-list="productInfoList"
                        :view-type="viewType">
             </base-info>
             <!--产品信息-->
@@ -53,9 +54,11 @@
     import tourGuideInfo from './teamOrderChild/tourGuideInfo';
     import driverInfo from './teamOrderChild/driverInfo';
     import orderParticulars from './teamOrderChild/orderParticulars';
-    import orderOperateLog from './teamOrderChild/orderOperateLog';
+    import orderOperateLog from '../components/operateLog';
     import commission from './teamOrderChild/commission';
     import ajax from '@/api/index.js';
+    import common from '@/assets/js/common.js';
+
     export default {
         mixins :[lifeCycelMixins],
         components : {
@@ -188,7 +191,6 @@
             },
             //视图
             viewType () {
-                return 'scenic';
                 if(this.orderDetailInfo && this.orderDetailInfo.orderOrgType){
                     return this.orderDetailInfo.orderOrgType;
                 }else{
@@ -197,7 +199,7 @@
             },
             // 分销佣金
             allocationCommission () {
-                if(this.orderDetailInfo && this.orderDetailInfo.allocationCommission){
+                if(this.orderDetailInfo && common.isNotEmpty(this.orderDetailInfo.allocationCommission)){
                     return this.orderDetailInfo.allocationCommission;
                 }else{
                     return '';

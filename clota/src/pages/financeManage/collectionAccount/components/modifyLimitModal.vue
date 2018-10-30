@@ -2,7 +2,7 @@
     <!--重置密码-->
     <Modal
         v-model="visible"
-        :title="'修改额度'"
+        :title="$t('ModifyLine')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -16,13 +16,13 @@
                     <span>{{formData.orgName}}</span>
                 </Form-item>
                 <!--信用额度-->
-                <Form-item :label="$t('信用额度')" prop="creditLimits">
-                    <Input v-model.trim="formData.creditBalance" :placeholder="$t('inputField', {field: $t('充值金额')})" />
+                <Form-item :label="$t('creditBalance')" prop="creditLimits">
+                    <Input v-model.trim="formData.creditBalance" :placeholder="$t('inputField', {field: $t('creditBalance')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
                 <!--预警额度-->
-                <Form-item :label="$t('预警额度')" prop="warningLimits">
-                    <Input v-model.trim="formData.alarmValue" :placeholder="$t('inputField', {field: $t('充值金额')})" />
+                <Form-item :label="$t('warningLines')" prop="warningLimits">
+                    <Input v-model.trim="formData.alarmValue" :placeholder="$t('inputField', {field: $t('warningLines')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
 
@@ -122,11 +122,11 @@
                     alarmValue: params.alarmValue
                 }).then(res => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('topUp')}));
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('topUp')}));
                     }
                 })
             },

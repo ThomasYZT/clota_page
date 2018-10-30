@@ -3,9 +3,14 @@
 <template>
     <Submenu :name="menuInfo.meta._name" class="sub-menu-class">
         <template slot="title">
+            <Tooltip :content="$t(`${menuInfo.meta.menuName}`)"
+                     placement="right"
+                     :disabled="!menuIsPackUp"
+                     transfer>
             <span v-if="menuInfo.meta.iconClass"
                   class="iconfont"
                   :class="[menuInfo.meta.iconClass]"></span>
+            </Tooltip>
             <span class="menu-name" v-w-title="$t(`${menuInfo.meta.menuName}`)">{{$t(`${menuInfo.meta.menuName}`)}}</span>
         </template>
         <template v-for="(item,i) in subMenuList">
@@ -28,6 +33,7 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
 
     export default {
         name : 'menuCom',
@@ -63,7 +69,10 @@
              */
             subMenuList() {
                 return this.childrenMenu.filter(item => item.meta && item.meta.isMenu);
-            }
+            },
+            ...mapGetters({
+                menuIsPackUp : 'menuIsPackUp'
+            })
         },
     }
 </script>

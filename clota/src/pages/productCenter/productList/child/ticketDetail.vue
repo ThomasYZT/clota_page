@@ -13,7 +13,6 @@
         </bread-crumb-head>
 
         <div class="container">
-
             <div class="title-wrap">
                 <span>{{$t('ticketDetail')}}</span>
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
@@ -24,6 +23,8 @@
 
             <!--表单信息-->
             <Form ref="formValidate"
+                  :label-width="250"
+                  label-position="right"
                   :model="detail">
 
                 <!--基本信息-->
@@ -35,7 +36,7 @@
                                 <div v-w-title="detail.productName">{{detail.productName | contentFilter}}</div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12">
+                        <i-col span="12" v-if="$store.state.manageOrgs.nodeType !== 'partner'">
                             <Form-item :label="$t('standardPrice')+'：'"><!--景区成本价-->
                                 <div>{{detail.standardPrice | contentFilter}}</div>
                             </Form-item>
@@ -224,7 +225,7 @@
                 </div>
 
                 <!--产品日志-->
-                <template v-if="recordsVos && recordsVos.length > 0">
+                <template v-if="recordsVos && recordsVos.length > 0 && $store.state.manageOrgs.nodeType !== 'partner'">
                     <title-temp title="productLog"></title-temp>
                     <div class="form-content">
                         <Timeline>
@@ -329,7 +330,6 @@
              * 查看可游玩园区详情
              */
             viewParkDetail ( data ) {
-                console.log(data)
                 this.$refs.viewPark.show({
                     data: data,
                     title : this.$t('check')+this.$t(data.saleType),
@@ -403,7 +403,6 @@
                 this.$refs.addRemarkModal.show({
                     data: {remark: this.remark},
                     confirmCallback : ( data ) => {
-                        console.log(data);
                         this.remark = data;
                     }
                 });
@@ -422,13 +421,15 @@
                     if(params.info){
                         //根据产品Id查明细
                         this.findProductById(params.info);
-                        //查询权限下的园区
-                        this.queryScenicOrgByAccountRole();
+                        if(this.$store.state.manageOrgs.nodeType !== 'partner') {
+                            //查询权限下的园区
+                            this.queryScenicOrgByAccountRole();
+                        }
                     }
                 }
-            },
+            }
 
-        },
+        }
     }
 </script>
 
@@ -502,30 +503,13 @@
                     margin: 0 auto;
                     text-align: left;
                     width: 100%;
-                    float: left;
-                    margin-right: 10px;
-                    height: 30px;
                     line-height: 30px;
                     font-size: $font_size_14px;
-                    display: flex;
                 }
 
                 /deep/ .ivu-form-item-label{
-                    padding-left: 0;
-                    padding-right: 0;
-                    width: 220px;
-                    display: inline-table;
-                }
-
-                /deep/ .ivu-form-item-content{
-                    color: $color-666;
-                    /*flex: 1;*/
-                    display: inline-block;
-                    width: calc(100% - 220px);
-                    >div{
-                        vertical-align: middle;
-                        @include overflow_tip();
-                    }
+                    width: auto;
+                    white-space: nowrap;
                 }
 
                 /deep/ .ivu-checkbox-wrapper{

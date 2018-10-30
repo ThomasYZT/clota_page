@@ -8,7 +8,7 @@
     <div class="bulk-order-detail">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="'订单明细详情'">
+            :locale-router="'orderDetailInfo'"><!--订单明细详情-->
         </bread-crumb-head>
 
         <div class="detail-container">
@@ -17,13 +17,17 @@
             <!--游客信息-->
             <visitor-info :module-info="detailData.visitor"></visitor-info>
             <!--产品明细-->
-            <product-detail :module-info="detailData.ticketList"
+            <product-detail :module-info="orderTicketList"
                             :base-info="detailData.baseInfo"
                             :visitor-info="detailData.visitor"
                             @confirm-audit="handleConfirmAudit">
             </product-detail>
             <!--分销信息-->
-            <allocation-info :module-info="detailData.allocationInfo"></allocation-info>
+            <!--<allocation-info :module-info="detailData.allocationInfo"></allocation-info>-->
+            <!--分销信息-->
+            <!--下单企业不可见-->
+            <distributionInfo viewType="scenic"
+                              :allocationInfo="detailData.allocationInfo"></distributionInfo>
             <!--退票日志-->
             <refund-alter-log :module-info="detailData.refundAlterList"></refund-alter-log>
             <!--核销日志-->
@@ -43,7 +47,9 @@
     import allocationInfo from './allocationInfo.vue';
     import refundAlterLog from '../../components/refundAlterLog.vue';
     import verifyLog from '../../components/verifyLog.vue';
-    import operateLog from '../../orderDetail/teamOrderChild/orderOperateLog.vue';
+    import operateLog from '../../components/operateLog';
+    import assignWith from 'lodash/assignWith';
+    import distributionInfo from '../../orderDetail/individualOrderChild/level2/distributionInfo'
 
     export default {
         mixins : [lifeCycleMixins],
@@ -56,6 +62,7 @@
             refundAlterLog,
             verifyLog,
             operateLog,
+            distributionInfo
         },
         props: {},
         data() {
@@ -78,6 +85,8 @@
                     verifyTicketLogList: [],    // 核销日志
                     orderOperationRecordList: [],    // 操作日志
                 },
+                // 订单审核详情里面的产品明细列表
+                orderTicketList: [],
             }
         },
         computed: {
@@ -85,12 +94,12 @@
             beforeRouterList() {
                 if (this.$route.name == 'bulkRefundDetail') {
                     return [{
-                        name: '散客退票审核',   // 散客退票审核
+                        name: 'auditBulkRefund',   // 散客退票审核
                         router: {name: 'auditBulkRefund'}
                     }]
                 } else if (this.$route.name == 'bulkChangeDetail') {
                     return [{
-                        name: '散客改签审核',   // 散客改签审核
+                        name: 'auditBulkChange',   // 散客改签审核
                         router: {name: 'auditBulkChange'}
                     }]
                 }
@@ -110,7 +119,24 @@
                     visitorProductId: id
                 }).then(res => {
                     if(res.success){
-                        this.detailData = res.data || {};
+//                        this.detailData = res.data || {};
+                        this.detailData = assignWith(this.detailData, res.data, (objValue, srcValue) => {
+                            return srcValue ? srcValue : objValue;
+                        });
+                    }
+                });
+            },
+            /**
+             * 获取订单审核详情里面的产品明细列表
+             */
+            getOrderTicketList (id) {
+                ajax.post('queryOrderTicketList',{
+                    visitorProductId: id
+                }).then(res => {
+                    if(res.success){
+                        this.orderTicketList = res.data || [];
+                    }else{
+                        this.orderTicketList = [];
                     }
                 });
             },
@@ -122,6 +148,7 @@
                 if(params && Object.keys(params).length > 0){
                     this.getBulkOrderDetail(params.rowData.visitorProductId);
 //                    this.getBulkOrderDetail('1051793405354577920');
+                    this.getOrderTicketList(params.rowData.visitorProductId);
                 }else{
                     this.$router.go(-1);
                 }

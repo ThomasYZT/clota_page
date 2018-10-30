@@ -51,7 +51,7 @@
         <delModal ref="delModal">
             <div class="remove-group">
                 <span class="red-bale">
-                <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('driver')}}：
+                <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('driverRole')}}：
                 <span style="color : #f8a334;">{{currentData.staffName}}</span> <br/>
                 <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}？</span>
             </div>
@@ -117,7 +117,7 @@
             delMember(scopeRow) {
                 this.currentData = scopeRow;
                 this.$refs.delModal.show({
-                    title: this.$t('delete')+this.$t('driver'),
+                    title: this.$t('delete')+this.$t('driverRole'),
                     confirmCallback: () => {
                         this.delete(scopeRow)
                     }
