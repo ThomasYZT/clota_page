@@ -1409,6 +1409,7 @@ export default {
     'batchVerify' : '批量核销',
     'verification' : '核销',
     'verifyFailure' : '核销失败',
+    'verifySuccess' : '核销成功',
     'continue' : '继续',
     'remind' : '提醒',
     'verifiedQtyOfSN' : '本次核销{field}条串码',
@@ -1439,4 +1440,8 @@ export default {
     'saveGuideInfo' : '保存导游信息',
     'deletedField' : '{field}已删除',
     'driverInfo' : '司机信息',
+    'addVisitorInfo' : '添加游客信息',
+    'addCredential' : '添加证件',
+    'ticketGetterInfo' : '取票信息',
+    'ticketGetterSN' : '取票串码',
 }
