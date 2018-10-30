@@ -66,6 +66,7 @@
                 /*<!--background: $color_fff;-->*/
                 border-radius: 5px 5px 0 0;
                 transition: all 0.3s;
+                overflow: hidden;
 
                 &.pick-up {
                     @include block_outline(unquote('calc(100% - 55px)'));

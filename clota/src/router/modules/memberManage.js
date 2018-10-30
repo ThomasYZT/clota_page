@@ -404,6 +404,19 @@ export default {
                     },
                 }
             },
+            //会员管理--基础设置--实体卡管理
+            entityCardControle: {
+                path: '/memberManage/entityCard',
+                name: 'cardManagement',
+                component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
+                meta: {
+                    menuName: 'cardManagement', //lang.config.js 里面的语言键值
+                    _name: 'init-setting',
+                    rightPath: topMenuName + '.' + 'cardManagement',
+                    iconClass: 'icon-card',
+                    isMenu: true
+                },
+            },
             memberSetting: {
                 //会员管理--基础设置
                 path: '/memberManage/initializationSettings',
@@ -428,17 +441,17 @@ export default {
                             isMenu: true
                         },
                     },
-                    //会员管理--基础设置--实体卡管理
-                    entityCardControle: {
-                        path: '/memberManage/entityCard',
-                        name: 'entityCard',
-                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
-                        meta: {
-                            menuName: 'entityCard', //lang.config.js 里面的语言键值
-                            _name: 'basic-setting',
-                            rightPath: topMenuName + '.' + 'memberSetting',
-                        },
-                    },
+                    // //会员管理--基础设置--实体卡管理
+                    // entityCardControle: {
+                    //     path: '/memberManage/entityCard',
+                    //     name: 'entityCard',
+                    //     component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
+                    //     meta: {
+                    //         menuName: 'entityCard', //lang.config.js 里面的语言键值
+                    //         _name: 'basic-setting',
+                    //         rightPath: topMenuName + '.' + 'memberSetting',
+                    //     },
+                    // },
                     //会员管理--基础设置--实体卡管理--批量导入
                     importEntityCcard: {
                         path: '/memberManage/entityCard/import',

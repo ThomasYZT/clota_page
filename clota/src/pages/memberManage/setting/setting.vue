@@ -59,24 +59,25 @@
                     </div>
                 </div>
 
-                <div class="content-item">
-                    <div class="title">{{$t('invalidCouponRemind')}}</div><!--卡券过期提醒设置-->
-                    <div :class="{'ivu-form-item-error': error.dayError, 'main': true}">
-                        <i-switch v-model="settingData.notificationBeforeCouponExpire.isSwitch"></i-switch>
-                        <span class="text">{{$t('beforeInvalidCoupon')}}<!--卡券过期前-->
-                            <Input v-model.trim="settingData.notificationBeforeCouponExpire.day"
-                                   :disabled="!settingData.notificationBeforeCouponExpire.isSwitch"
-                                   @on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"
-                                   type="text"
-                                   class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
-                            <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
-                        </span>
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 145px;"
-                             v-if="error.dayError">{{error.dayError}}</div>
-                    </div>
-                </div>
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-item">-->
+                    <!--<div class="title">{{$t('invalidCouponRemind')}}</div>&lt;!&ndash;卡券过期提醒设置&ndash;&gt;-->
+                    <!--<div :class="{'ivu-form-item-error': error.dayError, 'main': true}">-->
+                        <!--<i-switch v-model="settingData.notificationBeforeCouponExpire.isSwitch"></i-switch>-->
+                        <!--<span class="text">{{$t('beforeInvalidCoupon')}}&lt;!&ndash;卡券过期前&ndash;&gt;-->
+                            <!--<Input v-model.trim="settingData.notificationBeforeCouponExpire.day"-->
+                                   <!--:disabled="!settingData.notificationBeforeCouponExpire.isSwitch"-->
+                                   <!--@on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"-->
+                                   <!--type="text"-->
+                                   <!--class="single-input"-->
+                                   <!--:placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}，&lt;!&ndash;天短信提醒&ndash;&gt;-->
+                            <!--<span class="blue-color">{{$t('smsSetting')}}</span>&lt;!&ndash;短信设置&ndash;&gt;-->
+                        <!--</span>-->
+                        <!--<div class="ivu-form-item-error-tip"-->
+                             <!--style="left: 145px;"-->
+                             <!--v-if="error.dayError">{{error.dayError}}</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="content-item">
                     <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
@@ -92,19 +93,20 @@
                     </div>
                 </div>
 
-                <div class="content-item">
-                    <div class="title">{{$t('isReturnCoupon')}}</div><!--用户退款时卡券是否退还用户-->
-                    <div class="main">
-                        <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>
-                            <Radio label="false">
-                                <span>{{$t('noReturnCoupon')}}</span><!--用户退款时卡券不退-->
-                            </Radio>
-                            <Radio label="true">
-                                <span>{{$t('returnCoupon')}}</span><!--用户退款时卡券退回用户会员卡中-->
-                            </Radio>
-                        </RadioGroup>
-                    </div>
-                </div>
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-item">-->
+                    <!--<div class="title">{{$t('isReturnCoupon')}}</div>&lt;!&ndash;用户退款时卡券是否退还用户&ndash;&gt;-->
+                    <!--<div class="main">-->
+                        <!--<RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>-->
+                            <!--<Radio label="false">-->
+                                <!--<span>{{$t('noReturnCoupon')}}</span>&lt;!&ndash;用户退款时卡券不退&ndash;&gt;-->
+                            <!--</Radio>-->
+                            <!--<Radio label="true">-->
+                                <!--<span>{{$t('returnCoupon')}}</span>&lt;!&ndash;用户退款时卡券退回用户会员卡中&ndash;&gt;-->
+                            <!--</Radio>-->
+                        <!--</RadioGroup>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="content-item">
                     <div class="title">{{$t('modifyAccBalanceSetting')}}</div><!--修改会员储值、积分、虚拟账户余额设置-->
