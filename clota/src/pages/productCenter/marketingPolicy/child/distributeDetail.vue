@@ -136,7 +136,7 @@
 
         <!-- 分销 -->
         <distribution-modal @complete="refresh()"
-                            ref="distributionModal"f></distribution-modal>
+                            ref="distributionModal"></distribution-modal>
     </div>
 </template>
 

@@ -45,7 +45,9 @@
         props: {
             refundAlterList: {
                 type: Array,
-                default: []
+                default () {
+                    return [];
+                }
             }
         },
         components: {

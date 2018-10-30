@@ -2,7 +2,7 @@
 
 <template>
     <div class="order-operate-log">
-        <div class="title">{{$t('orderOperateLog')}}</div>
+        <div class="title" v-if="showTitle">{{$t('orderOperateLog')}}</div>
         <Steps direction="vertical" size="small" class="ivu-steps-clota">
             <Step v-for="item in operateLogDeal"
                   :key="item.createdTime"
@@ -25,6 +25,11 @@
                 default () {
                     return [];
                 }
+            },
+            //是否显示标题
+            'show-title' : {
+                type : Boolean,
+                default : true
             }
         },
         data() {

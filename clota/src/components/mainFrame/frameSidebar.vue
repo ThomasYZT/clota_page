@@ -133,7 +133,7 @@
         },
         watch: {
             //监听路由变化，更新激活菜单
-            '$route'(newVal,oldVal) {
+            '$route'() {
                 this.$nextTick(() => {
                     let menu = this.$refs.menu;
                     if (menu) {
@@ -141,7 +141,7 @@
                     }
                 });
             },
-            menuIsPackUp (newVal,oldVal){
+            menuIsPackUp (newVal){
                 if(newVal === true){
                     this.openedNames = [];
                 }else{

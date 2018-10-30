@@ -129,7 +129,7 @@
         .title{
             position: relative;
             padding: 15px 0 0 0;
-            @include block_outline($height : 45px);
+            @include block_outline($height : 50px);
             font-size: $font_size_16px;
             color: $color_333;
 
@@ -166,8 +166,10 @@
             }
         }
         .buttun-wrapper {
-            @include absolute_pos(absolute,20px,24px)
-            .ivu-btn-108px{
+            @include absolute_pos(absolute,20px,0);
+
+            .ivu-btn-primary{
+                margin-left: 10px;
             }
         }
 
