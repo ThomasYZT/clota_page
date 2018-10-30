@@ -406,7 +406,7 @@ export default {
             },
             memberSetting: {
                 //会员管理--基础设置
-                path: '/memberManage/basic',
+                path: '/memberManage/initializationSettings',
                 component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/index.vue'),
                 meta: {
                     menuName: 'initializationSettings', //lang.config.js 里面的语言键值

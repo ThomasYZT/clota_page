@@ -319,7 +319,7 @@ export default {
     'effectAfterPayed': '付款成功后立即生效',
     'effectAfterConsumption': '消费、核销成功后立即生效',
     'afterConsumption': '消费、核销成功后',
-    'effectAfterTime': '时后生效',
+    'effectAfterTime': '小时后生效',
     'multiIntegralForBirth': '会员生日积分多倍积分',
     'gainOnBirthday': '会员生日当天消费可获得',
     'timesIntegral': '倍积分',

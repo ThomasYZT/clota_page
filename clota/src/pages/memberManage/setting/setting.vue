@@ -10,51 +10,6 @@
             <Form ref="formDynamic" :model="formDynamic">
 
                 <div class="content-item">
-                    <div class="title">{{$t('memberIntegralSetting')}}</div><!--会员积分生效设置-->
-                    <div class="main">
-                        <RadioGroup v-model="settingData.scoreEffectiveMode.isIntegralType" vertical>
-                            <Radio label="immediately">
-                                <span>{{$t('effectAfterPayed')}}</span><!--付款成功后立即生效-->
-                            </Radio>
-                            <Radio label="checkout">
-                                <span>{{$t('effectAfterConsumption')}}</span><!--消费、核销成功后立即生效-->
-                            </Radio>
-                            <Radio label="checkout_after">
-                            <span :class="{'ivu-form-item-error': error.isNoIntegralTimeError}">{{$t('afterConsumption')}}<!--消费、核销成功后-->
-                                <Input v-model.trim="settingData.scoreEffectiveMode.isNoIntegralTime"
-                                       :disabled="settingData.scoreEffectiveMode.isIntegralType !== 'checkout_after' ? true : false"
-                                       @on-blur="checkInputBlurFunc(settingData.scoreEffectiveMode.isNoIntegralTime, 'isNoIntegralTimeError')"
-                                       type="text"
-                                       :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/>
-                                {{$t('effectAfterTime')}}</span><!--时后生效-->
-                                <div class="ivu-form-item-error-tip"
-                                     style="left: 153px;"
-                                     v-if="error.isNoIntegralTimeError">{{error.isNoIntegralTimeError}}</div>
-                            </Radio>
-                        </RadioGroup>
-                    </div>
-                </div>
-
-                <div class="content-item">
-                    <div class="title">{{$t('multiIntegralForBirth')}}</div><!--会员生日积分多倍积分-->
-                    <div :class="{'ivu-form-item-error': error.multipleError, 'main': true}">
-                        <i-switch v-model="settingData.scoreMultipleOnBirthday.isSwitch"></i-switch>
-                        <span class="text">{{$t('gainOnBirthday')}}<!--会员生日当天消费可获得-->
-                        <Input v-model.trim="settingData.scoreMultipleOnBirthday.multiple"
-                               :disabled="!settingData.scoreMultipleOnBirthday.isSwitch"
-                               @on-blur="checkInputBlurFunc(settingData.scoreMultipleOnBirthday.multiple, 'multipleError')"
-                               type="text"
-                               class="single-input"
-                               :placeholder="$t('inputField', {field: ''})"/>
-                        {{$t('timesIntegral')}}</span><!--倍积分-->
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 230px;"
-                             v-if="error.multipleError">{{error.multipleError}}</div>
-                    </div>
-                </div>
-
-                <div class="content-item">
                     <div class="title">{{$t('integralValiditySet')}}</div><!--会员积分有效期设置-->
                     <div class="main form-bottom">
                         <RadioGroup v-model="settingData.scoreValidityPeriod.validityType"
@@ -305,16 +260,6 @@
                 routerName: 'memberSetting',
                 //设置数据
                 settingData: {
-                    //积分生效设置
-                    scoreEffectiveMode: {
-                        isIntegralType: '',
-                        isNoIntegralTime: ''//number
-                    },
-                    //会员生日积分多倍积分
-                    scoreMultipleOnBirthday: {
-                        isSwitch: false,
-                        multiple: '',//number
-                    },
                     //会员积分有效期设置
                     scoreValidityPeriod: {
                         validityType: '',
@@ -355,8 +300,6 @@
                 },
                 //输入框校验错误显示
                 error: {
-                    isNoIntegralTimeError: '',//会员积分生效设置
-                    multipleError: '',//会员生日积分多倍积分
                     validityTimeError: '',//会员积分有效期设置
                     remindError: '',//会员积分有效期设置
                     vipValidityError: '',//会员卡有效期设置
@@ -375,20 +318,6 @@
             }
         },
         watch: {
-
-            //积分生效设置
-            'settingData.scoreEffectiveMode.isIntegralType' : function (newVal, oldVal) {
-                if(newVal !== 'checkout_after'){
-                    this.error.isNoIntegralTimeError = '';
-                }
-            },
-
-            //会员生日积分多倍积分
-            'settingData.scoreMultipleOnBirthday.isSwitch' : function (newVal, oldVal) {
-                if(!newVal){
-                    this.error.multipleError = '';
-                }
-            },
 
             //会员积分有效期设置
             'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
@@ -471,8 +400,6 @@
                             if(res.data.allowAdjustAccount){
                                 //处理数据
                                 let params = {
-                                    scoreEffectiveMode: JSON.parse(res.data.scoreEffectiveMode),
-                                    scoreMultipleOnBirthday: JSON.parse(res.data.scoreMultipleOnBirthday),
                                     scoreValidityPeriod: JSON.parse(res.data.scoreValidityPeriod),
                                     memberValidPeriod: JSON.parse(res.data.memberValidPeriod),
                                     notificationBeforeCouponExpire: JSON.parse(res.data.notificationBeforeCouponExpire),
@@ -521,15 +448,12 @@
 
                     let params = {
                         id: this.id,
-                        scoreEffectiveMode: JSON.stringify(setParam.scoreEffectiveMode),
-                        scoreMultipleOnBirthday: JSON.stringify(setParam.scoreMultipleOnBirthday),
                         scoreValidityPeriod: JSON.stringify(setParam.scoreValidityPeriod),
                         memberValidPeriod: JSON.stringify(setParam.memberValidPeriod),
                         notificationBeforeCouponExpire: JSON.stringify(setParam.notificationBeforeCouponExpire),
                         handingWithScoreGrowthWhileRefund: JSON.stringify(setParam.handingWithScoreGrowthWhileRefund),
                         allowAdjustAccount: setParam.allowAdjustAccount,
                     };
-                    console.log(params)
                     this.basicSet(params);
 
                 }
@@ -551,15 +475,6 @@
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-                if(this.settingData.scoreEffectiveMode.isIntegralType === 'checkout_after' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreEffectiveMode.isNoIntegralTime,'isNoIntegralTimeError')){
-                    return false
-                }
-
-                if(this.settingData.scoreMultipleOnBirthday.isSwitch &&
-                    !this.checkInputBlurFunc(this.settingData.scoreMultipleOnBirthday.multiple,'multipleError')){
-                    return false
-                }
 
                 if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
                     !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')){
