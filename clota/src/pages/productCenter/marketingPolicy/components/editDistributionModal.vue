@@ -117,6 +117,22 @@
                         :border="false"
                         :selectable="selectable"
                         @selection-change="colomnSelect($event)">
+                        <el-table-column
+                            slot="column1"
+                            slot-scope="row"
+                            :label="row.title"
+                            show-overflow-tooltip
+                            :min-width="120">
+                            <template slot-scope="scope">
+                                <span v-for="(item, index) in scope.row.channelModels"
+                                      class="channel"
+                                      :class="{disable: item.status === 'valid'}"
+                                      :key="index">
+                                    {{item.channelName}}
+                                    <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                </span>
+                            </template>
+                        </el-table-column>
                     </table-com>
                 </Form-item>
                 <Form-item prop="groupIds"
@@ -130,6 +146,22 @@
                         :border="false"
                         :selectable="selectDisable"
                         @selection-change="colomnSelect($event)">
+                        <el-table-column
+                            slot="column1"
+                            slot-scope="row"
+                            :label="row.title"
+                            show-overflow-tooltip
+                            :min-width="120">
+                            <template slot-scope="scope">
+                                <span v-for="(item, index) in scope.row.channelModels"
+                                      class="channel"
+                                      :class="{disable: item.status === 'valid'}"
+                                      :key="index">
+                                    {{item.channelName}}
+                                    <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                </span>
+                            </template>
+                        </el-table-column>
                     </table-com>
                 </Form-item>
             </Form>
@@ -284,7 +316,6 @@
                                 }
                             })
                         });
-
                         //关闭模态框
                         this.show = !this.show;
                     }
@@ -303,9 +334,12 @@
                     allocationId: this.detail.listItem.allocationId
                 }).then(res => {
                     if(res.success) {
+                        //已选择的销售渠道组数据
+                        this.haveSaleGroups = res.data;
+
                         //过滤没有销售渠道的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
-                            if(this.tempData[i].channelNames === null) {
+                            if(this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
                                 this.tempData.splice(i,1);
                                 len--;
                                 i--;
@@ -313,14 +347,14 @@
                             }
                         }
 
-                        this.haveSaleGroups = res.data;
-
                         //设置销售渠道组列表数据
                         this.saleGroupList = this.tempData;
 
                         //设置已选择的销售渠道组
                         let _channels = this.saleGroupList;
-                        let _chosedChannels = this.detail.groupIds.split(',');
+                        let _chosedChannels = this.haveSaleGroups.map((item) => {
+                            return item.id;
+                        });
                         for(let i=0,len=_channels.length; i<len; i++) {
                             for(let j=0,jlen=_chosedChannels.length; j<jlen; j++) {
                                 if(_channels[i].id === _chosedChannels[j]) {
@@ -331,12 +365,14 @@
                                 }
                             }
                         }
+
                         this.$nextTick(() => {
                             this.selectedRow.forEach((item) => {
                                 this.$refs.multipleTable.toggleRowSelection(item.item, true);
                                 this.$refs.multipleTable1.toggleRowSelection(item.item, true);
                             });
                         });
+
                         //去除其他分销选择过的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
@@ -562,6 +598,19 @@
         .loss-tip {
             color: $color_red;
             font-size: 12px;
+        }
+
+        .channel {
+            span {
+                margin-right: 13px;
+            }
+
+            span.disable {
+                letter-spacing: -1px;
+            }
+        }
+        .disable {
+            color: $color_red;
         }
     }
 
