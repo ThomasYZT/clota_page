@@ -3,7 +3,7 @@
 <template>
     <div class="team-order-detail">
         <bread-crumb-head
-            :locale-router="'订单详情'"
+            :locale-router="'orderDetail'"
             :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
         </bread-crumb-head>
         <div class="content">
@@ -79,7 +79,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: '订单查询',
+                        name: 'reserveOrderDetail',     // 订单查询
                         router: {
                             name: 'reserveOrderDetail'
                         }

@@ -252,10 +252,10 @@
                 ajax.post('auditSingleOrderProduct', auditParams).then(res => {
                     if(res.success){
                         this.$refs['confirmAuditModal'].hide();
-                        this.$Message.success(this.$t('审核成功'));
+                        this.$Message.success(this.$t('auditSuccess')); // 审核成功
                         this.$emit('confirm-audit', auditParams.visitorProductId);
                     }else{
-                        this.$Message.error(this.$t('审核失败'));
+                        this.$Message.error(this.$t('auditFailure'));   // 审核失败
                     }
                 });
             },

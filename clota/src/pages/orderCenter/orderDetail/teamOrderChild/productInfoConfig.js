@@ -96,29 +96,29 @@ export const columnData3 = [
         field: 'policyName'
     },
     {
-        title: '进货单价',
+        title: 'stockPrice',  // 进货单价
         width: 200,
         field: 'inPrice',
         type : 'money'
     },
     {
-        title: '分销单价',
+        title: 'allowcationPrice',  // 分销单价
         width: 200,
         field: 'settlePrice',
         type : 'money'
     },
     {
-        title: '预定数量',
+        title: 'reserveNum',    // 预定数量
         minWidth: 120,
         field: 'quantity'
     },
     {
-        title: '取票数量',
+        title: 'ticketPickNum',
         minWidth: 120,
         field: 'quantityPicked'
     },
     {
-        title: '核销数量',
+        title: 'verificationNum',
         minWidth: 120,
         field: 'quantityVerified'
     }

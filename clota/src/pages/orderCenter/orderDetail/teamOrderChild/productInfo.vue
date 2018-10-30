@@ -2,7 +2,8 @@
 
 <template>
     <div class="product-info">
-        <div class="title">产品信息</div>
+        <!--产品信息-->
+        <div class="title">{{$t('productInfo')}}</div>
         <table-com
             v-if="viewType === 'scenic'"
             :column-data="columnData"

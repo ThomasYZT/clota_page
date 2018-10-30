@@ -110,9 +110,12 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-suc" v-if="scope.row.auditStatus === 'success'">审核通过</span>
-                    <span class="status-wait" v-else-if="scope.row.auditStatus === 'audit'">待审核</span>
-                    <span class="status-fail" v-else>审核不通过</span>
+                    <!--审核通过-->
+                    <span class="status-suc" v-if="scope.row.auditStatus === 'success'">{{$t('checkPass')}}</span>
+                    <!--待审核-->
+                    <span class="status-wait" v-else-if="scope.row.auditStatus === 'audit'">{{$t('waitChecking')}}</span>
+                    <!--审核不通过-->
+                    <span class="status-fail" v-else>{{$t('checkNoPass')}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -123,8 +126,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="token-ticket">已取票：{{scope.row.quantityPicked ? scope.row.quantityPicked : 0}}</span>
-                    <span class="not-token-ticket">未取票：{{scope.row.quantity - scope.row.quantityPicked}}</span>
+                    <!--已取票-->
+                    <span class="token-ticket">{{$t('haveTickets')}}：{{scope.row.quantityPicked ? scope.row.quantityPicked : 0}}</span>
+                    <!--未取票-->
+                    <span class="not-token-ticket">{{$t('noHaveTickets')}}：{{scope.row.quantity - scope.row.quantityPicked}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -135,8 +140,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="token-ticket">已核销：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
-                    <span class="not-token-ticket">未核销：{{scope.row.quantity - scope.row.quantityVerified}}</span>
+                    <!--已核销-->
+                    <span class="token-ticket">{{$t('consumed')}}：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
+                    <!--未核销-->
+                    <span class="not-token-ticket">{{$t('noConsumed')}}：{{scope.row.quantity - scope.row.quantityVerified}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -147,8 +154,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="token-ticket">已退：{{scope.row.quantityRefunded ? scope.row.quantityRefunded : 0}}</span>
-                    <span class="not-token-ticket">待审：{{scope.row.quantityAuditRefunded ? scope.row.quantityAuditRefunded : 0}}</span>
+                    <!--已退-->
+                    <span class="token-ticket">{{$t('retired')}}：{{scope.row.quantityRefunded ? scope.row.quantityRefunded : 0}}</span>
+                    <!--待审-->
+                    <span class="not-token-ticket">{{$t('pendingTrial')}}：{{scope.row.quantityAuditRefunded ? scope.row.quantityAuditRefunded : 0}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -159,8 +168,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="token-ticket">已改：{{scope.row.quantityRescheduled ? scope.row.quantityRescheduled : 0}}</span>
-                    <span class="not-token-ticket">待审：{{scope.row.quantityAuditRescheduled ? scope.row.quantityAuditRescheduled : 0}}</span>
+                    <!--已改-->
+                    <span class="token-ticket">{{$t('hasChanged')}}：{{scope.row.quantityRescheduled ? scope.row.quantityRescheduled : 0}}</span>
+                    <span class="not-token-ticket">{{$t('pendingTrial')}}：{{scope.row.quantityAuditRescheduled ? scope.row.quantityAuditRescheduled : 0}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -174,11 +184,11 @@
                     <ul class="operate-list">
                         <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanReturn(scope.row)}"
-                            @click="refundTicket(scope.row)">{{$t('退票')}}</li>
+                            @click="refundTicket(scope.row)">{{$t('return')}}</li><!--退票-->
                         <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanAlter(scope.row)}"
-                            @click="alterTicket(scope.row)">{{$t('改签')}}</li>
-                        <li @click="toDetail(scope.row)">{{$t('详情')}}</li>
+                            @click="alterTicket(scope.row)">{{$t('alter')}}</li><!--改签-->
+                        <li @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
                     </ul>
                 </template>
             </el-table-column>

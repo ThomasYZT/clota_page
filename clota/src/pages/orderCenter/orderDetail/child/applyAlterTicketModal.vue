@@ -178,7 +178,7 @@
                 //表单校验规则
                 ruleValidate : {
                     alterDate : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('改签日期')}),trigger : 'change',type : 'date'}
+                        {required : true,message : this.$t('selectField',{msg : this.$t('alterDate')}),trigger : 'change',type : 'date'}
                     ]
                 },
                 //表单数据
@@ -235,7 +235,7 @@
                 this.selectedTicket = data;
                 this.errMsg = '';
                 if(this.productInfo.allowAlter === 'false'){
-                    this.errMsg = '提示：您申请改签的产品中包含按产品规则不允许改签的产品。';
+                    this.errMsg = this.$t('alterProductTip') + '。';    // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
                 }
             },
             /**
