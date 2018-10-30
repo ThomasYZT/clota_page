@@ -6,12 +6,13 @@
 
 <template>
     <div class="product-detail">
-        <div class="block-title">{{$t('产品明细')}}</div>
+        <!--产品明细-->
+        <div class="block-title">{{$t('productDetail')}}</div>
         <div class="table-top">
             <!--产品名称-->
             <span>{{$t('productName')}}：{{baseInfo.productName | contentFilter}}</span>
             <!--产品单价-->
-            <span style="margin-left: 40px;">{{$t('settlePrice')}}：{{baseInfo.price | contentFilter}}</span>
+            <span style="margin-left: 40px;">{{$t('settlePrice')}}：{{baseInfo.inPrice | moneyFilter | contentFilter}}</span>
             <div class="audit-btn">
                 <Button type="primary"
                         style="width: 88px; margin-right: 5px;"
@@ -21,8 +22,8 @@
                 <Button type="error"
                         style="width: 88px; background-color: #EB6751;"
                         :disabled="!moduleInfo || reqOrderTickets.length<1"
-                        @click="showAuditModal('reject')">{{$t('全部驳回')}}
-                </Button>
+                        @click="showAuditModal('reject')">{{$t('rejectAll')}}
+                </Button><!--全部驳回-->
             </div>
         </div>
         <!--产品列表-->
@@ -51,8 +52,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.pickStatus=='true'">{{$t('已取票')}}</span>
-                    <span v-if="scope.row.pickStatus=='false'">{{$t('未取票')}}</span>
+                    <span v-if="scope.row.pickStatus=='true'">{{$t('haveTickets')}}</span><!--已取票-->
+                    <span v-if="scope.row.pickStatus=='false'">{{$t('noHaveTickets')}}</span><!--未取票-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -63,8 +64,8 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <!--<span class="blue">{{$t(transVerifyStatus(moduleInfo.verifyStatus))}}</span>-->
-                    <span v-if="scope.row.verifyStatus=='true'">{{$t('已核销')}}</span>
-                    <span v-if="scope.row.verifyStatus=='false'">{{$t('未核销')}}</span>
+                    <span v-if="scope.row.verifyStatus=='true'">{{$t('consumed')}}</span><!--已核销-->
+                    <span v-if="scope.row.verifyStatus=='false'">{{$t('noConsumed')}}</span><!--未核销-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -74,9 +75,9 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red" v-if="scope.row.refundStatus=='refund_audit'">{{$t('退票待审核')}}</span>
-                    <span v-if="scope.row.refundStatus=='refunded'">{{$t('已退票')}}</span>
-                    <span v-if="scope.row.refundStatus=='no_refund'">{{$t('未退票')}}</span>
+                    <span class="yellow-label" v-if="scope.row.refundStatus=='refund_audit'">{{$t('refundToBeReviewed')}}</span><!--退票待审核-->
+                    <span class="red-label" v-if="scope.row.refundStatus=='refunded'">{{$t('order.refunded')}}</span><!--已退票-->
+                    <span v-if="scope.row.refundStatus=='no_refund'">{{$t('order.no_refund')}}</span><!--未退票-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -86,12 +87,12 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="red"
+                    <span class="yellow-label"
                           v-if="scope.row.rescheduleStatus=='alter_audit'">
-                        {{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('改签待审核')}}
+                        {{$t('timesNo', {field: scope.row.rescheduleNum})}}{{$t('ModificationToBeReviewed')}}<!--改签待审核-->
                     </span>
-                    <span v-if="scope.row.rescheduleStatus=='alter'">{{$t('已改签')}}</span>
-                    <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('未改签')}}</span>
+                    <span class="red-label" v-if="scope.row.rescheduleStatus=='altered'">{{$t('order.altered')}}</span><!--已改签-->
+                    <span v-if="scope.row.rescheduleStatus=='no_alter'">{{$t('order.no_alter')}}</span><!--未改签-->
                 </template>
             </el-table-column>
             <template v-if="isAlter">
@@ -102,8 +103,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('未改签')}}</span>-->
-                        <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('未改签'))}}</span>
+                        <!--<span class="red">{{scope.row.rescheduleAfterVisitDate ? new Date(scope.row.rescheduleAfterVisitDate).format('yyyy-MM-dd') : $t('order.no_alter')}}</span>-->
+                        <span class="red">{{scope.row.rescheduleAfterVisitDate | timeFormat('yyyy-MM-dd', $t('order.no_alter'))}}</span>
                     </template>
                 </el-table-column>
             </template>
@@ -132,14 +133,15 @@
         <div class="table-bottom">
             <i class="iconfont icon-note"></i>
             <ul>
-                <li>{{$t('未取票')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</b></li>
-                <li>{{$t('已取票')}}：<b>{{baseInfo.quantityPicked | contentFilter}}</b></li>
-                <li>{{$t('未核销')}}：<b>{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</b></li>
-                <li>{{$t('已核销')}}：<b>{{baseInfo.quantityVerified | contentFilter}}</b></li>
-                <li>{{$t('已退票')}}：<b>{{baseInfo.quantityRefunded | contentFilter}}</b></li>
-                <li>{{$t('已改签')}}：<b>{{baseInfo.quantityRescheduled | contentFilter}}</b></li>
+                <li>{{$t('noHaveTickets')}}：{{Number(baseInfo.quantity) - Number(baseInfo.quantityPicked)}}</li>
+                <li>{{$t('haveTickets')}}：{{Number(baseInfo.quantityPicked) | contentFilter}}</li>
+                <li>{{$t('noConsumed')}}：{{Number(baseInfo.quantity) - Number(baseInfo.quantityVerified)}}</li>
+                <li>{{$t('consumed')}}：{{Number(baseInfo.quantityVerified) | contentFilter}}</li>
+                <li>{{$t('order.refunded')}}：{{Number(baseInfo.quantityRefunded) | contentFilter}}</li>
+                <li>{{$t('order.altered')}}：{{Number(baseInfo.quantityRescheduled) | contentFilter}}</li>
             </ul>
-            <div class="reserve-num">{{$t('产品预定数量')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
+            <!--产品预定数量-->
+            <div class="reserve-num">{{$t('productReserveNum')}}：<b>{{baseInfo.quantity | contentFilter}}</b></div>
         </div>
         <!--审核确认弹框-->
         <confirm-audit-modal ref="confirmAuditModal"
@@ -250,8 +252,10 @@
                 ajax.post('auditSingleOrderProduct', auditParams).then(res => {
                     if(res.success){
                         this.$refs['confirmAuditModal'].hide();
-                        this.$Message.success(this.$t('审核结果确认成功'));
+                        this.$Message.success(this.$t('审核成功'));
                         this.$emit('confirm-audit', auditParams.visitorProductId);
+                    }else{
+                        this.$Message.error(this.$t('审核失败'));
                     }
                 });
             },
@@ -308,9 +312,7 @@
                 margin-right: 40px;
                 line-height: 30px;
                 color: rgba(0,0,0,0.65);
-                b {
-                    color: #000;
-                }
+                color: #000;
             }
         }
         .reserve-num {
@@ -324,7 +326,10 @@
     .blue {
         color: $color_blue;
     }
-    .red {
+    .red-label {
         color: $color_red;
+    }
+    .yellow-label{
+        color: $color_yellow;
     }
 </style>

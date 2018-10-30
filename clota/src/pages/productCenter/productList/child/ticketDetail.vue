@@ -404,7 +404,6 @@
                 this.$refs.addRemarkModal.show({
                     data: {remark: this.remark},
                     confirmCallback : ( data ) => {
-                        console.log(data);
                         this.remark = data;
                     }
                 });
@@ -421,7 +420,6 @@
             getParams(params) {
                 if(params && Object.keys(params).length > 0){
                     if(params.info){
-                        console.log(params.info)
                         //根据产品Id查明细
                         this.findProductById(params.info);
                         if(this.$store.state.manageOrgs.nodeType !== 'partner') {
@@ -430,9 +428,9 @@
                         }
                     }
                 }
-            },
+            }
 
-        },
+        }
     }
 </script>
 

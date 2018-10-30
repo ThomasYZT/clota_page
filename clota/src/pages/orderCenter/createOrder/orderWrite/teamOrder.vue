@@ -70,7 +70,7 @@
                 //上级路由列表
                 beforeRouterList: [
                     {
-                        name: '订单填写',
+                        name: 'orderFilling',   // 订单填写
                         router: {
                             name: 'createOrder'
                         }
@@ -152,13 +152,13 @@
                     ]);
                 }).catch(err => {
                     if(err === 'touristErr'){
-                        this.$Message.warning('请先保存游客信息');
+                        this.$Message.warning(this.$t('saveVisitorInfoFirst'));     // 请先保存游客信息
                     }else if(err === 'tourguideErr'){
-                        this.$Message.warning('请先保存导游信息');
+                        this.$Message.warning(this.$t('saveGuiderInfoFirst'));      // 请先保存导游信息
                     }else if(err === 'driverErr'){
-                        this.$Message.warning('请先保存司机信息');
+                        this.$Message.warning(this.$t('saveDriverInfoFirst'));      // 请先保存司机信息
                     }else if(err === 'tourguideNumErr'){
-                        this.$Message.warning('最少添加一名导游信息');
+                        this.$Message.warning(this.$t('addOneGuiderAtLeast'));    // 最少添加一名导游信息
                     }
                 });
             },
@@ -215,7 +215,7 @@
                             this.failModalShow = true;
                             this.createOrderFailType = 'inventoryNotEnough';
                         }else{
-                            this.$Message.error('下单失败');
+                            this.$Message.error(this.$t('orderFailure'));    // 下单失败
                         }
                     }
                 });

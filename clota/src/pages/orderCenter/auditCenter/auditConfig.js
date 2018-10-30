@@ -7,7 +7,7 @@ export const groupOrderHead = [
     },
     {
         title: 'playDate',  // 游玩日期
-        minWidth: 200,
+        minWidth: 130,
         field: 'originVisitDate'
     },
     {
@@ -17,7 +17,7 @@ export const groupOrderHead = [
     },
     {
         title: 'orderOrg',      // 下单企业
-        width: 150,
+        width: 200,
         enWidth : 180,
         field: 'orderOrgName'
     },
@@ -29,15 +29,15 @@ export const groupOrderHead = [
     },
     {
         title: 'productName',      // 产品名称
-        width: 150,
-        enWidth : 180,
+        width: 230,
+        enWidth : 280,
         field: 'productName'
     },
     {
         title: 'visitorNum',      // 游客人数
         width: 100,
         enWidth : 180,
-        field: 'quantity'
+        field: 'visitorNum'
     },
     {
         title: 'orderOrgAmount',  // 下单企业订单金额
@@ -54,7 +54,7 @@ export const groupOrderHead = [
     {
         title: 'operate',
         width: 180,
-        enWidth : 180,
+        enWidth : 230,
     }
 ];
 
@@ -123,8 +123,9 @@ export const bulkRefundHead = [
     },
     {
         title: 'playDate',
-        minWidth: 200,
-        field: 'visitDate'
+        minWidth: 150,
+        field: 'visitDate',
+        type : 'date'
     },
     {
         title: 'orderTime',
@@ -149,78 +150,78 @@ export const bulkRefundHead = [
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称|预定数量',     // 产品名称|预定数量
-        width: 180,
-        enWidth : 200,
+        title: 'pNameAndReverseNum',     // 产品名称|预定数量
+        width: 300,
         field: 'productName|quantity'
     },
     {
-        title: '产品单价|小计金额',
+        title: 'unitPriceAndSubtotal',    // 产品单价|小计金额
         width: 230,
         enWidth : 200,
         field: 'price|amount'
     },
     {
-        title: '游客|手机号',
+        title: 'visitorAndMobilePhone',   // 游客|手机号
         width: 200,
         field: 'visitorName|phoneNumber'
     },
     {
-        title: '申请数量',
+        title: 'requestNum',  // 申请数量
         width: 100,
         enWidth : 130,
         field: 'reqNum'
     },
     {
-        title: '申请改签后游玩日期',
+        title: 'visitDateAfterAlter',     // 申请改签后游玩日期
         minWidth: 200,
-        field: 'rescheduleAfterVisitDate'
+        field: 'afterAlterDate',
+        type : 'date'
     },
     {
-        title: '申请时间',
+        title: 'requestTime',      // 申请时间
         width: 200,
         field: 'reqTime'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',      // 同步状态
         width: 100,
         enWidth : 130,
         field: 'syncStatus'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 180,
-        enWidth : 180,
+        enWidth : 230,
     }
 ];
 
 // 散客订单--批量审核--订单列表表头
 export const bulkBatchAuditHead = [
     {
-        title: '订单明细编号',
+        title: 'orderDetailNo',     // 订单明细编号
         width: 190,
         field: 'orderDetailNo'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',  // 下单企业
         minWidth: 130,
         enWidth : 180,
         field: 'channel'
     },
     {
-        title: '产品名称',
+        title: 'productName',
         minWidth: 130,
         enWidth : 180,
         field: 'productName'
     },
     {
-        title: '申请数量',
+        title: 'requestNum',      // 申请数量
         width: 100,
         enWidth : 130,
         field: 'reqNum'
     },
     {
-        title: '申请改签后游玩日期',
+        title: 'visitDateAfterAlter',     // 申请改签后游玩日期
         minWidth: 200,
         field: 'rescheduleAfterVisitDate'
     },
@@ -234,51 +235,53 @@ export const productListHead = [
         field: ''
     },
     {
-        title: '产品明细编号',
+        title: 'productDetailNo',   // 产品明细编号
         minWidth: 200,
         field: 'id'
     },
     {
-        title: '游玩日期',
-        minWidth: 200,
-        field: 'visitDate'
+        title: 'playDate',
+        minWidth: 150,
+        field: 'visitDate',
+        type : 'date'
     },
     {
-        title: '取票状态',
-        minWidth: 100,
+        title: 'takeTicketStatus',    // 取票状态
+        minWidth: 120,
         enWidth : 130,
         field: 'pickStatus'
     },
     {
-        title: '核销状态',
-        minWidth: 100,
+        title: 'verifyStatus',      // 核销状态
+        minWidth: 120,
         enWidth : 130,
         field: 'verifyStatus'
     },
     {
-        title: '退票状态',
+        title: 'refundStatus',      // 退票状态
         minWidth: 120,
         enWidth : 130,
         field: 'refundStatus'
     },
     {
-        title: '改签状态',
+        title: 'rescheduleStatus',      // 改签状态
         minWidth: 150,
         enWidth : 150,
         field: 'rescheduleStatus'
     },
     {
-        title: '申请改签后游玩日期',
+        title: 'visitDateAfterAlter',     // 申请改签后游玩日期
         minWidth: 200,
-        field: 'rescheduleAfterVisitDate'
+        field: 'rescheduleAfterVisitDate',
+        type : 'date'
     },
     {
-        title: '串码',
-        minWidth: 150,
+        title: 'SN',    // 串码
+        minWidth: 200,
         field: 'serialNo'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',
         minWidth: 100,
         enWidth : 130,
         field: 'syncStatus'
@@ -286,35 +289,36 @@ export const productListHead = [
     {
         title: 'operate',
         width: 80,
+        enWidth: 110,
     }
 ];
 
 // 散客订单--审核详情--退票/改签日志列表表头
 export const refundAlterLogHead = [
     {
-        title: '申请退票数量',
+        title: 'ApplyForRefundNum',      // 申请退票数量
         width: 150,
         enWidth : 180,
         field: 'reqNum'
     },
     {
-        title: '申请人/时间',
+        title: 'oparaterAndTime',    // 申请操作员/时间
         width: 300,
         field: 'reqAccOrg/reqAccName/reqTime'
     },
     {
-        title: '退票审核通过',
+        title: 'TicketRefundsApproved',    // 退票审核通过
         width: 150,
         enWidth : 180,
         field: 'passNum'
     },
     {
-        title: '操作员/时间',
+        title: 'AuoditorAndTime',    // 审核操作员/时间
         width: 300,
         field: 'auditAccOrg/auditAccName/auditTime'
     },
     {
-        title: '产品明细编号',
+        title: 'productDetailNo',    // 产品明细编号
         minWidth: 150,
         enWidth : 180,
         field: 'passOrderTicketIds'
@@ -324,18 +328,18 @@ export const refundAlterLogHead = [
 // 散客订单--审核详情--核销日志列表表头
 export const verifyLogHead = [
     {
-        title: '核销数量',
+        title: 'verificationNum',     // 核销数量
         minWidth: 150,
         enWidth : 180,
         field: 'verifyNum'
     },
     {
-        title: '操作员/时间',
+        title: 'operatorAndTime',
         minWidth: 280,
         field: 'orgName/operator/operatedTime'
     },
     {
-        title: '产品明细编号',
+        title: 'productDetailNo',
         minWidth: 150,
         enWidth : 180,
         field: 'ticketIds'
@@ -350,8 +354,8 @@ export const bulkChangeHead = [
 
 // 批量审核
 export const batchAudit = [
-    {label: '通过', value: 'success'},
-    {label: '驳回', value: 'reject'},
+    {label: 'passed', value: 'success'},    // 通过
+    {label: 'reject', value: 'reject'},       // 驳回
 ];
 
 //订单同步状态

@@ -21,19 +21,19 @@
             <!--备注-->
             <div>
                 <span class="label-remark">{{$t('remark')}}：</span>
-                <div style="margin-left: 45px; position:relative;">
+                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请输入')" />
+                           :placeholder="$t('inputPlaceholder')" /><!--请输入-->
                     <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("通过")}}</Button>
-            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
+            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("passed")}}</Button>
+            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("reject")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -45,6 +45,7 @@
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {bulkBatchAuditHead} from '../auditConfig';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: [],
@@ -68,6 +69,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType() {
                 if (this.$route.name=='auditBulkRefund') {
@@ -75,7 +79,7 @@
                 } else if (this.$route.name=='auditBulkChange') {
                     return 'alter';
                 }
-            }
+            },
         },
         methods: {
 

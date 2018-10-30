@@ -16,15 +16,15 @@
         <div class="modal-body">
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="180">
                 <!--订单明细编号-->
-                <Form-item :label="$t('订单明细编号') + '：'" prop="">
+                <Form-item :label="$t('orderDetailNo') + '：'" prop="">
                     <span>{{formData.orderDetailNo}}</span>
                 </Form-item>
                 <!--产品名称-->
                 <Form-item :label="$t('productName') + '：'" prop="">
-                    <span>{{formData.productName | contentFilter}}</span>
+                    <div class="form-ellipsis-name" v-w-title="formData.productName">{{formData.productName | contentFilter}}</div>
                 </Form-item>
                 <!--游客姓名-->
-                <Form-item :label="$t('游客姓名') + '：'" prop="">
+                <Form-item :label="$t('touristName') + '：'" prop="">
                     <span>{{formData.visitorName | contentFilter}}</span>
                 </Form-item>
                 <!--手机号-->
@@ -32,36 +32,38 @@
                     <span>{{formData.phoneNumber | contentFilter}}</span>
                 </Form-item>
                 <!--申请改签后的游玩日期-->
-                <Form-item :label="$t('申请改签后的游玩日期') + '：'" prop="" v-if="reqType=='alter'">
+                <Form-item :label="$t('visitDateAfterAlter') + '：'" prop="" v-if="reqType=='alter'">
                     <span>{{formData.rescheduleAfterVisitDate | contentFilter}}</span>
                 </Form-item>
                 <!--申请数量-->
-                <Form-item :label="$t('申请数量') + '：'" prop="">
+                <Form-item :label="$t('requestNum') + '：'" prop="">
                     <span>{{formData.reqNum | contentFilter}}</span>
                 </Form-item>
                 <!--通过 - （退票/改签）数量-->
-                <Form-item :label="$t('通过数量') + '：'" prop="" v-if="orderData.type=='pass'">
-                    <span class="green" v-if="reqType=='refund'">{{formData.quantityRefunded | contentFilter}}</span>
-                    <span class="green" v-if="reqType=='alter'">{{Number(formData.quantity) - Number(formData.quantityRefunded)}}</span>
+                <Form-item :label="$t('passedNum') + '：'" prop="" v-if="orderData.type=='pass'">
+                    <!--<span class="green" v-if="reqType=='refund'">{{formData.quantityRefunded | contentFilter}}</span>
+                    <span class="green" v-if="reqType=='alter'">{{formData.quantityRescheduled | contentFilter}}</span>-->
+                    <span class="green">{{formData.reqNum | contentFilter}}</span>
                 </Form-item>
                 <!--驳回 - （退票/改签）数量-->
-                <Form-item :label="$t('驳回数量') + '：'" prop="" v-if="orderData.type=='reject'">
-                    <span class="red" v-if="reqType=='refund'">{{formData.quantityRefunded | contentFilter}}</span>
-                    <span class="red" v-if="reqType=='alter'">{{Number(formData.quantity) - Number(formData.quantityRescheduled)}}</span>
+                <Form-item :label="$t('rejectedNum') + '：'" prop="" v-if="orderData.type=='reject'">
+                    <!--<span class="red" v-if="reqType=='refund'">{{formData.quantityRefunded | contentFilter}}</span>
+                    <span class="red" v-if="reqType=='alter'">{{formData.quantityReschedule | contentFilter}}</span>-->
+                    <span class="red">{{formData.reqNum | contentFilter}}</span>
                 </Form-item>
                 <!--备注-->
                 <Form-item :label="$t('remark') + '：'" prop="auditRemark">
                     <Input v-model.trim="formData.auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请输入')" />
+                           :placeholder="$t('inputPlaceholder')" /><!--请输入-->
                 </Form-item>
             </Form>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("通过")}}</Button>
-            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
+            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("passed")}}</Button>
+            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("reject")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -122,9 +124,9 @@
                     }
 
                     if (data.type == 'pass') {
-                        this.title = '审核通过';
+                        this.title = 'checkPass';   // 审核通过
                     } else if (data.type == 'reject') {
-                        this.title = '驳回申请';
+                        this.title = 'PRODUCT_AUDIT_REJECT';    // 驳回申请
                     }
                 }
 
@@ -132,10 +134,13 @@
             },
             //关闭模态框
             hide() {
-                this.formData.auditRemark = this.orderData.type = '';
-                this.orderData.items = [];
-                this.$refs.formValidate.resetFields();
                 this.visible = false;
+
+                setTimeout(() => {
+                    this.formData.auditRemark = this.orderData.type = '';
+                    this.orderData.items = [];
+                    this.$refs.formValidate.resetFields();
+                }, 500);
             },
             /**
              * 单个订单退票的审核通过/驳回
@@ -151,9 +156,9 @@
                         }).then(res => {
                             if(res.success){
                                 if (this.orderData.type === 'pass') {
-                                    this.$Message.success(this.$t('订单已审核通过'));
+                                    this.$Message.success(this.$t('orderCheckPassed'));     // 订单已审核通过
                                 } else if (this.orderData.type === 'reject') {
-                                    this.$Message.success(this.$t('订单已驳回'));
+                                    this.$Message.success(this.$t('orderRejected'));    // 订单已驳回
                                 }
                                 this.hide();
 
@@ -172,6 +177,10 @@
 
     .modal-body{
         padding: 5px 60px 14px 20px;
+
+        .form-ellipsis-name {
+            @include overflow_tip();
+        }
     }
 
     /deep/ .ivu-form-item {

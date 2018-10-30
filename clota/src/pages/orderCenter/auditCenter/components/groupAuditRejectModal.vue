@@ -10,13 +10,15 @@
 
         <div class="modal-body">
             <div class="single-org" v-if="!orderData.isBatch && orderData.items.length>0">
+                <!--下单企业-->
                 <span style="float: left;margin-right: 60px;">
-                    {{$t('下单企业')}}：
+                    {{$t('orderOrg')}}：
                     <span class="org-name" v-w-title="orderData.items[0].orderOrgName">
                         {{orderData.items[0].orderOrgName | contentFilter}}
                     </span>
                 </span>
-                <span>{{$t('游玩日期')}}：
+                <!--游玩日期-->
+                <span>{{$t('playDate')}}：
                     <!--<span class="org-name">{{orderData.items[0] ? new Date(orderData.items[0].originVisitDate).format('yyyy-MM-dd') : '-'}}</span>-->
                     <span class="org-name">{{orderData.items[0].originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
                 </span>
@@ -50,8 +52,9 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <!--订单金额-->
                     <div class="order-amount">
-                        {{$t('订单金额')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : null) | moneyFilter}} {{$t('yuan')}}</span>
+                        {{$t('orderAmount')}}：<span class="yellow">{{(orderData.items[0] ? orderData.items[0].orderAmount : null) | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
                 <template v-else>
@@ -83,25 +86,27 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <!--订单金额合计-->
                     <div class="order-amount">
-                        {{$t('订单金额合计')}}：<span class="yellow">{{orderAmountSum | moneyFilter}} {{$t('yuan')}}</span>
+                        {{$t('totalOrderAmount')}}：<span class="yellow">{{orderAmountSum | moneyFilter}} {{$t('yuan')}}</span>
                     </div>
                 </template>
             </div>
             <!--备注-->
             <div style="padding: 0 20px;">
                 <span class="label-remark">{{$t('remark')}}：</span>
-                <div style="margin-left: 45px">
+                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('inputPlaceholder')" /><!--请输入-->
+                    <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="error" @click="auditPass()" >{{$t("驳回")}}</Button>
+            <Button type="error" @click="auditReject()" >{{$t("reject")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -114,6 +119,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {orderProductHead, batchAuditHead} from '../auditConfig';
     import sum from 'lodash/sum';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: [],
@@ -140,6 +146,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
             orderAmountSum() {
                 if (this.orderData.isBatch && this.orderData.items.length) {
                     return sum(this.orderData.items.map(item => item.orderAmount));
@@ -155,9 +164,9 @@
                     this.orderData = data;
                     if (data.isBatch) {
                         this.tableData = data.items;
-                        this.title = '团队订单批量驳回申请';
+                        this.title = 'teamBatchCheckReject';    // 团队订单批量驳回申请
                     } else {
-                        this.title = '驳回申请';
+                        this.title = 'PRODUCT_AUDIT_REJECT';    // 驳回申请
                         this.getOrderProducts(data.items[0].id);
                     }
                 }
@@ -185,7 +194,11 @@
                     }
                 });
             },
-            auditPass() {
+            auditReject() {
+                if (this.auditRemark.length>500) {
+                    return;
+                }
+
                 ajax.post('auditTeamOrder', {
                     orderIds: this.orderData.items.map(item => item.id).join(','),
                     remark: this.auditRemark,
@@ -193,7 +206,7 @@
                 }).then(res => {
                     if(res.success){
                         this.hide();
-                        this.$Message.success(this.$t('订单已驳回'));
+                        this.$Message.success(this.$t('orderRejected'));    // 订单已驳回
                         this.$emit('on-audit-pass');
                     }
                 });
@@ -230,6 +243,14 @@
                 float: left;
                 font-size: 14px;
                 color: #585858;
+            }
+
+            .error-tip {
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                font-size: 12px;
+                color: $color_red;
             }
         }
 

@@ -346,11 +346,11 @@ export const batchOperate = [
 //销售渠道批量操作
 export const saleOperateBatch = [
     {
-        label : '移至其它分组',
+        label : 'toOtherGroup',   // 移至其它分组
         value : 'toOtherGroup'
     },
     {
-        label : '移出分组',
+        label : 'outGroup',     // 移出分组
         value : 'outGroup'
     }
 ];
@@ -420,7 +420,7 @@ export const alterRule = [
 //指定日期-节假日
 export const specialHoliday = [
     {
-        holidayName : '自定义',//自定义
+        holidayName : 'custom',//自定义
         id : 'custom'
     },
 ];
@@ -444,16 +444,16 @@ export const takeTicketStatusList = [
         value : 'allStatus' //全部状态
     },
     {
-        label : '未取票',
-        value : 'none' //未取票
+        label : 'noHaveTickets',    //未取票
+        value : 'none'
     },
     {
-        label : '部分取票',
-        value : 'some'//部分取票
+        label : 'haveSomeTickets',     //部分取票
+        value : 'some'
     },
     {
-        label : '全部取票',
-        value : 'all'//全部取票
+        label : 'haveAllTickets',     //全部取票
+        value : 'all'
     }
 ];
 //退票状态
@@ -463,20 +463,20 @@ export const refundStatusList = [
         value : 'allStatus' //全部状态
     },
     {
-        label : '待审核',
-        value : 'wait' //待审核
+        label : 'waitChecking',     //待审核
+        value : 'wait'
     },
     {
-        label : '未退票',
-        value : 'none' //未退票
+        label : 'order.no_refund',      //未退票
+        value : 'none'
     },
     {
-        label : '部分退票',
-        value : 'some'//部分退票
+        label : 'someRefund',       //部分退票
+        value : 'some'
     },
     {
-        label : '全部退票',
-        value : 'all'//全部退票
+        label : 'someRefund',       //全部退票
+        value : 'all'
     }
 ];
 
@@ -487,20 +487,20 @@ export const rescheduleStatus = [
         value : 'allStatus' //全部状态
     },
     {
-        label : '待审核',
-        value : 'wait' //待审核
+        label : 'waitChecking',     //待审核
+        value : 'wait'
     },
     {
-        label : '未改签',
-        value : 'none' //未改签
+        label : 'order.no_alter',   //未改签
+        value : 'none'
     },
     {
-        label : '部分改签',
-        value : 'some'//部分改签
+        label : 'someAlter', //部分改签
+        value : 'some'
     },
     {
-        label : '全部改签',
-        value : 'all'//全部改签
+        label : 'allAlter',     //全部改签
+        value : 'all'
     }
 ];
 
@@ -511,11 +511,11 @@ export const synchronizationList = [
         value : 'allStatus'
     },
     {
-        label : '同步成功',
+        label : 'syncSucceed',      // 同步成功
         value : 'success'
     },
     {
-        label : '同步失败',
+        label : 'syncFailed',     // 同步失败
         value : 'failure'
     }
 ];
@@ -527,16 +527,16 @@ export const verifyStatusList  = [
         value : 'allStatus' //全部状态
     },
     {
-        label : '未核销',
-        value : 'none' //未核销
+        label : 'noConsumed',   //未核销
+        value : 'none'
     },
     {
-        label : '部分核销',
-        value : 'some'//部分核销
+        label : 'someVerified',     //部分核销
+        value : 'some'
     },
     {
-        label : '全部核销',
-        value : 'all'//全部核销
+        label : 'allVerified',     //全部核销
+        value : 'all'
     }
 ];
 
@@ -591,11 +591,11 @@ export const auditStatusList = [
         value : 'allStatus'
     },
     {
-        label : '已审核',//已审核
+        label : 'audited',//已审核
         value : 'true'
     },
     {
-        label : '未审核',//未审核
+        label : 'notAudited',//未审核
         value : 'false'
     }
 ];
@@ -607,11 +607,11 @@ export const payStatusList = [
         value : 'allStatus'
     },
     {
-        label : '已支付',//已支付
+        label : 'paid',//已支付
         value : 'true'
     },
     {
-        label : '未支付',//未支付
+        label : 'unPaid',//未支付
         value : 'false'
     }
 ];
@@ -619,7 +619,7 @@ export const payStatusList = [
 //短信发送状态
 export const smsStatusList = [
     {
-        label : '待发送',  // 待发送
+        label : 'waitingSend',  // 待发送
         value : 'wait'
     },
     {
@@ -631,7 +631,7 @@ export const smsStatusList = [
         value : 'failure'
     },
     {
-        label : '发送中',  // 发送中
+        label : 'isRending',  // 发送中
         value : 'doing'
     },
 ];

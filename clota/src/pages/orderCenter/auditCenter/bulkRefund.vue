@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="235"
+            :ofsetHeight="240"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -136,7 +136,7 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, batchAudit, orderSyncStatus} from './auditConfig';
+    import {bulkRefundHead, batchAudit} from './auditConfig';
     import ajax from '@/api/index';
     import {configVariable} from '@/assets/js/constVariable';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
@@ -155,7 +155,7 @@
             return {
                 //表头配置
                 columnData : bulkRefundHead.filter(item => {
-                    return item.field !== 'rescheduleAfterVisitDate';
+                    return item.field !== 'afterAlterDate';
                 }),
                 //表格数据
                 tableData: [],

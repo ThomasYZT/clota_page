@@ -218,16 +218,9 @@
                 <span>{{$t('orderLog')}}</span>
             </div>
             <div class="step-wrapper">
-                <Steps direction="vertical" size="small" class="ivu-steps-clota">
-                    <Step v-for="item in orderRecordList"
-                          :key="item.createdTime"
-                          icon="clota"
-                          :class="getClass(item)"
-                          :title="item.contents" >
-                        <span class="time">{{item.createdTime}}</span>
-                        <span class="operater">{{$t('operator')}}：{{item.createOrg}} {{item.createName}} </span>
-                    </Step>
-                </Steps>
+                <operateLog :order-record-list="orderRecordList"
+                            :show-title="false">
+                </operateLog>
             </div>
         </div>
 
@@ -238,8 +231,8 @@
 </template>
 
 <script>
-
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
+    import operateLog from '../../../components/operateLog';
     export default {
         props :{
             //当前查看详情角色
@@ -248,7 +241,9 @@
                 default: ''
             }
         },
-        components: {},
+        components: {
+            operateLog
+        },
         data() {
             return {
                 //是否显示
@@ -362,33 +357,6 @@
                     }
                 })
             },
-            /**
-             * 获取步骤类名
-             * @param data
-             */
-            getClass (data) {
-                switch(data.operationStatus){
-                    //订单退票申请
-                    case 'ORDER_REFUND_APPLY' : return 'blue-status';
-                    //订单退票审核
-                    case 'ORDER_REFUND_AUDIT' : return 'green-status';
-                    //订单改签申请
-                    case 'ORDER_ALTER_APPLY' : return 'green-status';
-                    //订单改签审核
-                    case 'ORDER_ALTER_AUDIT' : return 'green-status';
-                    //新建订单
-                    case 'ORDER_NEW_ORDER' : return 'blue-status';
-                    //新增票券
-                    case 'ORDER_NEW_TICKET' : return 'blue-status';
-                    //"团队订单审核驳回
-                    case 'ORDER_AUDIT_REJECT' : return 'red-status';
-                    //"团队订单审核通过
-                    case 'ORDER_AUDIT_PASS' : return 'green-status';
-                    //核销
-                    case 'ORDER_VERIFY_TICKET' : return 'green-status';
-                    default : return 'blue-status'
-                }
-            }
         }
     }
 </script>

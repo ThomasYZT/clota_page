@@ -1,26 +1,31 @@
 <!--
-内容：
-作者：
+内容：游客信息
+作者：djc
 日期：
 -->
 
 <template>
     <div class="">
-        <div class="block-title">{{$t('游客信息')}}</div>
+        <!--游客信息-->
+        <div class="block-title">{{$t('touristInfo')}}</div>
         <div class="form-wrap">
+            <!--游客姓名-->
             <div class="form-item-wrap">
-                <label>{{$t("游客姓名")}}：</label><span>{{moduleInfo.visitorName | contentFilter}}</span>
+                <label>{{$t("touristName")}}：</label><span>{{moduleInfo.visitorName | contentFilter}}</span>
             </div>
+            <!--手机号-->
             <div class="form-item-wrap">
-                <label>{{$t("手机号")}}：</label><span>{{moduleInfo.phoneNumber | contentFilter}}</span>
+                <label>{{$t("mobilePhone")}}：</label><span>{{moduleInfo.phoneNumber | contentFilter}}</span>
             </div>
             <!--站位标签-->
             <div class="form-item-wrap"></div>
+            <!--证件类型-->
             <div class="form-item-wrap">
-                <label>{{$t("证件类型")}}：</label><span>{{moduleInfo.documentInfo.type | contentFilter}}</span>
+                <label>{{$t("credentialsType")}}：</label><span>{{moduleInfo.documentInfo.type | contentFilter}}</span>
             </div>
+            <!--证件号码-->
             <div class="form-item-wrap">
-                <label>{{$t("证件号码")}}：</label><span>{{moduleInfo.documentInfo.data | contentFilter}}</span>
+                <label>{{$t("IdentificationNumber")}}：</label><span>{{moduleInfo.documentInfo.data | contentFilter}}</span>
             </div>
         </div>
     </div>

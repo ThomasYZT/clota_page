@@ -40,6 +40,17 @@
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
+                slot="column1"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ scope.row.originVisitDate | timeFormat('yyyy-MM-dd') }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column4"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -48,6 +59,17 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     {{ $t(transOrderOrg(scope.row.orderChannel)) }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ getProductName(scope.row) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -242,6 +264,13 @@
                     params: {orderId: scopeRow.id},
                 });
             },
+            /**
+             * 获取产品名称
+             * @param rowData 订单详情数据
+             */
+            getProductName(rowData) {
+                return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+            }
         }
     };
 </script>

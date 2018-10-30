@@ -15,33 +15,35 @@
 
         <div class="modal-body">
             <div class="sn-count">
-                <i class="iconfont icon-warn"></i><span>{{$t('本次核销')}}{{verify.list.length}}{{$t('条串码')}}</span>
+                <!--本次核销{field}条串码-->
+                <i class="iconfont icon-warn"></i><span>{{$t('verifiedQtyOfSN', {field: verify.list.length})}}</span>
             </div>
             <ul class="sn-box">
                 <li v-for="(item, index) in verify.list" :key="index">{{item.serialNo}}</li>
             </ul>
             <!--备注-->
             <div style="position: relative;">
-                <span style="position: absolute; left: -20px; color: #585858;">{{$t('remark')}}：</span>
-                <div style="margin-left: 28px">
+                <span :style="{position: 'absolute', left: lang=='zh-CN'?'-20px':'-40px', color: '#585858'}">{{$t('remark')}}：</span>
+                <div style="margin-left: 25px; position: relative">
                     <Input v-model.trim="remark"
                            type="textarea"
-                           :maxlength="500"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('inputPlaceholder')" />
+                    <p class="error-tip" v-show="remark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="handleVerify">{{$t("继续")}}</Button>
+            <Button type="primary" @click="handleVerify">{{$t("continue")}}</Button><!--继续-->
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
     </Modal>
 </template>
 <script type="text/ecmascript-6">
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
+    import {mapGetters} from 'vuex';
 
     export default {
         components: {},
@@ -49,7 +51,7 @@
         data() {
             return {
                 visible: false,
-                title: '提醒',
+                title: 'remind',    // 提醒
                 //核销列表数据
                 verify: {
                     list: [],
@@ -59,7 +61,11 @@
                 remark: '',
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
+        },
         created() {
         },
         mounted() {
@@ -90,6 +96,10 @@
                     apiUrlKey = 'checkByCheckSerialNo';
                 }
 
+                if (this.remark.length>500) {
+                    return;
+                }
+
                 ajax.post(apiUrlKey, {
                     serialNoList: this.verify.list.map(item => item.serialNo),
                     remark: this.remark
@@ -100,7 +110,7 @@
                         this.hide();
                         this.$router.push({name: 'verifySuccess'});
                     }else{
-                        this.$Message.error('核销失败');
+                        this.$Message.error(this.$t('verifyFailure'));    // 核销失败
                     }
                 });
             },
@@ -109,6 +119,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "~@/assets/scss/base";
+
     .modal-body {
         padding: 14px 50px;
         font-size: 14px;
@@ -130,6 +142,14 @@
             >li {
                 line-height: 24px;
             }
+        }
+
+        .error-tip {
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            font-size: 12px;
+            color: $color_red;
         }
     }
 

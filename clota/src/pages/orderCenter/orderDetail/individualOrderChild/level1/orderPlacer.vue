@@ -26,7 +26,9 @@
             //下单人信息
             orderVisitor: {
                 type: Object,
-                default: {}
+                default () {
+                    return {}
+                }
             }
         },
         components: {},
