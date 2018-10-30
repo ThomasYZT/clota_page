@@ -6,7 +6,7 @@ export const idColumns = [
         minwidth: 130,
         field: 'type'
     },{
-        title: '证件号',
+        title: 'credentialsNumber',   // 证件号
         minwidth: 130,
         field: 'data'
     },{
@@ -30,7 +30,7 @@ export const ticketColumnData = [
         width: 130,
         field: 'settlePrice'
     },{
-        title: '取票证件',
+        title: 'ticketGetterCredentials',  // 取票证件
         width: 180,
         field: 'scenicOrgName'
     },{

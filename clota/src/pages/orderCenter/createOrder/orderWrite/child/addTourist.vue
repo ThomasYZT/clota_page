@@ -13,7 +13,8 @@
             class="add-tourist"
             class-name="vertical-center-modal">
             <div slot="header" class="target-class">
-                <span class="title">{{$t('添加游客信息')}}</span>
+                <!--添加游客信息-->
+                <span class="title">{{$t('addVisitorInfo')}}</span>
             </div>
             <Form ref="formInline" :model="formData" label-position="left" >
                 <i-row>
@@ -31,7 +32,8 @@
                 <!--不需要证件时，不需要显示证件列表-->
                 <template v-if="acceptCertificateType.all.length > 0">
                     <div class="add-id-card">
-                        <span class="add-btn" @click="addCardInfo"><Icon type="ios-plus-empty"></Icon>添加证件</span>
+                        <!--添加证件-->
+                        <span class="add-btn" @click="addCardInfo"><Icon type="ios-plus-empty"></Icon>{{$t('addCredential')}}</span>
                     </div>
                     <table-com
                         v-if="acceptCertificateType.all.length > 0"
@@ -106,9 +108,8 @@
                         </el-table-column>
                     </table-com>
                 </template>
-                <div class="title-label">
-                    取票信息
-                </div>
+                <!--取票信息-->
+                <div class="title-label">{{$t('ticketGetterInfo')}}</div>
                 <table-com
                     :column-data="ticketColumnData"
                     class="get-ticket"
@@ -223,7 +224,7 @@
                     this.validatePhoneIsExit().then(() => {
                         callback();
                     }).catch(err => {
-                        callback('手机号码已存在');
+                        callback(this.$t('existMobilePhone'));   // 手机号码已存在
                     });
                 }else{
                     callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
@@ -241,7 +242,7 @@
                                 callback();
                             }
                         }
-                        callback('请填写证件信息');
+                        callback(this.$t('fillCredentialsInfo'));    // 请填写证件信息
                     }else{
                         callback();
                     }
@@ -256,11 +257,11 @@
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback('证件已存在');
+                            callback(this.$t('existID'));   // 证件已存在
                         });
                     }
                 }else{
-                    callback('请输入证件号');
+                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
                 }
             };
             //校验是否选择了证件
@@ -268,7 +269,7 @@
                 if(rule.rowData.type){
                     callback();
                 }else{
-                    callback('请选择证件类型');
+                    callback(this.$t('selectField', {msg: this.$t('credentialsType')}));    // 请选择证件类型
                 }
             };
             return {
@@ -363,9 +364,9 @@
                             this.$emit('input', false);
                         }).catch(err => {
                             if(err === 'ticketErr'){
-                                this.$Message.error('最少选择一种产品信息');
+                                this.$Message.error('selectOneProductAtLeast');     // 最少选择一种产品信息
                             }else if(err === 'idTypeErr'){
-                                this.$Message.warning('请先保存正在编辑的证件类型')
+                                this.$Message.warning('saveEditingCredentials');   // 请先保存正在编辑的证件类型
                             }
                         });
                     }
@@ -415,7 +416,8 @@
             saveCardInfo (index){
                 for(let i = 0,j = this.idTableData.length;i < j;i++){
                     if(i !== index && this.idTableData[index]['type'] !== '' && this.idTableData[index]['type'] === this.idTableData[i]['type']){
-                        this.$Message.error(`${this.$t(this.idTableData[index]['type'])}已经填写，请选择其它证件类型`);
+//                        this.$Message.error(`${this.$t(this.idTableData[index]['type'])}已经填写，请选择其它证件类型`);
+                        this.$Message.error(this.$t('selectOtherCredentialsField', {field: this.$t(this.idTableData[index]['type'])}));
                         return;
                     }
                 }

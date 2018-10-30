@@ -2,13 +2,12 @@
 
 <template>
     <div class="place-order-info">
-        <div class="title">
-            下单人信息
-        </div>
+        <!--下单人信息-->
+        <div class="title">{{$t('orderMakerInfo')}}</div>
         <Form ref="formInline" :model="formData" label-position="right" :label-width="110">
             <i-row>
                 <i-col span="11">
-                    <FormItem label="请选择下单人" >
+                    <FormItem :label="$t('selectField', {msg: $t('orderPlacer')})"><!--请选择下单人-->
                         <Select v-model="formData.payerType"
                                 style="width: 280px;"
                                 :key="JSON.stringify(payPersonListFilter)"
@@ -16,7 +15,7 @@
                             <Option v-for="(item,index) in payPersonListFilter"
                                     :value="item.value"
                                     :key="index"
-                                    :label="payPersonListFilter[index]['label']">
+                                    :label="$t(payPersonListFilter[index]['label'])">
                             </Option>
                         </Select>
                     </FormItem>
@@ -31,12 +30,14 @@
             </i-row>
             <i-row>
                 <i-col span="11" v-if="formData.payerType === 'other'">
-                    <FormItem prop="payer" label="下单人姓名" :rules="ruleInline.payer">
+                    <!--下单人姓名-->
+                    <FormItem prop="payer" :label="$t('orderMakerName')" :rules="ruleInline.payer">
                         <Input v-model="formData.payer" style="width: 280px"/>
                     </FormItem>
                 </i-col>
                 <i-col span="11" v-if="formData.payerType === 'other'">
-                    <FormItem prop="idNum" label="身份证号码" :rules="ruleInline.idNum">
+                    <!--身份证号码-->
+                    <FormItem prop="idNum" :label="$t('identityNo')" :rules="ruleInline.idNum">
                         <Input v-model="formData.idNum" style="width: 280px"/>
                     </FormItem>
                 </i-col>
@@ -81,8 +82,8 @@
             return {
                 ruleInline: {
                     payer: [
-                        { required: true, message: this.$t('inputField',{field : '下单人姓名'}), trigger: 'blur' },
-                        { max : 20, message: this.$t('errorMaxLength', { field : '下单人姓名' , length : 20}), trigger: 'blur' },
+                        { required: true, message: this.$t('inputField',{field : this.$t('orderMakerName')}), trigger: 'blur' },
+                        { max : 20, message: this.$t('errorMaxLength', { field : this.$t('orderMakerName') , length : 20}), trigger: 'blur' },
                     ],
                     phone: [
                         { required: true, message: this.$t('inputField',{field : this.$t('mobilePhone')}), trigger: 'blur' },
@@ -180,7 +181,7 @@
             //下单人列表，（添加了其它选项）
             payPersonListFilter () {
                 return [...this.payPersonList,{
-                    label : '其它',
+                    label : 'others',
                     value :'other',
                     phone : '',
                     idTableData : []

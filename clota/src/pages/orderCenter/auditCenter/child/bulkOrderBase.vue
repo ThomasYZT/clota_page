@@ -50,7 +50,6 @@
 </template>
 <script type="text/ecmascript-6">
     import {transOrderOrg, transSMSStatus} from '../../commFun';
-    import {smsStatusList} from '@/assets/js/constVariable';
 
     export default {
         components: {},

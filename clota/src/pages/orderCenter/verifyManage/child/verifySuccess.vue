@@ -8,7 +8,7 @@
     <div class="verify-ok">
         <div class="tip">
             <img src="@/assets/images/verify-ok-img.png" />
-            <p>{{$t('核销成功 !')}}</p>
+            <p>{{$t('verifySuccess')}} !</p><!--核销成功 !-->
             <Button type="primary"
                     style="width: 105px"
                     @click="goVerifyManage">{{$t('back')}}</Button>

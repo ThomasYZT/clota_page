@@ -8,7 +8,7 @@
     <div class="payment-manage">
         <div class="filter-box">
             <Input class="input-field"
-                   v-model.trim="filterParam.name"
+                   v-model.trim="queryParams.keyword"
                    icon="ios-search"
                    :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
@@ -99,6 +99,7 @@
             return {
                 // 获取数据的请求参数
                 queryParams: {
+                    keyword: '',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
@@ -138,7 +139,6 @@
             // 搜索信息
             handleSearch() {
                 this.queryParams.pageNo = 1;
-                Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
             /**

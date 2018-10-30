@@ -129,6 +129,22 @@
                         :column-check="true"
                         :border="false"
                         @selection-change="colomnSelect($event)">
+                        <el-table-column
+                            slot="column1"
+                            slot-scope="row"
+                            :label="row.title"
+                            show-overflow-tooltip
+                            :min-width="120">
+                            <template slot-scope="scope">
+                                <span v-for="(item, index) in scope.row.channelModels"
+                                      class="channel"
+                                      :class="{disable: item.status === 'valid'}"
+                                      :key="index">
+                                    {{item.channelName}}
+                                    <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                </span>
+                            </template>
+                        </el-table-column>
                     </table-com>
                 </Form-item>
                 <div v-if="isTipShow" class="distribute-tip">{{$t('distributeTip',{field: detail.parentDistributor})}}</div>
@@ -286,10 +302,12 @@
                     if(res.success) {
                         this.haveSaleGroups = res.data;
 
+
+                        console.log(this.tempData);
+                        console.log(this.haveSaleGroups)
                         //过滤没有销售渠道的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
-                            if(this.tempData[i].channelNames === null) {
-                                console.log(this.tempData[i].groupName,this.tempData[i].channelNames)
+                            if(this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
                                 this.tempData.splice(i,1);
                                 len--;
                                 i--;
@@ -297,6 +315,7 @@
                             }
                         }
 
+                        //过滤已其他分销政策已选择的销售渠道组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
                                 if(len > 0 && jlen > 0) {
@@ -460,6 +479,19 @@
         .loss-tip {
             color: $color_red;
             font-size: 12px;
+        }
+
+        .channel {
+            span {
+                margin-right: 13px;
+            }
+
+            span.disable {
+                letter-spacing: -1px;
+            }
+        }
+        .disable {
+            color: $color_red;
         }
     }
 

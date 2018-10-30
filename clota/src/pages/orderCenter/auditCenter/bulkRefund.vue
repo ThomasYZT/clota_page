@@ -136,7 +136,7 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, batchAudit, orderSyncStatus} from './auditConfig';
+    import {bulkRefundHead, batchAudit} from './auditConfig';
     import ajax from '@/api/index';
     import {configVariable} from '@/assets/js/constVariable';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';

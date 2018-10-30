@@ -3,14 +3,15 @@
 <template>
     <div class="guide-info">
         <div class="title">
-            导游信息
+            <!--导游信息-->
+            {{$t('courierInfo')}}
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTourGuideInfo.length < 1"
                     @click="delTourGuide">{{$t('deleteBatch')}}</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
-                    @click="addTourGuide">添加导游</Button>
+                    @click="addTourGuide">{{$t('addGuides')}}</Button><!--添加导游-->
         </div>
 
         <Form ref="formInline" >
@@ -114,9 +115,9 @@
             <ul class="pro-list">
                 <li class="detail">
                     <span class="content-text">
-                        {{$t('isDoing')}}{{$t('delete')}}导游：
+                        {{$t('isDoing')}}{{$t('delete')}} {{$t('courier')}}：<!--导游-->
                         <span class="yellow-label">{{delingTouristInfo.data}}</span>
-                        <span v-if="delingTouristInfo.showMore">等</span>
+                        <span v-if="delingTouristInfo.showMore">{{$t('etc')}}</span>
                     </span>
                 </li>
                 <li class="detail">
@@ -171,11 +172,11 @@
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback('证件已存在');
+                            callback(this.$t('existID'));   // 证件已存在
                         });
                     }
                 }else{
-                    callback('请输入证件号');
+                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
                 }
             };
             //校验导游姓名
@@ -187,7 +188,7 @@
                         callback();
                     }
                 }else{
-                    callback('请输入姓名');
+                    callback(this.$t('inputField', {field: this.$t('name')}));     // 请输入姓名
                 }
             };
             //校验手机号
@@ -199,7 +200,7 @@
                         callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
                     }
                 }else{
-                    callback('请输入手机号');
+                    callback(this.$t('inputField', {field: this.$t('mobilePhone')}));  // 请输入手机号
                 }
             };
             return {
@@ -291,7 +292,7 @@
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
-                this.$Message.success('导游信息已删除');
+                this.$Message.success(this.$t('deletedField', {field: this.$t('courierInfo')}));   // 导游信息已删除
             },
             /**
              * 保存导游信息
@@ -377,7 +378,7 @@
                         this.tableData.splice(i,1);
                     }
                 }
-                this.$Message.success('导游信息已删除');
+                this.$Message.success(this.$t('deletedField', {field: this.$t('courierInfo')}));   // 导游信息已删除
             },
             /**
              * 获取填写的导游信息
@@ -431,10 +432,12 @@
                     phoneNumber : phoneNumber,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('修改导游信息成功');
+                        // 修改导游信息成功
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('editCourierInfo')}));
                         this.$set(this.tableData[index],'editType','');
                     }else{
-                        this.$Message.err('修改导游信息失败');
+                        // 修改导游信息失败
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('editCourierInfo')}));
                     }
                 });
             },

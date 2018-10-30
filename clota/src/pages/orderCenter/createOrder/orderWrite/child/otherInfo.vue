@@ -2,9 +2,7 @@
 
 <template>
     <div class="other-info">
-        <div class="title">
-            其它
-        </div>
+        <div class="title">{{$t('others')}}</div>
         <ul class="per-info">
             <li class="list">
                 <span class="key">{{$t('orderOrg')}}：</span>
