@@ -10,49 +10,6 @@
             <Form ref="formDynamic" :model="formDynamic">
 
                 <div class="content-item">
-                    <div class="title">{{$t('integralValiditySet')}}</div><!--会员积分有效期设置-->
-                    <div class="main form-bottom">
-                        <RadioGroup v-model="settingData.scoreValidityPeriod.validityType"
-                                    vertical
-                                    :class="{'ivu-form-item-error': error.validityTimeError}">
-                            <Radio label="perpetual">
-                                <span>{{$t('permanentValidity')}}</span><!--永久有效-->
-                            </Radio>
-                            <Radio label="months_effective">
-                                <span>{{$t('gainIntegral')}}<!--获得积分-->
-                                    <Input v-model.trim="settingData.scoreValidityPeriod.validityTime"
-                                           :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false"
-                                           @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.validityTime, 'validityTimeError')"
-                                           type="text"
-                                           class="single-input"
-                                           :placeholder="$t('inputField', {field: ''})"/>
-                                    {{$t('invalidAfterMonths')}}</span><!--个月后失效，清除-->
-                            </Radio>
-                            <span class="ivu-form-item-error-tip"
-                                 style="left: 153px;left: 95px;top: 60px;"
-                                 v-if="error.validityTimeError">{{error.validityTimeError}}</span>
-                        </RadioGroup>
-                        <div class="check-group-wrap" :class="{'ivu-form-item-error': error.remindError}">
-                            <Checkbox v-model="settingData.scoreValidityPeriod.checked"
-                                      :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false">
-                            </Checkbox>{{$t('clearIntegral')}}<!--清除积分前-->
-                            <Input v-model.trim="settingData.scoreValidityPeriod.remind"
-                                   :disabled="!settingData.scoreValidityPeriod.checked"
-                                   @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.remind, 'remindError')"
-                                   type="text"
-                                   class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
-                                <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
-                            <div class="ivu-form-item-error-tip"
-                                 style="left: 155px;"
-                                 v-if="error.remindError">{{error.remindError}}</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="content-item">
                     <div class="title">{{$t('memberCardValiditySet')}}</div><!--会员卡有效期设置-->
                     <div class="main margin-radio-group form-bottom">
                         <RadioGroup v-model="settingData.memberValidPeriod.type" vertical>
@@ -260,13 +217,6 @@
                 routerName: 'memberSetting',
                 //设置数据
                 settingData: {
-                    //会员积分有效期设置
-                    scoreValidityPeriod: {
-                        validityType: '',
-                        validityTime: '',//number
-                        checked: false,
-                        remind: '',//number
-                    },
                     //会员卡有效期设置
                     memberValidPeriod: {
                         type: '',//类型
@@ -300,7 +250,6 @@
                 },
                 //输入框校验错误显示
                 error: {
-                    validityTimeError: '',//会员积分有效期设置
                     remindError: '',//会员积分有效期设置
                     vipValidityError: '',//会员卡有效期设置
                     vipValidityTimeError: '',//会员卡有效期设置
@@ -318,23 +267,6 @@
             }
         },
         watch: {
-
-            //会员积分有效期设置
-            'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
-                if(newVal === 'perpetual'){
-                    this.settingData.scoreValidityPeriod.checked = false;
-                    this.error.validityTimeError = '';
-                    this.error.remindError = '';
-                }
-                if(newVal === 'months_effective'){
-                    this.settingData.scoreValidityPeriod.checked = true;
-                }
-            },
-            'settingData.scoreValidityPeriod.checked' : function (newVal, oldVal) {
-                if(!newVal){
-                    this.error.remindError = '';
-                }
-            },
 
             //会员卡有效期设置
             'settingData.memberValidPeriod.type' : function (newVal, oldVal) {
@@ -400,7 +332,6 @@
                             if(res.data.allowAdjustAccount){
                                 //处理数据
                                 let params = {
-                                    scoreValidityPeriod: JSON.parse(res.data.scoreValidityPeriod),
                                     memberValidPeriod: JSON.parse(res.data.memberValidPeriod),
                                     notificationBeforeCouponExpire: JSON.parse(res.data.notificationBeforeCouponExpire),
                                     handingWithScoreGrowthWhileRefund: JSON.parse(res.data.handingWithScoreGrowthWhileRefund),
@@ -448,7 +379,6 @@
 
                     let params = {
                         id: this.id,
-                        scoreValidityPeriod: JSON.stringify(setParam.scoreValidityPeriod),
                         memberValidPeriod: JSON.stringify(setParam.memberValidPeriod),
                         notificationBeforeCouponExpire: JSON.stringify(setParam.notificationBeforeCouponExpire),
                         handingWithScoreGrowthWhileRefund: JSON.stringify(setParam.handingWithScoreGrowthWhileRefund),
@@ -475,16 +405,6 @@
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-
-                if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')){
-                    return false
-                }
-
-                if(this.settingData.scoreValidityPeriod.checked &&
-                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'remindError')){
-                    return false
-                }
 
                 if(this.settingData.memberValidPeriod.type === 'vipValidityType' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity,'vipValidityError')){
@@ -658,7 +578,7 @@
                 }
 
                 //校验表情符号
-                if (val && val.isUtf16()) {
+                if (val && String(val).isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
                     return false
                 } else {
