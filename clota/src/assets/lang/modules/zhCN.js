@@ -1391,6 +1391,7 @@ export default {
     'withdrawRechargeRequest': '撤回充值申请',
     'isWithdrawRechargeRequest': '是否撤回充值申请',
     'ModifyLine': '修改额度',
-    'onliShowTip': '仅当使用微信支付或支付宝时展示交易流水号'
+    'onliShowTip': '仅当使用微信支付或支付宝时展示交易流水号',
+    'forbidden': '禁用'
 
 }

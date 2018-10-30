@@ -1083,7 +1083,8 @@
 
                         params.playRule.weekSold = this.formData.playRule.weekSold && this.formData.playRule.weekSold.length > 0 ?
                             this.formData.playRule.weekSold.join(',') : '';
-                        params.playRule.specifiedTime = this.formData.saleRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0 ?
+
+                        params.playRule.specifiedTime = this.formData.playRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0 ?
                             this.formData.playRule.specifiedTime.map( item => { return new Date(item).format('yyyy-MM-dd')}).join(',') : '';
                         params.playRule.startTime = this.formData.playRule.time[0] ? new Date(this.formData.playRule.time[0]).format('yyyy-MM-dd'): '';
                         params.playRule.endTime = this.formData.playRule.time[1] ? new Date(this.formData.playRule.time[1]).format('yyyy-MM-dd'): '';
@@ -1124,7 +1125,6 @@
                         delete params.saleTime;
                         delete params.todaySaleTime;
                         console.log(params);
-
                         //区分新增与修改
                         if( this.type === 'add' ){
                             this.saveAndEditPolicy( 'addPolicy', params);

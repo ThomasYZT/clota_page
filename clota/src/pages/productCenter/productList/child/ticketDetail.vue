@@ -358,6 +358,7 @@
                         this.detail = res.data.productSaleVo || {};
                         this.productPlayRuleVo = res.data.productPlayRuleVo || [];
                         this.recordsVos = res.data.recordsVos || [];
+                        this.remark = '';
                     } else {
                         this.detail = {};
                         this.productPlayRuleVo = [];

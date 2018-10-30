@@ -22,7 +22,7 @@
         <div class="btn-wrap" v-if="tabsName === 'created' && role !== 'partner'">
             <Button type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
             <Button type="error"
-                    v-if="selectedRow.length < 1"
+                    v-if="isDisabled"
                     disabled>{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i></Button>
             <el-dropdown @command="handleCommand" trigger="click" v-else>
                 <span class="el-dropdown-link">
@@ -31,6 +31,7 @@
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in dropdownList"
                                       :key="index"
+                                      v-show="(item.value === 'forbidden' && disenable) || (item.value === 'checkPass' && passable) || (item.value === 'commissioned' && openable) || (item.value === 'delete' && deletable) || (item.value === 'reject' && rebuttable) || (item.value === 'commitCheck' && auditable)"
                                       :command="item.value">
                         {{$t(item.name)}}
                     </el-dropdown-item>
@@ -217,13 +218,30 @@
                 ],
                 // 下拉列表数据
                 dropdownList: [
-                    { name: 'checked', value: 'checked' },//审核
-                    { name: 'up', value: 'up' },//上架
-                    { name: 'down', value: 'down' },//下架
+                    { name: 'checkPass', value: 'checkPass' },//审核通过
+                    { name: 'commissioned', value: 'commissioned' },//启用
+                    { name: 'forbidden', value: 'forbidden' },//禁用
                     { name: 'delete', value: 'delete' },//删除
+                    { name: 'reject', value: 'reject'},//驳回
+                    { name: 'commitCheck', value: 'commitCheck'}//提交审核
                 ],
                 // 业态类型数据
                 policyTypeList: [],
+                //能否进行批量操作
+                isDisabled: true,
+                //可批量禁用
+                disenable: false,
+                //可批量通过
+                passable: false,
+                //可批量驳回
+                rebuttable: false,
+                //可批量启用
+                openable: false,
+                //可批量删除
+                deletable: false,
+                //可提交审核
+                auditable: false,
+
             }
         },
         computed: {
@@ -339,6 +357,7 @@
              */
             changeSelection(selection) {
                 this.selectedRow = selection;
+                this.canBatchOperate(selection);
             },
             // 批量删除
             batchDel () {
@@ -385,17 +404,25 @@
                 if(item){
                     let ids = this.selectedRow.map(item => item.id).join(',');
                     switch (item) {
-                        case 'checked' :
-                            this.modifyPolicyStatus(ids, 'auditing');
-                            break;
-                        case 'up' :
+                        case 'checkPass' :
                             this.modifyPolicyStatus(ids, 'enabled');
                             break;
-                        case 'down' :
+                        case 'commissioned' :
+                            this.modifyPolicyStatus(ids, 'enabled');
+                            break;
+                        case 'forbidden' :
                             this.modifyPolicyStatus(ids, 'not_enabled');
                             break;
                         case 'delete' :
                             this.batchDel();
+                            break;
+                        case 'reject' :
+                            //驳回
+                            this.modifyPolicyStatus(ids, 'rejected');
+                            break;
+                        case 'commitCheck' :
+                            //提交审核
+                            this.modifyPolicyStatus(ids, 'auditing');
                             break;
                     }
                 }
@@ -463,6 +490,55 @@
                         listItem: data
                     }
                 });
+            },
+            /**
+             * 判断当前选中的销售政策列表能否进行批量操作
+             */
+            canBatchOperate(data) {
+                this.disenable = false;
+                this.passable = false;
+                this.rebuttable = false;
+                this.deletable = false;
+                this.openable = false;
+                this.isDisabled = true;
+                this.auditable = false;
+                if(data.length > 0) {
+                    let auditStatus = data[0].auditStatus,
+                        status = true;
+
+                    for(let i=1,len=data.length; i<len; i++) {
+                        //若选中的行中有一行的审核状态值于第一个不同，则不允许批量操作
+                        if(data[i].auditStatus !== auditStatus) {
+                            status = false;
+                            break;
+                        }
+                    }
+
+                    if(status) {
+                        this.isDisabled = false;
+                        switch (auditStatus) {
+                            //选中的行都是 已启用 状态 => 可禁用
+                            case 'enabled':
+                                this.disenable = true;
+                                break;
+                            //选中的行都是 审核中 状态 => 可审核通过、可驳回
+                            case 'auditing':
+                                this.passable = true;
+                                this.rebuttable = true;
+                                break;
+                            //选中的行都是 已驳回 状态 => 可删除、可提交审核
+                            case 'rejected':
+                                this.deletable = true;
+                                this.auditable = true;
+                                break;
+                            //选中的行都是 未启用 状态 => 可提交审核、可删除
+                            case 'not_enabled':
+                                this.auditable = true;
+                                this.deletable = true;
+                                break;
+                        }
+                    }
+                }
             }
         }
     };

@@ -34,6 +34,7 @@
                             </template>
                             <template v-else>
                                 <Select v-model="formData.parkId"
+                                        v-if="parkList"
                                         :disabled="type === 'check'"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         @on-change="selectParkChange">
@@ -43,6 +44,10 @@
                                         {{item.orgName}}
                                     </Option>
                                 </Select>
+                                <Input :value="formData.parkName"
+                                       v-else
+                                       disabled
+                                       placeholder=""/>
                             </template>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
@@ -198,6 +203,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('choosePark')" prop="parkId"><!--选择园区-->
                             <Select v-model="formData.parkId"
+                                    v-if="parkList"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="selectParkChange">
@@ -207,6 +213,9 @@
                                     {{item.orgName}}
                                 </Option>
                             </Select>
+                            <Input :value="formData.parkName"
+                                   disabled
+                                   placeholder=""/>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
                     </i-col>
