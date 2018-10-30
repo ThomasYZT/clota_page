@@ -134,7 +134,7 @@ new Vue({
 
 
 //使用fundeBug实时监测代码运行错误，测试时开启,生成环境开启
-if(process.NODE_ENV === 'production'){
+if(process.env.NODE_ENV === 'production'){
 
     let fundebug = require("fundebug-javascript");
     fundebug.apikey = "7a0ef57656b2a4b59207cf9410c7edc5d9c40db437c42b5d3c825999d2cebf30";
