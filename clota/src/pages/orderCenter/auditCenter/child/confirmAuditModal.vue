@@ -77,8 +77,6 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {orderProductHead, batchAuditHead} from '../auditConfig';
-    import sum from 'lodash/sum';
     import {transAudit} from '../../commFun';
     import {mapGetters} from 'vuex';
 

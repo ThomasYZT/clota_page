@@ -134,9 +134,9 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, batchAudit, orderSyncStatus} from './auditConfig';
-    import ajax from '@/api/index.js';
-    import {configVariable} from '@/assets/js/constVariable.js';
+    import {bulkRefundHead, batchAudit} from './auditConfig';
+    import ajax from '@/api/index';
+    import {configVariable} from '@/assets/js/constVariable';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
     import bulkSingleAuditModal from './components/bulkSingleAuditModal.vue';
     import {transOrderOrg, transSyncStatus} from '../commFun';
