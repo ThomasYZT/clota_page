@@ -17,7 +17,7 @@
             <ul class="pro-list">
                 <li v-for="item in touristWithoutProduct"
                     :key="item.productId"
-                    class="detail">游客{{item.name}}未分配产品</li>
+                    class="detail">{{$t('visitorWithoutProduct', {field: item.name})}}</li><!--游客{{item.name}}未分配产品-->
                 <li class="hint">
                     <Icon type="information-circled"></Icon>
                 </li>

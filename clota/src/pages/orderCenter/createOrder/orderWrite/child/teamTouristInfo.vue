@@ -3,14 +3,15 @@
 <template>
     <div class="team-tourist-info">
         <div class="title">
-            游客信息
+            <!--游客信息-->
+            {{$t('touristInfo')}}
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTouristInfo.length < 1"
                     @click="delTourist">{{$t('deleteBatch')}}</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
-                    @click="addTourist">添加游客</Button>
+                    @click="addTourist">{{$t('addVisitor')}}</Button><!--添加游客-->
         </div>
 
         <Form ref="formInline" :model="formData" label-position="left" >
@@ -142,9 +143,9 @@
             <ul class="pro-list">
                 <li class="detail">
                     <span class="content-text">
-                        {{$t('isDoing')}}{{$t('delete')}}游客：
+                        {{$t('isDoing')}}{{$t('delete')}} {{$t('visitor')}}：
                         <span class="yellow-label">{{delingTouristInfo.data}}</span>
-                        <span v-if="delingTouristInfo.showMore">等</span>
+                        <span v-if="delingTouristInfo.showMore">{{$t('visitor')}}</span>
                     </span>
                 </li>
                 <li class="detail">
@@ -185,7 +186,7 @@
                 if(rule.rowData.type){
                     callback();
                 }else{
-                    callback('请选择证件类型');
+                    callback(this.$t('selectField', {msg: this.$t('credentialsType')}));   // 请选择证件类型
                 }
             };
             //校验证件号码
@@ -197,11 +198,11 @@
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback('证件已存在');
+                            callback(this.$t('existID'));   // 证件已存在
                         });
                     }
                 }else{
-                    callback('请输入证件号');
+                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
                 }
             };
             //校验游客姓名
@@ -213,7 +214,7 @@
                         callback();
                     }
                 }else{
-                    callback('请输入姓名');
+                    callback(this.$t('inputField', {field: this.$t('name')}));     // 请输入姓名
                 }
             };
             //校验手机号
@@ -225,7 +226,7 @@
                         callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
                     }
                 }else{
-                    callback('请输入手机号');
+                    callback(this.$t('inputField', {field: this.$t('mobilePhone')}));  // 请输入手机号
                 }
             };
             return {
@@ -335,7 +336,7 @@
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
-                this.$Message.success('游客信息已删除');
+                this.$Message.success(this.$t('deletedField', {field: this.$t('touristInfo')}));   // 游客信息已删除
             },
             /**
              * 保存游客信息
@@ -426,7 +427,9 @@
                         this.tableData.splice(i,1);
                     }
                 }
-                this.$Message.success('游客信息已删除');
+                this.$Message.success(this.$t('deletedField', {
+                    field: this.$t('touristInfo')
+                }));   // 游客信息已删除
             },
             /**
              * 获取填写的游客信息

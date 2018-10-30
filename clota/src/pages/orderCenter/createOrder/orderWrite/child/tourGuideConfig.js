@@ -3,7 +3,7 @@
 export const columnData = [
     {},
     {
-        title: '导游姓名',
+        title: 'tourGuideName',     // 导游姓名
         minwidth: 234,
         field: 'staffName'
     },

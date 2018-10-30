@@ -3,17 +3,17 @@
 export const columnData = [
     {},
     {
-        title: '司机姓名',
+        title: 'driverName',  // 司机姓名
         minwidth: 234,
         field: 'staffName'
     },
     {
-        title: '车牌号',
+        title: 'licence',   // 车牌号
         minwidth: 254,
         field: 'documentNo'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 130,
     },
 ];

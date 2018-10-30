@@ -30,16 +30,17 @@
                     {{$t('balanceLeftNotEnought')}}
                 </li>
                 <li class="detail error" v-else>
-                    原因：产品库存不足
+                    <!--原因：产品库存不足-->
+                    {{$t('repertoryLeftNotEnought')}}
                 </li>
             </ul>
         </div>
         <div slot="footer">
             <Button type="primary"
-                    @click="confirm">{{$t('取消订单')}}</Button>
+                    @click="confirm">{{$t('cancelOrder')}}</Button><!--取消订单-->
             <Button type="error"
                     :disabled="!canRemoveProduct"
-                    @click="delProduct">{{$t('从订单中删除此产品')}}</Button>
+                    @click="delProduct">{{$t('delProductFromOrder')}}</Button><!--从订单中删除此产品-->
         </div>
     </Modal>
 </template>
