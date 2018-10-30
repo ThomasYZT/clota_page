@@ -171,3 +171,52 @@ var utils = {
 }
 
 export default utils
+
+
+/**
+ * 滚动条缓慢滚动
+ * @param el 元素
+ * @param from 起始位置
+ * @param to 重点位置
+ * @param direction 方向（垂直还是还是水平滚动） horizontal/vertical
+ * @param duration 动画持续时间
+ * @param endCallback 回调函数
+ */
+export const scrollIntoView =  function (el, from = 0, to, direction = 'horizontal',  duration = 500, endCallback) {
+    if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = (
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (callback) {
+                return window.setTimeout(callback, 1000/60);
+            }
+        );
+    }
+    const difference = Math.abs(from - to);
+    const step = Math.ceil(difference / duration * 50);
+
+    function scroll(start, end, step) {
+        if (start === end) {
+            endCallback && endCallback();
+            return;
+        }
+
+        let d = (start + step > end) ? end : start + step;
+        if (start > end) {
+            d = (start - step < end) ? end : start - step;
+        }
+
+        if (el === window) {
+            window.scrollTo(d, d);
+        } else {
+            if(direction === 'vertical'){
+                el.scrollLeft = d;
+            }else if(direction === 'horizontal'){
+                el.scrollTop = d;
+            }
+        }
+        window.requestAnimationFrame(() => scroll(d, end, step));
+    }
+    scroll(from, to, step);
+}
