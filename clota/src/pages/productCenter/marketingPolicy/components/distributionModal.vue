@@ -138,10 +138,10 @@
                             <template slot-scope="scope">
                                 <span v-for="(item, index) in scope.row.channelModels"
                                       class="channel"
-                                      :class="{disable: item.status === 'valid'}"
+                                      :class="{disable: item.status !== 'valid'}"
                                       :key="index">
                                     {{item.channelName}}
-                                    <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
+                                    <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
                                 </span>
                             </template>
                         </el-table-column>
@@ -345,9 +345,11 @@
                 data.forEach((item) => {
                     this.formData.groupIds += item.id + ',';
                     //政策不能在分销给上级分销商,后台会做过滤处理，此处给出提示
-                    if(item.channelNames.indexOf(this.detail.parentDistributor) > -1) {
-                        this.isTipShow = true;
-                    }
+                    item.channelModels.forEach(channel => {
+                        if(channel.channelName === this.detail.parentDistributor) {
+                            this.isTipShow = true;
+                        }
+                    });
                 })
 
             },

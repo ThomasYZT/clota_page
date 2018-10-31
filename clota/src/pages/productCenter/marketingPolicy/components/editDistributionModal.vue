@@ -126,10 +126,10 @@
                             <template slot-scope="scope">
                                 <span v-for="(item, index) in scope.row.channelModels"
                                       class="channel"
-                                      :class="{disable: item.status === 'valid'}"
+                                      :class="{disable: item.status !== 'valid'}"
                                       :key="index">
                                     {{item.channelName}}
-                                    <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
+                                    <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
                                 </span>
                             </template>
                         </el-table-column>
@@ -155,10 +155,10 @@
                             <template slot-scope="scope">
                                 <span v-for="(item, index) in scope.row.channelModels"
                                       class="channel"
-                                      :class="{disable: item.status === 'valid'}"
+                                      :class="{disable: item.status !== 'valid'}"
                                       :key="index">
                                     {{item.channelName}}
-                                    <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
+                                    <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
                                 </span>
                             </template>
                         </el-table-column>
@@ -324,15 +324,9 @@
                     if(res.success) {
                         // 设置临时数据
                         this.tempData = res.data;
-                    }
-                });
-                //获取已选择销售渠道组数据接口
-                await ajax.post('queryHaveAllocationSaleGroups',{
-                    allocationId: this.detail.listItem.allocationId
-                }).then(res => {
-                    if(res.success) {
+
                         //已选择的销售渠道组数据
-                        this.haveSaleGroups = res.data;
+                        this.haveSaleGroups = this.detail.haveSaleGroups;
 
                         //过滤没有销售渠道的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
@@ -350,7 +344,7 @@
                         //设置已选择的销售渠道组
                         let _channels = this.saleGroupList;
                         let _chosedChannels = this.haveSaleGroups.map((item) => {
-                            return item.id;
+                            return item.groupId;
                         });
                         for(let i=0,len=_channels.length; i<len; i++) {
                             for(let j=0,jlen=_chosedChannels.length; j<jlen; j++) {
@@ -374,7 +368,7 @@
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
                                 if(len > 0 && jlen > 0) {
-                                    if(this.haveSaleGroups[j].id === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
+                                    if(this.haveSaleGroups[j].groupId === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
                                         this.haveSaleGroups.splice(j,1);
                                         j--;
                                         jlen--;
@@ -435,6 +429,12 @@
                 this.formData.groupIds = "";
                 data.forEach((item) => {
                     this.formData.groupIds += item.id + ',';
+
+                    item.channelModels.forEach(channel => {
+                        if(channel.channelName === this.detail.parentDistributor) {
+                            this.isTipShow = true;
+                        }
+                    });
                 });
             },
             /**

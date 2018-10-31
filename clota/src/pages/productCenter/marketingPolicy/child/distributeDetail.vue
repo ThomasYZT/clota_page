@@ -213,6 +213,7 @@
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
                                     this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i].settlePrice;
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
+                                    this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos)
                                     if(i === 0) {
                                         //动态增加表格列
                                         let _obj = {
@@ -290,12 +291,14 @@
              * @param _index
              */
             getColumnData(_index) {
+                console.log(this.myAllocationLists)
                 //组装表格选中列的数据,同一列的数据allocationId、groupNames、allocationName都是相同的，
                 //所以默认取第一产品的相关数据即可
                 let columnData = {
                     productList: [],
                     name: this.myAllocationLists[0]['allocationName'+_index],
                     allocationId: this.myAllocationLists[0]['allocationId'+_index],
+                    haveSaleGroups: this.myAllocationLists[0]['haveSaleGroups'+_index],
                     groupIds: this.myAllocationLists[this.myAllocationLists.length -1]['groupIds'+_index]
                 };
                 this.myAllocationLists.forEach((item, index) => {
