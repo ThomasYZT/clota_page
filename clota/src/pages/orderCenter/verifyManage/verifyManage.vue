@@ -32,6 +32,7 @@
                     :column-data="ticketColumnData"
                     :table-data="tableData.orderInfoList"
                     :column-check="true"
+                    :selectable="setSelectable"
                     :border="true"
                     @selection-change="changeTicketSelection">
                     <el-table-column
@@ -178,7 +179,9 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <!--核销-->
-                            <span class="operate-btn blue" @click="showModal(scope.row, false, 'ticket')">{{$t('verification')}}</span>
+                            <span :class="['operate-btn', scope.row.verifyRule=='true' ? 'blue' : 'gray']"
+                                  @click="showModal(scope.row, false, 'ticket')">{{$t('verification')}}
+                            </span>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -197,6 +200,7 @@
                     :column-data="verifyColumnData"
                     :table-data="tableData.orderTicketList"
                     :column-check="true"
+                    :selectable="setSelectable"
                     :border="true"
                     @selection-change="changeVerifySelection">
                     <el-table-column
@@ -304,7 +308,9 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="operate-btn" @click="showModal(scope.row, false, 'verify')">{{$t('verification')}}</span>
+                            <span :class="['operate-btn', scope.row.verifyRule=='true' ? 'blue' : 'gray']"
+                                  @click="showModal(scope.row, false, 'verify')">{{$t('verification')}}
+                            </span>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -403,11 +409,13 @@
              * @param type - 类型  'ticket'-根据取票串码核销 | 'verify'-根据核销串码核销
              **/
             showModal(data, isBatch, type) {
-                this.$refs['verifyModal'].show({
-                    list: isBatch ? data : [data],
-                    isBatch: isBatch,
-                    type: type
-                });
+                if (data.verifyRule == 'true') {
+                    this.$refs['verifyModal'].show({
+                        list: isBatch ? data : [data],
+                        isBatch: isBatch,
+                        type: type
+                    });
+                }
             },
             handleCommand(type) {
                 if (this.chosenRowData[type].length<=0) {
@@ -430,6 +438,15 @@
             transSMSStatus: transSMSStatus,
             // 核销状态code转换
             transVerifyStatus: transVerifyStatus,
+            /**
+             * 设置表格每一行的CheckBox是否可勾选状态（verifyRule: 'true' 表示可勾选，否则disabled不可勾选 置灰）
+             * @param row
+             * @param index
+             * @returns {boolean}
+             */
+            setSelectable(row, index) {
+                return row.verifyRule == 'true';
+            },
         }
     };
 </script>
@@ -458,6 +475,9 @@
     .operate-btn {
         cursor: pointer;
         color: $color_blue;
+        &.gray {
+            cursor: not-allowed;
+        }
     }
 
     .wrapper {
