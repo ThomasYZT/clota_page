@@ -574,7 +574,7 @@
                 //校验产品有效性设置与游玩规则数据
                 this.productPlayRuleVo.forEach(item => {
                     if(this.formData.productEffSet === 'since_the_play' && (item.effDay == '' || item.effDay == 0)){
-                        this.$Message.warning(this.$t('inputField', { feild: $t('AvailableNumberOfDays') }));
+                        this.$Message.warning(this.$t('inputField', { feild: this.$t('AvailableNumberOfDays') }));
                         return
                     }
                 });

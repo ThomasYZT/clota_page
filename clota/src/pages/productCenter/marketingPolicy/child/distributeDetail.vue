@@ -291,7 +291,6 @@
              * @param _index
              */
             getColumnData(_index) {
-                console.log(this.myAllocationLists)
                 //组装表格选中列的数据,同一列的数据allocationId、groupNames、allocationName都是相同的，
                 //所以默认取第一产品的相关数据即可
                 let columnData = {
