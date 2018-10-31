@@ -51,7 +51,7 @@
                     <Form-item :label="$t('adjustPrincipalAccBalance') + '：'" prop="corpusAmount"><!--本金账户余额调整-->
                         <RadioGroup v-model="formData.corpusOptSign">
                             <Radio label="add">
-                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
                                     {{$t("increase")}}
                                 </span>
                                 <template v-if="formData.corpusOptSign === 'sub'">
@@ -63,7 +63,7 @@
                                 {{accountInfo.unit}}
                             </Radio>
                             <Radio label="sub">
-                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
                                     {{$t("reduce")}}
                                 </span>
                                 <template v-if="formData.corpusOptSign === 'add'">
@@ -82,7 +82,7 @@
                     <Form-item :label="$t('adjustGiftAccBalance') + '：'" prop="donateAmount"><!--赠送账户余额调整-->
                         <RadioGroup v-model="formData.donateOptSign">
                             <Radio label="add">
-                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
                                     {{$t("increase")}}
                                 </span>
                                 <template v-if="formData.donateOptSign === 'sub'">
@@ -94,7 +94,7 @@
                                 {{accountInfo.unit || ''}}
                             </Radio>
                             <Radio label="sub">
-                                <span  class="adjust-type":style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
+                                <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
                                     {{$t("reduce")}}
                                 </span>
                                 <template v-if="formData.donateOptSign === 'add'">
@@ -167,9 +167,9 @@
                     callback();
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                        callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
                     }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                        callback(this.$t(err,{ field : this.$t(rule.field) }));
                     }
                 });
             };
@@ -177,7 +177,7 @@
             //校验本金额不可大于总本金余额
             const validateMaxCorpus = (rule,value,callback) => {
                 if(value && this.formData.corpusOptSign === 'sub' && Number(value) > this.accountInfo.corpusBalance ){
-                    callback(new Error( this.$t('errorGreaterThan', {small: this.$t('corpusAmount'), big: this.$t('totalPrincipalBalance')}) ));    // 本金余额不可大于总本金余额
+                    callback(new Error( this.$t('errorGreaterThan', { small: this.$t('corpusAmount'), big: this.$t('totalPrincipalBalance') }) ));    // 本金余额不可大于总本金余额
                 } else {
                     callback();
                 }
@@ -258,7 +258,6 @@
             changeAccount ( val ) {
                 if(val){
                     this.accountInfo = this.store.find((item) => val === item.id);
-                    console.log(this.accountInfo)
                 }
             },
 
@@ -276,7 +275,6 @@
                             reasonId: this.formData.reasonId,
                             remark: this.formData.remark,
                         };
-                        console.log(params)
                         this.adjustAmount(params);
                     }
                 })

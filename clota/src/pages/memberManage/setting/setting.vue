@@ -82,7 +82,9 @@
                 <div class="content-item">
                     <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
                     <div class="main">
-                        <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.score" vertical>
+                        <RadioGroup :value="String(settingData.handingWithScoreGrowthWhileRefund.score)"
+                                    @input="settingData.handingWithScoreGrowthWhileRefund.score = Boolean($event === 'true')"
+                                    vertical>
                             <Radio label="false">
                                 <span>{{$t('noReturnIntegral')}}</span><!--用户退款时积分不退-->
                             </Radio>
@@ -97,7 +99,9 @@
                 <!--<div class="content-item">-->
                     <!--<div class="title">{{$t('isReturnCoupon')}}</div>&lt;!&ndash;用户退款时卡券是否退还用户&ndash;&gt;-->
                     <!--<div class="main">-->
-                        <!--<RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>-->
+                        <!--<RadioGroup :value="String(settingData.handingWithScoreGrowthWhileRefund.coupon)"-->
+                                    <!--@input="settingData.handingWithScoreGrowthWhileRefund.coupon = Boolean($event === 'true')"-->
+                                    <!--vertical>-->
                             <!--<Radio label="false">-->
                                 <!--<span>{{$t('noReturnCoupon')}}</span>&lt;!&ndash;用户退款时卡券不退&ndash;&gt;-->
                             <!--</Radio>-->
@@ -166,16 +170,55 @@
 
                     </div>
                 </div>
-                <div class="content-item">
-                    <div class="title">{{$t('cardManagement')}}</div>
-                    <div class="main">
-                        <span class="a-link-el" @click="toEntityCardDetail">{{$t('cardManagement')}}</span>
-                    </div>
-                </div>
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-item">-->
+                    <!--<div class="title">{{$t('cardManagement')}}</div>-->
+                    <!--<div class="main">-->
+                        <!--<span class="a-link-el" @click="toEntityCardDetail">{{$t('cardManagement')}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="content-item">
                     <div class="title">{{$t('paymentSetting')}}</div>
                     <div class="main">
                         <span class="a-link-el" @click="toSetPayProtocol">{{$t('paymentSetting')}}</span>
+                    </div>
+                </div>
+
+                <!--新开卡会员积分赠送设置-->
+                <div class="content-item">
+                    <div class="title">{{$t('新开卡会员积分赠送设置')}}</div>
+                    <div :class="{'ivu-form-item-error': error.memberDonateIntegerErr, 'main': true}">
+                        <i-switch v-model="settingData.openCardSendScore.isSwitch"
+                                  @on-change="settingData.openCardSendScore.score = ''">
+                        </i-switch>
+                        <span class="text">{{$t('新开卡会员赠送')}}<!--会员生日当天消费可获得-->
+                        <Input v-model.trim="settingData.openCardSendScore.score"
+                               :disabled="!settingData.openCardSendScore.isSwitch"
+                               @on-blur="checkInputBlurFunc(settingData.openCardSendScore.score, 'memberDonateIntegerErr')"
+                               type="text"
+                               class="single-input"
+                               :placeholder="$t('inputField', {field: ''})"/>
+                        {{$t('积分')}}</span><!--倍积分-->
+                        <div class="ivu-form-item-error-tip"
+                             style="left: 173px;"
+                             v-if="error.memberDonateIntegerErr">{{error.memberDonateIntegerErr}}</div>
+                    </div>
+                </div>
+
+                <!--短信发送设置-->
+                <div class="content-item">
+                    <div class="title">{{$t('短信发送设置')}}</div>
+                    <div :class="{'ivu-form-item-error': error.tradeAmountErr, 'main': true}">
+                        <span class="text">{{$t('交易金额大于')}}</span><!--交易金额大于-->
+                        <Input v-model.trim="settingData.smsSend"
+                               @on-blur="checkInputIsMoney(settingData.smsSend,'tradeAmountErr')"
+                               type="text"
+                               class="single-input"
+                               :placeholder="$t('inputField', {field: ''})"/>
+                        <div class="ivu-form-item-error-tip"
+                             style="left: 100px;"
+                             v-if="error.tradeAmountErr">{{error.tradeAmountErr}}</div>
+                        {{$t('时发送短信')}}<!--时发送短信-->
                     </div>
                 </div>
 
@@ -219,6 +262,11 @@
                 routerName: 'memberSetting',
                 //设置数据
                 settingData: {
+                    // 新开卡会员积分赠送设置
+                    openCardSendScore : {
+                        isSwitch : false,
+                        score : ''
+                    },
                     //会员卡有效期设置
                     memberValidPeriod: {
                         type: '',//类型
@@ -233,11 +281,13 @@
                     },
                     //用户退款时积分是否退还用户
                     handingWithScoreGrowthWhileRefund: {
-                        score: '',//Boolean
-                        coupon: '',//Boolean
+                        score: false,//Boolean
+                        coupon: false,//Boolean
                     },
                     //修改会员储值、积分、虚拟账户余额设置
                     allowAdjustAccount: '',
+                    //短信发送设置
+                    smsSend : ''
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
@@ -257,15 +307,9 @@
                     vipValidityTimeError: '',//会员卡有效期设置
                     vipNumberError: '',//会员卡有效期设置
                     dayError: '',//卡券过期提醒设置
+                    memberDonateIntegerErr: '',//卡券过期提醒设置
+                    tradeAmountErr: '',//交易金额错误
                 },
-                //布尔型
-                boolProps: ['score','coupon'],
-                //Number型
-                numberProps: ['isNoIntegralTime','multiple','validityTime','remind','vipValidity',
-                'vipValidityTime','vipNumber','day'],
-                //String型
-                stringProps: ['isNoIntegralTime','multiple','validityTime','remind','vipValidity',
-                    'vipValidityTime','vipNumber','day','score','coupon'],
             }
         },
         watch: {
@@ -309,21 +353,6 @@
         },
         methods: {
 
-            //数据转换，数据查询后转成string进入input，保存时转成相应类型
-            transPropsType ( data, type ) {
-                switch (type) {
-                    case 'number':
-                        return data ? Number(data) : 0;
-                        break;
-                    case 'boolean':
-                        return data ==='true' ? true : false;
-                        break;
-                    case 'string':
-                        return data!==null ? String(data) : '';
-                        break;
-                }
-            },
-
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
@@ -331,23 +360,30 @@
                         if(res.data){
                             this.id = res.data.id;
                             this.paymentAgreement = res.data.paymentAgreement;
-                            if(res.data.allowAdjustAccount){
+                            if(Object.keys(res.data).length > 0){
                                 //处理数据
                                 let params = {
-                                    memberValidPeriod: JSON.parse(res.data.memberValidPeriod),
-                                    notificationBeforeCouponExpire: JSON.parse(res.data.notificationBeforeCouponExpire),
-                                    handingWithScoreGrowthWhileRefund: JSON.parse(res.data.handingWithScoreGrowthWhileRefund),
+                                    memberValidPeriod: res.data.memberValidPeriod ? JSON.parse(res.data.memberValidPeriod) : {
+                                        type: '',//类型
+                                        vipValidity: '',//number
+                                        vipValidityTime: '',//number
+                                        vipNumber: '',//number
+                                    },
+                                    openCardSendScore: res.data.openCardSendScore ? JSON.parse(res.data.openCardSendScore) : {
+                                        isSwitch : false,
+                                        score : ''
+                                    },
+                                    notificationBeforeCouponExpire: res.data.notificationBeforeCouponExpire ? JSON.parse(res.data.notificationBeforeCouponExpire) : {
+                                        isSwitch: false,
+                                        day: '',//number
+                                    },
+                                    handingWithScoreGrowthWhileRefund: res.data.handingWithScoreGrowthWhileRefund ? JSON.parse(res.data.handingWithScoreGrowthWhileRefund) : {
+                                        score: false,//Boolean
+                                        coupon: false,//Boolean
+                                    },
+                                    smsSend : res.data.smsSend,
                                     allowAdjustAccount: res.data.allowAdjustAccount,
                                 };
-                                for( let key in params){
-                                    if(key && Object.keys(params[key]).length > 0){
-                                        for( let ckey in params[key]){
-                                            if(this.stringProps.indexOf(ckey) > -1){
-                                                params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
-                                            }
-                                        }
-                                    }
-                                }
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -363,39 +399,27 @@
             //点击保存，校验信息，数据处理
             save () {
                 if(this.checkInputFunc()){
-
-                    let setParam = defaultsDeep({}, this.settingData);
-                    for( let key in setParam){
-                        if(key && Object.keys(setParam[key]).length > 0){
-                            for( let ckey in setParam[key]){
-                                if(this.boolProps.indexOf(ckey) > -1){
-                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'boolean');
-                                }
-                                if(this.numberProps.indexOf(ckey) > -1){
-                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
-                                }
-                            }
-                        }
-                    }
-                    setParam.id = this.id;
-
-                    let params = {
-                        id: this.id,
-                        memberValidPeriod: JSON.stringify(setParam.memberValidPeriod),
-                        notificationBeforeCouponExpire: JSON.stringify(setParam.notificationBeforeCouponExpire),
-                        handingWithScoreGrowthWhileRefund: JSON.stringify(setParam.handingWithScoreGrowthWhileRefund),
-                        allowAdjustAccount: setParam.allowAdjustAccount,
-                    };
-                    this.basicSet(params);
-
+                    this.checkInputIsMoney(this.settingData.smsSend,'tradeAmountErr').then(() =>{
+                        this.basicSet({
+                            id: this.id,
+                            memberValidPeriod: JSON.stringify(this.settingData.memberValidPeriod),
+                            openCardSendScore: JSON.stringify(this.settingData.openCardSendScore),
+                            smsSend: this.settingData.smsSend,
+                            notificationBeforeCouponExpire: JSON.stringify(this.settingData.notificationBeforeCouponExpire),
+                            handingWithScoreGrowthWhileRefund: JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
+                            allowAdjustAccount: this.settingData.allowAdjustAccount,
+                        });
+                    });
                 }
             },
             //会员基础设置-保存/修改
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
                     if( res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('saveBaseSetting')}) + '!');  // 保存基础设置成功
+                        this.$Message.success(this.$t('successTip', { tip: this.$t('saveBaseSetting') }) + '!');  // 保存基础设置成功
                         this.findBasicSet();
+                    }else{
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('save') }));
                     }
                 })
             },
@@ -407,6 +431,11 @@
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
+
+                if(this.settingData.openCardSendScore.isSwitch === true &&
+                    !this.checkInputBlurFunc(this.settingData.openCardSendScore.score,'memberDonateIntegerErr')){
+                    return false
+                }
 
                 if(this.settingData.memberValidPeriod.type === 'vipValidityType' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity,'vipValidityError')){
@@ -590,26 +619,26 @@
                 if(validator.isNumber(val)){
                     let numStr = String(val);
                     if(numStr.length < 1){
-                        this.error[errorField] = this.$t('errorMinLength',{field : '',length : 1});
+                        this.error[errorField] = this.$t('errorMinLength',{ field : '',length : 1 });
                         return false
                     }else if(numStr.length > 10){
-                        this.error[errorField] = this.$t('errorMaxLength', {field : '',length : 10});
+                        this.error[errorField] = this.$t('errorMaxLength', { field : '',length : 10 });
                         return false
                     }else{
                         if(Number.parseInt(val) === Number.parseFloat(val)){
                             if(val < 0 || val == 0){
-                                this.error[errorField] = this.$t('fieldTypeError', {field: ''});
+                                this.error[errorField] = this.$t('fieldTypeError', { field: '' });
                                 return false
                             }else{
                                 this.error[errorField] = '';
                             }
                         }else{
-                            this.error[errorField] = this.$t('integetError', {field: ''});
+                            this.error[errorField] = this.$t('integetError', { field: '' });
                             return false
                         }
                     }
                 }else{
-                    this.error[errorField] = this.$t('integetError', {field: ''});
+                    this.error[errorField] = this.$t('integetError', { field: '' });
                     return false
                 }
 
@@ -629,7 +658,28 @@
             toSetPayProtocol () {
                 this.$router.push({
                     name: 'paymentProtocol',
-                    params: {paymentAgreement: this.paymentAgreement, id: this.id}
+                    params: { paymentAgreement: this.paymentAgreement, id: this.id }
+                });
+            },
+
+            /**
+             * 校验输入的是否符合金钱的格式
+             * @param data
+             * @param errType
+             */
+            checkInputIsMoney(data,errType){
+                return new Promise((resolve,reject) => {
+                    common.validateMoney(data,0,10).then(() => {
+                        this.error.tradeAmountErr = '';
+                        resolve();
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            this.error.tradeAmountErr = this.$t('errorMaxLength', { field : '',length : 10 });
+                        }else{
+                            this.error.tradeAmountErr = this.$t(err, { field : '' });
+                        }
+                        reject();
+                    });
                 });
             }
 
@@ -684,8 +734,7 @@
                 }
 
                 /deep/ .ivu-input-wrapper{
-                    margin-bottom: 0px !important;
-                    margin-right: 5px;
+                    margin-bottom: 0 !important;
                     width: 80%;
                 }
 
