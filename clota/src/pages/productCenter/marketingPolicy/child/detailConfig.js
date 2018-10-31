@@ -3,7 +3,7 @@
 export const productColumn = [
     {
         title: 'productName',      // 产品名称
-        width: 150,
+        minWidth: 150,
         field: 'productName'
     },
     {
@@ -18,7 +18,7 @@ export const productColumn = [
     },
     {
         title: 'stockType',       // 限制库存
-        width: 100,
+        minWidth: 100,
         field: 'stockType'
     }
 ];
@@ -99,7 +99,7 @@ export const saleChannelColumn = [
 export const setSaleChannelColumn = [
     {
         title: 'chooseSaleChannelGroup',      // 选择销售渠道分组
-        width: 200,
+        minWidth: 200,
         field: 'groupName'
     },
     {
