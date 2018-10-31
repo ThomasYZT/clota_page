@@ -1490,5 +1490,5 @@ export default {
     'reverseSuccess' : '预定成功',
     'reverseFailure' : '预定失败',
     'auditSuccess' : '审核成功',
-    'auditFailure' : '审核失败',
+    'auditFailure' : '审核失败'
 }
