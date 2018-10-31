@@ -1362,7 +1362,6 @@ export default {
     'isBuiltIn': '是否内置',
     'createdTime': '创建时间',
     'buySmsMeal': '购买短信套餐',
-    'packagePrice': '套餐价格',
     'smsCount': '短信数量',
     'payType': '支付方式',
     'wechatPay': '微信支付',
@@ -1497,5 +1496,6 @@ export default {
     'playableItem': '可玩项',
     'requiredPlayItem': '必玩项',
     'level': '等级',
-    'AvailableNumberOfDays': '可游玩园区有效天数'
+    'AvailableNumberOfDays': '可游玩园区有效天数',
+    'interfaceErr' : '接口调用失败'
 }

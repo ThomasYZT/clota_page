@@ -1496,6 +1496,6 @@ export default {
     'playableItem': '可玩项',
     'requiredPlayItem': '必玩项',
     'level': '等级',
-    'AvailableNumberOfDays': '可游玩园区有效天数'
-
+    'AvailableNumberOfDays': '可游玩园区有效天数',
+    'interfaceErr' : '接口调用失败',
 }
