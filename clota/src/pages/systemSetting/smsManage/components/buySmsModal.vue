@@ -2,7 +2,7 @@
     <!--购买短信套餐-->
     <Modal
         v-model="visible"
-        :title="'购买短信套餐'"
+        :title="$t('buySmsMeal')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -12,26 +12,26 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
                 <!--短信套餐名称-->
-                <Form-item :label="$t('短信套餐名称') + '：'" prop="">
+                <Form-item :label="$t('smsPackageName') + '：'" prop="">
                     <span>{{formData.packageName}}</span>
                 </Form-item>
                 <!--套餐价格-->
-                <Form-item :label="$t('套餐价格') + '：'" prop="">
+                <Form-item :label="$t('packagePrice') + '：'" prop="">
                     <span>￥{{formData.price | moneyFilter}}</span>
                 </Form-item>
                 <!--短信数量-->
-                <Form-item :label="$t('短信数量') + '：'" prop="">
-                    <span>{{formData.smsCount | contentFilter}}条</span>
+                <Form-item :label="$t('smsCount') + '：'" prop="">
+                    <span>{{formData.smsCount | contentFilter}}{{$t('item')}}</span>
                 </Form-item>
                 <!--短信供应商-->
-                <Form-item :label="$t('短信供应商') + '：'" prop="">
+                <Form-item :label="$t('smsProvider') + '：'" prop="">
                     <span>{{formData.provider | contentFilter}}</span>
                 </Form-item>
                 <!--支付方式-->
-                <Form-item :label="$t('支付方式') + '：'" prop="">
+                <Form-item :label="$t('payType') + '：'" prop="">
                     <RadioGroup v-model="formData.payType" @on-change="onTypeChanged">
                         <Radio label="zfb">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                        <Radio label="wx">{{$t('微信支付')}}</Radio><!--微信支付-->
+                        <Radio label="wx">{{$t('wechatPay')}}</Radio><!--微信支付-->
                     </RadioGroup>
                 </Form-item>
 
@@ -40,7 +40,7 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="buyNow(formData)" >{{$t('立即购买')}}</Button>
+            <Button type="primary" @click="buyNow(formData)" >{{$t('buyNow')}}</Button>
         </div>
 
     </Modal>
@@ -115,11 +115,11 @@
                     smsPackageId: params.id
                 }).then(res => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
                     }
                 })
             },

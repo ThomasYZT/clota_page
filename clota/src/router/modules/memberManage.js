@@ -35,10 +35,10 @@ export default {
                 },
             },
             newCard: {
-                //会员管理--新开卡
+                //会员管理--新开会员卡
                 path: '/memberManage/newCard',
                 name: 'newCard',
-                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/index.vue'),
                 meta: {
                     menuName: 'newCard', //lang.config.js 里面的语言键值
                     _name: 'members-index',
@@ -46,6 +46,57 @@ export default {
                     rightPath: topMenuName + '.' + 'newCard',
                     isMenu: true
                 },
+                children: {
+                    newOwnerCard: {
+                        //会员管理--新开会员卡--新开业主卡
+                        path: '/memberManage/newCard/owner',
+                        name: 'newOwnerCard',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                        meta: {
+                            menuName: 'newOwnerCard', //lang.config.js 里面的语言键值
+                            _name: 'members-index',
+                            rightPath: topMenuName + '.' + 'newOwnerCard',
+                            isMenu: true
+                        },
+                    },
+                    newEnterpriseCard: {
+                        //会员管理--新开会员卡--新开企业会员卡
+                        path: '/memberManage/newCard/enterprise',
+                        name: 'newEnterpriseCard',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                        meta: {
+                            menuName: 'newEnterpriseCard', //lang.config.js 里面的语言键值
+                            _name: 'members-index',
+                            rightPath: topMenuName + '.' + 'newEnterpriseCard',
+                            isMenu: true
+                        },
+                    },
+                    newBatchCard: {
+                        //会员管理--新开会员卡--批量开卡
+                        path: '/memberManage/newCard/batch',
+                        name: 'newBatchCard',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                        meta: {
+                            menuName: 'newBatchCard', //lang.config.js 里面的语言键值
+                            _name: 'members-index',
+                            rightPath: topMenuName + '.' + 'newBatchCard',
+                            isMenu: true
+                        },
+                    },
+                    refundedCard: {
+                        //会员管理--新开会员卡--退卡
+                        path: '/memberManage/newCard/refunded',
+                        name: 'refundedCard',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/refundedCard.vue'),
+                        meta: {
+                            menuName: 'refundedCard', //lang.config.js 里面的语言键值
+                            _name: 'members-index',
+                            rightPath: topMenuName + '.' + 'refundedCard',
+                            isMenu: true
+                        },
+                    },
+
+                }
             },
             memberInfo: {
                 //会员管理--会员信息
@@ -198,6 +249,18 @@ export default {
                             isMenu: true
                         },
                     },
+                    //节假日特殊时期积分、折扣率设置
+                    activityIntegration: {
+                        path: '/memberManage/point/activity',
+                        name: 'activityIntegrate',
+                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/activityIntegration.vue'),
+                        meta: {
+                            menuName: 'activityIntegrate', //lang.config.js 里面的语言键值
+                            _name: 'stuff-setting',
+                            rightPath: topMenuName + '.' + 'activityIntegrate',
+                            isMenu: true
+                        },
+                    },
                     setRate: {
                         //会员管理--会员积分--设置积分、折扣率
                         path: '/memberManage/point/memberRate',
@@ -341,9 +404,22 @@ export default {
                     },
                 }
             },
+            //会员管理--基础设置--实体卡管理
+            entityCardControle: {
+                path: '/memberManage/entityCard',
+                name: 'cardManagement',
+                component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
+                meta: {
+                    menuName: 'cardManagement', //lang.config.js 里面的语言键值
+                    _name: 'init-setting',
+                    rightPath: topMenuName + '.' + 'cardManagement',
+                    iconClass: 'icon-card',
+                    isMenu: true
+                },
+            },
             memberSetting: {
                 //会员管理--基础设置
-                path: '/memberManage/basic',
+                path: '/memberManage/initializationSettings',
                 component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/index.vue'),
                 meta: {
                     menuName: 'initializationSettings', //lang.config.js 里面的语言键值
@@ -365,17 +441,17 @@ export default {
                             isMenu: true
                         },
                     },
-                    //会员管理--基础设置--实体卡管理
-                    entityCardControle: {
-                        path: '/memberManage/entityCard',
-                        name: 'entityCard',
-                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
-                        meta: {
-                            menuName: 'entityCard', //lang.config.js 里面的语言键值
-                            _name: 'basic-setting',
-                            rightPath: topMenuName + '.' + 'memberSetting',
-                        },
-                    },
+                    // //会员管理--基础设置--实体卡管理
+                    // entityCardControle: {
+                    //     path: '/memberManage/entityCard',
+                    //     name: 'entityCard',
+                    //     component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
+                    //     meta: {
+                    //         menuName: 'entityCard', //lang.config.js 里面的语言键值
+                    //         _name: 'basic-setting',
+                    //         rightPath: topMenuName + '.' + 'memberSetting',
+                    //     },
+                    // },
                     //会员管理--基础设置--实体卡管理--批量导入
                     importEntityCcard: {
                         path: '/memberManage/entityCard/import',
@@ -411,16 +487,27 @@ export default {
                     //         isMenu : true
                     //     },
                     // },
+                    //会员管理--会员类别设置
+                    categorySetting: {
+                        path: '/memberManage/category',
+                        name: 'memCardManagement',
+                        component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/categorySetting.vue'),
+                        meta: {
+                            menuName: 'memCardManagement', //lang.config.js 里面的语言键值
+                            _name: 'member-level',
+                            rightPath: topMenuName + '.' + 'memCardManagement',
+                            isMenu: true
+                        },
+                    },
                     levelSetting: {
                         //会员管理--会员级别
-                        path: '/memberManage/level',
+                        path: '/memberManage/category/level',
                         name: 'levelSetting',
                         component: () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/levelSetting.vue'),
                         meta: {
                             menuName: 'levelSetting', //lang.config.js 里面的语言键值
                             _name: 'member-level',
-                            rightPath: topMenuName + '.' + 'levelSetting',
-                            isMenu: true
+                            rightPath: topMenuName + '.' + 'memCardManagement',
                         },
                     },
                     growthSetting: {

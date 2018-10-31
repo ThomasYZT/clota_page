@@ -2,34 +2,46 @@
 
 <template>
     <div class="team-order-base-info">
-        <div class="title">团队订单基本信息</div>
+        <!--团队订单基本信息-->
+        <div class="title">{{$t('teamOrderBaseInfo')}}</div>
         <!--下单企业视图-->
         <ul class="order-detail" v-if="viewType === 'channel'">
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">支付状态：{{baseInfo.paymentStatus | contentFilter}}</li>
+                    <!--订单编号-->
+                    <li class="col">{{$t('orderNo')}}：{{baseInfo.orderNo | contentFilter}}</li>
+                    <!--下单时间-->
+                    <li class="col">{{$t('orderTime')}}：{{baseInfo.createdTime | contentFilter}}</li>
+                    <!--支付状态-->
+                    <li class="col">{{$t('paymentStatus')}}：{{$t(transPaymentStatus(baseInfo.paymentStatus)) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">支付方式：{{baseInfo.paymentType | contentFilter}} </li>
-                    <li class="col">支付时间：{{baseInfo.paymentTime | contentFilter}}</li>
-                    <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
+                    <!--支付方式-->
+                    <li class="col">{{$t('payType')}}：{{$t('payType.' + baseInfo.paymentType) | contentFilter}} </li>
+                    <!--支付时间-->
+                    <li class="col">{{$t('paymentTime')}}：{{baseInfo.paymentTime | contentFilter}}</li>
+                    <!--所属景区-->
+                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
-                    <li class="col">订单金额：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
+                    <!--发售机构-->
+                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
+                    <!--下单渠道-->
+                    <li class="col">{{$t('orderChannel')}}：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
+                    <!--订单金额-->
+                    <li class="col">{{$t('orderAmount')}}：{{baseInfo.orderAmount | moneyFilter |  contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">取票串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span> </li>
-                    <li class="col">游玩日期：{{baseInfo.originVisitDate | contentFilter}}</li>
+                    <!--取票串码-->
+                    <li class="col">{{$t('ticketGetterSN')}}：<span class="code">{{baseInfo.serialNo | contentFilter}}</span> </li>
+                    <!--游玩日期-->
+                    <li class="col">{{$t('playDate')}}：{{baseInfo.originVisitDate | contentFilter}}</li>
                 </ul>
             </li>
         </ul>
@@ -37,35 +49,48 @@
         <ul class="order-detail" v-else-if="viewType === 'scenic'">
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">支付状态：{{baseInfo.paymentStatus | contentFilter}}</li>
+                    <!--订单编号-->
+                    <li class="col">{{$t('orderNo')}}：{{baseInfo.orderNo | contentFilter}}</li>
+                    <!--下单时间-->
+                    <li class="col">{{$t('orderTime')}}：{{baseInfo.createdTime | contentFilter}}</li>
+                    <!--支付状态-->
+                    <li class="col">{{$t('paymentStatus')}}：{{$t(transPaymentStatus(baseInfo.paymentStatus)) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">支付方式：{{baseInfo.paymentType | contentFilter}} </li>
-                    <li class="col">支付时间：{{baseInfo.paymentTime | contentFilter}}</li>
-                    <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
+                    <!--支付方式-->
+                    <li class="col">{{$t('payType')}}：{{$t('payType.' + baseInfo.paymentType) | contentFilter}} </li>
+                    <!--支付时间-->
+                    <li class="col">{{$t('paymentTime')}}：{{baseInfo.paymentTime | contentFilter}}</li>
+                    <!--所属景区-->
+                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
-                    <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
+                    <!--发售机构-->
+                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
+                    <!--下单渠道-->
+                    <li class="col">{{$t('orderChannel')}}：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
+                    <!--下单企业-->
+                    <li class="col">{{$t('orderOrg')}}：{{baseInfo.channel | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单金额：{{baseInfo.orderAmount | moneyFilter | contentFilter}}</li>
-                    <li class="col">取票串码：<span class="code">{{baseInfo.serialNo | contentFilter}}</span> </li>
-                    <li class="col">游玩日期：{{baseInfo.originVisitDate | contentFilter}}</li>
+                    <!--订单金额-->
+                    <li class="col">{{$t('orderAmount')}}：{{baseInfo.orderAmount | moneyFilter | contentFilter}}</li>
+                    <!--取票串码-->
+                    <li class="col">{{$t('ticketGetterSN')}}：<span class="code">{{baseInfo.serialNo | contentFilter}}</span> </li>
+                    <!--游玩日期-->
+                    <li class="col">{{$t('playDate')}}：{{baseInfo.originVisitDate | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">短信发送状态：{{baseInfo.smsStatus | contentFilter}}</li>
+                    <!--短信发送状态-->
+                    <li class="col">{{$t('smsStatus')}}：{{$t(transSMSStatus(baseInfo.smsStatus)) | contentFilter}}</li>
                 </ul>
             </li>
         </ul>
@@ -74,37 +99,53 @@
         <ul class="order-detail" v-else-if="viewType === 'allocation'">
             <li class="row">
                 <ul class="list">
-                    <li class="col">订单编号：{{baseInfo.orderNo | contentFilter}}</li>
-                    <li class="col">下单时间：{{baseInfo.createdTime | contentFilter}}</li>
-                    <li class="col">支付状态：{{baseInfo.paymentStatus | contentFilter}}</li>
+                    <!--订单编号-->
+                    <li class="col">{{$t('orderNo')}}：{{baseInfo.orderNo | contentFilter}}</li>
+                    <!--下单时间-->
+                    <li class="col">{{$t('orderTime')}}：{{baseInfo.createdTime | contentFilter}}</li>
+                    <!--支付状态-->
+                    <li class="col">{{$t('paymentStatus')}}：{{$t(transPaymentStatus(baseInfo.paymentStatus)) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">支付方式：{{baseInfo.paymentType | contentFilter}} </li>
-                    <li class="col">支付时间：{{baseInfo.paymentTime | contentFilter}}</li>
-                    <li class="col">所属景区：{{baseInfo.scenic | contentFilter}}</li>
+                    <!--支付方式-->
+                    <li class="col">{{$t('payType')}}：{{$t('payType.' + baseInfo.paymentType) | contentFilter}} </li>
+                    <!--支付时间-->
+                    <li class="col">{{$t('paymentTime')}}：{{baseInfo.paymentTime | contentFilter}}</li>
+                    <!--所属景区-->
+                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">游玩日期：{{baseInfo.originVisitDate | contentFilter}}</li>
-                    <li class="col">发售机构：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">下单渠道：{{baseInfo.orderChannel | contentFilter}}</li>
+                    <!--游玩日期-->
+                    <li class="col">{{$t('playDate')}}：{{baseInfo.originVisitDate | contentFilter}}</li>
+                    <!--发售机构-->
+                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
+                    <!--下单渠道-->
+                    <li class="col">{{$t('orderChannel')}}：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">下单企业：{{baseInfo.channel | contentFilter}}</li>
+                    <!--下单企业-->
+                    <li class="col">{{$t('orderOrg')}}：{{baseInfo.channel | contentFilter}}</li>
                 </ul>
             </li>
         </ul>
 
-        <Button  type="primary" class="ivu-btn-108px" @click="reSendMsg">重发短信</Button>
+        <!--重发短信-->
+        <Button  v-if="canResendMsg" type="primary" class="ivu-btn-108px" @click="reSendMsg">{{$t('reSending')}}</Button>
+        <div class="audit-result">
+            <img :src="auditResultImg" alt="">
+        </div>
     </div>
 </template>
 
 <script>
+    import {transPaymentStatus,transSMSStatus} from '../../commFun';
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //基本信息
@@ -118,7 +159,14 @@
             'view-type' : {
                 type : String,
                 default : ''
-            }
+            },
+            //产品信息
+            'product-info-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
         },
         data() {
             return {}
@@ -128,21 +176,38 @@
              * 给导游重发短信
              */
             reSendMsg () {
-                ajax.post('reSendMsg',{
+                ajax.post('noticeGuidesAuditResult',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('发送成功');
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('sending')}));  // 发送成功
                     }else{
-                        this.$Message.error('发送失败');
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('sending')}));    // 发送失败
                     }
                 });
-            }
+            },
+            //支付状态过滤
+            transPaymentStatus : transPaymentStatus,
+            //短信发送状态
+            transSMSStatus : transSMSStatus
         },
         computed : {
             //是否可以重发短信
             canResendMsg () {
-
+                //景区下，审核成功，取票前可重发短信
+                return this.viewType === 'scenic' &&
+                    this.baseInfo.auditStatus === 'success' &&
+                    this.productInfoList.every(item => item.quantity > item.quantityPicked) ;
+            },
+            //审核结果图片
+            auditResultImg () {
+                if(this.baseInfo.auditStatus === 'success'){
+                    return require('../../../../assets/images/icon-audit-success.svg');
+                }else if(this.baseInfo.auditStatus === 'audit'){
+                    return require('../../../../assets/images/icon-wait-audit.svg');
+                }else{
+                    return require('../../../../assets/images/icon-audit-fail.svg');
+                }
             }
         }
     }
@@ -199,6 +264,14 @@
 
         .ivu-btn-108px{
             @include absolute_pos(absolute,20px,24px)
+        }
+
+        .audit-result{
+            @include absolute_pos(absolute,$right : 0,$bottom : 0);
+
+            img{
+                @include block_outline(100,100,false);
+            }
         }
     }
 </style>

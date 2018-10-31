@@ -2,10 +2,6 @@
 
 <template>
     <div class="entity-card-controle">
-        <bread-crumb-head
-            :locale-router="$t('cardManagement')"
-            :before-router-list="beforeRouterList">
-        </bread-crumb-head>
         <div class="content">
             <div class="btn-area">
                 <div class="query-params">
@@ -52,7 +48,7 @@
                 :show-pagination="true"
                 :page-size-d.sync="pageSize"
                 :total-count="totalCount"
-                :ofset-height="203"
+                :ofset-height="153"
                 @query-data="queryList">
                 <el-table-column
                     slot="column1"
@@ -90,28 +86,17 @@
 </template>
 
 <script>
-    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {cardHead} from './entityCardControlConfig';
     import ajax from '@/api/index.js';
     import importSingleCardInfo from './components/importSingleCardInfo';
     export default {
         components : {
-            breadCrumbHead,
             tableCom,
             importSingleCardInfo
         },
         data() {
             return {
-                //上级路由列表
-                beforeRouterList: [
-                    {
-                        name: 'basic-setting',
-                        router: {
-                            name: 'memberSetting'
-                        }
-                    }
-                ],
                 //表头配置
                 columns : cardHead,
                 //表格数据
@@ -208,6 +193,8 @@
 	@import '~@/assets/scss/base';
     .entity-card-controle{
         @include block_outline();
+        background: $color_fff;
+        border-radius: 4px;
 
         .content{
             @include block_outline($height : unquote('calc(100% - 50px)'));

@@ -10,94 +10,6 @@
             <Form ref="formDynamic" :model="formDynamic">
 
                 <div class="content-item">
-                    <div class="title">{{$t('memberIntegralSetting')}}</div><!--会员积分生效设置-->
-                    <div class="main">
-                        <RadioGroup v-model="settingData.scoreEffectiveMode.isIntegralType" vertical>
-                            <Radio label="immediately">
-                                <span>{{$t('effectAfterPayed')}}</span><!--付款成功后立即生效-->
-                            </Radio>
-                            <Radio label="checkout">
-                                <span>{{$t('effectAfterConsumption')}}</span><!--消费、核销成功后立即生效-->
-                            </Radio>
-                            <Radio label="checkout_after">
-                            <span :class="{'ivu-form-item-error': error.isNoIntegralTimeError}">{{$t('afterConsumption')}}<!--消费、核销成功后-->
-                                <Input v-model.trim="settingData.scoreEffectiveMode.isNoIntegralTime"
-                                       :disabled="settingData.scoreEffectiveMode.isIntegralType !== 'checkout_after' ? true : false"
-                                       @on-blur="checkInputBlurFunc(settingData.scoreEffectiveMode.isNoIntegralTime, 'isNoIntegralTimeError')"
-                                       type="text"
-                                       :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/>
-                                {{$t('effectAfterTime')}}</span><!--时后生效-->
-                                <div class="ivu-form-item-error-tip"
-                                     style="left: 153px;"
-                                     v-if="error.isNoIntegralTimeError">{{error.isNoIntegralTimeError}}</div>
-                            </Radio>
-                        </RadioGroup>
-                    </div>
-                </div>
-
-                <div class="content-item">
-                    <div class="title">{{$t('multiIntegralForBirth')}}</div><!--会员生日积分多倍积分-->
-                    <div :class="{'ivu-form-item-error': error.multipleError, 'main': true}">
-                        <i-switch v-model="settingData.scoreMultipleOnBirthday.isSwitch"></i-switch>
-                        <span class="text">{{$t('gainOnBirthday')}}<!--会员生日当天消费可获得-->
-                        <Input v-model.trim="settingData.scoreMultipleOnBirthday.multiple"
-                               :disabled="!settingData.scoreMultipleOnBirthday.isSwitch"
-                               @on-blur="checkInputBlurFunc(settingData.scoreMultipleOnBirthday.multiple, 'multipleError')"
-                               type="text"
-                               class="single-input"
-                               :placeholder="$t('inputField', {field: ''})"/>
-                        {{$t('timesIntegral')}}</span><!--倍积分-->
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 230px;"
-                             v-if="error.multipleError">{{error.multipleError}}</div>
-                    </div>
-                </div>
-
-                <div class="content-item">
-                    <div class="title">{{$t('integralValiditySet')}}</div><!--会员积分有效期设置-->
-                    <div class="main form-bottom">
-                        <RadioGroup v-model="settingData.scoreValidityPeriod.validityType"
-                                    vertical
-                                    :class="{'ivu-form-item-error': error.validityTimeError}">
-                            <Radio label="perpetual">
-                                <span>{{$t('permanentValidity')}}</span><!--永久有效-->
-                            </Radio>
-                            <Radio label="months_effective">
-                                <span>{{$t('gainIntegral')}}<!--获得积分-->
-                                    <Input v-model.trim="settingData.scoreValidityPeriod.validityTime"
-                                           :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false"
-                                           @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.validityTime, 'validityTimeError')"
-                                           type="text"
-                                           class="single-input"
-                                           :placeholder="$t('inputField', {field: ''})"/>
-                                    {{$t('invalidAfterMonths')}}</span><!--个月后失效，清除-->
-                            </Radio>
-                            <span class="ivu-form-item-error-tip"
-                                 style="left: 153px;left: 95px;top: 60px;"
-                                 v-if="error.validityTimeError">{{error.validityTimeError}}</span>
-                        </RadioGroup>
-                        <div class="check-group-wrap" :class="{'ivu-form-item-error': error.remindError}">
-                            <Checkbox v-model="settingData.scoreValidityPeriod.checked"
-                                      :disabled="settingData.scoreValidityPeriod.validityType !== 'months_effective' ? true : false">
-                            </Checkbox>{{$t('clearIntegral')}}<!--清除积分前-->
-                            <Input v-model.trim="settingData.scoreValidityPeriod.remind"
-                                   :disabled="!settingData.scoreValidityPeriod.checked"
-                                   @on-blur="checkInputBlurFunc(settingData.scoreValidityPeriod.remind, 'remindError')"
-                                   type="text"
-                                   class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
-                                <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
-                            <div class="ivu-form-item-error-tip"
-                                 style="left: 155px;"
-                                 v-if="error.remindError">{{error.remindError}}</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="content-item">
                     <div class="title">{{$t('memberCardValiditySet')}}</div><!--会员卡有效期设置-->
                     <div class="main margin-radio-group form-bottom">
                         <RadioGroup v-model="settingData.memberValidPeriod.type" vertical>
@@ -147,24 +59,25 @@
                     </div>
                 </div>
 
-                <div class="content-item">
-                    <div class="title">{{$t('invalidCouponRemind')}}</div><!--卡券过期提醒设置-->
-                    <div :class="{'ivu-form-item-error': error.dayError, 'main': true}">
-                        <i-switch v-model="settingData.notificationBeforeCouponExpire.isSwitch"></i-switch>
-                        <span class="text">{{$t('beforeInvalidCoupon')}}<!--卡券过期前-->
-                            <Input v-model.trim="settingData.notificationBeforeCouponExpire.day"
-                                   :disabled="!settingData.notificationBeforeCouponExpire.isSwitch"
-                                   @on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"
-                                   type="text"
-                                   class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
-                            <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
-                        </span>
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 145px;"
-                             v-if="error.dayError">{{error.dayError}}</div>
-                    </div>
-                </div>
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-item">-->
+                    <!--<div class="title">{{$t('invalidCouponRemind')}}</div>&lt;!&ndash;卡券过期提醒设置&ndash;&gt;-->
+                    <!--<div :class="{'ivu-form-item-error': error.dayError, 'main': true}">-->
+                        <!--<i-switch v-model="settingData.notificationBeforeCouponExpire.isSwitch"></i-switch>-->
+                        <!--<span class="text">{{$t('beforeInvalidCoupon')}}&lt;!&ndash;卡券过期前&ndash;&gt;-->
+                            <!--<Input v-model.trim="settingData.notificationBeforeCouponExpire.day"-->
+                                   <!--:disabled="!settingData.notificationBeforeCouponExpire.isSwitch"-->
+                                   <!--@on-blur="checkInputBlurFunc(settingData.notificationBeforeCouponExpire.day,'dayError')"-->
+                                   <!--type="text"-->
+                                   <!--class="single-input"-->
+                                   <!--:placeholder="$t('inputField', {field: ''})"/> {{$t('smsRemindsBeforeDays')}}，&lt;!&ndash;天短信提醒&ndash;&gt;-->
+                            <!--<span class="blue-color">{{$t('smsSetting')}}</span>&lt;!&ndash;短信设置&ndash;&gt;-->
+                        <!--</span>-->
+                        <!--<div class="ivu-form-item-error-tip"-->
+                             <!--style="left: 145px;"-->
+                             <!--v-if="error.dayError">{{error.dayError}}</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="content-item">
                     <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
@@ -180,19 +93,20 @@
                     </div>
                 </div>
 
-                <div class="content-item">
-                    <div class="title">{{$t('isReturnCoupon')}}</div><!--用户退款时卡券是否退还用户-->
-                    <div class="main">
-                        <RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>
-                            <Radio label="false">
-                                <span>{{$t('noReturnCoupon')}}</span><!--用户退款时卡券不退-->
-                            </Radio>
-                            <Radio label="true">
-                                <span>{{$t('returnCoupon')}}</span><!--用户退款时卡券退回用户会员卡中-->
-                            </Radio>
-                        </RadioGroup>
-                    </div>
-                </div>
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-item">-->
+                    <!--<div class="title">{{$t('isReturnCoupon')}}</div>&lt;!&ndash;用户退款时卡券是否退还用户&ndash;&gt;-->
+                    <!--<div class="main">-->
+                        <!--<RadioGroup v-model="settingData.handingWithScoreGrowthWhileRefund.coupon" vertical>-->
+                            <!--<Radio label="false">-->
+                                <!--<span>{{$t('noReturnCoupon')}}</span>&lt;!&ndash;用户退款时卡券不退&ndash;&gt;-->
+                            <!--</Radio>-->
+                            <!--<Radio label="true">-->
+                                <!--<span>{{$t('returnCoupon')}}</span>&lt;!&ndash;用户退款时卡券退回用户会员卡中&ndash;&gt;-->
+                            <!--</Radio>-->
+                        <!--</RadioGroup>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="content-item">
                     <div class="title">{{$t('modifyAccBalanceSetting')}}</div><!--修改会员储值、积分、虚拟账户余额设置-->
@@ -305,23 +219,6 @@
                 routerName: 'memberSetting',
                 //设置数据
                 settingData: {
-                    //积分生效设置
-                    scoreEffectiveMode: {
-                        isIntegralType: '',
-                        isNoIntegralTime: ''//number
-                    },
-                    //会员生日积分多倍积分
-                    scoreMultipleOnBirthday: {
-                        isSwitch: false,
-                        multiple: '',//number
-                    },
-                    //会员积分有效期设置
-                    scoreValidityPeriod: {
-                        validityType: '',
-                        validityTime: '',//number
-                        checked: false,
-                        remind: '',//number
-                    },
                     //会员卡有效期设置
                     memberValidPeriod: {
                         type: '',//类型
@@ -355,9 +252,6 @@
                 },
                 //输入框校验错误显示
                 error: {
-                    isNoIntegralTimeError: '',//会员积分生效设置
-                    multipleError: '',//会员生日积分多倍积分
-                    validityTimeError: '',//会员积分有效期设置
                     remindError: '',//会员积分有效期设置
                     vipValidityError: '',//会员卡有效期设置
                     vipValidityTimeError: '',//会员卡有效期设置
@@ -375,37 +269,6 @@
             }
         },
         watch: {
-
-            //积分生效设置
-            'settingData.scoreEffectiveMode.isIntegralType' : function (newVal, oldVal) {
-                if(newVal !== 'checkout_after'){
-                    this.error.isNoIntegralTimeError = '';
-                }
-            },
-
-            //会员生日积分多倍积分
-            'settingData.scoreMultipleOnBirthday.isSwitch' : function (newVal, oldVal) {
-                if(!newVal){
-                    this.error.multipleError = '';
-                }
-            },
-
-            //会员积分有效期设置
-            'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
-                if(newVal === 'perpetual'){
-                    this.settingData.scoreValidityPeriod.checked = false;
-                    this.error.validityTimeError = '';
-                    this.error.remindError = '';
-                }
-                if(newVal === 'months_effective'){
-                    this.settingData.scoreValidityPeriod.checked = true;
-                }
-            },
-            'settingData.scoreValidityPeriod.checked' : function (newVal, oldVal) {
-                if(!newVal){
-                    this.error.remindError = '';
-                }
-            },
 
             //会员卡有效期设置
             'settingData.memberValidPeriod.type' : function (newVal, oldVal) {
@@ -471,9 +334,6 @@
                             if(res.data.allowAdjustAccount){
                                 //处理数据
                                 let params = {
-                                    scoreEffectiveMode: JSON.parse(res.data.scoreEffectiveMode),
-                                    scoreMultipleOnBirthday: JSON.parse(res.data.scoreMultipleOnBirthday),
-                                    scoreValidityPeriod: JSON.parse(res.data.scoreValidityPeriod),
                                     memberValidPeriod: JSON.parse(res.data.memberValidPeriod),
                                     notificationBeforeCouponExpire: JSON.parse(res.data.notificationBeforeCouponExpire),
                                     handingWithScoreGrowthWhileRefund: JSON.parse(res.data.handingWithScoreGrowthWhileRefund),
@@ -521,15 +381,11 @@
 
                     let params = {
                         id: this.id,
-                        scoreEffectiveMode: JSON.stringify(setParam.scoreEffectiveMode),
-                        scoreMultipleOnBirthday: JSON.stringify(setParam.scoreMultipleOnBirthday),
-                        scoreValidityPeriod: JSON.stringify(setParam.scoreValidityPeriod),
                         memberValidPeriod: JSON.stringify(setParam.memberValidPeriod),
                         notificationBeforeCouponExpire: JSON.stringify(setParam.notificationBeforeCouponExpire),
                         handingWithScoreGrowthWhileRefund: JSON.stringify(setParam.handingWithScoreGrowthWhileRefund),
                         allowAdjustAccount: setParam.allowAdjustAccount,
                     };
-                    console.log(params)
                     this.basicSet(params);
 
                 }
@@ -551,25 +407,6 @@
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-                if(this.settingData.scoreEffectiveMode.isIntegralType === 'checkout_after' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreEffectiveMode.isNoIntegralTime,'isNoIntegralTimeError')){
-                    return false
-                }
-
-                if(this.settingData.scoreMultipleOnBirthday.isSwitch &&
-                    !this.checkInputBlurFunc(this.settingData.scoreMultipleOnBirthday.multiple,'multipleError')){
-                    return false
-                }
-
-                if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')){
-                    return false
-                }
-
-                if(this.settingData.scoreValidityPeriod.checked &&
-                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'remindError')){
-                    return false
-                }
 
                 if(this.settingData.memberValidPeriod.type === 'vipValidityType' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity,'vipValidityError')){
@@ -743,7 +580,7 @@
                 }
 
                 //校验表情符号
-                if (val && val.isUtf16()) {
+                if (val && String(val).isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
                     return false
                 } else {

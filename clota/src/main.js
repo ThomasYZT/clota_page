@@ -15,6 +15,7 @@ import './assets/theme/iviewTheme/index.less';
 import 'klwk-ui/src/lib/css/index.scss';
 import './assets/theme/elementTheme/index.scss';
 import './assets/css/iconfont.css';
+import '@/assets/scss/_common.scss';
 import eleLocale from 'element-ui/lib/locale';
 import eleEnLang from 'element-ui/lib/locale/lang/en';
 import eleZhCnLang from 'element-ui/lib/locale/lang/zh-CN';
@@ -106,7 +107,7 @@ new Vue({
     router,
     i18n,
     store,
-    components: {App},
+    components: { App },
     computed: {
         langCode(){
             return store.state.lang;
@@ -132,21 +133,18 @@ new Vue({
     }
 });
 
+function formatComponentName(vm) {
+    if (vm.$root === vm) return 'root';
 
+    var name = vm._isVue ? (vm.$options && vm.$options.name) || (vm.$options && vm.$options._componentTag) : vm.name;
+    return (name ? 'component <' + name + '>' : 'anonymous component') + (vm._isVue && vm.$options && vm.$options.__file ? ' at ' + (vm.$options && vm.$options.__file) : '');
+
+}
 //使用fundeBug实时监测代码运行错误，测试时开启,生成环境开启
-if(process.NODE_ENV === 'production'){
+if(DEBUGGER){
 
     let fundebug = require("fundebug-javascript");
     fundebug.apikey = "7a0ef57656b2a4b59207cf9410c7edc5d9c40db437c42b5d3c825999d2cebf30";
-
-    function formatComponentName(vm)
-    {
-        if (vm.$root === vm) return 'root';
-
-        var name = vm._isVue ? (vm.$options && vm.$options.name) || (vm.$options && vm.$options._componentTag) : vm.name;
-        return (name ? 'component <' + name + '>' : 'anonymous component') + (vm._isVue && vm.$options && vm.$options.__file ? ' at ' + (vm.$options && vm.$options.__file) : '');
-
-    }
 
     Vue.config.errorHandler = function(err, vm, info)
     {

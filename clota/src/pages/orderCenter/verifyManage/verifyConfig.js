@@ -2,57 +2,54 @@
 //以取票串码查询的结果列表表头
 export const orderTicketHead = [
     {
-        title: '订单号',
+        title: 'orderId',   // 订单号
         width: 215,
         field: 'orderNo'
     },
     {
-        title: '游玩日期',
-        minWidth: 190,
+        title: 'playDate',  // 游玩日期
+        minWidth: 120,
         field: 'visitDate'
     },
     {
-        title: '下单时间',
+        title: 'orderTime',  // 下单时间
         width: 190,
         field: 'orderTime'
     },
     {
-        title: '所属景区',
+        title: 'scenePlace',  // 所属景区
         width: 200,
         field: 'scenic'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',  // 下单企业
         width: 200,
         field: 'channel'
     },
     {
-        title: '下单渠道',
+        title: 'orderChannel',  // 下单渠道
         width: 130,
         enWidth : 180,
         field: 'orderChannel'
     },
     {
-        title: '第三方订单号',
+        title: 'thirdOrderNo',    // 第三方订单号
         width: 200,
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称|预定数量',
-        minWidth: 180,
-        enWidth : 200,
+        title: 'pNameAndReverseNum',     // 产品名称|预定数量
+        width: 200,
         field: 'productName|quantity'
     },
     {
-        title: '产品单价|小计金额',
-        width: 180,
-        enWidth : 200,
+        title: 'unitPriceAndSubtotal',     // 产品单价|小计金额
+        width: 230,
         field: 'price|amount'
     },
     {
-        title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        title: 'visitorAndMobilePhone',    // 游客|手机号
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     /*{
@@ -62,142 +59,141 @@ export const orderTicketHead = [
         field: 'verifyStatus'
     },*/
     {
-        title: '取票串码',
-        minWidth: 150,
+        title: 'ticketGetterSN',      // 取票串码
+        minWidth: 200,
         field: 'serialNo'
     },
     {
-        title: '取票数量',
-        width: 130,
+        title: 'ticketPickNum',      // 取票数量
+        width: 200,
         field: 'quantityPicked'
     },
     {
-        title: '核销数量',
-        width: 130,
+        title: 'verificationNum',      // 核销数量
+        width: 200,
         field: 'quantityVerified'
     },
     {
-        title: '退票数量',
-        width: 130,
+        title: 'quantityRefunded',      // 退票数量
+        width: 200,
         field: 'quantityRefunded'
     },
     {
-        title: '改签数量',
-        width: 130,
+        title: 'quantityRescheduled',      // 改签数量
+        width: 200,
         field: 'quantityRescheduled'
     },
     {
-        title: '短信发送状态',
+        title: 'smsStatus',    // 短信发送状态
         width: 130,
         enWidth : 180,
         field: 'smsStatus'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',      // 同步状态
         width: 130,
         enWidth : 180,
         field: 'syncStatus'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 100,
+        enWidth: 120,
     }
 ];
 
 //以核销串码查询的结果列表表头
 export const orderVerifyHead = [
     {
-        title: '订单号',
+        title: 'orderId',
         width: 215,
         field: 'orderNo'
     },
     {
-        title: '产品明细编号',
+        title: 'productDetailNo',    // 产品明细编号
         width: 200,
         field: 'orderDetailNo'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         minWidth: 190,
         field: 'visitDate'
     },
     {
-        title: '下单时间',
+        title: 'orderTime',
         width: 190,
         field: 'orderTime'
     },
     {
-        title: '所属景区',
+        title: 'scenePlace',    // 所属景区
         width: 200,
         field: 'scenic'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',
         width: 200,
         field: 'channel'
     },
     {
-        title: '下单渠道',
+        title: 'orderChannel',
         width: 130,
         enWidth : 180,
         field: 'orderChannel'
     },
     {
-        title: '第三方订单号',
+        title: 'thirdOrderNo',
         width: 200,
         field: 'thirdOrderNo'
     },
     {
-        title: '产品名称|预定数量',
-        width: 180,
-        enWidth : 200,
+        title: 'pNameAndReverseNum',
+        width: 200,
         field: 'productName|quantity'
     },
     {
-        title: '产品单价|小计金额',
-        width: 180,
-        enWidth : 200,
+        title: 'unitPriceAndSubtotal',
+        width: 230,
         field: 'price|amount'
     },
     {
-        title: '游客|手机号',
-        width: 130,
-        enWidth : 150,
+        title: 'visitorAndMobilePhone',
+        width: 200,
         field: 'visitorName|phoneNumber'
     },
     {
-        title: '串码',
+        title: 'SN',
         minWidth: 150,
         field: 'serialNo'
     },
     {
-        title: '取票状态',
+        title: 'takeTicketStatus',      // 取票状态
         width: 130,
         field: 'pickStatus'
     },
     {
-        title: '核销状态',
+        title: 'verifyStatus',      // 核销状态
         width: 130,
         field: 'verifyStatus'
     },
     {
-        title: '退票状态',
+        title: 'refundStatus',      // 退票状态
         width: 130,
         field: 'refundStatus'
     },
     {
-        title: '改签状态',
+        title: 'rescheduleStatus',      // 改签状态
         width: 130,
         field: 'rescheduleStatus'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',      // 同步状态
         width: 130,
         enWidth : 180,
         field: 'syncStatus'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 100,
+        enWidth: 120,
     }
 ];

@@ -11,7 +11,7 @@
         class="product-err"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('提示')}}</span>
+            <span class="title">{{$t('notice')}}</span>
         </div>
         <div class="targe-body">
             <ul class="pro-list">
@@ -106,6 +106,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: auto;
 
             .pro-list{
                 max-width: 100%;

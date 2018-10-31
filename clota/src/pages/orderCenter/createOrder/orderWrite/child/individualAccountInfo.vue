@@ -4,18 +4,21 @@
     <div class="account-money-info">
         <div class="content">
             <div class="account-left">
-                <span class="label">账户可用额度：</span>
+                <!--账户可用额度-->
+                <span class="label">{{$t('accountUsableAmount')}}：</span>
                 <span class="value">{{accountInfo.validatMoney | moneyFilter | contentFilter}}</span>
-                <span class="warning-label" v-if="limitEnough">可用额度不足！</span>
+                <!--可用额度不足-->
+                <span class="warning-label" v-if="limitEnough">{{$t('notEnoughAvailableAmount')}}！</span>
             </div>
             <div class="account-right">
-                <span class="label">订单总金额：</span>
+                <!--订单总金额-->
+                <span class="label">{{$t('orderTotalAmount')}}：</span>
                 <span class="value">{{accountInfo.totalPrice | moneyFilter | contentFilter}}</span>
             </div>
             <Button type="warning"
                     :disabled="limitEnough"
                     class="ivu-btn-108px"
-                    @click="payOrder">付款</Button>
+                    @click="payOrder">{{$t('payment')}}</Button><!--付款-->
         </div>
     </div>
 </template>

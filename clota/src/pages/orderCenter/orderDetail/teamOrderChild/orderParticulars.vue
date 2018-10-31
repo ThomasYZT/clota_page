@@ -2,36 +2,39 @@
 
 <template>
     <div class="order-particular">
-        <div class="title">订单明细信息</div>
+        <div class="title">{{$t('orderDetailInformation')}}</div>
         <Form ref="formInline" :model="formData" :rules="ruleInline" inline>
-            <FormItem prop="user" label="产品名称" :label-width="80">
+            <FormItem prop="user" :label="$t('productName')" :label-width="80">
                 <Select v-model="formData.productId"
                         style="width: 180px"
                         @on-change="queryOrderTicketDetail">
                     <Option v-for="item in productList"
                             :key="item.value"
                             :value="item.value">
-                        {{item.label}}
+                        {{$t(item.label)}}
                     </Option>
                 </Select>
             </FormItem>
-            <FormItem prop="user" label="是否取票" :label-width="80">
+            <!--是否取票-->
+            <FormItem prop="user" :label="$t('whetherPickTicket')" :label-width="80">
                 <Select v-model="formData.pickStatus"
                         style="width: 180px"
                         @on-change="queryOrderTicketDetail">
-                    <Option value="true">已取票</Option>
-                    <Option value="false">未取票</Option>
+                    <Option value="true">{{$t('haveTickets')}}</Option><!--已取票-->
+                    <Option value="false">{{$t('noHaveTickets')}}</Option><!--未取票-->
                 </Select>
             </FormItem>
-            <FormItem prop="user" label="关键词" :label-width="80">
+            <!--关键词-->
+            <FormItem prop="user" :label="$t('keywords')" :label-width="80">
+                <!--请输入游客姓名/手机号码/核销串码-->
                 <Input type="text"
                        v-model.trim="formData.keyword"
-                       placeholder="请输入游客姓名/手机号码/核销串码"
+                       :placeholder="$t('queryByVerifySN')"
                        style="min-width: 180px;max-width: 280px" />
             </FormItem>
             <FormItem prop="user" :label-width="10">
-                <Button type="primary" class="ivu-btn-90px" @click="queryOrderTicketDetail">搜索</Button>
-                <Button type="ghost" class="ivu-btn-90px" @click="reset">重置</Button>
+                <Button type="primary" class="ivu-btn-90px" @click="queryOrderTicketDetail">{{$t('searching')}}</Button>
+                <Button type="ghost" class="ivu-btn-90px" @click="reset">{{$t('reset')}}</Button>
             </FormItem>
         </Form>
         <table-com
@@ -137,7 +140,7 @@
                         value : item.productId
                     }
                 }),[{
-                    label : '全部',
+                    label : 'all',
                     value : 'all'
                 }]);
             }

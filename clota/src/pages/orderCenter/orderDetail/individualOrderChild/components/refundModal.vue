@@ -4,22 +4,23 @@
 -->
 <template>
     <Modal v-model="visible"
-           title="申请退票"
+           :title="$t('ApplyForRefund')"
+           class-name="vertical-center-modal"
            width="420">
 
         <Form :label-width="150"
               label-position="right">
-            <FormItem label="申请退票数量">
+            <FormItem :label="$t('ApplyForRefundNum')">
                 {{num}}
             </FormItem>
-            <FormItem label="退票手续费">
+            <FormItem :label="$t('cancellationCharge')">
                 {{fee | moneyFilter}}
             </FormItem>
         </Form>
 
         <div class="btn-wrapper" slot="footer">
-            <Button class="btn-88px" type="primary" @click="save">确定</Button>
-            <Button class="btn-88px" type="default" @click="toggle">取消</Button>
+            <Button class="btn-88px" type="primary" @click="save">{{$t('confirm')}}</Button>
+            <Button class="btn-88px" type="default" @click="toggle">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -59,6 +60,7 @@
                     this.chosedData = [];
                     this.num = 0;
                     this.baseInfo = {};
+                    this.orderTicketIds = '';
                 }
                 this.visible = !this.visible;
             },
@@ -66,13 +68,11 @@
              * 获取退票手续费
              */
             getFee(chosedData) {
-                chosedData.forEach(item => {
-                    this.orderTicketIds += item.id + ',';
-                });
-
+                this.orderTicketIds = chosedData.map(item => item.id).join(',');
                 ajax.post('getRefundProcedureFee', {
                     orderProductId: chosedData[0].orderProductId,
-                    orderTicketIds: this.orderTicketIds
+                    orderTicketIds: this.orderTicketIds,
+                    orderId: this.baseInfo.orderId,
                 }).then(res => {
                     if(res.success) {
                         this.fee = res.data;
@@ -89,6 +89,15 @@
                     visitorProductId: this.baseInfo.visitorProductId,
                     productId: this.baseInfo.productId,
                     reqOrderTicketIds: this.orderTicketIds,
+                }).then(res => {
+                    if(res.success) {
+                        this.$Message.success(this.$t('ApplicationForRefundSuccess'));
+                        this.toggle();
+                        this.$emit('fresh-data');
+                    }else {
+                        this.$Message.error(this.$t('ApplicationForRefundFail'));
+                        this.toggle();
+                    }
                 })
             }
         }

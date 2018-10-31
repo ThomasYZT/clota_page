@@ -3,22 +3,22 @@
 export const tourColumnData = [
     {},
     {
-        title: '导游姓名',
+        title: 'tourGuideName',     // 导游姓名
         minwidth: 200,
         field: 'staffName'
     },
     {
-        title: '身份证号',
+        title: 'identityNo',      // 身份证号
         minwidth: 200,
         field: 'documentNo'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',
         width: 160,
         field: 'phoneNumber'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 130,
     },
 ];
@@ -27,17 +27,17 @@ export const tourColumnData = [
 export const driverColumnData = [
     {},
     {
-        title: '姓名',
+        title: 'name',
         minwidth: 200,
         field: 'staffName'
     },
     {
-        title: '车牌号',
+        title: 'licence',   // 车牌号
         minwidth: 200,
         field: 'documentNo'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 130,
     },
 ];

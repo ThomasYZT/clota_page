@@ -2,7 +2,7 @@
     <!--重置密码-->
     <Modal
         v-model="visible"
-        :title="'重置密码'"
+        :title="$t('resetPsw')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -16,16 +16,16 @@
                     <span>{{formData.nickName | contentFilter}}</span>
                 </Form-item>
                 <!--登录名-->
-                <Form-item :label="$t('登录名')" prop="">
+                <Form-item :label="$t('loginName')" prop="">
                     <span>{{formData.loginName | contentFilter}}</span>
                 </Form-item>
                 <!--新密码-->
-                <Form-item :label="$t('新密码')" prop="password">
-                    <Input type="password" v-model.trim="formData.password" :placeholder="$t('inputField', {field: '密码'})" />
+                <Form-item :label="$t('newPassword')" prop="password">
+                    <Input type="password" v-model.trim="formData.password" :placeholder="$t('inputField', {field: $t('password')})" />
                 </Form-item>
                 <!--确认新密码-->
-                <Form-item :label="$t('确认新密码')" prop="rePassword">
-                    <Input type="password" v-model.trim="formData.rePassword" :placeholder="$t('请再次输入密码')" />
+                <Form-item :label="$t('confirmNewPassword')" prop="rePassword">
+                    <Input type="password" v-model.trim="formData.rePassword" :placeholder="$t('inputPasswordAgain')" />
                 </Form-item>
             </Form>
 
@@ -63,7 +63,7 @@
                 // 校验再次输入的密码是否与新密码相同
                 isEqNewPwd: (rule, value, callback) => {
                     if (value != self.formData.password) {
-                        callback(new Error( this.$t('再次输入的密码与新密码不同') ));    // 输入的密码与新密码不同
+                        callback(new Error( this.$t('paswordMustBeEqual') ));    // 输入的密码与新密码不同
                     } else {
                         callback();
                     }
@@ -77,11 +77,11 @@
                 //校验规则
                 ruleValidate: {
                     password: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('新密码')}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('newPassword')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     rePassword: [
-                        { required: true, message: this.$t('请再次输入密码'), trigger: 'blur' },
+                        { required: true, message: this.$t('inputPasswordAgain'), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMethod.isEqNewPwd, trigger: 'blur' },
                     ],
@@ -129,11 +129,11 @@
                 params.password = MD5(params.password).toString();
                 ajax.post('resetAccountPassword', params).then((res) => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('resetPsw')}));
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('resetPsw')}));
                     }
                 });
             },

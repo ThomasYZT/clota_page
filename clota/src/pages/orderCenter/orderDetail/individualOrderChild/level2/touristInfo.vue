@@ -4,19 +4,19 @@
 -->
 <template>
     <div class="individual-order-base-info">
-        <div class="title">游客信息</div>
+        <div class="title">{{$t('touristInfo')}}</div>
         <!--下单企业视图-->
         <ul class="order-detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">游客姓名：{{visitor.visitorName | contentFilter}}</li>
-                    <li class="col">手机号：{{visitor.phoneNumber | contentFilter}}</li>
+                    <li class="col">{{$t('touristName')}}：{{visitor.visitorName | contentFilter}}</li>
+                    <li class="col">{{$t('mobilePhone')}}：{{visitor.phoneNumber | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">证件类型：{{cardType | contentFilter}}</li>
-                    <li class="col">证件号码：{{cardNum | contentFilter}} </li>
+                    <li class="col">{{$t('credentialsType')}}：{{$t(cardType) | contentFilter}}</li>
+                    <li class="col">{{$t('IdentificationNumber')}}：{{cardNum | contentFilter}} </li>
                 </ul>
             </li>
         </ul>
@@ -29,35 +29,30 @@
         props: {
             visitor: {
                 type: Object,
-                default: {}
+                default() {
+                    return {};
+                }
             }
         },
         computed: {
             //证件类型
             cardType() {
                 if(Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
-                    console.log(this.visitor)
                     let type = JSON.parse(this.visitor.documentInfo);
                     if(type.length != 0){
                         switch (type[0].type) {
                             case 'identity':
-                                return '身份证';
-                                break;
+                                return 'identity';
                             case 'passport':
-                                return '护照';
-                                break;
+                                return 'passport';
                             case 'driver':
-                                return '驾驶证';
-                                break;
+                                return 'driverLisence';
                             case 'officer':
-                                return '军官证';
-                                break;
+                                return 'officer';
                             case 'police':
-                                return '警官证';
-                                break;
+                                return 'police';
                             case 'license':
-                                return '车牌号';
-                                break;
+                                return 'licence';
                         }
                     } else {
                         return ''

@@ -7,27 +7,27 @@ export const smsTplHead = [
         field: 'smsCode'
     },
     {
-        title: '模板名称',
+        title: 'templateName',
         minWidth: 150,
         field: 'templetName'
     },
     {
-        title: '模板类型',
+        title: 'templateType',
         minWidth: 100,
         field: 'templetType'
     },
     {
-        title: '模板内容',
+        title: 'templateContent',
         minWidth: 220,
         field: 'templetContent'
     },
     {
-        title: '是否内置',
+        title: 'isBuiltIn',
         minWidth: 90,
         field: 'isBuiltIn'
     },
     {
-        title: '创建时间',
+        title: 'createdTime',
         minWidth: 180,
         field: 'createdTime'
     },

@@ -21,6 +21,15 @@
                      v-else>
                     <Button type="default" @click="cancelEdit" >{{$t("giveUpModify")}}</Button>
                 </div>
+
+                <i-row class="first-row">
+                    <i-col span="10">
+                        <Form-item :label="$t('distributeName')+'：'" prop="name"><!--分销名称-->
+                            <Input :disabled="!editable"  v-model="formData.name" :placeholder="$t('distributeName')"></Input>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+
                 <!-- 我的分销单价 -->
                 <div class="divider-header">
                     <span>{{$t('mySalePrice')}}</span>
@@ -31,7 +40,7 @@
                         v-if="detail && detail.productList"
                         :table-com-min-height="260"
                         :column-data="detailParentDistributePriceConfig"
-                        :table-data="info.policyItems"
+                        :table-data="info.parentAllocationProductList"
                         :border="false">
                         <el-table-column
                             slot="column0"
@@ -74,7 +83,7 @@
                             :min-width="120"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                                {{scope.row.settlePrice | moneyFilter}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -89,6 +98,7 @@
                             </template>
                         </el-table-column>
                     </table-com>
+                    <span v-if="isLossTipShow" class="loss-tip">{{this.$t('maybeLoss')}}</span>
                 </Form-item>
 
                 <!-- 设置我的销售渠道 -->
@@ -107,6 +117,22 @@
                         :border="false"
                         :selectable="selectable"
                         @selection-change="colomnSelect($event)">
+                        <el-table-column
+                            slot="column1"
+                            slot-scope="row"
+                            :label="row.title"
+                            show-overflow-tooltip
+                            :min-width="120">
+                            <template slot-scope="scope">
+                                <span v-for="(item, index) in scope.row.channelModels"
+                                      class="channel"
+                                      :class="{disable: item.status !== 'valid'}"
+                                      :key="index">
+                                    {{item.channelName}}
+                                    <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
+                                </span>
+                            </template>
+                        </el-table-column>
                     </table-com>
                 </Form-item>
                 <Form-item prop="groupIds"
@@ -120,6 +146,22 @@
                         :border="false"
                         :selectable="selectDisable"
                         @selection-change="colomnSelect($event)">
+                        <el-table-column
+                            slot="column1"
+                            slot-scope="row"
+                            :label="row.title"
+                            show-overflow-tooltip
+                            :min-width="120">
+                            <template slot-scope="scope">
+                                <span v-for="(item, index) in scope.row.channelModels"
+                                      class="channel"
+                                      :class="{disable: item.status !== 'valid'}"
+                                      :key="index">
+                                    {{item.channelName}}
+                                    <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
+                                </span>
+                            </template>
+                        </el-table-column>
                     </table-com>
                 </Form-item>
             </Form>
@@ -138,10 +180,10 @@
 
 <script>
     import ajax from '@/api/index';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
     import tipModal from '../../components/tipModal';
-    import {saleChannelColumn, detailParentDistributePriceConfig} from '../child/detailConfig';
+    import { saleChannelColumn, detailParentDistributePriceConfig } from '../child/detailConfig';
     export default {
         components: {
             tableCom,
@@ -154,16 +196,17 @@
                     if(value.length){
                         value.forEach((item) => {
                             if(item.price === ''){
-                                callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
+                                callback(new Error(this.$t('errorEmpty', { msg: this.$t('mySalePrice') })));
                             }else {
                                 if(validator.isNumber(item.price)) {
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
-                                        callback(new Error(this.$t('maybeLoss')));
+                                        this.isLossTipShow = true;
+                                        callback();
                                     } else {
                                         callback();
                                     }
                                 } else {
-                                    callback(this.$t('numError',{field : this.$t('mySalePrice')}));
+                                    callback(this.$t('numError',{ field : this.$t('mySalePrice') }));
                                 }
 
                             }
@@ -190,13 +233,13 @@
                 //表达验证
                 ruleValidate: {
                     name: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('distributeName')}), trigger: 'blur' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('distributeName') }), trigger: 'blur' },     // 不能为空
                     ],
                     productPrices: [
                         { validator: validateMethod.productPrice, trigger: 'blur' },     // 不能为空
                     ],
                     groupIds: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleChannels')}), trigger: 'blur' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('saleChannels') }), trigger: 'blur' },     // 不能为空
                     ]
                 },
                 //分销详情数据 --接口数据
@@ -210,7 +253,9 @@
                 //已选中的渠道组
                 selectedRow: [],
                 //是否处于编辑状态
-                editable: false
+                editable: false,
+                //是否显示亏损提示
+                isLossTipShow: false
 
             }
         },
@@ -228,7 +273,6 @@
                     this.formData.groupIds = this.detail.groupIds;
                     //获取模态框数据
                     this.getData();
-                    console.log(this.detail,"this.detail");
                 }else {
                     //关闭模态框
                     this.$refs.policyform.resetFields();
@@ -251,7 +295,7 @@
              */
             async getData(){
                 //获取分销详情数据
-                await ajax.post('getPolicyInfo', {
+                await ajax.post('getPolicyAllocationInfo', {
                     allocationId: this.detail.listItem.allocationId
                 }).then((res) => {
                     if(res.success) {
@@ -259,12 +303,16 @@
 
                         //初始化产品分销单价数据
                         this.detail.productList.forEach((item,index) => {
-                            let _obj = {};
-                            _obj.productId = item.productId;
-                            _obj.price = item.settlePrice;
-                            this.formData.productPrices.push(_obj);
+                            this.info.parentAllocationProductList.forEach((pitem, pindex) => {
+                                if(index === pindex) {
+                                    let _obj = {};
+                                    _obj.productId = item.productId;
+                                    _obj.price = item.settlePrice;
+                                    _obj.settlePrice = pitem.settlePrice;
+                                    this.formData.productPrices.push(_obj);
+                                }
+                            })
                         });
-
                         //关闭模态框
                         this.show = !this.show;
                     }
@@ -276,22 +324,28 @@
                     if(res.success) {
                         // 设置临时数据
                         this.tempData = res.data;
-                    }
-                });
-                //获取已选择销售渠道组数据接口
-                await ajax.post('queryHaveAllocationSaleGroups',{
-                    allocationId: this.detail.listItem.allocationId
-                }).then(res => {
-                    if(res.success) {
-                        //
-                        this.haveSaleGroups = res.data;
+
+                        //已选择的销售渠道组数据
+                        this.haveSaleGroups = this.detail.haveSaleGroups;
+
+                        //过滤没有销售渠道的销售组
+                        for(let i=0,len=this.tempData.length; i<len; i++) {
+                            if(this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
+                                this.tempData.splice(i,1);
+                                len--;
+                                i--;
+                                continue;
+                            }
+                        }
 
                         //设置销售渠道组列表数据
                         this.saleGroupList = this.tempData;
 
                         //设置已选择的销售渠道组
                         let _channels = this.saleGroupList;
-                        let _chosedChannels = this.detail.groupIds.split(',');
+                        let _chosedChannels = this.haveSaleGroups.map((item) => {
+                            return item.groupId;
+                        });
                         for(let i=0,len=_channels.length; i<len; i++) {
                             for(let j=0,jlen=_chosedChannels.length; j<jlen; j++) {
                                 if(_channels[i].id === _chosedChannels[j]) {
@@ -302,17 +356,19 @@
                                 }
                             }
                         }
+
                         this.$nextTick(() => {
                             this.selectedRow.forEach((item) => {
                                 this.$refs.multipleTable.toggleRowSelection(item.item, true);
                                 this.$refs.multipleTable1.toggleRowSelection(item.item, true);
                             });
                         });
+
                         //去除其他分销选择过的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
                                 if(len > 0 && jlen > 0) {
-                                    if(this.haveSaleGroups[j].id === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
+                                    if(this.haveSaleGroups[j].groupId === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
                                         this.haveSaleGroups.splice(j,1);
                                         j--;
                                         jlen--;
@@ -336,7 +392,7 @@
                     allocationId: this.detail.allocationId
                 }).then((res) => {
                      if(res.success) {
-                        this.$Message.success(this.$t('successTip',{tip: this.$t('delete')}));
+                        this.$Message.success(this.$t('successTip',{ tip: this.$t('delete') }));
                         this.toggle();
                         this.$emit('refresh')
                     }
@@ -356,7 +412,7 @@
                             groupIds: this.formData.groupIds
                         }).then((res) => {
                             if(res) {
-                                this.$Message.success(this.$t('successTip',{tip: this.$t('modify')}));
+                                this.$Message.success(this.$t('successTip',{ tip: this.$t('modify') }));
                                 this.toggle();
                                 this.$emit('refresh')
                             }
@@ -373,6 +429,12 @@
                 this.formData.groupIds = "";
                 data.forEach((item) => {
                     this.formData.groupIds += item.id + ',';
+
+                    item.channelModels.forEach(channel => {
+                        if(channel.channelName === this.detail.parentDistributor) {
+                            this.isTipShow = true;
+                        }
+                    });
                 });
             },
             /**
@@ -528,6 +590,24 @@
             /deep/ .ivu-btn.ivu-btn-error {
                 background-color: #EB6751;
             }
+        }
+
+        .loss-tip {
+            color: $color_red;
+            font-size: 12px;
+        }
+
+        .channel {
+            span {
+                margin-right: 13px;
+            }
+
+            span.disable {
+                letter-spacing: -1px;
+            }
+        }
+        .disable {
+            color: $color_red;
         }
     }
 

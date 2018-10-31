@@ -11,14 +11,14 @@
         class="product-err"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('提示')}}</span>
+            <span class="title">{{$t('notice')}}</span>
         </div>
         <div class="target-body">
             <ul class="pro-list">
                 <li v-for="item in leftProductInfo"
                     :key="item.productId"
-                    v-w-title="`${item.productName}产品还剩余${item.leftNum}张未分配给游客。`"
-                    class="detail">{{item.productName}}产品还剩余{{item.leftNum}}张未分配给游客。</li>
+                    v-w-title="$t('productLeftTip',{productName : item.productName,num : item.leftNum})"
+                    class="detail">{{$t('productLeftTip',{productName : item.productName,num : item.leftNum})}}</li>
                 <li class="hint">
                     <Icon type="information-circled"></Icon>
                 </li>

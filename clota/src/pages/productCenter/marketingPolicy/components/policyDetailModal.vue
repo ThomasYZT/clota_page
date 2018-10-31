@@ -104,7 +104,7 @@
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
-                                <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">
+                                <div v-w-title="`${detail.productPolicy.playRuleModel.startTime}~${detail.productPolicy.playRuleModel.endTime}`">
                                     {{detail.productPolicy.playRuleModel.startTime}}~{{detail.productPolicy.playRuleModel.endTime}}
                                 </div>
                             </Form-item>
@@ -164,7 +164,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                            {{scope.row.stockNum | contentFilter}}
                         </template>
                     </el-table-column>
                 </table-com>
@@ -176,6 +176,7 @@
 
                 <h3 class="table-title"><span>{{$t('returnAndAlterRule')}}：</span> {{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</h3>
                 <table-com
+                    v-if="detail.productPolicy.returnRuleModel.type !== 'notAllow'"
                     :table-com-min-height="260"
                     :column-data="refundColumn"
                     :table-data="detail.productPolicy.returnRuleModel.rules"
@@ -198,25 +199,28 @@
                 <!--改签规则-->
                 <br/>
                 <div class="line" v-if="detail.productPolicy && detail.productPolicy.alterRuleModel">
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('alterRule')+'：'"><!--改签规则-->
-                                <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
-                                <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="24">
-                            <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
-                                <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
+                   <Form :label-width="120"
+                         label-position="left">
+                       <i-row>
+                           <i-col span="12">
+                               <Form-item label-position="left" :label="$t('alterRule')+'：'"><!--改签规则-->
+                                   <div v-w-title="$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')})">{{$t(detail.productPolicy.alterRuleModel.type,{msg: $t('alter')}) | contentFilter}}</div>
+                               </Form-item>
+                           </i-col>
+                           <i-col span="12">
+                               <Form-item v-if="detail.productPolicy.alterRuleModel.type !== 'notAllow'" :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                                   <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
+                               </Form-item>
+                           </i-col>
+                       </i-row>
+                       <i-row>
+                           <i-col span="24">
+                               <Form-item :label="$t('buyTicketNotes')+'：'"><!--购票须知-->
+                                   <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
+                               </Form-item>
+                           </i-col>
+                       </i-row>
+                   </Form>
                 </div>
             </Form>
         </div>
@@ -230,7 +234,7 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
-    import {productColumn, refundColumn} from '../child/detailConfig'
+    import { productColumn, refundColumn } from '../child/detailConfig'
     export default {
         components: {
             tableCom
@@ -259,7 +263,11 @@
                 ajax.post('getPolicyInfo', {
                     allocationId: this.listItem.allocationId
                 }).then((res) => {
-                    this.detail = res.data ? res.data : {};
+                    if(res.success) {
+                        this.detail = res.data ? res.data : {};
+                    } else {
+                        this.detail = {};
+                    }
                     this.detail.scenicName = this.listItem.scenicName;
                     this.detail.policyDesc = this.listItem.policyDesc;
                 })
@@ -373,9 +381,11 @@
         }
 
         .table-title {
-            padding: 5px 20px;
+            padding: 5px 12px;
             line-height: 22px;
             span {
+                display: inline-block;
+                width: 100px;
                 font-weight: bold;
             }
         }

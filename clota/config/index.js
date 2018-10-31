@@ -3,7 +3,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
 module.exports = {
     dev: {
 
@@ -23,7 +22,7 @@ module.exports = {
         // Use Eslint Loader?
         // If true, your code will be linted during bundling and
         // linting errors and warnings will be shown in the console.
-        useEslint: false,
+        useEslint: true,
         // If true, eslint errors and warnings will also be shown in the error overlay
         // in the browser.
         showEslintErrorsInOverlay: false,
@@ -52,13 +51,18 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
 
+        // Use Eslint Loader?
+        // If true, your code will be linted during bundling and
+        // linting errors and warnings will be shown in the console.
+        useEslint: process.env.npm_config_debugger === 'true',
+
         /**
          * Source Maps
          */
 
-        productionSourceMap: false,
+        productionSourceMap: process.env.npm_config_debugger === 'true',
         // https://webpack.js.org/configuration/devtool/#production
-        devtool: false,
+        devtool: 'source-map',
 
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.

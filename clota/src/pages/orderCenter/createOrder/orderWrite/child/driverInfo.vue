@@ -3,14 +3,15 @@
 <template>
     <div class="driver-info">
         <div class="title">
-            司机信息
+            <!--司机信息-->
+            {{$t('driverInfo')}}
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTourGuideInfo.length < 1"
-                    @click="delTourGuide">批量删除</Button>
+                    @click="delTourGuide">{{$t('deleteBatch')}}</Button>
             <Button type="primary"
                     class="ivu-btn-108px"
-                    @click="addTourGuide">添加司机</Button>
+                    @click="addTourGuide">{{$t('addDrivers')}}</Button><!--添加司机-->
         </div>
 
         <Form ref="formInline" >
@@ -96,9 +97,9 @@
             <ul class="pro-list">
                 <li class="detail">
                     <span class="content-text">
-                        {{$t('isDoing')}}{{$t('delete')}}司机：
+                        {{$t('isDoing')}}{{$t('delete')}} {{$t('driverRole')}}：
                         <span class="yellow-label">{{delingTouristInfo.data}}</span>
-                        <span v-if="delingTouristInfo.showMore">等</span>
+                        <span v-if="delingTouristInfo.showMore">{{$t('etc')}}</span><!--等-->
                     </span>
                 </li>
                 <li class="detail">
@@ -147,16 +148,16 @@
             const validateIdCard = (rule,value,callback) => {
                 if(rule.rowData.documentNo){
                     if(rule.rowData.documentNo.length > 10){
-                        callback(this.$t('errorMaxLength', { field : this.$t('车牌号'), length : 10}));
+                        callback(this.$t('errorMaxLength', { field : this.$t('licence'), length : 10}));    // 车牌号
                     }else{
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback('车牌号已存在');
+                            callback(this.$t('existCarNo'));     // 车牌号已存在
                         });
                     }
                 }else{
-                    callback('请输车牌号');
+                    callback(this.$t('inputField', {field: this.$t('licence')}));     // 请输入车牌号
                 }
             };
             //校验司机姓名
@@ -168,7 +169,7 @@
                         callback();
                     }
                 }else{
-                    callback('请输入姓名');
+                    callback(this.$t('inputField', {field: this.$t('name')}));      // 请输入姓名
                 }
             };
             return {
@@ -254,7 +255,7 @@
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
-                this.$Message.success('司机信息已删除');
+                this.$Message.success(this.$t('deletedField', {field: this.$t('driverInfo')}));      // 司机信息已删除
             },
             /**
              * 保存司机信息
@@ -309,7 +310,7 @@
              */
             delTourGuide () {
                 this.$refs.delModal.show({
-                    title : this.$t('删除'),
+                    title : this.$t('del'),
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }
@@ -332,7 +333,7 @@
                         this.tableData.splice(i,1);
                     }
                 }
-                this.$Message.success('司机信息已删除');
+                this.$Message.success(this.$t('deletedField', {field: this.$t('driverInfo')}));      // 司机信息已删除
             },
             /**
              * 获取填写的司机信息
@@ -382,10 +383,12 @@
                     phoneNumber : phoneNumber,
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('修改司机信息成功');
+                        // 修改司机信息成功
+                        this.$Message.success(this.$t('successTip', {tip: this.$t('modifyDriverInfo')}));
                         this.$set(this.tableData[index],'editType','');
                     }else{
-                        this.$Message.error('修改司机信息失败');
+                        // 修改司机信息失败
+                        this.$Message.error(this.$t('failureTip', {tip: this.$t('modifyDriverInfo')}));
                     }
                 });
             },
@@ -418,7 +421,7 @@
                         this.tableData = res.data ? res.data.map(item => {
                             return {
                                 ...item,
-                                documentNo : item.documentInfo ? JSON.parse(item.documentInfo)[0]['data'] : '',
+                                documentNo : item.documentInfo ? JSON.parse(item.documentInfo)['data'] : '',
                                 staffName : item.visitorName
                             }
                         }) : [];

@@ -11,8 +11,9 @@
         <div class="modal-body">
             <div class="single-org">
                 <div class="form-wrap">
+                    <!--游客姓名-->
                     <div class="form-item-wrap">
-                        <label>{{$t("游客姓名")}}：</label><span v-w-title="visitorInfo.visitorName">{{visitorInfo.visitorName | contentFilter}}</span>
+                        <label>{{$t("touristName")}}：</label><span v-w-title="visitorInfo.visitorName">{{visitorInfo.visitorName | contentFilter}}</span>
                     </div>
                     <div class="form-item-wrap">
                         <label>{{$t("mobilePhone")}}：</label><span>{{visitorInfo.phoneNumber | contentFilter}}</span>
@@ -40,26 +41,27 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <div class="table-bottom">
+                <div class="table-bottom clearfix">
                     <ul>
-                        <li>{{$t('申请数量')}}：<b style="color: #333;">{{baseInfo.reqNum | contentFilter}}</b></li>
-                        <li>{{$t('通过数量')}}：<b class="green">{{passedProducts.length | contentFilter}}</b></li>
-                        <li>{{$t('驳回数量')}}：<b class="red">{{rejectProducts.length | contentFilter}}</b></li>
+                        <li>{{$t('rejectedNum')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li><!--驳回数量-->
+                        <li>{{$t('passedNum')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li><!--通过数量-->
+                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{Number(baseInfo.reqNum) | contentFilter}}</span></li><!--申请数量-->
                     </ul>
                 </div>
-
+                <!--退票手续费-->
                 <div class="refund-fee" v-if="isRefund">
-                    {{$t('退票手续费')}}：<span class="yellow">{{(refundProcedureFee || '-') | moneyFilter}} {{$t('yuan')}}</span>
+                    {{$t('cancellationCharge')}}：<span class="yellow">{{(refundProcedureFee || '-') | moneyFilter}} {{$t('yuan')}}</span>
                 </div>
             </div>
             <!--备注-->
             <div>
                 <span style="float: left;">{{$t('remark')}}：</span>
-                <div style="margin-left: 30px">
+                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('inputPlaceholder')" />
+                    <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
@@ -75,9 +77,8 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {orderProductHead, batchAuditHead} from '../auditConfig';
-    import sum from 'lodash/sum';
     import {transAudit} from '../../commFun';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: {
@@ -90,19 +91,19 @@
         data () {
             return {
                 visible: false,
-                title: '审核结果确认',
+                title: 'confirmAuditRes',   // 审核结果确认
                 //表头配置
                 columnData : [
                     {
-                        title: '产品明细编号',
+                        title: 'productDetailNo',      // 产品明细编号
                         minWidth: 150,
-                        enWidth : 180,
+//                        enWidth : 180,
                         field: 'id'
                     },
                     {
-                        title: '审核结果',
+                        title: 'auditResult',      // 审核结果
                         minWidth: 150,
-                        enWidth : 180,
+//                        enWidth : 180,
                         field: 'auditStatus'
                     },
                 ],
@@ -117,6 +118,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
             // 是否散客退票
             isRefund() {
                 return (this.$route.query.reqType=='refund') || (this.$route.name=='bulkRefundDetail');
@@ -178,6 +182,7 @@
             getRefundProcedureFee() {
                 if (this.tableData.length) {
                     ajax.post('getRefundProcedureFee', {
+                        orderId : this.baseInfo.orderId,
                         orderProductId: this.tableData[0].orderProductId,
                         orderTicketIds: this.passedProducts.map(item => item.id).join(','),  // 只传审核结果为通过的id
                     }).then(res => {
@@ -215,7 +220,9 @@
                     auditParams.reqType = 'alter';
                 }
 
-                this.$emit('on-audit-confirmed', auditParams);
+                if (this.auditRemark.length<=500) {
+                    this.$emit('on-audit-confirmed', auditParams);
+                }
             },
 
         },
@@ -227,11 +234,11 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 14px;
-            /*height: 450px;*/
+            padding: 10px 14px;
+            font-size: 14px;
 
             .refund-fee {
-                margin: 15px 20px;
+                margin: 10px 0;
             }
             .single-org {
                 margin-bottom: 16px;
@@ -244,10 +251,19 @@
             }
 
             .table-bottom {
+                margin: 10px 0;
                 ul > li {
                     float: right;
                     margin-right: 20px;
                 }
+            }
+
+            .error-tip {
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                font-size: 12px;
+                color: $color_red;
             }
         }
 
@@ -269,7 +285,6 @@
 
         .form-wrap{
             width: 100%;
-            margin-top: 15px;
             @include clearfix();
 
             .form-item-wrap{

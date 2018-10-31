@@ -21,18 +21,19 @@
             <!--备注-->
             <div>
                 <span class="label-remark">{{$t('remark')}}：</span>
-                <div style="margin-left: 45px">
+                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"
-                           :placeholder="$t('请填写备注，不超过500个字符')" />
+                           :placeholder="$t('inputPlaceholder')" /><!--请输入-->
+                    <p class="error-tip" v-show="auditRemark.length>500">{{$t('errorMaxLength', {field: this.$t('remark'), length: 500})}}</p>
                 </div>
             </div>
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("通过")}}</Button>
-            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("驳回")}}</Button>
+            <Button type="primary" @click="bulkBatchAudit()" v-if="orderData.type == 'pass'">{{$t("passed")}}</Button>
+            <Button type="error" @click="bulkBatchAudit()" v-if="orderData.type == 'reject'">{{$t("reject")}}</Button>
             <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
         </div>
 
@@ -44,6 +45,7 @@
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {bulkBatchAuditHead} from '../auditConfig';
+    import {mapGetters} from 'vuex';
 
     export default {
         props: [],
@@ -67,6 +69,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                lang : 'lang'
+            }),
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType() {
                 if (this.$route.name=='auditBulkRefund') {
@@ -74,7 +79,7 @@
                 } else if (this.$route.name=='auditBulkChange') {
                     return 'alter';
                 }
-            }
+            },
         },
         methods: {
 
@@ -104,6 +109,9 @@
             },
 
             bulkBatchAudit() {
+                if (this.auditRemark.length>500) {
+                    return;
+                }
                 ajax.post('auditBatchOrderProduct', {
                     productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
                     remark: this.auditRemark,
@@ -111,12 +119,12 @@
                     reqType: this.reqType
                 }).then(res => {
                     if(res.success){
-                        this.hide();
                         if (this.orderData.type === 'pass') {
                             this.$Message.success(this.$t('订单已批量审核通过'));
                         } else if (this.orderData.type === 'reject') {
                             this.$Message.success(this.$t('订单已批量驳回'));
                         }
+                        this.hide();
 
                         this.$emit('on-audited');
                     }
@@ -156,6 +164,14 @@
                 float: left;
                 font-size: 14px;
                 color: #585858;
+            }
+
+            .error-tip {
+                position: absolute;
+                bottom: -18px;
+                left: 0;
+                font-size: 12px;
+                color: $color_red;
             }
         }
 

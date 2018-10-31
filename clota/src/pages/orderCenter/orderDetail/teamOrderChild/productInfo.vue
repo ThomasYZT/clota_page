@@ -2,8 +2,51 @@
 
 <template>
     <div class="product-info">
-        <div class="title">产品信息</div>
+        <!--产品信息-->
+        <div class="title">{{$t('productInfo')}}</div>
         <table-com
+            v-if="viewType === 'scenic'"
+            :column-data="columnData"
+            :table-data="productInfoList"
+            :border="true"
+            :table-com-min-height="250"
+            :auto-height="true">
+            <el-table-column
+                slot="column3"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.firstAllocation}} {{scope.row.firstAllocationPrice | moneyFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column4"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.secondAllocation}} {{scope.row.secondAllocationPrice | moneyFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.thirdAllocation}} {{scope.row.thirdAllocationPrice | moneyFilter}}
+                </template>
+            </el-table-column>
+        </table-com>
+        <table-com
+            v-else
             :column-data="columnData"
             :table-data="productInfoList"
             :border="true"
@@ -36,8 +79,6 @@
         },
         data() {
             return {
-                //表头配置
-                columnData : columnData
             }
         },
         methods: {},

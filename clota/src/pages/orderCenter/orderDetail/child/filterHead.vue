@@ -8,33 +8,35 @@
             <i-row>
                 <i-col span="7">
                     <!--下单时间-->
-                    <FormItem label="下单日期">
+                    <FormItem :label="$t('orderDate')">
                         <DatePicker v-model.trim="formData.orderDate"
                                     transfer
                                     :editable="false"
                                     type="daterange"
                                     placement="bottom-end"
-                                    placeholder="请选择"
-                                    style="max-width: 260px">
+                                    :placeholder="$t('selectField',{msg: ''})"
+                                    style="max-width: 260px"
+                                    @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
                 <i-col span="7">
                     <!--游玩日期-->
-                    <FormItem label="游玩日期">
+                    <FormItem :label="$t('playDate')">
                         <DatePicker v-model.trim="formData.visitDate"
                                     transfer
                                     :editable="false"
                                     type="daterange"
                                     placement="bottom-end"
-                                    placeholder="请选择"
-                                    style="max-width: 260px">
+                                    :placeholder="$t('selectField',{msg: ''})"
+                                    style="max-width: 260px"
+                                    @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
                 <i-col span="4">
                     <!--订单类型-->
-                    <FormItem label="订单类型" >
+                    <FormItem :label="$t('orderType')" >
                         <Select v-model.trim="formData.orderType"
                                 style="max-width: 100px"
                                 @on-change="orderTypeChange">
@@ -48,7 +50,7 @@
                 </i-col>
                 <i-col span="4">
                     <!--是否分销-->
-                    <FormItem label="是否分销" >
+                    <FormItem :label="$t('whetherVerify')" >
                         <Select v-model.trim="formData.allocationStatus"
                                 style="max-width: 100px"
                                 @on-change="allocationStatusChange">
@@ -64,9 +66,10 @@
             <i-row>
                 <i-col span="6">
                     <!--取票状态-->
-                    <FormItem label="取票状态">
+                    <FormItem :label="$t('takeTicketStatus')">
                         <Select v-model.trim="formData.pickStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in takeTicketStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -77,9 +80,10 @@
                 </i-col>
                 <i-col span="6">
                     <!--退票状态-->
-                    <FormItem label="退票状态">
+                    <FormItem :label="$t('refundStatus')">
                         <Select v-model.trim="formData.refundStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in refundStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -90,7 +94,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--所属景区-->
-                    <FormItem label="所属景区">
+                    <FormItem :label="$t('scenePlace')">
                         <Select v-model.trim="formData.scenicOrgId"
                                 style="max-width: 200px"
                                 @on-change="sceneChange">
@@ -103,9 +107,12 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem label="下单企业" >
+                    <!--下单企业-->
+                    <FormItem :label="$t('orderOrg')" >
                         <Select v-model.trim="formData.orderOrgId"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                :disabled="orderTaskDisabled"
+                                @on-change="searchProductList">
                             <Option v-for="item  in orderTakeList"
                                     :key="item.id"
                                     :value="item.id">
@@ -118,9 +125,10 @@
             <i-row>
                 <i-col span="6">
                     <!--下单渠道-->
-                    <FormItem label="下单渠道" >
+                    <FormItem :label="$t('orderChannel')" >
                         <Select v-model.trim="formData.orderChannel"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
@@ -131,9 +139,10 @@
                 </i-col>
                 <i-col span="6">
                     <!--核销状态-->
-                    <FormItem label="核销状态" >
+                    <FormItem :label="$t('verifyStatus')" >
                         <Select v-model.trim="formData.verifyStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in verifyStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -144,9 +153,10 @@
                 </i-col>
                 <i-col span="6">
                     <!--是否同步-->
-                    <FormItem label="是否同步" >
+                    <FormItem :label="$t('whetherSync')" >
                         <Select v-model.trim="formData.syncStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in synchronizationList"
                                     :key="item.value"
                                     :value="item.value">
@@ -157,9 +167,10 @@
                 </i-col>
                 <i-col span="6">
                     <!--改签状态-->
-                    <FormItem label="改签状态" >
+                    <FormItem :label="$t('rescheduleStatus')" >
                         <Select v-model.trim="formData.rescheduleStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in rescheduleStatus"
                                     :key="item.value"
                                     :value="item.value">
@@ -198,9 +209,10 @@
                 <!--</i-col>-->
                 <i-col span="6">
                     <!--审核状态-->
-                    <FormItem label="审核状态" >
+                    <FormItem :label="$t('auditStatus')" >
                         <Select v-model.trim="formData.auditStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in auditStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -211,9 +223,10 @@
                 </i-col>
                 <i-col span="6">
                     <!--支付状态-->
-                    <FormItem label="支付状态" >
+                    <FormItem :label="$t('paymentStatus')" >
                         <Select v-model.trim="formData.paymentStatus"
-                                style="max-width: 200px">
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
                             <Option v-for="item  in payStatusList"
                                     :key="item.value"
                                     :value="item.value">
@@ -226,29 +239,34 @@
             <i-row>
                 <i-col span="6">
                     <!--业态类型-->
-                    <FormItem label="业态类型" >
+                    <FormItem :label="$t('industryType')" >
                         <Select v-model.trim="formData.productType"
-                                style="max-width: 200px">
-                            <Option value="ticket">票</Option>
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
+                            <Option value="ticket">{{$t('tickets')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="关键字" >
+                    <FormItem :label="$t('keyWord')" >
+                        <!--输入游客姓名/手机号/订单明细编号-->
                         <Input v-model.trim="formData.keyword"
                                style="max-width: 380px"
-                               placeholder="输入游客姓名/手机号/订单明细编号" />
+                               :placeholder="$t('enterNamePhoneAndOrderNo')"
+                               @on-enter="searchProductList"/>
                     </FormItem>
                 </i-col>
                 <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
+                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">{{$t('searching')}}</Button>
+                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="9" className="abnormal-order">
                     <FormItem :label-width="0">
-                        <Checkbox v-model="formData.abnormalStatus">仅显示异常订单</Checkbox>
+                        <!--仅显示异常订单-->
+                        <Checkbox v-model="formData.abnormalStatus"
+                                  @on-change="searchProductList">{{$t('showAbnormalOrder')}}</Checkbox>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -270,15 +288,8 @@
         payStatusList,
     } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        props : {
-            //表格是否显示
-            tableShow : {
-                type : Boolean,
-                default : false
-            }
-        },
         data() {
             return {
                 //表单数据
@@ -340,6 +351,8 @@
                 auditStatusList : auditStatusList,
                 //支付状态
                 payStatusList : payStatusList,
+                //下单企业是否禁用
+                orderTaskDisabled : false
             }
         },
         methods: {
@@ -356,6 +369,7 @@
                             id : 'all',
                             orgName : this.$t('all')
                         }],res.data) : [];
+                        this.orderTakeList = [];
                         if(this.formData.scenicOrgId !== 'all'){
                             this.sceneChange();
                         }else{
@@ -370,7 +384,11 @@
              * 所属景区改变，查询下单企业信息
              */
             sceneChange () {
-                if(!this.formData.scenicOrgId) return;
+                if(!this.formData.scenicOrgId) {
+                    this.orderTakeList = [];
+                    return ;
+                }
+                this.formData.orderOrgId = '';
                 ajax.post('getOrderOrgList',{
                     scenicId : this.formData.scenicOrgId,
                     allocationStatus : this.formData.allocationStatus
@@ -380,19 +398,25 @@
                     }else{
                         this.orderTakeList = [];
                     }
-                    //如果所属景区是当前登录的景区，那么发售机构是当前机构，不可修改，
-                    //如果所属景区不是当前登录景区，那么下单企业必须是当前景区，且不可修改
+                    //如果所属景区不是当前登录景区,且是否分销选择了否，那么下单企业必须是当前景区，且不可修改
                     if(this.formData.scenicOrgId === this.manageOrgs.id){
-                        this.saleDisabled = true;
                         this.orderTaskDisabled = false;
                     }else{
-                        this.saleDisabled = false;
-                        this.orderTaskDisabled = true;
-                        if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
-                            this.formData.orderOrgId = this.orderTakeList[0].id;
-                            this.search();
+                        if(this.formData.allocationStatus === 'false'){
+                            if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
+                                this.formData.orderOrgId = this.orderTakeList[0].id;
+                            }
+                            //所属景区不为全部，下单企业不可选
+                            if(this.formData.scenicOrgId !== 'all'){
+                                this.orderTaskDisabled = true;
+                            }else{
+                                this.orderTaskDisabled = false;
+                            }
+                        }else{
+                            this.orderTaskDisabled = false;
                         }
                     }
+                    this.searchProductList();
                 });
             },
             /**
@@ -411,10 +435,26 @@
              * 重置筛选条件
              */
             reset () {
-                this.formData.scenicOrgId = '';
-                this.formData.orderOrgId = '';
-                this.formData.type = '';
-                this.formData.orderType = 'team';
+                //下单时间
+                this.formData.orderDate = [new Date().addMonths(-1),new Date()];
+                this.formData.visitDate = [];
+                this.formData.pickStatus =  'allStatus';
+                this.formData.allocationStatus =  'true';
+                this.formData.refundStatus =  'allStatus';
+                this.formData.scenicOrgId =  'all';
+                this.formData.orderChannel =  'allStatus';
+                this.formData.syncStatus =  'allStatus';
+                this.formData.rescheduleStatus =  'allStatus';
+                this.formData.verifyStatus =  'allStatus';
+                this.formData.orderOrgId =  '';
+                this.formData.productType =  'ticket';
+                this.formData.orderType =  'allStatus';
+                this.formData.abnormalStatus =  false;
+                this.formData.auditStatus =  'allStatus';
+                this.formData.paymentStatus =  'allStatus';
+                this.formData.marketTypeId =  '';
+                this.formData.marketLevelId =  '';
+                this.formData.keyword =  '';
                 this.orderTypeChange();
                 this.searchProductList();
             },
@@ -424,6 +464,8 @@
             allocationStatusChange () {
                 this.formData.orderChannel = 'allStatus';
                 this.formData.scenicOrgId = 'all';
+                this.orderTaskDisabled = false;
+                this.formData.orderOrgId = '';
                 this.orderTypeChange();
             }
         },
@@ -450,10 +492,10 @@
             //查询条件列表
             paramsObj () {
                 return {
-                    orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd'),
-                    orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd'),
-                    visitStartDate : this.formData.visitDate[0] ?this.formData.visitDate[0].format('yyyy-MM-dd') : '',
-                    visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd') : '',
+                    orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd 00:00:00'),
+                    orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd 23:59:59'),
+                    visitStartDate : this.formData.visitDate[0] ?this.formData.visitDate[0].format('yyyy-MM-dd 00:00:00') : '',
+                    visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd 23:59:59') : '',
                     orderType : this.formData.orderType === 'allStatus' ? '' : this.formData.orderType,
                     allocationStatus : this.formData.allocationStatus,
                     pickStatus : this.formData.pickStatus === 'allStatus' ? '' : this.formData.pickStatus,
@@ -470,6 +512,7 @@
                     abnormalStatus : this.formData.abnormalStatus,
                     marketTypeId : this.formData.marketTypeId,
                     marketLevelId : this.formData.marketLevelId,
+                    keyword : this.formData.keyword,
                     // orderOrgName : this.orderOrgName,
                 };
             },
@@ -484,11 +527,11 @@
             tOfSelectList () {
                 return [
                     {
-                        label : '是',
+                        label : 'yes',
                         value : 'true'
                     },
                     {
-                        label : '否',
+                        label : 'no',
                         value : 'false'
                     }
                 ];

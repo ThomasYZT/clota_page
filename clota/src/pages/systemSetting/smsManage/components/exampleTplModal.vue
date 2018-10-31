@@ -2,7 +2,7 @@
     <!--购买短信套餐-->
     <Modal
         v-model="visible"
-        :title="'短信模板示例'"
+        :title="$t('smsTemplateExample')"
         class-name="add-account-modal vertical-center-modal"
         width="660"
         :mask-closable="false"

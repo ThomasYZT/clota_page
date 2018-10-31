@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="vertification-log">
-        <div class="title">核销日志</div>
+        <div class="title">{{$t('verifyLog')}}</div>
 
         <tableCom :column-data="verifyTicketLogListHead"
                   :table-data="verifyTicketLogList"
@@ -27,12 +27,14 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom';
-    import {verifyTicketLogListHead} from './secondLevelDetailConfig'
+    import { verifyTicketLogListHead } from './secondLevelDetailConfig'
     export default {
         props: {
             verifyTicketLogList: {
                 type: Array,
-                default: []
+                default() {
+                    return [];
+                }
             }
         },
         components: {

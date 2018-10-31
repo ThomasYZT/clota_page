@@ -10,7 +10,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputField', {field: '请输入套餐名称'})"
+                   :placeholder="$t('inputField', {field: 'packageName'})"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -41,7 +41,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate" @click="handleBuy(scope.row)">购买</span>
+                    <span class="operate" @click="handleBuy(scope.row)">{{$t('buy')}}</span>
                 </template>
             </el-table-column>
         </table-com>

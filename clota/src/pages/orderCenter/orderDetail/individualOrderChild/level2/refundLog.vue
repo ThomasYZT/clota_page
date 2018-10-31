@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="refund-log">
-        <div class="title">退票日志</div>
+        <div class="title">{{$t('refundLog')}}</div>
 
         <tableCom :column-data="refundAlterListHead"
                   :table-data="refundAlterList"
@@ -40,12 +40,14 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom';
-    import {refundAlterListHead} from './secondLevelDetailConfig'
+    import { refundAlterListHead } from './secondLevelDetailConfig'
     export default {
         props: {
             refundAlterList: {
                 type: Array,
-                default: []
+                default () {
+                    return [];
+                }
             }
         },
         components: {

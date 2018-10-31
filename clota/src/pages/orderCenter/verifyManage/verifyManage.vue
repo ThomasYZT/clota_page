@@ -9,18 +9,22 @@
         <div class="filter-box">
             <Input v-model.trim="filterParam.serialNos"
                    class="input-field"
-                   :placeholder="$t('输入订单串码、多个串码用; 隔开')" /><!--输入订单串码、多个串码用；隔开-->
-            <Button type="primary" :disabled="!filterParam.serialNos" @click="handleSearch">{{$t("search", {msg: ''})}}</Button>
+                   :placeholder="$t('orderSNPlaceholder')" /><!--输入订单串码、多个串码用；隔开-->
+            <Button type="primary"
+                    :disabled="!filterParam.serialNos"
+                    @click="handleSearch">
+                {{$t("searching", {msg: ''})}}
+            </Button>
             <!--<Button type="ghost" :disabled="!filterParam.serialNos" @click="reset">{{$t("reset")}}</Button>-->
         </div>
         <div class="wrapper">
             <!--取票串码查询结果列表-->
             <div class="result-container" v-if="tableData.orderInfoList && tableData.orderInfoList.length>0">
-                <div class="list-sign">{{$t('取票串码查询结果列表')}}
+                <div class="list-sign">{{$t('listForTicketSN')}}
                     <Button type="primary"
                             class="batch-verify"
                             :disabled="chosenRowData.ticket.length<=0"
-                            @click="handleCommand('ticket')">{{$t('批量核销')}}</Button>
+                            @click="handleCommand('ticket')">{{$t('batchVerify')}}</Button><!--批量核销-->
                 </div>
                 <table-com
                     :ofsetHeight="170"
@@ -28,8 +32,19 @@
                     :column-data="ticketColumnData"
                     :table-data="tableData.orderInfoList"
                     :column-check="true"
+                    :selectable="setSelectable"
                     :border="true"
                     @selection-change="changeTicketSelection">
+                    <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{scope.row.visitDate | timeFormat('yyyy-MM-dd')}}
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         slot="column5"
                         slot-scope="row"
@@ -43,6 +58,7 @@
                     <el-table-column
                         slot="column7"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -54,17 +70,19 @@
                     <el-table-column
                         slot="column8"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
-                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                            <span>{{$t('unitPrice')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('subtotal')}}：{{scope.row.amount | moneyFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column9"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -76,60 +94,74 @@
                     <el-table-column
                         slot="column11"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已取票')}}：{{scope.row.quantityPicked | contentFilter}}</span>
-                            <span class="gray">{{$t('未取票')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityPicked)}}</span>
+                            <!--已取票-->
+                            <span class="blue" style="margin-right: 20px;">{{$t('haveTickets')}}：{{Number(scope.row.quantityPicked) | contentFilter}}</span>
+                            <!--未取票-->
+                            <span class="gray">{{$t('noHaveTickets')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityPicked)}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column12"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已核销')}}：{{scope.row.quantityVerified | contentFilter}}</span>
-                            <span class="gray">{{$t('未核销')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
+                            <!--已核销-->
+                            <span class="blue" style="margin-right: 20px;">{{$t('consumed')}}：{{Number(scope.row.quantityVerified) | contentFilter}}</span>
+                            <!--未核销-->
+                            <span class="gray">{{$t('noConsumed')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column13"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="red" style="margin-right: 20px;">{{$t('已退')}}：{{scope.row.quantityRefunded | contentFilter}}</span>
-                            <span class="yellow">{{$t('待审')}}：{{scope.row.quantityAuditRefunded | contentFilter}}</span>
+                            <!--已退-->
+                            <span class="red" style="margin-right: 20px;">{{$t('retired')}}：{{Number(scope.row.quantityRefunded) | contentFilter}}</span>
+                            <!--待审-->
+                            <span class="yellow">{{$t('pendingTrial')}}：{{Number(scope.row.quantityAuditRefunded) | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column14"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="blue" style="margin-right: 20px;">{{$t('已改')}}：{{scope.row.quantityRescheduled | contentFilter}}</span>
-                            <span class="yellow">{{$t('待审')}}：{{scope.row.quantityAuditRescheduled | contentFilter}}</span>
+                            <!--已改-->
+                            <span class="blue" style="margin-right: 20px;">{{$t('hasChanged')}}：{{Number(scope.row.quantityRescheduled) | contentFilter}}</span>
+                            <!--待审-->
+                            <span class="yellow">{{$t('pendingTrial')}}：{{Number(scope.row.quantityAuditRescheduled) | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column15"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <!--{{$t(transOrderOrg(scope.row.smsStatus))}}-->
+                            {{$t(transSMSStatus(scope.row.smsStatus))}}
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column16"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -146,18 +178,21 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="operate-btn blue" @click="showModal(scope.row, false, 'ticket')">{{$t('核销')}}</span>
+                            <!--核销-->
+                            <span :class="['operate-btn', scope.row.verifyRule=='true' ? 'blue' : 'gray']"
+                                  @click="showModal(scope.row, false, 'ticket')">{{$t('verification')}}
+                            </span>
                         </template>
                     </el-table-column>
                 </table-com>
             </div>
             <!--每张门票的核销串码查询结果列表-->
             <div class="result-container" v-if="tableData.orderTicketList && tableData.orderTicketList.length>0">
-                <div class="list-sign">{{$t('每张门票的核销串码查询结果列表')}}
+                <div class="list-sign">{{$t('listForVerifySN')}}
                     <Button type="primary"
                             class="batch-verify"
                             :disabled="chosenRowData.verify.length<=0"
-                            @click="handleCommand('verify')">{{$t('批量核销')}}</Button>
+                            @click="handleCommand('verify')">{{$t('batchVerify')}}</Button><!--批量核销-->
                 </div>
                 <table-com
                     :ofsetHeight="170"
@@ -165,6 +200,7 @@
                     :column-data="verifyColumnData"
                     :table-data="tableData.orderTicketList"
                     :column-check="true"
+                    :selectable="setSelectable"
                     :border="true"
                     @selection-change="changeVerifySelection">
                     <el-table-column
@@ -180,6 +216,7 @@
                     <el-table-column
                         slot="column8"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -191,17 +228,19 @@
                     <el-table-column
                         slot="column9"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>{{$t('单价')}}：{{scope.row.price | moneyFilter}}</span> |
-                            <span>{{$t('小计')}}：{{scope.row.amount | moneyFilter}}</span>
+                            <span>{{$t('unitPrice')}}：{{scope.row.price | moneyFilter}}</span> |
+                            <span>{{$t('subtotal')}}：{{scope.row.amount | moneyFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column10"
                         slot-scope="row"
+                        show-overflow-tooltip
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth">
@@ -269,7 +308,9 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span class="operate-btn" @click="showModal(scope.row, false, 'verify')">{{$t('核销')}}</span>
+                            <span :class="['operate-btn', scope.row.verifyRule=='true' ? 'blue' : 'gray']"
+                                  @click="showModal(scope.row, false, 'verify')">{{$t('verification')}}
+                            </span>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -289,7 +330,7 @@
     import {orderTicketHead, orderVerifyHead} from './verifyConfig';
     import ajax from '@/api/index'
     import verifyModal from './child/verifyModal.vue';
-    import {transOrderOrg, transSyncStatus, transPickStatus, transRefundStatus, transRescheduleStatus, transVerifyStatus} from '../commFun';
+    import {transOrderOrg, transSyncStatus, transPickStatus, transRefundStatus, transRescheduleStatus, transVerifyStatus, transSMSStatus} from '../commFun';
 
     export default {
         components: {tableCom, noDataTip, verifyModal},
@@ -329,8 +370,11 @@
         methods: {
             queryList() {
                 ajax.post('queryOrderInfoBySerialNo', this.queryParams).then((res) => {
-                    if (res.success && res.data) {
-                        this.tableData = res.data;
+                    if (res.success) {
+                        this.tableData = res.data || {orderInfoList: [], orderTicketList: []};
+                    } else {
+                        this.tableData.orderInfoList = [];
+                        this.tableData.orderTicketList = [];
                     }
                 })
             },
@@ -365,15 +409,17 @@
              * @param type - 类型  'ticket'-根据取票串码核销 | 'verify'-根据核销串码核销
              **/
             showModal(data, isBatch, type) {
-                this.$refs['verifyModal'].show({
-                    list: isBatch ? data : [data],
-                    isBatch: isBatch,
-                    type: type
-                });
+                if (data.verifyRule == 'true') {
+                    this.$refs['verifyModal'].show({
+                        list: isBatch ? data : [data],
+                        isBatch: isBatch,
+                        type: type
+                    });
+                }
             },
             handleCommand(type) {
                 if (this.chosenRowData[type].length<=0) {
-                    this.$Message.warning(this.$t('selectChannelOperate'));
+                    this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 this.showModal(this.chosenRowData[type], true, type);
@@ -382,6 +428,25 @@
             transOrderOrg: transOrderOrg,
             // 同步状态code转换
             transSyncStatus: transSyncStatus,
+            // 取票状态code转换
+            transPickStatus: transPickStatus,
+            // 退票状态code转换
+            transRefundStatus: transRefundStatus,
+            // 改签状态code转换
+            transRescheduleStatus: transRescheduleStatus,
+            // 短信发送状态code转换
+            transSMSStatus: transSMSStatus,
+            // 核销状态code转换
+            transVerifyStatus: transVerifyStatus,
+            /**
+             * 设置表格每一行的CheckBox是否可勾选状态（verifyRule: 'true' 表示可勾选，否则disabled不可勾选 置灰）
+             * @param row
+             * @param index
+             * @returns {boolean}
+             */
+            setSelectable(row, index) {
+                return row.verifyRule == 'true';
+            },
         }
     };
 </script>
@@ -410,6 +475,9 @@
     .operate-btn {
         cursor: pointer;
         color: $color_blue;
+        &.gray {
+            cursor: not-allowed;
+        }
     }
 
     .wrapper {
@@ -430,6 +498,18 @@
         .batch-verify {
             float: right;
         }
+
+        /*.col-ellipsis-name {
+            float: left;
+            max-width: 75px;
+            @include overflow_tip();
+        }
+
+        .col-ellipsis-number {
+            display: inline-block;
+            max-width: 46px;
+            @include overflow_tip();
+        }*/
     }
 
     .blue {

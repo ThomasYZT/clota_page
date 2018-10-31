@@ -61,9 +61,21 @@
             <!-- 上级分销单价表格信息 -->
             <div class="table-wrapper">
                 <tableCom :column-data="parentDistributePriceConfig"
+                          auto-height
                           :table-com-min-height="260"
                           :table-data="parentDistributeData"
                           :border="false">
+                    <el-table-column
+                        slot="column0"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span class="item-click" @click="checkProductDetail(scope.row)">{{scope.row.productName | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         slot="column3"
                         slot-scope="row"
@@ -72,7 +84,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{$t(scope.row.stockType)+scope.row.stockNum | contentFilter}}
+                            {{scope.row.settlePrice | moneyFilter}}
                         </template>
                     </el-table-column>
                 </tableCom>
@@ -90,12 +102,25 @@
             <!-- 我的分销表格信息 -->
             <div class="table-wrapper2">
                 <tableCom v-if="myAllocationLists.length !== 0"
+                          auto-height
                           :column-data="myDistributeConfig"
                           :table-com-min-height="260"
                           :table-data="myAllocationLists"
                           :border="false"
                           :header-clickable="true"
                           @headerClick="headerClick(arguments)">
+                        <template v-for="i in (myDistributeConfig.length - 1)"
+                                  :slot="'column'+i"
+                                  slot-scope="row">
+                            <el-table-column
+                                :key="i"
+                                :label="row.title"
+                                :prop="row.field"
+                                :render-header="headerRender"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip>
+                            </el-table-column>
+                        </template>
                 </tableCom>
                 <div class="no-data" v-else>
                     <img src="../../../../assets/images/icon-no-data.png" alt="">
@@ -113,7 +138,7 @@
 
         <!-- 分销 -->
         <distribution-modal @complete="refresh()"
-                            ref="distributionModal"f></distribution-modal>
+                            ref="distributionModal"></distribution-modal>
     </div>
 </template>
 
@@ -123,7 +148,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import policyDetail from '../components/policyDetailModal.vue';
     import distributionModal from '../components/distributionModal'
-    import {detailParentDistributePriceConfig, myDistributeConfig} from './detailConfig'
+    import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig'
     import ajax from '@/api/index';
     import editDistributeModal from '../components/editDistributionModal'
 
@@ -179,7 +204,7 @@
 
                             //增加尾行数据 -- 销售渠道分组
                             let lastRowData = {
-                                productName: '销售渠道组'
+                                productName: this.$t('salesChannel')
                             };
                             //动态增加列数据
                             for(let i = 0,len=this.myAllocationLists.length; i<len; i ++) {
@@ -188,10 +213,12 @@
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
                                     this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i].settlePrice;
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
+                                    this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos)
                                     if(i === 0) {
                                         //动态增加表格列
                                         let _obj = {
                                             title: this.myAllocationLists[i]['allocationName' + j],      // 分销名称
+                                            minWidth: '300',
                                             field: 'price'+ j
                                         };
                                         this.myDistributeConfig.push(_obj)
@@ -240,13 +267,13 @@
              * @param data
              */
             headerClick(data) {
-                //获取表格选中列的索引
-                let coloumnIndex = this.getIndex(data);
-                //组装表格选中列的数据
-                let columnData = this.getColumnData(coloumnIndex);
-                columnData.listItem = this.listItem;
                 //禁用首行首列的表头点击事件
-                if(data.label !== "产品名称/销售渠道组") {
+                if(data[0].property !== 'productName') {
+                    //获取表格选中列的索引
+                    let coloumnIndex = this.getIndex(data);
+                    //组装表格选中列的数据
+                    let columnData = this.getColumnData(coloumnIndex);
+                    columnData.listItem = this.listItem;
                     //console.log(columnData);
                     this.$refs.editModal.toggle(columnData);
                 }
@@ -270,6 +297,7 @@
                     productList: [],
                     name: this.myAllocationLists[0]['allocationName'+_index],
                     allocationId: this.myAllocationLists[0]['allocationId'+_index],
+                    haveSaleGroups: this.myAllocationLists[0]['haveSaleGroups'+_index],
                     groupIds: this.myAllocationLists[this.myAllocationLists.length -1]['groupIds'+_index]
                 };
                 this.myAllocationLists.forEach((item, index) => {
@@ -290,6 +318,44 @@
              */
             distribute() {
                 this.$refs.distributionModal.toggle(this.listItem);
+            },
+            /**
+             * 表头渲染
+             */
+            headerRender(h, { column, $index }) {
+                return h("Tooltip",
+                    {
+                        props: {
+                            placement: 'top',
+                            content: column.label,
+                            transfer: true
+                        },
+                    },
+                    [
+                        h(
+                            'div',
+                            {
+                                style: {
+                                    maxWidth: "100px"
+                                }
+                            },
+                            [column.label]
+                        ),
+                        h('i',{
+                            class: ['iconfont icon-edit']
+                        })
+                    ]
+                );
+            },
+            //查看产品详情
+            checkProductDetail ( data ) {
+                let _obj = Object.assign({},data,{ id: data.productId });
+                this.$router.push({
+                    name: 'ticketDetail',
+                    params: {
+                        info: _obj
+                    }
+                })
             },
         }
     }
@@ -398,6 +464,11 @@
             .table-wrapper {
                 width: 80%;
                 margin: 0 auto;
+
+                .item-click {
+                    cursor: pointer;
+                    color: $color_blue;
+                }
             }
 
             .table-wrapper2 {
@@ -409,6 +480,33 @@
                             text-decoration: underline;
                             color: #2F70DF;
                             cursor: pointer;
+                            text-align: left;
+
+                            .ivu-tooltip {
+                                padding: 0;
+                                display: block;
+                                line-height: 22px;
+                                vertical-align: middle;
+                                text-align: left;
+                                overflow: hidden;
+                                text-overflow: unset;
+                                overflow: unset;
+                                .ivu-tooltip-rel {
+                                    display: block;
+                                    padding: 0;
+                                    white-space: nowrap;
+                                    line-height: 22px;
+                                    text-overflow: unset;
+                                    overflow: unset;
+
+                                    div {
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                        padding: 0;
+                                        line-height: 22px;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

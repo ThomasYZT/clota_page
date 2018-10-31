@@ -4,14 +4,14 @@
 -->
 <template>
     <div class="order-placer">
-        <div class="title">散客订单基本信息</div>
+        <div class="title">{{$t('orderPlacer')}}</div>
 
         <ul class="detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">下单人姓名：{{orderVisitor.visitorName | contentFilter}}</li>
-                    <li class="col">下单人身份证：{{documentInfo | contentFilter}}</li>
-                    <li class="col">下单人手机号：{{orderVisitor.phoneNumber | contentFilter}}</li>
+                    <li class="col">{{$t('name')}}：{{orderVisitor.visitorName | contentFilter}}</li>
+                    <li class="col">{{$t('mobilePhone')}}：{{orderVisitor.phoneNumber | contentFilter}}</li>
+                    <li class="col" v-if="Object.keys(documentInfo).length > 0">{{$t(documentInfo['type'])}}：{{documentInfo['data'] | contentFilter}}</li>
                 </ul>
             </li>
         </ul>
@@ -26,7 +26,9 @@
             //下单人信息
             orderVisitor: {
                 type: Object,
-                default: {}
+                default () {
+                    return {}
+                }
             }
         },
         components: {},
@@ -36,8 +38,10 @@
         computed: {
             documentInfo() {
                 if(this.orderVisitor.documentInfo) {
-                    let documentInfo = JSON.parse(this.orderVisitor.documentInfo);
-                    return documentInfo[0].data;
+                    let documentInfo = this.orderVisitor.documentInfo ? JSON.parse(this.orderVisitor.documentInfo) : [];
+                    return documentInfo[0] ? documentInfo[0] : {};
+                }else{
+                    return {};
                 }
             }
         }

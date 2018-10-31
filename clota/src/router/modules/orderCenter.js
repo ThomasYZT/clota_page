@@ -30,6 +30,7 @@ export default {
                     menuName: 'createOrder',
                     _name: 'order-addOrder',
                     rightPath: topMenuName + '.' + 'createOrder',
+                    iconClass: 'icon-create-order',
                     isMenu: true
                 },
             },
@@ -75,6 +76,7 @@ export default {
                     menuName: 'reserveOrderDetail',
                     _name: 'order-list',
                     rightPath: topMenuName + '.' + 'reserveOrderDetail',
+                    iconClass: 'icon-order-query',
                     isMenu: true
                 },
             },
@@ -120,7 +122,8 @@ export default {
                     menuName: 'auditCenter',
                     _name: 'order-auditCenter',
                     rightPath: topMenuName + '.' + 'auditCenter',
-                    isMenu: true
+                    isMenu: true,
+                    iconClass: 'icon-order-audit',
                 },
                 children: {
                     groupOrder: {
@@ -194,7 +197,8 @@ export default {
                     menuName: 'verifyManage',
                     _name: 'order-checkerManage',
                     rightPath: topMenuName + '.' + 'verifyManage',
-                    isMenu: true
+                    isMenu: true,
+                    iconClass: 'icon-check-manage',
                 }
             },
             verifySuccess: {

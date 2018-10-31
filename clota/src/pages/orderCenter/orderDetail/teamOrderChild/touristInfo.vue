@@ -2,7 +2,7 @@
 
 <template>
     <div class="product-info">
-        <div class="title">游客信息</div>
+        <div class="title">{{$t('touristInfo')}}</div>
         <table-com
             :column-data="columnData"
             :table-data="visitorList"

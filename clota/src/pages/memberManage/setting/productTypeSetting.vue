@@ -18,7 +18,7 @@
                 :show-pagination="true"
                 :page-size-d.sync="pageSize"
                 :total-count="totalCount"
-                :ofset-height="190"
+                :ofset-height="100"
                 @query-data="queryList">
                 <el-table-column
                     slot="column3"
@@ -155,7 +155,7 @@
         @include block_outline();
 
         .content {
-            height: calc(100% - 126px);
+            height: calc(100% - 70px);
             overflow: auto;
             padding: 0 30px;
 

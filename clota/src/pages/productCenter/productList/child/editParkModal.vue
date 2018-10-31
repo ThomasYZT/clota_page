@@ -34,6 +34,7 @@
                             </template>
                             <template v-else>
                                 <Select v-model="formData.parkId"
+                                        v-if="parkList"
                                         :disabled="type === 'check'"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         @on-change="selectParkChange">
@@ -43,6 +44,10 @@
                                         {{item.orgName}}
                                     </Option>
                                 </Select>
+                                <Input :value="formData.parkName"
+                                       v-else
+                                       disabled
+                                       placeholder=""/>
                             </template>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
@@ -62,7 +67,7 @@
                                 </Option>
                             </Select>
                             <span class="notice" v-if="formData.saleType === 'one_ticket'">{{$t('oneTicketNotice')}}</span>
-                            <span class="notice" v-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
+                            <span class="notice" v-else-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -198,6 +203,7 @@
                     <i-col span="24">
                         <FormItem :label="$t('choosePark')" prop="parkId"><!--选择园区-->
                             <Select v-model="formData.parkId"
+                                    v-if="parkList"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="selectParkChange">
@@ -207,6 +213,9 @@
                                     {{item.orgName}}
                                 </Option>
                             </Select>
+                            <Input :value="formData.parkName"
+                                   disabled
+                                   placeholder=""/>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
                         </FormItem>
                     </i-col>
@@ -224,7 +233,7 @@
                                 </Option>
                             </Select>
                             <span class="notice" v-if="formData.saleType === 'one_ticket'">{{$t('oneTicketNotice')}}</span>
-                            <span class="notice" v-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
+                            <span class="notice" v-else-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -369,7 +378,7 @@
                                     {{item.groupName}}
                                     </Option>
                             </Select>
-                            <span class="example" @click="jumpForExample">{{$t('example')}}</span>
+                            <!--<span class="example" @click="jumpForExample">{{$t('example')}}</span>-->
                             <!--项目分组表格-->
                         </FormItem>
                     </i-col>
@@ -453,8 +462,8 @@
                                     <ul class="operate-list">
                                         <template v-if="type === 'check'">
                                             <li class="normal"
-                                                v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
-                                            <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
+                                                v-if="scope.row.playType === 'required'">{{$t('requiredPlayItem')}}</li><!--必玩项-->
+                                            <li class="normal" v-else>{{$t('playableItem')}}</li><!--可玩项-->
                                         </template>
                                         <template v-else>
                                             <li class="normal"
@@ -500,13 +509,13 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import titlePark from '../../components/titlePark.vue';
     import { saleType, authenticationType } from '@/assets/js/constVariable';
-    import {distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead} from './parkConfig';
+    import { distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead } from './parkConfig';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index';
 
     export default {
-        props: ['parkList','data'],
+        props: ['data'],
         components: {
             tableCom,
             titlePark,
@@ -528,9 +537,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }
@@ -544,17 +553,17 @@
                             callback();
                         }).catch(err => {
                             if(err === 'errorMaxLength'){
-                                callback(this.$t(err,{field : '', length : 10}));
+                                callback(this.$t(err,{ field : '', length : 10 }));
                             }else{
-                                callback(this.$t(err,{field : ''}));
+                                callback(this.$t(err,{ field : '' }));
                             }
                         });
                     }
                 }).catch(err => {
                     if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : '', length : 10}));
+                        callback(this.$t(err,{ field : '', length : 10 }));
                     }else{
-                        callback(this.$t(err,{field : ''}));
+                        callback(this.$t(err,{ field : '' }));
                     }
                 });
             };
@@ -563,7 +572,7 @@
                 if(value){
                     callback();
                 }else{
-                    callback(this.$t('selectField', {msg: this.$t('equipmentGroup')}));
+                    callback(this.$t('selectField', { msg: this.$t('equipmentGroup') }));
                 }
             };
             //校验游玩项目分组
@@ -571,7 +580,7 @@
                 if(value && value.length > 0){
                     callback();
                 }else{
-                    callback(this.$t('selectField', {msg: this.$t('addProjectGroup')}));
+                    callback(this.$t('selectField', { msg: this.$t('addProjectGroup') }));
                 }
             };
 
@@ -614,10 +623,10 @@
                 },
                 ruleValidate: {
                     parkId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('choosePark')}), trigger: 'change' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('choosePark') }), trigger: 'change' },     // 不能为空
                     ],
                     saleType: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleType')}), trigger: 'change' },
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('saleType') }), trigger: 'change' },
                     ],
                     gardenGroupId: [
                         { validator: validateGardenGroup, trigger: 'change' }
@@ -626,13 +635,13 @@
                         { validator: validateEquipmentGroup, trigger: 'change' }
                     ],
                     effTimes: [
-                        { max: 10, message: this.$t('errorMaxLength', {field: '', length: 10}), trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength', { field: '', length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateTimes, trigger: 'blur' }
                     ],
                     itemCheckTimes: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('projectTotalTimes')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('projectTotalTimes'), length: 10}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('projectTotalTimes') }), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('projectTotalTimes'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                     ],
@@ -643,7 +652,7 @@
                 //枚举数据
                 enumData: {
                     //售票方式
-                    saleType: saleType,
+                    saleType: Array.from(saleType),
                     //设备分组
                     group: [],
                     //认证方式
@@ -661,6 +670,8 @@
                 //复制数据，用于修改初次赋值
                 copyData: {},
                 check: false,
+                //可游玩园区
+                parkList: []
             }
         },
         methods: {
@@ -740,13 +751,11 @@
 
             //校验表格填入次数与总数
             checkTimes ( data ) {
-                console.log(data)
             },
 
             //跳转进入示例页面
-            jumpForExample () {
-                console.log('跳转进入示例页面');
-            },
+            // jumpForExample () {
+            // },
 
             /**
              * 确认
@@ -763,7 +772,7 @@
                         if ( valid ) {
                             //校验产品有效性设置与游玩规则数据
                             if(this.data.productEffSet === 'since_the_play' && (this.formData.effDay == '' || this.formData.effDay == 0)){
-                                this.$Message.warning(this.$t('inputField', {field: this.$t('effectiveDays')}));
+                                this.$Message.warning(this.$t('inputField', { field: this.$t('effectiveDays') }));
                                 return
                             }
                             this.loading = true;
@@ -806,15 +815,28 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({index,data,type,title,confirmCallback = null,cancelCallback}) {
-                console.log(title)
+            show ({ index,list,parkList,data,type,title,confirmCallback = null,cancelCallback }) {
                 this.title = title;
                 this.type = type;
                 this.index = index;
+                this.parkList = parkList;
+                //去除已新增的园区
+                if(list) {
+                    for(let i=0,len=this.parkList.length; i<len; i++) {
+                        for(let j=0,jlen=list.length; j<jlen; j++) {
+                            if(this.parkList[i].id === list[j].parkId) {
+                                this.parkList.splice(i,1);
+                                i--;
+                                len--;
+                                break;
+                            }
+                        }
+                    }
+                }
                 if(data){
                     this.check = true;
                     //查询核销设备组
-                    this.getOrgGroupList({ id: data.parkId});
+                    this.getOrgGroupList({ id: data.parkId });
                     this.formData = defaultsDeep({}, data);
                     this.copyData = defaultsDeep({}, data);
                     if(data.fingerCheck == 'true' || data.fingerCheck === true){
@@ -860,6 +882,7 @@
                 if(cancelCallback && typeof cancelCallback == 'function'){
                     this.cancelCallback = cancelCallback;
                 }
+
                 this.visible = true;
             },
 
@@ -966,9 +989,18 @@
                     itemCheckTimes: 0,
                     equipmentGroupIds: [],
                 };
+                this.enumData = {
+                    //售票方式
+                    saleType: Array.from(saleType),
+                    //设备分组
+                    group: [],
+                    //认证方式
+                    authenticationType: authenticationType,
+                },
                 this.playPoint = [];
                 this.checkPoint = [];
                 this.check = false;
+                this.parkList = [];
             },
 
         }

@@ -4,12 +4,17 @@
 -->
 <template>
     <div class="individual-order-detail">
+        <bread-crumb-head
+            :locale-router="$t('orderDetail')"
+            :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
+        </bread-crumb-head>
         <div class="content">
             <!--散客订单基本信息-->
             <baseInfo :base-info="baseInfo" ></baseInfo>
 
             <!--订单明细-->
-            <orderDetailList :orderDetailList="orderDetailList"></orderDetailList>
+            <orderDetailList :orderOrgType="orderOrgType"
+                             :orderDetailList="orderDetailList"></orderDetailList>
 
             <!--下单人-->
             <orderPlacer :orderVisitor="orderVisitor"></orderPlacer>
@@ -22,13 +27,15 @@
     import orderDetailList from './individualOrderChild/level1/orderDetailList';
     import orderPlacer  from './individualOrderChild/level1/orderPlacer';
     import lifeCycelMixins from '@/mixins/lifeCycleMixins.js';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import ajax from '@/api/index.js';
     export default {
         mixins: [lifeCycelMixins],
         components: {
             baseInfo,
             orderDetailList,
-            orderPlacer
+            orderPlacer,
+            breadCrumbHead
         },
         data() {
             return {
@@ -36,6 +43,15 @@
                 orderDetailInfo: {},
                 //订单id
                 orderId : '',
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: this.$t('reserveOrderDetail'),
+                        router: {
+                            name: 'reserveOrderDetail'
+                        }
+                    }
+                ],
             }
         },
         methods: {
@@ -46,6 +62,7 @@
             getParams(params) {
                 if(params && params.orderId){
                     this.orderId = params.orderId;
+                    //路由中获取到参数后立马调用数据接口
                     this.queryindividualOrderDetail();
                 }else{
                     this.$router.push({
@@ -60,7 +77,6 @@
                 ajax.post('queryFirstIndividualOrderDetail',{
                     orderId : this.orderId
                 }).then(res => {
-                    console.log(res)
                     if(res.success){
                         this.orderDetailInfo = res.data ? res.data : {};
                     }else{
@@ -78,7 +94,7 @@
                     return {};
                 }
             },
-            //订单详情列表信息
+            //订单明细列表数据
             orderDetailList() {
                 if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderDetailList) {
                     return this.orderDetailInfo.orderDetailList;
@@ -92,6 +108,14 @@
                     return this.orderDetailInfo.orderVisitor;
                 }else {
                     return {};
+                }
+            },
+            //机构对应订单角色
+            orderOrgType() {
+                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOrgType) {
+                    return this.orderDetailInfo.orderOrgType;
+                } else {
+                    return '';
                 }
             }
         }

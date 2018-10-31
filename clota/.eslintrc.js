@@ -3,7 +3,8 @@
 module.exports = {
     root: true,
     parserOptions: {
-        parser: 'babel-eslint'
+        parser: 'babel-eslint',
+        "ecmaVersion": 6,
     },
     env: {
         browser: true,
@@ -13,7 +14,8 @@ module.exports = {
         // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
         'plugin:vue/essential',
         // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-        'standard'
+        'standard',
+        'eslint:recommended'
     ],
     // required to lint *.vue files
     plugins: [
@@ -24,6 +26,14 @@ module.exports = {
         // allow async-await
         'generator-star-spacing': 'off',
         // allow debugger during development
-        'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+        'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+        "indent": [0, 4],
+        "beforeColon": true,
+        "afterColon": true,
+        "no-multiple-empty-lines" : [2,{
+            "max": 2
+        }],
+        "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
+        "object-curly-spacing": [1, "always"]
     }
 }

@@ -1,6 +1,7 @@
 @import 'blackSkin';
 @import "blueSkin";
 @import "pinkTheame";
+@import '~@/assets/scss/base';
 .operate-list{
     @include table_operate();
 
@@ -14,6 +15,15 @@
 .el-tooltip__popper {
     max-width: 900px !important;
     word-wrap: break-word !important;
+}
+
+/*类似退票、改签审核详情页面的各信息块的标题样式*/
+.block-title {
+    margin: 15px 0;
+    /**
+     * @params  ($height, $lineHeight, $fontSize, $margin: 0, $paddingLeft:0, $borderColor:$color_blue, $borderWidth:2px, $color:#333)
+     */
+    @include info-block-title(20px, 20px, 18px, 14px, $color_blue, 4px);
 }
 
 

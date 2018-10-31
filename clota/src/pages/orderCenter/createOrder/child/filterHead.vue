@@ -9,9 +9,11 @@
             <i-row>
                 <i-col span="9">
                     <!--游玩日期-->
-                    <FormItem label="游玩日期">
+                    <FormItem :label="$t('playDate')">
                         <DatePicker v-model="formData.playDate"
                                     type="date"
+                                    :options="dateOptions"
+                                    :editable="false"
                                     style="width: 280px"
                                     @on-change="searchProductList">
                         </DatePicker>
@@ -19,7 +21,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--订单类型-->
-                    <FormItem label="订单类型" >
+                    <FormItem :label="$t('orderType')" >
                         <Select v-model="formData.orderType"
                                 style="width: 160px"
                                 @on-change="orderTypeChange">
@@ -35,7 +37,7 @@
             <i-row>
                 <i-col span="9">
                     <!--所属景区-->
-                    <FormItem label="所属景区">
+                    <FormItem :label="$t('scenePlace')">
                         <Select v-model="formData.scenicOrgId"
                                 style="width: 280px"
                                 @on-change="sceneChange">
@@ -48,7 +50,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem label="发售机构" >
+                    <FormItem :label="$t('sellingOrg')" >
                         <Select v-model="formData.saleOrgId"
                                 style="width: 160px"
                                 :disabled="saleDisabled"
@@ -62,7 +64,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem label="下单企业" >
+                    <FormItem :label="$t('orderOrg')" >
                         <Select v-model="formData.orderOrgId"
                                 style="width: 160px"
                                 :disabled="orderTaskDisabled"
@@ -78,24 +80,24 @@
             </i-row>
             <i-row>
                 <i-col span="9">
-                    <FormItem label="关键字" >
+                    <FormItem :label="$t('keyWord')" >
                         <Input v-model.trim="formData.productName"
                                style="width: 280px"
-                               placeholder="输入产品名称" />
+                               :placeholder="$t('inputField',{field : $t('productName')})" />
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem label="业态类型" >
+                    <FormItem :label="$t('industryType')" >
                         <Select v-model="formData.type"
                                 style="width: 160px"
                                 @on-change="searchProductList">
-                            <Option value="ticket">票</Option>
+                            <Option value="ticket">{{$t('ticketType')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
+                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">{{$t('searching')}}</Button>
+                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button>
                 </i-col>
             </i-row>
         </Form>
@@ -107,13 +109,6 @@
     import ajax from '@/api/index.js';
     import {mapGetters} from 'vuex';
     export default {
-        props : {
-            //表格是否显示
-            tableShow : {
-                type : Boolean,
-                default : false
-            }
-        },
         data() {
             return {
                 //表单校验规则
@@ -145,10 +140,10 @@
                 saleOrgList : [],
                 //下单企业列表
                 orderTakeList : [],
-                //发送机构是否禁用
+                //发售机构是否禁用
                 saleDisabled : false,
                 //下单企业是否禁用
-                orderTaskDisabled : false
+                orderTaskDisabled : false,
             }
         },
         methods: {
@@ -183,6 +178,8 @@
              */
             sceneChange () {
                 if(!this.formData.scenicOrgId) return;
+                this.formData.saleOrgId = '';
+                this.formData.orderOrgId = '';
                 ajax.post('queryOrderOptionList',{
                     scenicId : this.formData.scenicOrgId,
                     orderType : this.formData.orderType
@@ -199,6 +196,9 @@
                     if(this.formData.scenicOrgId === this.manageOrgs.id){
                         this.saleDisabled = true;
                         this.orderTaskDisabled = false;
+                        if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
+                            this.formData.orderOrgId = this.orderTakeList[0].id;
+                        }
                         if(!this.formData.saleOrgId && this.saleOrgList.length > 0){
                             this.formData.saleOrgId = this.saleOrgList[0].id;
                             this.search();
@@ -206,6 +206,9 @@
                     }else{
                         this.saleDisabled = false;
                         this.orderTaskDisabled = true;
+                        if(!this.formData.saleOrgId && this.saleOrgList.length > 0){
+                            this.formData.saleOrgId = this.saleOrgList[0].id;
+                        }
                         if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
                             this.formData.orderOrgId = this.orderTakeList[0].id;
                             this.search();
@@ -238,7 +241,7 @@
                 this.formData.orderType = 'team';
                 this.orderTypeChange();
                 this.searchProductList();
-            }
+            },
         },
         created () {
             this.orderTypeChange();
@@ -286,6 +289,14 @@
                     saleOrgName : this.saleOrgName,
                     orderOrgName : this.orderOrgName,
                 };
+            },
+            //日期插件配置参数
+            dateOptions () {
+                return {
+                    disabledDate : (date) =>  {
+                        return date && date.valueOf() < Date.now() - 86400000;
+                    }
+                }
             }
         }
     }

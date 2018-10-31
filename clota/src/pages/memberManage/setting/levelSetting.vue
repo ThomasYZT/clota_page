@@ -2,8 +2,10 @@
     <!--会员管理--会员级别-->
     <div class="setting">
 
-        <!--头部tab组件-->
-        <header-tabs :router-name="routerName"></header-tabs>
+        <bread-crumb-head
+            :locale-router="$t('memberGrade')"
+            :before-router-list="beforeRouterList">
+        </bread-crumb-head>
 
         <div class="content">
 
@@ -78,23 +80,23 @@
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {levelListHead} from './levelConfig';
-    import headerTabs from './components/headerTabs.vue';
     import addMemberModal  from '../components/addMemberModal.vue';
     import memberRuleModal  from '../components/memberRuleModal.vue';
     import delModal from '@/components/delModal/index.vue';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components: {
-            headerTabs,
             addMemberModal,
             memberRuleModal,
             tableCom,
             delModal,
+            breadCrumbHead
         },
         data () {
             return {
-                //当前页面路由名称
-                routerName: 'levelSetting',
                 //列表表头
                 levelListHead : levelListHead,
                 // 表格数据
@@ -102,7 +104,16 @@
                 // 已被创建的会员级别
                 usedLevels: [],
                 //当前操作的数据
-                currentData : {}
+                currentData : {},
+                //上级路由列表
+                beforeRouterList: [
+                    {
+                        name: 'memCardManagement',
+                        router: {
+                            name: 'memCardManagement'
+                        }
+                    }
+                ],
             }
         },
         created(){
@@ -177,6 +188,19 @@
                     }
                 })
             },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams(params) {
+                if(params && Object.keys(params).length > 0){
+
+                }else{
+                    this.$router.push({
+                        name : 'memCardManagement'
+                    });
+                }
+            }
         }
     }
 </script>

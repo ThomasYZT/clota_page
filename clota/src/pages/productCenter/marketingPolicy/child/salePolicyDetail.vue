@@ -20,6 +20,8 @@
 
             <!--表单信息-->
             <Form ref="formValidate"
+                  :label-width="250"
+                  label-position="right"
                   :model="detail">
 
                 <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.saleRuleModel">
@@ -180,15 +182,31 @@
                 </div>
 
                 <!--销售渠道-->
-                <div class="form-content line" v-if="detail.policyChannels"
-                     :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
+                <div class="form-content line" v-if="detail.policyChannels">
                     <Form-item :label="$t('saleChannels')+'：'"><!--销售渠道-->
                         <div>
                             <table-com
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="saleChannelColumn"
                                 :table-data="detail.policyChannels"
                                 :border="false">
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span v-for="(item, index) in scope.row.channelModels"
+                                              class="channel"
+                                              :class="{disable: item.status !== 'valid'}"
+                                              :key="index">
+                                            {{item.channelName}}
+                                            <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </div>
                     </Form-item>
@@ -210,12 +228,12 @@
                 </div>-->
 
                 <!--退改规则-->
-                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel"
-                     :style="{height: detail.productPolicy.returnRuleModel.rules.length ? (detail.productPolicy.returnRuleModel.rules.length + 1) * 50 + 50+'px' : '280px'}">
+                <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel">
                     <Form-item :label="$t('returnAndAlterRule')+'：'"><!--退改规则-->
                         <div>
                             <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
                             <table-com
+                                v-if="detail.productPolicy.returnRuleModel.type !== 'notAllow'"
                                 :table-com-min-height="260"
                                 :column-data="refundColumn"
                                 :table-data="detail.productPolicy.returnRuleModel.rules"
@@ -247,7 +265,7 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
+                            <Form-item v-if="detail.productPolicy.alterRuleModel.type !== 'notAllow'"  :label="$t('lastAlterDate')+'：'"><!--最晚改签日期-->
                                 <div>{{$t('lastAlterDateDesc',{ times: detail.productPolicy.alterRuleModel.alterNum, day: detail.productPolicy.alterRuleModel.befPlayLatestDays}) | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -302,7 +320,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {productColumn, saleChannelColumn, marketingColumn, refundColumn} from './detailConfig';
+    import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -406,9 +424,8 @@
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
-                    data: {remark: this.remark},
+                    data: { remark: this.remark },
                     confirmCallback : ( msg ) => {
-                        console.log(msg);
                         this.remark = msg;
                     }
                 });
@@ -447,6 +464,7 @@
         border-radius: 4px;
 
         .container{
+            margin-bottom: 100px;
 
             .title-wrap{
                 padding: 15px 35px 0px;
@@ -494,29 +512,13 @@
                     margin: 0 auto;
                     text-align: left;
                     width: 100%;
-                    float: left;
-                    margin-right: 10px;
-                    height: 30px;
                     line-height: 30px;
                     font-size: $font_size_14px;
-                    display: flex;
                 }
 
                 /deep/ .ivu-form-item-label{
-                    padding-left: 0;
-                    padding-right: 0;
-                    width: 220px;
-                }
-
-                /deep/ .ivu-form-item-content{
-                    color: $color-666;
-                    /*flex: 1;*/
-                    display: inline-block;
-                    width: calc(100% - 220px);
-                    >div{
-                        vertical-align: middle;
-                        @include overflow_tip();
-                    }
+                    width: auto;
+                    white-space: nowrap;
                 }
 
                 /deep/ .ivu-checkbox-wrapper{
@@ -558,6 +560,24 @@
                     left: 5px;
                 }
 
+                /deep/ .ivu-form-item-content {
+                    div {
+                        word-break: break-all;
+                    }
+                }
+
+            }
+            .channel {
+                span {
+                    margin-right: 13px;
+                }
+
+                span.disable {
+                    letter-spacing: -1px;
+                }
+            }
+            .disable {
+                color: $color_red;
             }
 
         }

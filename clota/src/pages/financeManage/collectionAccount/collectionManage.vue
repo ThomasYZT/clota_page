@@ -8,9 +8,9 @@
     <div class="payment-manage">
         <div class="filter-box">
             <Input class="input-field"
-                   v-model.trim="filterParam.name"
+                   v-model.trim="queryParams.keyword"
                    icon="ios-search"
-                   :placeholder="$t('请输入任意信息进行查询')"
+                   :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -31,8 +31,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="status-account normal" v-if="scope.row.whetherAlarm=='true'">{{$t('正常')}}</span>
-                    <span class="status-account warning" v-else>{{$t('预警')}}</span>
+                    <span class="status-account warning" v-if="scope.row.whetherAlarm=='true'">{{$t('warning')}}</span>
+                    <span class="status-account normal" v-else>{{$t('normal')}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -99,6 +99,7 @@
             return {
                 // 获取数据的请求参数
                 queryParams: {
+                    keyword: '',
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
@@ -138,7 +139,6 @@
             // 搜索信息
             handleSearch() {
                 this.queryParams.pageNo = 1;
-                Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
             /**
