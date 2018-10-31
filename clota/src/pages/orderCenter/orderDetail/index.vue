@@ -61,6 +61,17 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column9"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.orderOrgType === 'allocation' ? scope.row.settleAmount : scope.row.amount | moneyFilter | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column10"
                 show-overflow-tooltip
                 slot-scope="row"

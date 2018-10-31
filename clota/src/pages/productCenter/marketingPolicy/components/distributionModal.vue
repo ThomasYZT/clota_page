@@ -109,7 +109,7 @@
                             :width="140"
                             :min-width="120">
                             <template slot-scope="scope">
-                                <Input v-model="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
+                                <Input v-model.trim="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
                             </template>
                         </el-table-column>
                     </table-com>

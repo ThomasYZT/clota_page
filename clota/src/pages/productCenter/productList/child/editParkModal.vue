@@ -67,7 +67,7 @@
                                 </Option>
                             </Select>
                             <span class="notice" v-if="formData.saleType === 'one_ticket'">{{$t('oneTicketNotice')}}</span>
-                            <span class="notice" v-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
+                            <span class="notice" v-else-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -233,7 +233,7 @@
                                 </Option>
                             </Select>
                             <span class="notice" v-if="formData.saleType === 'one_ticket'">{{$t('oneTicketNotice')}}</span>
-                            <span class="notice" v-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
+                            <span class="notice" v-else-if="formData.saleType === 'assort'">{{$t('moreTicketNotice')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
