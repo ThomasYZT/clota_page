@@ -482,19 +482,6 @@ export default {
                             _name: 'basic-setting',
                             rightPath: topMenuName + '.' + 'memberSetting'
                         },
-                    },
-                    integralMall: {
-                        //会员管理--初始化设置--积分商城
-                        path: '/memberManage/integralMall',
-                        name: 'integralMall',
-                        component: () => import(/* webpackChunkName: "memberSetting" */'../../pages/memberManage/setting/integralMall.vue'),
-                        meta: {
-                            menuName: 'integralMall', //lang.config.js 里面的语言键值
-                            //todo 未配置权限
-                            _name: 'init-setting',
-                            rightPath: topMenuName + '.' + 'memberSetting',
-                            isMenu: true
-                        },
                     }
                 }
             },
@@ -540,6 +527,20 @@ export default {
                         }
                     }
                 ]
+            },
+            integralMall: {
+                //会员管理--积分商城
+                path: '/memberManage/integralMall',
+                name: 'integralMall',
+                component: () => import(/* webpackChunkName: "integralMall" */'../../pages/memberManage/integralMall/integralMall.vue'),
+                meta: {
+                    //todo 未配置权限
+                    _name: 'members-index',
+                    menuName: 'integralMall', //lang.config.js 里面的语言键值
+                    iconClass: 'icon-home',
+                    rightPath: topMenuName + '.' + 'memberHome',
+                    isMenu: true
+                },
             }
         }
     }
