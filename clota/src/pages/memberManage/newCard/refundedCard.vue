@@ -6,6 +6,8 @@
 
 <template>
     <div class="refunded-card">
+        <!--头部tab组件-->
+        <header-tabs :router-name="'refundedCard'"></header-tabs>
         <div class="search-box">
             <Input v-model.trim="filterParams.keyword"
                    style="width: 280px;"
@@ -34,9 +36,11 @@
     import cardInfo from './components/cardInfo.vue';
     import storeAccountInfo from './components/storeAccountInfo.vue';
     import integralAccountInfo from './components/integralAccountInfo.vue';
+    import headerTabs from './components/newCardTabs.vue';
 
     export default {
         components: {
+            headerTabs,
             cardholderInfo,
             cardInfo,
             storeAccountInfo,
@@ -67,6 +71,13 @@
 
 <style lang="scss" scoped>
     @import "~@/assets/scss/base";
+    .refunded-card {
+        @include block_outline();
+        min-width: $content_min_width;
+        overflow: auto;
+        background: $color_fff;
+        border-radius : 4px;
+    }
 
     .search-box {
         margin: 20px 20px 0;
