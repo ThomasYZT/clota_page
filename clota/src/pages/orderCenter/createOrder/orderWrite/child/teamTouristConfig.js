@@ -3,27 +3,27 @@
 export const columnData = [
     {},
     {
-        title: '游客姓名',
+        title: 'touristName',
         minwidth: 234,
         field: 'name'
     },
     {
-        title: '证件类型',
+        title: 'credentialsType',
         minwidth: 254,
         field: 'type'
     },
     {
-        title: '证件号码',
+        title: 'IdentificationNumber',  // 证件号码
         minwidth: 254,
         field: 'idNum'
     },
     {
-        title: '手机号',
+        title: 'mobilePhone',
         minwidth: 254,
         field: 'phone'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 130,
     },
 ];

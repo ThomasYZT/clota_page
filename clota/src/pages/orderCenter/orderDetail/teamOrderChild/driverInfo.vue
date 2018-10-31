@@ -2,7 +2,8 @@
 
 <template>
     <div class="driver-info">
-        <div class="title">司机信息</div>
+        <!--司机信息-->
+        <div class="title">{{$t('driverInfo')}}</div>
         <table-com
             :column-data="columnData"
             :table-data="driverList"

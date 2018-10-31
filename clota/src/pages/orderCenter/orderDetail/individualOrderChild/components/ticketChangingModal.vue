@@ -19,7 +19,8 @@
             <FormItem :label="$t('applyForUpgradeNum')">
                 {{num}}
             </FormItem>
-            <FormItem label="申请改签至" prop="afterAlterDate">
+            <!--申请改签至-->
+            <FormItem :label="$t('applyForUpgradeTo')" prop="afterAlterDate">
                 <DatePicker v-model="formData.afterAlterDate"
                             format="yyyy-MM-dd"
                             type="date"
@@ -57,7 +58,7 @@
                 //表单校验规则
                 ruleValidate : {
                     afterAlterDate : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('改签日期')}),trigger : 'change',type : 'date'}
+                        {required : true,message : this.$t('selectField',{msg : this.$t('alterDate')}),trigger : 'change',type : 'date'}
                     ]
                 },
                 //表单数据
@@ -98,11 +99,11 @@
                             afterAlterDate: this.formData.afterAlterDate.format('yyyy-MM-dd')
                         }).then(res => {
                             if(res.success) {
-                                this.$Message.success('发起改签申请成功');
+                                this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));    // 发起改签申请成功
                                 this.toggle();
                                 this.$emit('fresh-data');
                             }else {
-                                this.$Message.error('发起改签申请失败');
+                                this.$Message.error(this.$t('TheApplicationForAlterationFail'));    // 发起改签申请失败
                                 this.toggle();
                             }
                         })

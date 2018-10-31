@@ -2,7 +2,7 @@
 
 <template>
     <div class="idler-wheel-tap">
-        <div class="before" :class="{hidden : !showLeftNonius}">
+        <div class="before" :class="{hidden : !showLeftNonius}" v-show="noniusShow" :hidden="!showLeftNonius && !showRightNonius">
             <slot name="before" :toLeft="toLeft"></slot>
         </div>
         <div class="scroll-area">
@@ -10,7 +10,7 @@
                 <slot></slot>
             </div>
         </div>
-        <div class="next" :class="{hidden : !showRightNonius}">
+        <div class="next" :class="{hidden : !showRightNonius}" v-show="noniusShow" :hidden="!showLeftNonius && !showRightNonius">
             <slot name="next" :toRight="toRight"></slot>
         </div>
     </div>
@@ -19,6 +19,13 @@
 <script>
     import {scrollIntoView} from '@/utils/domUtils.js';
     export default {
+        props : {
+            //默认跳转到的列表序号
+            'default-index' : {
+                type : [Number,String],
+                default : 0
+            }
+        },
         data() {
             return {
                 //是否显示左侧游标
@@ -27,6 +34,8 @@
                 showRightNonius : false,
                 //列表信息
                 itemMenuInfo : [],
+                //右边是否显示
+                noniusShow : false
             }
         },
         methods: {
@@ -39,13 +48,13 @@
                 for(let i = 0,j = this.itemMenuInfo.length;i < j;i++){
                     if(i === 0){
                         if(el.scrollLeft > 0 && el.scrollLeft <= this.itemMenuInfo[0]['offsetWidth']){
-                            this.scrollIntoView(el,el.scrollLeft,0,'vertical');
+                            this.scrollIntoView(el,el.scrollLeft,0,'horizontal');
                             break;
                         }
                     }else{
                         rightOffsetCount += this.itemMenuInfo[i - 1]['offsetWidth'];
                         if(el.scrollLeft > rightOffsetCount && el.scrollLeft <= rightOffsetCount + this.itemMenuInfo[i]['offsetWidth']){
-                            this.scrollIntoView(el,el.scrollLeft,rightOffsetCount,'vertical');
+                            this.scrollIntoView(el,el.scrollLeft,rightOffsetCount,'horizontal');
                             break;
                         }
                     }
@@ -61,7 +70,7 @@
                 for(let i = 0,j = this.itemMenuInfo.length;i < j;i++){
                     rightOffsetCount += this.itemMenuInfo[i]['offsetWidth'];
                     if(el.scrollLeft < rightOffsetCount){
-                        this.scrollIntoView(el,el.scrollLeft,rightOffsetCount,'vertical');
+                        this.scrollIntoView(el,el.scrollLeft,rightOffsetCount,'horizontal');
                         break;
                     }
                 }
@@ -81,10 +90,10 @@
                         let step = 100;
                         if (event.deltaY < 0) {
                             //向上滚动鼠标滚轮，屏幕滚动条左移
-                            _this.scrollIntoView(el,this.scrollLeft,this.scrollLeft - step,'vertical');
+                            _this.scrollIntoView(el,this.scrollLeft,this.scrollLeft - step,'horizontal');
                         } else {
                             //向下滚动鼠标滚轮，屏幕滚动条右移
-                            _this.scrollIntoView(el,this.scrollLeft,this.scrollLeft + step,'vertical');
+                            _this.scrollIntoView(el,this.scrollLeft,this.scrollLeft + step,'horizontal');
                         }
                     }
                 });
@@ -113,6 +122,7 @@
                     for(let i = 0,j = menuItem.length;i < j;i++){
                         this.itemMenuInfo.push(menuItem[i]);
                     }
+                    this.toIndexItem(this.defaultIndex);
                 });
             },
             /**
@@ -129,23 +139,59 @@
                 let scrollLeft = el.scrollLeft;
                 let offsetWidth = el.offsetWidth;
                 let scrollWidth = el.scrollWidth;
-                this.showRightNonius = !(scrollLeft + offsetWidth === scrollWidth);
+                if(offsetWidth !== scrollWidth){
+                    this.showRightNonius = !(scrollLeft + offsetWidth === scrollWidth);
+                }else{
+                    this.showRightNonius = false;
+                }
                 this.showLeftNonius = (scrollLeft !== 0);
+                this.noniusShow = true;
             },
             /**
              * 取消页面注册事件
              */
             offWindowResize() {
                 window.removeEventListener('resize',this.noniusDeal);
+            },
+            /**
+             * 跳转到特定的某个列表
+             * @param index
+             * @param duration 动画持续时间
+             */
+            toIndexItem(index,duration = 500) {
+                let el = this.$el.querySelector('.navigation');
+                let offsetLeft = 0;
+                if( index=== 0){
+                    this.scrollIntoView(el,el.scrollLeft,0,'horizontal',duration);
+                }else{
+                    for(let i = 0,j = index - 1;i <= j;i++){
+                        offsetLeft += this.itemMenuInfo[i]['offsetWidth'];
+                    }
+                    if(duration > 0){
+                        this.scrollIntoView(el,el.scrollLeft,offsetLeft,'horizontal',duration);
+                    }else{
+                        el.scrollLeft = offsetLeft;
+                    }
+                }
             }
         },
         mounted () {
             this.registerMouseWheelEvent();
             this.initOneLevelMenuInfo();
             this.registerWindowResize();
+            this.$nextTick(() => {
+                this.noniusDeal();
+            });
         },
         beforeDestroy() {
             this.offWindowResize();
+        },
+        watch : {
+            defaultIndex (newVal){
+                this.$nextTick(() => {
+                    this.toIndexItem(newVal,0);
+                });
+            }
         }
     }
 </script>
@@ -173,7 +219,8 @@
                 width: 100%;
                 white-space: nowrap;
                 overflow-x: auto;
-                height: 70px;
+                overflow-y: hidden;
+                height: calc(100% + 20px);
                 position: absolute;
 
                 .sub-menu {

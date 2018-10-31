@@ -11,11 +11,13 @@
         class="refund-ticket"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('申请退票')}}</span>
+            <!--申请退票-->
+            <span class="title">{{$t('ApplyForRefund')}}</span>
         </div>
         <div class="target-body">
             <ul class="tourist-info">
-                <li><span class="key">您正在申请对以下产品进行退票：</span></li>
+                <!--您正在申请对以下产品进行退票-->
+                <li><span class="key">{{$t('reqRefundForProducts')}}：</span></li>
             </ul>
             <table-com
                 :column-data="columnData"
@@ -54,7 +56,8 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.pickStatus === 'true'}">
-                            {{scope.row.pickStatus === 'true' ? $t('已取票') : $t('未取票')}}
+                            <!--{{scope.row.pickStatus === 'true' ? $t('已取票') : $t('未取票')}}-->
+                            {{scope.row.pickStatus === 'true' ? $t('haveTickets') : $t('noHaveTickets')}}
                         </span>
                     </template>
                 </el-table-column>
@@ -68,7 +71,8 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.verifyStatus === 'true'}">
-                            {{scope.row.verifyStatus === 'true' ? $t('已核销') : $t('未核销')}}
+                            <!--{{scope.row.verifyStatus === 'true' ? $t('已核销') : $t('未核销')}}-->
+                            {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
                         </span>
                     </template>
                 </el-table-column>
@@ -115,7 +119,8 @@
                     </template>
                 </el-table-column>
             </table-com>
-            <div class="service-charge">退票手续费：<span class="charge">{{refundFee | moneyFilter}}元</span></div>
+            <!--退票手续费-->
+            <div class="service-charge">{{$t('cancellationCharge')}}：<span class="charge">{{refundFee | moneyFilter}} {{$t('yuan')}}</span></div>
             <div class="err-message" v-if="errMsg">{{errMsg}}</div>
         </div>
         <div slot="footer">
@@ -198,7 +203,7 @@
                 if(this.selectedTicket.length > 0){
                     this.saveOrderProductRefundAlter();
                 }else{
-                    this.$Message.warning('请选择需要退票的产品');
+                    this.$Message.warning(this.$t('selectField', {msg: this.$t('productNeedsRefund')}));    // 请选择需要退票的产品
                 }
             },
             /**
@@ -211,7 +216,7 @@
                 for(let i = 0,j = data.length;i < j;i++){
                     //如果景区退票的时候选择了已核销的产品需要给出提示
                     if(data[i]['verifyStatus'] === 'true'){
-                        this.errMsg = '提示：您申请退票的产品中包含已核销的产品';
+                        this.errMsg = this.$t('refundProductTip');  // 提示：您申请退票的产品中包含已核销的产品
                         break;
                     }
                 }
@@ -238,11 +243,11 @@
                     reqType : 'refund'
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success('发起退票申请成功');
+                        this.$Message.success(this.$t('ApplicationForRefundSuccess'));  // 发起退票申请成功
                         this.cancel();
                         this.$emit('fresh-data');
                     }else{
-                        this.$Message.error('发起退票申请失败');
+                        this.$Message.error(this.$t('ApplicationForRefundFail'));    // 发起退票申请失败
                     }
                 });
             },

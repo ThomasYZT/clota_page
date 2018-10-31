@@ -2,104 +2,104 @@
 //表头配置
 export const columnData = [
     {
-        title: '订单号',
+        title: 'orderId',
         width: 215,
         field: 'orderNo'
     },
     {
-        title: '订单明细编号',
+        title: 'orderDetailNo',
         width: 200,
         field: 'orderDetailNo'
     },
     {
-        title: '游玩日期',
+        title: 'playDate',
         minWidth: 120,
         field: 'visitDate'
     },
     {
-        title: '下单时间',
+        title: 'orderTime',
         width: 190,
         field: 'orderTime'
     },
     {
-        title: '所属景区',
+        title: 'scenePlace',
         width: 200,
         field: 'scenic'
     },
     {
-        title: '下单渠道',
+        title: 'orderChannel',
         width: 130,
         enWidth : 180,
         field: 'orderChannel'
     },
     {
-        title: '下单企业',
+        title: 'orderOrg',
         width: 200,
         field: 'channel'
     },
     {
-        title: '产品名称',
+        title: 'productName',
         width: 250,
         field: 'productName'
     },
     {
-        title: '产品数量',
+        title: 'productQuantity',
         width: 130,
         enWidth : 180,
         field: 'quantity'
     },
     {
-        title: '订单金额',
+        title: 'orderAmount',
         width: 130,
         enWidth : 180,
         field: 'amount'
     },
     {
-        title: '短信发送状态',
+        title: 'smsStatus',
         width: 130,
         enWidth : 180,
         field: 'smsStatus'
     },
     {
-        title: '同步状态',
+        title: 'syncStatus',
         width: 130,
         enWidth : 180,
         field: 'syncStatus'
     },
     {
-        title: '支付状态',
+        title: 'paymentStatus',
         width: 130,
         enWidth : 180,
         field: 'paymentStatus'
     },
     {
-        title: '审核状态',
+        title: 'auditStatus',
         width: 130,
         enWidth : 180,
         field: 'auditStatus'
     },
     {
-        title: '取票数量',
+        title: 'ticketPickNum',
         width: 200,
         field: 'quantityPicked'
     },
     {
-        title: '核销数量',
+        title: 'verificationNum',
         width: 200,
         field: 'quantityVerified'
     },
     {
-        title: '退票数量',
+        title: 'quantityRefunded',
         width: 200,
         field: 'quantityRefunded'
     },
     {
-        title: '改签数量',
+        title: 'quantityRescheduled',
         width: 200,
         field: 'quantityRescheduled'
     },
     {
-        title: '操作',
+        title: 'operate',
         width: 170,
     }
 ];

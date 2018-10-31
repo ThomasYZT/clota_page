@@ -16,8 +16,8 @@
             <div class="title-wrap">
                 <span>{{$t('ticketDetail')}}</span>
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
-                <span class="yellow-span" v-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
-                <span class="red-span" v-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
+                <span class="yellow-span" v-else-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
+                <span class="red-span" v-else-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
                 <span class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
             </div>
 
@@ -254,11 +254,11 @@
                         @click="modify">{{$t('modify')}}</Button><!--修  改-->
             </template>
             <!--已启用-->
-            <template v-if="detail.auditStatus === 'enabled'">
+            <template v-else-if="detail.auditStatus === 'enabled'">
                 <Button type="primary" @click="auditProduct('PRODUCT_DISABLE')">{{$t('disabled')}}</Button><!--禁用-->
             </template>
             <!--待审核-->
-            <template v-if="detail.auditStatus === 'auditing'">
+            <template v-else-if="detail.auditStatus === 'auditing'">
                 <Button type="primary" @click="auditProduct('PRODUCT_AUDIT_PASS')">{{$t('checkPass')}}</Button><!--审核通过-->
                 <Button type="error" @click="auditProduct('PRODUCT_REVOCATION')">{{$t('revocation')}}</Button><!--撤回-->
                 <Button type="ghost" class="active-btn" @click="auditProduct('PRODUCT_AUDIT_REJECT')">{{$t('reject')}}</Button><!--驳回-->

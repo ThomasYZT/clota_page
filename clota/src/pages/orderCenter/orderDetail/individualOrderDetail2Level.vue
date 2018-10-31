@@ -219,13 +219,13 @@
             beforeRouterList () {
                 return [
                     {
-                        name: '订单查询',
+                        name: 'reserveOrderDetail',     // 订单查询
                         router: {
                             name: 'reserveOrderDetail'
                         }
                     },
                     {
-                        name: '订单详情',
+                        name: 'orderDetail',   // 订单详情
                         router: {
                             name: 'individualFirstLevel',
                             params : {

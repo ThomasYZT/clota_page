@@ -3,10 +3,11 @@
 <template>
     <div class="tourist-info">
         <div class="title">
-            游客信息
-            <Button type="primary" @click="addTourist">添加游客</Button>
+            <!--游客信息-->
+            {{$t('touristInfo')}}
+            <Button type="primary" @click="addTourist">{{$t('addVisitor')}}</Button><!--添加游客-->
         </div>
-        <div class="person-info-list" v-for="(item,index) of touristInfo" :key="item.phone">
+        <div class="person-info-list" v-for="(item,index) in touristInfo" :key="item.phone">
             <div class="name">
                 {{item.name}}  /  {{item.phone}}
                 <ul class="right-menu">
@@ -16,7 +17,7 @@
             </div>
             <div class="card-info">
                 <ul class="per-info" v-if="item.idTableData && item.idTableData.length > 0">
-                    <li class="list" v-for="list of item.idTableData" :key="list.type">
+                    <li class="list" v-for="list in item.idTableData" :key="list.type">
                         <span class="key">{{$t(list.type)}}：</span>
                         <span class="value">{{list.data}}</span>
                     </li>
@@ -92,7 +93,7 @@
                         field: 'takeNum'
                     },
                     {
-                        title: '取票证件',
+                        title: 'ticketGetterCredentials',  // 取票证件
                         width: 130,
                         field: 'idType'
                     },

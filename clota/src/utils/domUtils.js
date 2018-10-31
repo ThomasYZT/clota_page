@@ -174,7 +174,7 @@ export default utils
 
 
 /**
- * 滚动条缓慢滚动
+ * 滚动条柔和滚动
  * @param el 元素
  * @param from 起始位置
  * @param to 重点位置
@@ -210,9 +210,9 @@ export const scrollIntoView =  function (el, from = 0, to, direction = 'horizont
         if (el === window) {
             window.scrollTo(d, d);
         } else {
-            if(direction === 'vertical'){
+            if(direction === 'horizontal'){
                 el.scrollLeft = d;
-            }else if(direction === 'horizontal'){
+            }else if(direction === 'vertical'){
                 el.scrollTop = d;
             }
         }
