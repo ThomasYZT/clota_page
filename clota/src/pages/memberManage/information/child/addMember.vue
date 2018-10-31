@@ -424,7 +424,10 @@
                     if(res.success){
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
                         if(!this.member.levelId){
-                            this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
+                            let minLevelInfo = minBy(this.enumData.level, 'levelNum');
+                            if(minLevelInfo && 'id' in minLevelInfo){
+                                this.member.levelId = minBy(this.enumData.level, 'levelNum').id;
+                            }
                         }
                     } else {
                         this.$Message.warning('queryChannelSet '+ this.$t('queryFailure') +'！');
