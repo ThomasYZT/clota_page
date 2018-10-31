@@ -31,12 +31,12 @@ export const productColumn = [
 export const selectSaleChannelColumn = [
     {
         title: 'saleChannelGroup',      // 销售渠道分组
-        minWidth: 400,
+        minWidth: 120,
         field: 'groupName'
     },
     {
         title: 'saleChannels',   // 销售渠道
-        minWidth: 400,
+        minWidth: 120,
         field: 'channelNames'
     },
 ];

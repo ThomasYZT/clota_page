@@ -307,6 +307,22 @@
                                 :border="false"
                                 :column-check="true"
                                 @selection-change="changeSelection">
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span v-for="(item, index) in scope.row.channelModels"
+                                              class="channel"
+                                              :class="{disable: item.status === 'valid'}"
+                                              :key="index">
+                                            {{item.channelName}}
+                                            <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </Form-item>
                     </div>
@@ -408,6 +424,7 @@
                             <template v-if="formData.returnRule.type!=='notAllow'">
                                 <!--<br/>-->
                                 <table-com
+                                    auto-height
                                     :table-com-min-height="260"
                                     :column-data="refundColumn"
                                     :table-data="formData.returnRule.rules"
@@ -1441,6 +1458,19 @@
                     }
                 }
 
+            }
+
+            .channel {
+                span {
+                    margin-right: 13px;
+                }
+
+                span.disable {
+                    letter-spacing: -1px;
+                }
+            }
+            .disable {
+                color: $color_red;
             }
 
         }

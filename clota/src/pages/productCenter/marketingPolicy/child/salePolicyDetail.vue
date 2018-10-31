@@ -182,15 +182,31 @@
                 </div>
 
                 <!--销售渠道-->
-                <div class="form-content line" v-if="detail.policyChannels"
-                     :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
+                <div class="form-content line" v-if="detail.policyChannels">
                     <Form-item :label="$t('saleChannels')+'：'"><!--销售渠道-->
                         <div>
                             <table-com
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="saleChannelColumn"
                                 :table-data="detail.policyChannels"
                                 :border="false">
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span v-for="(item, index) in scope.row.channelModels"
+                                              class="channel"
+                                              :class="{disable: item.status === 'valid'}"
+                                              :key="index">
+                                            {{item.channelName}}
+                                            <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </div>
                     </Form-item>
@@ -550,6 +566,18 @@
                     }
                 }
 
+            }
+            .channel {
+                span {
+                    margin-right: 13px;
+                }
+
+                span.disable {
+                    letter-spacing: -1px;
+                }
+            }
+            .disable {
+                color: $color_red;
             }
 
         }
