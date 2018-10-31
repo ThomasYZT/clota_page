@@ -51,6 +51,11 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
 
+        // Use Eslint Loader?
+        // If true, your code will be linted during bundling and
+        // linting errors and warnings will be shown in the console.
+        useEslint: process.env.npm_config_debugger === 'true',
+
         /**
          * Source Maps
          */

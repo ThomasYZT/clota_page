@@ -49,7 +49,11 @@ module.exports = smp.wrap({
     module: {
         noParse: /node_modules\/(element-ui\.js)/,
         rules: [
-            ...(config.dev.useEslint ? [createLintingRule()] : []),
+            ...(
+                process.env.NODE_ENV === 'production'
+                    ? (config.build.useEslint ? [createLintingRule()] : [])
+                    : (config.dev.useEslint ? [createLintingRule()] : [])
+            ),
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
