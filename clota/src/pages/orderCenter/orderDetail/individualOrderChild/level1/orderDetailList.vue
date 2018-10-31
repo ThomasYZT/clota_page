@@ -240,15 +240,17 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './orderDetailListConfig.js';
-    import {transSyncStatus, transSMSStatus} from '../../../commFun.js'
+    import { columnData } from './orderDetailListConfig.js';
+    import { transSyncStatus, transSMSStatus } from '../../../commFun.js'
 
     export default {
         props :{
             //产品信息
             orderDetailList : {
                 type : Array,
-                default: []
+                default() {
+                    return []
+                }
             },
             //机构对应订单角色
             orderOrgType : {

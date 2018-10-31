@@ -180,10 +180,10 @@
 
 <script>
     import ajax from '@/api/index';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
     import tipModal from '../../components/tipModal';
-    import {saleChannelColumn, detailParentDistributePriceConfig} from '../child/detailConfig';
+    import { saleChannelColumn, detailParentDistributePriceConfig } from '../child/detailConfig';
     export default {
         components: {
             tableCom,
@@ -195,13 +195,10 @@
                     //校验非空必填以及不可低于上级分销单价
                     if(value.length){
                         value.forEach((item) => {
-                            console.log(item)
                             if(item.price === ''){
-                                callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
+                                callback(new Error(this.$t('errorEmpty', { msg: this.$t('mySalePrice') })));
                             }else {
                                 if(validator.isNumber(item.price)) {
-                                    console.log(item.settlePrice)
-                                    console.log(parseFloat(item.price),parseFloat(item.settlePrice))
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
                                         this.isLossTipShow = true;
                                         callback();
@@ -209,7 +206,7 @@
                                         callback();
                                     }
                                 } else {
-                                    callback(this.$t('numError',{field : this.$t('mySalePrice')}));
+                                    callback(this.$t('numError',{ field : this.$t('mySalePrice') }));
                                 }
 
                             }
@@ -236,13 +233,13 @@
                 //表达验证
                 ruleValidate: {
                     name: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('distributeName')}), trigger: 'blur' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('distributeName') }), trigger: 'blur' },     // 不能为空
                     ],
                     productPrices: [
                         { validator: validateMethod.productPrice, trigger: 'blur' },     // 不能为空
                     ],
                     groupIds: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleChannels')}), trigger: 'blur' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('saleChannels') }), trigger: 'blur' },     // 不能为空
                     ]
                 },
                 //分销详情数据 --接口数据
@@ -401,7 +398,7 @@
                     allocationId: this.detail.allocationId
                 }).then((res) => {
                      if(res.success) {
-                        this.$Message.success(this.$t('successTip',{tip: this.$t('delete')}));
+                        this.$Message.success(this.$t('successTip',{ tip: this.$t('delete') }));
                         this.toggle();
                         this.$emit('refresh')
                     }
@@ -421,7 +418,7 @@
                             groupIds: this.formData.groupIds
                         }).then((res) => {
                             if(res) {
-                                this.$Message.success(this.$t('successTip',{tip: this.$t('modify')}));
+                                this.$Message.success(this.$t('successTip',{ tip: this.$t('modify') }));
                                 this.toggle();
                                 this.$emit('refresh')
                             }

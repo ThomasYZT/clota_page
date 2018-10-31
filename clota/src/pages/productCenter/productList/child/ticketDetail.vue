@@ -127,8 +127,8 @@
                         <i-col span="24">
                             <Form-item :label="$t('idType')+'：'"><!--可接受证件类型-->
                                 <template v-if="detail.acceptIdType">
-                                    <CheckboxGroup v-model="detail.acceptIdType.split(',')">
-                                        <Checkbox v-for="(item,index) in detail.acceptIdType.split(',')"
+                                    <CheckboxGroup v-model="acceptIdType">
+                                        <Checkbox v-for="(item,index) in acceptIdType"
                                                   disabled :key="index" :label="item">
                                             {{$t(item)}}
                                         </Checkbox>
@@ -287,7 +287,7 @@
     import editParkModal from './editParkModal.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {parkColumn} from './parkConfig';
+    import { parkColumn } from './parkConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -322,6 +322,8 @@
                 parkList: [],
                 //备注
                 remark: '',
+                //可接受证件类型
+                acceptIdType: []
             }
         },
         methods: {
@@ -359,6 +361,7 @@
                         this.productPlayRuleVo = res.data.productPlayRuleVo || [];
                         this.recordsVos = res.data.recordsVos || [];
                         this.remark = '';
+                        this.acceptIdType = this.detail.acceptIdType.split(',');
                     } else {
                         this.detail = {};
                         this.productPlayRuleVo = [];
@@ -402,7 +405,7 @@
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
-                    data: {remark: this.remark},
+                    data: { remark: this.remark },
                     confirmCallback : ( data ) => {
                         this.remark = data;
                     }

@@ -32,6 +32,8 @@ module.exports = {
         "afterColon": true,
         "no-multiple-empty-lines" : [2,{
             "max": 2
-        }]
+        }],
+        "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
+        "object-curly-spacing": [1, "always"]
     }
 }

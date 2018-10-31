@@ -41,9 +41,6 @@
 
 <script>
 
-    import ajax from '@/api/index';
-    import defaultsDeep from 'lodash/defaultsDeep';
-
     export default {
         props: ['list'],
         components: {},
@@ -60,7 +57,7 @@
                 // 表单校验
                 ruleValidate: {
                     productType: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('industry')}), trigger: 'change' },   // 业态不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('industry') }), trigger: 'change' },   // 业态不能为空
                     ],
                 }
             }

@@ -58,7 +58,7 @@
                 //表单校验规则
                 ruleValidate : {
                     afterAlterDate : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('alterDate')}),trigger : 'change',type : 'date'}
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('alterDate') }),trigger : 'change',type : 'date' }
                     ]
                 },
                 //表单数据
@@ -131,7 +131,6 @@
             visibleChange(type) {
                 if(type === false){
                     this.$refs.formRef.resetFields();
-                }else{
                 }
             },
         },

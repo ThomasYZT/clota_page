@@ -222,11 +222,11 @@
 <script>
     import filterHead from './child/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './orderConfig';
+    import { columnData } from './orderConfig';
     import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
     import applyAlterTicketModal from './child/applyAlterTicketModal';
-    import {transSyncStatus,transSMSStatus,transPaymentStatus} from '../commFun.js'
+    import { transSyncStatus,transSMSStatus,transPaymentStatus } from '../commFun.js'
     import debounce from 'lodash/debounce';
 
     export default {

@@ -140,21 +140,25 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './applyRefundTicketConfig';
+    import { columnData } from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
-    import {transSyncStatus,canAlterTicket} from '../../commFun';
+    import { transSyncStatus } from '../../commFun';
 
     export default {
         props : {
             //绑定modal的v-modal值
             value : {
                 type : Boolean,
-                default : false
+                default() {
+                    return false;
+                }
             },
             //订单详情
             orderDetail : {
                 type : Object,
-                default : ''
+                default() {
+                    return '';
+                }
             },
             //产品信息
             'product-info' : {
@@ -178,7 +182,7 @@
                 //表单校验规则
                 ruleValidate : {
                     alterDate : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('alterDate')}),trigger : 'change',type : 'date'}
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('alterDate') }),trigger : 'change',type : 'date' }
                     ]
                 },
                 //表单数据

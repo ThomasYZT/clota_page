@@ -27,12 +27,14 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom';
-    import {verifyTicketLogListHead} from './secondLevelDetailConfig'
+    import { verifyTicketLogListHead } from './secondLevelDetailConfig'
     export default {
         props: {
             verifyTicketLogList: {
                 type: Array,
-                default: []
+                default() {
+                    return [];
+                }
             }
         },
         components: {

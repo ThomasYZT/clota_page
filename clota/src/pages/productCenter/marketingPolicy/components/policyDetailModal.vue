@@ -234,7 +234,7 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
-    import {productColumn, refundColumn} from '../child/detailConfig'
+    import { productColumn, refundColumn } from '../child/detailConfig'
     export default {
         components: {
             tableCom

@@ -125,7 +125,3 @@ export const subAccountColumn = [
         field: 'subPrice'
     },
 ];
-
-
-
-

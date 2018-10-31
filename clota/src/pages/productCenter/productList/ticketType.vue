@@ -108,10 +108,10 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {ticketTypeHead} from '../productConfig';
+    import { configVariable } from '@/assets/js/constVariable';
+    import { ticketTypeHead } from '../productConfig';
     import ajax from '@/api/index';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {
@@ -133,12 +133,12 @@
                     auditStatus: '',                                //审核状态；（未启用-not_enabled，已驳回-rejected，审核中-auditing，已启用-enabled）
                 },
                 filterParam: {
-                    orderBy: [{name: 'p.updated_time', val: 'desc'}],//[{name:xxx,val:asc|desc}]
+                    orderBy: [{ name: 'p.updated_time', val: 'desc' }],//[{name:xxx,val:asc|desc}]
                 },
                 // 筛选列表
                 filterList: [
-                    {text: '已启用', value: '已启用'},
-                    {text: '未启用', value: '未启用'},
+                    { text: '已启用', value: '已启用' },
+                    { text: '未启用', value: '未启用' },
                 ],
                 // 表格表头字段名
                 columnData: ticketTypeHead,
@@ -189,7 +189,6 @@
             batchDel () {
                 let ids = this.selectedRow.map(item => item.id).join(',');
                 this.delUnits = this.selectedRow.map(item => item.productName).join(',');
-                console.log(ids);
                 this.$refs.delModal.show({
                     title : this.$t('deleteBatch'),
                     confirmCallback : () => {
@@ -228,7 +227,7 @@
                         params.prop = 'p.updated_time';
                     }
 
-                    Object.assign(this.filterParam, { orderBy: JSON.stringify([{name: `${params.prop}`, val: `${order}`}]) });
+                    Object.assign(this.filterParam, { orderBy: JSON.stringify([{ name: `${params.prop}`, val: `${order}` }]) });
                     Object.assign(this.queryParams, this.filterParam);
                     this.queryParams.pageNo = 1;
                     this.queryList();

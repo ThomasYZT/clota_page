@@ -111,9 +111,9 @@
                                   :slot="'column'+i"
                                   slot-scope="row">
                             <el-table-column
+                                :key="i"
                                 :label="row.title"
                                 :prop="row.field"
-                                :key="row.index"
                                 :render-header="headerRender"
                                 :min-width="row.minWidth"
                                 show-overflow-tooltip>
@@ -146,7 +146,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import policyDetail from '../components/policyDetailModal.vue';
     import distributionModal from '../components/distributionModal'
-    import {detailParentDistributePriceConfig, myDistributeConfig} from './detailConfig'
+    import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig'
     import ajax from '@/api/index';
     import editDistributeModal from '../components/editDistributionModal'
 
@@ -346,7 +346,7 @@
             },
             //查看产品详情
             checkProductDetail ( data ) {
-                let _obj = Object.assign({},data,{id: data.productId});
+                let _obj = Object.assign({},data,{ id: data.productId });
                 this.$router.push({
                     name: 'ticketDetail',
                     params: {

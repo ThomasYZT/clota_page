@@ -309,10 +309,9 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import editParkModal from './editParkModal.vue'
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
-    import {parkColumn} from './parkConfig';
+    import { parkColumn } from './parkConfig';
     import { isTeamProduct, orderInfo, idType, productEffectSet, limitStore } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
 
@@ -342,9 +341,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }else{
@@ -358,9 +357,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t(rule.field),length : 50}));
+                            callback(this.$t(err,{ field : this.$t(rule.field),length : 50 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }else{
@@ -374,9 +373,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }
@@ -388,9 +387,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }
@@ -399,7 +398,7 @@
             const validatePrintPrice = (rule,value,callback) => {
                 if(value && this.formData.standardPrice){
                     if( Number(value) < Number(this.formData.standardPrice) ){
-                        callback(this.$t('sizeErrorS',{filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice')}));
+                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice') }));
                     }else{
                         callback();
                     }
@@ -412,7 +411,7 @@
                 if(value){
                     callback();
                 }else{
-                    callback(this.$t('selectField', {msg: this.$t('productEffSet')}));
+                    callback(this.$t('selectField', { msg: this.$t('productEffSet') }));
                 }
             };
 
@@ -465,56 +464,56 @@
                 //校验规则
                 ruleValidate: {
                     productName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('productName')}), trigger: 'blur' },     // 不能为空
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('productName'), length: 50}), trigger: 'blur' },      // 不能多于15个字符
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('productName') }), trigger: 'blur' },     // 不能为空
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', { field: this.$t('productName'), length: 50 }), trigger: 'blur' },      // 不能多于15个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     standardPrice: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('standardPrice')}), trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('standardPrice'), length: 10}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('standardPrice') }), trigger: 'blur' },
+                        { max: 10, message: this.$t('errorMaxLength', { field: this.$t('standardPrice'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' }
                     ],
                     thirdCode: [
-                        { max: 50, message: this.$t('errorMaxLength', {field: this.$t('thirdCode'), length: 50}), trigger: 'blur' },
+                        { max: 50, message: this.$t('errorMaxLength', { field: this.$t('thirdCode'), length: 50 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
                     productDes: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('productDes'), length: 500}), trigger: 'blur' },
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('productDes'), length: 500 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     printName: [
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('printName'), length: 50}), trigger: 'blur' },
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', { field: this.$t('printName'), length: 50 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     printPrice: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('printPrice'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('printPrice'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' },
                         { validator: validatePrintPrice, trigger: 'blur' }
                     ],
                     ticketRemark: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('ticketRemark'), length: 500}), trigger: 'blur' },
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('ticketRemark'), length: 500 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     printRemark: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('printRemark'), length: 500}), trigger: 'blur' },
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('printRemark'), length: 500 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     inNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('inNum')}), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('inNum'), length: 10}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('inNum') }), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('inNum'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
                     minNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('minOrderNum'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('minOrderNum'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
                     maxNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('maxOrderNum'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('maxOrderNum'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' }
                     ],
@@ -523,13 +522,13 @@
                         { validator: validateNumber, trigger: 'blur' }
                     ],
                     limitByIdDay: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitByIdDay'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('limitByIdDay'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateIdBuyTicket, trigger: 'blur' }
                     ],
                     limitByMobileDay: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('limitByMobileDay'), length: 10}), trigger: 'blur' },
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('limitByMobileDay'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateNumber, trigger: 'blur' },
                         { validator: validateMobileBuyTicket, trigger: 'blur' }
@@ -569,7 +568,7 @@
             formValidateFunc () {
                 //校验游玩规则-产品园区列表数据
                 if(this.productPlayRuleVo.length < 1){
-                    this.$Message.warning(this.$t('selectField',{msg: this.$t('playPark')}));
+                    this.$Message.warning(this.$t('selectField',{ msg: this.$t('playPark') }));
                     return
                 }
                 //校验产品有效性设置与游玩规则数据
@@ -650,11 +649,11 @@
                 ajax.post(url, params).then(res => {
                     if(res.success){
                         //区分新增与修改
-                        this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t(this.type) }));
                         this.goBack();
                     } else {
                         //区分新增与修改
-                        this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t(this.type)}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t(this.type) }));
                     }
                 })
             },
@@ -707,7 +706,7 @@
             goBack() {
                 //区分新增与修改
                 if( this.type === 'add' ){
-                    this.$router.push({ name: 'ticketType'});
+                    this.$router.push({ name: 'ticketType' });
                 }
                 if( this.type === 'modify' ){
                     this.$router.back();

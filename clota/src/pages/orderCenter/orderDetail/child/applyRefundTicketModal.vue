@@ -136,9 +136,9 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './applyRefundTicketConfig';
+    import { columnData } from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
-    import {transSyncStatus} from '../../commFun';
+    import { transSyncStatus } from '../../commFun';
 
     export default {
         props : {
@@ -150,7 +150,9 @@
             //订单详情
             orderDetail : {
                 type : Object,
-                default : ''
+                default() {
+                    return ''
+                }
             },
             //产品信息
             'product-info' : {
@@ -193,8 +195,7 @@
              * @param type
              */
             visibleChange(type) {
-                if(type === true){
-                }
+
             },
             /**
              * 确定退票
@@ -203,7 +204,7 @@
                 if(this.selectedTicket.length > 0){
                     this.saveOrderProductRefundAlter();
                 }else{
-                    this.$Message.warning(this.$t('selectField', {msg: this.$t('productNeedsRefund')}));    // 请选择需要退票的产品
+                    this.$Message.warning(this.$t('selectField', { sg: this.$t('productNeedsRefund') }));    // 请选择需要退票的产品
                 }
             },
             /**

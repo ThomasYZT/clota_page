@@ -304,7 +304,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {productColumn, saleChannelColumn, marketingColumn, refundColumn} from './detailConfig';
+    import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -408,9 +408,8 @@
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
-                    data: {remark: this.remark},
+                    data: { remark: this.remark },
                     confirmCallback : ( msg ) => {
-                        console.log(msg);
                         this.remark = msg;
                     }
                 });

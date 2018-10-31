@@ -166,8 +166,8 @@
     import refundModal from '../components/refundModal';
     import ticketChangingModal from '../components/ticketChangingModal'
     import tableCom from '@/components/tableCom/tableCom';
-    import {productDetailInfo} from './secondLevelDetailConfig';
-    import {transRescheduleStatus, transVerifyStatus} from '../../../commFun'
+    import { productDetailInfo } from './secondLevelDetailConfig';
+    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun'
     export default {
         components: {
             tableCom,

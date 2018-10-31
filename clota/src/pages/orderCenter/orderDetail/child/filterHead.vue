@@ -288,7 +288,7 @@
         payStatusList,
     } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         data() {
             return {

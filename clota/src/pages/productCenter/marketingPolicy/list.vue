@@ -144,7 +144,7 @@
 
         <!-- 分销 -->
         <distribution-modal @complete="distributeComplete($event)"
-                            ref="distributionModal"f></distribution-modal>
+                            ref="distributionModal"></distribution-modal>
 
     </div>
 </template>
@@ -153,10 +153,10 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
     import addSalePolicyModal from './components/addSalePolicyModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
+    import { configVariable } from '@/assets/js/constVariable';
     import distributionModal from './components/distributionModal'
-    import {mapGetters} from 'vuex';
-    import {myPolicyHead, distributePolicyHead} from '../policyConfig';
+    import { mapGetters } from 'vuex';
+    import { myPolicyHead, distributePolicyHead } from '../policyConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -208,8 +208,8 @@
                 },
                 // 筛选列表
                 filterList: [
-                    {text: '已启用', value: '已启用'},
-                    {text: '未启用', value: '未启用'},
+                    { text: '已启用', value: '已启用' },
+                    { text: '未启用', value: '未启用' },
                 ],
                 // 下拉列表数据
                 dropdownList: [
@@ -217,8 +217,8 @@
                     { name: 'commissioned', value: 'commissioned' },//启用
                     { name: 'forbidden', value: 'forbidden' },//禁用
                     { name: 'delete', value: 'delete' },//删除
-                    { name: 'reject', value: 'reject'},//驳回
-                    { name: 'commitCheck', value: 'commitCheck'}//提交审核
+                    { name: 'reject', value: 'reject' },//驳回
+                    { name: 'commitCheck', value: 'commitCheck' }//提交审核
                 ],
                 // 业态类型数据
                 policyTypeList: [],
@@ -358,7 +358,6 @@
             batchDel () {
                 let ids = this.selectedRow.map(item => item.id).join(',');
                 this.delUnits = this.selectedRow.map(item => item.name).join(',');
-                console.log(ids);
                 this.$refs.delModal.show({
                     title : this.$t('deleteBatch'),
                     confirmCallback : () => {
@@ -395,7 +394,6 @@
 
             // 点击dropdown回调 (checked-enabled审核,up-enabled上架,down-not_enabled下架,delete-删除)
             handleCommand( item ) {
-                console.log(item);
                 if(item){
                     let ids = this.selectedRow.map(item => item.id).join(',');
                     switch (item) {

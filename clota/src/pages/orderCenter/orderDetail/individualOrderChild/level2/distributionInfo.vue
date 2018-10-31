@@ -38,7 +38,9 @@
         props: {
             allocationInfo: {
                 type: Object,
-                default: {}
+                default() {
+                    return {}
+                }
             },
             //退票手续费收入
             totalRefundFee : {

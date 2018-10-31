@@ -152,9 +152,9 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import titlePark from '../../components/titlePark.vue';
     import { limitStore } from '@/assets/js/constVariable';
-    import { subAccountColumn} from './editPolicyConfig';
+    import { subAccountColumn } from './editPolicyConfig';
     import common from '@/assets/js/common.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
 
@@ -181,9 +181,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }else{
@@ -197,9 +197,9 @@
                         callback();
                     }).catch(err => {
                         if(err === 'errorMaxLength'){
-                            callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
+                            callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
                         }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
                 }else{
@@ -210,8 +210,8 @@
             const validateStockNum = (rule,value,callback) => {
                 if(this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum){
                     if( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ){
-                        console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
-                        callback(this.$t('errorGreaterThan',{small : this.$t('stockNum'),big : this.$t('upLevelStockName')+ this.productDetail.productSaleVo.stockNum }));
+                        //console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
+                        callback(this.$t('errorGreaterThan',{ small : this.$t('stockNum'),big : this.$t('upLevelStockName')+ this.productDetail.productSaleVo.stockNum }));
                     }else{
                         callback();
                     }
@@ -223,7 +223,7 @@
             const validateSettlePrice = (rule,value,callback) => {
                 if(value && this.productInfo.standardPrice){
                     if( Number(value) < Number(this.productInfo.standardPrice) ){
-                        callback(this.$t('sizeErrorS',{filed1 : this.$t('settlePrice'),filed2 : this.productInfo.standardPrice}));
+                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('settlePrice'),filed2 : this.productInfo.standardPrice }));
                     }else{
                         callback();
                     }
@@ -256,7 +256,7 @@
                 },
                 ruleValidate: {
                     productId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('chooseProduct')}), trigger: 'change' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('chooseProduct') }), trigger: 'change' },     // 不能为空
                     ],
                     stockNum: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
@@ -264,8 +264,8 @@
                         { validator: validateStockNum, trigger: 'blur' },
                     ],
                     settlePrice: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('settlePrice')}), trigger: 'change' },     // 不能为空
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('settlePrice'), length: 10}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('settlePrice') }), trigger: 'change' },     // 不能为空
+                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('settlePrice'), length: 10 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                         { validator: validateMoney, trigger: 'blur' },
                         { validator: validateSettlePrice, trigger: 'blur' },
@@ -295,7 +295,7 @@
                         sum += Number(item.subPrice)
                     });
                     if(this.formData.settlePrice-sum < 0){
-                        this.$Message.warning(this.$t('sizeErrorB', {filed1: this.$t('priceSet'), filed2: this.$t('settlePrice')}),);
+                        this.$Message.warning(this.$t('sizeErrorB', { filed1: this.$t('priceSet'), filed2: this.$t('settlePrice') }),);
                     }
                     return this.formData.settlePrice-sum
                 } else {
@@ -351,7 +351,6 @@
 
             //校验表格填入
             checkInput ( data ) {
-                console.log(data)
             },
 
             /**
@@ -394,7 +393,7 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({data,type,title,confirmCallback = null,cancelCallback}) {
+            show ({ data,type,title,confirmCallback = null,cancelCallback }) {
                 this.title = title;
                 this.type = type;
                 if(data){
