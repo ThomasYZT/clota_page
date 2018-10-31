@@ -207,10 +207,10 @@
                     scene: [],
                 },
                 // 筛选列表
-                filterList: [
+                /*filterList: [
                     { text: '已启用', value: '已启用' },
                     { text: '未启用', value: '未启用' },
-                ],
+                ],*/
                 // 下拉列表数据
                 dropdownList: [
                     { name: 'checkPass', value: 'checkPass' },//审核通过

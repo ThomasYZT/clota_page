@@ -58,12 +58,12 @@ export const saleChannelColumn = [
 // 全民营销表头
 export const marketingColumn = [
     {
-        title: '营销类别',      // 营销类别
+        title: 'marketType',      // 营销类别
         width: 300,
         field: 'parkName'
     },
     {
-        title: '等级名称',   // 等级名称
+        title: 'gradeName',   // 等级名称
         minWidth: 300,
         field: 'saleType'
     },

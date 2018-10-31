@@ -462,8 +462,8 @@
                                     <ul class="operate-list">
                                         <template v-if="type === 'check'">
                                             <li class="normal"
-                                                v-if="scope.row.playType === 'required'">{{$t('必玩项')}}</li><!--必玩项-->
-                                            <li class="normal" v-else>{{$t('可玩项')}}</li><!--可玩项-->
+                                                v-if="scope.row.playType === 'required'">{{$t('requiredPlayItem')}}</li><!--必玩项-->
+                                            <li class="normal" v-else>{{$t('playableItem')}}</li><!--可玩项-->
                                         </template>
                                         <template v-else>
                                             <li class="normal"

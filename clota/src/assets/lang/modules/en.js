@@ -1125,7 +1125,7 @@ export default {
     'distributeDetail': '分销政策详情',
     'distributePolicy': '分销政策',
     'myDistribute': '我的分销',
-    'productNameAndSaleGroup': '产品名称/销售渠道组',
+    'productNameAndSaleGroup': 'productName/salesChannel',
     'bestSaleStrategy': '最优价格销售策略',
     'saleAndPlayPolicy': '售卖和游玩政策',
     'distributeName': '分销名称',
@@ -1491,4 +1491,11 @@ export default {
     'reverseFailure' : '预定失败',
     'auditSuccess' : '审核成功',
     'auditFailure' : '审核失败',
+    'salesChannel': '销售渠道组',
+    'fillNote': '填写备注',
+    'marketType': '营销类别',
+    'playableItem': '可玩项',
+    'requiredPlayItem': '必玩项',
+    'level': '等级',
+    'AvailableNumberOfDays': '可游玩园区有效天数'
 }

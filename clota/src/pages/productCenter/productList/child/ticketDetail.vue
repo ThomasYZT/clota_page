@@ -266,7 +266,7 @@
             <Button type="ghost" @click="goBack">{{$t('back')}}</Button><!--返回-->
             <!--待审核--填写备注-->
             <template v-if="detail.auditStatus === 'auditing'">
-                <span class="blue" @click="showRemarkModal">{{$t('填写备注')}}</span>
+                <span class="blue" @click="showRemarkModal">{{$t('fillNote')}}</span>
             </template>
         </div>
 

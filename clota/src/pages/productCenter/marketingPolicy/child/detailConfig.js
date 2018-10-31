@@ -75,7 +75,7 @@ export const detailParentDistributePriceConfig = [
 export const myDistributeConfig = [
     {
         title: 'productNameAndSaleGroup',      // 产品名称/销售渠道组
-        width: 200,
+        width: 240,
         field: 'productName'
     },
 ]
@@ -112,12 +112,12 @@ export const setSaleChannelColumn = [
 //全民营销表头--暂不使用
 export const marketingColumn = [
     {
-        title: '类型',      // 类型
+        title: 'type',      // 类型
         width: 250,
         field: 'id'
     },
     {
-        title: '等级',   // 等级
+        title: 'level',   // 等级
         minWidth: 250,
         field: 'name'
     }

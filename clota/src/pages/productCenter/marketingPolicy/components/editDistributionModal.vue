@@ -129,7 +129,7 @@
                                       :class="{disable: item.status === 'valid'}"
                                       :key="index">
                                     {{item.channelName}}
-                                    <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                    <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
                                 </span>
                             </template>
                         </el-table-column>
@@ -158,7 +158,7 @@
                                       :class="{disable: item.status === 'valid'}"
                                       :key="index">
                                     {{item.channelName}}
-                                    <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                    <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
                                 </span>
                             </template>
                         </el-table-column>

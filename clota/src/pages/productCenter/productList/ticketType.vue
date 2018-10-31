@@ -136,10 +136,10 @@
                     orderBy: [{ name: 'p.updated_time', val: 'desc' }],//[{name:xxx,val:asc|desc}]
                 },
                 // 筛选列表
-                filterList: [
+                /*filterList: [
                     { text: '已启用', value: '已启用' },
                     { text: '未启用', value: '未启用' },
-                ],
+                ],*/
                 // 表格表头字段名
                 columnData: ticketTypeHead,
                 // 列表数据
