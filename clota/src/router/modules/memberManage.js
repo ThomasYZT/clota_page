@@ -575,18 +575,17 @@ export default {
             inventoryManage: {
                 //会员管理--进销存管理
                 path: '/memberManage/inventoryManage',
-                name: 'inventoryManage',
                 component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/index.vue'),
                 meta: {
                     //todo 未配置权限
-                    _name: 'members-index',
+                    _name: 'members-info',
                     menuName: 'inventoryManage',
                     iconClass: 'icon-home',
-                    rightPath: topMenuName + '.' + 'memberHome',
+                    rightPath: topMenuName + '.' + 'inventoryManage',
                     isMenu: true
                 },
-                children: [
-                    {
+                children: {
+                    goodsManage: {
                         //会员管理--进销存管理--商品管理
                         path: '/memberManage/inventoryManage/goodsManage',
                         name: 'goodsManage',
@@ -598,9 +597,8 @@ export default {
                             rightPath: topMenuName + '.' + 'memberHome',
                             isMenu: true
                         },
-
                     },
-                    {
+                    stocking: {
                         //会员管理--进销存管理--库存盘点
                         path: '/memberManage/inventoryManage/stocking',
                         name: 'stocking',
@@ -613,7 +611,7 @@ export default {
                             isMenu: true
                         }
                     }
-                ]
+                }
             },
             integralMall: {
                 //会员管理--积分商城
@@ -625,7 +623,7 @@ export default {
                     _name: 'members-index',
                     menuName: 'integralMall', //lang.config.js 里面的语言键值
                     iconClass: 'icon-home',
-                    rightPath: topMenuName + '.' + 'memberHome',
+                    rightPath: topMenuName + '.' + 'integralMall',
                     isMenu: true
                 },
             }
