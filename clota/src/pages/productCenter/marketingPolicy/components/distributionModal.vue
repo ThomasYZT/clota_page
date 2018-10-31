@@ -109,7 +109,7 @@
                             :width="140"
                             :min-width="120">
                             <template slot-scope="scope">
-                                <Input v-model="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
+                                <Input v-model.trim="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
                             </template>
                         </el-table-column>
                     </table-com>
@@ -141,7 +141,7 @@
                                       :class="{disable: item.status === 'valid'}"
                                       :key="index">
                                     {{item.channelName}}
-                                    <span class="disable" v-if="item.status === 'valid'">(未启用)</span>
+                                    <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
                                 </span>
                             </template>
                         </el-table-column>
@@ -160,9 +160,9 @@
 
 <script>
     import ajax from '@/api/index';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import {detailParentDistributePriceConfig, setSaleChannelColumn} from '../child/detailConfig'
+    import { detailParentDistributePriceConfig, setSaleChannelColumn } from '../child/detailConfig'
     export default {
         components: {
             tableCom
@@ -174,7 +174,7 @@
                     if(value.length){
                         value.forEach((item) => {
                             if(item.price === ''){
-                                callback(new Error(this.$t('errorEmpty', {msg: this.$t('mySalePrice')})));
+                                callback(new Error(this.$t('errorEmpty', { msg: this.$t('mySalePrice') })));
                             }else {
                                 if(validator.isNumber(item.price)) {
                                     if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
@@ -184,7 +184,7 @@
                                         callback();
                                     }
                                 } else {
-                                    callback(this.$t('numError',{field : this.$t('mySalePrice')}));
+                                    callback(this.$t('numError',{ field : this.$t('mySalePrice') }));
                                 }
 
                             }
@@ -219,14 +219,14 @@
                 //表达验证
                 ruleValidate: {
                     name: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('distributeName')}), trigger: 'blur' },     // 不能为空
-                        { type: 'string', max: 40, message: this.$t('errorMaxLength', {field: this.$t('distributeName'), length: 40}), trigger: 'blur' },
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('distributeName') }), trigger: 'blur' },     // 不能为空
+                        { type: 'string', max: 40, message: this.$t('errorMaxLength', { field: this.$t('distributeName'), length: 40 }), trigger: 'blur' },
                     ],
                     productPrices: [
                         { validator: validateMethod.productPrice, trigger: 'blur' },     // 不能为空
                     ],
                     groupIds: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('saleChannels')}), trigger: 'blur' },     // 不能为空
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('saleChannels') }), trigger: 'blur' },     // 不能为空
                     ]
                 },
                 //是否显示分销提示
@@ -302,9 +302,6 @@
                     if(res.success) {
                         this.haveSaleGroups = res.data;
 
-
-                        console.log(this.tempData);
-                        console.log(this.haveSaleGroups)
                         //过滤没有销售渠道的销售组
                         for(let i=0,len=this.tempData.length; i<len; i++) {
                             if(this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {

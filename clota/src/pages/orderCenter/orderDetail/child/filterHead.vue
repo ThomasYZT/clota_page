@@ -36,7 +36,7 @@
                 </i-col>
                 <i-col span="4">
                     <!--订单类型-->
-                    <FormItem label="订单类型" >
+                    <FormItem :label="$t('orderType')" >
                         <Select v-model.trim="formData.orderType"
                                 style="max-width: 100px"
                                 @on-change="orderTypeChange">
@@ -50,7 +50,7 @@
                 </i-col>
                 <i-col span="4">
                     <!--是否分销-->
-                    <FormItem label="是否分销" >
+                    <FormItem :label="$t('whetherVerify')" >
                         <Select v-model.trim="formData.allocationStatus"
                                 style="max-width: 100px"
                                 @on-change="allocationStatusChange">
@@ -66,7 +66,7 @@
             <i-row>
                 <i-col span="6">
                     <!--取票状态-->
-                    <FormItem label="取票状态">
+                    <FormItem :label="$t('takeTicketStatus')">
                         <Select v-model.trim="formData.pickStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -80,7 +80,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--退票状态-->
-                    <FormItem label="退票状态">
+                    <FormItem :label="$t('refundStatus')">
                         <Select v-model.trim="formData.refundStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -108,7 +108,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--下单企业-->
-                    <FormItem label="下单企业" >
+                    <FormItem :label="$t('orderOrg')" >
                         <Select v-model.trim="formData.orderOrgId"
                                 style="max-width: 200px"
                                 :disabled="orderTaskDisabled"
@@ -125,7 +125,7 @@
             <i-row>
                 <i-col span="6">
                     <!--下单渠道-->
-                    <FormItem label="下单渠道" >
+                    <FormItem :label="$t('orderChannel')" >
                         <Select v-model.trim="formData.orderChannel"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -139,7 +139,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--核销状态-->
-                    <FormItem label="核销状态" >
+                    <FormItem :label="$t('verifyStatus')" >
                         <Select v-model.trim="formData.verifyStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -153,7 +153,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--是否同步-->
-                    <FormItem label="是否同步" >
+                    <FormItem :label="$t('whetherSync')" >
                         <Select v-model.trim="formData.syncStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -167,7 +167,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--改签状态-->
-                    <FormItem label="改签状态" >
+                    <FormItem :label="$t('rescheduleStatus')" >
                         <Select v-model.trim="formData.rescheduleStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -209,7 +209,7 @@
                 <!--</i-col>-->
                 <i-col span="6">
                     <!--审核状态-->
-                    <FormItem label="审核状态" >
+                    <FormItem :label="$t('auditStatus')" >
                         <Select v-model.trim="formData.auditStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -223,7 +223,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--支付状态-->
-                    <FormItem label="支付状态" >
+                    <FormItem :label="$t('paymentStatus')" >
                         <Select v-model.trim="formData.paymentStatus"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
@@ -239,32 +239,34 @@
             <i-row>
                 <i-col span="6">
                     <!--业态类型-->
-                    <FormItem label="业态类型" >
+                    <FormItem :label="$t('industryType')" >
                         <Select v-model.trim="formData.productType"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
-                            <Option value="ticket">票</Option>
+                            <Option value="ticket">{{$t('tickets')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="关键字" >
+                    <FormItem :label="$t('keyWord')" >
+                        <!--输入游客姓名/手机号/订单明细编号-->
                         <Input v-model.trim="formData.keyword"
                                style="max-width: 380px"
-                               placeholder="输入游客姓名/手机号/订单明细编号"
+                               :placeholder="$t('enterNamePhoneAndOrderNo')"
                                @on-enter="searchProductList"/>
                     </FormItem>
                 </i-col>
                 <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">搜索</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">重置</Button>
+                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">{{$t('searching')}}</Button>
+                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="9" className="abnormal-order">
                     <FormItem :label-width="0">
+                        <!--仅显示异常订单-->
                         <Checkbox v-model="formData.abnormalStatus"
-                                  @on-change="searchProductList">仅显示异常订单</Checkbox>
+                                  @on-change="searchProductList">{{$t('showAbnormalOrder')}}</Checkbox>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -286,7 +288,7 @@
         payStatusList,
     } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         data() {
             return {
@@ -525,11 +527,11 @@
             tOfSelectList () {
                 return [
                     {
-                        label : '是',
+                        label : 'yes',
                         value : 'true'
                     },
                     {
-                        label : '否',
+                        label : 'no',
                         value : 'false'
                     }
                 ];

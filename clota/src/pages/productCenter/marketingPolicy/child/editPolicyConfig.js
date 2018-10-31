@@ -31,12 +31,12 @@ export const productColumn = [
 export const selectSaleChannelColumn = [
     {
         title: 'saleChannelGroup',      // 销售渠道分组
-        minWidth: 400,
+        minWidth: 120,
         field: 'groupName'
     },
     {
         title: 'saleChannels',   // 销售渠道
-        minWidth: 400,
+        minWidth: 120,
         field: 'channelNames'
     },
 ];
@@ -58,12 +58,12 @@ export const saleChannelColumn = [
 // 全民营销表头
 export const marketingColumn = [
     {
-        title: '营销类别',      // 营销类别
+        title: 'marketType',      // 营销类别
         width: 300,
         field: 'parkName'
     },
     {
-        title: '等级名称',   // 等级名称
+        title: 'gradeName',   // 等级名称
         minWidth: 300,
         field: 'saleType'
     },
@@ -125,7 +125,3 @@ export const subAccountColumn = [
         field: 'subPrice'
     },
 ];
-
-
-
-

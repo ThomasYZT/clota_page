@@ -19,7 +19,6 @@ const env = process.env.NODE_ENV === 'testing'
     : require('../config/prod.env')
 var argv = require('yargs').argv;
 
-
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({
@@ -50,6 +49,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         //   parallel: true
         // }),
         new ParallelUglifyPlugin({
+            sourceMap: config.build.productionSourceMap,
             cacheDir: '.cache/',
             uglifyJS: {
                 output: {

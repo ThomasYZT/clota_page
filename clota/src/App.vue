@@ -14,7 +14,7 @@
 
 <script>
     import mainFrame from '@/components/mainFrame/mainFrame';
-    import {mapGetters} from 'vuex'
+    import { mapGetters } from 'vuex'
 
     export default {
         name : 'app',

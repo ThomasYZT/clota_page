@@ -62,7 +62,7 @@
                 ruleValidate: {
                     remark: [
                         { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                        { max: 100, message: this.$t('errorMaxLength', { field: this.$t('remark'), length: 100 }), trigger: 'blur' },     // 备注不能超过100字符
                     ],
                 }
             }
@@ -75,7 +75,7 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({data,confirmCallback = null,cancelCallback}) {
+            show ({ data,confirmCallback = null,cancelCallback }) {
                 this.visible = true;
                 if(data){
                     this.formData = defaultsDeep({}, data);

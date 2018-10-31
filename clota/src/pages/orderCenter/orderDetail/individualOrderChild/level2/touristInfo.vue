@@ -29,35 +29,30 @@
         props: {
             visitor: {
                 type: Object,
-                default: {}
+                default() {
+                    return {};
+                }
             }
         },
         computed: {
             //证件类型
             cardType() {
                 if(Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
-                    console.log(this.visitor)
                     let type = JSON.parse(this.visitor.documentInfo);
                     if(type.length != 0){
                         switch (type[0].type) {
                             case 'identity':
                                 return 'identity';
-                                break;
                             case 'passport':
                                 return 'passport';
-                                break;
                             case 'driver':
                                 return 'driverLisence';
-                                break;
                             case 'officer':
                                 return 'officer';
-                                break;
                             case 'police':
                                 return 'police';
-                                break;
                             case 'license':
                                 return 'licence';
-                                break;
                         }
                     } else {
                         return ''

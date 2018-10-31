@@ -104,7 +104,7 @@
                                 <Option v-for="(item,index) in enumData.specialHoliday"
                                         :key="index"
                                         :value="item.id">
-                                    {{item.holidayName}}
+                                    {{$t(item.holidayName)}}
                                 </Option>
                             </Select>
                             <!--<br/>-->
@@ -207,7 +207,7 @@
                                 <Option v-for="(item,index) in enumData.specialHoliday"
                                         :key="index"
                                         :value="item.id">
-                                    {{item.holidayName}}
+                                    {{$t(item.holidayName)}}
                                 </Option>
                             </Select>
                             <!--<br/>-->
@@ -307,6 +307,22 @@
                                 :border="false"
                                 :column-check="true"
                                 @selection-change="changeSelection">
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span v-for="(item, index) in scope.row.channelModels"
+                                              class="channel"
+                                              :class="{disable: item.status === 'valid'}"
+                                              :key="index">
+                                            {{item.channelName}}
+                                            <span class="disable" v-if="item.status === 'valid'">({{$t('startingUse')}})</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </Form-item>
                     </div>
@@ -408,6 +424,7 @@
                             <template v-if="formData.returnRule.type!=='notAllow'">
                                 <!--<br/>-->
                                 <table-com
+                                    auto-height
                                     :table-com-min-height="260"
                                     :column-data="refundColumn"
                                     :table-data="formData.returnRule.rules"
@@ -555,9 +572,8 @@
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
-    import {productColumn, selectSaleChannelColumn, marketingColumn, dateListColumn, refundColumn} from './editPolicyConfig';
-    import { policyValidity, playDeadline, returnRule, alterRule, specialHoliday } from '@/assets/js/constVariable';
-    import {configVariable} from '@/assets/js/constVariable';
+    import { productColumn, selectSaleChannelColumn, marketingColumn, dateListColumn, refundColumn } from './editPolicyConfig';
+    import { policyValidity, playDeadline, returnRule, alterRule, specialHoliday, configVariable } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
 
     export default {
@@ -583,17 +599,17 @@
             //校验售票规则的指定日期
             const validateSaleData = (rule,value,callback) => {
                 if(this.formData.saleRule.type === 'playBeforeSold' && !(common.isNotEmpty(this.formData.saleRule.beforeDay) && common.isNotEmpty(this.formData.saleRule.afterDay))){
-                    callback(this.$t('inputField',{field : this.$t('aheadDays')}));
+                    callback(this.$t('inputField',{ field : this.$t('aheadDays') }));
                 }else if(this.formData.saleRule.type === 'specifiedPeriodSold'){
                     if(!(this.formData.saleRule.time[0] && this.formData.saleRule.time[1])){
-                        callback(this.$t('selectField',{msg : this.$t('specifiedTime')}));
+                        callback(this.$t('selectField',{ msg : this.$t('specifiedTime') }));
                     }else if(this.formData.saleRule.weekSold.length < 1){
-                        callback(this.$t('selectField',{msg : this.$t('weekSold')}));
+                        callback(this.$t('selectField',{ msg : this.$t('weekSold') }));
                     }else{
                         callback();
                     }
                 }else if(this.formData.saleRule.type === 'specifiedDateSold' && this.formData.saleRule.specifiedTime.length < 1){
-                    callback(this.$t('selectField',{msg : this.$t('specifiedDateSold')}));
+                    callback(this.$t('selectField',{ msg : this.$t('specifiedDateSold') }));
                 }else{
                     callback();
                 }
@@ -603,14 +619,14 @@
             const validatePlayData = (rule,value,callback) => {
                 if(this.formData.playRule.type === 'specifiedPeriodSold'){
                     if(!(this.formData.playRule.time[0] && this.formData.playRule.time[1])){
-                        callback(this.$t('selectField',{msg : this.$t('specifiedTime')}));
+                        callback(this.$t('selectField',{ msg : this.$t('specifiedTime') }));
                     }else if(this.formData.playRule.weekSold.length < 1){
-                        callback(this.$t('selectField',{msg : this.$t('weekPlay')}));
+                        callback(this.$t('selectField',{ msg : this.$t('weekPlay') }));
                     }else{
                         callback();
                     }
                 }else if(this.formData.playRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime.length < 1){
-                    callback(this.$t('selectField',{msg : this.$t('specifiedDateSold')}));
+                    callback(this.$t('selectField',{ msg : this.$t('specifiedDateSold') }));
                 }else{
                     callback();
                 }
@@ -689,12 +705,12 @@
                 },
                 ruleValidate: {
                     name: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('productName')}), trigger: 'blur' },     // 不能为空
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', {field: this.$t('salePolicyName'), length: 50}), trigger: 'blur' },      // 不能多于50个字符
+                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('productName') }), trigger: 'blur' },     // 不能为空
+                        { type: 'string', max: 50, message: this.$t('errorMaxLength', { field: this.$t('salePolicyName'), length: 50 }), trigger: 'blur' },      // 不能多于50个字符
                         { validator: validateMethod.emoji, trigger: 'blur' }
                     ],
                     policyDesc: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', {field: this.$t('desc'), length: 500}), trigger: 'blur' },
+                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('desc'), length: 500 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                     specifiedSaleDateSold: [
@@ -704,7 +720,7 @@
                         { validator: validatePlayData, trigger: 'change' },
                     ],
                     buyTicketNotes: [
-                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', {field: this.$t('ticketDesc'), length: 1000}), trigger: 'blur' },
+                        { type: 'string', max: 1000, message: this.$t('errorMaxLength', { field: this.$t('ticketDesc'), length: 1000 }), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
                     ],
                 },
@@ -983,7 +999,6 @@
             },
             //删除产品
             del ( data, index ) {
-                //console.log(this.itemsData.splice(index,1))
                 this.productList.splice(0,0,this.itemsData.splice(index,1)[0]);
             },
 
@@ -1049,26 +1064,26 @@
 
                 //产品
                 if(this.itemsData && this.itemsData.length < 1){
-                    this.$Message.warning(this.$t('selectField', {msg: this.$t('addProduct')}));
+                    this.$Message.warning(this.$t('selectField', { msg: this.$t('addProduct') }));
                     return
                 }
 
                 //渠道
                 if(this.selectedRow && this.selectedRow.length < 1){
-                    this.$Message.warning(this.$t('selectField', {msg: this.$t('saleChannels')}));
+                    this.$Message.warning(this.$t('selectField', { msg: this.$t('saleChannels') }));
                     return
                 }
 
                 //退票规则
                 if(this.formData.returnRule.type !== 'notAllow' && this.formData.returnRule.rules.length < 1){
-                    this.$Message.warning(this.$t('selectField', {msg: this.$t('addReturnRateRule')}));
+                    this.$Message.warning(this.$t('selectField', { msg: this.$t('addReturnRateRule') }));
                     return
                 }
 
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ){
                         let params = defaultsDeep({}, this.formData);
-                        params.groupIds = this.selectedRow.map( item => { return item.id}).join(',');
+                        params.groupIds = this.selectedRow.map( item => { return item.id }).join(',');
                         params.itemsData = JSON.stringify(defaultsDeep([], this.itemsData));
 
                         params.saleRule.weekSold = this.formData.saleRule.weekSold && this.formData.saleRule.weekSold.length > 0 ?
@@ -1085,7 +1100,7 @@
                             this.formData.playRule.weekSold.join(',') : '';
 
                         params.playRule.specifiedTime = this.formData.playRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0 ?
-                            this.formData.playRule.specifiedTime.map( item => { return new Date(item).format('yyyy-MM-dd')}).join(',') : '';
+                            this.formData.playRule.specifiedTime.map( item => { return new Date(item).format('yyyy-MM-dd') }).join(',') : '';
                         params.playRule.startTime = this.formData.playRule.time[0] ? new Date(this.formData.playRule.time[0]).format('yyyy-MM-dd'): '';
                         params.playRule.endTime = this.formData.playRule.time[1] ? new Date(this.formData.playRule.time[1]).format('yyyy-MM-dd'): '';
                         delete params.playRule.validDates;
@@ -1124,7 +1139,6 @@
 
                         delete params.saleTime;
                         delete params.todaySaleTime;
-                        console.log(params);
                         //区分新增与修改
                         if( this.type === 'add' ){
                             this.saveAndEditPolicy( 'addPolicy', params);
@@ -1140,11 +1154,11 @@
                 ajax.post(url, params).then(res => {
                     if(res.success){
                         //区分新增与修改
-                        this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t(this.type) }));
                         this.goBack();
                     } else {
                         //区分新增与修改
-                        this.$Message.error(res.message || this.$t('failureTip',{tip : this.$t(this.type)}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t(this.type) }));
                     }
                 })
             },
@@ -1153,7 +1167,7 @@
             goBack() {
                 //区分新增与修改
                 if( this.type === 'add' ){
-                    this.$router.push({ name: 'marketingPolicy'});
+                    this.$router.push({ name: 'marketingPolicy' });
                 }
                 if( this.type === 'modify' ){
                     this.$router.back();
@@ -1185,7 +1199,6 @@
              * @param data
              */
             initData(data) {
-                console.log(data);
                 let formData =  pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
@@ -1445,6 +1458,19 @@
                     }
                 }
 
+            }
+
+            .channel {
+                span {
+                    margin-right: 13px;
+                }
+
+                span.disable {
+                    letter-spacing: -1px;
+                }
+            }
+            .disable {
+                color: $color_red;
             }
 
         }

@@ -182,15 +182,31 @@
                 </div>
 
                 <!--销售渠道-->
-                <div class="form-content line" v-if="detail.policyChannels"
-                     :style="{height: (detail.policyChannels.length + 1) * 50 + 60+'px'}">
+                <div class="form-content line" v-if="detail.policyChannels">
                     <Form-item :label="$t('saleChannels')+'：'"><!--销售渠道-->
                         <div>
                             <table-com
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="saleChannelColumn"
                                 :table-data="detail.policyChannels"
                                 :border="false">
+                                <el-table-column
+                                    slot="column1"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span v-for="(item, index) in scope.row.channelModels"
+                                              class="channel"
+                                              :class="{disable: item.status === 'valid'}"
+                                              :key="index">
+                                            {{item.channelName}}
+                                            <span class="disable" v-if="item.status === 'valid'">({{$t('unStarting')}})</span>
+                                        </span>
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </div>
                     </Form-item>
@@ -304,7 +320,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {productColumn, saleChannelColumn, marketingColumn, refundColumn} from './detailConfig';
+    import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -408,9 +424,8 @@
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
-                    data: {remark: this.remark},
+                    data: { remark: this.remark },
                     confirmCallback : ( msg ) => {
-                        console.log(msg);
                         this.remark = msg;
                     }
                 });
@@ -551,6 +566,18 @@
                     }
                 }
 
+            }
+            .channel {
+                span {
+                    margin-right: 13px;
+                }
+
+                span.disable {
+                    letter-spacing: -1px;
+                }
+            }
+            .disable {
+                color: $color_red;
             }
 
         }

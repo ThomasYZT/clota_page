@@ -71,23 +71,41 @@
                 }
                 switch(itemData.operationStatus) {
                     //订单退票申请
-                    case 'ORDER_REFUND_APPLY' : return `申请退票，数量：${contentsObj.reqNum}。`;
+                    case 'ORDER_REFUND_APPLY' :
+                        // 申请退票，数量：
+                        return `${this.$t('ApplyForRefund')}，${this.$t('quantity')}：${contentsObj.reqNum}。`;
                     //订单退票审核
-                    case 'ORDER_REFUND_AUDIT' : return `退票审核，通过数量：${contentsObj.passNum}，手续费率：${contentsObj.refundRate}，${contentsObj.passOrderTicketIds}；驳回数量：${contentsObj.rejectNum}。备注：${contentsObj.remark}`;
+                    case 'ORDER_REFUND_AUDIT' :
+                        //退票审核，通过数量：                                                                    // 手续费率                                                                                 // 驳回数量                                         // 备注
+                        return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，${this.$t('handlingRate')}：${contentsObj.refundRate}，${contentsObj.passOrderTicketIds}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
                     //订单改签申请
-                    case 'ORDER_ALTER_APPLY' : return `申请改签，数量：${contentsObj.reqNum}，申请改签至：${contentsObj.afterAlterDate}。`;
+                    case 'ORDER_ALTER_APPLY' :
+                        // 申请改签，数量：                                                                      // 申请改签至
+                        return `${this.$t('applyForUpgrade')}，${this.$t('quantity')}：${contentsObj.reqNum}，${this.$t('applyForUpgradeTo')}：${contentsObj.afterAlterDate}。`;
                     //订单改签审核
-                    case 'ORDER_ALTER_AUDIT' : return `改签审核，通过数量：${contentsObj.passNum}，产品明细编号：${contentsObj.passOrderTicketIds}，游玩日期改签至：${contentsObj.afterAlterDate}。备注：${contentsObj.remark}`;
+                    case 'ORDER_ALTER_AUDIT' :
+                        // 改签审核，通过数量：                                                                  // 产品明细编号                                                           // 游玩日期改签至                                          // 备注
+                        return `${this.$t('alterAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，${this.$t('productDetailNo')}：${contentsObj.passOrderTicketIds}，${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。${this.$t('remark')}：${contentsObj.remark}`;
                     //新建订单
-                    case 'ORDER_NEW_ORDER' : return `预定成功，预定数量：${contentsObj.orderNum}。`;
+                    case 'ORDER_NEW_ORDER' :
+                        // 预定成功，预定数量：
+                        return `${this.$t('reverseSuccess')}，${this.$t('reserveNum')}：${contentsObj.orderNum}。`;
                     //新增票券
-                    case 'ORDER_NEW_TICKET' : return '预定成功';
+                    case 'ORDER_NEW_TICKET' :
+                        // 预定成功
+                        return this.$t('reverseSuccess');
                     //"团队订单审核驳回
-                    case 'ORDER_AUDIT_REJECT' : return `审核不通过，备注：${contentsObj.remark}。`;
+                    case 'ORDER_AUDIT_REJECT' :
+                        // 审核不通过，备注：
+                        return `${this.$t('checkNoPass')}，${this.$t('remark')}：${contentsObj.remark}。`;
                     //"团队订单审核通过
-                    case 'ORDER_AUDIT_PASS' : return `审核通过，备注：${contentsObj.remark}。`;
+                    case 'ORDER_AUDIT_PASS' :
+                        // 审核通过，备注：
+                        return `${this.$t('checkPass')}，${this.$t('remark')}：${contentsObj.remark}。`;
                     //核销
-                    case 'ORDER_VERIFY_TICKET' : return `核销数量：${contentsObj.verifyNum}，产品明细编号：${contentsObj.ticketId}，核销串码：${contentsObj.checkSerialNo}。备注：${contentsObj.remark}`;
+                    case 'ORDER_VERIFY_TICKET' :
+                        // 核销数量：                                                       // 产品明细编号                                          // 核销串码                                           // 备注
+                        return `${this.$t('verificationNum')}：${contentsObj.verifyNum}，${this.$t('productDetailNo')}：${contentsObj.ticketId}，${this.$t('verifySN')}：${contentsObj.checkSerialNo}。${this.$t('remark')}：${contentsObj.remark}`;
                     default : return ''
                 }
             }

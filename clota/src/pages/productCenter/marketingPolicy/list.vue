@@ -81,9 +81,9 @@
                 <template slot-scope="scope">
                     <div>
                         <span v-if="scope.row.auditStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
-                        <span v-if="scope.row.auditStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
-                        <span v-if="scope.row.auditStatus === 'rejected'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
-                        <span v-if="scope.row.auditStatus === 'not_enabled'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
+                        <span v-else-if="scope.row.auditStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
+                        <span v-else-if="scope.row.auditStatus === 'rejected'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                        <span v-else-if="scope.row.auditStatus === 'not_enabled'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
                     </div>
                 </template>
             </el-table-column>
@@ -142,12 +142,9 @@
                                @close-modal="queryMyPolicyList">
         </add-sale-policy-modal>
 
-        <!-- 查看分销政策 分销给我的销售政策 -->
-        <check-sale-policy-modal ref="checkSalePolicyModal"></check-sale-policy-modal>
-
         <!-- 分销 -->
         <distribution-modal @complete="distributeComplete($event)"
-                            ref="distributionModal"f></distribution-modal>
+                            ref="distributionModal"></distribution-modal>
 
     </div>
 </template>
@@ -156,11 +153,10 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
     import addSalePolicyModal from './components/addSalePolicyModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import checkSalePolicyModal from './components/checkSalePolicyModal';
+    import { configVariable } from '@/assets/js/constVariable';
     import distributionModal from './components/distributionModal'
-    import {mapGetters} from 'vuex';
-    import {myPolicyHead, distributePolicyHead} from '../policyConfig';
+    import { mapGetters } from 'vuex';
+    import { myPolicyHead, distributePolicyHead } from '../policyConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -168,7 +164,6 @@
             tableCom,
             delModal,
             addSalePolicyModal,
-            checkSalePolicyModal,
             distributionModal
         },
         props: {},
@@ -212,18 +207,18 @@
                     scene: [],
                 },
                 // 筛选列表
-                filterList: [
-                    {text: '已启用', value: '已启用'},
-                    {text: '未启用', value: '未启用'},
-                ],
+                /*filterList: [
+                    { text: '已启用', value: '已启用' },
+                    { text: '未启用', value: '未启用' },
+                ],*/
                 // 下拉列表数据
                 dropdownList: [
                     { name: 'checkPass', value: 'checkPass' },//审核通过
                     { name: 'commissioned', value: 'commissioned' },//启用
                     { name: 'forbidden', value: 'forbidden' },//禁用
                     { name: 'delete', value: 'delete' },//删除
-                    { name: 'reject', value: 'reject'},//驳回
-                    { name: 'commitCheck', value: 'commitCheck'}//提交审核
+                    { name: 'reject', value: 'reject' },//驳回
+                    { name: 'commitCheck', value: 'commitCheck' }//提交审核
                 ],
                 // 业态类型数据
                 policyTypeList: [],
@@ -363,7 +358,6 @@
             batchDel () {
                 let ids = this.selectedRow.map(item => item.id).join(',');
                 this.delUnits = this.selectedRow.map(item => item.name).join(',');
-                console.log(ids);
                 this.$refs.delModal.show({
                     title : this.$t('deleteBatch'),
                     confirmCallback : () => {
@@ -400,7 +394,6 @@
 
             // 点击dropdown回调 (checked-enabled审核,up-enabled上架,down-not_enabled下架,delete-删除)
             handleCommand( item ) {
-                console.log(item);
                 if(item){
                     let ids = this.selectedRow.map(item => item.id).join(',');
                     switch (item) {
@@ -461,8 +454,7 @@
                     params: {
                         listItem: data
                     }
-                })
-                //this.$refs.checkSalePolicyModal.toggle(data);
+                });
             },
             /**
              *  分销操作

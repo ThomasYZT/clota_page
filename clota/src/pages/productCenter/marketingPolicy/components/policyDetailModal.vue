@@ -104,7 +104,7 @@
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
-                                <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">
+                                <div v-w-title="`${detail.productPolicy.playRuleModel.startTime}~${detail.productPolicy.playRuleModel.endTime}`">
                                     {{detail.productPolicy.playRuleModel.startTime}}~{{detail.productPolicy.playRuleModel.endTime}}
                                 </div>
                             </Form-item>
@@ -234,7 +234,7 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
-    import {productColumn, refundColumn} from '../child/detailConfig'
+    import { productColumn, refundColumn } from '../child/detailConfig'
     export default {
         components: {
             tableCom
@@ -263,7 +263,11 @@
                 ajax.post('getPolicyInfo', {
                     allocationId: this.listItem.allocationId
                 }).then((res) => {
-                    this.detail = res.data ? res.data : {};
+                    if(res.success) {
+                        this.detail = res.data ? res.data : {};
+                    } else {
+                        this.detail = {};
+                    }
                     this.detail.scenicName = this.listItem.scenicName;
                     this.detail.policyDesc = this.listItem.policyDesc;
                 })

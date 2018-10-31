@@ -61,6 +61,7 @@
             <!-- 上级分销单价表格信息 -->
             <div class="table-wrapper">
                 <tableCom :column-data="parentDistributePriceConfig"
+                          auto-height
                           :table-com-min-height="260"
                           :table-data="parentDistributeData"
                           :border="false">
@@ -101,6 +102,7 @@
             <!-- 我的分销表格信息 -->
             <div class="table-wrapper2">
                 <tableCom v-if="myAllocationLists.length !== 0"
+                          auto-height
                           :column-data="myDistributeConfig"
                           :table-com-min-height="260"
                           :table-data="myAllocationLists"
@@ -111,9 +113,9 @@
                                   :slot="'column'+i"
                                   slot-scope="row">
                             <el-table-column
+                                :key="i"
                                 :label="row.title"
                                 :prop="row.field"
-                                :key="row.index"
                                 :render-header="headerRender"
                                 :min-width="row.minWidth"
                                 show-overflow-tooltip>
@@ -146,7 +148,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import policyDetail from '../components/policyDetailModal.vue';
     import distributionModal from '../components/distributionModal'
-    import {detailParentDistributePriceConfig, myDistributeConfig} from './detailConfig'
+    import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig'
     import ajax from '@/api/index';
     import editDistributeModal from '../components/editDistributionModal'
 
@@ -202,7 +204,7 @@
 
                             //增加尾行数据 -- 销售渠道分组
                             let lastRowData = {
-                                productName: '销售渠道组'
+                                productName: this.$t('salesChannel')
                             };
                             //动态增加列数据
                             for(let i = 0,len=this.myAllocationLists.length; i<len; i ++) {
@@ -264,9 +266,8 @@
              * @param data
              */
             headerClick(data) {
-
                 //禁用首行首列的表头点击事件
-                if(data[0].label !== "产品名称/销售渠道组") {
+                if(data[0].property !== 'productName') {
                     //获取表格选中列的索引
                     let coloumnIndex = this.getIndex(data);
                     //组装表格选中列的数据
@@ -346,7 +347,7 @@
             },
             //查看产品详情
             checkProductDetail ( data ) {
-                let _obj = Object.assign({},data,{id: data.productId});
+                let _obj = Object.assign({},data,{ id: data.productId });
                 this.$router.push({
                     name: 'ticketDetail',
                     params: {

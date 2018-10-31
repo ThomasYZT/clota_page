@@ -207,25 +207,17 @@
                     return '';
                 }
             },
-            //分销信息
-            allocationInfo() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
-                    return this.orderDetailInfo.allocationInfo;
-                }else {
-                    return {};
-                }
-            },
             //面包屑路由信息
             beforeRouterList () {
                 return [
                     {
-                        name: '订单查询',
+                        name: 'reserveOrderDetail',     // 订单查询
                         router: {
                             name: 'reserveOrderDetail'
                         }
                     },
                     {
-                        name: '订单详情',
+                        name: 'orderDetail',   // 订单详情
                         router: {
                             name: 'individualFirstLevel',
                             params : {

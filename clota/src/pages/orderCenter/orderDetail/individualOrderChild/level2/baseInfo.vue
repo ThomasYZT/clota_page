@@ -49,7 +49,7 @@
 
 <script>
     import ajax from '../../../../../api/index'
-    import {transSMSStatus} from '../../../commFun'
+    import { transSMSStatus } from '../../../commFun'
     export default {
         props: {
             'baseInfo': {
@@ -107,9 +107,9 @@
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
                     if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip: this.$t('sending')}));
+                        this.$Message.success(this.$t('successTip',{ tip: this.$t('sending') }));
                     }else{
-                        this.$Message.error(this.$t('failureTip',{tip: this.$t('sending')}));
+                        this.$Message.error(this.$t('failureTip',{ tip: this.$t('sending') }));
                     }
                 });
             },

@@ -40,7 +40,7 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom';
-    import {refundAlterListHead} from './secondLevelDetailConfig'
+    import { refundAlterListHead } from './secondLevelDetailConfig'
     export default {
         props: {
             refundAlterList: {

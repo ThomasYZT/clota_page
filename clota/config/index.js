@@ -3,7 +3,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
 module.exports = {
     dev: {
 
@@ -56,9 +55,9 @@ module.exports = {
          * Source Maps
          */
 
-        productionSourceMap: false,
+        productionSourceMap: process.env.npm_config_debugger === 'true',
         // https://webpack.js.org/configuration/devtool/#production
-        devtool: false,
+        devtool: 'source-map',
 
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.
