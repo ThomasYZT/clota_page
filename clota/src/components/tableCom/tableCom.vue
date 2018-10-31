@@ -268,7 +268,7 @@
                 this.$emit('row-click', data);
             },
             /**
-             * 设置表头的最大高度
+             * 设置表格的最大高度
              */
             setTableMaxHeight () {
                 if(this.autoHeight){
@@ -276,10 +276,11 @@
                 }else{
                     let rootEl = this.$root.$el;
                     if(rootEl){
+                        let offsetHeight = this.ofsetHeight ? this.ofsetHeight : this.$el.getBoundingClientRect().top;
                         if(this.showPagination){
-                            this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight - 52 + 'px';
+                            this.tableMaxHeight = rootEl.offsetHeight - offsetHeight - 52 + 'px';
                         }else{
-                            this.tableMaxHeight = rootEl.offsetHeight - this.ofsetHeight + 'px';
+                            this.tableMaxHeight = rootEl.offsetHeight - offsetHeight + 'px';
                         }
                     }
                 }
