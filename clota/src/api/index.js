@@ -73,6 +73,11 @@ export default {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
             return res.data
+        }).then(res => {
+            if(!res.success){
+                store.dispatch('showErrToast','interfaceErr');
+            }
+            return res;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             store.dispatch('showErrToast','systemErr');
@@ -113,6 +118,11 @@ export default {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
             return res.data;
+        }).then(res => {
+            if(!res.success){
+                store.dispatch('showErrToast','interfaceErr');
+            }
+            return res;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             store.dispatch('showErrToast','systemErr');
@@ -175,6 +185,11 @@ export default {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
             }
             return res.data;
+        }).then(res => {
+            if(!res.success){
+                store.dispatch('showErrToast','interfaceErr');
+            }
+            return res;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             store.dispatch('showErrToast','systemErr');
