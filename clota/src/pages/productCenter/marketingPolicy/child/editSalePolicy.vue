@@ -316,10 +316,10 @@
                                     <template slot-scope="scope">
                                         <span v-for="(item, index) in scope.row.channelModels"
                                               class="channel"
-                                              :class="{disable: item.status === 'valid'}"
+                                              :class="{disable: item.status !== 'valid'}"
                                               :key="index">
                                             {{item.channelName}}
-                                            <span class="disable" v-if="item.status === 'valid'">({{$t('startingUse')}})</span>
+                                            <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
                                         </span>
                                     </template>
                                 </el-table-column>

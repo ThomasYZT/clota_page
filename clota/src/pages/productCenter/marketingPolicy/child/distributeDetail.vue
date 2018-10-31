@@ -213,6 +213,7 @@
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
                                     this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i].settlePrice;
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
+                                    this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos)
                                     if(i === 0) {
                                         //动态增加表格列
                                         let _obj = {
@@ -296,6 +297,7 @@
                     productList: [],
                     name: this.myAllocationLists[0]['allocationName'+_index],
                     allocationId: this.myAllocationLists[0]['allocationId'+_index],
+                    haveSaleGroups: this.myAllocationLists[0]['haveSaleGroups'+_index],
                     groupIds: this.myAllocationLists[this.myAllocationLists.length -1]['groupIds'+_index]
                 };
                 this.myAllocationLists.forEach((item, index) => {
