@@ -104,7 +104,7 @@
                                 <Option v-for="(item,index) in enumData.specialHoliday"
                                         :key="index"
                                         :value="item.id">
-                                    {{item.holidayName}}
+                                    {{$t(item.holidayName)}}
                                 </Option>
                             </Select>
                             <!--<br/>-->
@@ -207,7 +207,7 @@
                                 <Option v-for="(item,index) in enumData.specialHoliday"
                                         :key="index"
                                         :value="item.id">
-                                    {{item.holidayName}}
+                                    {{$t(item.holidayName)}}
                                 </Option>
                             </Select>
                             <!--<br/>-->

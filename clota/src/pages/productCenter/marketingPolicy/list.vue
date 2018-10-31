@@ -142,9 +142,6 @@
                                @close-modal="queryMyPolicyList">
         </add-sale-policy-modal>
 
-        <!-- 查看分销政策 分销给我的销售政策 -->
-        <check-sale-policy-modal ref="checkSalePolicyModal"></check-sale-policy-modal>
-
         <!-- 分销 -->
         <distribution-modal @complete="distributeComplete($event)"
                             ref="distributionModal"f></distribution-modal>
@@ -157,7 +154,6 @@
     import delModal from '@/components/delModal/index.vue';
     import addSalePolicyModal from './components/addSalePolicyModal.vue';
     import {configVariable} from '@/assets/js/constVariable';
-    import checkSalePolicyModal from './components/checkSalePolicyModal';
     import distributionModal from './components/distributionModal'
     import {mapGetters} from 'vuex';
     import {myPolicyHead, distributePolicyHead} from '../policyConfig';
@@ -168,7 +164,6 @@
             tableCom,
             delModal,
             addSalePolicyModal,
-            checkSalePolicyModal,
             distributionModal
         },
         props: {},
@@ -461,8 +456,7 @@
                     params: {
                         listItem: data
                     }
-                })
-                //this.$refs.checkSalePolicyModal.toggle(data);
+                });
             },
             /**
              *  分销操作

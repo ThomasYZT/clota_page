@@ -263,7 +263,11 @@
                 ajax.post('getPolicyInfo', {
                     allocationId: this.listItem.allocationId
                 }).then((res) => {
-                    this.detail = res.data ? res.data : {};
+                    if(res.success) {
+                        this.detail = res.data ? res.data : {};
+                    } else {
+                        this.detail = {};
+                    }
                     this.detail.scenicName = this.listItem.scenicName;
                     this.detail.policyDesc = this.listItem.policyDesc;
                 })
