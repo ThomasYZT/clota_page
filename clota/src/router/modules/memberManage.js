@@ -34,8 +34,8 @@ export default {
                     isMenu: true
                 },
             },
+            //会员管理--新开会员卡
             newCard: {
-                //会员管理--新开会员卡
                 path: '/memberManage/newCard',
                 name: 'newCard',
                 component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/index.vue'),
@@ -45,58 +45,95 @@ export default {
                     iconClass: 'icon-home',
                     rightPath: topMenuName + '.' + 'newCard',
                     isMenu: true
-                },
-                children: {
-                    newOwnerCard: {
-                        //会员管理--新开会员卡--新开业主卡
-                        path: '/memberManage/newCard/owner',
-                        name: 'newOwnerCard',
-                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
-                        meta: {
-                            menuName: 'newOwnerCard', //lang.config.js 里面的语言键值
-                            _name: 'members-index',
-                            rightPath: topMenuName + '.' + 'newOwnerCard',
-                            isMenu: true
-                        },
-                    },
-                    newEnterpriseCard: {
-                        //会员管理--新开会员卡--新开企业会员卡
-                        path: '/memberManage/newCard/enterprise',
-                        name: 'newEnterpriseCard',
-                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
-                        meta: {
-                            menuName: 'newEnterpriseCard', //lang.config.js 里面的语言键值
-                            _name: 'members-index',
-                            rightPath: topMenuName + '.' + 'newEnterpriseCard',
-                            isMenu: true
-                        },
-                    },
-                    newBatchCard: {
-                        //会员管理--新开会员卡--批量开卡
-                        path: '/memberManage/newCard/batch',
-                        name: 'newBatchCard',
-                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
-                        meta: {
-                            menuName: 'newBatchCard', //lang.config.js 里面的语言键值
-                            _name: 'members-index',
-                            rightPath: topMenuName + '.' + 'newBatchCard',
-                            isMenu: true
-                        },
-                    },
-                    refundedCard: {
-                        //会员管理--新开会员卡--退卡
-                        path: '/memberManage/newCard/refunded',
-                        name: 'refundedCard',
-                        component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/refundedCard.vue'),
-                        meta: {
-                            menuName: 'refundedCard', //lang.config.js 里面的语言键值
-                            _name: 'members-index',
-                            rightPath: topMenuName + '.' + 'refundedCard',
-                            isMenu: true
-                        },
-                    },
-
                 }
+            },
+            /*//会员管理--新开会员卡--新开业主卡
+            newOwnerCard: {
+                path: '/memberManage/newCard/owner',
+                name: 'newOwnerCard',
+                component: () => import(/!* webpackChunkName: "memberManage" *!/ '../../pages/memberManage/newCard/newCard.vue'),
+                meta: {
+                    menuName: 'newOwnerCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newOwnerCard',
+                },
+            },
+            //会员管理--新开会员卡--新开企业会员卡
+            newEnterpriseCard: {
+                path: '/memberManage/newCard/enterprise',
+                name: 'newEnterpriseCard',
+                component: () => import(/!* webpackChunkName: "memberManage" *!/ '../../pages/memberManage/newCard/newCard.vue'),
+                meta: {
+                    menuName: 'newEnterpriseCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newEnterpriseCard',
+                },
+            },*/
+            //会员管理--新开会员卡--批量开卡
+            newBatchCard: {
+                path: '/memberManage/newCard/batch',
+                name: 'newBatchCard',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                meta: {
+                    menuName: 'newBatchCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--续期
+            cardRenewal: {
+                path: '/memberManage/newCard/renewal',
+                name: 'renewal',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/renewal.vue'),
+                meta: {
+                    menuName: 'renewal', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--关联实体卡
+            associateEntityCard: {
+                path: '/memberManage/newCard/associate',
+                name: 'associateEntityCard',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/associateEntityCard.vue'),
+                meta: {
+                    menuName: 'associateEntityCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--补卡
+            replenishCard: {
+                path: '/memberManage/newCard/replenishCard',
+                name: 'replenishCard',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/replenishCard.vue'),
+                meta: {
+                    menuName: 'replenishCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--挂失
+            reportLoss: {
+                path: '/memberManage/newCard/reportLoss',
+                name: 'reportLoss',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/reportLoss.vue'),
+                meta: {
+                    menuName: 'reportLoss', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--退卡
+            refundedCard: {
+                path: '/memberManage/newCard/refunded',
+                name: 'refundedCard',
+                component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/refundedCard.vue'),
+                meta: {
+                    menuName: 'refundedCard', //lang.config.js 里面的语言键值
+                    _name: 'members-index',
+                    rightPath: topMenuName + '.' + 'newCard',
+                },
             },
             memberInfo: {
                 //会员管理--会员信息

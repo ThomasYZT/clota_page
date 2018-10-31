@@ -469,6 +469,10 @@ export default {
     'newEnterpriseCard': '新开企业会员卡',
     'newBatchCard': '批量开卡',
     'refundedCard': '退卡',
+    'renewal': '续期',
+    'associateEntityCard': '关联实体卡',
+    'replenishCard': '补卡',
+    'reportLoss': '挂失',
 
     // 检验错误提示
     'errorIrregular': '输入内容不合规则',
