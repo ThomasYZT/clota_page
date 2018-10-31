@@ -51,8 +51,8 @@ module.exports = smp.wrap({
         rules: [
             ...(
                 process.env.NODE_ENV === 'production'
-                    ? (config.dev.useEslint ? [createLintingRule()] : [])
-                    : (config.build.useEslint ? [createLintingRule()] : [])
+                    ? (config.build.useEslint ? [createLintingRule()] : [])
+                    : (config.dev.useEslint ? [createLintingRule()] : [])
             ),
             {
                 test: /\.vue$/,
