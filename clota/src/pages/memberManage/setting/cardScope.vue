@@ -383,7 +383,12 @@
             memTableData () {
                 let result = [];
                 for (let item in this.memberLevelsData) {
-                    result = [].concat(result,this.memberLevelsData[item]);
+                    result = [].concat(result,this.memberLevelsData[item].map(list => {
+                        return {
+                            ...list,
+                            content : item + '-' + list.levelDesc
+                        }
+                    }));
                 }
                 return result;
             }

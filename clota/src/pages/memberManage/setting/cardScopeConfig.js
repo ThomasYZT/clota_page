@@ -22,8 +22,8 @@ export const memCardHead = [
         field : 'check',
     },
     {
-        title : '会员卡级别',
+        title : '会员卡类别-会员卡级别',
         minWidth : 150,
-        field : 'levelDesc'
+        field : 'content'
     },
 ];
