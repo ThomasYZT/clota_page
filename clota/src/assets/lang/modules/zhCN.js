@@ -1530,4 +1530,5 @@ export default {
     'level': '等级',
     'AvailableNumberOfDays': '可游玩园区有效天数',
     'interfaceErr' : '接口调用失败',
+    'time.year' : '年'
 }

@@ -4,7 +4,7 @@
     <div id="app" :class="skinType">
         <router-view v-if="noFrame"/>
         <main-frame v-else >
-            <transition name="fade">
+            <transition name="el-fade-in">
                 <router-view :key="hashKey">
                 </router-view>
             </transition>
