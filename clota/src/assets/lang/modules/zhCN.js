@@ -37,7 +37,7 @@ export default {
     'growthSetting': '成长值设置',
     'fundSetting': '储值设置',
     'fundInfo': '账户储值信息',
-    'consumeSetting': '积分消费管理',
+    'consumeSetting': '积分设置',
     'backUp': '收起',
     'upLoad': '展开',
     'logout': '退出系统',

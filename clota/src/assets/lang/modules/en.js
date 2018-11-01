@@ -37,7 +37,7 @@ export default {
     'growthSetting': 'growth value settings',
     'fundSetting': 'stored-value setting',
     'fundInfo': 'account stored value information',
-    'consumeSetting': 'point consumption management',
+    'consumeSetting': 'point setting',
     'backUp': 'collapse',
     'upLoad': 'expand',
     'logout': 'logout',
