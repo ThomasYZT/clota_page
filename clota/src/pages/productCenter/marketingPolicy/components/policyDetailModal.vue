@@ -236,73 +236,73 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
-    import { productColumn, refundColumn } from '../child/detailConfig'
+    import { productColumn, refundColumn } from '../child/detailConfig';
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
-                show: false,
+                show : false,
                 //week
-                weekList: ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                weekList : ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 //产品列表表头
-                productColumn: productColumn,
+                productColumn : productColumn,
                 //退改规则列表表头
-                refundColumn: refundColumn,
+                refundColumn : refundColumn,
                 //分销详情数据
-                detail: {}
-            }
+                detail : {}
+            };
         },
-        computed: {
+        computed : {
 
         },
-        methods: {
+        methods : {
             /**
              *  获取销售政策详情
              */
-            getPolicyDetailData(callback) {
+            getPolicyDetailData () {
                 ajax.post('getPolicyInfo', {
-                    allocationId: this.listItem.allocationId
+                    allocationId : this.listItem.allocationId
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         this.detail = res.data ? res.data : {};
                     } else {
                         this.detail = {};
                     }
                     this.detail.scenicName = this.listItem.scenicName;
                     this.detail.policyDesc = this.listItem.policyDesc;
-                })
+                });
             },
             /**
              * 控制弹窗显示/隐藏
              */
-            toggle(data) {
-                if(data) {
+            toggle (data) {
+                if (data) {
                     this.listItem = data;
-                    this.getPolicyDetailData()
-                }else {
+                    this.getPolicyDetailData();
+                } else {
                     this.listItem = {};
                 }
                 this.show = !this.show;
             },
             //显示星期
             showWeek ( val ) {
-                if(val){
+                if (val) {
                     let list = val.split(',');
                     return list.map(item => {
-                        return this.$t(this.weekList[Number(item)])
+                        return this.$t(this.weekList[Number(item)]);
                     }).join('、');
-                }else{
-                    return '-'
+                } else {
+                    return '-';
                 }
             },
             //关闭模态框
-            hide(){
+            hide () {
                 this.toggle();
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

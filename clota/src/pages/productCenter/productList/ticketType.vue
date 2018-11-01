@@ -113,26 +113,26 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             tableCom,
             delModal,
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'manageOrgs'
             ])
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
-                    auditStatus: '',                                //审核状态；（未启用-not_enabled，已驳回-rejected，审核中-auditing，已启用-enabled）
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
+                    auditStatus : '', //审核状态；（未启用-not_enabled，已驳回-rejected，审核中-auditing，已启用-enabled）
                 },
-                filterParam: {
-                    orderBy: [{ name: 'p.updated_time', val: 'desc' }],//[{name:xxx,val:asc|desc}]
+                filterParam : {
+                    orderBy : [{ name : 'p.updated_time', val : 'desc' }],//[{name:xxx,val:asc|desc}]
                 },
                 // 筛选列表
                 /*filterList: [
@@ -140,23 +140,23 @@
                     { text: '未启用', value: '未启用' },
                 ],*/
                 // 表格表头字段名
-                columnData: ticketTypeHead,
+                columnData : ticketTypeHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                total: 0,
+                total : 0,
                 // 已勾选的模板
-                selectedRow: [],
+                selectedRow : [],
                 // 删除数据显示
-                delUnits: '',
-            }
+                delUnits : '',
+            };
         },
-        methods: {
+        methods : {
 
             // 查询票类产品列表
-            queryList() {
+            queryList () {
                 ajax.post('queryProductPage',this.queryParams).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
                     } else {
@@ -170,18 +170,18 @@
             //查看详情
             checkProductDetail ( data ) {
                 this.$router.push({
-                    name: 'ticketDetail',
-                    params: {
-                        info: data
+                    name : 'ticketDetail',
+                    params : {
+                        info : data
                     }
-                })
+                });
             },
 
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.selectedRow = selection;
             },
             // 批量删除
@@ -199,11 +199,11 @@
              * 删除票类
              * @param data
              */
-            deleteTicket( data ) {
+            deleteTicket ( data ) {
                 ajax.post('deleteProduct',{
-                    productIds: data
+                    productIds : data
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.queryList();
                     } else {
@@ -216,17 +216,17 @@
              * 列表排序 - 默认按更新时间降序排列
              * @param params - { column, prop, order }
              */
-            handleSortChanged: function (params) {
+            handleSortChanged : function (params) {
                 let order = 'desc';
-                if (params.order && params.order === 'ascending'){
+                if (params.order && params.order === 'ascending') {
                     order = 'asc';
                 }
-                if (params.prop){
-                    if (params.prop === 'updatedTime'){
+                if (params.prop) {
+                    if (params.prop === 'updatedTime') {
                         params.prop = 'p.updated_time';
                     }
 
-                    Object.assign(this.filterParam, { orderBy: JSON.stringify([{ name: `${params.prop}`, val: `${order}` }]) });
+                    Object.assign(this.filterParam, { orderBy : JSON.stringify([{ name : `${params.prop}`, val : `${order}` }]) });
                     Object.assign(this.queryParams, this.filterParam);
                     this.queryParams.pageNo = 1;
                     this.queryList();
@@ -239,12 +239,12 @@
              * @param row
              * @returns {boolean}
              */
-            filterHandler(value, row) {
+            filterHandler (value, row) {
                 return row.status === value;
             },
 
         },
-        created() {
+        created () {
             //设置角色权限
             this.role = this.manageOrgs.nodeType;
         }

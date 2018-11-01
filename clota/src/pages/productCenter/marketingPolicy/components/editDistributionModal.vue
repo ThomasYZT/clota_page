@@ -185,21 +185,21 @@
     import tipModal from '../../components/tipModal';
     import { saleChannelColumn, detailParentDistributePriceConfig } from '../child/detailConfig';
     export default {
-        components: {
+        components : {
             tableCom,
             tipModal
         },
-        data() {
+        data () {
             const validateMethod = {
-                productPrice: (rule,value,callback) => {
+                productPrice : (rule,value,callback) => {
                     //校验非空必填以及不可低于上级分销单价
-                    if(value.length){
+                    if (value.length) {
                         value.forEach((item) => {
-                            if(item.price === ''){
-                                callback(new Error(this.$t('errorEmpty', { msg: this.$t('mySalePrice') })));
-                            }else {
-                                if(validator.isNumber(item.price)) {
-                                    if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
+                            if (item.price === '') {
+                                callback(new Error(this.$t('errorEmpty', { msg : this.$t('mySalePrice') })));
+                            } else {
+                                if (validator.isNumber(item.price)) {
+                                    if (parseFloat(item.price) < parseFloat(item.settlePrice)) {
                                         this.isLossTipShow = true;
                                         callback();
                                     } else {
@@ -210,61 +210,61 @@
                                 }
 
                             }
-                        })
+                        });
                     }
                 }
-            }
+            };
             return {
                 //是否显示模态框
-                show: false,
+                show : false,
                 //模态框信息参数
-                detail: {},
+                detail : {},
                 //表单数据
-                formData: {
+                formData : {
                     //分销名称
-                    name: '',
+                    name : '',
                     //销售政策id -- 父级销售政策id
-                    parentId: '',
+                    parentId : '',
                     //分销产品定价
-                    productPrices: [],
+                    productPrices : [],
                     //销售分组id
-                    groupIds: ''
+                    groupIds : ''
                 },
                 //表达验证
-                ruleValidate: {
-                    name: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('distributeName') }), trigger: 'blur' },     // 不能为空
+                ruleValidate : {
+                    name : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('distributeName') }), trigger : 'blur' }, // 不能为空
                     ],
-                    productPrices: [
-                        { validator: validateMethod.productPrice, trigger: 'blur' },     // 不能为空
+                    productPrices : [
+                        { validator : validateMethod.productPrice, trigger : 'blur' }, // 不能为空
                     ],
-                    groupIds: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('saleChannels') }), trigger: 'blur' },     // 不能为空
+                    groupIds : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleChannels') }), trigger : 'blur' }, // 不能为空
                     ]
                 },
                 //分销详情数据 --接口数据
-                info: {},
+                info : {},
                 //销售渠道分组数据
-                saleGroupList: [],
+                saleGroupList : [],
                 //设置销售渠道表头配置
-                saleChannelColumn: saleChannelColumn,
+                saleChannelColumn : saleChannelColumn,
                 //设置我的分销单价表头配置
-                detailParentDistributePriceConfig: Array.from(detailParentDistributePriceConfig),
+                detailParentDistributePriceConfig : Array.from(detailParentDistributePriceConfig),
                 //已选中的渠道组
-                selectedRow: [],
+                selectedRow : [],
                 //是否处于编辑状态
-                editable: false,
+                editable : false,
                 //是否显示亏损提示
-                isLossTipShow: false
+                isLossTipShow : false
 
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示模态框
              */
-            toggle(data) {
-                if(data) {
+            toggle (data) {
+                if (data) {
                     this.detail = data;
                     //获取对呀分销政策的表单数据
                     this.formData.id = this.detail.allocationId;
@@ -273,14 +273,14 @@
                     this.formData.groupIds = this.detail.groupIds;
                     //获取模态框数据
                     this.getData();
-                }else {
+                } else {
                     //关闭模态框
                     this.$refs.policyform.resetFields();
                     this.formData = {
-                        name: '',
-                        parentId: '',
-                        productPrices: [],
-                        groupIds: ''
+                        name : '',
+                        parentId : '',
+                        productPrices : [],
+                        groupIds : ''
                     };
                     this.detail = {};
                     this.info = {};
@@ -293,25 +293,25 @@
             /**
              * 获取数据
              */
-            async getData(){
+            async getData () {
                 //获取分销详情数据
                 await ajax.post('getPolicyAllocationInfo', {
-                    allocationId: this.detail.listItem.allocationId
+                    allocationId : this.detail.listItem.allocationId
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         this.info = res.data ? res.data : {};
 
                         //初始化产品分销单价数据
                         this.detail.productList.forEach((item,index) => {
                             this.info.parentAllocationProductList.forEach((pitem, pindex) => {
-                                if(index === pindex) {
+                                if (index === pindex) {
                                     let _obj = {};
                                     _obj.productId = item.productId;
                                     _obj.price = item.settlePrice;
                                     _obj.settlePrice = pitem.settlePrice;
                                     this.formData.productPrices.push(_obj);
                                 }
-                            })
+                            });
                         });
                         //关闭模态框
                         this.show = !this.show;
@@ -319,9 +319,9 @@
                 });
                 //获取销售渠道分组列表
                 await ajax.post('queryOrgGroupVoList',{
-                    groupType: 'sale'
+                    groupType : 'sale'
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         // 设置临时数据
                         this.tempData = res.data;
 
@@ -329,8 +329,8 @@
                         this.haveSaleGroups = this.detail.haveSaleGroups;
 
                         //过滤没有销售渠道的销售组
-                        for(let i=0,len=this.tempData.length; i<len; i++) {
-                            if(this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
+                        for (let i = 0,len = this.tempData.length; i < len; i++) {
+                            if (this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
                                 this.tempData.splice(i,1);
                                 len--;
                                 i--;
@@ -346,12 +346,12 @@
                         let _chosedChannels = this.haveSaleGroups.map((item) => {
                             return item.groupId;
                         });
-                        for(let i=0,len=_channels.length; i<len; i++) {
-                            for(let j=0,jlen=_chosedChannels.length; j<jlen; j++) {
-                                if(_channels[i].id === _chosedChannels[j]) {
+                        for (let i = 0,len = _channels.length; i < len; i++) {
+                            for (let j = 0,jlen = _chosedChannels.length; j < jlen; j++) {
+                                if (_channels[i].id === _chosedChannels[j]) {
                                     this.selectedRow.push({
-                                        item: _channels[i],
-                                        index: i
+                                        item : _channels[i],
+                                        index : i
                                     });
                                 }
                             }
@@ -365,18 +365,16 @@
                         });
 
                         //去除其他分销选择过的销售组
-                        for(let i=0,len=this.tempData.length; i<len; i++) {
-                            for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
-                                if(len > 0 && jlen > 0) {
-                                    if(this.haveSaleGroups[j].groupId === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
-                                        this.haveSaleGroups.splice(j,1);
-                                        j--;
-                                        jlen--;
-                                        this.tempData.splice(i,1);
-                                        i--;
-                                        len--;
-                                        break;
-                                    }
+                        for (let i = 0,len = this.tempData.length; i < len; i++) {
+                            for (let j = 0,jlen = this.haveSaleGroups.length; j < jlen; j++) {
+                                if (len > 0 && jlen > 0 && this.haveSaleGroups[j].groupId === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
+                                    this.haveSaleGroups.splice(j,1);
+                                    j--;
+                                    jlen--;
+                                    this.tempData.splice(i,1);
+                                    i--;
+                                    len--;
+                                    break;
                                 }
                             }
                         }
@@ -387,51 +385,51 @@
             /**
              * 删除分销
              */
-            deleteDistribution(){
+            deleteDistribution () {
                 ajax.post('deletePolicyAllocation',{
-                    allocationId: this.detail.allocationId
+                    allocationId : this.detail.allocationId
                 }).then((res) => {
-                     if(res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip: this.$t('delete') }));
+                     if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         this.toggle();
-                        this.$emit('refresh')
+                        this.$emit('refresh');
                     }
-                })
+                });
             },
             /**
              * 保存分销设置
              */
-            save() {
+            save () {
                 this.$refs['policyform'].validate((valid) => {
-                    if(valid) {
+                    if (valid) {
                         ajax.post('savePolicyAllocation',{
-                            id: this.formData.id,
-                            name: this.formData.name,
-                            parentId: this.formData.parentId,
-                            productPrices: JSON.stringify(this.formData.productPrices),
-                            groupIds: this.formData.groupIds
+                            id : this.formData.id,
+                            name : this.formData.name,
+                            parentId : this.formData.parentId,
+                            productPrices : JSON.stringify(this.formData.productPrices),
+                            groupIds : this.formData.groupIds
                         }).then((res) => {
-                            if(res) {
-                                this.$Message.success(this.$t('successTip',{ tip: this.$t('modify') }));
+                            if (res) {
+                                this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
                                 this.toggle();
-                                this.$emit('refresh')
+                                this.$emit('refresh');
                             }
-                        })
+                        });
 
                     }
-                })
+                });
 
             },
             /**
              * 表格选择框事件
              */
-            colomnSelect(data) {
+            colomnSelect (data) {
                 this.formData.groupIds = "";
                 data.forEach((item) => {
                     this.formData.groupIds += item.id + ',';
 
                     item.channelModels.forEach(channel => {
-                        if(channel.channelName === this.detail.parentDistributor) {
+                        if (channel.channelName === this.detail.parentDistributor) {
                             this.isTipShow = true;
                         }
                     });
@@ -440,11 +438,11 @@
             /**
              * 关闭模态框
              */
-            hide(){
-                if(this.editable) {
+            hide () {
+                if (this.editable) {
                     this.show = false;
                     this.$refs.tipModal.show();
-                }else {
+                } else {
                     this.toggle();
                 }
             },
@@ -452,25 +450,25 @@
              *  table selectable属性
              * @return {boolean}
              */
-            selectable: () => {
+            selectable : () => {
                 return true;
             },
-            selectDisable: () => {
+            selectDisable : () => {
                 return false;
             },
             /**
              *  改变选择框可选状态
              */
-            changeSelectable() {
+            changeSelectable () {
                 this.editable = !this.editable;
             },
             /**
              * 取消编辑
              */
-            cancelEdit() {
+            cancelEdit () {
                 //初始化产品分销单价数据
                 this.formData.productPrices = [];
-                this.detail.productList.forEach((item,index) => {
+                this.detail.productList.forEach((item) => {
                     let _obj = {};
                     _obj.productId = item.productId;
                     _obj.price = item.settlePrice;
@@ -481,27 +479,27 @@
             /**
              * 放弃保存编辑过后的信息
              */
-            giveUp() {
+            giveUp () {
                 this.show = true;
                 this.toggle();
             },
             /**
              * 不放弃编辑后的信息
              */
-            noGiveUp() {
+            noGiveUp () {
                 this.show = true;
             }
         },
-        created() {
+        created () {
             //增加我的分销单价表头
             this.detailParentDistributePriceConfig.push(
                 {
-                    title: 'mySalePrice',       // 我的分销单价
-                    width: 180,
+                    title : 'mySalePrice', // 我的分销单价
+                    width : 180,
                 }
-            )
+            );
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -42,30 +42,30 @@
 <script>
 
     export default {
-        props: ['list'],
-        components: {},
+        props : ['list'],
+        components : {},
         data () {
 
             return {
-                visible: false,
+                visible : false,
                 //标题
-                title: 'addSalePolicy',   // '新建销售政策'
+                title : 'addSalePolicy', // '新建销售政策'
                 //表单数据
-                formData: {
-                    productType: '',//业态
+                formData : {
+                    productType : '',//业态
                 },
                 // 表单校验
-                ruleValidate: {
-                    productType: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('industry') }), trigger: 'change' },   // 业态不能为空
+                ruleValidate : {
+                    productType : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('industry') }), trigger : 'change' }, // 业态不能为空
                     ],
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
 
             //显示
-            show (  ) {
+            show ( ) {
                 this.visible = true;
             },
 
@@ -74,25 +74,25 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         this.$router.push({
-                            name: 'editSalePolicy',
-                            params: {
-                                type: 'add',
-                                productType: this.formData.productType
+                            name : 'editSalePolicy',
+                            params : {
+                                type : 'add',
+                                productType : this.formData.productType
                             }
-                        })
+                        });
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                this.formData = { productType: '' };
+                this.formData = { productType : '' };
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -35,13 +35,13 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        components: {},
+        components : {},
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -49,25 +49,25 @@
             };
 
             return {
-                visible: false,
+                visible : false,
                 //确认执行的回调函数
                 confirmCallback : null,
                 //取消执行的回调函数
                 cancelCallback : null,
                 //表单数据
-                formData: {
-                    remark: '',
+                formData : {
+                    remark : '',
                 },
                 // 表单校验
-                ruleValidate: {
-                    remark: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 100, message: this.$t('errorMaxLength', { field: this.$t('remark'), length: 100 }), trigger: 'blur' },     // 备注不能超过100字符
+                ruleValidate : {
+                    remark : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' }, // 备注不能超过100字符
                     ],
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示 模态框
@@ -77,13 +77,13 @@
              */
             show ({ data,confirmCallback = null,cancelCallback }) {
                 this.visible = true;
-                if(data){
+                if (data) {
                     this.formData = defaultsDeep({}, data);
                 }
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             },
@@ -92,27 +92,27 @@
             /**
              * 确认
              */
-            confirm() {
+            confirm () {
                 //表单校验
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        if(this.confirmCallback){
+                        if (this.confirmCallback) {
                             this.confirmCallback( this.formData.remark );
                             this.hide();
                         }
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                this.formData = { remark: '' };
+                this.formData = { remark : '' };
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

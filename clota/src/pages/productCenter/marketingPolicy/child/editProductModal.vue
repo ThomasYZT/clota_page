@@ -159,16 +159,16 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['list'],
-        components: {
+        props : ['list'],
+        components : {
             tableCom,
             titlePark,
         },
-        data() {
+        data () {
             let validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -176,65 +176,65 @@
             };
             //校验正整数
             const validateNumber = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     common.validateInteger(value).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
+                        if (err === 'errorMaxLength') {
                             callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
-                        }else{
+                        } else {
                             callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验钱
             const validateMoney = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     common.validateMoney(value).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
+                        if (err === 'errorMaxLength') {
                             callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
-                        }else{
+                        } else {
                             callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验库存数量
             const validateStockNum = (rule,value,callback) => {
-                if(this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum){
-                    if( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ){
+                if (this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum) {
+                    if ( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ) {
                         //console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
-                        callback(this.$t('errorGreaterThan',{ small : this.$t('stockNum'),big : this.$t('upLevelStockName')+ this.productDetail.productSaleVo.stockNum }));
-                    }else{
+                        callback(this.$t('errorGreaterThan',{ small : this.$t('stockNum'),big : this.$t('upLevelStockName') + this.productDetail.productSaleVo.stockNum }));
+                    } else {
                         callback();
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验单价
             const validateSettlePrice = (rule,value,callback) => {
-                if(value && this.productInfo.standardPrice){
-                    if( Number(value) < Number(this.productInfo.standardPrice) ){
+                if (value && this.productInfo.standardPrice) {
+                    if ( Number(value) < Number(this.productInfo.standardPrice) ) {
                         callback(this.$t('sizeErrorS',{ filed1 : this.$t('settlePrice'),filed2 : this.productInfo.standardPrice }));
-                    }else{
+                    } else {
                         callback();
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
 
             return {
                 //类型 add/modify/check
-                type: 'add',
+                type : 'add',
                 //标题信息
                 title : this.$t('append') + this.$t('product'),
                 //是否显示模态框
@@ -244,75 +244,75 @@
                 //取消执行的回调函数
                 cancelCallback : null,
                 //表单数据
-                formData: {
-                    productId: '',//"产品ID",
-                    productName: '',//"产品名称",
-                    standardPrice: '',//"景区成本价",
-                    stockType: "",//库存限制类型（总量-total,每日-everyday,不限库存-is_no_limit）
-                    stockNum: "",//库存数量
-                    settlePrice: "",//单价
+                formData : {
+                    productId : '',//"产品ID",
+                    productName : '',//"产品名称",
+                    standardPrice : '',//"景区成本价",
+                    stockType : "",//库存限制类型（总量-total,每日-everyday,不限库存-is_no_limit）
+                    stockNum : "",//库存数量
+                    settlePrice : "",//单价
                     //分账设置表格数据 {orgId: "",parkName: "",subPrice: 0 }
-                    itemRule: [],
+                    itemRule : [],
                 },
-                ruleValidate: {
-                    productId: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('chooseProduct') }), trigger: 'change' },     // 不能为空
+                ruleValidate : {
+                    productId : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('chooseProduct') }), trigger : 'change' }, // 不能为空
                     ],
-                    stockNum: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateStockNum, trigger: 'blur' },
+                    stockNum : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateStockNum, trigger : 'blur' },
                     ],
-                    settlePrice: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('settlePrice') }), trigger: 'change' },     // 不能为空
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('settlePrice'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' },
-                        { validator: validateSettlePrice, trigger: 'blur' },
+                    settlePrice : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('settlePrice') }), trigger : 'change' }, // 不能为空
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('settlePrice'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMoney, trigger : 'blur' },
+                        { validator : validateSettlePrice, trigger : 'blur' },
                     ],
                 },
                 //枚举数据
-                enumData: {
+                enumData : {
                     //限制库存
-                    limitStore: limitStore,
+                    limitStore : limitStore,
                 },
                 //所选产品
-                productInfo: {},
-                productDetail: {},
+                productInfo : {},
+                productDetail : {},
                 //分账表头
-                subAccountColumn: subAccountColumn,
-            }
+                subAccountColumn : subAccountColumn,
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
-                manageOrgs: 'manageOrgs',
+                manageOrgs : 'manageOrgs',
             }),
             //未分账金额
             showCountMoney () {
-                if(this.formData.settlePrice && this.formData.itemRule && this.formData.itemRule.length > 1){
+                if (this.formData.settlePrice && this.formData.itemRule && this.formData.itemRule.length > 1) {
                     let sum = 0;
                     this.formData.itemRule.forEach(item => {
-                        sum += Number(item.subPrice)
+                        sum += Number(item.subPrice);
                     });
-                    if(this.formData.settlePrice-sum < 0){
-                        this.$Message.warning(this.$t('sizeErrorB', { filed1: this.$t('priceSet'), filed2: this.$t('settlePrice') }),);
+                    if (this.formData.settlePrice - sum < 0) {
+                        this.$Message.warning(this.$t('sizeErrorB', { filed1 : this.$t('priceSet'), filed2 : this.$t('settlePrice') }),);
                     }
-                    return this.formData.settlePrice-sum
+                    return this.formData.settlePrice - sum;
                 } else {
-                    return 0
+                    return 0;
                 }
             },
         },
-        methods: {
+        methods : {
 
             //选择产品改变
             changeChooseProduct ( val , bool) {
-                if(bool){
+                if (bool) {
                     this.findProductById(this.productInfo, bool);
-                }else{
-                    if(val){
+                } else {
+                    if (val) {
                         this.productInfo = this.list.find( item => val === item.id );
-                        if(this.productInfo && this.productInfo.id){
+                        if (this.productInfo && this.productInfo.id) {
                             this.formData.productName = this.productInfo.productName;
                             this.formData.standardPrice = this.productInfo.standardPrice;
                             this.findProductById(this.productInfo);
@@ -322,23 +322,23 @@
             },
 
             // 根据产品Id查明细
-            findProductById( data , bool) {
+            findProductById ( data , bool) {
                 ajax.post('findProductById', {
-                    productId: data.id
+                    productId : data.id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.productDetail = res.data || {};
                         this.formData.stockType = res.data.productSaleVo.stockType;
-                        if(!bool){
+                        if (!bool) {
                             this.formData.itemRule = [];
-                            if(res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0){
+                            if (res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0) {
                                 res.data.productPlayRuleVo.forEach( item => {
                                     this.formData.itemRule.push({
-                                        orgId: item.orgId,
-                                        parkName: item.parkName,
-                                        subPrice: 0,
-                                    })
-                                } )
+                                        orgId : item.orgId,
+                                        parkName : item.parkName,
+                                        subPrice : 0,
+                                    });
+                                } );
                             }
                         }
 
@@ -349,37 +349,33 @@
                 });
             },
 
-            //校验表格填入
-            checkInput ( data ) {
-            },
-
             /**
              * 确认
              */
-            confirm() {
+            confirm () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        if(this.showCountMoney == 0){
+                        if (this.showCountMoney == 0) {
                             this.loading = true;
-                            if(this.confirmCallback){
+                            if (this.confirmCallback) {
                                 let formData = defaultsDeep({},this.formData);
                                 this.confirmCallback( formData );
                                 this.cancel();
                             }
-                        }else{
+                        } else {
                             this.$Message.error(this.$t('unShareMoney') + '：' + this.showCountMoney + this.$t('yuan'));
                         }
                     }
-                })
+                });
             },
 
             /**
              * 取消
              */
-            cancel() {
+            cancel () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                if(this.cancelCallback){
+                if (this.cancelCallback) {
                     this.cancelCallback();
                 }
                 this.resetFunc();
@@ -396,18 +392,18 @@
             show ({ data,type,title,confirmCallback = null,cancelCallback }) {
                 this.title = title;
                 this.type = type;
-                if(data){
+                if (data) {
                     this.formData = defaultsDeep({}, data);
-                    if(data.productId){
+                    if (data.productId) {
                         this.productInfo = data;
                         this.productInfo.id = data.productId;
                         this.changeChooseProduct(data.productId, true);
                     }
                 }
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
                 this.visible = true;
@@ -416,18 +412,18 @@
             //重置数据
             resetFunc () {
                 this.formData = {
-                    productId: '',
-                    stockType: '',
-                    stockNum: '',
-                    settlePrice: '',
-                    itemRule: [],
+                    productId : '',
+                    stockType : '',
+                    stockNum : '',
+                    settlePrice : '',
+                    itemRule : [],
                 };
                 this.productInfo = {};
                 this.productDetail = {};
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

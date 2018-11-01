@@ -308,7 +308,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import editParkModal from './editParkModal.vue'
+    import editParkModal from './editParkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
@@ -318,7 +318,7 @@
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             titleTemp,
             tableCom,
@@ -327,9 +327,9 @@
         data () {
 
             let validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -337,45 +337,45 @@
             };
             //校验钱
             const validateMoney = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     common.validateMoney(value).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
+                        if (err === 'errorMaxLength') {
                             callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
-                        }else{
+                        } else {
                             callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验正整数
             const validateNumber = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     common.validateInteger(value, null, 0, 50).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
+                        if (err === 'errorMaxLength') {
                             callback(this.$t(err,{ field : this.$t(rule.field),length : 50 }));
-                        }else{
+                        } else {
                             callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验身份证购票限制
             const validateIdBuyTicket = (rule,value,callback) => {
-                if(value || this.formData.limitByIdNum){
+                if (value || this.formData.limitByIdNum) {
                     common.validateInteger(this.formData.limitByIdNum).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
+                        if (err === 'errorMaxLength') {
                             callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
-                        }else{
+                        } else {
                             callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
@@ -383,13 +383,13 @@
             };
             //校验手机号码购票限制
             const validateMobileBuyTicket = (rule,value,callback) => {
-                if(value || this.formData.limitByMobileNum){
+                if (value || this.formData.limitByMobileNum) {
                     common.validateInteger(this.formData.limitByMobileNum).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
+                        if (err === 'errorMaxLength') {
                             callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
-                        }else{
+                        } else {
                             callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
@@ -397,48 +397,48 @@
             };
             //校验票面价格(大于景区成本价)
             const validatePrintPrice = (rule,value,callback) => {
-                if(value && this.formData.standardPrice){
-                    if( Number(value) < Number(this.formData.standardPrice) ){
+                if (value && this.formData.standardPrice) {
+                    if ( Number(value) < Number(this.formData.standardPrice) ) {
                         callback(this.$t('sizeErrorS',{ filed1 : this.$t('printPrice'),filed2 : this.$t('standardPrice') }));
-                    }else{
+                    } else {
                         callback();
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验产品有效性设置
             const validateProductEffSet = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     callback();
-                }else{
-                    callback(this.$t('selectField', { msg: this.$t('productEffSet') }));
+                } else {
+                    callback(this.$t('selectField', { msg : this.$t('productEffSet') }));
                 }
             };
 
             return {
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'ticketType',   // 产品列表--票类列表
-                        router: 'ticketType',
+                        name : 'ticketType', // 产品列表--票类列表
+                        router : 'ticketType',
                     }
                 ],
                 //新增/修改
-                type: 'add',
-                loading: false,
+                type : 'add',
+                loading : false,
                 //表单数据
-                formData: {
+                formData : {
                     //基本信息
-                    productName: '',//产品名称
-                    standardPrice: '',//景区成本价
-                    thirdCode: '',//第三方产品编码
-                    productDes: '',//产品描述
+                    productName : '',//产品名称
+                    standardPrice : '',//景区成本价
+                    thirdCode : '',//第三方产品编码
+                    productDes : '',//产品描述
                     //票面信息
-                    printName: '',//打印名称
-                    printPrice: '',//票面价格
-                    ticketRemark: '',//票面说明
-                    printRemark: '',//打印说明
+                    printName : '',//打印名称
+                    printPrice : '',//票面价格
+                    ticketRemark : '',//票面说明
+                    printRemark : '',//打印说明
                     //购买限制
                     isGroup : 'true',//是否团队产品
                     inNum : '',//可入园人数
@@ -446,121 +446,121 @@
                     maxNum : '',//每订单最大限订数
                     needId : 'noRequired',//预定时提交游客身份信息
                     acceptIdType : ['identity','passport'],//可接受证件类型
-                    limitByIdDay: '',//身份证件购票限制
-                    limitByIdNum: '',//身份证件购票限制
-                    limitByMobileDay: '',//手机号购票限制
-                    limitByMobileNum: '',//手机号购票限制
+                    limitByIdDay : '',//身份证件购票限制
+                    limitByIdNum : '',//身份证件购票限制
+                    limitByMobileDay : '',//手机号购票限制
+                    limitByMobileNum : '',//手机号购票限制
                     stockType : '',//限制库存
                     stockNum : '',//库存数量
                     //产品有效性
-                    productEffSet: 'since_the_play',//产品有效性设置
+                    productEffSet : 'since_the_play',//产品有效性设置
                 },
                 //可游玩园区表头
-                columnData: parkColumn,
+                columnData : parkColumn,
                 //可游玩园区列表数据
-                parkList: [],
-                parkListCount: 0,
+                parkList : [],
+                parkListCount : 0,
                 //游玩规则-产品园区列表数据
-                productPlayRuleVo: [],
+                productPlayRuleVo : [],
                 //校验规则
-                ruleValidate: {
-                    productName: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('productName') }), trigger: 'blur' },     // 不能为空
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', { field: this.$t('productName'), length: 50 }), trigger: 'blur' },      // 不能多于15个字符
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                ruleValidate : {
+                    productName : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('productName') }), trigger : 'blur' }, // 不能为空
+                        { type : 'string', max : 50, message : this.$t('errorMaxLength', { field : this.$t('productName'), length : 50 }), trigger : 'blur' }, // 不能多于15个字符
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    standardPrice: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('standardPrice') }), trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength', { field: this.$t('standardPrice'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' }
+                    standardPrice : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('standardPrice') }), trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('standardPrice'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMoney, trigger : 'blur' }
                     ],
-                    thirdCode: [
-                        { max: 50, message: this.$t('errorMaxLength', { field: this.$t('thirdCode'), length: 50 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                    thirdCode : [
+                        { max : 50, message : this.$t('errorMaxLength', { field : this.$t('thirdCode'), length : 50 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
                     ],
-                    productDes: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('productDes'), length: 500 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    productDes : [
+                        { type : 'string', max : 500, message : this.$t('errorMaxLength', { field : this.$t('productDes'), length : 500 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    printName: [
-                        { type: 'string', max: 50, message: this.$t('errorMaxLength', { field: this.$t('printName'), length: 50 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    printName : [
+                        { type : 'string', max : 50, message : this.$t('errorMaxLength', { field : this.$t('printName'), length : 50 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    printPrice: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('printPrice'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMoney, trigger: 'blur' },
-                        { validator: validatePrintPrice, trigger: 'blur' }
+                    printPrice : [
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('printPrice'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMoney, trigger : 'blur' },
+                        { validator : validatePrintPrice, trigger : 'blur' }
                     ],
-                    ticketRemark: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('ticketRemark'), length: 500 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    ticketRemark : [
+                        { type : 'string', max : 500, message : this.$t('errorMaxLength', { field : this.$t('ticketRemark'), length : 500 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    printRemark: [
-                        { type: 'string', max: 500, message: this.$t('errorMaxLength', { field: this.$t('printRemark'), length: 500 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    printRemark : [
+                        { type : 'string', max : 500, message : this.$t('errorMaxLength', { field : this.$t('printRemark'), length : 500 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    inNum: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('inNum') }), trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('inNum'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                    inNum : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('inNum') }), trigger : 'blur' },
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('inNum'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
                     ],
-                    minNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('minOrderNum'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                    minNum : [
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('minOrderNum'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
                     ],
-                    maxNum: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('maxOrderNum'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                    maxNum : [
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('maxOrderNum'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
                     ],
-                    stockNum: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' }
+                    stockNum : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
                     ],
-                    limitByIdDay: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('limitByIdDay'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateIdBuyTicket, trigger: 'blur' }
+                    limitByIdDay : [
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByIdDay'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateIdBuyTicket, trigger : 'blur' }
                     ],
-                    limitByMobileDay: [
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', { field: this.$t('limitByMobileDay'), length: 10 }), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateMobileBuyTicket, trigger: 'blur' }
+                    limitByMobileDay : [
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByMobileDay'), length : 10 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateMobileBuyTicket, trigger : 'blur' }
                     ],
-                    productEffSet: [
-                        { validator: validateProductEffSet, trigger: 'change' }
+                    productEffSet : [
+                        { validator : validateProductEffSet, trigger : 'change' }
                     ],
                 },
                 //枚举数据
-                enumData: {
+                enumData : {
                     //是否团队产品
-                    isTeamProduct: isTeamProduct,
+                    isTeamProduct : isTeamProduct,
                     //预定时提交游客身份信息
-                    orderInfo: orderInfo,
+                    orderInfo : orderInfo,
                     //证件类型
-                    idType: idType,
+                    idType : idType,
                     //产品有效性设置
-                    productEffSet: productEffectSet,
+                    productEffSet : productEffectSet,
                     //限制库存
-                    stockType: limitStore,
+                    stockType : limitStore,
                 },
-            }
+            };
         },
-        created() {
+        created () {
 
         },
-        methods: {
+        methods : {
 
             //团队产品默认无需证件
             isGroupChange ( val ) {
-                if(val === 'true'){
+                if (val === 'true') {
                     this.formData.needId = 'noRequired';
                 }
             },
@@ -568,24 +568,24 @@
             //表单校验
             formValidateFunc () {
                 //校验游玩规则-产品园区列表数据
-                if(this.productPlayRuleVo.length < 1){
-                    this.$Message.warning(this.$t('selectField',{ msg: this.$t('playPark') }));
-                    return
+                if (this.productPlayRuleVo.length < 1) {
+                    this.$Message.warning(this.$t('selectField',{ msg : this.$t('playPark') }));
+                    return;
                 }
                 //校验产品有效性设置与游玩规则数据
                 this.productPlayRuleVo.forEach(item => {
-                    if(this.formData.productEffSet === 'since_the_play' && (item.effDay == '' || item.effDay == 0)){
-                        this.$Message.warning(this.$t('inputField', { feild: this.$t('AvailableNumberOfDays') }));
-                        return
+                    if (this.formData.productEffSet === 'since_the_play' && (item.effDay == '' || item.effDay == 0)) {
+                        this.$Message.warning(this.$t('inputField', { feild : this.$t('AvailableNumberOfDays') }));
+                        return;
                     }
                 });
                 this.$refs.formValidate.validate((valid) => {
-                    if ( valid ){
+                    if ( valid ) {
 
                         let rule = [];
                         this.productPlayRuleVo.forEach((item,index) => {
                             let obj = defaultsDeep({},item);
-                            if(item.saleType === 'one_ticket'){
+                            if (item.saleType === 'one_ticket') {
                                 obj.playPoint = [];
                             }
                             rule.push(obj);
@@ -593,62 +593,62 @@
 
                         let params = {
                             //产品
-                            productJson: JSON.stringify({
-                                auditStatus: this.formData.auditStatus || '',
-                                code: this.formData.code || '',
-                                productDes: this.formData.productDes || '',
-                                id: this.formData.id || '',
-                                inNum: this.formData.inNum || '',
-                                isGroup: this.formData.isGroup || '',
-                                printName: this.formData.printName || '',
-                                printPrice: this.formData.printPrice || '',
-                                printRemark: this.formData.printRemark || '',
-                                printTpl: this.formData.printTpl || '',
-                                productName: this.formData.productName || '',
-                                productType: this.formData.productType || '',
-                                standardPrice: this.formData.standardPrice || '',
-                                thirdCode: this.formData.thirdCode || '',
-                                ticketRemark: this.formData.ticketRemark || '',
-                                productEffSet: this.formData.productEffSet || '',
+                            productJson : JSON.stringify({
+                                auditStatus : this.formData.auditStatus || '',
+                                code : this.formData.code || '',
+                                productDes : this.formData.productDes || '',
+                                id : this.formData.id || '',
+                                inNum : this.formData.inNum || '',
+                                isGroup : this.formData.isGroup || '',
+                                printName : this.formData.printName || '',
+                                printPrice : this.formData.printPrice || '',
+                                printRemark : this.formData.printRemark || '',
+                                printTpl : this.formData.printTpl || '',
+                                productName : this.formData.productName || '',
+                                productType : this.formData.productType || '',
+                                standardPrice : this.formData.standardPrice || '',
+                                thirdCode : this.formData.thirdCode || '',
+                                ticketRemark : this.formData.ticketRemark || '',
+                                productEffSet : this.formData.productEffSet || '',
                             }),
                             //销售
                             saleRuleJson : JSON.stringify({
-                                acceptIdType: this.formData.acceptIdType.length > 0 ? this.formData.acceptIdType.join(',') : '',
-                                id: this.formData.saleId || '',
-                                idLimit: JSON.stringify({
-                                    day: this.formData.limitByIdDay || '',
-                                    quantity: this.formData.limitByIdNum || '',
+                                acceptIdType : this.formData.acceptIdType.length > 0 ? this.formData.acceptIdType.join(',') : '',
+                                id : this.formData.saleId || '',
+                                idLimit : JSON.stringify({
+                                    day : this.formData.limitByIdDay || '',
+                                    quantity : this.formData.limitByIdNum || '',
                                 }),
-                                mobileLimit: JSON.stringify({
-                                    day: this.formData.limitByMobileDay || '',
-                                    quantity: this.formData.limitByMobileNum || '',
+                                mobileLimit : JSON.stringify({
+                                    day : this.formData.limitByMobileDay || '',
+                                    quantity : this.formData.limitByMobileNum || '',
                                 }),
-                                minNum: this.formData.minNum || '',
-                                maxNum: this.formData.maxNum || '',
-                                needAllId: '',
-                                needId: this.formData.needId || '',
-                                productId: this.formData.productId || '',
-                                stockNum: this.formData.stockNum || '',
-                                stockType: this.formData.stockType || '',
+                                minNum : this.formData.minNum || '',
+                                maxNum : this.formData.maxNum || '',
+                                needAllId : '',
+                                needId : this.formData.needId || '',
+                                productId : this.formData.productId || '',
+                                stockNum : this.formData.stockNum || '',
+                                stockType : this.formData.stockType || '',
                             }),
                             //游玩
-                            playRuleJson: JSON.stringify(rule),
+                            playRuleJson : JSON.stringify(rule),
                         };
                         //区分新增与修改
-                        if( this.type === 'add' ){
+                        if ( this.type === 'add' ) {
                             this.saveAndEditTicket( 'addProduct', params);
                         }
-                        if( this.type === 'modify' ){
+                        if ( this.type === 'modify' ) {
                             this.saveAndEditTicket( 'updateProduct', params);
                         }
                     }
-                })
+                });
             },
 
             //新增/修改票类
-            saveAndEditTicket( url, params ){
+            saveAndEditTicket ( url, params ) {
                 ajax.post(url, params).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         //区分新增与修改
                         this.$Message.success(this.$t('successTip',{ tip : this.$t(this.type) }));
                         this.goBack();
@@ -656,18 +656,18 @@
                         //区分新增与修改
                         this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t(this.type) }));
                     }
-                })
+                });
             },
 
             //修改可游玩园区
             modify ( data, index ) {
                 this.$refs.editPark.show({
-                    index: index,
-                    data: data,
-                    parkList: this.parkList,
-                    list: this.productPlayRuleVo,
-                    title : this.$t('modify')+ (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
-                    type: 'modify',
+                    index : index,
+                    data : data,
+                    parkList : this.parkList,
+                    list : this.productPlayRuleVo,
+                    title : this.$t('modify') + (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
+                    type : 'modify',
                     confirmCallback : ( data, index ) => {
                         this.$set(this.productPlayRuleVo, index, data);
                     }
@@ -681,10 +681,10 @@
             //新增可游玩园区
             addPark () {
                 this.$refs.editPark.show({
-                    title : this.$t('add')+this.$t('one_ticket'),
-                    parkList: Array.from(this.parkList),
-                    type: 'add',
-                    list: this.productPlayRuleVo,
+                    title : this.$t('add') + this.$t('one_ticket'),
+                    parkList : Array.from(this.parkList),
+                    type : 'add',
+                    list : this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
                         this.productPlayRuleVo.push(data);
                         this.dealParkList(data.parkId);
@@ -693,8 +693,8 @@
             },
             //新增成功，可选园区数组数据-1
             dealParkList ( id ) {
-                for(let i=0,len=this.parkList.length; i<len; i++) {
-                    if(id === this.parkList[i].id){
+                for (let i = 0,len = this.parkList.length; i < len; i++) {
+                    if (id === this.parkList[i].id) {
                         this.parkList.splice(i,1);
                         i--;
                         len--;
@@ -704,12 +704,12 @@
             },
 
             //返回
-            goBack() {
+            goBack () {
                 //区分新增与修改
-                if( this.type === 'add' ){
-                    this.$router.push({ name: 'ticketType' });
+                if ( this.type === 'add' ) {
+                    this.$router.push({ name : 'ticketType' });
                 }
-                if( this.type === 'modify' ){
+                if ( this.type === 'modify' ) {
                     this.$router.back();
                 }
             },
@@ -718,9 +718,9 @@
              * 动态给行添加类名 行数据有误时添加的背景颜色 - 暂不使用
              * @param row
              */
-            rowClassName (row){
-                if(!row.row.check){
-                    return ''
+            rowClassName (row) {
+                if (!row.row.check) {
+                    return '';
                    /* return 'error-tr';*/
                 }
             },
@@ -728,13 +728,13 @@
             /**
              * 获取路由信息
              */
-            getParams(params) {
-                if(params && Object.keys(params).length > 0){
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
                     this.type = params.type;
-                    if(params.info){
+                    if (params.info) {
                         this.initData(params.info);
                     }
-                    if(params.productPlayRuleVo){
+                    if (params.productPlayRuleVo) {
                         this.productPlayRuleVo = defaultsDeep([],params.productPlayRuleVo);
                     }
                 }
@@ -744,7 +744,7 @@
              * 初始化数据
              * @param data
              */
-            initData(data) {
+            initData (data) {
                 let formData = defaultsDeep({},data);
                 formData.limitByIdDay = data.idLimit ? JSON.parse(data.idLimit).day : '';
                 formData.limitByIdNum = data.idLimit ? JSON.parse(data.idLimit).quantity : '';
@@ -763,9 +763,9 @@
             //查询权限下的园区
             queryScenicOrgByAccountRole () {
                 ajax.post('queryScenicOrgByAccountRole', {
-                    privCode: 'addProduct',
+                    privCode : 'addProduct',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.parkList = res.data || [];
                         this.parkListCount = res.data.length || 0;
                     } else {
@@ -773,16 +773,16 @@
                         this.parkListCount = 0;
                         this.$Message.error(res.message || this.$t('fail'));
                     }
-                })
+                });
             },
 
         },
-        computed: {
+        computed : {
             localeRouter () {
-                return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail');      // 新增票类 ： 修改票类信息
+                return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail'); // 新增票类 ： 修改票类信息
             },
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

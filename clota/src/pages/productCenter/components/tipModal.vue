@@ -26,25 +26,25 @@
 <script>
 
     export default {
-        data() {
+        data () {
             return {
-                visible: false
-            }
+                visible : false
+            };
         },
-        methods: {
-            confirm() {
+        methods : {
+            confirm () {
                 this.$emit('giveUp');
                 this.visible = false;
             },
-            hide() {
+            hide () {
                 this.$emit('noGiveUp');
                 this.visible = false;
             },
-            show() {
+            show () {
                 this.visible = true;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

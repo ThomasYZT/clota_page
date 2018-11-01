@@ -27,7 +27,7 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         // "indent": [1, "tab"], //缩进设置
         "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
-        "object-curly-spacing": [1, "always"],
+        "object-curly-spacing": [1, "always"], //非空对象首位必须加上空格
         "no-cond-assign": 2, //条件语句的条件中不允许出现赋值运算符
         "no-console": 2, //不允许出现console语句
         "no-dupe-args": 2, //函数定义的时候不允许出现重复的参数

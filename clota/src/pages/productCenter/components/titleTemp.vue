@@ -8,12 +8,12 @@
 
 <script>
     export default {
-        props: ['title'],
-        components: {},
+        props : ['title'],
+        components : {},
         data () {
-            return {}
+            return {};
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

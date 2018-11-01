@@ -162,22 +162,22 @@
     import ajax from '@/api/index';
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import { detailParentDistributePriceConfig, setSaleChannelColumn } from '../child/detailConfig'
+    import { detailParentDistributePriceConfig, setSaleChannelColumn } from '../child/detailConfig';
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             const validateMethod = {
-                productPrice: (rule,value,callback) => {
+                productPrice : (rule,value,callback) => {
                     //校验非空必填以及提示低于上级分销单价
-                    if(value.length){
+                    if (value.length) {
                         value.forEach((item) => {
-                            if(item.price === ''){
-                                callback(new Error(this.$t('errorEmpty', { msg: this.$t('mySalePrice') })));
-                            }else {
-                                if(validator.isNumber(item.price)) {
-                                    if(parseFloat(item.price) < parseFloat(item.settlePrice)) {
+                            if (item.price === '') {
+                                callback(new Error(this.$t('errorEmpty', { msg : this.$t('mySalePrice') })));
+                            } else {
+                                if (validator.isNumber(item.price)) {
+                                    if (parseFloat(item.price) < parseFloat(item.settlePrice)) {
                                         this.isLossTipShow = true;
                                         callback();
                                     } else {
@@ -188,60 +188,60 @@
                                 }
 
                             }
-                        })
+                        });
                     }
                 }
-            }
+            };
             return {
                 //是否显示modal
-                show: false,
+                show : false,
                 //分销详情数据 --传参
-                detail: {},
+                detail : {},
                 //分销详情数据 --接口数据
-                info: {},
+                info : {},
                 //销售渠道列表数据
-                saleGroupList: [],
+                saleGroupList : [],
                 //产品列表表头
-                detailParentDistributePriceConfig: Array.from(detailParentDistributePriceConfig),
+                detailParentDistributePriceConfig : Array.from(detailParentDistributePriceConfig),
                 //销售渠道表头
-                saleChannelColumn: setSaleChannelColumn,
+                saleChannelColumn : setSaleChannelColumn,
                 //表单数据
-                formData: {
+                formData : {
                     //分销名称
-                    name: '',
+                    name : '',
                     //销售政策id -- 父级销售政策id
-                    parentId: '',
+                    parentId : '',
                     //分销产品定价
-                    productPrices: [],
+                    productPrices : [],
                     //销售分组id
-                    groupIds: ''
+                    groupIds : ''
                 },
                 //表达验证
-                ruleValidate: {
-                    name: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('distributeName') }), trigger: 'blur' },     // 不能为空
-                        { type: 'string', max: 40, message: this.$t('errorMaxLength', { field: this.$t('distributeName'), length: 40 }), trigger: 'blur' },
+                ruleValidate : {
+                    name : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('distributeName') }), trigger : 'blur' }, // 不能为空
+                        { type : 'string', max : 40, message : this.$t('errorMaxLength', { field : this.$t('distributeName'), length : 40 }), trigger : 'blur' },
                     ],
-                    productPrices: [
-                        { validator: validateMethod.productPrice, trigger: 'blur' },     // 不能为空
+                    productPrices : [
+                        { validator : validateMethod.productPrice, trigger : 'blur' }, // 不能为空
                     ],
-                    groupIds: [
-                        { required: true, message: this.$t('errorEmpty', { msg: this.$t('saleChannels') }), trigger: 'blur' },     // 不能为空
+                    groupIds : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleChannels') }), trigger : 'blur' }, // 不能为空
                     ]
                 },
                 //是否显示分销提示
-                isTipShow: false,
+                isTipShow : false,
                 //是否显示亏损提示
-                isLossTipShow: false
-            }
+                isLossTipShow : false
+            };
         },
-        methods: {
+        methods : {
             /**
              * 弹窗显示/隐藏
              */
-            toggle(data) {
+            toggle (data) {
 
-                if(data) {
+                if (data) {
                     //打开模态框
                     this.detail = data;
                     this.formData.parentId = data.allocationId;
@@ -250,10 +250,10 @@
                     //关闭模态框
                     this.$refs.policyform.resetFields();
                     this.formData = {
-                        name: '',
-                        parentId: '',
-                        productPrices: [],
-                        groupIds: ''
+                        name : '',
+                        parentId : '',
+                        productPrices : [],
+                        groupIds : ''
                     };
                     this.detail = {};
                     this.info = {};
@@ -264,12 +264,12 @@
             /**
              * 获取数据
              */
-            async getData(){
+            async getData () {
                 //获取分销详情数据
                 await ajax.post('getPolicyAllocationInfo', {
-                    allocationId: this.detail.allocationId
+                    allocationId : this.detail.allocationId
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         this.info = res.data ? res.data : {};
 
                         //初始化产品分销单价数据
@@ -287,9 +287,9 @@
 
                 //获取销售渠道分组列表
                 await ajax.post('queryOrgGroupVoList',{
-                    groupType: 'sale'
+                    groupType : 'sale'
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         // 设置临时数据
                         this.tempData = res.data;
                     }
@@ -297,14 +297,14 @@
 
                 //获取已选择销售渠道组数据接口
                 await ajax.post('queryHaveAllocationSaleGroups',{
-                    allocationId: this.detail.allocationId
+                    allocationId : this.detail.allocationId
                 }).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.haveSaleGroups = res.data;
 
                         //过滤没有销售渠道的销售组
-                        for(let i=0,len=this.tempData.length; i<len; i++) {
-                            if(this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
+                        for (let i = 0,len = this.tempData.length; i < len; i++) {
+                            if (this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
                                 this.tempData.splice(i,1);
                                 len--;
                                 i--;
@@ -313,19 +313,17 @@
                         }
 
                         //过滤已其他分销政策已选择的销售渠道组
-                        for(let i=0,len=this.tempData.length; i<len; i++) {
-                            for(let j=0,jlen=this.haveSaleGroups.length; j<jlen; j++) {
-                                if(len > 0 && jlen > 0) {
-                                    if(this.haveSaleGroups[j].id === this.tempData[i].id) {
-                                        this.haveSaleGroups.splice(j,1);
-                                        j--;
-                                        jlen--;
-                                        this.tempData.splice(i,1);
-                                        i--;
-                                        len--;
-                                        break;
+                        for (let i = 0,len = this.tempData.length; i < len; i++) {
+                            for (let j = 0,jlen = this.haveSaleGroups.length; j < jlen; j++) {
+                                if (len > 0 && jlen > 0 && this.haveSaleGroups[j].id === this.tempData[i].id) {
+                                    this.haveSaleGroups.splice(j,1);
+                                    j--;
+                                    jlen--;
+                                    this.tempData.splice(i,1);
+                                    i--;
+                                    len--;
+                                    break;
 
-                                    }
                                 }
                             }
                         }
@@ -339,40 +337,40 @@
             /**
              * 表格选择框事件
              */
-            colomnSelect(data) {
+            colomnSelect (data) {
                 this.isTipShow = false;
                 this.formData.groupIds = '';
                 data.forEach((item) => {
                     this.formData.groupIds += item.id + ',';
                     //政策不能在分销给上级分销商,后台会做过滤处理，此处给出提示
                     item.channelModels.forEach(channel => {
-                        if(channel.channelName === this.detail.parentDistributor) {
+                        if (channel.channelName === this.detail.parentDistributor) {
                             this.isTipShow = true;
                         }
                     });
-                })
+                });
 
             },
             /**
              * 保存分销设置
              */
-            save() {
+            save () {
                 this.$refs['policyform'].validate((valid) => {
-                    if(valid) {
+                    if (valid) {
                         ajax.post('savePolicyAllocation',{
-                            parentId: this.formData.parentId,
-                            name: this.formData.name,
-                            productPrices: JSON.stringify(this.formData.productPrices),
-                            groupIds: this.formData.groupIds
+                            parentId : this.formData.parentId,
+                            name : this.formData.name,
+                            productPrices : JSON.stringify(this.formData.productPrices),
+                            groupIds : this.formData.groupIds
                         }).then((res) => {
-                            if(res.success) {
+                            if (res.success) {
                                 this.$Message.success(this.$t('distributeSccuess'));
                                 this.$emit('complete', this.detail);
                                 this.toggle();
                             } else {
                                 this.$Message.error(this.$t('distributeFail'));
                             }
-                        })
+                        });
                     }
                 });
 
@@ -380,20 +378,20 @@
             /**
              * 关闭模态框
              */
-            hide(){
+            hide () {
                 this.toggle();
             },
         },
-        created() {
+        created () {
             //增加我的分销单价表头
             this.detailParentDistributePriceConfig.push(
                 {
-                    title: 'mySalePrice',       // 我的分销单价
-                    width: 180,
+                    title : 'mySalePrice', // 我的分销单价
+                    width : 180,
                 }
             );
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

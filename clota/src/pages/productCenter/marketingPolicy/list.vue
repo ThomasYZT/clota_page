@@ -154,57 +154,57 @@
     import delModal from '@/components/delModal/index.vue';
     import addSalePolicyModal from './components/addSalePolicyModal.vue';
     import { configVariable } from '@/assets/js/constVariable';
-    import distributionModal from './components/distributionModal'
+    import distributionModal from './components/distributionModal';
     import { mapGetters } from 'vuex';
     import { myPolicyHead, distributePolicyHead } from '../policyConfig';
     import ajax from '@/api/index';
 
     export default {
-        components: {
+        components : {
             tableCom,
             delModal,
             addSalePolicyModal,
             distributionModal
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 //当前账号角色
-                role: '',
+                role : '',
                 //当前tap值
-                tabsName: 'created',
+                tabsName : 'created',
                 // 表格表头字段名
-                myPolicyHead: myPolicyHead,
-                distributePolicyHead: distributePolicyHead,
+                myPolicyHead : myPolicyHead,
+                distributePolicyHead : distributePolicyHead,
                 // 列表数据
-                myPolicyData: [],
-                distPolicyData: [],
+                myPolicyData : [],
+                distPolicyData : [],
                 //关键字
-                keywords: '',
+                keywords : '',
                 //所属景区
-                chooseOrgId: '',
+                chooseOrgId : '',
                 // 获取我的销售政策列表数据请求参数
-                myPolicyParams: {
-                    selectType: 'from',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                myPolicyParams : {
+                    selectType : 'from',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
                 // 获取分销列表数据的请求参数
-                queryParams: {
-                    selectType: 'to',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    selectType : 'to',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
                 // 数据总条数
-                mTotal: 0,
-                dTotal: 0,
+                mTotal : 0,
+                dTotal : 0,
                 // 已勾选的删除数据
-                selectedRow: [],
+                selectedRow : [],
                 // 删除数据显示
-                delUnits: '',
+                delUnits : '',
                 // 枚举数据
-                enumData: {
-                    scene: [],
+                enumData : {
+                    scene : [],
                 },
                 // 筛选列表
                 /*filterList: [
@@ -212,46 +212,46 @@
                     { text: '未启用', value: '未启用' },
                 ],*/
                 // 下拉列表数据
-                dropdownList: [
-                    { name: 'checkPass', value: 'checkPass' },//审核通过
-                    { name: 'commissioned', value: 'commissioned' },//启用
-                    { name: 'forbidden', value: 'forbidden' },//禁用
-                    { name: 'delete', value: 'delete' },//删除
-                    { name: 'reject', value: 'reject' },//驳回
-                    { name: 'commitCheck', value: 'commitCheck' }//提交审核
+                dropdownList : [
+                    { name : 'checkPass', value : 'checkPass' },//审核通过
+                    { name : 'commissioned', value : 'commissioned' },//启用
+                    { name : 'forbidden', value : 'forbidden' },//禁用
+                    { name : 'delete', value : 'delete' },//删除
+                    { name : 'reject', value : 'reject' },//驳回
+                    { name : 'commitCheck', value : 'commitCheck' }//提交审核
                 ],
                 // 业态类型数据
-                policyTypeList: [],
+                policyTypeList : [],
                 //能否进行批量操作
-                isDisabled: true,
+                isDisabled : true,
                 //可批量禁用
-                disenable: false,
+                disenable : false,
                 //可批量通过
-                passable: false,
+                passable : false,
                 //可批量驳回
-                rebuttable: false,
+                rebuttable : false,
                 //可批量启用
-                openable: false,
+                openable : false,
                 //可批量删除
-                deletable: false,
+                deletable : false,
                 //可提交审核
-                auditable: false,
+                auditable : false,
 
-            }
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'manageOrgs'
             ])
         },
-        created() {
+        created () {
 
             //设置当前角色
             this.role = this.manageOrgs.nodeType;
-            if(this.role === 'partner') {
+            if (this.role === 'partner') {
                 this.tabsName = 'cancellation';
             }
-            if(this.role === 'partner' || this.role === 'scenic') {
+            if (this.role === 'partner' || this.role === 'scenic') {
                 this.queryDistPolicyList();
             }
             //获取所有销售政策业态类型
@@ -260,10 +260,10 @@
             //获取所属景区列表
             this.queryPolicyFromScenic();
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
 
             /**
              * 切换tab
@@ -276,7 +276,7 @@
             // 获取所有销售政策业态类型
             getAllPolicyType () {
                 ajax.post('getAllPolicyType', {}).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.policyTypeList = res.data || [];
                     } else {
                         this.policyTypeList = [];
@@ -286,14 +286,14 @@
             },
 
             // 查询我定义的销售政策列表
-            queryMyPolicyList() {
+            queryMyPolicyList () {
                 ajax.post('queryPolicy', {
                     ...this.myPolicyParams,
-                    keyword: this.keywords,
-                    chooseOrgId: this.chooseOrgId
+                    keyword : this.keywords,
+                    chooseOrgId : this.chooseOrgId
                 }).then(res => {
                     this.selectedRow = [];
-                    if(res.success){
+                    if (res.success) {
                         this.myPolicyData = res.data.data || [];
                         this.mTotal = res.data.totalRow || 0;
                     } else {
@@ -305,11 +305,11 @@
             },
 
             // 查询分销给我的销售政策列表
-            queryDistPolicyList() {
+            queryDistPolicyList () {
                 ajax.post('queryPolicy', {
                     ...this.queryParams,
-                    keyword: this.keywords,
-                    chooseOrgId: this.chooseOrgId
+                    keyword : this.keywords,
+                    chooseOrgId : this.chooseOrgId
                 }).then((res) => {
                     this.dTotal = res.data.totalRow || 0;
                     this.distPolicyData = res.data ? res.data.data : [];
@@ -317,16 +317,16 @@
             },
 
             //获取所属景区列表
-            queryPolicyFromScenic() {
+            queryPolicyFromScenic () {
                 ajax.post('queryPolicyFromScenic',{
-                    selectType: 'to',
-                    pageNo: 1,
-                    pageSize: 999
+                    selectType : 'to',
+                    pageNo : 1,
+                    pageSize : 999
                 }).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.enumData.scene = res.data;
                     }
-                })
+                });
             },
 
             // 新建销售政策
@@ -338,19 +338,19 @@
                 }*/
 
                 this.$router.push({
-                    name: 'editSalePolicy',
-                    params: {
-                        type: 'add',
-                        productType: 'ticket',
+                    name : 'editSalePolicy',
+                    params : {
+                        type : 'add',
+                        productType : 'ticket',
                     }
-                })
+                });
             },
 
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.selectedRow = selection;
                 this.canBatchOperate(selection);
             },
@@ -369,11 +369,11 @@
              * 删除票类
              * @param ids
              */
-            deletePolicy( ids ) {
+            deletePolicy ( ids ) {
                 ajax.post('deletePolicy',{
-                    policyIds: ids
+                    policyIds : ids
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.queryMyPolicyList();
                     } else {
@@ -388,14 +388,14 @@
              * @param row
              * @returns {boolean}
              */
-            filterHandler(value, row) {
+            filterHandler (value, row) {
                 return row.status === value;
             },
 
             // 点击dropdown回调 (checked-enabled审核,up-enabled上架,down-not_enabled下架,delete-删除)
-            handleCommand( item ) {
-                if(item){
-                    let ids = this.selectedRow.map(item => item.id).join(',');
+            handleCommand ( item ) {
+                if (item) {
+                    let ids = this.selectedRow.map(obj => obj.id).join(',');
                     switch (item) {
                         case 'checkPass' :
                             this.modifyPolicyStatus(ids, 'enabled');
@@ -417,6 +417,8 @@
                             //提交审核
                             this.modifyPolicyStatus(ids, 'auditing');
                             break;
+                        default:
+                            break;
                     }
                 }
             },
@@ -424,10 +426,10 @@
             // 更新销售政策状态
             modifyPolicyStatus ( ids, status ) {
                 ajax.post('modifyPolicyStatus',{
-                    policyIds: ids,
-                    status: status
+                    policyIds : ids,
+                    status : status
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$Message.success(this.$t('updateStatus') + this.$t('success'));
                         this.queryMyPolicyList();
                     } else {
@@ -439,34 +441,34 @@
             // 查看政策详情 -- 自己定义的分销政策
             viewDetail ( data ) {
                 this.$router.push({
-                    name: 'salePolicyDetail',
-                    params: {
-                        info: data
+                    name : 'salePolicyDetail',
+                    params : {
+                        info : data
                     }
-                })
+                });
             },
             /**
              * 查看分销详情 -- 分配给我的分销政策
              */
-            check(data) {
+            check (data) {
                 this.$router.push({
-                    name: 'distributeDetail',
-                    params: {
-                        listItem: data
+                    name : 'distributeDetail',
+                    params : {
+                        listItem : data
                     }
                 });
             },
             /**
              *  分销操作
              */
-            distribute(data) {
+            distribute (data) {
                 this.$refs.distributionModal.toggle(data);
             },
             /**
              * 刷新页面
              */
-            refresh() {
-                if(this.tabsName === 'cancellation') {
+            refresh () {
+                if (this.tabsName === 'cancellation') {
                     this.queryDistPolicyList();
                 } else {
                     this.queryMyPolicyList();
@@ -475,18 +477,18 @@
             /**
              * 分销成功
              */
-            distributeComplete(data) {
+            distributeComplete (data) {
                 this.$router.push({
-                    name: 'distributeDetail',
-                    params: {
-                        listItem: data
+                    name : 'distributeDetail',
+                    params : {
+                        listItem : data
                     }
                 });
             },
             /**
              * 判断当前选中的销售政策列表能否进行批量操作
              */
-            canBatchOperate(data) {
+            canBatchOperate (data) {
                 this.disenable = false;
                 this.passable = false;
                 this.rebuttable = false;
@@ -494,19 +496,19 @@
                 this.openable = false;
                 this.isDisabled = true;
                 this.auditable = false;
-                if(data.length > 0) {
+                if (data.length > 0) {
                     let auditStatus = data[0].auditStatus,
                         status = true;
 
-                    for(let i=1,len=data.length; i<len; i++) {
+                    for (let i = 1,len = data.length; i < len; i++) {
                         //若选中的行中有一行的审核状态值于第一个不同，则不允许批量操作
-                        if(data[i].auditStatus !== auditStatus) {
+                        if (data[i].auditStatus !== auditStatus) {
                             status = false;
                             break;
                         }
                     }
 
-                    if(status) {
+                    if (status) {
                         this.isDisabled = false;
                         switch (auditStatus) {
                             //选中的行都是 已启用 状态 => 可禁用
@@ -527,6 +529,8 @@
                             case 'not_enabled':
                                 this.auditable = true;
                                 this.deletable = true;
+                                break;
+                            default:
                                 break;
                         }
                     }

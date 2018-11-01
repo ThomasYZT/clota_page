@@ -327,7 +327,7 @@
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             titleTemp,
             tableCom,
@@ -336,71 +336,71 @@
         data () {
             return {
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'marketingPolicy',   // 产品列表--票类列表
-                        router: {
+                        name : 'marketingPolicy', // 产品列表--票类列表
+                        router : {
                             name : 'marketingPolicy'
                         },
                     }
                 ],
                 //week
-                weekList: ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                weekList : ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 //详情数据
-                detail: {},
+                detail : {},
                 //产品列表表头
-                productColumn: productColumn,
+                productColumn : productColumn,
                 //销售渠道表头
-                saleChannelColumn: saleChannelColumn,
+                saleChannelColumn : saleChannelColumn,
                 //全民营销表头
-                marketingColumn: marketingColumn,
+                marketingColumn : marketingColumn,
                 //退票表头
-                refundColumn: refundColumn,
+                refundColumn : refundColumn,
                 //备注
-                remark: '',
+                remark : '',
                 //分销id
-                allocationId: '',
-            }
+                allocationId : '',
+            };
         },
-        computed: {
+        computed : {
             localeRouter () {
-                return this.$t('marketingPolicyDetail');      // 销售政策详情
+                return this.$t('marketingPolicyDetail'); // 销售政策详情
             },
         },
-        methods: {
+        methods : {
 
             //显示星期
             showWeek ( val ) {
-                if(val){
+                if (val) {
                     let list = val.split(',');
                     return list.map(item => {
-                        return this.$t(this.weekList[Number(item)])
+                        return this.$t(this.weekList[Number(item)]);
                     }).join('、');
-                }else{
-                    return '-'
+                } else {
+                    return '-';
                 }
             },
 
             //修改
             modify () {
                 this.$router.push({
-                    name: 'editSalePolicy',
-                    params: {
-                        type: 'modify',
-                        info: this.detail,
-                        allocationId: this.allocationId,
+                    name : 'editSalePolicy',
+                    params : {
+                        type : 'modify',
+                        info : this.detail,
+                        allocationId : this.allocationId,
                     }
-                })
+                });
             },
 
             //审核操作
             auditProduct ( status ) {
                 ajax.post('modifyPolicyStatus',{
-                    policyIds: this.detail.productPolicy.id,
-                    status: status,
-                    remark: this.remark,
+                    policyIds : this.detail.productPolicy.id,
+                    status : status,
+                    remark : this.remark,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$Message.success(this.$t('updateStatus') + this.$t('success'));
                         this.goBack();
                     } else {
@@ -412,9 +412,9 @@
             //获取销售政策详情（包含销售组、产品）
             getPolicyInfo ( data ) {
                 ajax.post('getPolicyInfo', {
-                    allocationId: data.allocationId
+                    allocationId : data.allocationId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.detail = res.data || {};
                     } else {
                         this.detail = {};
@@ -426,7 +426,7 @@
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
-                    data: { remark: this.remark },
+                    data : { remark : this.remark },
                     confirmCallback : ( msg ) => {
                         this.remark = msg;
                     }
@@ -434,24 +434,24 @@
             },
 
             //返回
-            goBack() {
+            goBack () {
                 this.$router.back();
             },
 
             /**
              * 获取路由信息
              */
-            getParams(params) {
-                if(params && Object.keys(params).length > 0){
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
                     //获取销售政策详情（包含销售组、产品）
-                    if( params.info ){
+                    if ( params.info ) {
                         this.allocationId = params.info.allocationId;
                         this.getPolicyInfo( params.info );
                     }
                 }
             },
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -293,7 +293,7 @@
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             titleTemp,
             tableCom,
@@ -303,61 +303,61 @@
         data () {
             return {
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'ticketType',   // 产品列表--票类列表
-                        router: {
+                        name : 'ticketType', // 产品列表--票类列表
+                        router : {
                             name : 'ticketType'
                         },
                     }
                 ],
                 //详情数据
-                detail: {},
+                detail : {},
                 //产品园区列表数据
-                productPlayRuleVo: [],
+                productPlayRuleVo : [],
                 //产品日志数据
-                recordsVos: [],
+                recordsVos : [],
                 //可游玩园区表头
-                columnData: parkColumn,
+                columnData : parkColumn,
                 //可游玩园区列表数据
-                parkList: [],
+                parkList : [],
                 //备注
-                remark: '',
+                remark : '',
                 //可接受证件类型
-                acceptIdType: []
-            }
+                acceptIdType : []
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 查看可游玩园区详情
              */
             viewParkDetail ( data ) {
                 this.$refs.viewPark.show({
-                    data: data,
-                    title : this.$t('check')+this.$t(data.saleType),
-                    type: 'check',
+                    data : data,
+                    title : this.$t('check') + this.$t(data.saleType),
+                    type : 'check',
                 });
             },
 
             //修改
             modify () {
                 this.$router.push({
-                    name: 'addTicket',
-                    params: {
-                        type: 'modify',
-                        info: this.detail,
-                        productPlayRuleVo: this.productPlayRuleVo,
+                    name : 'addTicket',
+                    params : {
+                        type : 'modify',
+                        info : this.detail,
+                        productPlayRuleVo : this.productPlayRuleVo,
                     }
-                })
+                });
             },
 
             // 根据产品Id查明细
-            findProductById( data ) {
+            findProductById ( data ) {
                 ajax.post('findProductById', {
-                    productId: data.id
+                    productId : data.id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.detail = res.data.productSaleVo || {};
                         this.productPlayRuleVo = res.data.productPlayRuleVo || [];
                         this.recordsVos = res.data.recordsVos || [];
@@ -375,38 +375,38 @@
             // 查询权限下的园区
             queryScenicOrgByAccountRole () {
                 ajax.post('queryScenicOrgByAccountRole', {
-                    privCode: 'addProduct',
+                    privCode : 'addProduct',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.parkList = res.data || [];
                     } else {
                         this.parkList = [];
                         this.$Message.error(res.message || this.$t('fail'));
                     }
-                })
+                });
             },
 
             //审核操作
             auditProduct ( status ) {
                 ajax.post('auditProduct', {
-                    productId: this.detail.id,
-                    operType: status,
-                    remark: this.remark,
+                    productId : this.detail.id,
+                    operType : status,
+                    remark : this.remark,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$Message.success(this.$t('operate') + this.$t('success'));
                         //根据产品Id查明细
                         this.findProductById(this.detail);
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
-                })
+                });
             },
 
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
-                    data: { remark: this.remark },
+                    data : { remark : this.remark },
                     confirmCallback : ( data ) => {
                         this.remark = data;
                     }
@@ -414,19 +414,19 @@
             },
 
             //返回
-            goBack() {
+            goBack () {
                 this.$router.back();
             },
 
             /**
              * 获取路由信息
              */
-            getParams(params) {
-                if(params && Object.keys(params).length > 0){
-                    if(params.info){
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    if (params.info) {
                         //根据产品Id查明细
                         this.findProductById(params.info);
-                        if(this.$store.state.manageOrgs.nodeType !== 'partner') {
+                        if (this.$store.state.manageOrgs.nodeType !== 'partner') {
                             //查询权限下的园区
                             this.queryScenicOrgByAccountRole();
                         }
@@ -435,7 +435,7 @@
             }
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

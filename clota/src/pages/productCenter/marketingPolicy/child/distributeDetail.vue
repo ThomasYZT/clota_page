@@ -147,87 +147,87 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import policyDetail from '../components/policyDetailModal.vue';
-    import distributionModal from '../components/distributionModal'
-    import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig'
+    import distributionModal from '../components/distributionModal';
+    import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig';
     import ajax from '@/api/index';
-    import editDistributeModal from '../components/editDistributionModal'
+    import editDistributeModal from '../components/editDistributionModal';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             tableCom,
             policyDetail,
             editDistributeModal,
             distributionModal
         },
-        data() {
+        data () {
             return {
                 //列表项信息 --路由参数
-                listItem: {},
+                listItem : {},
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'marketingPolicy',   // 产品列表--票类列表
-                        router: {
+                        name : 'marketingPolicy', // 产品列表--票类列表
+                        router : {
                             name : 'marketingPolicy'
                         },
                     }
                 ],
                 //上级分销单价表格数据
-                parentDistributeData: [],
+                parentDistributeData : [],
                 //上级分销单价表头配置
-                parentDistributePriceConfig: detailParentDistributePriceConfig,
+                parentDistributePriceConfig : detailParentDistributePriceConfig,
                 //我的分销单价表格数据
-                myAllocationLists: [],
+                myAllocationLists : [],
                 //我的分销表头配置
-                myDistributeConfig: Array.from(myDistributeConfig),
-            }
+                myDistributeConfig : Array.from(myDistributeConfig),
+            };
         },
-        methods: {
+        methods : {
             /**
              *  获取页面数据
              */
-            getData() {
+            getData () {
                 //获取分销详情数据接口
                 ajax.post('getPolicyAllocationInfo',{
-                    allocationId: this.listItem.allocationId
+                    allocationId : this.listItem.allocationId
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         //初始化我的分销表头配置
                         this.myDistributeConfig = Array.from(myDistributeConfig);
                         //上级分销单价表格数据
                         this.parentDistributeData = res.data ? res.data.parentAllocationProductList : {};
 
-                        if(res.data.myAllocationLists.length !== 0){
+                        if (res.data.myAllocationLists.length !== 0) {
                             this.myAllocationLists = Array.from(this.parentDistributeData);
 
                             //增加尾行数据 -- 销售渠道分组
                             let lastRowData = {
-                                productName: this.$t('salesChannel')
+                                productName : this.$t('salesChannel')
                             };
                             //动态增加列数据
-                            for(let i = 0,len=this.myAllocationLists.length; i<len; i ++) {
-                                for(let j = 0,jlen = res.data.myAllocationLists.length; j<jlen ; j++) {
+                            for (let i = 0,len = this.myAllocationLists.length; i < len; i++) {
+                                for (let j = 0,jlen = res.data.myAllocationLists.length; j < jlen; j++) {
                                     this.myAllocationLists[i]['allocationName' + j] = res.data.myAllocationLists[j].allocationName;
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
                                     this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i].settlePrice;
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
-                                    this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos)
-                                    if(i === 0) {
+                                    this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos);
+                                    if (i === 0) {
                                         //动态增加表格列
                                         let _obj = {
-                                            title: this.myAllocationLists[i]['allocationName' + j],      // 分销名称
-                                            minWidth: '300',
-                                            field: 'price'+ j
+                                            title : this.myAllocationLists[i]['allocationName' + j], // 分销名称
+                                            minWidth : '300',
+                                            field : 'price' + j
                                         };
-                                        this.myDistributeConfig.push(_obj)
+                                        this.myDistributeConfig.push(_obj);
 
                                         //组装尾行数据 -- 销售渠道分组
                                         res.data.myAllocationLists[j].policyChannelVos.forEach((item) => {
                                             lastRowData['price' + j] === undefined ? lastRowData['price' + j] = item.groupName + '\n' : lastRowData['price' + j] += item.groupName + '\n';
                                             lastRowData['groupIds' + j] === undefined ? lastRowData['groupIds' + j] = item.groupId : lastRowData['groupIds' + j] += ',' + item.groupId;
-                                        })
+                                        });
                                     }
 
                                 }
@@ -236,8 +236,8 @@
                         } else {
                             this.myAllocationLists = [];
                         }
-                    }else {
-                        this.$Message.error(this.$t(res.code || ''))
+                    } else {
+                        this.$Message.error(this.$t(res.code || ''));
                     }
                 });
             },
@@ -245,9 +245,9 @@
              * 获取路由信息
              * @param
              */
-            getParams(params) {
-                if(params && Object.keys(params).length > 0) {
-                    if(params.listItem) {
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    if (params.listItem) {
                         this.listItem = params.listItem;
                         //console.log(this.listItem)
                     }
@@ -258,7 +258,7 @@
             /**
              * 查看销售政策详情
              */
-            viewDetail() {
+            viewDetail () {
                 //显示弹窗
                 this.$refs.detailView.toggle(this.listItem);
             },
@@ -266,9 +266,9 @@
              * 表格头点击事件
              * @param data
              */
-            headerClick(data) {
+            headerClick (data) {
                 //禁用首行首列的表头点击事件
-                if(data[0].property !== 'productName') {
+                if (data[0].property !== 'productName') {
                     //获取表格选中列的索引
                     let coloumnIndex = this.getIndex(data);
                     //组装表格选中列的数据
@@ -281,7 +281,7 @@
             /**
              * 获取表格选中列的索引
              */
-            getIndex(data) {
+            getIndex (data) {
                 let property = data[0].property;
                 let _index = property.charAt(property.length - 1);
                 return _index;
@@ -290,18 +290,18 @@
              * 获取表格选中列的数据
              * @param _index
              */
-            getColumnData(_index) {
+            getColumnData (_index) {
                 //组装表格选中列的数据,同一列的数据allocationId、groupNames、allocationName都是相同的，
                 //所以默认取第一产品的相关数据即可
                 let columnData = {
-                    productList: [],
-                    name: this.myAllocationLists[0]['allocationName'+_index],
-                    allocationId: this.myAllocationLists[0]['allocationId'+_index],
-                    haveSaleGroups: this.myAllocationLists[0]['haveSaleGroups'+_index],
-                    groupIds: this.myAllocationLists[this.myAllocationLists.length -1]['groupIds'+_index]
+                    productList : [],
+                    name : this.myAllocationLists[0]['allocationName' + _index],
+                    allocationId : this.myAllocationLists[0]['allocationId' + _index],
+                    haveSaleGroups : this.myAllocationLists[0]['haveSaleGroups' + _index],
+                    groupIds : this.myAllocationLists[this.myAllocationLists.length - 1]['groupIds' + _index]
                 };
                 this.myAllocationLists.forEach((item, index) => {
-                    if(index !== this.myAllocationLists.length - 1){
+                    if (index !== this.myAllocationLists.length - 1) {
                         columnData.productList = item['itemVos' + _index];
                     }
                 });
@@ -310,55 +310,55 @@
             /**
              * 刷新页面数据
              */
-            refresh() {
+            refresh () {
                 this.getData();
             },
             /**
              *  分销操作
              */
-            distribute() {
+            distribute () {
                 this.$refs.distributionModal.toggle(this.listItem);
             },
             /**
              * 表头渲染
              */
-            headerRender(h, { column, $index }) {
+            headerRender (h, { column }) {
                 return h("Tooltip",
                     {
-                        props: {
-                            placement: 'top',
-                            content: column.label,
-                            transfer: true
+                        props : {
+                            placement : 'top',
+                            content : column.label,
+                            transfer : true
                         },
                     },
                     [
                         h(
                             'div',
                             {
-                                style: {
-                                    maxWidth: "100px"
+                                style : {
+                                    maxWidth : "100px"
                                 }
                             },
                             [column.label]
                         ),
                         h('i',{
-                            class: ['iconfont icon-edit']
+                            class : ['iconfont icon-edit']
                         })
                     ]
                 );
             },
             //查看产品详情
             checkProductDetail ( data ) {
-                let _obj = Object.assign({},data,{ id: data.productId });
+                let _obj = Object.assign({},data,{ id : data.productId });
                 this.$router.push({
-                    name: 'ticketDetail',
-                    params: {
-                        info: _obj
+                    name : 'ticketDetail',
+                    params : {
+                        info : _obj
                     }
-                })
+                });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
