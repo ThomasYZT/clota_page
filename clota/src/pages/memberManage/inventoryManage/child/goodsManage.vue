@@ -54,7 +54,7 @@ export default {
 		breadCrumbHead,
 		toolBox
 	},
-	data() {
+	data () {
 		return {
 			//路由信息
 			beforeRouterList : [
@@ -91,17 +91,17 @@ export default {
 		/**
          * 获取列表数据
          */
-		getListData() {
+		getListData () {
 			ajax.post('queryPagedGoods', this.queryParams).then(res => {
                 if ( res.success ) {
                     this.tableData = res.data ? res.data.data : [];
                     this.totalCount = res.data.totalRow;
                 }
-			})
+			});
 		},
 
 	},
-	created() {
+	created () {
 
 	}
 };

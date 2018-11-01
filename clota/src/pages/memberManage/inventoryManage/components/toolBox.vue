@@ -21,29 +21,29 @@
 
 <script>
     export default {
-        props: {
+        props : {
             //工具数量
-            toolNum: {
-                type: Number,
-                required: true
+            toolNum : {
+                type : Number,
+                required : true
             }
         },
-        components: {},
-        data() {
+        components : {},
+        data () {
             return {
-            }
+            };
         },
-        methods: {
-            generateArray(row) {
-                let len = Math.ceil(this.toolNum/3) === row && this.toolNum%3 > 0 ? this.toolNum%3 : 3;
+        methods : {
+            generateArray (row) {
+                let len = Math.ceil(this.toolNum / 3) === row && this.toolNum % 3 > 0 ? this.toolNum % 3 : 3;
                 let _arr = [];
-                for(let i=0; i<len; i++) {
-                    _arr[i] = ((row-1)*3)+i;
+                for (let i = 0; i < len; i++) {
+                    _arr[i] = ((row - 1) * 3) + i;
                 }
                 return _arr;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
