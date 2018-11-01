@@ -457,7 +457,7 @@ export default {
     'paymentTime': 'payment time',
     'integralRateInfo': 'point rate information',
     'inputOrderSearch': 'please enter the product name, transaction number',
-    'levelExistCard': 'member information already exists under this membership level and cannot be delete',
+    'levelExistCard': 'member information already exists under this membership category and cannot be delete',
     'noMatchCard': 'sorry, can`t find the card information, please try to replace other cards',
     'cardInitError': 'entity card initialization error',
     'cardInitSuccess': 'the physical card was successfully initialized',
