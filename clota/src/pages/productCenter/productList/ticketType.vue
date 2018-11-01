@@ -74,7 +74,6 @@
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth"
-                sortable="custom"
                 :prop="row.field">
                 <template slot-scope="scope">
                     {{scope.row.updatedTime}}

@@ -47,7 +47,7 @@
                         <i-col span="12" v-if="detail.productPolicy.saleRuleModel.type === 'playBeforeSold'">
                             <Form-item :label="$t('aheadDays')+'：'"><!--提前天数（M）-->
                                 <div>
-                                    {{detail.productPolicy.saleRuleModel.beforeDay | contentFilter}} {{$t('To')}} {{detail.productPolicy.saleRuleModel.afterDay | contentFilter}}
+                                    {{detail.productPolicy.saleRuleModel.beforeDay | contentFilter}} {{' '+$t('To')}} {{detail.productPolicy.saleRuleModel.afterDay | contentFilter}}
                                 </div>
                             </Form-item>
                         </i-col>
@@ -161,6 +161,7 @@
                     <Form-item :label="$t('productList')+'：'"><!--产品列表-->
                         <div>
                             <table-com
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="productColumn"
                                 :table-data="detail.policyItems"
@@ -234,6 +235,7 @@
                             <span>{{$t(detail.productPolicy.returnRuleModel.type,{msg: $t('return')}) | contentFilter}}</span>
                             <table-com
                                 v-if="detail.productPolicy.returnRuleModel.type !== 'notAllow'"
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="refundColumn"
                                 :table-data="detail.productPolicy.returnRuleModel.rules"

@@ -50,6 +50,7 @@
                                    :placeholder="$t('inputField', {msg: ''})"/>
                         </Form-item>
                     </div>
+                    <div class="ivu-form-item-wrap"></div>
                 </div>
 
                 <!--票面信息-->
@@ -821,13 +822,13 @@
                 .ivu-form-item-wrap{
                     position: relative;
                     display: inline-block;
-                    min-width: 495px;
+                    min-width: 340px;
                     width: 49%;
                     text-align: left;
                     vertical-align: middle;
 
                     .ivu-form-item{
-                        width: 395px;
+                        width: 340px;
                         margin: 0 auto 18px;
                         text-align: left;
 
@@ -869,8 +870,7 @@
                     }
 
                     &.single{
-                        width: calc(49% + 455px);
-                        padding: 0 24px 0 24px;
+                        width: calc(49% + 340px);
                         .ivu-form-item{
                             width: 100%;
                         }

@@ -23,6 +23,7 @@
 
             <!--表单信息-->
             <Form ref="formValidate"
+                  class="form"
                   :label-width="250"
                   label-position="right"
                   :model="detail">
@@ -451,7 +452,7 @@
         .container{
 
             .title-wrap{
-                padding: 15px 35px 0px;
+                padding: 25px 35px 0px;
                 color: $color_000_085;
 
                 .blue-span{
@@ -487,6 +488,12 @@
                     font-size: $font_size_14px;
                     color: $color_red;
                     padding: 4px 15px;
+                }
+            }
+
+            .form {
+                .title-wrap {
+                    padding: 10px 35px 10px 35px;
                 }
             }
 

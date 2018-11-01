@@ -562,6 +562,7 @@
                 margin: 0 6px;
                 color: #333333;
                 font-size: 14px;
+                font-weight: bold;
             }
             &:before {
                 display: table-cell;
