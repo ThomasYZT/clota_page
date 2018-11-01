@@ -13,10 +13,14 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('memberGrade') + '：'" prop="levelNum"><!--会员等级-->
-                        <!--<Input v-model.trim="formData.levelNum"
+                    <Form-item :label="$t('会员卡名称') + '：'" prop="levelDesc"><!--等级名称-->
+                        <Input v-model.trim="formData.levelDesc"
                                type="text"
-                               :placeholder="$t('inputField', {field: $t('memberGrade')})"/>--><!--请输入会员等级-->
+                               :placeholder="$t('inputField', {field: $t('memberLevelName')})"/><!--请输入会员级别名称，例：黄金会员-->
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('memberGrade') + '：'" prop="levelNum"><!--会员等级-->
                         <Select v-model="formData.levelNum"
                                 :placeholder="$t('selectField', {msg: ''})"
                                 style="width: 280px;"><!--请选择会员等级-->
@@ -27,26 +31,39 @@
                         </Select>
                     </Form-item>
                 </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('gradeName') + '：'" prop="levelDesc"><!--等级名称-->
-                        <Input v-model.trim="formData.levelDesc"
-                               type="text"
-                               :placeholder="$t('inputField', {field: $t('memberLevelName')})"/><!--请输入会员级别名称，例：黄金会员-->
-                    </Form-item>
-                </div>
-                <!--<div class="ivu-form-item-wrap" style="transform: scale(0);">-->
-                    <!--<Form-item  prop="lowerGrowthValue">-->
+                <!--会员3期暂时去掉-->
+                <!--<div class="ivu-form-item-wrap">-->
+                    <!--<Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue">&lt;!&ndash;会员成长值范围&ndash;&gt;-->
+                        <!--<Input v-model.trim="formData.lowerGrowthValue"-->
+                               <!--:placeholder="$t('inputField', {field: ''})"-->
+                               <!--class="single-input"/>-->
+                        <!--<span class="split-line">–</span>-->
+                        <!--<Input v-model.trim="formData.highestGrowthValue"-->
+                               <!--:placeholder="$t('inputField', {field: ''})"-->
+                               <!--class="single-input"/>-->
                     <!--</Form-item>-->
                 <!--</div>-->
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue"><!--会员成长值范围-->
-                        <Input v-model.trim="formData.lowerGrowthValue"
-                               :placeholder="$t('inputField', {field: ''})"
-                               class="single-input"/>
-                        <span class="split-line">–</span>
-                        <Input v-model.trim="formData.highestGrowthValue"
-                               :placeholder="$t('inputField', {field: ''})"
-                               class="single-input"/>
+                    <Form-item :label="$t('会员卡功能') + '：'" prop="function"><!--会员卡功能-->
+                        <CheckboxGroup v-model="formData.function">
+                            <Checkbox v-for="item in rightList"
+                                       :key="item.value"
+                                       :label="item.value">
+                                    {{item.label}}
+                            </Checkbox>
+                        </CheckboxGroup>
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('售卡金额') + '：'" prop="salePrice"><!--售卡金额-->
+                        <Input v-model.trim="formData.salePrice"
+                               type="text"/>
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('卡内金额') + '：'" prop="amountInCard"><!--卡内金额-->
+                        <Input v-model.trim="formData.amountInCard"
+                               type="text"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
@@ -74,13 +91,20 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        components: {},
+        props : {
+            //会员卡类别id
+            'card-type-id' : {
+              type : String,
+              default : ''
+            }
+        },
+        components : {},
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -101,84 +125,190 @@
                         case 'highestGrowthValue' :
                             field = 'memberGrowthValue';
                             break;
+                        default :
+                            field = '';
+                            break;
                     }
-                    callback(this.$t(err, {field: this.$t(field)}));
+                    callback(this.$t(err, { field : this.$t(field) }));
                 });
             };
 
             //校验最高值范围
             const validateHigh = (rule,value,callback) => {
                 common.validateInteger( this.formData.lowerGrowthValue).then(() => {
-                    if(Number(this.formData.lowerGrowthValue) > Number(value)){
-                        callback(new Error( this.$t('errorGreaterThan', {small: this.$t('startingValue'), big: this.$t('maximumValue')}) ));    // 起始值不能大于最高值
+                    if (Number(this.formData.lowerGrowthValue) > Number(value)) {
+                        callback(new Error( this.$t('errorGreaterThan', {
+                                small : this.$t('startingValue'),
+                                big : this.$t('maximumValue') }
+                            ) )); // 起始值不能大于最高值
                     } else {
                         callback();
                     }
                 }).catch(err => {
-                    callback(this.$t(err, {field: this.$t('memberGrowthRange')}));
+                    callback(this.$t(err, { field : this.$t('memberGrowthRange') }));
+                });
+            };
+
+            //校验输入的是否是金额，且符合金额的格式
+            const validateMoney = (rule,value,callback) => {
+                common.validateMoney(value,0,10).then(() => {
+                    callback();
+                }).catch(err => {
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t(rule._field),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t(rule._field) }));
+                    }
                 });
             };
 
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
-                    levelNum: '',
-                    levelDesc: '',
-                    lowerGrowthValue: '',
-                    highestGrowthValue: '',
-                    remark: '',
+                formData : {
+                    levelNum : '',
+                    levelDesc : '',
+                    lowerGrowthValue : '',
+                    highestGrowthValue : '',
+                    remark : '',
+                    //功能
+                    function : [],
+                    //售卡金额
+                    salePrice : '',
+                    //卡内金额
+                    amountInCard : ''
                 },
+                //功能列表
+                rightList : [
+                    {
+                        label : '储值',
+                        value : 'isRecharge'
+                    },
+                    {
+                        label : '折扣',
+                        value : 'isDiscount'
+                    },
+                    {
+                        label : '积分',
+                        value : 'isScore'
+                    }
+                ],
                 // 已被创建的会员级别
-                usedLevels: [],
+                usedLevels : [],
 
-                ruleValidate: {
-                    levelNum: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('memberGrade')}), type: "number", trigger: 'change' },   // 会员等级不能为空
-//                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('memberGrade'), length: 10}), trigger: 'change' },  // 会员等级不能超过10字符
-//                        { validator: validateMethod.emoji, trigger: 'change' },   //
-                        { validator: validateNumber, trigger: 'change' },
+                ruleValidate : {
+                    levelNum : [
+                        {
+                            required : true,
+                            message : this.$t('errorEmpty', { msg : this.$t('memberGrade') }),
+                            type : "number",
+                            trigger : 'change'
+                        },
+                        { validator : validateNumber, trigger : 'change' },
                     ],
-                    levelDesc: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('levelSetting')}), trigger: 'blur' }, // 会员级别名称不能为空
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('levelSetting'), length: 10}), trigger: 'blur' },  // 会员级别不能超过10字符
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    levelDesc : [
+                        {
+                            required : true,
+                            message : this.$t('errorEmpty', { msg : this.$t('levelSetting') }),
+                            trigger : 'blur'
+                        }, // 会员级别名称不能为空
+                        {
+                            max : 10,
+                            message : this.$t('errorMaxLength', { field : this.$t('levelSetting'), length : 10 }),
+                            trigger : 'blur'
+                        }, // 会员级别不能超过10字符
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    lowerGrowthValue: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('memberGrowthValue')}), trigger: 'blur' },  // 会员成长值不能为空
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('memberGrowthValue'), length: 10}), trigger: 'blur' }, // 会员成长值不能超过10字符
-                        { validator: validateNumber, trigger: 'blur' },
+                    lowerGrowthValue : [
+                        {
+                            required : true,
+                            message : this.$t('errorEmpty', { msg : this.$t('memberGrowthValue') }),
+                            trigger : 'blur'
+                        }, // 会员成长值不能为空
+                        {
+                            max : 10,
+                            message : this.$t('errorMaxLength', { field : this.$t('memberGrowthValue'), length : 10 }),
+                            trigger : 'blur'
+                        }, // 会员成长值不能超过10字符
+                        { validator : validateNumber, trigger : 'blur' },
                     ],
-                    highestGrowthValue: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('memberGrowthValue')}), trigger: 'blur' },  // 会员成长值不能为空
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('memberGrowthValue'), length: 10}), trigger: 'blur' }, // 会员成长值不能超过10字符
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateHigh, trigger: 'blur' },
+                    highestGrowthValue : [
+                        {
+                            required : true,
+                            message : this.$t('errorEmpty', { msg : this.$t('memberGrowthValue') }),
+                            trigger : 'blur'
+                        }, // 会员成长值不能为空
+                        {
+                            max : 10,
+                            message : this.$t('errorMaxLength', { field : this.$t('memberGrowthValue'), length : 10 }),
+                            trigger : 'blur'
+                        }, // 会员成长值不能超过10字符
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateHigh, trigger : 'blur' },
                     ],
-                    remark: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 20, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 20}), trigger: 'blur' },    // 备注不能超过20字符
+                    remark : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        // 备注不能超过20字符
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 20 }),
+                            trigger : 'blur'
+                        },
                     ],
-                }
-            }
+                    salePrice : [
+                        {
+                            required : true,
+                            validator : validateMoney ,
+                            trigger : 'blur',
+                            _field : '售卡金额'
+                        }
+                    ],
+                    amountInCard : [
+                        {
+                            required : true,
+                            validator : validateMoney ,
+                            trigger : 'blur',
+                            _field : '卡内金额'
+                        }
+                    ],
+                    function : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ msg : this.$t('会员卡功能') }),
+                            trigger : 'change',
+                            type : 'array'
+                        }
+                    ]
+                },
+            };
         },
-        watch: {
-            // 'formData.lowerGrowthValue': function (newVal) {
-            //     this.$refs.formValidate.validateField('highestGrowthValue');
-            // }
-        },
-        methods: {
+        methods : {
 
             show ( data, usedLevels ) {
-                if(data && data.id){
-                    this.formData = defaultsDeep({}, data);
+                if (data && data.id) {
+                    for (let item in this.formData) {
+                        if (item in data) {
+                            //获取选择的功能
+                            if (item === 'isRecharge' && data['isRecharge'] === true) {
+                                this.formData.function.push('isRecharge');
+                            } else if (item === 'isScore' && data['isScore'] === true) {
+                                this.formData.function.push('isScore');
+                            } else if (item === 'isDiscount' && data['isDiscount'] === true) {
+                                this.formData.function.push('isDiscount');
+                            }
+                            this.formData[item] = data[item];
+                        }
+                    }
                     this.formData.levelNum = this.formData.levelNum > -1 ? this.formData.levelNum : '';
-                    this.formData.lowerGrowthValue = this.formData.lowerGrowthValue > -1 ? this.formData.lowerGrowthValue+'' : '';
-                    this.formData.highestGrowthValue = this.formData.highestGrowthValue > -1 ? this.formData.highestGrowthValue+'' : '';
+                    this.formData.lowerGrowthValue = this.formData.lowerGrowthValue > -1
+                        ? this.formData.lowerGrowthValue + '' : '';
+                    this.formData.highestGrowthValue = this.formData.highestGrowthValue > -1
+                        ? this.formData.highestGrowthValue + '' : '';
 
-                    setTimeout( () => {
-                        this.$refs.formValidate.validateField('highestGrowthValue');
-                    }, 300);
+                    // 会员3期暂时去掉
+                    // setTimeout( () => {
+                    //     this.$refs.formValidate.validateField('highestGrowthValue');
+                    // }, 300);
                 }
 
                 this.usedLevels = usedLevels;
@@ -191,32 +321,39 @@
                     if ( valid ) {
                         this.updateMemberLevel(this.formData);
                     }
-                })
+                });
             },
 
             //新增/修改数据
             updateMemberLevel ( data ) {
                 ajax.post('updateMemberLevel', {
-                    id: data.id,
-                    levelNum: data.levelNum,
-                    levelDesc: data.levelDesc,
-                    lowerGrowthValue: data.lowerGrowthValue,
-                    highestGrowthValue: data.highestGrowthValue,
-                    remark: data.remark,
+                    cardTypeId : this.cardTypeId,
+                    id : data.id,
+                    levelNum : data.levelNum,
+                    levelDesc : data.levelDesc,
+                    lowerGrowthValue : data.lowerGrowthValue,
+                    highestGrowthValue : data.highestGrowthValue,
+                    remark : data.remark,
+                    salePrice : data.salePrice,
+                    amountInCard : data.amountInCard,
+                    isRecharge : data.function.includes('isRecharge'),
+                    isScore : data.function.includes('isScore'),
+                    isDiscount : data.function.includes('isDiscount'),
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');     // 操作成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('operate') })); // 操作成功
                         this.$emit('modify-success');
                         this.hide();
                     } else {
-                        this.$Message.warning(res.message ? this.$t(res.message) :
-                            'updateMemberLevel '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');  // 操作失败
+                        this.$Message.warning(res.code
+                            ? this.$t(res.code) :
+                            ('updateMemberLevel ' + this.$t('failureTip', { tip : this.$t('operate') }))); // 操作失败
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 //重置数据
                 this.visible = false;
 
@@ -226,14 +363,14 @@
              * @param type
              */
             visibleChange (type) {
-                if(type === false){
+                if (type === false) {
                     this.formData.lowerGrowthValue = '';
                     this.$refs.formValidate.resetFields();
                 }
             }
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -34,7 +34,10 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click.stop="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
-                                <li class="red-label" @click.stop="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
+                                <li class="red-label"
+                                    @click.stop="delMemberLevel($event,scoped.row)">
+                                    {{$t('del')}}
+                                </li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -178,7 +181,7 @@
                 this.$router.push({
                     name : 'levelSetting',
                     params : {
-
+                        id : data.id
                     }
                 });
             }

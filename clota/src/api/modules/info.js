@@ -161,6 +161,8 @@ export default {
     'saveOrUpdateCardType': '/member/memberLevel/saveOrUpdateCardType',
     //删除会员类别
     'deletedCardType': '/member/memberLevel/deletedCardType',
+    //查询会员卡类别下的会员级别
+    'queryLevelsByCardType': '/member/memberLevel/queryLevelsByCardType',
 
 
     /***********************************会员统计***********************************/

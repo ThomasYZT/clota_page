@@ -145,7 +145,7 @@
 <script>
     import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './cardConfig';
+    import { columnData } from './cardConfig';
     import delModal from './delModal';
     import defaultsDeep from 'lodash/defaultsDeep';
 
@@ -157,11 +157,11 @@
         data () {
             return {
                 //当前tap值
-                tabsName: 'created',
+                tabsName : 'created',
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //删除模态框是否显示
-                visible: false,
+                visible : false,
                 //表头配置
                 columnData : columnData,
                 //表格数据总条数
@@ -169,10 +169,10 @@
                 //当前操作的行数据
                 currentData : {},
                 pageSize : 10,
-                pageNo :1
-            }
+                pageNo : 1
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 切换tab
@@ -186,7 +186,7 @@
              * 新增卡券
              */
             add () {
-                this.$router.push({ name: 'addCard', query: { type: 'add' },params : {name : 1}});
+                this.$router.push({ name : 'addCard', query : { type : 'add' },params : { name : 1 } });
             },
 
             /**
@@ -195,8 +195,8 @@
              */
             modifyFunc ( data ) {
                 this.$router.push({
-                    name: 'addCard',
-                    query: { type: 'modify' },
+                    name : 'addCard',
+                    query : { type : 'modify' },
                     params : this.getUpdateCouponParams(data)
                 });
             },
@@ -210,11 +210,11 @@
                 ajax.post('updateCoupon',defaultsDeep({
                     status : 'invalid'
                 },params)).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('obsolete')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('obsolete') }));
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('obsolete')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('obsolete') }));
                     }
                 });
             },
@@ -228,11 +228,11 @@
                 ajax.post('updateCoupon',defaultsDeep({
                     status : 'valid'
                 },params)).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('commissioned')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('commissioned') }));
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('commissioned')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('commissioned') }));
                     }
                 });
                 //暂时修改重新启用的方法
@@ -262,11 +262,11 @@
                 ajax.post('updateCoupon',Object.assign({
                     isDeleted : 'true'
                 },params)).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));     // 删除成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') })); // 删除成功
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del')}) );   // 删除失败
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }) ); // 删除失败
                     }
                 });
             },
@@ -274,7 +274,7 @@
             /**
              * 查询新建的会员卡券信息
              */
-            queryList ({pageNo,pageSize} = {pageNo : this.pageNo,pageSize : this.pageSize}) {
+            queryList ({ pageNo,pageSize } = { pageNo : this.pageNo,pageSize : this.pageSize }) {
                 this.pageNo = pageNo;
                 this.pageSize = pageSize;
                 ajax.post('queryCoupons',{
@@ -283,10 +283,10 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                   if(res.success){
+                   if (res.success) {
                        this.tableData = res.data.data ? res.data.data : [];
                        this.totalCount = res.data.totalRow;
-                   }else{
+                   } else {
                        this.tableData = [];
                        this.totalCount = 0;
                    }
@@ -299,20 +299,20 @@
              * 获取卡券使用条件
              * @param rowData
              */
-            getUseCondition(rowData) {
-                if(rowData.couponType === 'discount_coupon'){//折扣券
-                    return this.$t('discountCouponUseConditions',{minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation});
-                }else if(rowData.couponType === 'exchange_coupon'){//兑换券
-                    return this.$t('only',{msg : rowData.remark});
-                }else if(rowData.couponType === 'cash_coupon'){//代金券
-                    return this.$t('overTipCanUse',{money : rowData.conditionLowerLimtation});
+            getUseCondition (rowData) {
+                if (rowData.couponType === 'discount_coupon') {//折扣券
+                    return this.$t('discountCouponUseConditions',{ minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation });
+                } else if (rowData.couponType === 'exchange_coupon') {//兑换券
+                    return this.$t('only',{ msg : rowData.remark });
+                } else if (rowData.couponType === 'cash_coupon') {//代金券
+                    return this.$t('overTipCanUse',{ money : rowData.conditionLowerLimtation });
                 }
             },
             /**
              * 获取编辑卡券的参数
              */
             getUpdateCouponParams (data) {
-                if(data.couponType === 'cash_coupon'){//代金券
+                if (data.couponType === 'cash_coupon') {//代金券
                     return {
                         id : data.id,
                         couponName : data.couponName,
@@ -326,8 +326,8 @@
                         isEffectBeforeDiscount : data.isEffectBeforeDiscount,
                         conditionChannelId : data.conditionChannelId,
                         conditionOrgId : data.conditionOrgId,
-                    }
-                }else if(data.couponType === 'exchange_coupon'){//兑换券
+                    };
+                } else if (data.couponType === 'exchange_coupon') {//兑换券
                     return {
                         id : data.id,
                         couponName : data.couponName,
@@ -338,8 +338,8 @@
                         conditionChannelId : data.conditionChannelId,
                         conditionProductId : data.conditionProductId,
                         singleStoreId : data.conditionOrgId,
-                    }
-                }else if(data.couponType === 'discount_coupon'){//折扣券
+                    };
+                } else if (data.couponType === 'discount_coupon') {//折扣券
                     return {
                         id : data.id,
                         couponName : data.couponName,
@@ -352,11 +352,11 @@
                         price : String(data.price),
                         conditionOrgId : data.conditionOrgId,
                         conditionChannelId : data.conditionChannelId,
-                    }
+                    };
                 }
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

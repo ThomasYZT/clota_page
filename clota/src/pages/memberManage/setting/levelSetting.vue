@@ -11,11 +11,13 @@
 
             <div class="btn-wrap">
                 <Button type="primary"
-                        :disabled="tableData.length > 11 ? true : false"
+                        :disabled="tableData.length > 11"
                         @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
-                <Button type="primary"
-                        :disabled="tableData.length > 0 ? false : true"
-                        @click="showRuleModal">{{$t('promotionSetting')}}</Button><!--晋级设置-->
+
+                <!--会员3期暂时去掉-->
+                <!--<Button type="primary"-->
+                        <!--:disabled="tableData.length > 0"-->
+                        <!--@click="showRuleModal">{{$t('promotionSetting')}}</Button>&lt;!&ndash;晋级设置&ndash;&gt;-->
                 <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
             </div>
             <div class="table-wrap">
@@ -24,21 +26,22 @@
                     :column-data="levelListHead"
                     :table-data="tableData"
                     :border="true">
+                    <!--会员3期暂时去掉-->
+                    <!--<el-table-column-->
+                        <!--slot="column3"-->
+                        <!--:label="row.title"-->
+                        <!--:prop="row.field"-->
+                        <!--:key="row.index"-->
+                        <!--:width="row.width"-->
+                        <!--:min-width="row.minWidth"-->
+                        <!--show-overflow-tooltip-->
+                        <!--slot-scope="row">-->
+                        <!--<template slot-scope="scoped">-->
+                            <!--<span>{{scoped.row.lowerGrowthValue}} - {{scoped.row.highestGrowthValue}}</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
                     <el-table-column
-                        slot="column3"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{scoped.row.lowerGrowthValue}} - {{scoped.row.highestGrowthValue}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column5"
+                        slot="column6"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -49,7 +52,8 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click="showAddMemberModal($event,scoped.row)">{{$t('modify')}}</li>
-                                <li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
+                                <!--会员3期暂时去掉-->
+                                <!--<li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>-->
                             </ul>
                         </template>
                     </el-table-column>
@@ -59,7 +63,10 @@
         </div>
 
         <!--新增会员modal-->
-        <add-member-modal ref="addMember" @modify-success="queryList"></add-member-modal>
+        <add-member-modal ref="addMember"
+                          :card-type-id="cardTypeId"
+                          @modify-success="queryList">
+        </add-member-modal>
 
         <!--会员等级晋升规则设置modal-->
         <member-rule-modal ref="memberRule" @modify-success="queryList"></member-rule-modal>
@@ -79,16 +86,16 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {levelListHead} from './levelConfig';
-    import addMemberModal  from '../components/addMemberModal.vue';
-    import memberRuleModal  from '../components/memberRuleModal.vue';
+    import { levelListHead } from './levelConfig';
+    import addMemberModal from '../components/addMemberModal.vue';
+    import memberRuleModal from '../components/memberRuleModal.vue';
     import delModal from '@/components/delModal/index.vue';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             addMemberModal,
             memberRuleModal,
             tableCom,
@@ -100,27 +107,25 @@
                 //列表表头
                 levelListHead : levelListHead,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 // 已被创建的会员级别
-                usedLevels: [],
+                usedLevels : [],
                 //当前操作的数据
                 currentData : {},
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'memCardManagement',
-                        router: {
-                            name: 'memCardManagement'
+                        name : 'memCardManagement',
+                        router : {
+                            name : 'memCardManagement'
                         }
                     }
                 ],
-            }
+                //会员类别id
+                cardTypeId : ''
+            };
         },
-        created(){
-            //查询列表
-            this.queryList();
-        },
-        methods: {
+        methods : {
 
             showAddMemberModal ( event, data ) {
                 this.$refs.addMember.show( data || null, this.usedLevels );
@@ -132,21 +137,17 @@
 
             //查询列表(查询表格取统一的方法名)
             queryList () {
-                ajax.post('queryMemberLevels', {
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
+                ajax.post('queryLevelsByCardType', {
+                    cardTypeId : this.cardTypeId
                 }).then(res => {
-                    if(res.success){
-                        this.tableData = res.data.data || [];
-                        this.usedLevels = this.tableData.map(item => {
-                            return item.levelNum;
-                        });
+                    if (res.success) {
+                        this.tableData = res.data ? res.data : [];
+                        this.usedLevels = this.tableData.map(item => item.levelNum);
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberLevels '+ $t('queryFailure') +'！');
+                        this.tableData = [];
+                        this.$Message.warning(res.message || 'queryMemberLevels ' + this.$t('queryFailure') + '');
                     }
-                })
+                });
             },
 
             //增加/修改会员级别
@@ -166,43 +167,44 @@
                     confirmCallback : () => {
                         this.deleteLevelInfo(rowData);
                     }
-                })
+                });
             },
 
             //删除数据
             deleteLevelInfo ( data ) {
                 ajax.post('deleteMemberLevel', {
-                    id: data.id,
-                    lowerGrowthValue: data.lowerGrowthValue,
-                    highestGrowthValue: data.highestGrowthValue,
-                    isDeleted: 'true',
+                    id : data.id,
+                    lowerGrowthValue : data.lowerGrowthValue,
+                    highestGrowthValue : data.highestGrowthValue,
+                    isDeleted : 'true',
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));     // 删除成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') })); // 删除成功
                         //查询列表
                         this.queryList();
                     } else if (res.code == 'M013') {
-                        this.$Message.error(this.$t('levelExistCard'));    // 该会员级别下已存在会员信息，不能删除
+                        this.$Message.error(this.$t('levelExistCard')); // 该会员级别下已存在会员信息，不能删除
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
+                        this.$Message.error(res.message || this.$t('failureTip', { tip : this.$t('del') })); // 删除失败
                     }
-                })
+                });
             },
             /**
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params && Object.keys(params).length > 0){
-
-                }else{
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.cardTypeId = params.id;
+                    this.queryList();
+                } else {
                     this.$router.push({
                         name : 'memCardManagement'
                     });
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
