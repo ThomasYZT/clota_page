@@ -387,7 +387,11 @@
         watch : {
             //监视查询关键字，如果改变就进行查找
             keyWord (newVal,oldVal) {
-                this.$refs.tree.filter(newVal);
+                this.$nextTick( () => {
+                    if(this.$refs.tree){
+                        this.$refs.tree.filter(newVal);
+                    }
+                });
             }
         }
     }
