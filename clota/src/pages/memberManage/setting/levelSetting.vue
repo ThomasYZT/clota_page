@@ -41,6 +41,19 @@
                         <!--</template>-->
                     <!--</el-table-column>-->
                     <el-table-column
+                        slot="column3"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            {{getFunctions(scoped.row)}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column6"
                         :label="row.title"
                         :prop="row.field"
@@ -202,6 +215,21 @@
                         name : 'memCardManagement'
                     });
                 }
+            },
+            /**
+             * 获取会员功能信息
+             * @param rowData
+             */
+            getFunctions (rowData) {
+                let result = [];
+                if ( rowData['isScore'] === true ) {
+                    result.push(this.$t('积分'));
+                } else if ( rowData['isDiscount'] === true ) {
+                    result.push(this.$t('折扣'));
+                } else if ( rowData['isRecharge'] === true ) {
+                    result.push(this.$t('储值'));
+                }
+                return result.join(',');
             }
         }
     };
