@@ -16,6 +16,7 @@ import 'klwk-ui/src/lib/css/index.scss';
 import './assets/theme/elementTheme/index.scss';
 import './assets/css/iconfont.css';
 import '@/assets/scss/_common.scss';
+
 import eleLocale from 'element-ui/lib/locale';
 import eleEnLang from 'element-ui/lib/locale/lang/en';
 import eleZhCnLang from 'element-ui/lib/locale/lang/zh-CN';

@@ -10,9 +10,9 @@
             <div class="btn-wrap">
                 <!--新增会员类别-->
                 <Button type="primary"
-                        :disabled="tableData.length > 11 ? true : false"
+                        :disabled="tableData.length > 11"
                         @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
-                <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
+                <span class="tips">{{$t('最多新增12个会员类别')}}</span><!--最多新增12个会员类别-->
             </div>
             <div class="table-wrap">
                 <table-com
@@ -33,8 +33,8 @@
                         slot-scope="row">
                         <template slot-scope="scoped">
                             <ul class="operate-list">
-                                <li class="blue-label" @click="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
-                                <li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
+                                <li class="blue-label" @click.stop="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
+                                <li class="red-label" @click.stop="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -46,8 +46,9 @@
         <!--删除级别模态框-->
         <del-modal ref="delModal">
             <span class="content-text">
-                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
-                <span class="yellow-label">{{currentData ? currentData.levelDesc : ''}}</span></span>
+                <i class="iconfont icon-help delete-icon"></i>
+                {{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{currentData ? currentData.typeName : ''}}</span>
+            </span>
             <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
         </del-modal>
 
@@ -101,7 +102,7 @@
              * 显示新增模态框
              */
             showAddMemberModal ( ) {
-                this.currentData =  {};
+                this.currentData = {};
                 this.showAddModal = true;
             },
 
@@ -110,27 +111,24 @@
              * @param rowData 行数据
              */
             showEditMemberModal (rowData) {
-                this.currentData =  rowData;
+                this.currentData = rowData;
                 this.showAddModal = true;
             },
 
-            //查询列表(查询表格取统一的方法名)
+            /**
+             * 查询所有会员类别信息
+             */
             queryList () {
-                ajax.post('queryMemberLevels', {
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
-                }).then(res => {
-                    if(res.success){
-                        this.tableData = res.data.data || [];
+                ajax.post('queryCardTypeList').then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data : [];
                         this.usedLevels = this.tableData.map(item => {
                             return item.levelNum;
                         });
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberLevels '+ $t('queryFailure') +'！');
+                        this.$Message.warning(res.message || 'queryMemberLevels ' + this.$t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             //增加/修改会员级别
@@ -150,27 +148,27 @@
                     confirmCallback : () => {
                         this.deleteLevelInfo(rowData);
                     }
-                })
+                });
             },
 
-            //删除数据
+            /**
+             * 删除会员类别
+             * @param data 会员类别数据
+             */
             deleteLevelInfo ( data ) {
-                ajax.post('deleteMemberLevel', {
-                    id: data.id,
-                    lowerGrowthValue: data.lowerGrowthValue,
-                    highestGrowthValue: data.highestGrowthValue,
-                    isDeleted: 'true',
+                ajax.post('deletedCardType', {
+                    cardTypeId : data.id,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));     // 删除成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         //查询列表
                         this.queryList();
-                    } else if (res.code == 'M013') {
-                        this.$Message.error(this.$t('levelExistCard'));    // 该会员级别下已存在会员信息，不能删除
+                    } else if (res.code === 'M013') {
+                        this.$Message.error(this.$t('levelExistCard')); // 该会员级别下已存在会员信息，不能删除
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
-                })
+                });
             },
             /**
              * 跳转到会员级别详情的页面

@@ -54,7 +54,7 @@
                 }
             }
         },
-        data() {
+        data () {
             //校验是否重名
             const validateMemberCategoryName = (rule,value,callback) => {
                 callback();
@@ -64,7 +64,8 @@
                     //备注
                     remark : '',
                     //会员卡类别名称
-                    memberCategoryName : ''
+                    memberCategoryName : '',
+                    id : ''
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -94,7 +95,7 @@
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
@@ -108,10 +109,10 @@
              */
             save () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        if(this.typeSetting === 'edit'){
+                    if (valid) {
+                        if (this.typeSetting === 'edit') {
                             this.updateCategoryInfo();
-                        }else{
+                        } else {
                             this.addCategoryInfo();
                         }
                     }
@@ -121,46 +122,67 @@
              * 新增会员类别信息
              */
             addCategoryInfo () {
-                this.saveIng =  true;
-                ajax.post('',{
-
+                this.saveIng = true;
+                ajax.post('saveOrUpdateCardType',{
+                    typeName : this.formData.memberCategoryName,
+                    remark : this.formData.remark,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success('');
+                    if (res.success) {
+                        this.$Message.success('新增会员类别成功');
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error('');
+                    } else {
+                        this.$Message.error('新增会员类别失败');
                     }
                 }).finally(() => {
-                    this.saveIng =  false;
+                    this.saveIng = false;
+                    this.cancel();
                 });
             },
             /**
              * 修改会员类别信息
              */
             updateCategoryInfo () {
-                this.saveIng =  true;
-                ajax.post('',{
-
+                this.saveIng = true;
+                ajax.post('saveOrUpdateCardType',{
+                    typeName : this.formData.memberCategoryName,
+                    remark : this.formData.remark,
+                    id : this.formData.id
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success('');
+                    if (res.success) {
+                        this.$Message.success('修改会员类别成功');
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error('');
+                    } else {
+                        this.$Message.error('修改会员类别失败');
                     }
                 }).finally(() => {
-                    this.saveIng =  false;
+                    this.saveIng = false;
+                    this.cancel();
                 });
             }
         },
         computed : {
             //当前是新增还是编辑
             typeSetting () {
-                if(this.cardDefaultInfo && Object.keys(this.cardDefaultInfo).length > 0){
+                if (this.cardDefaultInfo && Object.keys(this.cardDefaultInfo).length > 0) {
                     return 'edit';
-                }else{
+                } else {
                     return 'add';
+                }
+            }
+        },
+        watch : {
+            cardDefaultInfo : {
+                deep : true,
+                handler (newVal) {
+                    if (newVal && Object.keys(newVal).length > 0) {
+                        this.formData.memberCategoryName = newVal.typeName;
+                        this.formData.remark = newVal.remark;
+                        this.formData.id = newVal.id;
+                    } else {
+                        this.formData.memberCategoryName = '';
+                        this.formData.remark = '';
+                        this.formData.id = '';
+                    }
                 }
             }
         }

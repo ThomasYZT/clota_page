@@ -25,7 +25,7 @@ module.exports = {
     rules: {
         // allow debugger during development
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-        "indent": [1, "tab"], //缩进设置
+        // "indent": [1, "tab"], //缩进设置
         "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
         "object-curly-spacing": [1, "always"],
         "no-cond-assign": 2, //条件语句的条件中不允许出现赋值运算符
@@ -62,11 +62,6 @@ module.exports = {
         "no-alert": 1, //不允许使用alert，confirm，prompt语句
         "no-caller": 2, //不允许使用arguments.callee和arguments.caller属性
         "guard-for-in": 1, //监视for in循环，防止出现不可预料的情况
-        "no-else-return": 1, //如果if语句有return，else里的return不用放在else里
-            "no-labels": ["error", {
-            "allowLoop": false,
-            "allowSwitch": false
-        }], //不允许标签语句
         "no-eq-null": 2, //不允许对null用==或者!=
         "no-eval": 1, //不允许使用eval()
         "no-extend-native": 2, //不允许扩展原生对象
@@ -127,7 +122,7 @@ module.exports = {
         "semi": [1, "always"], //强制语句分号结尾
         "semi-spacing": [2, {"before": false, "after": true}], //分后前后空格
         "space-before-blocks": [2, "always"], //块前的空格
-        "space-before-function-paren": [2, {"anonymous": "always", "named": "never"}], //函数定义时括号前的空格
+        "space-before-function-paren": [2, {"anonymous": "always", "named": "always"}], //函数定义时括号前的空格
         "space-infix-ops": [2, {"int32Hint": true}], //操作符周围的空格
         "keyword-spacing": 2, //关键字前后的空格
         "space-unary-ops": [2, { "words": true, "nonwords": false}], //一元运算符前后使用一致的空格
@@ -135,6 +130,6 @@ module.exports = {
         "no-var": 2, //使用let和const代替var
         "generator-star-spacing": [2, "both"], //生成器函数前后空格
         "max-depth": [2,{"max": 4}], //嵌套块深度
-        "max-len": [1,{"code": 80,"comments": 65, "ignoreUrls": true}], //一行最大长度，单位为字符
+        "max-len": [1,{"code": 125,"comments": 100, "ignoreUrls": true}], //一行最大长度，单位为字符
     }
 }

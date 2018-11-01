@@ -153,6 +153,14 @@ export default {
     'existAccountBelong' : '/member/memberBasicSet/existAccountBelong',
     //应用范围
     'listApplicationRange': '/member/memberBasicSet/listApplicationRange',
+    //会员类别和会员级别所有数据
+    'getMemberLevelsInType': '/member/memberLevel/getMemberLevelsInType',
+    //会员类别数据
+    'queryCardTypeList': '/member/memberLevel/queryCardTypeList',
+    //新增或修改会员卡类别
+    'saveOrUpdateCardType': '/member/memberLevel/saveOrUpdateCardType',
+    //删除会员类别
+    'deletedCardType': '/member/memberLevel/deletedCardType',
 
 
     /***********************************会员统计***********************************/
