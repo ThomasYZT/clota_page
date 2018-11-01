@@ -11,8 +11,6 @@
                 classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>-->
         <iframe src="../../../../static/tpCard.html" frameborder="0" id="iframe" hidden></iframe>
 
-        <select-card></select-card>
-
         <div class="new-card-content ">
             <Form ref="formValidate"
                   :model="newCardParam"
@@ -181,11 +179,9 @@
     import minBy from 'lodash/minBy';
     import common from '@/assets/js/common.js';
     import isEmpty from 'lodash/isEmpty';
-    import selectCard from './selectCardType.vue';
 
     export default {
         components: {
-            selectCard
         },
         props: {},
         data() {
