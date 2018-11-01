@@ -185,6 +185,27 @@ export default {
     //获取会员消费金额和和积分的信息
     'getMemberConsumeSum' : '/member/getMemberConsumeSum',
     //获取会员消费金额和积分的图表信息
-    'getMemberConsumeSumGroupBy' : '/member/getMemberConsumeSumGroupBy'
+    'getMemberConsumeSumGroupBy' : '/member/getMemberConsumeSumGroupBy',
 
+    /***********************************进销存管理、积分商城***********************************/
+    //批量下架商品
+    'batchPullOffGoods' : '/goods/batchPullOffGoods',
+    //批量上架商品
+    'batchPutOnGoods' : '/goods/batchPutOnGoods',
+    //更新商品信息
+    'updateGoodsInfo' : '/goods/updateGoodsInfo',
+    //查询商品列表
+    'queryPagedGoods' : '/goods/queryPagedGoods',
+    //查询库存变动记录
+    'queryPagedStockChangeRecord' : '/goods/queryPagedStockChangeRecord',
+    //商品异常管理
+    'abnormalGoodsManage' : '/goods/abnormalGoodsManage',
+    //新增/继续商品入库
+    'addGoods' : '/goods/addGoods',
+    //查询商品信息
+    'queryGoodsInfo' : '/goods/queryGoodsInfo',
+    //查询单位列表
+    'queryUnitList' : '/goods/queryUnitList',
+    //新增商品单位
+    'addUnit' : '/goods/addUnit'
 }
