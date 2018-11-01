@@ -1183,7 +1183,7 @@ export default {
     'addProductType': '新增产品类别',
     'productTypeName': '产品类别名称',
     'memberChannelChoose': '会员卡可用渠道选择',
-    'memberAreaChoose': '会员卡可用渠道选择',
+    'memberAreaChoose': '会员卡可用景区选择',
     'deletingProductType': '您正在删除产品类别：',
     'deleteProductType': '删除产品类别：',
     'cardManagement': '实体卡管理',

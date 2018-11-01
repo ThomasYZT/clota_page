@@ -61,7 +61,6 @@ module.exports = {
         "eqeqeq": [1, "smart"], //比较的时候使用严格等于
         "no-alert": 1, //不允许使用alert，confirm，prompt语句
         "no-caller": 2, //不允许使用arguments.callee和arguments.caller属性
-        "guard-for-in": 1, //监视for in循环，防止出现不可预料的情况
         "no-eq-null": 2, //不允许对null用==或者!=
         "no-eval": 1, //不允许使用eval()
         "no-extend-native": 2, //不允许扩展原生对象

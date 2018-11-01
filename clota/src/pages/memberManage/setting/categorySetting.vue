@@ -166,7 +166,7 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         //查询列表
                         this.queryList();
-                    } else if (res.code === 'M016') {
+                    } else if (res.code === 'M021') {
                         this.$Message.error(this.$t('levelExistCard')); // 该会员级别下已存在会员信息，不能删除
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));

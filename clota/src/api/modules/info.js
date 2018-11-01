@@ -163,6 +163,10 @@ export default {
     'deletedCardType': '/member/memberLevel/deletedCardType',
     //查询会员卡类别下的会员级别
     'queryLevelsByCardType': '/member/memberLevel/queryLevelsByCardType',
+    //保存会员卡使用范围设置
+    'saveOrUpdateCardRanges': '/member/memberLevel/saveOrUpdateCardRanges',
+    //查询会员卡使用范围设置
+    'queryCardRangeList': '/member/memberLevel/queryCardRangeList',
 
 
     /***********************************会员统计***********************************/
