@@ -73,6 +73,24 @@
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </div>
+                <!--<div class="ivu-form-item-wrap">-->
+                    <!--<i-row>-->
+                        <!--<i-col span="6">-->
+                            <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
+                                <!--<Input v-model.trim="formData.effTime"-->
+                                       <!--type="textarea"-->
+                                       <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                            <!--</Form-item>-->
+                        <!--</i-col>-->
+                        <!--<i-col span="3">-->
+                            <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
+                                <!--<Input v-model.trim="formData.effTimeUnit"-->
+                                       <!--type="textarea"-->
+                                       <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                            <!--</Form-item>-->
+                        <!--</i-col>-->
+                    <!--</i-row>-->
+                <!--</div>-->
             </Form>
         </div>
 
@@ -176,7 +194,11 @@
                     //售卡金额
                     salePrice : '',
                     //卡内金额
-                    amountInCard : ''
+                    amountInCard : '',
+                    //有效期
+                    effTime : '',
+                    //有效期单位
+                    effTimeUnit : ''
                 },
                 //功能列表
                 rightList : [
@@ -339,6 +361,8 @@
                     isRecharge : data.function.includes('isRecharge'),
                     isScore : data.function.includes('isScore'),
                     isDiscount : data.function.includes('isDiscount'),
+                    effTime : 1,
+                    effTimeUnit : 'year'
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('operate') })); // 操作成功
