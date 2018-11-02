@@ -216,10 +216,10 @@
                     cardRanges : JSON.stringify(cardRanges)
                 }).then(res => {
                     if ( res.success ) {
-                        this.$Message.success('保存成功');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
                         this.getMemberLevelsInType();
                     } else {
-                        this.$Message.error('保存失败');
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
                     }
                 });
                 // ajax.post('basicSet',{
@@ -240,7 +240,7 @@
              */
             channelChange (data) {
                 if (this.cardCategoryChosedInfo[this.chosedMemCard]) {
-                    this.cardCategoryChosedInfo[this.chosedMemCard]['channel'] = data.map(item => item.id);
+                    this.cardCategoryChosedInfo[this.chosedMemCard]['channel'] = data.map(item => item.partnerId);
                 }
                 // this.channelSelected = data;
             },
@@ -325,7 +325,7 @@
                     this.$nextTick(() => {
                         let channelsData = this.cardCategoryChosedInfo[rowDataid]['channel'];
                         for (let i = 0,j = this.tableData.length; i < j; i++) {
-                            if (channelsData.includes(this.tableData[i]['id'])) {
+                            if (channelsData.includes(this.tableData[i]['partnerId'])) {
                                 this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
                             } else {
                                 this.$refs.tableCom.toggleRowSelection(this.tableData[i],false);

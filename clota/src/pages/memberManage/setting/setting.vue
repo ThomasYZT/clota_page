@@ -481,7 +481,7 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
                         this.findBasicSet();
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('save') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
                     }
                 });
             },
