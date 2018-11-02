@@ -134,6 +134,22 @@
 			        callback(this.$t('inputField', { field : this.$t('validityPeriod') }));
                 }
             }
+            //校验占订单总额的百分比
+            const validatePercent = (rule,value,callback) => {
+                common.validateMoney(value,0,3).then(() => {
+                    if (value > 0 && value < 100){
+                        callback();
+                    } else {
+                        callback(this.$t('rangeError',{ field : this.$t('比例'),min : 0,max : 100 }));
+                    }
+                }).catch(err => {
+                    if(err === 'errorMaxLength'){
+                        callback(this.$t('errorMaxLength',{field : this.$t('比例'),length : 3}));
+                    }else{
+                        callback(this.$t(err,{field : this.$t('比例')}));
+                    }
+                });
+            };
 			return {
 				//表单数据
 				formData : {
@@ -175,10 +191,9 @@
 					highProportion : [
 						{
 							required : true,
-							validator : validateIntegrate,
+							validator : validatePercent,
 							trigger : 'blur',
-							_field : ''
-						}
+						},
 					],
 					date : [
                         {

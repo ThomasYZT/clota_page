@@ -196,7 +196,9 @@
                     prodScoreRate : formData.scoreRate,
                     typeId : this.currentData.typeId,
                     remark : formData.remark,
-                    isActivity : this.isActivity
+                    isActivity : this.isActivity,
+                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd') : '',
+                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
