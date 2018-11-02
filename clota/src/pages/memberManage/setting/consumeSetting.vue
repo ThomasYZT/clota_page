@@ -158,6 +158,7 @@
             <integer-rule-setting class="content-item"
                                   :rule-data="settingData.scoreOffsetInConsumption"
                                   @add-integer-rule="addIntegerRule"
+                                  @edit-integer-rule="editIntegetRule"
                                   @del-rule="delIntegerRule">
             </integer-rule-setting>
             <!--<div class="content-item">-->
@@ -567,15 +568,23 @@
              * @param ruleData
              */
             addIntegerRule (ruleData) {
-                console.log(ruleData)
                 this.settingData.scoreOffsetInConsumption.push(ruleData);
             },
             /**
-             * 删除积分规则
+             * 删除积分兑换规则
              * @param index
              */
             delIntegerRule (index) {
                 this.settingData.scoreOffsetInConsumption.splice(index,1);
+            },
+
+            /**
+             * 编辑积分兑换规则
+             * @param data
+             * @param index
+             */
+            editIntegetRule ({data,index}) {
+                this.$set(this.settingData.scoreOffsetInConsumption,index,data);
             }
 
         },

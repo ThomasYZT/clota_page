@@ -1,9 +1,11 @@
 <!--积分交易抵扣规则设置-->
 
 <template>
-    <div >
+    <div class="integer-rule-set">
         <div class="title">
             {{$t('setRulesForMemberPointTransactionDeduction')}}
+        </div>
+        <div class="btn-wrap">
             <Button type="primary" @click="addRule">{{$t('新增规则')}}</Button>
         </div>
         <div class="main">
@@ -50,8 +52,8 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scoped">
                         <ul class="operate-list">
-                            <li>{{$t('modify')}}</li>
-                            <li class="red-label" @click="delRule(scoped.row.$index)">{{$t('del')}}</li>
+                            <li @click="modifyData(scoped.row,scoped.$index)">{{$t('modify')}}</li>
+                            <li class="red-label" @click="delRule(scoped.row,scoped,scoped.$index)">{{$t('del')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -60,8 +62,18 @@
         <!--新增或编辑模态框-->
         <add-integer-rule-modal v-model="showRuleModal"
                                 :valid-rules="ruleData"
+                                :default-info="currentData"
+                                @edit-integer-rule="$emit('edit-integer-rule',$event)"
                                 @add-integer-rule="$emit('add-integer-rule',$event)">
         </add-integer-rule-modal>
+
+        <!--删除模态框-->
+        <del-modal ref="delModal">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
+                <span class="yellow-label">{{currentData ? currentData['data'].ruleName : ''}}</span></span>
+            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
+        </del-modal>
     </div>
 </template>
 
@@ -69,6 +81,7 @@
     import tableCom from '@/components/tableCom/tableCom';
     import { columnData } from './integerRuleSettingConfig.js';
     import addIntegerRuleModal from './addIntegerRuleModal';
+    import delModal from '@/components/delModal/index.vue';
 
 	export default {
 	    props : {
@@ -83,26 +96,58 @@
                 //积分交易抵扣规则设置表头
                 ruleColumnData : columnData,
                 //是否显示新增模态框
-                showRuleModal : false
+                showRuleModal : false,
+                //当前编辑的数据
+                currentData : {
+                    index : 0,
+                    data : {}
+                },
             };
 		},
         components : {
             tableCom,
-            addIntegerRuleModal
+            addIntegerRuleModal,
+            delModal
         },
 		methods : {
             /**
              * 新增规则
              */
             addRule () {
+                this.currentData = {
+                    index : 0,
+                    data :{}
+                };
                 this.showRuleModal = true;
             },
             /**
              * 删除规则
+             * @param rowData
              * @param index 规则序号
              */
-            delRule (index) {
-                this.$emit('del-rule',index);
+            delRule (rowData,index) {
+                this.currentData = {
+                    data : rowData,
+                    index : index
+                };
+                this.$refs.delModal.show({
+                    title : this.$t('删除会员积分交易抵扣规则'),
+                    confirmCallback : () => {
+                        this.$emit('del-rule',index);
+                    }
+                });
+            },
+            /**
+             * 编辑规则信息
+             * @param rowData
+             * @param index
+             */
+            modifyData (rowData,index) {
+                this.currentData = {
+                    data : rowData,
+                    index : index
+                };
+                this.showRuleModal = true;
             }
         },
 	};
@@ -110,4 +155,30 @@
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
+    .integer-rule-set{
+
+        .btn-wrap{
+            padding : 0px 0 10px 0;
+        }
+    }
+
+    .content-text {
+        width: 210px;
+        position: relative;
+
+        .delete-icon {
+            position: absolute;
+            left: -27px;
+            margin-right: 12px;
+            color: $color_red;
+        }
+
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
+    }
 </style>
