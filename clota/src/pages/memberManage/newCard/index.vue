@@ -35,7 +35,7 @@
         data() {
             return {
                 // 当前卡类型对应的组件
-                currentCardType: '',
+                currentCardType: 'ownerCard',
                 selectedCard: {}
             }
         },

@@ -9,12 +9,7 @@
         <!--头部tab组件-->
         <header-tabs :router-name="'refundedCard'"></header-tabs>
         <div class="container">
-            <div class="search-box">
-                <Input v-model.trim="filterParams.keyword"
-                       style="width: 280px;"
-                       :placeholder="$t('请输入关键字')" /><!--请输入姓名、手机号、会员编号、证件编号-->
-                <Button type="primary" class="ivu-btn-90px" @click="">{{$t('搜索')}}</Button><!--搜索-->
-            </div>
+            <search-card></search-card>
 
             <div class="detail-container">
                 <!--持卡人的个人信息-->
@@ -39,6 +34,7 @@
     import storeAccountInfo from './components/storeAccountInfo.vue';
     import integralAccountInfo from './components/integralAccountInfo.vue';
     import headerTabs from './components/newCardTabs.vue';
+    import searchCard from './components/searchCard.vue';
 
     export default {
         components: {
@@ -47,6 +43,7 @@
             cardInfo,
             storeAccountInfo,
             integralAccountInfo,
+            searchCard,
         },
         props: {},
         data() {
@@ -55,9 +52,6 @@
                 queryParams: {
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
-                },
-                filterParams: {
-                    keyword: '',   //
                 },
             }
         },
@@ -79,13 +73,6 @@
         overflow: auto;
         background: $color_fff;
         border-radius : 4px;
-    }
-
-    .search-box {
-        margin: 20px 20px 0;
-        .ivu-btn-90px {
-            margin-left: 8px;
-        }
     }
 
     .detail-container {

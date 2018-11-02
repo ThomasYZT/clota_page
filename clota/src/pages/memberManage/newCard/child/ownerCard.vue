@@ -57,11 +57,11 @@
                 </Form-item>
             </div>
             <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('购房总金额')" prop="houseMoney" style="width: 100%;"><!--购房总金额-->
+                <Form-item :label="$t('购房总金额')" prop="houseMoney"><!--购房总金额-->
                     <Input v-model.trim="cardParam.houseMoney"
                            :placeholder="$t('inputField', {field: $t('购房总金额')})"/>
                 </Form-item>
-                <Form-item :label="$t('房产信息')" prop="realEstateInformation" style="width: 100%;"><!--房产信息-->
+                <Form-item :label="$t('房产信息')" prop="realEstateInformation"><!--房产信息-->
                     <Input v-model.trim="cardParam.realEstateInformation"
                            :placeholder="$t('inputField', {field: $t('房产信息')})"/>
                 </Form-item>
