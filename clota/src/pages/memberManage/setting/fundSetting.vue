@@ -7,20 +7,21 @@
 
         <div class="content">
 
-            <div class="content-item">
-                <div class="title">{{$t('StorePasswordSetting')}}</div>
-                <div class="main">
-                    <RadioGroup v-model="settingData.passwdForRechargeAccount" vertical>
-                        <Radio label="false">
-                            <span>{{$t('consumeWithoutPass')}}</span>
-                        </Radio>
-                        <Radio label="true">
-                            <span>{{$t('consumeWithPass')}}</span>
-                            <span class="yellow-color">{{$t('erCodeOrSmsToPass')}}</span>
-                        </Radio>
-                    </RadioGroup>
-                </div>
-            </div>
+            <!--会员3期暂时去掉-->
+            <!--<div class="content-item">-->
+                <!--<div class="title">{{$t('StorePasswordSetting')}}</div>-->
+                <!--<div class="main">-->
+                    <!--<RadioGroup v-model="settingData.passwdForRechargeAccount" vertical>-->
+                        <!--<Radio label="false">-->
+                            <!--<span>{{$t('consumeWithoutPass')}}</span>-->
+                        <!--</Radio>-->
+                        <!--<Radio label="true">-->
+                            <!--<span>{{$t('consumeWithPass')}}</span>-->
+                            <!--<span class="yellow-color">{{$t('erCodeOrSmsToPass')}}</span>-->
+                        <!--</Radio>-->
+                    <!--</RadioGroup>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="content-item">
                 <div class="title">{{$t('storeIntegetSetting')}}</div>
@@ -168,6 +169,7 @@
                             :table-com-min-height="320"
                             :column-data="columnData"
                             :table-data="tableData"
+                            :auto-height="true"
                             :border="false">
                             <el-table-column
                                 slot="column0"

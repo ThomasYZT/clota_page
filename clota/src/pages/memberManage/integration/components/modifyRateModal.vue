@@ -6,6 +6,7 @@
         class-name="set-rate-modal vertical-center-modal"
         :width="lang === 'zh-CN' ? 540 : 580"
         :mask-closable="false"
+        @on-visible-change="visibleChange"
         @on-cancel="hide">
 
         <div class="modal-body">
@@ -43,6 +44,7 @@
                     <Form-item :label="$t('开始时间')" prop="startTime">
                         <DatePicker v-model.trim="formData.startTime"
                                     :options="dateOptions"
+                                    :editable="false"
                                     type="date"
                                     placement="bottom-start"
                                     :placeholder="$t('inputPlaceholder')"
@@ -55,6 +57,7 @@
                     <Form-item :label="$t('结束时间')" prop="endTime">
                         <DatePicker v-model.trim="formData.endTime"
                                     :options="dateOptions"
+                                    :editable="false"
                                     type="date"
                                     placement="bottom-start"
                                     :placeholder="$t('inputPlaceholder')"
@@ -294,15 +297,21 @@
              */
             notEmpty (val) {
                 return val !== null && val !== '' && val !== undefined;
-            }
-        },
-        watch : {
-            //实时监测当前操作的积分率和折扣率信息，并且赋值给当前的组件
-            integraData (newVal,oldVal) {
-                if (newVal && Object.keys(newVal).length > 0) {
-                    this.formData.discountRate = newVal.discountRate;
-                    this.formData.remark = newVal.remark;
-                    this.formData.scoreRate = newVal.scoreRate;
+            },
+
+            /**
+             * 模态框显示或隐藏
+             * @param type
+             */
+            visibleChange (type) {
+                if (type === true) {
+                    if (this.integraData && Object.keys(this.integraData).length > 0) {
+                        this.formData.discountRate = this.integraData.discountRate;
+                        this.formData.remark = this.integraData.remark;
+                        this.formData.startTime = this.integraData.startTime;
+                        this.formData.endTime = this.integraData.endTime;
+                        this.formData.scoreRate = this.integraData.scoreRate;
+                    }
                 }
             }
         },
@@ -325,7 +334,7 @@
         }
 
         .modal-body{
-            padding: 20px 0 0 0;
+            padding: 20px 0 0 10px;
             min-height: 260px;
             display: flex;
             align-items: center;

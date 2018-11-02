@@ -4,9 +4,7 @@
     <div class="integer-rule-set">
         <div class="title">
             {{$t('setRulesForMemberPointTransactionDeduction')}}
-        </div>
-        <div class="btn-wrap">
-            <Button type="primary" @click="addRule">{{$t('新增规则')}}</Button>
+            <span class="blue-label" @click="addRule">+ {{$t('新增规则')}}</span>
         </div>
         <div class="main">
             <table-com
@@ -157,8 +155,11 @@
 	@import '~@/assets/scss/base';
     .integer-rule-set{
 
-        .btn-wrap{
-            padding : 0px 0 10px 0;
+        .blue-label{
+            color : $color_blue;
+            cursor : pointer;
+            font-size : $font_size_16px;
+            margin-left : 10px;
         }
     }
 
