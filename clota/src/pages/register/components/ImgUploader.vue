@@ -10,6 +10,8 @@
             :show-file-list="true"
             :before-upload="beforeUpload"
             :on-error="uploadFail"
+            :file-list="defaultList"
+            :show-upload-list="true"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="uploadSuc">
@@ -28,9 +30,16 @@
 
     export default {
         props: {
-            quantityLimit: {
+            quantityLimit : {
                 type: Number,
                 default: 5
+            },
+            //默认显示的照片
+            defaultList : {
+                type: Array,
+                default () {
+                    return [];
+                }
             }
         },
         components: {},

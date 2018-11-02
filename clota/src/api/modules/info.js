@@ -215,5 +215,9 @@ export default {
     //查询单位列表
     'queryUnitList' : '/goods/queryUnitList',
     //新增商品单位
-    'addUnit' : '/goods/addUnit'
+    'addUnit' : '/goods/addUnit',
+    //查询库存
+    'queryGoodsStock' : '/goods/queryGoodsStock',
+    //查询商品兑换信息
+    'queryGoodsChangeInfo' : '/goods/queryGoodsChangeInfo'
 }

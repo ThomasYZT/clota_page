@@ -647,7 +647,31 @@ export default {
                             rightPath: topMenuName + '.' + 'memberHome',
                             isMenu: true
                         }
-                    }
+                    },
+                    editGoodsWarehousing: {
+                        //会员管理--进销存管理--新增商品入库
+                        path: '/memberManage/inventoryManage/editGoodsWarehousing',
+                        name: 'editGoodsWarehousing',
+                        component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/editGoodsWarehousing.vue'),
+                        meta: {
+                            //todo 未配置权限
+                            _name: 'members-index',
+                            menuName: 'editGoodsWarehousing',
+                            rightPath: topMenuName + '.' + 'memberHome',
+                        },
+                    },
+                    stockInfo: {
+                        //会员管理--进销存管理--库存详情
+                        path: '/memberManage/inventoryManage/stockInfo',
+                        name: 'stockInfo',
+                        component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/stockInfo.vue'),
+                        meta: {
+                            //todo 未配置权限
+                            _name: 'members-index',
+                            menuName: 'stockInfo',
+                            rightPath: topMenuName + '.' + 'memberHome',
+                        },
+                    },
                 }
             },
             integralMall: {

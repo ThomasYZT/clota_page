@@ -14,31 +14,78 @@
         <!-- 工具栏 -->
         <tool-box :toolNum="3">
             <div slot="tool0" class="button-tool">
-                <Button class="tool-btn left" type="primary">新增商品入库</Button>
-                <Button class="ivu-btn-108px tool-btn right" type="primary">批量下架</Button>
+                <!-- 新增商品入库 -->
+                <Button class="tool-btn left" type="primary" @click="addGood()">{{$t('NewGoodsWarehousing')}}</Button>
+                <!-- 导出 -->
+                <Button class="ivu-btn-108px" type="primary">{{$t('exporting')}}</Button>
             </div>
-            <div slot="tool1" class="button-tool">
-                <Button class="ivu-btn-108px tool-btn" type="primary">导出</Button>
+            <div slot="tool1">
+                <div class="placeholder"></div>
             </div>
+
             <div slot="tool2" class="button-tool">
+                <!-- 搜索框 -->
                 <Input class="input-field"
+                       search
+                       enter-button
                        v-model.trim="queryParams.keyword"
                        icon="ios-search"
-                       :placeholder="$t('inputAnywordForSearch')"/>
+                       :placeholder="$t('inputSpecificForSearch', { field : $t('goodsName') })"
+                       @on-search="getListData"
+                       @on-enter="getListData"/>
             </div>
         </tool-box>
 
         <!-- 表格 -->
-        <tableCom :column-data="tableColumn"
-                  :table-data="tableData"
-                  :border="true"
-                  :show-pagination="true"
-                  :total-count="totalCount"
-                  :page-no-d.sync="queryParams.pageNo"
-                  :page-size-d.sync="queryParams.pageSize"
-                  @query-data="getListData">
+        <div class="table-wrapper">
+            <tableCom :column-data="tableColumn"
+                      :table-data="tableData"
+                      :border="true"
+                      :show-pagination="true"
+                      :total-count="totalCount"
+                      :page-no-d.sync="queryParams.pageNo"
+                      :page-size-d.sync="queryParams.pageSize"
+                      @query-data="getListData">
+                <!-- 库存数量 -->
+                <el-table-column
+                    slot="column1"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{ scope.row.stockNum + scope.row.undrawNum }}
+                    </template>
+                </el-table-column>
+                <!-- 商品状态 -->
+                <el-table-column
+                    slot="column5"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{ scope.row.goodsStatus === 'down' ? $t('down') : $t('up') }}
+                    </template>
+                </el-table-column>
+                <!-- 操作 -->
+                <el-table-column
+                    slot="column6"
+                    slot-scope="row"
+                    fixed="right"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <div class="operate">
+                            <span class="operate-btn blue" @click="addGood(scope.row)">{{$t('continueStockIn')}}</span>
+                            <span class="operate-btn blue" @click="stockDetail(scope.row)">{{$t('stockDetail')}}</span>
+                        </div>
+                    </template>
+                </el-table-column>
 
-        </tableCom>
+            </tableCom>
+        </div>
     </div>
 </template>
 
@@ -96,25 +143,73 @@ export default {
                 if ( res.success ) {
                     this.tableData = res.data ? res.data.data : [];
                     this.totalCount = res.data.totalRow;
+                } else {
+                    this.$Message.error(this.$t('dataGetError'));
                 }
 			});
 		},
-
-	},
-	created () {
-
+        /**
+         * 前往新增商品入库界面
+         * @param {object} data
+         */
+        addGood (data) {
+            this.$router.push({
+                name : 'editGoodsWarehousing',
+                params : {
+                    listItem : data
+                }
+            });
+        },
+        /**
+         * 前往库存详情页面
+         * @param {object} data
+         */
+        stockDetail (data) {
+            this.$router.push({
+                name : 'stockInfo',
+                params : {
+                    listItem : data
+                }
+            });
+        }
 	}
 };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .goods-manage {
+        .button-tool {
+            text-align: left;
+            .tool-btn {
+                margin: 0 20px;
+            }
 
-    .button-tool {
-        text-align: left;
-        .tool-btn {
-            margin: 0 20px;
+            /deep/ .input-field {
+                width: 350px;
+                float: right;
+            }
         }
 
+        .table-wrapper {
+            margin-top: 20px;
+
+            .operate {
+                .operate-btn {
+                    cursor: pointer;
+                    margin-right: 10px;
+                }
+
+                .blue {
+                    color: #2F70DF;
+                }
+            }
+        }
+
+        .placeholder {
+            width: 10px;
+            height: 10px;
+        }
     }
+
 </style>
