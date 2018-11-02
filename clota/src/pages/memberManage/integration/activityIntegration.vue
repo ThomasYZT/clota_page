@@ -43,8 +43,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li
-                            v-if="!isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)"
+                        <li v-if="!isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)"
                             @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li><!--设置积分、折扣率-->
                         <li v-else @click="showModifyModal(scope.row)">{{$t('ModifyIntegralDiscountRate')}}</li><!--修改积分、折扣率-->
                         <li :class="{disabled : !isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)}"
@@ -56,6 +55,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
+            :is-activity="true"
             :integra-data="currentData"
             ref="modifyRate"
             :title="$t('entireIntegralDiscountRateSet')"
@@ -113,7 +113,7 @@
                     return;
                 }
                 this.$router.push({
-                    name : 'setRate',
+                    name : 'activityStore',
                     params : {
                         memberInfo : data
                     }
@@ -136,7 +136,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.tableData = [];
                     this.totalCount = 0;
                 });
@@ -152,12 +152,16 @@
              * 设置会员积分、折扣率
              */
             setMemberDiscountOfMember (formData,callback) {
+                debugger
                 ajax.post('setMemberDiscountOfMember',{
                     id : this.currentData.id,
                     levelId : this.currentData.levelId,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
-                    remark : formData.remark
+                    remark : formData.remark,
+                    isActivity : true,
+                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd') : '',
+                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功

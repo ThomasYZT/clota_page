@@ -309,6 +309,17 @@ export default {
                             rightPath : topMenuName + '.' + 'integration',
                         },
                     },
+                    //会员管理--会员积分--特殊节日设置积分、折扣率
+                    activitySetRate : {
+                        path : '/memberManage/point/activity/store',
+                        name : 'activityStore',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
+                        meta : {
+                            menuName : 'activityStore', //lang.config.js 里面的语言键值
+                            _name : 'point-setting',
+                            rightPath : topMenuName + '.' + 'activityIntegrate',
+                        },
+                    },
                     setProductRate : {
                         //会员管理--会员积分--设置积分、折扣率--按类型/产品
                         path : '/memberManage/point/proRate',
@@ -318,6 +329,17 @@ export default {
                             menuName : 'integration', //lang.config.js 里面的语言键值
                             _name : 'point-setting',
                             rightPath : topMenuName + '.' + 'integration',
+                        },
+                    },
+                    //会员管理--会员积分--特殊活动设置积分、折扣率--按类型/产品
+                    activitySetProductRate : {
+                        path : '/memberManage/point/activity/proRate',
+                        name : 'activitySetProductRate',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
+                        meta : {
+                            menuName : 'activitySetProductRate', //lang.config.js 里面的语言键值
+                            _name : 'point-setting',
+                            rightPath : topMenuName + '.' + 'activityIntegrate',
                         },
                     },
                     linkSpeMember : {

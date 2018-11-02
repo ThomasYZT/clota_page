@@ -56,7 +56,6 @@ module.exports = {
             "requireStringLiterals": true
         }], //在使用typeof表达式比较的时候强制使用有效的字符串
         "block-scoped-var": 2, //将变量声明放在合适的代码块里
-        "consistent-return": 2, //无论有没有返回值都强制要求return语句返回一个值
         "default-case": 2, //在switch语句中需要有default语句
         "eqeqeq": [1, "smart"], //比较的时候使用严格等于
         "no-alert": 1, //不允许使用alert，confirm，prompt语句

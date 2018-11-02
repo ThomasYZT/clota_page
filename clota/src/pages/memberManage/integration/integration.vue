@@ -147,7 +147,8 @@
                     levelId : this.currentData.levelId,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
-                    remark : formData.remark
+                    remark : formData.remark,
+                    isActivity : false
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功

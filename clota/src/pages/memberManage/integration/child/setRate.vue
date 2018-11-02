@@ -42,7 +42,18 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column4"
+                        slot="column3"
+                        show-overflow-tooltip
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{scope.row.startTime | timeFormat('yyyy-MM-dd','')}} - {{scope.row.endTime | timeFormat('yyyy-MM-dd','')}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        :slot="'column' + (columnData.length - 1)"
                         show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
@@ -51,8 +62,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <ul class="operate-list">
-                                <li
-                                    v-if="!isNotEmpty(scope.row.deptScoreRate) || !isNotEmpty(scope.row.deptDiscountRate)"
+                                <li v-if="!isNotEmpty(scope.row.deptScoreRate) || !isNotEmpty(scope.row.deptDiscountRate)"
                                     @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li>
                                 <li v-else @click="showModifyModal(scope.row)">{{$t('ModifyIntegralDiscountRate')}}</li>
                                 <li :class="{disabled : !isNotEmpty(scope.row.deptScoreRate) || !isNotEmpty(scope.row.deptDiscountRate)}"
@@ -79,14 +89,14 @@
 
     import modifyRateModal from '../components/modifyRateModal.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './setRateConfig';
+    import { columnData,activityfColumnData } from './setRateConfig';
     import ajax from '@/api/index.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             modifyRateModal,
             tableCom,
             breadCrumbHead
@@ -94,19 +104,17 @@
         data () {
             return {
                 //跳转信息
-                memberInfo: {},
+                memberInfo : {},
                 // 查询数据
-                queryParams: {
-                    keyword: '',
+                queryParams : {
+                    keyword : '',
                 },
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
-                total: 50,
+                total : 50,
                 //会员级别id
                 levelDiscountId : '',
-                //表头配置
-                columnData : columnData,
                 //总条数
                 totalCount : 0,
                 //页码
@@ -116,17 +124,17 @@
                 //当前操作的行数据
                 currentData : {},
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'integration',
-                        router: {
-                            name: 'integration'
+                        name : 'integration',
+                        router : {
+                            name : 'integration'
                         }
                     }
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示设置店铺折扣率模态框
              * @param data
@@ -141,11 +149,11 @@
              * @param data
              */
             setProductRate ( data ) {
-                if(!this.isNotEmpty(data.deptScoreRate) || !this.isNotEmpty(data.deptDiscountRate)){
+                if (!this.isNotEmpty(data.deptScoreRate) || !this.isNotEmpty(data.deptDiscountRate)) {
                     return;
                 }
                 this.$router.push({
-                    name: 'setProductRate',
+                    name : this.isActivity ? 'activitySetProductRate' : 'setProductRate',
                     params : {
                         memberInfo : Object.assign({
                             levelId : this.memberInfo.levelId,
@@ -164,17 +172,19 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     levelDiscountId : this.memberInfo.id,
+                    levelId : this.memberInfo.levelId,
                     orgName : this.queryParams.keyword,
+                    isActivity : this.isActivity
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
-                        this.tableData =  [];
+                    } else {
+                        this.tableData = [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
-                    this.tableData =  [];
+                    this.tableData = [];
                     this.totalCount = 0;
                 });
             },
@@ -182,14 +192,14 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params){
-                if(params.memberInfo && Object.keys(params.memberInfo).length > 0){
+            getParams (params) {
+                if (params.memberInfo && Object.keys(params.memberInfo).length > 0) {
                     this.levelDiscountId = params.memberInfo.levelId;
                     this.memberInfo = params.memberInfo;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'integration'
-                    })
+                    });
                 }
             },
             /**
@@ -214,16 +224,17 @@
                     // orgIds : this.currentData.orgId,
                     deptDiscountRate : formData.discountRate,
                     deptScoreRate : formData.scoreRate,
-                    remark : formData.remark
+                    remark : formData.remark,
+                    isActivity : this.isActivity
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('settingSuccess'));  // 设置成功
-                        if(res.data){
+                    if (res.success) {
+                        this.$Message.success(this.$t('settingSuccess')); // 设置成功
+                        if (res.data) {
                             this.memberInfo.id = res.data;
                         }
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('settingFail'));    // 设置失败
+                    } else {
+                        this.$Message.error(this.$t('settingFail')); // 设置失败
                     }
                 }).finally(() => {
                     callback();
@@ -233,7 +244,7 @@
              * 判断val是否为空
              * @param val
              */
-            isNotEmpty(val) {
+            isNotEmpty (val) {
                 return val !== null && val !== '' && val !== undefined;
             },
         },
@@ -244,18 +255,30 @@
             },
             //传递给模态框的积分折扣率信息
             integraData () {
-                if(this.currentData && Object.keys(this.currentData).length > 0){
+                if (this.currentData && Object.keys(this.currentData).length > 0) {
                     return {
                         discountRate : this.currentData.deptDiscountRate,
                         remark : this.currentData.remark,
                         scoreRate : this.currentData.deptScoreRate,
-                    }
-                }else{
+                    };
+                } else {
                     return {};
+                }
+            },
+            //是否是特殊节日活动页面下的店铺
+            isActivity () {
+                return this.$route.name === 'activityStore';
+            },
+            //表头配置
+            columnData () {
+                if (this.isActivity) {
+                    return activityfColumnData;
+                } else {
+                    return columnData;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
