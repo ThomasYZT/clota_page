@@ -73,7 +73,7 @@ export default {
             newBatchCard : {
                 path : '/memberManage/newCard/batch',
                 name : 'newBatchCard',
-                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/newCard.vue'),
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/batchCard.vue'),
                 meta : {
                     menuName : 'newBatchCard', //lang.config.js 里面的语言键值
                     _name : 'members-index',

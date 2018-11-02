@@ -304,9 +304,6 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .personal-card {
-        width: 850px;
-        margin: 20px auto;
-
         h3 {
             margin-top: 20px;
             margin-bottom: 15px;

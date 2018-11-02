@@ -102,18 +102,6 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .select-card-type {
-        width: 850px;
-        margin: 20px auto;
-
-        /*> h3 {
-            margin-top: 20px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: $font_size_16px;
-            color: $color_333;
-        }*/
-    }
 
     .ivu-form-item-wrap {
         display: flex;

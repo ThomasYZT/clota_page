@@ -1,19 +1,21 @@
 <!--
-内容：新开个人会员卡
+内容：新开个人会员卡、业主卡、企业会员卡
 作者：djc
 日期：
 -->
 
 <template>
     <div class="new-personal-card">
-        <!--<router-view>
-        </router-view>-->
         <!--头部tab组件-->
         <header-tabs :router-name="'newCard'"></header-tabs>
-        <!--选择会员卡类型、级别-->
-        <select-card @on-change-card="handleCardChanged"></select-card>
+        <div class="container">
+            <div class="content-wrap">
+                <!--选择会员卡类型、级别-->
+                <select-card @on-change-card="handleCardChanged"></select-card>
 
-        <component :is="currentCardType"></component>
+                <component :is="currentCardType"></component>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -36,6 +38,10 @@
             }
         },
         methods: {
+            /**
+             * 所选择会员卡的类型、级别发生改变后的处理
+             * @param cardData  String  会员卡的类型、级别
+             */
             handleCardChanged(cardData) {
                 this.currentCardType = cardData.type;
             }
@@ -45,11 +51,21 @@
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
+
     .new-personal-card{
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
         background: $color_fff;
         border-radius : 4px;
+    }
+
+    .container {
+        height: calc(100% - 70px);
+        overflow: auto;
+        .content-wrap {
+            width: 850px;
+            margin: 20px auto;
+        }
     }
 </style>
