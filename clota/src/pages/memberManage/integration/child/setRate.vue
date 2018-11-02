@@ -76,6 +76,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
+            :is-activity="isActivity"
             :integra-data="integraData"
             ref="modifyRate"
             :title="$t('setStoreSetting')"
