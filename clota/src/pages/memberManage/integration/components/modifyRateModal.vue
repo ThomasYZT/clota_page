@@ -6,6 +6,7 @@
         class-name="set-rate-modal vertical-center-modal"
         :width="lang === 'zh-CN' ? 540 : 580"
         :mask-closable="false"
+        @on-visible-change="visibleChange"
         @on-cancel="hide">
 
         <div class="modal-body">
@@ -38,6 +39,32 @@
                                :placeholder="$t('inputPlaceholder')"/>
                     </Form-item>
                 </div>
+                <!--开始时间-->
+                <div class="ivu-form-item-wrap" v-if="isActivity">
+                    <Form-item :label="$t('开始时间')" prop="startTime">
+                        <DatePicker v-model.trim="formData.startTime"
+                                    :options="dateOptions"
+                                    :editable="false"
+                                    type="date"
+                                    placement="bottom-start"
+                                    :placeholder="$t('inputPlaceholder')"
+                                    style="width: 320px!important;">
+                        </DatePicker>
+                    </Form-item>
+                </div>
+                <!--结束时间-->
+                <div class="ivu-form-item-wrap" v-if="isActivity">
+                    <Form-item :label="$t('结束时间')" prop="endTime">
+                        <DatePicker v-model.trim="formData.endTime"
+                                    :options="dateOptions"
+                                    :editable="false"
+                                    type="date"
+                                    placement="bottom-start"
+                                    :placeholder="$t('inputPlaceholder')"
+                                    style="width: 320px!important;">
+                        </DatePicker>
+                    </Form-item>
+                </div>
                 <div class="ivu-form-item-wrap textarea-wrap">
                     <Form-item :label="$t('remark')" prop="remark">
                         <Input v-model.trim="formData.remark"
@@ -61,9 +88,9 @@
 
 <script>
     import ajax from '@/api/index';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import common from '@/assets/js/common';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -78,87 +105,146 @@
                 default : ''
             },
             //当前操作的积分、折扣率信息
-            'integra-data':{
+            'integra-data' : {
                 type : Object,
                 default () {
                     return {};
                 }
+            },
+            //是否是特殊活动的设置
+            'is-activity' : {
+                type : Boolean,
+                default : false
             }
         },
-        components: {},
+        components : {},
         data () {
             //校验消费金额是否正确
             const validateConsumption = (rule,value,callback) =>{
                 common.validateMoney(value).then(() => {
                     callback();
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t('IntegralRate'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('IntegralRate')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('IntegralRate'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('IntegralRate') }));
                     }
                 });
             };
             //校验折扣率是否正确
             const validateDiscount = (rule,value,callback) => {
-                if(this.notEmpty(value)){
-                    if(validator.isNumber(value)){
-                        if(value > 0 && value <= 1){
-                            let  numStr = String(value);
+                if (this.notEmpty(value)) {
+                    if (validator.isNumber(value)) {
+                        if (value > 0 && value <= 1) {
+                            let numStr = String(value);
                             //有小数
-                            if(numStr.indexOf('.') !== -1){
+                            if (numStr.indexOf('.') !== -1) {
                                 let numSplit = numStr.split('.');
-                                if(numSplit[1].length > 2){//小数位数字大于2
-                                    callback(this.$t('decimalError',{field : this.$t('discountRate')}));
-                                }else{
+                                if (numSplit[1].length > 2) {//小数位数字大于2
+                                    callback(this.$t('decimalError',{ field : this.$t('discountRate') }));
+                                } else {
                                     callback();
                                 }
-                            }else{
+                            } else {
                                 callback();
                             }
-                        }else{
+                        } else {
                             callback(this.$t('discountError'));
                         }
-                    }else{
-                        callback(this.$t('numError',{field : this.$t('discountRate')}));
+                    } else {
+                        callback(this.$t('numError',{ field : this.$t('discountRate') }));
                     }
-                }else{
-                    callback(this.$t('inputField',{field : this.$t('discountRate')}));
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('discountRate') }));
+                }
+            };
+
+            //校验开始时间
+            const validateStartTime = (rule,value,callback) => {
+                if (value) {
+                    if ( this.formData.endTime && this.formData.startTime > this.formData.endTime ) {
+                        callback(this.$t('errorGreaterThan', { small : this.$t('startDate'),big : this.$t('endDate') }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback(this.$t('selectField', { msg : this.$t('startDate') }));
+                }
+            };
+
+            //校验结束时间
+            const validateEndTime = (rule,value,callback) => {
+                if (value) {
+                    if ( this.formData.startTime && this.formData.startTime > this.formData.endTime ) {
+                        callback(this.$t('sizeErrorS', { filed1 : this.$t('endDate'),filed2 : this.$t('startDate') }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback(this.$t('selectField', { msg : this.$t('endDate') }));
                 }
             };
             return {
                 //模态框是否显示
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
+                formData : {
                     //兑换1积分需要的钱
                     scoreRate : '',
                     //兑换积分
-                    integRate: '1',
+                    integRate : '1',
                     //折扣率
-                    discountRate: '',
+                    discountRate : '',
                     //备注
-                    remark: '',
+                    remark : '',
+                    //开始时间
+                    startTime : '',
+                    //结束时间
+                    endTime : ''
                 },
                 //表单校验规则
-                ruleValidate: {
-                    discountRate: [
-                        { required: true, validator : validateDiscount, trigger: 'blur' },
+                ruleValidate : {
+                    discountRate : [
+                        { required : true, validator : validateDiscount, trigger : 'blur' },
                     ],
                     scoreRate : [
-                        {required : true, validator : validateConsumption,trigger : 'blur'}
+                        { required : true, validator : validateConsumption,trigger : 'blur' }
                     ],
                     remark : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 100}),trigger : 'blur'}
+                        {
+                            max : 100,
+                            message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }),
+                            trigger : 'blur'
+                        }
+                    ],
+                    startTime : [
+                        {
+                            required : true,
+                            validator : validateStartTime,
+                            trigger : 'blur'
+                        }
+                    ],
+                    endTime : [
+                        {
+                            required : true,
+                            validator : validateEndTime,
+                            trigger : 'blur'
+                        }
                     ]
                 },
                 //会员级别对应的id
                 levelIds : '',
                 //按钮在加载中
-                btnLoading : false
-            }
+                btnLoading : false,
+                //日期配置
+                dateOptions : {
+                    disabledDate (date) {
+                        return date && date.valueOf() < Date.now() - 86400000;
+                    }
+                },
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 模态框显示
@@ -178,26 +264,28 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        if(this.confirmOperate){
+                        if (this.confirmOperate) {
                             this.btnLoading = true;
                             this.confirmOperate({
                                 levelIds : this.levelIds,
                                 discountRate : this.formData.discountRate,
                                 scoreRate : this.formData.scoreRate,
                                 remark : this.formData.remark,
+                                startTime : this.formData.startTime,
+                                endTime : this.formData.endTime,
                             },() => {
                                 this.btnLoading = false;
                                 this.hide();
                             });
                         }
                     }
-                })
+                });
             },
 
             /**
              * 关闭模态框
              */
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
             },
@@ -207,17 +295,23 @@
              * 判断val是否为空
              * @param val
              */
-            notEmpty(val) {
+            notEmpty (val) {
                 return val !== null && val !== '' && val !== undefined;
-            }
-        },
-        watch : {
-            //实时监测当前操作的积分率和折扣率信息，并且赋值给当前的组件
-            integraData (newVal,oldVal) {
-                if(newVal && Object.keys(newVal).length > 0){
-                    this.formData.discountRate = newVal.discountRate;
-                    this.formData.remark = newVal.remark;
-                    this.formData.scoreRate = newVal.scoreRate;
+            },
+
+            /**
+             * 模态框显示或隐藏
+             * @param type
+             */
+            visibleChange (type) {
+                if (type === true) {
+                    if (this.integraData && Object.keys(this.integraData).length > 0) {
+                        this.formData.discountRate = this.integraData.discountRate;
+                        this.formData.remark = this.integraData.remark;
+                        this.formData.startTime = this.integraData.startTime;
+                        this.formData.endTime = this.integraData.endTime;
+                        this.formData.scoreRate = this.integraData.scoreRate;
+                    }
                 }
             }
         },
@@ -226,7 +320,7 @@
                 lang : 'lang'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -240,13 +334,13 @@
         }
 
         .modal-body{
-            padding: 20px 0 0 0;
+            padding: 20px 0 0 10px;
             min-height: 260px;
             display: flex;
             align-items: center;
 
             /deep/ .ivu-input-wrapper{
-                width: 160px;
+                /*width: 160px;*/
                 margin-right: 5px;
             }
             .equil{

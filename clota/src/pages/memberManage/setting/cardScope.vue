@@ -7,8 +7,33 @@
             :router-name="routerName">
         </header-tabs>
         <div class="content">
+            <div class="title">{{$t('选择会员卡')}}</div>
+            <table-com
+                key="memTableCom"
+                ref="memTableCom"
+                :column-data="memColumnData"
+                :table-data="memTableData"
+                :border="true"
+                :auto-height="true"
+                :table-com-min-height="280">
+                <el-table-column
+                    slot="column0"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scoped">
+                        <Radio :value="scoped.row.id === chosedMemCard"
+                               style="margin-right: 0"
+                               @input="chosedMemCard = scoped.row.id"
+                               @on-change="cardTypeChosedChange(scoped.row.id)">
+                        </Radio>
+                    </template>
+                </el-table-column>
+            </table-com>
             <div class="title">{{$t('memberChannelChoose')}}</div>
             <table-com
+                key="tableCom"
                 ref="tableCom"
                 :column-data="columns"
                 :table-data="tableData"
@@ -24,6 +49,7 @@
                 <el-table-column
                     slot="column0"
                     slot-scope="row"
+                    :selectable="selectable"
                     :label="row.title"
                     type="selection"
                     :width="row.width"
@@ -38,9 +64,9 @@
                      show-checkbox
                      :check-strictly="true"
                      :props="defaultProps"
-                     :default-expanded-keys="defaultExpandedKeys"
                      :expand-on-click-node="false"
                      v-if="companyData.length > 0"
+                     @check="treeChecked"
                      :render-content="renderContent">
             </el-tree>
         </div>
@@ -54,17 +80,18 @@
 <script>
     import headerTabs from './components/headerTabs.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {cardScopeHead} from './cardScopeConfig';
+    import { cardScopeHead,memCardHead } from './cardScopeConfig';
     import ajax from '@/api/index.js';
+
     export default {
         components : {
             headerTabs,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //当前页面路由名称
-                routerName: 'cardScopeSetting',
+                routerName : 'cardScopeSetting',
                 //表头配置
                 columns : cardScopeHead,
                 //表格数据
@@ -74,18 +101,24 @@
                 //总条数
                 totalCount : 0,
                 //组织树配置
-                defaultProps: {
-                    children: 'subNodes'
+                defaultProps : {
+                    children : 'subNodes'
                 },
                 //组织树数据
                 treeData : {},
-                //默认选中的节点
-                defaultExpandedKeys : [],
                 //当前选择的自营渠道列表
-                channelSelected : []
-            }
+                channelSelected : [],
+                //会员类别及级别数据
+                memberLevelsData : {},
+                //选择的会员卡信息
+                chosedMemCard : '',
+                //会员卡表头配置
+                memColumnData : memCardHead,
+                //会员卡级别对应的可用渠道和可用景区
+                cardCategoryChosedInfo : {}
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询会员卡可用渠道范围
              */
@@ -94,10 +127,10 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -113,29 +146,33 @@
                     showScene : 'manage',
                     manageType : 'manage',
                 }).then(res =>{
-                   if(res.success){
+                   if (res.success) {
                        this.treeData = res.data ? res.data : {};
-                   }else{
+                   } else {
                        this.treeData = {};
                    }
                 }).finally(() => {
-                    this.findBasicSet();
+                    this.queryCardRangeList();
+                    // this.findBasicSet();
                 });
             },
             /**
              * 组织树render函数
              */
-            renderContent(h, {root, node, data}) {
-                if(data.nodeType === 'department' ||  data.nodeType === 'table' ||  data.nodeType === 'company'){
+            renderContent (h, { root, node, data }) {
+                if (data.nodeType === 'department'
+                    || data.nodeType === 'table'
+                    || data.nodeType === 'company'
+                    || !this.chosedMemCard) {
                     this.$set(data,'disabled',true);
                 }
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                     },
                     on : {
                         click : () => {
@@ -143,48 +180,69 @@
                     }
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
-                                value: data.orgName
+                                name : 'w-title',
+                                value : data.orgName
                             }
                         ],
                         style : {
                             display : 'inline-block',
                             overflow : 'hidden',
-                            textOverflow :'ellipsis',
+                            textOverflow : 'ellipsis',
                             whiteSpace : 'nowrap',
                             width : '93%'
                         }
                     }, data.orgName),
-                ])
+                ]);
             },
             /**
              * 保存设置
              */
             saveSetting () {
-                let companyIds = this.$refs.tree ? this.$refs.tree.getCheckedKeys() : [];
-                ajax.post('basicSet',{
-                    channelIds : this.channelSelected.map(item => item.partnerId).join(','),
-                    parkIds : companyIds.join(','),
+                let cardRanges = [];
+                for ( let item in this.cardCategoryChosedInfo ) {
+                    cardRanges.push({
+                        id : this.cardCategoryChosedInfo[item]['id'],
+                        cardLevelId : item,
+                        channelIds : this.cardCategoryChosedInfo[item]['channel'].join(','),
+                        parkIds : this.cardCategoryChosedInfo[item]['scenic'].join(','),
+                    });
+                }
+                ajax.post('saveOrUpdateCardRanges',{
+                    cardRanges : JSON.stringify(cardRanges)
                 }).then(res => {
-                   if(res.success){
-                       this.$Message.success('保存成功');
-                       this.findBasicSet();
-                   } else{
-                       this.$Message.error('保存失败');
-                   }
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
+                        this.getMemberLevelsInType();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
+                    }
                 });
+                // ajax.post('basicSet',{
+                //     channelIds : this.channelSelected.map(item => item.partnerId).join(','),
+                //     parkIds : companyIds.join(','),
+                // }).then(res => {
+                //    if (res.success) {
+                //        this.$Message.success('保存成功');
+                //        this.findBasicSet();
+                //    } else {
+                //        this.$Message.error('保存失败');
+                //    }
+                // });
             },
             /**
              * 选中的自营渠道修改
              * @param data
              */
             channelChange (data) {
-                this.channelSelected = data;
+                if (this.cardCategoryChosedInfo[this.chosedMemCard]) {
+                    this.cardCategoryChosedInfo[this.chosedMemCard]['channel'] = data.map(item => item.partnerId);
+                }
+                // this.channelSelected = data;
             },
             /**
              * 取消保存，重置状态
@@ -195,46 +253,147 @@
             /**
              * 获取会员卡可用范围设置
              */
-            findBasicSet (){
-                ajax.post('findBasicSet').then(res => {
-                   if(res.success){
-                       if(res.data){
-                           if(res.data.channelIds){
-                               let channelSelected = res.data.channelIds.split(',');
-                               this.$nextTick(() => {
-                                   for(let i = 0,j = this.tableData.length;i < j;i++){
-                                       if(channelSelected.includes(this.tableData[i].partnerId)){
-                                           this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
-                                       }
-                                   }
-                               });
-                           }
-                           if(res.data.parkIds){
-                               this.$nextTick(() => {
-                                   this.$refs.tree.setCheckedKeys(res.data.parkIds.split(','));
-                               });
-                           }
-                       }
-                   }else{
-                       this.channelSelected = [];
-                   }
+            // findBasicSet () {
+            //     ajax.post('findBasicSet').then(res => {
+            //        if (res.success) {
+            //            if (res.data) {
+            //                if (res.data.channelIds) {
+            //                    let channelSelected = res.data.channelIds.split(',');
+            //                    this.$nextTick(() => {
+            //                        for (let i = 0,j = this.tableData.length; i < j; i++) {
+            //                            if (channelSelected.includes(this.tableData[i].partnerId)) {
+            //                                this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
+            //                            }
+            //                        }
+            //                    });
+            //                }
+            //                if (res.data.parkIds) {
+            //                    this.$nextTick(() => {
+            //                        this.$refs.tree.setCheckedKeys(res.data.parkIds.split(','));
+            //                    });
+            //                }
+            //            }
+            //        } else {
+            //            this.channelSelected = [];
+            //        }
+            //     });
+            // },
+            /**
+             * 获取所有会员类别和类别下的所有级别数据
+             */
+            getMemberLevelsInType () {
+                ajax.post('getMemberLevelsInType').then(res => {
+                    if (res.success) {
+                        this.memberLevelsData = res.data ? res.data : {};
+                        if ( !this.chosedMemCard && Object.keys(this.memberLevelsData).length > 0 ) {
+                            for (let item in this.memberLevelsData) {
+                                if (this.memberLevelsData[item] && this.memberLevelsData[item].length > 0) {
+                                    this.chosedMemCard = this.memberLevelsData[item][0]['id'];
+                                    this.cardTypeChosedChange(this.memberLevelsData[item][0]['id']);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        this.memberLevelsData = {};
+                    }
+                });
+            },
+            /**
+             * 判断会员卡可用渠道是否可以选择
+             */
+            selectable () {
+                return !!this.chosedMemCard;
+            },
+            /**
+             * 会员卡级别选择状态改变
+             * @param rowDataid
+             */
+            cardTypeChosedChange (rowDataid) {
+                if ( !(rowDataid in this.cardCategoryChosedInfo) ) {
+                    this.cardCategoryChosedInfo[rowDataid] = {
+                        channel : [],
+                        scenic : []
+                    };
+                    this.$nextTick(() => {
+                        this.$refs.tableCom.clearSelection();
+                        if (this.$refs.tree) {
+                            this.$refs.tree.setCheckedKeys([]);
+                        }
+                    });
+                } else {
+                    this.$nextTick(() => {
+                        let channelsData = this.cardCategoryChosedInfo[rowDataid]['channel'];
+                        for (let i = 0,j = this.tableData.length; i < j; i++) {
+                            if (channelsData.includes(this.tableData[i]['partnerId'])) {
+                                this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
+                            } else {
+                                this.$refs.tableCom.toggleRowSelection(this.tableData[i],false);
+                            }
+                        }
+                        this.$refs.tree.setCheckedKeys(this.cardCategoryChosedInfo[rowDataid]['scenic']);
+                    });
+                }
+            },
+            /**
+             * 选择的可用景区改变
+             * @param data
+             * @param checkedNodes
+             */
+            treeChecked (data,{ checkedNodes }) {
+                if (this.cardCategoryChosedInfo[this.chosedMemCard]) {
+                    this.cardCategoryChosedInfo[this.chosedMemCard]['scenic'] = checkedNodes.map(item => item.id);
+                }
+            },
+            /**
+             * 查询会员卡使用范围设置
+             */
+            queryCardRangeList () {
+                ajax.post('queryCardRangeList').then(res => {
+                    if (res.success) {
+                        let cardRange = res.data ? res.data : [];
+                        for ( let i = 0,j = cardRange.length; i < j; i++) {
+                            this.cardCategoryChosedInfo[cardRange[i]['cardLevelId']] = {
+                                channel : cardRange[i]['channelIds'].split(','),
+                                scenic : cardRange[i]['parkIds'].split(','),
+                                id : cardRange[i]['id']
+                            };
+                        }
+                    } else {
+                        this.cardCategoryChosedInfo = {};
+                    }
+                    this.cardTypeChosedChange(this.chosedMemCard);
                 });
             }
         },
         created () {
+            this.getMemberLevelsInType();
             // this.findBasicSet();
         },
         computed : {
             //组织树数组格式数据
             companyData () {
-                if(this.treeData && Object.keys(this.treeData).length > 0){
+                if (this.treeData && Object.keys(this.treeData).length > 0) {
                     return this.treeData;
-                }else{
+                } else {
                     return [];
                 }
+            },
+            //会员卡级别数据
+            memTableData () {
+                let result = [];
+                for (let item in this.memberLevelsData) {
+                    result = [].concat(result,this.memberLevelsData[item].map(list => {
+                        return {
+                            ...list,
+                            content : item + '-' + list.levelDesc
+                        }
+                    }));
+                }
+                return result;
             }
         }
-    }
+    };
 </script>
 
 

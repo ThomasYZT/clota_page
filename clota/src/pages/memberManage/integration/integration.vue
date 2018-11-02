@@ -31,8 +31,8 @@
                 fixed="right"
                 :width="row.width"
                 :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <ul class="operate-list">
+                    <template slot-scope="scope">
+                        <ul class="operate-list">
                         <li
                             v-if="!isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)"
                             @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li><!--设置积分、折扣率-->
@@ -59,11 +59,11 @@
 
     import modifyRateModal from './components/modifyRateModal.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './integrationConfig';
+    import { columnData } from './integrationConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             modifyRateModal,
             tableCom
         },
@@ -72,7 +72,7 @@
                 //表头配置
                 columnData : columnData,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //页码
@@ -81,9 +81,9 @@
                 pageSize : 10,
                 //当前操作的
                 currentData : {}
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示设置积分、折扣率的模态框
@@ -99,11 +99,11 @@
              * @param data
              */
             setRateToStore ( data ) {
-                if(!this.isNotEmpty(data.scoreRate) || !this.isNotEmpty(data.discountRate)){
-                    return ;
+                if (!this.isNotEmpty(data.scoreRate) || !this.isNotEmpty(data.discountRate)) {
+                    return;
                 }
                 this.$router.push({
-                    name: 'setRate',
+                    name : 'setRate',
                     params : {
                          memberInfo : data
                     }
@@ -116,17 +116,18 @@
             queryList () {
                 ajax.post('memberDiscountOfMemberList',{
                     pageNo : 1,
-                    pageSize : 9999
+                    pageSize : 9999,
+                    isActivity : false
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
-                        this.tableData =  [];
+                    } else {
+                        this.tableData = [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
-                    this.tableData =  [];
+                    this.tableData = [];
                     this.totalCount = 0;
                 });
             },
@@ -134,25 +135,26 @@
              * 判断val是否为空
              * @param val
              */
-            isNotEmpty(val) {
+            isNotEmpty (val) {
                 return val !== null && val !== '' && val !== undefined;
             },
             /**
              * 设置会员积分、折扣率
              */
-            setMemberDiscountOfMember(formData,callback) {
+            setMemberDiscountOfMember (formData,callback) {
                 ajax.post('setMemberDiscountOfMember',{
                     id : this.currentData.id,
                     levelId : this.currentData.levelId,
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
-                    remark : formData.remark
+                    remark : formData.remark,
+                    isActivity : false
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('settingSuccess'));  // 设置成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('settingSuccess')); // 设置成功
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('settingFail'));    // 设置失败
+                    } else {
+                        this.$Message.error(this.$t('settingFail')); // 设置失败
                     }
                 }).finally(() => {
                     callback();
@@ -160,7 +162,7 @@
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

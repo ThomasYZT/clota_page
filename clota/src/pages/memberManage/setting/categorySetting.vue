@@ -34,7 +34,10 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click.stop="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
-                                <li class="red-label" @click.stop="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
+                                <li class="red-label"
+                                    @click.stop="delMemberLevel($event,scoped.row)">
+                                    {{$t('del')}}
+                                </li>
                             </ul>
                         </template>
                     </el-table-column>
@@ -65,13 +68,13 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './categorySettingConfig';
+    import { columnData } from './categorySettingConfig';
     import headerTabs from './components/headerTabs.vue';
     import delModal from '@/components/delModal/index.vue';
     import addCardCategoryModal from './components/addCardCategoryModal';
 
     export default {
-        components: {
+        components : {
             headerTabs,
             tableCom,
             delModal,
@@ -80,24 +83,24 @@
         data () {
             return {
                 //当前页面路由名称
-                routerName: 'memCardManagement',
+                routerName : 'memCardManagement',
                 //列表表头
                 columnData : columnData,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 // 已被创建的会员级别
-                usedLevels: [],
+                usedLevels : [],
                 //当前操作的数据
                 currentData : {},
                 //是否显示新增会员卡类别名称
                 showAddModal : false,
-            }
+            };
         },
-        created(){
+        created () {
             //查询列表
             this.queryList();
         },
-        methods: {
+        methods : {
             /**
              * 显示新增模态框
              */
@@ -163,7 +166,7 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         //查询列表
                         this.queryList();
-                    } else if (res.code === 'M013') {
+                    } else if (res.code === 'M021') {
                         this.$Message.error(this.$t('levelExistCard')); // 该会员级别下已存在会员信息，不能删除
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
@@ -178,12 +181,12 @@
                 this.$router.push({
                     name : 'levelSetting',
                     params : {
-
+                        id : data.id
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

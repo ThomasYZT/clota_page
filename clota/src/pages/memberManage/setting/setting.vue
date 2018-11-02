@@ -11,7 +11,7 @@
 
                 <div class="content-item">
                     <div class="title">{{$t('会员卡有效期')}}</div><!--会员卡有效期-->
-                    <el-collapse >
+                    <el-collapse :value="collapseOpened">
                         <el-collapse-item v-for="(item,title,index) in memberLevelsData"
                                           :key="index"
                                           :title="title"
@@ -290,83 +290,83 @@
             headerTabs,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //用于动态表单校验(特殊字符)
-                emoji: (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error(this.$t('errorIrregular')));    // 输入内容不合规则
+                        callback(new Error(this.$t('errorIrregular'))); // 输入内容不合规则
                     } else {
                         callback();
                     }
                 },
                 //设置id
-                id: '',
+                id : '',
                 //当前页面路由名称
-                routerName: 'memberSetting',
+                routerName : 'memberSetting',
                 //设置数据
-                settingData: {
+                settingData : {
                     // 新开卡会员积分赠送设置
-                    openCardSendScore: {
-                        isSwitch: false,
-                        score: ''
+                    openCardSendScore : {
+                        isSwitch : false,
+                        score : ''
                     },
                     //会员卡有效期设置
-                    memberValidPeriod: {
-                        type: '',//类型
-                        vipValidity: '',//number
-                        vipValidityTime: '',//number
-                        vipNumber: '',//number
+                    memberValidPeriod : {
+                        type : '',//类型
+                        vipValidity : '',//number
+                        vipValidityTime : '',//number
+                        vipNumber : '',//number
                     },
                     //卡券过期提醒设置
-                    notificationBeforeCouponExpire: {
-                        isSwitch: false,
-                        day: '',//number
+                    notificationBeforeCouponExpire : {
+                        isSwitch : false,
+                        day : '',//number
                     },
                     //用户退款时积分是否退还用户
-                    handingWithScoreGrowthWhileRefund: {
-                        score: false,//Boolean
-                        coupon: false,//Boolean
+                    handingWithScoreGrowthWhileRefund : {
+                        score : false,//Boolean
+                        coupon : false,//Boolean
                     },
                     //修改会员储值、积分、虚拟账户余额设置
-                    allowAdjustAccount: '',
+                    allowAdjustAccount : '',
                     //短信发送设置
-                    smsSend: ''
+                    smsSend : ''
                 },
                 //copy数据，用于数据重置
-                copySetData: {},
+                copySetData : {},
                 // 支付协议内容
-                paymentAgreement: '',
+                paymentAgreement : '',
                 //动态表单数据
-                reasonIndex: 1,
-                idTypeIndex: 1,
-                formDynamic: {
-                    reason: [],
-                    idType: [],
+                reasonIndex : 1,
+                idTypeIndex : 1,
+                formDynamic : {
+                    reason : [],
+                    idType : [],
                 },
                 //输入框校验错误显示
-                error: {
-                    remindError: '',//会员积分有效期设置
-                    vipValidityError: '',//会员卡有效期设置
-                    vipValidityTimeError: '',//会员卡有效期设置
-                    vipNumberError: '',//会员卡有效期设置
-                    dayError: '',//卡券过期提醒设置
-                    memberDonateIntegerErr: '',//卡券过期提醒设置
-                    tradeAmountErr: '',//交易金额错误
+                error : {
+                    remindError : '',//会员积分有效期设置
+                    vipValidityError : '',//会员卡有效期设置
+                    vipValidityTimeError : '',//会员卡有效期设置
+                    vipNumberError : '',//会员卡有效期设置
+                    dayError : '',//卡券过期提醒设置
+                    memberDonateIntegerErr : '',//卡券过期提醒设置
+                    tradeAmountErr : '',//交易金额错误
                 },
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                tableData : [{
+                    date : '2016-05-02',
+                    name : '王小虎',
+                    address : '上海市普陀区金沙江路 1518 弄'
                 }],
                 //会员类别及会员级别数据
                 memberLevelsData : {}
-            }
+            };
         },
-        watch: {
+        watch : {
 
             //会员卡有效期设置
-            'settingData.memberValidPeriod.type': function (newVal, oldVal) {
+            'settingData.memberValidPeriod.type' : function (newVal, oldVal) {
                 if (newVal === 'perpetual') {
                     this.error.vipValidityError = '';
                     this.error.vipValidityTimeError = '';
@@ -387,14 +387,14 @@
             },
 
             //卡券过期提醒设置
-            'settingData.notificationBeforeCouponExpire.isSwitch': function (newVal, oldVal) {
+            'settingData.notificationBeforeCouponExpire.isSwitch' : function (newVal, oldVal) {
                 if (!newVal) {
                     this.error.dayError = '';
                 }
             },
 
         },
-        created() {
+        created () {
             //查询会员基础设置
             this.findBasicSet();
             //查询证件类型
@@ -403,10 +403,20 @@
             this.listAdjustReason();
             this.getMemberLevelsInType();
         },
-        methods: {
+        computed : {
+            //默认打开的折叠面板
+            collapseOpened () {
+                let result = [];
+                for (let item in this.memberLevelsData){
+                    result.push(item);
+                }
+                return result;
+            }
+        },
+        methods : {
 
             //查询会员基础设置
-            findBasicSet() {
+            findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
                     if (res.success) {
                         if (res.data) {
@@ -415,26 +425,26 @@
                             if (Object.keys(res.data).length > 0) {
                                 //处理数据
                                 let params = {
-                                    memberValidPeriod: res.data.memberValidPeriod ? JSON.parse(res.data.memberValidPeriod) : {
-                                        type: '',//类型
-                                        vipValidity: '',//number
-                                        vipValidityTime: '',//number
-                                        vipNumber: '',//number
+                                    memberValidPeriod : res.data.memberValidPeriod ? JSON.parse(res.data.memberValidPeriod) : {
+                                        type : '',//类型
+                                        vipValidity : '',//number
+                                        vipValidityTime : '',//number
+                                        vipNumber : '',//number
                                     },
-                                    openCardSendScore: res.data.openCardSendScore ? JSON.parse(res.data.openCardSendScore) : {
-                                        isSwitch: false,
-                                        score: ''
+                                    openCardSendScore : res.data.openCardSendScore ? JSON.parse(res.data.openCardSendScore) : {
+                                        isSwitch : false,
+                                        score : ''
                                     },
-                                    notificationBeforeCouponExpire: res.data.notificationBeforeCouponExpire ? JSON.parse(res.data.notificationBeforeCouponExpire) : {
-                                        isSwitch: false,
-                                        day: '',//number
+                                    notificationBeforeCouponExpire : res.data.notificationBeforeCouponExpire ? JSON.parse(res.data.notificationBeforeCouponExpire) : {
+                                        isSwitch : false,
+                                        day : '',//number
                                     },
-                                    handingWithScoreGrowthWhileRefund: res.data.handingWithScoreGrowthWhileRefund ? JSON.parse(res.data.handingWithScoreGrowthWhileRefund) : {
-                                        score: false,//Boolean
-                                        coupon: false,//Boolean
+                                    handingWithScoreGrowthWhileRefund : res.data.handingWithScoreGrowthWhileRefund ? JSON.parse(res.data.handingWithScoreGrowthWhileRefund) : {
+                                        score : false,//Boolean
+                                        coupon : false,//Boolean
                                     },
-                                    smsSend: res.data.smsSend,
-                                    allowAdjustAccount: res.data.allowAdjustAccount,
+                                    smsSend : res.data.smsSend,
+                                    allowAdjustAccount : res.data.allowAdjustAccount,
                                 };
                                 this.settingData = params;
                                 //复制数据
@@ -446,79 +456,79 @@
                             this.copySetData = defaultsDeep({}, this.settingData);
                         }
                     }
-                })
+                });
             },
             //点击保存，校验信息，数据处理
-            save() {
+            save () {
                 if (this.checkInputFunc()) {
                     this.checkInputIsMoney(this.settingData.smsSend, 'tradeAmountErr').then(() => {
                         this.basicSet({
-                            id: this.id,
-                            memberValidPeriod: JSON.stringify(this.settingData.memberValidPeriod),
-                            openCardSendScore: JSON.stringify(this.settingData.openCardSendScore),
-                            smsSend: this.settingData.smsSend,
-                            notificationBeforeCouponExpire: JSON.stringify(this.settingData.notificationBeforeCouponExpire),
-                            handingWithScoreGrowthWhileRefund: JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
-                            allowAdjustAccount: this.settingData.allowAdjustAccount,
+                            id : this.id,
+                            memberValidPeriod : JSON.stringify(this.settingData.memberValidPeriod),
+                            openCardSendScore : JSON.stringify(this.settingData.openCardSendScore),
+                            smsSend : this.settingData.smsSend,
+                            notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
+                            handingWithScoreGrowthWhileRefund : JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
+                            allowAdjustAccount : this.settingData.allowAdjustAccount,
                         });
                     });
                 }
             },
             //会员基础设置-保存/修改
-            basicSet(params) {
+            basicSet (params) {
                 ajax.post('basicSet', params).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('saveBaseSetting')}) + '!');  // 保存基础设置成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
                         this.findBasicSet();
                     } else {
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('save')}));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
                     }
-                })
+                });
             },
             //点击取消重置数据
-            resetFieldFunc() {
+            resetFieldFunc () {
                 if (this.copySetData !== {}) {
                     this.settingData = defaultsDeep({}, this.copySetData);
                 }
             },
             //校验选项勾选是输入框是否填写，返回true/false
-            checkInputFunc() {
+            checkInputFunc () {
 
                 if (this.settingData.openCardSendScore.isSwitch === true &&
                     !this.checkInputBlurFunc(this.settingData.openCardSendScore.score, 'memberDonateIntegerErr')) {
-                    return false
+                    return false;
                 }
 
                 if (this.settingData.memberValidPeriod.type === 'vipValidityType' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity, 'vipValidityError')) {
-                    return false
+                    return false;
                 }
 
                 if (this.settingData.memberValidPeriod.type === 'vipValidityTime' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidityTime, 'vipValidityTimeError')) {
-                    return false
+                    return false;
                 }
 
                 if (this.settingData.memberValidPeriod.type === 'vipNumber' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipNumber, 'vipNumberError')) {
-                    return false
+                    return false;
                 }
 
                 if (this.settingData.notificationBeforeCouponExpire.isSwitch &&
                     !this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day, 'dayError')) {
-                    return false
+                    return false;
                 }
 
-                return true
+                return true;
             },
 
             //查询证件类型
-            queryDocument() {
+            queryDocument () {
                 this.formDynamic.idType = [];
                 ajax.post('queryDocument', {
-                    isDeleted: 'false',
-                    pageNo: 1,
-                    pageSize: 99999,
+                    isDeleted : 'false',
+                    pageNo : 1,
+                    pageSize : 99999,
                 }).then(res => {
                     if (res.success) {
                         if (res.data.data && res.data.data.length > 0) {
@@ -528,47 +538,47 @@
                                 item.active = true;
                                 item.disabled = true;
                                 this.formDynamic.idType.push(item);
-                            })
+                            });
                         }
                     }
-                })
+                });
             },
             //增加/修改证件
-            updateDocument(data, index) {
+            updateDocument (data, index) {
                 ajax.post('updateDocument', {
-                    name: data.name,
+                    name : data.name,
                 }).then(res => {
                     if (res.success) {
                         this.formDynamic.idType[index].disabled = true;
                         this.formDynamic.idType[index].active = true;
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('addCredentialsType')}) + '!');    // 新增证件类型成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('addCredentialsType') }) + '!'); // 新增证件类型成功
                     }
-                })
+                });
             },
             //删除证件类型
-            deleteDocument(data, index) {
+            deleteDocument (data, index) {
                 ajax.post('updateDocument', {
-                    id: data.id,
-                    isDeleted: 'true',
+                    id : data.id,
+                    isDeleted : 'true',
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('delCredentialsType')}) + '!');       // 删除证件类型成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('delCredentialsType') }) + '!'); // 删除证件类型成功
                         this.formDynamic.idType[index]._status = 0;
                     }
-                })
+                });
             },
             //新增证件类型
-            handleAddIdType() {
+            handleAddIdType () {
                 this.idTypeIndex++;
                 this.formDynamic.idType.push({
-                    name: '',
-                    index: this.idTypeIndex,
-                    _status: 1,
-                    disabled: false,
+                    name : '',
+                    index : this.idTypeIndex,
+                    _status : 1,
+                    disabled : false,
                 });
             },
             //证件类型校验
-            handleSubmitForIdType(data, index) {
+            handleSubmitForIdType (data, index) {
                 this.$refs.formDynamic.validateField('idType.' + index + '.name', (valid) => {
                     if (valid === '') {
                         this.updateDocument(data, index);
@@ -576,14 +586,14 @@
                 });
             },
             //取消证件类型校验
-            handleResetDocument(data, index) {
+            handleResetDocument (data, index) {
                 this.$refs.formDynamic.resetFields('idType.' + index + '.name');
                 this.formDynamic.idType[index]._status = 0;
             },
 
 
             //查询修改原因
-            listAdjustReason() {
+            listAdjustReason () {
                 ajax.post('listAdjustReason', {}).then(res => {
                     if (res.success) {
                         if (res.data && res.data.length > 0) {
@@ -593,46 +603,46 @@
                                 item.active = true;
                                 item.disabled = true;
                                 this.formDynamic.reason.push(item);
-                            })
+                            });
                         }
                     }
-                })
+                });
             },
             //增加/修改原因
-            updateReason(data, index) {
+            updateReason (data, index) {
                 ajax.post('addAdjustReason', {
-                    reason: data.reason,
+                    reason : data.reason,
                 }).then(res => {
                     if (res.success) {
                         this.formDynamic.reason[index].disabled = true;
                         this.formDynamic.reason[index].active = true;
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('addReason')}) + '！');     // 新增原因成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('addReason') }) + '！'); // 新增原因成功
                     }
-                })
+                });
             },
             //删除原因
-            deleteReason(data, index) {
+            deleteReason (data, index) {
                 ajax.post('deleteAdjustReason', {
-                    reasonId: data.id,
+                    reasonId : data.id,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('delReason')}) + '！');     // 删除原因成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('delReason') }) + '！'); // 删除原因成功
                         this.formDynamic.reason[index]._status = 0;
                     }
-                })
+                });
             },
             //新增修改原因
-            handleAddReason() {
+            handleAddReason () {
                 this.reasonIndex++;
                 this.formDynamic.reason.push({
-                    reason: '',
-                    index: this.reasonIndex,
-                    _status: 1,
-                    disabled: false,
+                    reason : '',
+                    index : this.reasonIndex,
+                    _status : 1,
+                    disabled : false,
                 });
             },
             //修改原因表单校验
-            handleSubmitForReason(data, index) {
+            handleSubmitForReason (data, index) {
                 this.$refs.formDynamic.validateField('reason.' + index + '.reason', (valid) => {
                     if (valid === '') {
                         this.updateReason(data, index);
@@ -640,7 +650,7 @@
                 });
             },
             //取消原因表单校验
-            handleResetReason(data, index) {
+            handleResetReason (data, index) {
                 this.$refs.formDynamic.resetFields('reason.' + index + '.reason');
                 this.formDynamic.reason[index]._status = 0;
             },
@@ -650,20 +660,20 @@
              * @param val 值
              * @param errorField 校验错误显示字段
              */
-            checkInputBlurFunc(val, errorField) {
+            checkInputBlurFunc (val, errorField) {
 
                 //校验不为空
                 if (common.isNotEmpty(val)) {
                     this.error[errorField] = '';
                 } else {
-                    this.error[errorField] = this.$t('inputField', {field: ''});
-                    return false
+                    this.error[errorField] = this.$t('inputField', { field : '' });
+                    return false;
                 }
 
                 //校验表情符号
                 if (val && String(val).isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
-                    return false
+                    return false;
                 } else {
                     this.error[errorField] = '';
                 }
@@ -671,46 +681,46 @@
                 if (validator.isNumber(val)) {
                     let numStr = String(val);
                     if (numStr.length < 1) {
-                        this.error[errorField] = this.$t('errorMinLength', {field: '', length: 1});
-                        return false
+                        this.error[errorField] = this.$t('errorMinLength', { field : '', length : 1 });
+                        return false;
                     } else if (numStr.length > 10) {
-                        this.error[errorField] = this.$t('errorMaxLength', {field: '', length: 10});
-                        return false
+                        this.error[errorField] = this.$t('errorMaxLength', { field : '', length : 10 });
+                        return false;
                     } else {
                         if (Number.parseInt(val) === Number.parseFloat(val)) {
                             if (val < 0 || val == 0) {
-                                this.error[errorField] = this.$t('fieldTypeError', {field: ''});
-                                return false
+                                this.error[errorField] = this.$t('fieldTypeError', { field : '' });
+                                return false;
                             } else {
                                 this.error[errorField] = '';
                             }
                         } else {
-                            this.error[errorField] = this.$t('integetError', {field: ''});
-                            return false
+                            this.error[errorField] = this.$t('integetError', { field : '' });
+                            return false;
                         }
                     }
                 } else {
-                    this.error[errorField] = this.$t('integetError', {field: ''});
-                    return false
+                    this.error[errorField] = this.$t('integetError', { field : '' });
+                    return false;
                 }
 
-                return true
+                return true;
             },
             /**
              * 跳转到实体卡管理详情
              */
-            toEntityCardDetail() {
+            toEntityCardDetail () {
                 this.$router.push({
-                    name: 'entityCard'
+                    name : 'entityCard'
                 });
             },
             /**
              * 跳转到支付协议设置
              */
-            toSetPayProtocol() {
+            toSetPayProtocol () {
                 this.$router.push({
-                    name: 'paymentProtocol',
-                    params: {paymentAgreement: this.paymentAgreement, id: this.id}
+                    name : 'paymentProtocol',
+                    params : { paymentAgreement : this.paymentAgreement, id : this.id }
                 });
             },
 
@@ -774,7 +784,7 @@
             }
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

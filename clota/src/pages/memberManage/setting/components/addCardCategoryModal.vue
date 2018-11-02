@@ -19,7 +19,7 @@
                        style="width: 280px"
                        placeholder="请输入会员类别名称如:企业会员卡"/>
             </FormItem>
-            <FormItem label="会员卡类别名称" prop="remark">
+            <FormItem :label="$t('remark')" prop="remark">
                 <Input v-model.trim="formData.remark"
                        style="width: 280px"
                        type="textarea"/>
@@ -40,11 +40,11 @@
 <script>
     import ajax from '@/api/index.js';
     export default {
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //会员类别默认信息
             'card-default-info' : {
@@ -70,26 +70,35 @@
                 //表单校验规则
                 ruleValidate : {
                     memberCategoryName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('会员卡类别')}),trigger : 'blur'},
-                        {validator : validateMemberCategoryName,trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('会员卡类别') }),trigger : 'blur' },
+                        { validator : validateMemberCategoryName,trigger : 'blur' }
                     ],
                     remark : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('remarak'),length : 100}),trigger  : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remarak'),length : 100 }),trigger : 'blur' }
                     ]
                 },
                 //保存数据中
                 saveIng : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
                 if (type === false) {
                     this.$refs.formValidate.resetFields();
-                }else{
+                } else {
+                    if (this.cardDefaultInfo && Object.keys(this.cardDefaultInfo).length > 0) {
+                        this.formData.memberCategoryName = this.cardDefaultInfo.typeName;
+                        this.formData.remark = this.cardDefaultInfo.remark;
+                        this.formData.id = this.cardDefaultInfo.id;
+                    } else {
+                        this.formData.memberCategoryName = '';
+                        this.formData.remark = '';
+                        this.formData.id = '';
+                    }
                 }
             },
             /**
@@ -169,24 +178,8 @@
                     return 'add';
                 }
             }
-        },
-        watch : {
-            cardDefaultInfo : {
-                deep : true,
-                handler (newVal) {
-                    if (newVal && Object.keys(newVal).length > 0) {
-                        this.formData.memberCategoryName = newVal.typeName;
-                        this.formData.remark = newVal.remark;
-                        this.formData.id = newVal.id;
-                    } else {
-                        this.formData.memberCategoryName = '';
-                        this.formData.remark = '';
-                        this.formData.id = '';
-                    }
-                }
-            }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

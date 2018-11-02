@@ -98,59 +98,76 @@
                 </div>
             </div>
 
-            <div class="content-item">
-                <div class="title">{{$t('setRulesForMemberPointTransactionDeduction')}}</div>
-                <div class="main">
-                    <div>
-                        <i-switch v-model="settingData.scoreOffsetInConsumption.type"></i-switch>
-                        <span class="text">{{$t('allowsCreditTradingWhenCreditIsUsed')}}</span>
-                    </div>
-                    <div class="check-group-wrap">
-                        <Checkbox v-model="settingData.scoreOffsetInConsumption.columns.integrateToMoney"
-                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">{{$t('consumeSettingPer')}}</Checkbox>
-                        <span :class="{'ivu-form-item-error': error.integrateError}">
-                             <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.integrate"
-                                    :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
-                                    @on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.integrate,'integrateError')"
-                                    type="text"
-                                    class="single-input"
-                                    :placeholder="$t('inputField', {field: ''})"/>
-                             <span class="ivu-form-item-error-tip"
-                                   style="left: 296px;"
-                                   v-if="error.integrateError">{{error.integrateError}}</span>
-                        </span>
-                        <span>{{$t('pointsDeduction')}}</span>
-                        <span :class="{'ivu-form-item-error': error.moneyError}">
-                             <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.money"
-                                    :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
-                                    @on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.money,'moneyError')"
-                                    type="text"
-                                    :placeholder="$t('inputField', {field: ''})"
-                                    class="single-input"/>
-                             <span class="ivu-form-item-error-tip"
-                                   style="left: 485px;"
-                                   v-if="error.moneyError">{{error.moneyError}}</span>
-                        </span>
-                        <span>{{$t('deductionToOrder')}}</span>
-                        <span :class="{'ivu-form-item-error': error.highProportionError}">
-                             <Input v-model.trim="settingData.scoreOffsetInConsumption.columns.highProportion"
-                                    :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"
-                                    @on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.highProportion,'highProportionError')"
-                                    type="text"
-                                    :placeholder="$t('inputField', {field: ''})"
-                                    class="single-input"/>
-                             <span class="ivu-form-item-error-tip"
-                                   style="left: 795px;"
-                                   v-if="error.highProportionError">{{error.highProportionError}}</span>
-                        </span>
-                        <span>%</span>
-                    </div>
-                    <div class="check-group-wrap">
-                        <Checkbox v-model="settingData.scoreOffsetInConsumption.meanwhile"
-                                  :disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">{{$t('canUseItTogetherWithCoupons')}}</Checkbox>
-                    </div>
-                </div>
-            </div>
+            <!--会员3期暂时去掉-->
+            <!--会员积分交易抵扣规则设置-->
+            <!--<div class="content-item">-->
+                <!--<div class="title">{{$t('setRulesForMemberPointTransactionDeduction')}}</div>-->
+                <!--<div class="main">-->
+                    <!--<div>-->
+                        <!--<i-switch v-model="settingData.scoreOffsetInConsumption.type"></i-switch>-->
+                        <!--<span class="text">{{$t('allowsCreditTradingWhenCreditIsUsed')}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="check-group-wrap">-->
+                        <!--<Checkbox v-model="settingData.scoreOffsetInConsumption.columns.integrateToMoney"-->
+                                  <!--:disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">{{$t('consumeSettingPer')}}</Checkbox>-->
+                        <!--<span :class="{'ivu-form-item-error': error.integrateError}">-->
+                             <!--<Input v-model.trim="settingData.scoreOffsetInConsumption.columns.integrate"-->
+                                    <!--:disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"-->
+                                    <!--@on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.integrate,'integrateError')"-->
+                                    <!--type="text"-->
+                                    <!--class="single-input"-->
+                                    <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                             <!--<span class="ivu-form-item-error-tip"-->
+                                   <!--style="left: 296px;"-->
+                                   <!--v-if="error.integrateError">{{error.integrateError}}</span>-->
+                        <!--</span>-->
+                        <!--<span>{{$t('pointsDeduction')}}</span>-->
+                        <!--<span :class="{'ivu-form-item-error': error.moneyError}">-->
+                             <!--<Input v-model.trim="settingData.scoreOffsetInConsumption.columns.money"-->
+                                    <!--:disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"-->
+                                    <!--@on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.money,'moneyError')"-->
+                                    <!--type="text"-->
+                                    <!--:placeholder="$t('inputField', {field: ''})"-->
+                                    <!--class="single-input"/>-->
+                             <!--<span class="ivu-form-item-error-tip"-->
+                                   <!--style="left: 485px;"-->
+                                   <!--v-if="error.moneyError">{{error.moneyError}}</span>-->
+                        <!--</span>-->
+                        <!--<span>{{$t('deductionToOrder')}}</span>-->
+                        <!--<span :class="{'ivu-form-item-error': error.highProportionError}">-->
+                             <!--<Input v-model.trim="settingData.scoreOffsetInConsumption.columns.highProportion"-->
+                                    <!--:disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney"-->
+                                    <!--@on-blur="checkInputBlurFunc(settingData.scoreOffsetInConsumption.columns.highProportion,'highProportionError')"-->
+                                    <!--type="text"-->
+                                    <!--:placeholder="$t('inputField', {field: ''})"-->
+                                    <!--class="single-input"/>-->
+                             <!--<span class="ivu-form-item-error-tip"-->
+                                   <!--style="left: 795px;"-->
+                                   <!--v-if="error.highProportionError">{{error.highProportionError}}</span>-->
+                        <!--</span>-->
+                        <!--<span>%</span>-->
+                    <!--</div>-->
+                    <!--<div class="check-group-wrap">-->
+                        <!--<Checkbox v-model="settingData.scoreOffsetInConsumption.meanwhile"-->
+                                  <!--:disabled="!settingData.scoreOffsetInConsumption.columns.integrateToMoney">{{$t('canUseItTogetherWithCoupons')}}</Checkbox>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--会员积分交易抵扣规则设置-->
+            <integer-rule-setting class="content-item"
+                                  :rule-data="settingData.scoreOffsetInConsumption"
+                                  @add-integer-rule="addIntegerRule"
+                                  @edit-integer-rule="editIntegetRule"
+                                  @del-rule="delIntegerRule">
+            </integer-rule-setting>
+            <!--<div class="content-item">-->
+                <!--<div class="title">{{$t('setRulesForMemberPointTransactionDeduction')}}</div>-->
+                <!--<div class="main">-->
+                    <!--<integer-rule-setting :rule-data="settingData.scoreOffsetInConsumption">-->
+                    <!--</integer-rule-setting>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="content-item">
                 <div class="title">{{$t('canAllIntegerToMoney')}}</div>
@@ -202,146 +219,154 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
+    import integerRuleSetting from './components/integerRuleSetting';
 
     export default {
-        components: {
+        components : {
             headerTabs,
+            integerRuleSetting
         },
         data () {
             return {
                 //设置id
-                id:'',
+                id : '',
                 //当前页面路由名称
-                routerName: 'consumeSetting',
+                routerName : 'consumeSetting',
                 //设置数据
-                settingData: {
+                settingData : {
                     //会员积分有效期设置
-                    scoreValidityPeriod: {
-                        validityType: '',
-                        validityTime: '',//number
-                        checked: false,
-                        remind: '',//number
+                    scoreValidityPeriod : {
+                        validityType : '',
+                        validityTime : '',//number
+                        checked : false,
+                        remind : '',//number
                     },
                     //会员生日积分多倍积分
-                    scoreMultipleOnBirthday: {
-                        isSwitch: false,
-                        multiple: '',//number
+                    scoreMultipleOnBirthday : {
+                        isSwitch : false,
+                        multiple : '',//number
                     },
+
                     //积分交易抵扣规则
-                    scoreOffsetInConsumption: {
-                        type: false,//Boolean
-                        columns: {
-                            integrateToMoney: false,//Boolean
-                            integrate: '',//多少积分 Number
-                            money: '',//多少金额 Number
-                            highProportion: '',//最多能抵多少 Number
-                        },
-                        meanwhile: false,//Boolean
-                    },
+                    scoreOffsetInConsumption : [],
+                    // 会员3期暂时去掉
+                    // //积分交易抵扣规则
+                    // scoreOffsetInConsumption : {
+                    //     type : false,//Boolean
+                    //     columns : {
+                    //         integrateToMoney : false,//Boolean
+                    //         integrate : '',//多少积分 Number
+                    //         money : '',//多少金额 Number
+                    //         highProportion : '',//最多能抵多少 Number
+                    //     },
+                    //     meanwhile : false,//Boolean
+                    // },
                     //是否允许积分兑换成为储值账户金额
-                    scoreExToCharge: {
-                        donateType: false,//Boolean
-                        donateIntegrate: '',//Number
-                        donateMoney: 1,
+                    scoreExToCharge : {
+                        donateType : false,//Boolean
+                        donateIntegrate : '',//Number
+                        donateMoney : 1,
                     },
                     //退款时积分退回设置
-                    scoreInsufficientNotification: false,
+                    scoreInsufficientNotification : false,
                     //积分生效设置
-                    scoreEffectiveMode: {
-                        isIntegralType: '',
-                        isNoIntegralTime: ''//number
+                    scoreEffectiveMode : {
+                        isIntegralType : '',
+                        isNoIntegralTime : ''//number
                     },
                 },
                 //copy数据，用于数据重置
-                copySetData: {},
+                copySetData : {},
                 //输入框校验错误显示
-                error: {
-                    validityTimeError: '',//会员积分有效期设置
-                    multipleError: '',//会员生日积分多倍积分
-                    integrateError: '',//积分交易抵扣规则--多少积分
-                    moneyError: '',//积分交易抵扣规则--多少金额
-                    highProportionError: '',//积分交易抵扣规则--最多能抵多少
-                    donateIntegrateError: '',
-                    isNoIntegralTimeError: '',//会员积分生效设置
+                error : {
+                    validityTimeError : '',//会员积分有效期设置
+                    multipleError : '',//会员生日积分多倍积分
+                    integrateError : '',//积分交易抵扣规则--多少积分
+                    moneyError : '',//积分交易抵扣规则--多少金额
+                    highProportionError : '',//积分交易抵扣规则--最多能抵多少
+                    donateIntegrateError : '',
+                    isNoIntegralTimeError : '',//会员积分生效设置
                 },
                 //Number型
-                numberProps: ['integrate','money','highProportion','donateIntegrate'],
+                numberProps : ['integrate','money','highProportion','donateIntegrate'],
                 //String型
-                stringProps: ['integrate','money','highProportion','donateIntegrate'],
-            }
+                stringProps : ['integrate','money','highProportion','donateIntegrate'],
+            };
         },
-        watch: {
+        watch : {
 
             //会员积分有效期设置
             'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
-                if(newVal === 'perpetual'){
+                if (newVal === 'perpetual') {
                     this.settingData.scoreValidityPeriod.checked = false;
                     this.error.validityTimeError = '';
                     this.error.remindError = '';
                 }
-                if(newVal === 'months_effective'){
+                if (newVal === 'months_effective') {
                     this.settingData.scoreValidityPeriod.checked = true;
                 }
             },
             'settingData.scoreValidityPeriod.checked' : function (newVal, oldVal) {
-                if(!newVal){
+                if (!newVal) {
                     this.error.remindError = '';
                 }
             },
 
             //会员生日积分多倍积分
             'settingData.scoreMultipleOnBirthday.isSwitch' : function (newVal, oldVal) {
-                if(!newVal){
+                if (!newVal) {
                     this.error.multipleError = '';
                 }
             },
 
             //积分生效设置
             'settingData.scoreEffectiveMode.isIntegralType' : function (newVal, oldVal) {
-                if(newVal !== 'checkout_after'){
+                if (newVal !== 'checkout_after') {
                     this.error.isNoIntegralTimeError = '';
                 }
             },
 
-            //会员积分有效期设置
-            'settingData.scoreOffsetInConsumption.type' : function (newVal, oldVal) {
-                if(newVal){
-                    this.settingData.scoreOffsetInConsumption.columns.integrateToMoney = true;
-                    this.settingData.scoreOffsetInConsumption.meanwhile = true;
-                } else {
-                    this.settingData.scoreOffsetInConsumption.columns.integrateToMoney = false;
-                    this.settingData.scoreOffsetInConsumption.meanwhile = false;
-                    this.error.integrateError = '';
-                    this.error.moneyError = '';
-                    this.error.highProportionError = '';
-                }
-            },
+            // 会员3期暂时去掉
+            // //会员积分有效期设置
+            // 'settingData.scoreOffsetInConsumption.type' : function (newVal, oldVal) {
+            //     if (newVal) {
+            //         this.settingData.scoreOffsetInConsumption.columns.integrateToMoney = true;
+            //         this.settingData.scoreOffsetInConsumption.meanwhile = true;
+            //     } else {
+            //         this.settingData.scoreOffsetInConsumption.columns.integrateToMoney = false;
+            //         this.settingData.scoreOffsetInConsumption.meanwhile = false;
+            //         this.error.integrateError = '';
+            //         this.error.moneyError = '';
+            //         this.error.highProportionError = '';
+            //     }
+            // },
 
-            //会员积分有效期设置复选框
-            'settingData.scoreOffsetInConsumption.columns.integrateToMoney' : function (newVal, oldVal) {
-                if(!newVal){
-                    this.settingData.scoreOffsetInConsumption.type = false;
-                    this.settingData.scoreOffsetInConsumption.meanwhile = false;
-                    this.error.integrateError = '';
-                    this.error.moneyError = '';
-                    this.error.highProportionError = '';
-                }
-            },
+            // 会员3期暂时去掉
+            // //会员积分有效期设置复选框
+            // 'settingData.scoreOffsetInConsumption.columns.integrateToMoney' : function (newVal, oldVal) {
+            //     if (!newVal) {
+            //         this.settingData.scoreOffsetInConsumption.type = false;
+            //         this.settingData.scoreOffsetInConsumption.meanwhile = false;
+            //         this.error.integrateError = '';
+            //         this.error.moneyError = '';
+            //         this.error.highProportionError = '';
+            //     }
+            // },
 
             //会员积分有效期设置
             'settingData.scoreExToCharge.donateType' : function (newVal, oldVal) {
-                if(!newVal){
+                if (!newVal) {
                     this.error.donateIntegrateError = '';
                 }
             },
 
         },
-        created() {
+        created () {
             //查询会员基础设置
             this.findBasicSet();
         },
-        methods: {
+        methods : {
 
             //数据转换，数据查询后转成string进入input，保存时转成相应类型
             transPropsType ( data, type ) {
@@ -349,35 +374,36 @@
                     case 'number':
                         return data ? Number(data) : 0;
                     case 'boolean':
-                        return data ==='true' ? true : false;
+                        return data === 'true' ? true : false;
                     case 'string':
-                        return data!==null ? String(data) : '';
+                        return data !== null ? String(data) : '';
                 }
             },
 
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
-                    if( res.success){
-                        if(res.data){
+                    if ( res.success) {
+                        if (res.data) {
                             this.id = res.data.id;
                             //处理数据
                             let params = {
-                                scoreValidityPeriod: JSON.parse(res.data.scoreValidityPeriod),
-                                scoreMultipleOnBirthday: JSON.parse(res.data.scoreMultipleOnBirthday),
-                                scoreEffectiveMode: JSON.parse(res.data.scoreEffectiveMode),
-                                scoreOffsetInConsumption: JSON.parse(res.data.scoreOffsetInConsumption),
-                                scoreExToCharge: JSON.parse(res.data.scoreExToCharge),
-                                scoreInsufficientNotification: res.data.scoreInsufficientNotification ?
+                                scoreValidityPeriod : JSON.parse(res.data.scoreValidityPeriod),
+                                scoreMultipleOnBirthday : JSON.parse(res.data.scoreMultipleOnBirthday),
+                                scoreEffectiveMode : JSON.parse(res.data.scoreEffectiveMode),
+                                // scoreOffsetInConsumption : JSON.parse(res.data.scoreOffsetInConsumption),//会员3期暂时去掉
+                                scoreOffsetInConsumption : res.data.scoreOffsetInConsumption ? JSON.parse(res.data.scoreOffsetInConsumption) : [],
+                                scoreExToCharge : JSON.parse(res.data.scoreExToCharge),
+                                scoreInsufficientNotification : res.data.scoreInsufficientNotification ?
                                 Boolean(res.data.scoreInsufficientNotification) : false,
                             };
-                            for( let key in params){
-                                if(key && Object.keys(params[key]).length > 0){
-                                    for( let ckey in params[key]){
-                                        if(this.stringProps.indexOf(ckey) > -1){
+                            for ( let key in params) {
+                                if (key && Object.keys(params[key]).length > 0) {
+                                    for ( let ckey in params[key]) {
+                                        if (this.stringProps.indexOf(ckey) > -1) {
                                             params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
                                         }
-                                        if(ckey === 'columns'){
+                                        if (ckey === 'columns') {
                                             params[key][ckey].integrate = this.transPropsType(params[key][ckey].integrate, 'string');
                                             params[key][ckey].money = this.transPropsType(params[key][ckey].money, 'string');
                                             params[key][ckey].highProportion = this.transPropsType(params[key][ckey].highProportion, 'string');
@@ -392,20 +418,20 @@
                             this.copySetData = defaultsDeep({}, this.settingData);
                         }
                     }
-                })
+                });
             },
             //点击保存，校验信息，数据处理
             save () {
-                if(this.checkInputFunc()){
+                if (this.checkInputFunc()) {
 
                     let setParam = defaultsDeep({}, this.settingData);
-                    for( let key in setParam){
-                        if(key && Object.keys(setParam[key]).length > 0){
-                            for( let ckey in setParam[key]){
-                                if(this.numberProps.indexOf(ckey) > -1){
+                    for ( let key in setParam) {
+                        if (key && Object.keys(setParam[key]).length > 0) {
+                            for ( let ckey in setParam[key]) {
+                                if (this.numberProps.indexOf(ckey) > -1) {
                                     setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
                                 }
-                                if(ckey === 'columns'){
+                                if (ckey === 'columns') {
                                     setParam[key][ckey].integrate = this.transPropsType(setParam[key][ckey].integrate, 'number');
                                     setParam[key][ckey].money = this.transPropsType(setParam[key][ckey].money, 'number');
                                     setParam[key][ckey].highProportion = this.transPropsType(setParam[key][ckey].highProportion, 'number');
@@ -416,13 +442,13 @@
                     setParam.id = this.id;
 
                     let params = {
-                        id: this.id,
-                        scoreMultipleOnBirthday: JSON.stringify(setParam.scoreMultipleOnBirthday),
-                        scoreOffsetInConsumption: JSON.stringify(setParam.scoreOffsetInConsumption),
-                        scoreExToCharge: JSON.stringify(setParam.scoreExToCharge),
-                        scoreInsufficientNotification: String(setParam.scoreInsufficientNotification),
-                        scoreEffectiveMode: JSON.stringify(setParam.scoreEffectiveMode),
-                        scoreValidityPeriod: JSON.stringify(setParam.scoreValidityPeriod),
+                        id : this.id,
+                        scoreMultipleOnBirthday : JSON.stringify(setParam.scoreMultipleOnBirthday),
+                        scoreOffsetInConsumption : JSON.stringify(setParam.scoreOffsetInConsumption),
+                        scoreExToCharge : JSON.stringify(setParam.scoreExToCharge),
+                        scoreInsufficientNotification : String(setParam.scoreInsufficientNotification),
+                        scoreEffectiveMode : JSON.stringify(setParam.scoreEffectiveMode),
+                        scoreValidityPeriod : JSON.stringify(setParam.scoreValidityPeriod),
                     };
                     this.basicSet(params);
 
@@ -431,55 +457,58 @@
             //会员积分消费设置-保存/修改
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
-                    if( res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('saveCreditConsumptionSettings')}));
+                    if ( res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('saveCreditConsumptionSettings') }));
                         this.findBasicSet();
                     }
-                })
+                });
             },
             //点击取消重置数据
             resetFieldFunc () {
-                if(this.copySetData !== {}){
+                if (this.copySetData !== {}) {
                     this.settingData = defaultsDeep({}, this.copySetData);
                 }
             },
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-                if(this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')){
-                    return false
+                if (this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
+                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')) {
+                    return false;
                 }
 
-                if(this.settingData.scoreValidityPeriod.checked &&
-                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'remindError')){
-                    return false
+                if (this.settingData.scoreValidityPeriod.checked &&
+                    !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'remindError')) {
+                    return false;
                 }
-                if(this.settingData.scoreMultipleOnBirthday.isSwitch &&
-                    !this.checkInputBlurFunc(this.settingData.scoreMultipleOnBirthday.multiple,'multipleError')){
-                    return false
+                if (this.settingData.scoreMultipleOnBirthday.isSwitch &&
+                    !this.checkInputBlurFunc(this.settingData.scoreMultipleOnBirthday.multiple,'multipleError')) {
+                    return false;
                 }
-                if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.integrate, 'integrateError')){
-                    return false
+                // 会员3期暂时去掉
+                // if (this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
+                //     !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.integrate, 'integrateError')) {
+                //     return false;
+                // }
+
+                // 会员3期暂时去掉
+                // if (this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
+                //     !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.money, 'moneyError')) {
+                //     return false;
+                // }
+
+                // 会员3期暂时去掉
+                // if (this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
+                //     !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.highProportion, 'highProportionError')) {
+                //     return false;
+                // }
+
+                if (this.settingData.scoreExToCharge.donateType &&
+                    !this.checkInputBlurFunc(this.settingData.scoreExToCharge.donateIntegrate, 'donateIntegrateError')) {
+                    return false;
                 }
 
-                if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    !this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.money, 'moneyError')){
-                    return false
-                }
-
-                if(this.settingData.scoreOffsetInConsumption.columns.integrateToMoney &&
-                    ! this.checkInputBlurFunc(this.settingData.scoreOffsetInConsumption.columns.highProportion, 'highProportionError')){
-                    return false
-                }
-
-                if(this.settingData.scoreExToCharge.donateType &&
-                    !this.checkInputBlurFunc(this.settingData.scoreExToCharge.donateIntegrate, 'donateIntegrateError')){
-                    return false
-                }
-
-                return true
+                return true;
             },
 
             /**
@@ -490,52 +519,76 @@
             checkInputBlurFunc ( val, errorField ) {
 
                 //校验不为空
-                if(common.isNotEmpty(val)){
+                if (common.isNotEmpty(val)) {
                     this.error[errorField] = '';
-                }else{
-                    this.error[errorField] = this.$t('inputField', {field: ''});
-                    return false
+                } else {
+                    this.error[errorField] = this.$t('inputField', { field : '' });
+                    return false;
                 }
 
                 //校验表情符号
                 if (val && String(val).isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
-                    return false
+                    return false;
                 } else {
                     this.error[errorField] = '';
                 }
                 //正整数，长度校验
-                if(validator.isNumber(val)){
+                if (validator.isNumber(val)) {
                     let numStr = String(val);
-                    if(numStr.length < 1){
-                        this.error[errorField] = this.$t('errorMinLength',{field : '',length : 1});
-                        return false
-                    }else if(numStr.length > 10){
-                        this.error[errorField] = this.$t('errorMaxLength', {field : '',length : 10});
-                        return false
-                    }else{
-                        if(Number.parseInt(val) === Number.parseFloat(val)){
-                            if(val < 0 || val == 0){
-                                this.error[errorField] = this.$t('fieldTypeError', {field: ''});
-                                return false
-                            }else{
+                    if (numStr.length < 1) {
+                        this.error[errorField] = this.$t('errorMinLength',{ field : '',length : 1 });
+                        return false;
+                    } else if (numStr.length > 10) {
+                        this.error[errorField] = this.$t('errorMaxLength', { field : '',length : 10 });
+                        return false;
+                    } else {
+                        if (Number.parseInt(val) === Number.parseFloat(val)) {
+                            if (val < 0 || val == 0) {
+                                this.error[errorField] = this.$t('fieldTypeError', { field : '' });
+                                return false;
+                            } else {
                                 this.error[errorField] = '';
                             }
-                        }else{
-                            this.error[errorField] = this.$t('integetError', {field: ''});
-                            return false
+                        } else {
+                            this.error[errorField] = this.$t('integetError', { field : '' });
+                            return false;
                         }
                     }
-                }else{
-                    this.error[errorField] = this.$t('integetError', {field: ''});
-                    return false
+                } else {
+                    this.error[errorField] = this.$t('integetError', { field : '' });
+                    return false;
                 }
 
-                return true
+                return true;
             },
 
+            /**
+             * 获取新增的积分规则信息
+             * @param ruleData
+             */
+            addIntegerRule (ruleData) {
+                this.settingData.scoreOffsetInConsumption.push(ruleData);
+            },
+            /**
+             * 删除积分兑换规则
+             * @param index
+             */
+            delIntegerRule (index) {
+                this.settingData.scoreOffsetInConsumption.splice(index,1);
+            },
+
+            /**
+             * 编辑积分兑换规则
+             * @param data
+             * @param index
+             */
+            editIntegetRule ({data,index}) {
+                this.$set(this.settingData.scoreOffsetInConsumption,index,data);
+            }
+
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -554,16 +607,11 @@
             .content-item{
                 margin-bottom: 30px;
 
-                .title{
+                /deep/ .title{
                     font-size: $font_size_16px;
                     color: $color_333;
                     line-height: 24px;
                     margin-bottom: 15px;
-                }
-                .main{
-                    div{
-                        margin-bottom: 6px;
-                    }
                 }
             }
 
@@ -581,6 +629,8 @@
             padding-left: 50px;
             margin-bottom: 0 !important;
             position: relative;
+            margin-top : 5px;
+
             &:nth-child(1){
                 margin-top: 10px;
             }
