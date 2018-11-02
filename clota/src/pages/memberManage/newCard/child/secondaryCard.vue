@@ -20,7 +20,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <Input v-model.trim="scope.row.name"
+                    <Input v-model.trim="scope.row.custName"
                            :placeholder="$t('inputField', {field: ''})"/>
                 </template>
             </el-table-column>
@@ -31,7 +31,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <Input v-model.trim="scope.row.mobilePhone"
+                    <Input v-model.trim="scope.row.phoneNum"
                            :placeholder="$t('inputField', {field: ''})"/>
                 </template>
             </el-table-column>
@@ -58,7 +58,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <Select v-model="scope.row.credentialsType" transfer
+                    <Select v-model="scope.row.certificationType" transfer
                             :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
                         <Option v-for="item in idType" :key="item.id"
                                 :value="item.id">
@@ -74,7 +74,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <Input v-model.trim="scope.row.identificationNum"
+                    <Input v-model.trim="scope.row.idCardNumber"
                            :placeholder="$t('inputField', {field: ''})"/>
                 </template>
             </el-table-column>
@@ -103,7 +103,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{$t('支付密码')}}</span>
+                    <span v-if="!scope.row.tradePassword">{{$t('支付密码')}}</span>
+                    <span v-else>{{scope.row.tradePassword}}</span>
                 </template>
             </el-table-column>
 
@@ -126,8 +127,8 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import { secondaryCardHead } from './newCardConfig';
-    import { genderEnum } from '@/assets/js/constVariable';
+    import {secondaryCardHead} from './newCardConfig';
+    import {genderEnum} from '@/assets/js/constVariable';
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
@@ -144,14 +145,22 @@
                 // 表格数据
                 tableData: [
                     {
-                        index: '1',
-                        name: '',
-                        mobilePhone: '',
-                        gender: '',
-                        credentialsType: '',
-                        identificationNum: '',
-                        birthday: '',
-                        payPwd: '',
+                        custName: '老大',
+                        phoneNum: '135487521984',
+                        birthday: '1991-02-02',
+                        gender: 'female',
+                        certificationType: '1',
+                        idCardNumber: '68495738974832',
+                        tradePassword: '',
+                    },
+                    {
+                        custName: "张三",
+                        phoneNum: "13548752104",
+                        birthDay: "1990-01-01",
+                        gender: "male",
+                        certificationType: "1",
+                        idCardNumber: "1132123141342342",
+                        tradePassword: ""
                     }
                 ],
                 // 性别枚举

@@ -8,41 +8,40 @@ export const secondaryCardHead = [
     {
         title : 'name',
         minWidth : 200,
-        field : ''
+        field : 'custName'
     },
     {
         title : 'mobilePhone',
         minWidth : 150,
-        field : '',
-        type : ''
+        field : 'phoneNum',
     },
     {
         title : 'gender',
         minWidth : 120,
         enWidth : 130,
-        field : ''
+        field : 'gender'
     },
     {
         title : 'credentialsType', // 证件类型
         minWidth : 180,
-        field : ''
+        field : 'certificationType'
     },
     {
         title : 'identificationNum', // 证件编号
         minWidth : 180,
-        field : ''
+        field : 'idCardNumber'
     },
     {
         title : 'birthday',
         minWidth : 200,
         enWidth : 200,
-        field : '',
+        field : 'birthday',
         type : 'date'
     },
     {
         title : '支付密码', // 支付密码
         minWidth : 130,
-        field : '',
+        field : 'tradePassword',
     },
     {
         title : 'operate',

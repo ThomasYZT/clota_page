@@ -36,8 +36,7 @@
                         v-model="cardParam.birthday"
                         :options="dateOption"
                         format="yyyy-MM-dd"
-                        :placeholder="$t('selectField', {msg: ''})"
-                        @on-change="customValid($event, 'birthday')">
+                        :placeholder="$t('selectField', {msg: ''})">
                     </Date-picker>
                 </Form-item>
             </div>
@@ -57,30 +56,45 @@
                            :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
             </div>
+            <div class="ivu-form-item-wrap">
+                <Form-item :label="$t('购房总金额')" prop="houseMoney" style="width: 100%;"><!--购房总金额-->
+                    <Input v-model.trim="cardParam.houseMoney"
+                           :placeholder="$t('inputField', {field: $t('购房总金额')})"/>
+                </Form-item>
+                <Form-item :label="$t('房产信息')" prop="realEstateInformation" style="width: 100%;"><!--房产信息-->
+                    <Input v-model.trim="cardParam.realEstateInformation"
+                           :placeholder="$t('inputField', {field: $t('房产信息')})"/>
+                </Form-item>
+            </div>
+            <div class="ivu-form-item-wrap">
+                <Form-item :label="$t('购房日期')" prop="birthday"><!--购房日期-->
+                    <Date-picker
+                        type="date"
+                        v-model="cardParam.purchaseDate"
+                        format="yyyy-MM-dd"
+                        :placeholder="$t('selectField', {msg: ''})">
+                    </Date-picker>
+                </Form-item>
+                <Form-item :label="$t('支付密码')" prop="tradePassword">
+                    <Button type="ghost">{{$t('设置密码')}}</Button>
+                </Form-item>
+            </div>
             <Form-item :label="$t('remark')" prop="remark" style="width: 100%;"><!--备注-->
                 <Input v-model.trim="cardParam.remark"
                        type="textarea"
                        :rows="3"
                        :placeholder="$t('inputField', {field: ''})"/>
             </Form-item>
-            <Form-item :label="$t('address')" prop="homeAddr" style="width: 100%;"><!--地址-->
-                <Input v-model.trim="cardParam.homeAddr"
-                       :placeholder="$t('inputField', {field: $t('familyAddress')})"/><!--请输入家庭地址-->
-            </Form-item>
-            <Form-item :label="$t('支付密码')" prop="">
-                <Button type="ghost">{{$t('设置密码')}}</Button>
-            </Form-item>
         </Form>
         <!--副卡-->
-        <secondary-card :id-type="enumData.idType"></secondary-card>
+        <secondary-card :id-type="enumData.idType" ref="secondaryCard"></secondary-card>
         <!--实体卡信息-->
-        <owner-entity-card></owner-entity-card>
+        <owner-entity-card ref="ownerEntityCard"></owner-entity-card>
         <!--footer 按钮-->
         <div class="content-footer">
             <template v-if="type === 'add'">
                 <Button type="primary"
                         :loading="loading"
-                        :disabled="!cardParam.tpNo || !cardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirmAdd')}}
                 </Button>
@@ -88,7 +102,6 @@
             <template v-if="type === 'modify'">
                 <Button type="primary"
                         :loading="loading"
-                        :disabled="!cardParam.tpNo || !cardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirm')}}
                 </Button>
@@ -102,7 +115,6 @@
 </template>
 <script type="text/ecmascript-6">
     import {genderEnum} from '@/assets/js/constVariable';
-    import pick from 'lodash/pick';
     import {validator} from 'klwk-ui';
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
@@ -116,7 +128,14 @@
             secondaryCard,
             ownerEntityCard
         },
-        props: {},
+        props: {
+            selectedCard: {
+                type: Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         data() {
             let validateMethod = {
 
@@ -192,6 +211,10 @@
                     "idCardNumber": "",//证件号码
                     "remark": "",//备注
                     "homeAddr": "",//家庭地址
+                    "houseMoney": "",//购房总金额
+                    "realEstateInformation": "",//房产信息
+                    "purchaseDate": "",//购房日期
+                    "tradePassword": "",//支付密码
                 },
 
                 // 表单校验规则
@@ -263,9 +286,13 @@
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
                         var params = {
-                            memberInfo: pick(this.cardParam, ['custName', 'phoneNum', 'emailAddr', 'birthDay',
-                                'gender', 'qq', 'cityCode', 'stateCode', 'hobby', 'certificationType', 'idCardNumber', 'homeAddr']),
-                            memberCard: pick(this.cardParam, ['levelId', 'tpNo', 'tpCardNo']),
+                            memberInfo: this.cardParam,
+//                            memberCard: this.$refs.ownerEntityCard.tableData,
+                            // TODO  memberCard包含了主卡和副卡的信息，应该是对象数组（后端接口还没做好，暂时按照个人会员传参方式传）
+                            memberCard: {
+                                ...this.selectedCard,
+                            },
+                            viceCard: this.$refs.secondaryCard.tableData
                         };
                         params.memberInfo.birthDay = params.memberInfo.birthDay ?
                             new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
@@ -279,6 +306,43 @@
                             this.saveAndEditMember('editMemberInfo', params);
                         }*/
                     }
+                })
+            },
+            //新增/编辑会员接口
+            saveAndEditMember(url, params) {
+                this.loading = true;
+                ajax.post(url, {
+                    memberInfo: JSON.stringify(params.memberInfo),
+                    memberCard: JSON.stringify(params.memberCard),
+                    viceCard: JSON.stringify(params.viceCard),
+                }).then(res => {
+                    if (res.success) {
+                        //区分新增与修改
+                        if (this.type === 'add') {
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('add')}));     // 新增会员成功
+                            this.$router.push({name: 'memberInfo'});
+                        }
+                        if (this.type === 'modify') {
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 修改会员成功
+                            this.$router.back();
+                        }
+                    } else {
+                        //区分新增与修改
+                        let errorTip = '';
+                        if (res.message == 'M008') {
+                            errorTip = this.$t('phoneExistCard');   // 手机号已被注册，请更换手机号
+                        }
+
+                        if(this.type === 'add'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('add')}));
+                        }
+                        if(this.type === 'modify'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('modify')}));
+                        }
+
+                    }
+                }).finally(() => {
+                    this.loading = false;
                 })
             },
             //返回

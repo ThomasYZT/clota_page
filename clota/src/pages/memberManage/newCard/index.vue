@@ -13,7 +13,7 @@
                 <!--选择会员卡类型、级别-->
                 <select-card @on-change-card="handleCardChanged"></select-card>
 
-                <component :is="currentCardType"></component>
+                <component :is="currentCardType" :selected-card="selectedCard"></component>
             </div>
         </div>
     </div>
@@ -34,7 +34,9 @@
         },
         data() {
             return {
-                currentCardType: 'personalCard',
+                // 当前卡类型对应的组件
+                currentCardType: '',
+                selectedCard: {}
             }
         },
         methods: {
@@ -43,7 +45,19 @@
              * @param cardData  String  会员卡的类型、级别
              */
             handleCardChanged(cardData) {
-                this.currentCardType = cardData.type;
+                this.selectedCard = cardData;
+                // 判断动态组件当前是哪个
+                switch (cardData.cardTypeId) {
+                    case '1':
+                        this.currentCardType = 'ownerCard';
+                        break;
+                    case '2':
+                        this.currentCardType = 'personalCard';
+                        break;
+                    case '3':
+                        this.currentCardType = 'ownerCard';
+                        break;
+                }
             }
         }
     }
