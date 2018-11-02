@@ -31,8 +31,8 @@
                 fixed="right"
                 :width="row.width"
                 :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <ul class="operate-list">
+                    <template slot-scope="scope">
+                        <ul class="operate-list">
                         <li
                             v-if="!isNotEmpty(scope.row.scoreRate) || !isNotEmpty(scope.row.discountRate)"
                             @click="showModifyModal(scope.row)">{{$t('setIntegralDiscountRate')}}</li><!--设置积分、折扣率-->

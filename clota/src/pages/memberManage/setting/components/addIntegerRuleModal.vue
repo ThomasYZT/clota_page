@@ -1,0 +1,306 @@
+<!--新增积分兑换规则-->
+
+<template>
+	<Modal
+		v-model="value"
+		:title="title"
+		class-name="add-integer-rule vertical-center-modal"
+		:width="lang === 'zh-CN' ? 540 : 580"
+		:mask-closable="false"
+		@on-cancel="hide">
+		<div class="modal-body">
+			<Form ref="formValidate"
+				  :model="formData"
+				  :rules="ruleValidate"
+				  :label-width="lang === 'zh-CN' ? 135 : 160">
+				<i-row>
+					<i-col>
+						<Form-item :label="$t('规则名称')" prop="ruleName">
+							<Input v-model.trim="formData.ruleName"
+								   style="width: 320px;"
+								   :placeholder="$t('inputPlaceholder')"/>
+						</Form-item>
+					</i-col>
+				</i-row>
+				<i-row>
+					<i-col span="13">
+						<Form-item :label="$t('请设置兑换比例')" prop="integrate">
+							<Input v-model.trim="formData.integrate"
+								   :placeholder="$t('inputPlaceholder')"/>
+						</Form-item>
+					</i-col>
+					<i-col span="8">
+						<div class="integral-rate">
+							<span class="font">{{$t(`积分兑换${formData.money}元`)}}</span>
+						</div>
+					</i-col>
+				</i-row>
+				<i-row>
+					<i-col>
+						<Form-item :label="$t('请设置有效期')" prop="date">
+							<DatePicker v-model="formData.date"
+										:options="dateOptions"
+										type="daterange"
+										style="width: 320px">
+							</DatePicker>
+						</Form-item>
+					</i-col>
+				</i-row>
+				<i-row>
+					<i-col >
+						<Form-item :label-width="235"
+								   :label="$t('抵扣比例最多是单笔订单总额的')"
+								   prop="highProportion">
+							<i-input v-model.trim="formData.highProportion"
+									 style="width : 211px;"
+									 :placeholder="$t('inputPlaceholder')">
+								<span slot="append">%</span>
+							</i-input>
+						</Form-item>
+					</i-col>
+				</i-row>
+				<i-row>
+					<i-col>
+						<Form-item :label="$t('是否启用')" >
+							<i-switch v-model="formData.isSwitch"></i-switch>
+						</Form-item>
+					</i-col>
+				</i-row>
+			</Form>
+		</div>
+		<div slot="footer" class="modal-footer">
+			<Button type="primary"
+					:btnLoading="btnLoading"
+					@click="confirm">{{$t('confirm')}}</Button>
+			<Button type="ghost" @click="hide">{{$t('cancel')}}</Button>
+		</div>
+	</Modal>
+</template>
+
+<script>
+	import { mapGetters } from 'vuex';
+	import common from '@/assets/js/common.js';
+	import ajax from '@/api/index.js';
+
+	export default {
+		props : {
+			//是否显示模态框
+			value : {
+				type : Boolean,
+				default : false
+			},
+            //当前启用的规则
+            'valid-rules' : {
+			    type : Array,
+                default () {
+			        return [];
+                }
+            }
+		},
+		data () {
+			//校验是否为整数
+			const validateIntegrate = (rule,value,callback) => {
+				if (value) {
+					common.validateInteger(value).then(() => {
+						callback();
+					}).catch(err => {
+						if(err === 'errorMaxLength'){
+							callback(this.$t(err,{field : this.$t(rule._field),length : 10}));
+						}else{
+							callback(this.$t(err,{field : this.$t(rule._field)}));
+						}
+					});
+				} else {
+					callback(this.$t('inputField', { field : this.$t(rule._field) }));
+				}
+			};
+			//校验选择的日期是否正确
+			const validateDate = (rule,value,callback) => {
+			    if (value && value.length > 0) {
+			        let startTime = value[0].valueOf();
+			        let endTime = value[1].valueOf();
+                    for (let i = 0,j = this.hasSelectedTime.length;i < j;i++){
+                        if ( startTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && startTime <= this.hasSelectedTime[i]['endTime'] ) {
+                            callback('当前选择的时间区间和已存在的时间区间重合');
+                        } else if ( endTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime <= this.hasSelectedTime[i]['endTime'] ) {
+                            callback('当前选择的时间区间和已存在的时间区间重合');
+                        } else if ( startTime <= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime >= this.hasSelectedTime[i]['endTime'] ) {
+                            callback('当前选择的时间区间和已存在的时间区间重合');
+                        }else{
+                            callback();
+                        }
+                    }
+                } else {
+			        callback(this.$t('inputField', { field : this.$t('validityPeriod') }));
+                }
+            }
+			return {
+				//表单数据
+				formData : {
+					//规则名称
+					ruleName : '',
+					//兑换积分
+					integrate : '',
+					//兑换可得金额
+					money : 1,
+					//可用日期
+					date : [],
+					// 抵扣比例最多是单笔订单总额的
+					highProportion : '',
+					//是否打开积分兑换规则
+					isSwitch : false
+				},
+				//表单校验规则
+				ruleValidate : {
+					ruleName : [
+						{
+							required : true,
+							message : this.$t('inputField', { field : this.$t('规则名称') }),
+							trigger : 'blur'
+						},
+						{
+							max : 20,
+							message : this.$t('errorMaxLength',{ field : this.$t('规则名称'),length : 20 }),
+							trigger : 'blur'
+						}
+					],
+					integrate : [
+						{
+							required : true,
+							validator : validateIntegrate,
+							trigger : 'blur',
+							_field : 'integral'
+						}
+					],
+					highProportion : [
+						{
+							required : true,
+							validator : validateIntegrate,
+							trigger : 'blur',
+							_field : ''
+						}
+					],
+					date : [
+                        {
+                            required : true,
+                            validator : validateDate,
+                            trigger : 'change'
+                        }
+					]
+				},
+				//按钮是否在加载中
+				btnLoading : false,
+			};
+		},
+		methods : {
+			/**
+			 * 确定新增或修改
+			 */
+			confirm () {
+				this.$refs.formValidate.validate(valid => {
+					if (valid) {
+						this.$emit('add-integer-rule',{
+							ruleName : this.formData.ruleName,
+							integrate : this.formData.integrate,
+							money : this.formData.money,
+							highProportion : this.formData.highProportion,
+							isSwitch : this.formData.isSwitch,
+							startTime : this.formData.date.length > 0 ? this.formData.date[0].format('yyyy-MM-dd') : '',
+							endTime : this.formData.date.length > 0 ? this.formData.date[1].format('yyyy-MM-dd') : '',
+						});
+						this.hide();
+					}
+				});
+			},
+			/**
+			 * 关闭模态框
+			 */
+			hide () {
+				this.$emit('input',false);
+				this.$refs.formValidate.resetFields();
+			},
+		},
+		computed : {
+			//模态框标题
+			title () {
+				return '修改积分兑规则';
+			},
+			...mapGetters({
+				lang : 'lang'
+			}),
+            //日期配置
+            dateOptions () {
+			    let self = this;
+			    return {
+                    disabledDate (date) {
+                        if (date) {
+                            let valueOfDate = date.valueOf();
+                            for (let i = 0,j = self.hasSelectedTime.length;i < j;i++){
+                                if (valueOfDate >= self.hasSelectedTime[i]['startTime'] - 86400000 && valueOfDate <= self.hasSelectedTime[i]['endTime']){
+                                    return true;
+                                }
+                            }
+                            return valueOfDate < Date.now() - 86400000;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            },
+            //已经有设置积分抵扣规则的日期
+            hasSelectedTime () {
+			    return this.validRules.map(item => {
+			        return {
+                        ...item,
+                        startTime : new Date(item.startTime).valueOf(),
+                        endTime : new Date(item.endTime).valueOf(),
+                    }
+                });
+            }
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	@import '~@/assets/scss/base';
+	.add-integer-rule{
+
+		.modal-footer{
+			/deep/ .ivu-btn{
+				padding: 5px 30px;
+			}
+		}
+
+		.modal-body{
+			padding: 20px 0 0 10px;
+			min-height: 260px;
+			display: flex;
+			align-items: center;
+
+			.integral-rate{
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+				padding-left : 25px;
+			}
+
+			/deep/ .ivu-form{
+				width : 100%;
+			}
+
+			/deep/ .ivu-input-wrapper{
+				/*width: 160px;*/
+				margin-right: 5px;
+			}
+			.equil{
+				margin-left: 10px;
+			}
+
+			.textarea-wrap{
+				/deep/ .ivu-input-wrapper{
+					width: 320px;
+				}
+			}
+		}
+	}
+</style>
