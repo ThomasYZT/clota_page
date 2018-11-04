@@ -1575,4 +1575,5 @@ export default {
     'GetTheGoods' : '领取商品',
     'catering' : '餐饮',
     'memberRights' : '会员权益设置',
+    'memberActivity' : '会员活动',
 }

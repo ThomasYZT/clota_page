@@ -45,7 +45,8 @@
                     { name : 'fundSetting', desc : 'fundSetting' }, // 储值设置
                     { name : 'consumeSetting', desc : 'consumeSetting' }, // 积分消费管理
                     { name : 'productTypeSetting', desc : 'productTypeSetting' }, // 产品类别设置
-                    { name : 'memberRights', desc : 'memberRights' }, // 产品类别设置
+                    { name : 'memberRights', desc : 'memberRights' }, // 会员权益
+                    { name : 'memberActivity', desc : 'memberActivity' }, // 会员活动
                 ],
             };
         },

@@ -618,9 +618,8 @@ export default {
                             isMenu : true
                         },
                     },
-                    //初始化设置-产品类别设置
+                    //初始化设置-会员权益设置
                     memberRightsSetting : {
-                        //会员管理--积分消费管理
                         path : '/memberManage/memRights',
                         name : 'memberRights',
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/memberRightsSetting.vue'),
@@ -629,6 +628,29 @@ export default {
                             _name : 'point-manage',
                             rightPath : topMenuName + '.' + 'memberRights',
                             isMenu : true
+                        },
+                    },
+                    //初始化设置-会员活动
+                    memberActivitySetting : {
+                        path : '/memberManage/memActivity',
+                        name : 'memberActivity',
+                        component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/memberActivity.vue'),
+                        meta : {
+                            menuName : 'memberActivity', //lang.config.js 里面的语言键值
+                            _name : 'point-manage',
+                            rightPath : topMenuName + '.' + 'memberActivity',
+                            isMenu : true
+                        },
+                    },
+                    //初始化设置-会员活动-短信发送记录
+                    smsSendRecord : {
+                        path : '/memberManage/smsSendRecord',
+                        name : 'smsSendRecord',
+                        component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/smsSendRecord.vue'),
+                        meta : {
+                            menuName : 'smsSendRecord', //lang.config.js 里面的语言键值
+                            _name : 'point-manage',
+                            rightPath : topMenuName + '.' + 'memberActivity'
                         },
                     },
                     paymentProtocol : {
