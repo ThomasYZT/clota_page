@@ -1565,4 +1565,5 @@ export default {
     'startEndDate' : '起止日期',
     'exchangePointsRequired' : '兑换时所需积分',
     'GetTheGoods' : '领取商品',
+    'catering' : '餐饮',
 }

@@ -73,8 +73,10 @@
                             path : route.path
                         });
                         this.$nextTick(() =>{
-                            this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
-                            this.$emit('hide-tree');
+                            if (this.$refs.tree) {
+                                this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
+                                this.$emit('hide-tree');
+                            }
                         });
                     });
                 }

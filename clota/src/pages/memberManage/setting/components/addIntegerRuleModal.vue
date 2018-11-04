@@ -7,7 +7,7 @@
 		class-name="add-integer-rule vertical-center-modal"
 		:width="lang === 'zh-CN' ? 540 : 580"
 		:mask-closable="false"
-        @on-visible-change="visibleChange"
+		@on-visible-change="visibleChange"
 		@on-cancel="hide">
 		<div class="modal-body">
 			<Form ref="formValidate"
@@ -40,7 +40,7 @@
 					<i-col>
 						<Form-item :label="$t('请设置有效期')" prop="date">
 							<DatePicker v-model="formData.date"
-                                        :editable="false"
+										:editable="false"
 										:options="dateOptions"
 										type="daterange"
 										style="width: 320px">
@@ -91,20 +91,20 @@
 				type : Boolean,
 				default : false
 			},
-            //当前启用的规则
-            'valid-rules' : {
-			    type : Array,
-                default () {
-			        return [];
-                }
-            },
-            //编辑时默认信息
-            'default-info' : {
-			    type : Object,
-                default () {
-			        return {};
-                }
-            }
+			//当前启用的规则
+			'valid-rules' : {
+				type : Array,
+				default () {
+					return [];
+				}
+			},
+			//编辑时默认信息
+			'default-info' : {
+				type : Object,
+				default () {
+					return {};
+				}
+			}
 		},
 		data () {
 			//校验是否为整数
@@ -113,10 +113,10 @@
 					common.validateInteger(value).then(() => {
 						callback();
 					}).catch(err => {
-						if(err === 'errorMaxLength'){
-							callback(this.$t(err,{field : this.$t(rule._field),length : 10}));
-						}else{
-							callback(this.$t(err,{field : this.$t(rule._field)}));
+						if (err === 'errorMaxLength') {
+							callback(this.$t(err,{ field : this.$t(rule._field),length : 10 }));
+						} else {
+							callback(this.$t(err,{ field : this.$t(rule._field) }));
 						}
 					});
 				} else {
@@ -125,53 +125,53 @@
 			};
 			//校验选择的日期是否正确
 			const validateDate = (rule,value,callback) => {
-			    if (value && value.length > 0) {
-			        let startTime = value[0] ? value[0].valueOf() : 0;
-			        let endTime = value[1] ? value[1].valueOf() : 0;
-                    for (let i = 0,j = this.hasSelectedTime.length;i < j;i++){
-                        if ( startTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && startTime <= this.hasSelectedTime[i]['endTime'] ) {
-                            callback('当前选择的时间区间和已存在的时间区间重合');
-                        } else if ( endTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime <= this.hasSelectedTime[i]['endTime'] ) {
-                            callback('当前选择的时间区间和已存在的时间区间重合');
-                        } else if ( startTime <= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime >= this.hasSelectedTime[i]['endTime'] ) {
-                            callback('当前选择的时间区间和已存在的时间区间重合');
-                        }else{
-                            callback();
-                        }
-                    }
-                    callback();
-                } else {
-			        callback(this.$t('inputField', { field : this.$t('validityPeriod') }));
-                }
-            }
-            //校验占订单总额的百分比
-            const validatePercent = (rule,value,callback) => {
-                common.validateMoney(value,0,3).then(() => {
-                    if (value > 0 && value < 100){
-                        callback();
-                    } else {
-                        callback(this.$t('rangeError',{ field : this.$t('比例'),min : 0,max : 100 }));
-                    }
-                }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t('比例'),length : 3}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('比例')}));
-                    }
-                });
-            };
+				if (value && value.length > 0) {
+					let startTime = value[0] ? value[0].valueOf() : 0;
+					let endTime = value[1] ? value[1].valueOf() : 0;
+					for (let i = 0,j = this.hasSelectedTime.length; i < j; i++) {
+						if ( startTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && startTime <= this.hasSelectedTime[i]['endTime'] ) {
+							callback('当前选择的时间区间和已存在的时间区间重合');
+						} else if ( endTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime <= this.hasSelectedTime[i]['endTime'] ) {
+							callback('当前选择的时间区间和已存在的时间区间重合');
+						} else if ( startTime <= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime >= this.hasSelectedTime[i]['endTime'] ) {
+							callback('当前选择的时间区间和已存在的时间区间重合');
+						} else {
+							callback();
+						}
+					}
+					callback();
+				} else {
+					callback(this.$t('inputField', { field : this.$t('validityPeriod') }));
+				}
+			};
+			//校验占订单总额的百分比
+			const validatePercent = (rule,value,callback) => {
+				common.validateMoney(value,0,3).then(() => {
+					if (value > 0 && value < 100) {
+						callback();
+					} else {
+						callback(this.$t('rangeError',{ field : this.$t('比例'),min : 0,max : 100 }));
+					}
+				}).catch(err => {
+					if (err === 'errorMaxLength') {
+						callback(this.$t('errorMaxLength',{ field : this.$t('比例'),length : 3 }));
+					} else {
+						callback(this.$t(err,{ field : this.$t('比例') }));
+					}
+				});
+			};
 			//校验规则名称是否重复
 			const validateRuleName = (rule,value,callback) => {
-			    if (value) {
-			         if (this.hasSelectedTime.some(item => item['ruleName'] === value) ) {
-			             callback('规则名称已存在');
-                     } else {
-			             callback();
-                     }
-                } else {
-			        callback(this.$t('inputField', { field : this.$t('规则名称') }));
-                }
-            };
+				if (value) {
+					 if (this.hasSelectedTime.some(item => item['ruleName'] === value) ) {
+						 callback('规则名称已存在');
+					 } else {
+						 callback();
+					 }
+				} else {
+					callback(this.$t('inputField', { field : this.$t('规则名称') }));
+				}
+			};
 			return {
 				//表单数据
 				formData : {
@@ -201,10 +201,10 @@
 							message : this.$t('errorMaxLength',{ field : this.$t('规则名称'),length : 20 }),
 							trigger : 'blur'
 						},
-                        {
-                            validator : validateRuleName,
-                            trigger : 'blur'
-                        }
+						{
+							validator : validateRuleName,
+							trigger : 'blur'
+						}
 					],
 					integrate : [
 						{
@@ -222,11 +222,11 @@
 						},
 					],
 					date : [
-                        {
-                            required : true,
-                            validator : validateDate,
-                            trigger : 'change'
-                        }
+						{
+							required : true,
+							validator : validateDate,
+							trigger : 'change'
+						}
 					]
 				},
 				//按钮是否在加载中
@@ -238,35 +238,37 @@
 			 * 确定新增或修改
 			 */
 			confirm () {
-                console.log('a')
 				this.$refs.formValidate.validate(valid => {
-                    console.log(valid)
 					if (valid) {
-                        let defaultInfo = this.defaultInfo['data'];
-                        if (defaultInfo && Object.keys(defaultInfo).length > 0) { //编辑规则
-                            this.$emit('edit-integer-rule',{
-                                index : this.defaultInfo['index'],
-                                data : {
-                                    ruleName : this.formData.ruleName,
-                                    integrate : this.formData.integrate,
-                                    money : this.formData.money,
-                                    highProportion : this.formData.highProportion,
-                                    isSwitch : this.formData.isSwitch,
-                                    startTime : this.formData.date.length > 0 ? this.formData.date[0].format('yyyy-MM-dd') : '',
-                                    endTime : this.formData.date.length > 0 ? this.formData.date[1].format('yyyy-MM-dd') : '',
-                                }
-                            });
-                        } else { //新增规则
-                            this.$emit('add-integer-rule',{
-                                ruleName : this.formData.ruleName,
-                                integrate : this.formData.integrate,
-                                money : this.formData.money,
-                                highProportion : this.formData.highProportion,
-                                isSwitch : this.formData.isSwitch,
-                                startTime : this.formData.date.length > 0 ? this.formData.date[0].format('yyyy-MM-dd') : '',
-                                endTime : this.formData.date.length > 0 ? this.formData.date[1].format('yyyy-MM-dd') : '',
-                            });
-                        }
+						let defaultInfo = this.defaultInfo['data'];
+						if (defaultInfo && Object.keys(defaultInfo).length > 0) { //编辑规则
+							this.$emit('edit-integer-rule',{
+								index : this.defaultInfo['index'],
+								data : {
+									ruleName : this.formData.ruleName,
+									integrate : this.formData.integrate,
+									money : this.formData.money,
+									highProportion : this.formData.highProportion,
+									isSwitch : this.formData.isSwitch,
+									startTime : this.formData.date.length > 0
+										? this.formData.date[0].format('yyyy-MM-dd')
+										: '',
+									endTime : this.formData.date.length > 0
+										? this.formData.date[1].format('yyyy-MM-dd')
+										: '',
+								}
+							});
+						} else { //新增规则
+							this.$emit('add-integer-rule',{
+								ruleName : this.formData.ruleName,
+								integrate : this.formData.integrate,
+								money : this.formData.money,
+								highProportion : this.formData.highProportion,
+								isSwitch : this.formData.isSwitch,
+								startTime : this.formData.date.length > 0 ? this.formData.date[0].format('yyyy-MM-dd') : '',
+								endTime : this.formData.date.length > 0 ? this.formData.date[1].format('yyyy-MM-dd') : '',
+							});
+						}
 						this.hide();
 					}
 				});
@@ -278,21 +280,21 @@
 				this.$emit('input',false);
 				this.$refs.formValidate.resetFields();
 			},
-            /**
-             * 模态框显示或隐藏
-             * @param type
-             */
-            visibleChange (type) {
-                let defaultInfo = this.defaultInfo['data'];
-			    if (type === true && defaultInfo && Object.keys(defaultInfo).length > 0){
-                    this.formData.ruleName = defaultInfo.ruleName;
-                    this.formData.integrate = defaultInfo.integrate;
-                    this.formData.money = defaultInfo.money;
-                    this.formData.date = [defaultInfo.startTime,defaultInfo.endTime];
-                    this.formData.highProportion = defaultInfo.highProportion;
-                    this.formData.isSwitch = defaultInfo.isSwitch;
-                }
-            }
+			/**
+			 * 模态框显示或隐藏
+			 * @param type
+			 */
+			visibleChange (type) {
+				let defaultInfo = this.defaultInfo['data'];
+				if (type === true && defaultInfo && Object.keys(defaultInfo).length > 0) {
+					this.formData.ruleName = defaultInfo.ruleName;
+					this.formData.integrate = defaultInfo.integrate;
+					this.formData.money = defaultInfo.money;
+					this.formData.date = [defaultInfo.startTime,defaultInfo.endTime];
+					this.formData.highProportion = defaultInfo.highProportion;
+					this.formData.isSwitch = defaultInfo.isSwitch;
+				}
+			}
 		},
 		computed : {
 			//模态框标题
@@ -302,37 +304,37 @@
 			...mapGetters({
 				lang : 'lang'
 			}),
-            //日期配置
-            dateOptions () {
-			    let self = this;
-			    return {
-                    disabledDate (date) {
-                        if (date) {
-                            let valueOfDate = date.valueOf();
-                            for (let i = 0,j = self.hasSelectedTime.length;i < j;i++){
-                                if (valueOfDate >= self.hasSelectedTime[i]['startTime'] - 86400000 && valueOfDate <= self.hasSelectedTime[i]['endTime']){
-                                    return true;
-                                }
-                            }
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                }
-            },
-            //已经有设置积分抵扣规则的日期
-            hasSelectedTime () {
-			    return this.validRules.map(item => {
-			        return {
-                        ...item,
-                        startTime : new Date(item.startTime).valueOf(),
-                        endTime : new Date(item.endTime).valueOf(),
-                    }
-                }).filter(item => item['ruleName'] != this.defaultInfo['data']['ruleName'] );
-            }
+			//日期配置
+			dateOptions () {
+				let self = this;
+				return {
+					disabledDate (date) {
+						if (date) {
+							let valueOfDate = date.valueOf();
+							for (let i = 0,j = self.hasSelectedTime.length; i < j; i++) {
+								if (valueOfDate >= self.hasSelectedTime[i]['startTime'] - 86400000 && valueOfDate <= self.hasSelectedTime[i]['endTime']) {
+									return true;
+								}
+							}
+							return false;
+						} else {
+							return true;
+						}
+					}
+				};
+			},
+			//已经有设置积分抵扣规则的日期
+			hasSelectedTime () {
+				return this.validRules.map(item => {
+					return {
+						...item,
+						startTime : new Date(item.startTime).valueOf(),
+						endTime : new Date(item.endTime).valueOf(),
+					};
+				}).filter(item => item['ruleName'] != this.defaultInfo['data']['ruleName'] );
+			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss" scoped>
@@ -358,14 +360,19 @@
 				padding-left : 25px;
 			}
 
-            /deep/ .ivu-input-group-append{
-                background : $color_fff;
-                border-left : 0;
-            }
+			/deep/ .ivu-input-group-append{
+				background : $color_fff;
+				border-left : 0;
+			}
 
-            /deep/ .ivu-input-group .ivu-input{
-                border-right : 0;
-            }
+			/deep/ .ivu-input:focus{
+				border : 1px solid #e0e0e0;
+				box-shadow : 0 0 ;
+			}
+
+			/deep/ .ivu-input-group .ivu-input{
+				border-right : 0;
+			}
 
 			/deep/ .ivu-form{
 				width : 100%;
