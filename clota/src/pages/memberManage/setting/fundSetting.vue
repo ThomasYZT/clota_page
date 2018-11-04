@@ -48,20 +48,21 @@
                         </span>
                         <span> {{settingData.scoreGrowthFromCharging.integrate}} {{$t('integral')}}</span>
                     </div>
-                    <div class="check-group-wrap">{{$t('recharge')}}
-                        <span :class="{'ivu-form-item-error': error.moneyToGrowthError}">
-                              <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGrowth"
-                                     :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
-                                     @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGrowth,'moneyToGrowthError')"
-                                     type="text"
-                                     class="single-input"
-                                     :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
-                              <span class="ivu-form-item-error-tip"
-                                   style="left: 92px;"
-                                   v-if="error.moneyToGrowthError">{{error.moneyToGrowthError}}</span>
-                        </span>
-                        <span> {{settingData.scoreGrowthFromCharging.growth}} {{$t('growth')}}</span>
-                    </div>
+                    <!--会员3期暂时去掉-->
+                    <!--<div class="check-group-wrap">{{$t('recharge')}}-->
+                        <!--<span :class="{'ivu-form-item-error': error.moneyToGrowthError}">-->
+                              <!--<Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGrowth"-->
+                                     <!--:disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"-->
+                                     <!--@on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGrowth,'moneyToGrowthError')"-->
+                                     <!--type="text"-->
+                                     <!--class="single-input"-->
+                                     <!--:placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}-->
+                              <!--<span class="ivu-form-item-error-tip"-->
+                                   <!--style="left: 92px;"-->
+                                   <!--v-if="error.moneyToGrowthError">{{error.moneyToGrowthError}}</span>-->
+                        <!--</span>-->
+                        <!--<span> {{settingData.scoreGrowthFromCharging.growth}} {{$t('growth')}}</span>-->
+                    <!--</div>-->
                 </div>
             </div>
 
@@ -222,20 +223,21 @@
                                     </ul>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                slot="column4"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    <ul class="operate-list">
-                                        <li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
+                            <!--会员3期暂时去掉-->
+                            <!--<el-table-column-->
+                                <!--slot="column4"-->
+                                <!--:label="row.title"-->
+                                <!--:prop="row.field"-->
+                                <!--:key="row.index"-->
+                                <!--:width="row.width"-->
+                                <!--:min-width="row.minWidth"-->
+                                <!--slot-scope="row">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<ul class="operate-list">-->
+                                        <!--<li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>-->
+                                    <!--</ul>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
                         </table-com>
                     </div>
                 </div>
@@ -395,12 +397,13 @@
                         minWidth : 110,
                         field : 'id'
                     },
-                    {
-                        title : 'operate',
-                        minWidth : 110,
-                        enMinWidth : 140,
-                        field : 'id'
-                    },
+                    // 会员3期暂时去掉
+                    // {
+                    //     title : 'operate',
+                    //     minWidth : 110,
+                    //     enMinWidth : 140,
+                    //     field : 'id'
+                    // },
                 ],
                 //获取储值账户-(本金/赠送金额)应用范围
                 listAmountRangeTable : [],
@@ -456,25 +459,35 @@
                 switch (type) {
                     case 'number':
                         return data ? Number(data) : 0;
-                        break;
                     case 'boolean':
                         return data === 'true' ? true : false;
-                        break;
                     case 'string':
                         return data !== null ? String(data) : '';
-                        break;
                 }
             },
 
             //获取储值赠送金额应用范围
             listAccount () {
-                ajax.post('queryMemberAccountDefine', {
-                    accountType : 'charging',
-                    pageNo : 1,
-                    pageSize : 99999,
-                }).then(res => {
+                // 会员3期暂时去掉
+                // ajax.post('queryMemberAccountDefine', {
+                //     accountType : 'charging',
+                //     pageNo : 1,
+                //     pageSize : 99999,
+                // }).then(res => {
+                //     if ( res.success ) {
+                //         this.listAccountTable = res.data.data || [];
+                //     }
+                // });
+                ajax.post('getMemberLevelsInType').then(res => {
                     if ( res.success ) {
-                        this.listAccountTable = res.data.data || [];
+                        let tmpData = res.data ? res.data : {};
+                        let listAccountTable = [];
+                        for (let item in tmpData) {
+                            listAccountTable = [].concat(listAccountTable,tmpData[item]);
+                        }
+                        this.listAccountTable = listAccountTable;
+                    } else {
+                        this.listAccountTable = [];
                     }
                 });
             },
@@ -760,8 +773,8 @@
                     if (res.success) {
                         this.tableData = res.data.data || [];
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberAccountDefine ' + $t('queryFailure') + '！');
+                        this.tableData = [];
+                        this.$Message.warning(res.message || 'queryMemberAccountDefine ' + this.$t('queryFailure') + '！');
                     }
                 });
             },
