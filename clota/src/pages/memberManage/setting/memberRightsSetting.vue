@@ -29,6 +29,11 @@
 				</el-table-column>
 			</table-com>
 		</div>
+        <!--显示会员权益详情模态框-->
+        <member-right-detail-modal v-model="showDetailModal"
+                                   :detail-info="currentData"
+                                   @fresh-data="queryList">
+        </member-right-detail-modal>
 	</div>
 </template>
 
@@ -36,11 +41,13 @@
 	import headerTabs from './components/headerTabs.vue';
 	import tableCom from '@/components/tableCom/tableCom.vue';
 	import ajax from '@/api/index.js';
+	import memberRightDetailModal from './components/memberRightDetailModal';
 
 	export default {
 		components : {
 			headerTabs,
-			tableCom
+			tableCom,
+            memberRightDetailModal
 		},
 		data () {
 			return {
@@ -69,7 +76,11 @@
 				//每页条数
 				pageSize : 10,
 				//总条数
-				totalCount : 0
+				totalCount : 0,
+                //显示会员权益详情模态框
+                showDetailModal : false,
+                //当前操作的会员权益数据
+                currentData : {}
 			};
 		},
 		methods : {
@@ -96,7 +107,8 @@
 			 * @param rowData 行数据
 			 */
 			checkDetail (rowData) {
-				console.log(rowData);
+			    this.currentData = rowData;
+				this.showDetailModal = true;
 			}
 		}
 	};

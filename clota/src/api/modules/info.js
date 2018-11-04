@@ -167,6 +167,8 @@ export default {
     'saveOrUpdateCardRanges': '/member/memberLevel/saveOrUpdateCardRanges',
     //查询会员卡使用范围设置
     'queryCardRangeList': '/member/memberLevel/queryCardRangeList',
+    //查询会员卡权益可用景区
+    'getTicketList': '/member/memberLevel/getTicketList',
 
 
     /***********************************会员统计***********************************/
