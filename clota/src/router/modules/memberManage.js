@@ -618,6 +618,19 @@ export default {
                             isMenu : true
                         },
                     },
+                    //初始化设置-产品类别设置
+                    memberRightsSetting : {
+                        //会员管理--积分消费管理
+                        path : '/memberManage/memRights',
+                        name : 'memberRights',
+                        component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/memberRightsSetting.vue'),
+                        meta : {
+                            menuName : 'memberRights', //lang.config.js 里面的语言键值
+                            _name : 'point-manage',
+                            rightPath : topMenuName + '.' + 'memberRights',
+                            isMenu : true
+                        },
+                    },
                     paymentProtocol : {
                         //会员管理--基础设置--支付协议设置
                         path : '/memberManage/paymentProtocol',
@@ -670,28 +683,28 @@ export default {
                             isMenu : true
                         }
                     },
-                    editGoodsWarehousing: {
+                    editGoodsWarehousing : {
                         //会员管理--进销存管理--新增商品入库
-                        path: '/memberManage/inventoryManage/editGoodsWarehousing',
-                        name: 'editGoodsWarehousing',
-                        component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/editGoodsWarehousing.vue'),
-                        meta: {
+                        path : '/memberManage/inventoryManage/editGoodsWarehousing',
+                        name : 'editGoodsWarehousing',
+                        component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/editGoodsWarehousing.vue'),
+                        meta : {
                             //todo 未配置权限
-                            _name: 'members-index',
-                            menuName: 'editGoodsWarehousing',
-                            rightPath: topMenuName + '.' + 'memberHome',
+                            _name : 'members-index',
+                            menuName : 'editGoodsWarehousing',
+                            rightPath : topMenuName + '.' + 'memberHome',
                         },
                     },
-                    stockInfo: {
+                    stockInfo : {
                         //会员管理--进销存管理--库存详情
-                        path: '/memberManage/inventoryManage/stockInfo',
-                        name: 'stockInfo',
-                        component: () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/stockInfo.vue'),
-                        meta: {
+                        path : '/memberManage/inventoryManage/stockInfo',
+                        name : 'stockInfo',
+                        component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/stockInfo.vue'),
+                        meta : {
                             //todo 未配置权限
-                            _name: 'members-index',
-                            menuName: 'stockInfo',
-                            rightPath: topMenuName + '.' + 'memberHome',
+                            _name : 'members-index',
+                            menuName : 'stockInfo',
+                            rightPath : topMenuName + '.' + 'memberHome',
                         },
                     },
                 }

@@ -1573,4 +1573,5 @@ export default {
     'exchangePointsRequired' : '兑换时所需积分',
     'GetTheGoods' : '领取商品',
     'catering' : '餐饮',
+    'memberRights' : '会员权益设置',
 }

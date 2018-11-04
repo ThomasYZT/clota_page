@@ -65,7 +65,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <!--修改暂时去掉-->
+                        <!--会员3期暂时去掉-->
                         <!--<li @click="modifyFunc(scope.row)">{{$t('modify')}}</li>-->
                         <li @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
