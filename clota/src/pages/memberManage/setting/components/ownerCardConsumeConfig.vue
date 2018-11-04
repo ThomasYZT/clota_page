@@ -21,7 +21,7 @@
             </template>
             <i-row>
                 <i-col style="display: inline-block;width : auto;">
-                    <span>酒店消费时需额外支付</span>
+                    <span class="tip-label">酒店消费时需额外支付</span>
                 </i-col>
                 <i-col style="display: inline-block;width : auto;">
                     <FormItem prop="hotelNeedPay"
@@ -35,7 +35,7 @@
                     </FormItem>
                 </i-col>
                 <i-col style="display: inline-block;width : auto;">
-                    <span>元,其余可用业主卡内金额消费</span>
+                    <span  class="tip-label">元,其余可用业主卡内金额消费</span>
                 </i-col>
             </i-row>
         </Form>
@@ -201,6 +201,11 @@
         /deep/ .ivu-input:focus{
             border : 1px solid #e0e0e0;
             box-shadow : 0 0 ;
+        }
+
+        .tip-label{
+            color: $color_333;
+            font-size: $font_size_14px;
         }
     }
 </style>

@@ -524,10 +524,18 @@ export default {
     'consumeWithoutPass' : 'no need for password verification, personal information, etc.when consumption',
     'consumeWithPass' : 'password verification is required for consumption',
     'erCodeOrSmsToPass' : '(Offline brush payment QR code, online payment password verification)',
-    'storeIntegetSetting' : 'stored-value points, growth value ratio setting',
-    'storeWithouIntegetAGrowth' : 'the points and growth values are get when you consume but not when you store the value',
-    'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points and growth values when you consume.',
-    'storeIntegetRatioSetting' : 'effective settings of points and growth value obtained during the stored value',
+    // 会员3期暂时去掉
+    // 'storeIntegetSetting' : 'stored-value points, growth value ratio setting',
+    'storeIntegetSetting' : 'stored-value points value ratio setting',
+    // 会员3期暂时去掉
+    // 'storeWithouIntegetAGrowth' : 'the points and growth values are get when you consume but not when you store the value',
+    'storeWithouIntegetAGrowth' : 'the points values are get when you consume but not when you store the value',
+    // 会员3期暂时去掉
+    // 'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points and growth values when you consume.',
+    'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points when you consume.',
+    // 会员3期暂时去掉
+    // 'storeIntegetRatioSetting' : 'effective settings of points and growth value obtained during the stored value',
+    'storeIntegetRatioSetting' : 'effective settings of points obtained during the stored value',
     'rechartSucEffective' : 'effective immediately after the stored value is successful',
     'rechartSuc' : 'after the stored value is successful',
     'hourLaterInvalid' : 'after hours will effective',

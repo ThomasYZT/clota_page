@@ -24,6 +24,7 @@
             <!--</div>-->
 
             <div class="content-item">
+                <!--会员3期暂时去掉-->
                 <div class="title">{{$t('storeIntegetSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreGrowthFromCharging.storedAndGrowthType" vertical>
@@ -162,7 +163,8 @@
 
             <div class="content-item">
                 <div class="title">{{$t('storeValueAccountSettings')}}
-                    <span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
+                    <!--会员3期暂时去掉-->
+                    <!--<span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>-->
                 </div>
                 <div class="main">
                     <div class="table-wrap">
@@ -826,12 +828,15 @@
         border-radius: 4px;
 
         .content{
-            padding: 30px 60px;
+            padding: 30px 60px 10px;
             height: calc(100% - 124px);
             overflow: auto;
 
             .content-item{
-                margin-bottom: 30px;
+
+                &:not(:nth-last-of-type(1)) {
+                    margin-bottom: 30px;
+                }
 
                 /deep/ .ivu-form-item-wrap{
                     position: relative;

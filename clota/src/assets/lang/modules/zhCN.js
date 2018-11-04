@@ -524,10 +524,18 @@ export default {
     'consumeWithoutPass' : '消费时无需要密码验证，提供个人信息等',
     'consumeWithPass' : '消费时需要密码验证',
     'erCodeOrSmsToPass' : '（线下刷付款二维码、线上使用支付密码验证）',
-    'storeIntegetSetting' : '储值积分、成长值比例设置',
-    'storeWithouIntegetAGrowth' : '储值时不获得积分、成长值，消费时获取',
-    'storeWithouIntegetAGrowthNoRepeat' : '储值时获得积分、成长值，消费时不重复获得积分、成长值',
-    'storeIntegetRatioSetting' : '储值获得积分、成长值生效设置',
+    // 会员3期暂时去掉
+    // 'storeIntegetSetting' : '储值积分、成长值比例设置',
+    'storeIntegetSetting' : '储值积分比例设置',
+    // 会员3期暂时去掉
+    // 'storeWithouIntegetAGrowth' : '储值时不获得积分、成长值，消费时获取',
+    'storeWithouIntegetAGrowth' : '储值时不获得积分，消费时获取',
+    // 会员3期暂时去掉
+    // 'storeWithouIntegetAGrowthNoRepeat' : '储值时获得积分、成长值，消费时不重复获得积分、成长值',
+    'storeWithouIntegetAGrowthNoRepeat' : '储值时获得积分，消费时不重复获得积分、成长值',
+    'storeIntegetRatioSetting' : '储值获得积分生效设置',
+    // 会员3期暂时去掉
+    // 'storeIntegetRatioSetting' : '储值获得积分、成长值生效设置',
     'rechartSucEffective' : '储值成功后立即生效',
     'rechartSuc' : '储值成功后',
     'hourLaterInvalid' : '个小时后生效',
