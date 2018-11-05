@@ -109,7 +109,9 @@
         },
         mounted () {
             this.$nextTick(() =>{
-                this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
+                if (this.$refs.tree) {
+                    this.$refs.tree.setCheckedNodes([this.getChoseOrg()]);
+                }
             });
         },
         computed : {
