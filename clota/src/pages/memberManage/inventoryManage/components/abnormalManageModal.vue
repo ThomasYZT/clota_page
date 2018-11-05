@@ -4,6 +4,7 @@
 -->
 <template>
     <Modal v-model="isShow"
+           class-name="vertical-center-modal"
            :title="$t('CommodityAbnormalManagement')">
         <Form :model="formData"
               :rules="ruleValidate"

@@ -4,77 +4,72 @@
 -->
 <template>
     <div class="edit-good-warehousing">
-        <!-- 面包屑导航 -->
-        <breadCrumbHead
-            :before-router-list="beforeRouterList"
-            :locale-router="$t('NewGoodsWarehousing')"
-        >
-        </breadCrumbHead>
 
         <div class="form-wrapper">
             <Form ref='formList'
                   :model="formData"
                   :rules="ruleValidate"
-                  label-position="right"
-                  :label-width="150">
+                  label-position="top">
                 <i-row>
-                    <i-col span="8" offset="3">
+                    <i-col span="8" offset="5">
                         <!-- 产品名称 -->
                         <Form-item :label="$t('productName')" prop="name">
-                            <Input v-model="formData.name" :disabled="pageEditable" :placeholder="$t('inputField', { field : $t('productName') })"></Input>
+                            <Input v-model.trim="formData.name" style="width:250px" :disabled="pageEditable" :placeholder="$t('inputField', { field : $t('productName') })"></Input>
                         </Form-item>
                     </i-col>
                     <i-col span="8">
                         <!-- 入库数量 -->
                         <Form-item v-if="!pageEditable" :label="$t('goodsQuantity')" prop="stockNum">
-                            <Input v-model="formData.stockNum"
-                                   :placeholder="$t('inputField', { field : $t('goodsQuantity') })"></Input>
+                            <Input v-model.trim="formData.stockNum"
+                                   :placeholder="$t('inputField', { field : $t('goodsQuantity') })"
+                                   style="width:250px"></Input>
                         </Form-item>
                         <Form-item v-else :label="$t('addGoodsNum')" prop="stockNum">
-                            <Input v-model="formData.stockNum"
-                                   :placeholder="$t('inputField', { field : $t('addGoodsNum') })"></Input>
+                            <Input v-model.trim="formData.stockNum"
+                                   :placeholder="$t('inputField', { field : $t('addGoodsNum') })"
+                                   style="width:250px"></Input>
                             <span>{{$t('nowHaveStockNum')}}:{{nowHaveStockNum}}</span>
                         </Form-item>
                     </i-col>
                 </i-row>
 
                 <i-row>
-                    <i-col span="8" offset="3">
+                    <i-col span="8" offset="5">
                         <!-- 采购价 -->
                         <Form-item :label="$t('purchasePrice')" prop="purchasePrice">
-                            <Input v-model="formData.purchasePrice" :placeholder="$t('inputField', { field : $t('purchasePrice') })"></Input>
+                            <Input v-model.trim="formData.purchasePrice" :placeholder="$t('inputField', { field : $t('purchasePrice') })" style="width:250px"></Input>
                         </Form-item>
                     </i-col>
                     <i-col span="8">
                         <!-- 市场价 -->
                         <Form-item :label="$t('marketPrice')" prop="marketPrice">
-                            <Input v-model="formData.marketPrice" :placeholder="$t('inputField', { field : $t('marketPrice') })"></Input>
+                            <Input v-model.trim="formData.marketPrice" :placeholder="$t('inputField', { field : $t('marketPrice') })" style="width:250px"></Input>
                         </Form-item>
                     </i-col>
                 </i-row>
 
                 <i-row>
-                    <i-col span="8" offset="3">
+                    <i-col span="8" offset="5">
                         <!-- 采购人 -->
                         <Form-item :label="$t('purchaser')" prop="purchaser">
-                            <Input v-model="formData.purchaser" :placeholder="$t('inputField', { field : $t('purchaser') })"></Input>
+                            <Input v-model.trim="formData.purchaser" :placeholder="$t('inputField', { field : $t('purchaser') })" style="width:250px"></Input>
                         </Form-item>
                     </i-col>
                     <i-col span="8">
                         <!-- 采购日期 -->
                         <Form-item :label="$t('purchaseTime')" prop="purchaseDate">
                             <DatePicker type="date" :placeholder="$t('selectField', { msg : $t('purchaseTime') })"
-                                        v-model="formData.purchaseDate"></DatePicker>
+                                        v-model="formData.purchaseDate" style="width:250px"></DatePicker>
                         </Form-item>
                     </i-col>
                 </i-row>
 
                 <i-row>
-                    <i-col span="8" offset="3">
+                    <i-col span="8" offset="5">
                         <!-- 计量单位 -->
                         <Form-item :label="$t('unit')" prop="unit">
                             <Select v-model="formData.unit" :placeholder="$t('selectField', { msg : $t('unit') })"
-                                    @on-change="addUnit">
+                                    @on-change="addUnit" style="width:250px">
                                 <Option v-for="(item, index) in unitList"
                                         :value="item.unitNames"
                                         :key="index"
@@ -87,7 +82,7 @@
                 </i-row>
 
                 <i-row>
-                    <i-col span="16" offset="3">
+                    <i-col span="16" offset="5">
                         <!-- 商品图片 -->
                         <FormItem :label="$t('goodPic')" prop="pics">
                             <img-uploader @upload-success="uploadSuc"
@@ -99,19 +94,19 @@
                 </i-row>
 
                 <i-row>
-                    <i-col span="16" offset="3">
+                    <i-col span="16" offset="5">
                         <!-- 备注 -->
                         <Form-item :label="$t('remark')" prop="remark">
-                            <Input v-model="formData.remark" :rows="4" type="textarea" :placeholder="$t('inputField', { field : $t('remark') })"></Input>
+                            <Input v-model.trim="formData.remark" :rows="4" type="textarea" :placeholder="$t('inputField', { field : $t('remark') })" style="width: 655px;"></Input>
                         </Form-item>
                     </i-col>
                 </i-row>
 
                 <i-row>
-                    <i-col span="16" offset="3">
+                    <i-col span="16" offset="5">
                         <!-- 商品描述 -->
                         <Form-item :label="$t('goodsDesc')" prop="goodsDesc">
-                            <Input v-model="formData.goodsDesc" :rows="4" type="textarea" :placeholder="$t('inputField', { field : $t('goodsDesc') })"></Input>
+                            <Input v-model.trim="formData.goodsDesc" :rows="4" type="textarea" :placeholder="$t('inputField', { field : $t('goodsDesc') })" style="width: 655px;"></Input>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -130,7 +125,6 @@
 </template>
 
 <script>
-    import breadCrumbHead from '@/components/breadCrumbHead/index';
     import ImgUploader from '../../../register/components/ImgUploader';
     import ajax from '../../../../api/index';
     import lifeCycleMixins from '../../../../mixins/lifeCycleMixins';
@@ -140,7 +134,6 @@
     export default {
         mixins : [lifeCycleMixins],
         components : {
-            breadCrumbHead,
             ImgUploader,
             addUnitModal
         },
@@ -159,12 +152,6 @@
             };
 
             return {
-                //路由信息
-                beforeRouterList : [
-                    {
-                        name : 'inventoryManage',
-                    }
-                ],
                 //表单数据
                 formData : {
                     //商品ID
@@ -269,7 +256,7 @@
              * @param {object} params
              */
             getParams (params) {
-                if (params && params.listItem) {
+                if (params && params.type === 'edit' && params.listItem) {
                     this.pageEditable = true;
                     this.detail = params.listItem;
                     for (let key in this.detail) {
@@ -287,7 +274,12 @@
                         };
                     });
                 } else {
-                    this.detail = {};
+                    if (params && params.type === 'edit' && !params.listItem) {
+                        //若没获取到路由参数，返回上一级页面
+                        this.$router.push({
+                            name : 'goodMange'
+                        });
+                    }
                 }
             },
             /**
@@ -350,8 +342,7 @@
 
     .edit-good-warehousing {
         .form-wrapper {
-            margin-top: 30px;
-
+            margin-top: 50px;
 
             .button-wrapper {
                 margin-top: 40px;

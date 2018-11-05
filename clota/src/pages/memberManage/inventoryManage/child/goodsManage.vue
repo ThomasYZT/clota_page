@@ -4,18 +4,11 @@
 -->
 <template>
     <div class="goods-manage">
-        <!-- 面包屑导航 -->
-        <breadCrumbHead
-            :before-router-list="beforeRouterList"
-            :locale-router="$t('goodsManage')"
-        >
-        </breadCrumbHead>
-
         <!-- 工具栏 -->
         <tool-box :toolNum="3">
             <div slot="tool0" class="button-tool">
                 <!-- 新增商品入库 -->
-                <Button class="tool-btn left" type="primary" @click="addGood()">{{$t('NewGoodsWarehousing')}}</Button>
+                <Button class="tool-btn left" type="primary" @click="addGood({type : 'add'})">{{$t('NewGoodsWarehousing')}}</Button>
                 <!-- 导出 -->
                 <Button class="ivu-btn-108px" type="primary">{{$t('exporting')}}</Button>
             </div>
@@ -54,7 +47,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.stockNum + scope.row.undrawNum }}
+                        {{ scope.row.stockNum + scope.row.undrawNum | contentFilter}}
                     </template>
                 </el-table-column>
                 <!-- 商品状态 -->
@@ -65,7 +58,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.goodsStatus === 'down' ? $t('down') : $t('up') }}
+                        <span class="status normal" v-if="scope.row.goodsStatus === 'up'">{{$t('up')}}</span>
+                        <span class="status sleep" v-else>{{$t('down')}}</span>
                     </template>
                 </el-table-column>
                 <!-- 操作 -->
@@ -77,10 +71,10 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <div class="operate">
-                            <span class="operate-btn blue" @click="addGood(scope.row)">{{$t('continueStockIn')}}</span>
-                            <span class="operate-btn blue" @click="stockDetail(scope.row)">{{$t('stockDetail')}}</span>
-                        </div>
+                        <ul class="operate-list">
+                            <li class="blue-label" @click="addGood({type: 'edit', detail: scope.row})">{{$t('continueStockIn')}}</li>
+                            <li class="blue-label" @click="stockDetail(scope.row)">{{$t('stockDetail')}}</li>
+                        </ul>
                     </template>
                 </el-table-column>
 
@@ -91,24 +85,16 @@
 
 <script>
 import tableCom from '@/components/tableCom/tableCom';
-import breadCrumbHead from '@/components/breadCrumbHead/index';
 import toolBox from '../components/toolBox';
 import { goodsListHead } from './tableConfig';
 import ajax from '@/api/index';
 export default {
 	components : {
 		tableCom,
-		breadCrumbHead,
 		toolBox
 	},
 	data () {
 		return {
-			//路由信息
-			beforeRouterList : [
-				{
-					name : 'inventoryManage',
-				}
-			],
 			//商品状态类型 选择列表
 			goodsStatusList : [
 				{
@@ -150,13 +136,15 @@ export default {
 		},
         /**
          * 前往新增商品入库界面
-         * @param {object} data
+         * @param {string} type
+         * @param {object} detail
          */
-        addGood (data) {
+        addGood ({ type, detail }) {
             this.$router.push({
                 name : 'editGoodsWarehousing',
                 params : {
-                    listItem : data
+                    type : type,
+                    listItem : detail
                 }
             });
         },
@@ -194,15 +182,26 @@ export default {
         .table-wrapper {
             margin-top: 20px;
 
-            .operate {
-                .operate-btn {
-                    cursor: pointer;
-                    margin-right: 10px;
+            .status {
+                position: relative;
+                padding-left: 14px;
+                &:after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50px;
                 }
-
-                .blue {
-                    color: #2F70DF;
-                }
+            }
+            .normal:after {
+                background: $color_green;
+            }
+            .sleep:after {
+                background: $color_gray;
             }
         }
 
