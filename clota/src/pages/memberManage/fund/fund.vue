@@ -98,7 +98,7 @@
                 :min-width="row.minWidth"
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    {{scoped.row.moneyBalance}}{{getUnit(scoped.row)}}
+                    {{scoped.row.moneyBalance | moneyFilter}}{{getUnit(scoped.row)}}
                 </template>
             </el-table-column>
             <el-table-column

@@ -21,7 +21,7 @@
 						</Select>
 					</FormItem>
 				</i-col>
-				<i-col style="width: auto;display: inline-block;margin-left: 10px;">
+				<i-col style="width: auto;display: inline-block;margin-left: 10px;top : -2px;">
 					<Button type="primary"
 							:disabled="selectedSmsRecord.length < 1"
 							@click="reSendSms">
@@ -29,7 +29,9 @@
 					</Button>
 				</i-col>
 				<i-col style="display: inline-block;width:auto;float: right">
+					<span class="sms-count">
 					发送短信总量：{{totalCount | contentFilter}}条
+					</span>
 				</i-col>
 			</i-row>
 		</Form>
@@ -53,6 +55,7 @@
 					:key="row.index"
 					:width="row.width"
 					:min-width="row.minWidth"
+					:selectable="checkIsValid"
 					type="selection"
 					slot-scope="row">
 				</el-table-column>
@@ -155,17 +158,17 @@
 					pageNo : this.pageNo,
 					pageSize : this.pageSize,
 					bizId : this.bizId,
-					status : status
+					statuses : status
 				}).then(res =>{
 					if (res.success) {
 						this.tableData = res.data ? res.data.data.map(item => {
-						    let extraData = item.extraData ? JSON.parse(item.extraData) : {};
-						    return {
-                                ...item,
-                                receiver : extraData.receiver,
-                                idCardNum : extraData.idCardNum
-                            };
-                        }) : [];
+							let extraData = item.extraData ? JSON.parse(item.extraData) : {};
+							return {
+								...item,
+								receiver : extraData.receiver,
+								idCardNum : extraData.idCardNum
+							};
+						}) : [];
 						this.totalCount = res.data ? res.data.totalRow : 0;
 					} else {
 						this.tableData = [];
@@ -210,7 +213,7 @@
 			 */
 			reSendSms () {
 				ajax.post('reSendSms',{
-					queueIds : this.selectedSmsRecord.map(item => item.id)
+					queueIds : JSON.stringify(this.selectedSmsRecord.map(item => item.id))
 				}).then(res => {
 					if (res.success) {
 						this.$Message.success(this.$t('successTip',{ tip : this.$t('sending') }));
@@ -233,6 +236,16 @@
 				} else if ( ['req_failure','failure'].includes(rowData.status) ) {
 					return 'failure';
 				}
+			},
+			/**
+			 * 校验是否可以选择短信发送记录
+			 * @param{Object} row 短信发送记录信息
+			 */
+			checkIsValid (row) {
+				if ( ['wait','doing','req_success'].includes(row.status) ) {
+					return false;
+				}
+				return true;
 			}
 		},
 	};
@@ -254,6 +267,13 @@
 
 		.content{
 			@include block_outline($height : unquote('calc(100% - 110px)'));
+		}
+
+		.sms-count{
+			display: inline-block;
+			line-height: 32px;
+			font-size: $font_size_14px;
+			color: $color_333;
 		}
 	}
 </style>
