@@ -1592,6 +1592,7 @@ export default {
     'account.donate' : '赠送账户',
     'account.openAmount' : '账户总额',
     'account.total' : '账户总额',
+    'lose' : '遗失',
 
 
 }

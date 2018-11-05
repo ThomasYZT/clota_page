@@ -6,11 +6,19 @@
             <div class="btn-area">
                 <div class="query-params">
                     <Select v-model="cardStatus"
-                            style="width:200px"
+                            style="width:170px"
                             @on-change="statusChange">
                         <Option value="all">{{$t('allCardType')}}</Option>
                         <Option value="open">{{$t('cardOpened')}}</Option>
                         <Option value="wait">{{$t('cardUnopened')}}</Option>
+                        <Option value="lose">{{$t('lose')}}</Option>
+                    </Select>
+                    <Select v-model="entityCardType"
+                            style="width:170px"
+                            @on-change="queryList">
+                        <Option value="all">{{$t('all')}}</Option>
+                        <Option value="common">{{$t('普通卡')}}</Option>
+                        <Option value="password">{{$t('密码卡')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
                            style="width: 240px;margin-left: 15px;margin-right: 15px;"
@@ -61,7 +69,17 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column6"
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{scope.row.entityCardType === 'password' ? $t('密码卡') : $t('普通卡')}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column7"
                     slot-scope="row"
                     :label="row.title"
                     fixed="right"
@@ -115,7 +133,9 @@
                 //模态框是否显示
                 importVisible : false,
                 //当前操作的数据
-                currentData : {}
+                currentData : {},
+                //卡类型
+                entityCardType : 'all'
             }
         },
         methods: {
@@ -128,6 +148,7 @@
                     keyWord : this.keyword,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
+                    entityCardType : this.entityCardType === 'all' ? '' : this.entityCardType
                 }).then(res => {
                     if(res.success){
                         this.tableData = res.data ? res.data.memberEntityCardVoList ? res.data.memberEntityCardVoList.data : [] : [];

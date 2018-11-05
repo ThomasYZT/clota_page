@@ -18,11 +18,21 @@
                   :model="formData"
                   :rules="ruleValidate"
                   :label-width="lang === 'zh-CN' ? 100 : 180">
+                <FormItem :label="$t('卡类型')" prop="entityCardType">
+                    <Select v-model="formData.entityCardType">
+                        <Option value="common">{{$t('普通卡')}}</Option>
+                        <Option value="password">{{$t('密码卡')}}</Option>
+                    </Select>
+                </FormItem>
                 <FormItem :label="$t('cardFaceNum')" prop="faceNum">
                     <Input v-model.trim="formData.faceNum"/>
                 </FormItem>
                 <FormItem :label="$t('physicalCardNo')" prop="physicalNum">
                     <Input v-model.trim="formData.physicalNum"/>
+                </FormItem>
+                <FormItem :label="$t('涂层密码')" prop="password"
+                          v-if="formData.entityCardType === 'password'">
+                    <Input v-model.trim="formData.password"/>
                 </FormItem>
             </Form>
         </div>
@@ -80,7 +90,11 @@
                     //卡面号
                     faceNum : '',
                     //物理卡号
-                    physicalNum : ''
+                    physicalNum : '',
+                    //实体卡类型
+                    entityCardType : 'common',
+                    //图层密码
+                    password : ''
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -91,6 +105,20 @@
                     physicalNum :[
                         {required : true,message : this.$t('inputField',{field : this.$t('physicalCardNo')}),trigger : 'blur'},
                         {validator : validateNumAndStr,trigger : 'blur',name : this.$t('physicalCardNo'),maxLength : 60}
+                    ],
+                    entityCardType : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{msg : this.$t('卡类型')}),
+                            trigger : 'blur'
+                        }
+                    ],
+                    password : [
+                        {
+                            required : true,
+                            message : this.$t('inputField',{field : this.$t('password')}),
+                            trigger : 'blur'
+                        },
                     ]
                 },
                 //是否在保存中
@@ -149,6 +177,8 @@
                 ajax.post('saveEntityCard',{
                     physicalNum : this.formData.physicalNum,
                     faceNum : this.formData.faceNum,
+                    entityCardType : this.formData.entityCardType,
+                    password : this.formData.password,
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
@@ -226,8 +256,7 @@
         }
 
         .target-body{
-            padding: 82px 70px 0 70px;
-            height: 262px;
+            padding: 30px 70px 10px 70px;
         }
     }
 </style>
