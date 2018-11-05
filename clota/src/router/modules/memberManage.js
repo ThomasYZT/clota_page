@@ -653,6 +653,17 @@ export default {
                             rightPath : topMenuName + '.' + 'memberActivity'
                         },
                     },
+                    //初始化设置-会员活动-短信发送记录详情
+                    smsSendRecordDetail : {
+                        path : '/memberManage/smsSendRecord/detail',
+                        name : 'smsSendRecordDetail',
+                        component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/smsSendRecordDetail.vue'),
+                        meta : {
+                            menuName : 'smsSendRecordDetail', //lang.config.js 里面的语言键值
+                            _name : 'point-manage',
+                            rightPath : topMenuName + '.' + 'memberActivity'
+                        },
+                    },
                     paymentProtocol : {
                         //会员管理--基础设置--支付协议设置
                         path : '/memberManage/paymentProtocol',

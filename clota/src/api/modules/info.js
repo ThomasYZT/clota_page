@@ -175,6 +175,10 @@ export default {
     'countMemberInLevel': '/member/memberLevel/countMemberInLevel',
     //短信发送记录
     'querySmsBizModels': '/sms/querySmsBizModels',
+    //短信发送记录详情
+    'querySmsQueues': '/sms/querySmsQueues',
+    //重发短信
+    'reSendSms': '/sms/reSendSms',
 
 
     /***********************************会员统计***********************************/
