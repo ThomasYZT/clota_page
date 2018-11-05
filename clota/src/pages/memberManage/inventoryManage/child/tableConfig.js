@@ -53,12 +53,14 @@ export const inBoundHead = [
     {
         title : 'purchasePrice', //采购价（单位：元）
         minWidth : 200,
-        field : 'purchasePrice'
+        field : 'purchasePrice',
+        type : 'money'
     },
     {
         title : 'marketPrice', //市场价
         minWidth : 120,
-        field : 'marketPrice'
+        field : 'marketPrice',
+        type : 'money'
     },
     {
         title : 'purchaser', //采购人

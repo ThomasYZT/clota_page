@@ -28,7 +28,8 @@ export const integralHead = [
     {
         title : 'marketPrice', //市场价
         minWidth : 120,
-        field : 'marketPrice'
+        field : 'marketPrice',
+        type : 'money'
     },
     {
         title : 'more', //更多

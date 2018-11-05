@@ -1576,4 +1576,13 @@ export default {
     'catering' : '餐饮',
     'memberRights' : '会员权益设置',
     'memberActivity' : '会员活动',
+    'isSureDownGoods' : '是否确定下架商品',
+    'isSureUpGoods' : '是否确定上架商品',
+    'goodDetails' : '商品详情',
+    'convertibilityIntegral' : '可兑换积分',
+    'stockStatus' : '库存状态',
+    'ticketCode' : '券号',
+    'commodityExchangeInformation' : '商品兑换信息',
+    'failToGet' : '获取{feild}失败',
+    'updateInfo' : '更新信息'
 }

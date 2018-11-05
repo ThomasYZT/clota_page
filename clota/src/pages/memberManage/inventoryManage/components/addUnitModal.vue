@@ -4,6 +4,7 @@
 -->
 <template>
     <Modal v-model="isShow"
+           class-name="vertical-center-modal"
            :title="$t('addMeasurementUnit')">
         <Form :model="formData"
               :rules="ruleValidate"
@@ -68,7 +69,7 @@
              */
             hide () {
                 this.toggle();
-                this.$emit('restore')
+                this.$emit('restore');
             }
         }
     };

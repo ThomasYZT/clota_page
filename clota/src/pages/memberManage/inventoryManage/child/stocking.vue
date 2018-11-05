@@ -4,12 +4,6 @@
 -->
 <template>
     <div class="stocking">
-        <!-- 面包屑导航 -->
-        <breadCrumbHead
-            :before-router-list="beforeRouterList"
-            :locale-router="$t('stocking')"
-        >
-        </breadCrumbHead>
 
         <Form ref="formBody"
               label-position="right"
@@ -17,7 +11,7 @@
             <toolBox :toolNum="3">
                 <div slot="tool0">
                     <Form-item :label="$t('changeType')+':'">
-                        <Select v-model="filterData.changeType" style="width:250px">
+                        <Select v-model="filterData.changeType" @on-change="getListData()" style="width:250px">
                             <Option v-for="(item, index) in changeTypeList" :value="item.value" :key="index">{{ $t(item.label) }}</Option>
                         </Select>
                     </Form-item>
@@ -26,6 +20,9 @@
                     <Form-item :label="$t('startEndDate')+':'">
                         <DatePicker type="daterange" split-panels
                                     v-model="dateRange"
+                                    @on-change="dateChange"
+                                    :editable="false"
+                                    :clearable="false"
                                     :placeholder="$t('selectField', { msg : $t('startEndDate') })"
                                     style="width: 250px"></DatePicker>
                     </Form-item>
@@ -56,7 +53,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.stockNum + scope.row.undrawNum }}
+                        {{ scope.row.stockNum + scope.row.undrawNum | contentFilter}}
                     </template>
                 </el-table-column>
                 <!-- 商品状态 -->
@@ -67,7 +64,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.goodsStatus === 'down' ? $t('down') : $t('up') }}
+                        <span class="status normal" v-if="scope.row.goodsStatus === 'up'">{{$t('up')}}</span>
+                        <span class="status sleep" v-else>{{$t('down')}}</span>
                     </template>
                 </el-table-column>
                 <!-- 操作 -->
@@ -79,9 +77,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <div class="operate">
-                            <span class="operate-btn blue" @click="stockDetail(scope.row)">{{$t('stockDetail')}}</span>
-                        </div>
+                        <ul class="operate-list">
+                            <li class="blue-label" @click="stockDetail(scope.row)">{{$t('stockDetail')}}</li>
+                        </ul>
                     </template>
                 </el-table-column>
             </tableCom>
@@ -91,24 +89,16 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom';
-    import breadCrumbHead from '@/components/breadCrumbHead/index';
     import toolBox from '../components/toolBox';
     import { stockingHead } from './tableConfig';
     import ajax from '@/api/index';
     export default {
         components : {
             tableCom,
-            breadCrumbHead,
             toolBox
         },
         data () {
             return {
-                //路由信息
-                beforeRouterList : [
-                    {
-                        name : 'inventoryManage',
-                    }
-                ],
                 //过滤信息
                 filterData : {
                     startDate : '',
@@ -147,13 +137,14 @@
             dateChange (data) {
                 this.filterData.startDate = data[0];
                 this.filterData.endDate = data[1];
+                this.getListData();
             },
             /**
              * 获取库存盘点列表数据
              */
             getListData () {
-                this.filterData.startDate = new Date(this.dateRange[0]).format('yyyy-MM-dd');
-                this.filterData.endDate = new Date(this.dateRange[1]).format('yyyy-MM-dd');
+                this.filterData.startDate = this.dateRange[0] ? this.dateRange[0].format('yyyy-MM-dd') : '';
+                this.filterData.endDate = this.dateRange[1] ? this.dateRange[1].format('yyyy-MM-dd') : '';
                 ajax.post('queryGoodsStock', this.filterData).then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
@@ -195,15 +186,26 @@
             float: right;
         }
 
-        .operate {
-            .operate-btn {
-                cursor: pointer;
-                margin-right: 10px;
+        .status {
+            position: relative;
+            padding-left: 14px;
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 6px;
+                height: 6px;
+                border-radius: 50px;
             }
-
-            .blue {
-                color: #2F70DF;
-            }
+        }
+        .normal:after {
+            background: $color_green;
+        }
+        .sleep:after {
+            background: $color_gray;
         }
     }
 </style>

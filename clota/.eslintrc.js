@@ -128,6 +128,6 @@ module.exports = {
         "no-var": 2, //使用let和const代替var
         "generator-star-spacing": [2, "both"], //生成器函数前后空格
         "max-depth": [2,{"max": 4}], //嵌套块深度
-        "max-len": [1,{"code": 125,"comments": 100, "ignoreUrls": true}], //一行最大长度，单位为字符
+        "max-len": [1,{"code": 200,"comments": 100, "ignoreUrls": true}], //一行最大长度，单位为字符
     }
 }
