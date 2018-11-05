@@ -372,7 +372,7 @@
              * @param{Function} callback 回调函数
              */
             validateMoney (rule,value,callback) {
-                common.validateMoney(rule.data,0,2).then(() => {
+                common.validateMoney(rule.data,0,10).then(() => {
                     callback();
                 }).catch(err => {
                     if (err === 'errorMaxLength') {

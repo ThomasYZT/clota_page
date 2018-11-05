@@ -24,7 +24,6 @@
             <!--</div>-->
 
             <div class="content-item">
-                <!--会员3期暂时去掉-->
                 <div class="title">{{$t('storeIntegetSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreGrowthFromCharging.storedAndGrowthType" vertical>
@@ -161,73 +160,45 @@
                 </div>
             </div>
 
-            <div class="content-item">
-                <div class="title">{{$t('storeValueAccountSettings')}}
-                    <!--会员3期暂时去掉-->
-                    <!--<span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>-->
-                </div>
-                <div class="main">
-                    <div class="table-wrap">
-                        <table-com
-                            :table-com-min-height="320"
-                            :column-data="columnData"
-                            :table-data="tableData"
-                            :auto-height="true"
-                            :border="false">
-                            <el-table-column
-                                slot="column0"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    {{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column1"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip
-                                slot-scope="row">
-                            </el-table-column>
-                            <el-table-column
-                                slot="column2"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    <ul class="operate-list">
-                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column3"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    <ul class="operate-list">
-                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                            <!--会员3期暂时去掉-->
+            <!--会员3期暂时去掉-->
+            <!--<div class="content-item">-->
+                <!--<div class="title">{{$t('storeValueAccountSettings')}}-->
+                    <!--&lt;!&ndash;会员3期暂时去掉&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="main">-->
+                    <!--<div class="table-wrap">-->
+                        <!--<table-com-->
+                            <!--:table-com-min-height="320"-->
+                            <!--:column-data="columnData"-->
+                            <!--:table-data="tableData"-->
+                            <!--:auto-height="true"-->
+                            <!--:border="false">-->
                             <!--<el-table-column-->
-                                <!--slot="column4"-->
+                                <!--slot="column0"-->
+                                <!--:label="row.title"-->
+                                <!--:prop="row.field"-->
+                                <!--:key="row.index"-->
+                                <!--:width="row.width"-->
+                                <!--:min-width="row.minWidth"-->
+                                <!--show-overflow-tooltip-->
+                                <!--slot-scope="row">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--{{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
+                            <!--<el-table-column-->
+                                <!--slot="column1"-->
+                                <!--:label="row.title"-->
+                                <!--:prop="row.field"-->
+                                <!--:key="row.index"-->
+                                <!--:width="row.width"-->
+                                <!--:min-width="row.minWidth"-->
+                                <!--show-overflow-tooltip-->
+                                <!--slot-scope="row">-->
+                            <!--</el-table-column>-->
+                            <!--<el-table-column-->
+                                <!--slot="column2"-->
                                 <!--:label="row.title"-->
                                 <!--:prop="row.field"-->
                                 <!--:key="row.index"-->
@@ -236,14 +207,44 @@
                                 <!--slot-scope="row">-->
                                 <!--<template slot-scope="scope">-->
                                     <!--<ul class="operate-list">-->
-                                        <!--<li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>-->
+                                        <!--<li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>-->
                                     <!--</ul>-->
                                 <!--</template>-->
                             <!--</el-table-column>-->
-                        </table-com>
-                    </div>
-                </div>
-            </div>
+                            <!--<el-table-column-->
+                                <!--slot="column3"-->
+                                <!--:label="row.title"-->
+                                <!--:prop="row.field"-->
+                                <!--:key="row.index"-->
+                                <!--:width="row.width"-->
+                                <!--:min-width="row.minWidth"-->
+                                <!--slot-scope="row">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<ul class="operate-list">-->
+                                        <!--<li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>-->
+                                    <!--</ul>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
+                            <!--&lt;!&ndash;会员3期暂时去掉&ndash;&gt;-->
+                            <!--&lt;!&ndash;<el-table-column&ndash;&gt;-->
+                                <!--&lt;!&ndash;slot="column4"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:label="row.title"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:prop="row.field"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:key="row.index"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:width="row.width"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:min-width="row.minWidth"&ndash;&gt;-->
+                                <!--&lt;!&ndash;slot-scope="row">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<ul class="operate-list">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</template>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</el-table-column>&ndash;&gt;-->
+                        <!--</table-com>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
             <div class="content-item">
                 <div class="title">{{$t('消费时优先扣除账户设置')}}</div>
                 <div class="main">

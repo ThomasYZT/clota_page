@@ -70,11 +70,12 @@
                 //表单校验规则
                 ruleValidate : {
                     memberCategoryName : [
-                        { required : true,message : this.$t('inputField',{ field : this.$t('会员卡类别') }),trigger : 'blur' },
-                        { validator : validateMemberCategoryName,trigger : 'blur' }
+                        { required : true,message : this.$t('inputField',{ field : this.$t('会员卡类别名称') }),trigger : 'blur' },
+                        { validator : validateMemberCategoryName,trigger : 'blur' },
+                        { max : 20, message : this.$t('errorMaxLength',{ field : this.$t('会员卡类别名称'),length : 20 }),trigger : 'blur' }
                     ],
                     remark : [
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remarak'),length : 100 }),trigger : 'blur' }
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }),trigger : 'blur' }
                     ]
                 },
                 //保存数据中

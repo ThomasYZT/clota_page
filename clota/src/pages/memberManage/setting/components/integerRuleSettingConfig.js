@@ -24,7 +24,8 @@ export const columnData = [
     {
         title : '最多抵扣单笔订单总额',
         minWidth : 200,
-        field : 'highProportion'
+        field : 'highProportion',
+        type : 'money'
     },
     {
         title : '是否启用',

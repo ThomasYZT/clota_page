@@ -125,7 +125,7 @@
 			};
 			//校验选择的日期是否正确
 			const validateDate = (rule,value,callback) => {
-				if (value && value.length > 0) {
+				if (value && value.length > 0 && value[0] && value[1]) {
 					let startTime = value[0] ? value[0].valueOf() : 0;
 					let endTime = value[1] ? value[1].valueOf() : 0;
 					for (let i = 0,j = this.hasSelectedTime.length; i < j; i++) {
@@ -250,10 +250,10 @@
 									money : this.formData.money,
 									highProportion : this.formData.highProportion,
 									isSwitch : this.formData.isSwitch,
-									startTime : this.formData.date.length > 0
+									startTime : this.formData.date[0]
 										? this.formData.date[0].format('yyyy-MM-dd')
 										: '',
-									endTime : this.formData.date.length > 0
+									endTime : this.formData.date[1]
 										? this.formData.date[1].format('yyyy-MM-dd')
 										: '',
 								}

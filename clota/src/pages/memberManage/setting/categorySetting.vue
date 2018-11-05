@@ -50,7 +50,8 @@
         <del-modal ref="delModal">
             <span class="content-text">
                 <i class="iconfont icon-help delete-icon"></i>
-                {{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{currentData ? currentData.typeName : ''}}</span>
+                {{$t('isDoing')}}{{$t('delete')}}：
+                <span class="yellow-label" v-w-title="currentData ? currentData.typeName : ''">{{currentData ? currentData.typeName : ''}}</span>
             </span>
             <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
         </del-modal>

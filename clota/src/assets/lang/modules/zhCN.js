@@ -1583,7 +1583,8 @@ export default {
     'ticketCode' : '券号',
     'commodityExchangeInformation' : '商品兑换信息',
     'failToGet' : '获取{feild}失败',
-    'updateInfo' : '更新信息'
+    'updateInfo' : '更新信息',
+    'changeMemLevelPlease' : '会员级别已存在，请重新选择会员级别'
 
 
 }

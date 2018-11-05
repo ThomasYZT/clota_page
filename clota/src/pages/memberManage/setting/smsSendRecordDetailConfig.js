@@ -15,7 +15,7 @@ export const columnData = [
     },
     {
         title : '发送时间',
-        minwidth : 80,
+        width : 180,
         field : 'sendTime',
     },
     {
@@ -25,7 +25,7 @@ export const columnData = [
     },
     {
         title : '接收人电话',
-        minwidth : 80,
+        width : 140,
         field : 'phone',
     },
     {

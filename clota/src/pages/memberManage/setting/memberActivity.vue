@@ -8,22 +8,22 @@
 			<div class="btn-wrap">
 				<Button type="primary" @click="showRecord">发送记录</Button>
 			</div>
-            <Form ref="formValidate"
-                  :model="formData"
-                  label-position="left"
-                  :rules="ruleValidate"
-                  :label-width="110">
-                <FormItem label="短信内容：" prop="content">
-                    <i-input v-model.trim="formData.content"
-                             type="textarea"
-                             style="width: 480px" >
+			<Form ref="formValidate"
+				  :model="formData"
+				  label-position="left"
+				  :rules="ruleValidate"
+				  :label-width="110">
+				<FormItem label="短信内容：" prop="content">
+					<i-input v-model.trim="formData.content"
+							 type="textarea"
+							 style="width: 480px" >
 					</i-input>
 				</FormItem>
 				<FormItem label="会员卡级别：" prop="sendRange">
 					<Select v-model="formData.sendRange"
 							multiple
 							style="width: 480px"
-							@on-open-change="countMemberInLevel">
+							@on-change="countMemberInLevel">
 						<Option :value="item.id"
 								v-for="item in memberLevels"
 								:key="item.id">
@@ -60,31 +60,31 @@
 				},
 				//校验规则
 				ruleValidate : {
-                    content : [
-                        {
-                            required : true,
-                            message : this.$t('inputField',{ field : this.$t('短信内容') }),
-                            trigger : 'blur'
-                        },
-                        {
-                            max : 70,
-                            message : this.$t('errorMaxLength',{ field : this.$t('短信内容'),length : 70 }) ,
-                            trigger : 'blur'
-                        }
-                    ],
-                    sendRange : [
-                        {
-                            required : true,
-                            message : this.$t('selectField',{ msg : this.$t('会员卡级别') }),
-                            trigger : 'change',
-                            type : 'array'
-                        }
-                    ]
+					content : [
+						{
+							required : true,
+							message : this.$t('inputField',{ field : this.$t('短信内容') }),
+							trigger : 'blur'
+						},
+						{
+							max : 100,
+							message : this.$t('errorMaxLength',{ field : this.$t('短信内容'),length : 100 }) ,
+							trigger : 'blur'
+						}
+					],
+					sendRange : [
+						{
+							required : true,
+							message : this.$t('selectField',{ msg : this.$t('会员卡级别') }),
+							trigger : 'change',
+							type : 'array'
+						}
+					]
 				},
 				//会员级别信息
 				memberLevels : [],
-                //是否在发送中
-                sending : false
+				//是否在发送中
+				sending : false
 			};
 		},
 		methods : {
@@ -130,36 +130,34 @@
 			 * @param{Boolean} type 显示或隐藏
 			 */
 			countMemberInLevel (type) {
-				if (type === false) {
-					ajax.post('countMemberInLevel',{
-						memberLevelIds : this.formData.sendRange.join(','),
-					}).then(res => {
-						if (res.success) {
-							this.formData.smsCount = res.data ? res.data : 0;
-						} else {
-							this.formData.smsCount = 0;
-						}
-					});
-				}
+				ajax.post('countMemberInLevel',{
+					memberLevelIds : this.formData.sendRange.join(','),
+				}).then(res => {
+					if (res.success) {
+						this.formData.smsCount = res.data ? res.data : 0;
+					} else {
+						this.formData.smsCount = 0;
+					}
+				});
 			},
-            /**
-             * 发送短信
-             */
-            send () {
-			    this.$refs.formValidate.validate(valid => {
+			/**
+			 * 发送短信
+			 */
+			send () {
+				this.$refs.formValidate.validate(valid => {
 					if (valid) {
 						this.sendMassSms();
-                    }
-                });
-            },
-            /**
-             * 查看短信发送记录
-             */
-            showRecord () {
-                this.$router.push({
-                    name : 'smsSendRecord'
-                });
-            }
+					}
+				});
+			},
+			/**
+			 * 查看短信发送记录
+			 */
+			showRecord () {
+				this.$router.push({
+					name : 'smsSendRecord'
+				});
+			}
 		},
 		created () {
 			this.getMemberLevelsInType();
