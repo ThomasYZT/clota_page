@@ -524,10 +524,18 @@ export default {
     'consumeWithoutPass' : 'no need for password verification, personal information, etc.when consumption',
     'consumeWithPass' : 'password verification is required for consumption',
     'erCodeOrSmsToPass' : '(Offline brush payment QR code, online payment password verification)',
-    'storeIntegetSetting' : 'stored-value points, growth value ratio setting',
-    'storeWithouIntegetAGrowth' : 'the points and growth values are get when you consume but not when you store the value',
-    'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points and growth values when you consume.',
-    'storeIntegetRatioSetting' : 'effective settings of points and growth value obtained during the stored value',
+    // 会员3期暂时去掉
+    // 'storeIntegetSetting' : 'stored-value points, growth value ratio setting',
+    'storeIntegetSetting' : 'stored-value points value ratio setting',
+    // 会员3期暂时去掉
+    // 'storeWithouIntegetAGrowth' : 'the points and growth values are get when you consume but not when you store the value',
+    'storeWithouIntegetAGrowth' : 'the points values are get when you consume but not when you store the value',
+    // 会员3期暂时去掉
+    // 'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points and growth values when you consume.',
+    'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points when you consume.',
+    // 会员3期暂时去掉
+    // 'storeIntegetRatioSetting' : 'effective settings of points and growth value obtained during the stored value',
+    'storeIntegetRatioSetting' : 'effective settings of points obtained during the stored value',
     'rechartSucEffective' : 'effective immediately after the stored value is successful',
     'rechartSuc' : 'after the stored value is successful',
     'hourLaterInvalid' : 'after hours will effective',
@@ -1565,6 +1573,9 @@ export default {
     'startEndDate' : '起止日期',
     'exchangePointsRequired' : '兑换时所需积分',
     'GetTheGoods' : '领取商品',
+    'catering' : '餐饮',
+    'memberRights' : '会员权益设置',
+    'memberActivity' : '会员活动',
     'isSureDownGoods' : '是否确定下架商品',
     'isSureUpGoods' : '是否确定上架商品',
     'goodDetails' : '商品详情',

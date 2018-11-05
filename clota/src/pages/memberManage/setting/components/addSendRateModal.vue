@@ -71,52 +71,54 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['length','table-data'],
-        components: {
+        props : ['length','table-data'],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: this.$t('addStoredSendRatio'),
+                visible : false,
+                title : this.$t('addStoredSendRatio'),
                 //表单数据--储值赠送金额比例设置
-                index: null,
-                formData:  {
-                    lowerValue: 0,
-                    topValue: 0,
-                    gift: 0,
-                    scope: '',
-                    _status: 1,
+                index : null,
+                formData : {
+                    lowerValue : 0,
+                    topValue : 0,
+                    gift : 0,
+                    scope : '',
+                    _status : 1,
                 },
                 //表格多选列表
-                multipleSelection: [],
+                multipleSelection : [],
                 //表单报错内容
-                error: '',
+                error : '',
                 //表头信息
-                columnData: [
+                columnData : [
                     {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
+                        title : '',
+                        minWidth : 110,
+                        field : '',
                     },
                     {
-                        title: 'principalCanBeUsedInRangeSetting',
-                        minWidth: 400,
-                        field: 'accountName'
+                        title : 'applicationScope',
+                        minWidth : 400,
+                        // 会员3期暂时去掉
+                        // field : 'accountName'
+                        field : 'levelDesc'
                     },
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
 
             show ( data, type) {
-                if(type && type !== 'add'){
+                if (type && type !== 'add') {
                     this.title = this.$t('modifyProportionOfDonatedAmountOfStorageValue');
                     this.index = this.length;
                 }
 
-                if( data ){
-                    if(type && type !== 'add'){
+                if ( data ) {
+                    if (type && type !== 'add') {
                         this.formData = defaultsDeep({}, data.item);
                     } else {
                         this.formData = data.item;
@@ -126,82 +128,82 @@
 
                 this.visible = true;
 
-                if( data ){
+                if ( data ) {
                     setTimeout( () => {
-                        if(data.item.scope && JSON.parse(data.item.scope) && JSON.parse(data.item.scope).length > 0){
+                        if (data.item.scope && JSON.parse(data.item.scope) && JSON.parse(data.item.scope).length > 0) {
                             JSON.parse(data.item.scope).forEach( item => {
                                 this.tableData.forEach( (list,index) => {
-                                    if(item.id === list.id){
-                                        if(this.$refs.ruleMultiTablePlug){
+                                    if (item.id === list.id) {
+                                        if (this.$refs.ruleMultiTablePlug) {
                                             this.$refs.ruleMultiTablePlug.toggleRowSelection(this.tableData[index], true);
                                         }
                                     }
-                                })
-                            })
+                                });
+                            });
                         }
-                    },300)
+                    },300);
                 }
             },
 
             //校验input输入
             validateInput ( value, flag ) {
-                if( value === '' || value === 'null' || value === null || value == 0 || !value ){
-                    if( (value == 0 || !value) && flag ){
+                if ( value === '' || value === 'null' || value === null || value == 0 || !value ) {
+                    if ( (value == 0 || !value) && flag ) {
                         this.error = '';
-                        return true
-                    }else{
-                        this.error = this.$t('errorEmpty', {msg: ''});     // '不能为空'
-                        return false
+                        return true;
+                    } else {
+                        this.error = this.$t('errorEmpty', { msg : '' }); // '不能为空'
+                        return false;
                     }
-                } else if( value && value.length > 10 ){
-                    this.error = this.$t('errorMaxLength',{field : '',length : 10});
-                    return false
-                } else if( value && value.isUtf16() ){
-                    this.error = this.$t('errorIrregular');     // '输入内容不合规则'
-                    return false
+                } else if ( value && value.length > 10 ) {
+                    this.error = this.$t('errorMaxLength',{ field : '',length : 10 });
+                    return false;
+                } else if ( value && value.isUtf16() ) {
+                    this.error = this.$t('errorIrregular'); // '输入内容不合规则'
+                    return false;
                 } else {
                     this.error = '';
-                    return true
+                    return true;
                 }
             },
 
             //保存
             save () {
-                if( this.validateInput(this.formData.lowerValue, true) &&
+                if ( this.validateInput(this.formData.lowerValue, true) &&
                     this.validateInput(this.formData.topValue) &&
-                    this.validateInput(this.formData.gift) ){
+                    this.validateInput(this.formData.gift) ) {
 
-                    if(Number(this.formData.lowerValue) > Number(this.formData.topValue)) {
-                        this.error = this.$t('startValBiggerThenMaxVal', {msg: ''});     // '不能为空'
-                        return
+                    if (Number(this.formData.lowerValue) > Number(this.formData.topValue)) {
+                        this.error = this.$t('startValBiggerThenMaxVal', { msg : '' }); // '不能为空'
+                        return;
                     }
 
                     let list = [];
                     this.multipleSelection.forEach( (item, index) => {
-                        list.push({ id: item.id });
+                        list.push({ id : item.id });
                     });
                     this.formData.scope = JSON.stringify(list);
-                    this.$emit('submit-date', { item: this.formData, index: this.index});
+                    this.$emit('submit-date', { item : this.formData, index : this.index });
                     this.hide();
                 }
             },
 
-            handleSelectionChange(val) {
+            handleSelectionChange (val) {
                 this.multipleSelection = val;
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    lowerValue: 0,
-                    topValue: 0,
-                    gift: 0,
-                    scope: '',
-                    _status: 1,
+                    lowerValue : 0,
+                    topValue : 0,
+                    gift : 0,
+                    scope : '',
+                    _status : 1,
                 };
                 this.multipleSelection = [];
-                if( this.$refs.ruleMultiTablePlug ){
+                if ( this.$refs.ruleMultiTablePlug ) {
                     this.$refs.ruleMultiTablePlug.clearSelection();
                 }
                 this.index = null;
@@ -209,7 +211,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

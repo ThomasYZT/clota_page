@@ -8,25 +8,22 @@
     <div class="refunded-card">
         <!--头部tab组件-->
         <header-tabs :router-name="'refundedCard'"></header-tabs>
-        <div class="search-box">
-            <Input v-model.trim="filterParams.keyword"
-                   style="width: 280px;"
-                   :placeholder="$t('请输入关键字')" /><!--请输入姓名、手机号、会员编号、证件编号-->
-            <Button type="primary" class="ivu-btn-90px" @click="">{{$t('搜索')}}</Button><!--搜索-->
-        </div>
+        <div class="container">
+            <search-card></search-card>
 
-        <div class="detail-container">
-            <!--持卡人的个人信息-->
-            <cardholder-info></cardholder-info>
-            <!--会员卡信息-->
-            <card-info></card-info>
-            <!--储值账户信息-->
-            <store-account-info></store-account-info>
-            <!--积分账户信息-->
-            <integral-account-info></integral-account-info>
-        </div>
-        <div class="footer">
-            <Button type="primary" class="ivu-btn-90px">{{$t('退卡')}}</Button>
+            <div class="detail-container">
+                <!--持卡人的个人信息-->
+                <cardholder-info></cardholder-info>
+                <!--会员卡信息-->
+                <card-info></card-info>
+                <!--储值账户信息-->
+                <store-account-info></store-account-info>
+                <!--积分账户信息-->
+                <integral-account-info></integral-account-info>
+            </div>
+            <div class="footer">
+                <Button type="primary" class="ivu-btn-90px">{{$t('退卡')}}</Button>
+            </div>
         </div>
     </div>
 </template>
@@ -37,6 +34,7 @@
     import storeAccountInfo from './components/storeAccountInfo.vue';
     import integralAccountInfo from './components/integralAccountInfo.vue';
     import headerTabs from './components/newCardTabs.vue';
+    import searchCard from './components/searchCard.vue';
 
     export default {
         components: {
@@ -45,6 +43,7 @@
             cardInfo,
             storeAccountInfo,
             integralAccountInfo,
+            searchCard,
         },
         props: {},
         data() {
@@ -53,9 +52,6 @@
                 queryParams: {
                     pageNo: 1,                                      // 当前页码数
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
-                },
-                filterParams: {
-                    keyword: '',   //
                 },
             }
         },
@@ -79,15 +75,8 @@
         border-radius : 4px;
     }
 
-    .search-box {
-        margin: 20px 20px 0;
-        .ivu-btn-90px {
-            margin-left: 8px;
-        }
-    }
-
     .detail-container {
-        height: calc(100% - 50px);
+        /*height: calc(100% - 50px);*/
         padding: 15px 20px;
     }
 
@@ -110,6 +99,15 @@
             display: inline-block;
             vertical-align: middle;
             @include overflow_tip();
+        }
+    }
+
+    .container {
+        height: calc(100% - 70px);
+        overflow: auto;
+        .content-wrap {
+            width: 850px;
+            margin: 20px auto;
         }
     }
 </style>

@@ -30,46 +30,48 @@
 <script>
     import idlerWheelTap from '@/components/idlerWheelTap/index';
     export default {
-        props: ['routerName'],
-        components: {
+        props : ['routerName'],
+        components : {
             idlerWheelTap
         },
         data () {
             return {
                 // 路由列表
-                routerList: [
-                    { name: 'memberSetting', desc: 'memberSetting' },      // 基础设置
-                    { name: 'cardScopeSetting', desc: 'cardScopeSetting' },           // 会员卡应用范围设置
-                    { name: 'memCardManagement', desc: 'memCardManagement' },             // 会员级别
-                    { name: 'growthSetting', desc: 'growthSetting' },          // 成长值设置
-                    { name: 'fundSetting', desc: 'fundSetting' },              // 储值设置
-                    { name: 'consumeSetting', desc: 'consumeSetting' },       // 积分消费管理
-                    { name: 'productTypeSetting', desc: 'productTypeSetting' },       // 产品类别设置
+                routerList : [
+                    { name : 'memberSetting', desc : 'memberSetting' }, // 基础设置
+                    { name : 'cardScopeSetting', desc : 'cardScopeSetting' }, // 会员卡应用范围设置
+                    { name : 'memCardManagement', desc : 'memCardManagement' }, // 会员级别
+                    { name : 'growthSetting', desc : 'growthSetting' }, // 成长值设置
+                    { name : 'fundSetting', desc : 'fundSetting' }, // 储值设置
+                    { name : 'consumeSetting', desc : 'consumeSetting' }, // 积分消费管理
+                    { name : 'productTypeSetting', desc : 'productTypeSetting' }, // 产品类别设置
+                    { name : 'memberRights', desc : 'memberRights' }, // 会员权益
+                    { name : 'memberActivity', desc : 'memberActivity' }, // 会员活动
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 点击tab路由跳转
              * @param data
              */
             triggerLink ( data ) {
-                this.$router.push({ name: data.name })
+                this.$router.push({ name : data.name });
             },
 
         },
         computed : {
             //当前所在的默认列表序号
             defaultIndex () {
-                for(let i = 0,j = this.routerList.length;i < j;i++){
-                    if(this.routerName === this.routerList[i]['name']){
+                for (let i = 0,j = this.routerList.length; i < j; i++) {
+                    if (this.routerName === this.routerList[i]['name']) {
                         return i;
                     }
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

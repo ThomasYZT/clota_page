@@ -67,12 +67,12 @@
                 <Input v-model.trim="cardParam.homeAddr"
                        :placeholder="$t('inputField', {field: $t('familyAddress')})"/><!--请输入家庭地址-->
             </Form-item>
-            <Form-item :label="$t('支付密码')" prop="">
+            <Form-item :label="$t('支付密码')" prop="tradePassword">
                 <Button type="ghost">{{$t('设置密码')}}</Button>
             </Form-item>
 
             <!--实体卡信息-->
-            <entity-card-info :title="'entityCardInfo'"></entity-card-info>
+            <entity-card-info :title="'entityCardInfo'" ref="entityCard"></entity-card-info>
 
             <!--收款方式-->
             <h3>{{$t('收款方式')}}</h3>
@@ -89,7 +89,6 @@
             <template v-if="type === 'add'">
                 <Button type="primary"
                         :loading="loading"
-                        :disabled="!cardParam.tpNo || !cardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirmAdd')}}
                 </Button>
@@ -97,7 +96,6 @@
             <template v-if="type === 'modify'">
                 <Button type="primary"
                         :loading="loading"
-                        :disabled="!cardParam.tpNo || !cardParam.tpCardNo"
                         @click="formValidateFunc">
                     {{$t('confirm')}}
                 </Button>
@@ -111,7 +109,6 @@
 </template>
 <script type="text/ecmascript-6">
     import {genderEnum} from '@/assets/js/constVariable';
-    import pick from 'lodash/pick';
     import {validator} from 'klwk-ui';
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
@@ -121,7 +118,14 @@
         components: {
             entityCardInfo
         },
-        props: {},
+        props: {
+            selectedCard: {
+                type: Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         data() {
             let validateMethod = {
 
@@ -197,6 +201,7 @@
                     "idCardNumber": "",//证件号码
                     "remark": "",//备注
                     "homeAddr": "",//家庭地址
+                    "tradePassword": "",//支付密码
                     "payType": "wx",//收款方式
                 },
 
@@ -269,9 +274,11 @@
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
                         var params = {
-                            memberInfo: pick(this.cardParam, ['custName', 'phoneNum', 'emailAddr', 'birthDay',
-                                'gender', 'qq', 'cityCode', 'stateCode', 'hobby', 'certificationType', 'idCardNumber', 'homeAddr']),
-                            memberCard: pick(this.cardParam, ['levelId', 'tpNo', 'tpCardNo']),
+                            memberInfo: this.cardParam,
+                            memberCard: {
+                                ...this.selectedCard,
+                                ...this.$refs.entityCard.entityCardParam
+                            }
                         };
                         params.memberInfo.birthDay = params.memberInfo.birthDay ?
                             new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
@@ -285,6 +292,42 @@
                             this.saveAndEditMember('editMemberInfo', params);
                         }*/
                     }
+                })
+            },
+            //新增/编辑会员接口
+            saveAndEditMember(url, params) {
+                this.loading = true;
+                ajax.post(url, {
+                    memberInfo: JSON.stringify(params.memberInfo),
+                    memberCard: JSON.stringify(params.memberCard),
+                }).then(res => {
+                    if (res.success) {
+                        //区分新增与修改
+                        if (this.type === 'add') {
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('add')}));     // 新增会员成功
+                            this.$router.push({name: 'memberInfo'});
+                        }
+                        if (this.type === 'modify') {
+                            this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));     // 修改会员成功
+                            this.$router.back();
+                        }
+                    } else {
+                        //区分新增与修改
+                        let errorTip = '';
+                        if (res.message == 'M008' || res.code == '300') {
+                            errorTip = this.$t('phoneExistCard');   // 手机号已被注册，请更换手机号
+                        }
+
+                        if(this.type === 'add'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('add')}));
+                        }
+                        if(this.type === 'modify'){
+                            this.$Message.error(errorTip || this.$t('failureTip',{tip : this.$t('modify')}));
+                        }
+
+                    }
+                }).finally(() => {
+                    this.loading = false;
                 })
             },
             //返回

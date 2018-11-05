@@ -167,6 +167,18 @@ export default {
     'saveOrUpdateCardRanges': '/member/memberLevel/saveOrUpdateCardRanges',
     //查询会员卡使用范围设置
     'queryCardRangeList': '/member/memberLevel/queryCardRangeList',
+    //查询会员卡权益可用景区
+    'getTicketList': '/member/memberLevel/getTicketList',
+    //发送会员活动短信
+    'sendMassSms': '/member/memberBasicSet/sendMassSms',
+    //获取会员活动发送短信接口数量
+    'countMemberInLevel': '/member/memberLevel/countMemberInLevel',
+    //短信发送记录
+    'querySmsBizModels': '/sms/querySmsBizModels',
+    //短信发送记录详情
+    'querySmsQueues': '/sms/querySmsQueues',
+    //重发短信
+    'reSendSms': '/sms/reSendSms',
 
 
     /***********************************会员统计***********************************/
