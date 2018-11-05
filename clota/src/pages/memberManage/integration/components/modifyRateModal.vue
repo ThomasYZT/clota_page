@@ -115,6 +115,16 @@
             'is-activity' : {
                 type : Boolean,
                 default : false
+            },
+            //可选日期范围
+            'date-range' : {
+                type : Object,
+                default () {
+                    return {
+                        startDate : '',
+                        endDate : ''
+                    };
+                }
             }
         },
         components : {},
@@ -236,12 +246,6 @@
                 levelIds : '',
                 //按钮在加载中
                 btnLoading : false,
-                //日期配置
-                dateOptions : {
-                    disabledDate (date) {
-                        return date && date.valueOf() < Date.now() - 86400000;
-                    }
-                },
             };
         },
         methods : {
@@ -318,7 +322,21 @@
         computed : {
             ...mapGetters({
                 lang : 'lang'
-            })
+            }),
+            //日期配置
+            dateOptions () {
+                return {
+                    disabledDate : (date) => {
+                        if (this.dateRange['startDate'] && this.dateRange['endDate']) {
+                            return date &&
+                                date.valueOf() < Date.now() - 86400000 ||
+                                (date.valueOf() < this.dateRange['startDate'].valueOf() ||
+                                date.valueOf() > this.dateRange['endDate'].valueOf());
+                        }
+                        return date && date.valueOf() < Date.now() - 86400000 && date.valueOf();
+                    }
+                };
+            },
         }
     };
 </script>

@@ -76,6 +76,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
+            :date-range="dateRange"
             :is-activity="isActivity"
             :integra-data="integraData"
             ref="modifyRate"
@@ -124,15 +125,6 @@
                 pageSize : 10,
                 //当前操作的行数据
                 currentData : {},
-                //上级路由列表
-                beforeRouterList : [
-                    {
-                        name : 'integration',
-                        router : {
-                            name : 'integration'
-                        }
-                    }
-                ],
             };
         },
         methods : {
@@ -279,7 +271,39 @@
                 } else {
                     return columnData;
                 }
-            }
+            },
+            /**
+             * 日期设置范围
+             */
+            dateRange () {
+                return {
+                    startDate : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']) : '',
+                    endDate : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']) : '',
+                };
+            },
+
+            //上级路由列表
+            beforeRouterList () {
+                if (this.$route.name === 'activityStore') {
+                    return [
+                        {
+                            name : 'activityIntegrate',
+                            router : {
+                                name : 'activityIntegrate'
+                            }
+                        }
+                    ];
+                } else {
+                    return [
+                        {
+                            name : 'integration',
+                            router : {
+                                name : 'integration'
+                            }
+                        }
+                    ];
+                }
+            },
         }
     };
 </script>
