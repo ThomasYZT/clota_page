@@ -1,5 +1,5 @@
 
-//英文配置
+// 英文配置
 export default {
     yearCard : 'Year card',
     timeCard : 'Times card',
@@ -164,5 +164,6 @@ export default {
     changeIdNum : 'Change certificate number',
     rechartAccount : '{account} recharge',
     pointDetail : 'Points details',
-    systemError : 'System Error'
+    systemError : 'System Error',
+    integralMall: '积分商城'
 }

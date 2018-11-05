@@ -1,5 +1,5 @@
 
-//中文配置
+// 中文配置
 export default {
     yearCard : '年卡',
     timeCard : '次卡',
@@ -164,5 +164,6 @@ export default {
     changeIdNum : '修改证件号',
     rechartAccount : '{account}充值',
     pointDetail : '积分明细',
-    systemError : '系统错误'
+    systemError : '系统错误',
+    integralMall: '积分商城'
 }
