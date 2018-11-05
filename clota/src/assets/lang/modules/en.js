@@ -1585,5 +1585,5 @@ export default {
     'commodityExchangeInformation' : '商品兑换信息',
     'failToGet' : '获取{feild}失败',
     'updateInfo' : '更新信息',
-    'changeMemLevelPlease' : '会员级别已存在，请重新选择会员级别'
+    'changeMemLevelPlease' : '会员等级已存在，请重新选择会员等级'
 }

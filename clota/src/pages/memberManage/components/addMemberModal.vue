@@ -409,7 +409,7 @@
                         this.$emit('modify-success');
                         this.hide();
                     } else if (res.code === 'M003') {
-                        this.$Message.error(this.$t('levelExistCard')); // 会员级别已存在，请重新选择会员级别
+                        this.$Message.error(this.$t('changeMemLevelPlease')); // 会员级别已存在，请重新选择会员级别
                     } else {
                         this.$Message.warning(res.code
                             ? this.$t(res.code) :
