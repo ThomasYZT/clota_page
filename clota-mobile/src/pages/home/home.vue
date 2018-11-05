@@ -59,82 +59,82 @@
 </template>
 
 <script>
-    import ajax from '../../api/index'
-    import {mapMutations, mapGetters} from 'vuex'
-    import labelItem from './components/labelItem'
-    import onelevelMember from '../../assets/images/1levelMember.png'
-    import secondlevelMember from '../../assets/images/2levelMember.png'
-    import thirdlevelMember from '../../assets/images/3levelMember.png'
-    import fourthlevelMember from '../../assets/images/4levelMember.png'
+    import ajax from '../../api/index';
+    import { mapMutations, mapGetters } from 'vuex';
+    import labelItem from './components/labelItem';
+    import onelevelMember from '../../assets/images/1levelMember.png';
+    import secondlevelMember from '../../assets/images/2levelMember.png';
+    import thirdlevelMember from '../../assets/images/3levelMember.png';
+    import fourthlevelMember from '../../assets/images/4levelMember.png';
     export default {
-        components: {
+        components : {
             labelItem
         },
-        filters: {
+        filters : {
             /**
              * 格式化会员卡号
              * @param val
              * @return {string}
              */
-            formatCardCode(val) {
-                if(!val) return '';
+            formatCardCode (val) {
+                if (!val) return '';
                 val = val.toString();
                 return val.replace(/(.{4})/g,'$& ');
             }
         },
-        data() {
+        data () {
             let labelList = [
                 {
-                    title: 'integralDetail',
-                    link: '/integralDetail',
-                    iconClass: 'icon-my-points',
-                    info: '',
-                    params: {},
-                    iconColor: '#F46462'
+                    title : 'integralDetail',
+                    link : '/integralDetail',
+                    iconClass : 'icon-my-points',
+                    info : '',
+                    params : {},
+                    iconColor : '#F46462'
                 },
                 {
-                    title: 'defaultAccount',
-                    link: '/account',
-                    iconClass: 'icon-default-account',
-                    info: '',
-                    iconColor: '#368CE3'
+                    title : 'defaultAccount',
+                    link : '/account',
+                    iconClass : 'icon-default-account',
+                    info : '',
+                    iconColor : '#368CE3'
                 },
                 {
-                    title: 'myOrder',
-                    link: '/order',
-                    iconClass: 'icon-my-orders',
-                    info: '',
-                    iconColor: '#FF9700'
+                    title : 'myOrder',
+                    link : '/order',
+                    iconClass : 'icon-my-orders',
+                    info : '',
+                    iconColor : '#FF9700'
                 },
                 {
-                    title: 'checkFlow',
-                    link: '/checkFlow',
-                    iconClass: 'icon-check-flow1',
-                    info: '',
-                    iconColor: '#6F62E5'
+                    title : 'checkFlow',
+                    link : '/checkFlow',
+                    iconClass : 'icon-check-flow1',
+                    info : '',
+                    iconColor : '#6F62E5'
                 },
                 {
-                    title: 'memberCode',
-                    link: '/memberCode',
-                    iconClass: 'icon-member-code',
-                    info: '',
-                    iconColor: '#F46462'
+                    title : 'memberCode',
+                    link : '/memberCode',
+                    iconClass : 'icon-member-code',
+                    info : '',
+                    iconColor : '#F46462'
                 },
                 {
-                    title: 'card',
-                    link: '/card',
-                    iconClass: 'icon-my-package',
-                    info: '',
-                    iconColor: '#368CE3'
+                    title : 'card',
+                    link : '/card',
+                    iconClass : 'icon-my-package',
+                    info : '',
+                    iconColor : '#368CE3'
                 },
                 {
-                    title: 'memberRight',
-                    link: '/memberRight',
-                    iconClass: 'icon-member-rights',
-                    info: '',
-                    params: {},
-                    iconColor: '#6F62E5'
-                }/*,
+                    title : 'memberRight',
+                    link : '/memberRight',
+                    iconClass : 'icon-member-rights',
+                    info : '',
+                    params : {},
+                    iconColor : '#6F62E5'
+                },/*,
                     {
                         title: '安全设置',
                         link: '/integralDetail',
@@ -142,83 +142,90 @@
                         info: '',
                         iconColor: '#F46462'
                     }*/
+                {
+                    title : 'integralMall',
+                    link : '/integralMall',
+                    iconClass : 'icon-my-package',
+                    info : '',
+                    iconColor : '#368CE3'
+                },
             ];
             /**
              * 根据title名获取对应的导航数据对象
              * @param value
              * @return {{title, link, iconClass, info, iconColor}|*}
              */
-            labelList.getByTitle = function(value) {
-                for(let i=0,len=labelList.length; i < len; i++) {
-                    if(labelList[i].title === value) {
+            labelList.getByTitle = function (value) {
+                for (let i = 0,len = labelList.length; i < len; i++) {
+                    if (labelList[i].title === value) {
                         return labelList[i];
                     }
                 }
             };
             return {
-                cardInfo: {},
-                bgList: [
+                cardInfo : {},
+                bgList : [
                     onelevelMember,
                     secondlevelMember,
                     thirdlevelMember,
                     fourthlevelMember
                 ],
-                labelList: labelList,
-                cardBg: 'url(' + onelevelMember + ')',
-                cardLevel: 1,
-                lvName: '',
+                labelList : labelList,
+                cardBg : 'url(' + onelevelMember + ')',
+                cardLevel : 1,
+                lvName : '',
                 //会员卡字体颜色
-                cardFontColor: '#fff',
+                cardFontColor : '#fff',
                 //是否放大显示头像
-                isShowImg: false
-            }
+                isShowImg : false
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 isLoading : 'isLoading',
                 userInfo : 'userInfo'
             }),
             //vip卡类名
             memberVipCardClass () {
-                if(this.cardInfo && this.cardInfo.levelNum !== '' && this.cardInfo.levelNum !== null){
-                    if(this.cardInfo.levelNum === 1){
+                if (this.cardInfo && this.cardInfo.levelNum !== '' && this.cardInfo.levelNum !== null) {
+                    if (this.cardInfo.levelNum === 1) {
                         return 'one-level';
-                    }else if(this.cardInfo.levelNum === 2){
+                    } else if (this.cardInfo.levelNum === 2) {
                         return 'two-level';
-                    }else if(this.cardInfo.levelNum === 3){
+                    } else if (this.cardInfo.levelNum === 3) {
                         return 'three-level';
-                    }else if(this.cardInfo.levelNum >= 4){
+                    } else if (this.cardInfo.levelNum >= 4) {
                         return 'four-level';
-                    }else{
+                    } else {
                         return '';
                     }
-                }else{
-                    return ''
+                } else {
+                    return '';
                 }
             },
             //头像信息
             memberHeadImg () {
-                if(this.cardInfo && this.cardInfo.portrait){
+                if (this.cardInfo && this.cardInfo.portrait) {
                     return this.cardInfo.portrait;
-                }else{
+                } else {
                     return require('../../assets/images/defaut-face.png');
                 }
             }
         },
-        methods: {
+        methods : {
             ...mapMutations([
                 'updateCardInfo'
             ]),
             /**
              * 获取页面数据
              */
-            getData() {
+            getData () {
                 ajax.post('queryMemberPage', {
-                    cardId: JSON.parse(localStorage.getItem('userInfo')).cardId,
-                    pageNo: 1,
-                    pageSize: 100
+                    cardId : JSON.parse(localStorage.getItem('userInfo')).cardId,
+                    pageNo : 1,
+                    pageSize : 100
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         //console.log(res.data.data[0])
                         // res.data.data[0].levelNum = 4;
                         //存储会员卡信息
@@ -232,24 +239,24 @@
                         this.labelList.getByTitle('memberRight').params.levelDesc = this.cardInfo.levelDesc;
                         this.labelList.getByTitle('integralDetail').params.num = this.cardInfo.pointBalance;
                         //获取会员卡配色方案
-                        this.setCardTheme(res.data.data[0].levelNum)
-                    }else {
+                        this.setCardTheme(res.data.data[0].levelNum);
+                    } else {
                         this.$vux.toast.text(res.message);
                     }
-                })
+                });
             },
             /**
              * 设置会员卡主题
              */
-            setCardTheme(lvVal) {
-                if(!lvVal) {
+            setCardTheme (lvVal) {
+                if (!lvVal) {
                     this.cardFontColor = "#fff";
                     this.cardBg = 'url(' + this.bgList[0] + ')';
                     this.cardLevel = 1;
                     return;
                 }
                 lvVal = lvVal.toString();
-                switch(lvVal) {
+                switch (lvVal) {
                     case '1':
                         this.cardFontColor = "#fff";
                         this.cardBg = 'url(' + this.bgList[0] + ')';
@@ -293,7 +300,7 @@
             /**
              *  跳转到会员二维码
              */
-            toMemberCode() {
+            toMemberCode () {
                 this.$router.push({
                     name : 'memberCode'
                 });
@@ -301,14 +308,14 @@
             /**
              *  放大显示头像
              */
-            showImg() {
+            showImg () {
                 this.isShowImg = true;
             }
         },
-        created() {
+        created () {
             this.getData();
         }
-  }
+  };
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '../store/index';
 
 Vue.use(Router);
 
@@ -21,44 +20,44 @@ Vue.use(Router);
 
 //生成新路由的方法
 const createRouter = () => new Router({
-    routes: [
+    routes : [
         {
-            path: '',
+            path : '',
             redirect : {
                 name : 'mobileLogin'
             }
         },
         {
-            path: '/',
+            path : '/',
             redirect : {
                 name : 'mobileLogin'
             }
         },
         //会员登陆
         {
-            path: '/login',
-            name: 'mobileLogin',
-            component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
-            meta: {
-                title: 'memberLogin'
+            path : '/login',
+            name : 'mobileLogin',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue'),
+            meta : {
+                title : 'memberLogin'
             }
         },
         //会员注册
         {
-            path: '/register',
-            name: 'mobileRegister',
-            component: () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
-            meta: {
-                title: 'register'
+            path : '/register',
+            name : 'mobileRegister',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
+            meta : {
+                title : 'register'
             }
         },
         //会员主页
         {
-            path: '/home',
-            name: 'home',
-            component: () => import(/* webpackChunkName: "login" */ '../pages/home/home.vue'),
-            meta: {
-                title: 'home'
+            path : '/home',
+            name : 'home',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/home/home.vue'),
+            meta : {
+                title : 'home'
             }
         },
         //会员账户
@@ -144,27 +143,27 @@ const createRouter = () => new Router({
         },
         //会员权益
         {
-            path: '/memberRight',
-            name: 'memberRight',
-            component: () => import(/* webpackChunkName: "memberRight" */'../pages/memberRight/memberRight.vue'),
+            path : '/memberRight',
+            name : 'memberRight',
+            component : () => import(/* webpackChunkName: "memberRight" */'../pages/memberRight/memberRight.vue'),
             meta : {
                 title : 'memberRight'
             }
         },
         //资金明细
         {
-            path: '/checkFlow',
-            name: 'checkFlow',
-            component: () => import(/* webpackChunkName: "memberRight" */'../pages/checkFlow/checkFlow.vue'),
+            path : '/checkFlow',
+            name : 'checkFlow',
+            component : () => import(/* webpackChunkName: "memberRight" */'../pages/checkFlow/checkFlow.vue'),
             meta : {
                 title : 'checkFlow'
             }
         },
         //积分明细
         {
-            path: '/integralDetail',
-            name: 'integralDetail',
-            component: () => import(/* webpackChunkName: "memberRight" */'../pages/integralDetail/integralDetail.vue'),
+            path : '/integralDetail',
+            name : 'integralDetail',
+            component : () => import(/* webpackChunkName: "memberRight" */'../pages/integralDetail/integralDetail.vue'),
             meta : {
                 title : 'pointDetail'
             }
@@ -211,12 +210,21 @@ const createRouter = () => new Router({
         //         title : '我的卡包'
         //     }
         // }
+        //会员积分
+        {
+            path : '/integralMall',
+            name : 'integralMall',
+            component : () => import(/* webpackChunkName: "order" */'../pages/integralMall/integralMall.vue'),
+            meta : {
+                title : 'card'
+            }
+        },
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {
             x : 0,
             y : 0
-        }
+        };
     }
 });
 

@@ -25,7 +25,7 @@
                     </template>
                 </group>
             </div>
-            <template v-if="pageShow">
+            <template>
                 <!--<headNav v-if="showTopBanner"></headNav>-->
                 <transition name="fade">
                     <router-view :key="hashKey" >
@@ -33,11 +33,19 @@
                     </router-view>
                 </transition>
             </template>
-            <template v-else>
-                <div class="invlid-url">
-                    <img src="./assets/images/icon-invalid-url.png" alt="">
-                </div>
-            </template>
+            <!--<template v-if="pageShow">-->
+                <!--&lt;!&ndash;<headNav v-if="showTopBanner"></headNav>&ndash;&gt;-->
+                <!--<transition name="fade">-->
+                    <!--<router-view :key="hashKey" >-->
+
+                    <!--</router-view>-->
+                <!--</transition>-->
+            <!--</template>-->
+            <!--<template v-else>-->
+                <!--<div class="invlid-url">-->
+                    <!--<img src="./assets/images/icon-invalid-url.png" alt="">-->
+                <!--</div>-->
+            <!--</template>-->
         </drawer>
         <drag>
             <div class="lang-change" @click="changeLang">
@@ -72,25 +80,23 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import drag from '@/components/drag/index.vue';
-    // import headNav from '@/components/headNav/index'
-    import Vue from 'vue';
     import ajax from '@/api/index.js';
 
     export default {
         name : 'app',
-        components: {
+        components : {
             drag,
         },
-        data() {
+        data () {
             return {
                 //抽屉弹窗是否显示
                 drawerVisibility : false,
-                showMode: 'push',
-                showModeValue: 'push',
-                showPlacement: 'left',
-                showPlacementValue: 'left',
+                showMode : 'push',
+                showModeValue : 'push',
+                showPlacement : 'left',
+                showPlacementValue : 'left',
                 showContent001 : true,
                 //选择语言提示框是否显示
                 confirmShow : false,
@@ -98,12 +104,11 @@
                 langType : '',
                 //页面是否显示
                 pageShow : false,
-                langType : '',
                 //是否显示顶部返回首页的图标
                 //showTopBanner: true
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 修改语言
              */
@@ -128,9 +133,9 @@
              */
             onConfirm () {
                 this.$store.commit('setLang',this.langType);
-                if(this.$route && this.$route.meta && this.$route.meta.title){
+                if (this.$route && this.$route.meta && this.$route.meta.title) {
                     document.title = this.$t(this.$route.meta.title);
-                }else{
+                } else {
                     document.title = '';
                 }
             },
@@ -138,18 +143,18 @@
              * 获取微信配置
              */
             getWxConfig () {
-                if(this.is_weixn()){
+                if (this.is_weixn()) {
                     this.pageShow = true;
                     ajax.post('getWxConfig',{
                         url : location.href.split('#')[0]
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             this.$wechat.config({
-                                appId: res.data.appId,
-                                timestamp: res.data.timestamp,
-                                nonceStr: res.data.nonceStr,
-                                signature: res.data.signature,
-                                jsApiList: [
+                                appId : res.data.appId,
+                                timestamp : res.data.timestamp,
+                                nonceStr : res.data.nonceStr,
+                                signature : res.data.signature,
+                                jsApiList : [
                                     'chooseImage',
                                     'getLocalImgData',
                                     'uploadImage'
@@ -157,7 +162,7 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.pageShow = false;
                 }
             },
@@ -165,16 +170,16 @@
              * 判断是否在微信中
              * @returns {boolean}
              */
-            is_weixn(){
-                var ua = navigator.userAgent.toLowerCase();
-                if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            is_weixn () {
+                let ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {
                     return true;
                 } else {
                     return false;
                 }
             }
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 hashKey : 'hashKey',
                 lang : 'lang',
@@ -182,18 +187,18 @@
                 showNetworkError : 'showNetworkError'
             }),
             viewTransition () {
-                return 'vux-pop-in'
+                return 'vux-pop-in';
             }
         },
         created () {
             this.getWxConfig();
         },
         watch : {
-            '$route': {
-                handler (newVal,oldVal) {
-                    if(newVal && newVal.meta && newVal.meta.title){
+            '$route' : {
+                handler (newVal) {
+                    if (newVal && newVal.meta && newVal.meta.title) {
                         document.title = this.$t(newVal.meta.title);
-                    }else{
+                    } else {
                         document.title = '';
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
@@ -209,15 +214,15 @@
                 immediate : true
             },
             showNetworkError (newVal) {
-                if(newVal){
+                if (newVal) {
                     this.$vux.toast.show({
-                        text: this.$t(newVal),
-                        type: 'text',
+                        text : this.$t(newVal),
+                        type : 'text',
                     });
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">
