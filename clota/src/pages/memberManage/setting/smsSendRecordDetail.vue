@@ -29,9 +29,9 @@
 					</Button>
 				</i-col>
 				<i-col style="display: inline-block;width:auto;float: right">
-                    <span class="sms-count">
+					<span class="sms-count">
 					发送短信总量：{{totalCount | contentFilter}}条
-                    </span>
+					</span>
 				</i-col>
 			</i-row>
 		</Form>
@@ -55,7 +55,7 @@
 					:key="row.index"
 					:width="row.width"
 					:min-width="row.minWidth"
-                    :selectable="checkIsValid"
+					:selectable="checkIsValid"
 					type="selection"
 					slot-scope="row">
 				</el-table-column>
@@ -162,13 +162,13 @@
 				}).then(res =>{
 					if (res.success) {
 						this.tableData = res.data ? res.data.data.map(item => {
-						    let extraData = item.extraData ? JSON.parse(item.extraData) : {};
-						    return {
-                                ...item,
-                                receiver : extraData.receiver,
-                                idCardNum : extraData.idCardNum
-                            };
-                        }) : [];
+							let extraData = item.extraData ? JSON.parse(item.extraData) : {};
+							return {
+								...item,
+								receiver : extraData.receiver,
+								idCardNum : extraData.idCardNum
+							};
+						}) : [];
 						this.totalCount = res.data ? res.data.totalRow : 0;
 					} else {
 						this.tableData = [];
@@ -237,16 +237,16 @@
 					return 'failure';
 				}
 			},
-            /**
-             * 校验是否可以选择短信发送记录
-             * @param{Object} row 短信发送记录信息
-             */
-            checkIsValid (row) {
-                if ( ['wait','doing','req_success'].includes(row.status) ) {
-                    return false;
-                }
-                return true;
-            }
+			/**
+			 * 校验是否可以选择短信发送记录
+			 * @param{Object} row 短信发送记录信息
+			 */
+			checkIsValid (row) {
+				if ( ['wait','doing','req_success'].includes(row.status) ) {
+					return false;
+				}
+				return true;
+			}
 		},
 	};
 </script>
@@ -269,11 +269,11 @@
 			@include block_outline($height : unquote('calc(100% - 110px)'));
 		}
 
-        .sms-count{
-            display: inline-block;
-            line-height: 32px;
-            font-size: $font_size_14px;
-            color: $color_333;
-        }
+		.sms-count{
+			display: inline-block;
+			line-height: 32px;
+			font-size: $font_size_14px;
+			color: $color_333;
+		}
 	}
 </style>
