@@ -152,7 +152,6 @@
              * 设置会员积分、折扣率
              */
             setMemberDiscountOfMember (formData,callback) {
-                debugger
                 ajax.post('setMemberDiscountOfMember',{
                     id : this.currentData.id,
                     levelId : this.currentData.levelId,

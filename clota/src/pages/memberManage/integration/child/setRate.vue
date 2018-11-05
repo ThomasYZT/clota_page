@@ -77,7 +77,6 @@
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
             :date-range="dateRange"
-            :is-activity="isActivity"
             :integra-data="integraData"
             ref="modifyRate"
             :title="$t('setStoreSetting')"
@@ -219,8 +218,8 @@
                     deptScoreRate : formData.scoreRate,
                     remark : formData.remark,
                     isActivity : this.isActivity,
-                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd') : '',
-                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd') : '' ,
+                    startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd') : '',
+                    endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
@@ -255,6 +254,8 @@
                         discountRate : this.currentData.deptDiscountRate,
                         remark : this.currentData.remark,
                         scoreRate : this.currentData.deptScoreRate,
+                        startTime : this.currentData.startTime,
+                        endTime : this.currentData.endTime,
                     };
                 } else {
                     return {};
