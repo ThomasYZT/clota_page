@@ -500,6 +500,7 @@ export default {
     'M009': 'membership card is frozen',
     'M010': 'mother card is frozen',
     'M011': 'the physical card already exists',
+    'M023': '物理卡号重复',
     'M012': 'the card number consists of uppercase and lowercase letters + Arabic numerals. upper limit of 60',
     'S001': 'the parameter is empty',
     'S002': 'interface exception',
