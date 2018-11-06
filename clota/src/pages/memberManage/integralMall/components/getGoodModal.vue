@@ -15,7 +15,7 @@
             <i-row>
                 <i-col span="18" offset="3">
                     <Form-item :label="$t('ticketCode')" prop="exchangeSecurities">
-                        <Input v-model="formData.exchangeSecurities" style="width:200px" :placeholder="$t('inputField', { field : $t('ticketCode') })"></Input>
+                        <Input v-model.trim="formData.exchangeSecurities" style="width:200px" :placeholder="$t('inputField', { field : $t('ticketCode') })"></Input>
                     </Form-item>
                 </i-col>
             </i-row>

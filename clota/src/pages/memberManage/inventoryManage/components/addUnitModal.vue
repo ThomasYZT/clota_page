@@ -13,7 +13,7 @@
             <i-row>
                 <i-col span="18" offset="4">
                     <Form-item :label="$t('unitName')" prop="unitNames">
-                        <Input v-model="formData.unitNames" :placeholder="$t('inputField', { field : $t('unitName') })" style="width: 200px"></Input>
+                        <Input v-model.trim="formData.unitNames" :placeholder="$t('inputField', { field : $t('unitName') })" style="width: 200px"></Input>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -59,7 +59,12 @@
                         this.toggle();
                         this.$emit('addSuccess', this.formData.unitNames);
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('addUnit') }));
+                        if (res.code === 'M016') {
+                            //单位已存在
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('addUnit') }));
+                        }
                         this.$emit('addError');
                     }
                 });

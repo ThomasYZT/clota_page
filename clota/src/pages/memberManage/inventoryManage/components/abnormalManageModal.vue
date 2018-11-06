@@ -13,14 +13,14 @@
             <i-row>
                 <i-col span="18" offset="1">
                     <Form-item :label="$t('takeAwayNum')+':'" prop="stockNum">
-                        <Input v-model="formData.stockNum" :placeholder="$t('inputField', { field : $t('editNum') })" style="width: 200px"></Input>
+                        <Input v-model.trim="formData.stockNum" :placeholder="$t('inputField', { field : $t('editNum') })" style="width: 200px"></Input>
                     </Form-item>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="18" offset="1">
                     <Form-item :label="$t('editReason')" prop="remark">
-                        <Input v-model="formData.remark" :placeholder="$t('inputField', { field : $t('editReason') })" style="width: 200px"></Input>
+                        <Input v-model.trim="formData.remark" :placeholder="$t('inputField', { field : $t('editReason') })" style="width: 200px"></Input>
                     </Form-item>
                 </i-col>
             </i-row>

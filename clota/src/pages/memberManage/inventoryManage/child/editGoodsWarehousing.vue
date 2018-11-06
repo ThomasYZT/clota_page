@@ -273,13 +273,14 @@
                             url : url
                         };
                     });
+                } else if (params && params.type === 'add') {
+                    this.pageEditable = false;
+                    this.detail = {};
                 } else {
-                    if (params && params.type === 'edit' && !params.listItem) {
-                        //若没获取到路由参数，返回上一级页面
-                        this.$router.push({
-                            name : 'goodMange'
-                        });
-                    }
+                    //若没获取到路由参数，返回上一级页面
+                    this.$router.push({
+                        name : 'goodMange'
+                    });
                 }
             },
             /**
