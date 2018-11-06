@@ -217,7 +217,7 @@
                 }).then(res => {
                     if ( res.success ) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
-                        this.getMemberLevelsInType();
+                        this.queryCardRangeList();
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
                     }
