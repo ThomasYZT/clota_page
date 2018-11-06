@@ -76,7 +76,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
-            :is-activity="isActivity"
+            :date-range="dateRange"
             :integra-data="integraData"
             ref="modifyRate"
             :title="$t('setStoreSetting')"
@@ -124,15 +124,6 @@
                 pageSize : 10,
                 //当前操作的行数据
                 currentData : {},
-                //上级路由列表
-                beforeRouterList : [
-                    {
-                        name : 'integration',
-                        router : {
-                            name : 'integration'
-                        }
-                    }
-                ],
             };
         },
         methods : {
@@ -227,8 +218,8 @@
                     deptScoreRate : formData.scoreRate,
                     remark : formData.remark,
                     isActivity : this.isActivity,
-                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd') : '',
-                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd') : '' ,
+                    startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd') : '',
+                    endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
@@ -263,6 +254,8 @@
                         discountRate : this.currentData.deptDiscountRate,
                         remark : this.currentData.remark,
                         scoreRate : this.currentData.deptScoreRate,
+                        startTime : this.currentData.startTime,
+                        endTime : this.currentData.endTime,
                     };
                 } else {
                     return {};
@@ -279,7 +272,39 @@
                 } else {
                     return columnData;
                 }
-            }
+            },
+            /**
+             * 日期设置范围
+             */
+            dateRange () {
+                return {
+                    startDate : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']) : '',
+                    endDate : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']) : '',
+                };
+            },
+
+            //上级路由列表
+            beforeRouterList () {
+                if (this.$route.name === 'activityStore') {
+                    return [
+                        {
+                            name : 'activityIntegrate',
+                            router : {
+                                name : 'activityIntegrate'
+                            }
+                        }
+                    ];
+                } else {
+                    return [
+                        {
+                            name : 'integration',
+                            router : {
+                                name : 'integration'
+                            }
+                        }
+                    ];
+                }
+            },
         }
     };
 </script>

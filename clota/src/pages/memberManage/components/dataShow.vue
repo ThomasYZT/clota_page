@@ -184,7 +184,7 @@
                     position: relative;
                     top: -10px;
                     display: inline-block;
-                    width: 2px;
+                    width: 1px;
                     height: 40px;
                     background-color: $color_eee;
                 }

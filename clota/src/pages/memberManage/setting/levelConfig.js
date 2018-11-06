@@ -33,6 +33,18 @@ export const levelListHead = [
         type : 'money'
     },
     {
+        title : '卡内余额（元）', // 卡内余额（元）
+        minWidth : 150,
+        field : 'amountInCard',
+        type : 'money'
+    },
+    {
+        title : 'validityPeriod', // validityPeriod
+        minWidth : 150,
+        field : 'salePrice',
+        type : 'money'
+    },
+    {
         title : 'remark', // 备注
         minWidth : 280,
         field : 'remark'

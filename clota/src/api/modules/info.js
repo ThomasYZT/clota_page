@@ -204,6 +204,8 @@ export default {
     'getUpperlevelOrgList' : '/organize/getUpperlevelOrgList',
     //查询储值明细
     'queryChargingList' : '/member/memberAccount/queryChargingList',
+    //查询储值账户信息
+    'statisChargingAccount' : '/member/memberAccount/statisChargingAccount',
 
     /***********************************首页***********************************/
     //获取会员消费笔数

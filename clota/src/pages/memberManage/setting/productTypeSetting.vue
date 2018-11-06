@@ -18,7 +18,7 @@
                 :show-pagination="true"
                 :page-size-d.sync="pageSize"
                 :total-count="totalCount"
-                :ofset-height="100"
+                :ofset-height="190"
                 @query-data="queryList">
                 <el-table-column
                     slot="column3"
@@ -55,7 +55,7 @@
 <script>
     import headerTabs from './components/headerTabs.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {productTypeSettingHead} from './productTypeSettingConfig';
+    import { productTypeSettingHead } from './productTypeSettingConfig';
     import ajax from '@/api/index.js';
     import addProductTypeModal from './components/addProductType';
     import delModal from '@/components/delModal/index.vue';
@@ -66,14 +66,13 @@
             addProductTypeModal,
             delModal
         },
-        data() {
+        data () {
             return {
                 //当前页面路由名称
-                routerName: 'productTypeSetting',
+                routerName : 'productTypeSetting',
                 //表头配置
-                columnData :productTypeSettingHead,
-                tableData : [
-                ],
+                columnData : productTypeSettingHead,
+                tableData : [],
                 pageNo : 1,
                 pageSize : 10,
                 totalCount : 0,
@@ -81,9 +80,9 @@
                 addModalVisible : false,
                 //当前操作的数据
                 currentData : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 新增产品类别
              */
@@ -110,7 +109,7 @@
                     confirmCallback : () => {
                         this.deleteProductType();
                     }
-                })
+                });
             },
             /**
              * 查询所有哦产品列表
@@ -118,12 +117,12 @@
             queryList () {
                 ajax.post('queryProductType',{
                     pageNo : this.pageNo,
-                    pageSize :this.pageSize
+                    pageSize : this.pageSize
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -136,16 +135,16 @@
                 ajax.post('deleteProductType',{
                     id : this.currentData.id
                 }).then(res =>{
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('del')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('del') }));
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('del')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('del') }));
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

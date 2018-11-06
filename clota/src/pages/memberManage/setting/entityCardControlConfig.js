@@ -8,7 +8,7 @@ export const cardHead = [
     },
     {
         title : 'cardStatus',
-        minWidth : 300,
+        minWidth : 110,
         field : 'cardStatus'
     },
     {
@@ -20,6 +20,11 @@ export const cardHead = [
         title : 'cardFaceNum',
         minWidth : 200,
         field : 'faceNum'
+    },
+    {
+        title : '卡类型',
+        minWidth : 110,
+        field : 'entityCardType'
     },
     {
         title : 'openCardDate',

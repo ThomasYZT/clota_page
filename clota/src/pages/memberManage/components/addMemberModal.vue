@@ -66,6 +66,18 @@
                                type="text"/>
                     </Form-item>
                 </div>
+                <!--有效期设置-->
+                <div class="ivu-form-item-wrap">
+                    <Form-item :label="$t('validityPeriod') + '：'" prop="effTime">
+                        <Select v-model="formData.effTime" style="width:280px">
+                            <Option v-for="item in effTimeList"
+                                    :value="item.value"
+                                    :key="item.value">
+                                {{ item.label }}{{$t('time.' + formData.effTimeUnit)}}
+                            </Option>
+                        </Select>
+                    </Form-item>
+                </div>
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('remark') + '：'" prop="remark">
                         <Input v-model.trim="formData.remark"
@@ -184,6 +196,7 @@
                 visible : false,
                 //表单数据
                 formData : {
+                    id : '',
                     levelNum : '',
                     levelDesc : '',
                     lowerGrowthValue : '',
@@ -196,10 +209,29 @@
                     //卡内金额
                     amountInCard : '',
                     //有效期
-                    effTime : '',
+                    effTime : 1,
                     //有效期单位
-                    effTimeUnit : ''
+                    effTimeUnit : 'year'
                 },
+                //有效期列表
+                effTimeList : [
+                    {
+                        label : '1',
+                        value : 1
+                    },
+                    {
+                        label : '2',
+                        value : 2
+                    },
+                    {
+                        label : '3',
+                        value : 3
+                    },
+                    {
+                        label : '4',
+                        value : 4
+                    }
+                ],
                 //功能列表
                 rightList : [
                     {
@@ -300,6 +332,14 @@
                             trigger : 'change',
                             type : 'array'
                         }
+                    ],
+                    effTime : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ msg : this.$t('validityPeriod') }),
+                            trigger : 'change',
+                            type : 'number'
+                        }
                     ]
                 },
             };
@@ -308,16 +348,16 @@
 
             show ( data, usedLevels ) {
                 if (data && data.id) {
-                    for (let item in this.formData) {
-                        if (item in data) {
-                            //获取选择的功能
-                            if (item === 'isRecharge' && data['isRecharge'] === true) {
-                                this.formData.function.push('isRecharge');
-                            } else if (item === 'isScore' && data['isScore'] === true) {
-                                this.formData.function.push('isScore');
-                            } else if (item === 'isDiscount' && data['isDiscount'] === true) {
-                                this.formData.function.push('isDiscount');
-                            }
+                    for (let item in data) {
+                        //获取选择的功能
+                        if (item === 'isRecharge' && data['isRecharge'] === 'true') {
+                            this.formData.function.push('isRecharge');
+                        } else if (item === 'isScore' && data['isScore'] === 'true') {
+                            this.formData.function.push('isScore');
+                        } else if (item === 'isDiscount' && data['isDiscount'] === 'true') {
+                            this.formData.function.push('isDiscount');
+                        }
+                        if (item in this.formData) {
                             this.formData[item] = data[item];
                         }
                     }
@@ -361,17 +401,19 @@
                     isRecharge : data.function.includes('isRecharge'),
                     isScore : data.function.includes('isScore'),
                     isDiscount : data.function.includes('isDiscount'),
-                    effTime : 1,
-                    effTimeUnit : 'year'
+                    effTime : data.effTime,
+                    effTimeUnit : data.effTimeUnit,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('operate') })); // 操作成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('save') })); // 操作成功
                         this.$emit('modify-success');
                         this.hide();
+                    } else if (res.code === 'M003') {
+                        this.$Message.error(this.$t('changeMemLevelPlease')); // 会员级别已存在，请重新选择会员级别
                     } else {
                         this.$Message.warning(res.code
                             ? this.$t(res.code) :
-                            ('updateMemberLevel ' + this.$t('failureTip', { tip : this.$t('operate') }))); // 操作失败
+                            ('updateMemberLevel ' + this.$t('failureTip', { tip : this.$t('save') }))); // 操作失败
                     }
                 });
             },
@@ -389,6 +431,8 @@
             visibleChange (type) {
                 if (type === false) {
                     this.formData.lowerGrowthValue = '';
+                    this.formData.function = [];
+                    this.formData.id = '';
                     this.$refs.formValidate.resetFields();
                 }
             }

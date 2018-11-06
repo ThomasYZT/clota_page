@@ -74,7 +74,7 @@
 
         <!--总体积分率折扣率设置modal-->
         <modify-rate-modal
-            :is-activity="isActivity"
+            :date-range="dateRange"
             ref="modifyRate"
             :integra-data="integraData"
             :title="$t('setStoreSetting')"
@@ -197,8 +197,8 @@
                     typeId : this.currentData.typeId,
                     remark : formData.remark,
                     isActivity : this.isActivity,
-                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd') : '',
-                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd') : '' ,
+                    startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd') : '',
+                    endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
@@ -228,20 +228,37 @@
             },
             //面包屑路由信息
             beforeRouterList () {
-                return [
-                    {
-                        name : this.$t('integration'),
-                        router : {
-                            name : 'integration'
+                if (this.$route.name === 'activitySetProductRate') {
+                    return [
+                        {
+                            name : 'activityIntegrate',
+                            router : {
+                                name : 'activityIntegrate'
+                            }
+                        },
+                        {
+                            name : this.levelName + this.$t('integration'),
+                            router : {
+                                name : 'activityStore'
+                            }
                         }
-                    },
-                    {
-                        name : this.levelName + this.$t('integration'),
-                        router : {
-                            name : 'setRate'
+                    ];
+                } else {
+                    return [
+                        {
+                            name : 'integration',
+                            router : {
+                                name : 'integration'
+                            }
+                        },
+                        {
+                            name : this.levelName + this.$t('integration'),
+                            router : {
+                                name : 'setRate'
+                            }
                         }
-                    }
-                ];
+                    ];
+                }
             },
             //传递给模态框的积分折扣率信息
             integraData () {
@@ -250,6 +267,8 @@
                         discountRate : this.currentData.prodDiscountRate,
                         remark : this.currentData.remark,
                         scoreRate : this.currentData.prodScoreRate,
+                        startTime : this.currentData.startTime,
+                        endTime : this.currentData.endTime,
                     };
                 } else {
                     return {};
@@ -266,7 +285,16 @@
                 } else {
                     return columnData;
                 }
-            }
+            },
+            /**
+             * 日期设置范围
+             */
+            dateRange () {
+                return {
+                    startDate : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']) : '',
+                    endDate : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']) : '',
+                };
+            },
         }
     };
 </script>

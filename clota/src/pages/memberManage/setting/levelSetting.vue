@@ -60,6 +60,19 @@
                         :key="row.index"
                         :width="row.width"
                         :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            {{scoped.row.effTime}}{{$t('time.' + scoped.row.effTimeUnit)}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column8"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
                         fixed="right"
                         slot-scope="row">
                         <template slot-scope="scoped">
@@ -158,7 +171,7 @@
                         this.usedLevels = this.tableData.map(item => item.levelNum);
                     } else {
                         this.tableData = [];
-                        this.$Message.warning(res.message || 'queryMemberLevels ' + this.$t('queryFailure') + '');
+                        this.$Message.warning('queryMemberLevels ' + this.$t('queryFailure') + '');
                     }
                 });
             },
@@ -195,10 +208,10 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('del') })); // 删除成功
                         //查询列表
                         this.queryList();
-                    } else if (res.code == 'M013') {
+                    } else if (res.code === 'M013') {
                         this.$Message.error(this.$t('levelExistCard')); // 该会员级别下已存在会员信息，不能删除
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip', { tip : this.$t('del') })); // 删除失败
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') })); // 删除失败
                     }
                 });
             },
@@ -222,11 +235,13 @@
              */
             getFunctions (rowData) {
                 let result = [];
-                if ( rowData['isScore'] === true ) {
+                if ( rowData['isScore'] === 'true' ) {
                     result.push(this.$t('积分'));
-                } else if ( rowData['isDiscount'] === true ) {
+                }
+                if ( rowData['isDiscount'] === 'true' ) {
                     result.push(this.$t('折扣'));
-                } else if ( rowData['isRecharge'] === true ) {
+                }
+                if ( rowData['isRecharge'] === 'true' ) {
                     result.push(this.$t('储值'));
                 }
                 return result.join(',');

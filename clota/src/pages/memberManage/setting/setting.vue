@@ -480,6 +480,7 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
                         this.findBasicSet();
+                        this.queryDocument();
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
                     }
@@ -524,7 +525,6 @@
 
             //查询证件类型
             queryDocument () {
-                this.formDynamic.idType = [];
                 ajax.post('queryDocument', {
                     isDeleted : 'false',
                     pageNo : 1,
@@ -532,14 +532,25 @@
                 }).then(res => {
                     if (res.success) {
                         if (res.data.data && res.data.data.length > 0) {
-                            res.data.data.forEach((item, index) => {
-                                item.index = index;
-                                item._status = 1;
-                                item.active = true;
-                                item.disabled = true;
-                                this.formDynamic.idType.push(item);
+                            this.formDynamic.idType = res.data.data.map((item,index) => {
+                                return {
+                                    ...item,
+                                    index : index,
+                                    _status : 1,
+                                    active : true,
+                                    disabled : true,
+                                };
                             });
+                            // res.data.data.forEach((item, index) => {
+                            //     item.index = index;
+                            //     item._status = 1;
+                            //     item.active = true;
+                            //     item.disabled = true;
+                            //     this.formDynamic.idType.push(item);
+                            // });
                         }
+                    } else {
+                        this.formDynamic.idType = [];
                     }
                 });
             },
@@ -552,6 +563,9 @@
                         this.formDynamic.idType[index].disabled = true;
                         this.formDynamic.idType[index].active = true;
                         this.$Message.success(this.$t('successTip', { tip : this.$t('addCredentialsType') }) + '!'); // 新增证件类型成功
+                        this.queryDocument();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('addCredentialsType') }) + '!'); // 新增证件类型失败
                     }
                 });
             },
@@ -562,8 +576,11 @@
                     isDeleted : 'true',
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('delCredentialsType') }) + '!'); // 删除证件类型成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('delCredentialsType') })); // 删除证件类型成功
                         this.formDynamic.idType[index]._status = 0;
+                        this.queryDocument();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('delCredentialsType') })); // 删除证件类型失败
                     }
                 });
             },

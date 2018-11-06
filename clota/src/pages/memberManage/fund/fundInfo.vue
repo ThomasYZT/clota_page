@@ -4,22 +4,27 @@
     <div class="fund-info">
         <div class="title">{{$t('fundInfo')}}</div><!--账户储值信息-->
         <div class="account-info"
-            v-for="(item,i) in accountList"
+            v-for="(item,key,i) in accountList"
             :key="i">
             <div class="account-detail">
                 <div class="img-area" >
-                    <img v-if="item.id === '1'" src="../../../assets/images/icon-default-account.svg" alt="">
+                    <img v-if="key === 'defaultAccount'" src="../../../assets/images/icon-default-account.svg" alt="">
                     <img v-else src="../../../assets/images/icon-common-account.svg" alt="">
                 </div>
                 <div class="fund-list">
-                    <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
-                        {{item.accountName}}{{getUnit(item)}}
+                    <div class="account-name">
+                        {{$t(key)}}{{'(' + $t('yuan') + ')'}}
                     </div>
-                    <div class="account-money">{{item.amount | moneyFilter}}</div>
+                    <div class="money-area">
+                        <div class="account-money" v-for="(list,ik) in item" :key="ik">
+                            {{list | moneyFilter}}
+                            <span class="label-info">{{$t('account.' + ik)}}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul class="account-operate">
-                <li class="list" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
+                <li class="list" v-if="key !== 'openAccount'" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
                 <li class="list"
                     v-w-title="$t('fundDetail')"
                     @click="toTradeDetail(item)">{{$t('fundDetail')}}</li><!--资金交易明细-->
@@ -31,28 +36,38 @@
 <script>
     import ajax from '@/api/index.js';
     export default {
-        data() {
+        data () {
             return {
                 //账户列表
                 accountList : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取所欲的账户信息
              */
             queryMemberAccountDefine () {
-                ajax.post('queryChargingAccountInfo',{
-                    accountType: 'charging',
-                    pageNo: 1,
-                    pageSize: 99999,
-                }).then(res => {
-                   if(res.success){
+                //会员3期暂时去掉
+                // ajax.post('queryChargingAccountInfo',{
+                //     accountType : 'charging',
+                //     pageNo : 1,
+                //     pageSize : 99999,
+                // }).then(res => {
+                //    if (res.success) {
+                //         this.accountList = res.data ? res.data : [];
+                //    } else {
+                //        this.accountList = [];
+                //    }
+                // }).catch(() => {
+                //     this.accountList = [];
+                // });
+                ajax.post('statisChargingAccount').then(res => {
+                    if (res.success) {
                         this.accountList = res.data ? res.data : [];
-                   }else{
-                       this.accountList = [];
-                   }
-                }).catch(err => {
+                    } else {
+                        this.accountList = [];
+                    }
+                }).catch(() => {
                     this.accountList = [];
                 });
             },
@@ -60,7 +75,7 @@
              * 跳转到资金交易明细
              * @param data
              */
-            toTradeDetail(data) {
+            toTradeDetail (data) {
                 this.$router.push({
                     name : 'fianceDetail',
                     params : data
@@ -70,7 +85,7 @@
              * 跳转到储值明细页面
              * @param data
              */
-            toFundDetail(data){
+            toFundDetail (data) {
                 this.$router.push({
                     name : 'fund',
                     params : data
@@ -80,24 +95,24 @@
              * 获取单位
              * @param rowData
              */
-            getUnit(rowData) {
-                if(rowData.id === '1'){
-                    return  '(' + this.$t('yuan') + ')';
-                }else{
-                    if(rowData.unit){
+            getUnit (rowData) {
+                if (rowData.id === '1') {
+                    return '(' + this.$t('yuan') + ')';
+                } else {
+                    if (rowData.unit) {
                         return '(' + rowData.unit + ')';
-                    }else{
+                    } else {
                         return '';
                     }
                 }
             }
         },
-        beforeRouteEnter(to,from,next) {
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.queryMemberAccountDefine();
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -115,6 +130,7 @@
         }
 
         .account-info{
+            position: relative;
             float: left;
             @include block_outline(30%,178px);
             background: $color_fff;
@@ -132,8 +148,9 @@
 
                 .img-area{
                     @include block_outline(78px);
-                    padding: 30px 20px;
+                    padding: 22px 20px;
                     float: left;
+                    @include absolute_pos(absolute,$left : 0);
 
                     img{
                         @include block_outline(38px,38px,false);
@@ -141,25 +158,42 @@
                 }
 
                 .fund-list{
+                    width: 100%;
                     float: left;
-                    @include block_outline(unquote('calc(100% - 78px)'));
                     padding: 21px 0 26px 0 ;
+
+                    .money-area{
+                        @include block_outline($height : 50px);
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
+                    }
 
                     .account-name{
                         @include block_outline($height : 42px);
                         @include overflow_tip();
                         line-height: 24px;
-                        padding: 9px 0;
+                        padding: 9px 0 9px 70px;
                         font-size: $font_size_18px;
                         color: rgba($color_000,0.85);
                     }
 
                     .account-money{
-                        @include block_outline($height : 50px);
+                        display: inline-block;
+                        @include block_outline(auto, 50px);
                         line-height: 32px;
                         padding: 9px 0;
                         font-size: $font_size_28px;
                         color: rgba($color_000,0.65);
+                        text-align: center;
+
+                        .label-info{
+                            display: block;
+                            font-size: $font_size_12px;
+                            color: $color_666;
+                            height: 20px;
+                            line-height: 20px;
+                        }
                     }
                 }
             }

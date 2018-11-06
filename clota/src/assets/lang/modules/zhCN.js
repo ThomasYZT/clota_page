@@ -500,6 +500,7 @@ export default {
     'M009': '会员卡已冻结',
     'M010': '母卡已冻结',
     'M011': '实体卡已存在',
+    'M023': '物理卡号重复',
     'M012': '卡号由大小写字母+阿拉伯数字组成。 上限值60位',
     'S001': '参数为空',
     'S002': '接口异常',
@@ -1583,7 +1584,16 @@ export default {
     'ticketCode' : '券号',
     'commodityExchangeInformation' : '商品兑换信息',
     'failToGet' : '获取{feild}失败',
-    'updateInfo' : '更新信息'
+    'updateInfo' : '更新信息',
+    'changeMemLevelPlease' : '会员等级已存在，请重新选择会员等级',
+    'defaultAccount' : '默认账户',
+    'ownerAccount' : '业主卡账户',
+    'openAccount' : '开卡赠送金额账户',
+    'account.corpus' : '本金账户总额',
+    'account.donate' : '赠送账户',
+    'account.openAmount' : '账户总额',
+    'account.total' : '账户总额',
+    'lose' : '遗失',
 
 
 }

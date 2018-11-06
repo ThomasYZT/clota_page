@@ -6,11 +6,19 @@
             <div class="btn-area">
                 <div class="query-params">
                     <Select v-model="cardStatus"
-                            style="width:200px"
+                            style="width:170px"
                             @on-change="statusChange">
                         <Option value="all">{{$t('allCardType')}}</Option>
                         <Option value="open">{{$t('cardOpened')}}</Option>
                         <Option value="wait">{{$t('cardUnopened')}}</Option>
+                        <Option value="lose">{{$t('lose')}}</Option>
+                    </Select>
+                    <Select v-model="entityCardType"
+                            style="width:170px"
+                            @on-change="queryList">
+                        <Option value="all">{{$t('all')}}</Option>
+                        <Option value="common">{{$t('普通卡')}}</Option>
+                        <Option value="password">{{$t('密码卡')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
                            style="width: 240px;margin-left: 15px;margin-right: 15px;"
@@ -35,9 +43,20 @@
                             class="ivu-btn-108px"
                             style="margin-right: 5px;"
                             @click="importSingle">{{$t('singleImport')}}</Button>
-                    <Button type="primary"
-                            class="ivu-btn-108px"
-                            @click="batchImport">{{$t('batchImport')}}</Button>
+                    <el-dropdown trigger="click"
+                                 placement="bottom-start"
+                                 size="medium"
+                                 @command="handleCommand"
+                                 @click.native.stop="">
+                        <Button type="primary"
+                                class="ivu-btn-108px">{{$t('batchImport')}}</Button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item v-for="(item,index) in importTypeList"
+                                              :key="index"
+                                              :command="item">{{$t(item.label)}}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
             <table-com
@@ -61,7 +80,17 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column6"
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{scope.row.entityCardType === 'password' ? $t('密码卡') : $t('普通卡')}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column7"
                     slot-scope="row"
                     :label="row.title"
                     fixed="right"
@@ -69,7 +98,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="modify(scope.row)">{{$t('modify')}}</li>
+                            <li @click="modify(scope.row)" :class="{disabled : scope.row.cardStatus === 'open'}">{{$t('modify')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -87,7 +116,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {cardHead} from './entityCardControlConfig';
+    import { cardHead } from './entityCardControlConfig';
     import ajax from '@/api/index.js';
     import importSingleCardInfo from './components/importSingleCardInfo';
     export default {
@@ -95,7 +124,7 @@
             tableCom,
             importSingleCardInfo
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columns : cardHead,
@@ -103,11 +132,11 @@
                 tableData : [],
                 pageNo : 1,
                 pageSize : 10,
-                totalCount :0,
+                totalCount : 0,
                 //筛选卡状态
                 cardStatus : 'all',
                 //关键字
-                keyword  : '',
+                keyword : '',
                 //已开发数量
                 openCardsNum : '',
                 //未开卡数量
@@ -115,10 +144,23 @@
                 //模态框是否显示
                 importVisible : false,
                 //当前操作的数据
-                currentData : {}
-            }
+                currentData : {},
+                //卡类型
+                entityCardType : 'all',
+                //导入方式列表
+                importTypeList : [
+                    {
+                        label : '普通卡',
+                        value : 'common'
+                    },
+                    {
+                        label : '密码卡',
+                        value : 'password'
+                    }
+                ]
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询所有导入的实体卡信息
              */
@@ -128,13 +170,14 @@
                     keyWord : this.keyword,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
+                    entityCardType : this.entityCardType === 'all' ? '' : this.entityCardType
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.memberEntityCardVoList ? res.data.memberEntityCardVoList.data : [] : [];
                         this.totalCount = res.data ? res.data.memberEntityCardVoList ? res.data.memberEntityCardVoList.totalRow : 0 : 0;
                         this.openCardsNum = res.data ? res.data.openCardNum : '';
                         this.unOpenCardsNum = res.data ? res.data.waitOpenNum : '';
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                         this.openCardsNum = '';
@@ -174,19 +217,32 @@
              * @param rowData
              */
             modify (rowData) {
-                this.importVisible = true;
+                if (rowData.cardStatus === 'open') return;
                 this.currentData = rowData;
+                this.importVisible = true;
             },
+            // /**
+            //  * 批量导入
+            //  */
+            // batchImport () {
+            //     this.$router.push({
+            //         name : 'importEntityCard'
+            //     });
+            // },
             /**
-             * 批量导入
+             * 导入实体卡
+             * @param{String} command 导入的类型
              */
-            batchImport () {
+            handleCommand (command) {
                 this.$router.push({
-                    name : 'importEntityCard'
+                    name : 'importEntityCard',
+                    params : {
+                        importType : command.value
+                    }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

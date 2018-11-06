@@ -97,7 +97,7 @@
             //成功回调函数
             'confirm-operate' : {
                 type : Function,
-                default : new Function ()
+                default : () => {}
             },
             //标题
             'title' : {
@@ -115,6 +115,16 @@
             'is-activity' : {
                 type : Boolean,
                 default : false
+            },
+            //可选日期范围
+            'date-range' : {
+                type : Object,
+                default () {
+                    return {
+                        startDate : '',
+                        endDate : ''
+                    };
+                }
             }
         },
         components : {},
@@ -236,12 +246,6 @@
                 levelIds : '',
                 //按钮在加载中
                 btnLoading : false,
-                //日期配置
-                dateOptions : {
-                    disabledDate (date) {
-                        return date && date.valueOf() < Date.now() - 86400000;
-                    }
-                },
             };
         },
         methods : {
@@ -253,9 +257,11 @@
             show (levelIds) {
                 this.levelIds = levelIds;
                 this.visible = true;
-                this.formData.discountRate = this.integraData.discountRate;
-                this.formData.remark = this.integraData.remark;
-                this.formData.scoreRate = this.integraData.scoreRate;
+                // this.formData.discountRate = this.integraData.discountRate;
+                // this.formData.remark = this.integraData.remark;
+                // this.formData.scoreRate = this.integraData.scoreRate;
+                // this.formData.startTime = this.integraData.startTime;
+                // this.formData.endTime = this.integraData.endTime;
             },
 
             /**
@@ -318,7 +324,21 @@
         computed : {
             ...mapGetters({
                 lang : 'lang'
-            })
+            }),
+            //日期配置
+            dateOptions () {
+                return {
+                    disabledDate : (date) => {
+                        if (this.dateRange['startDate'] && this.dateRange['endDate']) {
+                            return date &&
+                                date.valueOf() < Date.now() - 86400000 ||
+                                (date.valueOf() < new Date(this.dateRange['startDate'].addDays(-1).format('yyyy-MM-dd')).valueOf() ||
+                                date.valueOf() > new Date(this.dateRange['endDate'].format('yyyy-MM-dd')).valueOf());
+                        }
+                        return date && date.valueOf() < Date.now() - 86400000 && date.valueOf();
+                    }
+                };
+            },
         }
     };
 </script>
