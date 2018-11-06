@@ -9,8 +9,6 @@
             <div slot="tool0" class="button-tool">
                 <!-- 新增商品入库 -->
                 <Button class="tool-btn left" type="primary" @click="addGood({type : 'add'})">{{$t('NewGoodsWarehousing')}}</Button>
-                <!-- 导出 -->
-                <Button class="ivu-btn-108px" type="primary">{{$t('exporting')}}</Button>
             </div>
             <div slot="tool1">
                 <div class="placeholder"></div>

@@ -30,7 +30,7 @@
                 <div slot="tool2">
                     <Button class="ivu-btn-90px" type="primary" @click="getListData">{{$t('orgStructQuery')}}</Button>
                     <div class="btn-wrapper">
-                        <Button class="ivu-btn-90px" type="primary">{{$t('exporting')}}</Button>
+                        <a class="ivu-btn-90px" :href="downloadUrl">{{$t('exporting')}}</a>
                     </div>
                 </div>
             </toolBox>
@@ -92,6 +92,8 @@
     import toolBox from '../components/toolBox';
     import { stockingHead } from './tableConfig';
     import ajax from '@/api/index';
+    import ajaxConfig from '@/config/index.js';
+    import apiList from '@/api/apiList.js';
     export default {
         components : {
             tableCom,
@@ -129,6 +131,12 @@
                 dateRange : []
             };
         },
+        computed : {
+            //下载模板路径
+            downloadUrl () {
+                return ajaxConfig['HOST'] + apiList['exportGoodsList'] + '?token=' + sessionStorage.getItem('token');
+            },
+        },
         methods : {
             /**
              * 日期改变转换格式
@@ -165,7 +173,7 @@
                         listItem : data
                     }
                 });
-            }
+            },
         },
         created () {
             let date = new Date();
@@ -184,6 +192,17 @@
     .stocking {
         .btn-wrapper {
             float: right;
+
+            a {
+                display: inline-block;
+                padding: 4px 15px;
+                width: 90px;
+                font-size: 14px;
+                color: $color_fff;
+                border-radius: 4px;
+                text-align: center;
+                background-color: $color_blue;
+            }
         }
 
         .status {

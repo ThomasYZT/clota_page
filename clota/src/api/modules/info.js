@@ -239,5 +239,9 @@ export default {
     //查询库存
     'queryGoodsStock' : '/goods/queryGoodsStock',
     //查询商品兑换信息
-    'queryGoodsChangeInfo' : '/goods/queryGoodsChangeInfo'
+    'queryGoodsChangeInfo' : '/goods/queryGoodsChangeInfo',
+    //领取奖品
+    'drawGoods' : '/goods/drawGoods',
+    //导出商品列表
+    'exportGoodsList' : 'goods/exportGoodsList'
 }

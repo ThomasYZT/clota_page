@@ -7,7 +7,7 @@
            class-name="vertical-center-modal"
            :title="$t('GetTheGoods')">
         <Form ref="formInline"
-              v-if="Object.keys(exchangeInfo).length <= 0"
+              v-if="!isGetStatus"
               :model="formData"
               :rules="ruleValidate"
               label-position="right"
@@ -20,13 +20,29 @@
                 </i-col>
             </i-row>
         </Form>
-
-        <div v-else>
-
-        </div>
+        <!-- 领取奖品时显示 -->
+        <Form v-else
+              label-position="right"
+              :label-width="100">
+            <i-row>
+                <i-col span="10" offset="7">
+                    <Form-item :label="$t('goodInfo')+':'">
+                        <span>{{exchangeInfo.goodsName}}</span>
+                    </Form-item>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="10" offset="7">
+                    <Form-item :label="$t('changerInfo')+':'">
+                        <span>{{exchangeInfo.memberName}}</span>
+                    </Form-item>
+                </i-col>
+            </i-row>
+        </Form>
 
         <div slot="footer">
-            <Button class="ivu-btn-90px" type="primary" @click="submit">{{$t('submit')}}</Button>
+            <Button class="ivu-btn-90px" v-if="isGetStatus" type="primary" @click="exchange">{{$t('exchange')}}</Button>
+            <Button class="ivu-btn-90px" v-else type="primary" @click="submit">{{$t('submit')}}</Button>
             <Button class="ivu-btn-90px" type="default" @click="hide">{{$t('cancel')}}</Button>
         </div>
     </Modal>
@@ -52,7 +68,9 @@
                     ]
                 },
                 //商品兑换信息
-                exchangeInfo : {}
+                exchangeInfo : {},
+                //模态框是否处于领取状态
+                isGetStatus : false
             };
         },
         methods : {
@@ -63,6 +81,8 @@
                 this.formData = {
                     exchangeSecurities : ''
                 };
+                this.exchangeInfo = {};
+                this.isGetStatus = false;
                 this.toggle();
             },
             /**
@@ -93,15 +113,29 @@
                 ajax.post('queryGoodsChangeInfo', this.formData).then(res => {
                     if (res.success) {
                         if (res.data) {
-                            this.exchangeInfo = res.data;
+                            this.exchangeInfo = res.data ? res.data : {};
+                            this.isGetStatus = true;
                         } else {
+                            this.exchangeInfo = {};
                             this.$Message.error(this.$t('failToGet', { feild : this.$t('commodityExchangeInformation') }));
                         }
-                        this.exchangeInfo = res.data ? res.data : {};
                     } else {
                         this.$Message.error(this.$t('failToGet', { feild : this.$t('commodityExchangeInformation') }));
                     }
                 });
+            },
+            /**
+             * 领取商品
+             */
+            exchange () {
+                ajax.post('drawGoods', this.formData).then(res => {
+                    if (res.success) {
+                       this.$Message.success(this.$t('successTip', { tip : this.$t('exchange') }));
+                       this.hide();
+                    } else {
+                        this.$Message.error(this.$t(res.code));
+                    }
+                })
             }
         }
     };
