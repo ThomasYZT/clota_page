@@ -69,9 +69,10 @@
              * @param data
              */
             popupChange (data) {
-                this.memberCardId = this.memberCardList.find((item) => {
+                let card = this.memberCardList.find((item) => {
                     return item.levelDesc === data;
-                }).id;
+                });
+                this.memberCardId = card ? card.id : '';
             },
             /**
              * 获取会员卡列表数据

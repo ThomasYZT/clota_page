@@ -17,10 +17,15 @@
         <div class="good-more-info">
             <div class="tab">
                 <div class="tab-label" @click="tabClick(1)"><p>{{$t('goodInfo')}}</p></div>
-                <div class="tab-label" @click="tabClick(2)"><p>{{$t('specificationParameter')}}</p></div>
+                <!--<div class="tab-label" @click="tabClick(2)"><p>{{$t('specificationParameter')}}</p></div>-->
             </div>
-            <div class="tab-pane" v-if='tabIndex === 1'></div>
-            <div class="tab-pane" v-else-if="tabIndex === 2"></div>
+            <div class="tab-pane" v-if='tabIndex === 1'>
+                <div class="decs-item">
+                    <div class="desc-title">{{$t('goodDesc')}} : </div>
+                    <div class="desc-content">{{detail.goodsDesc}}</div>
+                </div>
+            </div>
+            <!--<div class="tab-pane" v-else-if="tabIndex === 2"></div>-->
         </div>
 
 
@@ -155,20 +160,52 @@
                     text-align: center;
                     color: #666;
                     p {
+                        position: relative;
+                        display: inline-block;
+                        width: 20%;
                         line-height: 44px;
-                    }
 
-                    &:first-child {
                         &:after {
                             content: ' ';
-                            width: 1px;
-                            height: 12.5px;
+                            height: 1px;
+                            width: 20px;
                             position: absolute;
-                            right: 0;
+                            left: -30px;
                             top: 50%;
-                            margin-top: -6.25px;
-                            border-left: 1px solid #C5C5C5;
+                            margin-top: -2px;
+                            border-bottom: 1px solid #C5C5C5;
                         }
+                        &:before {
+                            content: ' ';
+                            height: 1px;
+                            width: 20px;
+                            position: absolute;
+                            right: -30px;
+                            top: 50%;
+                            margin-top: -2px;
+                            border-bottom: 1px solid #C5C5C5;
+                        }
+                    }
+                }
+            }
+
+            .tab-pane {
+                width: 100%;
+                padding: 24px;
+
+                .decs-item {
+                    width: 100%;
+                    display: flex;
+                    margin-bottom: 12.5px;
+
+                    .desc-title {
+                        flex: 1 0;
+                        flex-basis: 20%;
+                    }
+
+                    .desc-content {
+                        flex: 1 0;
+                        flex-basis: 80%;
                     }
                 }
             }

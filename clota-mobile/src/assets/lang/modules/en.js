@@ -186,5 +186,6 @@ export default {
     'getTime' : '领取时间',
     'pleaseSelectCard' : '请选择会员卡',
     'exchangeSuccess' : '兑换成功',
-    'exchangeFailure' : '兑换失败'
+    'exchangeFailure' : '兑换失败',
+    'goodDesc' : '商品描述'
 };
