@@ -43,9 +43,20 @@
                             class="ivu-btn-108px"
                             style="margin-right: 5px;"
                             @click="importSingle">{{$t('singleImport')}}</Button>
-                    <Button type="primary"
-                            class="ivu-btn-108px"
-                            @click="batchImport">{{$t('batchImport')}}</Button>
+                    <el-dropdown trigger="click"
+                                 placement="bottom-start"
+                                 size="medium"
+                                 @command="handleCommand"
+                                 @click.native.stop="">
+                        <Button type="primary"
+                                class="ivu-btn-108px">{{$t('batchImport')}}</Button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item v-for="(item,index) in importTypeList"
+                                              :key="index"
+                                              :command="item">{{$t(item.label)}}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
             <table-com
@@ -87,7 +98,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="modify(scope.row)">{{$t('modify')}}</li>
+                            <li @click="modify(scope.row)" :class="{disabled : scope.row.cardStatus === 'open'}">{{$t('modify')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -135,7 +146,18 @@
                 //当前操作的数据
                 currentData : {},
                 //卡类型
-                entityCardType : 'all'
+                entityCardType : 'all',
+                //导入方式列表
+                importTypeList : [
+                    {
+                        label : '普通卡',
+                        value : 'common'
+                    },
+                    {
+                        label : '密码卡',
+                        value : 'password'
+                    }
+                ]
             };
         },
         methods : {
@@ -195,15 +217,28 @@
              * @param rowData
              */
             modify (rowData) {
+                if (rowData.cardStatus === 'open') return;
                 this.currentData = rowData;
                 this.importVisible = true;
             },
+            // /**
+            //  * 批量导入
+            //  */
+            // batchImport () {
+            //     this.$router.push({
+            //         name : 'importEntityCard'
+            //     });
+            // },
             /**
-             * 批量导入
+             * 导入实体卡
+             * @param{String} command 导入的类型
              */
-            batchImport () {
+            handleCommand (command) {
                 this.$router.push({
-                    name : 'importEntityCard'
+                    name : 'importEntityCard',
+                    params : {
+                        importType : command.value
+                    }
                 });
             }
         }

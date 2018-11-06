@@ -532,13 +532,22 @@
                 }).then(res => {
                     if (res.success) {
                         if (res.data.data && res.data.data.length > 0) {
-                            res.data.data.forEach((item, index) => {
-                                item.index = index;
-                                item._status = 1;
-                                item.active = true;
-                                item.disabled = true;
-                                this.formDynamic.idType.push(item);
+                            this.formDynamic.idType = res.data.data.map((item,index) => {
+                                return {
+                                    ...item,
+                                    index : index,
+                                    _status : 1,
+                                    active : true,
+                                    disabled : true,
+                                };
                             });
+                            // res.data.data.forEach((item, index) => {
+                            //     item.index = index;
+                            //     item._status = 1;
+                            //     item.active = true;
+                            //     item.disabled = true;
+                            //     this.formDynamic.idType.push(item);
+                            // });
                         }
                     } else {
                         this.formDynamic.idType = [];

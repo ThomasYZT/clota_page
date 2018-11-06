@@ -3,7 +3,7 @@
 <template>
     <div class="import-entity-card">
         <bread-crumb-head
-            :locale-router="$t('batchImport')"
+            :locale-router="importType === 'common' ? $t('普通卡批量导入') : $t('密码卡批量导入')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div  class="content">
@@ -13,7 +13,8 @@
                         <img  src="../../../assets/images/icon-upload.png" alt="">
                     </div>
                     <span class="font-label">
-                        <upload-file @upload-success="getUploadResult">
+                        <upload-file :entityCardType="importType"
+                                     @upload-success="getUploadResult">
                         </upload-file>
                     </span>
                 </div>
@@ -38,7 +39,7 @@
             <table-com
                 v-if="resolveResultShow"
                 :key="tapValue"
-                :column-data="columns[tapValue]"
+                :column-data="columns[importType][tapValue]"
                 :table-data="tableData[tapValue]"
                 :border="true"
                 :page-no-d.sync="pageNo"
@@ -50,7 +51,7 @@
                 :auto-height="true"
                 @query-data="queryList">
                 <el-table-column
-                    slot="column2"
+                    :slot="importType === 'common' ? 'column2' : 'column3'"
                     slot-scope="row"
                     :label="row.title"
                     show-overflow-tooltip
@@ -64,6 +65,7 @@
         </div>
         <div class="btn-area" v-if="resolveResultShow">
             <Button type="primary"
+                    :disabled="tableData['successData'].length < 1"
                     class="ivu-btn-108px"
                     @click="importCard">{{$t('import')}}</Button>
             <Button type="ghost"
@@ -80,55 +82,97 @@
     import uploadFile from './components/uploadFile';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             uploadFile,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
+                    // 会员3期暂时去掉
+                    // {
+                    //     name : 'basic-setting',
+                    //     router : {
+                    //         name : 'memberSetting'
+                    //     }
+                    // },
                     {
-                        name: 'basic-setting',
-                        router: {
-                            name: 'memberSetting'
-                        }
-                    },
-                    {
-                        name: 'cardManagement',
-                        router: {
-                            name: 'entityCard'
+                        name : 'cardManagement',
+                        router : {
+                            name : 'cardManagement'
                         }
                     }
                 ],
                 //表头配置
                 columns : {
-                    successData : [
-                        {
-                            title: 'physicalCardNo',
-                            field: 'physicalNum'
-                        },
-                        {
-                            title: 'cardFaceNum',
-                            field: 'faceNum'
-                        },
-                    ],
-                    errorData : [
-                        {
-                            title: 'physicalCardNo',
-                            field: 'physicalNum'
-                        },
-                        {
-                            title: 'cardFaceNum',
-                            field: 'faceNum'
-                        },
-                        {
-                            title: 'errReason',
-                            field: 'errorInfo'
-                        },
-                    ]
+                    // 普通卡表头
+                    common : {
+                        successData : [
+                            {
+                                title : 'physicalCardNo',
+                                field : 'physicalNum'
+                            },
+                            {
+                                title : 'cardFaceNum',
+                                field : 'faceNum'
+                            },
+                        ],
+                        errorData : [
+                            {
+                                title : 'physicalCardNo',
+                                field : 'physicalNum'
+                            },
+                            {
+                                title : 'cardFaceNum',
+                                field : 'faceNum'
+                            },
+                            {
+                                title : 'errReason',
+                                field : 'errorInfo'
+                            },
+                        ]
+                    },
+                    // 实体卡表头
+                    password : {
+                        successData : [
+                            {
+                                title : 'physicalCardNo',
+                                field : 'physicalNum'
+                            },
+                            {
+                                title : 'cardFaceNum',
+                                field : 'faceNum'
+                            },
+                            {
+                                title : 'password',
+                                field : 'password'
+                            },
+                        ],
+                        errorData : [
+                            {
+                                title : 'physicalCardNo',
+                                field : 'physicalNum'
+                            },
+                            {
+                                title : 'cardFaceNum',
+                                field : 'faceNum'
+                            },
+                            {
+                                title : 'password',
+                                field : 'password'
+                            },
+                            {
+                                title : 'errReason',
+                                field : 'errorInfo'
+                            },
+                        ]
+                    }
                 },
                 //表格数据
                 tableData : {
@@ -148,15 +192,17 @@
                 uploadData : {
                     successData : [],
                     errorData : [],
-                }
-            }
+                },
+                //导入实体卡类型
+                importType : ''
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取上传解析结果
              * @param data
              */
-            getUploadResult (data){
+            getUploadResult (data) {
                 this.tapValue = 'successData';
                 this.pageNo = 1;
                 this.pageSize = 10;
@@ -173,21 +219,21 @@
              */
             cancel () {
                 this.$router.push({
-                    name : 'entityCard'
+                    name : 'cardManagement'
                 });
             },
             /**
              * 导入解析文件数据
              */
-            importCard ( ){
+            importCard ( ) {
                 ajax.post('batchSaveEntityCards',{
                     entityCards : JSON.stringify(this.uploadData['successData'])
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('import')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('import') }));
                         this.cancel();
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('import')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('import') }));
                     }
                 });
             },
@@ -196,7 +242,7 @@
              * @param row
              */
             rowClassName (row) {
-                if(this.tapValue === "errorData"){
+                if (this.tapValue === "errorData") {
                     return 'error-tr';
                 }
             },
@@ -207,10 +253,10 @@
             tapChange (value) {
                 this.pageNo = 1;
                 this.pageSize = 10;
-                if(value === 'successData'){
+                if (value === 'successData') {
                     this.totalCount = this.sucSize;
                     this.tableData['successData'] = this.uploadData['successData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
-                }else{
+                } else {
                     this.totalCount = this.failSize;
                     this.tableData['errorData'] = this.uploadData['errorData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
                 }
@@ -219,22 +265,35 @@
              * 切换导入数的分页
              */
             queryList () {
-                if(this.tapValue === 'successData'){
+                if (this.tapValue === 'successData') {
                     this.totalCount = this.sucSize;
                     this.tableData['successData'] = this.uploadData['successData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
-                }else{
+                } else {
                     this.totalCount = this.failSize;
                     this.tableData['errorData'] = this.uploadData['errorData'].slice( (this.pageNo - 1) * this.pageSize , this.pageNo * this.pageSize);
+                }
+            },
+            /**
+             * 获取路由参数
+             * @param params
+             */
+            getParams (params) {
+                if (params && params.importType) {
+                    this.importType = params.importType;
+                } else {
+                    this.$router.push({
+                        name : 'cardManagement'
+                    });
                 }
             }
         },
         computed : {
             //下载模板路径
             downloadUrl () {
-                return ajaxConfig['HOST'] + apiList['downloadEntityCardTmp'];
+                return ajaxConfig['HOST'] + apiList['downloadEntityCardTmp'] + '?realName=' + this.realName + '&tmpExcel=' + this.tmpExcel;
             },
             //解析成功label
-            sucResolve() {
+            sucResolve () {
                 return `${this.$t('analysisSuc')} · ${this.sucSize}`;
             },
             //解析失败label
@@ -244,16 +303,33 @@
             //解析结果是否显示
             resolveResultShow () {
                 return this.tableData['successData'].length > 0 || this.tableData['errorData'].length > 0;
+            },
+            //导出模板名称
+            realName () {
+                if (this.importType === 'common') {
+                    return '普通卡导入模板.xlsx';
+                } else {
+                    return '密码卡导入模板.xlsx';
+                }
+            },
+            //实体卡参数
+            tmpExcel () {
+                if (this.importType === 'common') {
+                    return 'entityCard.xlsx ';
+                } else {
+                    return 'entityPassword.xlsx';
+                }
             }
         }
 
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .import-entity-card{
         @include block_outline();
+        background: $color_fff;
 
         .content{
             @include block_outline($height : unquote('calc(100% - 106px)'));
