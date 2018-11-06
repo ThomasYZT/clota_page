@@ -19,7 +19,7 @@
                   :rules="ruleValidate"
                   :label-width="lang === 'zh-CN' ? 100 : 180">
                 <FormItem :label="$t('卡类型')" prop="entityCardType">
-                    <Select v-model="formData.entityCardType">
+                    <Select v-model="formData.entityCardType" :disabled="disabledChangeCardType">
                         <Option value="common">{{$t('普通卡')}}</Option>
                         <Option value="password">{{$t('密码卡')}}</Option>
                     </Select>
@@ -51,7 +51,7 @@
 <script>
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //模态框是否显示
@@ -63,24 +63,24 @@
             'card-data' : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
-        data() {
+        data () {
             //校验字符串是否包含数字和字母
             const validateNumAndStr = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(/^[A-Za-z0-9]{0,}$/g.test(value)){
-                        if(value.length > rule.maxLength){
-                            callback(this.$t('errorMaxLength',{field : rule.name,length : rule.maxLength}));
-                        }else{
+                if (common.isNotEmpty(value)) {
+                    if (/^[A-Za-z0-9]{0,}$/g.test(value)) {
+                        if (value.length > rule.maxLength) {
+                            callback(this.$t('errorMaxLength',{ field : rule.name,length : rule.maxLength }));
+                        } else {
                             callback();
                         }
-                    }else{
-                        callback(this.$t('filterError',{field : rule.name}));
+                    } else {
+                        callback(this.$t('filterError',{ field : rule.name }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
@@ -99,51 +99,70 @@
                 //表单校验规则
                 ruleValidate : {
                     faceNum : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('cardFaceNum')}),trigger : 'blur'},
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('cardFaceNum'),maxLength : 60}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('cardFaceNum') }),trigger : 'blur' },
+                        { validator : validateNumAndStr,trigger : 'blur',name : this.$t('cardFaceNum'),maxLength : 60 }
                     ],
-                    physicalNum :[
-                        {required : true,message : this.$t('inputField',{field : this.$t('physicalCardNo')}),trigger : 'blur'},
-                        {validator : validateNumAndStr,trigger : 'blur',name : this.$t('physicalCardNo'),maxLength : 60}
+                    physicalNum : [
+                        { required : true,message : this.$t('inputField',{ field : this.$t('physicalCardNo') }),trigger : 'blur' },
+                        { validator : validateNumAndStr,trigger : 'blur',name : this.$t('physicalCardNo'),maxLength : 60 }
                     ],
                     entityCardType : [
                         {
                             required : true,
-                            message : this.$t('selectField',{msg : this.$t('卡类型')}),
+                            message : this.$t('selectField',{ msg : this.$t('卡类型') }),
                             trigger : 'blur'
                         }
                     ],
                     password : [
                         {
                             required : true,
-                            message : this.$t('inputField',{field : this.$t('password')}),
+                            message : this.$t('inputField',{ field : this.$t('password') }),
                             trigger : 'blur'
                         },
+                        {
+                            max : 100,
+                            message : this.$t('errorMaxLength', { field : this.$t('password'),length : 100 }),
+                            trigger : 'blur'
+                        }
                     ]
                 },
                 //是否在保存中
                 saveIng : false
-            }
+            };
         },
         computed : {
             ...mapGetters({
                 lang : 'lang'
-            })
+            }),
+            //是否可以禁用选择卡类型
+            disabledChangeCardType () {
+                return this.cardData && Object.keys(this.cardData).length > 0;
+            }
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if (type === false) {
-                }else{
+            visibleChange (type) {
+                if (type === true) {
+                    if (this.cardData && Object.keys(this.cardData).length > 0) {
+                        this.formData.faceNum = this.cardData.faceNum;
+                        this.formData.physicalNum = this.cardData.physicalNum;
+                        this.formData.entityCardType = this.cardData.entityCardType;
+                        this.formData.password = this.cardData.password;
+                    } else {
+                        this.formData.entityCardType = 'common';
+                        this.formData.password = '';
+                    }
+                } else {
+                    this.$refs.formValidate.resetFields();
                 }
             },
             /**
@@ -152,13 +171,13 @@
             save () {
                 this.saveIng = true;
                 this.$refs.formValidate.validate(valid => {
-                    if(valid) {
-                        if(this.cardData.id){
+                    if (valid) {
+                        if (this.cardData.id) {
                             this.modifyEntityCard();
-                        }else{
+                        } else {
                             this.saveEntityCard();
                         }
-                    }else{
+                    } else {
                         this.saveIng = false;
                     }
                 });
@@ -167,7 +186,6 @@
              * 取消导入
              */
             cancel () {
-                this.$refs.formValidate.resetFields();
                 this.$emit('input', false);
             },
             /**
@@ -180,15 +198,15 @@
                     entityCardType : this.formData.entityCardType,
                     password : this.formData.password,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         this.$emit('fresh-data');
                         this.cancel();
-                    }else{
-                        if(res.code === 'M011'){
+                    } else {
+                        if (res.code === 'M011') {
                             this.$Message.error(this.$t('M011'));
-                        }else{
-                            this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                             this.cancel();
                         }
                     }
@@ -204,16 +222,18 @@
                     id : this.cardData.id,
                     physicalNum : this.formData.physicalNum,
                     faceNum : this.formData.faceNum,
+                    entityCardType : this.formData.entityCardType,
+                    password : this.formData.password,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
                         this.$emit('fresh-data');
                         this.cancel();
-                    }else{
-                        if(res.code === 'M011'){
+                    } else {
+                        if (res.code === 'M011') {
                             this.$Message.error(this.$t('M011'));
-                        }else{
-                            this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
                             this.cancel();
                         }
                     }
@@ -221,20 +241,8 @@
                     this.saveIng = false;
                 });
             }
-        },
-        watch :{
-            //修改时给输入框添加默认值
-            cardData (newVal,oldVal) {
-                if(newVal){
-                    this.formData.faceNum = newVal.faceNum;
-                    this.formData.physicalNum = newVal.physicalNum;
-                }else{
-                    this.formData.physicalNum = '';
-                    this.formData.faceNum = '';
-                }
-            }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

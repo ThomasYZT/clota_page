@@ -105,7 +105,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {cardHead} from './entityCardControlConfig';
+    import { cardHead } from './entityCardControlConfig';
     import ajax from '@/api/index.js';
     import importSingleCardInfo from './components/importSingleCardInfo';
     export default {
@@ -113,7 +113,7 @@
             tableCom,
             importSingleCardInfo
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columns : cardHead,
@@ -121,11 +121,11 @@
                 tableData : [],
                 pageNo : 1,
                 pageSize : 10,
-                totalCount :0,
+                totalCount : 0,
                 //筛选卡状态
                 cardStatus : 'all',
                 //关键字
-                keyword  : '',
+                keyword : '',
                 //已开发数量
                 openCardsNum : '',
                 //未开卡数量
@@ -136,9 +136,9 @@
                 currentData : {},
                 //卡类型
                 entityCardType : 'all'
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询所有导入的实体卡信息
              */
@@ -150,12 +150,12 @@
                     pageSize : this.pageSize,
                     entityCardType : this.entityCardType === 'all' ? '' : this.entityCardType
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.memberEntityCardVoList ? res.data.memberEntityCardVoList.data : [] : [];
                         this.totalCount = res.data ? res.data.memberEntityCardVoList ? res.data.memberEntityCardVoList.totalRow : 0 : 0;
                         this.openCardsNum = res.data ? res.data.openCardNum : '';
                         this.unOpenCardsNum = res.data ? res.data.waitOpenNum : '';
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                         this.openCardsNum = '';
@@ -195,8 +195,8 @@
              * @param rowData
              */
             modify (rowData) {
-                this.importVisible = true;
                 this.currentData = rowData;
+                this.importVisible = true;
             },
             /**
              * 批量导入
@@ -207,7 +207,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
