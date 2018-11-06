@@ -210,15 +210,39 @@ const createRouter = () => new Router({
         //         title : '我的卡包'
         //     }
         // }
-        //会员积分
+        //积分商城
         {
             path : '/integralMall',
             name : 'integralMall',
-            component : () => import(/* webpackChunkName: "order" */'../pages/integralMall/integralMall.vue'),
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/integralMall/integralMall.vue'),
             meta : {
-                title : 'card'
+                title : 'integralMall'
             }
         },
+        //商品详情
+        {
+            path : '/goodDetail',
+            name : 'goodDetail',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/integralMall/goodDetail.vue'),
+            meta : {
+                title : 'goodDetail'
+            }
+        },
+        //兑换商品
+        {
+            path : '/exchangeGood',
+            name : 'exchangeGood',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/integralMall/exchangeGood.vue'),
+            meta : {
+                title : 'exchangeGood'
+            }
+        },
+        //兑换记录
+        {
+            path : '/exchangeRecord',
+            name : 'exchangeRecord',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/integralMall/exchangeRecord.vue')
+        }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {
         return {

@@ -31,76 +31,76 @@
 </template>
 
 <script>
-    import Scroll from '../../components/scroll/scroll'
+    import Scroll from '../../components/scroll/scroll';
     import scoreItem from './components/scoreItem';
     import ajax from '../../api/index';
-    import {mapGetters} from 'vuex'
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             scoreItem,
             Scroll
         },
-        data() {
+        data () {
             return {
-                infoList: [],
+                infoList : [],
                 //积分总数
-                num: 0,
+                num : 0,
                 //是否显示滚动条
-                scrollbar: false,
+                scrollbar : false,
                 //下拉刷新配置
-                pullDownRefreshObj: {
+                pullDownRefreshObj : {
                     //临界值
-                    threshold: 90,
+                    threshold : 90,
                     //刷新完成bubble停留的位置
-                    stop: 40,
+                    stop : 40,
                     //设置加载和加载中显示的文字
-                    txt: this.$t('freshComplete')
+                    txt : this.$t('freshComplete')
                 },
                 //上拉加载配置
-                pullUpLoadObj: {
+                pullUpLoadObj : {
                     //临界值
-                    threshold: 20,
+                    threshold : 20,
                     //设置加载和加载中显示的文字
-                    txt: {more: 'loading', noMore: 'noMoreData'}
+                    txt : { more : 'loading', noMore : 'noMoreData' }
                 },
                 //分页设置
-                pageSetting: {
-                    pageNo: 1,
-                    pageSize: 10
+                pageSetting : {
+                    pageNo : 1,
+                    pageSize : 10
                 },
                 //页面参数
-                query: null
-            }
+                query : null
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取页面信息
              */
-            getData() {
+            getData () {
                 ajax.post('queryOrgAccountChange', {
-                    accountTypeIds: '2',
-                    operType: '',
-                    cardId: this.userInfo.cardId,
+                    accountTypeIds : '2',
+                    operType : '',
+                    cardId : this.userInfo.cardId,
                     ...this.pageSetting
                 }).then((res) => {
-                    if(res.success) {
-                        if(this.pageSetting.pageNo === 1) {
+                    if (res.success) {
+                        if (this.pageSetting.pageNo === 1) {
                             this.infoList = res.data ? res.data.data : [];
                             //组装数据
                             this.packingData(res.data.data);
                         } else {
-                            if(res.data.data.length !== 0) {
+                            if (res.data.data.length !== 0) {
                                 //组装数据
                                 this.packingData(res.data.data);
                                 this.infoList = this.infoList.concat(res.data.data);
-                            }else {
+                            } else {
                                 //如果下一页数据为0，则页数回退
                                 this.pageSetting.pageNo -= 1;
                                 this.refresh();
                             }
                         }
-                    }else {
+                    } else {
                         this.infoList = [];
                         this.$vux.toast.text(res.message);
                     }
@@ -109,52 +109,52 @@
             /**
              * 下拉刷新操作
              */
-            onPullingDown() {
+            onPullingDown () {
                 this.pageSetting.pageNo = 1;
                 this.getData();
             },
             /**
              * 上拉刷新操作
              */
-            onPullingUp() {
+            onPullingUp () {
                 this.pageSetting.pageNo += 1;
                 this.getData();
             },
             //强制刷新scroll
-            refresh() {
+            refresh () {
                 this.$refs.scroll.forceUpdate();
             },
             /**
              * 组装数据
              */
-            packingData(data) {
+            packingData (data) {
                 data.forEach((item) => {
                     switch (item.operationType) {
                         case 'adjust_score':
-                            item.purpose = 'adjustScore'
+                            item.purpose = 'adjustScore';
                             break;
                         case 'consume':
-                            item.evaluateType === 'consume_add' ? item.purpose = 'gainByConsuming' : item.purpose = 'scoreResume'
+                            item.evaluateType === 'consume_add' ? item.purpose = 'gainByConsuming' : item.purpose = 'scoreResume';
                             break;
                         case 'recharge':
-                            item.purpose = 'gainByRecharging'
+                            item.purpose = 'gainByRecharging';
                             break;
                         default:
-                            item.purpose = '-'
+                            item.purpose = '-';
                     }
-                })
+                });
             }
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'userInfo',
             ])
         },
-        created() {
+        created () {
             this.query = this.$route.query;
             this.getData();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

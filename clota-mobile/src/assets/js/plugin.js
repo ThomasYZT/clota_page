@@ -27,11 +27,18 @@ import {
     CellBox,
     Confirm ,
     CheckIcon ,
-    Loading  ,
-    Countdown  ,
+    Loading ,
+    Countdown ,
     XDialog,
     WechatPlugin ,
+    Tabbar,
+    TabbarItem,
 } from 'vux';
+
+
+// 引入公用样式，指令及方法等
+import klwkUi from 'klwk-ui';
+import VueBarcode from '@xkeshi/vue-barcode';
 
 
 // // 按需引入 Echarts 图表
@@ -42,11 +49,6 @@ require('echarts/lib/component/legend');
 require('echarts/lib/component/legendScroll');
 
 
-// 引入公用样式，指令及方法等
-import klwkUi from 'klwk-ui';
-import VueBarcode from '@xkeshi/vue-barcode';
-
-
 let plugin = {};
 plugin.install = function (Vue, options) {
 
@@ -54,7 +56,7 @@ plugin.install = function (Vue, options) {
     Vue.component(VueBarcode.name, VueBarcode);
 
     //以插件形式引入vux toast组件
-    Vue.use(ToastPlugin,{position: 'middle'});
+    Vue.use(ToastPlugin,{ position : 'middle' });
 
     //vux按需引入
     Vue.component( 'XInput', XInput);
@@ -80,6 +82,8 @@ plugin.install = function (Vue, options) {
     Vue.component('loading', Loading);
     Vue.component('countdown', Countdown);
     Vue.component('x-dialog', XDialog);
+    Vue.component('Tabbar', Tabbar);
+    Vue.component('TabbarItem', TabbarItem);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);
@@ -91,10 +95,10 @@ plugin.install = function (Vue, options) {
 
     // 注入全局变量
     Vue.mixin({
-        components: {},
-        filters: {
+        components : {},
+        filters : {
             // 时间格式化过滤器
-            timeFormat(value, format = 'yyyy/MM/dd', emptyVal = '') {
+            timeFormat (value, format = 'yyyy/MM/dd', emptyVal = '') {
                 if (!value) {
                     return emptyVal;
                 } else if (value instanceof Date) {
@@ -105,11 +109,11 @@ plugin.install = function (Vue, options) {
                     value = value.replace(/-/g,'/');
                     return value.toDate().format(format);
                 } else {
-                    return value
+                    return value;
                 }
             },
             //内容过滤器，如果内容为空或null，返回-
-            contentFilter(content) {
+            contentFilter (content) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
@@ -117,7 +121,7 @@ plugin.install = function (Vue, options) {
                 }
             },
             //货比格式化
-            moneyFilter(content,places = 2,symbol = '',defaultValue = '-') {
+            moneyFilter (content,places = 2,symbol = '',defaultValue = '-') {
                 if (content === '' || content === null || content === undefined) {
                     return defaultValue;
                 } else {
@@ -125,10 +129,10 @@ plugin.install = function (Vue, options) {
                 }
             }
         },
-        created() {
+        created () {
 
         }
-    })
+    });
 
 };
 

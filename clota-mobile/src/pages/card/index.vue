@@ -113,7 +113,7 @@
     import ajax from '@/api/index.js';
     import noData from '@/components/noData/index.vue';
     export default {
-        data() {
+        data () {
             return {
                 //卡包类型
                 cardType : 0,
@@ -126,7 +126,7 @@
                 yearyCardInfo : {},
                 //次卡信息
                 timeCardInfo : {}
-            }
+            };
         },
         components : {
             cardInfo,
@@ -135,7 +135,7 @@
             useExplain,
             noData
         },
-        methods: {
+        methods : {
             /**
              * 卡包类型改变
              * @param index 卡包序号
@@ -148,9 +148,9 @@
              * @param type
              */
             selectCard (type) {
-                if(type === 'yearCard'){
+                if (type === 'yearCard') {
                     this.cardType = 0;
-                }else if(type === 'timeCard'){
+                } else if (type === 'timeCard') {
                     this.cardType = 1;
                 }
             },
@@ -160,13 +160,13 @@
             showYearCode () {
                 this.prevList = [
                     {
-                        src: this.$refs.yearQrcode.imgData,
-                        w: 240,
-                        h: 240
+                        src : this.$refs.yearQrcode.imgData,
+                        w : 240,
+                        h : 240
                     }
                 ];
                 this.$nextTick(() =>{
-                    this.$refs.previewer.show(0)
+                    this.$refs.previewer.show(0);
                 });
             },
             /**
@@ -175,17 +175,17 @@
             showTimeCode () {
                 this.prevList = [
                     {
-                        msrc: this.$refs.timesQrcode.imgData,
-                        src: this.$refs.timesQrcode.imgData,
-                        w: 240,
-                        h: 240,
+                        msrc : this.$refs.timesQrcode.imgData,
+                        src : this.$refs.timesQrcode.imgData,
+                        w : 240,
+                        h : 240,
                         initialPosition : {
                             x : 100
                         }
                     }
                 ];
                 this.$nextTick(() =>{
-                    this.$refs.previewer.show(0)
+                    this.$refs.previewer.show(0);
                 });
             },
             /**
@@ -195,13 +195,13 @@
             previewImg (imgSrc) {
                 this.prevList = [
                     {
-                        src: imgSrc ? imgSrc : require('../../assets/images/defaut-face.png'),
-                        w: document.body.offsetWidth,
-                        h: 240
+                        src : imgSrc ? imgSrc : require('../../assets/images/defaut-face.png'),
+                        w : document.body.offsetWidth,
+                        h : 240
                     }
                 ];
                 this.$nextTick(() =>{
-                    this.$refs.previewer.show(0)
+                    this.$refs.previewer.show(0);
                 });
             },
             /**
@@ -209,12 +209,12 @@
              */
             getCard () {
                 ajax.post('getCardPackage').then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.setCardInfo(res.data ? res.data : []);
-                    }else{
+                    } else {
                         this.tapInfo = [];
                     }
-                })
+                });
             },
             /**
              * 获取卡包信息
@@ -222,13 +222,13 @@
              */
             setCardInfo (cardData) {
                 this.tapInfo = [];
-                if(cardData.length > 0){
-                    for(let i  =0,j = cardData.length;i < j;i++){
+                if (cardData.length > 0) {
+                    for (let i = 0,j = cardData.length; i < j; i++) {
                         //获取卡包tap栏列表
-                        if(cardData[i].vipType === 'annual'){
+                        if (cardData[i].vipType === 'annual') {
                             this.tapInfo.push('yearCard');
                             this.yearyCardInfo = cardData[i];
-                        }else if(cardData[i].vipType === 'times'){
+                        } else if (cardData[i].vipType === 'times') {
                             this.tapInfo.push('timeCard');
                             this.timeCardInfo = cardData[i];
                         }
@@ -242,13 +242,13 @@
         filters : {
             //头像过滤器
             headImgFilter (content) {
-                if(content) return content;
-                else{
+                if (content) return content;
+                else {
                     return require('../../assets/images/defaut-face.png');
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

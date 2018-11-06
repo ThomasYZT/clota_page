@@ -149,3 +149,28 @@ div.cell {
     color: #0073EB!important;
 }
 
+
+/**
+    tabbarItem
+ */
+.weui-tabbar__label {
+    font-size: 10px !important;
+}
+
+.weui-tabbar__item {
+    i {
+        &:before {
+            color : #B9B9B9 !important;
+        }
+    }
+}
+
+.weui-tabbar__item.weui-bar__item_on {
+    i {
+        &:before {
+            color: #0073EB !important;
+        }
+    }
+}
+
+
