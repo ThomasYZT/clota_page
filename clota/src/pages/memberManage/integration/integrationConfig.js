@@ -2,6 +2,12 @@
 //积分折扣率表头配置
 export const columnData = [
     {
+        title : '会员类别', // 会员类别
+        minWidth : 100,
+        enMinWidth : 160,
+        field : 'typeName'
+    },
+    {
         title : 'levelSetting', // 会员级别
         minWidth : 100,
         enMinWidth : 160,
@@ -9,7 +15,7 @@ export const columnData = [
     },
     {
         title : 'integralScale', // 积分比例（人民币：积分数）
-        minWidth : 130,
+        minWidth : 227,
         enMinWidth : 400,
         field : 'scoreRate'
     },
@@ -35,6 +41,12 @@ export const columnData = [
 
 //活动积分折扣率表头配置
 export const specialColumnData = [
+    {
+        title : '会员类别', // 会员类别
+        minWidth : 160,
+        enMinWidth : 160,
+        field : 'typeName'
+    },
     {
         title : 'levelSetting', // 会员级别
         minWidth : 120,

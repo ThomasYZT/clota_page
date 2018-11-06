@@ -12,35 +12,53 @@
               :rules="ruleValidate"
               :inline="true"
               label-position="top">
-            <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('请选择会员卡类型')" prop="cardTypeId"><!--请选择会员卡类型-->
-                    <Select v-model="memberCard.cardTypeId"
-                            style="width: 100%" ><!--@on-change="changeCardType"-->
-                        <Option v-for="item in cardTypes" :key="item.id"
-                                :value="item.id"
-                                :placeholder="$t('selectField', {field: ''})">
-                            {{$t(item.typeName)}}
-                        </Option>
-                    </Select>
-                </Form-item>
-                <Form-item :label="$t('请选择会员卡级别')" prop="levelId"><!--请选择会员卡级别-->
-                    <Select v-model="memberCard.levelId" style="width: 100%">
-                        <Option v-for="item in cardLevelList" :key="item.id"
-                                :value="item.id"
-                                :placeholder="$t('selectField', {field: ''})">
-                            {{$t(item.levelDesc)}}
-                        </Option>
-                    </Select>
-                </Form-item>
-            </div>
-            <div class="ivu-form-item-wrap">
-                <Form-item :label="$t('会员卡售价')">
-                    <span>{{currentSelectedCard.salePrice | contentFilter}} {{$t('yuan')}}</span>
-                </Form-item>
-                <Form-item :label="$t('卡内金额')">
-                    <span>{{currentSelectedCard.amountInCard | contentFilter}} {{$t('yuan')}}</span>
-                </Form-item>
-            </div>
+            <i-row>
+                <i-col span="12">
+                    <!--会员卡类型-->
+                    <Form-item :label="$t('请选择会员卡类型')" prop="cardTypeId">
+                        <Select v-model="memberCard.cardTypeId"
+                                style="width: 100%"
+                                @on-change="cardTypeChange">
+                            <Option v-for="item in cardTypes"
+                                    :key="item.id"
+                                    :value="item.id"
+                                    :placeholder="$t('selectField', {field: ''})">
+                                {{item.typeName}}
+                            </Option>
+                        </Select>
+                    </Form-item>
+                </i-col>
+                <i-col span="12">
+                    <!--会员卡级别-->
+                    <Form-item :label="$t('请选择会员卡级别')"
+                               prop="levelId"
+                               style="float: right">
+                        <Select v-model="memberCard.levelId"
+                                style="width: 100%"
+                                @on-change="getLevelsByCardType">
+                            <Option v-for="item in cardLevelList"
+                                    :key="item.id"
+                                    :value="item.id"
+                                    :placeholder="$t('selectField', {field: ''})">
+                                {{item.levelDesc}}
+                            </Option>
+                        </Select>
+                    </Form-item>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="12">
+                    <Form-item :label="$t('会员卡售价')">
+                        <span>{{cardLevelInfo.salePrice | moneyFilter | contentFilter}} {{$t('yuan')}}</span>
+                    </Form-item>
+                </i-col>
+                <i-col span="12">
+                    <Form-item :label="$t('卡内金额')"
+                               style="float: right">
+                        <span>{{cardLevelInfo.amountInCard | moneyFilter | contentFilter}} {{$t('yuan')}}</span>
+                    </Form-item>
+                </i-col>
+            </i-row>
         </Form>
     </div>
 </template>
@@ -48,91 +66,94 @@
     import ajax from '@/api/index';
 
     export default {
-        components: {},
-        props: {},
-        data() {
+        data () {
             return {
                 // 表单字段
-                memberCard: {
-                    cardTypeId: '',
-                    levelId: '',
+                memberCard : {
+                    // 会员卡类别id
+                    cardTypeId : '',
+                    //会员卡级别id
+                    levelId : '',
                 },
-                // 会员卡类型
-                cardTypes: [
-//                    {id: '2', typeName: '个人会员卡'},
-                ],
-                // 会员卡级别
-                cardLevelList: [
-//                    {id: '7549317274', levelDesc: '水源年卡', salePrice: 5, amountInCard: 100},
-                ],
-                // 当前选中级别的会员卡
-                currentSelectedCard: {},
-
+                // 会员卡类别列表
+                cardTypes : [],
+                // 会员卡级别列表
+                cardLevelList : [],
                 // 表单校验规则
-                ruleValidate: {
-                    cardTypeId: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('会员卡类别')}), trigger: 'change'},     // 会员卡类别不能为空
+                ruleValidate : {
+                    cardTypeId : [
+                        {
+                            required : true,
+                            message : this.$t('errorEmpty', { msg : this.$t('会员卡类别') }),
+                            trigger : 'change'
+                        },
                     ],
-                    levelId: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('会员卡类型')}), trigger: 'change'},     // 会员卡类型不能为空
+                    levelId : [
+                        // 会员卡类型不能为空
+                        {
+                            required : true,
+                            message : this.$t('errorEmpty', { msg : this.$t('会员卡类型') }),
+                            trigger : 'change'
+                        },
                     ],
                 }
-            }
+            };
         },
-        computed: {},
-        created() {
+        created () {
             this.getcardTypeList();
         },
-        mounted() {
-        },
-        watch: {
-            'memberCard.cardTypeId': function (val, oldVal) {
-                this.changeCardType(val);
-            },
-            'memberCard.levelId': function (val, oldVal) {
-                this.currentSelectedCard = this.cardLevelList.find(item => {
-                    return val == item.id;
-                }) || {};
-
-                this.changeCardSelection();
-            },
-        },
-        methods: {
+        methods : {
             /**
-             * 获取会员卡类型
+             * 获取会员卡类别列表
              */
-            getcardTypeList() {
+            getcardTypeList () {
                 ajax.post('queryCardTypeList').then(res => {
                     if (res.success) {
                         this.cardTypes = res.data || [];
-                        this.memberCard.cardTypeId = this.cardTypes[0] ? this.cardTypes[0].id : '';
+                        this.getLevelsByCardType();
+                    } else {
+                        this.cardTypes = [];
                     }
                 });
             },
             /**
              * 查询会员卡类别下的会员级别
              */
-            getLevelsByCardType(typeId) {
+            getLevelsByCardType () {
                 ajax.post('queryLevelsByCardType', {
-                    cardTypeId: typeId
+                    cardTypeId : this.memberCard.cardTypeId
                 }).then(res => {
                     if (res.success) {
                         this.cardLevelList = res.data || [];
-                        this.memberCard.levelId = this.cardLevelList[0] ? this.cardLevelList[0].id : '';
                     } else {
                         this.cardLevelList = [];
                     }
                 });
             },
-
-            changeCardType(cardTypeId) {
-                this.getLevelsByCardType(cardTypeId);
+            /**
+             * 当会员卡类别修改时，重新设置持卡人需要填写的信息
+             */
+            changeCardSelection () {
+                this.$emit('on-change-card', this.memberCard);
             },
             /**
-             * 当会员卡类型或级别改变时的处理
+             * 会员卡类别改变
              */
-            changeCardSelection() {
-                this.$emit('on-change-card', this.memberCard);
+            cardTypeChange () {
+                this.memberCard.levelId = '';
+                 this.getLevelsByCardType();
+                 this.changeCardSelection();
+            }
+        },
+        computed : {
+            //当前选择的会员卡级别信息
+            cardLevelInfo () {
+                for (let i = 0,j = this.cardLevelList.length; i < j; i++) {
+                    if (this.cardLevelList[i]['id'] === this.memberCard.levelId) {
+                        return this.cardLevelList[i];
+                    }
+                }
+                return {};
             }
         }
     };
@@ -141,14 +162,13 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .ivu-form-item-wrap {
-        display: flex;
-        justify-content: space-between;
+    .select-card-type{
+
+        .ivu-form-item {
+            width: 280px;
+            text-align: left;
+            margin-right: 0;
+        }
     }
 
-    .ivu-form-item {
-        width: 280px;
-        text-align: left;
-        margin-right: 0;
-    }
 </style>
