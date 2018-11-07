@@ -29,6 +29,7 @@
                 </div>
                 <div slot="tool2">
                     <Button class="ivu-btn-90px" type="primary" @click="getListData">{{$t('orgStructQuery')}}</Button>
+                    <!-- 导出 -->
                     <div class="btn-wrapper">
                         <a class="ivu-btn-90px" :href="downloadUrl">{{$t('exporting')}}</a>
                     </div>
@@ -134,7 +135,10 @@
         computed : {
             //下载模板路径
             downloadUrl () {
-                return ajaxConfig['HOST'] + apiList['exportGoodsList'] + '?token=' + ajax.getToken();
+                return ajaxConfig['HOST'] + apiList['exportGoodsStock'] + '?token=' + ajax.getToken() +
+                    '?startDate=' + this.filterData.startDate +
+                    '?endDate=' + this.filterData.endDate +
+                    '?changeType=' + this.filterData.changeType;
             },
         },
         methods : {

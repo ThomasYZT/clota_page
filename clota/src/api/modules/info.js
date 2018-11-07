@@ -245,5 +245,7 @@ export default {
     //领取奖品
     'drawGoods' : '/goods/drawGoods',
     //导出商品列表
-    'exportGoodsList' : 'goods/exportGoodsList'
+    'exportGoodsList' : 'goods/exportGoodsList',
+    //导出库存列表
+    'exportGoodsStock' : 'goods/exportGoodsStock',
 }

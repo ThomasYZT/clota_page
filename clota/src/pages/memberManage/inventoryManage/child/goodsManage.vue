@@ -9,6 +9,8 @@
             <div slot="tool0" class="button-tool">
                 <!-- 新增商品入库 -->
                 <Button class="tool-btn left" type="primary" @click="addGood({type : 'add'})">{{$t('NewGoodsWarehousing')}}</Button>
+                <!-- 导出 -->
+                <a class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
             </div>
             <div slot="tool1">
                 <div class="placeholder"></div>
@@ -86,6 +88,8 @@ import tableCom from '@/components/tableCom/tableCom';
 import toolBox from '../components/toolBox';
 import { goodsListHead } from './tableConfig';
 import ajax from '@/api/index';
+import ajaxConfig from '@/config/index.js';
+import apiList from '@/api/apiList.js';
 export default {
 	components : {
 		tableCom,
@@ -118,6 +122,12 @@ export default {
 			totalCount : 0
 		};
 	},
+    computed : {
+        //下载模板路径
+        downloadUrl () {
+            return ajaxConfig['HOST'] + apiList['exportGoodsList'] + '?token=' + ajax.getToken();
+        },
+    },
 	methods : {
 		/**
          * 获取列表数据
@@ -201,6 +211,18 @@ export default {
             .sleep:after {
                 background: $color_gray;
             }
+        }
+
+
+        .a-btn {
+            display: inline-block;
+            padding: 4px 15px;
+            width: 90px;
+            font-size: 14px;
+            color: $color_fff;
+            border-radius: 4px;
+            text-align: center;
+            background-color: $color_blue;
         }
 
         .placeholder {
