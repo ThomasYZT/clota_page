@@ -1418,7 +1418,7 @@ export default {
     'inputPasswordAgain': '请再次输入密码',
     'confirmNewPassword': '确认新密码',
     'newPassword': '新密码',
-    'paswordMustBeEqual': '请输入相同的密码',
+    'paswordMustBeEqual': '两次输入密码不同，请重新输入',
     'warning': '预警',
     'normal': '正常',
     'payer': '付款方',
@@ -1601,7 +1601,6 @@ export default {
     'M018': '商品不存在',
     'M017': '异常的商品数量',
     'M016': '单位已存在',
-
 
 
 }
