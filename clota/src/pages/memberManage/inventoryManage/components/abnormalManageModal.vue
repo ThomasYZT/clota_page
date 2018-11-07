@@ -6,7 +6,8 @@
     <Modal v-model="isShow"
            class-name="vertical-center-modal"
            :title="$t('CommodityAbnormalManagement')">
-        <Form :model="formData"
+        <Form ref="formList"
+              :model="formData"
               :rules="ruleValidate"
               label-position="right"
               :label-width="180">
@@ -35,9 +36,25 @@
 
 <script>
     import ajax from '../../../../api/index';
+    import common from '@/assets/js/common.js';
     export default {
         components : {},
         data () {
+            //校验是否为正整数
+            const validateNum = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    if (err === 'fieldTypeError') {
+                        callback(this.$t(err,{ field : '' }));
+                    } else if (err === 'integetError') {
+                        callback(this.$t(err, { field : '' }));
+                    } else {
+                        callback();
+                    }
+                });
+            };
+
             return {
                 //是否显示模态框
                 isShow : false,
@@ -53,6 +70,7 @@
                 ruleValidate : {
                     stockNum : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('amount') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur' }
                     ],
                     remark : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('reason') }), trigger : 'blur' },
@@ -76,12 +94,23 @@
                         remark : ''
                     };
                 }
+                this.$refs.formList.resetFields();
                 this.isShow = !this.isShow;
             },
             /**
              * 保存商品异常管理
              */
             save () {
+                this.$refs.formList.validate( valid => {
+                    if (valid) {
+                       this.abnormalEdit();
+                    }
+                });
+            },
+            /**
+             * 异常库存编辑
+             */
+            abnormalEdit () {
                 ajax.post('abnormalGoodsManage', this.formData).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('edit') }));
@@ -92,7 +121,7 @@
                         this.toggle();
                     }
                 });
-            },
+            }
         }
     };
 </script>

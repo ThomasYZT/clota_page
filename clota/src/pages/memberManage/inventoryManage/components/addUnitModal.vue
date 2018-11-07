@@ -6,7 +6,8 @@
     <Modal v-model="isShow"
            class-name="vertical-center-modal"
            :title="$t('addMeasurementUnit')">
-        <Form :model="formData"
+        <Form ref="formList"
+              :model="formData"
               :rules="ruleValidate"
               label-position="right"
               :label-width="100">
@@ -53,6 +54,16 @@
             },
             //保存计量单位
             save () {
+                this.$refs.formList.validate(valid => {
+                    if (valid) {
+                        this.addUnit();
+                    }
+                });
+            },
+            /**
+             *  增加单位
+             */
+            addUnit () {
                 ajax.post('addUnit', this.formData).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('addUnit') }));
@@ -73,6 +84,10 @@
              * 取消隐藏模态框还原选项
              */
             hide () {
+                this.formData = {
+                    unitNames : ''
+                };
+                this.$refs.formList.resetFields();
                 this.toggle();
                 this.$emit('restore');
             }

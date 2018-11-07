@@ -280,6 +280,7 @@
                 this.$router.push({
                     name : 'editGoodsWarehousing',
                     params : {
+                        type : 'edit',
                         listItem : data
                     }
                 });

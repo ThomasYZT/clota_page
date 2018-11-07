@@ -135,7 +135,7 @@
                     } else {
                         this.$Message.error(this.$t(res.code));
                     }
-                })
+                });
             }
         }
     };

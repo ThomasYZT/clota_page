@@ -134,7 +134,7 @@
         computed : {
             //下载模板路径
             downloadUrl () {
-                return ajaxConfig['HOST'] + apiList['exportGoodsList'] + '?token=' + sessionStorage.getItem('token');
+                return ajaxConfig['HOST'] + apiList['exportGoodsList'] + '?token=' + ajax.getToken();
             },
         },
         methods : {

@@ -58,7 +58,9 @@
                     <i-col span="8">
                         <!-- 采购日期 -->
                         <Form-item :label="$t('purchaseTime')" prop="purchaseDate">
-                            <DatePicker type="date" :placeholder="$t('selectField', { msg : $t('purchaseTime') })"
+                            <DatePicker type="date"
+                                        :placeholder="$t('selectField', { msg : $t('purchaseTime') })"
+                                        :editable="false"
                                         v-model="formData.purchaseDate" style="width:250px"></DatePicker>
                         </Form-item>
                     </i-col>
@@ -138,17 +140,36 @@
             addUnitModal
         },
         data () {
-            //校验入库数量是否为正整数
-            const validateStockNum = (rule,value,callback) => {
+            //校验是否为正整数
+            const validateNum = (rule,value,callback) => {
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
                     if (err === 'fieldTypeError') {
-                        callback(this.$t(err,{ field : this.$t('amount') }));
+                        callback(this.$t(err,{ field : '' }));
+                    } else if (err === 'integetError') {
+                        callback(this.$t(err, { field : '' }));
                     } else {
                         callback();
                     }
                 });
+            };
+
+            //校验钱
+            const validateMoney = (rule,value,callback) => {
+                if (value) {
+                    common.validateMoney(value).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
+                        }
+                    });
+                } else {
+                    callback();
+                }
             };
 
             return {
@@ -186,8 +207,16 @@
                     //入库数量
                     stockNum : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('goodsQuantity') }), trigger : 'blur' },
-                        { validator : validateStockNum, trigger : 'blur' }
+                        { validator : validateNum, trigger : 'blur' }
                     ],
+                    //采购价
+                    purchasePrice : [
+                        { validator : validateMoney, trigger : 'blur' }
+                    ],
+                    //市场价
+                    marketPrice : [
+                        { validator : validateMoney, trigger : 'blur' }
+                    ]
                 },
                 //列表项详情信息
                 detail : {},
@@ -206,11 +235,11 @@
              * 表单校验
              */
             formValidate () {
-                if (this.$refs['formList'].validate( valid => {
+                this.$refs['formList'].validate( valid => {
                     if (valid) {
                         this.stockGood();
                     }
-                }));
+                });
             },
             /**
              * 新增商品入库

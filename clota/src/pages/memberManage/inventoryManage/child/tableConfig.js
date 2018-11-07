@@ -133,7 +133,7 @@ export const abnormalHead = [
     {
         title : 'editTime', //编辑时间
         minWidth : 120,
-        field : 'editTime'
+        field : 'updatedTime'
     },
     {
         title : 'editNum', //编辑数量

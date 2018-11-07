@@ -7,13 +7,14 @@
            class-name="vertical-center-modal"
            :title="$t('goodDetails')">
 
-        <Form :model="formData"
+        <Form ref="formList"
+              :model="formData"
               :rules="ruleValidate"
               label-position="right"
               :label-width="110">
 
             <i-row>
-                <i-col span="8" offset="5">
+                <i-col span="16" offset="4">
                     <!--商品名称-->
                     <Form-item :label="$t('goodsName')">
                         <span>{{detail.name}}</span>
@@ -54,12 +55,14 @@
         components : {},
         data () {
             //校验是否为正整数
-            const validateStockNum = (rule,value,callback) => {
+            const validateNum = (rule,value,callback) => {
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
                     if (err === 'fieldTypeError') {
-                        callback(this.$t(err,{ field : this.$t('amount') }));
+                        callback(this.$t(err,{ field : '' }));
+                    } else if (err === 'integetError') {
+                        callback(this.$t(err, { field : '' }));
                     } else {
                         callback();
                     }
@@ -80,8 +83,8 @@
                 //表单验证规则
                 ruleValidate : {
                     requiredCredits : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('ticketCode') }), trigger : 'blur' },
-                        { validator : validateStockNum, trigger : 'blur' }
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('convertibilityIntegral') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur' }
                     ]
                 },
                 //商品上下架状态
@@ -117,12 +120,28 @@
              * 隐藏模态框
              */
             hide () {
+                this.formData = {
+                    id : '',
+                    goodsStatus : '',
+                    requiredCredits : ''
+                };
+                this.$refs.formList.resetFields();
                 this.toggle();
             },
             /**
              * 更新商品信息
              */
             save () {
+                this.$refs.formList.validate( valid => {
+                    if (valid) {
+                        this.editGood();
+                    }
+                });
+            },
+            /**
+             * 修改商品信息
+             */
+            editGood () {
                 ajax.post('updateGoodsInfo', this.formData).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('updateInfo') }));
