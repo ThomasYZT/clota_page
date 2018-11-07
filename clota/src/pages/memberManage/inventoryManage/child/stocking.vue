@@ -136,9 +136,9 @@
             //下载模板路径
             downloadUrl () {
                 return ajaxConfig['HOST'] + apiList['exportGoodsStock'] + '?token=' + ajax.getToken() +
-                    '?startDate=' + this.filterData.startDate +
-                    '?endDate=' + this.filterData.endDate +
-                    '?changeType=' + this.filterData.changeType;
+                    '&startDate=' + this.filterData.startDate +
+                    '&endDate=' + this.filterData.endDate +
+                    '&changeType=' + this.filterData.changeType;
             },
         },
         methods : {
