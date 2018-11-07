@@ -14,32 +14,38 @@
 
 <script>
     import mainFrame from '@/components/mainFrame/mainFrame';
-    import { mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex';
 
     export default {
         name : 'app',
-        components: {
+        components : {
             mainFrame
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
         },
-        computed: {
-            noFrame() {
+        computed : {
+            noFrame () {
                 // 解决刷新页面未拿到正确路由meta信息时noFrame初始值默认为false触发了mainFrame的created事件(根据$route.name来判断当前是否能拿到meta信息)
                 return this.$route.name ? !!this.$route.meta.noFrame : true;
             },
             ...mapGetters({
-                skinType: 'skinType',
+                skinType : 'skinType',
                 hashKey : 'hashKey'
             }),
         },
         created () {
             // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
+        },
+        mounted () {
+            this.$nextTick(() => {
+                //初始化读卡器信息
+                this.$store.dispatch('initCardRead');
+            })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

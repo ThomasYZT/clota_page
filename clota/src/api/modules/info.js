@@ -51,6 +51,8 @@ export default {
     'queryMemberOrder' : '/member/memberOrder/queryMemberOrder',
     //订单-订单详情
     'queryOrderDetail' : '/member/memberOrder/queryOrderDetail',
+    //查询实体卡是否可以使用
+    'findByPhysicalNum' : '/member/entityCard/findByPhysicalNum',
 
 
     /***********************************会员积分***********************************/

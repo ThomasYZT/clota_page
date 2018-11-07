@@ -106,7 +106,7 @@
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem prop="content"
-                                  :rules="{ required : true, validator : validateContent,trigger : 'blur',data : item.content}">
+                                  :rules="{ required : true, validator : validateContent,trigger : 'blur',data : item.content,isEnable : item.isEnable}">
                             <i-input type="textarea"
                                      v-model="item.content"
                                      style="width: 342px;">
@@ -278,14 +278,18 @@
              * @param{Function} callback 回调函数
              */
             validateContent (rule,value,callback) {
-                if (rule.data) {
-                    if (rule.data.length > 300) {
-                        callback(this.$t('errorMaxLength',{ field : '',length : 300 }));
+                if (rule.isEnable) {
+                    if (rule.data) {
+                        if (rule.data.length > 300) {
+                            callback(this.$t('errorMaxLength',{ field : '',length : 300 }));
+                        } else {
+                            callback();
+                        }
                     } else {
-                        callback();
+                        callback(this.$t('inputField', { field : '' }));
                     }
                 } else {
-                    callback(this.$t('inputField', { field : '' }));
+                    callback();
                 }
             },
             /**

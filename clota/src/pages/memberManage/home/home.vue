@@ -6,11 +6,11 @@
 
             <!--会员数据概览-->
             <div class="data-show-left">
-                <!--<data-total :member-sum-count="memberSumCount">-->
-                <!--</data-total>-->
-                <!--热高会员数据概览-->
-                <member-data-overview>
-                </member-data-overview>
+                <data-total :member-sum-count="memberSumCount">
+                </data-total>
+                <!--&lt;!&ndash;热高会员数据概览&ndash;&gt;-->
+                <!--<member-data-overview>-->
+                <!--</member-data-overview>-->
             </div>
 
             <!--会员分布数据-->

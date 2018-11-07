@@ -11,7 +11,7 @@
             :ofset-height="60"
             @query-data="queryList">
             <el-table-column
-                slot="column1"
+                slot="column2"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -22,7 +22,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column3"
+                slot="column4"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -33,7 +33,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column5"
+                slot="column6"
                 show-overflow-tooltip
                 slot-scope="row"
                 :resizable="false"

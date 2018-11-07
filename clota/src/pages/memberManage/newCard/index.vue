@@ -7,13 +7,18 @@
 <template>
     <div class="new-personal-card">
         <!--头部tab组件-->
-        <header-tabs :router-name="'newCard'"></header-tabs>
+        <header-tabs :router-name="'newCard'">
+        </header-tabs>
         <div class="container">
             <div class="content-wrap">
                 <!--选择会员卡类型、级别-->
-                <select-card @on-change-card="handleCardChanged"></select-card>
+                <select-card
+                    @on-change-card="handleCardChanged">
+                </select-card>
 
-                <component :is="currentCardType" :selected-card="selectedCard"></component>
+                <component :is="currentCardType"
+                           :selected-card="selectedCard">
+                </component>
             </div>
         </div>
     </div>
@@ -26,25 +31,25 @@
     import ownerCard from './child/ownerCard.vue';
 
     export default {
-        components: {
+        components : {
             headerTabs,
             selectCard,
             personalCard,
             ownerCard,
         },
-        data() {
+        data () {
             return {
                 // 当前卡类型对应的组件
-                currentCardType: 'ownerCard',
-                selectedCard: {}
-            }
+                currentCardType : '',
+                selectedCard : {}
+            };
         },
-        methods: {
+        methods : {
             /**
              * 所选择会员卡的类型、级别发生改变后的处理
              * @param cardData  String  会员卡的类型、级别
              */
-            handleCardChanged(cardData) {
+            handleCardChanged (cardData) {
                 this.selectedCard = cardData;
                 // 判断动态组件当前是哪个
                 switch (cardData.cardTypeId) {
@@ -57,10 +62,13 @@
                     case '3':
                         this.currentCardType = 'ownerCard';
                         break;
+                    default :
+                        this.currentCardType = '';
+                        break;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -77,6 +85,7 @@
     .container {
         height: calc(100% - 70px);
         overflow: auto;
+
         .content-wrap {
             width: 850px;
             margin: 20px auto;

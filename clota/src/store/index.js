@@ -76,6 +76,8 @@ export default new Vuex.Store({
         hashKey : '',
         //当前账号拥有的所有组织结构信息,
         manageOrgList : [],
+        //当前浏览器是否支持读卡器，如果支持，是否启用
+        cardReadEnabled : false
     },
     getters: {
         //左侧菜单是否收起
@@ -130,7 +132,8 @@ export default new Vuex.Store({
         },
         hashKey : state => {
             return state.hashKey;
-        }
+        },
+        cardReadEnabled : state => state.cardReadEnabled
     },
     mutations: {
         //更新左侧菜单是否收起
@@ -202,6 +205,10 @@ export default new Vuex.Store({
         //更新节点信息
         updatemanageOrgList (state ,manageOrgList) {
             state.manageOrgList = manageOrgList;
+        },
+        //更新读卡器是否可用的状态
+        updateCardReadEnabled (state,isEnabled) {
+            state.cardReadEnabled = isEnabled;
         }
     },
     actions: {
@@ -327,6 +334,103 @@ export default new Vuex.Store({
          */
         showErrToast : debounce((store,msg) => {
             Vue.prototype.$Message.error(i18n.messages[i18n.locale][msg]);
-        },500)
+        },500),
+        /**
+         * 初始化读卡器信息
+         */
+        initCardRead (store) {
+            store.commit('updateCardReadEnabled',true);
+            //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
+            if (window.rd) {
+                store.commit('updateCardReadEnabled',true);
+            } else {
+                store.commit('updateCardReadEnabled',false);
+            }
+        },
+        /**
+         * 获取读卡器读到的数据
+         * @param store
+         */
+        getCardReadData (store) {
+            return new Promise((resolve,reject) => {
+                store.commit('updateCardReadEnabled',true);
+                resolve('1234567890123456');
+                let st;
+                //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
+                if (window.rd) {
+                    store.commit('updateCardReadEnabled',true);
+                    //如果初始化的结果小于等于0，表示初始化读卡器失败，大于0表示初始话成功
+                    st = window.rd.dc_init(100, 115200);
+                    if (st <= 0) {
+                        reject('dcInitError');
+                    } else {
+                        rd.dc_config_card(65);
+                        st = rd.dc_card_double(0);
+                        if (st !== 0) {
+                            //如果没有放置卡片，连续响3次，表示没有放置卡的错误
+                            st = rd.dc_beep(25);
+                            st = rd.dc_beep(25);
+                            st = rd.dc_beep(25);
+                            rd.dc_exit();
+                            reject('dcCardError');
+                        } else {
+                            rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
+                            st = rd.dc_load_key(0, 0);
+                            if (st !== 0) {
+                                rd.dc_exit();
+                                reject('dcLoadKeyError');
+                            } else {
+                                st = rd.dc_authentication(0, 0);
+                                if (st !== 0) {
+                                    rd.dc_exit();
+                                    reject('dcLoadKeyError');
+                                } else {
+                                    rd.put_bstrSBuffer_asc = "31323334353637383930313233343536";
+                                    st = rd.dc_write(2);
+                                    if (st !== 0) {
+                                        rd.dc_exit();
+                                        reject('dcWriteError');
+                                    } else {
+                                        st = rd.dc_read(2);
+                                        if (st !== 0) {
+                                            rd.dc_exit();
+                                            reject('dcReadError');
+                                        } else {
+                                            let result = '';
+                                            result = rd.get_bstrRBuffer;
+                                            rd.put_bstrSBuffer_asc = "30303030303030303030303030303030";
+                                            st = rd.dc_write(2);
+                                            if (st !== 0) {
+                                                rd.dc_exit();
+                                                reject('dcWriteError');
+                                            } else {
+                                                st = rd.dc_read(2);
+                                                if (st !== 0) {
+                                                    rd.dc_exit();
+                                                    reject('dcReadError');
+                                                } else {
+                                                    //读取成功，蜂鸣器响一次
+                                                    st = rd.dc_beep(5);
+                                                    if (st !== 0) {
+                                                        rd.dc_exit();
+                                                        reject('dcBeepError');
+                                                    } else {
+                                                        rd.dc_exit();
+                                                        resolve(result);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                } else {
+                    store.commit('updateCardReadEnabled',false);
+                }
+            });
+        }
     }
 });

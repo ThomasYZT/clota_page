@@ -140,12 +140,14 @@
                     if (res.success) {
                         this.$Message.success('新增会员类别成功');
                         this.$emit('fresh-data');
+                        this.cancel();
+                    } else if (res.code === 'M024') {
+                        this.$Message.error('会员卡类别名称已存在');
                     } else {
                         this.$Message.error('新增会员类别失败');
                     }
                 }).finally(() => {
                     this.saveIng = false;
-                    this.cancel();
                 });
             },
             /**
@@ -161,12 +163,14 @@
                     if (res.success) {
                         this.$Message.success('修改会员类别成功');
                         this.$emit('fresh-data');
-                    } else {
+                        this.cancel();
+                    } else if (res.code === 'M024') {
+                        this.$Message.error('会员卡类别名称已存在');
+                    }  else {
                         this.$Message.error('修改会员类别失败');
                     }
                 }).finally(() => {
                     this.saveIng = false;
-                    this.cancel();
                 });
             }
         },
