@@ -427,13 +427,14 @@
         },
         watch : {
 
-            //成长值生效设置
-            'settingData.scoreGrowthFromCharging.storedAndGrowthType' : function (newVal, oldVal) {
-                if (newVal !== 'true') {
-                    this.error.moneyToIntegrateError = '';
-                    this.error.moneyToGrowthError = '';
-                }
-            },
+            // 会员3期暂时去掉
+            // //成长值生效设置
+            // 'settingData.scoreGrowthFromCharging.storedAndGrowthType' : function (newVal, oldVal) {
+            //     if (newVal !== 'true') {
+            //         this.error.moneyToIntegrateError = '';
+            //         this.error.moneyToGrowthError = '';
+            //     }
+            // },
 
             //储值获得积分、成长值生效设置
             'settingData.scoreGrowthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
@@ -599,7 +600,6 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-
                 if (this.settingData.scoreGrowthEffModeWhileCharging.storedType === 'checkout_after' &&
                     !this.checkInputBlurFunc(this.settingData.scoreGrowthEffModeWhileCharging.storedTime, 'storedTimeError') ) {
                     return false;
@@ -609,10 +609,11 @@
                     !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToIntegrate, 'moneyToIntegrateError') ) {
                     return false;
                 }
-                if (this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGrowth, 'moneyToGrowthError') ) {
-                    return false;
-                }
+                // 会员3期暂时去掉
+                // if (this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
+                //     !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGrowth, 'moneyToGrowthError') ) {
+                //     return false;
+                // }
 
                 return true;
             },
