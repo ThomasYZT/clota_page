@@ -43,7 +43,7 @@
                             <div v-if="isPullingDown" class="loading">
                                 <loading></loading>
                             </div>
-                            <div v-else><span>{{refreshTxt}}</span></div>
+                            <div v-else><span>{{$t(refreshTxt)}}</span></div>
                         </div>
                     </div>
                 </slot>

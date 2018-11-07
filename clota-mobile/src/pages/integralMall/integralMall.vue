@@ -51,7 +51,7 @@
                     //刷新完成bubble停留的位置
                     stop : 40,
                     //设置加载和加载中显示的文字
-                    txt : this.$t('freshComplete')
+                    txt : 'freshComplete'
                 },
                 //上拉加载配置
                 pullUpLoadObj : {
@@ -72,14 +72,17 @@
              * 下拉刷新操作
              */
             onPullingDown () {
-                this.pageSetting.pageNo = 1;
+                this.pageSetting = {
+                    pageNo : 1,
+                    pageSize : 10
+                };
                 this.getData();
             },
             /**
-             * 上拉刷新操作
+             * 上拉加载操作
              */
             onPullingUp () {
-                this.pageSetting.pageNo += 1;
+                this.pageSetting.pageSize += 10;
                 this.getData();
             },
             /**
@@ -88,20 +91,20 @@
             getData () {
                 ajax.post('queryPagedGoods', this.pageSetting).then(res => {
                     if (res.success) {
-                        //下拉 刷新加载第1页
-                        if (this.pageSetting.pageNo === 1) {
-                            this.goodsList = res.data ? res.data.data : [];
-                            //上拉 刷新加载第N页
-                        } else {
-                            if (res.data.data.length !== 0) {
-                                this.goodsList = this.goodsList.concat(res.data ? res.data.data : []);
+                        if (res.data) {
+                            if ( res.data.data.length >= this.pageSetting.pageNo * (this.pageSetting.pageSize - 10) && res.data.data.length <= this.pageSetting.pageNo * this.pageSetting.pageSize) {
+                                this.goodsList = res.data ? res.data.data : [];
                             } else {
-                                this.pageSetting.pageNo -= 1;
+                                this.goodsList = res.data ? res.data.data : [];
                                 this.refresh();
+                                this.pageSetting.pageSize -= 10;
                             }
+                        } else {
+                            this.goodsList = [];
                         }
                     } else {
                         this.goodsList = [];
+                        this.$vux.toast.text(this.$t('getDataFailure'));
                     }
                 });
             },

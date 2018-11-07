@@ -116,9 +116,15 @@
                             text : this.$t('exchangeSuccess')
                         });
                     } else {
+                        let text;
+                        if (res.code === 'M023' || res.code === 'M022') {
+                            text = res.code;
+                        } else {
+                            text = 'exchangeFailure';
+                        }
                         this.$vux.toast.show({
                             type : 'cancel',
-                            text : this.$t('exchangeFailure')
+                            text : this.$t(text)
                         });
                     }
                 });

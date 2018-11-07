@@ -17,39 +17,38 @@
 <script>
 
   export default {
-      props: {
-        info: {
-            type: Object,
-            default: null
+      props : {
+        info : {
+            type : Object,
+            default : null
         }
       },
-      components: {},
-      computed: {
-          checkFlowName() {
+      components : {},
+      computed : {
+          checkFlowName () {
               switch (this.info.operationType) {
                   case 'adjust_score':
-                      return 'adjustScore'
-                      break;
+                      return 'adjustScore';
                   case 'consume':
-                      if(this.info.evaluateType === 'consume_add') {
+                      if (this.info.evaluateType === 'consume_add') {
                           return 'gainByConsuming';
-                      }else {
+                      } else {
                           return 'scoreResume';
                       }
-                      break;
                   case 'recharge':
-                      return 'gainByRecharging'
-                      break;
+                      return 'gainByRecharging';
+                  case 'adjust_money':
+                      return 'adjustScore'
                   default:
-                      return '-'
+                      return '-';
               }
           }
       },
-      data() {
-          return {}
+      data () {
+          return {};
       },
-      methods: {}
-  }
+      methods : {}
+  };
 </script>
 
 <style lang="scss" scoped>

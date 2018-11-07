@@ -43,129 +43,133 @@
 </template>
 
 <script>
-    import checkItem from './components/check-item'
-    import ajax from '../../api/index'
-    import {mapGetters} from 'vuex'
-    import Scroll from '../../components/scroll/scroll'
+    import checkItem from './components/check-item';
+    import ajax from '../../api/index';
+    import { mapGetters } from 'vuex';
+    import Scroll from '../../components/scroll/scroll';
     export default {
-        components: {
+        components : {
             checkItem,
             Scroll
         },
-        data() {
+        data () {
             return {
-                infoList: [],
-                memberAccounts: [],
-                accounts: '',
+                infoList : [],
+                memberAccounts : [],
+                accounts : '',
                 //是否显示滚动条
-                scrollbar: false,
+                scrollbar : false,
                 //下拉刷新配置
-                pullDownRefreshObj: {
+                pullDownRefreshObj : {
                     //临界值
-                    threshold: 90,
+                    threshold : 90,
                     //刷新完成bubble停留的位置
-                    stop: 40,
+                    stop : 40,
                     //设置加载和加载中显示的文字
-                    txt: this.$t('freshComplete')
+                    txt : 'freshComplete'
                 },
                 //上拉加载配置
-                pullUpLoadObj: {
+                pullUpLoadObj : {
                     //临界值
-                    threshold: 20,
+                    threshold : 20,
                     //设置加载和加载中显示的文字
-                    txt: {more: 'loading', noMore: 'noMoreData'}
+                    txt : { more : 'loading', noMore : 'noMoreData' }
                 },
                 //分页设置
-                pageSetting: {
-                    pageNo: 1,
-                    pageSize: 10
+                pageSetting : {
+                    pageNo : 1,
+                    pageSize : 10
                 },
                 //页面参数
-                query: null,
+                query : null,
                 //是否显示pop
-                visible: false,
+                visible : false,
                 //选择的账户信息
                 chosedAccount : [],
                 //会员所有账户
-                accountList: [{}],
+                accountList : [{}],
                 //当前账户id
-                curAccountsId: ''
-            }
+                curAccountsId : ''
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'userInfo'
             ])
         },
-        methods: {
+        methods : {
             //获取页面数据
-            async getData() {
+            async getData () {
                 //获取用户所有的账户类型
                 await ajax.post('queryMemberAccountDefine', {
-                    accountType: 'charging',
-                    pageNo: 1,
-                    pageSize: 200
+                    accountType : 'charging',
+                    pageNo : 1,
+                    pageSize : 200
                 }).then((res) => {
-                    if(res.success){
-                        this.accountList =  res.data ? res.data.data.map((item) => {
+                    if (res.success) {
+                        this.accountList = res.data ? res.data.data.map((item) => {
                             return {
                                 ...item,
                                 name : item.accountName,
                                 value : item.accountName
-                            }
+                            };
                         }) : [];
-                        this.chosedAccount[0] = this.accountList[0].name
-                        this.curAccountsId = this.accountList[0].id
-                    }else{
+                        this.chosedAccount[0] = this.accountList[0].name;
+                        this.curAccountsId = this.accountList[0].id;
+                    } else {
                         this.accountList = [];
                     }
-                })
+                });
                 //获取用户账户资金明细
                 await this.getCheckFlow();
             },
             /**
              *  获取资金明细
              */
-            getCheckFlow() {
+            getCheckFlow () {
                 ajax.post('queryOrgAccountChange', {
-                    accountTypeIds: this.curAccountsId,
-                    operType: '',
-                    cardId: this.userInfo.cardId,
+                    accountTypeIds : this.curAccountsId,
+                    operType : '',
+                    cardId : this.userInfo.cardId,
                     ...this.pageSetting
                 }).then((res) => {
-                    if(res.success) {
-                        if(this.pageSetting.pageNo === 1) {
-                            this.infoList = res.data ? res.data.data : [];
-                        }else {
-                            if(res.data.data.length !== 0) {
-                                this.infoList = this.infoList.concat(res.data.data);
-                            }else {
-                                //如果下一页数据量为0，则页数回退
-                                this.pageSetting.pageNo -= 1;
+                    if (res.success) {
+                        if (res.data) {
+                            if ( res.data.data.length >= this.pageSetting.pageNo * (this.pageSetting.pageSize - 10) && res.data.data.length <= this.pageSetting.pageNo * this.pageSetting.pageSize) {
+                                this.infoList = res.data ? res.data.data : [];
+                            } else {
+                                this.infoList = res.data ? res.data.data : [];
                                 this.refresh();
+                                this.pageSetting.pageSize -= 10;
                             }
+                        } else {
+                            this.infoList = [];
                         }
-                    }else {
-                        this.$vux.toast.text(res.message)
+                    } else {
+                        this.infoList = [];
+                        this.$vux.toast.text(this.$t('getDataFailure'));
                     }
-                })
+                });
             },
             /**
              * 下拉刷新操作
              */
-            onPullingDown() {
-                this.pageSetting.pageNo = 1;
+            onPullingDown () {
+                this.pageSetting = {
+                    pageNo : 1,
+                    pageSize : 10
+                };
                 this.getCheckFlow();
             },
             /**
              * 上拉刷新操作
              */
-            onPullingUp() {
-                this.pageSetting.pageNo += 1;
+            onPullingUp () {
+                this.pageSetting.pageSize += 10;
                 this.getCheckFlow();
             },
             //强制刷新scroll
-            refresh() {
+            refresh () {
                 this.$refs.scroll.forceUpdate();
             },
             /**
@@ -180,17 +184,17 @@
             accountChange (value) {
                 this.chosedAccount = [String(value)];
                 this.accountList.forEach((item) => {
-                   if(item.name === this.chosedAccount[0]) {
-                       this.curAccountsId = item.id
+                   if (item.name === this.chosedAccount[0]) {
+                       this.curAccountsId = item.id;
                    }
-                })
+                });
                 this.getCheckFlow();
             },
         },
-        created() {
-            this.getData()
+        created () {
+            this.getData();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

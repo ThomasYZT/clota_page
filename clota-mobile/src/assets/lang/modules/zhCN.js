@@ -187,5 +187,8 @@ export default {
     'pleaseSelectCard' : '请选择会员卡',
     'exchangeSuccess' : '兑换成功',
     'exchangeFailure' : '兑换失败',
-    'goodDesc' : '商品描述'
+    'goodDesc' : '商品描述',
+    'getDataFailure' : '获取数据失败',
+    'M022' : '实体卡-密码卡未设置密码',
+    'M023' : '会员积分不够',
 };

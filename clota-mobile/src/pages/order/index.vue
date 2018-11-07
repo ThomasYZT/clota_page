@@ -68,7 +68,7 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import noData from '@/components/noData/index.vue';
     import Scroll from '../../components/scroll/scroll';
     export default {
@@ -76,38 +76,38 @@
             noData,
             Scroll
         },
-        data() {
+        data () {
             return {
                 //订单列表
                 orderList : [],
                 //当前订单的类型
                 activeTap : 'ticket',
                 //是否显示滚动条
-                scrollbar: false,
+                scrollbar : false,
                 //下拉刷新配置
-                pullDownRefreshObj: {
+                pullDownRefreshObj : {
                     //临界值
-                    threshold: 90,
+                    threshold : 90,
                     //刷新完成bubble停留的位置
-                    stop: 40,
+                    stop : 40,
                     //设置加载和加载中显示的文字
-                    txt: this.$t('freshComplete')
+                    txt : 'freshComplete'
                 },
                 //上拉加载配置
-                pullUpLoadObj: {
+                pullUpLoadObj : {
                     //临界值
-                    threshold: 20,
+                    threshold : 20,
                     //设置加载和加载中显示的文字
-                    txt: {more: 'loading', noMore: 'noMoreData'}
+                    txt : { more : 'loading', noMore : 'noMoreData' }
                 },
                 //分页设置
-                pageSetting: {
-                    pageNo: 1,
-                    pageSize: 10
+                pageSetting : {
+                    pageNo : 1,
+                    pageSize : 10
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转到订单详情
              * @param data
@@ -130,21 +130,21 @@
                     productType : this.activeTap,
                     ...this.pageSetting
                 }).then(res => {
-                    if(res.success){
-                        //下拉 刷新加载第1页
-                        if(this.pageSetting.pageNo === 1) {
-                            this.orderList = res.data ? res.data.data : [];
-                        //上拉 刷新加载第N页
-                        } else {
-                            if(res.data.data.length !== 0) {
-                                this.orderList = this.orderList.concat(res.data.data);
-                            }else {
-                                this.pageSetting.pageNo -= 1;
+                    if (res.success) {
+                        if (res.data) {
+                            if ( res.data.data.length >= this.pageSetting.pageNo * (this.pageSetting.pageSize - 10) && res.data.data.length <= this.pageSetting.pageNo * this.pageSetting.pageSize) {
+                                this.orderList = res.data ? res.data.data : [];
+                            } else {
+                                this.orderList = res.data ? res.data.data : [];
                                 this.refresh();
+                                this.pageSetting.pageSize -= 10;
                             }
+                        } else {
+                            this.orderList = [];
                         }
-                    }else{
+                    } else {
                         this.orderList = [];
+                        this.$vux.toast.text(this.$t('getDataFailure'));
                     }
                 });
             },
@@ -166,19 +166,22 @@
             /**
              * 下拉刷新操作
              */
-            onPullingDown() {
-                this.pageSetting.pageNo = 1;
+            onPullingDown () {
+                this.pageSetting = {
+                    pageNo : 1,
+                    pageSize : 10
+                };
                 this.queryMemberOrder();
             },
             /**
              * 上拉刷新操作
              */
-            onPullingUp() {
-                this.pageSetting.pageNo += 1;
+            onPullingUp () {
+                this.pageSetting.pageSize += 10;
                 this.queryMemberOrder();
             },
             //强制刷新scroll
-            refresh() {
+            refresh () {
                 this.$refs.scroll.forceUpdate();
             }
         },
@@ -187,12 +190,12 @@
                 userInfo : 'userInfo'
             })
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

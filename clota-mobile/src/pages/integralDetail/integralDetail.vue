@@ -55,7 +55,7 @@
                     //刷新完成bubble停留的位置
                     stop : 40,
                     //设置加载和加载中显示的文字
-                    txt : this.$t('freshComplete')
+                    txt : 'freshComplete'
                 },
                 //上拉加载配置
                 pullUpLoadObj : {
@@ -85,24 +85,24 @@
                     ...this.pageSetting
                 }).then((res) => {
                     if (res.success) {
-                        if (this.pageSetting.pageNo === 1) {
-                            this.infoList = res.data ? res.data.data : [];
-                            //组装数据
-                            this.packingData(res.data.data);
-                        } else {
-                            if (res.data.data.length !== 0) {
+                        if (res.data) {
+                            if ( res.data.data.length >= this.pageSetting.pageNo * (this.pageSetting.pageSize - 10) && res.data.data.length <= this.pageSetting.pageNo * this.pageSetting.pageSize) {
                                 //组装数据
                                 this.packingData(res.data.data);
-                                this.infoList = this.infoList.concat(res.data.data);
+                                this.infoList = res.data ? res.data.data : [];
                             } else {
-                                //如果下一页数据为0，则页数回退
-                                this.pageSetting.pageNo -= 1;
+                                //组装数据
+                                this.packingData(res.data.data);
+                                this.infoList = res.data ? res.data.data : [];
                                 this.refresh();
+                                this.pageSetting.pageSize -= 10;
                             }
+                        } else {
+                            this.infoList = [];
                         }
                     } else {
                         this.infoList = [];
-                        this.$vux.toast.text(res.message);
+                        this.$vux.toast.text(this.$t('getDataFailure'));
                     }
                 });
             },
@@ -110,14 +110,17 @@
              * 下拉刷新操作
              */
             onPullingDown () {
-                this.pageSetting.pageNo = 1;
+                this.pageSetting = {
+                    pageNo : 1,
+                    pageSize : 10
+                };
                 this.getData();
             },
             /**
              * 上拉刷新操作
              */
             onPullingUp () {
-                this.pageSetting.pageNo += 1;
+                this.pageSetting.pageSize += 10;
                 this.getData();
             },
             //强制刷新scroll
