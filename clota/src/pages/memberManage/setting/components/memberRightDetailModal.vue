@@ -15,14 +15,14 @@
                 <!--生日购票优惠-->
                 <i-row :key="'birthday' + index">
                     <i-col style="display: inline-block;width : auto;">
-                        <i-switch v-model="item.isEnable"></i-switch>
+                        <i-switch v-model="item.isEnable" @on-change="changeValidateStatus(index,'birthday')"></i-switch>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <span class="word-label">生日当天限购</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <FormItem prop="user"
-                                  :rules="{ required : true,validator : validateNum,trigger : 'blur',data : item.rule.num }">
+                        <FormItem :prop="'birthdayNum' + index"
+                                  :rules="{ required : true,validator : validateNum,trigger : 'blur',data : item.rule.num,isEnable : item.isEnable }">
                             <i-input type="text"
                                      v-model.trim="item.rule.num"
                                      style="width: 70px;">
@@ -33,8 +33,8 @@
                         <span class="word-label">张</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <FormItem prop="user"
-                                  :rules="{ required : true,validator : validateDecimail,trigger : 'blur',data : item.rule.discount }">
+                        <FormItem :prop="'birthdayDiscount' + index"
+                                  :rules="{ required : true,validator : validateDecimail,trigger : 'blur',data : item.rule.discount,isEnable : item.isEnable }">
                             <i-input type="text"
                                      v-model.trim="item.rule.discount"
                                      style="width: 70px;">
@@ -50,14 +50,14 @@
             <template v-for="(item,index) in rightInfo.ticket">
                 <i-row :key="'ticket' + index" v-if="item.type === 'ticket'">
                     <i-col style="display: inline-block;width : auto;">
-                        <i-switch v-model="item.isEnable"></i-switch>
+                        <i-switch v-model="item.isEnable" @on-change="changeValidateStatus(index,'ticket')"></i-switch>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <span class="word-label">每月</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <FormItem prop="user"
-                                  :rules="{ required : true,validator : validateNum,trigger : 'blur',data : item.rule.num }">
+                        <FormItem :prop="'ticketNum' + index"
+                                  :rules="{ required : true,validator : validateNum,trigger : 'blur',data : item.rule.num,isEnable : item.isEnable  }">
                             <i-input type="text"
                                      v-model.trim="item.rule.num"
                                      style="width: 70px;">
@@ -69,8 +69,8 @@
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem
-                            :prop="'scenicId' + index"
-                            :rules="{ validator : validateScenic,trigger : 'change',index : index }">
+                            :prop="'ticketScenicId' + index"
+                            :rules="{ validator : validateScenic,trigger : 'change',index : index,isEnable : item.isEnable }">
                             <Select v-model="item.rule.scenicId"
                                     transfer
                                     style="width: 100px;">
@@ -83,8 +83,8 @@
                         </FormItem>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <FormItem prop="user"
-                                  :rules="{ validator : validateMoney,trigger : 'blur',data : item.rule.discount }">
+                        <FormItem :prop="'ticketDiscount' + index"
+                                  :rules="{ validator : validateMoney,trigger : 'blur',data : item.rule.discount,isEnable : item.isEnable }">
                             <i-input type="text"
                                      v-model.trim="item.rule.discount"
                                      style="width: 70px;">
@@ -102,10 +102,10 @@
             <template v-for="(item,index) in rightInfo.desc">
                 <i-row :key="'desc' + index">
                     <i-col style="display: inline-block;width : auto;">
-                        <i-switch v-model="item.isEnable"></i-switch>
+                        <i-switch v-model="item.isEnable" @on-change="changeValidateStatus(index,'desc')"></i-switch>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <FormItem prop="content"
+                        <FormItem :prop="'descContent' + index"
                                   :rules="{ required : true, validator : validateContent,trigger : 'blur',data : item.content,isEnable : item.isEnable}">
                             <i-input type="textarea"
                                      v-model="item.content"
@@ -306,18 +306,22 @@
              * @param{Function} callback 回调函数
              */
             validateNum (rule,value,callback) {
-                if (common.isNotEmpty(rule.data)) {
-                    common.validateInteger(rule.data).then(() => {
-                        callback();
-                    }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : '',length : 10 }));
-                        } else {
-                            callback(this.$t(err,{ field : '' }));
-                        }
-                    });
+                if (rule.isEnable) {
+                    if (common.isNotEmpty(rule.data)) {
+                        common.validateInteger(rule.data).then(() => {
+                            callback();
+                        }).catch(err => {
+                            if (err === 'errorMaxLength') {
+                                callback(this.$t(err,{ field : '',length : 10 }));
+                            } else {
+                                callback(this.$t(err,{ field : '' }));
+                            }
+                        });
+                    } else {
+                        callback(this.$t('inputField', { field : '' }));
+                    }
                 } else {
-                    callback(this.$t('inputField', { field : '' }));
+                    callback();
                 }
             },
             /**
@@ -327,22 +331,26 @@
              * @param{Function} callback 回调函数
              */
             validateDecimail (rule,value,callback) {
-                if (common.isNotEmpty(rule.data)) {
-                    common.validateMoney(rule.data,0,2).then(() => {
-                        if ( rule.data > 10) {
-                            callback(this.$t('errorGreaterThan',{ small : '',big : '10' }));
-                        } else {
-                            callback();
-                        }
-                    }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            callback(this.$t('errorMaxLength',{ field : '',length : 10 }));
-                        } else {
-                            callback(this.$t(err,{ field : '' }));
-                        }
-                    });
+                if (rule.isEnable) {
+                    if (common.isNotEmpty(rule.data)) {
+                        common.validateMoney(rule.data,0,2).then(() => {
+                            if ( rule.data > 10) {
+                                callback(this.$t('errorGreaterThan',{ small : '',big : '10' }));
+                            } else {
+                                callback();
+                            }
+                        }).catch(err => {
+                            if (err === 'errorMaxLength') {
+                                callback(this.$t('errorMaxLength',{ field : '',length : 10 }));
+                            } else {
+                                callback(this.$t(err,{ field : '' }));
+                            }
+                        });
+                    } else {
+                        callback(this.$t('inputField', { field : '' }));
+                    }
                 } else {
-                    callback(this.$t('inputField', { field : '' }));
+                    callback();
                 }
             },
             /**
@@ -353,20 +361,24 @@
              */
             validateScenic (rule,value,callback) {
                 let scenicId = this.rightInfo.ticket[rule.index]['rule']['scenicId'];
-                if (scenicId) {
-                    let tickets = this.rightInfo.ticket;
-                    for (let i = 0,j = tickets.length; i < j; i++) {
-                        if (i !== rule.index) {
-                            if (scenicId === tickets[i]['rule']['scenicId']) {
-                                callback('当前景区已选择，请重新选择景区');
-                            } else {
-                                callback();
+                if (rule.isEnable) {
+                    if (scenicId) {
+                        let tickets = this.rightInfo.ticket;
+                        for (let i = 0,j = tickets.length; i < j; i++) {
+                            if (i !== rule.index) {
+                                if (scenicId === tickets[i]['rule']['scenicId']) {
+                                    callback('当前景区已选择，请重新选择景区');
+                                } else {
+                                    callback();
+                                }
                             }
                         }
+                        callback();
+                    } else {
+                        callback(this.$t('inputField', { field : this.$t('scenic') }));
                     }
-                    callback();
                 } else {
-                    callback(this.$t('inputField', { field : this.$t('scenic') }));
+                    callback();
                 }
             },
             /**
@@ -376,15 +388,19 @@
              * @param{Function} callback 回调函数
              */
             validateMoney (rule,value,callback) {
-                common.validateMoney(rule.data,0,10).then(() => {
+                if (rule.isEnable) {
+                    common.validateMoney(rule.data,0,10).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t('errorMaxLength',{ field : '',length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : '' }));
+                        }
+                    });
+                } else {
                     callback();
-                }).catch(err => {
-                    if (err === 'errorMaxLength') {
-                        callback(this.$t('errorMaxLength',{ field : '',length : 10 }));
-                    } else {
-                        callback(this.$t(err,{ field : '' }));
-                    }
-                });
+                }
             },
             /**
              * 保存会员权益信息
@@ -446,6 +462,25 @@
                         this.scenicList = res.data ? res.data : [];
                     } else {
                         this.scenicList = [];
+                    }
+                });
+            },
+            /**
+             * 改变开启关闭状态重新校验输入信息
+             * @param{Number} index 当前序列
+             * @param{String} label 当前校验的权益类型
+             */
+            changeValidateStatus (index,label) {
+                this.$nextTick(() => {
+                    if (label === 'birthday') {
+                        this.$refs.formValidate.validateField('birthdayNum' + index);
+                        this.$refs.formValidate.validateField('birthdayDiscount' + index);
+                    } else if (label === 'ticket') {
+                        this.$refs.formValidate.validateField('ticketNum' + index);
+                        this.$refs.formValidate.validateField('ticketScenicId' + index);
+                        this.$refs.formValidate.validateField('ticketDiscount' + index);
+                    } else if (label === 'desc') {
+                        this.$refs.formValidate.validateField('descContent' + index);
                     }
                 });
             }

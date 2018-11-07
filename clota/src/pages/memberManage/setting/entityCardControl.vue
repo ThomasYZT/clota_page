@@ -90,6 +90,16 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    slot="column6"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{scope.row.custName}}/{{scope.row.phoneNum}}
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column7"
                     slot-scope="row"
                     :label="row.title"
