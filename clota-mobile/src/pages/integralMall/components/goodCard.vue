@@ -65,7 +65,6 @@
             width: 100%;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
-            background-color: $color_red;
 
             div {
                 width:100%;
