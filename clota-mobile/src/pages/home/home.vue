@@ -55,6 +55,7 @@
                 :dialog-style="{'max-width': '100%', width: '100%', height: '50%', 'background-color': 'transparent'}">
           <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
       </x-dialog>
+
   </div>
 </template>
 
@@ -142,13 +143,6 @@
                         info: '',
                         iconColor: '#F46462'
                     }*/
-                {
-                    title : 'integralMall',
-                    link : '/integralMall',
-                    iconClass : 'icon-my-package',
-                    info : '',
-                    iconColor : '#368CE3'
-                },
             ];
             /**
              * 根据title名获取对应的导航数据对象
@@ -177,7 +171,7 @@
                 //会员卡字体颜色
                 cardFontColor : '#fff',
                 //是否放大显示头像
-                isShowImg : false
+                isShowImg : false,
             };
         },
         computed : {

@@ -45,91 +45,91 @@
 
 <script>
     import ajax from '../../api/index';
-    import {validator} from 'klwk-ui';
-    import {mapGetters} from 'vuex';
+    import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
     import Vue from 'vue';
 
     export default {
-        data() {
+        data () {
             return {
                 //输入提示信息
-                msg: '',
+                msg : '',
                 //登陆信息
-                loginInfo: {
-                    phoneNum: '',
-                    vcode: ''
+                loginInfo : {
+                    phoneNum : '',
+                    vcode : ''
                 },
-                isGetCode: false,
-                timer: null,
+                isGetCode : false,
+                timer : null,
                 //倒计时间
-                countDown: null,
+                countDown : null,
                 //微信用户信息
-                wxUserInfo :{},
-            }
+                wxUserInfo : {},
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取验证码
              */
-            getCode() {
+            getCode () {
                 //先验证是否在60s倒计时内
-                if(!this.isGetCode) {
+                if (!this.isGetCode) {
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
-                            phoneNum: this.loginInfo.phoneNum,
+                            phoneNum : this.loginInfo.phoneNum,
                             type : 'member_login',
                             companyCode : this.companyCode
                         }).then((res) => {
-                            if(!res.success) {
+                            if (!res.success) {
                                 this.$vux.toast.show({
-                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    text : this.$t('operateFail',{ msg : this.$t('send') }),
                                     type : 'cancel'
                                 });
-                            }else{
+                            } else {
                                 this.timimg();
                                 this.isGetCode = true;
                                 this.$vux.toast.show({
-                                    text: this.$t('operateSuc',{msg : this.$t('send')})
-                                })
+                                    text : this.$t('operateSuc',{ msg : this.$t('send') })
+                                });
                             }
-                        })
+                        });
                     });
                 }
             },
             /**
              * 登陆
              */
-            login() {
+            login () {
                 this.msg = '';
                 this.validate(() => {
                     ajax.post('login', {
-                        phoneNum: this.loginInfo.phoneNum,
-                        code: this.loginInfo.vcode,
-                        companyCode: this.companyCode,
+                        phoneNum : this.loginInfo.phoneNum,
+                        code : this.loginInfo.vcode,
+                        companyCode : this.companyCode,
                         openId : this.wxUserInfo.openId
                     }).then((res) => {
-                        if(res.success) {
+                        if (res.success) {
                             this.dataToLogin(res);
-                        } else if(res.toString() === 'Error: Network Error'){
+                        } else if (res.toString() === 'Error: Network Error') {
                             this.$vux.toast.text(this.$t('netNotGood'));
-                        }else {
+                        } else {
                             this.$vux.toast.text(this.$t(res.code));
                         }
-                    })
+                    });
                 });
             },
             /**
              * 验证输入信息
              */
-            validate(callback) {
+            validate (callback) {
                 //手机号验证 验证手机号不为空 且为 手机号格式
                 this.phoneValidate(() => {
                     //验证验证码不为空
-                    if(this.loginInfo.vcode === '') {
+                    if (this.loginInfo.vcode === '') {
                         this.$vux.toast.text(this.$t('pleaseInputValidCode'));
-                    }else{
-                        if(callback) {
+                    } else {
+                        if (callback) {
                             callback();
                         }
                     }
@@ -139,14 +139,14 @@
              * 手机号验证 验证手机号不为空 且为 手机号格式
              * @param callback
              */
-            phoneValidate(callback) {
+            phoneValidate (callback) {
                 this.msg = '';
-                if(this.loginInfo.phoneNum === '') {
+                if (this.loginInfo.phoneNum === '') {
                     this.$vux.toast.text(this.$t('pleaseEnterMobile'));
                 } else {
-                    if(!validator.isMobile(this.loginInfo.phoneNum)){
+                    if (!validator.isMobile(this.loginInfo.phoneNum)) {
                         this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
-                    }else{
+                    } else {
                         callback();
                     }
                 }
@@ -154,18 +154,18 @@
             /**
              * 计时器函数
              */
-            timimg() {
+            timimg () {
                 this.countDown = 60000;
                 this.timer = setInterval(() => {
-                    if(this.countDown !== 0) {
+                    if (this.countDown !== 0) {
                         this.countDown -= 1000;
-                    }else {
+                    } else {
                         this.isGetCode = false;
                         this.countDown = null;
                         clearInterval(this.timer);
                         this.timer = null;
                     }
-                }, 1000)
+                }, 1000);
             },
             /**
              * 获取路由信息
@@ -173,7 +173,7 @@
              */
             getparms (route) {
                 let queryParams = this.getUrlString(location.href);
-                if(queryParams && queryParams.code){
+                if (queryParams && queryParams.code) {
                     this.getOAuth2UserInfo(queryParams.code);
                 }
             },
@@ -185,15 +185,15 @@
                 ajax.post('getOAuth2UserInfo',{
                     code : code,
                     lang : this.lang,
-                    companyCode: this.companyCode
+                    companyCode : this.companyCode
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.dataToLogin(res);
-                    }else{
+                    } else {
                         //错误信息为空，表示获取到了用户信息
-                        if(!res.errcode){
+                        if (!res.errcode) {
                             this.wxUserInfo = res.data ? res.data : {};
-                        }else{
+                        } else {
                             this.wxUserInfo = {};
                         }
                     }
@@ -206,10 +206,10 @@
              */
             getUrlString (url) {
                 let obj = {};
-                if(url.indexOf('?') !== -1){
+                if (url.indexOf('?') !== -1) {
                     let query = url.split("?")[1];
                     let queryArr = query.split("&");
-                    queryArr.forEach(function(item){
+                    queryArr.forEach(function (item) {
                         let key = item.split("=")[0];
                         let value = item.split("=")[1];
                         obj[key] = value;
@@ -229,32 +229,32 @@
                 //更新用户信息
                 this.$store.commit('updateUserInfo');
                 //登陆跳转到主页
-                this.$router.push({ name: 'home'});
+                this.$router.push({ name : 'home' });
             },
             /**
              * 跳到注册界面
              */
-            toRegister() {
+            toRegister () {
                 this.$router.replace({
-                    name: 'mobileRegister',
-                    params: {
-                        openId: this.wxUserInfo.openId
+                    name : 'mobileRegister',
+                    params : {
+                        openId : this.wxUserInfo.openId
                     }
-                })
+                });
             }
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getparms(to);
             });
         },
-        computed :{
+        computed : {
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode',
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -326,6 +326,5 @@
         }
     }
 </style>
-
 
 

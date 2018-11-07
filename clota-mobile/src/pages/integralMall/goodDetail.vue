@@ -5,7 +5,7 @@
 <template>
     <div class="good-detail">
         <div class="img-board">
-            <img src="../../assets/images/1levelMember.png" alt="">
+            <div class="zoom-img" :style="{backgroundImage:'url('+detail.pics+')'}"></div>
         </div>
 
         <div class="info-board">
@@ -103,23 +103,36 @@
 
     .good-detail {
         height: 100%;
+        overflow: auto;
         background-color: #F4F6F9;
 
         .img-board {
+            position: relative;
             width: 100%;
             height: 340px;
+            z-index: 0;
 
-            img {
-                height: 100%;
+            .zoom-img {
+                position: relative;
+                top: 0;
+                width:100%;
+                height:0;
+                padding-bottom: 100%;
+                overflow:hidden;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size:cover;
             }
         }
 
 
         .info-board {
+            position: relative;
             padding: 16px 19px;
             width: 100%;
             height: 105.5px;
             background-color: $color_fff;
+            z-index: 10;
 
             .good-name {
                 width: 100%;
@@ -192,6 +205,7 @@
             .tab-pane {
                 width: 100%;
                 padding: 24px;
+                margin-bottom: 50px;
 
                 .decs-item {
                     width: 100%;
