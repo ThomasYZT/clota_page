@@ -2,11 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
 import defaultsDeep from 'lodash/defaultsDeep';
-import router,{resetRouter} from '../router/index';
+import router,{ resetRouter } from '../router/index';
 import routerClect from '../router/routerClect';
 import ajax from '@/api/index.js';
-import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
-import debounce from 'lodash/debounce'
+import { getFourRoute, getNoSubMenuRoute } from '../router/constRouter';
+import debounce from 'lodash/debounce';
 
 Vue.use(Vuex);
 //子路由深度复制
@@ -19,12 +19,12 @@ const childDeepClone = (childrenList, data) => {
             if (router.children) {
                 let children = childDeepClone(router.children, data);
                 //配置没有匹配到路由的重定向页面
-                children.push(getFourRoute({menuName: '404', lightMenu: router.meta._name, _name: router.meta._name}));
+                children.push(getFourRoute({ menuName : '404', lightMenu : router.meta._name, _name : router.meta._name }));
                 if (children.length > 1) {
                     //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
                     children.push({
-                        path: '',
-                        redirect: {
+                        path : '',
+                        redirect : {
                             // name : children[0].name ? children[0].name : children[0].meta._name
                             path : children[0].path ? children[0].path : ''
                         }
@@ -32,16 +32,16 @@ const childDeepClone = (childrenList, data) => {
                     router['children'] = children;
                 } else {
                     router['children'] = [getNoSubMenuRoute({
-                        menuName: 'noSubMenu',
-                        lightMenu: router.meta._name,
-                        _name: router.meta._name
+                        menuName : 'noSubMenu',
+                        lightMenu : router.meta._name,
+                        _name : router.meta._name
                     })];
                 }
             } else if (!router.children && !router.name) {
                 router['children'] = [getNoSubMenuRoute({
-                    menuName: 'noSubMenu',
-                    lightMenu: router.meta._name,
-                    _name: router.meta._name
+                    menuName : 'noSubMenu',
+                    lightMenu : router.meta._name,
+                    _name : router.meta._name
                 })];
             }
             children.push(router);
@@ -51,15 +51,15 @@ const childDeepClone = (childrenList, data) => {
 };
 
 export default new Vuex.Store({
-    state: {
+    state : {
         //左侧菜单是否收起
-        menuIsPackUp: false,
+        menuIsPackUp : false,
         //当前选择的语言
-        lang: i18n.locale,
+        lang : i18n.locale,
         //权限信息
-        permissionInfo: null,
+        permissionInfo : null,
         //生成的路由信息
-        routerInfo: null,
+        routerInfo : null,
         //用户信息
         userInfo : {},
         //页面是否显示加载中
@@ -79,9 +79,9 @@ export default new Vuex.Store({
         //当前浏览器是否支持读卡器，如果支持，是否启用
         cardReadEnabled : false
     },
-    getters: {
+    getters : {
         //左侧菜单是否收起
-        menuIsPackUp: state => {
+        menuIsPackUp : state => {
             let menuIsPackUp = localStorage.getItem('menuIsPackUp');
             if (menuIsPackUp) {
                 state.menuIsPackUp = (menuIsPackUp === 'true');
@@ -89,17 +89,17 @@ export default new Vuex.Store({
             return state.menuIsPackUp;
         },
         //当前语言状态
-        lang: state => {
+        lang : state => {
             let lang = localStorage.getItem('lang');
             state.lang = lang ? lang : state.lang;
             return state.lang;
         },
         //一级菜单权限信息
-        permissionInfo: state => {
+        permissionInfo : state => {
             return state.permissionInfo;
         },
         //生成的路由信息
-        routerInfo: state => {
+        routerInfo : state => {
             return state.routerInfo;
         },
         //用户信息
@@ -135,15 +135,15 @@ export default new Vuex.Store({
         },
         cardReadEnabled : state => state.cardReadEnabled
     },
-    mutations: {
+    mutations : {
         //更新左侧菜单是否收起
-        updateMenuIsPackUp(state, payload) {
+        updateMenuIsPackUp (state, payload) {
             //保存当前菜单的展开收起状态
             localStorage.setItem('menuIsPackUp', payload);
             state.menuIsPackUp = payload;
         },
         //设置语言
-        setLang(state, lang) {
+        setLang (state, lang) {
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
             i18n.locale = state.lang = lang;
@@ -154,7 +154,7 @@ export default new Vuex.Store({
             state.operateLine = status;
         },
         //设置用户权限
-        updatePermissionInfo(state, data) {
+        updatePermissionInfo (state, data) {
             state.permissionInfo = data;
         },
         //设置用户信息
@@ -166,30 +166,30 @@ export default new Vuex.Store({
             state.routerInfo = routerInfo;
         },
         //改变是否加载中的状态
-        changeLoadingStatus (state,loading){
+        changeLoadingStatus (state,loading) {
             state.isLoading = loading;
         },
         //更改请求中接口的个数
-        changePromisings (state,type){
-            if(type === 'add'){
+        changePromisings (state,type) {
+            if (type === 'add') {
                 state.promisings++;
-            }else if(type === 'del'){
+            } else if (type === 'del') {
                 state.promisings--;
             }
-            if(state.promisings > 0){
+            if (state.promisings > 0) {
                 state.isLoading = true;
-            }else{
+            } else {
                 setTimeout(() => {
                     state.isLoading = false;
                 },200);
             }
         },
         //更改组织机构
-        updateManageOrgs(state,org) {
+        updateManageOrgs (state,org) {
             let orgInfoStorage = localStorage.getItem('manageOrg');
-            if(Object.keys(state.manageOrgs).length < 1 && orgInfoStorage){
+            if (Object.keys(state.manageOrgs).length < 1 && orgInfoStorage) {
                 state.manageOrgs = JSON.parse(orgInfoStorage);
-            }else{
+            } else {
                 state.manageOrgs = org;
             }
         },
@@ -211,24 +211,24 @@ export default new Vuex.Store({
             state.cardReadEnabled = isEnabled;
         }
     },
-    actions: {
+    actions : {
         //获取用户权限信息
-        getUserRight(store, route) {
+        getUserRight (store, route) {
             store.dispatch('freshOrgs');
             return ajax.post('getPrivilege',{
                 orgId : store.state.manageOrgs.id
             }).then(res =>{
-                if(res.success){
+                if (res.success) {
                     sessionStorage.setItem('token',res.data ? res.data.token : '');
                     return new Promise((resolve, reject) => {
                         let privCode = {};
                         let privateData = res.data.privileges;
                         //获取账号的菜单权限
-                        for(let i = 0,j = privateData.length;i < j;i++){
+                        for (let i = 0,j = privateData.length; i < j; i++) {
                             privCode[privateData[i]['privCode']] = 'allow';
                         }
                         let routers = childDeepClone(routerClect, privCode);
-                        routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
+                        routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
                         //重新设置路由信息
                         resetRouter(routers);
                         store.commit('updatePermissionInfo',privCode);
@@ -238,9 +238,9 @@ export default new Vuex.Store({
                             resolve(routers[0]);
                         }
                     }).catch(err => {
-                        console.log(err)
+                        console.log(err);
                     });
-                }else{
+                } else {
                     store.dispatch('showErrToast','rightGetError');
                     // Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
                     return new Promise().reject();
@@ -253,28 +253,28 @@ export default new Vuex.Store({
         //获取用户信息
         getUserInfo (store,userInfo) {
             return new Promise((resolve,reject) => {
-                if(userInfo.token){
+                if (userInfo.token) {
                     store.commit('updateUserInfo',userInfo);
                     let manageOrgs = userInfo.manageOrgs ? userInfo.manageOrgs : [];
                     let orgIndex = localStorage.getItem('orgId');
-                    if(orgIndex === '' || orgIndex === null){
+                    if (orgIndex === '' || orgIndex === null) {
                         orgIndex = manageOrgs[0].id;
                         localStorage.setItem('orgIndex',orgIndex);
                     }
-                    for(let i = 0,j = manageOrgs.length;i < j;i++){
-                        if(orgIndex === manageOrgs[i].id){
+                    for (let i = 0,j = manageOrgs.length; i < j; i++) {
+                        if (orgIndex === manageOrgs[i].id) {
                             store.commit('updateManageOrgs',manageOrgs[i]);
                             break;
                         }
                     }
                     resolve(userInfo);
-                }else{
+                } else {
                     reject();
                 }
             }).then(() => {
                 return store.dispatch('getUserRight');
             }).catch(err => {
-                console.log(err)
+                console.log(err);
             });
         },
         //重新选择登录的机构
@@ -291,23 +291,23 @@ export default new Vuex.Store({
          */
         freshOrgs (store) {
             ajax.post('getManageOrgs').then(res => {
-                if(res.success){
-                    let filterOrgsArr =  res.data ? res.data.filterOrg : [];
+                if (res.success) {
+                    let filterOrgsArr = res.data ? res.data.filterOrg : [];
                     let filterOrgsObj = {};
-                    for(let i = 0,j = filterOrgsArr.length;i < j;i++){
+                    for (let i = 0,j = filterOrgsArr.length; i < j; i++) {
                         filterOrgsObj[filterOrgsArr[i]['id']] = filterOrgsArr[i];
                     }
                     let manageOrgs = res.data ? res.data.allOrg.map(item => {
-                        if(item.id in filterOrgsObj){
+                        if (item.id in filterOrgsObj) {
                             return {
                                 ...item,
                                 disabled : false
-                            }
-                        }else{
+                            };
+                        } else {
                             return {
                                 ...item,
                                 disabled : true
-                            }
+                            };
                         }
                     }) : [];
                     let userInfo = {
@@ -315,14 +315,14 @@ export default new Vuex.Store({
                         manageOrgs : manageOrgs
                     };
                     sessionStorage.setItem('userInfo',JSON.stringify(userInfo));
-                    for(let i = 0,j = manageOrgs.length;i < j;i++){
-                        if(store.getters.manageOrgs.id === manageOrgs[i].id){
+                    for (let i = 0,j = manageOrgs.length; i < j; i++) {
+                        if (store.getters.manageOrgs.id === manageOrgs[i].id) {
                             store.commit('updateManageOrgs',manageOrgs[i]);
                             break;
                         }
                     }
                     store.commit('updatemanageOrgList',manageOrgs);
-                }else{
+                } else {
                     store.commit('updatemanageOrgList',[]);
                 }
             });
@@ -350,11 +350,12 @@ export default new Vuex.Store({
         /**
          * 获取读卡器读到的数据
          * @param store
+         * @return promise对象
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
                 store.commit('updateCardReadEnabled',true);
-                resolve('1234567890123456');
+                resolve('121235');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {
@@ -364,65 +365,74 @@ export default new Vuex.Store({
                     if (st <= 0) {
                         reject('dcInitError');
                     } else {
-                        rd.dc_config_card(65);
-                        st = rd.dc_card_double(0);
+                        window.rd.dc_config_card(65);
+                        st = window.rd.dc_card_double(0);
                         if (st !== 0) {
                             //如果没有放置卡片，连续响3次，表示没有放置卡的错误
-                            st = rd.dc_beep(25);
-                            st = rd.dc_beep(25);
-                            st = rd.dc_beep(25);
-                            rd.dc_exit();
+                            st = window.rd.dc_beep(25);
+                            st = window.rd.dc_beep(25);
+                            st = window.rd.dc_beep(25);
+                            window.rd.dc_exit();
                             reject('dcCardError');
                         } else {
-                            rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
-                            st = rd.dc_load_key(0, 0);
+                            window.rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
+                            st = window.rd.dc_load_key(0, 0);
                             if (st !== 0) {
-                                rd.dc_exit();
+                                window.rd.dc_exit();
                                 reject('dcLoadKeyError');
                             } else {
-                                st = rd.dc_authentication(0, 0);
+                                let result = '';
+                                result = window.rd.get_bstrRBuffer_asc;
+                                st = window.rd.dc_authentication(0, 0);
+                                //读取成功，蜂鸣器响一次
+                                st = window.rd.dc_beep(5);
                                 if (st !== 0) {
-                                    rd.dc_exit();
-                                    reject('dcLoadKeyError');
+                                    window.rd.dc_exit();
+                                    reject('dcBeepError');
                                 } else {
-                                    rd.put_bstrSBuffer_asc = "31323334353637383930313233343536";
-                                    st = rd.dc_write(2);
-                                    if (st !== 0) {
-                                        rd.dc_exit();
-                                        reject('dcWriteError');
-                                    } else {
-                                        st = rd.dc_read(2);
-                                        if (st !== 0) {
-                                            rd.dc_exit();
-                                            reject('dcReadError');
-                                        } else {
-                                            let result = '';
-                                            result = rd.get_bstrRBuffer;
-                                            rd.put_bstrSBuffer_asc = "30303030303030303030303030303030";
-                                            st = rd.dc_write(2);
-                                            if (st !== 0) {
-                                                rd.dc_exit();
-                                                reject('dcWriteError');
-                                            } else {
-                                                st = rd.dc_read(2);
-                                                if (st !== 0) {
-                                                    rd.dc_exit();
-                                                    reject('dcReadError');
-                                                } else {
-                                                    //读取成功，蜂鸣器响一次
-                                                    st = rd.dc_beep(5);
-                                                    if (st !== 0) {
-                                                        rd.dc_exit();
-                                                        reject('dcBeepError');
-                                                    } else {
-                                                        rd.dc_exit();
-                                                        resolve(result);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    window.rd.dc_exit();
+                                    resolve(result);
                                 }
+                                // if (st !== 0) {
+                                //     window.rd.dc_exit();
+                                //     reject('dcLoadKeyError');
+                                // } else {
+                                //     window.rd.put_bstrSBuffer_asc = "31323334353637383930313233343536";
+                                //     st = window.rd.dc_write(2);
+                                //     if (st !== 0) {
+                                //         window.rd.dc_exit();
+                                //         reject('dcWriteError');
+                                //     } else {
+                                //         st = window.rd.dc_read(2);
+                                //         if (st !== 0) {
+                                //             window.rd.dc_exit();
+                                //             reject('dcReadError');
+                                //         } else {
+                                //             window.rd.put_bstrSBuffer_asc = "30303030303030303030303030303030";
+                                //             st = window.rd.dc_write(2);
+                                //             if (st !== 0) {
+                                //                 window.rd.dc_exit();
+                                //                 reject('dcWriteError');
+                                //             } else {
+                                //                 st = window.rd.dc_read(2);
+                                //                 if (st !== 0) {
+                                //                     window.rd.dc_exit();
+                                //                     reject('dcReadError');
+                                //                 } else {
+                                //                     //读取成功，蜂鸣器响一次
+                                //                     st = window.rd.dc_beep(5);
+                                //                     if (st !== 0) {
+                                //                         window.rd.dc_exit();
+                                //                         reject('dcBeepError');
+                                //                     } else {
+                                //                         window.rd.dc_exit();
+                                //                         resolve(result);
+                                //                     }
+                                //                 }
+                                //             }
+                                //         }
+                                //     }
+                                // }
                             }
                         }
 

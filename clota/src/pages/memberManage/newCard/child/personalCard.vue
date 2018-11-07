@@ -1,4 +1,4 @@
-<!--
+1<!--
 内容：个人会员卡
 作者：djc
 日期：
@@ -10,7 +10,8 @@
               :model="cardParam"
               :rules="ruleValidate"
               label-position="top">
-            <h3>{{$t('cardOwnerInfo')}}</h3><!--持卡人信息-->
+            <h3 v-if="cardType === 'personalCard'">{{$t('cardOwnerInfo')}}</h3><!--持卡人信息-->
+            <h3 v-else-if="cardType === 'companyCard'">{{$t('企业及持卡人信息')}}</h3><!--持卡人信息-->
             <i-row>
                 <i-col span="12">
                     <!--姓名-->
@@ -44,15 +45,25 @@
                 <i-col span="12">
                     <!--生日-->
                     <Form-item :label="$t('birthday')"
-                               prop="birthday"
+                               v-if="cardType === 'personalCard'"
+                               prop="birthDay"
                                style="float:right;">
                         <Date-picker
                             type="date"
-                            v-model="cardParam.birthday"
+                            v-model="cardParam.birthDay"
+                            :editable="false"
                             :options="dateOption"
                             format="yyyy-MM-dd"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
+                    </Form-item>
+                    <!--企业名称-->
+                    <Form-item :label="$t('企业名称')"
+                               v-if="cardType === 'companyCard'"
+                               prop="companyName"
+                               style="float:right;">
+                        <Input v-model.trim="cardParam.companyName"
+                               :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -81,6 +92,22 @@
                 </i-col>
             </i-row>
             <i-row>
+                <i-col span="12">
+                    <Form-item :label="$t('支付密码')" prop="tradePassword">
+                        <Button type="primary"
+                                v-if="cardParam.tradePassword"
+                                @click="setPasswordModalShow = true">
+                            {{$t('已设置')}}
+                        </Button>
+                        <Button type="primary"
+                                v-else
+                                @click="setPasswordModalShow = true">
+                            {{$t('设置密码')}}
+                        </Button>
+                    </Form-item>
+                </i-col>
+            </i-row>
+            <i-row>
                 <i-col span="24">
                     <!--备注-->
                     <Form-item :label="$t('remark')" prop="remark" style="width: 100%;">
@@ -91,7 +118,7 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row>
+            <i-row v-if="cardType === 'personalCard'">
                 <i-col span="24">
                     <Form-item :label="$t('address')" prop="homeAddr" style="width: 100%;"><!--地址-->
                         <Input v-model.trim="cardParam.homeAddr"
@@ -99,23 +126,18 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row>
-                <i-col span="12">
-                    <Form-item :label="$t('支付密码')" prop="tradePassword">
-                        <Button type="ghost">{{$t('设置密码')}}</Button>
-                    </Form-item>
-                </i-col>
-            </i-row>
 
             <!--实体卡信息-->
-            <entity-card-info :title="'entityCardInfo'" ref="entityCard"></entity-card-info>
+            <entity-card-info :title="'entityCardInfo'"
+                              ref="entityCard">
+            </entity-card-info>
 
             <!--收款方式-->
             <h3>{{$t('收款方式')}}</h3>
-            <Form-item prop="">
+            <Form-item prop="payType">
                 <RadioGroup v-model="cardParam.payType">
-                    <Radio label="wx">{{$t('微信')}}</Radio><!--微信-->
-                    <Radio label="zfb">{{$t('支付宝')}}</Radio><!--支付宝-->
+                    <Radio label="weixin">{{$t('微信')}}</Radio><!--微信-->
+                    <Radio label="alipay">{{$t('支付宝')}}</Radio><!--支付宝-->
                     <Radio label="cash">{{$t('现金')}}</Radio><!--支付宝-->
                 </RadioGroup>
             </Form-item>
@@ -141,6 +163,76 @@
                 {{$t("cancel")}}
             </Button>
         </div>
+
+        <!--设置支付密码模态框-->
+        <set-password-modal v-model="setPasswordModalShow"
+                            @set-pay-password="getPayPassword">
+        </set-password-modal>
+        <!--确认会员信息模态框-->
+        <confirm-member-info v-model="showConfirmModal">
+            <Form :rules="ruleValidate" :label-width="130">
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="会员卡信息">
+                            {{selectedCard.levelName | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="会员卡售价">
+                            {{selectedCard.salePrice | moneyFilter | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="姓名">
+                            {{cardParam.custName | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="性别">
+                            {{$t(cardParam.gender) | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="证件类型">
+                            {{cardParam.custName | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="证件编号">
+                            {{cardParam.idCardNumber | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="生日">
+                            {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="手机号">
+                            {{cardParam.phoneNum | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="12">
+                        <FormItem label="备注">
+                            {{cardParam.remark | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="地址">
+                            {{cardParam.homeAddr | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </i-row>
+            </Form>
+        </confirm-member-info>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -149,10 +241,14 @@
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
     import entityCardInfo from '../components/entityCardInfo.vue';
+    import setPasswordModal from '../components/setPasswordModal';
+    import confirmMemberInfo from '../components/confirmDetailModal';
 
     export default {
         components : {
-            entityCardInfo
+            entityCardInfo,
+            setPasswordModal,
+            confirmMemberInfo
         },
         props : {
             selectedCard : {
@@ -160,6 +256,11 @@
                 default () {
                     return {};
                 }
+            },
+            //卡类型
+            'card-type' : {
+                type : String,
+                default : ''
             }
         },
         data () {
@@ -229,22 +330,26 @@
 
                 // 持卡人信息表单
                 cardParam : {
-                    "custName" : "",//姓名
-                    "phoneNum" : "",//手机号
-                    "gender" : "",// 性别
+                    "custName" : "111",//姓名
+                    "phoneNum" : "11222112221",//手机号
+                    "gender" : "meal",// 性别
                     "birthDay" : "",//生日
                     "certificationType" : "",//证件类型
-                    "idCardNumber" : "",//证件号码
+                    "idCardNumber" : "111",//证件号码
                     "remark" : "",//备注
                     "homeAddr" : "",//家庭地址
-                    "tradePassword" : "",//支付密码
-                    "payType" : "wx",//收款方式
+                    "tradePassword" : "1111",//支付密码
+                    "payType" : "alipay",//收款方式
+                    "companyName" : "111",//企业名称
                 },
-
+                //设置支付密码模态框是否显示
+                setPasswordModalShow : false,
+                //显示确认信息模态框
+                showConfirmModal : false,
                 // 表单校验规则
                 ruleValidate : {
                     custName : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('name') }), trigger : 'blur' }, // 姓名不能为空
+                        { required : true, message : this.$t('inputField', { field : this.$t('name') }), trigger : 'blur' }, // 姓名不能为空
                         {
                             type : 'string',
                             max : 15,
@@ -256,13 +361,13 @@
                     phoneNum : [
                         {
                             required : true,
-                            message : this.$t('errorEmpty', { field : this.$t('mobilePhone') }),
+                            message : this.$t('inputField', { field : this.$t('mobilePhone') }),
                             trigger : 'blur'
                         }, // 手机号不能为空
                         { validator : validateMethod.mobile, trigger : 'blur' }
                     ],
                     gender : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('gender') }), trigger : 'change' }, // 性别不能为空
+                        { required : true, message : this.$t('selectField', { msg : this.$t('gender') }), trigger : 'change' }, // 性别不能为空
                     ],
                     remark : [
                         {
@@ -276,30 +381,47 @@
                         { validator : validateFileLength, trigger : 'blur', name : this.$t('address'), maxLength : 100 }
                     ],
                     idCardNumber : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('identificationNum') }), trigger : 'blur' }, // 证件编号不能为空
+                        { required : true, message : this.$t('inputField', { field : this.$t('identificationNum') }), trigger : 'blur' }, // 证件编号不能为空
                         { validator : validateNumAndStr, trigger : 'blur', name : this.$t('credentialsCode'), maxLength : 40 }
                     ],
                     certificationType : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('credentialsType') }), trigger : 'change' }, // 证件类型不能为空
+                        { required : true, message : this.$t('selectField', { msg : this.$t('credentialsType') }), trigger : 'change' }, // 证件类型不能为空
                     ],
-                    birthday : [
+                    birthDay : [
                         {
                             required : true,
-                            message : this.$t('selectField', { msg : this.$t('birthday') }),
+                            message : this.$t('selectField', { msg : this.$t('birthDay') }),
                             trigger : 'change',
                             type : 'date'
                         }
+                    ],
+                    payType : [
+                        {
+                            required : true,
+                            message : this.$t('selectField', { msg : this.$t('支付方式') }),
+                            trigger : 'blur'
+                        }
+                    ],
+                    tradePassword : [
+                        {
+                            required : true,
+                            message : this.$t('请设置支付密码'),
+                            trigger : 'change',
+                        },
+                    ],
+                    companyName : [
+                        {
+                            required : true,
+                            message : this.$t('inputField', { field : this.$t('企业名称') }),
+                            trigger : 'blur',
+                        },
                     ]
                 }
             };
         },
-        computed : {},
         created () {
             this.queryDocument();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             //查询证件类型
             queryDocument () {
@@ -317,60 +439,49 @@
             },
             //表单校验
             formValidateFunc () {
-                this.$refs.formValidate.validate((valid) => {
-                    if (valid) {
-                        let params = {
-                            memberInfo : this.cardParam,
-                            memberCard : {
-                                ...this.selectedCard,
-                                ...this.$refs.entityCard.entityCardParam
-                            }
-                        };
-                        params.memberInfo.birthDay = params.memberInfo.birthDay ?
-                            new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
-                        //区分新增与修改
-                        if (this.type === 'add') {
-                            this.saveAndEditMember('saveNewMemberInfo', params);
-                        }
-                        /*if (this.type === 'modify') {
-                            params.memberInfo.id = this.info.id;
-                            params.memberCard.id = this.info.cardId;
-                            this.saveAndEditMember('editMemberInfo', params);
-                        }*/
-                    }
-                });
+                this.showConfirmModal = true;
+                // this.$refs.formValidate.validate((valid) => {
+                //     if (valid) {
+                //         let params = {
+                //             memberInfo : Object.assign({},{
+                //                 ...this.cardParam,
+                //                 ...this.selectedCard,
+                //                 ...this.$refs.entityCard.entityCardParam
+                //             }),
+                //         };
+                //         params.memberInfo.birthDay = params.memberInfo.birthDay ?
+                //             new Date(params.memberInfo.birthDay).format('yyyy-MM-dd') : '';
+                //         //区分新增与修改
+                //         if (this.type === 'add') {
+                //             this.saveAndEditMember('saveNewMemberInfo', params);
+                //         }
+                //         /*if (this.type === 'modify') {
+                //             params.memberInfo.id = this.info.id;
+                //             params.memberCard.id = this.info.cardId;
+                //             this.saveAndEditMember('editMemberInfo', params);
+                //         }*/
+                //     }
+                // });
             },
             //新增/编辑会员接口
             saveAndEditMember (url, params) {
                 this.loading = true;
                 ajax.post(url, {
                     memberInfo : JSON.stringify(params.memberInfo),
-                    memberCard : JSON.stringify(params.memberCard),
+                    channelType : this.cardParam.payType,
+                    qrCode : '282397030684814913',
+                    txnAmt : '0.01',
+                    txnShortDesc : this.cardParam.payType === 'alipay' ? 'test' : ''
                 }).then(res => {
                     if (res.success) {
-                        //区分新增与修改
-                        if (this.type === 'add') {
-                            this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
-                            this.$router.push({ name : 'memberInfo' });
-                        }
-                        if (this.type === 'modify') {
-                            this.$Message.success(this.$t('successTip', { tip : this.$t('modify') })); // 修改会员成功
-                            this.$router.back();
-                        }
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
+                        this.$router.push({ name : 'memberInfo' });
                     } else {
-                        //区分新增与修改
-                        let errorTip = '';
-                        if (res.message == 'M008' || res.code == '300') {
-                            errorTip = this.$t('phoneExistCard'); // 手机号已被注册，请更换手机号
+                        if (res.code === '300') {
+                            this.$Message.error(this.$t('phoneExistCard'));// 手机号已被注册，请更换手机号
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                         }
-
-                        if (this.type === 'add') {
-                            this.$Message.error(errorTip || this.$t('failureTip',{ tip : this.$t('add') }));
-                        }
-                        if (this.type === 'modify') {
-                            this.$Message.error(errorTip || this.$t('failureTip',{ tip : this.$t('modify') }));
-                        }
-
                     }
                 }).finally(() => {
                     this.loading = false;
@@ -386,6 +497,14 @@
                     this.$router.back();
                 }
             },
+            /**
+             * 获取支付密码
+             * @param{String} payPassword
+             */
+            getPayPassword (payPassword) {
+                this.cardParam.tradePassword = payPassword;
+                this.$refs.formValidate.validateField('tradePassword');
+            }
         }
     };
 </script>

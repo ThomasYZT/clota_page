@@ -16,9 +16,17 @@
                     @on-change-card="handleCardChanged">
                 </select-card>
 
-                <component :is="currentCardType"
-                           :selected-card="selectedCard">
-                </component>
+                <!--<component :is="currentCardType"-->
+                           <!--:selected-card="selectedCard">-->
+                <!--</component>-->
+                <personal-card v-show="currentCardType === 'personalCard' || currentCardType === 'companyCard'"
+                               :card-type="currentCardType"
+                               :key="currentCardType"
+                               :selected-card="selectedCard">
+                </personal-card>
+                <owner-card v-show="currentCardType === 'ownerCard'"
+                            :selected-card="selectedCard">
+                </owner-card>
             </div>
         </div>
     </div>
@@ -52,7 +60,7 @@
             handleCardChanged (cardData) {
                 this.selectedCard = cardData;
                 // 判断动态组件当前是哪个
-                switch (cardData.cardTypeId) {
+                switch (cardData.memberCard.cardTypeId) {
                     case '1':
                         this.currentCardType = 'ownerCard';
                         break;
@@ -60,7 +68,7 @@
                         this.currentCardType = 'personalCard';
                         break;
                     case '3':
-                        this.currentCardType = 'ownerCard';
+                        this.currentCardType = 'companyCard';
                         break;
                     default :
                         this.currentCardType = '';

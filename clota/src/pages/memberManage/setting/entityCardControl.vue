@@ -96,7 +96,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.custName}}/{{scope.row.phoneNum}}
+                        {{scope.row.custName | contentFilter}}/{{scope.row.phoneNum | contentFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column

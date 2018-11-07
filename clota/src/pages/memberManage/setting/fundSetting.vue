@@ -548,7 +548,6 @@
             save () {
                 this.$refs.ownerSetting.validateFormData().then(() => {
                     if (this.checkInputFunc()) {
-
                         let setParam = defaultsDeep({}, this.settingData);
                         for ( let key in setParam) {
                             if (key && typeof (setParam[key]) === 'object' && Object.keys(setParam[key]).length > 0) {

@@ -35,7 +35,7 @@
                                style="float: right">
                         <Select v-model="memberCard.levelId"
                                 style="width: 100%"
-                                @on-change="getLevelsByCardType">
+                                @on-change="cardLevelChange">
                             <Option v-for="item in cardLevelList"
                                     :key="item.id"
                                     :value="item.id"
@@ -134,7 +134,13 @@
              * 当会员卡类别修改时，重新设置持卡人需要填写的信息
              */
             changeCardSelection () {
-                this.$emit('on-change-card', this.memberCard);
+                this.$nextTick(() => {
+                    this.$emit('on-change-card', {
+                        memberCard : this.memberCard,
+                        levelName : this.cardLevelInfo.levelDesc,
+                        salePrice : this.cardLevelInfo.salePrice,
+                    });
+                });
             },
             /**
              * 会员卡类别改变
@@ -142,7 +148,12 @@
             cardTypeChange () {
                 this.memberCard.levelId = '';
                  this.getLevelsByCardType();
-                 this.changeCardSelection();
+            },
+            /**
+             * 会员卡级别改变
+             */
+            cardLevelChange () {
+                this.changeCardSelection();
             }
         },
         computed : {
@@ -154,7 +165,7 @@
                     }
                 }
                 return {};
-            }
+            },
         }
     };
 </script>
