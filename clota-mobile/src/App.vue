@@ -106,6 +106,22 @@
                 pageShow : false,
                 //是否显示顶部返回首页的图标
                 //showTopBanner: true
+                //底部导航栏
+                tabbarList : [
+                    {
+                        label : 'myMember',
+                        selected : true,
+                        link : '/home',
+                        icon : 'iconfont icon-member-rights'
+                    },
+                    {
+                        label : 'integralMall',
+                        link : '/integralMall',
+                        icon : 'iconfont icon-member-rights'
+                    }
+                ],
+                //是否显示底部导航栏
+                isTabbarShow : false
             };
         },
         methods : {
@@ -203,13 +219,11 @@
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
 
-                    /*if(newVal.name === 'mobileLogin' ||
-                       newVal.name === 'mobileRegister' ||
-                       newVal.name === 'home') {
-                        this.showTopBanner = false;
-                    }else {
-                        this.showTopBanner = true;
-                    }*/
+                    if (newVal.name === 'home' || newVal.name === 'integralMall' || newVal.name === 'exchangeRecord') {
+                        this.isTabbarShow = true;
+                    } else {
+                        this.isTabbarShow = false;
+                    }
                 },
                 immediate : true
             },
