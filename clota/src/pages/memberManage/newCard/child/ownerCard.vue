@@ -49,7 +49,7 @@
                 </i-col>
                 <i-col span="12">
                     <!--生日-->
-                    <Form-item :label="$t('birthDay')"
+                    <Form-item :label="$t('birthday')"
                                prop="birthDay"
                                style="float:right;">
                         <Date-picker
@@ -116,6 +116,7 @@
                     <Form-item :label="$t('购房日期')" prop="birthDay">
                         <Date-picker
                             style="width: 280px"
+                            :editable="false"
                             type="date"
                             v-model="cardParam.purchaseDate"
                             format="yyyy-MM-dd"
@@ -127,7 +128,7 @@
                     <!--支付密码-->
                     <Form-item :label="$t('支付密码')"
                                prop="tradePassword"
-                               style="float:right;">
+                               style="float:right;width: 280px;">
                         <Button type="primary"
                                 v-if="cardParam.tradePassword"
                                 @click="setPasswordModalShow = true">
@@ -261,14 +262,7 @@
                         </div>
                     </FormItem>
                 </i-col>
-                <i-col span="12" >
-                    <FormItem label="地址" >
-                        <div class="word-wrap" v-w-title="cardParam.homeAddr">
-                            {{cardParam.homeAddr | contentFilter}}
-                        </div>
-                    </FormItem>
-                </i-col>
-                <i-col span="12" >
+                <i-col span="24" >
                     <FormItem label="备注" >
                         <div class="word-wrap" v-w-title="cardParam.remark">
                             {{cardParam.remark | contentFilter}}
@@ -277,40 +271,40 @@
                 </i-col>
                 <i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>
                 <template v-for="(item,index) in viceCardInfo">
-                    <i-col span="12" >
+                    <i-col span="12" :key="index + 'custName'">
                         <FormItem label="姓名">
                             <div class="word-wrap" >
                                 {{item.custName | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
-                    <i-col span="12" >
+                    <i-col span="12" :key="index + 'gender'">
                         <FormItem label="性别" >
                             {{$t(item.gender) | contentFilter}}
                         </FormItem>
                     </i-col>
-                    <i-col span="12" >
+                    <i-col span="12" :key="index + 'certificationType'">
                         <FormItem label="证件类型" >
                             <div class="word-wrap" >
-                                {{item.certificationType | contentFilter}}
+                                {{idTypeObj[item.certificationType] ? idTypeObj[item.certificationType]['name'] : '' | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
-                    <i-col span="12" >
+                    <i-col span="12" :key="index + 'idCardNumber'">
                         <FormItem label="证件编号">
                             <div class="word-wrap" v-w-title="item.idCardNumber">
                                 {{item.idCardNumber | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
-                    <i-col span="12">
+                    <i-col span="12" :key="index + 'birthDay'">
                         <FormItem label="生日" >
                             <div class="word-wrap" >
                                 {{item.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
-                    <i-col span="12" >
+                    <i-col span="12" :key="index + 'phoneNum'">
                         <FormItem label="手机号">
                             {{item.phoneNum | contentFilter}}
                         </FormItem>
@@ -330,6 +324,7 @@
     import ownerEntityCard from './ownerEntityCard.vue';
     import setPasswordModal from '../components/setPasswordModal';
     import confirmMemberInfo from '../components/confirmDetailModal';
+    import MD5 from 'crypto-js/md5';
 
     export default {
         components : {
@@ -594,7 +589,6 @@
                 this.loading = true;
                 ajax.post(url, {
                     memberInfo : JSON.stringify(params.memberInfo),
-                    memberCard : JSON.stringify(params.memberCard),
                     viceCard : JSON.stringify(params.viceCard),
                     channelType : 'cash'
                 }).then(res => {
@@ -663,11 +657,12 @@
                 let cardInfo = this.$refs.ownerEntityCard.getEntityCardInfo();
                 memberInfo = {
                     ...this.cardParam,
+                    tradePassword : MD5(this.cardParam.tradePassword).toString(),
                     tpNo : cardInfo[0]['tpNo'],
                     tpCardNo : cardInfo[0]['tpCardNo'],
                     birthDay : this.cardParam['birthDay'] ? this.cardParam['birthDay'].format('yyyy-MM-dd') : '',
                     purchaseDate : this.cardParam['purchaseDate'] ? this.cardParam['purchaseDate'].format('yyyy-MM-dd') : '',
-                    ...this.selectedCard
+                    ...this.selectedCard.memberCard
                 };
                 viceCard = cardInfo.slice(1).map((item,i) => {
                     return {
@@ -675,7 +670,8 @@
                         tpNo : cardInfo[i]['tpNo'],
                         tpCardNo : cardInfo[i]['tpCardNo'],
                         birthDay : item['birthDay'] ? item['birthDay'].format('yyyy-MM-dd') : '',
-                        ...this.selectedCard
+                        ...this.selectedCard.memberCard,
+                        tradePassword : MD5(item.tradePassword).toString(),
                     };
                 });
                 return {
@@ -709,6 +705,15 @@
                     }
                 }
                 return '';
+            },
+            //证件类别对象类型
+            idTypeObj () {
+                let idType = this.enumData.idType;
+                let result = {};
+                for (let i = 0,j = idType.length; i < j; i++) {
+                    result[idType[i]['id']] = idType[i];
+                }
+                return result;
             }
         }
     };

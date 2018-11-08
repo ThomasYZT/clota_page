@@ -5,7 +5,7 @@
         :title="$t('请确认信息')"
         :mask-closable="false"
         :value="value"
-        :width="500"
+        :width="600"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="confirm-member-info"
@@ -76,6 +76,7 @@
 
         /deep/ .ivu-modal-body{
             overflow: auto;
+            max-height: 400px;
         }
     }
 </style>

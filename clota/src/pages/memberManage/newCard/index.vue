@@ -58,20 +58,23 @@
              * @param cardData  String  会员卡的类型、级别
              */
             handleCardChanged (cardData) {
-                this.selectedCard = cardData;
                 // 判断动态组件当前是哪个
                 switch (cardData.memberCard.cardTypeId) {
                     case '1':
                         this.currentCardType = 'ownerCard';
+                        this.selectedCard = cardData;
                         break;
                     case '2':
                         this.currentCardType = 'personalCard';
+                        this.selectedCard = cardData;
                         break;
                     case '3':
                         this.currentCardType = 'companyCard';
+                        this.selectedCard = cardData;
                         break;
                     default :
                         this.currentCardType = '';
+                        this.selectedCard = {};
                         break;
                 }
             }

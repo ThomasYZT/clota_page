@@ -3,17 +3,22 @@ export const batchEntityCardHead = [
     {
         title : 'index',    // 序号
         width : 100,
-        field : 'index'
+        field : ''
     },
     {
         title : 'cardFaceNum', // 卡面号
         minWidth : 180,
-        field : 'cardFaceNum'
+        field : 'faceNum'
     },
     {
         title : 'physicalCardNo', // 物理卡号
         minWidth : 180,
-        field : 'physicalCardNo'
+        field : 'physicalNum'
+    },
+    {
+        title : 'operate', // 物理卡号
+        width : 100,
+        field : ''
     }
 ];
 

@@ -156,6 +156,8 @@
                     }).catch((err) => {
                         if (err && err === 'M026') {
                             this.$Message.warning('实体卡已使用，请更换其它卡');
+                        } else {
+                            this.$Message.warning(this.$t('noMatchCard'));
                         }
                         this.tableData[index]['tpNo'] = '';
                         this.tableData[index]['tpCardNo'] = '';

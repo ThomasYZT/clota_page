@@ -251,6 +251,7 @@
     import entityCardInfo from '../components/entityCardInfo.vue';
     import setPasswordModal from '../components/setPasswordModal';
     import confirmMemberInfo from '../components/confirmDetailModal';
+    import MD5 from 'crypto-js/md5';
 
     export default {
         components : {
@@ -501,6 +502,7 @@
                 let params = {
                     memberInfo : Object.assign({},{
                         ...this.cardParam,
+                        tradePassword : MD5(this.cardParam.tradePassword).toString(),
                         ...this.selectedCard.memberCard,
                         ...this.$refs.entityCard.entityCardParam
                     }),

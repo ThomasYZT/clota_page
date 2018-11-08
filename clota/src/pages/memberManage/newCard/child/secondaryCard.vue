@@ -333,18 +333,7 @@
              * 更新副卡信息
              */
             freshTableData () {
-                this.$emit('set-vice-card-info',this.tableData.map(item => {
-                    return {
-                        certificationName : this.idTypeObj[item.certificationType],
-                        certificationType : item.certificationType,
-                        custName : item.custName,
-                        phoneNum : item.phoneNum,
-                        birthDay : item.birthDay,
-                        gender : item.gender,
-                        idCardNumber : item.idCardNumber,
-                        tradePassword : item.tradePassword,
-                    };
-                }));
+                this.$emit('set-vice-card-info',this.tableData);
             }
         },
         computed : {
