@@ -90,19 +90,35 @@
                         if (Object.keys(res.data).length > 0) {
                             this.entityCardParam.tpNo = res.data.physicalNum;
                             this.entityCardParam.tpCardNo = res.data.faceNum;
+                            this.$emit('set-card-data',{
+                                physicalNum : res.data.physicalNum,
+                                faceNum : res.data.faceNum,
+                            });
                         } else {
                             this.entityCardParam.tpNo = '';
                             this.entityCardParam.tpCardNo = '';
                             this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
+                            this.$emit('set-card-data',{
+                                physicalNum : '',
+                                faceNum : '',
+                            });
                         }
                     } else if (res.code === 'M026') {
                         this.$Message.warning('实体卡已使用，请更换其它卡');
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
+                        this.$emit('set-card-data',{
+                            physicalNum : '',
+                            faceNum : '',
+                        });
                     } else {
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
                         this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
+                        this.$emit('set-card-data',{
+                            physicalNum : '',
+                            faceNum : '',
+                        });
                     }
                 }).finally(() => {
                     this.reading = false;

@@ -53,6 +53,12 @@ export default {
     'queryOrderDetail' : '/member/memberOrder/queryOrderDetail',
     //查询实体卡是否可以使用
     'findByPhysicalNum' : '/member/entityCard/findByPhysicalNum',
+    //挂失实体卡
+    'reportTheLoss' : '/member/entityCard/reportTheLoss',
+    //补退卡查询
+    'listMemberCards' : '/member/listMemberCards',
+    //补卡、关联实体卡
+    'entityCardrelationEntityCard' : '/member/entityCard/relationEntityCard',
 
 
     /***********************************会员积分***********************************/

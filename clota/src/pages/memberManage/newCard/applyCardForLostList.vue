@@ -3,7 +3,6 @@
 作者：djc
 日期：
 -->
-
 <template>
     <div class="report-loss">
         <!--头部tab组件-->
@@ -39,7 +38,12 @@
              * @param{Object} rowData 行数据
              */
             toFunc (rowData) {
-
+                this.$router.push({
+                    name : 'applyForLost',
+                    params : {
+                        memberInfo : rowData
+                    }
+                });
             }
         }
     };

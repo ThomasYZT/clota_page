@@ -59,8 +59,8 @@
              * 查询会员数据
              */
             queryList () {
-                ajax.post('queryMemberPage',{
-                    keyWord : this.formData.keyWord,
+                ajax.post('listMemberCards',{
+                    keyword : this.formData.keyWord,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {

@@ -137,7 +137,7 @@
 
             <!--实体卡信息-->
             <entity-card-info :title="'entityCardInfo'"
-                              ref="entityCard">
+                              @set-card-data="getCardData">
             </entity-card-info>
 
             <!--收款方式-->
@@ -350,6 +350,8 @@
                     "tradePassword" : "",//支付密码
                     "payType" : "weixin",//收款方式
                     "companyName" : "",//企业名称
+                    "physicalNum" : "",//物理卡号
+                    "faceNum" : "",//卡面号
                 },
                 //设置支付密码模态框是否显示
                 setPasswordModalShow : false,
@@ -504,7 +506,6 @@
                         ...this.cardParam,
                         tradePassword : MD5(this.cardParam.tradePassword).toString(),
                         ...this.selectedCard.memberCard,
-                        ...this.$refs.entityCard.entityCardParam
                     }),
                 };
                 params.memberInfo.birthDay = params.memberInfo.birthDay ?
@@ -518,6 +519,15 @@
                     params.memberCard.id = this.info.cardId;
                     this.saveAndEditMember('editMemberInfo', params);
                 }*/
+            },
+            /**
+             * 获取读取的实体卡信息
+             * @param{String} faceNum 卡面号
+             * @param{String} physicalNum 物理卡号
+             */
+            getCardData ({ faceNum,physicalNum }) {
+                this.cardParam.faceNum = faceNum;
+                this.cardParam.physicalNum = physicalNum;
             }
         },
         computed : {

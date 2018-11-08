@@ -27,9 +27,9 @@
 
 <script>
     export default {
-        props: {
+        props : {
         },
-        data() {
+        data () {
             return {
                 //要显示的信息
                 msg : '',
@@ -41,31 +41,31 @@
                 confirmCallback : null,
                 //取消执行的回调函数
                 cancelCallback : null,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
 
             },
             /**
              * 取消删除
              */
-            cancel() {
+            cancel () {
                 this.modalShow = false;
-                if(this.cancelCallback){
+                if (this.cancelCallback) {
                     this.cancelCallback();
                 }
             },
             /**
              * 确认删除
              */
-            confirm() {
+            confirm () {
                 this.modalShow = false;
-                if(this.confirmCallback){
+                if (this.confirmCallback) {
                     this.confirmCallback();
                 }
             },
@@ -76,19 +76,19 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({msg,title,confirmCallback = null,cancelCallback}) {
+            show ({ msg,title,confirmCallback = null,cancelCallback }) {
                 this.modalShow = true;
                 this.msg = msg;
                 this.title = title;
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

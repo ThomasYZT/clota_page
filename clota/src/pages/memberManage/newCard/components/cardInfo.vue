@@ -5,72 +5,60 @@
 -->
 
 <template>
-    <div class="">
+    <div class="card-info">
         <div class="block-title">{{$t('会员卡信息')}}</div>
-        <i-row>
-            <i-col span="9">
-                <div class="form-item-wrap">
-                    <label>{{$t("会员编号")}}：</label><span>{{'0000000108'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("会员卡类型")}}：</label><span>{{'水园年卡'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <!--购买日期-->
-                    <label>{{$t("购买日期")}}：</label><span>{{'2018-10-10'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("支付密码")}}：</label><span>{{'******'}}</span>
-                </div>
-            </i-col>
-            <i-col span="9">
-                <div class="form-item-wrap">
-                    <label>{{$t("实体卡卡面号")}}：</label><span>{{'33435454'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("注册渠道")}}：</label><span>{{'景区'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("有效开始日期")}}：</label><span>{{'2018-10-10'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <!--指纹信息-->
-                    <label>{{$t("指纹信息")}}：</label><span>{{'北京市长安街81号'}}</span>
-                </div>
-            </i-col>
-            <i-col span="6">
-                <div class="form-item-wrap">
-                    <label>{{$t("会员类别")}}：</label><span>{{'正式会员'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("注册渠道")}}：</label><span>{{'热高乐园会员'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("有效开始日期")}}：</label><span>{{'2019-10-10'}}</span>
-                </div>
-            </i-col>
-        </i-row>
+        <i-col class="split-class">
+            <span class="key-label">会员卡类型：</span>
+            <span class="value-label">{{memberInfo.levelDesc | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">有效开始日期：</span>
+            <span class="value-label">{{memberInfo.effDate | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">有效结束日期：</span>
+            <span class="value-label">{{memberInfo.expDate | contentFilter}}</span>
+        </i-col>
     </div>
 </template>
 <script type="text/ecmascript-6">
 
     export default {
-        components: {},
-        props: {},
-        data() {
-            return {}
+        components : {},
+        props : {
+            //会员信息
+            'member-info' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
         },
-        computed: {},
-        created() {
+        data () {
+            return {};
         },
-        mounted() {
-        },
-        watch: {},
-        methods: {}
     };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .card-info{
+        .split-class{
+            width: 33%;
+            height: 34px;
+            padding: 6px 0;
+            font-size: $font_size_14px;
+            display: inline-flex;
 
+            .key-label{
+                color: $color_333;
+            }
+
+            .value-label{
+                flex: 1;
+                color: $color_666;
+                @include overflow_tip();
+            }
+        }
+    }
 </style>

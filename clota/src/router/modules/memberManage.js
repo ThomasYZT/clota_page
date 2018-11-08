@@ -106,9 +106,20 @@ export default {
             replenishCard : {
                 path : '/memberManage/newCard/replenishCard',
                 name : 'replenishCard',
-                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/replenishCard.vue'),
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/reissueCard.vue'),
                 meta : {
                     menuName : 'replenishCard', //lang.config.js 里面的语言键值
+                    _name : 'members-index',
+                    rightPath : topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--补卡
+            applyReissuceCard : {
+                path : '/memberManage/newCard/applyReissueCard',
+                name : 'applyReissuceCard',
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyReissuceCard.vue'),
+                meta : {
+                    menuName : 'applyReissuceCard', //lang.config.js 里面的语言键值
                     _name : 'members-index',
                     rightPath : topMenuName + '.' + 'newCard',
                 },
@@ -117,7 +128,18 @@ export default {
             reportLoss : {
                 path : '/memberManage/newCard/reportLoss',
                 name : 'reportLoss',
-                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/reportLoss.vue'),
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/applyCardForLostList.vue'),
+                meta : {
+                    menuName : 'reportLoss', //lang.config.js 里面的语言键值
+                    _name : 'members-index',
+                    rightPath : topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--挂失申请
+            applyForLost : {
+                path : '/memberManage/newCard/applyForLost',
+                name : 'applyForLost',
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyForLost.vue'),
                 meta : {
                     menuName : 'reportLoss', //lang.config.js 里面的语言键值
                     _name : 'members-index',

@@ -319,7 +319,6 @@
     import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
-    import entityCardInfo from '../components/entityCardInfo.vue';
     import secondaryCard from './secondaryCard.vue';
     import ownerEntityCard from './ownerEntityCard.vue';
     import setPasswordModal from '../components/setPasswordModal';
@@ -328,7 +327,6 @@
 
     export default {
         components : {
-            entityCardInfo,
             secondaryCard,
             ownerEntityCard,
             setPasswordModal,
