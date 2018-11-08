@@ -12,23 +12,44 @@
 
             <div class="ivu-form-item-wrap">
                 <div class="send-money-wrap">
-                    <span class="label">{{$t('recharge')}}：</span>
-                    <Input type="text"
-                           v-model.trim="formData.lowerValue"
-                           @on-blur="validateInput(formData.lowerValue, true)"
-                           :placeholder="$t('inputField', {field: ''})"
-                           class="single-input"/> –
-                    <Input type="text"
-                           v-model.trim="formData.topValue"
-                           @on-blur="validateInput(formData.topValue)"
-                           :placeholder="$t('inputField', {field: ''})"
-                           class="single-input"/> {{$t('sendGift')}}
-                    <Input type="text"
-                           v-model.trim="formData.gift"
-                           @on-blur="validateInput(formData.gift)"
-                           :placeholder="$t('inputField', {field: ''})"
-                           class="single-input"/> {{$t('yuan')}}
-                   <div class="ivu-form-item-error-tip" v-if="error">{{error}}</div>
+                    <Form ref="formValidate"
+                          :model="formData"
+                          :rules="ruleValidate"
+                          inline>
+                        <i-row type="flex" justify="center" align="middle">
+                            <i-col style="display: inline-block;width : auto;">
+                                <span class="label">{{$t('recharge')}}：</span>
+                            </i-col>
+                            <i-col style="display: inline-block;width : auto;">
+                                <FormItem prop="lowerValue">
+                                    <Input type="text"
+                                           v-model.trim="formData.lowerValue"
+                                           :placeholder="$t('inputField', {field: ''})"
+                                           class="single-input"/>
+                                </FormItem>
+                            </i-col>
+                            <i-col style="display: inline-block;width : auto;">–</i-col>
+                            <i-col style="display: inline-block;width : auto;">
+                                <FormItem prop="topValue">
+                                    <Input type="text"
+                                           v-model.trim="formData.topValue"
+                                           :placeholder="$t('inputField', {field: ''})"
+                                           class="single-input"/>
+                                </FormItem>
+                            </i-col>
+                            <i-col style="display: inline-block;width : auto;">
+                                {{$t('sendGift')}}
+                            </i-col>
+                            <i-col style="display: inline-block;width : auto;">
+                                <FormItem prop="gift">
+                                    <Input type="text"
+                                           v-model.trim="formData.gift"
+                                           :placeholder="$t('inputField', {field: ''})"
+                                           class="single-input"/> {{$t('yuan')}}
+                                </FormItem>
+                            </i-col>
+                        </i-row>
+                    </Form>
                 </div>
             </div>
             <div class="title">{{$t('scopeOfApplicationOfTheRule')}}：</div>
@@ -56,7 +77,6 @@
 
         <div slot="footer" class="modal-footer">
             <Button type="primary"
-                    :disabled="!(formData.topValue && formData.gift && multipleSelection.length > 0)"
                     @click="save" >{{$t("save")}}</Button>
             <Button type="ghost" @click="hide">{{$t("cancel")}}</Button>
         </div>
@@ -65,7 +85,6 @@
 </template>
 
 <script>
-
     import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import defaultsDeep from 'lodash/defaultsDeep';
@@ -76,22 +95,64 @@
             tableCom,
         },
         data () {
+            //校验储值的最低值
+            const validateLowerValue = (rule,value,callback) => {
+                common.validateMoney(value,0,10).then(() => {
+                    if (common.isNotEmpty(this.formData.topValue) && Number(value) > Number(this.formData.topValue)) {
+                        callback(this.$t('储值范围错误'));
+                    } else {
+                        callback();
+                    }
+                }).catch(err => {
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('储值最小值'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('储值最小值') }));
+                    }
+                });
+            };
+            //校验储值的最大值
+            const validateTopValue = (rule,value,callback) => {
+                common.validateMoney(value,0,10).then(() => {
+                    if (common.isNotEmpty(this.formData.lowerValue) && Number(value) < Number(this.formData.lowerValue)) {
+                        callback(this.$t('储值范围错误'));
+                    } else {
+                        callback();
+                    }
+                }).catch(err => {
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('储值最大值'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('储值最大值') }));
+                    }
+                });
+            };
+            //校验赠送金额
+            const validateGift = (rule,value,callback) => {
+                common.validateMoney(value,0,10).then(() => {
+                    callback();
+                }).catch(err => {
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('giftSum'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('giftSum') }));
+                    }
+                });
+            };
             return {
                 visible : false,
                 title : this.$t('addStoredSendRatio'),
                 //表单数据--储值赠送金额比例设置
                 index : null,
                 formData : {
-                    lowerValue : 0,
-                    topValue : 0,
-                    gift : 0,
+                    lowerValue : '',
+                    topValue : '',
+                    gift : '',
                     scope : '',
                     _status : 1,
                 },
                 //表格多选列表
                 multipleSelection : [],
-                //表单报错内容
-                error : '',
                 //表头信息
                 columnData : [
                     {
@@ -107,6 +168,30 @@
                         field : 'levelDesc'
                     },
                 ],
+                //表单校验规则
+                ruleValidate : {
+                    lowerValue : [
+                        {
+                            required : true,
+                            validator : validateLowerValue,
+                            trigger : 'blur'
+                        }
+                    ],
+                    topValue : [
+                        {
+                            required : true,
+                            validator : validateTopValue,
+                            trigger : 'blur'
+                        }
+                    ],
+                    gift : [
+                        {
+                            required : true,
+                            validator : validateGift,
+                            trigger : 'blur'
+                        }
+                    ]
+                }
             };
         },
         methods : {
@@ -144,48 +229,23 @@
                     },300);
                 }
             },
-
-            //校验input输入
-            validateInput ( value, flag ) {
-                if ( value === '' || value === 'null' || value === null || value == 0 || !value ) {
-                    if ( (value == 0 || !value) && flag ) {
-                        this.error = '';
-                        return true;
-                    } else {
-                        this.error = this.$t('errorEmpty', { msg : '' }); // '不能为空'
-                        return false;
-                    }
-                } else if ( value && value.length > 10 ) {
-                    this.error = this.$t('errorMaxLength',{ field : '',length : 10 });
-                    return false;
-                } else if ( value && value.isUtf16() ) {
-                    this.error = this.$t('errorIrregular'); // '输入内容不合规则'
-                    return false;
-                } else {
-                    this.error = '';
-                    return true;
-                }
-            },
-
             //保存
             save () {
-                if ( this.validateInput(this.formData.lowerValue, true) &&
-                    this.validateInput(this.formData.topValue) &&
-                    this.validateInput(this.formData.gift) ) {
-
-                    if (Number(this.formData.lowerValue) > Number(this.formData.topValue)) {
-                        this.error = this.$t('startValBiggerThenMaxVal', { msg : '' }); // '不能为空'
-                        return;
+                this.$refs.formValidate.validate((valid) => {
+                    if (valid) {
+                        if (this.multipleSelection.length > 0) {
+                            let list = [];
+                            this.multipleSelection.forEach( (item, index) => {
+                                list.push({ id : item.id });
+                            });
+                            this.formData.scope = JSON.stringify(list);
+                            this.$emit('submit-date', { item : JSON.parse(JSON.stringify(this.formData)), index : this.index });
+                            this.hide();
+                        } else {
+                            this.$Message.warning(this.$t('selectField',{ msg : this.$t('applicationScope') }));
+                        }
                     }
-
-                    let list = [];
-                    this.multipleSelection.forEach( (item, index) => {
-                        list.push({ id : item.id });
-                    });
-                    this.formData.scope = JSON.stringify(list);
-                    this.$emit('submit-date', { item : this.formData, index : this.index });
-                    this.hide();
-                }
+                });
             },
 
             handleSelectionChange (val) {
@@ -196,9 +256,9 @@
             hide () {
                 this.visible = false;
                 this.formData = {
-                    lowerValue : 0,
-                    topValue : 0,
-                    gift : 0,
+                    lowerValue : '',
+                    topValue : '',
+                    gift : '',
                     scope : '',
                     _status : 1,
                 };
@@ -207,9 +267,8 @@
                     this.$refs.ruleMultiTablePlug.clearSelection();
                 }
                 this.index = null;
-                this.error = '';
+                this.$refs.formValidate.resetFields();
             },
-
         },
     };
 </script>
@@ -219,7 +278,7 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 44px;
+            padding: 0 20px;
             height: 450px;
             overflow-y: auto;
             overflow-x: hidden;
@@ -241,8 +300,12 @@
             }
 
             /deep/ .ivu-form-item-error-tip{
-                left: 50px;
-                padding-top: 2px;
+                left: 9px;
+            }
+
+            /deep/ .ivu-form-item{
+                margin-bottom: 0;
+                margin-right: 0;
             }
 
             .title{
@@ -261,6 +324,5 @@
                 padding: 5px 30px;
             }
         }
-
     }
 </style>

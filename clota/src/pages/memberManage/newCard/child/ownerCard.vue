@@ -17,6 +17,7 @@
                     <Form-item :label="$t('name')"
                                prop="custName">
                         <Input v-model.trim="cardParam.custName"
+                               style="width: 280px"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
@@ -26,6 +27,7 @@
                                prop="phoneNum"
                                style="float:right;">
                         <Input v-model.trim="cardParam.phoneNum"
+                               style="width: 280px"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
@@ -35,6 +37,7 @@
                     <!--性别-->
                     <Form-item :label="$t('gender')" prop="gender">
                         <Select v-model="cardParam.gender"
+                                style="width: 280px"
                                 :placeholder="$t('selectField', {msg: ''})">
                             <Option v-for="(item,index) in enumData.genderEnum"
                                     :key="index"
@@ -50,6 +53,7 @@
                                prop="birthDay"
                                style="float:right;">
                         <Date-picker
+                            style="width: 280px"
                             type="date"
                             :editable="false"
                             v-model="cardParam.birthDay"
@@ -65,6 +69,7 @@
                     <!--证件类型-->
                     <Form-item :label="$t('credentialsType')" prop="certificationType">
                         <Select v-model="cardParam.certificationType"
+                                style="width: 280px"
                                 :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
                             <Option v-for="item in enumData.idType"
                                     :key="item.id"
@@ -80,6 +85,7 @@
                                prop="idCardNumber"
                                style="float:right;">
                         <Input v-model.trim="cardParam.idCardNumber"
+                               style="width: 280px"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
@@ -89,6 +95,7 @@
                     <!--购房总金额-->
                     <Form-item :label="$t('购房总金额')" prop="houseMoney">
                         <Input v-model.trim="cardParam.houseMoney"
+                               style="width: 280px"
                                :placeholder="$t('inputField', {field: $t('购房总金额')})"/>
                     </Form-item>
                 </i-col>
@@ -98,6 +105,7 @@
                                prop="realEstateInformation"
                                style="float:right;">
                         <Input v-model.trim="cardParam.realEstateInformation"
+                               style="width: 280px"
                                :placeholder="$t('inputField', {field: $t('房产信息')})"/>
                     </Form-item>
                 </i-col>
@@ -107,6 +115,7 @@
                     <!--购房日期-->
                     <Form-item :label="$t('购房日期')" prop="birthDay">
                         <Date-picker
+                            style="width: 280px"
                             type="date"
                             v-model="cardParam.purchaseDate"
                             format="yyyy-MM-dd"
@@ -181,6 +190,134 @@
         <set-password-modal v-model="setPasswordModalShow"
                             @set-pay-password="getPayPassword">
         </set-password-modal>
+
+        <!--确认会员信息模态框-->
+        <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
+            <Form :rules="ruleValidate" :label-width="110">
+                <i-row>主卡信息</i-row>
+                <i-col span="12">
+                    <FormItem label="会员卡信息">
+                        {{selectedCard.levelName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="会员卡售价" >
+                        {{selectedCard.salePrice | moneyFilter | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="姓名">
+                        {{cardParam.custName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="性别" >
+                        {{$t(cardParam.gender) | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="证件类型">
+                        {{idNumName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="证件编号" >
+                        {{cardParam.idCardNumber | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="生日" >
+                        {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="手机号" >
+                        {{cardParam.phoneNum | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="手机号" >
+                        {{cardParam.phoneNum | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12" >
+                    <FormItem label="购房总金额">
+                        <div class="word-wrap">
+                            {{cardParam.houseMoney | moneyFilter | contentFilter}}
+                        </div>
+                    </FormItem>
+                </i-col>
+                <i-col span="12" >
+                    <FormItem label="房产信息">
+                        <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
+                            {{cardParam.realEstateInformation | contentFilter}}
+                        </div>
+                    </FormItem>
+                </i-col>
+                <i-col span="12" >
+                    <FormItem label="购房日期">
+                        <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
+                            {{cardParam.purchaseDate | timeFormat('yyyy-MM-dd') | contentFilter}}
+                        </div>
+                    </FormItem>
+                </i-col>
+                <i-col span="12" >
+                    <FormItem label="地址" >
+                        <div class="word-wrap" v-w-title="cardParam.homeAddr">
+                            {{cardParam.homeAddr | contentFilter}}
+                        </div>
+                    </FormItem>
+                </i-col>
+                <i-col span="12" >
+                    <FormItem label="备注" >
+                        <div class="word-wrap" v-w-title="cardParam.remark">
+                            {{cardParam.remark | contentFilter}}
+                        </div>
+                    </FormItem>
+                </i-col>
+                <i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>
+                <template v-for="(item,index) in viceCardInfo">
+                    <i-col span="12" >
+                        <FormItem label="姓名">
+                            <div class="word-wrap" >
+                                {{item.custName | contentFilter}}
+                            </div>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12" >
+                        <FormItem label="性别" >
+                            {{$t(item.gender) | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12" >
+                        <FormItem label="证件类型" >
+                            <div class="word-wrap" >
+                                {{item.certificationType | contentFilter}}
+                            </div>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12" >
+                        <FormItem label="证件编号">
+                            <div class="word-wrap" v-w-title="item.idCardNumber">
+                                {{item.idCardNumber | contentFilter}}
+                            </div>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="生日" >
+                            <div class="word-wrap" >
+                                {{item.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
+                            </div>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12" >
+                        <FormItem label="手机号">
+                            {{item.phoneNum | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </template>
+            </Form>
+        </confirm-member-info>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -192,13 +329,15 @@
     import secondaryCard from './secondaryCard.vue';
     import ownerEntityCard from './ownerEntityCard.vue';
     import setPasswordModal from '../components/setPasswordModal';
+    import confirmMemberInfo from '../components/confirmDetailModal';
 
     export default {
         components : {
             entityCardInfo,
             secondaryCard,
             ownerEntityCard,
-            setPasswordModal
+            setPasswordModal,
+            confirmMemberInfo
         },
         props : {
             //会员卡信息
@@ -303,6 +442,8 @@
                 },
                 //设置支付密码模态框是否显示
                 setPasswordModalShow : false,
+                //显示确认信息模态框
+                showConfirmModal : false,
                 //副卡信息
                 viceCardInfo : [],
                 // 表单校验规则
@@ -445,16 +586,7 @@
                         }
                     });
                 })]).then(() => {
-                    let params = this.linkCardInfoWithMember();
-                    //区分新增与修改
-                    if (this.type === 'add') {
-                        this.saveAndEditMember('saveNewMemberInfo', params);
-                    }
-                    /*if (this.type === 'modify') {
-                        params.memberInfo.id = this.info.id;
-                        params.memberCard.id = this.info.cardId;
-                        this.saveAndEditMember('editMemberInfo', params);
-                    }*/
+                    this.showConfirmModal = true;
                 });
             },
             //新增/编辑会员接口
@@ -550,6 +682,33 @@
                     memberInfo,
                     viceCard
                 };
+            },
+            /**
+             * 确认用户信息成功，可以新开卡
+             */
+            createMember () {
+                let params = this.linkCardInfoWithMember();
+                //区分新增与修改
+                if (this.type === 'add') {
+                    this.saveAndEditMember('saveNewMemberInfo', params);
+                }
+                /*if (this.type === 'modify') {
+                    params.memberInfo.id = this.info.id;
+                    params.memberCard.id = this.info.cardId;
+                    this.saveAndEditMember('editMemberInfo', params);
+                }*/
+            }
+        },
+        computed : {
+            //证件名称
+            idNumName () {
+                let idTypes = this.enumData.idType;
+                for (let i = 0,j = idTypes.length; i < j; i++ ) {
+                    if (idTypes[i]['id'] === this.cardParam.certificationType) {
+                        return idTypes[i]['name'];
+                    }
+                }
+                return '';
             }
         }
     };
@@ -568,15 +727,15 @@
         }
     }
 
-    .ivu-form-item {
-        width: 280px;
-        text-align: left;
-        margin-right: 0;
+    /*.ivu-form-item {*/
+        /*width: 280px;*/
+        /*text-align: left;*/
+        /*margin-right: 0;*/
 
-        .ivu-date-picker {
-            display: block;
-        }
-    }
+        /*.ivu-date-picker {*/
+            /*display: block;*/
+        /*}*/
+    /*}*/
 
     .content-footer {
         margin: 20px 0 40px 0;

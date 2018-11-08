@@ -31,10 +31,6 @@
                         </Form-item>
                     </i-col>
                 </i-row>
-                <!--<div class="ivu-form-item-wrap">-->
-                <!--</div>-->
-                <!--<div class="ivu-form-item-wrap">-->
-                <!--</div>-->
             </template>
             <Button style="width: 100%;"
                     type="dashed"
@@ -54,35 +50,35 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        props: {
-            title: {
-                type: String,
-                default: ''
+        props : {
+            title : {
+                type : String,
+                default : ''
             }
         },
-        data() {
+        data () {
             return {
                 // 读卡中: reading
-                reading: false,
+                reading : false,
                 // 实体卡信息表单
-                entityCardParam: {
+                entityCardParam : {
                     //第三方卡号
-                    tpNo: "",
+                    tpNo : "",
                     //第三方卡面号
-                    tpCardNo: "",
+                    tpCardNo : "",
                 },
                 // 表单校验规则
-                ruleValidate: {}
-            }
+                ruleValidate : {}
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 cardReadEnabled : 'cardReadEnabled'
             })
         },
         methods : {
             /**
-             * 查询所有导入的实体卡信息
+             * 查询当前实体卡是否可以使用
              * @param{String} physicalNum 物理卡号
              */
             getAllEntityCard (physicalNum) {
@@ -90,13 +86,23 @@
                 return ajax.post('findByPhysicalNum',{
                     physicalNum : physicalNum
                 }).then(res => {
-                    if (res.success && res.data && Object.keys(res.data).length > 0) {
-                        this.entityCardParam.tpNo = res.data.physicalNum;
-                        this.entityCardParam.tpCardNo = res.data.faceNum;
-                    } else {
-                        this.$Message.warning(this.$t('noMatchCard'));  // 对不起，找不到该卡的信息，请尝试更换其他的卡
+                    if (res.success && res.data ) {
+                        if (Object.keys(res.data).length > 0) {
+                            this.entityCardParam.tpNo = res.data.physicalNum;
+                            this.entityCardParam.tpCardNo = res.data.faceNum;
+                        } else {
+                            this.entityCardParam.tpNo = '';
+                            this.entityCardParam.tpCardNo = '';
+                            this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
+                        }
+                    } else if (res.code === 'M026') {
+                        this.$Message.warning('实体卡已使用，请更换其它卡');
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
+                    } else {
+                        this.entityCardParam.tpNo = '';
+                        this.entityCardParam.tpCardNo = '';
+                        this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
                     }
                 }).finally(() => {
                     this.reading = false;
@@ -105,7 +111,7 @@
             /**
              * 读取实体卡信息
              */
-            fetchCardInfo() {
+            fetchCardInfo () {
                 this.entityCardParam.tpNo = '';
                 this.entityCardParam.tpCardNo = '';
                 this.$store.dispatch('getCardReadData').then(res => {
@@ -116,7 +122,7 @@
                     }
                 });
             },
-            readEntityCard(cardId) {
+            readEntityCard (cardId) {
                 let matchedCard = this.allEntityCards.find((item, i) => {
                     return cardId === item.physicalNum;
                 });
@@ -124,7 +130,7 @@
                     this.entityCardParam.tpNo = cardId;
                     this.entityCardParam.tpCardNo = matchedCard.faceNum;
                 } else {
-                    this.$Message.warning(this.$t('noMatchCard'));  // 对不起，找不到该卡的信息，请尝试更换其他的卡
+                    this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
                 }
             },
         }

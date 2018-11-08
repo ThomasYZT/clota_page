@@ -339,10 +339,17 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            store.commit('updateCardReadEnabled',true);
+            // store.commit('updateCardReadEnabled',true);
+            // return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
-            if (window.rd) {
-                store.commit('updateCardReadEnabled',true);
+            if (window.rd ) {
+                try {
+                    window.rd.dc_init(100, 115200);
+                    window.rd.dc_exit();
+                    store.commit('updateCardReadEnabled',true);
+                } catch (err) {
+                    store.commit('updateCardReadEnabled',false);
+                }
             } else {
                 store.commit('updateCardReadEnabled',false);
             }
@@ -354,8 +361,8 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                store.commit('updateCardReadEnabled',true);
-                resolve('121235');
+                // store.commit('updateCardReadEnabled',true);
+                // resolve('121235');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {

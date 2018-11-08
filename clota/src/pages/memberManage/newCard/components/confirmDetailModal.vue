@@ -19,7 +19,7 @@
                     @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     class="ivu-btn-90px"
-                    @click="save">{{$t('save')}}</Button>
+                    @click="save">{{$t('confirm')}}</Button>
         </div>
     </Modal>
 </template>
@@ -47,7 +47,7 @@
              * 确认信息
              */
             save () {
-
+                this.$emit('confirm-data');
             },
             /**
              * 绑定的value值改变
@@ -72,6 +72,10 @@
 
         /deep/ .ivu-form-item{
             margin-bottom: 0;
+        }
+
+        /deep/ .ivu-modal-body{
+            overflow: auto;
         }
     }
 </style>

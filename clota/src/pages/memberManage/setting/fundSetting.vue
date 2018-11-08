@@ -573,7 +573,6 @@
                             priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption,
                             houseMoneyRefunded : this.settingData.houseMoneyRefunded,
                         };
-                        console.log(params);
                         this.basicSet(params);
 
                     }
@@ -742,15 +741,15 @@
 
             //删除储值赠送金额比例
             handleRemoveSendRate ( data, index ) {
-                this.$Message.success(this.$t('successTip', { tip : 'del' }) + '!'); // 删除成功
+                this.$Message.success(this.$t('successTip', { tip : this.$t('del') })); // 删除成功
                 this.settingData.donateWhileRecharge.splice(index, 1);
             },
             //新增显示储值赠送金额比例
             addSendRate () {
                 let item = {
-                    lowerValue : 0,
-                    topValue : 0,
-                    gift : 0,
+                    lowerValue : '',
+                    topValue : '',
+                    gift : '',
                     scope : '',
                     _status : 1,
                 };

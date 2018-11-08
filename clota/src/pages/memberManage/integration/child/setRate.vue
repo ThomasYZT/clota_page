@@ -42,6 +42,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
+                        v-if="isActivity"
                         slot="column3"
                         show-overflow-tooltip
                         slot-scope="row"

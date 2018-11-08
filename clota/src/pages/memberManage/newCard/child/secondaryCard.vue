@@ -88,7 +88,8 @@
                             <Select v-model="scope.row.certificationType"
                                     transfer
                                     :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
-                                <Option v-for="item in idType" :key="item.id"
+                                <Option v-for="item in idType"
+                                        :key="item.id"
                                         :value="item.id">
                                     {{$t(item.name)}}
                                 </Option>
@@ -188,6 +189,7 @@
             setPasswordModal
         },
         props : {
+            //证件类型列表
             idType : Array
         },
         data () {
@@ -298,7 +300,7 @@
                     idCardNumber : "",
                     tradePassword : ""
                 });
-                this.$emit('set-vice-card-info',this.tableData);
+                this.freshTableData();
             },
             /**
              * 校验副卡表单
@@ -325,7 +327,34 @@
              */
             delCard (index) {
                 this.tableData.splice(index,1);
-                this.$emit('set-vice-card-info',this.tableData);
+                this.freshTableData();
+            },
+            /**
+             * 更新副卡信息
+             */
+            freshTableData () {
+                this.$emit('set-vice-card-info',this.tableData.map(item => {
+                    return {
+                        certificationName : this.idTypeObj[item.certificationType],
+                        certificationType : item.certificationType,
+                        custName : item.custName,
+                        phoneNum : item.phoneNum,
+                        birthDay : item.birthDay,
+                        gender : item.gender,
+                        idCardNumber : item.idCardNumber,
+                        tradePassword : item.tradePassword,
+                    };
+                }));
+            }
+        },
+        computed : {
+            //证件类别对象类型
+            idTypeObj () {
+                let result = {};
+                for (let i = 0,j = this.idType.length; i < j; i++) {
+                    result[this.idType[i]['id']] = this.idType[i];
+                }
+                return result;
             }
         }
     };
