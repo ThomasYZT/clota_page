@@ -14,7 +14,7 @@
                     <i-col span="8" offset="5">
                         <!-- 产品名称 -->
                         <Form-item :label="$t('productName')" prop="name">
-                            <Input v-model.trim="formData.name" style="width:250px" :disabled="pageEditable" :placeholder="$t('inputField', { field : $t('productName') })"></Input>
+                            <Input v-model.trim="formData.name" style="width:250px" :disabled="pageEditable" :placeholder="$t('inputField', { field : $t('productName') })"/>
                         </Form-item>
                     </i-col>
                     <i-col span="8">
@@ -27,7 +27,7 @@
                         <Form-item v-else :label="$t('addGoodsNum')" prop="stockNum">
                             <Input v-model.trim="formData.stockNum"
                                    :placeholder="$t('inputField', { field : $t('addGoodsNum') })"
-                                   style="width:250px"></Input>
+                                   style="width:250px"/>
                             <span>{{$t('nowHaveStockNum')}}:{{nowHaveStockNum}}</span>
                         </Form-item>
                     </i-col>
@@ -37,13 +37,13 @@
                     <i-col span="8" offset="5">
                         <!-- 采购价 -->
                         <Form-item :label="$t('purchasePrice')" prop="purchasePrice">
-                            <Input v-model.trim="formData.purchasePrice" :placeholder="$t('inputField', { field : $t('purchasePrice') })" style="width:250px"></Input>
+                            <Input v-model.trim="formData.purchasePrice" :placeholder="$t('inputField', { field : $t('purchasePrice') })" style="width:250px"/>
                         </Form-item>
                     </i-col>
                     <i-col span="8">
                         <!-- 市场价 -->
                         <Form-item :label="$t('marketPrice')" prop="marketPrice">
-                            <Input v-model.trim="formData.marketPrice" :placeholder="$t('inputField', { field : $t('marketPrice') })" style="width:250px"></Input>
+                            <Input v-model.trim="formData.marketPrice" :placeholder="$t('inputField', { field : $t('marketPrice') })" style="width:250px"/>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -52,7 +52,7 @@
                     <i-col span="8" offset="5">
                         <!-- 采购人 -->
                         <Form-item :label="$t('purchaser')" prop="purchaser">
-                            <Input v-model.trim="formData.purchaser" :placeholder="$t('inputField', { field : $t('purchaser') })" style="width:250px"></Input>
+                            <Input v-model.trim="formData.purchaser" :placeholder="$t('inputField', { field : $t('purchaser') })" style="width:250px"/>
                         </Form-item>
                     </i-col>
                     <i-col span="8">

@@ -33,7 +33,7 @@ export const goodsListHead = [
     },
     {
         title : 'operate', //操作
-        minWidth : 120,
+        minWidth : 160,
         field : ''
     },
 ];

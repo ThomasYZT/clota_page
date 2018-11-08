@@ -138,6 +138,8 @@ export default {
                     this.tableData = res.data ? res.data.data : [];
                     this.totalCount = res.data.totalRow;
                 } else {
+                    this.tableData = [];
+                    this.totalCount = 0;
                     this.$Message.error(this.$t('dataGetError'));
                 }
 			});

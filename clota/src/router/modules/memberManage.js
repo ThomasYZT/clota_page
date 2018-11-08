@@ -712,7 +712,7 @@ export default {
                             //todo 未配置权限
                             _name : 'members-index',
                             menuName : 'goodsManage',
-                            rightPath : topMenuName + '.' + 'memberHome',
+                            rightPath : topMenuName + '.' + 'goodsManage',
                             isMenu : true
                         },
                     },
@@ -725,7 +725,7 @@ export default {
                             //todo 未配置权限
                             _name : 'members-index',
                             menuName : 'stocking',
-                            rightPath : topMenuName + '.' + 'memberHome',
+                            rightPath : topMenuName + '.' + 'stocking',
                             isMenu : true
                         }
                     },
@@ -738,7 +738,7 @@ export default {
                             //todo 未配置权限
                             _name : 'members-index',
                             menuName : 'editGoodsWarehousing',
-                            rightPath : topMenuName + '.' + 'memberHome',
+                            rightPath : topMenuName + '.' + 'goodsManage',
                         },
                     },
                     stockInfo : {
@@ -750,7 +750,7 @@ export default {
                             //todo 未配置权限
                             _name : 'members-index',
                             menuName : 'stockInfo',
-                            rightPath : topMenuName + '.' + 'memberHome',
+                            rightPath : topMenuName + '.' + 'goodsManage',
                         },
                     },
                 }

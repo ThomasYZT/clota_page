@@ -151,7 +151,7 @@
                     {{$t('confirmAdd')}}
                 </Button>
             </template>
-            <template v-if="type === 'modify'">
+            <template v-else-if="type === 'modify'">
                 <Button type="primary"
                         :loading="loading"
                         @click="formValidateFunc">

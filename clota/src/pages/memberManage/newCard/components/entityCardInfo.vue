@@ -80,7 +80,7 @@
                 cardReadEnabled : 'cardReadEnabled'
             })
         },
-        methods: {
+        methods : {
             /**
              * 查询所有导入的实体卡信息
              * @param{String} physicalNum 物理卡号
