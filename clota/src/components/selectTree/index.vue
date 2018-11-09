@@ -52,28 +52,35 @@
             disabled : {
                 type : Boolean,
                 default : false
+            },
+            //禁用的节点id数组
+            'disabled-node-ids' : {
+                type : Array ,
+                default () {
+                    return [];
+                }
             }
         },
-        data() {
+        data () {
             return {
                 //组织树是否显示
                 treeShow : false,
                 //组织树配置
-                defaultProps: {
-                    children: 'subNodes',
+                defaultProps : {
+                    children : 'subNodes',
                     label : 'orgName'
                 },
                 //组织id与name对应数据
                 treeIdToName : {},
                 orgName : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示树
              */
             showTree (e) {
-                if(this.disabled) return;
+                if (this.disabled) return;
                 e.stopPropagation();
                 this.treeShow = true;
             },
@@ -89,56 +96,58 @@
              * @param node
              */
             choseNode (data,node) {
+                if (this.disabledNodeIds.includes(data.id)) return;
                 this.$emit('input',data.id);
                 this.hideTree();
             },
             /**
              * 组织树render函数
              */
-            renderContent(h, {root, node, data}) {
+            renderContent (h, { root, node, data }) {
                 this.$set(this.treeIdToName,data.id,data['orgName']);
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                         'active-node' : data.id === this.value
                     }
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true,
+                            'disabled-node' : this.disabledNodeIds.includes(data.id)
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
-                                value: data.orgName
+                                name : 'w-title',
+                                value : data.orgName
                             }
                         ],
                     }, data.orgName)
-                ])
+                ]);
             },
         },
-        watch :{
+        watch : {
             treeIdToName : {
                 deep : true,
                 handler (newVal) {
-                    if(newVal && Object.keys(newVal)){
+                    if (newVal && Object.keys(newVal)) {
                         this.orgName = newVal[this.value];
-                    }else{
+                    } else {
                         this.orgName = '';
                     }
                 }
             },
-            value (newVal){
-                if(newVal){
+            value (newVal) {
+                if (newVal) {
                     this.orgName = this.treeIdToName[newVal];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -190,6 +199,7 @@
             font-size: 14px;
             color: #333333;
             vertical-align: middle;
+
         }
 
         .el-icon-caret-right{
@@ -224,6 +234,11 @@
                 font-size: 14px;
                 color: #333333;
                 vertical-align: middle;
+
+                &.disabled-node{
+                    color: $color_gray!important;
+                    cursor: not-allowed;
+                }
             }
 
             .iconfont {
