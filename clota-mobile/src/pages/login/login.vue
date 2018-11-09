@@ -32,14 +32,21 @@
         </x-input>
         <!-- 注册按钮 -->
         <div class="bottom-info">
-            <p class="msg">{{msg}}</p>
+            <p class="msg">
+                <span @click="activateCard">{{$t('activateMemberCard')}}</span>
+            </p>
             <p class="register-entry">
-                <span @click="toRegister()">{{$t('register')}}</span>
+                <!-- 注册入口暂时屏蔽 -->
+                <!--<span @click="toRegister()">{{$t('register')}}</span>-->
             </p>
         </div>
         <!-- 登陆按钮 -->
         <x-button class="button"
                   @click.native="login()">{{$t('login')}}</x-button>
+        <!-- 购买会员卡 -->
+        <div class="entry-wrapper">
+            <span @click="buyMemberCard">{{$t('buyMemberCard')}}</span>
+        </div>
     </div>
 </template>
 
@@ -47,13 +54,10 @@
     import ajax from '../../api/index';
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
-    import Vue from 'vue';
 
     export default {
         data () {
             return {
-                //输入提示信息
-                msg : '',
                 //登陆信息
                 loginInfo : {
                     phoneNum : '',
@@ -101,7 +105,6 @@
              * 登陆
              */
             login () {
-                this.msg = '';
                 this.validate(() => {
                     ajax.post('login', {
                         phoneNum : this.loginInfo.phoneNum,
@@ -140,7 +143,6 @@
              * @param callback
              */
             phoneValidate (callback) {
-                this.msg = '';
                 if (this.loginInfo.phoneNum === '') {
                     this.$vux.toast.text(this.$t('pleaseEnterMobile'));
                 } else {
@@ -241,6 +243,23 @@
                         openId : this.wxUserInfo.openId
                     }
                 });
+            },
+            /**
+             * 前往激活会员卡
+             */
+            activateCard () {
+                this.$router.push({
+                    name : 'activateCard',
+                    params : {
+                        openId : this.wxUserInfo.openId
+                    }
+                })
+            },
+            /**
+             * 前往购买会员卡
+             */
+            buyMemberCard () {
+
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -262,6 +281,7 @@
     $img_base_url : '../../assets/images/';
 
     .login {
+        padding: 10px;
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;
@@ -270,17 +290,15 @@
         .bottom-info {
             display: flex;
             .msg {
-                width: 70%;
-                margin-left: 14px;
-                padding: 10px 0;
-                color: #FF8C69;
-                font-size: 12px;
-                font-style: italic;
+                flex: 1 0;
+                padding: 10px 12.5px;
+                color: #046FDB;
+                font-size: 12.5px;
             }
 
             .register-entry {
-                width: 30%;
-                margin-right: 16.5px;
+                flex: 1 0;
+                padding-right: 16.5px;
                 color: #046FDB;
                 height: 50.5px;
                 line-height: 50.5px;
@@ -291,6 +309,15 @@
 
         .code-button{
             padding: 0 10px;
+        }
+
+        .entry-wrapper {
+            margin-top: 14px;
+            text-align: center;
+            span {
+                color: $color_333;
+                font-size: 13px;
+            }
         }
 
         .validate{

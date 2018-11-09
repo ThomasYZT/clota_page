@@ -5,13 +5,15 @@ import i18n from '../assets/lang/lang.config';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state: {
+    state : {
         //当前选择的语言
-        lang: i18n.locale,
+        lang : i18n.locale,
         //用户信息
         userInfo : {},
         //会员卡信息
-        cardInfo: {},
+        cardInfo : {},
+        //会员卡列表信息
+        cardInfoList : {},
         //页面是否显示加载中
         isLoading : false,
         //当前正在加载中的接口个数
@@ -25,9 +27,9 @@ export default new Vuex.Store({
         //公司id
         companyCode : '1045244656750825472'
     },
-    getters: {
+    getters : {
         //当前语言状态
-        lang: state => {
+        lang : state => {
             let lang = localStorage.getItem('lang');
             state.lang = lang ? lang : state.lang;
             return state.lang;
@@ -37,7 +39,7 @@ export default new Vuex.Store({
             return state.userInfo;
         },
         //会员卡信息
-        cardInfo: state => {
+        cardInfo : state => {
             return state.cardInfo;
         },
         //是否显示页面加载中
@@ -60,27 +62,27 @@ export default new Vuex.Store({
             return state.companyCode;
         }
     },
-    mutations: {
+    mutations : {
         //设置语言
-        setLang(state, lang) {
+        setLang (state, lang) {
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
             i18n.locale = state.lang = lang;
         },
         //改变是否加载中的状态
-        changeLoadingStatus (state,loading){
+        changeLoadingStatus (state,loading) {
             state.isLoading = loading;
         },
         //更改请求中接口的个数
-        changePromisings (state,type){
-            if(type === 'add'){
+        changePromisings (state,type) {
+            if (type === 'add') {
                 state.promisings++;
-            }else if(type === 'del'){
+            } else if (type === 'del') {
                 state.promisings--;
             }
-            if(state.promisings > 0){
+            if (state.promisings > 0) {
                 state.isLoading = true;
-            }else{
+            } else {
                 setTimeout(() => {
                     state.isLoading = false;
                 },100);
@@ -91,7 +93,7 @@ export default new Vuex.Store({
             state.hashKey = Math.random();
         },
         //更改键盘状态
-        updateKeyBoardStatus (state,status ){
+        updateKeyBoardStatus (state,status ) {
             state.showKeyBoard = status;
         },
         /**
@@ -100,9 +102,9 @@ export default new Vuex.Store({
         updateUserInfo ( state ) {
             //获取保存到本地的用户信息
             let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-            if(userInfo && Object.keys(userInfo).length > 0){
+            if (userInfo && Object.keys(userInfo).length > 0) {
                 state.userInfo = userInfo;
-            }else{
+            } else {
                 state.userInfo = {};
             }
         },
@@ -112,11 +114,24 @@ export default new Vuex.Store({
          */
         updateCardInfo ( state ) {
             //获取保存到本地的会用卡信息
-            let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-            if(cardInfo && Object.keys(cardInfo).length > 0){
+            let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+            if (cardInfo && Object.keys(cardInfo).length > 0) {
                 state.cardInfo = cardInfo;
-            }else{
+            } else {
                 state.cardInfo = {};
+            }
+        },
+        /**
+         * 更新会员卡列表信息
+         * @param state
+         */
+        updateCardInfoList ( state ) {
+            //获取保存到本地的会用卡列表信息
+            let cardInfoList = localStorage.getItem('cardInfoList') ? JSON.parse(localStorage.getItem('cardInfoList')) : {};
+            if (cardInfoList && Object.keys(cardInfoList).length > 0) {
+                state.cardInfoList = cardInfoList;
+            } else {
+                state.cardInfoList = {};
             }
         },
         /**
@@ -130,6 +145,6 @@ export default new Vuex.Store({
             state.showNetworkError = companyCode;
         }
     },
-    actions: {
+    actions : {
     }
 });

@@ -9,6 +9,35 @@
       </div>
 
       <div class="member-right-content">
+          <h3 class="category">{{$t('memberRight')}}</h3>
+
+          <template v-if="!isMemberRightNoData">
+              <!--优惠通知-->
+              <ul class="right-list" v-if="rightInfo.desc.length > 0">
+                  <li v-for="(item, index) in rightInfo.desc" :key="index" v-if="item.isEnable">
+                      <span class="spot"></span><span>{{item.content}}</span>
+                  </li>
+              </ul>
+                <!--每月优惠门票-->
+              <ul class="right-list" v-if="rightInfo.ticket.length > 0">
+                  <li v-for="(item, index) in rightInfo.ticket" :key="index" v-if="item.isEnable">
+                      <span class="spot"></span><span>每月{{item.rule.num}}张{{item.rule.scenicName}}{{item.rule.discount}}元门票</span>
+                  </li>
+              </ul>
+                <!--生日购票优惠-->
+              <ul class="right-list" v-if="rightInfo.birthday.length > 0">
+                  <li v-for="(item, index) in rightInfo.birthday" :key="index" v-if="item.isEnable">
+                      <span class="spot"></span><span>生日当天限购{{item.rule.num | contentFilter}}张{{$store.state.cardInfo.orgName}}{{item.rule.discount | contentFilter}}折门票</span>
+                  </li>
+              </ul>
+          </template>
+          <template v-else>
+              <div class="no-data-area">
+                  <no-data>
+                  </no-data>
+              </div>
+          </template>
+
           <h3 class="category">{{$t('memberVos')}}</h3>
           <template v-if="memberVos && memberVos.length > 0">
               <illustration-board v-for="(item, index) in memberVos"
@@ -52,54 +81,141 @@
 </template>
 
 <script>
-    import illustrationBoard from './components/illustrationBoard'
-    import ajax from '../../api/index'
-    import {mapGetters} from 'vuex';
+    import illustrationBoard from './components/illustrationBoard';
+    import ajax from '../../api/index';
+    import { mapGetters } from 'vuex';
     import noData from '@/components/noData/index.vue';
     export default {
-        components: {
+        components : {
             illustrationBoard,
             noData
         },
-        data() {
+        data () {
             return {
                 //按会员级别分类数据
-                memberVos: [],
+                memberVos : [],
                 //按产品类别分类数据
-                productArr: [],
+                productArr : [],
                 //按店铺分类数据
-                storeVos: [],
-                query: null,
+                storeVos : [],
+                query : null,
                 //是否显示页面
-                isShow: false,
-            }
+                isShow : false,
+                //会员等级信息
+                levelModel : {},
+                //默认权益信息
+                rightDefaultInfo : [
+                    //生日打折门票
+                    {
+                        type : 'birthday',
+                        rule : {
+                            num : '',
+                            discount : '',
+                            price : '',
+                            scenicId : ''
+                        },
+                        isEnable : false,
+                        content : ''
+                    },
+                    //每月优惠门票
+                    {
+                        type : 'ticket',
+                        rule : {
+                            num : '',
+                            discount : '',
+                            price : '',
+                            scenicId : ''
+                        },
+                        isEnable : false,
+                        content : ''
+                    },
+                    //通知信息
+                    {
+                        type : 'desc',
+                        rule : {
+                            num : '',
+                            discount : '',
+                            price : '',
+                            scenicId : ''
+                        },
+                        isEnable : false,
+                        content : ''
+                    }
+                ],
+                //权益信息
+                rightInfo : {
+                    birthday : [],
+                    ticket : [],
+                    desc : []
+                },
+                //会员权益信息
+                memberRight : [],
+                //会员权益是否数据为空
+                isMemberRightNoData : true
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'userInfo'
             ]),
-            isEn() {
+            isEn () {
                 return this.$store.state.lang === 'en';
             }
         },
-        methods: {
+        methods : {
             /**
              * 获取页面数据
              */
-            getData() {
+            getData () {
                 ajax.post('listMemberCardRate', {
-                    cardId: this.userInfo.cardId
+                    cardId : this.userInfo.cardId
                 }).then((res) => {
                     //console.log(res.data)
-                    if(res.success) {
+                    if (res.success) {
                         this.memberVos = res.data ? (res.data.memberVos ? res.data.memberVos : []) : [];
-                        var productMap = res.data ? (res.data.productMap ? res.data.productMap : []) : [];
+                        let productMap = res.data ? (res.data.productMap ? res.data.productMap : []) : [];
                         this.storeVos = res.data ? (res.data.storeVos ? res.data.storeVos : []) : [];
+                        //会员权益信息整理
+                        this.rightInfo = {
+                            birthday : [],
+                            ticket : [],
+                            desc : []
+                        };
+                        this.memberRight = [];
+                        this.levelModel = {};
+                        this.levelModel = res.data ? res.data.levelModel : {};
+                        this.memberRight = this.levelModel.rights ? JSON.parse(this.levelModel.rights) : [];
+
+                        let rightInfoLocale = [];
+                        if (this.memberRight && this.memberRight.length > 0) {
+                            rightInfoLocale = this.memberRight;
+                        } else {
+                            rightInfoLocale = this.rightDefaultInfo;
+                        }
+                        for (let i = 0,j = rightInfoLocale.length; i < j; i++ ) {
+                            if (rightInfoLocale[i]['type'] === 'birthday') {
+                                this.rightInfo.birthday.push(rightInfoLocale[i]);
+                            } else if (rightInfoLocale[i]['type'] === 'ticket') {
+                                this.rightInfo.ticket.push(rightInfoLocale[i]);
+                            } else if (rightInfoLocale[i]['type'] === 'desc') {
+                                this.rightInfo.desc.push(rightInfoLocale[i]);
+                            }
+                        }
+                        console.log(rightInfoLocale)
+                        let isNoData = true;
+                        rightInfoLocale.forEach(item => {
+                            if (item.isEnable) {
+                                isNoData = false;
+                            }
+                        });
+                        this.isMemberRightNoData = isNoData;
+
+
 
                         this.packageData(this.memberVos, productMap, this.storeVos)
                         //显示页面
                         this.isShow = true;
-                    }else {
+                    } else {
                         this.memberVos = [];
                         this.productArr = [];
                         this.storeVos = [];
@@ -107,12 +223,12 @@
                         //显示页面
                         this.isShow = true;
                     }
-                })
+                });
             },
             /**
              * 组装数据
              */
-            packageData(memberVos,productMap,storeVos) {
+            packageData (memberVos,productMap,storeVos) {
                 memberVos.forEach((item) => {
                     item.name = this.query.name;
                     item.scoreRate = item.scoreRate;
@@ -125,21 +241,21 @@
                     item.discountRate = item.deptDiscountRate;
                 });
 
-                for(let item in productMap) {
+                for (let item in productMap) {
                     productMap[item].forEach((item) => {
                         item.name = item.typeName;
                         item.scoreRate = item.prodScoreRate;
                         item.discountRate = item.prodDiscountRate;
                         this.productArr = this.productArr.concat(item);
-                    })
+                    });
                 }
             }
         },
-        created() {
+        created () {
             this.query = this.$route.query;
             this.getData();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -177,6 +293,25 @@
             -webkit-overflow-scrolling: touch;
             overflow: auto;
             background: $color_fff;
+
+            .right-list {
+                li {
+                    margin: 10px 25px;
+                    text-align: left;
+                    font-size: 13px;
+                    color: #666;
+
+                    .spot {
+                        vertical-align: middle;
+                        margin-right: 9px;
+                        display: inline-block;
+                        width: 5px;
+                        height: 5px;
+                        border-radius: 2.5px;
+                        background-color: #E2C18E;
+                    }
+                }
+            }
 
             .category {
                 display: inline-block;

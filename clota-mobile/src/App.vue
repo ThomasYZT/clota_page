@@ -79,7 +79,6 @@
 
         <tabbar v-if="isTabbarShow">
             <tabbar-item v-for="(item, index) in tabbarList"
-                         :icon-class="item.icon"
                          :key="index"
                          :link="item.link"
                          :selected="item.selected">
@@ -123,12 +122,12 @@
                         label : 'myMember',
                         selected : true,
                         link : '/home',
-                        icon : 'iconfont icon-member-rights'
+                        icon : 'iconfont icon-mymember'
                     },
                     {
                         label : 'integralMall',
                         link : '/integralMall',
-                        icon : 'iconfont icon-member-rights'
+                        icon : 'iconfont icon-integral-mall'
                     }
                 ],
                 //是否显示底部导航栏

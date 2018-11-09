@@ -2,7 +2,9 @@
 
 <template>
     <div class="account">
+        <!-- 非业主卡显示信息 -->
         <swiper dots-position="center"
+                v-if="!isOwnerCard"
                 v-model="accountShow"
                 @on-index-change="accountTapChange">
             <swiper-item
@@ -29,6 +31,42 @@
                 </div>
             </swiper-item>
         </swiper>
+        <!-- 业主卡显示信息 -->
+        <div v-else class="header no-list-chose">
+            <div class="asset-info">{{OwnerCardAccount.accountBalance | moneyFilter}}</div>
+            <div class="asset-tip">{{$t('allAssets')}}</div>
+            <div class="account-type">
+                <div class="account-priciple-left">
+                    <div class="money-num">{{OwnerCardAccount.corpusBalance | moneyFilter}}</div>
+                    <div class="money-label">{{$t('rechargeMoney')}}</div>
+                </div>
+                <div class="account-donate-left">
+                    <div class="money-num">{{OwnerCardAccount.donateBalance | moneyFilter}}</div>
+                    <div class="money-label">{{$t('donateMoney')}}</div>
+                </div>
+            </div>
+
+            <div class="account-detail-wrapper">
+                <ul class="flex-box">
+                    <li>
+                        <span class="detail-money">{{OwnerCardAccount.ticketBalance | moneyFilter}}</span>
+                        <p class="detail-title">{{$t('ticketMoney')}}</p>
+                    </li>
+                    <li>
+                        <span class="detail-money">{{OwnerCardAccount.hotelBalance | moneyFilter}}</span>
+                        <p class="detail-title">{{$t('hotelMoney')}}</p>
+                    </li>
+                    <li>
+                        <span class="detail-money">{{OwnerCardAccount.cateringBalance | moneyFilter}}</span>
+                        <p class="detail-title">{{$t('restaurantMoney')}}</p>
+                    </li>
+                    <li>
+                        <span class="detail-money">{{OwnerCardAccount.otherBalance | moneyFilter}}</span>
+                        <p class="detail-title">{{$t('otherMoney')}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
         <div class="btn-area">
             <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
@@ -48,9 +86,9 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
+        data () {
             return {
                 visible : false,
                 //选择的账户信息
@@ -60,10 +98,14 @@
                     {}
                 ],
                 //当前显示的账户信息
-                accountShow : 0
-            }
+                accountShow : 0,
+                //是否是业主账户信息
+                isOwnerCard : this.$store.state.cardInfo.cardTypeId === '1',
+                //业主账户信息
+                OwnerCardAccount : {}
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示所有账户信息
              */
@@ -103,29 +145,48 @@
                     cardId : this.userInfo.cardId,
                     memberId : this.userInfo.memberId
                 }).then(res => {
-                    if(res.success){
-                        this.accountList =  res.data ? res.data.map((item,index) => {
+                    if (res.success) {
+                        this.accountList = res.data ? res.data.map((item,index) => {
                             return {
                                 ...item,
                                 name : item.accountName,
                                 value : index
-                            }
+                            };
                         }) : [];
-                    }else{
+                    } else {
                         this.accountList = [];
                     }
                 });
+            },
+            /**
+             * 获取业主卡账户信息
+             */
+            getOwnerCardAccountInfo () {
+                ajax.post('queryCardAccountInfo', {
+                    cardId : this.userInfo.cardId,
+                }).then(res => {
+                    if (res.success) {
+                        console.log(res.data)
+                        this.OwnerCardAccount = res.data ? res.data : [];
+                    } else {
+                        this.OwnerCardAccount = []
+                    }
+                })
             }
         },
         created () {
-            this.listCardAccountInfo();
+            if (this.isOwnerCard) {
+                this.getOwnerCardAccountInfo();
+            } else {
+                this.listCardAccountInfo();
+            }
         },
         computed : {
             ...mapGetters({
                 userInfo : 'userInfo'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -215,6 +276,87 @@
                 }
 
             }
+
+            .account-detail-wrapper {
+                position: absolute;
+                bottom: -202px;
+                left: 50%;
+                margin-left: -166px;
+                width: 337px;
+                height: 210px;
+                background-color: $color_fff;
+                z-index: 10;
+                box-shadow:0 5px 15px 1px #F2F2F2;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+
+                .flex-box {
+                    height: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    li {
+                        position: relative;
+                        padding-top: 35px;
+                        flex: 1 0;
+                        flex-basis: 50%;
+                        height: 50%;
+
+                        .detail-money {
+                            font-size: 19px;
+                            color: #333;
+                        }
+
+                        .detail-title {
+                            font-size: 12px;
+                            color: #999;
+                        }
+
+                        &:nth-of-type(odd) {
+                            &:after {
+                                position: absolute;
+                                right: 0;
+                                top: 50%;
+                                margin-top: -30px;
+                                content: ' ';
+                                height: 60px;
+                                width: 1px;
+                                border-left: 1px solid #EEE;
+                            }
+                        }
+                        &:nth-child(3){
+                            &:before {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                content: ' ';
+                                height: 1px;
+                                width: 150px;
+                                border-top: 1px solid #EEE;
+                            }
+                        }
+                        &:nth-child(4){
+                            &:before {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                content: ' ';
+                                height: 1px;
+                                width: 150px;
+                                border-top: 1px solid #EEE;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .no-list-chose {
+            @include block_outline($height : 282px);
+            padding-top: 50px;
+            .account-type {
+                bottom: 15px;
+            }
         }
 
         /deep/ .vux-slider > .vux-indicator > a,
@@ -232,7 +374,7 @@
 
         .btn-area{
             @include block_outline(unquote('calc(100% - 55px)'),42px);
-            margin: 33px auto 0;
+            margin: 220px auto 0;
 
             /deep/ .weui-btn_default{
                 background: $color_0073EB;

@@ -38,7 +38,9 @@
                   case 'recharge':
                       return 'gainByRecharging';
                   case 'adjust_money':
-                      return 'adjustScore'
+                      return 'adjustScore';
+                  case 'open_card':
+                      return 'open_card';
                   default:
                       return '-';
               }

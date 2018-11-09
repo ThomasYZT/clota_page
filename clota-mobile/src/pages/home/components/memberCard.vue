@@ -1,0 +1,316 @@
+<!--
+    会员卡组件
+    作者：杨泽涛
+-->
+<template>
+    <div class="member-card"
+         :class="[memberVipCardClass]">
+        <div class="card-content">
+            <div class="person-info">
+                <div class="left">
+                    <div class="img-wrapper">
+                        <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+                    </div>
+                    <span class="username" @click="toPersonInfo">
+                      <span class="name">
+                      {{info.custName}}
+                      </span>
+                      <span class="iconfont icon-arrow"></span>
+                  </span>
+                </div>
+                <div class="right">
+                    <div  class="card-level">
+                        <i class="iconfont icon-level"></i>
+                        <span class="level-name">{{info.levelDesc}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-info-wrapper">
+
+                <div class="company-info">
+                    <span>{{info.orgName}}</span>
+                </div>
+                <div class="card-info">
+                    <div style="font-weight: bold">{{info.cardCode | formatCardCode}}</div>
+                    <div @click="toMemberCode">
+                        <i class="iconfont icon-code"></i>
+                        <i class="iconfont icon-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <x-dialog v-model="isShowImg"
+                  hide-on-blur
+                  :dialog-style="{'max-width': '100%', width: '100%', height: '50%', 'background-color': 'transparent'}">
+            <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+        </x-dialog>
+    </div>
+</template>
+
+<script>
+    import { mapGetters } from 'vuex';
+    export default {
+        props : {
+            info : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
+        data () {
+            return {
+                //是否放大显示头像
+                isShowImg : false,
+            };
+        },
+        computed : {
+            ...mapGetters({
+                isLoading : 'isLoading',
+                userInfo : 'userInfo'
+            }),
+            //vip卡类名
+            memberVipCardClass () {
+                let cardType = '';
+                if (this.info.cardTypeId === '1') {
+                    //业主卡
+                    cardType += 'owner-card ';
+                    return cardType;
+                } else if (this.info.cardTypeId === '2') {
+                    //个人卡
+                    cardType += 'personal-card ';
+                    switch (this.info.levelNum) {
+                        case 1:
+                            cardType += 'one-level ';
+                            break;
+                        case 2:
+                            cardType += 'two-level ';
+                            break;
+                        case 3:
+                            cardType += 'three-level ';
+                            break;
+                        case 4:
+                            cardType += 'four-level ';
+                            break;
+                        default:
+                            cardType += 'one-level ';
+                    }
+                    return cardType;
+                } else if (this.info.cardTypeId === '3') {
+                    //企业卡
+                    cardType += 'company-card ';
+                    return cardType;
+                }
+            },
+            //头像信息
+            memberHeadImg () {
+                if (this.info && this.info.portrait) {
+                    return this.info.portrait;
+                } else {
+                    return require('../../../assets/images/defaut-face.png');
+                }
+            }
+        },
+        filters : {
+            /**
+             * 格式化会员卡号
+             * @param val
+             * @return {string}
+             */
+            formatCardCode (val) {
+                if (!val) return '';
+                val = val.toString();
+                return val.replace(/(.{4})/g,'$& ');
+            }
+        },
+        methods : {
+            /**
+             *  跳转到会员二维码
+             */
+            toMemberCode () {
+                this.$router.push({
+                    name : 'memberCode'
+                });
+            },
+            /**
+             * 跳转到会员详情
+             */
+            toPersonInfo () {
+                this.$router.push({
+                    name : 'personInfo'
+                });
+            },
+        }
+    };
+</script>
+
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
+
+    .member-card {
+        position: relative;
+        width: 347px;
+        height: 170px;
+        margin: 11px auto;
+        border-radius: 13px;
+        box-shadow: #A6AABE 0 5px 10px;
+        background-size: 100% 100%;
+
+        //业主卡样式
+        &.owner-card {
+            background-image: url("../../../assets/images/owner-card.png");
+
+            .card-level {
+                background-color: $color_fff;
+            }
+        }
+        //个人卡样式
+        &.personal-card {
+            &.one-level {
+                background-image: url("../../../assets/images/personal-card-lv1.png");
+                .card-level{
+                    background: #A1A5BA;
+                }
+            }
+            &.two-level {
+                background-image: url("../../../assets/images/personal-card-lv2.png");
+                .card-level{
+                    background: #ECBB3F;
+                }
+            }
+            &.three-level {
+                background-image: url("../../../assets/images/personal-card-lv3.png");
+                .card-level{
+                    background: #E4C3AC;
+                }
+            }
+            &.four-level {
+                background-image: url("../../../assets/images/personal-card-lv4.png");
+                .card-level{
+                    background: #E4C3AC;
+                }
+            }
+        }
+        //企业卡样式
+        &.company-card {
+
+        }
+
+        .card-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 21.2px;
+
+            .person-info {
+                display: flex;
+                height: 33px;
+                width: 100%;
+                display: flex;
+
+                div {
+                    &.left {
+                        flex: 1 0;
+                        .img-wrapper {
+                            display: inline-block;
+                            position: relative;
+                            width: 33px;
+                            height: 100%;
+                            border-radius: 50%;
+                            background-color: rgba(255,255,255,0.1);
+
+                            img.person-img {
+                                position: absolute;
+                                margin-right: 12px;
+                                border-radius: 50%;
+                                left: 1.5px;
+                                top: 1.5px;
+                                width: 30px;
+                                height: 30px;
+                            }
+                        }
+
+                        span.username {
+                            margin-left: 5px;
+                            display: inline-block;
+                            width: calc(100% - 60px);
+                            height: 100%;
+                            line-height: 32.65px;
+                            vertical-align: top;
+                            font-size: 14px;
+                            @include overflow_tip();
+
+                            .name{
+                                vertical-align: middle;
+                            }
+
+                            .icon-arrow{
+                                font-size: 12px!important;
+                                vertical-align: middle;
+                                line-height: 16px;
+                                margin-top: 8px;
+                            }
+                        }
+                    }
+                    &.right {
+                        text-align: right;
+                        position: relative;
+
+                        .card-level {
+                            margin-top: 4px;
+                            padding: 0 15px;
+                            min-width: 83.5px;
+                            height: 24px;
+                            display: inline-block;
+                            border-radius: 15px;
+                            font-size: 8px;
+                            line-height: 24px;
+                            i {
+                                font-size: 8px;
+                                opacity: 1;
+                            }
+                            span {
+                                opacity: 1;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            .bottom-info-wrapper {
+                position: absolute;
+                width: 282.6px;
+                bottom: 21.2px;
+
+                .company-info {
+                    position: relative;
+                    height: 19px;
+                    width: 100%;
+                    margin-bottom: 9px;
+                    font-size: 12.5px;
+                }
+
+                .card-info {
+                    display: flex;
+                    bottom: 0;
+                    height: 19px;
+                    width: 304.6px;
+                    font-size: 14px;
+
+                    div {
+                        &:first-child {
+                            flex: 1;
+                            white-space: nowrap;
+                        }
+                        &:last-child {
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

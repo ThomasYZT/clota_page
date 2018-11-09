@@ -5,6 +5,7 @@
 <template>
   <div class="label-item">
       <cell :is-link="false"
+            v-if="!(cardInfo.cardTypeId === '1' && (info.title === 'integralDetail' || info.title === 'integralMall'))"
             :title="$t(info.title)"
             @click.native="toUrl(info.link,info.params)"
             class="cell">
@@ -24,29 +25,38 @@
 <script>
 
   export default {
-    props: {
+    props : {
         //导航信息
-        info: {
-            type: Object,
-            default: null
+        info : {
+            type : Object,
+            default () {
+                return {}
+            },
+        },
+        //卡信息
+        cardInfo : {
+            type : Object,
+            default () {
+                return {}
+            },
         }
     },
-    data() {
-      return {}
+    data () {
+      return {};
     },
-    methods: {
+    methods : {
         /**
          * 页面导航控制
          */
-        toUrl(url,params) {
-            if(params && Object.keys(params).length > 0) {
-                this.$router.push({path: url, query: params})
-            }else{
-                this.$router.push({path: url})
+        toUrl (url,params) {
+            if (params && Object.keys(params).length > 0) {
+                this.$router.push({ path : url, query : params });
+            } else {
+                this.$router.push({ path : url });
             }
         }
     }
-  }
+  };
 </script>
 
 <style lang="scss" scoped>

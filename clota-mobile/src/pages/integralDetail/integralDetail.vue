@@ -142,6 +142,14 @@
                         case 'recharge':
                             item.purpose = 'gainByRecharging';
                             break;
+                        case 'exchange_goods':
+                            //积分兑换商品
+                            item.purpose = 'exchange_goods';
+                            break;
+                        case 'open_card':
+                            //新开卡
+                            item.purpose = 'open_card';
+                            break;
                         default:
                             item.purpose = '-';
                     }
