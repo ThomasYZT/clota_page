@@ -22,46 +22,47 @@
 <script>
     import idlerWheelTap from '@/components/idlerWheelTap/index';
     export default {
-        props: ['routerName'],
-        components: {
+        props : ['routerName'],
+        components : {
             idlerWheelTap
         },
         data () {
             return {
                 // 路由列表
-                routerList: [
-                    { name: 'newCard', desc: 'newCard' },      // 新开卡
-                    { name: 'newBatchCard', desc: 'newBatchCard' },           // 批量开卡
-                    { name: 'renewal', desc: 'renewal' },             // 续期
-                    { name: 'associateEntityCard', desc: 'associateEntityCard' },          // 关联实体卡
-                    { name: 'replenishCard', desc: 'replenishCard' },              // 补卡
-                    { name: 'reportLoss', desc: 'reportLoss' },       // 挂失
-                    { name: 'refundedCard', desc: 'refundedCard' },       // 退卡
+                routerList : [
+                    { name : 'newCard', desc : 'newCard' }, // 新开卡
+                    { name : 'newBatchCard', desc : 'newBatchCard' }, // 批量开卡
+                    { name : 'renewal', desc : 'renewal' }, // 续期
+                    { name : 'associateEntityCard', desc : 'associateEntityCard' }, // 关联实体卡
+                    { name : 'replenishCard', desc : 'replenishCard' }, // 补卡
+                    { name : 'reportLoss', desc : 'reportLoss' }, // 挂失
+                    { name : 'refundedCard', desc : 'refundedCard' }, // 退卡
+                    { name : 'tradeRecord', desc : '在线交易记录' }, // 退卡
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 点击tab路由跳转
              * @param data
              */
             triggerLink ( data ) {
-                this.$router.push({ name: data.name })
+                this.$router.push({ name : data.name });
             },
 
         },
         computed : {
             //当前所在的默认列表序号
             defaultIndex () {
-                for(let i = 0,j = this.routerList.length;i < j;i++){
-                    if(this.routerName === this.routerList[i]['name']){
+                for (let i = 0,j = this.routerList.length; i < j; i++) {
+                    if (this.routerName === this.routerList[i]['name']) {
                         return i;
                     }
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -110,7 +111,7 @@
 
         .router-item{
             display: inline-block;
-            min-width: 14.2%;
+            min-width: 12%;
             font-size: $font_size_16px;
             color: $color-666;
             letter-spacing: 2.29px;

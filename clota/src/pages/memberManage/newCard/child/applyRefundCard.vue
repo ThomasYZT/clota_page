@@ -3,20 +3,32 @@
 <template>
     <div class="apply-refund-card">
         <bread-crumb-head
-            :locale-router="$t('关联实体卡')"
+            :locale-router="$t('退卡')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
-
+            <!--个人信息-->
+            <person-info :member-info="memberInfo">
+            </person-info>
+            <Tabs value="a">
+                <TabPane label="标签一" name="name1">标签一的内容</TabPane>
+                <TabPane label="标签二" name="name2">标签二的内容</TabPane>
+                <TabPane label="标签三" name="name3">标签三的内容</TabPane>
+            </Tabs>
         </div>
     </div>
 </template>
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import personInfo from '../components/personInfo';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+
 	export default {
+        mixins : [ lifeCycleMixins ],
         components : {
             breadCrumbHead,
+            personInfo
         },
 		data () {
 			return {
@@ -25,13 +37,29 @@
                     {
                         name : 'newCard',
                         router : {
-                            name : 'replenishCard'
+                            name : 'refundedCard'
                         }
                     }
                 ],
+                //会员信息
+                memberInfo : {}
             };
 		},
-		methods : {}
+		methods : {
+            /**
+             * 获取路由信息
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && params.memberInfo) {
+                    this.memberInfo = params.memberInfo;
+                } else {
+                    this.$router.push({
+                        name : 'refundedCard'
+                    });
+                }
+            },
+        }
 	};
 </script>
 <style lang="scss" scoped>

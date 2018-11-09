@@ -179,6 +179,17 @@ export default {
                     rightPath : topMenuName + '.' + 'newCard',
                 },
             },
+            //会员管理--新开会员卡--在线交易记录
+            tradeOnlineRecord : {
+                path : '/memberManage/newCard/tradeRecord',
+                name : 'tradeRecord',
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/tradeRecord.vue'),
+                meta : {
+                    menuName : 'tradeRecord', //lang.config.js 里面的语言键值
+                    _name : 'members-index',
+                    rightPath : topMenuName + '.' + 'newCard',
+                },
+            },
             memberInfo : {
                 //会员管理--会员信息
                 path : '/memberManage/infoList',
