@@ -361,88 +361,92 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                // store.commit('updateCardReadEnabled',true);
-                // resolve('121233');
+                store.commit('updateCardReadEnabled',true);
+                resolve('121236');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {
                     store.commit('updateCardReadEnabled',true);
                     //如果初始化的结果小于等于0，表示初始化读卡器失败，大于0表示初始话成功
-                    st = window.rd.dc_init(100, 115200);
-                    if (st <= 0) {
-                        reject('dcInitError');
-                    } else {
-                        window.rd.dc_config_card(65);
-                        st = window.rd.dc_card_double(0);
-                        if (st !== 0) {
-                            //如果没有放置卡片，连续响3次，表示没有放置卡的错误
-                            st = window.rd.dc_beep(25);
-                            st = window.rd.dc_beep(25);
-                            st = window.rd.dc_beep(25);
-                            window.rd.dc_exit();
-                            reject('dcCardError');
+                    try {
+                        st = window.rd.dc_init(100, 115200);
+                        if (st <= 0) {
+                            reject('dcInitError');
                         } else {
-                            window.rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
-                            st = window.rd.dc_load_key(0, 0);
+                            window.rd.dc_config_card(65);
+                            st = window.rd.dc_card_double(0);
                             if (st !== 0) {
+                                //如果没有放置卡片，连续响3次，表示没有放置卡的错误
+                                st = window.rd.dc_beep(25);
+                                st = window.rd.dc_beep(25);
+                                st = window.rd.dc_beep(25);
                                 window.rd.dc_exit();
-                                reject('dcLoadKeyError');
+                                reject('dcCardError');
                             } else {
-                                let result = '';
-                                result = window.rd.get_bstrRBuffer_asc;
-                                st = window.rd.dc_authentication(0, 0);
-                                //读取成功，蜂鸣器响一次
-                                st = window.rd.dc_beep(5);
+                                window.rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
+                                st = window.rd.dc_load_key(0, 0);
                                 if (st !== 0) {
                                     window.rd.dc_exit();
-                                    reject('dcBeepError');
+                                    reject('dcLoadKeyError');
                                 } else {
-                                    window.rd.dc_exit();
-                                    resolve(result);
+                                    let result = '';
+                                    result = window.rd.get_bstrRBuffer_asc;
+                                    st = window.rd.dc_authentication(0, 0);
+                                    //读取成功，蜂鸣器响一次
+                                    st = window.rd.dc_beep(5);
+                                    if (st !== 0) {
+                                        window.rd.dc_exit();
+                                        reject('dcBeepError');
+                                    } else {
+                                        window.rd.dc_exit();
+                                        resolve(result);
+                                    }
+                                    // if (st !== 0) {
+                                    //     window.rd.dc_exit();
+                                    //     reject('dcLoadKeyError');
+                                    // } else {
+                                    //     window.rd.put_bstrSBuffer_asc = "31323334353637383930313233343536";
+                                    //     st = window.rd.dc_write(2);
+                                    //     if (st !== 0) {
+                                    //         window.rd.dc_exit();
+                                    //         reject('dcWriteError');
+                                    //     } else {
+                                    //         st = window.rd.dc_read(2);
+                                    //         if (st !== 0) {
+                                    //             window.rd.dc_exit();
+                                    //             reject('dcReadError');
+                                    //         } else {
+                                    //             window.rd.put_bstrSBuffer_asc = "30303030303030303030303030303030";
+                                    //             st = window.rd.dc_write(2);
+                                    //             if (st !== 0) {
+                                    //                 window.rd.dc_exit();
+                                    //                 reject('dcWriteError');
+                                    //             } else {
+                                    //                 st = window.rd.dc_read(2);
+                                    //                 if (st !== 0) {
+                                    //                     window.rd.dc_exit();
+                                    //                     reject('dcReadError');
+                                    //                 } else {
+                                    //                     //读取成功，蜂鸣器响一次
+                                    //                     st = window.rd.dc_beep(5);
+                                    //                     if (st !== 0) {
+                                    //                         window.rd.dc_exit();
+                                    //                         reject('dcBeepError');
+                                    //                     } else {
+                                    //                         window.rd.dc_exit();
+                                    //                         resolve(result);
+                                    //                     }
+                                    //                 }
+                                    //             }
+                                    //         }
+                                    //     }
+                                    // }
                                 }
-                                // if (st !== 0) {
-                                //     window.rd.dc_exit();
-                                //     reject('dcLoadKeyError');
-                                // } else {
-                                //     window.rd.put_bstrSBuffer_asc = "31323334353637383930313233343536";
-                                //     st = window.rd.dc_write(2);
-                                //     if (st !== 0) {
-                                //         window.rd.dc_exit();
-                                //         reject('dcWriteError');
-                                //     } else {
-                                //         st = window.rd.dc_read(2);
-                                //         if (st !== 0) {
-                                //             window.rd.dc_exit();
-                                //             reject('dcReadError');
-                                //         } else {
-                                //             window.rd.put_bstrSBuffer_asc = "30303030303030303030303030303030";
-                                //             st = window.rd.dc_write(2);
-                                //             if (st !== 0) {
-                                //                 window.rd.dc_exit();
-                                //                 reject('dcWriteError');
-                                //             } else {
-                                //                 st = window.rd.dc_read(2);
-                                //                 if (st !== 0) {
-                                //                     window.rd.dc_exit();
-                                //                     reject('dcReadError');
-                                //                 } else {
-                                //                     //读取成功，蜂鸣器响一次
-                                //                     st = window.rd.dc_beep(5);
-                                //                     if (st !== 0) {
-                                //                         window.rd.dc_exit();
-                                //                         reject('dcBeepError');
-                                //                     } else {
-                                //                         window.rd.dc_exit();
-                                //                         resolve(result);
-                                //                     }
-                                //                 }
-                                //             }
-                                //         }
-                                //     }
-                                // }
                             }
-                        }
 
+                        }
+                    } catch (err) {
+                        reject('dcInitError');
                     }
                 } else {
                     store.commit('updateCardReadEnabled',false);
