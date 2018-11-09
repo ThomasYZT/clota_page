@@ -511,33 +511,29 @@
                     if ( res.success) {
                         if (res.data) {
                             this.id = res.data.id;
-                            if (res.data.id) {
-                                //处理数据
-                                let params = {
-                                    passwdForRechargeAccount : res.data.passwdForRechargeAccount || 'true',
-                                    scoreGrowthFromCharging : res.data.scoreGrowthFromCharging ?
-                                        JSON.parse(res.data.scoreGrowthFromCharging) : this.settingData.scoreGrowthFromCharging,
-                                    scoreGrowthEffModeWhileCharging : res.data.scoreGrowthEffModeWhileCharging ?
-                                        JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
-                                    donateWhileRecharge : res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
-                                    priorityDeductionInConsumption : res.data.priorityDeductionInConsumption,
-                                    houseMoneyRefunded : res.data.houseMoneyRefunded,
-                                };
-                                for ( let key in params) {
-                                    if (key && params[key] && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0) {
-                                        for ( let ckey in params[key]) {
-                                            if (this.stringProps.indexOf(ckey) > -1) {
-                                                params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
-                                            }
+                            //处理数据
+                            let params = {
+                                passwdForRechargeAccount : res.data.passwdForRechargeAccount || 'true',
+                                scoreGrowthFromCharging : res.data.scoreGrowthFromCharging ?
+                                    JSON.parse(res.data.scoreGrowthFromCharging) : this.settingData.scoreGrowthFromCharging,
+                                scoreGrowthEffModeWhileCharging : res.data.scoreGrowthEffModeWhileCharging ?
+                                    JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
+                                donateWhileRecharge : res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
+                                priorityDeductionInConsumption : res.data.priorityDeductionInConsumption,
+                                houseMoneyRefunded : res.data.houseMoneyRefunded,
+                            };
+                            for ( let key in params) {
+                                if (key && params[key] && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0) {
+                                    for ( let ckey in params[key]) {
+                                        if (this.stringProps.indexOf(ckey) > -1) {
+                                            params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
                                         }
                                     }
                                 }
-                                this.settingData = params;
-                                //复制数据
-                                this.copySetData = defaultsDeep({}, params);
-                            } else {
-                                this.copySetData = defaultsDeep({}, this.settingData);
                             }
+                            this.settingData = params;
+                            //复制数据
+                            this.copySetData = defaultsDeep({}, params);
                         } else {
                             this.copySetData = defaultsDeep({}, this.settingData);
                         }
