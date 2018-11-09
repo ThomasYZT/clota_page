@@ -91,13 +91,24 @@ export default {
                     rightPath : topMenuName + '.' + 'newCard',
                 },
             },
-            //会员管理--新开会员卡--关联实体卡
+            //会员管理--新开会员卡--申请关联实体卡
             associateEntityCard : {
                 path : '/memberManage/newCard/associate',
                 name : 'associateEntityCard',
                 component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/associateEntityCard.vue'),
                 meta : {
                     menuName : 'associateEntityCard', //lang.config.js 里面的语言键值
+                    _name : 'members-index',
+                    rightPath : topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--关联实体卡
+            applyAssociateEntityCard : {
+                path : '/memberManage/newCard/applyAssociateCard',
+                name : 'applyAssociateCard',
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyForAssociateEntityCard.vue'),
+                meta : {
+                    menuName : 'applyAssociateCard', //lang.config.js 里面的语言键值
                     _name : 'members-index',
                     rightPath : topMenuName + '.' + 'newCard',
                 },
@@ -113,7 +124,7 @@ export default {
                     rightPath : topMenuName + '.' + 'newCard',
                 },
             },
-            //会员管理--新开会员卡--补卡
+            //会员管理--新开会员卡--申请补卡
             applyReissuceCard : {
                 path : '/memberManage/newCard/applyReissueCard',
                 name : 'applyReissuceCard',
@@ -153,6 +164,17 @@ export default {
                 component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/refundedCard.vue'),
                 meta : {
                     menuName : 'refundedCard', //lang.config.js 里面的语言键值
+                    _name : 'members-index',
+                    rightPath : topMenuName + '.' + 'newCard',
+                },
+            },
+            //会员管理--新开会员卡--申请退卡
+            applyRefundedCard : {
+                path : '/memberManage/newCard/applyRefunded',
+                name : 'applyRefundedCard',
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyRefundCard.vue'),
+                meta : {
+                    menuName : 'applyRefundedCard', //lang.config.js 里面的语言键值
                     _name : 'members-index',
                     rightPath : topMenuName + '.' + 'newCard',
                 },

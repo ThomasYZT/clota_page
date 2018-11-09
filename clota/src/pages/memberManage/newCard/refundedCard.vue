@@ -9,7 +9,8 @@
         <!--头部tab组件-->
         <header-tabs :router-name="'refundedCard'"></header-tabs>
         <div class="container">
-            <search-card></search-card>
+            <member-info @click-row-todo="toFunc">
+            </member-info>
 
             <div class="detail-container">
                 <!--持卡人的个人信息-->
@@ -28,40 +29,53 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {configVariable} from '@/assets/js/constVariable';
+    import { configVariable } from '@/assets/js/constVariable';
     import cardholderInfo from './components/cardholderInfo.vue';
     import cardInfo from './components/cardInfo.vue';
     import storeAccountInfo from './components/storeAccountInfo.vue';
     import integralAccountInfo from './components/integralAccountInfo.vue';
     import headerTabs from './components/newCardTabs.vue';
-    import searchCard from './components/searchCard.vue';
+    import memberInfo from './components/memberInfo';
 
     export default {
-        components: {
+        components : {
             headerTabs,
             cardholderInfo,
             cardInfo,
             storeAccountInfo,
             integralAccountInfo,
-            searchCard,
+            memberInfo,
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
+            };
+        },
+        computed : {},
+        created () {
+        },
+        mounted () {
+        },
+        watch : {},
+        methods : {
+            /**
+             * 跳转到对应的操作页面
+             * @param{Object} rowData 行数据
+             */
+            toFunc (rowData) {
+                this.$router.push({
+                    name : 'applyRefundedCard',
+                    params : {
+                        memberInfo : rowData
+                    }
+                });
             }
-        },
-        computed: {},
-        created() {
-        },
-        mounted() {
-        },
-        watch: {},
-        methods: {}
+        }
     };
 </script>
 

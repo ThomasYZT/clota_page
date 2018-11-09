@@ -362,7 +362,7 @@ export default new Vuex.Store({
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
                 store.commit('updateCardReadEnabled',true);
-                resolve('FA881661');
+                resolve('121233');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {

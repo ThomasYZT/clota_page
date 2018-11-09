@@ -59,6 +59,8 @@ export default {
     'listMemberCards' : '/member/listMemberCards',
     //补卡、关联实体卡
     'entityCardrelationEntityCard' : '/member/entityCard/relationEntityCard',
+    //补卡
+    'reissueEntityCard' : '/member/entityCard/reissueEntityCard',
 
 
     /***********************************会员积分***********************************/

@@ -8,26 +8,45 @@
     <div class="associate-entity-card">
         <!--头部tab组件-->
         <header-tabs :router-name="'associateEntityCard'"></header-tabs>
+        <div class="content">
+            <member-info @click-row-todo="toFunc">
+            </member-info>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import headerTabs from './components/newCardTabs.vue';
+    import memberInfo from './components/memberInfo';
 
     export default {
-        components: {
+        components : {
             headerTabs,
+            memberInfo
         },
-        props: {},
-        data() {
-            return {}
+        props : {},
+        data () {
+            return {};
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {}
+        watch : {},
+        methods : {
+            /**
+             * 跳转到对应的操作页面
+             * @param{Object} rowData 行数据
+             */
+            toFunc (rowData) {
+                this.$router.push({
+                    name : 'applyAssociateCard',
+                    params : {
+                        memberInfo : rowData
+                    }
+                });
+            }
+        }
     };
 </script>
 
@@ -40,6 +59,8 @@
         background: $color_fff;
         border-radius : 4px;
 
-
+        .content{
+            @include block_outline($height : unquote('calc(100% - 68px)'));
+        }
     }
 </style>

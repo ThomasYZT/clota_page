@@ -1,10 +1,10 @@
-<!--申请补卡-->
+<!--关联实体卡-->
 
 <template>
-    <div class="apply-reissuce-card">
+    <div class="apply-for-assoiate-entity-card">
         <bread-crumb-head
-            :locale-router="$t('补卡')"
-            :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
+            :locale-router="$t('关联实体卡')"
+            :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
             <!--持卡人信息-->
@@ -17,9 +17,6 @@
             <!--绑定实体卡-->
             <entity-card-info @set-card-data="getCardData">
             </entity-card-info>
-            <!--支付方式选择-->
-            <pay-type-select @set-pay-type="formData.payType = $event">
-            </pay-type-select>
             <i-col style="text-align: center;margin-top: 10px;">
                 <Button class="ivu-btn-90px" type="primary" @click="applyReissuceCard">提交</Button>
             </i-col>
@@ -32,26 +29,25 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import cardInfo from '../components/cardInfo';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import payTypeSelect from '../components/payTypeSelect';
     import entityCardInfo from '../components/entityCardInfo';
     import ajax from '@/api/index.js';
-	export default {
+
+    export default {
         mixins : [ lifeCycleMixins ],
         components : {
             cardHolderInfo,
             breadCrumbHead,
             cardInfo,
-            payTypeSelect,
             entityCardInfo,
         },
-		data () {
-			return {
+        data () {
+            return {
                 //上级路由列表
                 beforeRouterList : [
                     {
                         name : 'newCard',
                         router : {
-                            name : 'replenishCard'
+                            name : 'associateEntityCard'
                         }
                     }
                 ],
@@ -59,36 +55,31 @@
                 memberInfo : {},
                 //表单信息
                 formData : {
-                    //支付方式
-                    payType : '',
                     //物理卡号
                     physicalNum : '',
                     //卡面号
                     faceNum : ''
                 }
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
-             * 申请补卡
+             * 关联实体卡
              */
             applyReissuceCard () {
                 if (this.formData.physicalNum && this.formData.faceNum) {
-                    ajax.post('reissueEntityCard',{
+                    ajax.post('entityCardrelationEntityCard',{
                         faceNum : this.formData.faceNum,
                         physicalNum : this.formData.physicalNum,
-                        cardId : this.memberInfo.cardId,
-                        channelType : this.formData.payType,
-                        QRCode : this.formData.payType,
-                        txnAmt : '',
+                        cardId : this.memberInfo.cardId
                     }).then(res => {
                         if (res.success) {
-                            this.$Message.success('补卡成功');
+                            this.$Message.success('关联实体卡成功');
                             this.$router.push({
-                                name : 'replenishCard'
+                                name : 'associateEntityCard'
                             });
                         } else {
-                            this.$Message.error('补卡失败');
+                            this.$Message.error('关联实体卡失败');
                         }
                     });
                 } else {
@@ -104,7 +95,7 @@
                     this.memberInfo = params.memberInfo;
                 } else {
                     this.$router.push({
-                        name : 'reportLoss'
+                        name : 'associateEntityCard'
                     });
                 }
             },
@@ -118,11 +109,11 @@
                 this.formData.physicalNum = physicalNum;
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .apply-reissuce-card{
+    .apply-for-assoiate-entity-card{
         @include block_outline();
         background: $color_fff;
 
