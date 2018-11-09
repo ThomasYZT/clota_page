@@ -91,15 +91,15 @@
 </template>
 
 <script>
-    import {genderEnum} from '@/assets/js/constVariable.js';
+    import { genderEnum } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
-    import {validator} from 'klwk-ui';
+    import { mapGetters } from 'vuex';
+    import { validator } from 'klwk-ui';
     export default {
-        data() {
+        data () {
             return {
                 //性别枚举值
-                genderEnum : genderEnum.map(item => ({name : this.$t(item.name),value : item.desc})),
+                genderEnum : genderEnum.map(item => ({ name : this.$t(item.name),value : item.desc })),
                 //个人信息数据
                 formData : {
                     //姓名
@@ -111,9 +111,9 @@
                     homeAddr : '',
                     emailAddr : '',
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取个人信息
              */
@@ -121,14 +121,14 @@
                 ajax.post('getMemberDetail',{
                     memberId : this.userInfo.memberId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$set(this,'formData',res.data ? Object.assign(this.formData,{
                             ...res.data,
                             name : res.data.custName,
                             gender : [res.data.gender],
                             qq : res.data.qq ? res.data.qq : ''
                         }) : {});
-                    }else{
+                    } else {
                         this.formData = {};
                     }
                 });
@@ -152,14 +152,14 @@
                         emailAddr : this.formData.emailAddr,
                         homeAddr : this.formData.homeAddr,
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             this.$vux.toast.show({
-                                text: this.$t('operateSuc',{msg : this.$t('save')})
+                                text : this.$t('operateSuc',{ msg : this.$t('save') })
                             });
                             this.getMemberDetail();
-                        }else{
+                        } else {
                             this.$vux.toast.show({
-                                text: this.$t('operateFail',{msg : this.$t('save')}),
+                                text : this.$t('operateFail',{ msg : this.$t('save') }),
                                 type : 'cancel'
                             });
                         }
@@ -171,21 +171,21 @@
              */
             validateName () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData && !this.formData.name){
+                    if (this.formData && !this.formData.name) {
                         this.$vux.toast.show({
-                            text: this.$t('pleaseInput',{field : this.$t('name')}),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('pleaseInput',{ field : this.$t('name') }),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else if(this.formData.name.length > 15){
+                    } else if (this.formData.name.length > 15) {
                         this.$vux.toast.show({
-                            text: this.$t('maxLengthErr',{field : this.$t('name'),length : 15}),
-                            type: 'text',
-                            width: '6rem'
+                            text : this.$t('maxLengthErr',{ field : this.$t('name'),length : 15 }),
+                            type : 'text',
+                            width : '6rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -195,14 +195,14 @@
              */
             validateQQ () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.qq && this.formData.qq.length > 50){
+                    if (this.formData.qq && this.formData.qq.length > 50) {
                         this.$vux.toast.show({
-                            text: this.$t('maxLengthErr',{field : this.$t('qq'),length : 50}),
-                            type: 'text',
-                            width: '6rem'
+                            text : this.$t('maxLengthErr',{ field : this.$t('qq'),length : 50 }),
+                            type : 'text',
+                            width : '6rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -212,21 +212,21 @@
              */
             validateEmail () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.emailAddr && this.formData.emailAddr.length > 100){
+                    if (this.formData.emailAddr && this.formData.emailAddr.length > 100) {
                         this.$vux.toast.show({
-                            text: this.$t('maxLengthErr',{field : this.$t('email'),length : 100}),
-                            type: 'text',
-                            width: '6rem'
+                            text : this.$t('maxLengthErr',{ field : this.$t('email'),length : 100 }),
+                            type : 'text',
+                            width : '6rem'
                         });
                         reject();
-                    }else  if(this.formData.emailAddr && !validator.isEmail(this.formData.emailAddr)){
+                    } else if (this.formData.emailAddr && !validator.isEmail(this.formData.emailAddr)) {
                         this.$vux.toast.show({
-                            text: this.$t('errFormat',{field : this.$t('email')}),
-                            type: 'text',
-                            width: '6rem'
+                            text : this.$t('errFormat',{ field : this.$t('email') }),
+                            type : 'text',
+                            width : '6rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -236,14 +236,14 @@
              */
             validateAddress () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.homeAddr && this.formData.homeAddr.length > 100){
+                    if (this.formData.homeAddr && this.formData.homeAddr.length > 100) {
                         this.$vux.toast.show({
-                            text: this.$t('maxLengthErr',{field : this.$t('address'),length : 100}),
-                            type: 'text',
-                            width: '6rem'
+                            text : this.$t('maxLengthErr',{ field : this.$t('address'),length : 100 }),
+                            type : 'text',
+                            width : '6rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -255,9 +255,9 @@
                 ajax.post('getGrowthBalance',{
                     cardId : this.userInfo.cardId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$set(this.formData,'growth',res.data ? res.data.accountBalance : '');
-                    }else{
+                    } else {
                         this.formData.growth = '';
                     }
                 });
@@ -318,9 +318,9 @@
              */
             editHeadImg () {
                 this.$wechat.chooseImage({
-                    count: 1, // 默认9
-                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    count : 1, // 默认9
+                    sizeType : ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType : ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                     success : res => {
                         this.$wechat.getLocalImgData({
                             localId : res.localIds[0],
@@ -338,20 +338,20 @@
             getBase64ToServer (data) {
                 let extension = data ? data.match(/data:image\/(.*);{1,}/) : [];
                 let file = '';
-                if(extension){
+                if (extension) {
                     file = data ? data.split(',')[1] : '';
-                }else{
+                } else {
                     file = data;
                 }
                 ajax.post('uploadBase64File',{
                     file : file,
                     extension : extension ? extension[1] : 'jpg'
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.savePortrait(res.data);
-                    }else{
+                    } else {
                         this.$vux.toast.show({
-                            text: this.$t('operateFail',{msg : this.$t('changeImg')}),
+                            text : this.$t('operateFail',{ msg : this.$t('changeImg') }),
                             type : 'cancel'
                         });
                     }
@@ -366,22 +366,22 @@
                     id : this.userInfo.memberId,
                     portrait : portrait,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.getMemberDetail();
                         this.getGrowthBalance();
                         this.$vux.toast.show({
-                            text: this.$t('operateSuc',{msg : this.$t('changeImg')})
+                            text : this.$t('operateSuc',{ msg : this.$t('changeImg') })
                         });
-                    }else{
+                    } else {
                         this.$vux.toast.show({
-                            text: this.$t('operateFail',{msg : this.$t('changeImg')}),
+                            text : this.$t('operateFail',{ msg : this.$t('changeImg') }),
                             type : 'cancel'
                         });
                     }
                 });
             }
         },
-        beforeRouteEnter (to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getMemberDetail();
                 vm.getGrowthBalance();
@@ -393,18 +393,18 @@
             }),
             //证件号码
             idNum () {
-                if(this.formData && this.formData.idCardNumber){
-                    if(this.formData.certificationTypeName){
-                        return this.formData.idCardNumber + '(' + this.formData.certificationTypeName + ')'
-                    }else{
+                if (this.formData && this.formData.idCardNumber) {
+                    if (this.formData.certificationTypeName) {
+                        return this.formData.idCardNumber + '(' + this.formData.certificationTypeName + ')';
+                    } else {
                         return this.formData.idCardNumber;
                     }
-                }else{
+                } else {
                     return '';
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
