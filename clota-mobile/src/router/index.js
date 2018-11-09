@@ -241,7 +241,28 @@ const createRouter = () => new Router({
         {
             path : '/exchangeRecord',
             name : 'exchangeRecord',
-            component : () => import(/* webpackChunkName: "integralMall" */'../pages/integralMall/exchangeRecord.vue')
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/integralMall/exchangeRecord.vue'),
+            meta : {
+                title : 'conversionRecord'
+            }
+        },
+        //激活会员卡
+        {
+            path : '/activateCard',
+            name : 'activateCard',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/activateCard/index.vue'),
+            meta : {
+                title : 'memberCardActivating'
+            }
+        },
+        //填写激活信息
+        {
+            path : '/activateInfo',
+            name : 'activateInfo',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/activateCard/child/activateInfo.vue'),
+            meta : {
+                title : 'memberCardActivating'
+            }
         }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {

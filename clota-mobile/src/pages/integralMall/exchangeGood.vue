@@ -21,7 +21,8 @@
         <group class="cell">
             <popup-picker :title="$t('integrallAccountChoose')"
                           :popup-title="$t('integrallAccountChoose')"
-                          :data="memeberCardListShow" v-model="memberCard"
+                          show-name
+                          :data="memberCardList" v-model="memberCardId"
                           :placeholder="$t('pleaseSelectCard')+' '"
                           @on-change="popupChange"></popup-picker>
         </group>
@@ -41,12 +42,8 @@
                 detail : {},
                 //会员卡列表数据
                 memberCardList : [],
-                //popup组件使用的会员卡列表数据
-                memeberCardListShow : [],
-                //默认指定的会员卡
-                memberCard : [],
                 //指定的会员卡id
-                memberCardId : ''
+                memberCardId : []
             };
         },
         methods : {
@@ -65,16 +62,6 @@
                 }
             },
             /**
-             * 选择会员卡
-             * @param data
-             */
-            popupChange (data) {
-                let card = this.memberCardList.find((item) => {
-                    return item.levelDesc === data;
-                });
-                this.memberCardId = card ? card.id : '';
-            },
-            /**
              * 获取会员卡列表数据
              */
             getData () {
@@ -82,20 +69,14 @@
                     memberId : this.$store.state.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
-                        this.memberCardList = res.data && res.data.length > 0 ? res.data.map((item) => {
+                        this.memberCardList = res.data && res.data.length > 0 ? [res.data.map((item) => {
                             return {
-                                id : item.id,
-                                levelDesc : item.levelDesc
+                                value : item.id,
+                                name : item.levelDesc
                             };
-                        }) : [];
-                        this.memeberCardListShow = this.memberCardList.length > 0 ? [this.memberCardList.map(item => {
-                            return item.levelDesc;
                         })] : [];
-                        this.memberCard = res.data && res.data.length > 0 ? [res.data[0].levelDesc] : [];
-                        this.memberCardId = res.data && res.data.length > 0 ? res.data[0].id : '';
                     } else {
                         this.memberCardList = [];
-                        this.memeberCardListShow = [];
                     }
                 });
             },
@@ -103,31 +84,35 @@
              * 确认兑换奖品
              */
             exchange () {
-                ajax.post('exchangeGoods', {
-                    goodsId : this.detail.id,
-                    memberCardId : this.memberCardId
-                }).then(res => {
-                    if (res.success) {
-                        this.$router.push({
-                            name : 'goodDetail'
-                        });
-                        this.$vux.toast.show({
-                            type : 'success',
-                            text : this.$t('exchangeSuccess')
-                        });
-                    } else {
-                        let text;
-                        if (res.code === 'M023' || res.code === 'M022') {
-                            text = res.code;
+                if (!this.memberCardId.length > 0 || !this.memberCardId[0].length > 0) {
+                    this.$vux.toast.text(this.$t('pleaseSelectCard'));
+                } else {
+                    ajax.post('exchangeGoods', {
+                        goodsId : this.detail.id,
+                        memberCardId : this.memberCardId[0]
+                    }).then(res => {
+                        if (res.success) {
+                            this.$router.push({
+                                name : 'goodDetail'
+                            });
+                            this.$vux.toast.show({
+                                type : 'success',
+                                text : this.$t('exchangeSuccess')
+                            });
                         } else {
-                            text = 'exchangeFailure';
+                            let text;
+                            if (res.code === 'M023' || res.code === 'M022') {
+                                text = res.code;
+                            } else {
+                                text = 'exchangeFailure';
+                            }
+                            this.$vux.toast.show({
+                                type : 'cancel',
+                                text : this.$t(text)
+                            });
                         }
-                        this.$vux.toast.show({
-                            type : 'cancel',
-                            text : this.$t(text)
-                        });
-                    }
-                });
+                    });
+                }
             }
         },
         created () {

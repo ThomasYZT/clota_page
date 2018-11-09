@@ -33,6 +33,7 @@ import {
     WechatPlugin ,
     Tabbar,
     TabbarItem,
+    Datetime,
 } from 'vux';
 
 
@@ -84,6 +85,7 @@ plugin.install = function (Vue, options) {
     Vue.component('x-dialog', XDialog);
     Vue.component('Tabbar', Tabbar);
     Vue.component('TabbarItem', TabbarItem);
+    Vue.component('Datetime', Datetime);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

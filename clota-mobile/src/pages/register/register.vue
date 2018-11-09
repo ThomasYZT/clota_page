@@ -120,7 +120,7 @@
                         phoneNum: this.registerInfo.phoneNum,
                         code: this.registerInfo.vcode,
                         sex: this.registerInfo.gender[0] === this.$t('male') ? 'male' : 'female',
-                        companyCode: this.companyCode //冰雪世界景区
+                        companyCode: this.companyCode, //冰雪世界景区
                     }).then((res) => {
                         if(res.success) {
                             //存储token信息

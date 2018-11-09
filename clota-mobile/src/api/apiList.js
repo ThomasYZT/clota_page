@@ -62,7 +62,13 @@ const apiList = {
     //查询兑换记录
     queryChangeRecordByDrawStatus : '/external/memberMall/queryChangeRecordByDrawStatus',
     //获取会员卡信息列表
-    queryMemberCardList : '/external/memberInfo/queryMemberCardList'
+    queryMemberCardList : '/external/memberInfo/queryMemberCardList',
+    //获取业主卡账户信息
+    queryCardAccountInfo : '/external/memberAccount/queryCardAccountInfo',
+    //激活会员卡
+    activationMemberCard : '/external/member/activationMemberCard',
+    //根据卡面号及密码查询实体卡
+    queryEntityCardByFaceNumAndPassword : '/external/memberInfo/queryEntityCardByFaceNumAndPassword',
 };
 
 export default apiList;

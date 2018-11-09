@@ -76,6 +76,17 @@
                 :text="$t('loading')">
             </loading>
         </div>
+
+        <tabbar v-if="isTabbarShow">
+            <tabbar-item v-for="(item, index) in tabbarList"
+                         :icon-class="item.icon"
+                         :key="index"
+                         :link="item.link"
+                         :selected="item.selected">
+                <i slot="icon" :class="item.icon"></i>
+                <span slot="label">{{$t(item.label)}}</span>
+            </tabbar-item>
+        </tabbar>
     </div>
 </template>
 

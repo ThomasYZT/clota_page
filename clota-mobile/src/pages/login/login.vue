@@ -9,7 +9,7 @@
                  :title="$t('mobile')"
                  keyboard="number"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : this.$t('mobile') })"
+                 :placeholder="$t('pleaseInput',{field : $t('mobile') })"
                  v-model.trim="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>
@@ -27,7 +27,7 @@
                  :class="{active: isGetCode}"
                  disabled="isGetCode"
                  @click="getCode">
-                <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
+                <p>{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <!-- 注册按钮 -->
