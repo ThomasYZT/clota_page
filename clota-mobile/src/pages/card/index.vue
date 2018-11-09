@@ -446,7 +446,7 @@
         }
 
         .year-card .card-inner{
-            background: url("../../assets/images/yeaeCard.png");
+            background: url("../../assets/images/yearCard.png");
         }
     }
 </style>

@@ -19,7 +19,9 @@
         props: {
             info: {
                 type: Object,
-                default: null
+                default () {
+                    return {};
+                }
             }
         },
         components: {},
