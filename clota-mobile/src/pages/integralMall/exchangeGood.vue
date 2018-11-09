@@ -23,8 +23,7 @@
                           :popup-title="$t('integrallAccountChoose')"
                           show-name
                           :data="memberCardList" v-model="memberCardId"
-                          :placeholder="$t('pleaseSelectCard')+' '"
-                          @on-change="popupChange"></popup-picker>
+                          :placeholder="$t('pleaseSelectCard')+' '"></popup-picker>
         </group>
 
     </div>
