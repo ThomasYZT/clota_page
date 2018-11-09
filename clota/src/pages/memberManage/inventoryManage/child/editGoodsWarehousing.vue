@@ -293,7 +293,7 @@
                             this.formData[key] = this.detail[key];
                         }
                     }
-                    this.formData.pics = this.formData.pics.split(',');
+                    this.formData.pics = this.formData.pics ? this.formData.pics.split(',') : [];
                     this.nowHaveStockNum = this.formData.stockNum + this.detail.undrawNum;
                     this.formData.stockNum = '';
                     this.defaultImgList = this.formData.pics.map((url,index) => {

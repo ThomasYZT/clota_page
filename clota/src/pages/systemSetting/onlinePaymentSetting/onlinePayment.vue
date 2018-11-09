@@ -147,16 +147,21 @@
              */
             queryOnlineAccount() {
                 ajax.post('queryOnlineAccount').then((res) => {
-                    this.collectionAccList = res.data;
-                    this.hasPaytypeList = [];
-                    this.collectionAccList.forEach((item) => {
-                        if(this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType == 'alipay') {
-                            this.hasPaytypeList.push('alipay');
-                        }
-                        if(this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType == 'weixin') {
-                            this.hasPaytypeList.push('weixin');
-                        }
-                    });
+                    if (res.success) {
+                        this.collectionAccList = res.data;
+                        this.hasPaytypeList = [];
+                        this.collectionAccList.forEach((item) => {
+                            if(this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType == 'alipay') {
+                                this.hasPaytypeList.push('alipay');
+                            }
+                            if(this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType == 'weixin') {
+                                this.hasPaytypeList.push('weixin');
+                            }
+                        });
+                    } else {
+                        this.hasPaytypeList = [];
+                        this.collectionAccList = [];
+                    }
                 })
             },
         }
