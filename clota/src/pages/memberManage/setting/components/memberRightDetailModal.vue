@@ -73,6 +73,8 @@
                             :rules="{ validator : validateScenic,trigger : 'change',index : index,isEnable : item.isEnable }">
                             <Select v-model="item.rule.scenicId"
                                     transfer
+                                    :label-in-value="true"
+                                    @on-change="selectChange($event, item)"
                                     style="width: 100px;">
                                 <Option :value="item.id"
                                         v-for="(item,index) in scenicList"
@@ -173,7 +175,8 @@
                             num : '',
                             discount : '',
                             price : '',
-                            scenicId : ''
+                            scenicId : '',
+                            scenicName : ''
                         },
                         isEnable : false,
                         content : ''
@@ -440,7 +443,8 @@
                         num : '',
                         discount : '',
                         price : '',
-                        scenicId : ''
+                        scenicId : '',
+                        scenicName : ''
                     },
                     isEnable : false,
                     content : ''
@@ -483,6 +487,12 @@
                         this.$refs.formValidate.validateField('descContent' + index);
                     }
                 });
+            },
+            /**
+             * 选择园区下拉框值变化时
+             */
+            selectChange (val,item) {
+                item.rule.scenicName = val.label;
             }
         },
         computed : {
