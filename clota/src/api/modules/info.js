@@ -61,6 +61,8 @@ export default {
     'entityCardrelationEntityCard' : '/member/entityCard/relationEntityCard',
     //补卡
     'reissueEntityCard' : '/member/entityCard/reissueEntityCard',
+    //查询在线交易记录
+    'queryPayTransactionRecordList' : '/pay/queryPayTransactionRecordList',
 
 
     /***********************************会员积分***********************************/

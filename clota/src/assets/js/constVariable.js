@@ -635,3 +635,26 @@ export const smsStatusList = [
         value : 'doing'
     },
 ];
+//开、腿、补卡类型列表
+export const  tradeTypeList = [
+    {
+        label : 'all',
+        value : 'all'
+    },
+    {
+        label : '开卡记录',
+        value : 'open_card，batch_open_card-batch_open_card'
+    },
+    {
+        label : '补卡记录',
+        value : 'reissue_card'
+    },
+    {
+        label : '退卡记录',
+        value : 'return_card'
+    },
+    {
+        label : '储值',
+        value : 'recharge'
+    }
+];

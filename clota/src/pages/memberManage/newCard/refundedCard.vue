@@ -11,27 +11,17 @@
         <div class="container">
             <member-info @click-row-todo="toFunc">
             </member-info>
-
             <div class="detail-container">
-                <!--持卡人的个人信息-->
-                <cardholder-info></cardholder-info>
-                <!--会员卡信息-->
-                <card-info></card-info>
                 <!--储值账户信息-->
                 <store-account-info></store-account-info>
                 <!--积分账户信息-->
                 <integral-account-info></integral-account-info>
-            </div>
-            <div class="footer">
-                <Button type="primary" class="ivu-btn-90px">{{$t('退卡')}}</Button>
             </div>
         </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import { configVariable } from '@/assets/js/constVariable';
-    import cardholderInfo from './components/cardholderInfo.vue';
-    import cardInfo from './components/cardInfo.vue';
     import storeAccountInfo from './components/storeAccountInfo.vue';
     import integralAccountInfo from './components/integralAccountInfo.vue';
     import headerTabs from './components/newCardTabs.vue';
@@ -40,8 +30,6 @@
     export default {
         components : {
             headerTabs,
-            cardholderInfo,
-            cardInfo,
             storeAccountInfo,
             integralAccountInfo,
             memberInfo,
@@ -92,11 +80,6 @@
     .detail-container {
         /*height: calc(100% - 50px);*/
         padding: 15px 20px;
-    }
-
-    .footer {
-        margin: 20px;
-        text-align: center;
     }
 
     /deep/ .form-item-wrap{
