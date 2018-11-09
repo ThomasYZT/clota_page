@@ -211,6 +211,8 @@ export default {
     'M026' : '实体卡已使用',
     'M027' : '实体卡已激活',
     'companyName' : '企业名称',
-    'activateFailure' : '激活失败'
+    'activateFailure' : '激活失败',
+    'memberCardType' : '会员卡类型',
+    'memberCardNo' : '会员卡编号'
 
 };

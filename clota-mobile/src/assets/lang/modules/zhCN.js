@@ -213,7 +213,9 @@ export default {
     'M015' : '卡不存在/密码不正确',
     'getCardInfoFailure' : '获取卡信息失败',
     'companyName' : '企业名称',
-    'activateFailure' : '激活失败'
+    'activateFailure' : '激活失败',
+    'memberCardType' : '会员卡类型',
+    'memberCardNo' : '会员卡编号'
 
 
 };
