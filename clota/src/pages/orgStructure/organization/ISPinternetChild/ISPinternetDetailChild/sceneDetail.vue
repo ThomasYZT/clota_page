@@ -225,7 +225,7 @@
                             <select-tree v-model="formDataCopy.parentManageId"
                                          :disabled="activeNode && activeNode.level === 1"
                                          :tree="superiorList"
-                                         width="278px">
+                                         style="width: 100%;">
                             </select-tree>
                         </FormItem>
                         <div class="node-info" v-else>
@@ -248,7 +248,7 @@
                             <select-tree v-model="formDataCopy.parentEconomicId"
                                          :disabled="activeNode && activeNode.level === 1"
                                          :tree="fianceSuperiorList"
-                                         width="278px">
+                                         style="width: 100%;">
                             </select-tree>
                         </FormItem>
                         <div class="node-info" v-else>
