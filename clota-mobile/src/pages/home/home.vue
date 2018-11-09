@@ -135,14 +135,23 @@
                     info : '',
                     params : {},
                     iconColor : '#6F62E5'
-                },/*,
-                    {
-                        title: '安全设置',
-                        link: '/integralDetail',
-                        iconClass: 'icon-my-points',
-                        info: '',
-                        iconColor: '#F46462'
-                    }*/
+                },
+                {
+                    title : 'integralMall',
+                    link : '/integralMall',
+                    iconClass : 'icon-member-rights',
+                    info : '',
+                    params : {},
+                    iconColor : '#6F62E5'
+                },
+                /*,
+                {
+                    title: '安全设置',
+                    link: '/integralDetail',
+                    iconClass: 'icon-my-points',
+                    info: '',
+                    iconColor: '#F46462'
+                }*/
             ];
             /**
              * 根据title名获取对应的导航数据对象
