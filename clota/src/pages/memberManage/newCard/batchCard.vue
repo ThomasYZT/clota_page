@@ -11,51 +11,98 @@
         <div class="container">
             <div class="content-wrap">
                 <!--选择会员卡类型、级别-->
-                <select-card @on-change-card="handleCardChanged"></select-card>
-                <!--实体卡信息-->
-                <h3>{{$t('entityCardInfo')}}</h3>
-                <table-com
-                    :show-pagination="false"
-                    :column-data="columnData"
-                    :table-data="tableData"
-                    :table-com-min-height="250"
-                    :border="true">
-                    <!--<el-table-column
-                        slot="column1"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                        <template slot-scope="scope">
-
-                        </template>
-                    </el-table-column>-->
-
-                </table-com>
-                <div class="table-bottom">
-                    {{$t('总价')}}：<span class="total-money">{{5}} {{$t('yuan')}}</span>
-                </div>
-                <!--收款方式-->
-                <h3>{{$t('收款方式')}}</h3>
-                <RadioGroup v-model="cardParam.payType">
-                    <Radio label="wx">{{$t('微信')}}</Radio><!--微信-->
-                    <Radio label="zfb">{{$t('支付宝')}}</Radio><!--支付宝-->
-                    <Radio label="cash">{{$t('现金')}}</Radio><!--支付宝-->
-                </RadioGroup>
-                <!--footer 按钮-->
-                <div class="content-footer">
-                    <Button type="primary"
-                            :loading="loading"
-                            @click="">
-                        {{$t('submit')}}
-                    </Button>
-                    <!--<Button type="ghost"
-                            @click="goBack">
-                        {{$t("cancel")}}
-                    </Button>-->
-                </div>
+                <select-card @on-change-card="handleCardChanged" :need-company-card="false"></select-card>
+                <template v-if="cardTypeInfo && Object.keys(cardTypeInfo).length > 0">
+                    <!--实体卡信息-->
+                    <h3>{{$t('entityCardInfo')}}</h3>
+                    <div class="btn-wrap">
+                        <Button type="primary"
+                                :disabled="tableData.length >= 50 || !cardReadEnabled"
+                                @click="readEntityCard">读取实体卡</Button>
+                    </div>
+                    <table-com
+                        :show-pagination="false"
+                        :column-data="columnData"
+                        :table-data="tableData"
+                        :auto-height="true"
+                        :table-com-min-height="250"
+                        :border="true">
+                        <el-table-column
+                            slot="column0"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                {{scope.$index + 1}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column3"
+                            slot-scope="row"
+                            show-overflow-tooltip
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                <ul class="operate-list">
+                                    <li class="red-label" @click="delCard(scope.$index)">{{$t('del')}}</li>
+                                </ul>
+                            </template>
+                        </el-table-column>
+                    </table-com>
+                    <div class="table-bottom">
+                        {{$t('总价')}}：<span class="total-money">{{entityCardTotalPrice | moneyFilter | contentFilter}}  {{$t('yuan')}}</span>
+                    </div>
+                    <!--收款方式-->
+                    <h3>{{$t('收款方式')}}</h3>
+                    <RadioGroup v-model="cardParam.payType">
+                        <Radio label="weixin">{{$t('微信')}}</Radio><!--微信-->
+                        <Radio label="alipay">{{$t('支付宝')}}</Radio><!--支付宝-->
+                        <Radio label="cash">{{$t('现金')}}</Radio><!--支付宝-->
+                    </RadioGroup>
+                    <!--footer 按钮-->
+                    <div class="content-footer">
+                        <Button type="primary"
+                                :loading="loading"
+                                @click="batchOpenCard">
+                            {{$t('submit')}}
+                        </Button>
+                    </div>
+                </template>
             </div>
         </div>
+        <!--确认会员信息模态框-->
+        <confirm-member-info v-model="showConfirmModal"
+                             @confirm-data="createMember">
+            <Form :label-width="110">
+                <i-col span="12">
+                    <FormItem label="会员卡信息">
+                        {{cardTypeInfo.levelName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="会员卡单价">
+                        {{cardTypeInfo.salePrice | moneyFilter | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="本次开卡数量">
+                        {{tableData.length | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="会员卡总价">
+                        {{entityCardTotalPrice | moneyFilter | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="支付方式">
+                        {{cardParam.payType | contentFilter}}
+                    </FormItem>
+                </i-col>
+            </Form>
+        </confirm-member-info>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -63,48 +110,147 @@
     import selectCard from './components/selectCardType.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { batchEntityCardHead } from './openCardsConfig';
+    import ajax from '@/api/index.js';
+    import { validator } from 'klwk-ui';
+    import confirmMemberInfo from './components/confirmDetailModal';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             headerTabs,
             selectCard,
             tableCom,
+            confirmMemberInfo
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 // 提交按钮loading
-                loading: false,
+                loading : false,
                 // 表头配置
-                columnData: batchEntityCardHead,
+                columnData : batchEntityCardHead,
                 // 表格数据
-                tableData: [
-                    {
-                        index: 1,
-                        cardFaceNum: '752387494',
-                        physicalCardNo: '94375934895'
-                    }
-                ],
-                cardParam: {
+                tableData : [],
+                cardParam : {
                     // 收款方式
-                    payType: 'wx',
+                    payType : 'cash',
                 },
-
-            }
+                //会员卡信息
+                cardTypeInfo : {},
+                //显示确认信息模态框
+                showConfirmModal : false,
+            };
         },
-        computed: {},
-        created() {
+        computed : {
+            //实体卡总价
+            entityCardTotalPrice () {
+                if ( this.cardTypeInfo && Object.keys(this.cardTypeInfo).length > 0 && validator.isNumber(this.cardTypeInfo.salePrice) ) {
+                    return this.cardTypeInfo.salePrice * this.tableData.length;
+                } else {
+                    return '';
+                }
+            },
+            ...mapGetters({
+                cardReadEnabled : 'cardReadEnabled'
+            })
         },
-        mounted() {
-        },
-        watch: {},
-        methods: {
+        methods : {
             /**
              * 所选择会员卡的类型、级别发生改变后的处理
-             * @param cardData  String  会员卡的类型、级别
+             * @param{Object} cardData   会员卡的类型、级别
              */
-            handleCardChanged(cardData) {
+            handleCardChanged (cardData) {
+                if (cardData.memberCard.cardTypeId) {
+                    this.cardTypeInfo = cardData;
+                } else {
+                    this.cardTypeInfo = {};
+                }
+            },
+            /**
+             * 读取实体卡
+             */
+            readEntityCard () {
+                this.$store.dispatch('getCardReadData').then(res => {
+                    //校验当前页面是否已经使用了读取的卡
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (this.tableData[i]['physicalNum'] === res) {
+                            this.$Message.warning('实体卡已使用，请更换其它卡');
+                            return;
+                        }
+                    }
+                    this.findByPhysicalNum(res).then(item => {
+                        this.tableData.push({
+                            faceNum : item.faceNum,
+                            physicalNum : item.physicalNum
+                        });
+                    }).catch((err) => {
+                        if (err && err === 'M026') {
+                            this.$Message.warning('实体卡已使用，请更换其它卡');
+                        } else {
+                            this.$Message.warning(this.$t('noMatchCard'));
+                        }
+                    });
+                });
+            },
+            /**
+             * 查看实体卡是否可以使用
+             * @param{String} physicalNum
+             * @return{Object} promise对象
+             */
+            findByPhysicalNum (physicalNum) {
+                return new Promise((resolve,reject) => {
+                    ajax.post('findByPhysicalNum',{
+                        physicalNum : physicalNum
+                    }).then((res) => {
+                        if (res.success) {
+                            if (res.data && Object.keys(res.data).length > 0) {
+                                resolve(res.data);
+                            } else {
+                                reject();
+                            }
+                        } else {
+                            if (res.code && res.code === 'M026') {
+                                reject('M026');
+                            } else {
+                                reject();
+                            }
+                        }
+                    }).catch(() => {
+                        reject();
+                    });
+                });
+            },
+            /**
+             * 删除实体卡
+             * @param{Number} index
+             */
+            delCard (index) {
+                this.tableData.splice(index,1);
+            },
+            /**
+             * 提交读取的卡信息
+             */
+            batchOpenCard () {
+                if (this.tableData.length > 0) {
+                    this.showConfirmModal = true;
+                } else {
+                    this.$Message.warning('请添加实体卡信息');
+                }
+            },
+            /**
+             * 确认用户信息成功，可以新开卡
+             */
+            createMember () {
+                ajax.post('',{
 
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success('批量开卡成功');
+                        this.tableData = [];
+                    } else {
+                        this.$Message.error('批量开卡失败');
+                    }
+                });
             }
         }
     };
@@ -156,6 +302,11 @@
         .content-wrap {
             width: 850px;
             margin: 20px auto;
+
+            .btn-wrap{
+                height: 48px;
+                padding-top: 8px;
+            }
         }
     }
 </style>

@@ -263,6 +263,23 @@
                         {{$t('时发送短信')}}<!--时发送短信-->
                     </div>
                 </div>
+                <!--补卡收费标准-->
+                <div class="content-item">
+                    <div class="title">{{$t('补卡收费标准')}}</div>
+                    <div :class="{'ivu-form-item-error': error.replaceCardFeeErr, 'main': true}">
+                        <span class="text">{{$t('补卡收费')}}</span><!--补卡收费-->
+                        <Input v-model.trim="settingData.replacementCardFee"
+                               @on-blur="checkInputIsMoney(settingData.replacementCardFee,'replaceCardFeeErr')"
+                               type="text"
+                               class="single-input"
+                               :placeholder="$t('inputField', {field: ''})"/>
+                        <div class="ivu-form-item-error-tip"
+                             style="left: 70px;"
+                             v-if="error.replaceCardFeeErr">{{error.replaceCardFeeErr}}
+                        </div>
+                        {{$t('yuan')}}
+                    </div>
+                </div>
 
             </Form>
 
@@ -331,7 +348,9 @@
                     //修改会员储值、积分、虚拟账户余额设置
                     allowAdjustAccount : '',
                     //短信发送设置
-                    smsSend : ''
+                    smsSend : '',
+                    //补卡收费标准
+                    replacementCardFee : ''
                 },
                 //copy数据，用于数据重置
                 copySetData : {},
@@ -353,6 +372,7 @@
                     dayError : '',//卡券过期提醒设置
                     memberDonateIntegerErr : '',//卡券过期提醒设置
                     tradeAmountErr : '',//交易金额错误
+                    replaceCardFeeErr : '',//补卡收费金额错误
                 },
                 tableData : [{
                     date : '2016-05-02',
@@ -444,6 +464,7 @@
                                         coupon : false,//Boolean
                                     },
                                     smsSend : res.data.smsSend,
+                                    replacementCardFee : res.data.replacementCardFee,
                                     allowAdjustAccount : res.data.allowAdjustAccount,
                                 };
                                 this.settingData = params;
@@ -461,12 +482,16 @@
             //点击保存，校验信息，数据处理
             save () {
                 if (this.checkInputFunc()) {
-                    this.checkInputIsMoney(this.settingData.smsSend, 'tradeAmountErr').then(() => {
+                    Promise.all([
+                        this.checkInputIsMoney(this.settingData.smsSend, 'tradeAmountErr'),
+                        this.checkInputIsMoney(this.settingData.replacementCardFee, 'replaceCardFeeErr'),
+                    ]).then(() => {
                         this.basicSet({
                             id : this.id,
                             memberValidPeriod : JSON.stringify(this.settingData.memberValidPeriod),
                             openCardSendScore : JSON.stringify(this.settingData.openCardSendScore),
                             smsSend : this.settingData.smsSend,
+                            replacementCardFee : this.settingData.replacementCardFee,
                             notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
                             handingWithScoreGrowthWhileRefund : JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
                             allowAdjustAccount : this.settingData.allowAdjustAccount,

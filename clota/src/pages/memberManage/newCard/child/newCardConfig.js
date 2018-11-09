@@ -1,7 +1,7 @@
 // 新开业主卡 - 副卡列表表头
 export const secondaryCardHead = [
     {
-        title : 'index',    // 序号
+        title : 'index', // 序号
         width : 100,
         field : 'index'
     },
@@ -35,7 +35,7 @@ export const secondaryCardHead = [
         title : 'birthday',
         minWidth : 200,
         enWidth : 200,
-        field : 'birthday',
+        field : 'birthDay',
         type : 'date'
     },
     {
@@ -53,27 +53,27 @@ export const secondaryCardHead = [
 // 新开业主卡 - 实体卡列表表头
 export const entityCardHead = [
     {
-        title : '持卡人姓名',    // 持卡人姓名
-        width : 160,
-        field : ''
+        title : '持卡人姓名', // 持卡人姓名
+        width : 140,
+        field : 'custName'
     },
     {
         title : '持卡人证件号', // 持卡人证件号
         minWidth : 180,
-        field : ''
+        field : 'idCardNumber'
     },
     {
         title : 'cardFaceNum', // 卡面号
         minWidth : 180,
-        field : ''
+        field : 'tpNo'
     },
     {
         title : 'physicalCardNo', // 物理卡号
         minWidth : 180,
-        field : ''
+        field : 'tpCardNo'
     },
     {
         title : 'operate',
-        width : 180,
+        width : 120,
     }
 ];

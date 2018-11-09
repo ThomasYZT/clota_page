@@ -1,13 +1,13 @@
 <!--
-内容：关联实体卡
+内容：补卡
 作者：djc
 日期：
 -->
 
 <template>
-    <div class="associate-entity-card">
+    <div class="reissue-card">
         <!--头部tab组件-->
-        <header-tabs :router-name="'associateEntityCard'"></header-tabs>
+        <header-tabs :router-name="'replenishCard'"></header-tabs>
         <div class="content">
             <member-info @click-row-todo="toFunc">
             </member-info>
@@ -40,7 +40,7 @@
              */
             toFunc (rowData) {
                 this.$router.push({
-                    name : 'applyAssociateCard',
+                    name : 'applyReissuceCard',
                     params : {
                         memberInfo : rowData
                     }
@@ -52,7 +52,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .associate-entity-card{
+    .reissue-card{
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;

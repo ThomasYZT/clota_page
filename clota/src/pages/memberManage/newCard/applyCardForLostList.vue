@@ -1,13 +1,12 @@
 <!--
-内容：关联实体卡
+内容：挂失
 作者：djc
 日期：
 -->
-
 <template>
-    <div class="associate-entity-card">
+    <div class="report-loss">
         <!--头部tab组件-->
-        <header-tabs :router-name="'associateEntityCard'"></header-tabs>
+        <header-tabs :router-name="'reportLoss'"></header-tabs>
         <div class="content">
             <member-info @click-row-todo="toFunc">
             </member-info>
@@ -40,7 +39,7 @@
              */
             toFunc (rowData) {
                 this.$router.push({
-                    name : 'applyAssociateCard',
+                    name : 'applyForLost',
                     params : {
                         memberInfo : rowData
                     }
@@ -52,7 +51,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .associate-entity-card{
+    .report-loss{
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;

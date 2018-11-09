@@ -40,14 +40,14 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('birthday')" prop="birthday"><!--生日-->
+                    <Form-item :label="$t('birthDay')" prop="birthDay"><!--生日-->
                         <Date-picker
                             type="date"
-                            v-model="newCardParam.birthday"
+                            v-model="newCardParam.birthDay"
                             :options="dateOption"
                             format="yyyy-MM-dd"
                             :placeholder="$t('selectField', {msg: ''})"
-                            @on-change="customValid($event, 'birthday')">
+                            @on-change="customValid($event, 'birthDay')">
                         </Date-picker>
                     </Form-item>
                 </div>

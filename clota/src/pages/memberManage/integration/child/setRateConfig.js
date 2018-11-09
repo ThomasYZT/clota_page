@@ -24,7 +24,7 @@ export const columnData = [
         field : 'remark'
     },
     {
-        title : 'operate  ',
+        title : 'operate',
         width : 363,
         enWidth : 450,
     }
@@ -62,7 +62,7 @@ export const activityfColumnData = [
         field : 'remark'
     },
     {
-        title : 'operate  ',
+        title : 'operate',
         width : 363,
         enWidth : 450,
     }

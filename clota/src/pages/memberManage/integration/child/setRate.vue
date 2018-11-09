@@ -49,7 +49,12 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{scope.row.startTime | timeFormat('yyyy-MM-dd','')}} - {{scope.row.endTime | timeFormat('yyyy-MM-dd','')}}
+                            <template v-if="isActivity">
+                                {{scope.row.startTime | timeFormat('yyyy-MM-dd','')}} - {{scope.row.endTime | timeFormat('yyyy-MM-dd','')}}
+                            </template>
+                            <template v-else>
+                                {{scope.row.remark | contentFilter}}
+                            </template>
                         </template>
                     </el-table-column>
                     <el-table-column

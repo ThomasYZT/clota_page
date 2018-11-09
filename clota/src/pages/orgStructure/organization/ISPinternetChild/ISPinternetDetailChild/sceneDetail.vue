@@ -223,9 +223,10 @@
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <select-tree v-model="formDataCopy.parentManageId"
+                                         :disabled-node-ids="[activeNode.id]"
                                          :disabled="activeNode && activeNode.level === 1"
                                          :tree="superiorList"
-                                         width="278px">
+                                         style="width: 100%;">
                             </select-tree>
                         </FormItem>
                         <div class="node-info" v-else>
@@ -246,9 +247,10 @@
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <select-tree v-model="formDataCopy.parentEconomicId"
+                                         :disabled-node-ids="[activeNode.id]"
                                          :disabled="activeNode && activeNode.level === 1"
                                          :tree="fianceSuperiorList"
-                                         width="278px">
+                                         style="width: 100%;">
                             </select-tree>
                         </FormItem>
                         <div class="node-info" v-else>

@@ -394,7 +394,7 @@
                                 // scoreOffsetInConsumption : JSON.parse(res.data.scoreOffsetInConsumption),//会员3期暂时去掉
                                 scoreOffsetInConsumption : res.data.scoreOffsetInConsumption ? JSON.parse(res.data.scoreOffsetInConsumption) : [],
                                 scoreExToCharge : JSON.parse(res.data.scoreExToCharge),
-                                scoreInsufficientNotification : res.data.scoreInsufficientNotification ?
+                                scoreInsufficientNotification : res.data.scoreInsufficientNotification === 'true' ?
                                 Boolean(res.data.scoreInsufficientNotification) : false,
                             };
                             for ( let key in params) {

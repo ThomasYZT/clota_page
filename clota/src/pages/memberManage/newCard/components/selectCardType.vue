@@ -9,13 +9,12 @@
         <!--<h3>{{$t('选择会员卡类型')}}</h3>&lt;!&ndash;选择会员卡类型&ndash;&gt;-->
         <Form ref="formValidate"
               :model="memberCard"
-              :rules="ruleValidate"
               :inline="true"
               label-position="top">
             <i-row>
                 <i-col span="12">
                     <!--会员卡类型-->
-                    <Form-item :label="$t('请选择会员卡类型')" prop="cardTypeId">
+                    <Form-item :label="$t('请选择会员卡类型')" >
                         <Select v-model="memberCard.cardTypeId"
                                 style="width: 100%"
                                 @on-change="cardTypeChange">
@@ -31,11 +30,10 @@
                 <i-col span="12">
                     <!--会员卡级别-->
                     <Form-item :label="$t('请选择会员卡级别')"
-                               prop="levelId"
                                style="float: right">
                         <Select v-model="memberCard.levelId"
                                 style="width: 100%"
-                                @on-change="getLevelsByCardType">
+                                @on-change="cardLevelChange">
                             <Option v-for="item in cardLevelList"
                                     :key="item.id"
                                     :value="item.id"
@@ -66,6 +64,13 @@
     import ajax from '@/api/index';
 
     export default {
+        props : {
+            //是否需要业主卡
+            'need-company-card' : {
+                type : Boolean,
+                default : true,
+            }
+        },
         data () {
             return {
                 // 表单字段
@@ -79,24 +84,6 @@
                 cardTypes : [],
                 // 会员卡级别列表
                 cardLevelList : [],
-                // 表单校验规则
-                ruleValidate : {
-                    cardTypeId : [
-                        {
-                            required : true,
-                            message : this.$t('errorEmpty', { msg : this.$t('会员卡类别') }),
-                            trigger : 'change'
-                        },
-                    ],
-                    levelId : [
-                        // 会员卡类型不能为空
-                        {
-                            required : true,
-                            message : this.$t('errorEmpty', { msg : this.$t('会员卡类型') }),
-                            trigger : 'change'
-                        },
-                    ],
-                }
             };
         },
         created () {
@@ -109,8 +96,14 @@
             getcardTypeList () {
                 ajax.post('queryCardTypeList').then(res => {
                     if (res.success) {
-                        this.cardTypes = res.data || [];
-                        this.getLevelsByCardType();
+                        this.cardTypes = res.data ? res.data.filter(item => {
+                            if (this.needCompanyCard) {
+                                return true;
+                            } else {
+                                return item['id'] !== '1';
+                            }
+                        }) : [];
+                        // this.getLevelsByCardType();
                     } else {
                         this.cardTypes = [];
                     }
@@ -125,6 +118,10 @@
                 }).then(res => {
                     if (res.success) {
                         this.cardLevelList = res.data || [];
+                        if (this.cardLevelList.length > 0) {
+                            this.memberCard.levelId = this.cardLevelList[0]['id'];
+                            this.changeCardSelection();
+                        }
                     } else {
                         this.cardLevelList = [];
                     }
@@ -134,7 +131,21 @@
              * 当会员卡类别修改时，重新设置持卡人需要填写的信息
              */
             changeCardSelection () {
-                this.$emit('on-change-card', this.memberCard);
+                this.$nextTick(() => {
+                    if ( this.memberCard.levelId ) {
+                        this.$emit('on-change-card', {
+                            memberCard : this.memberCard,
+                            levelName : this.cardLevelInfo.levelDesc,
+                            salePrice : this.cardLevelInfo.salePrice,
+                        });
+                    } else {
+                        this.$emit('on-change-card', {
+                            memberCard : {
+                                cardTypeId : null
+                            },
+                        });
+                    }
+                });
             },
             /**
              * 会员卡类别改变
@@ -142,7 +153,12 @@
             cardTypeChange () {
                 this.memberCard.levelId = '';
                  this.getLevelsByCardType();
-                 this.changeCardSelection();
+            },
+            /**
+             * 会员卡级别改变
+             */
+            cardLevelChange () {
+                this.changeCardSelection();
             }
         },
         computed : {
@@ -154,7 +170,7 @@
                     }
                 }
                 return {};
-            }
+            },
         }
     };
 </script>

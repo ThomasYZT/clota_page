@@ -16,6 +16,7 @@ import i18n from './assets/lang/lang.config';
 import './assets/css/mobilePublic.css';
 import './assets/css/iconfont.css';
 import './assets/theme/theme.scss';
+import '@/assets/scss/_common.scss';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin'

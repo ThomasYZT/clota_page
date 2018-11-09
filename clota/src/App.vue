@@ -43,7 +43,7 @@
             this.$nextTick(() => {
                 //初始化读卡器信息
                 this.$store.dispatch('initCardRead');
-            })
+            });
         }
     };
 </script>

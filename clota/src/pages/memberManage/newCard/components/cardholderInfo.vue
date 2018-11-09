@@ -5,64 +5,90 @@
 -->
 
 <template>
-    <div class="">
-        <div class="block-title">{{$t('个人信息')}}</div>
-        <i-row>
-            <i-col span="9">
-                <div class="form-item-wrap">
-                    <label>{{$t("name")}}：</label><span>{{'李菲菲'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("mobilePhone")}}：</label><span>{{18800000000}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <!--证件类型-->
-                    <label>{{$t("credentialsType")}}：</label><span>{{'身份证'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("birthday")}}：</label><span>{{'1990-01-01'}}</span>
-                </div>
-            </i-col>
-            <i-col span="9">
-                <div class="form-item-wrap">
-                    <label>{{$t("gender")}}：</label><span>{{'女'}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("年龄")}}：</label><span>{{29}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <label>{{$t("证件号码")}}：</label><span>{{1102011199001012010}}</span>
-                </div>
-                <div class="form-item-wrap">
-                    <!--家庭住址-->
-                    <label>{{$t("homeAddress")}}：</label><span>{{'北京市长安街81号'}}</span>
-                </div>
-            </i-col>
-            <i-col span="6" style="float: right;">
-                <img src="" style="width: 100px;height: 120px;border: 1px solid #E9E9E9;" />
-            </i-col>
-        </i-row>
+    <div class="card-holder-info">
+        <div class="block-title">{{$t('持卡人信息')}}</div>
+        <i-col class="split-class">
+            <span class="key-label">姓名：</span>
+            <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">手机号：</span>
+            <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">性别：</span>
+            <span class="value-label">{{$t(memberInfo.gender) | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">生日：</span>
+            <span class="value-label">{{memberInfo.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">证件类型：</span>
+            <span class="value-label">{{memberInfo.certificationTypeName | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">证件编号：</span>
+            <span class="value-label">{{memberInfo.idCardNumber | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">地址：</span>
+            <span class="value-label" v-w-title="memberInfo.homeAddr">{{memberInfo.homeAddr | contentFilter}}</span>
+        </i-col>
+        <i-col class="split-class">
+            <span class="key-label">支付密码：</span>
+            <span class="value-label">{{tradePassword | contentFilter}}</span>
+        </i-col>
     </div>
 </template>
 <script type="text/ecmascript-6">
 
     export default {
-        components: {},
-        props: {},
-        data() {
-            return {}
+        props : {
+            //会员信息
+            'member-info' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
         },
-        computed: {},
-        created() {
+        computed : {
+            //交易密码显示格式
+            tradePassword () {
+                if (this.memberInfo && Object.keys(this.memberInfo).length > 0) {
+                    return '●●●●●●';
+                } else {
+                    return '';
+                }
+            }
         },
-        mounted() {
+        data () {
+            return {};
         },
-        watch: {},
-        methods: {}
     };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .card-holder-info{
 
+        .split-class{
+            width: 33%;
+            height: 34px;
+            padding: 6px 0;
+            font-size: $font_size_14px;
+            display: inline-flex;
+
+            .key-label{
+                color: $color_333;
+            }
+
+            .value-label{
+                flex: 1;
+                color: $color_666;
+                @include overflow_tip();
+            }
+        }
+    }
 </style>

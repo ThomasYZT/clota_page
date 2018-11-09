@@ -137,39 +137,39 @@
 </template>
 
 <script>
-    import {configVariable} from '@/assets/js/constVariable.js';
+    import { configVariable } from '@/assets/js/constVariable.js';
     import tableMixins from '@/mixins/tableMixins.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
-    import {mapGetters} from 'vuex'
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [tableMixins],
         components : {
             noData
         },
-        props: {
+        props : {
             //表格数据
-            'table-data': {
-                type: Array,
-                default() {
+            'table-data' : {
+                type : Array,
+                default () {
                     return [];
                 }
             },
             //表头配置
-            'column-data': {
-                type: [Object, Array],
-                default() {
+            'column-data' : {
+                type : [Object, Array],
+                default () {
                     return {};
                 }
             },
             //是否开启选择
-            'column-check': {
-                type: Boolean,
-                default: false
+            'column-check' : {
+                type : Boolean,
+                default : false
             },
             //是否开启边框
             'border' : {
-                type: Boolean,
-                default: false
+                type : Boolean,
+                default : false
             },
             //选择框的宽度
             'selection-width' : {
@@ -241,45 +241,45 @@
                 defaut : ''
             },
             //表头单元格是否可点击
-            'header-clickable': {
-                type: Boolean,
-                default: false
+            'header-clickable' : {
+                type : Boolean,
+                default : false
             },
             //表格选择框是否禁用
-            'selectable': {
-                type: Function,
-                default: new Function('return true')
+            'selectable' : {
+                type : Function,
+                default : new Function('return true')
             }
         },
-        data() {
+        data () {
             return {
                 //分页功能配置
-                pageLayout: this.defaultPageLayout ? this.defaultPageLayout : configVariable.pageLayout,
+                pageLayout : this.defaultPageLayout ? this.defaultPageLayout : configVariable.pageLayout,
                 //表格最大高度
                 tableMaxHeight : null,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 行点击事件
              * @param data
              */
-            classDetailLink(data) {
+            classDetailLink (data) {
                 this.$emit('row-click', data);
             },
             /**
              * 设置表格的最大高度
              */
             setTableMaxHeight () {
-                if(this.autoHeight){
+                if (this.autoHeight) {
                     this.tableMaxHeight = 'auto';
-                }else{
+                } else {
                     let rootEl = this.$root.$el;
-                    if(rootEl){
+                    if (rootEl) {
                         let offsetHeight = this.ofsetHeight ? this.ofsetHeight : this.$el.getBoundingClientRect().top;
-                        if(this.showPagination){
+                        if (this.showPagination) {
                             this.tableMaxHeight = rootEl.offsetHeight - offsetHeight - 52 + 'px';
-                        }else{
+                        } else {
                             this.tableMaxHeight = rootEl.offsetHeight - offsetHeight + 'px';
                         }
                     }
@@ -319,13 +319,13 @@
             /**
              * 注册监听页面缩放事件
              */
-            registerWindowResize() {
+            registerWindowResize () {
                 window.addEventListener('resize', this.setTableMaxHeight);
             },
             /**
              * 解除监听页面缩放事件
              */
-            unregisterWindowResize() {
+            unregisterWindowResize () {
                 window.removeEventListener('resize', this.setTableHeight);
             },
             /**
@@ -333,13 +333,13 @@
              * @param columnData
              */
             getColumnWidth (columnData) {
-                if(this.lang === 'en'){
-                    if(columnData.enWidth){
+                if (this.lang === 'en') {
+                    if (columnData.enWidth) {
                         return columnData.enWidth;
-                    }else{
+                    } else {
                         return columnData.width;
                     }
-                }else if(this.lang === 'zh-CN'){
+                } else if (this.lang === 'zh-CN') {
                     return columnData.width;
                 }
             },
@@ -348,20 +348,20 @@
              * @param columnData
              */
             getColumnMinWidth (columnData) {
-                if(this.lang === 'en'){
-                    if(columnData.enMinWidth){
+                if (this.lang === 'en') {
+                    if (columnData.enMinWidth) {
                         return columnData.enMinWidth;
-                    }else{
+                    } else {
                         return columnData.minWidth;
                     }
-                }else if(this.lang === 'zh-CN'){
+                } else if (this.lang === 'zh-CN') {
                     return columnData.minWidth;
                 }
             },
             /**
              * 当某一列的表头点击事件
              */
-            headerClick(column, event) {
+            headerClick (column, event) {
                 this.$emit('headerClick', column, event);
             },
         },
@@ -374,37 +374,37 @@
         },
         computed : {
             minHeight () {
-                if(this.height !== 'auto'){
+                if (this.height !== 'auto') {
                     return 'auto';
-                }else{
-                    if(this.tableData && this.tableData.length === 0){
-                        if(this.tableComMinHeight !== 0){
+                } else {
+                    if (this.tableData && this.tableData.length === 0) {
+                        if (this.tableComMinHeight !== 0) {
                             return this.tableComMinHeight + 'px';
-                        }else{
+                        } else {
                             return this.tableMaxHeight;
                         }
-                    }else{
+                    } else {
                         return 'auto';
                     }
                 }
             },
             ...mapGetters({
-                lang: 'lang',
+                lang : 'lang',
             })
         },
         watch : {
             //如果表格数据改变了，表格数据长度为0，但是不是在第一页，需要重新获取数据
             tableData (newVal,oldVal) {
-                if(newVal && newVal.length === 0 && this.pageNo !== 1){
+                if (newVal && newVal.length === 0 && this.pageNo !== 1) {
                     this.handleCurrentChange(1);
                 }
             }
         },
-        beforeDestroy() {
+        beforeDestroy () {
             this.unregisterWindowResize();
         }
 
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
