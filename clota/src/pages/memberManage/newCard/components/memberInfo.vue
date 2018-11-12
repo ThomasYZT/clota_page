@@ -23,7 +23,7 @@
             :row-click-able="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="188"
+            :ofset-height="190"
             @row-click="rowClick"
             @query-data="queryList">
         </table-com>
@@ -59,19 +59,24 @@
              * 查询会员数据
              */
             queryList () {
-                ajax.post('listMemberCards',{
-                    keyword : this.formData.keyWord,
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize,
-                }).then(res => {
-                    if (res.success) {
-                        this.tableData = res.data ? res.data.data : [];
-                        this.totalCount = res.data ? res.data.totalRow : 0;
-                    } else {
-                        this.tableData = [];
-                        this.totalCount = 0;
-                    }
-                });
+                if (this.formData.keyWord) {
+                    ajax.post('listMemberCards',{
+                        keyword : this.formData.keyWord,
+                        pageNo : this.pageNo,
+                        pageSize : this.pageSize,
+                    }).then(res => {
+                        if (res.success) {
+                            this.tableData = res.data ? res.data.data : [];
+                            this.totalCount = res.data ? res.data.totalRow : 0;
+                        } else {
+                            this.tableData = [];
+                            this.totalCount = 0;
+                        }
+                    });
+                } else {
+                    this.tableData = [];
+                    this.totalCount = 0;
+                }
             },
             /**
              * 点击行事件

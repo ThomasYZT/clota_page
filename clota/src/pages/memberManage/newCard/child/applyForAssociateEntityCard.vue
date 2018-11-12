@@ -18,7 +18,9 @@
             <entity-card-info @set-card-data="getCardData">
             </entity-card-info>
             <i-col style="text-align: center;margin-top: 10px;">
-                <Button class="ivu-btn-90px" type="primary" @click="applyReissuceCard">提交</Button>
+                <Button class="ivu-btn-90px"
+                        type="primary"
+                        @click="applyReissuceCard">提交</Button>
             </i-col>
         </div>
     </div>

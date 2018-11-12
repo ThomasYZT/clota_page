@@ -63,6 +63,10 @@ export default {
     'reissueEntityCard' : '/member/entityCard/reissueEntityCard',
     //查询在线交易记录
     'queryPayTransactionRecordList' : '/pay/queryPayTransactionRecordList',
+    //批量开卡
+    'batchOpenCards' : '/member/batchOpenCards',
+    //查询会员卡信息
+    'listCardsByMemberId' : '/member/listCardsByMemberId',
 
 
     /***********************************会员积分***********************************/

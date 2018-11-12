@@ -152,7 +152,15 @@
             },
             ...mapGetters({
                 cardReadEnabled : 'cardReadEnabled'
-            })
+            }),
+            //选择的会员卡信息
+            cardInfo () {
+                if (this.cardTypeInfo && this.cardTypeInfo.memberCard) {
+                    return this.cardTypeInfo.memberCard;
+                } else {
+                    return {};
+                }
+            }
         },
         methods : {
             /**
@@ -181,7 +189,8 @@
                     this.findByPhysicalNum(res).then(item => {
                         this.tableData.push({
                             faceNum : item.faceNum,
-                            physicalNum : item.physicalNum
+                            physicalNum : item.physicalNum,
+                            id : item.id
                         });
                     }).catch((err) => {
                         if (err && err === 'M026') {
@@ -241,8 +250,13 @@
              * 确认用户信息成功，可以新开卡
              */
             createMember () {
-                ajax.post('',{
-
+                ajax.post('batchOpenCards',{
+                    entityCardInfo : JSON.stringify(this.tableData),
+                    cardTypeId : this.cardInfo.cardTypeId,
+                    cardLevelId : this.cardInfo.levelId,
+                    channelType : this.cardParam.payType,
+                    qrCode : '',
+                    txnAmt : '',
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success('批量开卡成功');
@@ -250,6 +264,8 @@
                     } else {
                         this.$Message.error('批量开卡失败');
                     }
+                }).finally(() => {
+                    this.showConfirmModal = false;
                 });
             }
         }

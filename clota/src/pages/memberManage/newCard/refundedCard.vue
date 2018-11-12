@@ -11,27 +11,17 @@
         <div class="container">
             <member-info @click-row-todo="toFunc">
             </member-info>
-            <div class="detail-container">
-                <!--储值账户信息-->
-                <store-account-info></store-account-info>
-                <!--积分账户信息-->
-                <integral-account-info></integral-account-info>
-            </div>
         </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import { configVariable } from '@/assets/js/constVariable';
-    import storeAccountInfo from './components/storeAccountInfo.vue';
-    import integralAccountInfo from './components/integralAccountInfo.vue';
     import headerTabs from './components/newCardTabs.vue';
     import memberInfo from './components/memberInfo';
 
     export default {
         components : {
             headerTabs,
-            storeAccountInfo,
-            integralAccountInfo,
             memberInfo,
         },
         props : {},
@@ -75,11 +65,6 @@
         overflow: auto;
         background: $color_fff;
         border-radius : 4px;
-    }
-
-    .detail-container {
-        /*height: calc(100% - 50px);*/
-        padding: 15px 20px;
     }
 
     /deep/ .form-item-wrap{

@@ -50,7 +50,6 @@
 			:border="true"
 			:page-no-d.sync="pageNo"
 			:page-size-d.sync="pageSize"
-			:row-click-able="true"
 			:show-pagination="true"
 			:total-count="totalCount"
 			:ofset-height="188"
@@ -117,8 +116,8 @@
 				show-overflow-tooltip
 				slot-scope="row">
 				<template slot-scope="scoped">
-					<span :class="{'status-abnormal' : scoped.row.txnStatus === 'abnormal'}">
-						{{$t('bizStatus.' + scoped.row.txnStatus)}}
+					<span :class="{'status-abnormal' : scoped.row.bizStatus === 'abnormal'}">
+						{{$t('bizStatus.' + scoped.row.bizStatus)}}
 					</span>
 				</template>
 			</el-table-column>
@@ -134,11 +133,41 @@
 					<ul class="operate-list">
 						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('重新开卡')}}</li>
 						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('重新补卡')}}</li>
-						<li @click="showModal(scope.row)">{{$t('more')}}</li>
+						<li @click="showMoreData(scope.row)">{{$t('more')}}</li>
 					</ul>
 				</template>
 			</el-table-column>
 		</table-com>
+        <!--确认会员信息模态框-->
+        <confirm-member-info v-model="showConfirmModal">
+            <Form :label-width="110">
+                <i-col span="12">
+                    <FormItem label="类型">
+                        {{currentData.bizType ? $t('tradeType.' + currentData.bizType) : '' | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="日期">
+                        {{currentData.txnReqTime | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="会员卡信息">
+                        {{currentData.cardLevelName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="持卡人信息">
+                        {{currentData.memberName | contentFilter}},{{currentData.mobile | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="物理卡号">
+                        {{currentData.memberName | contentFilter}}
+                    </FormItem>
+                </i-col>
+            </Form>
+        </confirm-member-info>
 	</div>
 </template>
 
@@ -148,11 +177,13 @@
 	import tableCom from '@/components/tableCom/tableCom.vue';
 	import { tradeRecordHead } from './tradeRecordConfig';
 	import ajax from '@/api/index.js';
+    import confirmMemberInfo from './components/confirmDetailModal';
 
 	export default {
 		components : {
 			headerTabs,
-			tableCom
+			tableCom,
+            confirmMemberInfo
 		},
 		data () {
 			return {
@@ -174,7 +205,11 @@
 				tableData : [],
 				pageNo : 1,
 				pageSize : 10,
-				totalCount : 0
+				totalCount : 0,
+                //显示详细信息
+                showConfirmModal : false,
+                //当前查看的行数据
+                currentData : {}
 			};
 		},
 		methods : {
@@ -242,6 +277,14 @@
                 this.formData.endTime = '';
                 this.formData.keyWord = '';
                 this.queryList();
+            },
+            /**
+             * 显示详细信息
+             * @param{Object} rowData
+             */
+            showMoreData (rowData) {
+                this.showConfirmModal = true;
+                this.currentData = rowData;
             }
 		}
 	};
