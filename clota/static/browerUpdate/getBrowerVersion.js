@@ -6,14 +6,14 @@ var theUA = window.navigator.userAgent.toLowerCase();
 //当前支持IE10及以上，初始值默认ie版本11
 var ieVersion = 11;
 // 判断当前页面是否为浏览器升级页面
-var loginPage = '/performance/index.html';
-var errorPage = '/performance/static/browerUpdate/errorPage.html';
+var loginPage = '/index.html';
+var errorPage = '/static/browerUpdate/errorPage.html';
 var isErrorPage = location.href.indexOf(errorPage) !== -1;
 
 if ((theUA.match(/msie\s\d+/) && theUA.match(/msie\s\d+/)[0]) || (theUA.match(/trident\s?\d+/) && theUA.match(/trident\s?\d+/)[0])) {
     ieVersion = theUA.match(/msie\s\d+/)[0].match(/\d+/)[0] || theUA.match(/trident\s?\d+/)[0];
     // 当前浏览器版本小于等于10 且 当前页面非浏览器升级提示页面时跳转至浏览器升级页面
-    if (ieVersion <= 10 && !isErrorPage) {
+    if (ieVersion < 10 && !isErrorPage) {
         location.href = errorPage;
     }
 }
