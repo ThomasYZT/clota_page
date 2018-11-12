@@ -1654,6 +1654,7 @@ export default {
     'reissueCardFee': '补卡收费',
     'reissueCardErr': '会员{name}下实体卡状态正常，如需补卡，请先挂失实体卡',
     'viceCardAddErr': '副卡持有人已存在会员卡',
+    'moneyInCard': '卡内余额',
 
 
 

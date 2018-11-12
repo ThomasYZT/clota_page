@@ -23,10 +23,10 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <template v-if="scope.row.mainCard">
-                     {{scope.row.custName | contentFilter}}{{$t('bracketSetting',{ content : this.$t('mainCard') })}}
+                     {{scope.row.custName | contentFilter}}{{$t('bracketSetting',{ content : $t('mainCard') })}}
                     </template>
                     <template v-else>
-                        {{scope.row.custName | contentFilter}}{{$t('bracketSetting',{ content : this.$t('viceCard') })}}
+                        {{scope.row.custName | contentFilter}}{{$t('bracketSetting',{ content : $t('viceCard') })}}
                     </template>
                 </template>
             </el-table-column>
