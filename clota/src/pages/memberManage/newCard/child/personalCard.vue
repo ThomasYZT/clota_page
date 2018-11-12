@@ -102,16 +102,16 @@
             <i-row>
                 <i-col span="12">
                     <Form-item :label="$t('payPass')" prop="tradePassword">
-                        <Button type="primary"
+                        <span class="blue-label"
                                 v-if="cardParam.tradePassword"
                                 @click="setPasswordModalShow = true">
                             {{$t('haveSetted')}}
-                        </Button>
-                        <Button type="primary"
-                                v-else
+                        </span>
+                        <span  v-else
+                               class="blue-label"
                                 @click="setPasswordModalShow = true">
                             {{$t('setTradePass')}}
-                        </Button>
+                        </span>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -120,8 +120,6 @@
                     <!--备注-->
                     <Form-item :label="$t('remark')" prop="remark" style="width: 100%;">
                         <Input v-model.trim="cardParam.remark"
-                               type="textarea"
-                               :rows="3"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
@@ -141,15 +139,15 @@
             </entity-card-info>
 
             <!--收款方式-->
-            <h3>{{$t('paymentMethod')}}</h3>
-            <Form-item prop="payType">
+            <h3 style="margin-top: 35px;">{{$t('paymentMethod')}}</h3>
+            <Form-item prop="payType" label="收款方式" >
                 <RadioGroup v-model="cardParam.payType">
                     <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
                     <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
                     <Radio label="cash">{{$t('_cash')}}</Radio><!--现金-->
-                    <Input v-model="cardParam.qrCode" type="text"/>
                 </RadioGroup>
             </Form-item>
+            <Input v-model="cardParam.qrCode" type="text"/>
         </Form>
         <!--footer 按钮-->
         <div class="content-footer">
@@ -357,7 +355,7 @@
                     "remark" : "",//备注
                     "homeAddr" : "",//家庭地址
                     "tradePassword" : "",//支付密码
-                    "payType" : "",//收款方式
+                    "payType" : "weixin",//收款方式
                     "companyName" : "",//企业名称
                     "physicalNum" : "",//物理卡号
                     "faceNum" : "",//卡面号
@@ -411,7 +409,7 @@
                     birthDay : [
                         {
                             required : true,
-                            message : this.$t('selectField', { msg : this.$t('birthDay') }),
+                            message : this.$t('selectField', { msg : this.$t('birthday') }),
                             trigger : 'change',
                             type : 'date'
                         }
@@ -578,6 +576,8 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .personal-card {
+        @include padding_place($height : 50px);
+
         h3 {
             margin-top: 20px;
             margin-bottom: 15px;
@@ -585,33 +585,30 @@
             font-size: $font_size_16px;
             color: $color_333;
         }
-    }
 
-    .word-wrap{
-        @include overflow_tip();
-        @include block_outline();
-    }
+        .blue-label{
+            color: $color_blue;
+            cursor: pointer;
+        }
 
-    /*.ivu-form-item {*/
-        /*width: 280px;*/
-        /*text-align: left;*/
-        /*margin-right: 0;*/
+        .word-wrap{
+            @include overflow_tip();
+            @include block_outline();
+        }
+        .content-footer {
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
+            text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
 
-        /*.ivu-date-picker {*/
-            /*display: block;*/
-        /*}*/
-    /*}*/
-
-    .content-footer {
-        text-align: center;
-        background: $color_fff;
-        height: 56px;
-        line-height: 56px;
-
-        /deep/ .ivu-btn {
-            width: 108px;
-            &:nth-child(1) {
-                margin-right: 20px;
+            /deep/ .ivu-btn {
+                width: 108px;
+                &:nth-child(1) {
+                    margin-right: 20px;
+                }
             }
         }
     }

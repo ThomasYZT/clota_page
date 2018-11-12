@@ -36,8 +36,8 @@
 					   :placeholder="$t('tradeSearchKeyword')"/>
 			</FormItem>
 			<FormItem>
-				<Button class="ivu-btn-90px" type="primary" @click="queryList">{{$t('searching')}}</Button>
-				<Button class="ivu-btn-90px" type="primary" @click="reset">{{$t('reset')}}</Button>
+				<Button  type="primary" @click="queryList">{{$t('searching')}}</Button>
+				<Button  type="ghost" @click="reset">{{$t('reset')}}</Button>
 			</FormItem>
 		</Form>
 		<table-com
@@ -141,54 +141,54 @@
         <confirm-member-info v-model="showConfirmModal">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem :label="$t('type')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('type') })">
                         {{currentData.bizType ? $t('tradeType.' + currentData.bizType) : '' | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('date')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('date') })">
                         {{currentData.txnReqTime | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{currentData.cardLevelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('cardOwnerInfo')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('cardOwnerInfo') })">
                         {{currentData.memberName | contentFilter}},{{currentData.mobile | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('physicalCardNo')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('physicalCardNo') })">
                         {{currentData.memberName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('cardFaceNum')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('cardFaceNum') })">
                         {{currentData.memberName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('payType')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('payType') })">
                         {{currentData.payType ? $t('payType.' + currentData.payType) : '' | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('paymentStatus')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('paymentStatus') })">
                         {{$t('txnStatus.' + currentData.txnStatus) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberSystemStatus')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberSystemStatus') })">
                         <span :class="{'status-abnormal' : currentData.bizStatus === 'abnormal'}">
                             {{$t('bizStatus.' + currentData.bizStatus)}}
                         </span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('operator')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('operator') })">
                         {{currentData.operateUserName | contentFilter}}
                     </FormItem>
                 </i-col>

@@ -5,7 +5,7 @@
         :title="$t('pleaseConfirmData')"
         :mask-closable="false"
         :value="value"
-        :width="600"
+        :width="580"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="confirm-member-info"
@@ -77,6 +77,16 @@
         /deep/ .ivu-modal-body{
             overflow: auto;
             max-height: 400px;
+            padding: 32px;
+
+            .ivu-form-item-content{
+                color: $color_666;
+            }
+
+            .ivu-form-item-label{
+                padding-right: 5px;
+                padding-left: 0;
+            }
         }
     }
 </style>

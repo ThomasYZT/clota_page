@@ -16,23 +16,16 @@
                 <i-row>
                     <i-col span="12">
                         <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--卡面号-->
-                            <!--<Input v-model.trim="entityCardParam.tpNo"-->
-                                   <!--:disabled="true"-->
-                                   <!--style="width: 280px"-->
-                                   <!--:placeholder="$t('readCard')"/>-->
-
                             <Input v-model.trim="entityCardParam.tpNo"
+                                   :disabled="true"
                                    style="width: 280px"
                                    :placeholder="$t('readCard')"/>
                         </Form-item>
                     </i-col>
                     <i-col span="12">
                         <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo" style="float: right"><!--物理卡号-->
-                            <!--<Input v-model.trim="entityCardParam.tpCardNo"-->
-                                   <!--:disabled="true"-->
-                                   <!--style="width: 280px"-->
-                                   <!--:placeholder="$t('readCard')"/>-->
                             <Input v-model.trim="entityCardParam.tpCardNo"
+                                   :disabled="true"
                                    style="width: 280px"
                                    :placeholder="$t('readCard')"/>
                         </Form-item>

@@ -129,16 +129,16 @@
                     <Form-item :label="$t('payPass')"
                                prop="tradePassword"
                                style="float:right;width: 280px;">
-                        <Button type="primary"
-                                v-if="cardParam.tradePassword"
+                        <span v-if="cardParam.tradePassword"
+                              class="blue-label"
                                 @click="setPasswordModalShow = true">
                             {{$t('haveSetted')}}
-                        </Button>
-                        <Button type="primary"
-                                v-else
+                        </span>
+                        <span v-else
+                              class="blue-label"
                                 @click="setPasswordModalShow = true">
                             {{$t('setTradePass')}}
-                        </Button>
+                        </span>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -717,32 +717,27 @@
     .personal-card {
 
          h3 {
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 15px;
             text-align: center;
             font-size: $font_size_16px;
             color: $color_333;
         }
-    }
 
-    /*.ivu-form-item {*/
-        /*width: 280px;*/
-        /*text-align: left;*/
-        /*margin-right: 0;*/
+        .blue-label{
+            color: $color_blue;
+            cursor: pointer;
+        }
 
-        /*.ivu-date-picker {*/
-            /*display: block;*/
-        /*}*/
-    /*}*/
+        .content-footer {
+            margin: 20px 0 40px 0;
+            text-align: center;
 
-    .content-footer {
-        margin: 20px 0 40px 0;
-        text-align: center;
-
-        /deep/ .ivu-btn {
-            width: 108px;
-            &:nth-child(1) {
-                margin-right: 20px;
+            /deep/ .ivu-btn {
+                width: 108px;
+                &:nth-child(1) {
+                    margin-right: 20px;
+                }
             }
         }
     }

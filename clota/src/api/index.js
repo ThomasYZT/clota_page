@@ -124,7 +124,9 @@ export default {
             store.dispatch('showErrToast','systemErr');
             return err;
         }).finally(() => {
-            store.commit('changePromisings','del');
+            if (urlKey !== 'queryConsumeUpdateBiz') {
+                store.commit('changePromisings','del');
+            }
         });
     },
 
