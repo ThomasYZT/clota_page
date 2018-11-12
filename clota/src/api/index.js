@@ -104,13 +104,16 @@ export default {
             }
         }
 
+        if (urlKey !== 'queryConsumeUpdateBiz') {
+            store.commit('changePromisings','add');
+        }
+
         if (config) {
             if (config.headers) {
                 myConfig.headers = Object.assign(myConfig.headers, config.headers)
             }
         }
         let needStringify = myConfig.headers ? myConfig.headers['Content-Type'] !== 'application/json;charset-UTF-8' : true;
-        store.commit('changePromisings','add');
         return instance.post(baseUrl + api[urlKey], needStringify ? querystring.stringify(paramObj) : paramObj, myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)

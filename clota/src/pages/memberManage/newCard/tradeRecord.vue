@@ -2,10 +2,6 @@
 
 <template>
 	<div class="trade-record">
-		<!--头部tab组件-->
-		<header-tabs
-			router-name="tradeRecord">
-		</header-tabs>
 		<Form ref="formValidate" :model="formData" inline>
 			<FormItem prop="tradeType">
 				<Select v-model="formData.tradeType"
@@ -52,7 +48,7 @@
 			:page-size-d.sync="pageSize"
 			:show-pagination="true"
 			:total-count="totalCount"
-			:ofset-height="188"
+			:ofset-height="122"
 			@query-data="queryList">
 			<el-table-column
 				slot="column0"
@@ -133,7 +129,9 @@
 					<ul class="operate-list">
 						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('reOpenCard')}}</li>
 						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('reReissueCard')}}</li>
-						<li v-if="scope.row.txnStatus === 'unknown'" @click="searchPayResult(scope.row)">{{$t('searchPayResult')}}</li>
+                        <!--未知状态以及正在进行中的支付状态需要重新查询结果-->
+						<li v-if="scope.row.txnStatus === 'unknown' || scope.row.txnStatus === 'doing'"
+                            @click="searchPayResult(scope.row)">{{$t('searchPayResult')}}</li>
 						<li @click="showMoreData(scope.row)">{{$t('more')}}</li>
 					</ul>
 				</template>
@@ -200,7 +198,6 @@
 </template>
 
 <script>
-	import headerTabs from './components/newCardTabs.vue';
 	import { tradeTypeList } from '@/assets/js/constVariable.js';
 	import tableCom from '@/components/tableCom/tableCom.vue';
 	import { tradeRecordHead } from './tradeRecordConfig';
@@ -209,7 +206,6 @@
 
 	export default {
 		components : {
-			headerTabs,
 			tableCom,
             confirmMemberInfo
 		},

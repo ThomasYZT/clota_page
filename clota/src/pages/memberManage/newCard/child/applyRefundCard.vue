@@ -204,6 +204,9 @@
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('refundedCard') }));
                         this.choosedCard = {};
                         this.listCardsByMemberId();
+                    } else if (res.code === 'M031') {//原路退还金额失败
+                        this.$Message.success('线上退款失败，请在在线交易记录中重新退款');
+                        this.listCardsByMemberId();
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('refundedCard') }));
                     }
