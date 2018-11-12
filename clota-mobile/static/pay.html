@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .pay-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="pay-form">
+        <form id="form" action="" method="post">
+            <!-- 币种 -->
+            <!--<input type="text" name="CurrencyCode" v-model="payFormData.currencyCode">-->
+            <!-- 交易类型 -->
+            <input id="TxnType" type="text" name="TxnType" value="">
+            <!-- 合作方id -->
+            <input id="PartnerID" type="text" name="PartnerID" value="">
+            <!-- 支付方式id -->
+            <input id="ChannelID" type="text" name="ChannelID" value="">
+            <!-- 商户流水号 -->
+            <input id="MerchantTxnNo" type="text" name="MerchantTxnNo" value="">
+            <!-- 商户id -->
+            <input id="MerchantID" type="text" name="MerchantID" value="">
+            <!-- 支付说明 -->
+            <input id="TxnAmt" type="text" name="TxnAmt" value="">
+            <!-- 支付结果回调地址 -->
+            <input id="RedirectUrl" type="text" name="RedirectUrl" value="">
+            <!-- 交易说明 -->
+            <input id="TxnShortDesc" type="text" name="TxnShortDesc" value="">
+            <!-- 签名串 -->
+            <input id="Sign" type="text" name="Sign" value="">
+            <!-- 异步通知url -->
+            <input id="NotifyUrl" type="text" name="NotifyUrl" value="">
+        </form>
+    </div>
+
+    <script>
+        /**
+         * 获取url的参数
+         * @param url
+         * @returns {Array}
+         */
+        function getUrlString (url) {
+            let obj = {};
+            if(url.indexOf('?') !== -1){
+                let query = url.split("?")[1];
+                let queryArr = query.split("&");
+                queryArr.forEach(function(item){
+                    let key = item.split("=")[0];
+                    let value = item.split("=")[1];
+                    obj[key] = value;
+                });
+            }
+            return obj;
+        }
+
+        window.onload = function () {
+            let params = getUrlString(decodeURI(location.href));
+            let formDom = document.getElementById('form');
+            let payFormData = JSON.parse(params.payFormData);
+
+            //设置表单数据
+            formDom.action = payFormData.payWebUrl;
+            document.getElementById('TxnType').value = payFormData.txnType;
+            document.getElementById('PartnerID').value = payFormData.partnerId;
+            document.getElementById('ChannelID').value = payFormData.channelId;
+            document.getElementById('MerchantTxnNo').value = payFormData.merchantTxnNo;
+            document.getElementById('MerchantID').value = payFormData.merchantId;
+            document.getElementById('TxnAmt').value = payFormData.txnAmt;
+            document.getElementById('RedirectUrl').value = payFormData.redirectUrl;
+            document.getElementById('TxnShortDesc').value = payFormData.txnShortDesc;
+            document.getElementById('Sign').value = payFormData.sign;
+            document.getElementById('NotifyUrl').value = payFormData.notifyUrl;
+            formDom.submit();
+        }
+    </script>
+</body>
+</html>

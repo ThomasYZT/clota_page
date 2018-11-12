@@ -208,10 +208,10 @@
                         if (this.isWeixin()) {
                             //微信环境内
                             if ( history.state.key !== 1) {
-                                let newUrl = 'static/test.html?payFormData=' + JSON.stringify(this.payFormData);
+                                let newUrl = 'static/pay.html?payFormData=' + JSON.stringify(this.payFormData);
                                 history.pushState({key : 1},'账户充值',newUrl)
                             } else {
-                                let newUrl = 'test.html?payFormData=' + JSON.stringify(this.payFormData);
+                                let newUrl = 'pay.html?payFormData=' + JSON.stringify(this.payFormData);
                                 history.replaceState({key : 1},'账户充值',newUrl)
                             }
                         } else {
