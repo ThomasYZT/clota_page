@@ -6,7 +6,7 @@
 
 <template>
     <div class="">
-        <div class="block-title">{{$t('积分账户信息')}}</div>
+        <div class="block-title">{{$t('integerAccountName')}}</div>
         <div class="table-wrap">
             <table-com
                 :auto-height="true"
@@ -38,7 +38,7 @@
                 // 表头信息
                 columnData : [
                     {
-                        title : '可用积分',
+                        title : 'pointBalance',
                         minWidth : 180,
                         field : 'accountBalance',
                     },

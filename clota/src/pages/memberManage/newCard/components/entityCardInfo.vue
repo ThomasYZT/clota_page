@@ -112,7 +112,7 @@
                             });
                         }
                     } else if (res.code === 'M026') {
-                        this.$Message.warning('实体卡已使用，请更换其它卡');
+                        this.$Message.warning(this.$t('entityCardUsedErr'));
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
                         this.$emit('set-card-data',{
@@ -141,7 +141,7 @@
                     this.getAllEntityCard(res);
                 }).catch(err => {
                     if (err === 'dcCardError') {
-                        this.$Message.warning('请放置实体卡到读卡器上');
+                        this.$Message.warning(this.$t('pleasePlaceEntityCard'));
                     }
                 });
             },

@@ -50,7 +50,7 @@ export const cardInfoHead = [
         field : 'phoneNum',
     },
     {
-        title : '会员卡类型', // 会员卡类型
+        title : 'memberCardType', // 会员卡类型
         minWidth : 150,
         field : ''
     },

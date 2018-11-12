@@ -20,7 +20,7 @@
 				<DatePicker type="date"
                             :editable="false"
 							style="width : 150px"
-							placeholder="请选择开始时间"
+							:placeholder="$t('selectField',{ msg : $t('startTime') })"
 							v-model="formData.startTime"
                             @on-change="queryList">
 				</DatePicker>
@@ -29,7 +29,7 @@
 				<DatePicker type="date"
                             :editable="false"
 							style="width : 150px"
-							placeholder="请选择结束时间"
+							:placeholder="$t('selectField',{ msg : $t('endTime') })"
 							v-model="formData.endTime"
                             @on-change="queryList">
 				</DatePicker>
@@ -37,10 +37,10 @@
 			<FormItem prop="endTime">
 				<Input v-model.trim="formData.keyWord"
 					   style="width : 300px"
-					   placeholder="请输入姓名、证件编号、手机号、卡面号"/>
+					   :placeholder="$t('tradeSearchKeyword')"/>
 			</FormItem>
 			<FormItem>
-				<Button class="ivu-btn-90px" type="primary" @click="queryList">{{$t('搜索')}}</Button>
+				<Button class="ivu-btn-90px" type="primary" @click="queryList">{{$t('searching')}}</Button>
 				<Button class="ivu-btn-90px" type="primary" @click="reset">{{$t('reset')}}</Button>
 			</FormItem>
 		</Form>
@@ -131,9 +131,9 @@
 				:min-width="row.minWidth">
 				<template slot-scope="scope">
 					<ul class="operate-list">
-						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('重新开卡')}}</li>
-						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('重新补卡')}}</li>
-						<li v-if="scope.row.txnStatus === 'unknown'" @click="searchPayResult(scope.row)">{{$t('查询支付结果')}}</li>
+						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('reOpenCard')}}</li>
+						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('reReissueCard')}}</li>
+						<li v-if="scope.row.txnStatus === 'unknown'" @click="searchPayResult(scope.row)">{{$t('searchPayResult')}}</li>
 						<li @click="showMoreData(scope.row)">{{$t('more')}}</li>
 					</ul>
 				</template>
@@ -143,54 +143,54 @@
         <confirm-member-info v-model="showConfirmModal">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem label="类型">
+                    <FormItem :label="$t('type')">
                         {{currentData.bizType ? $t('tradeType.' + currentData.bizType) : '' | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="日期">
+                    <FormItem :label="$t('date')">
                         {{currentData.txnReqTime | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="会员卡信息">
+                    <FormItem :label="$t('selectCardAttribution')">
                         {{currentData.cardLevelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="持卡人信息">
+                    <FormItem :label="$t('cardOwnerInfo')">
                         {{currentData.memberName | contentFilter}},{{currentData.mobile | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="物理卡号">
+                    <FormItem :label="$t('physicalCardNo')">
                         {{currentData.memberName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="卡面号">
+                    <FormItem :label="$t('cardFaceNum')">
                         {{currentData.memberName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="支付方式">
+                    <FormItem :label="$t('payType')">
                         {{currentData.payType ? $t('payType.' + currentData.payType) : '' | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="支付状态">
+                    <FormItem :label="$t('paymentStatus')">
                         {{$t('txnStatus.' + currentData.txnStatus) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="会员系统状态">
+                    <FormItem :label="$t('memberSystemStatus')">
                         <span :class="{'status-abnormal' : currentData.bizStatus === 'abnormal'}">
                             {{$t('bizStatus.' + currentData.bizStatus)}}
                         </span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="操作人">
+                    <FormItem :label="$t('operator')">
                         {{currentData.operateUserName | contentFilter}}
                     </FormItem>
                 </i-col>

@@ -3,43 +3,43 @@
 <template>
     <div class="member-card-detail-info">
         <i-col class="split-class">
-            <span class="key-label">会员编号：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('memberNum') })}}</span>
             <span class="value-label">{{cardInfo.cardCode | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">实体卡卡面号：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('entityCardFaceNum') })}}</span>
             <span class="value-label">{{cardInfo.tpNo | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">会员类别：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('memberTypes') })}}</span>
             <span class="value-label">{{cardInfo.typeName | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">会员卡类型：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('memberCardType') })}}</span>
             <span class="value-label">{{cardInfo.levelDesc | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">注册渠道：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('signChannel') })}}</span>
             <span class="value-label">{{cardInfo.remark | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">支付密码：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('payPass') })}}</span>
             <span class="value-label">{{tradePassword | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">购买日期：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('buyTime') })}}</span>
             <span class="value-label">{{cardInfo.createdTime | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">有效开始日期：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('effectiveStartDate') })}}</span>
             <span class="value-label">{{cardInfo.effDate | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">有效结束日期：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('effectiveEndDate') })}}</span>
             <span class="value-label">{{cardInfo.expDate | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">备注：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('remark') })}}</span>
             <span class="value-label">{{cardInfo.remark | contentFilter}}</span>
         </i-col>
     </div>

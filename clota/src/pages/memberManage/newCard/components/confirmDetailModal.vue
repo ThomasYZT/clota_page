@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        :title="$t('请确认信息')"
+        :title="$t('pleaseConfirmData')"
         :mask-closable="false"
         :value="value"
         :width="600"

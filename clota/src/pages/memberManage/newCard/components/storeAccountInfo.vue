@@ -58,12 +58,12 @@
                 // 表头信息
                 columnData : [
                     {
-                        title : '本金',
+                        title : 'principal',
                         minWidth : 180,
                         field : 'corpusBalance',
                     },
                     {
-                        title : '赠送金额',
+                        title : 'giftSum',
                         minWidth : 180,
                         field : 'donateBalance',
                     }
