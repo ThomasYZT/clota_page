@@ -103,7 +103,7 @@
 				show-overflow-tooltip
 				slot-scope="row">
 				<template slot-scope="scoped">
-					{{$t('txnStatus.' + scoped.row.txnStatus)}}
+					{{$t('txnStatus.' + scoped.row.txnStatus) | contentFilter}}
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -133,6 +133,7 @@
 					<ul class="operate-list">
 						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('重新开卡')}}</li>
 						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('重新补卡')}}</li>
+						<li v-if="scope.row.txnStatus === 'unknown'" @click="searchPayResult(scope.row)">{{$t('查询支付结果')}}</li>
 						<li @click="showMoreData(scope.row)">{{$t('more')}}</li>
 					</ul>
 				</template>
@@ -164,6 +165,33 @@
                 <i-col span="12">
                     <FormItem label="物理卡号">
                         {{currentData.memberName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="卡面号">
+                        {{currentData.memberName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="支付方式">
+                        {{currentData.payType ? $t('payType.' + currentData.payType) : '' | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="支付状态">
+                        {{$t('txnStatus.' + currentData.txnStatus) | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="会员系统状态">
+                        <span :class="{'status-abnormal' : currentData.bizStatus === 'abnormal'}">
+                            {{$t('bizStatus.' + currentData.bizStatus)}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="操作人">
+                        {{currentData.operateUserName | contentFilter}}
                     </FormItem>
                 </i-col>
             </Form>
@@ -220,7 +248,6 @@
 				ajax.post('queryPayTransactionRecordList',{
 					bizScene : 'member',
 					bizType : this.formData.tradeType === 'all' ? '' : this.formData.tradeType,
-					bizStatus : '',
 					txnStartTime : this.formData.startTime ? this.formData.startTime.format('yyyy-MM-dd 00:00:00') : '',
 					txnEndTime : this.formData.endTime ? this.formData.endTime.format('yyyy-MM-dd 23:59:59') : '',
 					keyword : this.formData.keyWord,
@@ -259,7 +286,9 @@
              * @param{Object} rowData 记录数据
              */
             reOpenCard (rowData) {
-
+                this.$router.push({
+                    name : ''
+                });
             },
             /**
              * 重新补卡
@@ -285,6 +314,17 @@
             showMoreData (rowData) {
                 this.showConfirmModal = true;
                 this.currentData = rowData;
+            },
+            /**
+             * 查询支付结果
+             * @param{Object} rowData 支付数据
+             */
+            searchPayResult (rowData) {
+                ajax.post('queryConsumeUpdateBiz',{
+                    transactionId : rowData.id
+                }).finally(() => {
+                    this.queryList();
+                });
             }
 		}
 	};

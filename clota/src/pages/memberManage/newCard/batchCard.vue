@@ -60,6 +60,7 @@
                         <Radio label="weixin">{{$t('微信')}}</Radio><!--微信-->
                         <Radio label="alipay">{{$t('支付宝')}}</Radio><!--支付宝-->
                         <Radio label="cash">{{$t('现金')}}</Radio><!--支付宝-->
+                        <Input v-model="cardParam.qrCode" type="text"/>
                     </RadioGroup>
                     <!--footer 按钮-->
                     <div class="content-footer">
@@ -103,6 +104,12 @@
                 </i-col>
             </Form>
         </confirm-member-info>
+
+        <!--查询支付结果模态框-->
+        <loop-for-pay-result v-model="payModalShow"
+                             :transaction-id="transctionId"
+                             @search-success="tipSuccess">
+        </loop-for-pay-result>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -114,13 +121,15 @@
     import { validator } from 'klwk-ui';
     import confirmMemberInfo from './components/confirmDetailModal';
     import { mapGetters } from 'vuex';
+    import loopForPayResult from './components/loopForPayResult';
 
     export default {
         components : {
             headerTabs,
             selectCard,
             tableCom,
-            confirmMemberInfo
+            confirmMemberInfo,
+            loopForPayResult
         },
         props : {},
         data () {
@@ -134,11 +143,16 @@
                 cardParam : {
                     // 收款方式
                     payType : 'cash',
+                    qrCode : "",//扫码结果
                 },
                 //会员卡信息
                 cardTypeInfo : {},
                 //显示确认信息模态框
                 showConfirmModal : false,
+                //支付查询结果是否显示
+                payModalShow : false,
+                //内部交易id
+                transctionId : ''
             };
         },
         computed : {
@@ -209,7 +223,8 @@
             findByPhysicalNum (physicalNum) {
                 return new Promise((resolve,reject) => {
                     ajax.post('findByPhysicalNum',{
-                        physicalNum : physicalNum
+                        physicalNum : physicalNum,
+                        entityCardType : 'password'
                     }).then((res) => {
                         if (res.success) {
                             if (res.data && Object.keys(res.data).length > 0) {
@@ -255,19 +270,38 @@
                     cardTypeId : this.cardInfo.cardTypeId,
                     cardLevelId : this.cardInfo.levelId,
                     channelType : this.cardParam.payType,
-                    qrCode : '',
-                    txnAmt : '',
+                    qrCode : this.cardParam.qrCode,
+                    txnAmt : this.entityCardTotalPrice,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success('批量开卡成功');
                         this.tableData = [];
+                    } else if (res.code === 'P002') {
+                        this.startSearchForPayResult({
+                            ...(res.data ? res.data : {})
+                        });
                     } else {
                         this.$Message.error('批量开卡失败');
                     }
                 }).finally(() => {
                     this.showConfirmModal = false;
                 });
-            }
+            },
+            /**
+             * 查询到支付成功
+             */
+            tipSuccess () {
+                this.$Message.success('批量开卡成功');
+                this.tableData = [];
+            },
+            /**
+             * 开启查询支付结果
+             * @param{Object} transctionId 内部交易id
+             */
+            startSearchForPayResult ({ transctionId }) {
+                this.transctionId = transctionId;
+                this.payModalShow = true;
+            },
         }
     };
 </script>

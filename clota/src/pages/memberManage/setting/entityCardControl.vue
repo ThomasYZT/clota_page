@@ -11,7 +11,7 @@
                         <Option value="all">{{$t('allCardType')}}</Option>
                         <Option value="open">{{$t('cardOpened')}}</Option>
                         <Option value="wait">{{$t('cardUnopened')}}</Option>
-                        <Option value="lose">{{$t('lose')}}</Option>
+                        <Option value="loss">{{$t('lose')}}</Option>
                     </Select>
                     <Select v-model="entityCardType"
                             style="width:170px"
@@ -71,16 +71,18 @@
                 @query-data="queryList">
                 <el-table-column
                     slot="column1"
+                    show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.cardStatus === 'open' ? $t('cardOpened') : $t('cardUnopened')}}
+                        {{$t('entityCardStatus.' + scope.row.cardStatus)}}
                     </template>
                 </el-table-column>
                 <el-table-column
                     slot="column4"
+                    show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
@@ -92,6 +94,7 @@
                 <el-table-column
                     slot="column6"
                     slot-scope="row"
+                    show-overflow-tooltip
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
@@ -108,7 +111,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="modify(scope.row)" :class="{disabled : scope.row.cardStatus === 'open'}">{{$t('modify')}}</li>
+                            <li @click="modify(scope.row)"
+                                :class="{disabled : scope.row.cardStatus === 'open' ||  scope.row.cardStatus === 'loss'}">
+                                {{$t('modify')}}
+                            </li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -223,11 +229,11 @@
                 this.importVisible = true;
             },
             /**
-             * 修改卡数据
+             * 修改卡数据,已开卡和已遗失的实体卡不可以再修改数据
              * @param rowData
              */
             modify (rowData) {
-                if (rowData.cardStatus === 'open') return;
+                if (rowData.cardStatus === 'open' || rowData.cardStatus === 'loss') return;
                 this.currentData = rowData;
                 this.importVisible = true;
             },

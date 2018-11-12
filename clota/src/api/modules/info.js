@@ -67,6 +67,14 @@ export default {
     'batchOpenCards' : '/member/batchOpenCards',
     //查询会员卡信息
     'listCardsByMemberId' : '/member/listCardsByMemberId',
+    //查询退卡金额
+    'findRefundCardMoney' : '/member/findRefundCardMoney',
+    //退卡
+    'refundCard' : '/member/refundCard',
+    //查询支付结果
+    'queryConsumeUpdateBiz' : '/pay/queryConsumeUpdateBiz',
+    //查询补卡费
+    'queryCardReplaceFee' : '/member/memberBasicSet/findReplacementCardFee',
 
 
     /***********************************会员积分***********************************/

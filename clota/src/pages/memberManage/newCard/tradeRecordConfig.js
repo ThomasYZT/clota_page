@@ -48,7 +48,7 @@ export const tradeRecordHead = [
     },
     {
         title : 'operate', // 操作人
-        width : 160,
+        width : 177,
         field : ''
     }
 ];

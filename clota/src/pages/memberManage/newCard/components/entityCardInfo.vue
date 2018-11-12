@@ -16,16 +16,23 @@
                 <i-row>
                     <i-col span="12">
                         <Form-item :label="$t('thirdCardNum')" prop="tpNo"><!--卡面号-->
+                            <!--<Input v-model.trim="entityCardParam.tpNo"-->
+                                   <!--:disabled="true"-->
+                                   <!--style="width: 280px"-->
+                                   <!--:placeholder="$t('readCard')"/>-->
+
                             <Input v-model.trim="entityCardParam.tpNo"
-                                   :disabled="true"
                                    style="width: 280px"
                                    :placeholder="$t('readCard')"/>
                         </Form-item>
                     </i-col>
                     <i-col span="12">
                         <Form-item :label="$t('thirdCardFaceNum')" prop="tpCardNo" style="float: right"><!--物理卡号-->
+                            <!--<Input v-model.trim="entityCardParam.tpCardNo"-->
+                                   <!--:disabled="true"-->
+                                   <!--style="width: 280px"-->
+                                   <!--:placeholder="$t('readCard')"/>-->
                             <Input v-model.trim="entityCardParam.tpCardNo"
-                                   :disabled="true"
                                    style="width: 280px"
                                    :placeholder="$t('readCard')"/>
                         </Form-item>
@@ -84,7 +91,8 @@
             getAllEntityCard (physicalNum) {
                 this.reading = true;
                 return ajax.post('findByPhysicalNum',{
-                    physicalNum : physicalNum
+                    physicalNum : physicalNum,
+                    entityCardType : 'common'
                 }).then(res => {
                     if (res.success && res.data ) {
                         if (Object.keys(res.data).length > 0) {
@@ -114,7 +122,6 @@
                     } else {
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
-                        this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
                         this.$emit('set-card-data',{
                             physicalNum : '',
                             faceNum : '',

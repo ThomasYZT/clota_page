@@ -643,7 +643,11 @@ export const  tradeTypeList = [
     },
     {
         label : '开卡记录',
-        value : 'open_card，batch_open_card-batch_open_card'
+        value : 'open_card'
+    },
+    {
+        label : '批量开卡记录',
+        value : 'batch_open_card'
     },
     {
         label : '补卡记录',

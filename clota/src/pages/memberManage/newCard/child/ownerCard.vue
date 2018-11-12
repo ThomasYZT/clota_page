@@ -93,27 +93,27 @@
             <i-row>
                 <i-col span="12">
                     <!--购房总金额-->
-                    <Form-item :label="$t('购房总金额')" prop="houseMoney">
+                    <Form-item :label="$t('homeBuyMoney')" prop="houseMoney">
                         <Input v-model.trim="cardParam.houseMoney"
                                style="width: 280px"
-                               :placeholder="$t('inputField', {field: $t('购房总金额')})"/>
+                               :placeholder="$t('inputField', {field: $t('homeBuyMoney')})"/>
                     </Form-item>
                 </i-col>
                 <i-col span="12">
                     <!--房产信息-->
-                    <Form-item :label="$t('房产信息')"
+                    <Form-item :label="$t('homeInfo')"
                                prop="realEstateInformation"
                                style="float:right;">
                         <Input v-model.trim="cardParam.realEstateInformation"
                                style="width: 280px"
-                               :placeholder="$t('inputField', {field: $t('房产信息')})"/>
+                               :placeholder="$t('inputField', {field: $t('homeInfo')})"/>
                     </Form-item>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="12">
                     <!--购房日期-->
-                    <Form-item :label="$t('购房日期')" prop="birthDay">
+                    <Form-item :label="$t('buyHomeTime')" prop="birthDay">
                         <Date-picker
                             style="width: 280px"
                             :editable="false"
@@ -126,18 +126,18 @@
                 </i-col>
                 <i-col span="12">
                     <!--支付密码-->
-                    <Form-item :label="$t('支付密码')"
+                    <Form-item :label="$t('payPass')"
                                prop="tradePassword"
                                style="float:right;width: 280px;">
                         <Button type="primary"
                                 v-if="cardParam.tradePassword"
                                 @click="setPasswordModalShow = true">
-                            {{$t('已设置')}}
+                            {{$t('haveSetted')}}
                         </Button>
                         <Button type="primary"
                                 v-else
                                 @click="setPasswordModalShow = true">
-                            {{$t('设置密码')}}
+                            {{$t('setTradePass')}}
                         </Button>
                     </Form-item>
                 </i-col>
@@ -197,73 +197,73 @@
             <Form :rules="ruleValidate" :label-width="110">
                 <i-row>主卡信息</i-row>
                 <i-col span="12">
-                    <FormItem label="会员卡信息">
+                    <FormItem :label="$t('selectCardAttribution')">
                         {{selectedCard.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="会员卡售价" >
+                    <FormItem :label="$t('memberCardSales')" >
                         {{selectedCard.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="姓名">
+                    <FormItem :label="$t('name')">
                         {{cardParam.custName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="性别" >
+                    <FormItem :label="$t('gender')" >
                         {{$t(cardParam.gender) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="证件类型">
+                    <FormItem :label="$t('credentialsType')">
                         {{idNumName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="证件编号" >
+                    <FormItem :label="$t('identificationNum')" >
                         {{cardParam.idCardNumber | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="生日" >
+                    <FormItem :label="$t('birthday')" >
                         {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="手机号" >
+                    <FormItem :label="$t('mobilePhone')" >
                         {{cardParam.phoneNum | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="手机号" >
+                    <FormItem :label="$t('mobilePhone')" >
                         {{cardParam.phoneNum | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem label="购房总金额">
+                    <FormItem :label="$t('homeBuyMoney')">
                         <div class="word-wrap">
                             {{cardParam.houseMoney | moneyFilter | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem label="房产信息">
+                    <FormItem :label="$t('homeInfo')">
                         <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
                             {{cardParam.realEstateInformation | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem label="购房日期">
+                    <FormItem :label="$t('buyHomeTime')">
                         <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
                             {{cardParam.purchaseDate | timeFormat('yyyy-MM-dd') | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="24" >
-                    <FormItem label="备注" >
+                    <FormItem :label="$t('remark')" >
                         <div class="word-wrap" v-w-title="cardParam.remark">
                             {{cardParam.remark | contentFilter}}
                         </div>
@@ -272,40 +272,40 @@
                 <i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>
                 <template v-for="(item,index) in viceCardInfo">
                     <i-col span="12" :key="index + 'custName'">
-                        <FormItem label="姓名">
+                        <FormItem :label="$t('name')">
                             <div class="word-wrap" >
                                 {{item.custName | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'gender'">
-                        <FormItem label="性别" >
+                        <FormItem :label="$t('gender')" >
                             {{$t(item.gender) | contentFilter}}
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'certificationType'">
-                        <FormItem label="证件类型" >
+                        <FormItem :label="$t('credentialsType')" >
                             <div class="word-wrap" >
                                 {{idTypeObj[item.certificationType] ? idTypeObj[item.certificationType]['name'] : '' | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'idCardNumber'">
-                        <FormItem label="证件编号">
+                        <FormItem :label="$t('identificationNum')">
                             <div class="word-wrap" v-w-title="item.idCardNumber">
                                 {{item.idCardNumber | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'birthDay'">
-                        <FormItem label="生日" >
+                        <FormItem :label="$t('birthday')" >
                             <div class="word-wrap" >
                                 {{item.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'phoneNum'">
-                        <FormItem label="手机号">
+                        <FormItem :label="$t('mobilePhone')">
                             {{item.phoneNum | contentFilter}}
                         </FormItem>
                     </i-col>
@@ -397,9 +397,9 @@
                     callback();
                 }).catch(err => {
                     if (err === 'errorMaxLength') {
-                        callback(this.$t('errorMaxLength',{ field : this.$t('购房总金额'),length : 15 }));
+                        callback(this.$t('errorMaxLength',{ field : this.$t('homeBuyMoney'),length : 15 }));
                     } else {
-                        callback(this.$t(err,{ field : this.$t('购房总金额') }));
+                        callback(this.$t(err,{ field : this.$t('homeBuyMoney') }));
                     }
                 });
             };
@@ -518,7 +518,7 @@
                     houseMoney : [
                         {
                             required : true,
-                            message : this.$t('inputField', { field : this.$t('购房总金额') }),
+                            message : this.$t('inputField', { field : this.$t('homeBuyMoney') }),
                             trigger : 'blur',
                         },
                         {
@@ -529,19 +529,19 @@
                     realEstateInformation : [
                         {
                             required : true,
-                            message : this.$t('errorEmpty', { msg : this.$t('房产信息') }),
+                            message : this.$t('errorEmpty', { msg : this.$t('homeInfo') }),
                             trigger : 'blur'
                         },
                         {
                             trigger : 'blur',
-                            message : this.$t('errorMaxLength', { field : this.$t('房产信息'), length : 100 }),
+                            message : this.$t('errorMaxLength', { field : this.$t('homeInfo'), length : 100 }),
                             max : 100
                         }
                     ],
                     tradePassword : [
                         {
                             required : true,
-                            message : this.$t('请设置支付密码'),
+                            message : this.$t('setTradePass'),
                             trigger : 'change',
                         },
                     ]
@@ -601,17 +601,12 @@
                             this.$router.back();
                         }
                     } else {
-                        //区分新增与修改
-                        let errorTip = '';
-                        if (res.message == 'M008') {
-                            errorTip = this.$t('phoneExistCard'); // 手机号已被注册，请更换手机号
-                        }
-
-                        if (this.type === 'add') {
-                            this.$Message.error(errorTip || this.$t('failureTip',{ tip : this.$t('add') }));
-                        }
-                        if (this.type === 'modify') {
-                            this.$Message.error(errorTip || this.$t('failureTip',{ tip : this.$t('modify') }));
+                        if (res.message === 'M008') {
+                            this.$Message.error(this.$t('phoneExistCard'));
+                        } else if (res.message === 'M029') {
+                            this.$Message.error(this.$t('viceCardAddErr'));
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                         }
 
                     }
@@ -665,8 +660,8 @@
                 viceCard = cardInfo.slice(1).map((item,i) => {
                     return {
                         ...item,
-                        tpNo : cardInfo[i]['tpNo'],
-                        tpCardNo : cardInfo[i]['tpCardNo'],
+                        tpNo : cardInfo[i + 1]['tpNo'],
+                        tpCardNo : cardInfo[i + 1]['tpCardNo'],
                         birthDay : item['birthDay'] ? item['birthDay'].format('yyyy-MM-dd') : '',
                         ...this.selectedCard.memberCard,
                         tradePassword : MD5(item.tradePassword).toString(),

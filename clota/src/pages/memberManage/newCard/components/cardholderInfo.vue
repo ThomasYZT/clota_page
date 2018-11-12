@@ -13,7 +13,7 @@
         </i-col>
         <i-col class="split-class">
             <span class="key-label">手机号：</span>
-            <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
+            <span class="value-label">{{memberInfo.phoneNum | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
             <span class="key-label">性别：</span>
@@ -56,7 +56,7 @@
         computed : {
             //交易密码显示格式
             tradePassword () {
-                if (this.memberInfo && Object.keys(this.memberInfo).length > 0) {
+                if (this.memberInfo && this.memberInfo.tradePassword) {
                     return '●●●●●●';
                 } else {
                     return '';

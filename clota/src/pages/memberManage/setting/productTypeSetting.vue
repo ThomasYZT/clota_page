@@ -100,7 +100,7 @@
             },
             /**
              * 删除产品类别
-             * @param rowData
+             * @param{Object} rowData
              */
             delProductType (rowData) {
                 this.currentData = rowData;

@@ -49,7 +49,7 @@
             return {
                 // 当前卡类型对应的组件
                 currentCardType : '',
-                selectedCard : {}
+                selectedCard : {},
             };
         },
         methods : {

@@ -15,7 +15,7 @@
         </i-col>
         <i-col class="split-class">
             <span class="key-label">手机号：</span>
-            <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
+            <span class="value-label">{{memberInfo.phoneNum | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
             <span class="key-label">性别：</span>

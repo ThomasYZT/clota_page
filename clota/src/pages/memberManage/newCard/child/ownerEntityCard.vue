@@ -23,10 +23,10 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <template v-if="scope.row.mainCard">
-                     {{scope.row.custName | contentFilter}}{{$t('（主卡）')}}
+                     {{scope.row.custName | contentFilter}}{{$t('bracketSetting',{ content : this.$t('mainCard') })}}
                     </template>
                     <template v-else>
-                        {{scope.row.custName | contentFilter}}{{$t('（副卡）')}}
+                        {{scope.row.custName | contentFilter}}{{$t('bracketSetting',{ content : this.$t('viceCard') })}}
                     </template>
                 </template>
             </el-table-column>
@@ -39,7 +39,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li :class="{ disabled : !cardReadEnabled }" @click="readEntiryCard(scope.$index)">{{$t('读取实体卡')}}</li>
+                        <li :class="{ disabled : !cardReadEnabled }" @click="readEntiryCard(scope.$index)">{{$t('readEntityCard')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -146,7 +146,7 @@
                     //校验当前页面是否已经使用了读取的卡
                     for (let i = 0,j = this.tableData.length; i < j; i++) {
                         if (this.tableData[i]['tpNo'] === res) {
-                            this.$Message.warning('实体卡已使用，请更换其它卡');
+                            this.$Message.warning(this.$t('entityCardUsedErr'));
                             return;
                         }
                     }
@@ -155,7 +155,7 @@
                         this.tableData[index]['tpCardNo'] = item.faceNum;
                     }).catch((err) => {
                         if (err && err === 'M026') {
-                            this.$Message.warning('实体卡已使用，请更换其它卡');
+                            this.$Message.warning(this.$t('entityCardUsedErr'));
                         } else {
                             this.$Message.warning(this.$t('noMatchCard'));
                         }
@@ -172,7 +172,8 @@
             findByPhysicalNum (physicalNum) {
                 return new Promise((resolve,reject) => {
                     ajax.post('findByPhysicalNum',{
-                        physicalNum : physicalNum
+                        physicalNum : physicalNum,
+                        entityCardType : 'common'
                     }).then((res) => {
                         if (res.success) {
                             if (res.data && Object.keys(res.data).length > 0) {
