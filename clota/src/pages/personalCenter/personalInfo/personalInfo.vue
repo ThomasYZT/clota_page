@@ -63,9 +63,13 @@
              */
             getAccountInfo() {
                 ajax.post('getProfile').then((res) => {
-                    console.log(res)
-                    this.accountInfo = res.data;
-                    this.employeeType = res.data.employeeType;
+                    if (res.success) {
+                        this.accountInfo = res.data ? res.data : {};
+                        this.employeeType = res.data ? res.data.employeeType : '';
+                    } else {
+                        this.accountInfo = {};
+                        this.employeeType = '';
+                    }
                 })
             }
         }
