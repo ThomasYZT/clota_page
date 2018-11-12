@@ -32,7 +32,34 @@
             </div>
         </div>
         <div class="btn-area">
-            <x-button>{{$t('recharge')}}</x-button>
+            <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
+        </div>
+
+        <div class="pay-form">
+            <form ref="payForm" :action="payFormData.payWebUrl" method="post">
+                <!-- 币种 -->
+                <!--<input type="text" name="CurrencyCode" v-model="payFormData.currencyCode">-->
+                <!-- 交易类型 -->
+                <input type="text" name="TxnType" v-model="payFormData.txnType">
+                <!-- 合作方id -->
+                <input type="text" name="PartnerID" v-model="payFormData.partnerId">
+                <!-- 支付方式id -->
+                <input type="text" name="ChannelID" v-model="payFormData.channelId">
+                <!-- 商户流水号 -->
+                <input type="text" name="MerchantTxnNo" v-model="payFormData.merchantTxnNo">
+                <!-- 商户id -->
+                <input type="text" name="MerchantID" v-model="payFormData.merchantId">
+                <!-- 支付说明 -->
+                <input type="text" name="TxnAmt" v-model="payFormData.txnAmt">
+                <!-- 支付结果回调地址 -->
+                <input type="text" name="RedirectUrl" v-model="payFormData.redirectUrl">
+                <!-- 交易说明 -->
+                <input type="text" name="TxnShortDesc" v-model="payFormData.txnShortDesc">
+                <!-- 签名串 -->
+                <input type="text" name="Sign" v-model="payFormData.sign">
+                <!-- 异步通知url -->
+                <input type="text" name="NotifyUrl" v-model="payFormData.notifyUrl">
+            </form>
         </div>
     </div>
 </template>
@@ -43,10 +70,10 @@
     import common from '@/assets/js/common';
     export default {
         mixins : [lifeCycle],
-        data() {
+        data () {
             return {
                 //可选中支付方式
-                commonList: [
+                commonList : [
                     {
                         icon : require('../../../assets/images/icon-wx-pay.svg'),
                         key : 'wx',
@@ -65,14 +92,29 @@
                 //充值金额
                 rechargeMoney : '',
                 //账户类型id
-                accountTypeId  : '',
+                accountTypeId : '',
                 //赠送金额
                 donateMoney : 0,
                 //账户名称
-                accountTypeName : ''
-            }
+                accountTypeName : '',
+                //支付接口参数对象
+                payFormData : {
+                    payWebUrl : '',
+                    txnType : '',
+                    partnerId : '',
+                    channelID : '',
+                    merchantTxnNo : '',
+                    merchantId : '',
+                    txnAmt : '',
+                    redirectUrl : '',
+                    txnShortDesc : '',
+                    sign : '',
+                    currencyCode : '',
+                    notifyUrl : ''
+                }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取实际到账金额
              */
@@ -82,10 +124,10 @@
                         accountTypeId : this.accountTypeId,
                         amount : this.rechargeMoney,
                     }).then(res => {
-                        if(res.success){
-                            this.actualMoney =  res.data ? res.data.actMoney : '';
-                            this.donateMoney =  res.data ? res.data.gift : '';
-                        }else{
+                        if (res.success) {
+                            this.actualMoney = res.data ? res.data.actMoney : '';
+                            this.donateMoney = res.data ? res.data.gift : '';
+                        } else {
                             this.actualMoney = '';
                             this.donateMoney = '';
                         }
@@ -97,13 +139,13 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
+                if (params && Object.keys(params).length > 0) {
                     this.accountTypeId = params.accountTypeId;
                     this.accountTypeName = params.accountName;
                     this.setTitle();
-                }else{
+                } else {
                     this.$router.push({
-                        name: 'account'
+                        name : 'account'
                     });
                 }
             },
@@ -121,10 +163,10 @@
                     common.validateMoney(this.rechargeMoney).then(() => {
                         resolve();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            this.$vux.toast.text(this.$t('errorMaxLength',{field : this.$t('rechargeNum'),length : 10}));
-                        }else{
-                            this.$vux.toast.text(this.$t(err,{field : this.$t('rechargeNum')}));
+                        if (err === 'errorMaxLength') {
+                            this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('rechargeNum'),length : 10 }));
+                        } else {
+                            this.$vux.toast.text(this.$t(err,{ field : this.$t('rechargeNum') }));
                         }
                         reject();
                     });
@@ -134,7 +176,67 @@
              * 设置标题
              */
             setTitle () {
-                document.title = this.$t('rechartAccount',{'account' : this.accountTypeName });
+                document.title = this.$t('rechartAccount',{ 'account' : this.accountTypeName });
+            },
+            /**
+             * 充值
+             */
+            recharge () {
+                if ( this.rechargeMoney ) {
+                    ajax.post('getPayPageForMobile', {
+                        bizScene : 'member',
+                        bizType : 'recharge',
+                        bizId : this.$store.state.cardInfo.id,
+                        channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
+                        txnAmt : this.rechargeMoney,
+                        memberLevelId : this.$store.state.cardInfo.levelId
+                    }).then(res => {
+                        this.payFormData = res.data ? res.data : {
+                            payWebUrl : '',
+                            txnType : '',
+                            partnerId : '',
+                            channelID : '',
+                            merchantTxnNo : '',
+                            merchantId : '',
+                            txnAmt : '',
+                            redirectUrl : '',
+                            txnShortDesc : '',
+                            sign : '',
+                            currencyCode : '',
+                            notifyUrl : ''
+                        };
+                        if (this.isWeixin()) {
+                            //微信环境内
+                            if ( history.state.key !== 1) {
+                                let newUrl = 'static/test.html?payFormData=' + JSON.stringify(this.payFormData);
+                                history.pushState({key : 1},'账户充值',newUrl)
+                            } else {
+                                let newUrl = 'test.html?payFormData=' + JSON.stringify(this.payFormData);
+                                history.replaceState({key : 1},'账户充值',newUrl)
+                            }
+                        } else {
+                            //非微信环境内 直接提交表单
+                            this.$nextTick(() => {
+                                this.$refs.payForm.submit();
+                            });
+                        }
+                    })
+                } else {
+                    this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('rechargeNum') }));
+                }
+
+            },
+            /**
+             * 判断是否在微信浏览器
+             */
+            isWeixin () {
+                let ua = navigator.userAgent.toLowerCase();
+                let isWeixin = ua.indexOf('micromessenger') != -1;
+                if (isWeixin) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         },
         mounted () {
@@ -142,7 +244,7 @@
                 this.$refs.money.focus();
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -270,6 +372,10 @@
                 border-radius: 100px;
                 letter-spacing: 2px;
             }
+        }
+
+        .pay-form {
+            display: none;
         }
     }
 </style>

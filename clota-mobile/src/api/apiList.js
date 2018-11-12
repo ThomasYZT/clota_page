@@ -52,7 +52,6 @@ const apiList = {
     getWxConfig : '/wechat/mp/getConfig',
     //上传头像
     uploadBase64File : '/uploadBase64File',
-
     //查询商品列表
     queryPagedGoods : '/external/memberMall/queryPagedGoods',
     //查询商品信息
@@ -69,6 +68,14 @@ const apiList = {
     activationMemberCard : '/external/member/activationMemberCard',
     //根据卡面号及密码查询实体卡
     queryEntityCardByFaceNumAndPassword : '/external/memberInfo/queryEntityCardByFaceNumAndPassword',
+    //获取会员卡及会员详情
+    queryMemberCardDetail : '/external/memberInfo/queryMemberCardDetail',
+    //获取手机网页支付信息
+    getPayPageForMobile : '/external/pay/getPayPageForMobile',
+    //储值账户充值
+    rechargeAccount : '/external/memberAccount/rechargeAccount',
+    //查询消费结果更新业务
+    queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz'
 };
 
 export default apiList;

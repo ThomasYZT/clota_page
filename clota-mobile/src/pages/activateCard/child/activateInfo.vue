@@ -80,6 +80,7 @@
             <div>
                 <popup-picker :title="$t('sex')"
                               :data="sexList"
+                              show-name
                               v-model="formData.gender"
                               class="c-input"
                               :placeholder="$t('pleaseChoose')"></popup-picker>
@@ -95,6 +96,7 @@
 
 <script>
     import ajax from '../../../api/index';
+    import { genderEnum } from '@/assets/js/constVariable.js';
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
     import lifeCycleMixins from '../../../mixins/lifeCycleMixins';
@@ -103,6 +105,22 @@
         mixins : [lifeCycleMixins],
         data () {
             return {
+                //页面计时器
+                timer : null,
+                //倒计时间
+                countDown : null,
+                //是否获取验证码
+                isGetCode : false,
+                //是否显示日期选择器
+                isShowDate : false,
+                //实体卡信息
+                cardInfo : {},
+                //性别列表数据
+                sexList : [genderEnum.map(item => ({ name : this.$t(item.name),value : item.desc }))],
+                //证件类型列表数据
+                idTypeList : [],
+                //微信openId
+                openId : '',
                 //表单数据
                 formData : {
                     //企业名称
@@ -118,36 +136,16 @@
                     //证件类型
                     certificationType : [],
                     //证件号码
-                    identifyCard : '',
+                    idCardNumber : '',
                     //验证码
                     code : '',
-                    //物理卡号
-                    tpNo : this.cardInfo.physicalNum,
-                    //会员卡类型id
-                    cardTypeId : this.cardInfo.cardTypeId,
-                    //卡级别id
-                    levelId : this.cardInfo.cardLevelId,
                     //公司编码
                     companyCode : this.$store.state.companyCode,
                     //微信openid
-                    wxOpenId : this.openId
+                    wxOpenId : '',
+                    //实体卡id
+                    id : ''
                 },
-                //页面计时器
-                timer : null,
-                //倒计时间
-                countDown : null,
-                //是否获取验证码
-                isGetCode : false,
-                //是否显示日期选择器
-                isShowDate : false,
-                //实体卡信息
-                cardInfo : {},
-                //性别列表数据
-                sexList : [[this.$t('male'), this.$t('female')]],
-                //证件类型列表数据
-                idTypeList : [],
-                //微信openId
-                openId : '',
             };
         },
         computed : {
@@ -182,7 +180,7 @@
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
                             phoneNum : this.formData.phoneNum,
-                            type : 'member_login',
+                            type : 'member_register',
                             companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
@@ -222,15 +220,18 @@
              */
             validate () {
                 //企业名称,仅企业卡需要校验
-                if (/*this.cardInfo.cardTypeId === '3' &&*/ !validator.isEmpty(this.formData.companyName)) {
-                    if (!validator.isInLengthRange(this.formData.companyName,0,50)) {
-                        this.$vux.toast.text(this.$t('maxLengthErr', { field : this.$t('companyName'), length : 50 }));
+                if (this.cardInfo.cardTypeId === '3') {
+                    if (!validator.isEmpty(this.formData.companyName)) {
+                        if (!validator.isInLengthRange(this.formData.companyName,0,50)) {
+                            this.$vux.toast.text(this.$t('maxLengthErr', { field : this.$t('companyName'), length : 50 }));
+                            return;
+                        }
+                    } else {
+                        this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('companyName') }));
                         return;
                     }
-                } else {
-                    this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('companyName') }));
-                    return;
                 }
+
 
                 //姓名不为空
                 if (!validator.isEmpty(this.formData.custName)) {
@@ -289,6 +290,12 @@
                     return;
                 }
 
+                //实体卡id
+                if (validator.isEmpty(this.formData.id)) {
+                    this.$vux.toast.text();
+                    return;
+                }
+
                 this.activationMemberCard();
             },
             /**
@@ -299,7 +306,16 @@
                 this.formData.certificationType = this.formData.certificationType[0];
                 ajax.post('activationMemberCard', this.formData).then(res => {
                     if (res.success) {
-
+                        //存储token信息
+                        localStorage.setItem('token', res.data.token);
+                        //存储用户信息
+                        localStorage.setItem('userInfo', JSON.stringify(res.data));
+                        //更新用户信息
+                        this.$store.commit('updateUserInfo');
+                        //提示注册成功
+                        this.$vux.toast.text(this.$t('registSuccess'));
+                        //自动登陆跳转到主页
+                        this.$router.replace({ name : 'home' });
                     } else {
                         this.formData.gender = [this.formData.gender];
                         this.formData.certificationType = [this.formData.certificationType];
@@ -312,13 +328,17 @@
              * @param params
              */
             getParams (params) {
-                if (params && params.openId && params.cardInfo && Object.keys(params.cardInfo).length > 0) {
+                if (params /*&& params.openId*/ && params.cardInfo) {
                     this.cardInfo = params.cardInfo;
                     this.openId = params.openId;
+                    //实体卡id
+                    this.formData.id = this.cardInfo.id;
+                    //微信openId
+                    this.formData.wxOpenId = this.openId;
                 } else {
-                    // this.$router.push({
-                    //     name : 'activateCard'
-                    // })
+                    this.$router.push({
+                        name : 'activateCard'
+                    });
                 }
                 this.queryDocument();
             },
@@ -338,7 +358,21 @@
                         this.idTypeList = [];
                     }
                 });
-            }
+            },
+            /**
+             * 处理登录数据
+             * @param res
+             */
+            dataToLogin (res) {
+                //存储token信息
+                localStorage.setItem('token', res.data.token);
+                //存储用户信息
+                localStorage.setItem('userInfo', JSON.stringify(res.data));
+                //更新用户信息
+                this.$store.commit('updateUserInfo');
+                //登陆跳转到主页
+                this.$router.push({ name : 'home' });
+            },
         }
     };
 </script>

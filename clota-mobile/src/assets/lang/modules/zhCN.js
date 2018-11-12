@@ -215,7 +215,10 @@ export default {
     'companyName' : '企业名称',
     'activateFailure' : '激活失败',
     'memberCardType' : '会员卡类型',
-    'memberCardNo' : '会员卡编号'
+    'memberCardNo' : '会员卡编号',
+    'notFoundCardId' : '获取不到实体卡id',
+    'memberNo' : '会员编号',
+    'memberCardValidTime' : '会员卡有效期'
 
 
 };

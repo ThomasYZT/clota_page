@@ -14,6 +14,7 @@
         </div>
         <div class="cell-list">
             <group>
+                <!-- 性别 -->
                 <x-input
                     :title="$t('name')"
                     text-align="right"
@@ -21,25 +22,29 @@
                     v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>
+                <!-- 性别 -->
                 <popup-picker
                     :title="$t('sex')"
                     show-name
                     v-model.trim="formData.gender"
                     :data="[genderEnum]">
                 </popup-picker>
+                <!-- 电话号码 -->
                 <cell
                     :title="$t('phone')"
                     is-link
-                    :value="formData.phoneNum"
-                    :link="{name : 'changeMobile',params : {mobile : formData.phoneNum}}">
+                    :value="formData.memberInfo.phoneNum"
+                    :link="{name : 'changeMobile',params : {mobile : formData.memberInfo.phoneNum}}">
                 </cell>
+                <!-- 交易密码 -->
                 <cell
                     class="trade-pass"
                     :title="$t('tradePass')"
                     is-link
                     value="●●●●●●"
-                    :link="{name : 'changeTradePass',params : {mobile : formData.phoneNum}}">
+                    :link="{name : 'changeTradePass',params : {mobile : formData.memberInfo.phoneNum}}">
                 </cell>
+                <!-- 证件号码 -->
                 <cell
                     :title="$t('IdNumber')"
                     is-link
@@ -56,30 +61,55 @@
                     <!--disabled-->
                     <!--:value="formData.alipayAcct">-->
                 <!--</cell>-->
-                <x-input
-                    :title="$t('qq')"
-                    text-align="right"
-                    :show-clear="false"
-                    v-model.trim="formData.qq"
-                    placeholder-align="right">
-                </x-input>
-                <cell
-                    :title="$t('growth')"
-                    disabled
-                    class="padding-right"
-                    :value="formData.growth">
-                </cell>
+                <!-- qq号码 -->
+                <!--<x-input-->
+                    <!--:title="$t('qq')"-->
+                    <!--text-align="right"-->
+                    <!--:show-clear="false"-->
+                    <!--v-model.trim="formData.memberInfo.qq"-->
+                    <!--placeholder-align="right">-->
+                <!--</x-input>-->
+                <!-- 成长值 -->
+                <!--<cell-->
+                    <!--:title="$t('growth')"-->
+                    <!--disabled-->
+                    <!--class="padding-right"-->
+                    <!--:value="formData.growth">-->
+                <!--</cell>-->
+                <!-- 实体卡卡号 -->
                 <cell
                     :title="$t('entityCardId')"
                     disabled
                     class="padding-right"
-                    :value="formData.tpNo">
+                    :value="formData.tpCardNo">
                 </cell>
+                <!-- 会员卡类型 -->
+                <cell
+                    :title="$t('memberCardType')"
+                    disabled
+                    class="padding-right"
+                    :value="formData.typeName">
+                </cell>
+                <!-- 会员卡有效期 -->
+                <cell
+                    :title="$t('memberCardValidTime')"
+                    disabled
+                    class="padding-right valid-time"
+                    :value="validTime">
+                </cell>
+                <!-- 会员编号 -->
+                <cell
+                    :title="$t('memberNo')"
+                    disabled
+                    class="padding-right"
+                    :value="formData.memberInfo.id">
+                </cell>
+                <!-- 地址 -->
                 <x-input
                     :title="$t('address')"
                     text-align="right"
                     :show-clear="false"
-                    v-model.trim="formData.homeAddr"
+                    v-model.trim="formData.memberInfo.homeAddr"
                     placeholder-align="right">
                 </x-input>
             </group>
@@ -108,8 +138,14 @@
                     gender : ['0'],
                     idCardNumber : '',
                     certificationTypeName : '',
-                    homeAddr : '',
                     emailAddr : '',
+                    memberInfo : {
+                        homeAddr : '',
+                        qq : ''
+                    },
+                    effDate : '',
+                    expDate : ''
+
                 }
             };
         },
@@ -118,8 +154,8 @@
              * 获取个人信息
              */
             getMemberDetail () {
-                ajax.post('getMemberDetail',{
-                    memberId : this.userInfo.memberId
+                ajax.post('queryMemberCardDetail',{
+                    cardId : this.userInfo.cardId
                 }).then(res => {
                     if (res.success) {
                         this.$set(this,'formData',res.data ? Object.assign(this.formData,{
@@ -148,9 +184,9 @@
                         id : this.userInfo.memberId,
                         custName : this.formData.name,
                         gender : this.formData.gender[0],
-                        qq : this.formData.qq,
-                        emailAddr : this.formData.emailAddr,
-                        homeAddr : this.formData.homeAddr,
+                        qq : this.formData.memberInfo.qq,
+                        emailAddr : this.formData.memberInfo.emailAddr,
+                        homeAddr : this.formData.memberInfo.homeAddr,
                     }).then(res => {
                         if (res.success) {
                             this.$vux.toast.show({
@@ -393,14 +429,26 @@
             }),
             //证件号码
             idNum () {
-                if (this.formData && this.formData.idCardNumber) {
+                if (this.formData && this.formData.memberInfo) {
                     if (this.formData.certificationTypeName) {
-                        return this.formData.idCardNumber + '(' + this.formData.certificationTypeName + ')';
+                        return this.formData.memberInfo.idCardNumber + '(' + this.formData.certificationTypeName + ')';
                     } else {
-                        return this.formData.idCardNumber;
+                        return this.formData.memberInfo.idCardNumber;
                     }
                 } else {
                     return '';
+                }
+            },
+            //会员卡有效期
+            validTime () {
+                if (this.formData && this.formData.effDate && this.formData.expDate) {
+                    let startTime,
+                        endTime;
+                    startTime = this.formData.effDate.split(' ')[0];
+                    endTime = this.formData.expDate.split(' ')[0];
+                    return startTime + ' - ' + endTime;
+                } else {
+                    return '-'
                 }
             }
         }
@@ -468,6 +516,10 @@
 
             .padding-right /deep/ .weui-cell__ft{
                 padding-right: 15px;
+            }
+
+            .valid-time /deep/ .vux-x-input-placeholder-right{
+                font-size: 10px;
             }
 
             /deep/ .vux-x-input-placeholder-right{
