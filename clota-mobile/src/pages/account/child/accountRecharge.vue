@@ -35,32 +35,6 @@
             <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
         </div>
 
-        <div class="pay-form">
-            <form ref="payForm" :action="payFormData.payWebUrl" method="post">
-                <!-- 币种 -->
-                <!--<input type="text" name="CurrencyCode" v-model="payFormData.currencyCode">-->
-                <!-- 交易类型 -->
-                <input type="text" name="TxnType" v-model="payFormData.txnType">
-                <!-- 合作方id -->
-                <input type="text" name="PartnerID" v-model="payFormData.partnerId">
-                <!-- 支付方式id -->
-                <input type="text" name="ChannelID" v-model="payFormData.channelId">
-                <!-- 商户流水号 -->
-                <input type="text" name="MerchantTxnNo" v-model="payFormData.merchantTxnNo">
-                <!-- 商户id -->
-                <input type="text" name="MerchantID" v-model="payFormData.merchantId">
-                <!-- 支付说明 -->
-                <input type="text" name="TxnAmt" v-model="payFormData.txnAmt">
-                <!-- 支付结果回调地址 -->
-                <input type="text" name="RedirectUrl" v-model="payFormData.redirectUrl">
-                <!-- 交易说明 -->
-                <input type="text" name="TxnShortDesc" v-model="payFormData.txnShortDesc">
-                <!-- 签名串 -->
-                <input type="text" name="Sign" v-model="payFormData.sign">
-                <!-- 异步通知url -->
-                <input type="text" name="NotifyUrl" v-model="payFormData.notifyUrl">
-            </form>
-        </div>
     </div>
 </template>
 
@@ -68,6 +42,7 @@
     import ajax from '@/api/index.js';
     import lifeCycle from '@/mixins/lifeCycleMixins.js';
     import common from '@/assets/js/common';
+    import {mapGetters} from 'vuex';
     export default {
         mixins : [lifeCycle],
         data () {
@@ -90,7 +65,7 @@
                 //实际到账金额
                 actualMoney : '',
                 //充值金额
-                rechargeMoney : '',
+                rechargeMoney : '0.01',
                 //账户类型id
                 accountTypeId : '',
                 //赠送金额
@@ -98,21 +73,14 @@
                 //账户名称
                 accountTypeName : '',
                 //支付接口参数对象
-                payFormData : {
-                    payWebUrl : '',
-                    txnType : '',
-                    partnerId : '',
-                    channelID : '',
-                    merchantTxnNo : '',
-                    merchantId : '',
-                    txnAmt : '',
-                    redirectUrl : '',
-                    txnShortDesc : '',
-                    sign : '',
-                    currencyCode : '',
-                    notifyUrl : ''
-                }
+                payFormData : {}
             };
+        },
+        computed : {
+            ...mapGetters([
+                'userInfo',
+                'cardInfo'
+            ])
         },
         methods : {
             /**
@@ -142,6 +110,7 @@
                 if (params && Object.keys(params).length > 0) {
                     this.accountTypeId = params.accountTypeId;
                     this.accountTypeName = params.accountName;
+                    this.accounId = params.accounId
                     this.setTitle();
                 } else {
                     this.$router.push({
@@ -183,48 +152,16 @@
              */
             recharge () {
                 if ( this.rechargeMoney ) {
-                    ajax.post('getPayPageForMobile', {
-                        bizScene : 'member',
-                        bizType : 'recharge',
-                        bizId : this.$store.state.cardInfo.id,
-                        channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
-                        txnAmt : this.rechargeMoney,
-                        memberLevelId : this.$store.state.cardInfo.levelId
-                    }).then(res => {
-                        this.payFormData = res.data ? res.data : {
-                            payWebUrl : '',
-                            txnType : '',
-                            partnerId : '',
-                            channelID : '',
-                            merchantTxnNo : '',
-                            merchantId : '',
-                            txnAmt : '',
-                            redirectUrl : '',
-                            txnShortDesc : '',
-                            sign : '',
-                            currencyCode : '',
-                            notifyUrl : ''
-                        };
-                        if (this.isWeixin()) {
-                            //微信环境内
-                            if ( history.state.key !== 1) {
-                                let newUrl = 'static/pay.html?payFormData=' + JSON.stringify(this.payFormData);
-                                history.pushState({key : 1},'账户充值',newUrl)
-                            } else {
-                                let newUrl = 'pay.html?payFormData=' + JSON.stringify(this.payFormData);
-                                history.replaceState({key : 1},'账户充值',newUrl)
-                            }
-                        } else {
-                            //非微信环境内 直接提交表单
-                            this.$nextTick(() => {
-                                this.$refs.payForm.submit();
-                            });
-                        }
-                    })
+                    if (this.payType === 'wx' && this.isWeixin()) {
+                        //微信内微信支付专用
+                        this.getPayPageForOfficialAccount();
+                    } else {
+                        //微信内支付宝支付、微信外支付宝、微信支付
+                        this.getPayPageForMobile();
+                    }
                 } else {
                     this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('rechargeNum') }));
                 }
-
             },
             /**
              * 判断是否在微信浏览器
@@ -237,6 +174,69 @@
                 } else {
                     return false;
                 }
+            },
+            /**
+             * 获取手机网页支付信息
+             */
+            getPayPageForMobile () {
+                ajax.post('getPayPageForMobile', {
+                    bizScene : 'member',
+                    bizType : 'recharge',
+                    bizId : this.$store.state.cardInfo.id,
+                    channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
+                    txnAmt : this.rechargeMoney,
+                    memberLevelId : this.$store.state.cardInfo.levelId
+                }).then(res => {
+                    this.payFormData = res.data ? res.data : {};
+
+                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                    location.href = location.origin + '/#/h5Pay?memberId=' + this.userInfo.memberId +
+                        '&cardId=' + this.cardInfo.id +
+                        '&accounId=' + this.accounId +
+                        '&paymentTypeId=' + this.payType +
+                        '&accountTypeId=' + this.accountTypeId +
+                        '&amount=' + this.payFormData.txnAmt +
+                        '&txnType=' + this.payFormData.txnType +
+                        '&partnerId=' + this.payFormData.partnerId +
+                        '&channelId=' + this.payFormData.channelId +
+                        '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
+                        '&merchantId=' + this.payFormData.merchantId +
+                        '&txnAmt=' + this.payFormData.txnAmt +
+                        '&redirectUrl=' + escape(this.payFormData.redirectUrl) +
+                        '&txnShortDesc=' + this.payFormData.txnShortDesc +
+                        '&sign=' + this.payFormData.sign +
+                        '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
+                        '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
+                        '&transactionId=' + this.payFormData.transactionId;
+                });
+            },
+            /**
+             * 微信内微信支付获取支付信息
+             */
+            getPayPageForOfficialAccount () {
+                ajax.post('getPayPageForOfficialAccount', {
+                    bizScene : 'member',
+                    bizType : 'recharge',
+                    bizId : this.$store.state.cardInfo.id,
+                    channelId : 'weixin',
+                    txnAmt : this.rechargeMoney,
+                    memberLevelId : this.$store.state.cardInfo.levelId
+                }).then(res => {
+                    this.payFormData = res.data ? res.data : {};
+                    //设置会员id
+                    this.payFormData.memberId = this.userInfo.memberId;
+                    this.payFormData.cardId = this.cardInfo.id;
+                    this.payFormData.accounId = this.accounId;
+                    this.payFormData.paymentTypeId = this.payType;
+                    this.payFormData.accountTypeId = this.accountTypeId;
+                    this.payFormData.remark = '';
+                    this.payFormData.amount = this.payFormData.txnAmt;
+
+                    //console.log(this.payFormData);
+
+                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData))
+                    location.href = location.origin + '/#/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                })
             }
         },
         mounted () {

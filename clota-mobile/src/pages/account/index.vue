@@ -121,6 +121,7 @@
                     params : {
                         accountTypeId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountDefineId : '',
                         accountName : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountName : '',
+                        accounId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].id : ''
                     }
                 });
             },

@@ -160,42 +160,48 @@
 
         //业主卡样式
         &.owner-card {
+            color: #fff;
             background-image: url("../../../assets/images/owner-card.png");
 
             .card-level {
-                background-color: $color_fff;
+                background-color: rgba(220, 220, 220, .2);
             }
         }
         //个人卡样式
         &.personal-card {
+            color: #fff;
             &.one-level {
                 background-image: url("../../../assets/images/personal-card-lv1.png");
                 .card-level{
-                    background: #A1A5BA;
+                    background: rgba(220, 220, 220, .2);
                 }
             }
             &.two-level {
                 background-image: url("../../../assets/images/personal-card-lv2.png");
                 .card-level{
-                    background: #ECBB3F;
+                    background: rgba(220, 220, 220, .2);
                 }
             }
             &.three-level {
                 background-image: url("../../../assets/images/personal-card-lv3.png");
                 .card-level{
-                    background: #E4C3AC;
+                    background: rgba(220, 220, 220, .2);
                 }
             }
             &.four-level {
+                color: #F0D890;
                 background-image: url("../../../assets/images/personal-card-lv4.png");
                 .card-level{
-                    background: #E4C3AC;
+                    background: rgba(220, 220, 220, .2);
                 }
             }
         }
         //企业卡样式
         &.company-card {
-
+            color: #fff;
+            .card-level {
+                background: rgba(220, 220, 220, .2);
+            }
         }
 
         .card-content {
@@ -261,12 +267,14 @@
                         .card-level {
                             margin-top: 4px;
                             padding: 0 15px;
-                            min-width: 83.5px;
+                            width: auto;
+                            min-width: 50px;
                             height: 24px;
                             display: inline-block;
                             border-radius: 15px;
                             font-size: 8px;
                             line-height: 24px;
+                            text-align: center;
                             i {
                                 font-size: 8px;
                                 opacity: 1;

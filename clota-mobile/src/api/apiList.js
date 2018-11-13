@@ -72,10 +72,14 @@ const apiList = {
     queryMemberCardDetail : '/external/memberInfo/queryMemberCardDetail',
     //获取手机网页支付信息
     getPayPageForMobile : '/external/pay/getPayPageForMobile',
+    //微信内微信支付获取支付信息
+    getPayPageForOfficialAccount : '/external/pay/getPayPageForOfficialAccount',
     //储值账户充值
     rechargeAccount : '/external/memberAccount/rechargeAccount',
     //查询消费结果更新业务
-    queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz'
+    queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz',
+    //支付结果同步结果
+    syncPayTransactionResult : '/external/pay/syncPayTransactionResult'
 };
 
 export default apiList;

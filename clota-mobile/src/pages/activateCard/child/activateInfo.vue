@@ -313,7 +313,10 @@
                         //更新用户信息
                         this.$store.commit('updateUserInfo');
                         //提示注册成功
-                        this.$vux.toast.text(this.$t('registSuccess'));
+                        this.$vux.toast.show({
+                            type : 'success',
+                            text : this.$t('registSuccess')
+                        });
                         //自动登陆跳转到主页
                         this.$router.replace({ name : 'home' });
                     } else {
@@ -335,12 +338,12 @@
                     this.formData.id = this.cardInfo.id;
                     //微信openId
                     this.formData.wxOpenId = this.openId;
+                    this.queryDocument();
                 } else {
                     this.$router.push({
                         name : 'activateCard'
                     });
                 }
-                this.queryDocument();
             },
             /**
              * 查询所有证件类型

@@ -28,7 +28,7 @@ Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
     //判断是否保存了用户信息和token，如果没有保存需要重新登录
-    if (to.name === 'mobileLogin' || to.name === 'mobileRegister' || to.name === 'activateCard' || to.name === 'activateInfo') {
+    if (to.name === 'mobileLogin' || to.name === 'activateCard' || to.name === 'activateInfo' || to.name === 'h5Pay'/* || to.name === 'mobileRegister'*/) {
         next();
     } else {
         //获取保存到本地的用户信息

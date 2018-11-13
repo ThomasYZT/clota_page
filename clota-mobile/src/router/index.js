@@ -263,6 +263,24 @@ const createRouter = () => new Router({
             meta : {
                 title : 'memberCardActivating'
             }
+        },
+        //h5支付跳转页
+        {
+            path : '/h5Pay',
+            name : 'h5Pay',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/h5Pay/index.vue'),
+            meta : {
+                title : 'h5Pay'
+            }
+        },
+        //支付结果页面
+        {
+            path : '/payStatus',
+            name : 'payStatus',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/h5Pay/payStatus.vue'),
+            meta : {
+                title : 'payStatus'
+            }
         }
     ],
     scrollBehaviorHandler (to,from,savedPosition) {

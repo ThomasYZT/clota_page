@@ -201,18 +201,17 @@
                                 this.rightInfo.desc.push(rightInfoLocale[i]);
                             }
                         }
-                        console.log(rightInfoLocale)
+
                         let isNoData = true;
-                        rightInfoLocale.forEach(item => {
-                            if (item.isEnable) {
+                        for (let i = 0, len = rightInfoLocale.length; i < len; i++) {
+                            if (rightInfoLocale[i].isEnable) {
                                 isNoData = false;
+                                break;
                             }
-                        });
+                        }
                         this.isMemberRightNoData = isNoData;
 
-
-
-                        this.packageData(this.memberVos, productMap, this.storeVos)
+                        this.packageData(this.memberVos, productMap, this.storeVos);
                         //显示页面
                         this.isShow = true;
                     } else {

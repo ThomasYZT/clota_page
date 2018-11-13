@@ -218,7 +218,12 @@ export default {
     'memberCardNo' : '会员卡编号',
     'notFoundCardId' : '获取不到实体卡id',
     'memberNo' : '会员编号',
-    'memberCardValidTime' : '会员卡有效期'
+    'memberCardValidTime' : '会员卡有效期',
+    'h5Pay' : '支付',
+    'payStatus' : '支付结果',
+    'backToAccount' : '返回我的账户',
+    'paySuccess' : '支付成功',
+    'payFailure' : '支付失败'
 
 
 };
