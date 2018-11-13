@@ -16,33 +16,33 @@
 </template>
 
 <script>
-	export default {
-		data () {
-			return {
+    export default {
+        data () {
+            return {
                 formData : {
                     //支付方式
-                    payType : 'cash',
+                    payType : 'weixin',
                 }
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 将选择的支付方式传递给使用的组件
              */
-		    setPayType () {
-		        this.$emit('set-pay-type',this.formData.payType);
+            setPayType () {
+                this.$emit('set-pay-type',this.formData.payType);
             },
             /**
              * 支付方式改变
              */
             payTypeChange () {
-		        this.setPayType();
+                this.setPayType();
             }
         },
         created () {
             this.setPayType();
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

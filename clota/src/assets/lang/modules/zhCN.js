@@ -1646,7 +1646,7 @@ export default {
     'payField': '支付失败',
     'linkEntityCard': '绑定实体卡',
     'linkEntityCardSuc': '关联实体卡成功',
-    'memLinkedEntityCard': '会员{name}已关联实体卡',
+    'memLinkedEntityCard': '会员{name}已关联实体卡，不可再次关联',
     'homeInfo': '房产信息',
     'buyHomeTime': '购房日期',
     'sureToLossMemInfo': '是否确定挂失该会员卡',

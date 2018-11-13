@@ -84,7 +84,7 @@
         </div>
         <!--确认会员信息模态框-->
         <confirm-member-info v-model="showConfirmModal"
-                             @confirm-data="createMember">
+                             @confirm-data="confirmDataInfo">
             <Form :label-width="110">
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
@@ -113,11 +113,12 @@
                 </i-col>
             </Form>
         </confirm-member-info>
-
         <!--查询支付结果模态框-->
         <loop-for-pay-result v-model="payModalShow"
+                             ref="payResultModal"
                              :transaction-id="transctionId"
-                             @search-success="tipSuccess">
+                             @search-success="cancelOperate"
+                             @start-pay="createMember">
         </loop-for-pay-result>
     </div>
 </template>
@@ -151,7 +152,7 @@
                 tableData : [],
                 cardParam : {
                     // 收款方式
-                    payType : 'cash',
+                    payType : 'weixin',
                     qrCode : "",//扫码结果
                 },
                 //会员卡信息
@@ -272,36 +273,41 @@
             },
             /**
              * 确认用户信息成功，可以新开卡
+             * @param{String} qrCode 扫码枪扫码结果
              */
-            createMember () {
+            createMember (qrCode) {
                 ajax.post('batchOpenCards',{
                     entityCardInfo : JSON.stringify(this.tableData),
                     cardTypeId : this.cardInfo.cardTypeId,
                     cardLevelId : this.cardInfo.levelId,
                     channelType : this.cardParam.payType,
-                    qrCode : this.cardParam.qrCode,
+                    qrCode : qrCode,
                     txnAmt : this.entityCardTotalPrice,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('newBatchCard') }));
                         this.tableData = [];
+                        this.$refs.payResultModal.setStage('success');
+                        this.payModalShow = true;
                     } else if (res.code === 'P002') {
                         this.startSearchForPayResult({
                             ...(res.data ? res.data : {})
                         });
+                    } else if (res.code === 'P001') {
+                        if (this.payModalShow) {
+                            this.$refs.payResultModal.setStage('fail');
+                        } else {
+                            this.$Message.error(this.$t('payField'));
+                        }
                     } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('newBatchCard') }));
+                        if (this.payModalShow) {
+                            this.$refs.payResultModal.setStage('fail');
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('newBatchCard') }));
+                        }
                     }
                 }).finally(() => {
                     this.showConfirmModal = false;
                 });
-            },
-            /**
-             * 查询到支付成功
-             */
-            tipSuccess () {
-                this.$Message.success(this.$t('successTip',{ tip : this.$t('newBatchCard') }));
-                this.tableData = [];
             },
             /**
              * 开启查询支付结果
@@ -309,13 +315,26 @@
              */
             startSearchForPayResult ({ transctionId }) {
                 this.transctionId = transctionId;
-                this.payModalShow = true;
+                this.$refs.payResultModal.startSearchPayResult();
             },
             /**
              * 取消操作
              */
             cancelOperate () {
                 this.tableData = [];
+                this.cardParam.payType = 'weixin';
+            },
+            /**
+             * 确认填写的数据是否正确
+             */
+            confirmDataInfo () {
+                if (this.cardParam.payType === 'cash' || !this.entityCardTotalPrice) {
+                    this.createMember();
+                } else {
+                    this.$refs.payResultModal.setStage('scan');
+                    this.payModalShow = true;
+                    this.showConfirmModal = false;
+                }
             }
         }
     };

@@ -120,6 +120,9 @@
              * @param{Boolean} data  当前状态
              */
             changeValue (data) {
+                // if (data === false) {
+                //     this.$refs.formValidate.resetFields();
+                // }
                 this.$emit('input', data);
             },
             /**
@@ -129,7 +132,7 @@
             visibleChange (type) {
                 if (type === false) {
                     clearInterval(this.timer);
-                    this.$refs.formValidate.resetFields();
+                    this.formData.code = '';
                 }
             },
             /**
@@ -141,7 +144,7 @@
                     transactionId : this.transactionId
                 }).then(res => {
                     if (res.success && res.data === 'success') {
-                        // this.$emit('search-success');
+                        this.$emit('search-success');
                         this.stage = 'success';
                         clearInterval(this.timer);
                     } else if (res.data === 'fail') {

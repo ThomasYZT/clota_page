@@ -237,8 +237,8 @@
         <loop-for-pay-result v-model="payModalShow"
                              ref="payResultModal"
                              :transaction-id="transctionId"
-                             @start-pay="createMember"
-                             @search-success="tipSuccess">
+                             @search-success="cancelOperate"
+                             @start-pay="createMember">
         </loop-for-pay-result>
     </div>
 </template>
@@ -477,15 +477,24 @@
                         this.cancelOperate();
                     } else {
                         if (res.message === 'M008') {
+                            this.payModalShow = false;
                             this.$Message.error(this.$t('phoneExistCard'));// 手机号已被注册，请更换手机号
                         } else if (res.code === 'P002') {
                             this.startSearchForPayResult({
                                 ...(res.data ? res.data : {})
                             });
                         } else if (res.code === 'P001') {
-                            this.$Message.error(this.$t('payField'));
+                            if (this.payModalShow) {
+                                this.$refs.payResultModal.setStage('fail');
+                            } else {
+                                this.$Message.error(this.$t('payField'));
+                            }
                         } else {
-                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                            if (this.payModalShow) {
+                                this.$refs.payResultModal.setStage('fail');
+                            } else {
+                                this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                            }
                         }
                     }
                 }).finally(() => {
@@ -523,7 +532,7 @@
             },
             /**
              * 确认用户信息成功，可以新开卡
-             * @param qrCode 扫码枪扫码结果
+             * @param{String} qrCode 扫码枪扫码结果
              */
             createMember (qrCode) {
                 let params = {
@@ -553,13 +562,6 @@
             startSearchForPayResult ({ transctionId }) {
                 this.transctionId = transctionId;
                 this.$refs.payResultModal.startSearchPayResult();
-            },
-            /**
-             * 查询到支付成功
-             */
-            tipSuccess () {
-                this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
-                this.$router.push({ name : 'memberInfo' });
             },
             /**
              * 确认填写的数据是否正确

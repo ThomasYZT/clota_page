@@ -8,7 +8,12 @@
         </i-col>
         <i-col class="split-class">
             <span class="key-label">{{$t('colonSetting',{ key : $t('entityCardFaceNum') })}}</span>
-            <span class="value-label">{{cardInfo.tpNo | contentFilter}}</span>
+            <span class="value-label">
+                {{cardInfo.tpNo | contentFilter}}
+                <span class="value-status" v-if="cardInfo.cardStatus === 'loss'">{{$t('bracketSetting',{ content : $t('已挂失') })}}</span>
+                <span class="value-status" v-if="cardInfo.cardStatus === 'return'">{{$t('bracketSetting',{ content : $t('已退卡') })}}</span>
+            </span>
+
         </i-col>
         <i-col class="split-class">
             <span class="key-label">{{$t('colonSetting',{ key : $t('memberTypes') })}}</span>
@@ -76,6 +81,10 @@
     @import '~@/assets/scss/base';
     .member-card-detail-info{
         padding-top: 10px;
+
+        .value-status{
+            color: $color_gray;
+        }
 
         .split-class{
             width: 33%;
