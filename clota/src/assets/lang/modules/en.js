@@ -1609,6 +1609,7 @@ export default {
     'tradeType.return_card': '退卡',
     'payType.weixin': '微信',
     'payType.alipay': '支付宝',
+    'payType.cash': '现金',
     'txnStatus.doing': '进行中',
     'txnStatus.success': '成功',
     'txnStatus.fai': '失败',

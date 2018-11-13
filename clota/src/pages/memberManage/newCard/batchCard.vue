@@ -56,18 +56,27 @@
                     </div>
                     <!--收款方式-->
                     <h3>{{$t('paymentMethod')}}</h3>
-                    <RadioGroup v-model="cardParam.payType">
-                        <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
-                        <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                        <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
-                        <Input v-model="cardParam.qrCode" type="text"/>
-                    </RadioGroup>
+                    <Form label-position="top" :model="cardParam">
+                        <Form-item prop="payType"
+                                   label="收款方式"
+                                   :rules="{ required : true,trigger : 'change' }" >
+                            <RadioGroup v-model="cardParam.payType">
+                                <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
+                                <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
+                                <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
+                            </RadioGroup>
+                        </Form-item>
+                    </Form>
                     <!--footer 按钮-->
                     <div class="content-footer">
                         <Button type="primary"
                                 :loading="loading"
                                 @click="batchOpenCard">
                             {{$t('submit')}}
+                        </Button>
+                        <Button type="ghost"
+                                @click="cancelOperate">
+                            {{$t("cancel")}}
                         </Button>
                     </div>
                 </template>
@@ -78,28 +87,28 @@
                              @confirm-data="createMember">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{cardTypeInfo.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardPrice')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardPrice') })">
                         {{cardTypeInfo.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('openCardNum')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('openCardNum') })">
                         {{tableData.length | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardAmount')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardAmount') })">
                         {{entityCardTotalPrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('payType')">
-                        {{cardParam.payType | contentFilter}}
+                    <FormItem :label="$t('colonSetting',{ key : $t('payType') })">
+                        {{$t('payType.' + cardParam.payType) | contentFilter}}
                     </FormItem>
                 </i-col>
             </Form>
@@ -302,6 +311,12 @@
                 this.transctionId = transctionId;
                 this.payModalShow = true;
             },
+            /**
+             * 取消操作
+             */
+            cancelOperate () {
+                this.tableData = [];
+            }
         }
     };
 </script>
@@ -317,7 +332,7 @@
         border-radius : 4px;
 
         h3 {
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 15px;
             text-align: center;
             font-size: $font_size_16px;
@@ -334,8 +349,14 @@
         }
 
         .content-footer {
-            margin: 20px 0 40px 0;
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
             text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
 
             /deep/ .ivu-btn {
                 width: 108px;
@@ -349,6 +370,8 @@
     .container {
         height: calc(100% - 70px);
         overflow: auto;
+        @include padding_place($height : 50px);
+
         .content-wrap {
             width: 850px;
             margin: 20px auto;

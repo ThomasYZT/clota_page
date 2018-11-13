@@ -70,6 +70,11 @@
     @import '~@/assets/scss/base';
     .confirm-member-info{
 
+        /deep/ .word-wrap{
+            @include overflow_tip();
+            @include block_outline($width : auto);
+        }
+
         /deep/ .ivu-form-item{
             margin-bottom: 0;
         }
@@ -81,12 +86,27 @@
 
             .ivu-form-item-content{
                 color: $color_666;
+                margin-left: 0!important;
             }
 
             .ivu-form-item-label{
                 padding-right: 5px;
-                padding-left: 0;
+                padding-left: 10px;
+                width: auto!important;
             }
+        }
+
+        /deep/ .card-title{
+            font-size: $font_size_14px;
+            color: $color_000;
+            clear: both;
+            padding: 10px 0 5px 10px;
+        }
+
+        /deep/ .hr{
+            @include block_outline($height : 10px);
+            height: 10px;
+            clear: both;
         }
     }
 </style>

@@ -4,7 +4,7 @@
     <div class="apply-reissuce-card">
         <bread-crumb-head
             :locale-router="$t('replenishCard')"
-            :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
+            :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
             <!--持卡人信息-->
@@ -13,19 +13,23 @@
             <!--会员卡信息-->
             <card-info :member-info="memberInfo">
             </card-info>
-            <div class="block-title">{{$t('linkEntityCard')}}</div>
+            <div class="card-info-title">{{$t('linkEntityCard')}}</div>
             <!--绑定实体卡-->
             <entity-card-info @set-card-data="getCardData">
             </entity-card-info>
             <!--支付方式选择-->
             <pay-type-select @set-pay-type="formData.payType = $event">
             </pay-type-select>
-            <Input  v-model="formData.qrCode" type="text"/>
-            <i-col style="text-align: center;margin-top: 10px;">
+            <!--footer 按钮-->
+            <div class="content-footer">
                 <Button class="ivu-btn-90px"
                         type="primary"
                         @click="applyReissuceCard">{{$t('submit')}}</Button>
-            </i-col>
+                <Button type="ghost"
+                        @click="cancelOperate">
+                    {{$t("cancel")}}
+                </Button>
+            </div>
         </div>
         <!--确认会员信息模态框-->
         <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
@@ -263,6 +267,14 @@
                         memberInfo : this.memberInfo
                     }
                 });
+            },
+            /**
+             * 取消补卡操作
+             */
+            cancelOperate () {
+                this.$router.push({
+                    name : 'replenishCard'
+                });
             }
         },
         created () {
@@ -278,7 +290,33 @@
 
         .content{
             padding: 0 15px;
+            overflow: auto;
             @include block_outline($height : unquote('calc(100% - 60px)'));
+            @include padding_place($height : 50px);
+
+            .card-info-title{
+                text-align: center;
+                font-size: $font_size_16px;
+                color: $color_333;
+                padding: 47px 0 16px 0;
+            }
+        }
+        .content-footer {
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
+            text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
+
+            /deep/ .ivu-btn {
+                width: 108px;
+                &:nth-child(1) {
+                    margin-right: 20px;
+                }
+            }
         }
     }
 </style>

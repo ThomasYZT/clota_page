@@ -179,60 +179,60 @@
         <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
             <Form :rules="ruleValidate" :label-width="110">
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{selectedCard.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardSales')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardSales') })">
                         {{selectedCard.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12"
                        v-if="cardType === 'companyCard'">
-                    <FormItem :label="$t('company_name')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('company_name') })">
                         {{cardParam.companyName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('name')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('name') })">
                         {{cardParam.custName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('gender')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('gender') })">
                         {{$t(cardParam.gender) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('mobilePhone')" :label-width="100">
+                    <FormItem :label="$t('colonSetting',{ key : $t('mobilePhone') })">
                         {{cardParam.phoneNum | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('credentialsType')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('credentialsType') })">
                         {{idNumName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('credentialsCode')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('credentialsCode') })">
                         {{cardParam.idCardNumber | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12" v-if="cardType === 'personalCard'">
-                    <FormItem :label="$t('birthday')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('birthday') })">
                         {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col :span="cardType === 'personalCard' ? 12 : 24">
-                    <FormItem :label="$t('remark')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('remark') })">
                         <div class="word-wrap" v-w-title="cardParam.remark">
                             {{cardParam.remark | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" v-if="cardType === 'personalCard'">
-                    <FormItem :label="$t('address')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('address') })">
                         <div class="word-wrap" v-w-title="cardParam.homeAddr">
                             {{cardParam.homeAddr | contentFilter}}
                         </div>
@@ -590,11 +590,6 @@
             color: $color_blue;
             cursor: pointer;
         }
-
-        .word-wrap{
-            @include overflow_tip();
-            @include block_outline();
-        }
         .content-footer {
             @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
             text-align: center;
@@ -603,6 +598,7 @@
             line-height: 56px;
             box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
             background: $color_fff;
+            z-index: 10;
 
             /deep/ .ivu-btn {
                 width: 108px;

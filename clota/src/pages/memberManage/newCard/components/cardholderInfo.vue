@@ -6,7 +6,7 @@
 
 <template>
     <div class="card-holder-info">
-        <div class="block-title">{{$t('cardOwnerInfo')}}</div>
+        <div class="card-info-title">{{$t('cardOwnerInfo')}}</div>
         <i-col class="split-class">
             <span class="key-label">{{$t('colonSetting',{ key: $t('name')})}}</span>
             <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
@@ -72,6 +72,15 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .card-holder-info{
+        width: 850px;
+        margin: 0 auto;
+
+        .card-info-title{
+            text-align: center;
+            font-size: $font_size_16px;
+            color: $color_333;
+            padding: 47px 0 16px 0;
+        }
 
         .split-class{
             width: 33%;

@@ -10,7 +10,7 @@
             <!--个人信息-->
             <person-info :member-info="memberInfo">
             </person-info>
-            <div class="block-title">{{$t('selectCardAttribution')}}</div>
+            <div class="info-title">{{$t('selectCardAttribution')}}</div>
             <ButtonGroup>
                 <Button v-for="(item,index) in memberDetail"
                         :key="index"
@@ -23,18 +23,30 @@
                 <!--会员卡信息-->
                 <member-card-detail :card-info="choosedCard">
                 </member-card-detail>
+                <div class="info-title">{{$t('储值账户信息')}}</div>
                 <!--储值账户信息-->
-                <store-account-info v-for="item in chargeAccount"
+                <store-account-info v-for="(item,index) in chargeAccount"
+                                    :class="{'last-item-class' : index === chargeAccount.length - 1 }"
                                     :key="item.id"
                                     :charge-info="item">
                 </store-account-info>
+                <div class="info-title">{{$t('积分账户信息')}}</div>
                 <!--积分账户信息-->
                 <integral-account-info v-for="item in integerAccount"
                                        :key="item.id"
                                        :account-info="item">
                 </integral-account-info>
-                <div class="btn-wrap">
-                    <Button type="primary" class="ivu-btn-90px" @click="refundCard">{{$t('refundedCard')}}</Button>
+                <!--footer 按钮-->
+                <div class="content-footer">
+                    <Button type="primary"
+                            class="ivu-btn-90px"
+                            @click="refundCard">
+                        {{$t('refundedCard')}}
+                    </Button>
+                    <Button type="ghost"
+                            @click="cancelOperate">
+                        {{$t("cancel")}}
+                    </Button>
                 </div>
             </template>
         </div>
@@ -211,6 +223,14 @@
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('refundedCard') }));
                     }
                 });
+            },
+            /**
+             * 取消退卡
+             */
+            cancelOperate () {
+                this.$router.push({
+                    name : 'refundedCard'
+                });
             }
         },
         created () {
@@ -225,9 +245,35 @@
         background: $color_fff;
 
         .content{
-            padding: 0 15px;
+            padding: 0 50px;
             @include block_outline($height : unquote('calc(100% - 60px)'));
             overflow: auto;
+            @include padding_place($height : 50px);
+
+            .content-footer {
+                @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
+                text-align: center;
+                background: $color_fff;
+                height: 56px;
+                line-height: 56px;
+                box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+                background: $color_fff;
+                z-index: 10;
+
+                /deep/ .ivu-btn {
+                    width: 108px;
+                    &:nth-child(1) {
+                        margin-right: 20px;
+                    }
+                }
+            }
+
+            /deep/ .info-title{
+                text-align: left;
+                font-size: $font_size_16px;
+                color: $color_000;
+                padding: 30px 0 20px 0;
+            }
         }
 
         .btn-wrap{

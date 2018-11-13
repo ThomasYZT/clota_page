@@ -113,7 +113,7 @@
             <i-row>
                 <i-col span="12">
                     <!--购房日期-->
-                    <Form-item :label="$t('buyHomeTime')" prop="birthDay">
+                    <Form-item :label="$t('buyHomeTime')" prop="purchaseDate">
                         <Date-picker
                             style="width: 280px"
                             :editable="false"
@@ -149,8 +149,6 @@
                                prop="remark"
                                style="width: 100%;">
                         <Input v-model.trim="cardParam.remark"
-                               type="textarea"
-                               :rows="3"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
@@ -193,122 +191,119 @@
         </set-password-modal>
 
         <!--确认会员信息模态框-->
-        <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
+        <confirm-member-info v-model="showConfirmModal"
+                             @confirm-data="createMember">
             <Form :rules="ruleValidate" :label-width="110">
-                <i-row>主卡信息</i-row>
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{selectedCard.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardSales')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardSales') })">
                         {{selectedCard.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('name')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('name') })">
                         {{cardParam.custName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('gender')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('gender') })">
                         {{$t(cardParam.gender) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('credentialsType')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('credentialsType') })">
                         {{idNumName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('identificationNum')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('identificationNum') })">
                         {{cardParam.idCardNumber | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('birthday')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('birthday') })">
                         {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('mobilePhone')" >
-                        {{cardParam.phoneNum | contentFilter}}
-                    </FormItem>
-                </i-col>
-                <i-col span="12">
-                    <FormItem :label="$t('mobilePhone')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('mobilePhone') })">
                         {{cardParam.phoneNum | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem :label="$t('homeBuyMoney')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('homeBuyMoney') })">
                         <div class="word-wrap">
                             {{cardParam.houseMoney | moneyFilter | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem :label="$t('homeInfo')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('homeInfo') })">
                         <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
                             {{cardParam.realEstateInformation | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem :label="$t('buyHomeTime')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('buyHomeTime') })">
                         <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
                             {{cardParam.purchaseDate | timeFormat('yyyy-MM-dd') | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
-                <i-col span="24" >
-                    <FormItem :label="$t('remark')" >
+                <i-col span="12" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('remark') })">
                         <div class="word-wrap" v-w-title="cardParam.remark">
                             {{cardParam.remark | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
-                <i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>
+                <!--<i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>-->
+                <div class="card-title" v-if="viceCardInfo.length > 0">副卡信息</div>
                 <template v-for="(item,index) in viceCardInfo">
                     <i-col span="12" :key="index + 'custName'">
-                        <FormItem :label="$t('name')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('name') })">
                             <div class="word-wrap" >
                                 {{item.custName | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'gender'">
-                        <FormItem :label="$t('gender')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('gender') })">
                             {{$t(item.gender) | contentFilter}}
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'certificationType'">
-                        <FormItem :label="$t('credentialsType')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('credentialsType') })">
                             <div class="word-wrap" >
                                 {{idTypeObj[item.certificationType] ? idTypeObj[item.certificationType]['name'] : '' | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'idCardNumber'">
-                        <FormItem :label="$t('identificationNum')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('identificationNum') })">
                             <div class="word-wrap" v-w-title="item.idCardNumber">
                                 {{item.idCardNumber | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'birthDay'">
-                        <FormItem :label="$t('birthday')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('birthday') })">
                             <div class="word-wrap" >
                                 {{item.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'phoneNum'">
-                        <FormItem :label="$t('mobilePhone')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('mobilePhone') })">
                             {{item.phoneNum | contentFilter}}
                         </FormItem>
                     </i-col>
+                    <div class="hr"></div>
                 </template>
             </Form>
         </confirm-member-info>
@@ -510,7 +505,15 @@
                     birthDay : [
                         {
                             required : true,
-                            message : this.$t('selectField', { msg : this.$t('birthDay') }),
+                            message : this.$t('selectField', { msg : this.$t('birthday') }),
+                            trigger : 'change',
+                            type : 'date'
+                        }
+                    ],
+                    purchaseDate : [
+                        {
+                            required : true,
+                            message : this.$t('selectField', { msg : this.$t('buyHomeTime') }),
                             trigger : 'change',
                             type : 'date'
                         }
@@ -715,6 +718,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .personal-card {
+        @include padding_place($height : 50px);
 
          h3 {
             margin-top: 10px;
@@ -730,8 +734,14 @@
         }
 
         .content-footer {
-            margin: 20px 0 40px 0;
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
             text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
 
             /deep/ .ivu-btn {
                 width: 108px;

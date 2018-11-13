@@ -12,8 +12,7 @@
             :column-data="columnData"
             :table-data="tableData"
             auto-height
-            :table-com-min-height="250"
-            :border="true">
+            :table-com-min-height="250">
             <el-table-column
                 show-overflow-tooltip
                 slot="column0"
