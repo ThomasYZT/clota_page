@@ -2,10 +2,6 @@
 
 <template>
 	<div class="trade-record">
-		<!--头部tab组件-->
-		<header-tabs
-			router-name="tradeRecord">
-		</header-tabs>
 		<Form ref="formValidate" :model="formData" inline>
 			<FormItem prop="tradeType">
 				<Select v-model="formData.tradeType"
@@ -20,7 +16,7 @@
 				<DatePicker type="date"
                             :editable="false"
 							style="width : 150px"
-							placeholder="请选择开始时间"
+							:placeholder="$t('selectField',{ msg : $t('startTime') })"
 							v-model="formData.startTime"
                             @on-change="queryList">
 				</DatePicker>
@@ -29,7 +25,7 @@
 				<DatePicker type="date"
                             :editable="false"
 							style="width : 150px"
-							placeholder="请选择结束时间"
+							:placeholder="$t('selectField',{ msg : $t('endTime') })"
 							v-model="formData.endTime"
                             @on-change="queryList">
 				</DatePicker>
@@ -37,11 +33,11 @@
 			<FormItem prop="endTime">
 				<Input v-model.trim="formData.keyWord"
 					   style="width : 300px"
-					   placeholder="请输入姓名、证件编号、手机号、卡面号"/>
+					   :placeholder="$t('tradeSearchKeyword')"/>
 			</FormItem>
 			<FormItem>
-				<Button class="ivu-btn-90px" type="primary" @click="queryList">{{$t('搜索')}}</Button>
-				<Button class="ivu-btn-90px" type="primary" @click="reset">{{$t('reset')}}</Button>
+				<Button  type="primary" @click="queryList">{{$t('searching')}}</Button>
+				<Button  type="ghost" @click="reset">{{$t('reset')}}</Button>
 			</FormItem>
 		</Form>
 		<table-com
@@ -52,7 +48,7 @@
 			:page-size-d.sync="pageSize"
 			:show-pagination="true"
 			:total-count="totalCount"
-			:ofset-height="188"
+			:ofset-height="122"
 			@query-data="queryList">
 			<el-table-column
 				slot="column0"
@@ -103,7 +99,7 @@
 				show-overflow-tooltip
 				slot-scope="row">
 				<template slot-scope="scoped">
-					{{$t('txnStatus.' + scoped.row.txnStatus)}}
+					{{$t('txnStatus.' + scoped.row.txnStatus) | contentFilter}}
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -131,8 +127,11 @@
 				:min-width="row.minWidth">
 				<template slot-scope="scope">
 					<ul class="operate-list">
-						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('重新开卡')}}</li>
-						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('重新补卡')}}</li>
+						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('reOpenCard')}}</li>
+						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('reReissueCard')}}</li>
+                        <!--未知状态以及正在进行中的支付状态需要重新查询结果-->
+						<li v-if="scope.row.txnStatus === 'unknown' || scope.row.txnStatus === 'doing'"
+                            @click="searchPayResult(scope.row)">{{$t('searchPayResult')}}</li>
 						<li @click="showMoreData(scope.row)">{{$t('more')}}</li>
 					</ul>
 				</template>
@@ -142,28 +141,55 @@
         <confirm-member-info v-model="showConfirmModal">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem label="类型">
+                    <FormItem :label="$t('colonSetting',{ key : $t('type') })">
                         {{currentData.bizType ? $t('tradeType.' + currentData.bizType) : '' | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="日期">
+                    <FormItem :label="$t('colonSetting',{ key : $t('date') })">
                         {{currentData.txnReqTime | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="会员卡信息">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{currentData.cardLevelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="持卡人信息">
+                    <FormItem :label="$t('colonSetting',{ key : $t('cardOwnerInfo') })">
                         {{currentData.memberName | contentFilter}},{{currentData.mobile | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="物理卡号">
+                    <FormItem :label="$t('colonSetting',{ key : $t('physicalCardNo') })">
                         {{currentData.memberName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('cardFaceNum') })">
+                        {{currentData.memberName | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('payType') })">
+                        {{currentData.payType ? $t('payType.' + currentData.payType) : '' | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('paymentStatus') })">
+                        {{$t('txnStatus.' + currentData.txnStatus) | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberSystemStatus') })">
+                        <span :class="{'status-abnormal' : currentData.bizStatus === 'abnormal'}">
+                            {{$t('bizStatus.' + currentData.bizStatus)}}
+                        </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('operator') })">
+                        {{currentData.operateUserName | contentFilter}}
                     </FormItem>
                 </i-col>
             </Form>
@@ -172,7 +198,6 @@
 </template>
 
 <script>
-	import headerTabs from './components/newCardTabs.vue';
 	import { tradeTypeList } from '@/assets/js/constVariable.js';
 	import tableCom from '@/components/tableCom/tableCom.vue';
 	import { tradeRecordHead } from './tradeRecordConfig';
@@ -181,7 +206,6 @@
 
 	export default {
 		components : {
-			headerTabs,
 			tableCom,
             confirmMemberInfo
 		},
@@ -220,7 +244,6 @@
 				ajax.post('queryPayTransactionRecordList',{
 					bizScene : 'member',
 					bizType : this.formData.tradeType === 'all' ? '' : this.formData.tradeType,
-					bizStatus : '',
 					txnStartTime : this.formData.startTime ? this.formData.startTime.format('yyyy-MM-dd 00:00:00') : '',
 					txnEndTime : this.formData.endTime ? this.formData.endTime.format('yyyy-MM-dd 23:59:59') : '',
 					keyword : this.formData.keyWord,
@@ -259,7 +282,9 @@
              * @param{Object} rowData 记录数据
              */
             reOpenCard (rowData) {
-
+                this.$router.push({
+                    name : ''
+                });
             },
             /**
              * 重新补卡
@@ -285,6 +310,17 @@
             showMoreData (rowData) {
                 this.showConfirmModal = true;
                 this.currentData = rowData;
+            },
+            /**
+             * 查询支付结果
+             * @param{Object} rowData 支付数据
+             */
+            searchPayResult (rowData) {
+                ajax.post('queryConsumeUpdateBiz',{
+                    transactionId : rowData.id
+                }).finally(() => {
+                    this.queryList();
+                });
             }
 		}
 	};

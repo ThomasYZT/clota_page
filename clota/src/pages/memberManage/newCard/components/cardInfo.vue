@@ -6,17 +6,17 @@
 
 <template>
     <div class="card-info">
-        <div class="block-title">{{$t('会员卡信息')}}</div>
+        <div class="block-title">{{$t('selectCardAttribution')}}</div>
         <i-col class="split-class">
-            <span class="key-label">会员卡类型：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('memberCardType') })}}</span>
             <span class="value-label">{{memberInfo.levelDesc | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">有效开始日期：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('effectiveStartDate') })}}</span>
             <span class="value-label">{{memberInfo.effDate | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">有效结束日期：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('effectiveEndDate') })}}</span>
             <span class="value-label">{{memberInfo.expDate | contentFilter}}</span>
         </i-col>
     </div>

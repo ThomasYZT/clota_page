@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        :title="$t('设置支付交易密码')"
+        :title="$t('setTradePass')"
         :mask-closable="false"
         :value="value"
         :width="500"
@@ -14,12 +14,12 @@
               :model="formData"
               :rules="ruleValidate"
               :label-width="130">
-            <FormItem label="支付密码" prop="password">
+            <FormItem :label="$t('payPass')" prop="password">
                 <Input v-model.trim="formData.password"
                        style="width: 240px;"
                        type="password" />
             </FormItem>
-            <FormItem label="请确认支付密码" prop="passwordAgain">
+            <FormItem :label="$t('pleaseConfirmTradePass')" prop="passwordAgain">
                 <Input v-model.trim="formData.passwordAgain"
                        style="width: 240px;"
                        type="password" />
@@ -53,10 +53,10 @@
                     if (reg.test(value)) {
                         callback();
                     } else {
-                        callback(this.$t('请输入6位数字支付密码'));
+                        callback(this.$t('tradePassFormatError'));
                     }
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('支付密码') }));
+                    callback(this.$t('inputField',{ field : this.$t('payPass') }));
                 }
             };
             //校验第二次输入的密码
@@ -69,7 +69,7 @@
                         if (reg.test(value)) {
                             callback();
                         } else {
-                            callback(this.$t('请输入6位数字支付密码'));
+                            callback(this.$t('tradePassFormatError'));
                         }
                     }
                 } else {

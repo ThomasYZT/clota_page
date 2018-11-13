@@ -6,23 +6,14 @@
 
 <template>
     <div class="">
-        <div class="block-title">{{$t('积分账户信息')}}</div>
+        <div class="block-title">{{$t('integerAccountName')}}</div>
         <div class="table-wrap">
             <table-com
+                :auto-height="true"
                 :table-com-min-height="250"
                 :column-data="columnData"
                 :table-data="tableData"
                 :border="false">
-                <el-table-column
-                    slot="column0"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{ scope.row.account | moneyFilter }} {{$t('yuan')}}
-                    </template>
-                </el-table-column>
             </table-com>
         </div>
     </div>
@@ -32,29 +23,44 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        components: {tableCom},
-        props: {},
-        data() {
-            return {
-                // 表头信息
-                columnData: [
-                    {
-                        title: '可用积分',
-                        minWidth: 180,
-                        field: '',
-                    },
-                ],
-                // 列表数据
-                tableData: [],
+        components : { tableCom },
+        props : {
+            //积分账户信息
+            'account-info' : {
+                type : Object,
+                default () {
+                    return {};
+                }
             }
         },
-        computed: {},
-        created() {
+        data () {
+            return {
+                // 表头信息
+                columnData : [
+                    {
+                        title : 'pointBalance',
+                        minWidth : 180,
+                        field : 'accountBalance',
+                    },
+                ],
+            };
         },
-        mounted() {
+        computed : {
+            //表格数据
+            tableData () {
+                if (this.accountInfo && Object.keys(this.accountInfo).length > 0) {
+                    return [this.accountInfo];
+                } else {
+                    return [];
+                }
+            }
         },
-        watch: {},
-        methods: {}
+        created () {
+        },
+        mounted () {
+        },
+        watch : {},
+        methods : {}
     };
 </script>
 

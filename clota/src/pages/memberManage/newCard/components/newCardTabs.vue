@@ -37,7 +37,6 @@
                     { name : 'replenishCard', desc : 'replenishCard' }, // 补卡
                     { name : 'reportLoss', desc : 'reportLoss' }, // 挂失
                     { name : 'refundedCard', desc : 'refundedCard' }, // 退卡
-                    { name : 'tradeRecord', desc : '在线交易记录' }, // 退卡
                 ],
             };
         },

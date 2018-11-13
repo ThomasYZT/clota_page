@@ -84,7 +84,8 @@
             getAllEntityCard (physicalNum) {
                 this.reading = true;
                 return ajax.post('findByPhysicalNum',{
-                    physicalNum : physicalNum
+                    physicalNum : physicalNum,
+                    entityCardType : 'common'
                 }).then(res => {
                     if (res.success && res.data ) {
                         if (Object.keys(res.data).length > 0) {
@@ -104,7 +105,7 @@
                             });
                         }
                     } else if (res.code === 'M026') {
-                        this.$Message.warning('实体卡已使用，请更换其它卡');
+                        this.$Message.warning(this.$t('entityCardUsedErr'));
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
                         this.$emit('set-card-data',{
@@ -114,7 +115,6 @@
                     } else {
                         this.entityCardParam.tpNo = '';
                         this.entityCardParam.tpCardNo = '';
-                        this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
                         this.$emit('set-card-data',{
                             physicalNum : '',
                             faceNum : '',
@@ -134,7 +134,7 @@
                     this.getAllEntityCard(res);
                 }).catch(err => {
                     if (err === 'dcCardError') {
-                        this.$Message.warning('请放置实体卡到读卡器上');
+                        this.$Message.warning(this.$t('pleasePlaceEntityCard'));
                     }
                 });
             },

@@ -6,7 +6,7 @@
             <i-row>
                 <i-col style="width: auto;display:inline-block;">
                     <Input v-model.trim="formData.keyWord"
-                           placeholder="请输入姓名、手机号、身份证号"
+                           :placeholder="$t('memberSearchKeyWord')"
                            style="width: 280px"/>
                 </i-col>
                 <i-col style="width: auto;display:inline-block;margin-left: 10px">

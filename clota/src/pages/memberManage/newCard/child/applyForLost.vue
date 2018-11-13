@@ -3,7 +3,7 @@
 <template>
     <div class="apply-for-lost">
         <bread-crumb-head
-            :locale-router="$t('挂失')"
+            :locale-router="$t('reportLoss')"
             :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
         </bread-crumb-head>
         <div class="content">
@@ -14,14 +14,14 @@
             <card-info :member-info="memberInfo">
             </card-info>
             <i-col style="text-align: center;margin-top: 10px;">
-                <Button class="ivu-btn-90px" type="primary" @click="reportLoss">挂失</Button>
+                <Button class="ivu-btn-90px" type="primary" @click="reportLoss">{{$t('reportLoss')}}</Button>
             </i-col>
         </div>
         <!--挂失确认模态框-->
         <confirm-modal ref="confirmModal">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
-                是否确定挂失该会员卡
+                {{$t('sureToLossMemInfo')}}
             </div>
         </confirm-modal>
     </div>
@@ -35,16 +35,16 @@
     import confirmModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index.js';
 
-	export default {
-	    mixins : [ lifeCycleMixins ],
-	    components : {
+    export default {
+        mixins : [ lifeCycleMixins ],
+        components : {
             cardHolderInfo,
             breadCrumbHead,
             cardInfo,
             confirmModal
         },
-		data () {
-			return {
+        data () {
+            return {
                 //上级路由列表
                 beforeRouterList : [
                     {
@@ -57,17 +57,17 @@
                 //会员信息
                 memberInfo : {}
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 获取路由信息
              * @param{Object} params 路由信息
              */
-	        getParams (params) {
-	            if (params && params.memberInfo) {
-	                this.memberInfo = params.memberInfo;
+            getParams (params) {
+                if (params && params.memberInfo) {
+                    this.memberInfo = params.memberInfo;
                 } else {
-	                this.$router.push({
+                    this.$router.push({
                         name : 'reportLoss'
                     });
                 }
@@ -91,17 +91,21 @@
                     cardId : this.memberInfo.cardId
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('挂失成功');
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('reportLoss') }));
                         this.$router.push({
                             name : 'reportLoss'
                         });
+                    } else if (res.code === 'M015') {
+                        this.$Message.warning(this.$t('memHavnotCardErr',{ name : this.memberInfo.custName }));
+                    } else if (res.code === 'M028') {
+                        this.$Message.warning(this.$t('memHaveLossErr',{ name : this.memberInfo.custName }));
                     } else {
-                        this.$Message.error('挂失失败');
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('reportLoss') }));
                     }
                 });
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

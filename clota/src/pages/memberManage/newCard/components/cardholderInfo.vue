@@ -6,37 +6,37 @@
 
 <template>
     <div class="card-holder-info">
-        <div class="block-title">{{$t('持卡人信息')}}</div>
+        <div class="block-title">{{$t('cardOwnerInfo')}}</div>
         <i-col class="split-class">
-            <span class="key-label">姓名：</span>
+            <span class="key-label">{{$t('colonSetting',{ key: $t('name')})}}</span>
             <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">手机号：</span>
-            <span class="value-label">{{memberInfo.custName | contentFilter}}</span>
+            <span class="key-label">{{$t('colonSetting',{ key: $t('mobilePhone')})}}</span>
+            <span class="value-label">{{memberInfo.phoneNum | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">性别：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('gender') })}}</span>
             <span class="value-label">{{$t(memberInfo.gender) | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">生日：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('birthday') })}}</span>
             <span class="value-label">{{memberInfo.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">证件类型：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('credentialsType') })}}</span>
             <span class="value-label">{{memberInfo.certificationTypeName | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">证件编号：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('identificationNum') })}}</span>
             <span class="value-label">{{memberInfo.idCardNumber | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">地址：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('address') })}}</span>
             <span class="value-label" v-w-title="memberInfo.homeAddr">{{memberInfo.homeAddr | contentFilter}}</span>
         </i-col>
         <i-col class="split-class">
-            <span class="key-label">支付密码：</span>
+            <span class="key-label">{{$t('colonSetting',{ key : $t('payPass') })}}</span>
             <span class="value-label">{{tradePassword | contentFilter}}</span>
         </i-col>
     </div>
@@ -56,7 +56,7 @@
         computed : {
             //交易密码显示格式
             tradePassword () {
-                if (this.memberInfo && Object.keys(this.memberInfo).length > 0) {
+                if (this.memberInfo && this.memberInfo.tradePassword) {
                     return '●●●●●●';
                 } else {
                     return '';

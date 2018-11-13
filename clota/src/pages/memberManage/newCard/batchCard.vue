@@ -18,7 +18,7 @@
                     <div class="btn-wrap">
                         <Button type="primary"
                                 :disabled="tableData.length >= 50 || !cardReadEnabled"
-                                @click="readEntityCard">读取实体卡</Button>
+                                @click="readEntityCard">{{$t('readEntityCard')}}</Button>
                     </div>
                     <table-com
                         :show-pagination="false"
@@ -52,14 +52,15 @@
                         </el-table-column>
                     </table-com>
                     <div class="table-bottom">
-                        {{$t('总价')}}：<span class="total-money">{{entityCardTotalPrice | moneyFilter | contentFilter}}  {{$t('yuan')}}</span>
+                        {{$t('totalPrice')}}：<span class="total-money">{{entityCardTotalPrice | moneyFilter | contentFilter}}  {{$t('yuan')}}</span>
                     </div>
                     <!--收款方式-->
-                    <h3>{{$t('收款方式')}}</h3>
+                    <h3>{{$t('paymentMethod')}}</h3>
                     <RadioGroup v-model="cardParam.payType">
-                        <Radio label="weixin">{{$t('微信')}}</Radio><!--微信-->
-                        <Radio label="alipay">{{$t('支付宝')}}</Radio><!--支付宝-->
-                        <Radio label="cash">{{$t('现金')}}</Radio><!--支付宝-->
+                        <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
+                        <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
+                        <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
+                        <Input v-model="cardParam.qrCode" type="text"/>
                     </RadioGroup>
                     <!--footer 按钮-->
                     <div class="content-footer">
@@ -77,32 +78,38 @@
                              @confirm-data="createMember">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem label="会员卡信息">
+                    <FormItem :label="$t('selectCardAttribution')">
                         {{cardTypeInfo.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="会员卡单价">
+                    <FormItem :label="$t('memberCardPrice')">
                         {{cardTypeInfo.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="本次开卡数量">
+                    <FormItem :label="$t('openCardNum')">
                         {{tableData.length | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="会员卡总价">
+                    <FormItem :label="$t('memberCardAmount')">
                         {{entityCardTotalPrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem label="支付方式">
+                    <FormItem :label="$t('payType')">
                         {{cardParam.payType | contentFilter}}
                     </FormItem>
                 </i-col>
             </Form>
         </confirm-member-info>
+
+        <!--查询支付结果模态框-->
+        <loop-for-pay-result v-model="payModalShow"
+                             :transaction-id="transctionId"
+                             @search-success="tipSuccess">
+        </loop-for-pay-result>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -114,13 +121,15 @@
     import { validator } from 'klwk-ui';
     import confirmMemberInfo from './components/confirmDetailModal';
     import { mapGetters } from 'vuex';
+    import loopForPayResult from './components/loopForPayResult';
 
     export default {
         components : {
             headerTabs,
             selectCard,
             tableCom,
-            confirmMemberInfo
+            confirmMemberInfo,
+            loopForPayResult
         },
         props : {},
         data () {
@@ -134,11 +143,16 @@
                 cardParam : {
                     // 收款方式
                     payType : 'cash',
+                    qrCode : "",//扫码结果
                 },
                 //会员卡信息
                 cardTypeInfo : {},
                 //显示确认信息模态框
                 showConfirmModal : false,
+                //支付查询结果是否显示
+                payModalShow : false,
+                //内部交易id
+                transctionId : ''
             };
         },
         computed : {
@@ -182,7 +196,7 @@
                     //校验当前页面是否已经使用了读取的卡
                     for (let i = 0,j = this.tableData.length; i < j; i++) {
                         if (this.tableData[i]['physicalNum'] === res) {
-                            this.$Message.warning('实体卡已使用，请更换其它卡');
+                            this.$Message.warning(this.$t('entityCardUsedErr'));
                             return;
                         }
                     }
@@ -194,7 +208,7 @@
                         });
                     }).catch((err) => {
                         if (err && err === 'M026') {
-                            this.$Message.warning('实体卡已使用，请更换其它卡');
+                            this.$Message.warning(this.$t('entityCardUsedErr'));
                         } else {
                             this.$Message.warning(this.$t('noMatchCard'));
                         }
@@ -209,7 +223,8 @@
             findByPhysicalNum (physicalNum) {
                 return new Promise((resolve,reject) => {
                     ajax.post('findByPhysicalNum',{
-                        physicalNum : physicalNum
+                        physicalNum : physicalNum,
+                        entityCardType : 'password'
                     }).then((res) => {
                         if (res.success) {
                             if (res.data && Object.keys(res.data).length > 0) {
@@ -243,7 +258,7 @@
                 if (this.tableData.length > 0) {
                     this.showConfirmModal = true;
                 } else {
-                    this.$Message.warning('请添加实体卡信息');
+                    this.$Message.warning(this.$t('pleaseAddEntityCard'));
                 }
             },
             /**
@@ -255,19 +270,38 @@
                     cardTypeId : this.cardInfo.cardTypeId,
                     cardLevelId : this.cardInfo.levelId,
                     channelType : this.cardParam.payType,
-                    qrCode : '',
-                    txnAmt : '',
+                    qrCode : this.cardParam.qrCode,
+                    txnAmt : this.entityCardTotalPrice,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('批量开卡成功');
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('newBatchCard') }));
                         this.tableData = [];
+                    } else if (res.code === 'P002') {
+                        this.startSearchForPayResult({
+                            ...(res.data ? res.data : {})
+                        });
                     } else {
-                        this.$Message.error('批量开卡失败');
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('newBatchCard') }));
                     }
                 }).finally(() => {
                     this.showConfirmModal = false;
                 });
-            }
+            },
+            /**
+             * 查询到支付成功
+             */
+            tipSuccess () {
+                this.$Message.success(this.$t('successTip',{ tip : this.$t('newBatchCard') }));
+                this.tableData = [];
+            },
+            /**
+             * 开启查询支付结果
+             * @param{Object} transctionId 内部交易id
+             */
+            startSearchForPayResult ({ transctionId }) {
+                this.transctionId = transctionId;
+                this.payModalShow = true;
+            },
         }
     };
 </script>

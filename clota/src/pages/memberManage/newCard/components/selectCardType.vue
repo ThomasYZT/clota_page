@@ -9,14 +9,13 @@
         <!--<h3>{{$t('选择会员卡类型')}}</h3>&lt;!&ndash;选择会员卡类型&ndash;&gt;-->
         <Form ref="formValidate"
               :model="memberCard"
-              :inline="true"
-              label-position="top">
+              inline>
             <i-row>
                 <i-col span="12">
                     <!--会员卡类型-->
-                    <Form-item :label="$t('请选择会员卡类型')" >
+                    <Form-item :label="$t('pleaseSelectMemType')" >
                         <Select v-model="memberCard.cardTypeId"
-                                style="width: 100%"
+                                style="width: 280px"
                                 @on-change="cardTypeChange">
                             <Option v-for="item in cardTypes"
                                     :key="item.id"
@@ -29,10 +28,10 @@
                 </i-col>
                 <i-col span="12">
                     <!--会员卡级别-->
-                    <Form-item :label="$t('请选择会员卡级别')"
+                    <Form-item :label="$t('pleaseSelectMemLevel')"
                                style="float: right">
                         <Select v-model="memberCard.levelId"
-                                style="width: 100%"
+                                style="width: 280px"
                                 @on-change="cardLevelChange">
                             <Option v-for="item in cardLevelList"
                                     :key="item.id"
@@ -45,14 +44,11 @@
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="12">
-                    <Form-item :label="$t('会员卡售价')">
+                <i-col span="24">
+                    <Form-item :label="$t('colonSetting',{ key : $t('memberCardSales') })" class="auto-item-content">
                         <span>{{cardLevelInfo.salePrice | moneyFilter | contentFilter}} {{$t('yuan')}}</span>
                     </Form-item>
-                </i-col>
-                <i-col span="12">
-                    <Form-item :label="$t('卡内金额')"
-                               style="float: right">
+                    <Form-item :label="$t('colonSetting',{ key : $t('moneyInCard') })" class="auto-item-content">
                         <span>{{cardLevelInfo.amountInCard | moneyFilter | contentFilter}} {{$t('yuan')}}</span>
                     </Form-item>
                 </i-col>
@@ -180,10 +176,20 @@
 
     .select-card-type{
 
-        .ivu-form-item {
-            width: 280px;
-            text-align: left;
-            margin-right: 0;
+        /*.ivu-form-item {*/
+            /*width: 280px;*/
+            /*text-align: left;*/
+            /*margin-right: 0;*/
+        /*}*/
+
+        .auto-item-content{
+            /deep/ .ivu-form-item-content{
+                display: inline-block;
+            }
+        }
+        /deep/ .ivu-form-item-label{
+            padding-left: 0;
+            padding-right: 5px;
         }
     }
 

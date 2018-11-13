@@ -6,9 +6,9 @@
 
 <template>
     <div class="owner-vice-card">
-        <h3>{{$t('副卡')}}</h3>
+        <h3>{{$t('viceCard')}}</h3>
         <div class="btn-wrap">
-            <Button type="primary" @click="addViceCard">新增副卡</Button>
+            <Button type="primary" @click="addViceCard">{{$t('addViceCard')}}</Button>
         </div>
         <Form ref="formValidate" >
             <table-com
@@ -143,10 +143,10 @@
                                   :rules="{ validator : validateExist,trigger : 'change',data : scope.row.tradePassword ,_field : 'password'}">
                             <ul class="operate-list">
                                 <li v-if="scope.row.tradePassword"
-                                    @click="setPayPassword(scope.$index)">{{$t('已设置')}}
+                                    @click="setPayPassword(scope.$index)">{{$t('haveSetted')}}
                                 </li>
                                 <li v-else
-                                    @click="setPayPassword(scope.$index)">{{$t('设置支付密码')}}
+                                    @click="setPayPassword(scope.$index)">{{$t('setTradePass')}}
                                 </li>
                             </ul>
                         </FormItem>
@@ -163,7 +163,7 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <li class="red-label"
-                                @click="delCard(scope.$index)">{{$t('清除')}}
+                                @click="delCard(scope.$index)">{{$t('clear')}}
                             </li>
                         </ul>
                     </template>
@@ -261,7 +261,7 @@
                             callback(this.$t('inputField', { field : this.$t(rule._field) }));
                         } else {
                             if (rule._field === 'password') {
-                                callback(this.$t('请设置支付密码'));
+                                callback(this.$t('setTradePass'));
                             } else {
                                 callback(this.$t('inputField', { field : this.$t(rule._field) }));
                             }

@@ -39,7 +39,7 @@ export const secondaryCardHead = [
         type : 'date'
     },
     {
-        title : '支付密码', // 支付密码
+        title : 'payPass', // 支付密码
         minWidth : 130,
         field : 'tradePassword',
     },
@@ -53,12 +53,12 @@ export const secondaryCardHead = [
 // 新开业主卡 - 实体卡列表表头
 export const entityCardHead = [
     {
-        title : '持卡人姓名', // 持卡人姓名
+        title : 'cardHolderName', // 持卡人姓名
         width : 140,
         field : 'custName'
     },
     {
-        title : '持卡人证件号', // 持卡人证件号
+        title : 'cardHolderIdNum', // 持卡人证件号
         minWidth : 180,
         field : 'idCardNumber'
     },

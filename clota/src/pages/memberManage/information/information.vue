@@ -162,46 +162,46 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {infoListHead} from './infoListConfig';
-    import {mapGetters} from 'vuex';
+    import { infoListHead } from './infoListConfig';
+    import { mapGetters } from 'vuex';
     import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
-        components: { tableCom },
+        components : { tableCom },
         data () {
             return {
                 // 查询数据 keyWord-搜索关键字，levelId-会员级别Id，channelId-会员渠道Id，vipStatus-会员类型，cardStatus-会员状态
-                queryParams: {
-                    keyWord: '',
-                    levelId: 'null',
-                    channelId: 'null',
-                    vipStatus: 'null',
-                    cardStatus: 'null',
-                    pageNo: 1,
-                    pageSize: 10,
+                queryParams : {
+                    keyWord : '',
+                    levelId : 'null',
+                    channelId : 'null',
+                    vipStatus : 'null',
+                    cardStatus : 'null',
+                    pageNo : 1,
+                    pageSize : 10,
                 },
                 //枚举数据
-                enumData: {
+                enumData : {
                     //会员级别
-                    level: vipLevel,
+                    level : vipLevel,
                     //会员渠道
-                    channel: vipChannel,
+                    channel : vipChannel,
                     //会员类型
-                    vipStatusEnum: vipStatusEnum,
+                    vipStatusEnum : vipStatusEnum,
                     //会员状态
-                    cardStatusEnum: cardStatusEnum,
+                    cardStatusEnum : cardStatusEnum,
                     //性别
-                    genderEnum: genderEnum,
+                    genderEnum : genderEnum,
                 },
                 //列表表头
                 infoListHead : infoListHead,
                 //列表数据(表格数据取统一字段名)
                 tableData : [],
                 //列表总条数
-                total: 0,
-            }
+                total : 0,
+            };
         },
-        created(){
+        created () {
             this.getLevelList();
             this.getChannelList();
         },
@@ -210,47 +210,47 @@
                 lang : 'lang'
             })
         },
-        methods: {
+        methods : {
             // 获取会员级别列表
-            getLevelList() {
+            getLevelList () {
                 ajax.post('queryMemberLevels', {
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
+                    pageNo : 1,
+                    pageSize : 99999,
+                    isDeleted : 'false',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet ' + this.$t('queryFailure'));
                     }
-                })
+                });
             },
 
             // 获取会员渠道列表
-            getChannelList() {
+            getChannelList () {
                 ajax.post('querySelfOwnedChannel',{
                     pageNo : 1,
                     pageSize : 999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet ' + $t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             //新增会员
             add () {
-                this.$router.push({ name: 'addMember', query: { type: 'add' }});
+                this.$router.push({ name : 'addMember', query : { type : 'add' } });
             },
 
             //编辑会员
             modifyData ( event, data ) {
                 event.stopPropagation();
                 this.$router.push({
-                    name: 'addMember',
-                    query: { type: 'modify'},
+                    name : 'addMember',
+                    query : { type : 'modify' },
                     params : data
                 });
             },
@@ -258,41 +258,41 @@
             //查询列表(查询表格取统一的方法名)
             queryList () {
                 ajax.post('queryMemberPage', {
-                    keyWord: this.queryParams.keyWord,
-                    levelId: this.queryParams.levelId === 'null' ? "" : this.queryParams.levelId,
-                    channelId: this.queryParams.channelId === 'null' ? "" : this.queryParams.channelId,
-                    vipStatus: this.queryParams.vipStatus === 'null' ? "" : this.queryParams.vipStatus,
-                    cardStatus: this.queryParams.cardStatus === 'null' ? "" : this.queryParams.cardStatus,
-                    pageNo: this.queryParams.pageNo,
-                    pageSize: this.queryParams.pageSize,
+                    keyWord : this.queryParams.keyWord,
+                    levelId : this.queryParams.levelId === 'null' ? "" : this.queryParams.levelId,
+                    channelId : this.queryParams.channelId === 'null' ? "" : this.queryParams.channelId,
+                    vipStatus : this.queryParams.vipStatus === 'null' ? "" : this.queryParams.vipStatus,
+                    cardStatus : this.queryParams.cardStatus === 'null' ? "" : this.queryParams.cardStatus,
+                    pageNo : this.queryParams.pageNo,
+                    pageSize : this.queryParams.pageSize,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$Message.warning('queryMemberPage '+ this.$t('queryFailure') +'！');
+                        this.$Message.warning('queryMemberPage ' + this.$t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             //点击表格行常看详情
             viewDetail ( data ) {
-                this.$router.push({ name: 'infoDetail', params: { detail: data } });
+                this.$router.push({ name : 'infoDetail', params : { detail : data } });
             },
 
             //删除表格数据
             deleteMemberInfo ( event, data ) {
                 event.stopPropagation();
                 ajax.post('deleteMemberInfo', {
-                    memberId: data.id,
+                    memberId : data.id,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}) + '！');     // 删除成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }) + '！'); // 删除成功
                         this.queryList();
                     } else {
-                        this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', {tip: this.$t('del')}) + '！');    // 删除失败
+                        this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', { tip : this.$t('del') }) + '！'); // 删除失败
                     }
                 });
             },
@@ -303,8 +303,8 @@
              * @param val String 值
              */
             getEnumFieldShow ( name, val ) {
-                var obj = this.enumData[name].find((item) => val === item.name);
-                return obj ?this.$t(obj.desc) : '';
+                let obj = this.enumData[name].find((item) => val === item.name);
+                return obj ? this.$t(obj.desc) : '';
             },
 
             //重置查询数据
@@ -318,13 +318,13 @@
              * 动态给行添加类名
              * @param row
              */
-            rowClassName (row){
-                if(row.row.cardStatus === "frozen"){
+            rowClassName (row) {
+                if (row.row.cardStatus === "frozen") {
                     return 'frozen-tr';
                 }
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -449,7 +449,7 @@
                     if (res.success && res.data && res.data.memberEntityCardVoList) {
                         this.allEntityCards = res.data.memberEntityCardVoList.data || [];
                     } else {
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('获取实体卡基础数据')}));
+                        this.allEntityCards = [];
                     }
                     return res.data;
                 }).finally(() => {

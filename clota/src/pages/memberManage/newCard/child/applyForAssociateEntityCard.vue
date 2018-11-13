@@ -3,7 +3,7 @@
 <template>
     <div class="apply-for-assoiate-entity-card">
         <bread-crumb-head
-            :locale-router="$t('关联实体卡')"
+            :locale-router="$t('associateEntityCard')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
@@ -13,14 +13,14 @@
             <!--会员卡信息-->
             <card-info :member-info="memberInfo">
             </card-info>
-            <div class="block-title">{{$t('绑定实体卡')}}</div>
+            <div class="block-title">{{$t('linkEntityCard')}}</div>
             <!--绑定实体卡-->
             <entity-card-info @set-card-data="getCardData">
             </entity-card-info>
             <i-col style="text-align: center;margin-top: 10px;">
                 <Button class="ivu-btn-90px"
                         type="primary"
-                        @click="applyReissuceCard">提交</Button>
+                        @click="applyReissuceCard">{{$t('submit')}}</Button>
             </i-col>
         </div>
     </div>
@@ -76,16 +76,18 @@
                         cardId : this.memberInfo.cardId
                     }).then(res => {
                         if (res.success) {
-                            this.$Message.success('关联实体卡成功');
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('associateEntityCard') }));
                             this.$router.push({
                                 name : 'associateEntityCard'
                             });
+                        } else if (res.code === 'M030') {
+                            this.$Message.error(this.$t('memLinkedEntityCard' , { name : this.memberInfo.custName }));
                         } else {
-                            this.$Message.error('关联实体卡失败');
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('associateEntityCard') }));
                         }
                     });
                 } else {
-                    this.$Message.warning('请读取实体卡信息');
+                    this.$Message.warning(this.$t('pleaseReadEntityCard'));
                 }
             },
             /**
