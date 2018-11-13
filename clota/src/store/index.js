@@ -187,7 +187,7 @@ export default new Vuex.Store({
         //更改组织机构
         updateManageOrgs (state,org) {
             let orgInfoStorage = localStorage.getItem('manageOrg');
-            if (Object.keys(state.manageOrgs).length < 1 && orgInfoStorage) {
+            if (orgInfoStorage) {
                 state.manageOrgs = JSON.parse(orgInfoStorage);
             } else {
                 state.manageOrgs = org;
@@ -216,7 +216,7 @@ export default new Vuex.Store({
         getUserRight (store, route) {
             store.dispatch('freshOrgs');
             return ajax.post('getPrivilege',{
-                orgId : store.state.manageOrgs.id
+                orgId : store.getters.manageOrgs.id
             }).then(res =>{
                 if (res.success) {
                     sessionStorage.setItem('token',res.data ? res.data.token : '');
@@ -236,6 +236,8 @@ export default new Vuex.Store({
                         // 如果有权限，则跳转到有权限的第一个页面
                         if (routers.length > 0) {
                             resolve(routers[0]);
+                        } else {
+                            reject();
                         }
                     }).catch(err => {
                         console.log(err);
