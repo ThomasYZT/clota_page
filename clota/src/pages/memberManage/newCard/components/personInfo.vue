@@ -8,13 +8,14 @@
         <div class="info-title">{{$t('personalInfo')}}</div>
         <div class="person-info-label">
             <div class="person-img">
-                <img src="../../../../assets/images/icon-no-data.png" class="person-img" alt="">
+                <img v-if="memberInfo.portrait" :src="memberInfo.portrait" class="person-img" alt="">
+                <img v-else src="../../../../assets/images/square-avatar.svg" class="person-img" alt="">
             </div>
             <i-row style="float: left;width: calc(100% - 100px)">
                 <i-col class="split-class">
                     <span class="name-label" style="margin-right: 10px;">{{memberInfo.custName | contentFilter}}</span>
                     <span class="other-label">{{$t(memberInfo.gender) | contentFilter}}</span>
-                    <span class="other-label">23</span>
+                    <span class="other-label">{{memberInfo.age | contentFilter}}</span>
                 </i-col>
             </i-row>
             <i-row style="float: left;width: calc(100% - 100px)">

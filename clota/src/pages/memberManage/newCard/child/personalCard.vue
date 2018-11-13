@@ -357,8 +357,8 @@
                     "tradePassword" : "",//支付密码
                     "payType" : "weixin",//收款方式
                     "companyName" : "",//企业名称
-                    "physicalNum" : "",//物理卡号
-                    "faceNum" : "",//卡面号
+                    "tpNo" : "",//物理卡号
+                    "tpCardNo" : "",//卡面号
                     "qrCode" : "",//扫码结果
                 },
                 //设置支付密码模态框是否显示
@@ -539,8 +539,8 @@
              * @param{String} physicalNum 物理卡号
              */
             getCardData ({ faceNum,physicalNum }) {
-                this.cardParam.faceNum = faceNum;
-                this.cardParam.physicalNum = physicalNum;
+                this.cardParam.tpCardNo = faceNum;
+                this.cardParam.tpNo = physicalNum;
             },
             /**
              * 开启查询支付结果
