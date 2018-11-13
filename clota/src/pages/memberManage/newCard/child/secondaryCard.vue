@@ -333,6 +333,13 @@
              */
             freshTableData () {
                 this.$emit('set-vice-card-info',this.tableData);
+            },
+            /**
+             * 清空副卡信息
+             */
+            resetTableData () {
+                this.tableData = [];
+                this.$emit('set-vice-card-info',this.tableData);
             }
         },
         computed : {

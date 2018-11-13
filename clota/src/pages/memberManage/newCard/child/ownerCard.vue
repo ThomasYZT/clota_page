@@ -166,22 +166,13 @@
         </owner-entity-card>
         <!--footer 按钮-->
         <div class="content-footer">
-            <template v-if="type === 'add'">
-                <Button type="primary"
-                        :loading="loading"
-                        @click="formValidateFunc">
-                    {{$t('confirmAdd')}}
-                </Button>
-            </template>
-            <template v-else-if="type === 'modify'">
-                <Button type="primary"
-                        :loading="loading"
-                        @click="formValidateFunc">
-                    {{$t('confirm')}}
-                </Button>
-            </template>
+            <Button type="primary"
+                    :loading="loading"
+                    @click="formValidateFunc">
+                {{$t('confirmAdd')}}
+            </Button>
             <Button type="ghost"
-                    @click="goBack">
+                    @click="cancelOperate">
                 {{$t("cancel")}}
             </Button>
         </div>
@@ -400,8 +391,6 @@
             };
 
             return {
-                //新增/修改
-                type : 'add',
                 // 新增/修改按钮loading
                 loading : false,
                 dateOption : {
@@ -588,21 +577,15 @@
             //新增/编辑会员接口
             saveAndEditMember (url, params) {
                 this.loading = true;
+                this.showConfirmModal = false;
                 ajax.post(url, {
                     memberInfo : JSON.stringify(params.memberInfo),
                     viceCard : JSON.stringify(params.viceCard),
                     channelType : 'cash'
                 }).then(res => {
                     if (res.success) {
-                        //区分新增与修改
-                        if (this.type === 'add') {
-                            this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
-                            this.$router.push({ name : 'memberInfo' });
-                        }
-                        if (this.type === 'modify') {
-                            this.$Message.success(this.$t('successTip', { tip : this.$t('modify') })); // 修改会员成功
-                            this.$router.back();
-                        }
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
+                        this.cancelOperate();
                     } else {
                         if (res.message === 'M008') {
                             this.$Message.error(this.$t('phoneExistCard'));
@@ -617,14 +600,25 @@
                     this.loading = false;
                 });
             },
-            //返回
-            goBack () {
-                //区分新增与修改
-                if (this.type === 'add') {
-                    this.$router.push({ name : 'memberInfo' });
-                } else if (this.type === 'modify') {
-                    this.$router.back();
-                }
+            /**
+             * 取消操作
+             */
+            cancelOperate () {
+                this.$refs.formValidate.resetFields();
+                this.$refs.secondaryCard.resetTableData();
+                this.$refs.ownerEntityCard.resetTableData();
+                this.cardParam.custName = '';
+                this.cardParam.phoneNum = '';
+                this.cardParam.gender = '';
+                this.cardParam.birthDay = '';
+                this.cardParam.certificationType = '';
+                this.cardParam.idCardNumber = '';
+                this.cardParam.remark = '';
+                this.cardParam.homeAddr = '';
+                this.cardParam.houseMoney = '';
+                this.cardParam.realEstateInformation = '';
+                this.cardParam.purchaseDate = '';
+                this.cardParam.tradePassword = '';
             },
             /**
              * 获取支付密码
@@ -680,15 +674,7 @@
              */
             createMember () {
                 let params = this.linkCardInfoWithMember();
-                //区分新增与修改
-                if (this.type === 'add') {
-                    this.saveAndEditMember('saveNewMemberInfo', params);
-                }
-                /*if (this.type === 'modify') {
-                    params.memberInfo.id = this.info.id;
-                    params.memberCard.id = this.info.cardId;
-                    this.saveAndEditMember('editMemberInfo', params);
-                }*/
+                this.saveAndEditMember('saveNewMemberInfo', params);
             }
         },
         computed : {

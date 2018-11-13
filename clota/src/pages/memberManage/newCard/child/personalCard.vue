@@ -135,6 +135,7 @@
 
             <!--实体卡信息-->
             <entity-card-info :title="'entityCardInfo'"
+                              ref="entityCardInfo"
                               @set-card-data="getCardData">
             </entity-card-info>
 
@@ -147,26 +148,16 @@
                     <Radio label="cash">{{$t('_cash')}}</Radio><!--现金-->
                 </RadioGroup>
             </Form-item>
-            <Input v-model="cardParam.qrCode" type="text"/>
         </Form>
         <!--footer 按钮-->
         <div class="content-footer">
-            <template v-if="type === 'add'">
-                <Button type="primary"
-                        :loading="loading"
-                        @click="formValidateFunc">
-                    {{$t('confirmAdd')}}
-                </Button>
-            </template>
-            <template v-else-if="type === 'modify'">
-                <Button type="primary"
-                        :loading="loading"
-                        @click="formValidateFunc">
-                    {{$t('confirm')}}
-                </Button>
-            </template>
+            <Button type="primary"
+                    :loading="loading"
+                    @click="formValidateFunc">
+                {{$t('confirmAdd')}}
+            </Button>
             <Button type="ghost"
-                    @click="goBack">
+                    @click="cancelOperate">
                 {{$t("cancel")}}
             </Button>
         </div>
@@ -176,7 +167,8 @@
                             @set-pay-password="getPayPassword">
         </set-password-modal>
         <!--确认会员信息模态框-->
-        <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
+        <confirm-member-info v-model="showConfirmModal"
+                             @confirm-data="confirmDataInfo">
             <Form :rules="ruleValidate" :label-width="110">
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
@@ -243,7 +235,9 @@
 
         <!--查询支付结果模态框-->
         <loop-for-pay-result v-model="payModalShow"
+                             ref="payResultModal"
                              :transaction-id="transctionId"
+                             @start-pay="createMember"
                              @search-success="tipSuccess">
         </loop-for-pay-result>
     </div>
@@ -330,8 +324,6 @@
             };
 
             return {
-                //新增/修改
-                type : 'add',
                 // 新增/修改按钮loading
                 loading : false,
                 dateOption : {
@@ -480,8 +472,9 @@
                     txnShortDesc : this.cardParam.payType === 'alipay' ? 'test' : ''
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
-                        this.$router.push({ name : 'memberInfo' });
+                        this.$refs.payResultModal.setStage('success');
+                        this.payModalShow = true;
+                        this.cancelOperate();
                     } else {
                         if (res.message === 'M008') {
                             this.$Message.error(this.$t('phoneExistCard'));// 手机号已被注册，请更换手机号
@@ -499,14 +492,26 @@
                     this.loading = false;
                 });
             },
-            //返回
-            goBack () {
-                //区分新增与修改
-                if (this.type === 'add') {
-                    this.$router.push({ name : 'memberInfo' });
-                } else if (this.type === 'modify') {
-                    this.$router.back();
-                }
+            /**
+             * 取消操作
+             */
+            cancelOperate () {
+                this.cardParam.custName = '';
+                this.cardParam.phoneNum = '';
+                this.cardParam.gender = '';
+                this.cardParam.birthDay = '';
+                this.cardParam.certificationType = '';
+                this.cardParam.idCardNumber = '';
+                this.cardParam.remark = '';
+                this.cardParam.homeAddr = '';
+                this.cardParam.tradePassword = '';
+                this.cardParam.payType = '';
+                this.cardParam.companyName = '';
+                this.cardParam.tpNo = '';
+                this.cardParam.tpCardNo = '';
+                this.cardParam.qrCode = '';
+                this.$refs.formValidate.resetFields();
+                this.$refs.entityCardInfo.resetInfo();
             },
             /**
              * 获取支付密码
@@ -518,20 +523,19 @@
             },
             /**
              * 确认用户信息成功，可以新开卡
+             * @param qrCode 扫码枪扫码结果
              */
-            createMember () {
+            createMember (qrCode) {
                 let params = {
                     memberInfo : Object.assign({},{
                         ...this.cardParam,
                         tradePassword : MD5(this.cardParam.tradePassword).toString(),
                         ...this.selectedCard.memberCard,
-                        birthDay : this.cardParam.birthDay ? this.cardParam.birthDay.format('yyyy-MM-dd') : ''
+                        birthDay : this.cardParam.birthDay ? this.cardParam.birthDay.format('yyyy-MM-dd') : '',
                     }),
                 };
-                //区分新增与修改
-                if (this.type === 'add') {
-                    this.saveAndEditMember('saveNewMemberInfo', params);
-                }
+                this.cardParam.qrCode = qrCode;
+                this.saveAndEditMember('saveNewMemberInfo', params);
             },
             /**
              * 获取读取的实体卡信息
@@ -548,7 +552,7 @@
              */
             startSearchForPayResult ({ transctionId }) {
                 this.transctionId = transctionId;
-                this.payModalShow = true;
+                this.$refs.payResultModal.startSearchPayResult();
             },
             /**
              * 查询到支付成功
@@ -556,6 +560,18 @@
             tipSuccess () {
                 this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
                 this.$router.push({ name : 'memberInfo' });
+            },
+            /**
+             * 确认填写的数据是否正确
+             */
+            confirmDataInfo () {
+                if (this.cardParam.payType === 'cash' || !this.selectedCard.salePrice) {
+                    this.createMember();
+                } else {
+                    this.$refs.payResultModal.setStage('scan');
+                    this.payModalShow = true;
+                    this.showConfirmModal = false;
+                }
             }
         },
         computed : {
