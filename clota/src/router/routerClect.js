@@ -15,6 +15,8 @@ import productCenterRouter from './modules/productCenter';
 import financeManageRouter from './modules/financeManage';
 // 预定中心路由
 import orderCenter from './modules/orderCenter';
+//报表中心
+import dataReport from './modules/dataReport';
 
 
 export default {
@@ -25,4 +27,5 @@ export default {
     ...productCenterRouter,
     ...financeManageRouter,
     ...orderCenter,
+    ...dataReport,
 }

@@ -1620,6 +1620,13 @@ export default {
     'bizStatus.fail': '失败',
     'bizStatus.abnormal': '异常',
     'bizStatus.unknown': '未知',
+    'dataReport' : '报表中心',
+    'memberReport' : '会员报表',
+    'cardSaleReport' : '会员卡销售报表',
+    'consumeReport' : '会员消费数据报表',
+    'storeValueReport' : '会员储值报表',
+    'mutipleChannelReport' : '各渠道会员数据报表',
+    'scoreReport' : '会员积分数据报表'
 
 
 }
