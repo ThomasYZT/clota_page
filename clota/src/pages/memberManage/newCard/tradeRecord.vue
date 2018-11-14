@@ -138,7 +138,9 @@
 			</el-table-column>
 		</table-com>
         <!--确认会员信息模态框-->
-        <confirm-member-info v-model="showConfirmModal">
+        <confirm-member-info v-model="showConfirmModal"
+                             :show-cancel="false"
+                             @confirm-data="showConfirmModal = false">
             <Form :label-width="110">
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('type') })">

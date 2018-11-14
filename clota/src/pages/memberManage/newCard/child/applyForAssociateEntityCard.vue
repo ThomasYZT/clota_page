@@ -118,6 +118,14 @@
             getCardData ({ faceNum,physicalNum }) {
                 this.formData.faceNum = faceNum;
                 this.formData.physicalNum = physicalNum;
+            },
+            /**
+             * 取消操作
+             */
+            cancelOperate () {
+                this.$router.push({
+                    name : 'associateEntityCard'
+                });
             }
         }
     };

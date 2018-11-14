@@ -15,6 +15,7 @@
         </slot>
         <div slot="footer">
             <Button type="ghost"
+                    v-if="showCancel"
                     class="ivu-btn-90px"
                     @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
@@ -31,6 +32,11 @@
             value : {
                 type : Boolean,
                 default : false
+            },
+            //是否显示取消按钮
+            'show-cancel' : {
+                type : Boolean,
+                default : true
             }
         },
         data () {
