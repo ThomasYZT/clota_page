@@ -40,7 +40,7 @@ export const secondaryCardHead = [
     },
     {
         title : 'payPass', // 支付密码
-        minWidth : 130,
+        minWidth : 150,
         field : 'tradePassword',
     },
     {

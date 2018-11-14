@@ -138,7 +138,9 @@
 			</el-table-column>
 		</table-com>
         <!--确认会员信息模态框-->
-        <confirm-member-info v-model="showConfirmModal">
+        <confirm-member-info v-model="showConfirmModal"
+                             :show-cancel="false"
+                             @confirm-data="showConfirmModal = false">
             <Form :label-width="110">
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('type') })">
@@ -194,6 +196,9 @@
                 </i-col>
             </Form>
         </confirm-member-info>
+        <re-ressiue-card-modal v-model="showRessueModal"
+                               :member-info="currentData">
+        </re-ressiue-card-modal>
 	</div>
 </template>
 
@@ -203,11 +208,13 @@
 	import { tradeRecordHead } from './tradeRecordConfig';
 	import ajax from '@/api/index.js';
     import confirmMemberInfo from './components/confirmDetailModal';
+    import reRessiueCardModal from './components/reRessiueCardModal';
 
 	export default {
 		components : {
 			tableCom,
-            confirmMemberInfo
+            confirmMemberInfo,
+            reRessiueCardModal
 		},
 		data () {
 			return {
@@ -233,7 +240,9 @@
                 //显示详细信息
                 showConfirmModal : false,
                 //当前查看的行数据
-                currentData : {}
+                currentData : {},
+                //重新补卡是否显示
+                showRessueModal : false
 			};
 		},
 		methods : {
@@ -291,7 +300,8 @@
              * @param{Object} rowData 记录数据
              */
             reFundCard (rowData) {
-
+                this.currentData = rowData;
+                this.showRessueModal = true;
             },
             /**
              * 重置筛选条件

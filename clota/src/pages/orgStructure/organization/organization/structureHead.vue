@@ -206,7 +206,7 @@
                             paddingRight : '5px',
                             color : '#EB6751',
                             fontSize : '14px',
-                            marginTop : '10px'
+                            marginTop : '9px'
                         },
                         on: {
                             click: (e) => {
@@ -323,6 +323,9 @@
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip',{tip : this.$t('del')}));
+                        if (data.id === this.activeNode.id) {
+                            this.$emit('update:activeNode',{});
+                        }
                         this.$emit('switch-tap',this.activeTap);
                     }else{
                         if(res.code === 'S007'){

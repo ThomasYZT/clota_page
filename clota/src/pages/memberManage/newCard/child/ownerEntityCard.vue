@@ -12,8 +12,7 @@
             :column-data="columnData"
             :table-data="tableData"
             auto-height
-            :table-com-min-height="250"
-            :border="true">
+            :table-com-min-height="250">
             <el-table-column
                 show-overflow-tooltip
                 slot="column0"
@@ -103,8 +102,8 @@
                         this.tableData = [tmpData[0],...this.viceCardInfo.map((item,i) => {
                             return {
                                 ...item,
-                                tpNo : tmpData[i] ? tmpData[i]['tpNo'] : '',
-                                tpCardNo : tmpData[i] ? tmpData[i]['tpCardNo'] : '',
+                                tpNo : tmpData[i + 1] ? tmpData[i + 1]['tpNo'] : '',
+                                tpCardNo : tmpData[i + 1] ? tmpData[i + 1]['tpCardNo'] : '',
                             };
                         })];
                     } else {
@@ -199,6 +198,13 @@
              */
             getEntityCardInfo () {
                 return this.tableData;
+            },
+            /**
+             * 重置表格数据
+             */
+            resetTableData () {
+                this.$set(this.tableData[0],'tpNo','');
+                this.$set(this.tableData[0],'tpCardNo','');
             }
         },
         computed : {

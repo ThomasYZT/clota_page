@@ -4,7 +4,7 @@
     <div class="apply-reissuce-card">
         <bread-crumb-head
             :locale-router="$t('replenishCard')"
-            :before-router-list="beforeRouterList">     <!--新增卡券 : 修改卡券信息-->
+            :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
             <!--持卡人信息-->
@@ -13,70 +13,76 @@
             <!--会员卡信息-->
             <card-info :member-info="memberInfo">
             </card-info>
-            <div class="block-title">{{$t('linkEntityCard')}}</div>
+            <div class="card-info-title">{{$t('linkEntityCard')}}</div>
             <!--绑定实体卡-->
-            <entity-card-info @set-card-data="getCardData">
+            <entity-card-info ref="entityCardInfo"
+                              @set-card-data="getCardData">
             </entity-card-info>
             <!--支付方式选择-->
             <pay-type-select @set-pay-type="formData.payType = $event">
             </pay-type-select>
-            <Input  v-model="formData.qrCode" type="text"/>
-            <i-col style="text-align: center;margin-top: 10px;">
+            <!--footer 按钮-->
+            <div class="content-footer">
                 <Button class="ivu-btn-90px"
                         type="primary"
                         @click="applyReissuceCard">{{$t('submit')}}</Button>
-            </i-col>
+                <Button type="ghost"
+                        @click="cancelOperate">
+                    {{$t("cancel")}}
+                </Button>
+            </div>
         </div>
         <!--确认会员信息模态框-->
-        <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
+        <confirm-member-info v-model="showConfirmModal"
+                             @confirm-data="confirmDataInfo">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{memberInfo.levelDesc | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('reissueCardFee')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('reissueCardFee') })">
                         {{replaceCardFee | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('name')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('name') })">
                         {{memberInfo.custName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('gender')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('gender') })">
                         {{$t(memberInfo.gender) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('credentialsType')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('credentialsType') })">
                         {{memberInfo.certificationTypeName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('identificationNum')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('identificationNum') })">
                         {{memberInfo.idCardNumber | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('birthday')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('birthday') })">
                         {{memberInfo.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('mobilePhone')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('mobilePhone') })">
                         {{memberInfo.phoneNum | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('remark')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('remark') })">
                         {{memberInfo.remark | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('address')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('address') })">
                         {{memberInfo.homeAddr | contentFilter}}
                     </FormItem>
                 </i-col>
@@ -84,8 +90,10 @@
         </confirm-member-info>
         <!--查询支付结果模态框-->
         <loop-for-pay-result v-model="payModalShow"
+                             ref="payResultModal"
                              :transaction-id="transctionId"
-                             @search-success="tipSuccess">
+                             @search-success="tipSuccess"
+                             @start-pay="createMember">
         </loop-for-pay-result>
         <!--挂失确认模态框-->
         <confirm-modal ref="confirmModal">
@@ -190,8 +198,9 @@
             },
             /**
              * 确认用户信息成功，可以补卡
+             * @param{String} qrCode 扫码枪扫码结果
              */
-            createMember () {
+            createMember (qrCode) {
                 this.showConfirmModal = false;
                 ajax.post('reissueEntityCard',{
                     faceNum : this.formData.faceNum,
@@ -199,28 +208,36 @@
                     cardId : this.memberInfo.cardId,
                     levelId : this.memberInfo.levelId,
                     channelType : this.formData.payType,
-                    qrCode : this.formData.qrCode
+                    qrCode : qrCode
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('replenishCard') }));
-                        this.$router.push({
-                            name : 'replenishCard'
-                        });
+                        this.$refs.payResultModal.setStage('success');
+                        this.payModalShow = true;
+                        this.cancelOperate();
                     } else if (res.code === 'P002') {
                         this.startSearchForPayResult({
                             ...(res.data ? res.data : {})
                         });
+                    } else if (res.code === 'P001') {
+                        if (this.payModalShow) {
+                            this.$refs.payResultModal.setStage('fail');
+                        } else {
+                            this.$Message.error(this.$t('payField'));
+                        }
                     } else if (res.code === 'M030') {
+                        this.payModalShow = false;
                         this.$refs.confirmModal.show({
                             title : this.$t('notice'),
                             confirmCallback : () => {
                                 this.confirmApplyForLost();
                             }
                         });
-                    } else if (res.code === 'P001') {
-                        this.$Message.error(this.$t('payField'));
                     } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('replenishCard') }));
+                        if (this.payModalShow) {
+                            this.$refs.payResultModal.setStage('fail');
+                        } else {
+                            this.$Message.error(this.$t('payField'));
+                        }
                     }
                 });
             },
@@ -239,7 +256,7 @@
              */
             startSearchForPayResult ({ transctionId }) {
                 this.transctionId = transctionId;
-                this.payModalShow = true;
+                this.$refs.payResultModal.startSearchPayResult();
             },
             /**
              * 查询补卡费
@@ -263,6 +280,26 @@
                         memberInfo : this.memberInfo
                     }
                 });
+            },
+            /**
+             * 取消补卡操作
+             */
+            cancelOperate () {
+                this.$router.push({
+                    name : 'replenishCard'
+                });
+            },
+            /**
+             * 确认填写的数据是否正确
+             */
+            confirmDataInfo () {
+                if (this.formData.payType === 'cash' || !this.replaceCardFee) {
+                    this.createMember();
+                } else {
+                    this.$refs.payResultModal.setStage('scan');
+                    this.payModalShow = true;
+                    this.showConfirmModal = false;
+                }
             }
         },
         created () {
@@ -278,7 +315,33 @@
 
         .content{
             padding: 0 15px;
+            overflow: auto;
             @include block_outline($height : unquote('calc(100% - 60px)'));
+            @include padding_place($height : 50px);
+
+            .card-info-title{
+                text-align: center;
+                font-size: $font_size_16px;
+                color: $color_333;
+                padding: 47px 0 16px 0;
+            }
+        }
+        .content-footer {
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
+            text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
+
+            /deep/ .ivu-btn {
+                width: 108px;
+                &:nth-child(1) {
+                    margin-right: 20px;
+                }
+            }
         }
     }
 </style>

@@ -56,12 +56,17 @@
                     </div>
                     <!--收款方式-->
                     <h3>{{$t('paymentMethod')}}</h3>
-                    <RadioGroup v-model="cardParam.payType">
-                        <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
-                        <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                        <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
-                        <Input v-model="cardParam.qrCode" type="text"/>
-                    </RadioGroup>
+                    <Form label-position="top" :model="cardParam">
+                        <Form-item prop="payType"
+                                   label="收款方式"
+                                   :rules="{ required : true,trigger : 'change' }" >
+                            <RadioGroup v-model="cardParam.payType">
+                                <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
+                                <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
+                                <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
+                            </RadioGroup>
+                        </Form-item>
+                    </Form>
                     <!--footer 按钮-->
                     <div class="content-footer">
                         <Button type="primary"
@@ -69,46 +74,51 @@
                                 @click="batchOpenCard">
                             {{$t('submit')}}
                         </Button>
+                        <Button type="ghost"
+                                @click="cancelOperate">
+                            {{$t("cancel")}}
+                        </Button>
                     </div>
                 </template>
             </div>
         </div>
         <!--确认会员信息模态框-->
         <confirm-member-info v-model="showConfirmModal"
-                             @confirm-data="createMember">
+                             @confirm-data="confirmDataInfo">
             <Form :label-width="110">
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{cardTypeInfo.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardPrice')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardPrice') })">
                         {{cardTypeInfo.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('openCardNum')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('openCardNum') })">
                         {{tableData.length | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardAmount')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardAmount') })">
                         {{entityCardTotalPrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('payType')">
-                        {{cardParam.payType | contentFilter}}
+                    <FormItem :label="$t('colonSetting',{ key : $t('payType') })">
+                        {{$t('payType.' + cardParam.payType) | contentFilter}}
                     </FormItem>
                 </i-col>
             </Form>
         </confirm-member-info>
-
         <!--查询支付结果模态框-->
         <loop-for-pay-result v-model="payModalShow"
+                             ref="payResultModal"
                              :transaction-id="transctionId"
-                             @search-success="tipSuccess">
+                             @search-success="cancelOperate"
+                             @start-pay="createMember">
         </loop-for-pay-result>
     </div>
 </template>
@@ -142,7 +152,7 @@
                 tableData : [],
                 cardParam : {
                     // 收款方式
-                    payType : 'cash',
+                    payType : 'weixin',
                     qrCode : "",//扫码结果
                 },
                 //会员卡信息
@@ -263,36 +273,41 @@
             },
             /**
              * 确认用户信息成功，可以新开卡
+             * @param{String} qrCode 扫码枪扫码结果
              */
-            createMember () {
+            createMember (qrCode) {
                 ajax.post('batchOpenCards',{
                     entityCardInfo : JSON.stringify(this.tableData),
                     cardTypeId : this.cardInfo.cardTypeId,
                     cardLevelId : this.cardInfo.levelId,
                     channelType : this.cardParam.payType,
-                    qrCode : this.cardParam.qrCode,
+                    qrCode : qrCode,
                     txnAmt : this.entityCardTotalPrice,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('newBatchCard') }));
                         this.tableData = [];
+                        this.$refs.payResultModal.setStage('success');
+                        this.payModalShow = true;
                     } else if (res.code === 'P002') {
                         this.startSearchForPayResult({
                             ...(res.data ? res.data : {})
                         });
+                    } else if (res.code === 'P001') {
+                        if (this.payModalShow) {
+                            this.$refs.payResultModal.setStage('fail');
+                        } else {
+                            this.$Message.error(this.$t('payField'));
+                        }
                     } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('newBatchCard') }));
+                        if (this.payModalShow) {
+                            this.$refs.payResultModal.setStage('fail');
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('newBatchCard') }));
+                        }
                     }
                 }).finally(() => {
                     this.showConfirmModal = false;
                 });
-            },
-            /**
-             * 查询到支付成功
-             */
-            tipSuccess () {
-                this.$Message.success(this.$t('successTip',{ tip : this.$t('newBatchCard') }));
-                this.tableData = [];
             },
             /**
              * 开启查询支付结果
@@ -300,8 +315,27 @@
              */
             startSearchForPayResult ({ transctionId }) {
                 this.transctionId = transctionId;
-                this.payModalShow = true;
+                this.$refs.payResultModal.startSearchPayResult();
             },
+            /**
+             * 取消操作
+             */
+            cancelOperate () {
+                this.tableData = [];
+                this.cardParam.payType = 'weixin';
+            },
+            /**
+             * 确认填写的数据是否正确
+             */
+            confirmDataInfo () {
+                if (this.cardParam.payType === 'cash' || !this.entityCardTotalPrice) {
+                    this.createMember();
+                } else {
+                    this.$refs.payResultModal.setStage('scan');
+                    this.payModalShow = true;
+                    this.showConfirmModal = false;
+                }
+            }
         }
     };
 </script>
@@ -317,7 +351,7 @@
         border-radius : 4px;
 
         h3 {
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 15px;
             text-align: center;
             font-size: $font_size_16px;
@@ -334,8 +368,14 @@
         }
 
         .content-footer {
-            margin: 20px 0 40px 0;
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
             text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
 
             /deep/ .ivu-btn {
                 width: 108px;
@@ -349,6 +389,8 @@
     .container {
         height: calc(100% - 70px);
         overflow: auto;
+        @include padding_place($height : 50px);
+
         .content-wrap {
             width: 850px;
             margin: 20px auto;

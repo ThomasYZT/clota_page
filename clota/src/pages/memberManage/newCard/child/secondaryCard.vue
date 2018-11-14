@@ -16,8 +16,7 @@
                 :show-pagination="false"
                 :column-data="columnData"
                 :table-data="tableData"
-                :table-com-min-height="250"
-                :border="true">
+                :table-com-min-height="250">
                 <!--序号-->
                 <el-table-column
                     slot="column0"
@@ -65,7 +64,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <FormItem prop="gender"
-                                  :rules="{ validator : validateExist,trigger : 'change',data : scope.row.phoneNum ,_field : 'gender'}">
+                                  :rules="{ validator : validateExist,trigger : 'change',index : scope.$index ,_field : 'gender'}">
                             <Select v-model="scope.row.gender" transfer
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in genderEnum" :key="index"
@@ -84,7 +83,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <FormItem prop="certificationType"
-                                  :rules="{ validator : validateExist,trigger : 'change',data : scope.row.certificationType ,_field : 'credentialsType'}">
+                                  :rules="{ validator : validateExist,trigger : 'change',index : scope.$index ,_field : 'certificationType',msgField : 'credentialsType'}">
                             <Select v-model="scope.row.certificationType"
                                     transfer
                                     :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
@@ -105,7 +104,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <FormItem prop="idCardNumber"
-                                  :rules="{ validator : validateExist,trigger : 'blur',data : scope.row.idCardNumber ,_field : 'identificationNum'}">
+                                  :rules="{ validator : validateExist,trigger : 'blur',index : scope.$index ,_field : 'idCardNumber',msgField : 'identificationNum'}">
                             <Input v-model.trim="scope.row.idCardNumber"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </FormItem>
@@ -119,7 +118,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <FormItem prop="birthDay"
-                                  :rules="{ validator : validateExist,trigger : 'change',data : scope.row.birthDay ,_field : 'birthDay'}">
+                                  :rules="{ validator : validateExist,trigger : 'change',index : scope.$index ,_field : 'birthDay',msgField : 'birthday'}">
                             <Date-picker
                                 type="date"
                                 v-model="scope.row.birthDay"
@@ -140,7 +139,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <FormItem :prop="'tradePassword' + scope.$index"
-                                  :rules="{ validator : validateExist,trigger : 'change',data : scope.row.tradePassword ,_field : 'password'}">
+                                  :rules="{ validator : validateExist,trigger : 'blur',index : scope.$index ,_field : 'tradePassword',msgField : 'payPass'}">
                             <ul class="operate-list">
                                 <li v-if="scope.row.tradePassword"
                                     @click="setPayPassword(scope.$index)">{{$t('haveSetted')}}
@@ -254,16 +253,16 @@
              */
             validateExist (rule,value,callback) {
                 this.$nextTick(() => {
-                    if (rule.data) {
+                    if (this.tableData[rule.index][rule._field]) {
                         callback();
                     } else {
                         if (rule.trigger === 'change') {
-                            callback(this.$t('inputField', { field : this.$t(rule._field) }));
+                            callback(this.$t('selectField', { msg : this.$t(rule.msgField ? rule.msgField : rule._field) }));
                         } else {
-                            if (rule._field === 'password') {
+                            if (rule._field === 'tradePassword') {
                                 callback(this.$t('setTradePass'));
                             } else {
-                                callback(this.$t('inputField', { field : this.$t(rule._field) }));
+                                callback(this.$t('inputField', { field : this.$t(rule.msgField ? rule.msgField : rule._field) }));
                             }
                         }
                     }
@@ -333,6 +332,13 @@
              * 更新副卡信息
              */
             freshTableData () {
+                this.$emit('set-vice-card-info',this.tableData);
+            },
+            /**
+             * 清空副卡信息
+             */
+            resetTableData () {
+                this.tableData = [];
                 this.$emit('set-vice-card-info',this.tableData);
             }
         },

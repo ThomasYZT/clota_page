@@ -88,22 +88,20 @@
                     entityCardType : 'common'
                 }).then(res => {
                     if (res.success && res.data ) {
-                        if (Object.keys(res.data).length > 0) {
-                            this.entityCardParam.tpNo = res.data.physicalNum;
-                            this.entityCardParam.tpCardNo = res.data.faceNum;
-                            this.$emit('set-card-data',{
-                                physicalNum : res.data.physicalNum,
-                                faceNum : res.data.faceNum,
-                            });
-                        } else {
-                            this.entityCardParam.tpNo = '';
-                            this.entityCardParam.tpCardNo = '';
-                            this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
-                            this.$emit('set-card-data',{
-                                physicalNum : '',
-                                faceNum : '',
-                            });
-                        }
+                        this.entityCardParam.tpNo = res.data.physicalNum;
+                        this.entityCardParam.tpCardNo = res.data.faceNum;
+                        this.$emit('set-card-data',{
+                            physicalNum : res.data.physicalNum,
+                            faceNum : res.data.faceNum,
+                        });
+                    } else if (res.code === 'M015') {
+                        this.entityCardParam.tpNo = '';
+                        this.entityCardParam.tpCardNo = '';
+                        this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
+                        this.$emit('set-card-data',{
+                            physicalNum : '',
+                            faceNum : '',
+                        });
                     } else if (res.code === 'M026') {
                         this.$Message.warning(this.$t('entityCardUsedErr'));
                         this.entityCardParam.tpNo = '';
@@ -149,6 +147,17 @@
                     this.$Message.warning(this.$t('noMatchCard')); // 对不起，找不到该卡的信息，请尝试更换其他的卡
                 }
             },
+            /**
+             * 重置读取的实体卡信息为空
+             */
+            resetInfo () {
+                this.entityCardParam.tpNo = '';
+                this.entityCardParam.tpCardNo = '';
+                this.$emit('set-card-data',{
+                    physicalNum : '',
+                    faceNum : '',
+                });
+            }
         }
     };
 </script>

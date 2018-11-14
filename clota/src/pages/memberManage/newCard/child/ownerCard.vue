@@ -113,7 +113,7 @@
             <i-row>
                 <i-col span="12">
                     <!--购房日期-->
-                    <Form-item :label="$t('buyHomeTime')" prop="birthDay">
+                    <Form-item :label="$t('buyHomeTime')" prop="purchaseDate">
                         <Date-picker
                             style="width: 280px"
                             :editable="false"
@@ -149,8 +149,6 @@
                                prop="remark"
                                style="width: 100%;">
                         <Input v-model.trim="cardParam.remark"
-                               type="textarea"
-                               :rows="3"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
                 </i-col>
@@ -168,22 +166,13 @@
         </owner-entity-card>
         <!--footer 按钮-->
         <div class="content-footer">
-            <template v-if="type === 'add'">
-                <Button type="primary"
-                        :loading="loading"
-                        @click="formValidateFunc">
-                    {{$t('confirmAdd')}}
-                </Button>
-            </template>
-            <template v-else-if="type === 'modify'">
-                <Button type="primary"
-                        :loading="loading"
-                        @click="formValidateFunc">
-                    {{$t('confirm')}}
-                </Button>
-            </template>
+            <Button type="primary"
+                    :loading="loading"
+                    @click="formValidateFunc">
+                {{$t('confirmAdd')}}
+            </Button>
             <Button type="ghost"
-                    @click="goBack">
+                    @click="cancelOperate">
                 {{$t("cancel")}}
             </Button>
         </div>
@@ -193,122 +182,119 @@
         </set-password-modal>
 
         <!--确认会员信息模态框-->
-        <confirm-member-info v-model="showConfirmModal" @confirm-data="createMember">
+        <confirm-member-info v-model="showConfirmModal"
+                             @confirm-data="createMember">
             <Form :rules="ruleValidate" :label-width="110">
-                <i-row>主卡信息</i-row>
                 <i-col span="12">
-                    <FormItem :label="$t('selectCardAttribution')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('selectCardAttribution') })">
                         {{selectedCard.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('memberCardSales')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('memberCardSales') })">
                         {{selectedCard.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('name')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('name') })">
                         {{cardParam.custName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('gender')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('gender') })">
                         {{$t(cardParam.gender) | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('credentialsType')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('credentialsType') })">
                         {{idNumName | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('identificationNum')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('identificationNum') })">
                         {{cardParam.idCardNumber | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('birthday')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('birthday') })">
                         {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('mobilePhone')" >
-                        {{cardParam.phoneNum | contentFilter}}
-                    </FormItem>
-                </i-col>
-                <i-col span="12">
-                    <FormItem :label="$t('mobilePhone')" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('mobilePhone') })">
                         {{cardParam.phoneNum | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem :label="$t('homeBuyMoney')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('homeBuyMoney') })">
                         <div class="word-wrap">
                             {{cardParam.houseMoney | moneyFilter | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem :label="$t('homeInfo')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('homeInfo') })">
                         <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
                             {{cardParam.realEstateInformation | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
                 <i-col span="12" >
-                    <FormItem :label="$t('buyHomeTime')">
+                    <FormItem :label="$t('colonSetting',{ key : $t('buyHomeTime') })">
                         <div class="word-wrap" v-w-title="cardParam.realEstateInformation">
                             {{cardParam.purchaseDate | timeFormat('yyyy-MM-dd') | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
-                <i-col span="24" >
-                    <FormItem :label="$t('remark')" >
+                <i-col span="12" >
+                    <FormItem :label="$t('colonSetting',{ key : $t('remark') })">
                         <div class="word-wrap" v-w-title="cardParam.remark">
                             {{cardParam.remark | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
-                <i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>
+                <!--<i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>-->
+                <div class="card-title" v-if="viceCardInfo.length > 0">副卡信息</div>
                 <template v-for="(item,index) in viceCardInfo">
                     <i-col span="12" :key="index + 'custName'">
-                        <FormItem :label="$t('name')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('name') })">
                             <div class="word-wrap" >
                                 {{item.custName | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'gender'">
-                        <FormItem :label="$t('gender')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('gender') })">
                             {{$t(item.gender) | contentFilter}}
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'certificationType'">
-                        <FormItem :label="$t('credentialsType')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('credentialsType') })">
                             <div class="word-wrap" >
                                 {{idTypeObj[item.certificationType] ? idTypeObj[item.certificationType]['name'] : '' | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'idCardNumber'">
-                        <FormItem :label="$t('identificationNum')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('identificationNum') })">
                             <div class="word-wrap" v-w-title="item.idCardNumber">
                                 {{item.idCardNumber | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'birthDay'">
-                        <FormItem :label="$t('birthday')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('birthday') })">
                             <div class="word-wrap" >
                                 {{item.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                             </div>
                         </FormItem>
                     </i-col>
                     <i-col span="12" :key="index + 'phoneNum'">
-                        <FormItem :label="$t('mobilePhone')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('mobilePhone') })">
                             {{item.phoneNum | contentFilter}}
                         </FormItem>
                     </i-col>
+                    <div class="hr"></div>
                 </template>
             </Form>
         </confirm-member-info>
@@ -405,8 +391,6 @@
             };
 
             return {
-                //新增/修改
-                type : 'add',
                 // 新增/修改按钮loading
                 loading : false,
                 dateOption : {
@@ -510,7 +494,15 @@
                     birthDay : [
                         {
                             required : true,
-                            message : this.$t('selectField', { msg : this.$t('birthDay') }),
+                            message : this.$t('selectField', { msg : this.$t('birthday') }),
+                            trigger : 'change',
+                            type : 'date'
+                        }
+                    ],
+                    purchaseDate : [
+                        {
+                            required : true,
+                            message : this.$t('selectField', { msg : this.$t('buyHomeTime') }),
                             trigger : 'change',
                             type : 'date'
                         }
@@ -585,21 +577,15 @@
             //新增/编辑会员接口
             saveAndEditMember (url, params) {
                 this.loading = true;
+                this.showConfirmModal = false;
                 ajax.post(url, {
                     memberInfo : JSON.stringify(params.memberInfo),
                     viceCard : JSON.stringify(params.viceCard),
                     channelType : 'cash'
                 }).then(res => {
                     if (res.success) {
-                        //区分新增与修改
-                        if (this.type === 'add') {
-                            this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
-                            this.$router.push({ name : 'memberInfo' });
-                        }
-                        if (this.type === 'modify') {
-                            this.$Message.success(this.$t('successTip', { tip : this.$t('modify') })); // 修改会员成功
-                            this.$router.back();
-                        }
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
+                        this.cancelOperate();
                     } else {
                         if (res.message === 'M008') {
                             this.$Message.error(this.$t('phoneExistCard'));
@@ -614,14 +600,25 @@
                     this.loading = false;
                 });
             },
-            //返回
-            goBack () {
-                //区分新增与修改
-                if (this.type === 'add') {
-                    this.$router.push({ name : 'memberInfo' });
-                } else if (this.type === 'modify') {
-                    this.$router.back();
-                }
+            /**
+             * 取消操作
+             */
+            cancelOperate () {
+                this.$refs.formValidate.resetFields();
+                this.$refs.secondaryCard.resetTableData();
+                this.$refs.ownerEntityCard.resetTableData();
+                this.cardParam.custName = '';
+                this.cardParam.phoneNum = '';
+                this.cardParam.gender = '';
+                this.cardParam.birthDay = '';
+                this.cardParam.certificationType = '';
+                this.cardParam.idCardNumber = '';
+                this.cardParam.remark = '';
+                this.cardParam.homeAddr = '';
+                this.cardParam.houseMoney = '';
+                this.cardParam.realEstateInformation = '';
+                this.cardParam.purchaseDate = '';
+                this.cardParam.tradePassword = '';
             },
             /**
              * 获取支付密码
@@ -677,15 +674,7 @@
              */
             createMember () {
                 let params = this.linkCardInfoWithMember();
-                //区分新增与修改
-                if (this.type === 'add') {
-                    this.saveAndEditMember('saveNewMemberInfo', params);
-                }
-                /*if (this.type === 'modify') {
-                    params.memberInfo.id = this.info.id;
-                    params.memberCard.id = this.info.cardId;
-                    this.saveAndEditMember('editMemberInfo', params);
-                }*/
+                this.saveAndEditMember('saveNewMemberInfo', params);
             }
         },
         computed : {
@@ -715,6 +704,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .personal-card {
+        @include padding_place($height : 50px);
 
          h3 {
             margin-top: 10px;
@@ -730,8 +720,14 @@
         }
 
         .content-footer {
-            margin: 20px 0 40px 0;
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
             text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
 
             /deep/ .ivu-btn {
                 width: 108px;

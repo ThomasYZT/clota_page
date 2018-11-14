@@ -116,6 +116,13 @@ export default new Vuex.Store({
         },
         //当前选择的组织信息
         manageOrgs : state => {
+            if (!state.manageOrgs || Object.keys(state.manageOrgs).length < 1) {
+                //判断是否有本地存储，如果有则拿本地存储记录
+                let orgInfoStorage = localStorage.getItem('manageOrg') ? JSON.parse(localStorage.getItem('manageOrg')) : {};
+                if (orgInfoStorage && Object.keys(orgInfoStorage).length > 0) {
+                    state.manageOrgs = orgInfoStorage;
+                }
+            }
             return state.manageOrgs;
         },
         //当前账号拥有的所有组织结构信息
@@ -186,12 +193,14 @@ export default new Vuex.Store({
         },
         //更改组织机构
         updateManageOrgs (state,org) {
-            let orgInfoStorage = localStorage.getItem('manageOrg');
-            if (orgInfoStorage) {
-                state.manageOrgs = JSON.parse(orgInfoStorage);
-            } else {
+            if (org) {
+                localStorage.setItem('manageOrg',JSON.stringify(org));
                 state.manageOrgs = org;
+            } else {
+                let orgInfoStorage = localStorage.getItem('manageOrg');
+                state.manageOrgs = orgInfoStorage ? JSON.parse(orgInfoStorage) : {};
             }
+            localStorage.setItem('orgIndex',state.manageOrgs ? state.manageOrgs['id'] : '');
         },
         //更改皮肤
         updateSkin (state,skin) {
@@ -258,7 +267,7 @@ export default new Vuex.Store({
                 if (userInfo.token) {
                     store.commit('updateUserInfo',userInfo);
                     let manageOrgs = userInfo.manageOrgs ? userInfo.manageOrgs : [];
-                    let orgIndex = localStorage.getItem('orgId');
+                    let orgIndex = localStorage.getItem('orgIndex');
                     if (orgIndex === '' || orgIndex === null) {
                         orgIndex = manageOrgs[0].id;
                         localStorage.setItem('orgIndex',orgIndex);
@@ -341,8 +350,8 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            store.commit('updateCardReadEnabled',true);
-            return;
+            // store.commit('updateCardReadEnabled',true);
+            // return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -363,8 +372,8 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                store.commit('updateCardReadEnabled',true);
-                resolve('1122222');
+                // store.commit('updateCardReadEnabled',true);
+                // resolve('1231321231312');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {

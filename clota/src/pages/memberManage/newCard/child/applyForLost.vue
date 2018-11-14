@@ -14,8 +14,19 @@
             <card-info :member-info="memberInfo">
             </card-info>
             <i-col style="text-align: center;margin-top: 10px;">
-                <Button class="ivu-btn-90px" type="primary" @click="reportLoss">{{$t('reportLoss')}}</Button>
             </i-col>
+            <!--footer 按钮-->
+            <div class="content-footer">
+                <Button class="ivu-btn-90px"
+                        type="primary"
+                        @click="reportLoss">
+                    {{$t('submit')}}
+                </Button>
+                <Button type="ghost"
+                        @click="cancelOperate">
+                    {{$t("cancel")}}
+                </Button>
+            </div>
         </div>
         <!--挂失确认模态框-->
         <confirm-modal ref="confirmModal">
@@ -103,6 +114,14 @@
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('reportLoss') }));
                     }
                 });
+            },
+            /**
+             * 取消挂失操作
+             */
+            cancelOperate () {
+                this.$router.push({
+                    name : 'reportLoss'
+                });
             }
         }
     };
@@ -116,6 +135,24 @@
         .content{
             padding: 0 15px;
             @include block_outline($height : unquote('calc(100% - 60px)'));
+        }
+
+        .content-footer {
+            @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
+            text-align: center;
+            background: $color_fff;
+            height: 56px;
+            line-height: 56px;
+            box-shadow: 0 -5px 3px 0 rgba(0, 0, 0, 0.03);
+            background: $color_fff;
+            z-index: 10;
+
+            /deep/ .ivu-btn {
+                width: 108px;
+                &:nth-child(1) {
+                    margin-right: 20px;
+                }
+            }
         }
     }
 </style>

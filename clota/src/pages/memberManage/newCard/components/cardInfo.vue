@@ -6,7 +6,7 @@
 
 <template>
     <div class="card-info">
-        <div class="block-title">{{$t('selectCardAttribution')}}</div>
+        <div class="card-info-title">{{$t('selectCardAttribution')}}</div>
         <i-col class="split-class">
             <span class="key-label">{{$t('colonSetting',{ key : $t('memberCardType') })}}</span>
             <span class="value-label">{{memberInfo.levelDesc | contentFilter}}</span>
@@ -43,6 +43,15 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .card-info{
+        width: 850px;
+        margin: 0 auto;
+
+        .card-info-title{
+            text-align: center;
+            font-size: $font_size_16px;
+            color: $color_333;
+            padding: 47px 0 16px 0;
+        }
         .split-class{
             width: 33%;
             height: 34px;

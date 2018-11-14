@@ -15,10 +15,6 @@
                 <select-card
                     @on-change-card="handleCardChanged">
                 </select-card>
-
-                <!--<component :is="currentCardType"-->
-                           <!--:selected-card="selectedCard">-->
-                <!--</component>-->
                 <personal-card v-show="currentCardType === 'personalCard' || currentCardType === 'companyCard'"
                                :card-type="currentCardType"
                                :key="currentCardType"
