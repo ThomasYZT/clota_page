@@ -177,53 +177,53 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import ajax from '@/api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {cardOwnerHead, cardInfosHead} from '../infoListConfig';
+    import { cardOwnerHead, cardInfosHead } from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
-        components: {breadCrumbHead, tableCom, noData},
+        components : { breadCrumbHead, tableCom, noData },
         mixins : [lifeCycleMixins],
         data () {
             return {
                 // 面包屑路由列表
-                breadRouterList: [
+                breadRouterList : [
                     {
-                        name: 'memberInfo',
-                        router: {
+                        name : 'memberInfo',
+                        router : {
                             name : 'memberInfo'// 会员信息
                         }
                     },
                     {
-                        name: 'memberDetail',
-                        router: {
+                        name : 'memberDetail',
+                        router : {
                             name : 'infoDetail'// 会员信息
                         }
-                    }    // 会员详情
+                    } // 会员详情
                 ],
 
                 // 年卡、次卡信息数据
-                cardInfo: {
-                    annual: [],
-                    times: []
+                cardInfo : {
+                    annual : [],
+                    times : []
                 },
                 // 年卡、次卡可使用人表头
-                cardOwnerHead: cardOwnerHead,
+                cardOwnerHead : cardOwnerHead,
                 // 年卡、次卡可使用的第三方卡表头
-                cardInfosHead: cardInfosHead,
-            }
+                cardInfosHead : cardInfosHead,
+            };
         },
-        created() {
+        created () {
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    this.getCardPackage(params.cardPkg ? params.cardPkg.cardId : '');
-                }else{
+                if (params && Object.keys(params).length > 0) {
+                    this.getCardPackage(params.cardPkg ? params.cardPkg.id : '');
+                } else {
                     this.$router.push({
                         name : 'infoDetail'
                     });
@@ -232,9 +232,9 @@
             /**
              * 获取卡包信息
              */
-            getCardPackage(cardId) {
+            getCardPackage (cardId) {
                 ajax.post('getCardPackage', {
-                    cardId: cardId
+                    cardId : cardId
                 }).then(res => {
                     if (res.success) {
                         if (res.data) {
@@ -258,26 +258,26 @@
              * @param status -- 状态code
              * @returns {string}
              */
-            cardStatus(status) {
+            cardStatus (status) {
                 let statusName = '-';
                 switch (status) {
                     case 'valid' :
-                        statusName = 'activate';      // 激活
+                        statusName = 'activate'; // 激活
                         break;
                     case 'invalid' :
-                        statusName = 'unactivated';        // 未激活
+                        statusName = 'unactivated'; // 未激活
                         break;
                     case 'froze' :
-                        statusName = 'memberStatusFrozen';        // 已冻结
+                        statusName = 'memberStatusFrozen'; // 已冻结
                         break;
                     case 'expire' :
-                        statusName = 'overdue';       // 已到期
+                        statusName = 'overdue'; // 已到期
                         break;
                 }
                 return this.$t(statusName);
             },
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

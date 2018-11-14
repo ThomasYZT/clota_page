@@ -68,56 +68,56 @@
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import ajax from '@/api/index';
-    import {orderListHead, orderStatus} from '../infoListConfig';
+    import { orderListHead, orderStatus } from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable} from '@/assets/js/constVariable';
+    import { configVariable } from '@/assets/js/constVariable';
     import map from 'lodash/map';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'memberInfo',   // 会员信息
-                        router: {name: 'memberInfo'},
+                        name : 'memberInfo', // 会员信息
+                        router : { name : 'memberInfo' },
                     },
                     {
-                        name: 'memberDetail',   // 会员详情
-                        router: {name: 'infoDetail'},
+                        name : 'memberDetail', // 会员详情
+                        router : { name : 'infoDetail' },
                     },
                 ],
 
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    keyWord: '',
+                filterParam : {
+                    keyWord : '',
                 },
                 // 表格表头字段名
-                columnData: orderListHead,
+                columnData : orderListHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
+                totalCount : 0,
                 //会员id
                 cardId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             // 初始化加载获取员工列表数据
-            queryList() {
+            queryList () {
                 ajax.post('queryMemberOrder', {
-                    cardId: this.cardId,
+                    cardId : this.cardId,
                     ...this.queryParams
                 }).then(res => {
                     if (res.success) {
@@ -136,16 +136,16 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    this.cardId = params.cardPkg.cardId;
-                }else{
+                if (params && Object.keys(params).length > 0) {
+                    this.cardId = params.cardPkg.id;
+                } else {
                     this.$router.push({
                         name : 'infoDetail'
                     });
                 }
             },
             // 搜索员工
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
@@ -158,25 +158,25 @@
             },
 
             //路由跳转订单详情页面
-            goOderDetail(scopeRow) {
+            goOderDetail (scopeRow) {
                 this.$router.push({
-                    name: 'orderDetail',
-                    query: {orderId: scopeRow.id}
+                    name : 'orderDetail',
+                    query : { orderId : scopeRow.id }
                 });
             },
 
             // 订单状态显示
-            orderStatus: orderStatus,
+            orderStatus : orderStatus,
 
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             })
         },
-        created() {
+        created () {
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

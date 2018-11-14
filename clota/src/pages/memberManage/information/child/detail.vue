@@ -5,7 +5,7 @@
         <div class="breadcrumb-box">
             <bread-crumb-head
                 :before-router-list="[{name: 'memberInfo', router: {name  : 'memberInfo'}}]"
-                :locale-router="'memberInfo'">
+                locale-router="memberDetail">
             </bread-crumb-head>
         </div>
 
@@ -54,7 +54,8 @@
                 <div class="content-info">
                     <div class="title">
                         <span>{{$t("selectCardAttribution")}} </span>
-                        <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>
+                        <!--会员3期暂时去掉-->
+                        <!--<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>-->
                     </div>
                     <!--会员卡切换-->
                     <ButtonGroup class="card-list">
@@ -69,27 +70,26 @@
                     <member-card-base-info :memberDetail="choosedCard">
                     </member-card-base-info>
                 </div>
-
-                <div class="content-info" v-for="(item, index) in accountData" :key="index">
-                    <div class="title">
-                        {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : (item.accountType === 'score' ? $t('integralAccount') : item.accountName) }}
+                <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
+                    <div class="content-info" v-for="(item, index) in accountData" :key="index">
                         <!--会员3期暂时去掉-->
-                        <!--<span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"-->
-                              <!--class="add"-->
-                              <!--@click="addAccount">+ {{$t("newAccount")}}</span>-->
-                    </div>
-                    <div class="content">
-                        <div class="header-wrap" v-if="item.accountType === 'charging'">
-                            {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
-                            <span>{{$t("information")}}</span>
-                        </div>
-                        <div class="header-wrap" v-if="item.accountType === 'score'">{{$t("integral")}}</div>
-                        <div class="body-wrap">
-                            <div class="coast">
+                        <!--<div class="title">-->
+                            <!--{{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : (item.accountType === 'score' ? $t('integralAccount') : item.accountName) }}-->
+                            <!--&lt;!&ndash;<span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"&ndash;&gt;-->
+                            <!--&lt;!&ndash;class="add"&ndash;&gt;-->
+                            <!--&lt;!&ndash;@click="addAccount">+ {{$t("newAccount")}}</span>&ndash;&gt;-->
+                        <!--</div>-->
+                        <div class="content">
+                            <div class="header-wrap" v-if="item.accountType === 'charging'">
+                                {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
+                            </div>
+                            <div class="header-wrap" v-if="item.accountType === 'score'">{{$t("integral")}}</div>
+                            <div class="body-wrap">
+                                <div class="coast">
                                 <span>
                                     <template v-if="item.accountType === 'charging'">
                                         <span>{{$t("principal")}}：</span>
-                                        <span class="num">{{item.corpusBalance.toCurrency()}}</span>
+                                        <span class="num">{{item.corpusBalance | moneyFilter}}</span>
                                         <span>{{item.unit || ''}}</span>
                                     </template>
                                     <template v-if="item.accountType === 'score'">
@@ -97,167 +97,172 @@
                                         <span class="num">{{item.accountBalance}}</span>
                                     </template>
                                 </span>
-                                <span v-if="item.accountType === 'charging'">
+                                    <span v-if="item.accountType === 'charging'">
                                     {{$t("giftSum")}}：
-                                    <span class="num">{{item.donateBalance.toCurrency()}}</span>
+                                    <span class="num">{{item.donateBalance | moneyFilter}}</span>
                                     <span v-if="item.accountType === 'charging'">{{item.unit || ''}}</span>
                                 </span>
-                            </div>
-                            <div class="operate-right">
-                                <template v-if="item.accountType === 'charging'">
-                                    <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
-                                    <span class="split-line"></span>
-                                    <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
-                                    <span class="split-line"></span>
-                                    <span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>
-                                    <template v-if="item.exchangeToCash === 'true'">
-                                        <span class="split-line"></span>
-                                        <span @click="showCashModal(item)">{{$t("cash")}}</span>
+                                </div>
+                                <div class="operate-right">
+                                    <template v-if="item.accountType === 'charging'">
+                                        <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
+                                        <template v-if="item.accountDefineId === '1'">
+                                            <span class="split-line"></span>
+                                            <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                                        </template>
+                                        <!--会员3期暂时去掉-->
+                                        <!--<span class="split-line"></span>-->
+                                        <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
+                                        <template v-if="item.exchangeToCash === 'true'">
+                                            <span class="split-line"></span>
+                                            <span @click="showCashModal(item)">{{$t("cash")}}</span>
+                                        </template>
                                     </template>
-                                </template>
-                                <template v-if="item.accountType === 'score'">
-                                    <span @click="viewIntegration(item)">{{$t("integralDetail")}}</span>
-                                </template>
+                                    <template v-if="item.accountType === 'score'">
+                                        <span @click="viewIntegration(item)">{{$t("integralDetail")}}</span>
+                                    </template>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!--会员3期暂时去掉-->
-                <!--<div class="content-info">-->
+                    <!--会员3期暂时去掉-->
+                    <!--<div class="content-info">-->
                     <!--<div class="title">{{$t("couponInfo")}}</div>&lt;!&ndash;优惠券信息&ndash;&gt;-->
                     <!--<more-card type="view"-->
-                               <!--:status="status"-->
-                               <!--:table-data="couponData"-->
-                               <!--@view-more="showCouponModal"-->
-                               <!--@change-status="changeStatus">-->
+                    <!--:status="status"-->
+                    <!--:table-data="couponData"-->
+                    <!--@view-more="showCouponModal"-->
+                    <!--@change-status="changeStatus">-->
                     <!--</more-card>-->
-                <!--</div>-->
-                <!--我的订单-->
-                <div class="content-info">
-                    <div class="title">{{$t("myOrder")}}</div>
-                    <div class="operate"><span class="pointer"  @click="viewCardDetail('myOrder')">{{$t('checkOrderInfo')}}</span></div>
-                </div>
-                <!--卡包信息-->
-                <div class="content-info">
-                    <div class="title">{{$t("cardPkgInfo")}}</div>
-                    <div class="operate"><span class="pointer"  @click="viewCardDetail('infoCard')">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
-                </div>
-                <!--享受积分、折扣率信息-->
-                <div class="content-info">
-                    <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
-                    <div class="operate">
-                        <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span>
+                    <!--</div>-->
+                    <!--我的订单-->
+                    <div class="content-info">
+                        <div class="title">{{$t("myOrder")}}</div>
+                        <div class="operate"><span class="pointer"  @click="viewCardDetail('myOrder')">{{$t('checkOrderInfo')}}</span></div>
                     </div>
-                </div>
+                    <!--卡包信息-->
+                    <div class="content-info">
+                        <div class="title">{{$t("cardPkgInfo")}}</div>
+                        <div class="operate"><span class="pointer"  @click="viewCardDetail('infoCard')">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
+                    </div>
+                    <!--享受积分、折扣率信息-->
+                    <div class="content-info">
+                        <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
+                        <div class="operate">
+                            <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span>
+                        </div>
+                    </div>
 
-                <div class="content-info card-temp"
-                     v-if=" (childOrMotherCard.isMotherCard === 'true' && childCard.length > 0)
+                    <div class="content-info card-temp"
+                         v-if=" (childOrMotherCard.isMotherCard === 'true' && childCard.length > 0)
                      || (childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0)">
-                    <div class="title">{{$t("childMotherCardInfo")}}</div>
-                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && childCard.length > 0">
-                        <table-com
-                            :auto-height="true"
-                            :table-com-min-height="300"
-                            :ofsetHeight="170"
-                            :column-data="childTableColumn"
-                            :table-data="childCard"
-                            :span-method="objectSpanMethod"
-                            :border="true">
-                            <el-table-column
-                                slot="column0"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scoped">{{$t("motherCard")}}</template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column1"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip
-                                slot-scope="row">
-                                <template slot-scope="scoped">
-                                    <span>{{  scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
-                                </template>
-                            </el-table-column>
-                        </table-com>
+                        <div class="title">{{$t("childMotherCardInfo")}}</div>
+                        <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && childCard.length > 0">
+                            <table-com
+                                :auto-height="true"
+                                :table-com-min-height="300"
+                                :ofsetHeight="170"
+                                :column-data="childTableColumn"
+                                :table-data="childCard"
+                                :span-method="objectSpanMethod"
+                                :border="true">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    slot-scope="row">
+                                    <template slot-scope="scoped">{{$t("motherCard")}}</template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column1"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scoped">
+                                        <span>{{  scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
+                                    </template>
+                                </el-table-column>
+                            </table-com>
+                        </div>
+                        <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0">
+                            <table-com
+                                :auto-height="true"
+                                :table-com-min-height="300"
+                                :ofsetHeight="170"
+                                :column-data="motherTableColumn"
+                                :table-data="motherCard"
+                                :border="true">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    slot-scope="row">
+                                    <template slot-scope="scoped">{{$t("childCard")}}</template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column1"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scoped">
+                                        <span>{{ scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
+                                    </template>
+                                </el-table-column>
+                            </table-com>
+                        </div>
                     </div>
-                    <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0">
-                        <table-com
-                            :auto-height="true"
-                            :table-com-min-height="300"
-                            :ofsetHeight="170"
-                            :column-data="motherTableColumn"
-                            :table-data="motherCard"
-                            :border="true">
-                            <el-table-column
-                                slot="column0"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scoped">{{$t("childCard")}}</template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column1"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip
-                                slot-scope="row">
-                                <template slot-scope="scoped">
-                                    <span>{{ scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
-                                </template>
-                            </el-table-column>
-                        </table-com>
+                    <!--安全设置-->
+                    <div class="content-info">
+                        <div class="title">{{$t("securitySettings")}}</div>
+                        <div class="switch-wrap">
+                            <i-switch :value="choosedCard.status === 'active' ? true : false"
+                                      @on-change="changeCardStatus">
+                            </i-switch>
+                            <span class="text">{{$t("freezeMemberCard")}}</span>
+                        </div>
                     </div>
-                </div>
-                <!--安全设置-->
-                <div class="content-info">
-                    <div class="title">{{$t("securitySettings")}}</div>
-                    <div class="switch-wrap">
-                        <i-switch :value="choosedCard.status === 'active' ? true : false"
-                                  @on-change="changeCardStatus">
-                        </i-switch>
-                        <span class="text">{{$t("freezeMemberCard")}}</span>
-                    </div>
-                </div>
-                <!--修改储值、积分数值-->
-                <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount == 'true'">
-                    <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
-                    <div class="operate">
-                        <div><span @click="showAssetModal">{{$t("modifyStorageBalance")}}</span></div>
-                        <div><span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span></div>
-                    </div>
+                    <!--修改储值、积分数值-->
+                    <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount == 'true'">
+                        <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
+                        <div class="operate">
+                            <div><span @click="showAssetModal">{{$t("modifyStorageBalance")}}</span></div>
+                            <div><span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span></div>
+                        </div>
 
-                </div>
+                    </div>
+                </template>
 
             </div>
 
         </div>
 
+        <!--会员3期暂时去掉-->
         <!--新增账户modal-->
-        <add-account-modal ref="addAccount"
-                           :store="defineAccount"
-                           :detail="choosedCard"
-                           @add-success="listCardAccountInfo(choosedCard)">
-        </add-account-modal>
+        <!--<add-account-modal ref="addAccount"-->
+                           <!--:store="defineAccount"-->
+                           <!--:detail="choosedCard"-->
+                           <!--@add-success="listCardAccountInfo(choosedCard)">-->
+        <!--</add-account-modal>-->
 
         <!--新增储值modal-->
         <add-fund-modal ref="addFund"
                         :payment-list="paymentData"
-                        :detail="choosedCard"
+                        :detail="memberBaseDetail"
                         @add-success="listCardAccountInfo(choosedCard)">
         </add-fund-modal>
 
@@ -268,10 +273,11 @@
                        @add-success="listCardAccountInfo(choosedCard)">
         </to-cash-modal>
 
+        <!--会员3期暂时去掉-->
         <!--应用范围modal-->
-        <use-range-modal ref="useRange"
-                         :store="allStore">
-        </use-range-modal>
+        <!--<use-range-modal ref="useRange"-->
+                         <!--:store="allStore">-->
+        <!--</use-range-modal>-->
 
         <!--优惠券信息--查看更多modal-->
         <view-more-coupon-modal :status="status"
@@ -282,15 +288,17 @@
         <!--会员储值账户余额修改modal-->
         <modify-balance-modal ref="modifyBalance"
                               :reason="reasonData"
-                              :detail="choosedCard"
+                              :card-info="choosedCard"
+                              :detail="memberBaseDetail"
                               @add-success="listCardAccountInfo(choosedCard)">
         </modify-balance-modal>
 
         <!--会员积分账户修改modal-->
         <modify-score-modal ref="modifyScore"
                             :account="scoreData"
+                            :card-info="choosedCard"
                             :reason="reasonData"
-                            :detail="choosedCard"
+                            :detail="memberBaseDetail"
                             @add-success="listCardAccountInfo(choosedCard)">
         </modify-score-modal>
 
@@ -301,12 +309,14 @@
 
     import ajax from '@/api/index';
     import breadCrumbHead from '@/components/breadCrumbHead/index';
-    import addAccountModal from '../components/addAccountModal.vue';
+    // 会员3期暂时去掉
+    // import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal from '../../components/addFundModal.vue';
     import toCashModal from '../components/taCashModal.vue';
     import modifyBalanceModal from '../components/modifyBalanceModal.vue';
     import modifyScoreModal from '../components/modifyScoreModal.vue';
-    import useRangeModal from '../components/useRangeModal.vue';
+    // 会员3期暂时去掉
+    // import useRangeModal from '../components/useRangeModal.vue';
     import viewMoreCouponModal from '../components/viewMoreCouponModal.vue';
     import moreCard from '../components/moreCard.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
@@ -319,12 +329,14 @@
         mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
-            addAccountModal,
+            // 会员3期暂时去掉
+            // addAccountModal,
             addFundModal,
             toCashModal,
             modifyBalanceModal,
             modifyScoreModal,
-            useRangeModal,
+            // 会员3期暂时去掉
+            // useRangeModal,
             viewMoreCouponModal,
             moreCard,
             tableCom,
@@ -414,7 +426,8 @@
             //获取储值账户-(本金/赠送金额)应用范围
             this.getSubNode();
             //查询储值账户
-            this.queryMemberAccountDefine();
+            // 会员3期暂时去掉
+            // this.queryMemberAccountDefine();
             //查询会员初始化设置
             this.findBasicSet();
         },
@@ -475,7 +488,6 @@
                     if (res.success) {
                         this.allFundsAccount = res.data.data || [];
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message || 'queryMemberAccountDefine ' + this.$t('queryFailure') + '！');
                     }
                 });
@@ -504,10 +516,12 @@
                 return obj ? this.$t(obj.desc) : '-';
             },
 
-            //显示新增账号弹窗
-            addAccount () {
-                this.$refs.addAccount.show();
-            },
+
+            // 会员3期暂时去掉
+            // //显示新增账号弹窗
+            // addAccount () {
+            //     this.$refs.addAccount.show();
+            // },
             //根据会员卡获取账户信息
             listCardAccountInfo ( params ) {
                 ajax.post('listCardAccountInfo', {
@@ -538,9 +552,9 @@
                 });
             },
             //点击账号信息，显示该账号信息的应用范围（店铺）
-            showRangeModal ( data ) {
-                this.$refs.useRange.show( data );
-            },
+            // showRangeModal ( data ) {
+            //     this.$refs.useRange.show( data );
+            // },
 
             //获取更多优惠券
             listCouponsByStatus ( params ) {
@@ -656,7 +670,13 @@
 
             //修改会员信息
             modifyInfo () {
-                this.$router.push({ name : 'addMember', query : { type : 'modify' },params : this.choosedCard });
+                this.$router.push({
+                    name : 'addMember',
+                    query : {
+                        type : 'modify'
+                    },
+                    params : this.memberBaseDetail
+                });
             },
 
             //储值账户--查看明细
@@ -715,7 +735,6 @@
                     if (res.success) {
                         this.growthAccount = res.data || {};
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message || 'getGrowthBalance ' + this.$t('failure') + '！');
                     }
                 });
@@ -728,9 +747,6 @@
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
                     this.memberInfo = params.detail;
-                    /*for(let item in params){
-                        this[item] = params[item];
-                    }*/
                     //根据会员卡获取账户信息
                     // 会员3期暂时去掉
                     // this.listCardAccountInfo(params.detail);
@@ -786,6 +802,10 @@
                 this.choosedCard = item;
                 //查询会员卡下的账户信息
                 this.listCardAccountInfo(this.choosedCard);
+                // this.updateStorgeInfo({
+                //     detail : this.memberInfo,
+                //
+                // });
             },
 
         }

@@ -77,15 +77,15 @@
 
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: ['payment-list','detail'],
-        components: {},
+        props : ['payment-list','detail'],
+        components : {},
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
                         callback(this.$t('errorIrregular'));
                     } else {
@@ -98,54 +98,55 @@
             const validateNumber = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
                     this.getTotalAmount();
-                    if(value == 0){
-                        callback(this.$t('fieldTypeError',{field : this.$t('storageSum')}));
-                    }else{
+                    if (value == 0) {
+                        callback(this.$t('fieldTypeError',{ field : this.$t('storageSum') }));
+                    } else {
                         callback();
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t('storageSum'),length : 10}));
-                    }else if(err === 'moneyError'){
-                        callback(this.$t('fieldTypeError',{field : this.$t('storageSum')}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('storageSum')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('storageSum'),length : 10 }));
+                    } else if (err === 'moneyError') {
+                        callback(this.$t('fieldTypeError',{ field : this.$t('storageSum') }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('storageSum') }));
                     }
                 });
             };
 
             return {
-                visible: false,
+                visible : false,
                 //会员信息的账户数据
-                accountInfo: {},
+                accountInfo : {},
                 //表单数据
-                formData: {
-                    amount: '',//储值金额
-                    totalAmount: '',//实际增加金额
-                    paymentTypeId: '',//支付方式
-                    remark: '',
+                formData : {
+                    amount : '',//储值金额
+                    totalAmount : '',//实际增加金额
+                    paymentTypeId : '',//支付方式
+                    remark : '',
                 },
                 //表单校验
-                ruleValidate: {
-                    amount: [
-                        { required: true, message: this.$t('inputField',{field  : this.$t('storageSum')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
+                ruleValidate : {
+                    amount : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('storageSum') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
                     ],
-                    paymentTypeId: [
-                        { required: true, message:this.$t('selectField',{msg  : this.$t('paymentMethod')}), trigger: 'change' },
+                    paymentTypeId : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('paymentMethod') }), trigger : 'change' },
                     ],
-                    remark: [
-                        { max: 100, message: this.$t('errorMaxLength',{field : this.$t('remark'),length : 100}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    remark : [
+                        { max : 100, message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
 
             show ( data ) {
-                if( data ){
+                debugger
+                if ( data ) {
                     this.accountInfo = data;
                 }
                 this.visible = true;
@@ -156,37 +157,39 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
-                            memberId: this.detail.id,
-                            cardId: this.detail.cardId,
-                            amount: this.formData.amount,
-                            paymentTypeId: this.formData.paymentTypeId,
-                            accountTypeId: this.accountInfo.accountDefineId,
-                            remark: this.formData.remark,
+                            memberId : this.detail.id,
+                            // 会员3期暂时去掉
+                            // cardId : this.detail.cardId,
+                            cardId : this.accountInfo.cardId,
+                            amount : this.formData.amount,
+                            paymentTypeId : this.formData.paymentTypeId,
+                            accountTypeId : this.accountInfo.accountDefineId,
+                            remark : this.formData.remark,
                         };
-                        console.log(params)
+                        console.log(params);
                         this.addAmount(params);
                     }
-                })
+                });
             },
 
             //新增储值
             addAmount ( params ) {
                 ajax.post('addAmount', params).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('newStorageValue')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('newStorageValue') }));
                         this.$emit('add-success');
                         this.hide();
                     } else {
-                        this.$Message.error(res.message|| this.$t('failureTip',{tip : this.$t('newStorageValue')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t('newStorageValue') }));
                     }
-                })
+                });
             },
 
             //失焦获取实际金额
             getTotalAmount () {
                 let params = {
-                    accountTypeId: this.accountInfo.accountDefineId,
-                    amount: this.formData.amount,
+                    accountTypeId : this.accountInfo.accountDefineId,
+                    amount : this.formData.amount,
                 };
                 this.getRechargeActMoney(params);
             },
@@ -194,24 +197,24 @@
             //充值时获取实际所得到的金额
             getRechargeActMoney ( params ) {
                 ajax.post('getRechargeActMoney', params).then(res => {
-                    if( res.success ) {
+                    if ( res.success ) {
                        this.formData.totalAmount = res.data;
                     } else {
-                        this.$Message.warning(res.message|| 'getRechargeActMoney '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message || 'getRechargeActMoney ' + this.$t('failure') + '！');
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.accountInfo = {};
                 this.formData = {
-                    amount: '',
-                    totalAmount: '',
-                    paymentTypeId: '',
-                    remark: '',
+                    amount : '',
+                    totalAmount : '',
+                    paymentTypeId : '',
+                    remark : '',
                 };
             },
 
@@ -221,7 +224,7 @@
                 lang : 'lang'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

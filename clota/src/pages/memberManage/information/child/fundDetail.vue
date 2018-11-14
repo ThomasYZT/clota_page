@@ -118,59 +118,59 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import modifyDetailModal from '../components/viewModifyModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {fundDetailHead} from './fundDetailConfig';
+    import { fundDetailHead } from './fundDetailConfig';
     import ajax from '@/api/index.js';
-    import {moneyTradeTypes} from '@/assets/js/constVariable.js';
+    import { moneyTradeTypes } from '@/assets/js/constVariable.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             modifyDetailModal,
             tableCom
         },
         data () {
             return {
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'memberInfo',   // 会员信息
-                        router: {
-                            name :'memberInfo'
+                        name : 'memberInfo', // 会员信息
+                        router : {
+                            name : 'memberInfo'
                         },
                     },
                     {
-                        name: 'memberDetail',   // 会员详情
-                        router: {
-                            name :'infoDetail'
+                        name : 'memberDetail', // 会员详情
+                        router : {
+                            name : 'infoDetail'
                         },
                     },
                 ],
-                localeRouter: 'selfFundTradeDetail',   // 个人资金交易明细
+                localeRouter : 'selfFundTradeDetail', // 个人资金交易明细
                 // 查询数据
-                queryParams: {
-                    cardId: '',
-                    accountTypeIds: '',
-                    operType: 'all',
-                    startDate: '',
-                    endDate: '',
-                    pageNo: 1,
-                    pageSize: 10,
+                queryParams : {
+                    cardId : '',
+                    accountTypeIds : '',
+                    operType : 'all',
+                    startDate : '',
+                    endDate : '',
+                    pageNo : 1,
+                    pageSize : 10,
                 },
                 // 枚举数据
-                type: moneyTradeTypes,
+                type : moneyTradeTypes,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
-                totalCount: 0,
+                totalCount : 0,
                 //表头配置
                 columnData : fundDetailHead,
                 //会员详情账户数据
-                fundDetail: {},
+                fundDetail : {},
                 //当前手动修改的交易数据
-                currManualData: {},
-            }
+                currManualData : {},
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询资金交易明细
              */
@@ -184,10 +184,10 @@
                     startDate : this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '',
                     endDate : this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '',
                 })).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -207,11 +207,10 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    for(let item in params){
+                if (params && Object.keys(params).length > 0) {
+                    for (let item in params) {
                         this[item] = params[item];
                     }
-
                     this.queryParams.cardId = this.fundDetail.cardId;
                     this.queryParams.accountTypeIds = this.fundDetail.accountDefineId;
                     this.queryList();
@@ -221,10 +220,10 @@
             /**
              * 查询交易明细
              */
-            filterDealList() {
+            filterDealList () {
                 Object.assign(this.queryParams, {
-                    pageNo: 1,
-                    pageSize: 10
+                    pageNo : 1,
+                    pageSize : 10
                 });
                 this.queryList();
             },
@@ -232,19 +231,19 @@
             /**
              * 重置查询条件
              */
-            resetQueryParams() {
+            resetQueryParams () {
                 Object.assign(this.queryParams, {
-                    operType: 'all',
-                    startDate: '',
-                    endDate: '',
-                    pageNo: 1,
-                    pageSize: 10,
+                    operType : 'all',
+                    startDate : '',
+                    endDate : '',
+                    pageNo : 1,
+                    pageSize : 10,
                 });
                 this.queryList();
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
