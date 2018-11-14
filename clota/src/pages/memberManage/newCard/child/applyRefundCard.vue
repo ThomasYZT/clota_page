@@ -115,7 +115,7 @@
                 //会员信息
                 memberInfo : {},
                 //会员卡详情
-                memberDetail : {},
+                memberDetail : [],
                 //选择的会员卡信息
                 choosedCard : {},
                 //储值账户信息
@@ -149,9 +149,9 @@
                     memberId : this.memberInfo.id
                 }).then(res => {
                     if (res.success) {
-                        this.memberDetail = res.data ? res.data : {};
+                        this.memberDetail = res.data ? res.data : [];
                     } else {
-                        this.memberDetail = {};
+                        this.memberDetail = [];
                     }
                 });
             },

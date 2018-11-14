@@ -35,7 +35,7 @@ instance.interceptors.response.use(function (response) {
     if(response.status !== 200){
         store.dispatch('showErrToast','systemErr');
     }else{
-        if (response.code === '300') {
+        if (response.data.code === '300') {
             store.dispatch('showErrToast','interfaceError');
         }
         if (response.data.message === '请先登录') {

@@ -41,7 +41,7 @@ export const infoListHead = [
     },
     {
         title : 'defaultAccountMoney',
-        minWidth : 140,
+        minWidth : 206,
         field : 'moneyBalance'
     },
     {
@@ -52,7 +52,7 @@ export const infoListHead = [
     },
     {
         title : 'operate',
-        width : 140,
+        width : 110,
         field : ''
     },
 ];

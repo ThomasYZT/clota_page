@@ -853,7 +853,7 @@
             .started,
             .not-started,
             .edit {
-                @include block_outline(60px);
+                @include block_outline(65px);
                 display: inline-block;
                 vertical-align: middle;
                 line-height: 28px;

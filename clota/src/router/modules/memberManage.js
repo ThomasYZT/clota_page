@@ -266,7 +266,7 @@ export default {
             },
             infoRate : {
                 //会员管理--会员信息--享受积分、折扣率信息
-                path : '/memberManage/rate',
+                path : '/memberManage/integral',
                 name : 'infoRate',
                 component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/rate.vue'),
                 meta : {

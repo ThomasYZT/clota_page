@@ -98,7 +98,7 @@
                 <!--使用说明-->
                 <div class="label instruction"></div>
                 <div class="range-list">{{annualCard.instructions | contentFilter}}</div>
-                <div class="table-wrap" style="width: 1090px;">
+                <div class="table-wrap">
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardInfosHead"
@@ -153,7 +153,7 @@
                 <!--使用说明-->
                 <div class="label instruction"></div>
                 <div class="range-list">{{timesCard.instructions | contentFilter}}</div>
-                <div class="table-wrap" style="width: 1090px;">
+                <div class="table-wrap">
                     <table-com
                         :ofsetHeight="170"
                         :column-data="cardInfosHead"

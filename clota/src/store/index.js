@@ -154,7 +154,8 @@ export default new Vuex.Store({
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
             i18n.locale = state.lang = lang;
-            window.location.reload();
+            // window.location.reload();
+            this.commit('changeOperateLine',false);
         },
         //改变操作栏状态
         changeOperateLine (state,status) {
@@ -329,9 +330,11 @@ export default new Vuex.Store({
                     for (let i = 0,j = manageOrgs.length; i < j; i++) {
                         if (store.getters.manageOrgs.id === manageOrgs[i].id) {
                             store.commit('updateManageOrgs',manageOrgs[i]);
-                            break;
+                            store.commit('updatemanageOrgList',manageOrgs);
+                            return;
                         }
                     }
+                    store.commit('updateManageOrgs',manageOrgs[0]);
                     store.commit('updatemanageOrgList',manageOrgs);
                 } else {
                     store.commit('updatemanageOrgList',[]);
@@ -350,8 +353,8 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            // store.commit('updateCardReadEnabled',true);
-            // return;
+            store.commit('updateCardReadEnabled',true);
+            return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -372,8 +375,8 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                // store.commit('updateCardReadEnabled',true);
-                // resolve('1231321231312');
+                store.commit('updateCardReadEnabled',true);
+                resolve('222222');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {
