@@ -10,7 +10,7 @@
                 <p class="status-message">{{$t('paySuccess')}}</p>
             </div>
             <div class="status" v-else-if="isSuccess === false">
-                <img class="status-icon" src="../../assets/images/pay-success.svg" alt="">
+                <img class="status-icon" src="../../assets/images/pay-failure.svg" alt="">
                 <p class="status-message">{{$t('payFailure')}}</p>
             </div>
 
