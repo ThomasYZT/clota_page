@@ -664,18 +664,3 @@ export const  tradeTypeList = [
     }
 ];
 
-//会员卡类型
-export const memberCardTypes = [
-    {
-        label : 'allMemCardTyps',
-        value : 'all'
-    },
-    {
-        label : '个人',
-        value : ''
-    },
-    {
-        label : '企业',
-        value : ''
-    }
-];
