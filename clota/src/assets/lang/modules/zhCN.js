@@ -1650,6 +1650,7 @@ export default {
     'homeInfo': '房产信息',
     'buyHomeTime': '购房日期',
     'sureToLossMemInfo': '是否确定挂失该会员卡',
+    'sureToReturnMemInfo': '是否确定注销该会员卡',
     'memHavnotCardErr': '会员{name}没有关联实体卡，不可挂失',
     'memHaveLossErr': '会员{name}实体卡已挂失，不可重复挂失',
     'pleaseReadEntityCard': '请读取实体卡信息',

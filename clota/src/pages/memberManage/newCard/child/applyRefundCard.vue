@@ -19,6 +19,11 @@
                     {{item.levelDesc}}
                 </Button>
             </ButtonGroup>
+            <div class="no-data-wrap" v-if="memberDetail.length < 1">
+                <!--无数据组件-->
+                <no-data >
+                </no-data>
+            </div>
             <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
                 <!--会员卡信息-->
                 <member-card-detail :card-info="choosedCard">
@@ -54,7 +59,7 @@
         <confirm-modal ref="confirmModal">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
-                <span>{{$t('sureToLossMemInfo')}}</span>
+                <span>{{$t('sureToReturnMemInfo')}}</span>
                 <ul class="tips-label">
                     <li>
                         <span class="key-label">线上返回金额：</span>
@@ -83,6 +88,7 @@
     import memberCardDetail from '../components/memberCardDetail';
     import ajax from '@/api/index.js';
     import confirmModal from '@/components/delModal/index.vue';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
 	export default {
         mixins : [ lifeCycleMixins ],
@@ -92,7 +98,8 @@
             storeAccountInfo,
             integralAccountInfo,
             memberCardDetail,
-            confirmModal
+            confirmModal,
+            noData
         },
 		data () {
 			return {
@@ -214,12 +221,13 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('refundedCard') }));
-                        this.choosedCard = {};
                         this.listCardsByMemberId();
                     } else {
                         this.listCardsByMemberId();
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('refundedCard') }));
                     }
+                }).finally(() => {
+                    this.choosedCard = {};
                 });
             },
             /**
@@ -247,6 +255,11 @@
             @include block_outline($height : unquote('calc(100% - 60px)'));
             overflow: auto;
             @include padding_place($height : 50px);
+
+            .no-data-wrap{
+                @include block_outline(100%,200px);
+                position: relative;
+            }
 
             .content-footer {
                 @include absolute_pos(absolute,$left : 0,$right : 0,$bottom : 0);
