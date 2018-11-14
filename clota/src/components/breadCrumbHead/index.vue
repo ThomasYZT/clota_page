@@ -16,26 +16,26 @@
 
 <script>
     export default {
-        props: {
+        props : {
             //上级路由列表
-            'before-router-list': {
-                type: Array,
-                default() {
-                    return []
+            'before-router-list' : {
+                type : Array,
+                default () {
+                    return [];
                 }
             },
             //当前路由名称
-            'locale-router': {
-                type: String,
-                default: ''
+            'locale-router' : {
+                type : String,
+                default : ''
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {}
+        methods : {}
 
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -3,36 +3,50 @@
     <div class="member-information">
 
         <div class="filter-wrap">
+            <!--会员卡类型-->
+            <Select v-model="queryParams.cardTypeId" @on-change="queryList">
+                <Option v-for="item in enumData.memberCardTypes"
+                        :key="item.label"
+                        :value="item.value">
+                    {{$t(item.label)}}
+                </Option>
+            </Select>
             <!--会员等级-->
             <Select v-model="queryParams.levelId" @on-change="queryList">
                 <Option v-for="(level, index) in enumData.level"
                         :key="index"
-                        :value="level.id">{{$t(level.levelDesc)}}
+                        :value="level.id">
+                    {{$t(level.levelDesc)}}
                 </Option>
             </Select>
             <!--会员渠道-->
             <Select v-model="queryParams.channelId"
                     @on-change="queryList"
                     style="width : 190px">
-                <Option v-for="(channel, index) in enumData.channel" :key="index"
-                        :value="channel.id">{{$t(channel.channelName)}}
+                <Option v-for="(channel, index) in enumData.channel"
+                        :key="index"
+                        :value="channel.id">
+                    {{$t(channel.channelName)}}
                 </Option>
             </Select>
             <!--会员类型-->
             <Select v-model="queryParams.vipStatus" @on-change="queryList">
-                <Option v-for="(item,index) in enumData.vipStatusEnum" :key="index"
-                        :value="item.name">{{$t(item.desc)}}
+                <Option v-for="(item,index) in enumData.vipStatusEnum"
+                        :key="index"
+                        :value="item.name">
+                    {{$t(item.desc)}}
                 </Option>
             </Select>
             <!--会员状态-->
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
                         :key="index"
-                        :value="item.name">{{$t(item.desc)}}
+                        :value="item.name">
+                    {{$t(item.desc)}}
                 </Option>
             </Select>
         </div>
-
+        <!--关键字查询-->
         <div class="search-wrap">
             <Input v-model.trim="queryParams.keyWord"
                    :placeholder="$t('memberPlaceholder')"
@@ -41,13 +55,14 @@
             <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
         </div>
 
-        <div class="btn-wrap">
-            <Button type="primary" @click="add">+ {{$t("addMember")}}</Button>
-        </div>
+        <!--会员3期暂时去掉-->
+        <!--<div class="btn-wrap">-->
+            <!--<Button type="primary" @click="add">+ {{$t("addMember")}}</Button>-->
+        <!--</div>-->
 
         <div class="table-wrap">
             <table-com
-                :ofsetHeight="208"
+                :ofsetHeight="163"
                 :show-pagination="true"
                 :column-data="infoListHead"
                 :table-data="tableData"
@@ -75,16 +90,6 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column1"
-                    :label="row.title"
-                    :prop="row.field"
-                    :key="row.index"
-                    :width="row.width"
-                    :min-width="row.minWidth"
-                    show-overflow-tooltip
-                    slot-scope="row">
-                </el-table-column>
-                <el-table-column
                     slot="column3"
                     :label="row.title"
                     :prop="row.field"
@@ -94,7 +99,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ getEnumFieldShow('genderEnum', scoped.row.gender)  | contentFilter}}</span>
+                        {{$t(scoped.row.gender) | contentFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -107,7 +112,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ getEnumFieldShow('vipStatusEnum', scoped.row.memberType) | contentFilter}}</span>
+                        <span>{{ $t(getEnumFieldShow('vipStatusEnum', scoped.row.memberType)) | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -164,7 +169,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { infoListHead } from './infoListConfig';
     import { mapGetters } from 'vuex';
-    import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
+    import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum,memberCardTypes } from '@/assets/js/constVariable';
 
     export default {
         components : { tableCom },
@@ -179,6 +184,8 @@
                     cardStatus : 'null',
                     pageNo : 1,
                     pageSize : 10,
+                    //会员卡类型
+                    cardTypeId : 'all'
                 },
                 //枚举数据
                 enumData : {
@@ -192,6 +199,8 @@
                     cardStatusEnum : cardStatusEnum,
                     //性别
                     genderEnum : genderEnum,
+                    //会员卡类型
+                    memberCardTypes : memberCardTypes
                 },
                 //列表表头
                 infoListHead : infoListHead,
@@ -221,7 +230,7 @@
                     if (res.success) {
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet ' + this.$t('queryFailure'));
+                        this.$set(this.enumData, 'level', []);
                     }
                 });
             },
@@ -235,15 +244,15 @@
                     if (res.success) {
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
                     } else {
-                        this.$Message.warning('queryChannelSet ' + $t('queryFailure') + '！');
+                        this.$set(this.enumData, 'channel', []);
                     }
                 });
             },
 
-            //新增会员
-            add () {
-                this.$router.push({ name : 'addMember', query : { type : 'add' } });
-            },
+            // //新增会员
+            // add () {
+            //     this.$router.push({ name : 'addMember', query : { type : 'add' } });
+            // },
 
             //编辑会员
             modifyData ( event, data ) {
@@ -265,14 +274,14 @@
                     cardStatus : this.queryParams.cardStatus === 'null' ? "" : this.queryParams.cardStatus,
                     pageNo : this.queryParams.pageNo,
                     pageSize : this.queryParams.pageSize,
+                    cardTypeId : this.queryParams.cardTypeId === 'all' ? "" : this.queryParams.cardTypeId,
                 }).then(res => {
                     if (res.success) {
-                        this.tableData = res.data.data || [];
+                        this.tableData = res.data ? res.data.data : [];
                         this.total = res.data.totalRow || 0;
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$Message.warning('queryMemberPage ' + this.$t('queryFailure') + '！');
                     }
                 });
             },
@@ -282,41 +291,44 @@
                 this.$router.push({ name : 'infoDetail', params : { detail : data } });
             },
 
-            //删除表格数据
-            deleteMemberInfo ( event, data ) {
-                event.stopPropagation();
-                ajax.post('deleteMemberInfo', {
-                    memberId : data.id,
-                }).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }) + '！'); // 删除成功
-                        this.queryList();
-                    } else {
-                        this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', { tip : this.$t('del') }) + '！'); // 删除失败
-                    }
-                });
-            },
+            // //删除表格数据
+            // deleteMemberInfo ( event, data ) {
+            //     event.stopPropagation();
+            //     ajax.post('deleteMemberInfo', {
+            //         memberId : data.id,
+            //     }).then(res => {
+            //         if (res.success) {
+            //             this.$Message.success(this.$t('successTip', { tip : this.$t('del') }) + '！'); // 删除成功
+            //             this.queryList();
+            //         } else {
+            //             this.$Message.warning('deleteMemberInfo ' + this.$t('failureTip', { tip : this.$t('del') }) + '！'); // 删除失败
+            //         }
+            //     });
+            // },
 
             /**
              * 获取枚举数据展示字段
-             * @param name String 枚举字段名
-             * @param val String 值
+             * @param{String} name  枚举字段名
+             * @param{String} val  值
+             * @return 枚举值的值
              */
             getEnumFieldShow ( name, val ) {
                 let obj = this.enumData[name].find((item) => val === item.name);
-                return obj ? this.$t(obj.desc) : '';
+                return obj ? obj.desc : '';
             },
 
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
                 this.queryParams.levelId = this.queryParams.channelId = this.queryParams.vipStatus = this.queryParams.cardStatus = 'null';
+                this.queryParams.cardTypeId = 'all';
                 this.queryList();
             },
 
             /**
              * 动态给行添加类名
-             * @param row
+             * @param{Object} row
+             * @return 冻结的行的类名
              */
             rowClassName (row) {
                 if (row.row.cardStatus === "frozen") {
@@ -362,10 +374,10 @@
 
         }
 
-        .btn-wrap{
-            padding: 0 30px;
-            margin-bottom: 15px;
-        }
+        /*.btn-wrap{*/
+            /*padding: 0 30px;*/
+            /*margin-bottom: 15px;*/
+        /*}*/
 
         .table-wrap{
             max-height: calc(100% - 200px);

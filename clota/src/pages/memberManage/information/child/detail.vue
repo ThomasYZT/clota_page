@@ -5,7 +5,7 @@
         <div class="breadcrumb-box">
             <bread-crumb-head
                 :before-router-list="[{name: 'memberInfo', router: {name  : 'memberInfo'}}]"
-                :locale-router="'memberDetail'">
+                :locale-router="'memberInfo'">
             </bread-crumb-head>
         </div>
 
@@ -17,8 +17,8 @@
                     <div class="title">{{$t("memberSelfInfo")}}<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span></div>
                     <div class="basic-wrap">
                         <div class="person-left">
-                            <template v-if="detail.portrait">
-                                <img :src="detail.portrait" alt=""/>
+                            <template v-if="memberBaseDetail.portrait">
+                                <img :src="memberBaseDetail.portrait" alt=""/>
                             </template>
                             <template v-else>
                                 <img src="@/assets/images/square-avatar.svg" alt=""/>
@@ -26,65 +26,57 @@
                         </div>
                         <div class="person-right">
                             <div>
-                                <span class="name">{{detail.custName || '-'}}</span>
-                                <span>{{ getEnumFieldShow('genderEnum', detail.gender) }}</span>
-                                <span>{{ detail.age ? detail.age+($store.state.lang=='en' ? '' : $t('years')) : '-' }}</span>
+                                <span class="name">{{memberBaseDetail.custName || '-'}}</span>
+                                <span>{{ getEnumFieldShow('genderEnum', memberBaseDetail.gender) }}</span>
+                                <span>{{ memberBaseDetail.age ? memberBaseDetail.age+($store.state.lang === 'en' ? '' : $t('years')) : '-' }}</span>
                             </div>
                             <div class="form-show">
-                                <span class="form-item-wrap"><label>{{$t("phoneNum")}}：</label>{{detail.phoneNum || '-'}}</span>
+                                <span class="form-item-wrap"><label>{{$t("phoneNum")}}：</label>{{memberBaseDetail.phoneNum || '-'}}</span>
                                 <span class="form-item-wrap"><label>{{$t("birthday")}}：</label>
-                                    {{detail.birthDay | timeFormat('yyyy-MM-dd')}}</span>
+                                    {{memberBaseDetail.birthDay | timeFormat('yyyy-MM-dd')}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="form-wrap">
-                        <!--<div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-w-title="detail.wechatAcct">{{detail.wechatAcct || '-'}}</span></div>-->
-                        <div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span v-w-title="detail.alipayAcct">{{detail.alipayAcct || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>E-mail：</label><span v-w-title="detail.emailAddr">{{detail.emailAddr || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-w-title="detail.stateCode">{{detail.stateCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span v-w-title="detail.cityCode">{{detail.cityCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-w-title="detail.qq">{{detail.qq || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="detail.certificationTypeName">{{detail.certificationTypeName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-w-title="detail.idCardNumber">{{detail.idCardNumber || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-w-title="detail.hobby">{{detail.hobby || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="detail.homeAddr">{{detail.homeAddr || '-'}}</span></div>
+                        <!--会员3期暂时去掉-->
+                        <!--<div class="form-item-wrap"><label>{{$t("weixin")}}：</label><span v-w-title="memberBaseDetail.wechatAcct">{{memberBaseDetail.wechatAcct || '-'}}</span></div>-->
+                        <!--<div class="form-item-wrap"><label>{{$t("zfb")}}：</label><span v-w-title="memberBaseDetail.alipayAcct">{{memberBaseDetail.alipayAcct || '-'}}</span></div>-->
+                        <!--<div class="form-item-wrap"><label>E-mail：</label><span v-w-title="memberBaseDetail.emailAddr">{{memberBaseDetail.emailAddr || '-'}}</span></div>-->
+                        <!--<div class="form-item-wrap"><label>{{$t("countryCode")}}：</label><span v-w-title="memberBaseDetail.stateCode">{{memberBaseDetail.stateCode || '-'}}</span></div>-->
+                        <!--<div class="form-item-wrap"><label>{{$t("cityCode")}}：</label><span v-w-title="memberBaseDetail.cityCode">{{memberBaseDetail.cityCode || '-'}}</span></div>-->
+                        <!--<div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-w-title="memberBaseDetail.qq">{{memberBaseDetail.qq || '-'}}</span></div>-->
+                        <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="memberBaseDetail.certificationTypeName">{{memberBaseDetail.certificationTypeName || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-w-title="memberBaseDetail.idCardNumber">{{memberBaseDetail.idCardNumber || '-'}}</span></div>
+                        <!--<div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-w-title="memberBaseDetail.hobby">{{memberBaseDetail.hobby || '-'}}</span></div>-->
+                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="memberBaseDetail.homeAddr">{{memberBaseDetail.homeAddr || '-'}}</span></div>
                     </div>
                 </div>
-
                 <div class="content-info">
                     <div class="title">
                         <span>{{$t("selectCardAttribution")}} </span>
                         <span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span>
                     </div>
-                    <div class="form-wrap">
-                        <div class="form-item-wrap"><label>{{$t("memberNum")}}：</label><span v-w-title="detail.cardCode">
-                            {{detail.cardCode || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span v-w-title="detail.orgName">
-                            {{detail.orgName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("signChannel")}}：</label><span v-w-title="detail.channelName">
-                            {{detail.channelName || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("memberType")}}：</label><span v-w-title="getEnumFieldShow('vipStatusEnum', detail.memberType)">
-                            {{getEnumFieldShow('vipStatusEnum', detail.memberType)}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("levelSetting")}}：</label><span v-w-title="detail.levelDesc">
-                            {{detail.levelDesc || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("password")}}：</label><span>
-                            {{detail.passwd || '********'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("thirdCardFaceNum")}}：</label><span v-w-title="detail.tpCardNo">
-                            {{detail.tpCardNo || '-'}}</span></div>
-                        <div class="form-item-wrap"><label>{{$t("thirdCardNum")}}：</label><span v-w-title="detail.tpNo">
-                            {{detail.tpNo || '-'}}</span></div>
-                         <div class="form-item-wrap"><label>{{$t("growth")}}：</label><span v-w-title="growthAccount.accountBalance">
-                        {{growthAccount.accountBalance !== null ? growthAccount.accountBalance : '-'}}</span></div>
-                    </div>
+                    <!--会员卡切换-->
+                    <ButtonGroup class="card-list">
+                        <Button v-for="(item,index) in memberCardList"
+                                :key="index"
+                                :type="choosedCard === item ? 'primary' : 'ghost'"
+                                @click="choseCard(item)">
+                            {{item.levelDesc}}
+                        </Button>
+                    </ButtonGroup>
+                    <!--会员卡基础信息-->
+                    <member-card-base-info :memberDetail="choosedCard">
+                    </member-card-base-info>
                 </div>
 
-                <div class="content-info" v-for="(item, index) in accountData">
+                <div class="content-info" v-for="(item, index) in accountData" :key="index">
                     <div class="title">
                         {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : (item.accountType === 'score' ? $t('integralAccount') : item.accountName) }}
-                        <span>{{$t("information")}}</span>
-                        <span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"
-                              class="add"
-                              @click="addAccount">+ {{$t("newAccount")}}</span>
+                        <!--会员3期暂时去掉-->
+                        <!--<span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"-->
+                              <!--class="add"-->
+                              <!--@click="addAccount">+ {{$t("newAccount")}}</span>-->
                     </div>
                     <div class="content">
                         <div class="header-wrap" v-if="item.accountType === 'charging'">
@@ -131,15 +123,16 @@
                     </div>
                 </div>
 
-                <div class="content-info">
-                    <div class="title">{{$t("couponInfo")}}</div><!--优惠券信息-->
-                    <more-card type="view"
-                               :status="status"
-                               :table-data="couponData"
-                               @view-more="showCouponModal"
-                               @change-status="changeStatus">
-                    </more-card>
-                </div>
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-info">-->
+                    <!--<div class="title">{{$t("couponInfo")}}</div>&lt;!&ndash;优惠券信息&ndash;&gt;-->
+                    <!--<more-card type="view"-->
+                               <!--:status="status"-->
+                               <!--:table-data="couponData"-->
+                               <!--@view-more="showCouponModal"-->
+                               <!--@change-status="changeStatus">-->
+                    <!--</more-card>-->
+                <!--</div>-->
                 <!--我的订单-->
                 <div class="content-info">
                     <div class="title">{{$t("myOrder")}}</div>
@@ -150,10 +143,12 @@
                     <div class="title">{{$t("cardPkgInfo")}}</div>
                     <div class="operate"><span class="pointer"  @click="viewCardDetail('infoCard')">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
                 </div>
-
+                <!--享受积分、折扣率信息-->
                 <div class="content-info">
                     <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
-                    <div class="operate"><span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span></div>
+                    <div class="operate">
+                        <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span>
+                    </div>
                 </div>
 
                 <div class="content-info card-temp"
@@ -228,16 +223,17 @@
                         </table-com>
                     </div>
                 </div>
-
+                <!--安全设置-->
                 <div class="content-info">
                     <div class="title">{{$t("securitySettings")}}</div>
                     <div class="switch-wrap">
-                        <i-switch :value="detail.cardStatus ==='active' ? true : false"
-                                  @on-change="changeCardStatus"></i-switch>
+                        <i-switch :value="choosedCard.status === 'active' ? true : false"
+                                  @on-change="changeCardStatus">
+                        </i-switch>
                         <span class="text">{{$t("freezeMemberCard")}}</span>
                     </div>
                 </div>
-
+                <!--修改储值、积分数值-->
                 <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount == 'true'">
                     <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
                     <div class="operate">
@@ -254,26 +250,28 @@
         <!--新增账户modal-->
         <add-account-modal ref="addAccount"
                            :store="defineAccount"
-                           :detail="detail"
-                           @add-success="listCardAccountInfo(detail)">
+                           :detail="choosedCard"
+                           @add-success="listCardAccountInfo(choosedCard)">
         </add-account-modal>
 
         <!--新增储值modal-->
         <add-fund-modal ref="addFund"
                         :payment-list="paymentData"
-                        :detail="detail"
-                        @add-success="listCardAccountInfo(detail)">
+                        :detail="choosedCard"
+                        @add-success="listCardAccountInfo(choosedCard)">
         </add-fund-modal>
 
         <!--兑现modal-->
         <to-cash-modal ref="toCash"
-                       :detail="detail"
+                       :detail="choosedCard"
                        :store="allFundsAccount"
-                       @add-success="listCardAccountInfo(detail)"></to-cash-modal>
+                       @add-success="listCardAccountInfo(choosedCard)">
+        </to-cash-modal>
 
         <!--应用范围modal-->
         <use-range-modal ref="useRange"
-                         :store="allStore"></use-range-modal>
+                         :store="allStore">
+        </use-range-modal>
 
         <!--优惠券信息--查看更多modal-->
         <view-more-coupon-modal :status="status"
@@ -284,16 +282,16 @@
         <!--会员储值账户余额修改modal-->
         <modify-balance-modal ref="modifyBalance"
                               :reason="reasonData"
-                              :detail="detail"
-                              @add-success="listCardAccountInfo(detail)">
+                              :detail="choosedCard"
+                              @add-success="listCardAccountInfo(choosedCard)">
         </modify-balance-modal>
 
         <!--会员积分账户修改modal-->
         <modify-score-modal ref="modifyScore"
                             :account="scoreData"
                             :reason="reasonData"
-                            :detail="detail"
-                            @add-success="listCardAccountInfo(detail)">
+                            :detail="choosedCard"
+                            @add-success="listCardAccountInfo(choosedCard)">
         </modify-score-modal>
 
     </div>
@@ -304,21 +302,22 @@
     import ajax from '@/api/index';
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import addAccountModal from '../components/addAccountModal.vue';
-    import addFundModal  from '../../components/addFundModal.vue';
-    import toCashModal  from '../components/taCashModal.vue';
-    import modifyBalanceModal  from '../components/modifyBalanceModal.vue';
-    import modifyScoreModal  from '../components/modifyScoreModal.vue';
-    import useRangeModal  from '../components/useRangeModal.vue';
-    import viewMoreCouponModal  from '../components/viewMoreCouponModal.vue';
-    import moreCard  from '../components/moreCard.vue';
+    import addFundModal from '../../components/addFundModal.vue';
+    import toCashModal from '../components/taCashModal.vue';
+    import modifyBalanceModal from '../components/modifyBalanceModal.vue';
+    import modifyScoreModal from '../components/modifyScoreModal.vue';
+    import useRangeModal from '../components/useRangeModal.vue';
+    import viewMoreCouponModal from '../components/viewMoreCouponModal.vue';
+    import moreCard from '../components/moreCard.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import defaultsDeep from 'lodash/defaultsDeep';
     import { vipStatusEnum, genderEnum } from '@/assets/js/constVariable';
+    import memberCardBaseInfo from '../components/memberCardBaseInfo';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             addAccountModal,
             addFundModal,
@@ -329,74 +328,83 @@
             viewMoreCouponModal,
             moreCard,
             tableCom,
+            memberCardBaseInfo
         },
         data () {
             return {
                 //会员获取会员信息和会员卡信息
-                detail: {},
+                detail : {},
                 //成长值账户信息
-                growthAccount: {},
+                growthAccount : {},
                 //枚举数据
-                enumData: {
+                enumData : {
                     //性别
-                    genderEnum: genderEnum,
+                    genderEnum : genderEnum,
                     //会员类型
-                    vipStatusEnum: vipStatusEnum,
+                    vipStatusEnum : vipStatusEnum,
                 },
                 //账户信息列表（本金/积分）
-                accountData: [],
+                accountData : [],
                 //收款方式数据
-                paymentData: [],
+                paymentData : [],
                 //自定义账户--用于新增账户
-                defineAccount: [],
+                defineAccount : [],
                 //优惠券状态 未使用-noUse 未过期-noOverdue 已使用-used  已过期-overdue
-                status: 'noUse',
+                status : 'noUse',
                 //优惠券信息列表,包括分页信息
-                couponData: [],
+                couponData : [],
                 //子母卡信息
-                childOrMotherCard: {},
+                childOrMotherCard : {},
                 //子母卡表格数据
-                motherCard: [],
-                motherTableColumn: [
+                motherCard : [],
+                motherTableColumn : [
                     {
-                        title: 'currentMemberCardInfo',
-                        minWidth: 250,
-                        field: ''
+                        title : 'currentMemberCardInfo',
+                        minWidth : 250,
+                        field : ''
                     },
                     {
-                        title: 'motherCardInfo',
-                        minWidth: 270,
-                        field: ''
+                        title : 'motherCardInfo',
+                        minWidth : 270,
+                        field : ''
                     },
                 ],
-                childCard: [],
-                childTableColumn: [
+                childCard : [],
+                childTableColumn : [
                     {
-                        title: 'currentMemberCardInfo',
-                        minWidth: 250,
-                        field: ''
+                        title : 'currentMemberCardInfo',
+                        minWidth : 250,
+                        field : ''
                     },
                     {
-                        title: 'childCardInfo',
-                        minWidth: 270,
-                        field: ''
+                        title : 'childCardInfo',
+                        minWidth : 270,
+                        field : ''
                     },
                 ],
                 //修改原因
-                reasonData: [],
+                reasonData : [],
                 //储值账户信息--用于修改储值余额修改
-                charTableData: [],
+                charTableData : [],
                 //积分账户信息--用于修改积分余额修改
-                scoreData: {},
+                scoreData : {},
                 //应用范围列表
-                allStore: [],
+                allStore : [],
                 //所有储值账户
-                allFundsAccount: [],
+                allFundsAccount : [],
                 //初始化设置
-                setting: {},
-            }
+                setting : {},
+                //会员基础详情
+                memberBaseDetail : {},
+                //会员卡列表
+                memberCardList : [],
+                //选择的会员卡信息
+                choosedCard : {},
+                //会员信息
+                memberInfo : {}
+            };
         },
-        created() {
+        created () {
             //查询自定义账户--用于新增账户
             this.queryDefineAccountType();
             //查询收款方式--用于新增储值
@@ -410,16 +418,15 @@
             //查询会员初始化设置
             this.findBasicSet();
         },
-        methods: {
+        methods : {
 
             //查询自定义账户
             queryDefineAccountType () {
                 ajax.post('queryDefineAccountType', {}).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.defineAccount = res.data || [];
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'queryDefineAccountType '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message || 'queryDefineAccountType ' + this.$t('failure') + '！');
                     }
                 });
             },
@@ -427,64 +434,64 @@
             //查询收款方式
             queryPaymentType () {
                 ajax.post('queryPaymentType',{
-                    isDeleted: 'false',
-                    pageNo: 1,
-                    pageSize: 99999,
+                    isDeleted : 'false',
+                    pageNo : 1,
+                    pageSize : 99999,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.paymentData = res.data || [];
                     }
-                })
+                });
             },
 
             //查询修改原因
             listAdjustReason () {
                 ajax.post('listAdjustReason',{}).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.reasonData = res.data || [];
                     }
-                })
+                });
             },
 
             //获取储值账户-(本金/赠送金额)应用范围
             getSubNode () {
                 ajax.post('getSubNode', {
-                    orgType: 'scenic',
-                    includeMe: 'true',
+                    orgType : 'scenic',
+                    includeMe : 'true',
                 }).then(res => {
-                    if( res.success ) {
+                    if ( res.success ) {
                         this.allStore = res.data || [];
                     }
-                })
+                });
             },
 
             //查询储值账户
             queryMemberAccountDefine () {
                 ajax.post('queryMemberAccountDefine',{
-                    accountType: 'charging',
-                    pageNo: 1,
-                    pageSize: 99999,
+                    accountType : 'charging',
+                    pageNo : 1,
+                    pageSize : 99999,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.allFundsAccount = res.data.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberAccountDefine '+ this.$t('queryFailure') +'！');
+                        this.$Message.warning(res.message || 'queryMemberAccountDefine ' + this.$t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             //查询会员初始化设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
-                    if( res.success){
-                        if(res.data){
+                    if ( res.success) {
+                        if (res.data) {
                             this.setting = res.data || {};
                         } else {
                             this.setting = {};
                         }
                     }
-                })
+                });
             },
 
             /**
@@ -493,8 +500,8 @@
              * @param val String 值
              */
             getEnumFieldShow ( name, val ) {
-                var obj = this.enumData[name].find((item) => val === item.name);
-                return obj ? this.$t(obj.desc) : '-'
+                let obj = this.enumData[name].find((item) => val === item.name);
+                return obj ? this.$t(obj.desc) : '-';
             },
 
             //显示新增账号弹窗
@@ -504,27 +511,29 @@
             //根据会员卡获取账户信息
             listCardAccountInfo ( params ) {
                 ajax.post('listCardAccountInfo', {
-                    cardId: params.cardId,
-                    memberId: params.id,
+                    cardId : params.id,
+                    memberId : this.memberInfo.id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.accountData = res.data || [];
                         this.charTableData = [];
                         this.scoreData = [];
                         //区分账户类型数据
-                        res.data.forEach( item => {
-                            if(item.accountType === 'charging'){
+                        this.accountData.forEach( item => {
+                            if (item.accountType === 'charging') {
                                 this.charTableData.push(item);
                             }
-                            if(item.accountType === 'score'){
+                            if (item.accountType === 'score') {
                                 this.scoreData = item;
                             }
                         });
+                        // 会员3期暂时去掉
                         //查询成长值
-                        this.getGrowthBalance(params);
+                        // this.getGrowthBalance(params);
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'listCardAccountInfo '+ this.$t('failure') +'！');
+                        this.accountData = [];
+                        this.charTableData = [];
+                        this.scoreData = [];
                     }
                 });
             },
@@ -536,30 +545,31 @@
             //获取更多优惠券
             listCouponsByStatus ( params ) {
                 ajax.post('listCouponsByStatus', {
-                    cardId: params.cardId,
-                    memberId: params.id,
-                    status: this.status,
-                    pageNo: 1,
-                    pageSize: 10,
+                    cardId : params.cardId,
+                    memberId : params.id,
+                    status : this.status,
+                    pageNo : 1,
+                    pageSize : 10,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.couponData = res.data || [];
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message ||'listCouponsByStatus '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message || 'listCouponsByStatus ' + this.$t('failure') + '！');
                     }
                 });
             },
-            //切换优惠券状态查询
-            changeStatus ( val ) {
-                if(val){
-                    this.status = val;
-                    this.listCouponsByStatus( this.detail );
-                }
-            },
+            // 会员3期暂时去掉
+            // //切换优惠券状态查询
+            // changeStatus ( val ) {
+            //     if (val) {
+            //         this.status = val;
+            //         this.listCouponsByStatus( this.memberBaseDetail );
+            //     }
+            // },
             //点击查看更多显示卡劵所有列表弹窗
             showCouponModal () {
-                if(this.$refs.viewMoreCoupon){
+                if (this.$refs.viewMoreCoupon) {
                     this.$refs.viewMoreCoupon.show();
                 }
             },
@@ -570,7 +580,7 @@
             },
 
             //监听开关组件改变
-            changeCardStatus ( bool ){
+            changeCardStatus ( bool ) {
                 if (bool) {
                     this.manualUpdateCardStatus('active');
                 } else {
@@ -580,15 +590,14 @@
             //更新会员卡信息
             manualUpdateCardStatus ( status ) {
                 ajax.post('manualUpdateCardStatus', {
-                    id: this.detail.cardId,
-                    status: status,
+                    id : this.choosedCard.id,
+                    status : status,
                 }).then(res => {
-                    if(res.success){
-                        this.detail.cardStatus = status;
-                        this.$Message.success(this.$t('successTip', {tip: $t('updateMemberInfo')}) + '！');      // 更新会员卡信息成功
+                    if (res.success) {
+                        this.choseCard(this.choosedCard);
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('updateMemberInfo') })); // 更新会员卡信息成功
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message ? this.$t(res.message) : 'manualUpdateCardStatus '+ this.$t('failure') +'！');
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('updateMemberInfo') })); // 更新会员卡信息失败
                     }
                 });
             },
@@ -596,34 +605,34 @@
             //获取子母卡
             queryChildOrMotherCard ( data ) {
                 ajax.post('queryChildOrMotherCard', {
-                    cardId: data.cardId,
+                    cardId : data.cardId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.childOrMotherCard = res.data || {};
                         //区分子母卡
-                        if(res.data.isMotherCard === 'true'){
-                            this.childCard = res.data.childCard && res.data.childCard.length > 0 ? res.data.childCard: [];
+                        if (res.data.isMotherCard === 'true') {
+                            this.childCard = res.data.childCard && res.data.childCard.length > 0 ? res.data.childCard : [];
                         } else {
-                            this.motherCard = res.data.motherCard && res.data.motherCard.length > 0 ? res.data.motherCard: [];
+                            this.motherCard = res.data.motherCard && res.data.motherCard.length > 0 ? res.data.motherCard : [];
                         }
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'queryChildOrMotherCard '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message || 'queryChildOrMotherCard ' + this.$t('failure') + '！');
                     }
                 });
             },
             // 子母卡列合并
-            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+            objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
                     if (rowIndex % 2 === 0) {
                         return {
-                            rowspan: 2,
-                            colspan: 1
+                            rowspan : 2,
+                            colspan : 1
                         };
                     } else {
                         return {
-                            rowspan: 0,
-                            colspan: 0
+                            rowspan : 0,
+                            colspan : 0
                         };
                     }
                 }
@@ -647,38 +656,53 @@
 
             //修改会员信息
             modifyInfo () {
-                this.$router.push({ name: 'addMember', query: { type: 'modify' },params : this.detail});
+                this.$router.push({ name : 'addMember', query : { type : 'modify' },params : this.choosedCard });
             },
 
             //储值账户--查看明细
             viewDeal (dealData) {
-                this.$router.push({ name: 'infoFund', params: {fundDetail: dealData} });
+                this.$router.push({ name : 'infoFund', params : { fundDetail : dealData } });
             },
 
             //积分账户--查看明细
             viewIntegration  (integraData) {
-                this.$router.push({ name: 'infoInteg', params: {integraDetail: integraData} });
+                this.$router.push({
+                    name : 'infoInteg',
+                    params : {
+                        integraDetail : integraData
+                    }
+                });
             },
 
             //查看卡包信息、我的订单
             viewCardDetail (routerName) {
-                this.$router.push({ name: routerName, params: {cardPkg: this.detail} });
+                this.$router.push({
+                    name : routerName,
+                    params : {
+                        cardPkg : this.choosedCard
+                    }
+                });
             },
 
             //查看享受积分、折扣率信息
             viewCardRateDetail () {
-                this.$router.push({ name: 'infoRate' , params: { detail: this.detail} });
+                this.$router.push({
+                    name : 'infoRate' ,
+                    params : {
+                        detail : this.choosedCard
+                    }
+                });
             },
 
             //根据会员id获取会员信息和会员卡信息
-            showMemberDetail ( params ) {
+            showMemberDetail ( ) {
                 ajax.post('showMemberDetail', {
-                    memberId: params.id,
+                    memberId : this.memberInfo.id,
                 }).then(res => {
-                    if(res.success){
-                        this.detail = res.data || {};
+                    if (res.success) {
+                        this.memberBaseDetail = res.data || {};
                     } else {
-                        this.$Message.warning(res.message || 'showMemberDetail '+ this.$t('failure') +'！');
+                        this.memberBaseDetail = {};
                     }
                 });
             },
@@ -686,13 +710,13 @@
             //查询成长值
             getGrowthBalance ( params ) {
                 ajax.post('getGrowthBalance', {
-                    cardId: params.cardId,
+                    cardId : params.cardId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.growthAccount = res.data || {};
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message || 'getGrowthBalance '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message || 'getGrowthBalance ' + this.$t('failure') + '！');
                     }
                 });
             },
@@ -702,29 +726,70 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
+                if (params && Object.keys(params).length > 0) {
+                    this.memberInfo = params.detail;
                     /*for(let item in params){
                         this[item] = params[item];
                     }*/
                     //根据会员卡获取账户信息
-                    this.listCardAccountInfo(params.detail);
+                    // 会员3期暂时去掉
+                    // this.listCardAccountInfo(params.detail);
                     //获取更多优惠券
                     this.listCouponsByStatus(params.detail);
                     //字母卡列合并
                     this.queryChildOrMotherCard(params.detail);
                     //根据会员获取会员信息和会员卡信息
-                    this.showMemberDetail(params.detail);
+                    this.showMemberDetail();
                     //查询成长值
-                    this.getGrowthBalance(params.detail);
-                }else{
+                    // 会员3期暂时去掉
+                    // this.getGrowthBalance(params.detail);
+                    //查询会员卡信息
+                    this.listCardsByMemberId();
+                } else {
                     this.$router.push({
                         name : 'memberInfo'
                     });
                 }
             },
+            /**
+             * 查询会员卡信息
+             */
+            listCardsByMemberId () {
+                ajax.post('listCardsByMemberId',{
+                    memberId : this.memberInfo.id
+                }).then(res => {
+                    if (res.success) {
+                        this.memberCardList = res.data ? res.data : [];
+                        //默认给选择的会员第一个会员卡信息
+                        if (this.memberCardList.length > 0) {
+                            this.choosedCard = this.memberCardList[0];
+                        }
+                        //如果从列表进入，需要指定查看会员下的哪个会员卡
+                        for (let i = 0,j = this.memberCardList.length; i < j; i++) {
+                            if (this.memberCardList[i]['id'] === this.memberInfo.cardId) {
+                                this.choosedCard = this.memberCardList[i];
+                            }
+                        }
+                        //查询会员卡下的账户信息
+                        this.listCardAccountInfo(this.choosedCard);
+                    } else {
+                        this.memberCardList = [];
+                    }
+                });
+            },
+
+            /**
+             * 选择会员卡
+             * @param{Object} item 会员卡信息
+             */
+            choseCard (item) {
+                this.choosedCard = item;
+                //查询会员卡下的账户信息
+                this.listCardAccountInfo(this.choosedCard);
+            },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -751,6 +816,10 @@
 
                 .content-info{
                     margin-bottom: 30px;
+
+                    .card-list{
+                        margin-top: 10px;
+                    }
 
                     .title{
                         font-size: $font_size_16px;

@@ -56,15 +56,15 @@
 
 <script>
     import common from '../../assets/js/common';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
+        data () {
             return {
                 //用户名
                 accountName : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 切换语言
              * @param lang
@@ -83,7 +83,7 @@
              * 修改皮肤
              * @param skin
              */
-            chagneSkin(skin) {
+            chagneSkin (skin) {
                 this.$store.commit('updateSkin',skin);
             },
             getAccountName () {
@@ -104,12 +104,12 @@
         },
         computed : {
             ...mapGetters({
-                lang: 'lang',
+                lang : 'lang',
                 operateLine : 'operateLine',
                 skinType : 'skinType'
             }),
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

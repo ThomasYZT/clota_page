@@ -1693,7 +1693,9 @@ export default {
     'consumeReport' : '会员消费数据报表',
     'storeValueReport' : '会员储值报表',
     'mutipleChannelReport' : '各渠道会员数据报表',
-    'scoreReport' : '会员积分数据报表'
-
-
+    'scoreReport' : '会员积分数据报表',
+    'allMemCardTyps' : '全部会员卡类型',
+    'memberStatusExpire' : '过期',
+    'birthdayRights' : '生日当前限购{num}张{discount}折门票',
+    'ticketRights' : '每月{num}张{scene}{money}元门票',
 }
