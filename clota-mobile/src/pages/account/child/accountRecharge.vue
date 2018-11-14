@@ -79,7 +79,8 @@
         computed : {
             ...mapGetters([
                 'userInfo',
-                'cardInfo'
+                'cardInfo',
+                'lang'
             ])
         },
         methods : {
@@ -182,32 +183,40 @@
                 ajax.post('getPayPageForMobile', {
                     bizScene : 'member',
                     bizType : 'recharge',
-                    bizId : this.$store.state.cardInfo.id,
+                    bizId : this.cardInfo.id,
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
-                    memberLevelId : this.$store.state.cardInfo.levelId
+                    memberLevelId : this.cardInfo.levelId
                 }).then(res => {
-                    this.payFormData = res.data ? res.data : {};
+                    if (res.success) {
+                        this.payFormData = res.data ? res.data : {};
 
-                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                    location.href = location.origin + '/#/h5Pay?memberId=' + this.userInfo.memberId +
-                        '&cardId=' + this.cardInfo.id +
-                        '&accounId=' + this.accounId +
-                        '&paymentTypeId=' + this.payType +
-                        '&accountTypeId=' + this.accountTypeId +
-                        '&amount=' + this.payFormData.txnAmt +
-                        '&txnType=' + this.payFormData.txnType +
-                        '&partnerId=' + this.payFormData.partnerId +
-                        '&channelId=' + this.payFormData.channelId +
-                        '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
-                        '&merchantId=' + this.payFormData.merchantId +
-                        '&txnAmt=' + this.payFormData.txnAmt +
-                        '&redirectUrl=' + escape(this.payFormData.redirectUrl) +
-                        '&txnShortDesc=' + this.payFormData.txnShortDesc +
-                        '&sign=' + this.payFormData.sign +
-                        '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
-                        '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
-                        '&transactionId=' + this.payFormData.transactionId;
+                        //设置支付表单信息
+                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                        location.href = location.origin + '/h5Pay?memberId=' + this.userInfo.memberId +
+                            '&cardId=' + this.cardInfo.id +
+                            '&accounId=' + this.accounId +
+                            '&paymentTypeId=' + this.payType +
+                            '&accountTypeId=' + this.accountTypeId +
+                            '&amount=' + this.payFormData.txnAmt +
+                            '&txnType=' + this.payFormData.txnType +
+                            '&partnerId=' + this.payFormData.partnerId +
+                            '&channelId=' + this.payFormData.channelId +
+                            '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
+                            '&merchantId=' + this.payFormData.merchantId +
+                            '&txnAmt=' + this.payFormData.txnAmt +
+                            '&redirectUrl=' + escape(this.payFormData.redirectUrl) +
+                            '&txnShortDesc=' + this.payFormData.txnShortDesc +
+                            '&sign=' + this.payFormData.sign +
+                            '&currencyCode=' + this.payFormData.currencyCode +
+                            '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
+                            '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
+                            '&transactionId=' + this.payFormData.transactionId +
+                            '&token=' + ajax.getToken();
+                    } else {
+                        this.payFormData = {};
+                        this.$vux.toast.text(this.$t('payAbnormal'));
+                    }
                 });
             },
             /**
@@ -217,25 +226,28 @@
                 ajax.post('getPayPageForOfficialAccount', {
                     bizScene : 'member',
                     bizType : 'recharge',
-                    bizId : this.$store.state.cardInfo.id,
+                    bizId : this.cardInfo.id,
                     channelId : 'weixin',
                     txnAmt : this.rechargeMoney,
-                    memberLevelId : this.$store.state.cardInfo.levelId
+                    memberLevelId : this.cardInfo.levelId
                 }).then(res => {
-                    this.payFormData = res.data ? res.data : {};
-                    //设置会员id
-                    this.payFormData.memberId = this.userInfo.memberId;
-                    this.payFormData.cardId = this.cardInfo.id;
-                    this.payFormData.accounId = this.accounId;
-                    this.payFormData.paymentTypeId = this.payType;
-                    this.payFormData.accountTypeId = this.accountTypeId;
-                    this.payFormData.remark = '';
-                    this.payFormData.amount = this.payFormData.txnAmt;
+                    if (res.success) {
+                        //设置支付表单信息
+                        this.payFormData = res.data ? res.data : {};
+                        this.payFormData.memberId = this.userInfo.memberId;
+                        this.payFormData.cardId = this.cardInfo.id;
+                        this.payFormData.accounId = this.accounId;
+                        this.payFormData.paymentTypeId = this.payType;
+                        this.payFormData.accountTypeId = this.accountTypeId;
+                        this.payFormData.remark = '';
+                        this.payFormData.amount = this.payFormData.txnAmt;
 
-                    //console.log(this.payFormData);
-
-                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData))
-                    location.href = location.origin + '/#/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData))
+                        location.href = location.origin + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                    } else {
+                        this.payFormData = {};
+                        this.$vux.toast.text(this.$t('payAbnormal'));
+                    }
                 })
             }
         },
@@ -243,7 +255,12 @@
             this.$nextTick(() => {
                 this.$refs.money.focus();
             });
-        }
+        },
+        watch : {
+            lang () {
+                this.setTitle();
+            }
+         }
     };
 </script>
 

@@ -53,7 +53,7 @@
 <script>
     import ajax from '../../api/index';
     import { validator } from 'klwk-ui';
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapMutations } from 'vuex';
 
     export default {
         data () {
@@ -71,7 +71,21 @@
                 wxUserInfo : {},
             };
         },
+        computed : {
+            ...mapGetters({
+                lang : 'lang',
+                companyCode : 'companyCode',
+                userInfo : 'userInfo',
+                cardInfo : 'cardInfo'
+            })
+        },
         methods : {
+            ...mapMutations([
+                'updateUserInfo',
+                'updateCardInfoList',
+                'updateCardInfo',
+                'updateLoginStatus'
+            ]),
             /**
              * 获取验证码
              */
@@ -229,9 +243,11 @@
                 //存储用户信息
                 localStorage.setItem('userInfo', JSON.stringify(res.data));
                 //更新用户信息
-                this.$store.commit('updateUserInfo');
-                //登陆跳转到主页
-                this.$router.push({ name : 'home' });
+                this.updateUserInfo();
+                //更新登陆状态
+                this.updateLoginStatus();
+                //获取用卡列表信息
+                this.getCardList();
             },
             /**
              * 跳到注册界面
@@ -260,18 +276,39 @@
              */
             buyMemberCard () {
 
+            },
+            /**
+             * 获取会员卡列表
+             */
+            getCardList () {
+                //获取会员卡列表
+                ajax.post('queryMemberCardList', {
+                    memberId : this.userInfo.memberId
+                }).then(res => {
+                    if (res.success) {
+                        //存储卡列表数据
+                        this.memberCardList = res.data ? res.data : [];
+                        //存储会员卡/会员卡列表数据
+                        localStorage.setItem('cardInfoList', JSON.stringify(this.memberCardList));
+                        localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList.length > 0 ? this.memberCardList[0] : {}));
+                        this.updateCardInfoList();
+                        this.updateCardInfo();
+                        //登陆跳转到主页
+                        this.$router.push({ name : 'home' });
+                    } else {
+                        localStorage.setItem('cardInfoList', '[]');
+                        localStorage.setItem('cardInfo', '{}');
+                        this.updateCardInfoList();
+                        this.updateCardInfo();
+                        this.$vux.toast.text(this.$t('getDataFailure'));
+                    }
+                })
             }
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getparms(to);
             });
-        },
-        computed : {
-            ...mapGetters({
-                lang : 'lang',
-                companyCode : 'companyCode',
-            })
         }
     };
 </script>

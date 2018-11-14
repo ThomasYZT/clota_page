@@ -7,7 +7,7 @@
         <div class="pay-form">
             <form ref="payForm" :action="payFormData.payWebUrl" method="post">
                 <!-- 币种 -->
-                <!--<input type="text" name="CurrencyCode" v-model="payFormData.currencyCode">-->
+                <input type="text" name="CurrencyCode" v-model="payFormData.currencyCode">
                 <!-- 交易类型 -->
                 <input type="text" name="TxnType" v-model="payFormData.txnType">
                 <!-- 合作方id -->
@@ -33,7 +33,11 @@
 
         <div v-if="isShowImg" class="img-wrapper">
             <img class="notice" src="../../assets/images/open-in-browser.svg" alt="">
+
+            <!-- 取消支付按钮 -->
+            <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
+
     </div>
 </template>
 
@@ -83,16 +87,19 @@
              * @param params
              */
             getParams () {
-
+                //微信
                 if (this.isWeixin()) {
-
                     this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
+
+                    //微信内，公众号支付
                     if (this.payFormData.paymentTypeId === 'wx') {
-                        //微信公众号支付
-                        //alert("微信公众号支付")
+                        //删除路由缓存数据
+                        localStorage.removeItem('payStatus');
                         this.$nextTick(() => {
                             this.$refs.payForm.submit();
                         });
+
+                    //微信内支付宝支付，显示其他浏览器打开
                     } else {
                         this.isShowImg = true;
                         //开始轮询支付状态及支付结果
@@ -100,9 +107,11 @@
                            this.queryConsumeUpdateBiz();
                         }, 5000);
                     }
+
+                //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                 } else {
                     this.payFormData = querystring.parse(location.href.split('?')[1]);
-
+                    localStorage.setItem('token', this.payFormData.token);
                     localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                     this.$nextTick(() => {
                         this.$refs.payForm.submit();
@@ -119,6 +128,7 @@
                 }).then(res => {
                     if (res.success && (res.data !== 'doing' && res.data !== 'unknown') ) {
                         clearInterval(this.intervalId);
+                        //alert("查询支付状态")
                         this.$router.push({
                             name : 'payStatus',
                             params : {
@@ -130,22 +140,29 @@
                 });
             },
             /**
-             * 获取url参数
-             * @param url
+             * 取消支付
              */
-            getUrlString (url) {
-                let obj = {};
-                if (url.indexOf('?') !== -1) {
-                    let query = url.split("?")[1];
-                    let queryArr = query.split("&");
-                    queryArr.forEach(function (item) {
-                        let key = item.split("=")[0];
-                        let value = item.split("=")[1];
-                        obj[key] = value;
+            cancelPay () {
+                ajax.post('revocation', {
+                    transactionId : this.payFormData.transactionId
+                }).then(() => {
+                    clearInterval(this.intervalId);
+                    this.$router.push({
+                        name : 'account'
                     });
-                }
-                return obj;
+                })
             }
+        },
+        mounted () {
+            //监听微信物理返回
+            let state = {
+                title : "title",
+                url : "#"
+            };
+            history.pushState(state, "title", "#");
+            window.addEventListener("popstate", (e) => {
+                clearInterval(this.intervalId);
+            }, false);
         }
     };
 </script>

@@ -63,7 +63,7 @@
                 <popup-picker :title="$t('cardType')"
                               :data="idTypeList"
                               show-name
-                              v-model="formData.certificationType"
+                              v-model="certificationType"
                               class="c-input"
                               :placeholder="$t('pleaseSelect',{field : $t('cardType') })"></popup-picker>
             </div>
@@ -81,7 +81,7 @@
                 <popup-picker :title="$t('sex')"
                               :data="sexList"
                               show-name
-                              v-model="formData.gender"
+                              v-model="gender"
                               class="c-input"
                               :placeholder="$t('pleaseChoose')"></popup-picker>
             </div>
@@ -98,7 +98,7 @@
     import ajax from '../../../api/index';
     import { genderEnum } from '@/assets/js/constVariable.js';
     import { validator } from 'klwk-ui';
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapMutations } from 'vuex';
     import lifeCycleMixins from '../../../mixins/lifeCycleMixins';
     export default {
         components : {},
@@ -117,10 +117,16 @@
                 cardInfo : {},
                 //性别列表数据
                 sexList : [genderEnum.map(item => ({ name : this.$t(item.name),value : item.desc }))],
+                //选中的性别
+                gender : [],
                 //证件类型列表数据
                 idTypeList : [],
+                //选中的证件类型
+                certificationType : [],
                 //微信openId
                 openId : '',
+                //组织id
+                orgId : '',
                 //表单数据
                 formData : {
                     //企业名称
@@ -130,17 +136,17 @@
                     //电话号码
                     phoneNum : '',
                     //性别
-                    gender : [],
+                    gender : '',
                     //生日
                     birthDay : '',
                     //证件类型
-                    certificationType : [],
+                    certificationType : '',
                     //证件号码
                     idCardNumber : '',
                     //验证码
                     code : '',
                     //公司编码
-                    companyCode : this.$store.state.companyCode,
+                    companyCode : this.companyCode,
                     //微信openid
                     wxOpenId : '',
                     //实体卡id
@@ -155,6 +161,10 @@
             })
         },
         methods : {
+            ...mapMutations([
+                'updateUserInfo',
+                'updateLoginStatus'
+            ]),
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
              * @param callback
@@ -219,6 +229,9 @@
              * 校验输入信息
              */
             validate () {
+                this.formData.gender = this.gender[0] ? this.gender[0] : '';
+                this.formData.certificationType = this.certificationType[0] ? this.certificationType[0] : '';
+
                 //企业名称,仅企业卡需要校验
                 if (this.cardInfo.cardTypeId === '3') {
                     if (!validator.isEmpty(this.formData.companyName)) {
@@ -302,26 +315,32 @@
              * 激活会员卡
              */
             activationMemberCard () {
-                this.formData.gender = this.formData.gender[0];
-                this.formData.certificationType = this.formData.certificationType[0];
-                ajax.post('activationMemberCard', this.formData).then(res => {
+                let gender = this.formData.gender[0];
+                let certificationType = this.formData.certificationType[0];
+                delete this.formData.gender;
+                delete this.formData.certificationType;
+                ajax.post('activationMemberCard', {
+                    ...this.formData,
+                    gender : gender,
+                    certificationType : certificationType,
+                }).then(res => {
                     if (res.success) {
                         //存储token信息
                         localStorage.setItem('token', res.data.token);
                         //存储用户信息
                         localStorage.setItem('userInfo', JSON.stringify(res.data));
                         //更新用户信息
-                        this.$store.commit('updateUserInfo');
+                        this.updateUserInfo();
+                        //更新登陆状态
+                        this.updateLoginStatus();
                         //提示注册成功
                         this.$vux.toast.show({
                             type : 'success',
                             text : this.$t('registSuccess')
                         });
-                        //自动登陆跳转到主页
+                        //激活成功跳转到主页
                         this.$router.replace({ name : 'home' });
                     } else {
-                        this.formData.gender = [this.formData.gender];
-                        this.formData.certificationType = [this.formData.certificationType];
                         this.$vux.toast.text(this.$t('activateFailure'));
                     }
                 });
@@ -349,7 +368,9 @@
              * 查询所有证件类型
              */
             queryDocument () {
-                ajax.post('queryDocument').then(res => {
+                ajax.post('queryDocuments', {
+                    orgId : this.cardInfo.orgId
+                }).then(res => {
                     if (res.success) {
                         this.idTypeList = res.data ? [res.data.data.map((item) => {
                             return {

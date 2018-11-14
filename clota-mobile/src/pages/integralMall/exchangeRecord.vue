@@ -34,7 +34,8 @@
 
 <script>
     import ajax from '../../api/index';
-    import goodBoard from './components/goodBoard'
+    import goodBoard from './components/goodBoard';
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             goodBoard
@@ -52,6 +53,11 @@
                 //已领取/未领取
                 drawStatus : true
             };
+        },
+        computed : {
+            ...mapGetters([
+                'userInfo'
+            ])
         },
         methods : {
             /**
@@ -73,7 +79,7 @@
                 }
                 ajax.post('queryChangeRecordByDrawStatus', {
                     drawStatus : this.drawStatus,
-                    memberId : this.$store.state.userInfo.memberId
+                    memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
                         if (this.drawStatus) {

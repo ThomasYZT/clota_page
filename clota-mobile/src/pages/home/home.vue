@@ -9,54 +9,14 @@
               v-model="cardIndex"
               @on-index-change="swiperChange"
               dots-position="center">
-          <swiper-item v-for="(item, index) in memberCardList"
+          <swiper-item v-for="(item, index) in cardInfoList"
                        :key="index">
               <member-card :info="item"></member-card>
           </swiper-item>
       </swiper>
-      <!--<div class="member-card"
-           :class="[memberVipCardClass]"
-           :style="{backgroundImage: cardBg}">
-          <div class="card-content" :style="{color: cardFontColor}">
-              <div class="person-info">
-                  <div class="left">
-                      <div class="img-wrapper">
-                          <img class="default-face"
-                               :src="userInfo.userImg ? userInfo.userImg : memberHeadImg"
-                               @click="showImg">
-                      </div>
-                      <span class="username" @click="toPersonInfo">
-                          <span class="name">
-                          {{cardInfo.custName}}
-                          </span>
-                          <span class="iconfont icon-arrow"></span>
-                      </span>
-                  </div>
-                  <div class="right">
-                      <div  class="card-level">
-                        <i class="iconfont icon-level">{{cardLevel}}</i>
-                        <span class="level-name">{{cardInfo.levelDesc}}</span>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="company-info">
-                  <span>{{cardInfo.orgName}}</span>
-                  <img src="" alt="">
-              </div>
-
-              <div class="card-info">
-                  <div style="font-weight: bold">{{cardInfo.cardCode | formatCardCode}}</div>
-                  <div @click="toMemberCode">
-                      <i class="iconfont icon-code"></i>
-                      <i class="iconfont icon-arrow-right"></i>
-                  </div>
-              </div>
-          </div>
-      </div>-->
 
       <div class="nav">
-          <label-item v-for="(item, index) in labelList" :info.sync="item" :cardInfo="$store.state.cardInfo" :key="index">
+          <label-item v-for="(item, index) in labelList" :info.sync="item" :cardInfo="cardInfo" :key="index">
           </label-item>
       </div>
 
@@ -64,31 +24,14 @@
 </template>
 
 <script>
-    import ajax from '../../api/index';
     import { mapMutations, mapGetters } from 'vuex';
     import labelItem from './components/labelItem';
-    import onelevelMember from '../../assets/images/1levelMember.png';
-    import secondlevelMember from '../../assets/images/2levelMember.png';
-    import thirdlevelMember from '../../assets/images/3levelMember.png';
-    import fourthlevelMember from '../../assets/images/4levelMember.png';
     import memberCard from './components/memberCard';
     import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {
             labelItem,
             memberCard
-        },
-        filters : {
-            /**
-             * 格式化会员卡号
-             * @param val
-             * @return {string}
-             */
-            formatCardCode (val) {
-                if (!val) return '';
-                val = val.toString();
-                return val.replace(/(.{4})/g,'$& ');
-            }
         },
         data () {
             let labelList = [
@@ -105,6 +48,7 @@
                     link : '/account',
                     iconClass : 'icon-default-account',
                     info : '',
+                    params : {},
                     iconColor : '#368CE3'
                 },
                 {
@@ -112,6 +56,7 @@
                     link : '/order',
                     iconClass : 'icon-my-orders',
                     info : '',
+                    params : {},
                     iconColor : '#FF9700'
                 },
                 {
@@ -119,6 +64,7 @@
                     link : '/checkFlow',
                     iconClass : 'icon-check-flow1',
                     info : '',
+                    params : {},
                     iconColor : '#6F62E5'
                 },
                 {
@@ -126,6 +72,7 @@
                     link : '/memberCode',
                     iconClass : 'icon-member-code',
                     info : '',
+                    params : {},
                     iconColor : '#F46462'
                 },
                 {
@@ -133,6 +80,7 @@
                     link : '/card',
                     iconClass : 'icon-my-package',
                     info : '',
+                    params : {},
                     iconColor : '#368CE3'
                 },
                 {
@@ -160,33 +108,8 @@
                     iconColor: '#F46462'
                 }*/
             ];
-            /**
-             * 根据title名获取对应的导航数据对象
-             * @param value
-             * @return {{title, link, iconClass, info, iconColor}|*}
-             */
-            labelList.getByTitle = function (value) {
-                for (let i = 0,len = labelList.length; i < len; i++) {
-                    if (labelList[i].title === value) {
-                        return labelList[i];
-                    }
-                }
-            };
             return {
-                bgList : [
-                    onelevelMember,
-                    secondlevelMember,
-                    thirdlevelMember,
-                    fourthlevelMember
-                ],
                 labelList : labelList,
-                cardBg : 'url(' + onelevelMember + ')',
-                cardLevel : 1,
-                lvName : '',
-                //会员卡字体颜色
-                cardFontColor : '#fff',
-                //会员卡列表信息
-                memberCardList : [],
                 //当前卡索引
                 cardIndex : 0
             };
@@ -196,33 +119,8 @@
                 'isLoading',
                 'userInfo',
                 'cardInfo',
+                'cardInfoList'
             ]),
-            //vip卡类名
-            /*memberVipCardClass () {
-                if (this.cardInfo && this.cardInfo.levelNum !== '' && this.cardInfo.levelNum !== null) {
-                    if (this.cardInfo.levelNum === 1) {
-                        return 'one-level';
-                    } else if (this.cardInfo.levelNum === 2) {
-                        return 'two-level';
-                    } else if (this.cardInfo.levelNum === 3) {
-                        return 'three-level';
-                    } else if (this.cardInfo.levelNum >= 4) {
-                        return 'four-level';
-                    } else {
-                        return '';
-                    }
-                } else {
-                    return '';
-                }
-            },*/
-            //头像信息
-            /*memberHeadImg () {
-                if (this.cardInfo && this.cardInfo.portrait) {
-                    return this.cardInfo.portrait;
-                } else {
-                    return require('../../assets/images/defaut-face.png');
-                }
-            }*/
         },
         methods : {
             ...mapMutations([
@@ -230,103 +128,6 @@
                 'updateCardInfoList',
                 'updateUserInfo'
             ]),
-            /**
-             * 获取页面数据
-             */
-            getData () {
-                // await ajax.post('queryMemberPage', {
-                //     cardId : JSON.parse(localStorage.getItem('userInfo')).cardId,
-                //     pageNo : 1,
-                //     pageSize : 100
-                // }).then((res) => {
-                //     if (res.success) {
-                //         //console.log(res.data.data[0])
-                //         // res.data.data[0].levelNum = 4;
-                //         //存储会员卡信息
-                //         localStorage.setItem('cardInfo', JSON.stringify(res.data.data[0]));
-                //         this.updateCardInfo();
-                //         this.cardInfo = res.data.data[0];
-                //
-                //         //初始化页面数据
-                //         this.labelList.getByTitle('integralDetail').info = this.cardInfo.pointBalance;
-                //         this.labelList.getByTitle('defaultAccount').info = this.cardInfo.moneyBalance;
-                //         this.labelList.getByTitle('memberRight').params.levelDesc = this.cardInfo.levelDesc;
-                //         this.labelList.getByTitle('integralDetail').params.num = this.cardInfo.pointBalance;
-                //         //获取会员卡配色方案
-                //         this.setCardTheme(res.data.data[0].levelNum);
-                //     } else {
-                //         this.$vux.toast.text(res.message);
-                //     }
-                // });
-                //获取会员卡列表
-                ajax.post('queryMemberCardList', {
-                    memberId : this.$store.state.userInfo.memberId
-                }).then(res => {
-                    if (res.success) {
-                        //存储卡列表数据
-                        this.memberCardList = res.data ? res.data : [];
-                        //存储会员卡/会员卡列表数据
-                        localStorage.setItem('cardInfoList', JSON.stringify(this.memberCardList));
-                        localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList.length > 0 ? this.memberCardList[0] : {}));
-                        this.updateCardInfoList();
-                        this.updateCardInfo();
-                        this.labelList.getByTitle('integralDetail').info = this.$store.state.cardInfo.pointBalance;
-                        this.labelList.getByTitle('defaultAccount').info = this.$store.state.cardInfo.moneyBalance;
-                        this.labelList.getByTitle('memberRight').params.levelDesc = this.$store.state.cardInfo.levelDesc;
-                        this.labelList.getByTitle('integralDetail').params.num = this.$store.state.cardInfo.pointBalance;
-                    } else {
-                        localStorage.setItem('cardInfoList', '[]');
-                        localStorage.setItem('cardInfo', '{}');
-                        this.updateCardInfoList();
-                        this.updateCardInfo();
-                        this.$vux.toast.text(this.$t('getDataFailure'));
-                    }
-                })
-            },
-            /**
-             * 设置会员卡主题
-             */
-            // setCardTheme (lvVal) {
-            //     if (!lvVal) {
-            //         this.cardFontColor = "#fff";
-            //         this.cardBg = 'url(' + this.bgList[0] + ')';
-            //         this.cardLevel = 1;
-            //         return;
-            //     }
-            //     lvVal = lvVal.toString();
-            //     switch (lvVal) {
-            //         case '1':
-            //             this.cardFontColor = "#fff";
-            //             this.cardBg = 'url(' + this.bgList[0] + ')';
-            //             this.cardLevel = 1;
-            //             this.lvName = 'regularMembers';
-            //             break;
-            //         case '2':
-            //             this.cardFontColor = "#fff";
-            //             this.cardBg = 'url(' + this.bgList[1] + ')';
-            //             this.cardLevel = 2;
-            //             this.lvName = 'goldMember';
-            //             break;
-            //         case '3':
-            //             this.cardFontColor = "#fff";
-            //             this.cardBg = 'url(' + this.bgList[2] + ')';
-            //             this.cardLevel = 3;
-            //             this.lvName = 'platinumMember';
-            //             break;
-            //         case '4':
-            //             this.cardFontColor = "#F0D890";
-            //             this.cardBg = 'url(' + this.bgList[3] + ')';
-            //             this.cardLevel = 4;
-            //             this.lvName = 'diamondMembers';
-            //             break;
-            //         default:
-            //             this.cardFontColor = "#fff";
-            //             this.cardBg = 'url(' + this.bgList[0] + ')';
-            //             this.cardLevel = 1;
-            //             this.lvName = 'regularMembers';
-            //     }
-            // },
-
             /**
              *  会员卡切换
              *  @param index
@@ -339,10 +140,8 @@
                 let userInfo = defaultsDeep({cardId : this.cardInfo.id}, this.userInfo);
                 localStorage.setItem('userInfo', JSON.stringify(userInfo));
                 this.updateUserInfo();
-                this.labelList.getByTitle('integralDetail').info = this.$store.state.cardInfo.pointBalance;
-                this.labelList.getByTitle('defaultAccount').info = this.$store.state.cardInfo.moneyBalance;
-                this.labelList.getByTitle('memberRight').params.levelDesc = this.$store.state.cardInfo.levelDesc;
-                this.labelList.getByTitle('integralDetail').params.num = this.$store.state.cardInfo.pointBalance;
+                //设置菜单数据
+                this.setCell();
             },
             /**
              * 跳转到会员详情
@@ -361,14 +160,35 @@
                 });
             },
             /**
-             *  放大显示头像
+             * //设置菜单数据
              */
-            showImg () {
-                this.isShowImg = true;
+            setCell () {
+                for (let i = 0,len = this.labelList.length; i < len; i++) {
+                    if (this.labelList[i].title === 'integralDetail') {
+                        return this.labelList[i];
+                    }
+                    switch (this.labelList[i].title) {
+                        case 'integralDetail':
+                            this.labelList[i].info = this.cardInfo.pointBalance;
+                            this.labelList[i].params.num = this.cardInfo.pointBalance;
+                            break;
+                        case 'defaultAccount':
+                            this.labelList[i].info = this.cardInfo.moneyBalance
+                            break;
+                        case 'memberRight':
+                            this.labelList[i].params.levelDesc = this.cardInfo.levelDesc;
+                            break;
+                        default :
+                            this.labelList[i].info = '';
+                            this.labelList[i].params = {};
+
+                    }
+                }
             }
         },
         created () {
-            this.getData();
+            //设置菜单数据
+            this.setCell();
         }
   };
 </script>

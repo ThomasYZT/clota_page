@@ -141,7 +141,7 @@
                     emailAddr : '',
                     memberInfo : {
                         homeAddr : '',
-                        qq : ''
+                        //qq : ''
                     },
                     effDate : '',
                     expDate : ''

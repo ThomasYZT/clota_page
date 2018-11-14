@@ -32,6 +32,7 @@
 <script>
     import ajax from '../../api/index';
     import lifeCycleMixins from '../../mixins/lifeCycleMixins';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         components : {},
@@ -44,6 +45,11 @@
                 //指定的会员卡id
                 memberCardId : []
             };
+        },
+        computed : {
+            ...mapGetters([
+                'userInfo'
+            ])
         },
         methods : {
             /**
@@ -65,7 +71,7 @@
              */
             getData () {
                 ajax.post('queryMemberCardList', {
-                    memberId : this.$store.state.userInfo.memberId
+                    memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
                         this.memberCardList = res.data && res.data.length > 0 ? [res.data.map((item) => {

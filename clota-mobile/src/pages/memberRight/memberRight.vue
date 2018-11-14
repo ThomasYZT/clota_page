@@ -27,7 +27,7 @@
                 <!--生日购票优惠-->
               <ul class="right-list" v-if="rightInfo.birthday.length > 0">
                   <li v-for="(item, index) in rightInfo.birthday" :key="index" v-if="item.isEnable">
-                      <span class="spot"></span><span>生日当天限购 {{item.rule.num | contentFilter}} 张 {{$store.state.cardInfo.orgName}} {{item.rule.discount | contentFilter}} 折门票</span>
+                      <span class="spot"></span><span>生日当天限购 {{item.rule.num | contentFilter}} 张 {{cardInfo.orgName}} {{item.rule.discount | contentFilter}} 折门票</span>
                   </li>
               </ul>
           </template>
@@ -156,10 +156,12 @@
         },
         computed : {
             ...mapGetters([
-                'userInfo'
+                'userInfo',
+                'cardInfo',
+                'lang'
             ]),
             isEn () {
-                return this.$store.state.lang === 'en';
+                return this.lang === 'en';
             }
         },
         methods : {

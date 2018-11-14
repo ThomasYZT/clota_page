@@ -28,38 +28,32 @@ Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
     //判断是否保存了用户信息和token，如果没有保存需要重新登录
-    if (to.name === 'mobileLogin' || to.name === 'activateCard' || to.name === 'activateInfo' || to.name === 'h5Pay'/* || to.name === 'mobileRegister'*/) {
+    if (to.name === 'mobileLogin' || to.name === 'activateCard' || to.name === 'activateInfo' || to.name === 'h5Pay' || to.name === 'payStatus'/* || to.name === 'mobileRegister'*/) {
         next();
     } else {
-        //获取保存到本地的用户信息
+        //获取保存到本地的用户信息、卡列表信息、当前选择的卡信息
         let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        let cardInfoList = localStorage.getItem('cardInfoList') ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
+        let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+        userInfo = defaultsDeep({cardId : cardInfo.id}, userInfo);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
         let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
-        if (token && userInfo && Object.keys(userInfo).length > 0) {
-            if (to.name !== 'home') {
-                //获取保存到本地的卡列表信息、当前选择的卡信息、更新用户信息
-                let cardinfoList = localStorage.getItem('cardinfoList') ? JSON.parse(localStorage.getItem('cardinfoList')) : [];
-                let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-                let tempUserInfo = defaultsDeep({cardId : cardInfo.id}, userInfo);
-                localStorage.setItem('userInfo', JSON.stringify(tempUserInfo));
-                if (cardinfoList && cardInfo && Object.keys(cardInfo).length > 0) {
-                    //更新卡信息
-                    store.commit('updateCardInfo');
-                    store.commit('updateCardInfoList');
-                    next();
-                } else {
-                    next({
-                        name : 'home'
-                    });
-                }
-            }
+
+        if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfoList && cardInfoList.length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
+            //若本地数据存在、更新vuex数据，防止刷新页面数据丢失
+            store.commit('updateCardInfo');
+            store.commit('updateCardInfoList');
             store.commit('updateUserInfo');
             next();
         } else {
+            //若本地数据不存在，跳至登陆页
             next({
                 name : 'mobileLogin'
             });
         }
     }
+    //跟新登陆状态
+    store.commit('updateLoginStatus');
 });
 
 

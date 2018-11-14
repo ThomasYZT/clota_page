@@ -24,6 +24,8 @@ export default new Vuex.Store({
         showKeyBoard : false,
         //显示网路错误提示框
         showNetworkError : false,
+        //用户是否登陆
+        isLogin : false,
         //公司id
         companyCode : '1045244656750825472'
     },
@@ -41,6 +43,10 @@ export default new Vuex.Store({
         //会员卡信息
         cardInfo : state => {
             return state.cardInfo;
+        },
+        //会员卡列表信息
+        cardInfoList : state => {
+            return state.cardInfoList;
         },
         //是否显示页面加载中
         isLoading : state => {
@@ -60,6 +66,10 @@ export default new Vuex.Store({
         //公司id
         companyCode : state => {
             return state.companyCode;
+        },
+        //是否登陆
+        isLogin : state => {
+            return state.isLogin;
         }
     },
     mutations : {
@@ -132,6 +142,18 @@ export default new Vuex.Store({
                 state.cardInfoList = cardInfoList;
             } else {
                 state.cardInfoList = {};
+            }
+        },
+        /**
+         * 更新登陆状态
+         * @param state
+         */
+        updateLoginStatus ( state ) {
+            let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+            if (userInfo && Object.keys(userInfo).length > 0) {
+                state.isLogin = true;
+            } else {
+                state.isLogin = false;
             }
         },
         /**

@@ -37,7 +37,7 @@ const apiList = {
     //获取成长值
     getGrowthBalance : '/external/memberInfo/getGrowthBalance',
     //查询所有证件类型
-    queryDocument : '/external/memberInfo/queryDocument',
+    queryDocuments : '/external/memberInfo/queryDocuments',
     //会员权益
     listMemberCardRate : '/external/memberInfo/listMemberCardRate',
     //上传头像
@@ -79,7 +79,9 @@ const apiList = {
     //查询消费结果更新业务
     queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz',
     //支付结果同步结果
-    syncPayTransactionResult : '/external/pay/syncPayTransactionResult'
+    syncPayTransactionResult : '/external/pay/syncPayTransactionResult',
+    //撤销交易
+    revocation : '/api/external/pay/revocation',
 };
 
 export default apiList;

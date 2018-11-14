@@ -222,5 +222,8 @@ export default {
     'backToAccount' : '返回我的账户',
     'paySuccess' : '支付成功',
     'payFailure' : '支付失败',
+    'pleaseBackToWX' : '请返回微信',
+    'chargeFailure' : '账户充值失败',
+    'payAbnormal' : '支付异常'
 
 };

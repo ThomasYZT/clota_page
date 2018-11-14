@@ -99,11 +99,19 @@
                 ],
                 //当前显示的账户信息
                 accountShow : 0,
-                //是否是业主账户信息
-                isOwnerCard : this.$store.state.cardInfo.cardTypeId === '1',
                 //业主账户信息
                 OwnerCardAccount : {}
             };
+        },
+        computed : {
+            ...mapGetters([
+                'userInfo',
+                'cardInfo'
+            ]),
+            //是否是业主账户信息
+            isOwnerCard () {
+                return this.cardInfo.cardTypeId === '1';
+            }
         },
         methods : {
             /**
@@ -167,10 +175,11 @@
                     cardId : this.userInfo.cardId,
                 }).then(res => {
                     if (res.success) {
-                        console.log(res.data)
                         this.OwnerCardAccount = res.data ? res.data : [];
+                        this.accountList[0] = res.data ? res.data : [];
                     } else {
-                        this.OwnerCardAccount = []
+                        this.OwnerCardAccount = [];
+                        this.accountList = [];
                     }
                 })
             }
@@ -181,11 +190,6 @@
             } else {
                 this.listCardAccountInfo();
             }
-        },
-        computed : {
-            ...mapGetters({
-                userInfo : 'userInfo'
-            })
         }
     };
 </script>

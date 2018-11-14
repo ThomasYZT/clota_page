@@ -9,7 +9,7 @@
             <div class="person-info">
                 <div class="left">
                     <div class="img-wrapper">
-                        <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+                        <img @click="showImg" class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
                     </div>
                     <span class="username" @click="toPersonInfo">
                       <span class="name">
@@ -41,11 +41,13 @@
             </div>
         </div>
 
-        <x-dialog v-model="isShowImg"
-                  hide-on-blur
-                  :dialog-style="{'max-width': '100%', width: '100%', height: '50%', 'background-color': 'transparent'}">
-            <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
-        </x-dialog>
+        <div v-transfer-dom>
+            <x-dialog v-model="isShowImg"
+                      :hide-on-blur="true"
+                      :dialog-style="{'max-width': '100%', width: '100%', 'background-color': 'transparent'}">
+                <img class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+            </x-dialog>
+        </div>
     </div>
 </template>
 
@@ -141,6 +143,12 @@
                 this.$router.push({
                     name : 'personInfo'
                 });
+            },
+            /**
+             *  放大显示头像
+             */
+            showImg () {
+                this.isShowImg = true;
             },
         }
     };

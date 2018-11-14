@@ -5,13 +5,13 @@
 <template>
     <div class="pay-status">
         <div class="status-wrapper">
-            <div v-if="isSuccess === true">
-                <img src="../../assets/images/pay-success.svg" alt="">
-                <p>{{$t('paySuccess')}}</p>
+            <div class="status" v-if="isSuccess === true">
+                <img class="status-icon" src="../../assets/images/pay-success.svg" alt="">
+                <p class="status-message">{{$t('paySuccess')}}</p>
             </div>
-            <div v-else-if="isSuccess === false">
-                <img src="../../assets/images/pay-success.svg" alt="">
-                <p>{{$t('payFailure')}}</p>
+            <div class="status" v-else-if="isSuccess === false">
+                <img class="status-icon" src="../../assets/images/pay-success.svg" alt="">
+                <p class="status-message">{{$t('payFailure')}}</p>
             </div>
 
             <!-- 返回按钮 -->
@@ -24,6 +24,7 @@
     import { querystring } from 'vux'
     import lifeCycleMixins from '../../mixins/lifeCycleMixins';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         components : {},
@@ -34,6 +35,11 @@
                 payFormData : {}
             };
         },
+        computed : {
+            ...mapGetters([
+                'isLogin'
+            ])
+        },
         methods : {
             /**
              * 获取路由参数
@@ -41,98 +47,82 @@
              */
             getParams (params) {
 
+                //微信内支付宝支付结果
                 if (params && params.status && params.payFormData) {
                     this.status = params.status;
                     this.payFormData = params.payFormData;
                     if (params.status === 'success') {
-                        this.isSuccess = true;
+                        //调用内部系统充值接口
                         this.rechargeAccount();
                     } else {
+                        this.$vux.toast.text(this.$t('payFailure'));
                         this.isSuccess = false;
                     }
+
+                //微信内公众号支付、非微信的微信支付、支付宝支付结果
                 } else {
                     let data = querystring.parse(location.href.split('?')[1]);
 
                     if (data && data.RespCode === '00') {
                         this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
-
+                        //调用内部系统充值接口
                         this.rechargeAccount();
                     } else {
+                        this.$vux.toast.text(this.$t('payFailure'));
                         this.isSuccess = false;
                     }
                     //支付结果同步
-                    alert('无同步接口')
-                    //alert(JSON.stringify(data));
-
                     //this.syncPayTransactionResult(data);
 
                 }
             },
             /**
-             * 获取url的参数
-             * @param url
-             * @returns {Array}
-             */
-             getUrlString (url) {
-                let obj = {};
-                if (url.indexOf('?') !== -1) {
-                    let query = url.split("?")[1];
-                    let queryArr = query.split("&");
-                    queryArr.forEach(function (item) {
-                        let key = item.split("=")[0];
-                        let value = item.split("=")[1];
-                        obj[key] = value;
-                    });
-                }
-                return obj;
-            },
-            /**
-             * 储值账户充值
+             * 内部系统储值账户充值
              */
             rechargeAccount () {
                 ajax.post('rechargeAccount', {
                     memberId : this.payFormData.memberId,
                     cardId : this.payFormData.cardId,
-                    accounId : this.payFormData.accounId,
-                    paymentTypeId : this.payFormData.paymentTypeId,
+                    accountTypeId : this.payFormData.accountTypeId,
+                    // paymentTypeId : this.payFormData.paymentTypeId,
+                    paymentType : this.payFormData.paymentTypeId === 'wx' ? 'weixin' : 'alipay',
                     amount : this.payFormData.amount,
                     remark : this.payFormData.remark,
                     transctionId : this.payFormData.transactionId
                 }).then(res => {
-                    this.isSuccess = true;
-                })
-            },
-            /**
-             * 前往我的账户页面
-             */
-            toAccount () {
-                history.length = 0;
-                location.href = location.origin + '/#/account';
-            },
-            /**
-             * 支付结果同步接口
-             */
-            syncPayTransactionResult (params) {
-                ajax.post(' ', params).then(res => {
                     if (res.success) {
-
+                        this.isSuccess = true;
                     } else {
-
+                        this.$vux.toast.text(this.$t('chargeFailure'));
+                        this.isSuccess = false;
                     }
                 })
-            }
+            },
+            /**
+             * 若已登陆前往我的账户页面，否则为切换浏览器的情况，提示返回微信
+             */
+            toAccount () {
+                if (this.isLogin) {
+                    this.$router.push({
+                        name : 'account'
+                    })
+                } else {
+                    this.$vux.toast.text(this.$t('pleaseBackToWX'));
+                }
+            },
         },
         mounted () {
-            // let state = {
-            //     title : "payStatus",
-            //     url : "#"
-            // };
-            // history.pushState(state, "", "#");
-            // window.addEventListener("popstate", function () {
-            //     if (history.state.payStatus) {
-            //         window.location.href = location.origin + '/#/account';//指定回退的地址
-            //     }
-            // }, false);
+            //监听微信物理返回
+            let state = {
+                title : "title",
+                url : "#"
+            };
+            history.pushState(state, "title", "#");
+            window.addEventListener("popstate", (e) => {
+                this.$router.push({
+                    name : 'account'
+                })
+            }, false);
         }
     };
 </script>
@@ -150,12 +140,12 @@
             margin-top: -150px;
             text-align: center;
 
-            div {
-                img {
+            .status {
+                .status-icon {
                     width: 150px;
                 }
 
-                p {
+                .status-message {
                     margin-top: 20px;
                     font-size: 18px;
                 }
