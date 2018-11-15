@@ -118,17 +118,16 @@ new Vue({
         langCode (val) {
             if (val === 'en') {
                 eleLocale.use(eleEnLang);
-            } else if (val === 'zh-Cn') {
+            } else if (val === 'zh-CN') {
                 eleLocale.use(eleZhCnLang);
             }
             Vue.config.lang = val;
-            // document.title = val === 'zh-CN' ? 'BIM数字化平台' : 'BIM Digital Platform';
         }
     },
     mounted () {
         if (this.langCode === 'en') {
             eleLocale.use(eleEnLang);
-        } else if (this.langCode === 'zh-Cn') {
+        } else if (this.langCode === 'zh-CN') {
             eleLocale.use(eleZhCnLang);
         }
     }

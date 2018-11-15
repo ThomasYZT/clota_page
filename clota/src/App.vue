@@ -5,7 +5,7 @@
         <router-view v-if="noFrame"/>
         <main-frame v-else >
             <transition name="el-fade-in">
-                <router-view :key="hashKey">
+                <router-view :key="hashKey" v-if="isRouterActive">
                 </router-view>
             </transition>
         </main-frame>
@@ -22,9 +22,18 @@
             mainFrame
         },
         data () {
-            return {};
+            return {
+                //路由页面是否显示
+                isRouterActive : true
+            };
         },
         methods : {
+            reload () {
+                this.isRouterActive = false;
+                this.$nextTick(() => {
+                    this.isRouterActive = true;
+                });
+            }
         },
         computed : {
             noFrame () {
@@ -33,7 +42,8 @@
             },
             ...mapGetters({
                 skinType : 'skinType',
-                hashKey : 'hashKey'
+                hashKey : 'hashKey',
+                lang : 'lang'
             }),
         },
         created () {
@@ -44,6 +54,11 @@
                 //初始化读卡器信息
                 this.$store.dispatch('initCardRead');
             });
+        },
+        watch : {
+            lang () {
+                this.reload();
+            }
         }
     };
 </script>
