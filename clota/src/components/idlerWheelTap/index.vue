@@ -19,6 +19,8 @@
 <script>
     import { scrollIntoView } from '@/utils/domUtils.js';
     import { mapGetters } from 'vuex';
+    import debounce from 'lodash/debounce';
+
     export default {
         props : {
             //默认跳转到的列表序号
@@ -174,7 +176,11 @@
                         el.scrollLeft = offsetLeft;
                     }
                 }
-            }
+            },
+            /**
+             * 重置位置
+             */
+            resetPosition () {}
         },
         mounted () {
             this.registerMouseWheelEvent();
@@ -183,6 +189,11 @@
             this.$nextTick(() => {
                 this.noniusDeal();
             });
+            this.resetPosition = debounce(() => {
+                this.$nextTick(() => {
+                    this.noniusDeal();
+                });
+            },300);
         },
         beforeDestroy () {
             this.offWindowResize();
@@ -203,6 +214,9 @@
             ...mapGetters({
                 lang : 'lang'
             })
+        },
+        updated () {
+            this.resetPosition();
         }
     };
 </script>
