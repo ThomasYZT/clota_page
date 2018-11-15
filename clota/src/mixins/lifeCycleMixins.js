@@ -19,5 +19,14 @@ export default {
                 vm.getParams({});
             }
         });
+    },
+    methods : {
+        /**
+         * 更新当前路由下保存的信息
+         * @param{Object} params
+         */
+        updateStorgeInfo (params) {
+            sessionStorage.setItem(this.$route.name,JSON.stringify(params));
+        }
     }
 }

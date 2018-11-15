@@ -170,23 +170,6 @@
                 })
             },
             /**
-             * 判断是否有存储所在机构的索引，如果没有则默认存储第一个
-             * @param data 组织树所有权限数据
-             */
-            setOrgIndex (data) {
-                let orgIndex = localStorage.getItem('orgId');
-                if(orgIndex === '' || orgIndex === null){
-                    orgIndex = data[0].id;
-                    localStorage.setItem('orgIndex',data[0].id);
-                }
-                for(let i = 0,j = data.length;i < j;i++){
-                    if(orgIndex === data[i].id){
-                        this.$store.commit('updateManageOrgs',data[i]);
-                        break;
-                    }
-                }
-            },
-            /**
              * 跳转至合作伙伴注册界面
              */
             toRegist() {

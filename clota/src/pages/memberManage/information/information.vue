@@ -169,7 +169,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { infoListHead } from './infoListConfig';
     import { mapGetters } from 'vuex';
-    import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum,memberCardTypes } from '@/assets/js/constVariable';
+    import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
 
     export default {
         components : { tableCom },
@@ -200,7 +200,12 @@
                     //性别
                     genderEnum : genderEnum,
                     //会员卡类型
-                    memberCardTypes : memberCardTypes
+                    memberCardTypes : [
+                        {
+                            label : 'allMemCardTyps',
+                            value : 'all'
+                        },
+                    ]
                 },
                 //列表表头
                 infoListHead : infoListHead,
@@ -213,6 +218,7 @@
         created () {
             this.getLevelList();
             this.getChannelList();
+            this.queryCardTypeList();
         },
         computed : {
             ...mapGetters({
@@ -229,8 +235,6 @@
                 }).then(res => {
                     if (res.success) {
                         this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
-                    } else {
-                        this.$set(this.enumData, 'level', []);
                     }
                 });
             },
@@ -243,8 +247,6 @@
                 }).then(res => {
                     if (res.success) {
                         this.$set(this.enumData, 'channel', this.enumData.channel.concat(res.data.data || []));
-                    } else {
-                        this.$set(this.enumData, 'channel', []);
                     }
                 });
             },
@@ -335,6 +337,21 @@
                     return 'frozen-tr';
                 }
             },
+            /**
+             * 获取所有会员卡类型
+             */
+            queryCardTypeList () {
+                ajax.post('queryCardTypeList').then(res => {
+                    if (res.success) {
+                        this.$set(this.enumData, 'memberCardTypes', this.enumData.memberCardTypes.concat(res.data ? res.data.map(item => {
+                            return {
+                                label : item.typeName,
+                                value : item.id,
+                            };
+                        }) : []));
+                    }
+                });
+            }
         }
     };
 </script>

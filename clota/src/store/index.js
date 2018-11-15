@@ -154,8 +154,9 @@ export default new Vuex.Store({
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
             i18n.locale = state.lang = lang;
-            // window.location.reload();
-            this.commit('changeOperateLine',false);
+            setTimeout(() => {
+                this.commit('changeOperateLine',false);
+            },600);
         },
         //改变操作栏状态
         changeOperateLine (state,status) {
@@ -224,43 +225,76 @@ export default new Vuex.Store({
     actions : {
         //获取用户权限信息
         getUserRight (store, route) {
-            store.dispatch('freshOrgs');
-            return ajax.post('getPrivilege',{
-                orgId : store.getters.manageOrgs.id
-            }).then(res =>{
-                if (res.success) {
-                    sessionStorage.setItem('token',res.data ? res.data.token : '');
-                    return new Promise((resolve, reject) => {
-                        let privCode = {};
-                        let privateData = res.data.privileges;
-                        //获取账号的菜单权限
-                        for (let i = 0,j = privateData.length; i < j; i++) {
-                            privCode[privateData[i]['privCode']] = 'allow';
-                        }
-                        let routers = childDeepClone(routerClect, privCode);
-                        routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
-                        //重新设置路由信息
-                        resetRouter(routers);
-                        store.commit('updatePermissionInfo',privCode);
-                        store.commit('updateRouteInfo',routers);
-                        // 如果有权限，则跳转到有权限的第一个页面
-                        if (routers.length > 0) {
-                            resolve(routers[0]);
-                        } else {
-                            reject();
-                        }
-                    }).catch(err => {
-                        console.log(err);
-                    });
-                } else {
+            return store.dispatch('freshOrgs').then(() => {
+                return ajax.post('getPrivilege',{
+                    orgId : store.getters.manageOrgs.id
+                }).then(res =>{
+                    if (res.success) {
+                        sessionStorage.setItem('token',res.data ? res.data.token : '');
+                        return new Promise((resolve, reject) => {
+                            let privCode = {};
+                            let privateData = res.data.privileges;
+                            //获取账号的菜单权限
+                            for (let i = 0,j = privateData.length; i < j; i++) {
+                                privCode[privateData[i]['privCode']] = 'allow';
+                            }
+                            let routers = childDeepClone(routerClect, privCode);
+                            routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
+                            //重新设置路由信息
+                            resetRouter(routers);
+                            store.commit('updatePermissionInfo',privCode);
+                            store.commit('updateRouteInfo',routers);
+                            // 如果有权限，则跳转到有权限的第一个页面
+                            if (routers.length > 0) {
+                                resolve(routers[0]);
+                            } else {
+                                reject();
+                            }
+                        }).catch(err => {
+                            console.log(err);
+                        });
+                    } else {
+                        store.dispatch('showErrToast','rightGetError');
+                        return new Promise().reject();
+                    }
+                }).catch(() => {
                     store.dispatch('showErrToast','rightGetError');
-                    // Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
-                    return new Promise().reject();
-                }
-            }).catch(() => {
-                store.dispatch('showErrToast','rightGetError');
-                // Vue.prototype.$Message.error(i18n.messages[i18n.locale]['rightGetError']);
+                });
             });
+            // return ajax.post('getPrivilege',{
+            //     orgId : store.getters.manageOrgs.id
+            // }).then(res =>{
+            //     if (res.success) {
+            //         sessionStorage.setItem('token',res.data ? res.data.token : '');
+            //         return new Promise((resolve, reject) => {
+            //             let privCode = {};
+            //             let privateData = res.data.privileges;
+            //             //获取账号的菜单权限
+            //             for (let i = 0,j = privateData.length; i < j; i++) {
+            //                 privCode[privateData[i]['privCode']] = 'allow';
+            //             }
+            //             let routers = childDeepClone(routerClect, privCode);
+            //             routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
+            //             //重新设置路由信息
+            //             resetRouter(routers);
+            //             store.commit('updatePermissionInfo',privCode);
+            //             store.commit('updateRouteInfo',routers);
+            //             // 如果有权限，则跳转到有权限的第一个页面
+            //             if (routers.length > 0) {
+            //                 resolve(routers[0]);
+            //             } else {
+            //                 reject();
+            //             }
+            //         }).catch(err => {
+            //             console.log(err);
+            //         });
+            //     } else {
+            //         store.dispatch('showErrToast','rightGetError');
+            //         return new Promise().reject();
+            //     }
+            // }).catch(() => {
+            //     store.dispatch('showErrToast','rightGetError');
+            // });
         },
         //获取用户信息
         getUserInfo (store,userInfo) {
@@ -302,7 +336,7 @@ export default new Vuex.Store({
          * 更新当前账号下的组织结构信息
          */
         freshOrgs (store) {
-            ajax.post('getManageOrgs').then(res => {
+            return ajax.post('getManageOrgs').then(res => {
                 if (res.success) {
                     let filterOrgsArr = res.data ? res.data.filterOrg : [];
                     let filterOrgsObj = {};
@@ -353,8 +387,8 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            store.commit('updateCardReadEnabled',true);
-            return;
+            // store.commit('updateCardReadEnabled',true);
+            // return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -375,8 +409,8 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                store.commit('updateCardReadEnabled',true);
-                resolve('222222');
+                // store.commit('updateCardReadEnabled',true);
+                // resolve('555555');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {

@@ -614,7 +614,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/categorySetting.vue'),
                         meta : {
                             menuName : 'memCardManagement', //lang.config.js 里面的语言键值
-                            _name : 'member-level',
+                            _name : 'card-manage',
                             rightPath : topMenuName + '.' + 'memCardManagement',
                             isMenu : true
                         },
@@ -626,7 +626,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/levelSetting.vue'),
                         meta : {
                             menuName : 'levelSetting', //lang.config.js 里面的语言键值
-                            _name : 'member-level',
+                            _name : 'card-manage',
                             rightPath : topMenuName + '.' + 'memCardManagement',
                         },
                     },

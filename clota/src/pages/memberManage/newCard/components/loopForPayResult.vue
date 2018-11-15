@@ -35,7 +35,7 @@
                                    style="width: 280px"
                                    placeholder="扫码前，请获取焦点"
                                    @on-focus="setValidateStatus"
-                                   @keyup.native.enter="startPay"/>
+                                   @keyup.native.stop.enter="startPay"/>
                         </FormItem>
                     </Form>
                 </div>
