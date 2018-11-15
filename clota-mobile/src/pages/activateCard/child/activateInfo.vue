@@ -65,6 +65,7 @@
                               show-name
                               v-model="certificationType"
                               class="c-input"
+                              @on-change="certificationTypeChange"
                               :placeholder="$t('pleaseSelect',{field : $t('cardType') })"></popup-picker>
             </div>
             <!-- 证件号码 -->
@@ -83,6 +84,7 @@
                               show-name
                               v-model="gender"
                               class="c-input"
+                              @on-change="sexChange"
                               :placeholder="$t('pleaseChoose')"></popup-picker>
             </div>
 
@@ -229,9 +231,6 @@
              * 校验输入信息
              */
             validate () {
-                this.formData.gender = this.gender[0] ? this.gender[0] : '';
-                this.formData.certificationType = this.certificationType[0] ? this.certificationType[0] : '';
-
                 //企业名称,仅企业卡需要校验
                 if (this.cardInfo.cardTypeId === '3') {
                     if (!validator.isEmpty(this.formData.companyName)) {
@@ -244,7 +243,6 @@
                         return;
                     }
                 }
-
 
                 //姓名不为空
                 if (!validator.isEmpty(this.formData.custName)) {
@@ -315,14 +313,8 @@
              * 激活会员卡
              */
             activationMemberCard () {
-                let gender = this.formData.gender[0];
-                let certificationType = this.formData.certificationType[0];
-                delete this.formData.gender;
-                delete this.formData.certificationType;
                 ajax.post('activationMemberCard', {
                     ...this.formData,
-                    gender : gender,
-                    certificationType : certificationType,
                 }).then(res => {
                     if (res.success) {
                         //存储token信息
@@ -397,6 +389,20 @@
                 //登陆跳转到主页
                 this.$router.push({ name : 'home' });
             },
+            /**
+             *  证件类型改变
+             *  @param {array} data
+             */
+            certificationTypeChange (data) {
+                this.formData.certificationType = data ? data[0] : '';
+            },
+            /**
+             * 性别改变
+             * @param {array} data
+             */
+            sexChange (data) {
+                this.formData.gender = data ? data[0] : '';
+            }
         }
     };
 </script>
