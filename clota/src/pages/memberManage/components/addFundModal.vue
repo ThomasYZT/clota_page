@@ -218,6 +218,7 @@
                 }).then(res => {
                     if ( res.success ) {
                         this.$refs.payResultModal.setStage('success');
+                        this.payModalShow = true;
                         this.$emit('add-success');
                     } else if (res.code === 'P002') {
                         this.startSearchForPayResult({

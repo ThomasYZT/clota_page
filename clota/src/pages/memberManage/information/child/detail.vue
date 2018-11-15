@@ -63,12 +63,13 @@
                                 :key="index"
                                 :type="choosedCard === item ? 'primary' : 'ghost'"
                                 @click="choseCard(item)">
-                            {{item.levelDesc}}
+                            {{item.levelDesc}}{{(item.motherCard === false && item.cardTypeId === '1') ? $t('bracketSetting',{ content : $t('副卡') }) : ''}}
                         </Button>
                     </ButtonGroup>
                     <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
                         <!--会员卡基础信息-->
-                        <member-card-base-info :memberDetail="choosedCard">
+                        <member-card-base-info :memberDetail="choosedCard"
+                                               @fresh-data="choseCard(choosedCard)">
                         </member-card-base-info>
                     </template>
                 </div>
@@ -133,78 +134,80 @@
                         </div>
                     </div>
 
-                    <div class="content-info card-temp"
-                         v-if=" (childOrMotherCard.isMotherCard === 'true' && childCard.length > 0)
-                     || (childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0)">
-                        <div class="title">{{$t("childMotherCardInfo")}}</div>
-                        <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && childCard.length > 0">
-                            <table-com
-                                :auto-height="true"
-                                :table-com-min-height="300"
-                                :ofsetHeight="170"
-                                :column-data="childTableColumn"
-                                :table-data="childCard"
-                                :span-method="objectSpanMethod"
-                                :border="true">
-                                <el-table-column
-                                    slot="column0"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    slot-scope="row">
-                                    <template slot-scope="scoped">{{$t("motherCard")}}</template>
-                                </el-table-column>
-                                <el-table-column
-                                    slot="column1"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip
-                                    slot-scope="row">
-                                    <template slot-scope="scoped">
-                                        <span>{{  scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
-                                    </template>
-                                </el-table-column>
-                            </table-com>
-                        </div>
-                        <div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0">
-                            <table-com
-                                :auto-height="true"
-                                :table-com-min-height="300"
-                                :ofsetHeight="170"
-                                :column-data="motherTableColumn"
-                                :table-data="motherCard"
-                                :border="true">
-                                <el-table-column
-                                    slot="column0"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    slot-scope="row">
-                                    <template slot-scope="scoped">{{$t("childCard")}}</template>
-                                </el-table-column>
-                                <el-table-column
-                                    slot="column1"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip
-                                    slot-scope="row">
-                                    <template slot-scope="scoped">
-                                        <span>{{ scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>
-                                    </template>
-                                </el-table-column>
-                            </table-com>
-                        </div>
-                    </div>
+                    <!--会员3期暂时去掉-->
+                    <!--<div class="content-info card-temp"-->
+                         <!--v-if=" (childOrMotherCard.isMotherCard === 'true' && childCard.length > 0)-->
+                     <!--|| (childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0)">-->
+                        <!--<div class="title">{{$t("childMotherCardInfo")}}</div>-->
+                        <!--<div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'true' && childCard.length > 0">-->
+                            <!--<table-com-->
+                                <!--:auto-height="true"-->
+                                <!--:table-com-min-height="300"-->
+                                <!--:ofsetHeight="170"-->
+                                <!--:column-data="childTableColumn"-->
+                                <!--:table-data="childCard"-->
+                                <!--:span-method="objectSpanMethod"-->
+                                <!--:border="true">-->
+                                <!--<el-table-column-->
+                                    <!--slot="column0"-->
+                                    <!--:label="row.title"-->
+                                    <!--:prop="row.field"-->
+                                    <!--:key="row.index"-->
+                                    <!--:width="row.width"-->
+                                    <!--:min-width="row.minWidth"-->
+                                    <!--slot-scope="row">-->
+                                    <!--<template slot-scope="scoped">{{$t("motherCard")}}</template>-->
+                                <!--</el-table-column>-->
+                                <!--<el-table-column-->
+                                    <!--slot="column1"-->
+                                    <!--:label="row.title"-->
+                                    <!--:prop="row.field"-->
+                                    <!--:key="row.index"-->
+                                    <!--:width="row.width"-->
+                                    <!--:min-width="row.minWidth"-->
+                                    <!--show-overflow-tooltip-->
+                                    <!--slot-scope="row">-->
+                                    <!--<template slot-scope="scoped">-->
+                                        <!--<span>{{  scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>-->
+                                    <!--</template>-->
+                                <!--</el-table-column>-->
+                            <!--</table-com>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;会员3期暂时去掉&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="card-wrap" v-if="childOrMotherCard.isMotherCard === 'false' && motherCard.length > 0">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<table-com&ndash;&gt;-->
+                                <!--&lt;!&ndash;:auto-height="true"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:table-com-min-height="300"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:ofsetHeight="170"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:column-data="motherTableColumn"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:table-data="motherCard"&ndash;&gt;-->
+                                <!--&lt;!&ndash;:border="true">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<el-table-column&ndash;&gt;-->
+                                    <!--&lt;!&ndash;slot="column0"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:label="row.title"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:prop="row.field"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:key="row.index"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:width="row.width"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:min-width="row.minWidth"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;slot-scope="row">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<template slot-scope="scoped">{{$t("childCard")}}</template>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</el-table-column>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<el-table-column&ndash;&gt;-->
+                                    <!--&lt;!&ndash;slot="column1"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:label="row.title"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:prop="row.field"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:key="row.index"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:width="row.width"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;:min-width="row.minWidth"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;show-overflow-tooltip&ndash;&gt;-->
+                                    <!--&lt;!&ndash;slot-scope="row">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<template slot-scope="scoped">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span>{{ scoped.row.custName ? scoped.row.custName+','+scoped.row.cardCode : '-' }}</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</template>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</el-table-column>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</table-com>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
                     <!--安全设置-->
                     <div class="content-info">
                         <div class="title">{{$t("securitySettings")}}</div>
@@ -224,6 +227,10 @@
                         </div>
 
                     </div>
+                    <!--业主卡副卡/主卡信息 -->
+                    <owner-card-vice-card
+                        @fresh-data="choseCard(choosedCard)">
+                    </owner-card-vice-card>
                 </template>
 
             </div>
@@ -306,6 +313,7 @@
     import { vipStatusEnum, genderEnum } from '@/assets/js/constVariable';
     import memberCardBaseInfo from '../components/memberCardBaseInfo';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import ownerCardViceCard from '../components/ownerCardViceCard';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -325,7 +333,8 @@
             memberCardBaseInfo,
             storeAccountInfo,
             integralAccountInfo,
-            noData
+            noData,
+            ownerCardViceCard
         },
         data () {
             return {
@@ -351,21 +360,24 @@
                 //优惠券信息列表,包括分页信息
                 couponData : [],
                 //子母卡信息
-                childOrMotherCard : {},
+                // 会员3期暂时去掉
+                // childOrMotherCard : {},
+                // 会员3期暂时去掉
                 //子母卡表格数据
-                motherCard : [],
-                motherTableColumn : [
-                    {
-                        title : 'currentMemberCardInfo',
-                        minWidth : 250,
-                        field : ''
-                    },
-                    {
-                        title : 'motherCardInfo',
-                        minWidth : 270,
-                        field : ''
-                    },
-                ],
+                // motherCard : [],
+                // 会员3期暂时去掉
+                // motherTableColumn : [
+                //     {
+                //         title : 'currentMemberCardInfo',
+                //         minWidth : 250,
+                //         field : ''
+                //     },
+                //     {
+                //         title : 'motherCardInfo',
+                //         minWidth : 270,
+                //         field : ''
+                //     },
+                // ],
                 childCard : [],
                 childTableColumn : [
                     {
@@ -601,25 +613,25 @@
                 });
             },
 
+            // 会员3期暂时去掉
             //获取子母卡
-            queryChildOrMotherCard ( data ) {
-                ajax.post('queryChildOrMotherCard', {
-                    cardId : data.cardId,
-                }).then(res => {
-                    if (res.success) {
-                        this.childOrMotherCard = res.data || {};
-                        //区分子母卡
-                        if (res.data.isMotherCard === 'true') {
-                            this.childCard = res.data.childCard && res.data.childCard.length > 0 ? res.data.childCard : [];
-                        } else {
-                            this.motherCard = res.data.motherCard && res.data.motherCard.length > 0 ? res.data.motherCard : [];
-                        }
-                    } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'queryChildOrMotherCard ' + this.$t('failure') + '！');
-                    }
-                });
-            },
+            // queryChildOrMotherCard ( data ) {
+            //     ajax.post('queryChildOrMotherCard', {
+            //         cardId : data.cardId,
+            //     }).then(res => {
+            //         if (res.success) {
+            //             this.childOrMotherCard = res.data || {};
+            //             //区分子母卡
+            //             if (res.data.isMotherCard === 'true') {
+            //                 this.childCard = res.data.childCard && res.data.childCard.length > 0 ? res.data.childCard : [];
+            //             } else {
+            //                 this.motherCard = res.data.motherCard && res.data.motherCard.length > 0 ? res.data.motherCard : [];
+            //             }
+            //         } else {
+            //             this.$Message.warning(res.message || 'queryChildOrMotherCard ' + this.$t('failure') + '！');
+            //         }
+            //     });
+            // },
             // 子母卡列合并
             objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
@@ -737,8 +749,9 @@
                     // this.listCardAccountInfo(params.detail);
                     //获取更多优惠券
                     this.listCouponsByStatus(params.detail);
+                    // 会员3期暂时去掉
                     //字母卡列合并
-                    this.queryChildOrMotherCard(params.detail);
+                    // this.queryChildOrMotherCard(params.detail);
                     //根据会员获取会员信息和会员卡信息
                     this.showMemberDetail();
                     //查询成长值
