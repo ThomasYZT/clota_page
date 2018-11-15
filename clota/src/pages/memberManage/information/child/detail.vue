@@ -66,65 +66,44 @@
                             {{item.levelDesc}}
                         </Button>
                     </ButtonGroup>
-                    <!--会员卡基础信息-->
-                    <member-card-base-info :memberDetail="choosedCard">
-                    </member-card-base-info>
+                    <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
+                        <!--会员卡基础信息-->
+                        <member-card-base-info :memberDetail="choosedCard">
+                        </member-card-base-info>
+                    </template>
+                </div>
+                <div class="no-data-wrap" v-if="memberCardList.length < 1">
+                    <!--无数据组件-->
+                    <no-data >
+                    </no-data>
                 </div>
                 <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
-                    <div class="content-info" v-for="(item, index) in accountData" :key="index">
-                        <!--会员3期暂时去掉-->
-                        <!--<div class="title">-->
-                            <!--{{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : (item.accountType === 'score' ? $t('integralAccount') : item.accountName) }}-->
-                            <!--&lt;!&ndash;<span v-if="item.accountType === 'charging' && childOrMotherCard.isMotherCard === 'true'"&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="add"&ndash;&gt;-->
-                            <!--&lt;!&ndash;@click="addAccount">+ {{$t("newAccount")}}</span>&ndash;&gt;-->
-                        <!--</div>-->
-                        <div class="content">
-                            <div class="header-wrap" v-if="item.accountType === 'charging'">
-                                {{item.accountDefineId === '1' ? $t("DefaultPrePaidAcc") : item.accountName }}
-                            </div>
-                            <div class="header-wrap" v-if="item.accountType === 'score'">{{$t("integral")}}</div>
-                            <div class="body-wrap">
-                                <div class="coast">
-                                <span>
-                                    <template v-if="item.accountType === 'charging'">
-                                        <span>{{$t("principal")}}：</span>
-                                        <span class="num">{{item.corpusBalance | moneyFilter}}</span>
-                                        <span>{{item.unit || ''}}</span>
-                                    </template>
-                                    <template v-if="item.accountType === 'score'">
-                                        <span>{{$t("pointBalance")}}：</span>
-                                        <span class="num">{{item.accountBalance}}</span>
-                                    </template>
-                                </span>
-                                    <span v-if="item.accountType === 'charging'">
-                                    {{$t("giftSum")}}：
-                                    <span class="num">{{item.donateBalance | moneyFilter}}</span>
-                                    <span v-if="item.accountType === 'charging'">{{item.unit || ''}}</span>
-                                </span>
-                                </div>
-                                <div class="operate-right">
-                                    <template v-if="item.accountType === 'charging'">
-                                        <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
-                                        <template v-if="item.accountDefineId === '1'">
-                                            <span class="split-line"></span>
-                                            <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
-                                        </template>
-                                        <!--会员3期暂时去掉-->
-                                        <!--<span class="split-line"></span>-->
-                                        <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
-                                        <template v-if="item.exchangeToCash === 'true'">
-                                            <span class="split-line"></span>
-                                            <span @click="showCashModal(item)">{{$t("cash")}}</span>
-                                        </template>
-                                    </template>
-                                    <template v-if="item.accountType === 'score'">
-                                        <span @click="viewIntegration(item)">{{$t("integralDetail")}}</span>
-                                    </template>
-                                </div>
-                            </div>
+                    <div class="info-title">{{$t('储值账户信息')}}</div>
+                    <!--储值账户信息-->
+                    <store-account-info v-for="item in charTableData"
+                                        :key="item.id"
+                                        :charge-info="item">
+                        <div class="operate-right">
+                            <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
+                            <template v-if="item.accountDefineId === '1'">
+                                <span class="split-line"></span>
+                                <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                            </template>
+                            <!--会员3期暂时去掉-->
+                            <!--<span class="split-line"></span>-->
+                            <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
+                            <template v-if="item.exchangeToCash === 'true'">
+                                <span class="split-line"></span>
+                                <span @click="showCashModal(item)">{{$t("cash")}}</span>
+                            </template>
                         </div>
-                    </div>
+                    </store-account-info>
+                    <!--积分账户信息-->
+                    <template v-if="choosedCard.cardTypeId !== '1'">
+                        <div class="info-title">{{$t('积分账户信息')}}</div>
+                        <integral-account-info :account-info="scoreData">
+                        </integral-account-info>
+                    </template>
 
                     <!--会员3期暂时去掉-->
                     <!--<div class="content-info">-->
@@ -309,6 +288,8 @@
 
     import ajax from '@/api/index';
     import breadCrumbHead from '@/components/breadCrumbHead/index';
+    import storeAccountInfo from '../../newCard/components/storeAccountInfo';
+    import integralAccountInfo from '../../newCard/components/integralAccountInfo.vue';
     // 会员3期暂时去掉
     // import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal from '../../components/addFundModal.vue';
@@ -324,6 +305,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import { vipStatusEnum, genderEnum } from '@/assets/js/constVariable';
     import memberCardBaseInfo from '../components/memberCardBaseInfo';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -340,7 +322,10 @@
             viewMoreCouponModal,
             moreCard,
             tableCom,
-            memberCardBaseInfo
+            memberCardBaseInfo,
+            storeAccountInfo,
+            integralAccountInfo,
+            noData
         },
         data () {
             return {
@@ -524,6 +509,7 @@
             // },
             //根据会员卡获取账户信息
             listCardAccountInfo ( params ) {
+                if (!params.id) return;
                 ajax.post('listCardAccountInfo', {
                     cardId : params.id,
                     memberId : this.memberInfo.id
@@ -531,7 +517,7 @@
                     if (res.success) {
                         this.accountData = res.data || [];
                         this.charTableData = [];
-                        this.scoreData = [];
+                        this.scoreData = {};
                         //区分账户类型数据
                         this.accountData.forEach( item => {
                             if (item.accountType === 'charging') {
@@ -547,7 +533,7 @@
                     } else {
                         this.accountData = [];
                         this.charTableData = [];
-                        this.scoreData = [];
+                        this.scoreData = {};
                     }
                 });
             },
@@ -568,7 +554,6 @@
                     if (res.success) {
                         this.couponData = res.data || [];
                     } else {
-                        console.log(res);
                         this.$Message.warning(res.message || 'listCouponsByStatus ' + this.$t('failure') + '！');
                     }
                 });
@@ -834,6 +819,22 @@
             .content-wrap{
                 padding: 25px 50px;
 
+                .operate-right{
+                    float: right;
+                    color: $color-blue;
+                    >span{
+                        cursor: pointer;
+                    }
+                    .split-line{
+                        display: inline-block;
+                        width: 1px;
+                        height: 14px;
+                        background-color: $color-E1E1E1;
+                        margin: 0 10px;
+                        vertical-align: middle;
+                    }
+                }
+
                 .content-info{
                     margin-bottom: 30px;
 
@@ -999,52 +1000,6 @@
                         border-radius: 4px 4px 0 0;
                         font-size: $font_size_14px;
                         margin-top: 15px;
-
-                        .header-wrap{
-                            background: $color_F5F7FA_050;
-                            border-bottom: 1px solid $color_E9E9E9;
-                            border-radius: 3px 3px 0 0;
-                            height: 40px;
-                            line-height: 38px;
-                            padding: 0 20px;
-                            color: $color_000_085;
-                        }
-
-                        .body-wrap{
-                            padding: 0 40px 0 60px;
-                            height: 60px;
-                            line-height: 60px;
-                            @include clearfix();
-
-                            .coast{
-                                display: inline-block;
-                                >span{
-                                    margin-right: 30px;
-                                }
-                            }
-
-                            .num{
-                                font-size: $font_size_18px;
-                                color: $color-666;
-                            }
-
-                            .operate-right{
-                                float: right;
-                                color: $color-blue;
-                                >span{
-                                    cursor: pointer;
-                                }
-                                .split-line{
-                                    display: inline-block;
-                                    width: 1px;
-                                    height: 14px;
-                                    background-color: $color-E1E1E1;
-                                    margin: 0 10px;
-                                    vertical-align: middle;
-                                }
-                            }
-
-                        }
                     }
 
                 }
@@ -1066,5 +1021,15 @@
             cursor: pointer;
         }
 
+        .info-title{
+            text-align: left;
+            font-size: $font_size_16px;
+            color: $color_000;
+            padding: 0 0 20px 0;
+        }
+        .no-data-wrap{
+            @include block_outline(100%,200px);
+            position: relative;
+        }
     }
 </style>

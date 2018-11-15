@@ -1698,4 +1698,5 @@ export default {
     'memberStatusExpire' : '过期',
     'birthdayRights' : '生日当前限购{num}张{discount}折门票',
     'ticketRights' : '每月{num}张{scene}{money}元门票',
+    'open_card_add' : '开卡',
 }

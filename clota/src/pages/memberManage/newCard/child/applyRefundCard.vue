@@ -35,12 +35,14 @@
                                     :key="item.id"
                                     :charge-info="item">
                 </store-account-info>
-                <div class="info-title">{{$t('积分账户信息')}}</div>
-                <!--积分账户信息-->
-                <integral-account-info v-for="item in integerAccount"
-                                       :key="item.id"
-                                       :account-info="item">
-                </integral-account-info>
+                <template v-if="choosedCard.cardTypeId !== '1'">
+                    <div class="info-title">{{$t('积分账户信息')}}</div>
+                    <!--积分账户信息-->
+                    <integral-account-info v-for="item in integerAccount"
+                                           :key="item.id"
+                                           :account-info="item">
+                    </integral-account-info>
+                </template>
                 <!--footer 按钮-->
                 <div class="content-footer">
                     <Button type="primary"
@@ -238,9 +240,6 @@
                     name : 'refundedCard'
                 });
             }
-        },
-        created () {
-            this.listCardAccountInfo();
         }
 	};
 </script>
@@ -254,7 +253,7 @@
             padding: 0 50px;
             @include block_outline($height : unquote('calc(100% - 60px)'));
             overflow: auto;
-            @include padding_place($height : 50px);
+            @include padding_place($height : 60px);
 
             .no-data-wrap{
                 @include block_outline(100%,200px);

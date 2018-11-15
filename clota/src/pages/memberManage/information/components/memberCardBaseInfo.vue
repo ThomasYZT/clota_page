@@ -2,7 +2,12 @@
 
 <template>
     <div class="member-card-info">
-        <!--会员3期暂时去掉-->
+        <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '3'">
+            <label>{{$t("企业名称")}}：</label>
+            <span v-w-title="memberDetail.companyName">
+                    {{memberDetail.companyName | contentFilter}}
+            </span>
+        </div>
         <div class="form-item-wrap">
             <label>{{$t("memberNum")}}：</label>
             <span v-w-title="memberDetail.cardCode">
@@ -18,7 +23,7 @@
             </span>
         </div>
         <div class="form-item-wrap">
-            <label>{{$t("memberTypes")}}：</label>
+            <label>{{$t("memberCardType")}}：</label>
             <span v-w-title="memberDetail.typeName">
                     {{memberDetail.typeName  | contentFilter}}
             </span>
@@ -26,13 +31,13 @@
         <!--会员3期暂时去掉-->
         <!--<div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span v-w-title="memberDetail.orgName">-->
         <!--{{memberDetail.orgName || '-'}}</span></div>-->
-        <!--<div class="form-item-wrap">-->
-            <!--<label>{{$t("memberType")}}：</label>-->
-            <!--<span v-w-title="$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberType))">-->
-                    <!--{{$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberType))}}-->
-            <!--</span>-->
-        <!--</div>-->
         <div class="form-item-wrap">
+            <label>{{$t("memberType")}}：</label>
+            <span v-w-title="$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberType))">
+                    {{$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberType))}}
+            </span>
+        </div>
+        <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '1'">
             <label>{{$t("levelSetting")}}：</label>
             <span v-w-title="memberDetail.levelDesc">
                     {{memberDetail.levelDesc | contentFilter}}
@@ -40,13 +45,13 @@
         </div>
         <div class="form-item-wrap">
             <label>{{$t("购买日期")}}：</label>
-            <span v-w-title="memberDetail.createTime">{{memberDetail.createTime  | contentFilter}}</span>
+            <span v-w-title="memberDetail.createdTime">{{memberDetail.createdTime  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap">
+        <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '1'">
             <label>{{$t("effectiveStartDate")}}：</label>
             <span v-w-title="memberDetail.effDate">{{memberDetail.effDate  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap">
+        <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '1'">
             <label>{{$t("effectiveEndDate")}}：</label>
             <span v-w-title="memberDetail.expDate">{{memberDetail.expDate  | contentFilter}}</span>
         </div>
@@ -94,10 +99,10 @@
              * @param{String} name  枚举字段名
              * @param{String} val  值
              */
-            // getEnumFieldShow (name, val) {
-            //     let obj = this[name].find((item) => val === item.name);
-            //     return obj ? obj.desc : '-';
-            // },
+            getEnumFieldShow (name, val) {
+                let obj = this[name].find((item) => val === item.name);
+                return obj ? obj.desc : '-';
+            },
         }
     };
 </script>

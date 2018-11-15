@@ -5,18 +5,26 @@
 -->
 
 <template>
-    <div class="charge-account-info">
+    <div class="charge-account-info" :class="{ 'split-class' : chargeInfo.accountDefineId > 4 }">
         <div class="title">{{chargeInfo.accountName | contentFilter}}</div>
         <ul class="table-wrap">
+            <!--默认账户显示账户合计-->
+            <li class="wrap-li" v-if="chargeInfo.accountDefineId === '1'">
+                <span class="label-key">{{$t('colonSetting' , { key : $t('账户合计') })}}</span>
+                <span class="label-value">{{(chargeInfo.corpusBalance + chargeInfo.donateBalance) | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
+            </li>
             <li class="wrap-li">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('principal') })}}</span>
                 <span class="label-value">{{ chargeInfo.corpusBalance | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
             </li>
-            <li class="wrap-li">
+            <li class="wrap-li" v-if="chargeInfo.accountDefineId === '1'">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('giftSum') })}}</span>
                 <span class="label-value">{{ chargeInfo.donateBalance | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
             </li>
         </ul>
+        <div class="operate-taps">
+            <slot :account-info="chargeInfo"></slot>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -47,6 +55,19 @@
         border: 1px solid #E9E9E9;
         border-radius: 3px 3px 0 0;
         margin-bottom: 20px;
+        overflow: auto;
+
+        &.split-class{
+            width: calc(50% - 15px);
+
+            &:nth-of-type(2n - 1){
+                float: left;
+            }
+
+            &:nth-of-type(2n){
+                float: right;
+            }
+        }
 
         &.last-item-class {
             margin-bottom: 0;
@@ -63,13 +84,22 @@
         }
 
         .table-wrap{
-            @include block_outline($height : 60px);
+            @include block_outline($width : auto,$height : 60px);
             padding: 20px 0 20px 30px;
+            display: inline-block;
+            float: left;
 
             .wrap-li{
                 float: left;
                 margin-right: 50px;
             }
+        }
+
+        .operate-taps{
+            @include block_outline(auto, 60px);
+            float: right;
+            margin-right: 34px;
+            padding: 20px 0;
         }
     }
 </style>

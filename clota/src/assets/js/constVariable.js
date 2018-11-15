@@ -137,6 +137,10 @@ export const moneyTradeTypes = [
         label : 'return_order',     // 撤销扣款
         value : 'return_order',
     },
+    {
+        label : 'open_card_add',     // 开卡
+        value : 'open_card_add',
+    },
 ];
 //月份枚举
 export const monthEnum = [
