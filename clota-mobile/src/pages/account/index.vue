@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <div class="btn-area">
+        <div class="btn-area" :class="{'owner-btn' : isOwnerCard}">
             <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
         </div>
         <popup-picker
@@ -199,6 +199,7 @@
     $img_base_url : '../../assets/images/';
     .account{
         @include block_outline();
+        overflow: auto;
 
         /deep/ .vux-swiper{
             height: 310px!important;
@@ -379,7 +380,7 @@
 
         .btn-area{
             @include block_outline(unquote('calc(100% - 55px)'),42px);
-            margin: 220px auto 0;
+            margin: 0px auto 20px;
 
             /deep/ .weui-btn_default{
                 background: $color_0073EB;
@@ -387,6 +388,10 @@
                 color: $color_fff;
                 border-radius: 100px;
             }
+        }
+
+        .owner-btn {
+            margin-top: 300px;
         }
 
         /deep/ .vux-cell-box::before{

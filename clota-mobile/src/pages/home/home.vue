@@ -232,9 +232,5 @@
                 display: none;
             }
         }
-
-        .nav {
-            margin-bottom: 150px;
-        }
     }
 </style>
