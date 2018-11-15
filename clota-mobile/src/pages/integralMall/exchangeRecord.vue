@@ -22,11 +22,25 @@
                 @on-index-change="swiperChange">
             <!-- 已领取 -->
             <swiper-item class="swiper-demo-img">
-                <goodBoard v-for="(item, index) in receivedList" :key="index" :info="item"></goodBoard>
+                <template v-if="receivedList.length !== 0">
+                    <goodBoard v-for="(item, index) in receivedList" :key="index" :info="item"></goodBoard>
+                </template>
+                <template v-else>
+                    <div class="no-data">
+                        <img src="../../assets/images/icon-no-data.svg" alt="">
+                    </div>
+                </template>
             </swiper-item>
             <!-- 未领取 -->
             <swiper-item class="swiper-demo-img">
-                <goodBoard v-for="(item, index) in unreceivedList" :key="index" :info="item"></goodBoard>
+                <template v-if="unreceivedList.length !== 0">
+                    <goodBoard v-for="(item, index) in unreceivedList" :key="index" :info="item"></goodBoard>
+                </template>
+                <template v-else>
+                    <div class="no-data">
+                        <img src="../../assets/images/icon-no-data.svg" alt="">
+                    </div>
+                </template>
             </swiper-item>
         </swiper>
     </div>
@@ -169,6 +183,22 @@
         /deep/ .vux-swiper-item{
             height: 100%;
 
+        }
+
+        .no-data {
+            width: 100%;
+            height: 96px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto auto;
+            text-align: center;
+            img {
+                width: 150px;
+                height: 150px;
+            }
         }
     }
 </style>

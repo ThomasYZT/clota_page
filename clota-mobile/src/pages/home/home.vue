@@ -6,6 +6,7 @@
   <div class="home"
        v-show="!isLoading">
       <swiper height="205px"
+              :class="{'no-spot': this.cardInfoList.length === 1}"
               v-model="cardIndex"
               @on-index-change="swiperChange"
               dots-position="center">
@@ -201,143 +202,6 @@
         overflow: auto;
         -webkit-overflow-scrolling: touch;
 
-        /*.member-card {
-            position: relative;
-            width: 100%;
-            height: 167.5px;
-            background-size: 100% 100%;
-
-            &.one-level .card-level{
-                background: #A1A5BA;
-            }
-            &.two-level .card-level{
-                background: #ECBB3F;
-            }
-            &.three-level .card-level{
-                background: #E4C3AC;
-            }
-            &.four-level .card-level{
-                background-color:  #2B2C2E;
-            }
-
-            .card-content {
-                position: absolute;
-                left: 24px;
-                bottom: 0;
-                width: 327-21.2px;
-                height: 150px;
-                margin-left: 21.2px;
-
-                .person-info {
-                    margin-bottom: 30px;
-                    margin-top: 21.2px;
-                    display: flex;
-                    height: 37px;
-                    width: 100%;
-                    display: flex;
-
-                    div {
-                        height: 100%;
-
-                        &.left {
-                            flex: 1;
-                            .img-wrapper {
-                                display: inline-block;
-                                position: relative;
-                                width: 37px;
-                                border-radius: 50%;
-                                background-color: rgba(255,255,255,0.1);
-
-                                img.default-face {
-                                    position: absolute;
-                                    margin-right: 12px;
-                                    border-radius: 50%;
-                                    left: 2.175px;
-                                    top: 2.175px;
-                                    width: 32.65px;
-                                    height: 32.65px;
-                                }
-                            }
-
-                            span.username {
-                                margin-left: 5px;
-                                display: inline-block;
-                                width: calc(100% - 60px);
-                                height: 100%;
-                                line-height: 32.65px;
-                                vertical-align: top;
-                                font-size: 14px;
-                                @include overflow_tip();
-
-                                .name{
-                                    vertical-align: middle;
-                                }
-
-                                .icon-arrow{
-                                    font-size: 12px!important;
-                                    vertical-align: middle;
-                                    line-height: 16px;
-                                    margin-top: 8px;
-                                }
-                            }
-                        }
-                        &.right {
-                            margin-right: 15px;
-                            text-align: right;
-                            position: relative;
-
-                            .card-level {
-                                margin-top: 4px;
-                                padding: 0 15px;
-                                width: auto;
-                                height: 21px;
-                                display: inline-block;
-                                border-radius: 10px;
-                                font-size: 8px;
-                                line-height: 21px;
-                                i {
-                                    font-size: 8px;
-                                    opacity: 1;
-                                }
-                                span {
-                                    opacity: 1;
-                                }
-                            }
-
-                        }
-                    }
-                }
-
-                .company-info {
-                    height: 19px;
-                    width: 100%;
-                    margin-bottom: 9px;
-                    font-size: 12.5px;
-                }
-
-                .card-info {
-                    display: flex;
-                    height: 19px;
-                    width: 100%;
-                    font-size: 14px;
-
-                    div {
-                        &:first-child {
-                            flex: 1;
-                            white-space: nowrap;
-                        }
-                        &:last-child {
-                            text-align: right;
-
-                            &:last-child {
-                                margin-right: 22.5px;
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
-
         .person-img {
             width: 50%;
         }
@@ -356,6 +220,16 @@
                 &.active{
                     background: #383837;
                 }
+            }
+        }
+
+        /deep/ .vux-indicator {
+            bottom: 0;
+        }
+
+        /deep/ .no-spot {
+            .vux-indicator {
+                display: none;
             }
         }
 

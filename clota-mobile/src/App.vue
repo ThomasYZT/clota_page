@@ -77,11 +77,11 @@
             </loading>
         </div>
 
-        <tabbar v-if="isTabbarShow">
+        <tabbar v-if="isTabbarShow"
+                v-model="actived">
             <tabbar-item v-for="(item, index) in tabbarList"
                          :key="index"
-                         :link="item.link"
-                         :selected="item.selected">
+                         :link="item.link">
                 <i slot="icon" :class="item.icon"></i>
                 <span slot="label">{{$t(item.label)}}</span>
             </tabbar-item>
@@ -120,7 +120,6 @@
                 tabbarList : [
                     {
                         label : 'myMember',
-                        selected : true,
                         link : '/home',
                         icon : 'iconfont icon-mymember'
                     },
@@ -130,6 +129,8 @@
                         icon : 'iconfont icon-integral-mall'
                     }
                 ],
+                //tab选中状态
+                actived : 0,
                 //是否显示底部导航栏
                 isTabbarShow : false
             };
@@ -222,6 +223,13 @@
         watch : {
             '$route' : {
                 handler (newVal) {
+                    this.actived = this.tabbarList.findIndex((i) => {
+                        if (newVal.path === '/exchangeRecord') {
+                            return i.link === '/integralMall'
+                        } else {
+                            return i.link === newVal.path;
+                        }
+                    });
                     if (newVal && newVal.meta && newVal.meta.title) {
                         document.title = this.$t(newVal.meta.title);
                     } else {

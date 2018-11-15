@@ -9,6 +9,7 @@
           <div class="account-list-chose" @click="showAccount">
               <p class="account-name">
                   {{chosedAccount[0] ? chosedAccount[0] : ''}}
+                  <span class="iconfont icon-arrow-right"></span>
               </p>
           </div>
           <div class="scroll-wrapper" v-if="infoList.length !== 0">
@@ -213,11 +214,23 @@
                     line-height: 50px;
                     font-size: 18px;
                     font-weight: bold;
+
+                    .icon-arrow-right{
+                        display: inline-block;
+                        transform: rotate(90deg);
+                        font-size: $font_size_15px;
+                    }
                 }
             }
             .scroll-wrapper {
                 position: relative;
                 height: calc(100% - 50px);
+
+                /deep/ .scroll-content {
+                    div {
+                        background-color: $color_fff;
+                    }
+                }
             }
             .no-data {
                 width: 100%;
