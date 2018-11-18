@@ -101,7 +101,7 @@
                             @set-pay-password="getPayPassword">
         </set-password-modal>
         <!--修改购房金额模态框-->
-        <change-house-money-modal :value="true">
+        <change-house-money-modal v-model="changeHouseMoneyModalShow">
         </change-house-money-modal>
     </div>
 </template>
@@ -130,7 +130,9 @@
             return {
                 vipStatusEnum : vipStatusEnum,
                 //设置密码模态框是否显示
-                setPasswordModalShow : false
+                setPasswordModalShow : false,
+                // 修改购房总金额是否显示
+                changeHouseMoneyModalShow : false
             };
         },
         methods : {
@@ -148,7 +150,10 @@
              * @param{String} password 更改后的密码
              */
             getPayPassword (password) {
-                ajax.post('').then(res => {
+                ajax.post('updateTradePassword',{
+                    tradePassword : password,
+                    id : this.memberDetail.id
+                }).then(res => {
                     if (res.success) {
                         this.$Message.success('修改支付密码成功');
                         this.$emit('fresh-data');
@@ -161,7 +166,7 @@
              * 修改购房金额
              */
             changeHouseMoney () {
-
+                this.changeHouseMoneyModalShow = true;
             }
         }
     };

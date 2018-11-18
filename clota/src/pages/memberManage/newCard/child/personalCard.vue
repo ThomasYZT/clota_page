@@ -250,7 +250,6 @@
     import entityCardInfo from '../components/entityCardInfo.vue';
     import setPasswordModal from '../components/setPasswordModal';
     import confirmMemberInfo from '../components/confirmDetailModal';
-    import MD5 from 'crypto-js/md5';
     import loopForPayResult from '../components/loopForPayResult';
 
     export default {
@@ -538,7 +537,6 @@
                 let params = {
                     memberInfo : Object.assign({},{
                         ...this.cardParam,
-                        tradePassword : MD5(this.cardParam.tradePassword).toString(),
                         ...this.selectedCard.memberCard,
                         birthDay : this.cardParam.birthDay ? this.cardParam.birthDay.format('yyyy-MM-dd') : '',
                     }),

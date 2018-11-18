@@ -51,10 +51,12 @@ import elCollapseItem from 'element-ui/lib/collapse-item';
 
 // // 按需引入 Echarts 图表
 require('echarts/lib/chart/pie');
+require('echarts/lib/chart/bar');
 require('echarts/lib/chart/line');
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/legend');
 require('echarts/lib/component/legendScroll');
+require('echarts/lib/component/dataZoom');
 
 
 // 引入公用样式，指令及方法等

@@ -75,6 +75,10 @@ export default {
     'queryConsumeUpdateBiz' : '/pay/queryConsumeUpdateBiz',
     //查询补卡费
     'queryCardReplaceFee' : '/member/memberBasicSet/findReplacementCardFee',
+    //修改支付交易密码
+    'updateTradePassword' : '/member/updateTradePassword',
+    //查看会员类别分布情况
+    'countCardsByTyeId' : '/member/report/countCardsByTyeId',
 
 
     /***********************************会员积分***********************************/

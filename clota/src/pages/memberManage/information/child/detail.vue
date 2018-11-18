@@ -229,6 +229,7 @@
                     </div>
                     <!--业主卡副卡/主卡信息 -->
                     <owner-card-vice-card
+                        :card-info="choosedCard"
                         @fresh-data="choseCard(choosedCard)">
                     </owner-card-vice-card>
                 </template>

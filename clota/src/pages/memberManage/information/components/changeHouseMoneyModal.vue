@@ -8,7 +8,7 @@
         :width="600"
         @input="changeValue"
         @on-visible-change="visibleChange"
-        class="confirm-member-info"
+        class="change-house-money-modal"
         class-name="vertical-center-modal">
         <Form ref="formValidate"
               :model="formData"
@@ -17,6 +17,7 @@
             <!--购房总金额-->
             <Form-item :label="$t('homeBuyMoney')" prop="houseMoney">
                 <Input v-model.trim="formData.houseMoney"
+                       style="width : 300px"
                        :placeholder="$t('inputField', {field: $t('homeBuyMoney')})"/>
             </Form-item>
         </Form>
@@ -123,17 +124,50 @@
              * 保存修改的购房金额
              */
             save () {
-
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        this.saveHouseMoney();
+                    }
+                });
             },
             /**
              * 取消修改购房金额
              */
             cancel () {
 
+            },
+            /**
+             * 模态框状态改变
+             * @param{String} type 模态框显隐状态
+             */
+            visibleChange (type) {
+
+            },
+            /**
+             * 保存修改的购房金额
+             */
+            saveHouseMoney () {
+                ajax.post('').then(res => {
+                    if (res.success) {
+                        this.$Message.success('修改购房金额成功');
+                        this.$emit('fresh-data');
+                    } else {
+                        this.$Message.error('修改购房金额失败');
+                    }
+                });
             }
         }
 	};
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .change-house-money-modal{
+
+        /deep/ .ivu-modal-body{
+            .el-table th,
+            .el-table td{
+                padding: 8px 0;
+            }
+        }
+    }
 </style>

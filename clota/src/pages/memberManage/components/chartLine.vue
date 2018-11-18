@@ -59,7 +59,7 @@
 
     import vueEcharts from '../../../components/vueEcharts/eCharts.vue';
     import ajax from '@/api/index.js';
-    import {getConfig} from './chartLineConfig';
+    import { getConfig } from './chartLineConfig';
 
     export default {
         props : {
@@ -67,7 +67,7 @@
             data : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //当前类型
@@ -76,60 +76,60 @@
                 default : ''
             }
         },
-        components: {
+        components : {
             vueEcharts,
         },
         data () {
             return {
                 //图表数据
-                seriesData: [],
+                seriesData : [],
                 //横坐标轴数据
-                xAxis: [],
+                xAxis : [],
                 //当前日期类型
                 timeType : 'week',
                 //自定义时间
                 autoDefTIme : [],
                 //会员注册开始时间
                 memberStartDate : ''
-            }
+            };
         },
-        computed: {
+        computed : {
             //图表配置
-            chartConfig(){
+            chartConfig () {
                 return getConfig(this.xAxis,this.seriesData);
             },
             //获取日期信息
-            getDateInfo() {
-                if(this.timeType === 'week'){//近7天数据
+            getDateInfo () {
+                if (this.timeType === 'week') {//近7天数据
                     return {
                         startDate : new Date().addDays(-7).format('yyyy-MM-dd'),
                         endDate : new Date().format('yyyy-MM-dd'),
-                    }
-                }else if(this.timeType === 'month'){//近30天数据
+                    };
+                } else if (this.timeType === 'month') {//近30天数据
                     return {
                         startDate : new Date().addDays(-30).format('yyyy-MM-dd'),
                         endDate : new Date().format('yyyy-MM-dd'),
-                    }
-                }else if(this.timeType === 'year'){//本年数据
+                    };
+                } else if (this.timeType === 'year') {//本年数据
                     let year = String(new Date().getFullYear());
                     return {
                         startDate : new Date(year).format('yyyy-MM-dd'),
                         endDate : new Date().format('yyyy-MM-dd'),
-                    }
-                }else if(this.timeType === 'autoDefTIme'){//自定义时间范围
+                    };
+                } else if (this.timeType === 'autoDefTIme') {//自定义时间范围
                     return {
                         startDate : this.autoDefTIme[0] ? this.autoDefTIme[0].format('yyyy-MM-dd') : '',
                         endDate : this.autoDefTIme[1] ? this.autoDefTIme[1].format('yyyy-MM-dd') : '',
-                    }
+                    };
                 }
             },
             //设置日期不可选时间
             dateOptions () {
                 return {
-                    disabledDate : date =>  {
+                    disabledDate : date => {
                         return !(date && (date.valueOf() >= this.memberStartDate) && (date.valueOf() <= new Date().valueOf()));
                     }
-                }
+                };
             }
         },
         methods : {
@@ -146,18 +146,18 @@
                 }).then(res => {
                     this.xAxis = [];
                     this.seriesData = [];
-                    if(res.success){
-                        if(res.data && Object.keys(res.data).length > 0){
-                            if(this.type === 'money'){
-                                for(let item in res.data){
+                    if (res.success) {
+                        if (res.data && Object.keys(res.data).length > 0) {
+                            if (this.type === 'money') {
+                                for (let item in res.data) {
                                     this.xAxis.push(item ? item.slice(5) : '');
                                     this.seriesData.push({
                                         name : item ? item.slice(5) : '',
                                         value : Number(res.data[item] / 10000).toFixed(2)
                                     });
                                 }
-                            }else{
-                                for(let item in res.data){
+                            } else {
+                                for (let item in res.data) {
                                     this.xAxis.push(item ? item.slice(5) : '');
                                     this.seriesData.push({
                                         name : item ? item.slice(5) : '',
@@ -180,7 +180,7 @@
              * 获取对应时间的消费数据
              * @param timeType 时间类型
              */
-            changeTimeType(timeType) {
+            changeTimeType (timeType) {
                 this.autoDefTIme = [];
                 this.timeType = timeType;
                 this.getMemberConsumeSumGroupBy();
@@ -197,9 +197,9 @@
              */
             getFirstMemberDate () {
                 ajax.post('getFirstMemberDate').then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.memberStartDate = res.data ? res.data.replace(/-/g,'/').toDate().valueOf() : new Date().valueOf();
-                    }else{
+                    } else {
                         this.memberStartDate = new Date().valueOf();
                     }
                 }).catch(err => {
@@ -211,7 +211,7 @@
             this.getMemberConsumeSumGroupBy();
             this.getFirstMemberDate();
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

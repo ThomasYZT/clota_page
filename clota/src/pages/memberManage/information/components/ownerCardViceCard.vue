@@ -1,8 +1,9 @@
 <!--业主卡副卡/主卡-->
 
 <template>
-    <div class="owner-card-vice-card">
-        <div class="title">主卡/副卡信息 <span class="add-vice-card" @click="addViceCard">+新增副卡</span></div>
+    <div class="owner-card-vice-card" v-if="cardInfo.cardTypeId === '1'">
+        <div class="title" v-if="cardInfo.motherCard">主卡信息<span class="add-vice-card" @click="addViceCard">+新增副卡</span></div>
+        <div class="title" v-else>副卡信息</div>
         <Form ref="formValidate" >
             <table-com
                 auto-height
@@ -198,6 +199,7 @@
         </confirm-modal>
         <!--设置支付密码模态框-->
         <set-password-modal v-model="setPasswordModalShow"
+                            @fresh-data="$emit('fresh-data',$event)"
                             @set-pay-password="getPayPassword">
         </set-password-modal>
     </div>
@@ -214,6 +216,15 @@
     import setPasswordModal from '../../newCard/components/setPasswordModal';
 
     export default {
+        props : {
+            //会员卡信息
+            'card-info' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         components : {
             tableCom,
             confirmModal,
@@ -225,7 +236,6 @@
                 tableData : [
                     {}
                 ],
-                columnData : columnData,
                 //当前操作的数据
                 currentData : {},
                 // 性别枚举
@@ -454,7 +464,14 @@
             },
             ...mapGetters({
                 cardReadEnabled : 'cardReadEnabled'
-            })
+            }),
+            columnData () {
+                if (this.cardInfo && this.cardInfo.motherCard) {
+                    return columnData;
+                } else {
+                    return columnData.slice(0,-1);
+                }
+            }
         },
         created () {
             this.queryDocument();

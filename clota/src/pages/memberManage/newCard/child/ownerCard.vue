@@ -309,7 +309,6 @@
     import ownerEntityCard from './ownerEntityCard.vue';
     import setPasswordModal from '../components/setPasswordModal';
     import confirmMemberInfo from '../components/confirmDetailModal';
-    import MD5 from 'crypto-js/md5';
 
     export default {
         components : {
@@ -647,7 +646,6 @@
                 let cardInfo = this.$refs.ownerEntityCard.getEntityCardInfo();
                 memberInfo = {
                     ...this.cardParam,
-                    tradePassword : MD5(this.cardParam.tradePassword).toString(),
                     tpNo : cardInfo[0]['tpNo'],
                     tpCardNo : cardInfo[0]['tpCardNo'],
                     birthDay : this.cardParam['birthDay'] ? this.cardParam['birthDay'].format('yyyy-MM-dd') : '',
@@ -661,7 +659,6 @@
                         tpCardNo : cardInfo[i + 1]['tpCardNo'],
                         birthDay : item['birthDay'] ? item['birthDay'].format('yyyy-MM-dd') : '',
                         ...this.selectedCard.memberCard,
-                        tradePassword : MD5(item.tradePassword).toString(),
                     };
                 });
                 return {
