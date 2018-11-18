@@ -1701,4 +1701,7 @@ export default {
     'open_card_add' : '开卡',
     'ModifyIntegerThisTime': '本次修改积分',
     'IntegerAfterModification': '修改后积分账户为',
+    'editSelfChannel': '修改渠道信息',
+    'emailtip': '重要！用于接收登录密码',
+    'addNodeTips': '{nodeName}{nodeType}已启用，登录密码已发送至{email}',
 }
