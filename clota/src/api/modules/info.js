@@ -79,6 +79,8 @@ export default {
     'updateTradePassword' : '/member/updateTradePassword',
     //查看会员类别分布情况
     'countCardsByTyeId' : '/member/report/countCardsByTyeId',
+    //个人资金支出、储值明细
+    'showRechargeAndAdjust' : '/member/memberAccount/showRechargeAndAdjust',
 
 
     /***********************************会员积分***********************************/

@@ -31,11 +31,24 @@
                 <div class="btn-wrap">
                     <Button type="primary" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
                     <Button type="ghost" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
+                    <a href="downloadUrl">
+                        <Button type="ghost">{{$t('exporting')}}</Button><!--导出-->
+                    </a>
                 </div>
             </div>
+            <ul class="total-amount">
+                <li class="amount-record">
+                    <span class="key-label">{{$t('colonSetting', { key : $t('已支出') })}}</span>
+                    <span class="value-label">{{100 | moneyFilter | contentFilter}}</span>
+                </li>
+                <li class="amount-record">
+                    <span class="key-label">{{$t('colonSetting', { key : $t('储值总额') })}}</span>
+                    <span class="value-label">{{100 | moneyFilter | contentFilter}}</span>
+                </li>
+            </ul>
             <table-com
                 v-if="queryParams.accountTypeIds"
-                :ofsetHeight="170"
+                :ofsetHeight="180"
                 :show-pagination="true"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -121,6 +134,8 @@
     import { fundDetailHead } from './fundDetailConfig';
     import ajax from '@/api/index.js';
     import { moneyTradeTypes } from '@/assets/js/constVariable.js';
+    import ajaxConfig from '@/config/index.js';
+    import apiList from '@/api/apiList.js';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -191,6 +206,8 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
+                }).finally(() => {
+                    this.getFundAmountInfo();
                 });
             },
 
@@ -241,7 +258,29 @@
                 });
                 this.queryList();
             },
+            /**
+             * 获取支出和储值统计信息
+             */
+            getFundAmountInfo () {
+                ajax.post('showRechargeAndAdjust',{
+                    startTime : this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '',
+                    endTime : this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '',
+                    bizType : this.queryParams.operType === 'all' ? '' : this.queryParams.operType,
+                    cardId : this.queryParams.cardId
+                }).then(res => {
+                    if (res.success) {
 
+                    } else {
+
+                    }
+                });
+            }
+        },
+        computed : {
+            //下载交易明细文件
+            downloadUrl () {
+                return ajaxConfig['HOST'] + apiList['downloadEntityCardTmp'] + '?realName=' + this.realName + '&tmpExcel=' + this.tmpExcel;
+            },
         }
     };
 </script>
@@ -259,8 +298,29 @@
 
         .fund-detail-content{
 
+            .total-amount{
+                height: 20px;
+                line-height: 20px;
+                text-align: right;
+                overflow: auto;
+                padding-right: 30px;
+
+                .amount-record{
+                    display: inline-block;
+                    margin-left: 20px;
+
+                    .key-label{
+                        color: $color_yellow;
+                    }
+
+                    .value-label{
+                        color: $color_999;
+                    }
+                }
+            }
+
             .filter-wrap{
-                height: 60px;
+                height: 50px;
                 line-height: 60px;
                 padding: 0 30px;
                 /deep/ .ivu-select{
