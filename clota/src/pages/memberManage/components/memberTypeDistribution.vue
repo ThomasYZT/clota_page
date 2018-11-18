@@ -2,7 +2,7 @@
 <template>
     <div class="member-data-pie">
         <div class="data-header">
-            <div class="title">{{$t("memberDistribute")}}</div>
+            <div class="title">{{$t("企业会员卡数量")}}</div>
         </div>
         <div class="filter-head">
             <!--时间范围选择-->

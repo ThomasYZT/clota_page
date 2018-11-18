@@ -259,7 +259,7 @@
 
             .filter{
                 height: 48px;
-                padding: 17px 45px 0;
+                padding: 17px 20px 0;
                 text-align: right;
 
                 >span{
