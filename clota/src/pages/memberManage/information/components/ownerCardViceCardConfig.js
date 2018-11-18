@@ -16,8 +16,8 @@ export const columnData = [
         field : 'gender'
     },
     {
-        title : 'credentialsType', // 证件编号
-        minWidth : 180,
+        title : 'credentialsType', // 证件类型
+        minWidth : 150,
         field : 'certificationType'
     },
     {
@@ -39,14 +39,18 @@ export const columnData = [
     },
     {
         title : '会员编号',//会员编号
-        minWidth : 120,
-        enWidth : 130,
-        field : 'birthday'
+        minWidth : 180,
+        field : 'cardCode'
     },
     {
         title : '实体卡卡面号',//实体卡卡面号
-        minWidth : 160,
-        field : 'birthday'
+        minWidth : 180,
+        field : 'tpCardNo'
+    },
+    {
+        title : 'physicalCardNo',//物理卡号
+        minWidth : 180,
+        field : 'tpNo'
     },
     {
         title : 'operate',

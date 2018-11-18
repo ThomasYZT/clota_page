@@ -1,9 +1,9 @@
 <!--业主卡副卡/主卡-->
 
 <template>
-    <div class="owner-card-vice-card" v-if="cardInfo.cardTypeId === '1'">
-        <div class="title" v-if="cardInfo.motherCard">主卡信息<span class="add-vice-card" @click="addViceCard">+新增副卡</span></div>
-        <div class="title" v-else>副卡信息</div>
+    <div class="owner-card-vice-card" >
+        <div class="title" v-if="cardInfo.isMotherCard === 'true'">副卡信息<span class="add-vice-card" @click="addViceCard">+新增副卡</span></div>
+        <div class="title" v-else>主卡信息</div>
         <Form ref="formValidate" >
             <table-com
                 auto-height
@@ -15,6 +15,7 @@
                     slot="column0"
                     slot-scope="row"
                     :label="row.title"
+                    show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
@@ -33,6 +34,7 @@
                 <el-table-column
                     slot="column1"
                     slot-scope="row"
+                    show-overflow-tooltip
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
@@ -51,6 +53,7 @@
                 </el-table-column>
                 <el-table-column
                     slot="column2"
+                    show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
@@ -79,6 +82,7 @@
                     slot="column3"
                     slot-scope="row"
                     :label="row.title"
+                    show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
@@ -104,6 +108,7 @@
                 <el-table-column
                     slot="column4"
                     slot-scope="row"
+                    show-overflow-tooltip
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
@@ -125,6 +130,7 @@
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
+                    show-overflow-tooltip
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <template v-if="scope.row.edit">
@@ -151,6 +157,7 @@
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
+                    show-overflow-tooltip
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <template v-if="scope.row.edit">
@@ -167,19 +174,21 @@
                             </FormItem>
                         </template>
                         <template v-else>
-                            {{scope.row.tradePassword ? '●●●●●●' : ''}}
+                            {{scope.row.tradePassword ? '●●●●●●' : '' | contentFilter}}
                         </template>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column9"
+                    slot="column10"
                     slot-scope="row"
+                    show-overflow-tooltip
                     :label="row.title"
                     :width="tableOperateColumnWidth"
                     fixed="right">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li v-if="!scope.row.edit" class="red-label" @click="stopAccount(scope.row)">{{$t('停用')}}</li>
+                            <li v-if="!scope.row.edit && scope.row.cardStatus === 'active'" class="red-label" @click="stopAccount(scope.row)">{{$t('停用')}}</li>
+                            <li v-else-if="!scope.row.edit && scope.row.cardStatus === 'frozen'" @click="startAccount(scope.row)">{{$t('启用')}}</li>
                             <template v-else-if="scope.row.edit">
                                 <li @click="saveAccount(scope.row)">{{$t('save')}}</li>
                                 <li @click="cancelAdd(scope.$index)">{{$t('cancel')}}</li>
@@ -263,7 +272,7 @@
                 this.$refs.confirmModal.show({
                     title : this.$t('notice'),
                     confirmCallback : () => {
-                        this.confirmStopAccount();
+                        this.changeCardStatus(rowData,'frozen');
                     }
                 });
             },
@@ -272,24 +281,55 @@
              * @param{Object} rowData 保存的业主卡信息
              */
             saveAccount (rowData) {
-                ajax.post('').then(res => {
+                rowData.edit = false;
+                ajax.post('saveViceCard',{
+                    levelId : this.cardInfo.levelId,
+                    viceCard : JSON.stringify([{
+                        custName : rowData.custName,
+                        phoneNum : rowData.phoneNum,
+                        gender : rowData.gender,
+                        birthDay : rowData.birthDay ? new Date(rowData.birthDay).format('yyyy-MM-dd') : '',
+                        certificationType : rowData.certificationType,
+                        idCardNumber : rowData.idCardNumber,
+                        tradePassword : rowData.tradePassword,
+                        tpNo : rowData.tpNo,
+                        tpCardNo : rowData.tpCardNo,
+                        parentId : this.cardInfo.id,
+                        levelId : this.cardInfo.levelId,
+                        cardTypeId : this.cardInfo.cardTypeId,
+                    }])
+                }).then(res => {
                     if (res.success) {
-
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                        this.findMainOrViceCard();
                     } else {
-
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
                 });
             },
             /**
              * 确认停用业主卡
+             * @param{Object} rowData 副卡信息
+             * @param{String} status 卡状态
              */
-            confirmStopAccount () {
-                ajax.post('').then(res => {
+            changeCardStatus (rowData,status) {
+                ajax.post('manualUpdateCardStatus', {
+                    id : rowData.cardId,
+                    status : status,
+                }).then(res => {
                     if (res.success) {
-                        this.$Message.success('停用成功');
-                        this.$emit('fresh-data');
+                        if (status === 'active') {
+                            this.$Message.success('启用成功');
+                        } else {
+                            this.$Message.success('停用成功');
+                        }
+                        this.findMainOrViceCard();
                     } else {
-                        this.$Message.error('停用失败');
+                        if (status === 'active') {
+                            this.$Message.error('启用失败');
+                        } else {
+                            this.$Message.error('停用失败');
+                        }
                     }
                 });
             },
@@ -397,16 +437,16 @@
                         }
                     }
                     this.findByPhysicalNum(res).then(item => {
-                        this.tableData[index]['tpNo'] = item.physicalNum;
-                        this.tableData[index]['tpCardNo'] = item.faceNum;
+                        this.$set(this.tableData[index],'tpNo',item.physicalNum);
+                        this.$set(this.tableData[index],'tpCardNo',item.faceNum);
                     }).catch((err) => {
                         if (err && err === 'M026') {
                             this.$Message.warning(this.$t('entityCardUsedErr'));
                         } else {
                             this.$Message.warning(this.$t('noMatchCard'));
                         }
-                        this.tableData[index]['tpNo'] = '';
-                        this.tableData[index]['tpCardNo'] = '';
+                        this.$set(this.tableData[index],'tpNo','');
+                        this.$set(this.tableData[index],'tpCardNo','');
                     });
                 });
             },
@@ -445,7 +485,7 @@
              * @param{String} password 支付密码
              */
             getPayPassword (password) {
-                this.tableData[this.setPasswordIndex]['tradePassword'] = password;
+                this.$set(this.tableData[this.setPasswordIndex],'tradePassword',password);
             },
             /**
              * 取消保存
@@ -453,6 +493,28 @@
              */
             cancelAdd (index) {
                 this.tableData.splice(index,1);
+            },
+            /**
+             * 获取主卡或副卡信息
+             */
+            findMainOrViceCard () {
+                ajax.post('findMainOrViceCard',{
+                    isMainCard : this.cardInfo.isMotherCard,
+                    cardId : this.cardInfo.id
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data : [];
+                    } else {
+                        this.tableData = [];
+                    }
+                });
+            },
+            /**
+             * 启用会员
+             * @param{Object} rowData
+             */
+            startAccount (rowData) {
+                this.changeCardStatus(rowData,'active');
             }
         },
         computed : {
@@ -466,7 +528,7 @@
                 cardReadEnabled : 'cardReadEnabled'
             }),
             columnData () {
-                if (this.cardInfo && this.cardInfo.motherCard) {
+                if (this.cardInfo && this.cardInfo.isMotherCard === 'true') {
                     return columnData;
                 } else {
                     return columnData.slice(0,-1);
@@ -475,6 +537,7 @@
         },
         created () {
             this.queryDocument();
+            this.findMainOrViceCard();
         }
     };
 </script>

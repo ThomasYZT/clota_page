@@ -63,7 +63,7 @@
                                 :key="index"
                                 :type="choosedCard === item ? 'primary' : 'ghost'"
                                 @click="choseCard(item)">
-                            {{item.levelDesc}}{{(item.motherCard === false && item.cardTypeId === '1') ? $t('bracketSetting',{ content : $t('副卡') }) : ''}}
+                            {{item.levelDesc}}{{(item.isMotherCard === 'false' && item.cardTypeId === '1') ? $t('bracketSetting',{ content : $t('副卡') }) : ''}}
                         </Button>
                     </ButtonGroup>
                     <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
@@ -232,6 +232,7 @@
                     </div>
                     <!--业主卡副卡/主卡信息 -->
                     <owner-card-vice-card
+                        v-if="choosedCard.cardTypeId === '1'"
                         :card-info="choosedCard"
                         @fresh-data="choseCard(choosedCard)">
                     </owner-card-vice-card>

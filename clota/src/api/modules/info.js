@@ -83,6 +83,8 @@ export default {
     'showRechargeAndAdjust' : '/member/memberAccount/showRechargeAndAdjust',
     //查询主卡或副卡信息
     'findMainOrViceCard' : '/member/findMainOrViceCard',
+    //新增副卡
+    'saveViceCard' : '/member/saveViceCard',
 
 
     /***********************************会员积分***********************************/
