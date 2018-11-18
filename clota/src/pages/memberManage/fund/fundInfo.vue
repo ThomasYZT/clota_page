@@ -132,14 +132,15 @@
         .account-info{
             position: relative;
             float: left;
-            @include block_outline(30%,178px);
+            @include block_outline(auto,178px);
+            min-width: 30%;
             background: $color_fff;
             border: 1px solid $color_E9E9E9;
             border-radius: 2px;
             margin-bottom: 30px;
 
             &:nth-of-type(3n){
-                margin: 0 5%;
+                margin: 0 5px 30px 5%;
             }
 
             .account-detail{
@@ -160,7 +161,7 @@
                 .fund-list{
                     width: 100%;
                     float: left;
-                    padding: 21px 0 26px 0 ;
+                    padding: 21px 10px 26px 10px;
 
                     .money-area{
                         @include block_outline($height : 50px);
@@ -182,7 +183,7 @@
                         display: inline-block;
                         @include block_outline(auto, 50px);
                         line-height: 32px;
-                        padding: 9px 0;
+                        padding: 9px 10px;
                         font-size: $font_size_28px;
                         color: rgba($color_000,0.65);
                         text-align: center;

@@ -10,13 +10,20 @@
 
         <div class="modal-body">
             <div class="form-item-wrap">
-                <label>{{$t('ModifyAmountThisTime')}}：</label><!--本次修改金额-->
+                <label v-if="type === 'fund'">{{$t('ModifyAmountThisTime')}}：</label><!--本次修改金额-->
+                <label v-else-if="type === 'integration'">{{$t('ModifyIntegerThisTime')}}：</label><!--本次修改积分-->
                 <span class="green" v-if="manualData.amount > -1">+{{manualData.amount}}</span>
                 <span class="red" v-if="manualData.amount < 0">{{manualData.amount}}</span>
             </div>
             <div class="form-item-wrap">
-                <label>{{$t('accBalanceAfterModification')}}：</label><!--修改后账户余额为-->
-                <span>{{manualData.endingBalance | contentFilter}}</span>{{$t('yuan')}}
+                <template v-if="type === 'fund'">
+                    <label>{{$t('accBalanceAfterModification')}}：</label><!--修改后账户余额为-->
+                    <span>{{manualData.endingBalance | contentFilter}}</span>{{$t('yuan')}}
+                </template>
+                <template v-else-if="type === 'integration'">
+                    <label>{{$t('IntegerAfterModification')}}：</label><!--修改后积分余额-->
+                    <span>{{manualData.endingBalance | contentFilter}}</span>
+                </template>
             </div>
             <!--操作人-->
             <div class="form-item-wrap"><label>{{$t('operator')}}：</label><span>{{manualData.operName | contentFilter}}</span></div>
@@ -36,18 +43,18 @@
 
 <script>
     export default {
-        components: {},
-        props: {
-            manualData: Object
+        components : {},
+        props : {
+            manualData : Object,
         },
         data () {
             return {
                 // 储值/积分 fund/integration
-                type: 'fund',
-                visible: false,
-            }
+                type : 'fund',
+                visible : false,
+            };
         },
-        methods: {
+        methods : {
 
             show ( type ) {
                 this.type = type || 'fund';
@@ -56,12 +63,12 @@
 
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -81,6 +81,8 @@ export default {
     'countCardsByTyeId' : '/member/report/countCardsByTyeId',
     //个人资金支出、储值明细
     'showRechargeAndAdjust' : '/member/memberAccount/showRechargeAndAdjust',
+    //查询主卡或副卡信息
+    'findMainOrViceCard' : '/member/findMainOrViceCard',
 
 
     /***********************************会员积分***********************************/

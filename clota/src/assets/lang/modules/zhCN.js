@@ -1699,4 +1699,6 @@ export default {
     'birthdayRights' : '生日当前限购{num}张{discount}折门票',
     'ticketRights' : '每月{num}张{scene}{money}元门票',
     'open_card_add' : '开卡',
+    'ModifyIntegerThisTime': '本次修改积分',
+    'IntegerAfterModification': '修改后积分账户为',
 }

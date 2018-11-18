@@ -137,7 +137,10 @@
                     this.stage = 'scan';
                 } else {
                     this.$nextTick(() => {
-                        this.$el.querySelector('#payCodeInput .ivu-input').focus();
+                        let ele = this.$el.querySelector('#payCodeInput .ivu-input');
+                        if (ele) {
+                            ele.focus();
+                        }
                     });
                 }
             },

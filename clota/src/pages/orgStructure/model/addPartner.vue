@@ -14,6 +14,7 @@
         <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="120">
             <Form-item :label="$t('partnerName')" prop="partnerId">
                 <Select v-model="addPartner.partnerId"
+                        filterable
                         :disabled="type=='modify'"
                         @on-change="handlePartnerChanged">
                     <Option v-for="item in partners" :value="item.id" :key="item.id">{{ item.orgName }}</Option>

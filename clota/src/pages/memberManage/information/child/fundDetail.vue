@@ -39,16 +39,16 @@
             <ul class="total-amount">
                 <li class="amount-record">
                     <span class="key-label">{{$t('colonSetting', { key : $t('已支出') })}}</span>
-                    <span class="value-label">{{100 | moneyFilter | contentFilter}}</span>
+                    <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
                 </li>
                 <li class="amount-record">
                     <span class="key-label">{{$t('colonSetting', { key : $t('储值总额') })}}</span>
-                    <span class="value-label">{{100 | moneyFilter | contentFilter}}</span>
+                    <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
                 </li>
             </ul>
             <table-com
                 v-if="queryParams.accountTypeIds"
-                :ofsetHeight="180"
+                :ofsetHeight="190"
                 :show-pagination="true"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -183,6 +183,12 @@
                 fundDetail : {},
                 //当前手动修改的交易数据
                 currManualData : {},
+                //已支出
+                disbursement : '',
+                //已储值
+                storeAmount : '',
+                //账户类型id
+                accountTypeId : ''
             };
         },
         methods : {
@@ -230,6 +236,7 @@
                     }
                     this.queryParams.cardId = this.fundDetail.cardId;
                     this.queryParams.accountTypeIds = this.fundDetail.accountDefineId;
+                    this.accountTypeId = this.fundDetail['accountDefineId'];
                     this.queryList();
                 }
             },
@@ -266,12 +273,15 @@
                     startTime : this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '',
                     endTime : this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '',
                     bizType : this.queryParams.operType === 'all' ? '' : this.queryParams.operType,
-                    cardId : this.queryParams.cardId
+                    cardId : this.queryParams.cardId,
+                    accountTypeId : this.accountTypeId
                 }).then(res => {
                     if (res.success) {
-
+                        this.storeAmount = res.data ? res.data.add : '';
+                        this.disbursement = res.data ? res.data.reduce * -1 : '';
                     } else {
-
+                        this.storeAmount = '';
+                        this.disbursement = '';
                     }
                 });
             }
@@ -299,11 +309,11 @@
         .fund-detail-content{
 
             .total-amount{
-                height: 20px;
+                height: 25px;
                 line-height: 20px;
                 text-align: right;
                 overflow: auto;
-                padding-right: 30px;
+                padding: 0 30px 5px 0;
 
                 .amount-record{
                     display: inline-block;

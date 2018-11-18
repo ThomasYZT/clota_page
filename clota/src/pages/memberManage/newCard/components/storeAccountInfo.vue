@@ -23,7 +23,7 @@
             </li>
         </ul>
         <div class="operate-taps">
-            <slot :account-info="chargeInfo"></slot>
+            <slot ></slot>
         </div>
     </div>
 </template>

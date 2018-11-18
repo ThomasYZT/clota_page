@@ -2,12 +2,20 @@
 
 <template>
     <div class="member-card-info">
-        <div class="form-item-wrap" v-if="memberDetail.cardTypeId === '3'">
-            <label>{{$t("企业名称")}}：</label>
-            <span v-w-title="memberDetail.companyName">
+        <template v-if="memberDetail.cardTypeId === '3'">
+            <div class="form-item-wrap">
+                <label>{{$t("企业名称")}}：</label>
+                <span v-w-title="memberDetail.companyName">
                     {{memberDetail.companyName | contentFilter}}
             </span>
-        </div>
+            </div>
+            <div class="form-item-wrap">
+                <label>{{$t("企业地址")}}：</label>
+                <span v-w-title="memberDetail.homeAddr">
+                    {{memberDetail.homeAddr | contentFilter}}
+            </span>
+            </div>
+        </template>
         <div class="form-item-wrap">
             <label>{{$t("memberNum")}}：</label>
             <span v-w-title="memberDetail.cardCode">
@@ -54,8 +62,8 @@
         <!--{{memberDetail.orgName || '-'}}</span></div>-->
         <div class="form-item-wrap">
             <label>{{$t("memberType")}}：</label>
-            <span v-w-title="$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberType))">
-                    {{$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberType))}}
+            <span>
+                    {{$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberStatus))}}
             </span>
         </div>
         <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '1'">
@@ -92,6 +100,10 @@
         <div class="form-item-wrap">
             <label>{{$t("remark")}}：</label>
             <span v-w-title="memberDetail.remark">{{memberDetail.remark  | contentFilter}}</span>
+        </div>
+        <div class="form-item-wrap" v-if="memberDetail.cardTypeId === '2'"  >
+            <label>{{$t("address")}}：</label>
+            <span v-w-title="memberDetail.homeAddr">{{memberDetail.homeAddr  | contentFilter}}</span>
         </div>
         <!--会员3期暂时去掉-->
         <!--<div class="form-item-wrap"><label>{{$t("growth")}}：</label><span v-w-title="growthAccount.accountBalance">-->

@@ -1,5 +1,5 @@
 1<!--
-内容：个人会员卡
+内容：个人会员卡/企业会员卡
 作者：djc
 日期：
 -->
@@ -124,9 +124,9 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row v-if="cardType === 'personalCard'">
+            <i-row>
                 <i-col span="24">
-                    <Form-item :label="$t('address')" prop="homeAddr" style="width: 100%;"><!--地址-->
+                    <Form-item :label="cardType === 'personalCard' ? $t('address') : $t('公司地址')" prop="homeAddr" style="width: 100%;"><!--地址-->
                         <Input v-model.trim="cardParam.homeAddr"
                                :placeholder="$t('inputField', {field: $t('familyAddress')})"/><!--请输入家庭地址-->
                     </Form-item>
@@ -216,15 +216,15 @@
                         {{cardParam.birthDay | timeFormat('yyyy-MM-dd') | contentFilter}}
                     </FormItem>
                 </i-col>
-                <i-col :span="cardType === 'personalCard' ? 12 : 24">
+                <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('remark') })">
                         <div class="word-wrap" v-w-title="cardParam.remark">
                             {{cardParam.remark | contentFilter}}
                         </div>
                     </FormItem>
                 </i-col>
-                <i-col span="12" v-if="cardType === 'personalCard'">
-                    <FormItem :label="$t('colonSetting',{ key : $t('address') })">
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : cardType === 'personalCard' ? $t('address') : $t('公司地址') })">
                         <div class="word-wrap" v-w-title="cardParam.homeAddr">
                             {{cardParam.homeAddr | contentFilter}}
                         </div>

@@ -10,9 +10,12 @@
         <ul class="table-wrap">
             <li class="wrap-li">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('pointBalance') })}}</span>
-                <span class="label-value">{{ accountInfo.corpusBalance | contentFilter }}</span>
+                <span class="label-value">{{ accountInfo.accountBalance | contentFilter }}</span>
             </li>
         </ul>
+        <div class="operate-taps">
+            <slot></slot>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -43,6 +46,7 @@
         border: 1px solid #E9E9E9;
         border-radius: 3px 3px 0 0;
         margin-bottom: 20px;
+        overflow: auto;
 
         &:nth-last-of-type(1) {
             margin-bottom: 0;
@@ -59,13 +63,22 @@
         }
 
         .table-wrap{
-            @include block_outline($height : 60px);
+            @include block_outline($width : auto,$height : 60px);
             padding: 20px 0 20px 30px;
+            display: inline-block;
+            float: left;
 
             .wrap-li{
                 float: left;
                 margin-right: 50px;
             }
+        }
+
+        .operate-taps{
+            @include block_outline(auto, 60px);
+            float: right;
+            margin-right: 34px;
+            padding: 20px 0;
         }
     }
 </style>

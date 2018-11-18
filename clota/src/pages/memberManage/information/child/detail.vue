@@ -48,7 +48,7 @@
                         <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="memberBaseDetail.certificationTypeName">{{memberBaseDetail.certificationTypeName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-w-title="memberBaseDetail.idCardNumber">{{memberBaseDetail.idCardNumber || '-'}}</span></div>
                         <!--<div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-w-title="memberBaseDetail.hobby">{{memberBaseDetail.hobby || '-'}}</span></div>-->
-                        <div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="memberBaseDetail.homeAddr">{{memberBaseDetail.homeAddr || '-'}}</span></div>
+                        <!--<div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="memberBaseDetail.homeAddr">{{memberBaseDetail.homeAddr || '-'}}</span></div>-->
                     </div>
                 </div>
                 <div class="content-info">
@@ -103,6 +103,9 @@
                     <template v-if="choosedCard.cardTypeId !== '1'">
                         <div class="info-title">{{$t('积分账户信息')}}</div>
                         <integral-account-info :account-info="scoreData">
+                            <div class="operate-right">
+                                <span @click="viewIntegration(scoreData)">{{$t("integralDetail")}}</span>
+                            </div>
                         </integral-account-info>
                     </template>
 
@@ -128,9 +131,9 @@
                     </div>
                     <!--享受积分、折扣率信息-->
                     <div class="content-info">
-                        <div class="title">{{$t("enjoyIntegraAndDiscount")}}</div>
+                        <div class="title">{{$t("会员权益")}}</div>
                         <div class="operate">
-                            <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("enjoyIntegraAndDiscount") }`}}</span>
+                            <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("会员权益") }`}}</span>
                         </div>
                     </div>
 
