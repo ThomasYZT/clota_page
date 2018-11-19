@@ -122,7 +122,7 @@
         <!--修改购房金额密码确认框-->
         <edit-modal ref="editModal">
             <Form ref="formData" :model="formData" :rules="ruleValidate">
-                <!--修改分组名称-->
+                <!--请输入登录密码-->
                 <FormItem prop="password" :label="$t('请输入登录密码')">
                     <Input v-model.trim="formData.password" type="password" style="width: 280px"/>
                 </FormItem>
@@ -211,10 +211,13 @@
                     confirmCallback : () => {
                         this.$refs.formData.validate(valid => {
                             if (valid) {
-                                this.$refs.formData.resetFields();
                                 this.checkPassword();
+                                this.$refs.formData.resetFields();
                             }
                         });
+                    },
+                    cancelCallback : () => {
+                        this.$refs.formData.resetFields();
                     }
                 });
             },
@@ -223,7 +226,7 @@
              */
             checkPassword () {
                 ajax.post('secondLogin',{
-                    password : MD5(this.formData.password).toString()
+                    password : MD5(this.formData.password).toString(),
                 }).then(res => {
                     if (res.success) {
                         if (res.data) {

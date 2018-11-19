@@ -91,6 +91,8 @@ export default {
     'updateHomeMoney' : '/member/updateHomeMoney',
     //查看修改购房金额记录
     'queryHouseMoneyEditRecord' : '/member/queryHouseMoneyEditRecord',
+    //查看新增详情
+    'getIncreaseMemberCountDetail' : '/member/getIncreaseMemberCountDetail',
 
 
     /***********************************会员积分***********************************/

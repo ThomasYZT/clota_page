@@ -143,7 +143,7 @@
              * 取消修改购房金额
              */
             cancel () {
-
+                this.$emit('input',false);
             },
             /**
              * 模态框状态改变

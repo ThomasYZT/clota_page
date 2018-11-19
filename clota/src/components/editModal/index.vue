@@ -83,6 +83,9 @@
                         this.$refs.formRef.resetFields();
                         this.formData.passWord = '';
                     }
+                    if (this.cancelCallback) {
+                        this.cancelCallback();
+                    }
                 }
             },
             /**

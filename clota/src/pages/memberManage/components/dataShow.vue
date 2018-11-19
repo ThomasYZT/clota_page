@@ -135,7 +135,25 @@
                 this.addDetailStyle.left = eleParentWidth * index / 3 + 'px';
                 this.addDetailStyle.width = eleParentWidth / 3 + 'px';
                 this.addDetailShow = true;
+            },
+            /**
+             * 获取增长数量详情
+             */
+            getMemberIncreaseDetail () {
+                ajax.post('getIncreaseMemberCountDetail',{
+                    startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                    endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                }).then(res => {
+                    if (res.success) {
+                        this.todayMemberIncreaseCount = res.data;
+                    } else {
+                        this.todayMemberIncreaseCount = '';
+                    }
+                }).catch(err => {
+                    this.todayMemberIncreaseCount = '';
+                });
             }
+
         },
         created () {
             //获取今日增长数量

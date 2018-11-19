@@ -846,7 +846,6 @@
                         confirmCallback : () => {
                             this.$refs.formData.validate(valid => {
                                 if (valid) {
-                                    this.$refs.formData.resetFields();
                                     ajax.post('secondLogin',{
                                         password : MD5(this.formData.password).toString()
                                     }).then(res => {
@@ -863,10 +862,14 @@
                                     }).finally(() => {
                                         this.$refs.editModal.hide();
                                     });
+                                    this.$refs.formData.resetFields();
                                 } else {
                                     reject();
                                 }
                             });
+                        },
+                        cancelCallback : () => {
+                            this.$refs.formData.resetFields();
                         }
                     });
                 });
