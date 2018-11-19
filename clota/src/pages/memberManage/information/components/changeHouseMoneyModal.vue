@@ -38,6 +38,7 @@
 <script>
     import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import ajax from '@/api/index.js'
 	export default {
 	    components : {
             tableCom
@@ -48,6 +49,13 @@
                 type : Boolean,
                 default : false
             },
+            //会员卡信息
+            'card-info' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
         },
 		data () {
             //校验购房总金额
@@ -83,9 +91,7 @@
                     houseMoney : ''
                 },
                 //修改购房金额记录
-                tableData : [
-                    {}
-                ],
+                tableData : [],
                 //购房记录表头配置
                 columnData : [
                     {
@@ -141,19 +147,26 @@
              * @param{String} type 模态框显隐状态
              */
             visibleChange (type) {
-
+                if (type === false) {
+                    this.$refs.formValidate.resetFields();
+                }
             },
             /**
              * 保存修改的购房金额
              */
             saveHouseMoney () {
-                ajax.post('').then(res => {
+                ajax.post('updateHomeMoney',{
+                    memberId : this.cardInfo.memberId,
+                    homeMoney : this.formData.houseMoney,
+                }).then(res => {
                     if (res.success) {
                         this.$Message.success('修改购房金额成功');
                         this.$emit('fresh-data');
                     } else {
                         this.$Message.error('修改购房金额失败');
                     }
+                }).finally(() => {
+                    this.$emit('input',false);
                 });
             }
         }

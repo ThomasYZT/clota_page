@@ -115,7 +115,9 @@
                             @set-pay-password="getPayPassword">
         </set-password-modal>
         <!--修改购房金额模态框-->
-        <change-house-money-modal v-model="changeHouseMoneyModalShow">
+        <change-house-money-modal v-model="changeHouseMoneyModalShow"
+                                  :card-info="memberDetail"
+                                  @fresh-data="$emit('fresh-card-info')">
         </change-house-money-modal>
     </div>
 </template>

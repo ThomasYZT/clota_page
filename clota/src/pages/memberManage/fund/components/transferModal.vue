@@ -32,7 +32,9 @@
                                 :placeholder="$t('selectField', {msg: ''})"
                                 style="width: 240px;">
                             <Option :value="item.id"
+                                    class="account-list"
                                     v-for="(item,i) in inOrgList"
+                                    v-w-title="item.orgName"
                                     :key="i">
                                 {{item.orgName}}
                             </Option>
@@ -84,8 +86,8 @@
 <script>
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
-    import {mapGetters} from 'vuex';
+    import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //账户信息
@@ -100,60 +102,60 @@
             //校验转出余额
             const validateeAmount = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    if(value > this.orgInfo.balance){
-                        callback(this.$t('errorGreaterThan',{small : this.$t('transferAmount'),big : this.$t('validAmount')}));
-                    }else{
-                        if(validator.isNumber(this.data.commission)){
-                            if(Number(value) + Number(this.data.commission) > this.orgInfo.balance){
+                    if (value > this.orgInfo.balance) {
+                        callback(this.$t('errorGreaterThan',{ small : this.$t('transferAmount'),big : this.$t('validAmount') }));
+                    } else {
+                        if (validator.isNumber(this.data.commission)) {
+                            if (Number(value) + Number(this.data.commission) > this.orgInfo.balance) {
                                 callback(this.$t('transferError'));
-                            }else{
+                            } else {
                                 callback();
                             }
-                        }else{
+                        } else {
                             callback();
                         }
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t('transferAmount'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('transferAmount')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('transferAmount'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('transferAmount') }));
                     }
                 });
             };
             //校验手续费是否正确
             const validateCommission = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    if(value > this.orgInfo.balance){
-                        callback(this.$t('errorGreaterThan',{small : this.$t('fee'),big : this.$t('validAmount')}));
-                    }else{
-                        if(validator.isNumber(this.data.amount)){
-                            if(Number(value) + Number(this.data.amount) > this.orgInfo.balance){
+                    if (value > this.orgInfo.balance) {
+                        callback(this.$t('errorGreaterThan',{ small : this.$t('fee'),big : this.$t('validAmount') }));
+                    } else {
+                        if (validator.isNumber(this.data.amount)) {
+                            if (Number(value) + Number(this.data.amount) > this.orgInfo.balance) {
                                 callback(this.$t('transferError'));
-                            }else{
+                            } else {
                                 callback();
                             }
-                        }else{
+                        } else {
                             callback();
                         }
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t('fee'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('fee')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('fee'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('fee') }));
                     }
                 });
             };
             return {
                 //模态框是否显示
-                visible: false,
+                visible : false,
                 //表单数据
-                data: {
+                data : {
                     //转出金额
-                    amount: '',
+                    amount : '',
                     //备注
-                    remark: '',
+                    remark : '',
                     //转入的机构id
                     toOrgId : '',
                     //手续费
@@ -162,27 +164,27 @@
                 //转入账户列表
                 inOrgList : [],
                 //校验方法
-                ruleValidate: {
+                ruleValidate : {
                     amount : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('transferAmount')}),trigger : 'blur'},
-                        {validator : validateeAmount,trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('transferAmount') }),trigger : 'blur' },
+                        { validator : validateeAmount,trigger : 'blur' }
                     ],
                     toOrgId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('transferToAccount')}),trigger : 'change'}
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('transferToAccount') }),trigger : 'change' }
                     ],
                     commission : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('fee')}),trigger : 'blur'},
-                        {required : true,validator : validateCommission,trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('fee') }),trigger : 'blur' },
+                        { required : true,validator : validateCommission,trigger : 'blur' }
                     ],
                     remark : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 100}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }),trigger : 'blur' }
                     ]
                 },
                 //btn是否在保存中
                 btnLoading : false
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 模态框显示
@@ -200,13 +202,13 @@
                         this.btnLoading = true;
                         this.transfer();
                     }
-                })
+                });
             },
 
             /**
              * 关闭模态框
              */
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.resetFormData();
@@ -221,11 +223,11 @@
                     fee : this.data.commission,
                     remark : this.data.remark
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('transfer')}));    // '转账成功'
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('transfer') })); // '转账成功'
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('transfer')}));      // '转账失败'
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('transfer') })); // '转账失败'
                     }
                 }).finally(() => {
                     this.btnLoading = false;
@@ -244,9 +246,9 @@
              */
             getUpperlevelOrgList () {
                 ajax.post('getUpperlevelOrgList').then(res => {
-                   if(res.success){
+                   if (res.success) {
                        this.inOrgList = res.data ? res.data : [];
-                   }else{
+                   } else {
                        this.inOrgList = [];
                    }
                 }).catch(err => {
@@ -263,16 +265,20 @@
                 lang : 'lang'
             })
         }
-    }
+    };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .transfer-modal{
 
         .num{
             font-size: $font_size_18px;
             color: $color_yellow;
+        }
+
+        .account-list{
+            @include overflow_tip();
         }
 
         .no-marg-bottom{

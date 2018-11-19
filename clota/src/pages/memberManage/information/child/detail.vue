@@ -69,7 +69,8 @@
                     <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
                         <!--会员卡基础信息-->
                         <member-card-base-info :memberDetail="choosedCard"
-                                               @fresh-data="choseCard(choosedCard)">
+                                               @fresh-data="choseCard(choosedCard)"
+                                               @fresh-card-info="listCardsByMemberId">
                         </member-card-base-info>
                     </template>
                 </div>

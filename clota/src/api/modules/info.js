@@ -87,6 +87,8 @@ export default {
     'saveViceCard' : '/member/saveViceCard',
     //导出个人交易明细
     'exportAccountDetail' : '/member/memberAccount/exportAccountDetail',
+    //修改购房金额
+    'updateHomeMoney' : '/member/updateHomeMoney',
 
 
     /***********************************会员积分***********************************/
