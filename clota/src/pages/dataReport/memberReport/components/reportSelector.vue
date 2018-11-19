@@ -137,8 +137,8 @@
             },
         },
         created () {
-            if (this.$route && this.$route.params && this.$route.params.type) {
-                this.selectButton = this.$route.params.type;
+            if (this.$route && this.$route.params && this.$route.params.selectButton) {
+                this.selectButton = this.$route.params.selectButton;
             }
             this.getMemberTypeList();
         },
