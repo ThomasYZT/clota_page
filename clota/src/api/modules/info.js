@@ -85,6 +85,8 @@ export default {
     'findMainOrViceCard' : '/member/findMainOrViceCard',
     //新增副卡
     'saveViceCard' : '/member/saveViceCard',
+    //导出个人交易明细
+    'exportAccountDetail' : '/member/memberAccount/exportAccountDetail',
 
 
     /***********************************会员积分***********************************/

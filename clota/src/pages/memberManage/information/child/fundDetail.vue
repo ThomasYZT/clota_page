@@ -31,7 +31,7 @@
                 <div class="btn-wrap">
                     <Button type="primary" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
                     <Button type="ghost" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
-                    <a href="downloadUrl">
+                    <a :href="downloadUrl">
                         <Button type="ghost">{{$t('exporting')}}</Button><!--导出-->
                     </a>
                 </div>
@@ -289,7 +289,13 @@
         computed : {
             //下载交易明细文件
             downloadUrl () {
-                return ajaxConfig['HOST'] + apiList['downloadEntityCardTmp'] + '?realName=' + this.realName + '&tmpExcel=' + this.tmpExcel;
+                return ajaxConfig['HOST'] + apiList['exportAccountDetail'] +
+                    '?accountTypeIds=' + this.accountTypeId +
+                    '&cardId=' + this.queryParams.cardId +
+                    '&token=' + ajax.getToken() +
+                    '&operType=' + (this.queryParams.operType === 'all' ? '' : this.queryParams.operType) +
+                    '&startDate=' + (this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '') +
+                    '&endDate=' + (this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '');
             },
         }
     };

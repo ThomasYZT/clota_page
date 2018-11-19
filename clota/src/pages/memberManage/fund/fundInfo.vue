@@ -24,10 +24,10 @@
                 </div>
             </div>
             <ul class="account-operate">
-                <li class="list" v-if="key !== 'openAccount'" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
+                <li class="list" @click="toFundDetail(item,key)">{{$t('storageDetail')}}</li><!--储值明细-->
                 <li class="list"
                     v-w-title="$t('fundDetail')"
-                    @click="toTradeDetail(item)">{{$t('fundDetail')}}</li><!--资金交易明细-->
+                    @click="toTradeDetail(item,key)">{{$t('fundDetail')}}</li><!--资金交易明细-->
             </ul>
         </div>
     </div>
@@ -84,11 +84,15 @@
             /**
              * 跳转到储值明细页面
              * @param data
+             * @param key
              */
-            toFundDetail (data) {
+            toFundDetail (data,key) {
                 this.$router.push({
                     name : 'fund',
-                    params : data
+                    params : {
+                        data,
+                        key
+                    }
                 });
             },
             /**
@@ -200,6 +204,9 @@
             }
 
             .account-operate{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
                 @include block_outline($height : 40px);
                 background: #F7F9FA;
                 border-top: 1px solid #E8E8E8;
@@ -207,8 +214,7 @@
 
                 .list{
                     position: relative;
-                    @include block_outline(50%);
-                    float: left;
+                    flex: 1;
                     line-height: 40px;
                     text-align: center;
                     color: $color_blue;
@@ -217,9 +223,9 @@
                     @include overflow_tip();
                     padding: 0 10px;
 
-                    &:nth-of-type(1)::after{
+                    &:nth-of-type(2)::before{
                         content: '';
-                        @include absolute_pos(absolute,$right : 0,$top : 13px);
+                        @include absolute_pos(absolute,$left : 0,$top : 13px);
                         background:  #E8E8E8;
                         @include block_outline(1px,12px);
                     }

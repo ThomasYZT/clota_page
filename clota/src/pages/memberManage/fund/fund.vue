@@ -124,7 +124,7 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './fundConfig';
+    import { columnData } from './fundConfig';
     import ajax from '@/api/index.js';
     import { cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
@@ -132,48 +132,48 @@
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             tableCom,
             breadCrumbHead
         },
         data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'fund',
-                        router: {
-                            name: 'fundInfo'
+                        name : 'fund',
+                        router : {
+                            name : 'fundInfo'
                         }
                     }
                 ],
                 // 查询数据
-                queryParams: {
-                    keyWord: '',
+                queryParams : {
+                    keyWord : '',
                     //会员等级id
-                    levelId: 'all',
+                    levelId : 'all',
                     //渠道id
-                    channelId: 'all',
+                    channelId : 'all',
                     //会员卡状态
-                    cardStatus: 'null',
+                    cardStatus : 'null',
                     //账户类型
                     accountTypeId : ''
                 },
                 //枚举数据
-                enumData: {
+                enumData : {
                     //会员级别
-                    level: [],
+                    level : [],
                     //会员渠道
-                    channel: [],
+                    channel : [],
                     //会员状态
-                    cardStatusEnum: cardStatusEnum,
+                    cardStatusEnum : cardStatusEnum,
                     //性别
-                    genderEnum: genderEnum,
+                    genderEnum : genderEnum,
                 },
                 //表头配置
                 columnData : columnData,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //页码
@@ -187,46 +187,44 @@
                 //会员中心初始化，用于重置查询条件时重置账户类型
                 accountTypeIdInit : ''
 
-            }
+            };
         },
-        created() {
+        created () {
             //查询会员级别
             this.queryMemberLevels();
             //查询渠道列表
             this.queryChannelSet();
         },
-        methods: {
+        methods : {
 
             //查询会员级别
             queryMemberLevels () {
                 ajax.post('queryMemberLevels', {
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
+                    pageNo : 1,
+                    pageSize : 99999,
+                    isDeleted : 'false',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.enumData.level = res.data.data || [];
                     } else {
-                        console.log(res);
-                        this.$Message.warning(res.message || 'queryMemberLevels '+ $t('queryFailure') +'！');
+                        this.$Message.warning(res.message || 'queryMemberLevels ' + $t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             //查询渠道列表
             queryChannelSet () {
                 ajax.post('queryChannelSet', {
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
+                    pageNo : 1,
+                    pageSize : 99999,
+                    isDeleted : 'false',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.enumData.channel = res.data.data || [];
                     } else {
-                        console.log(res);
-                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet ' + $t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             /**
@@ -235,22 +233,22 @@
             queryList () {
                 ajax.post('queryChargingList',{
                     levelId : this.queryParams.levelId !== 'all' ? this.queryParams.levelId : '',
-                    channelId : this.queryParams.channelId !=='all' ? this.queryParams.channelId : '',
+                    channelId : this.queryParams.channelId !== 'all' ? this.queryParams.channelId : '',
                     cardStatus : this.queryParams.cardStatus !== 'null' ? this.queryParams.cardStatus : '',
-                    accountTypeIds  : this.queryParams.accountTypeId !== 'all' ? this.queryParams.accountTypeId : this.accountIds.join(','),
+                    accountTypeIds : this.queryParams.accountTypeId !== 'all' ? this.queryParams.accountTypeId : this.accountIds.join(','),
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     keyword : this.queryParams.keyWord,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
-                        this.tableData =  [];
+                    } else {
+                        this.tableData = [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
-                    this.tableData =  [];
+                    this.tableData = [];
                     this.totalCount = 0;
                 });
             },
@@ -262,7 +260,7 @@
              */
             getEnumFieldShow ( name, val ) {
                 let obj = this.enumData[name].find((item) => val === item.name);
-                return this.$t(obj.desc)
+                return this.$t(obj.desc);
             },
 
             //重置查询数据
@@ -281,16 +279,16 @@
             queryMemberAccountDefine () {
                 this.accountIds = [];
                 ajax.post('queryMemberAccountDefine',{
-                    accountType: 'charging',
-                    pageNo: 1,
-                    pageSize: 99999
+                    accountType : 'charging',
+                    pageNo : 1,
+                    pageSize : 99999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.accountList = res.data.data ? res.data.data : [];
                         this.accountList.forEach(item => {
                             this.accountIds.push(item.id);
                         });
-                    }else{
+                    } else {
                         this.accountList = [];
                     }
                 }).catch(() => {
@@ -298,8 +296,10 @@
                 }).finally(() => {
                     this.accountList.unshift({
                         id : 'all',
-                        accountName : this.$t('all')
+                        accountName : this.$t('allAccount')
                     });
+                    this.queryParams.accountTypeId = 'all';
+                    this.accountTypeIdInit = 'all';
                 });
             },
             /**
@@ -307,17 +307,18 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    this.queryParams.accountTypeId = params.id;
-                    this.accountTypeIdInit = params.id;
+                if (params && Object.keys(params).length > 0) {
+                    // this.queryParams.accountTypeId = 'all';
+                    // this.accountTypeIdInit = 'all';
                 }
+                this.queryMemberAccountDefine();
             },
             /**
              * 动态给行添加类名
              * @param row
              */
-            rowClassName (row){
-                if(row.row.cardStatus === "frozen"){
+            rowClassName (row) {
+                if (row.row.cardStatus === "frozen") {
                     return 'frozen-tr';
                 }
             },
@@ -328,9 +329,9 @@
             toDetail (data) {
                 this.$router.push({
                     name : 'infoFund',
-                    params: {
+                    params : {
                         fundDetail : {
-                            id :data.accountId,
+                            id : data.accountId,
                             accountDefineId : data.accountTypeId
                         }
                     }
@@ -341,27 +342,27 @@
              * @param rowData
              */
             getUnit (rowData) {
-                if(rowData.accountTypeId === '1'){
+                if (rowData.accountTypeId === '1') {
                     return this.$t('yuan');
-                }else if(rowData.unit){
+                } else if (rowData.unit) {
                     return rowData.unit;
-                }else{
+                } else {
                     return '';
                 }
             }
         },
-        beforeRouteEnter(to,from,next){
-            next(vm => {
-                vm.queryMemberAccountDefine();
-            });
-        },
+        // beforeRouteEnter (to,from,next) {
+        //     next(vm => {
+        //         vm.queryMemberAccountDefine();
+        //     });
+        // },
         computed : {
             //表格是否显示
             tableShow () {
                 return !!this.queryParams.accountTypeId;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

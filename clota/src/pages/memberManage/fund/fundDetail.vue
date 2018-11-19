@@ -109,64 +109,64 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './fundDetailConfig';
+    import { columnData } from './fundDetailConfig';
     import ajax from '@/api/index.js';
-    import {moneyTradeTypes} from '@/assets/js/constVariable.js';
+    import { moneyTradeTypes } from '@/assets/js/constVariable.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             tableCom,
             breadCrumbHead
         },
         data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'fund',
-                        router: {
-                            name: 'fundInfo'
+                        name : 'fund',
+                        router : {
+                            name : 'fundInfo'
                         }
                     }
                 ],
                 //交易类型列表
                 tradeType1 : moneyTradeTypes,
                 // 查询数据
-                queryParams: {
+                queryParams : {
                     //账户id
                     accountTypeId : 'all',
                     //关键字
-                    keyword: '',
+                    keyword : '',
                     //交易类型
-                    tradeType: 'all',
+                    tradeType : 'all',
                 },
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
-                totalCount: 0,
+                totalCount : 0,
                 //表头配置
                 columnData : columnData,
                 //页码
-                pageNo: 1,
+                pageNo : 1,
                 //每页条数
                 pageSize : 10,
                 //账户类型列表
                 accountList : [],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询资金交易明细
              */
             queryList () {
                 let accountTypeIds = [];
-                if(this.queryParams.accountTypeId === 'all'){
-                    for(let i = 0,j = this.accountList.length;i < j;i++){
-                        if(this.accountList[i].id !== 'all'){
+                if (this.queryParams.accountTypeId === 'all') {
+                    for (let i = 0,j = this.accountList.length; i < j; i++) {
+                        if (this.accountList[i].id !== 'all') {
                             accountTypeIds.push(this.accountList[i].id);
                         }
                     }
@@ -180,10 +180,10 @@
                     pageSize : this.pageSize,
                     keyword : this.queryParams.keyword,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -206,17 +206,17 @@
              */
             queryMemberAccountDefine () {
                 ajax.post('queryMemberAccountDefine',{
-                    accountType: 'charging',
-                    pageNo: 1,
-                    pageSize: 99999
+                    accountType : 'charging',
+                    pageNo : 1,
+                    pageSize : 99999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.accountList = res.data.data ? res.data.data : [];
                         this.accountList.unshift({
                             id : 'all',
-                            accountName : this.$t('allAccount')    // 全部账户
+                            accountName : this.$t('allAccount') // 全部账户
                         });
-                    }else{
+                    } else {
                         this.accountList = [];
                     }
                 }).catch(() => {
@@ -228,30 +228,31 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0 && this.fromAccountStore){
-                    this.$set(this.queryParams,'accountTypeId',params.id);
-                    this.queryParams.accountTypeId = params.id;
-                }else{
+                // 会员3期暂时去掉
+                // if (params && Object.keys(params).length > 0 && this.fromAccountStore) {
+                //     this.$set(this.queryParams,'accountTypeId',params.id);
+                //     this.queryParams.accountTypeId = params.id;
+                // } else {
                     this.$set(this.queryParams,'accountTypeId','all');
-                }
+                // }
             },
             /**
              * 获取本次交易金额
              * @param rowData
              */
             getTradeMoney (rowData) {
-                let unit =  '';
+                let unit = '';
                 let label = rowData.amount > 0 ? '+' : '';
-                if(rowData.unit){
+                if (rowData.unit) {
                     unit = rowData.unit;
-                }else if(rowData.accountTypeId === '1'){
-                    unit = this.$t('yuan');    // '元'
+                } else if (rowData.accountTypeId === '1') {
+                    unit = this.$t('yuan'); // '元'
                 }
-                if(rowData.accountSubType === 'corpus'){
-                    return  `${this.$t('corpusAccount')}:${label}${rowData.amount}${unit}`; // 本金账户
-                }else if(rowData.accountSubType === 'donate'){
-                    return  `${this.$t('presentAccount')}:${label}${rowData.amount}${unit}`;    // 赠送账户
-                }else{
+                if (rowData.accountSubType === 'corpus') {
+                    return `${this.$t('corpusAccount')}:${label}${rowData.amount}${unit}`; // 本金账户
+                } else if (rowData.accountSubType === 'donate') {
+                    return `${this.$t('presentAccount')}:${label}${rowData.amount}${unit}`; // 赠送账户
+                } else {
                     return `${label}${rowData.amount}${unit}`;
                 }
             }
@@ -260,7 +261,7 @@
         created () {
             this.queryMemberAccountDefine();
         },
-        beforeRouteLeave(to,from,next){
+        beforeRouteLeave (to,from,next) {
             next();
         },
         computed : {
@@ -273,19 +274,19 @@
             }),
             //表格是否显示
             tableShow () {
-                return  this.queryParams.accountTypeId && this.accountList && this.accountList.length > 0;
+                return this.queryParams.accountTypeId && this.accountList && this.accountList.length > 0;
             }
         },
         watch : {
             '$route' (newVal,oldVal) {
-                if(newVal.name === 'fundDetail'){
+                if (newVal.name === 'fundDetail') {
                     this.$set(this.queryParams,'accountTypeId','all');
                     this.pageSize = 10;
                     this.pageNo = 1;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
