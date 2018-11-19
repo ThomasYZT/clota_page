@@ -32,23 +32,23 @@
             :page-size-d.sync="filterData.pageSize"
             @query-data="getData">
             <el-table-column
-                slot="column4"
+                slot="column3"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="check(scope.row)">{{$t('check')}}</li>
+                        <li class="normal" @click="showTip(scope.row)">{{$t('check')}}</li>
                     </ul>
                     <Tooltip placement="bottom" :transfer="true">
-                        <div v-html="statusFilter(scope.row.status)"></div>
-                        <div slot="content">
+                        <div class="check-button"></div>
+                        <div slot="content" v-if="isShowTip">
                             <Timeline>
-                                <TimelineItem v-for="(item, index) in timeLineData" :key="index">
-                                    <p class="time">{{item.createdTime}}</p>
-                                    <p class="content">{{$t('colonSetting', { key : $t('packageCount') } )}}{{item.amount | contentFilter}}</p>
-                                    <p class="content">{{$t('colonSetting', { key : $t('unitPrice') } )}}{{item.price | moneyFilter}}</p>
+                                <TimelineItem v-for="(item, index) in timeLineData"
+                                              :key="index"
+                                              color="blue">
+                                    {{item.createdTime}} {{$t('packageCount')}} {{item.amount}} , {{$t('unitPrice')}} {{item.price}}
                                 </TimelineItem>
                             </Timeline>
                         </div>
@@ -102,6 +102,8 @@
                 listItem : [],
                 //时间查看消费记录数据
                 timeLineData : [],
+                //是否显示tip
+                isShowTip : false
             };
         },
         methods : {
@@ -112,7 +114,7 @@
                 ajax.post('queryPagedMemberOrderItemCount', {
                     startDate : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endDate : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
-                    orgId : this.listItem.orgId,
+                    orgId : this.listItem.outOrgId,
                     memberId : this.listItem.memberId,
                 }).then(res => {
                     if (res.success) {
@@ -140,20 +142,24 @@
             },
             /**
              * 查看日期
+             * @param {*} data
              */
-            check () {
+            showTip (data) {
+                this.isShowTip = false;
                 ajax.post('queryMemberOrderItemList', {
                     memberId : this.listItem.memberId,
-                    orgId : this.listItem.orgId,
-                    itemId : this.listItem.id
+                    orgId : this.listItem.outOrgId,
+                    itemId : data.itemId
                 }).then(res => {
                     if (res.success) {
                         this.timeLineData = res.data ? res.data : [];
+                        this.isShowTip = true;
                     } else {
                         this.timeLineData = [];
+                        this.isShowTip = false;
                     }
                 });
-            }
+            },
         }
     };
 </script>
@@ -181,6 +187,16 @@
                 color: #666666;
                 margin-right: 30px;
             }
+        }
+
+        /deep/ .check-button {
+            position: absolute;
+            left: -30px;
+            top: -12px;
+            width: 32px;
+            height: 22px;
+            cursor: pointer;
+            color: $color_blue;
         }
     }
 </style>

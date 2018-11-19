@@ -1744,4 +1744,6 @@ export default {
     'pointAdd' : '积分发放',
     'pointReduce' : '积分消耗',
     'MemberSourceTrendChart' : '会员来源趋势图',
+    'MembershipTrendChart' : '会员积分趋势图',
+    'stockInNum' : '入库数量',
 }

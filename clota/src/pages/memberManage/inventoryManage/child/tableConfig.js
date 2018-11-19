@@ -159,7 +159,7 @@ export const stockingHead = [
         field : 'name'
     },
     {
-        title : 'inTotal', //入库总量
+        title : 'stockInNum', //入库总量
         minWidth : 120,
         field : 'total'
     },
