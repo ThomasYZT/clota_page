@@ -11,112 +11,112 @@
 //一级菜单的menuname
 let topMenuName = 'productCenter';
 export default {
-    productCenter: {
-        path: '/productCenter',
-        component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/index.vue'),
-        meta: {
-            _name: 'product',
-            menuName: 'productCenter',
+    productCenter : {
+        path : '/productCenter',
+        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/index.vue'),
+        meta : {
+            _name : 'product',
+            menuName : 'productCenter',
             rightPath : topMenuName + '.' + 'productCenter',
             isMenu : true
         },
-        children: {
-            productList: {
+        children : {
+            productList : {
                 //产品中心--产品列表--三级菜单
-                path: '/productCenter/pList',
+                path : '/productCenter/pList',
                 // name : 'productList',
-                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/index.vue'),
-                meta: {
-                    menuName: 'productList', //lang.config.js 里面的语言键值
-                    _name: 'product-list',
-                    iconClass: 'icon-diamond',
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/index.vue'),
+                meta : {
+                    menuName : 'productList', //lang.config.js 里面的语言键值
+                    _name : 'product-list',
+                    iconClass : 'icon-product-list',
                     rightPath : topMenuName + '.' + 'productList',
                     isMenu : true
                 },
-                children: {
-                    ticketType: {
+                children : {
+                    ticketType : {
                         //产品中心--产品列表--票类
-                        path: '/productCenter/pList/ticketType',
-                        name: 'ticketType',
-                        component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType.vue'),
-                        meta: {
-                            menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'ticket',
+                        path : '/productCenter/pList/ticketType',
+                        name : 'ticketType',
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType.vue'),
+                        meta : {
+                            menuName : 'ticketType', //lang.config.js 里面的语言键值
+                            _name : 'ticket',
                             rightPath : topMenuName + '.' + 'productList',
                             isMenu : true
                         },
                     },
-                    addTicket: {
+                    addTicket : {
                         //产品中心--产品列表--新建/修改票类
-                        path: '/productCenter/pList/addTicket',
-                        name: 'addTicket',
-                        component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/editTicket.vue'),
-                        meta: {
-                            menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'ticket',
+                        path : '/productCenter/pList/addTicket',
+                        name : 'addTicket',
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/editTicket.vue'),
+                        meta : {
+                            menuName : 'ticketType', //lang.config.js 里面的语言键值
+                            _name : 'ticket',
                             rightPath : topMenuName + '.' + 'productList',
                         },
                     },
-                    ticketDetail: {
+                    ticketDetail : {
                         //产品中心--产品列表--票类详情
-                        path: '/productCenter/pList/ticketDetail',
-                        name: 'ticketDetail',
-                        component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/ticketDetail.vue'),
-                        meta: {
-                            menuName: 'ticketType', //lang.config.js 里面的语言键值
-                            _name: 'ticket',
+                        path : '/productCenter/pList/ticketDetail',
+                        name : 'ticketDetail',
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/child/ticketDetail.vue'),
+                        meta : {
+                            menuName : 'ticketType', //lang.config.js 里面的语言键值
+                            _name : 'ticket',
                             rightPath : topMenuName + '.' + 'productList',
                         },
                     },
                 }
             },
 
-            marketingPolicy: {
+            marketingPolicy : {
                 //产品中心--销售政策
-                path: '/productCenter/marketingPolicy',
-                name: 'marketingPolicy',
-                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/list.vue'),
-                meta: {
-                    _name: 'product-policy', //
-                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
+                path : '/productCenter/marketingPolicy',
+                name : 'marketingPolicy',
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/list.vue'),
+                meta : {
+                    _name : 'product-policy', //
+                    menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'marketingPolicy',
-                    iconClass: 'icon-person',
+                    iconClass : 'icon-sale-policy',
                     isMenu : true
                 },
             },
-            editSalePolicy: {
+            editSalePolicy : {
                 //产品中心--销售政策--新建/修改政策
-                path: '/productCenter/editSalePolicy',
-                name: 'editSalePolicy',
-                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
-                meta: {
-                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
-                    _name: 'product-policy',
+                path : '/productCenter/editSalePolicy',
+                name : 'editSalePolicy',
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
+                meta : {
+                    menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
+                    _name : 'product-policy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 },
             },
-            salePolicyDetail: {
+            salePolicyDetail : {
                 //产品中心--销售政策--政策详情
-                path: '/productCenter/salePolicyDetail',
-                name: 'salePolicyDetail',
-                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/salePolicyDetail.vue'),
-                meta: {
-                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
-                    _name: 'product-policy',
+                path : '/productCenter/salePolicyDetail',
+                name : 'salePolicyDetail',
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/salePolicyDetail.vue'),
+                meta : {
+                    menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
+                    _name : 'product-policy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 },
             },
-            distributeDetail: {
+            distributeDetail : {
                 //产品中心--销售政策--分销详情
-                path: '/productCenter/distributeDetail',
-                name: 'distributeDetail',
-                component: () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/distributeDetail.vue'),
-                meta: {
-                    menuName: 'marketingPolicy', //lang.config.js 里面的语言键值
-                    _name: 'product-policy',
+                path : '/productCenter/distributeDetail',
+                name : 'distributeDetail',
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/distributeDetail.vue'),
+                meta : {
+                    menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
+                    _name : 'product-policy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 }
             }
         }
     }
-}
+};

@@ -41,7 +41,9 @@
                 <label>{{$t("homeBuyMoney")}}：</label>
                 <span v-w-title="memberDetail.houseMoney">
                     {{memberDetail.houseMoney | moneyFilter | contentFilter}}
-                <span class="blue-label" @click="changeHouseMoney">{{$t('modify')}}</span>
+                <span class="blue-label"
+                      v-if="memberDetail.isMotherCard === 'true'"
+                      @click="changeHouseMoney">{{$t('modify')}}</span>
             </span>
             </div>
             <div class="form-item-wrap">

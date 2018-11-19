@@ -222,11 +222,11 @@
                         </div>
                     </div>
                     <!--修改储值、积分数值-->
-                    <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount == 'true'">
+                    <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount === 'true'">
                         <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
                         <div class="operate">
                             <div><span @click="showAssetModal">{{$t("modifyStorageBalance")}}</span></div>
-                            <div><span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span></div>
+                            <div v-if="choosedCard.cardTypeId !== '1'"><span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span></div>
                         </div>
 
                     </div>

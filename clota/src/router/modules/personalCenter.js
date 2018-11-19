@@ -11,41 +11,41 @@
 //一级菜单的menuname
 let topMenuName = 'personalCenter';
 export default {
-    personalCenter: {
-        path: '/personalCenter',
-        component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/personalCenter/index.vue'),
-        meta: {
-            menuName: 'personalCenter',
+    personalCenter : {
+        path : '/personalCenter',
+        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/personalCenter/index.vue'),
+        meta : {
+            menuName : 'personalCenter',
             rightPath : topMenuName + '.' + 'personalCenter',
             isStaticMenu : true
         },
-        children: {
-            personalInfo: {
+        children : {
+            personalInfo : {
                 // 个人中心 - 个人信息
-                path: '/personalCenter/info',
-                name: 'personalInfo',
-                component: () => import(/* webpackChunkName: "personalCenter" */ '../../pages/personalCenter/personalInfo/personalInfo.vue'),
-                meta: {
-                    menuName: 'personalInfo', //lang.config.js 里面的语言键值
+                path : '/personalCenter/info',
+                name : 'personalInfo',
+                component : () => import(/* webpackChunkName: "personalCenter" */ '../../pages/personalCenter/personalInfo/personalInfo.vue'),
+                meta : {
+                    menuName : 'personalInfo', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'personalInfo',
-                    iconClass: 'icon-person',
+                    iconClass : 'icon-person',
                     isStaticMenu : true
                 },
             },
 
-            pwdModifying: {
+            pwdModifying : {
                 // 个人中心 - 修改密码
-                path: '/personalCenter/pwdModifying',
-                name: 'pwdModifying',
-                component: () => import(/* webpackChunkName: "personalCenter" */ '../../pages/personalCenter/pwdModifying/pwdModifying.vue'),
-                meta: {
-                    menuName: 'pwdModifying', //lang.config.js 里面的语言键值
+                path : '/personalCenter/pwdModifying',
+                name : 'pwdModifying',
+                component : () => import(/* webpackChunkName: "personalCenter" */ '../../pages/personalCenter/pwdModifying/pwdModifying.vue'),
+                meta : {
+                    menuName : 'pwdModifying', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'pwdModifying',
-                    iconClass: 'icon-person',
+                    iconClass : 'icon-change-password',
                     isStaticMenu : true
                 },
             },
 
         }
     }
-}
+};

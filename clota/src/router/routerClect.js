@@ -28,4 +28,4 @@ export default {
     ...financeManageRouter,
     ...orderCenter,
     ...dataReport,
-}
+};
