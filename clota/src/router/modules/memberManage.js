@@ -41,7 +41,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/index.vue'),
                 meta : {
                     menuName : 'openNewCard', //lang.config.js 里面的语言键值
-                    _name : 'members-index',
+                    _name : 'members-card',
                     iconClass : 'icon-home',
                     rightPath : topMenuName + '.' + 'openNewCard',
                     isMenu : true

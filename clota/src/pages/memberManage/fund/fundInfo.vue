@@ -39,7 +39,7 @@
         data () {
             return {
                 //账户列表
-                accountList : []
+                accountList : {}
             };
         },
         methods : {
@@ -63,12 +63,12 @@
                 // });
                 ajax.post('statisChargingAccount').then(res => {
                     if (res.success) {
-                        this.accountList = res.data ? res.data : [];
+                        this.accountList = res.data ? res.data : {};
                     } else {
-                        this.accountList = [];
+                        this.accountList = {};
                     }
                 }).catch(() => {
-                    this.accountList = [];
+                    this.accountList = {};
                 });
             },
             /**

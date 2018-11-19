@@ -3,7 +3,9 @@
 <template>
     <div class="without-sub-menu">
         <mainFrame>
-            该菜单下没有二级菜单
+            <div class="area-con">
+                {{$t('moduleWithoutMenu')}}
+            </div>
         </mainFrame>
     </div>
 </template>
@@ -25,6 +27,16 @@
     @import '~@/assets/scss/base';
 
     .without-sub-menu {
+        @include block_outline();
 
+        .area-con{
+            @include block_outline();
+            background: $color_fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: $font_size_18px;
+            color: $color_333;
+        }
     }
 </style>

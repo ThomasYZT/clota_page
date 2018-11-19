@@ -34,7 +34,8 @@ const childDeepClone = (childrenList, data) => {
                     router['children'] = [getNoSubMenuRoute({
                         menuName : 'noSubMenu',
                         lightMenu : router.meta._name,
-                        _name : router.meta._name
+                        _name : router.meta._name,
+                        rightPath : router.meta.rightPath,
                     })];
                 }
             } else if (!router.children && !router.name) {
@@ -225,7 +226,7 @@ export default new Vuex.Store({
     actions : {
         //获取用户权限信息
         getUserRight (store, route) {
-            return store.dispatch('freshOrgs').then(() => {
+            return store.dispatch('freshOrgs').then((replaceRoute) => {
                 return ajax.post('getPrivilege',{
                     orgId : store.getters.manageOrgs.id
                 }).then(res =>{
@@ -246,7 +247,11 @@ export default new Vuex.Store({
                             store.commit('updateRouteInfo',routers);
                             // 如果有权限，则跳转到有权限的第一个页面
                             if (routers.length > 0) {
-                                resolve(routers[0]);
+                                if (replaceRoute === 'replaceRoute' || !route) {
+                                    resolve(routers[0]);
+                                } else {
+                                    resolve(route);
+                                }
                             } else {
                                 reject();
                             }
@@ -297,20 +302,20 @@ export default new Vuex.Store({
             // });
         },
         //获取用户信息
-        getUserInfo (store,userInfo) {
+        getUserInfo (store,{ userInfo,route }) {
             return new Promise((resolve,reject) => {
                 if (userInfo.token) {
                     store.commit('updateUserInfo',userInfo);
                     let manageOrgs = userInfo.manageOrgs ? userInfo.manageOrgs : [];
                     let orgIndex = localStorage.getItem('orgIndex');
                     if (orgIndex === '' || orgIndex === null) {
-                        orgIndex = manageOrgs[0].id;
-                        localStorage.setItem('orgIndex',orgIndex);
-                    }
-                    for (let i = 0,j = manageOrgs.length; i < j; i++) {
-                        if (orgIndex === manageOrgs[i].id) {
-                            store.commit('updateManageOrgs',manageOrgs[i]);
-                            break;
+                        store.commit('updateManageOrgs',manageOrgs[0]);
+                    } else {
+                        for (let i = 0,j = manageOrgs.length; i < j; i++) {
+                            if (orgIndex === manageOrgs[i].id) {
+                                store.commit('updateManageOrgs',manageOrgs[i]);
+                                break;
+                            }
                         }
                     }
                     resolve(userInfo);
@@ -318,7 +323,7 @@ export default new Vuex.Store({
                     reject();
                 }
             }).then(() => {
-                return store.dispatch('getUserRight');
+                return store.dispatch('getUserRight',route);
             }).catch(err => {
                 console.log(err);
             });
@@ -370,6 +375,7 @@ export default new Vuex.Store({
                     }
                     store.commit('updateManageOrgs',manageOrgs[0]);
                     store.commit('updatemanageOrgList',manageOrgs);
+                    return 'replaceRoute';
                 } else {
                     store.commit('updatemanageOrgList',[]);
                 }

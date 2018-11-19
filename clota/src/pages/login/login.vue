@@ -36,11 +36,12 @@
                         </Form-item>
                         <Form-item class="auto-reme">
                             <Checkbox v-model="rememberAccount">{{ $t("rememberAccount") }}</Checkbox>
-                            <p class="register-entry"
-                               @click="toRegist()">
-                                <span class="entry-tip">{{$t('noAccount')}}</span>
-                                {{$t('partnerRegister')}}
-                            </p>
+                            <!--会员3期暂时去掉-->
+                            <!--<p class="register-entry"-->
+                               <!--@click="toRegist()">-->
+                                <!--<span class="entry-tip">{{$t('noAccount')}}</span>-->
+                                <!--{{$t('partnerRegister')}}-->
+                            <!--</p>-->
                         </Form-item>
                         <div class="error-area">
                             {{errMsg}}
@@ -116,7 +117,9 @@
                                 sessionStorage.setItem('userInfo',JSON.stringify(res.data));
                                 sessionStorage.setItem('accountName',this.formInline.user);
                                 sessionStorage.setItem('token',res.data ? res.data.token : '');
-                                this.$store.dispatch('getUserInfo',res.data).then(route => {
+                                this.$store.dispatch('getUserInfo',{
+                                    userInfo : res.data,
+                                }).then(route => {
                                     if(route && route.path){
                                         this.$router.push({
                                             path: route.path

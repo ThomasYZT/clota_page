@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import { mapGetters } from 'vuex';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import orgTree from './orgTree';
@@ -66,25 +66,25 @@
             orgTree,
             idlerWheelTap
         },
-        data() {
+        data () {
             return {
                 //是否显示集团组织树
                 orgTreeShow : false,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 收起或展开左侧菜单
              */
-            shrinkMenu() {
+            shrinkMenu () {
                 this.$store.commit('updateMenuIsPackUp', !this.menuIsPackUp);
             },
             /**
              * 跳转到对应的一级菜单
              * @param data
              */
-            toTopMenu(data) {
-                this.$router.push({path: data.path});
+            toTopMenu (data) {
+                this.$router.push({ path : data.path });
             },
             /**
              * 退出登录
@@ -96,7 +96,7 @@
              * 切换组织树的显示状态
              */
             toggleOrgStatus () {
-                if(this.isLoading) return;
+                if (this.isLoading) return;
                 this.orgTreeShow = !this.orgTreeShow;
             },
             /**
@@ -119,20 +119,20 @@
             },
 
         },
-        computed: {
+        computed : {
             ...mapGetters({
-                menuIsPackUp: 'menuIsPackUp',
-                lang: 'lang',
-                routerInfo: 'routerInfo',
+                menuIsPackUp : 'menuIsPackUp',
+                lang : 'lang',
+                routerInfo : 'routerInfo',
                 operateLine : 'operateLine',
                 manageOrgs : 'manageOrgs',
                 isLoading : 'isLoading',
             }),
             //当前激活的菜单
-            activeMenu() {
-                if(this.$route && this.$route.meta && this.$route.meta.rightPath){
+            activeMenu () {
+                if (this.$route && this.$route.meta && this.$route.meta.rightPath) {
                     return this.$route.meta.rightPath.split('.')[0];
-                }else{
+                } else {
                     return '';
                 }
                 // if (this.$route && this.$route.meta) {
@@ -147,9 +147,9 @@
                 if (routerInfo) {
                     return routerInfo.filter(item => {
                         //判断是否需要显示二级菜单
-                        if(item.children && item.children.length > 0){
+                        if (item.children && item.children.length > 0) {
                             item.children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
-                        }else{
+                        } else {
                             item.children = [];
                         }
                         item.showSubMenu = false;
@@ -161,7 +161,7 @@
                         //     //没有路由名字的都是一级路由，需要显示菜单
                         //     return  item.path !== '*'
                         // }
-                    })
+                    });
                 } else {
                     return [];
                 }
@@ -169,7 +169,7 @@
         },
         mounted () {
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
