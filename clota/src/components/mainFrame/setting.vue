@@ -5,7 +5,7 @@
          :style="{width : operateLine ? '240px' : '0'}"
          @click.stop="">
         <div class="img-area">
-            <img src="../../assets/images/icon-no-data.png" alt="">
+            <img src="../../assets/images/square-avatar.svg" alt="">
         </div>
         <div class="account-name">
             {{accountName | contentFilter}}

@@ -47,17 +47,17 @@ router.beforeEach((to, from, next) => {
                 if (manageOrgs && Object.keys(manageOrgs).length > 0) {
                     let orgIndex = localStorage.getItem('orgId');
                     if (orgIndex === '' || orgIndex === null) {
-                        orgIndex = manageOrgs[0].id;
-                        localStorage.setItem('orgIndex',manageOrgs[0].id);
-                    }
-                    for (let i = 0,j = manageOrgs.length; i < j; i++) {
-                        if (orgIndex === manageOrgs[i].id) {
-                            store.commit('updateManageOrgs',manageOrgs[i]);
-                            break;
+                        store.commit('updateManageOrgs',manageOrgs[0]);
+                    } else {
+                        for (let i = 0,j = manageOrgs.length; i < j; i++) {
+                            if (orgIndex === manageOrgs[i].id) {
+                                store.commit('updateManageOrgs',manageOrgs[i]);
+                                break;
+                            }
                         }
                     }
-                    store.dispatch('getUserRight', to).then((router) => {
-                        if (router) {
+                    store.dispatch('getUserRight', to).then((toRouter) => {
+                        if (toRouter) {
                             next({ ...to, replace : true });
                         } else {
                             next({
@@ -79,15 +79,24 @@ router.beforeEach((to, from, next) => {
             //判断是否本地有存储token，有的话，直接重新获取用户信息
             if (ajax.getToken()) {
                 let userInfo = common.getUserInfo().userInfo;
-                store.dispatch('getUserInfo',userInfo).then(route => {
-                    if (to.query && Object.keys(to.query).length > 0) {
-                        next({
-                            path : to.path,
-                            query : to.query
-                        });
+                store.dispatch('getUserInfo',{
+                    userInfo : userInfo,
+                    route : to
+                }).then(route => {
+                    if (route.path === to.path) {
+                        if (to.query && Object.keys(to.query).length > 0) {
+                            next({
+                                path : to.path,
+                                query : to.query
+                            });
+                        } else {
+                            next({
+                                path : to.path
+                            });
+                        }
                     } else {
                         next({
-                            path : to.path
+                            path : route.path
                         });
                     }
                 });

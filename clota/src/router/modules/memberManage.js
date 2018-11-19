@@ -41,7 +41,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/index.vue'),
                 meta : {
                     menuName : 'openNewCard', //lang.config.js 里面的语言键值
-                    _name : 'members-index',
+                    _name : 'members-card',
                     iconClass : 'icon-home',
                     rightPath : topMenuName + '.' + 'openNewCard',
                     isMenu : true
@@ -54,7 +54,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/openMemberCard.vue'),
                         meta : {
                             menuName : 'newCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                             isMenu : true
                         }
@@ -66,7 +66,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/batchCard.vue'),
                         meta : {
                             menuName : 'newBatchCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -77,7 +77,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/renewal.vue'),
                         meta : {
                             menuName : 'renewal', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -88,7 +88,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/associateEntityCard.vue'),
                         meta : {
                             menuName : 'associateEntityCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -99,7 +99,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyForAssociateEntityCard.vue'),
                         meta : {
                             menuName : 'applyAssociateCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -110,7 +110,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/reissueCard.vue'),
                         meta : {
                             menuName : 'replenishCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -121,7 +121,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyReissuceCard.vue'),
                         meta : {
                             menuName : 'applyReissuceCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -132,7 +132,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/applyCardForLostList.vue'),
                         meta : {
                             menuName : 'reportLoss', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -143,7 +143,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyForLost.vue'),
                         meta : {
                             menuName : 'reportLoss', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -154,7 +154,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/refundedCard.vue'),
                         meta : {
                             menuName : 'refundedCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -165,7 +165,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyRefundCard.vue'),
                         meta : {
                             menuName : 'applyRefundedCard', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'new-card',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -176,7 +176,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/tradeRecord.vue'),
                         meta : {
                             menuName : 'tradeRecord', //lang.config.js 里面的语言键值
-                            _name : 'members-index',
+                            _name : 'transaction-record',
                             rightPath : topMenuName + '.' + 'tradeRecord',
                             isMenu : true
                         },
@@ -196,19 +196,6 @@ export default {
                     isMenu : true
                 },
             },
-            //会员统计暂时去掉
-            // memberCount: {
-            //     //会员管理--会员统计
-            //     path: '/memberManage/count',
-            //     name: 'memberCount',
-            //     component: () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/information/count.vue'),
-            //     meta: {
-            //         menuName: 'memberCount', //lang.config.js 里面的语言键值
-            //         _name: 'members-stat',
-            //         rightPath : topMenuName + '.' + 'memberCount',
-            //         isMenu : true
-            //     },
-            // },
             addMember : {
                 //会员管理--会员信息--新增会员
                 path : '/memberManage/add',
@@ -341,7 +328,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/activityIntegration.vue'),
                         meta : {
                             menuName : 'activityIntegrate', //lang.config.js 里面的语言键值
-                            _name : 'stuff-setting',
+                            _name : 'activity-point-setting',
                             rightPath : topMenuName + '.' + 'activityIntegrate',
                             isMenu : true
                         },
@@ -364,7 +351,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
                         meta : {
                             menuName : 'activityStore', //lang.config.js 里面的语言键值
-                            _name : 'point-setting',
+                            _name : 'activity-point-setting',
                             rightPath : topMenuName + '.' + 'activityIntegrate',
                         },
                     },
@@ -386,7 +373,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
                         meta : {
                             menuName : 'activitySetProductRate', //lang.config.js 里面的语言键值
-                            _name : 'point-setting',
+                            _name : 'activity-point-setting',
                             rightPath : topMenuName + '.' + 'activityIntegrate',
                         },
                     },
@@ -481,7 +468,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                         meta : {
                             menuName : 'fundDetail', //lang.config.js 里面的语言键值
-                            _name : 'storage-detail',
+                            _name : 'storage-transfer',
                             rightPath : topMenuName + '.' + 'fundDetail',
                             isMenu : true
                         },
@@ -493,7 +480,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/financialManagement.vue'),
                         meta : {
                             menuName : 'transfer', //lang.config.js 里面的语言键值
-                            _name : 'storage-manage',
+                            _name : 'queryStorageTransfer',
                             rightPath : topMenuName + '.' + 'transfer',
                             isMenu : true
                         },
@@ -505,7 +492,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/child/transferRecord.vue'),
                         meta : {
                             menuName : 'financialManagement', //lang.config.js 里面的语言键值
-                            _name : 'storage-manage',
+                            _name : 'operateTransfer',
                             rightPath : topMenuName + '.' + 'transfer',
                         },
                     },
@@ -518,7 +505,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/entityCardControl.vue'),
                 meta : {
                     menuName : 'cardManagement', //lang.config.js 里面的语言键值
-                    _name : 'init-setting',
+                    _name : 'entity-card',
                     rightPath : topMenuName + '.' + 'cardManagement',
                     iconClass : 'icon-card',
                     isMenu : true
@@ -531,7 +518,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/importEntityCard.vue'),
                 meta : {
                     menuName : 'importEntityCard', //lang.config.js 里面的语言键值
-                    _name : 'basic-setting',
+                    _name : 'entity-card',
                     rightPath : topMenuName + '.' + 'cardManagement'
                 },
             },
@@ -743,8 +730,7 @@ export default {
                 path : '/memberManage/inventoryManage',
                 component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/index.vue'),
                 meta : {
-                    //todo 未配置权限
-                    _name : 'members-info',
+                    _name : 'invoicing-management',
                     menuName : 'inventoryManage',
                     iconClass : 'icon-home',
                     rightPath : topMenuName + '.' + 'inventoryManage',
@@ -757,8 +743,7 @@ export default {
                         name : 'goodsManage',
                         component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/goodsManage.vue'),
                         meta : {
-                            //todo 未配置权限
-                            _name : 'members-index',
+                            _name : 'invoicing-management',
                             menuName : 'goodsManage',
                             rightPath : topMenuName + '.' + 'goodsManage',
                             isMenu : true
@@ -770,8 +755,7 @@ export default {
                         name : 'stocking',
                         component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/stocking.vue'),
                         meta : {
-                            //todo 未配置权限
-                            _name : 'members-index',
+                            _name : 'invoicing-management',
                             menuName : 'stocking',
                             rightPath : topMenuName + '.' + 'stocking',
                             isMenu : true
@@ -783,8 +767,7 @@ export default {
                         name : 'editGoodsWarehousing',
                         component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/editGoodsWarehousing.vue'),
                         meta : {
-                            //todo 未配置权限
-                            _name : 'members-index',
+                            _name : 'invoicing-management',
                             menuName : 'editGoodsWarehousing',
                             rightPath : topMenuName + '.' + 'goodsManage',
                         },
@@ -795,8 +778,7 @@ export default {
                         name : 'stockInfo',
                         component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/stockInfo.vue'),
                         meta : {
-                            //todo 未配置权限
-                            _name : 'members-index',
+                            _name : 'invoicing-management',
                             menuName : 'stockInfo',
                             rightPath : topMenuName + '.' + 'goodsManage',
                         },
@@ -809,8 +791,7 @@ export default {
                 name : 'integralMall',
                 component : () => import(/* webpackChunkName: "integralMall" */'../../pages/memberManage/integralMall/integralMall.vue'),
                 meta : {
-                    //todo 未配置权限
-                    _name : 'members-index',
+                    _name : 'integral-mall',
                     menuName : 'integralMall', //lang.config.js 里面的语言键值
                     iconClass : 'icon-home',
                     rightPath : topMenuName + '.' + 'integralMall',

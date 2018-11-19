@@ -143,7 +143,7 @@
         }
 
         .data-content{
-            padding: 25px 0;
+            padding: 30px 0;
 
             .total{
                 height: 50px;
@@ -151,7 +151,7 @@
                 color: $color_353B5E;
                 font-size: $font_size_28px;
                 text-align: center;
-                margin-bottom: 25px;
+                margin-bottom: 40px;
 
                 .img{
                     width: 52px;

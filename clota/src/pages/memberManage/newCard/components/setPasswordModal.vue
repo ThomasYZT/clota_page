@@ -37,6 +37,7 @@
 </template>
 
 <script>
+    import MD5 from 'crypto-js/md5';
     export default {
         props : {
             //模态框是否显示
@@ -132,7 +133,7 @@
             save () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.$emit('set-pay-password',this.formData.password);
+                        this.$emit('set-pay-password',MD5(this.formData.password).toString());
                         this.$emit('input', false);
                     }
                 });

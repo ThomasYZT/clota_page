@@ -28,6 +28,9 @@
             };
         },
         methods : {
+            /**
+             * 重新加载页面
+             */
             reload () {
                 this.isRouterActive = false;
                 this.$nextTick(() => {

@@ -8,17 +8,26 @@
             <div class="data-show-left">
                 <data-total :member-sum-count="memberSumCount">
                 </data-total>
-                <!--&lt;!&ndash;热高会员数据概览&ndash;&gt;-->
-                <!--<member-data-overview>-->
-                <!--</member-data-overview>-->
             </div>
 
             <!--会员分布数据-->
             <div class="data-show-right">
-                <chart-pie>
-                </chart-pie>
+                <!--会员3期暂时去掉-->
+                <!--<chart-pie>-->
+                <!--</chart-pie>-->
+                <member-type-distribution>
+                </member-type-distribution>
             </div>
 
+        </div>
+
+        <!--个人会员卡分布信息-->
+        <div class="home-chart">
+            <div class="chart-header">{{$t("个人会员卡数量")}}</div>
+            <div class="chart-content">
+                <personal-card-info>
+                </personal-card-info>
+            </div>
         </div>
 
         <!--会员消费数据概览-->
@@ -45,37 +54,43 @@
 <script>
 
     import dataTotal from '../components/dataShow.vue';
-    import chartPie from '../components/chartPie.vue';
+    // 会员3期暂时去掉
+    // import chartPie from '../components/chartPie.vue';
+    import memberTypeDistribution from '../components/memberTypeDistribution';
     import chartLine from '../components/chartLine.vue';
     import ajax from '@/api/index.js';
-    import memberDataOverview from  '../components/memberDataOverview';
+    import memberDataOverview from '../components/memberDataOverview';
+    import personalCardInfo from '../components/personalCardInfo';
 
     export default {
-        components: {
+        components : {
             dataTotal,
-            chartPie,
+            // 会员3期暂时去掉
+            // chartPie,
             chartLine,
-            memberDataOverview
+            memberDataOverview,
+            memberTypeDistribution,
+            personalCardInfo
         },
         data () {
             return {
                 // 会员分布数据
-                vipPlace: {
-                    label1: "totalConsumption_thisWeek",
-                    label2: "totalConsumption_lastWeek",
-                    total1: '',
-                    total2: '',
+                vipPlace : {
+                    label1 : "totalConsumption_thisWeek",
+                    label2 : "totalConsumption_lastWeek",
+                    total1 : '',
+                    total2 : '',
                 },
                 // 会员积分数据
-                integrationPlace: {
-                    label1: 'sendIntegral_thisWeek',
-                    label2: 'consumeIntegral_thisWeek',
-                    total1: '',
-                    total2: '',
+                integrationPlace : {
+                    label1 : 'sendIntegral_thisWeek',
+                    label2 : 'consumeIntegral_thisWeek',
+                    total1 : '',
+                    total2 : '',
                 },
                 //会员总数数据
                 memberSumCount : ''
-            }
+            };
         },
         methods : {
             /**
@@ -83,9 +98,9 @@
              */
             getMemberSumCount () {
                 ajax.post('getMemberSumCount').then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.memberSumCount = res.data;
-                    }else{
+                    } else {
                         this.memberSumCount = '';
                     }
                 }).catch(err => {
@@ -97,19 +112,19 @@
              */
             getNowWeekMemberConsumeSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay() === 0 ?  -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(-new Date().getDay() === 0 ? -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '1',
                     accountType : 'charging',
                     operType : 'reduce',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.vipPlace.total1 = 0;
-                        for(let item in res.data){
+                        for (let item in res.data) {
                             this.vipPlace.total1 += res.data[item];
                         }
                         this.vipPlace.total1 = Number(this.vipPlace.total1 / 10000).toFixed(2);
-                    }else{
+                    } else {
                         this.vipPlace.total1 = '';
                     }
                 }).catch(err => {
@@ -127,13 +142,13 @@
                     accountType : 'charging',
                     operType : 'reduce',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.vipPlace.total2 = 0;
-                        for(let item in res.data){
+                        for (let item in res.data) {
                             this.vipPlace.total2 += res.data[item];
                         }
                         this.vipPlace.total2 = Number(this.vipPlace.total2 / 10000).toFixed(2);
-                    }else{
+                    } else {
                         this.vipPlace.total2 = '';
                     }
                 }).catch(err => {
@@ -145,18 +160,18 @@
              */
             getNowWeekMemberIntegraSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay() === 0 ?  -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(-new Date().getDay() === 0 ? -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '2',
                     accountType : 'score',
                     operType : 'reduce',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.integrationPlace.total2 = 0;
-                        for(let item in res.data){
+                        for (let item in res.data) {
                             this.integrationPlace.total2 += res.data[item];
                         }
-                    }else{
+                    } else {
                         this.integrationPlace.total2 = '';
                     }
                 }).catch(err => {
@@ -168,18 +183,18 @@
              */
             getLastWeekMemberSendIntegraSum () {
                 ajax.post('getMemberConsumeSumGroupBy',{
-                    startDate : new Date().addDays(-new Date().getDay() === 0 ?  -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                    startDate : new Date().addDays(-new Date().getDay() === 0 ? -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
                     endDate : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
                     accountTypeId : '2',
                     accountType : 'score',
                     operType : 'add',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.integrationPlace.total1 = 0;
-                        for(let item in res.data){
+                        for (let item in res.data) {
                             this.integrationPlace.total1 += res.data[item];
                         }
-                    }else{
+                    } else {
                         this.integrationPlace.total1 = '';
                     }
                 }).catch(err => {
@@ -187,14 +202,14 @@
                 });
             },
         },
-        created() {
+        created () {
             this.getMemberSumCount();
             this.getNowWeekMemberConsumeSum();
             this.getLastWeekMemberConsumeSum();
             this.getNowWeekMemberIntegraSum();
             this.getLastWeekMemberSendIntegraSum();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -207,7 +222,7 @@
 
         .home-data-show{
             width: 100%;
-            height: 245px;
+            height: 270px;
             @include clearfix();
 
             .data-show-left{

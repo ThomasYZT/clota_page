@@ -30,6 +30,7 @@
                           :rules="ruleValidate">
                         <FormItem prop="code">
                             <Input type="text"
+                                   id="payCodeInput"
                                    v-model.trim="formData.code"
                                    autofocus
                                    style="width: 280px"
@@ -133,6 +134,14 @@
                 if (type === false) {
                     clearInterval(this.timer);
                     this.formData.code = '';
+                    this.stage = 'scan';
+                } else {
+                    this.$nextTick(() => {
+                        let ele = this.$el.querySelector('#payCodeInput .ivu-input');
+                        if (ele) {
+                            ele.focus();
+                        }
+                    });
                 }
             },
             /**

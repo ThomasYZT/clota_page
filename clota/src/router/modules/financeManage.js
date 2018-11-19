@@ -11,58 +11,58 @@
 //一级菜单的menuname
 let topMenuName = 'financeManage';
 export default {
-    financeManage: {
-        path: '/financeManage',
-        component: () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/index.vue'),
-        meta: {
-            _name: 'finance-manage',
-            menuName: 'financeManage',
+    financeManage : {
+        path : '/financeManage',
+        component : () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/index.vue'),
+        meta : {
+            _name : 'finance-manage',
+            menuName : 'financeManage',
             rightPath : topMenuName + '.' + 'financeManage',
             isMenu : true
         },
-        children: {
-            rechargeRecord: {
+        children : {
+            rechargeRecord : {
                 // 财务管理 -- 充值记录
-                path: '/financeManage/rechargeRecord',
-                name: 'rechargeRecord',
-                component: () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/rechargeRecord/rechargeRecord.vue'),
-                meta: {
-                    _name: 'recharge-record', //
-                    menuName: 'rechargeRecord', //lang.config.js 里面的语言键值
+                path : '/financeManage/rechargeRecord',
+                name : 'rechargeRecord',
+                component : () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/rechargeRecord/rechargeRecord.vue'),
+                meta : {
+                    _name : 'recharge-record', //
+                    menuName : 'rechargeRecord', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'rechargeRecord',
-                    iconClass: 'icon-person',
+                    iconClass : 'icon-recharge-record',
                     isMenu : true
                 },
             },
 
-            paymentManage: {
+            paymentManage : {
                 // 财务管理 -- 付款账户管理
-                path: '/financeManage/payment',
-                name: 'paymentManage',
-                component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/paymentManage.vue'),
-                meta: {
-                    _name: 'payment-account-manage',
-                    menuName: 'paymentManage', //lang.config.js 里面的语言键值
+                path : '/financeManage/payment',
+                name : 'paymentManage',
+                component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/paymentManage.vue'),
+                meta : {
+                    _name : 'payment-account-manage',
+                    menuName : 'paymentManage', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'paymentManage',
-                    iconClass: 'icon-person',
+                    iconClass : 'icon-payment-account',
                     isMenu : true
                 },
             },
 
-            collectionManage: {
+            collectionManage : {
                 // 财务管理 -- 收款账户管理
-                path: '/financeManage/collection',
-                name: 'collectionManage',
-                component: () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
-                meta: {
-                    _name: 'receivable-account-manage', //
-                    menuName: 'collectionManage', //lang.config.js 里面的语言键值
+                path : '/financeManage/collection',
+                name : 'collectionManage',
+                component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
+                meta : {
+                    _name : 'receivable-account-manage', //
+                    menuName : 'collectionManage', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'collectionManage',
-                    iconClass: 'icon-diamond',
+                    iconClass : 'icon-credited-account',
                     isMenu : true
                 },
 
             },
         }
     }
-}
+};

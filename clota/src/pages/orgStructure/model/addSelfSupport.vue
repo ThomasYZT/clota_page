@@ -18,14 +18,14 @@
             <Form-item :label="$t('selfSaleChannelType')" prop="type">
                 <RadioGroup v-model="addChannel.type">
                     <Radio label="online"><span>{{$t('online')}}</span></Radio>
-                    <Radio label="offline" style="margin-right: 0;"><span>{{$t('offline')}}</span></Radio>
+                    <!--<Radio label="offline" style="margin-right: 0;"><span>{{$t('offline')}}</span></Radio>-->
                 </RadioGroup>
-                <Tooltip placement="top" transfer>
-                    <i class="iconfont icon-note"></i>
-                    <div slot="content">
-                        <div class="tip-trade">{{$t('createChannelNotice')}}</div>
-                    </div>
-                </Tooltip>
+                <!--<Tooltip placement="top" transfer>-->
+                    <!--<i class="iconfont icon-note"></i>-->
+                    <!--<div slot="content">-->
+                        <!--<div class="tip-trade">{{$t('createChannelNotice')}}</div>-->
+                    <!--</div>-->
+                <!--</Tooltip>-->
             </Form-item>
             <!--URL-->
             <Form-item label="URL">

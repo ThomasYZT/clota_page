@@ -38,7 +38,7 @@
                 </FormItem>
                 <!--电子邮箱-->
                 <FormItem :label="$t('email')" prop="mail">
-                    <Input v-model.trim="formData.mail" style="width: 280px"/>
+                    <Input v-model.trim="formData.mail" :placeholder="$t('emailtip')" style="width: 280px"/>
                 </FormItem>
                 <!--短信服务商-->
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
@@ -100,13 +100,13 @@
             </Form>
         </div>
         <div slot="footer">
+            <Button type="primary"
+                    :loading="savIng"
+                    class="ivu-btn-90px"
+                    @click="save">{{$t('save')}}</Button>
             <Button type="ghost"
                 class="ivu-btn-90px"
                 @click="cancel">{{$t('cancel')}}</Button>
-            <Button type="primary"
-                    :loading="savIng"
-                class="ivu-btn-90px"
-                @click="save">{{$t('save')}}</Button>
         </div>
     </Modal>
 </template>
@@ -424,7 +424,18 @@
                     if(res.success){
                         this.$emit('fresh-structure-data');
                         this.$emit('input', false);
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                        if (this.formData.status === 'open') {
+                            this.$Message.success({
+                                content : this.$t('addNodeTips', {
+                                    nodeName : this.addedNodeDetail.nodeName,
+                                    nodeType : this.$t('company'),
+                                    email :  this.formData.mail
+                                }),
+                                duration : 5
+                            });
+                        } else {
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                        }
                     }else{
                         this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
                     }

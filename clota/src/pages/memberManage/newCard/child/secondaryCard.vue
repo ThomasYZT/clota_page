@@ -151,7 +151,6 @@
                         </FormItem>
                     </template>
                 </el-table-column>
-
                 <el-table-column
                     slot="column8"
                     slot-scope="row"

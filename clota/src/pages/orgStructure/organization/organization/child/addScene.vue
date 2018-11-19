@@ -59,7 +59,7 @@
                 </FormItem>
                 <!--电子邮箱-->
                 <FormItem :label="$t('email')" prop="mail">
-                    <Input v-model.trim="formData.mail" style="width: 280px"/>
+                    <Input v-model.trim="formData.mail" :placeholder="$t('emailtip')" style="width: 280px"/>
                 </FormItem>
                 <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
@@ -108,13 +108,13 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="ghost"
-                class="ivu-btn-90px"
-                @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     :loading="saveIng"
                     class="ivu-btn-90px"
                     @click="save">{{$t('save')}}</Button>
+            <Button type="ghost"
+                class="ivu-btn-90px"
+                @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -372,7 +372,18 @@
                 }).then(res => {
                     if(res.success){
                         this.$emit('fresh-structure-data');
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                        if (this.formData.status === 'open') {
+                            this.$Message.success({
+                                content : this.$t('addNodeTips', {
+                                    nodeName : this.addedNodeDetail.nodeName,
+                                    nodeType : this.$t('scene'),
+                                    email :  this.formData.mail
+                                }),
+                                duration : 5
+                            });
+                        } else {
+                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                        }
                     }else{
                         this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}))
                     }

@@ -4,7 +4,7 @@
 
         <div class="filter-wrap">
             <!--会员卡类型-->
-            <Select v-model="queryParams.cardTypeId" @on-change="queryList">
+            <Select v-model="queryParams.cardTypeId" @on-change="cardTypeChange">
                 <Option v-for="item in enumData.memberCardTypes"
                         :key="item.label"
                         :value="item.value">
@@ -216,7 +216,7 @@
             };
         },
         created () {
-            this.getLevelList();
+            // this.getLevelList();
             this.getChannelList();
             this.queryCardTypeList();
         },
@@ -227,17 +227,17 @@
         },
         methods : {
             // 获取会员级别列表
-            getLevelList () {
-                ajax.post('queryMemberLevels', {
-                    pageNo : 1,
-                    pageSize : 99999,
-                    isDeleted : 'false',
-                }).then(res => {
-                    if (res.success) {
-                        this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
-                    }
-                });
-            },
+            // getLevelList () {
+            //     ajax.post('queryMemberLevels', {
+            //         pageNo : 1,
+            //         pageSize : 99999,
+            //         isDeleted : 'false',
+            //     }).then(res => {
+            //         if (res.success) {
+            //             this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
+            //         }
+            //     });
+            // },
 
             // 获取会员渠道列表
             getChannelList () {
@@ -351,6 +351,35 @@
                         }) : []));
                     }
                 });
+            },
+            /**
+             * 根据会员类别获取会员级别
+             * @param{String} cardTypeId 会员类别id
+             */
+            queryLevelsByCardType (cardTypeId) {
+                ajax.post('queryLevelsByCardType',{
+                    cardTypeId : cardTypeId
+                }).then(res => {
+                    if (res.success) {
+                        this.$set(this.enumData, 'level', [].concat(this.enumData.level[0],res.data ? res.data : []));
+                        this.queryParams.levelId = 'null';
+                        this.queryList();
+                    }
+                });
+            },
+            /**
+             * 会员卡类别修改，
+             * @param{String} cardTypeId 会员类别id
+             */
+            cardTypeChange (cardTypeId) {
+                if (cardTypeId === 'all') {
+                    this.queryParams.levelId = 'null';
+                    this.enumData.level = this.enumData.level.slice(0,1);
+                    // this.$set(this.enumData, 'level', this.enumData.level[0]);
+                    this.queryList();
+                } else {
+                    this.queryLevelsByCardType(cardTypeId);
+                }
             }
         }
     };

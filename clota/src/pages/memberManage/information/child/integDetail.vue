@@ -91,20 +91,20 @@
                         </span>
                     </template>
                 </el-table-column>
+                <!--<el-table-column-->
+                    <!--slot="column2"-->
+                    <!--slot-scope="row"-->
+                    <!--:label="row.title"-->
+                    <!--:width="row.width"-->
+                    <!--:min-width="row.minWidth">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span v-if="scope.row.accountSubType === 'corpus'">{{$t('principal')}}：{{ scope.row.amount  | contentFilter }}</span>-->
+                        <!--<span v-else-if="scope.row.accountSubType === 'donate'">{{$t('sendGift')}}：{{ scope.row.amount  | contentFilter }}</span>-->
+                        <!--<span v-else>{{ scope.row.amount  | contentFilter }}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column
-                    slot="column2"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.accountSubType === 'corpus'">{{$t('principal')}}：{{ scope.row.amount  | contentFilter }}</span>
-                        <span v-else-if="scope.row.accountSubType === 'donate'">{{$t('sendGift')}}：{{ scope.row.amount  | contentFilter }}</span>
-                        <span v-else>{{ scope.row.amount  | contentFilter }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    slot="column4"
+                    slot="column3"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
@@ -114,7 +114,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column6"
+                    slot="column5"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
@@ -133,6 +133,7 @@
 
         <!--积分修改信息modal-->
         <modify-detail-modal
+            modal-type="integer"
             ref="modifyDetail"
             :manual-data="currManualData">
         </modify-detail-modal>
@@ -145,11 +146,11 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import modifyDetailModal from '../components/viewModifyModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {integraDetailHead, integraType} from './integDetailConfig';
+    import { integraDetailHead, integraType } from './integDetailConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             modifyDetailModal,
             tableCom
@@ -157,46 +158,46 @@
         mixins : [lifeCycleMixins],
         data () {
             return {
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'memberInfo',     // 会员信息
-                        router: {
+                        name : 'memberInfo', // 会员信息
+                        router : {
                             name : 'memberInfo'
                         },
                     },
                     {
-                        name: 'memberDetail',   // 会员详情
-                        router: {
+                        name : 'memberDetail', // 会员详情
+                        router : {
                             name : 'infoDetail'
                         },
                     },
                 ],
-                localeRouter: 'selfIntegralTradeDetail',    // 个人积分交易明细
+                localeRouter : 'selfIntegralTradeDetail', // 个人积分交易明细
                 // 查询数据
-                queryParams: {
-                    cardId: '',
-                    accountTypeIds: '',
-                    operType: 'null',
-                    startDate: '',
-                    endDate: '',
-                    pageNo: 1,
-                    pageSize: 10,
+                queryParams : {
+                    cardId : '',
+                    accountTypeIds : '',
+                    operType : 'null',
+                    startDate : '',
+                    endDate : '',
+                    pageNo : 1,
+                    pageSize : 10,
                 },
                 // 枚举数据
-                type: integraType,
+                type : integraType,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
-                totalCount: 0,
+                totalCount : 0,
                 //表头配置
                 columnData : integraDetailHead,
                 //会员详情账户数据
-                integraDetail: {},
+                integraDetail : {},
                 //当前手动修改的交易数据
-                currManualData: {},
-            }
+                currManualData : {},
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询积分交易明细
              */
@@ -210,10 +211,10 @@
                     startDate : this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '',
                     endDate : this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '',
                 })).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -233,8 +234,8 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    for(let item in params){
+                if (params && Object.keys(params).length > 0) {
+                    for (let item in params) {
                         this[item] = params[item];
                     }
 
@@ -247,10 +248,10 @@
             /**
              * 查询交易明细
              */
-            filterDealList() {
+            filterDealList () {
                 Object.assign(this.queryParams, {
-                    pageNo: 1,
-                    pageSize: 10
+                    pageNo : 1,
+                    pageSize : 10
                 });
                 this.queryList();
             },
@@ -258,27 +259,27 @@
             /**
              * 重置查询条件
              */
-            resetQueryParams() {
+            resetQueryParams () {
                 Object.assign(this.queryParams, {
-                    operType: 'null',
-                    startDate: '',
-                    endDate: '',
-                    pageNo: 1,
-                    pageSize: 10,
+                    operType : 'null',
+                    startDate : '',
+                    endDate : '',
+                    pageNo : 1,
+                    pageSize : 10,
                 });
                 this.queryList();
             },
 
             //路由跳转订单详情页面
-            goOderDetail(scopeRow) {
+            goOderDetail (scopeRow) {
                 this.$router.push({
-                    name: 'orderDetail',
-                    query: {orderNo: scopeRow.orderNo}
+                    name : 'orderDetail',
+                    query : { orderNo : scopeRow.orderNo }
                 });
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -345,6 +346,5 @@
 
     }
 </style>
-
 
 

@@ -78,7 +78,7 @@
                     </Form-item>
                 </div>
 
-                <div class="ivu-form-item-wrap double-input">
+                <div class="ivu-form-item-wrap double-input" v-if="showDonateAccount">
                     <Form-item :label="$t('adjustGiftAccBalance') + '：'" prop="donateAmount"><!--赠送账户余额调整-->
                         <RadioGroup v-model="formData.donateOptSign">
                             <Radio label="add">
@@ -317,7 +317,16 @@
         computed : {
             ...mapGetters({
                 lang : 'lang'
-            })
+            }),
+            //是否显示赠送账户余额调整
+            showDonateAccount () {
+                for (let i = 0,j = this.store.length; i < j; i++) {
+                    if (this.formData.accountTypeId === this.store[i]['id']) {
+                        return this.store[i]['accountDefineId'] === '1';
+                    }
+                }
+                return false;
+            }
         }
     };
 </script>

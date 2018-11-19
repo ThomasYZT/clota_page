@@ -1,10 +1,36 @@
-<!--会员分布数据-->
+<!--会员类别分布数据-->
 <template>
     <div class="member-data-pie">
         <div class="data-header">
-            <div class="title">{{$t("memberDistribute")}}</div>
+            <div class="title">{{$t("企业会员卡数量")}}</div>
         </div>
-
+        <div class="filter-head">
+            <!--时间范围选择-->
+            <span :class="{'active': timeType === 'all'}"
+                  class="date-range"
+                  @click="changeTimeType('all')">{{$t("all")}}</span>
+            <span :class="{'active': timeType === 'today'}"
+                  class="date-range"
+                  @click="changeTimeType('today')">{{$t("今日")}}</span>
+            <span :class="{'active': timeType === 'week'}"
+                  class="date-range"
+                  @click="changeTimeType('week')">{{$t("本周")}}</span>
+            <span :class="{'active': timeType === 'month'}"
+                  class="date-range"
+                  @click="changeTimeType('month')">{{$t("本月")}}</span>
+            <div class="date-range-filter">
+                <DatePicker v-model="autoDefTIme"
+                            format="yyyy-MM-dd"
+                            type="daterange"
+                            :clearable="false"
+                            :editable="false"
+                            transfer
+                            placement="bottom-end"
+                            style="width: 220px"
+                            @on-change="dateChange">
+                </DatePicker>
+            </div>
+        </div>
         <div class="data-content">
             <vue-echarts
                 v-if="memberLevelData && memberLevelData.length > 0"
@@ -34,7 +60,11 @@
                 //会员等级数据
                 memberLevelData : [],
                 //会员总数
-                memberCount : ''
+                memberCount : '',
+                //当前查看的时间范围
+                timeType : 'all',
+                //自定义时间
+                autoDefTIme : [],
             };
         },
         computed : {
@@ -162,37 +192,112 @@
                         }
                     ]
                 };
+            },
+            //筛选时间参数
+            serachParams () {
+                if (this.timeType === 'all') {//全部
+                    return {
+                        startTime : '1990-01-01',
+                        endTime : '9999-12-31'
+                    };
+                } else if (this.timeType === 'today') {//当天
+                    return {
+                        startTime : new Date().format('yyyy-MM-dd'),
+                        endTime : new Date().format('yyyy-MM-dd')
+                    };
+                } else if (this.timeType === 'week') {//本周
+                    return {
+                        startTime : new Date().addDays(-new Date().getDay() === 0 ? -new Date().getDay() - 6 : -new Date().getDay() + 1).format('yyyy-MM-dd'),
+                        endTime : new Date().addDays(new Date().getDay() === 0 ? 0 : 7 - new Date().getDay()).format('yyyy-MM-dd'),
+                    };
+                } else if (this.timeType === 'month') {//本月
+                    return {
+                        startTime : new Date().format('yyyy-MM-01'),
+                        endTime : new Date().addDays(-new Date().getDate()).addMonths(1).addDays(-1).format('yyyy-MM-dd'),
+                    };
+                } else if (this.timeType === 'autoDefTIme') {//自定义事件
+                    return {
+                        startTime : this.autoDefTIme[0] ? this.autoDefTIme[0].format('yyyy-MM-dd') : '',
+                        endTime : this.autoDefTIme[1] ? this.autoDefTIme[1].format('yyyy-MM-dd') : '',
+                    };
+                }
             }
         },
         methods : {
+            // /**
+            //  * 获取会员等级数量
+            //  */
+            // getMemberLevelCount () {
+            //     this.memberCount = 0;
+            //     ajax.post('getMemberLevelCount').then(res => {
+            //         if (res.success) {
+            //             this.memberLevelData = res.data ? res.data.map(item => {
+            //                 this.memberCount += item.levelCount;
+            //                 return {
+            //                     value : item.levelCount,
+            //                     label : item.levelName
+            //                 };
+            //             }) : [];
+            //         } else {
+            //             this.memberLevelData = [];
+            //         }
+            //     }).catch(err => {
+            //         this.memberLevelData = [];
+            //     }).finally(() => {
+            //         this.$nextTick(() => {
+            //             this.$refs.vueChart ? this.$refs.vueChart.refresh() : '';
+            //         });
+            //     });
+            // },
             /**
-             * 获取会员等级数量
+             * 获取对应时间的消费数据
+             * @param timeType 时间类型
              */
-            getMemberLevelCount () {
+            changeTimeType (timeType) {
+                this.autoDefTIme = [];
+                this.timeType = timeType;
+                this.getCompanyCardTypeInfo();
+            },
+            /**
+             * 自定义查看时间范围
+             */
+            dateChange () {
+                this.timeType = 'autoDefTIme';
+                this.getCompanyCardTypeInfo();
+            },
+            /**
+             * 获取企业卡数据分布
+             */
+            getCompanyCardTypeInfo () {
                 this.memberCount = 0;
-                ajax.post('getMemberLevelCount').then(res => {
+                ajax.post('countCardsByTyeId',{
+                    ...this.serachParams,
+                    cardTypeId : '3'//业主卡-1 个人会员卡-2 企业卡-3
+                }).then(res => {
                     if (res.success) {
                         this.memberLevelData = res.data ? res.data.map(item => {
-                            this.memberCount += item.levelCount;
+                            this.memberCount += item.quantity;
                             return {
-                                value : item.levelCount,
-                                label : item.levelName
+                                value : item.quantity,
+                                label : item.levelDesc
                             };
                         }) : [];
                     } else {
                         this.memberLevelData = [];
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.memberLevelData = [];
                 }).finally(() => {
                     this.$nextTick(() => {
-                        this.$refs.vueChart ? this.$refs.vueChart.refresh() : '';
+                        if (this.$refs.vueChart) {
+                            this.$refs.vueChart.refresh();
+                        }
                     });
                 });
             }
         },
         created () {
-            this.getMemberLevelCount();
+            this.getCompanyCardTypeInfo();
         }
     };
 </script>
@@ -221,13 +326,43 @@
 
         }
 
+        .filter-head{
+            @include block_outline($height : 40px);
+            padding: 10px 20px 0 0;
+            text-align: right;
+
+            .date-range{
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                font-size: $font_size_14px;
+                color: $color_7F8FA4;
+                letter-spacing: 1px;
+                margin-right: 10px;
+                cursor: pointer;
+                &.active{
+                    color: $color_blue;
+                }
+            }
+
+            .date-range-filter{
+                vertical-align: middle;
+                position: relative;
+                display: inline-block;
+                height: 30px;
+
+                /deep/ .ivu-input{
+                    cursor: pointer;
+                }
+            }
+        }
+
         .data-content {
-            height: calc(100% - 50px);
-            padding-top: 10px;
+            height: calc(100% - 90px);
             position: relative;
 
             .echarts {
-                @include block_outline(100%, 175px);
+                @include block_outline(100%, 180px);
                 max-width: 700px;
                 margin: 0 auto;
             }
