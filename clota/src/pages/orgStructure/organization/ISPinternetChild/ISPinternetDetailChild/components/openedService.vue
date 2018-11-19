@@ -13,7 +13,7 @@
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
                 <div class="service-operation" v-if="type === 'scene' && canModifyService">
-                    <Button type="primary"
+                    <Button type="error"
                             :disabled="!canDelService"
                             @click="delService(selectedService)">{{$t('delService')}}</Button>
                     <Button type="primary"

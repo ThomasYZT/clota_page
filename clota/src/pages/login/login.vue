@@ -6,9 +6,9 @@
                 <img src="../../assets/images/logo.svg" alt="">
             </div>
             <div class="lang">
-                <span @click="changeLang('zh-CN')">中文</span>
-                <span>|</span>
-                <span @click="changeLang('en')">English</span>
+                <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">中文</span>
+                <span class="lang-split-line">|</span>
+                <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">English</span>
             </div>
         </div>
         <!-- 登录模块 -->
@@ -31,7 +31,8 @@
                             <Input type="password"
                                    prefix="logo-usd"
                                    v-model.trim="formInline.password"
-                                   :placeholder="$t('password')"/>
+                                   :placeholder="$t('password')"
+                                   @on-enter="handleSubmit('formInline')"/>
                         </Form-item>
                         <Form-item class="auto-reme">
                             <Checkbox v-model="rememberAccount">{{ $t("rememberAccount") }}</Checkbox>
@@ -63,6 +64,7 @@
 <script>
     import ajax from '@/api/index';
     import MD5 from 'crypto-js/md5';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {},
@@ -176,7 +178,11 @@
                 this.$router.push({name: 'register'})
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters({
+                lang : 'lang'
+            })
+        },
         created() {
             this.formInline.user =  localStorage.getItem('logName') ? localStorage.getItem('logName') : '';
             this.rememberAccount =  !!localStorage.getItem('logName');
@@ -208,24 +214,22 @@
         }
         .lang {
             float: right;
-            span {
+
+            .lang-list{
                 float: left;
-                &:first-child {
+                font-size: $font_size_16px;
+                cursor: pointer;
+                color: #9d9d9d;
+
+                &.active{
                     font-size: $font_size_18px;
                     color: $color_333;
-                    margin-right: 10px;
-                    cursor: pointer;
                 }
-                &:nth-child(2) {
-                    font-size: $font_size_18px;
-                    color: $color_3F3F3F;
-                    margin-right: 10px;
-                }
-                &:last-child {
-                    font-size: $font_size_14px;
-                    color: $color_3F3F3F;
-                    cursor: pointer;
-                }
+            }
+
+            .lang-split-line{
+                float: left;
+                margin : 0 10px;
             }
         }
     }
