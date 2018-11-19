@@ -81,7 +81,7 @@
             },
             /**
              * 跳转到对应的一级菜单
-             * @param data
+             * @param {*} data
              */
             toTopMenu (data) {
                 this.$router.push({ path : data.path });

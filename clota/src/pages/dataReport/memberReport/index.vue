@@ -60,7 +60,7 @@
                 if (newVal.name === 'memberReport') {
                     this.$router.push({
                         name : 'cardSaleReport',
-                    })
+                    });
                 }
             }
         }

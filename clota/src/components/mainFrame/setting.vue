@@ -67,7 +67,7 @@
         methods : {
             /**
              * 切换语言
-             * @param lang
+             * @param {*} lang
              */
             changeLang (lang) {
                 this.$store.commit('setLang',lang);
@@ -81,7 +81,7 @@
             },
             /**
              * 修改皮肤
-             * @param skin
+             * @param {*} skin
              */
             chagneSkin (skin) {
                 this.$store.commit('updateSkin',skin);

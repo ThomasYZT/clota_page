@@ -203,4 +203,4 @@ export const memberConsumeDetailHead = [
         minWidth : 100,
         field : ''
     },
-]
+];
