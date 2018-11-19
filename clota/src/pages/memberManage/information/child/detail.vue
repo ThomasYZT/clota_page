@@ -294,6 +294,20 @@
                             @add-success="listCardAccountInfo(choosedCard)">
         </modify-score-modal>
 
+        <!--密码确认框-->
+        <edit-modal ref="editModal">
+            <Form ref="formData" :model="formData">
+                <!--请输入登录密码-->
+                <FormItem prop="password" :label="$t('请输入登录密码')" :rules="[  {
+                            required : true,
+                            message : $t('inputField',{ field : $t('password') }),
+                            trigger : 'blur'
+                        }]">
+                    <Input v-model.trim="formData.password" type="password" style="width: 280px"/>
+                </FormItem>
+            </Form>
+        </edit-modal>
+
     </div>
 </template>
 
@@ -320,6 +334,8 @@
     import memberCardBaseInfo from '../components/memberCardBaseInfo';
     import noData from '@/components/noDataTip/noData-tip.vue';
     import ownerCardViceCard from '../components/ownerCardViceCard';
+    import editModal from '@/components/editModal/index.vue';
+    import MD5 from 'crypto-js/md5';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -340,7 +356,8 @@
             storeAccountInfo,
             integralAccountInfo,
             noData,
-            ownerCardViceCard
+            ownerCardViceCard,
+            editModal
         },
         data () {
             return {
@@ -416,7 +433,11 @@
                 //选择的会员卡信息
                 choosedCard : {},
                 //会员信息
-                memberInfo : {}
+                memberInfo : {},
+                //表单数据
+                formData : {
+                    password : ''
+                }
             };
         },
         created () {
@@ -662,13 +683,16 @@
 
             // 修改该会员储值账户余额
             showAssetModal () {
-                let _storeList = defaultsDeep([], this.charTableData);
-                this.$refs.modifyBalance.show( _storeList );
-
+                this.validatePassword().then(() => {
+                    let _storeList = defaultsDeep([], this.charTableData);
+                    this.$refs.modifyBalance.show( _storeList );
+                });
             },
             //修改该会员积分账户余额
             showScoreModal () {
-                this.$refs.modifyScore.show();
+                this.validatePassword().then(() => {
+                    this.$refs.modifyScore.show();
+                });
             },
 
             //修改会员信息
@@ -811,6 +835,42 @@
                 //
                 // });
             },
+            /**
+             * 校验登录密码
+             * @return {Promise<any>}
+             */
+            validatePassword () {
+                return new Promise((resolve,reject) => {
+                    this.$refs.editModal.show({
+                        title : this.$t('请输入登录密码'),
+                        confirmCallback : () => {
+                            this.$refs.formData.validate(valid => {
+                                if (valid) {
+                                    this.$refs.formData.resetFields();
+                                    ajax.post('secondLogin',{
+                                        password : MD5(this.formData.password).toString()
+                                    }).then(res => {
+                                        if (res.success) {
+                                            if (res.data) {
+                                                resolve();
+                                            } else {
+                                                this.$Message.error('登录密码错误');
+                                            }
+                                        }
+                                        reject();
+                                    }).catch(() => {
+                                        reject();
+                                    }).finally(() => {
+                                        this.$refs.editModal.hide();
+                                    });
+                                } else {
+                                    reject();
+                                }
+                            });
+                        }
+                    });
+                });
+            }
 
         }
     };

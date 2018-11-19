@@ -119,6 +119,15 @@
                                   :card-info="memberDetail"
                                   @fresh-data="$emit('fresh-card-info')">
         </change-house-money-modal>
+        <!--修改购房金额密码确认框-->
+        <edit-modal ref="editModal">
+            <Form ref="formData" :model="formData" :rules="ruleValidate">
+                <!--修改分组名称-->
+                <FormItem prop="password" :label="$t('请输入登录密码')">
+                    <Input v-model.trim="formData.password" type="password" style="width: 280px"/>
+                </FormItem>
+            </Form>
+        </edit-modal>
     </div>
 </template>
 
@@ -127,11 +136,14 @@
     import setPasswordModal from '../../newCard/components/setPasswordModal';
     import ajax from '@/api/index.js';
     import changeHouseMoneyModal from './changeHouseMoneyModal';
+    import editModal from '@/components/editModal/index.vue';
+    import MD5 from 'crypto-js/md5';
 
     export default {
         components : {
             setPasswordModal,
-            changeHouseMoneyModal
+            changeHouseMoneyModal,
+            editModal
         },
         props : {
             //会员卡详情
@@ -148,7 +160,19 @@
                 //设置密码模态框是否显示
                 setPasswordModalShow : false,
                 // 修改购房总金额是否显示
-                changeHouseMoneyModalShow : false
+                changeHouseMoneyModalShow : false,
+                formData : {
+                    password : ''
+                },
+                ruleValidate : {
+                    password : [
+                        {
+                            required : true,
+                            message : this.$t('inputField',{ field : this.$t('password') }),
+                            trigger : 'blur'
+                        }
+                    ]
+                }
             };
         },
         methods : {
@@ -182,7 +206,35 @@
              * 修改购房金额
              */
             changeHouseMoney () {
-                this.changeHouseMoneyModalShow = true;
+                this.$refs.editModal.show({
+                    title : this.$t('请输入登录密码'),
+                    confirmCallback : () => {
+                        this.$refs.formData.validate(valid => {
+                            if (valid) {
+                                this.$refs.formData.resetFields();
+                                this.checkPassword();
+                            }
+                        });
+                    }
+                });
+            },
+            /**
+             * 校验登录密码是否正确
+             */
+            checkPassword () {
+                ajax.post('secondLogin',{
+                    password : MD5(this.formData.password).toString()
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data) {
+                            this.changeHouseMoneyModalShow = true;
+                        } else {
+                            this.$Message.error('登录密码错误');
+                        }
+                    }
+                }).finally(() => {
+                    this.$refs.editModal.hide();
+                });
             }
         }
     };

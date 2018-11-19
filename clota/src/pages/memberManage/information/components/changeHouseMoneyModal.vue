@@ -29,8 +29,8 @@
             :table-com-min-height="250">
         </table-com>
         <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="save" >{{$t("save")}}</Button>
-            <Button type="ghost" @click="cancel" >{{$t("cancel")}}</Button>
+            <Button type="primary" class="ivu-btn-90px" @click="save" >{{$t("save")}}</Button>
+            <Button type="ghost" class="ivu-btn-90px" @click="cancel" >{{$t("cancel")}}</Button>
         </div>
     </Modal>
 </template>
@@ -39,6 +39,7 @@
     import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js'
+
 	export default {
 	    components : {
             tableCom
@@ -96,24 +97,26 @@
                 columnData : [
                     {
                         title : '修改时间', // 修改时间
-                        minWidth : 150,
-                        enMinWidth : 290,
-                        field : 'amount'
+                        minWidth : 190,
+                        field : 'updatedTime',
+                        type : 'time'
                     },
                     {
                         title : '原购房金额', // 原购房金额
                         width : 150,
-                        field : 'evaluateType'
+                        field : 'oldMoney',
+                        type : 'money'
                     },
                     {
                         title : '修改后购房金额', // 修改后购房金额
                         minWidth : 150,
-                        field : 'remark'
+                        field : 'newMoney',
+                        type : 'money'
                     },
                     {
                         title : '操作人', // 操作人
                         width : 100,
-                        field : 'id'
+                        field : 'optUser'
                     },
                 ]
             };
@@ -149,6 +152,8 @@
             visibleChange (type) {
                 if (type === false) {
                     this.$refs.formValidate.resetFields();
+                } else {
+                    this.queryHouseMoneyEditRecord();
                 }
             },
             /**
@@ -167,6 +172,29 @@
                     }
                 }).finally(() => {
                     this.$emit('input',false);
+                });
+            },
+            /**
+             * 查询购房金额修改记录
+             */
+            queryHouseMoneyEditRecord () {
+                ajax.post('queryHouseMoneyEditRecord',{
+                    memberId : this.cardInfo.memberId
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.map(item => {
+                            let record = item.contents ? JSON.parse(item.contents) : {};
+                            return {
+                                ...item,
+                                oldMoney : record.oldMoney,
+                                updatedTime : record.updatedTime,
+                                optUser : record.optUser,
+                                newMoney : record.newMoney,
+                            };
+                        }) : [];
+                    } else {
+                        this.tableData = [];
+                    }
                 });
             }
         }

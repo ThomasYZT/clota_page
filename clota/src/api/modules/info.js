@@ -89,6 +89,8 @@ export default {
     'exportAccountDetail' : '/member/memberAccount/exportAccountDetail',
     //修改购房金额
     'updateHomeMoney' : '/member/updateHomeMoney',
+    //查看修改购房金额记录
+    'queryHouseMoneyEditRecord' : '/member/queryHouseMoneyEditRecord',
 
 
     /***********************************会员积分***********************************/

@@ -26,6 +26,8 @@ const apiList = {
     /*****************登录+获取用户信息公用接口****************/
     // 登录
     login: '/account/login',
+    //二次校验登录密码是否正确
+    secondLogin: '/account/secondLogin',
     // 注册
     register: '/partner/signUp',
     //图片上传接口
