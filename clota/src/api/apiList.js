@@ -18,6 +18,8 @@ import account from './modules/account';
 import finance from './modules/finance';
 //预订单中心接口
 import orderCenter from './modules/orderCenter';
+//数据中心接口
+import report from './modules/report';
 
 const apiList = {
 
@@ -49,7 +51,9 @@ const apiList = {
     //财务管理接口
     ...finance,
     //预定中心接口
-    ...orderCenter
+    ...orderCenter,
+    //数据中心接口
+    ...report
 };
 
 export default apiList;

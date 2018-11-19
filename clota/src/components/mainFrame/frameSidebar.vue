@@ -16,7 +16,7 @@
                         :menu-info="item"
                         :menu-deep="2"
                         :children-menu="item.children"
-                        v-if="item.children && item.children.length > 2">
+                        v-if="item.children && item.children.length > 2 && item.children && item.children.filter(item => item.meta ? item.meta.isMenu : false).length > 0">
                     </menu-com>
                     <MenuItem :name="item.name"
                               v-else

@@ -114,5 +114,7 @@ export default {
     'addOrUpdateOrgStaff' : '/organize/addOrUpdateOrgStaff',
     //删除导游或司机
     'batchDeleteOrgStaff' : '/organize/batchDeleteOrgStaff',
+    //查询当前机构对应景区
+    'queryScenicByOrgId' : '/organize/queryScenicByOrgId',
 
 }

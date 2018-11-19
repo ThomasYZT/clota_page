@@ -3,30 +3,68 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="">
+    <div class="card-sale-report">
+        <!-- 数据表 -->
+        <datasheet v-if="type === 'datasheet'" :cardTypeList="cardTypeList"></datasheet>
 
+        <!-- 趋势图 -->
+        <tendency v-else :cardTypeList="cardTypeList"></tendency>
     </div>
 </template>
 
 <script>
-
+    import datasheet from './child/datasheet';
+    import tendency from './child/tendency';
+    import ajax from '../../../../api/index';
     export default {
-        components : {},
-        data () {
-            return {};
+        props : {
+            type : {
+                type : String,
+                default : ''
+            }
         },
-        methods : {}
+        components : {
+            datasheet,
+            tendency,
+        },
+        data () {
+            return {
+                //会员卡类型列表数据
+                cardTypeList : [],
+            };
+        },
+        methods : {
+            /**
+             * 获取会员卡类型下拉列表数据
+             */
+            getMemberTypeList () {
+                ajax.post('queryCardTypeList').then(res => {
+                    if (res.success && res.data.length > 0) {
+                        this.cardTypeList = this.cardTypeList.concat(res.data.map(item => {
+                            return {
+                                value : item.id,
+                                label : item.typeName
+                            };
+                        }));
+                        this.defaultCardType = this.cardTypeList[0].value;
+                    } else {
+                        this.cardTypeList = [];
+                    }
+                });
+            },
+        },
+        created () {
+            this.getMemberTypeList();
+        }
     };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .container{
-        @include block_outline();
-        min-width: $content_min_width;
-        overflow: auto;
-        background: $color-fff;
-        border-radius: 4px;
+    .card-sale-report {
+        width: 100%;
+        height: calc(100% - 59px);
     }
+
 </style>

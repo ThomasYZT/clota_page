@@ -217,8 +217,55 @@ export default {
             //     reject('integetError');
             // }
         });
+    },
+    /**
+     * 获取以今天为基准，前后N天的Date对象
+     * @param {number} index
+     */
+    getDay (index) {
+        let _tDay = new Date();
+        let _tTime = _tDay.getTime();
+        //有参数获取对应事件、否则返回当前时间
+        _tDay.setTime(_tTime ? _tTime + 1000*60*60*24*index : 0);
+        return _tDay;
+    },
+    /**
+     * 获取星期几
+     * @param date
+     * @return {*}
+     */
+    getWeekDay (date) {
+        if (date) {
+            var week;
+            let index = date.getDay();
+            switch (index) {
+                case 0:
+                    week = "Sunday";
+                    break;
+                case 1:
+                    week = "Monday";
+                    break;
+                case 2:
+                    week = "Tuesday";
+                    break;
+                case 3:
+                    week = "Wednesday";
+                    break;
+                case 4:
+                    week = "Thursday";
+                    break;
+                case 5:
+                    week = "Friday";
+                    break;
+                case 6:
+                    week = "Saturday";
+                    break;
+            }
+        }
+        return week;
     }
-}
+};
+
 
 
 // 表单校验，正则表达式

@@ -26,24 +26,24 @@ export default {
             memberReport : {
                 path: '/dataReport/memberReport',
                 component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/index.vue'),
-                meta: {
+                name : 'memberReport',
+                meta : {
                     menuName: 'memberReport', //lang.config.js 里面的语言键值
                     _name: 'member-report',
                     iconClass: 'icon-diamond',
                     rightPath: topMenuName + '.' + 'memberReport',
-                    isMenu: true
+                    isMenu: true,
                 },
-                children : {
+                children: {
                     //数据中心--会员报表--会员卡销售报表
                     cardSaleReport: {
                         path: '/dataReport/memberReport/cardSaleReport',
                         name: 'cardSaleReport',
                         component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/cardSaleReport/index.vue'),
                         meta: {
-                            menuName: 'cardSaleReport', //lang.config.js 里面的语言键值
-                            _name: 'member-card-sale',
+                            menuName: 'memberReport', //lang.config.js 里面的语言键值
+                            _name: 'member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
-                            isMenu : true
                         },
                     },
                     //数据中心--会员报表--会员消费数据报表
@@ -53,9 +53,19 @@ export default {
                         component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/consumeReport/index.vue'),
                         meta: {
                             menuName: 'consumeReport', //lang.config.js 里面的语言键值
-                            _name: 'member-consume',
+                            _name: 'member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
-                            isMenu : true
+                        },
+                    },
+                    //数据中心--会员报表--会员个人消费记录
+                    consumeRecord : {
+                        path: '/dataReport/memberReport/consumeReport/consumeRecord',
+                        name: 'consumeRecord',
+                        component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/consumeReport/child/memberConsumeDetail.vue'),
+                        meta: {
+                            menuName: 'consumeRecord', //lang.config.js 里面的语言键值
+                            _name: 'member-report',
+                            rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },
                     //数据中心--会员报表--会员储值报表
@@ -65,9 +75,8 @@ export default {
                         component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/storeValueReport/index.vue'),
                         meta: {
                             menuName: 'storeValueReport', //lang.config.js 里面的语言键值
-                            _name: 'member-charging',
+                            _name: 'member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
-                            isMenu : true
                         },
                     },
                     //数据中心--会员报表--各渠道会员数据报表
@@ -77,9 +86,8 @@ export default {
                         component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/mutipleChannelReport/index.vue'),
                         meta: {
                             menuName: 'mutipleChannelReport', //lang.config.js 里面的语言键值
-                            _name: 'member-channel',
+                            _name: 'member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
-                            isMenu : true
                         },
                     },
                     //数据中心--会员报表--会员积分数据报表
@@ -89,13 +97,12 @@ export default {
                         component: () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/scoreReport/index.vue'),
                         meta: {
                             menuName: 'scoreReport', //lang.config.js 里面的语言键值
-                            _name: 'member-score',
+                            _name: 'member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
-                            isMenu : true
                         },
                     },
                 }
-            }
+            },
         }
     }
 }
