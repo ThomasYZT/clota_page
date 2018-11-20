@@ -47,6 +47,7 @@ import elUpload from 'element-ui/lib/upload';
 import elDialog from 'element-ui/lib/dialog';
 import elCollapse from 'element-ui/lib/collapse';
 import elCollapseItem from 'element-ui/lib/collapse-item';
+import Loading  from 'element-ui/lib/Loading';
 
 
 // // 按需引入 Echarts 图表
@@ -82,6 +83,7 @@ plugin.install = function (Vue, options) {
     Vue.use(elDialog);
     Vue.use(elCollapse);
     Vue.use(elCollapseItem);
+    Vue.use(Loading);
 
     //iview按需引入
     Vue.component('Button',Button);
