@@ -27,8 +27,7 @@
                 <div class="input-area">
                     <Form ref="formValidate"
                           :model="formData"
-                          :rules="ruleValidate"
-                          @submit.native="submit">
+                          :rules="ruleValidate">
                         <FormItem prop="code">
                             <Input type="text"
                                    id="payCodeInput"
@@ -37,8 +36,9 @@
                                    style="width: 280px"
                                    placeholder="扫码前，请获取焦点"
                                    @on-focus="setValidateStatus"
-                                   @keyup.native.stop.enter="startPay($event)"/>
+                                   @on-enter="startPay"/>
                         </FormItem>
+                        <input type="text" style="display: none;">
                     </Form>
                 </div>
             </template>
@@ -168,11 +168,8 @@
             },
             /**
              * 发起支付申请
-             * @param{Object} event 事件对象
              */
-            startPay (event) {
-                event.cancleBubble = true;
-                event.returnValue = false;
+            startPay () {
                 this.$emit('start-pay',this.formData.code);
             },
             /**
