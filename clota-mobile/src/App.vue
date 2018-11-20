@@ -77,7 +77,7 @@
             </loading>
         </div>
 
-        <tabbar v-if="isTabbarShow"
+        <tabbar v-if="isTabbarShow && cardInfo.cardTypeId !== '1'"
                 v-model="actived">
             <tabbar-item v-for="(item, index) in tabbarList"
                          :key="index"
@@ -211,7 +211,8 @@
                 hashKey : 'hashKey',
                 lang : 'lang',
                 isLoading : 'isLoading',
-                showNetworkError : 'showNetworkError'
+                showNetworkError : 'showNetworkError',
+                cardInfo : 'cardInfo'
             }),
             viewTransition () {
                 return 'vux-pop-in';

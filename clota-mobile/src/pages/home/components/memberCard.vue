@@ -102,7 +102,7 @@
                     return cardType;
                 } else if (this.info.cardTypeId === '3') {
                     //企业卡
-                    cardType += 'company-card ';
+                    cardType = 'company-card ';
                     return cardType;
                 }
             },
@@ -207,6 +207,7 @@
         //企业卡样式
         &.company-card {
             color: #fff;
+            background-image: url("../../../assets/images/year-card.png");
             .card-level {
                 background: rgba(220, 220, 220, .2);
             }

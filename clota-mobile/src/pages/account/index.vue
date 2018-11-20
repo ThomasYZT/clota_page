@@ -68,7 +68,9 @@
             </div>
         </div>
 
-        <div class="btn-area" :class="{'owner-btn' : isOwnerCard}">
+        <div v-if="this.accountList.length > 0 && this.accountList[accountShow].accountDefineId === '1'"
+             class="btn-area"
+             :class="{'owner-btn' : isOwnerCard}">
             <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
         </div>
         <popup-picker

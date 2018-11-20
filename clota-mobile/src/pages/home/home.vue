@@ -45,7 +45,7 @@
                     iconColor : '#F46462'
                 },
                 {
-                    title : 'defaultAccount',
+                    title : 'accountOfStoreValue',
                     link : '/account',
                     iconClass : 'icon-default-account',
                     info : '',
@@ -76,14 +76,14 @@
                     params : {},
                     iconColor : '#F46462'
                 },
-                {
-                    title : 'card',
-                    link : '/card',
-                    iconClass : 'icon-my-package',
-                    info : '',
-                    params : {},
-                    iconColor : '#368CE3'
-                },
+                // {
+                //     title : 'card',
+                //     link : '/card',
+                //     iconClass : 'icon-my-package',
+                //     info : '',
+                //     params : {},
+                //     iconColor : '#368CE3'
+                // },
                 {
                     title : 'memberRight',
                     link : '/memberRight',
@@ -135,7 +135,7 @@
              */
             swiperChange (index) {
                 //更新会员卡数据
-                localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList[index]));
+                localStorage.setItem('cardInfo', JSON.stringify(this.cardInfoList[index]));
                 this.updateCardInfo();
                 //更新个人信息
                 let userInfo = defaultsDeep({cardId : this.cardInfo.id}, this.userInfo);
@@ -165,19 +165,13 @@
              */
             setCell () {
                 for (let i = 0,len = this.labelList.length; i < len; i++) {
-                    if (this.labelList[i].title === 'integralDetail') {
-                        return this.labelList[i];
-                    }
                     switch (this.labelList[i].title) {
                         case 'integralDetail':
                             this.labelList[i].info = this.cardInfo.pointBalance;
                             this.labelList[i].params.num = this.cardInfo.pointBalance;
                             break;
-                        case 'defaultAccount':
+                        case 'accountOfStoreValue':
                             this.labelList[i].info = this.cardInfo.moneyBalance
-                            break;
-                        case 'memberRight':
-                            this.labelList[i].params.levelDesc = this.cardInfo.levelDesc;
                             break;
                         default :
                             this.labelList[i].info = '';
@@ -190,6 +184,11 @@
         created () {
             //设置菜单数据
             this.setCell();
+        },
+        watch : {
+            cardInfo () {
+                this.setCell();
+            }
         }
   };
 </script>

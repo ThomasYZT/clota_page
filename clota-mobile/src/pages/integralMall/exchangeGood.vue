@@ -98,7 +98,7 @@
                     }).then(res => {
                         if (res.success) {
                             this.$router.push({
-                                name : 'goodDetail'
+                                name : 'exchangeRecord'
                             });
                             this.$vux.toast.show({
                                 type : 'success',

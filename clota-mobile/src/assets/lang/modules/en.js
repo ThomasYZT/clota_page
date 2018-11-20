@@ -224,6 +224,7 @@ export default {
     'payFailure' : '支付失败',
     'pleaseBackToWX' : '请返回微信',
     'chargeFailure' : '账户充值失败',
-    'payAbnormal' : '支付异常'
+    'payAbnormal' : '支付异常',
+    'accountOfStoreValue' : '储值账户'
 
 };

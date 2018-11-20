@@ -9,27 +9,27 @@
             <p class="time">{{info.createdTime}}</p>
         </div>
         <div class="check">
-            <p>{{info.amount + $t('score')}}</p>
+            <p>{{ (info.amount > 0 ? '+' + info.amount : info.amount )  + $t('score')}}</p>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: {
-            info: {
-                type: Object,
+        props : {
+            info : {
+                type : Object,
                 default () {
                     return {};
                 }
             }
         },
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -46,12 +46,12 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
-    import {mapGetters} from 'vuex';
+    import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
         mixins : [lifeCycleMixins],
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -64,33 +64,33 @@
                 isTiming : false,
                 //计时时间
                 time : 60
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取短信验证码
              */
             getValidCode () {
-                if(this.isTiming) return;
+                if (this.isTiming) return;
                 this.validateMobile().then(() => {
                     ajax.post('getCode',{
                         phoneNum : this.formData.mobile,
                         type : 'member_mod_phone',
                         companyCode : this.companyCode
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('operateSuc',{msg : this.$t('send')})
-                                })
+                                    text : this.$t('operateSuc',{ msg : this.$t('send') })
+                                });
                             },500);
                             this.isTiming = true;
-                        }else{
+                        } else {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    text : this.$t('operateFail',{ msg : this.$t('send') }),
                                     type : 'cancel'
-                                })
+                                });
                             },500);
                         }
                     });
@@ -111,28 +111,28 @@
              */
             validateMobile () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData && !this.formData.mobile){
+                    if (this.formData && !this.formData.mobile) {
                         this.$vux.toast.show({
-                            text : this.$t('pleaseInput',{field : this.$t('mobile')}),
+                            text : this.$t('pleaseInput',{ field : this.$t('mobile') }),
                             type : 'text',
                             width : '5rem'
                         });
                         reject();
-                    }else if(!validator.isMobile(this.formData.mobile)){
+                    } else if (!validator.isMobile(this.formData.mobile)) {
                         this.$vux.toast.show({
                             text : this.$t('pleaseEnterRightMobile'),
                             type : 'text',
                             width : '5rem'
                         });
                         reject();
-                    }else if(this.formData.mobile === this.orginalMobile){
+                    } else if (this.formData.mobile === this.orginalMobile) {
                         this.$vux.toast.show({
                             text : this.$t('twPhoneError'),
                             type : 'text',
                             width : '8rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -145,28 +145,28 @@
                     id : this.userInfo.memberId,
                     phoneNum : this.formData.mobile,
                     code : this.formData.validCode,
-                    companyId : this.userInfo.companyId,
+                    orgId : this.userInfo.orgId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$vux.toast.show({
-                            text: this.$t('operateSuc',{'msg' : this.$t('modify')})
+                            text : this.$t('operateSuc',{ 'msg' : this.$t('modify') })
                         });
                         this.$router.replace({
                             name : 'personInfo'
                         });
-                    }else{
-                        if(res.code === 'M014'){
+                    } else {
+                        if (res.code === 'M014') {
                             this.$vux.toast.show({
-                                text: this.$t('phoneExitErr'),
+                                text : this.$t('phoneExitErr'),
                                 type : 'text',
                                 width : '9rem'
-                            })
-                        }else{
+                            });
+                        } else {
                             this.$vux.toast.show({
                                 // text: '修改失败',
-                                text: this.$t('operateFail',{msg : this.$t('modify')}),
+                                text : this.$t('operateFail',{ msg : this.$t('modify') }),
                                 type : 'cancel'
-                            })
+                            });
                         }
                     }
                 });
@@ -176,21 +176,21 @@
              */
             validateCode () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData && !this.formData.validCode) {
+                    if (this.formData && !this.formData.validCode) {
                         this.$vux.toast.show({
-                            text: this.$t('pleaseInput',{field : this.$t('validCode')}),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('pleaseInput',{ field : this.$t('validCode') }),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else if(this.formData.mobile === this.orginalMobile){
+                    } else if (this.formData.mobile === this.orginalMobile) {
                         this.$vux.toast.show({
                             text : this.$t('twPhoneError'),
                             type : 'text',
                             width : '8rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -200,9 +200,9 @@
              * @param params
              */
             getParams (params) {
-                if(params.mobile){
+                if (params.mobile) {
                     this.orginalMobile = params.mobile;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'personInfo'
                     });
@@ -219,10 +219,10 @@
         computed : {
             ...mapGetters({
                 userInfo : 'userInfo',
-                companyCode :'companyCode'
+                companyCode : 'companyCode'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

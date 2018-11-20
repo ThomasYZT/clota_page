@@ -26,11 +26,11 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
         mixins : [lifeCycleMixins],
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -41,9 +41,9 @@
                 },
                 //证件类型列表
                 idLists : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存证件号码
              */
@@ -57,16 +57,16 @@
             /**
              * 查询所有的证件类型
              */
-            queryDocument () {
-                ajax.post('queryDocument').then(res => {
-                    if(res.success){
+            queryDocuments () {
+                ajax.post('queryDocuments').then(res => {
+                    if (res.success) {
                         this.idLists = res.data ? res.data.data.map(item => {
                             return {
                                 value : item.id,
                                 name : item.name
-                            }
+                            };
                         }) : [];
-                    }else{
+                    } else {
                         this.idLists = [];
                     }
                 });
@@ -76,14 +76,14 @@
              */
             validateIdTpe () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData.idType.length === 0 || this.formData.idType[0] === '0'){
+                    if (this.formData.idType.length === 0 || this.formData.idType[0] === '0') {
                         this.$vux.toast.show({
-                            text: this.$t('pleaseSelect',{field : this.$t('cardType')}),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('pleaseSelect',{ field : this.$t('cardType') }),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -93,21 +93,21 @@
              */
             validateIdNum () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData && !this.formData.idCard){
+                    if (this.formData && !this.formData.idCard) {
                         this.$vux.toast.show({
-                            text: this.$t('pleaseInput',{field : this.$t('idCard')}),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('pleaseInput',{ field : this.$t('idCard') }),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else if(this.formData.idCard.length > 40){
+                    } else if (this.formData.idCard.length > 40) {
                         this.$vux.toast.show({
-                            text: this.$t('maxLengthErr',{field : this.$t('idCard'),length : 40}),
-                            type: 'text',
-                            width: '5.2rem'
+                            text : this.$t('maxLengthErr',{ field : this.$t('idCard'),length : 40 }),
+                            type : 'text',
+                            width : '5.2rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -121,16 +121,16 @@
                     certificationType : this.formData.idType[0],
                     idCardNumber : this.formData.idCard
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$vux.toast.show({
-                            text: this.$t('operateSuc',{msg : this.$t('modify')})
+                            text : this.$t('operateSuc',{ msg : this.$t('modify') })
                         });
                         this.$router.push({
                             name : 'personInfo'
                         });
-                    }else{
+                    } else {
                         this.$vux.toast.show({
-                            text: this.$t('operateFail',{msg : this.$t('modify')}),
+                            text : this.$t('operateFail',{ msg : this.$t('modify') }),
                             type : 'cancel'
                         });
                     }
@@ -141,13 +141,13 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    if(params.idCardNumber){
+                if (params && Object.keys(params).length > 0) {
+                    if (params.idCardNumber) {
                         this.formData.idType = [String(params.certificationType)];
                     }
                     this.formData.idCard = params.idCardNumber;
-                    this.queryDocument();
-                }else{
+                    this.queryDocuments();
+                } else {
                     this.$router.push({
                         name : 'personInfo'
                     });
@@ -159,7 +159,7 @@
                 userInfo : 'userInfo'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
