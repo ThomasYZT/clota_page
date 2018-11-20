@@ -11,7 +11,7 @@
         class="member-rights-modal"
         class-name="vertical-center-modal">
         <Form ref="formValidate">
-            <template v-for="(item,index) in rightInfo.birthday" v-if="detailInfo.cardTypeId !== '2'">
+            <template v-for="(item,index) in rightInfo.birthday" v-if="detailInfo.cardTypeId !== '3'">
                 <!--生日购票优惠-->
                 <i-row :key="'birthday' + index">
                     <i-col style="display: inline-block;width : auto;">

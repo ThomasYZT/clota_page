@@ -39,7 +39,7 @@
                     {{$t('modify')}}
                 </span>
                 <span v-if="companyDetail.status"
-                      :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status === 'close'}">
+                      :class="{'started' :companyDetail.status === 'open' ,'not-started' : companyDetail.status !== 'open'}">
                     {{$t(companyDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                 </span>
             </template>
