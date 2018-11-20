@@ -86,10 +86,10 @@
         <div slot="footer">
             <Button type="ghost"
                 class="ivu-btn-90px"
-                @click="cancel">取消</Button>
+                @click="save('invalid')">保存，暂不启用</Button>
             <Button type="primary"
                 class="ivu-btn-90px"
-                @click="save">保存</Button>
+                @click="save('valid')">保存，立即启用</Button>
         </div>
     </Modal>
 </template>
@@ -288,11 +288,12 @@
             },
             /**
              * 保存新增租户数据
+             * @params{string} status 保存节点的状态
              */
-            save() {
+            save(status) {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.addOrgInfo();
+                        this.addOrgInfo(status);
                     }
                 });
             },
@@ -359,8 +360,9 @@
             },
             /**
              * 新增下属公司
+             * @params{string} status 保存节点的状态
              */
-            addOrgInfo () {
+            addOrgInfo (status) {
                 ajax.post('addOrgInfo',{
                     rootId : this.chosedNodeDetail.id,
                     orgName : this.addedNodeDetail.nodeName,
@@ -377,7 +379,8 @@
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.manageSuperior,
-                    nodeType : 'company'
+                    nodeType : 'company',
+                    status : status
                 }).then(res => {
                     if(res.status === 200){
                         this.$emit('fresh-structure-data');

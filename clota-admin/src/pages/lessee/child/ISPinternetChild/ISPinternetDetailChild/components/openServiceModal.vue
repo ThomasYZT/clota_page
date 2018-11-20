@@ -35,6 +35,7 @@
             </FormItem>
             <FormItem label="设置服务开始时间" prop="startTime">
                 <DatePicker type="date"
+                            transfer
                             v-model="formData.startTime"
                             :editable="false"
                             :clearable="false"
@@ -42,7 +43,7 @@
                 </DatePicker>
             </FormItem>
             <FormItem :label="$t('serverTime') + '（月）'" prop="serverTime">
-                <Select v-model="formData.serverTime" style="width:280px">
+                <Select v-model="formData.serverTime" style="width:280px" transfer>
                     <Option v-for="item in monthEnum"
                             :value="item.value"
                             :key="item.value">
@@ -324,6 +325,8 @@
 
         & /deep/ .ivu-modal-body {
             padding: 20px 30px 0 30px;
+            max-height: 500px;
+            overflow: auto;
         }
 
         .target-body {

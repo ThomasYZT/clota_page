@@ -6,7 +6,7 @@
               :model="formDataCopy"
               :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
-              label-position="left"
+              label-position="right"
               inline>
             <div class="com-name">
                 <template v-if="type === 'edit'">
@@ -146,7 +146,7 @@
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="sceneDetail.parentManage">
+                        <span class="info-val" v-else v-w-title="sceneDetail.parentManage ? sceneDetail.parentManage.orgName : ''">
                             {{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}
                         </span>
                     </FormItem>
@@ -162,7 +162,7 @@
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="sceneDetail.parentEconomic">
+                        <span class="info-val" v-else v-w-title="sceneDetail.parentEconomic ? sceneDetail.parentEconomic.orgName : ''">
                             {{sceneDetail.parentEconomic ? sceneDetail.parentEconomic.orgName : '' | contentFilter}}
                         </span>
                     </FormItem>
@@ -681,6 +681,17 @@
             /deep/ .ivu-btn-primary {
                 margin-right: 7px;
             }
+        }
+
+        .info-val{
+            @include overflow_tip();
+            display: inline-block;
+            width: 100%;
+            color: $color_666;
+        }
+
+        /deep/ .ivu-form-item{
+            width: 100%;
         }
 
         .employee-account {

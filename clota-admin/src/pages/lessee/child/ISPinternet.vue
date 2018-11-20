@@ -16,31 +16,6 @@
                         @click="queryList" >查找</Button>
             </div>
         </div>
-        <!--<table-com-->
-            <!--:table-data="tableData"-->
-            <!--:table-height="tableHeight"-->
-            <!--:column-data="columnData"-->
-            <!--:row-click="false">-->
-            <!--<el-table-column-->
-                <!--label="操作"-->
-                <!--:width="120">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<ul class="operate-info">-->
-                        <!--<li class="operate-list" @click="toISPinternetDetail">查看</li>-->
-                        <!--<li class="operate-list disabled" @click="disabledLess(scoped.row)">禁用</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</table-com>-->
-        <!--<div class="page-area" v-if="tableData.length > 0">-->
-            <!--<el-pagination-->
-                <!--:current-page="pageNo"-->
-                <!--:page-sizes="pageSizeConfig"-->
-                <!--:page-size="pageSize"-->
-                <!--layout="total, sizes, prev, pager, next, jumper"-->
-                <!--:total="40">-->
-            <!--</el-pagination>-->
-        <!--</div>-->
 
         <table-com
             :column-data="columnData"

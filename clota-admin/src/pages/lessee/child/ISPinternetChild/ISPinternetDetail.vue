@@ -103,9 +103,9 @@
                         this.structureData = res.data ? res.data : [];
                         if(Object.keys(activeNode).length < 1){
                             this.activeNode = JSON.parse(JSON.stringify({
-                                id : this.structureData.id,
-                                pid : this.structureData.pid,
-                                type : this.structureData.data ? this.structureData.data.nodeType : ''
+                                id : this.structureData[0] ? this.structureData[0].id : '',
+                                pid : this.structureData[0] ? this.structureData[0].pid : '',
+                                type : this.structureData[0] ? this.structureData[0].data.nodeType : '',
                             }));
                         }else{
                             this.activeNode = activeNode;

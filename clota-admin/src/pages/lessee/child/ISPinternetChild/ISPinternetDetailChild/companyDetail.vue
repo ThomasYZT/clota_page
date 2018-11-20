@@ -6,12 +6,12 @@
               :model="formDataCopy"
               :rules="ruleValidate"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
-              label-position="left"
+              label-position="right"
               inline>
         <div class="com-name">
             <template v-if="type === 'edit'">
                 <i-row>
-                    <i-col span="8">
+                    <i-col span="8" style="width: auto">
                         <FormItem prop="orgName" >
                             <Input v-model.trim="formDataCopy.orgName" style="width : 280px"/>
                         </FormItem>
@@ -98,7 +98,7 @@
                 <i-col span="12">
                     <FormItem prop="email" label="电子邮箱：" :label-width="150">
                         <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="formDataCopy.email">
+                        <span class="info-val" v-else v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.email : ''">
                              {{companyDetail.managerAccount ? companyDetail.managerAccount.email : '' | contentFilter}}
                         </span>
                     </FormItem>
@@ -161,7 +161,7 @@
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentManage">
+                        <span class="info-val" v-else v-w-title="companyDetail.parentManage ? companyDetail.parentManage.orgName : ''">
                             {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
                         </span>
                     </FormItem>
@@ -175,7 +175,7 @@
                                 {{ item.orgName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentEconomic">
+                        <span class="info-val" v-else v-w-title="companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : ''">
                             {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
                         </span>
                     </FormItem>
@@ -273,6 +273,10 @@
         </note-table>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
+            <div class="edit-modal-tip-word">
+                您正在重置管理员{{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''}}的登录密码，
+                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{companyDetail.managerAccount ? companyDetail.managerAccount.email : ''}}
+            </div>
         </edit-modal>
     </div>
 </template>
@@ -458,7 +462,7 @@
                 this.$refs.editModal.show({
                     title : this.$t('resetPass'),
                     confirmCallback : (pass) => {
-                        this.confimChangePass(pass);
+                        this.confimChangePass('e10adc3949ba59abbe56e057f20f883e');
                     }
                 });
             },
@@ -746,5 +750,17 @@
             font-size: $font_size_14px;
             color: $color_606266;
         }
+
+        /deep/ .info-val{
+            @include overflow_tip();
+            display: inline-block;
+            width: 100%;
+            color: $color_666;
+        }
+    }
+
+    .edit-modal-tip-word{
+        @include block_outline(100%,auto);
+        padding: 20px;
     }
 </style>

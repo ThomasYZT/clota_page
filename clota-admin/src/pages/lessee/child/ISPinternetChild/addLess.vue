@@ -94,7 +94,7 @@
                     <i-col span="11">
                         <!--短息供应商-->
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                            <Select v-model.trim="formData.smsProvider" style="width:280px">
+                            <Select v-model.trim="formData.smsProvider" style="width:280px" transfer>
                                 <Option v-for="item in smsProviderList"
                                         :value="item.provider"
                                         :key="item.provider">
@@ -121,7 +121,7 @@
                     <i-col span="11">
                         <!--受理客服-->
                         <FormItem :label="$t('service')">
-                            <Select v-model.trim="formData.service" style="width:280px" placement="top">
+                            <Select v-model.trim="formData.service" style="width:280px" transfer>
                                 <Option v-for="item in serviceList"
                                         :value="item.id"
                                         :key="item.id">
@@ -221,11 +221,11 @@
                 //表单数据
                 formData: {
                     //*租户公司名称
-                    companyName: 'aaa',
+                    companyName: '',
                     //联系人
-                    person: 'tst',
+                    person: '',
                     //联系电话
-                    phone: '13054153343',
+                    phone: '',
                     //所属集团
                     // group: '',
                     //传真
@@ -237,7 +237,7 @@
                     //管理账号
                     controlAccount: '',
                     //电子邮箱
-                    mail: 'zgh@qq.com',
+                    mail: '',
                     //短信供应商
                     smsProvider: '',
                     //详细地址
@@ -399,6 +399,7 @@
                     businessAccountId : this.formData.service,
                     checkinCode : this.formData.companyCode,
                     nodeType : 'company',
+                    status : 'close'
                 }).then(res => {
                     if(res.status === 200){
                         this.$Message.success('新增成功');

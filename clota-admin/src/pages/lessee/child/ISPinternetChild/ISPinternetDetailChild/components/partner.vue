@@ -52,7 +52,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row.status)}}
+                            {{$t('partner.' + scope.row.status)}}
                         </template>
                     </el-table-column>
                 </table-com>

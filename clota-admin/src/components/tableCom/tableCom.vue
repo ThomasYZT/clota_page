@@ -37,11 +37,7 @@
                         :width="getColumnWidth(item)"
                         :min-width="getColumnMinWidth(item)">
                         <template slot-scope="scoped">
-                                <span
-                                    class="detail-hover"
-                                    v-w-title="scoped.row[item.field]">
-                                    {{scoped.row[item.field] | contentFilter}}
-                                </span>
+                            {{scoped.row[item.field] | contentFilter}}
                         </template>
                     </el-table-column>
                     <!--普通列-->
@@ -49,14 +45,12 @@
                         v-else
                         :label="$t(item.title)"
                         :prop="item.field"
-                        :show-overflow-tooltip="true"
+                        show-overflow-tooltip
                         :key="index"
                         :width="getColumnWidth(item)"
                         :min-width="getColumnMinWidth(item)">
                         <template slot-scope="scoped">
-                                    <span v-w-title="scoped.row[item.field]" >
-                                        {{scoped.row[item.field]  | contentFilter}}
-                                    </span>
+                            {{scoped.row[item.field]  | contentFilter}}
                         </template>
                     </el-table-column>
                     </slot>
