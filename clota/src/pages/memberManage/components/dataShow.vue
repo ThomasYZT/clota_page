@@ -15,21 +15,21 @@
 
             <div class="detail">
                 <div class="detail-item"
-                     @mouseover="showIncreaseDetail(0)"
+                     @mouseenter="showIncreaseDetail(0)"
                      @mouseout="addDetailShow = false">
                     <div>{{todayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_today")}}</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item"
-                     @mouseover="showIncreaseDetail(1)"
+                     @mouseenter="showIncreaseDetail(1)"
                      @mouseout="addDetailShow = false">
                     <div>{{yesterdayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_yesterday")}}</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item"
-                     @mouseover="showIncreaseDetail(2)"
+                     @mouseenter="showIncreaseDetail(2)"
                      @mouseout="addDetailShow = false">
                     <div>{{monthMemberIncreeaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_this_month")}}</div>
@@ -37,11 +37,24 @@
             </div>
         </div>
 
-        <div class="add-member-detail"
-             :style="addDetailStyle"
-             v-if="addDetailShow">
-
-        </div>
+        <transition name="fade">
+            <div class="add-member-detail"
+                 :style="addDetailStyle"
+                 v-loading="loadingMore"
+                 v-if="addDetailShow">
+                <ul class="detail-list-wrap">
+                    <li v-for="(item,index) in addMemberDetailInfo"
+                        :key="index"
+                        class="detail-list">
+                        {{$t('colonSetting',{ key : (item.typeName + '-' +  item.levelDesc) })}}{{item.quantity}}
+                    </li>
+                </ul>
+                <span class="empty-text"
+                      v-if="addMemberDetailInfo.length < 1">
+                {{$t('noData')}}
+            </span>
+            </div>
+        </transition>
 
     </div>
 </template>
@@ -68,10 +81,14 @@
                 //新增详情样式
                 addDetailStyle : {
                     left : '',
-                    width : ''
+                    minWidth : ''
                 },
                 //是否显示新增详情
-                addDetailShow : false
+                addDetailShow : false,
+                //新增会员详情
+                addMemberDetailInfo : [],
+                //是否在加载中
+                loadingMore : false
             };
         },
         methods : {
@@ -133,24 +150,45 @@
             showIncreaseDetail (index) {
                 let eleParentWidth = this.$el.querySelector('.detail').offsetWidth;
                 this.addDetailStyle.left = eleParentWidth * index / 3 + 'px';
-                this.addDetailStyle.width = eleParentWidth / 3 + 'px';
-                this.addDetailShow = true;
+                this.addDetailStyle.minWidth = eleParentWidth / 3 + 'px';
+                if (index === 0) {
+                    this.getMemberIncreaseDetail({
+                        startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                        endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                    });
+                } else if (index === 1) {
+                    this.getMemberIncreaseDetail({
+                        startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                        endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                    });
+                } else if (index === 2) {
+                    this.getMemberIncreaseDetail({
+                        startDate : new Date().addDays(-new Date().getDate() + 1).format('yyyy-MM-dd'),
+                        endDate : new Date().addDays(-new Date().getDate()).addMonths(1).format('yyyy-MM-dd'),
+                    });
+                }
             },
             /**
              * 获取增长数量详情
+             * @param{String} startDate 开始时间
+             * @param{String} endDate 结束时间
              */
-            getMemberIncreaseDetail () {
+            getMemberIncreaseDetail ({ startDate,endDate }) {
+                this.loadingMore = true;
                 ajax.post('getIncreaseMemberCountDetail',{
-                    startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
-                    endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
-                }).then(res => {
+                    startDate,
+                    endDate
+                },null,false).then(res => {
                     if (res.success) {
-                        this.todayMemberIncreaseCount = res.data;
+                        this.addMemberDetailInfo = res.data ? res.data : [];
+                        this.addDetailShow = true;
                     } else {
-                        this.todayMemberIncreaseCount = '';
+                        this.addMemberDetailInfo = [];
                     }
-                }).catch(err => {
-                    this.todayMemberIncreaseCount = '';
+                }).catch(() => {
+                    this.addMemberDetailInfo = [];
+                }).finally(() => {
+                    this.loadingMore = false;
                 });
             }
 
@@ -241,10 +279,10 @@
         .add-member-detail{
             @include absolute_pos(absolute,240px);
             background: $color_fff;
-            min-height: 100px;
             border: 1px solid #eee;
             box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);
             transition: all 0.3s;
+            z-index: 9;
 
             &::before{
                 @include absolute_pos(absolute,-4.5px,0,auto,0);
@@ -257,6 +295,24 @@
                 border-top: 1px solid #eee;
                 border-left: 1px solid #eee;
                 /*box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);*/
+            }
+
+            .detail-list-wrap{
+                min-height: 100px;
+                max-height: 300px;
+                overflow: auto;
+            }
+
+            .detail-list{
+                @include block_outline($height : 30px);
+                line-height: 30px;
+                @include overflow_tip();
+                padding: 0 10px;
+            }
+
+            .empty-text{
+                color: $color_999;
+                @include center_center();
             }
         }
     }

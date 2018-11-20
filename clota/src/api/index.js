@@ -61,16 +61,19 @@ export default {
      * get 请求
      * @param urlKey 对应API 中的urlkey
      * @param paramObj  发送ajax 传递的参数对象
+     * @param showLoading  是否显示加载中的图标
      * @returns {promise} 返回promise对象
      */
-    get(urlKey, paramObj) {
+    get(urlKey, paramObj,showLoading = true) {
         let myConfig = {
             params: paramObj,
             headers: {
                 token: this.getToken()
             }
         };
-        store.commit('changePromisings','add');
+        if (showLoading) {
+            store.commit('changePromisings','add');
+        }
         return instance.get(baseUrl + api[urlKey], myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`)
@@ -80,7 +83,9 @@ export default {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             store.dispatch('showErrToast','systemErr');
         }).finally(() => {
-            store.commit('changePromisings','del');
+            if (showLoading) {
+                store.commit('changePromisings','del');
+            }
         });
     },
 
@@ -88,9 +93,11 @@ export default {
      * post 请求
      * @param urlKey 对应API 中的urlkey
      * @param paramObj  发送ajax 传递的参数对象
+     * @param config  请求头信息
+     * @param showLoading  是否显示加载中的图标
      * @returns {promise} 返回promise对象
      */
-    post(urlKey, paramObj, config = null) {
+    post(urlKey, paramObj, config = null,showLoading = true) {
         let myConfig = {
             cancelToken: new axios.CancelToken(function (cancel) {
                 cancelTokenCollection[urlKey] = cancel;
@@ -104,7 +111,7 @@ export default {
             }
         }
 
-        if (urlKey !== 'queryConsumeUpdateBiz') {
+        if (showLoading) {
             store.commit('changePromisings','add');
         }
 
@@ -124,7 +131,7 @@ export default {
             store.dispatch('showErrToast','systemErr');
             return err;
         }).finally(() => {
-            if (urlKey !== 'queryConsumeUpdateBiz') {
+            if (showLoading) {
                 store.commit('changePromisings','del');
             }
         });

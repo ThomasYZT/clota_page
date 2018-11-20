@@ -151,7 +151,7 @@
                 this.searchIng = true;
                 ajax.post('queryConsumeUpdateBiz',{
                     transactionId : this.transactionId
-                }).then(res => {
+                },null,false).then(res => {
                     if (res.success && res.data === 'success') {
                         this.$emit('search-success');
                         this.stage = 'success';
