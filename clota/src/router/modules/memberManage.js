@@ -248,7 +248,7 @@ export default {
                 meta : {
                     menuName : 'memberInfo', //lang.config.js 里面的语言键值
                     _name : 'members-info',
-                    rightPath : topMenuName + '.' + 'memberInfo'
+                    rightPath : topMenuName + '.' + 'fundInfo'
                 },
             },
             infoRate : {

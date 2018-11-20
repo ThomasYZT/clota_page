@@ -87,6 +87,12 @@ export default {
     'saveViceCard' : '/member/saveViceCard',
     //导出个人交易明细
     'exportAccountDetail' : '/member/memberAccount/exportAccountDetail',
+    //修改购房金额
+    'updateHomeMoney' : '/member/updateHomeMoney',
+    //查看修改购房金额记录
+    'queryHouseMoneyEditRecord' : '/member/queryHouseMoneyEditRecord',
+    //查看新增详情
+    'getIncreaseMemberCountDetail' : '/member/getIncreaseMemberCountDetail',
 
 
     /***********************************会员积分***********************************/

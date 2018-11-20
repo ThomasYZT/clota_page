@@ -17,7 +17,7 @@
                     v-for="item in accountList"
                     :value="item.id"
                     :key="item.id">
-                    {{ item.accountName }}
+                   {{ item.accountName }}
                 </Option>
             </Select>
             <Select v-model="queryParams.levelId" @on-change="queryList">
@@ -25,7 +25,7 @@
                 <Option v-for="(item, index) in enumData.level"
                         :value="item.id"
                         :key="index">
-                    {{ item.levelDesc }}
+                    {{item.typeName}}-{{ item.levelDesc }}
                 </Option>
             </Select>
             <Select v-model="queryParams.channelId" @on-change="queryList">
