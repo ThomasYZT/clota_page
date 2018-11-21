@@ -25,7 +25,6 @@ const defaultConfig = {
     },
     xAxis : {
         type : 'category',
-        boundaryGap : false,
         //设置轴线的属性
         axisLine : {
             show : true,
@@ -58,8 +57,6 @@ export const defaultSeries = {
 
 export const barSeries = {
     type : 'bar',
-    barGap : 0,
-    barWidth : '5%',
     data : []
 };
 
