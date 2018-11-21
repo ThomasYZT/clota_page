@@ -9,7 +9,7 @@
             <x-input class="c-input"
                      v-if="cardInfo.cardTypeId === '3'"
                      :title="$t('companyName')"
-                     keyboard="number"
+                     type="text"
                      text-align="right"
                      :placeholder="$t('pleaseInput',{field : $t('companyName') })"
                      v-model.trim="formData.companyName"
@@ -18,7 +18,7 @@
             <!-- 姓名 -->
             <x-input class="c-input"
                      :title="$t('name')"
-                     keyboard="number"
+                     type="text"
                      text-align="right"
                      :placeholder="$t('pleaseInput',{field : $t('name') })"
                      v-model.trim="formData.custName"
