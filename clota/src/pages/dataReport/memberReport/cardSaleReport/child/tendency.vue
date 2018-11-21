@@ -11,7 +11,7 @@
             <div slot="right-filter" class="right-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd" type="daterange"
+                            type="daterange"
                             :editable="false"
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
@@ -25,7 +25,9 @@
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="queryLevelsByCardType"
                         style="width:160px" >
-                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
+                        {{ item.label }}
+                    </Option>
                 </Select>
 
                 <!-- 会员级别下拉列表 -->
@@ -34,7 +36,9 @@
                         :placeholder="$t('selectField', { msg : $t('member-level') })"
                         @on-change="getData"
                         style="width:160px">
-                    <Option v-for="item in memberLevellist" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in memberLevellist" :value="item.value" :key="item.value">
+                        {{ item.label === 'memberLevelAll' ? $t(item.label) : item.label }}
+                    </Option>
                 </Select>
             </div>
         </filterHead>
@@ -85,7 +89,7 @@
                 memberLevellist : [
                     {
                         value : 'all',
-                        label : 'memberTypeAll'
+                        label : 'memberLevelAll'
                     }
                 ],
                 //过滤条件数据
@@ -106,13 +110,13 @@
                         let time = params[0].data.params.createdTime + ' ' + this.$t(common.getWeekDay(new Date(params[0].data.params.createdTime)));
                         let statistics = '<p>' + this.$t('totalCount') + ' ' + params.reduce((total, cur) => {
                             return total + cur.data.value;
-                        }, 0) + ' ' + this.$t('totalMoney') + ' ' + params.reduce((total, cur) => {
+                        }, 0).toFixed(2) + ' ' + this.$t('totalMoney') + ' ' + params.reduce((total, cur) => {
                             return total + cur.data.params.money;
-                        }, 0) + '</p>';
+                        }, 0).toFixed(2) + '</p>';
                         html += time + statistics;
                         params.forEach(item => {
                             let account = item.name + ': ' + (item.data.value ? item.data.value : '0') + this.$t('paper') + ' ';
-                            let money = this.$t('money') + ' ' + (item.data.params ? item.data.params.money : '0');
+                            let money = this.$t('money') + ' ' + (item.data.params ? item.data.params.money.toFixed(2) : '0');
                             let spot = '<span style="display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' + item.color + ';"></span> ';
                             html += '<p style="height:22px;line-height: 22px">' + spot + account + money + '</p>';
                         });
@@ -143,36 +147,31 @@
                         if (res.data && Object.keys(res.data).length > 0) {
                             let data = res.data;
 
-                            //组装seriesDat 每根曲线数据
+                            let isxAxis = false;
                             for (let key in data) {
                                 if (data[key] && data[key].length > 0) {
                                     let _dataOfSeries = [];
                                     data[key].forEach(item => {
+                                        //组装xAxisData 横坐标时间数据
+                                        if (!isxAxis) {
+                                            this.xAxisData.push(item.createdTime);
+                                        }
+
+                                        //组装seriesDat 每根曲线数据
                                         _dataOfSeries.push({
                                             value : item.quantity,
                                             name : key,
                                             params : item
                                         });
                                     });
+                                    isxAxis = true;
                                     this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, defaultSeries));
-                                }
-                            }
 
-                            //组装xAxisData 横坐标时间数据
-                            for (let key in data) {
-                                if (data[key] && data[key].length > 0) {
-                                    data[key].forEach(item => {
-                                        this.xAxisData.push(item.createdTime);
+                                    //组装legendData数据
+                                    this.legendData.push({
+                                        name : key
                                     });
-                                    break;
                                 }
-                            }
-
-                            //组装legendData数据
-                            for (let key in data) {
-                                this.legendData.push({
-                                    name : key
-                                });
                             }
 
                         } else {
@@ -195,7 +194,7 @@
                 this.memberLevellist = [
                     {
                         value : 'all',
-                        label : 'memberTypeAll'
+                        label : 'memberLevelAll'
                     }
                 ];
                 ajax.post('queryLevelsByCardType', {
@@ -213,24 +212,22 @@
                         this.memberLevellist = [
                             {
                                 value : 'all',
-                                label : 'memberTypeAll'
+                                label : 'memberLevelAll'
                             }
                         ];
                     }
                 });
             }
         },
-        created () {
-            if (this.cardTypeList.length > 0 && this.memberLevellist.length === 1) {
-                this.queryLevelsByCardType();
-            }
-        },
         watch : {
-            cardTypeList (newVal) {
-                if (newVal.length > 0) {
-                    this.filterData.memberType = newVal[0].value;
-                    this.queryLevelsByCardType();
-                }
+            cardTypeList : {
+                handler (newVal) {
+                    if (newVal.length > 0) {
+                        this.filterData.memberType = newVal[0].value;
+                        this.queryLevelsByCardType();
+                    }
+                },
+                immediate : true
             }
         }
     };

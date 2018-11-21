@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="member-consume-detail">
-        <breadCrumbHead :locale-router="$t('consumeRecord')"
+        <breadCrumbHead :locale-router="'consumeRecord'"
                         :before-router-list="beforeRouterList"></breadCrumbHead>
 
         <div class="statistic">
@@ -48,7 +48,7 @@
                                 <TimelineItem v-for="(item, index) in timeLineData"
                                               :key="index"
                                               color="blue">
-                                    {{item.createdTime}} {{$t('packageCount')}} {{item.amount}} , {{$t('unitPrice')}} {{item.price}}
+                                    {{item.createdTime  | contentFilter}} {{$t('packageCount')}} {{item.amount | contentFilter}} , {{$t('unitPrice')}} {{item.price | contentFilter}}
                                 </TimelineItem>
                             </Timeline>
                         </div>
@@ -76,7 +76,7 @@
                 //上级路由列表
                 beforeRouterList : [
                     {
-                        name : this.$t('consumeReport'),
+                        name : 'consumeReport',
                         router : {
                             name : 'consumeReport',
                             params : {

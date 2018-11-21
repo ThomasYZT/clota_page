@@ -39,14 +39,13 @@
              */
             getMemberTypeList () {
                 ajax.post('queryCardTypeList').then(res => {
-                    if (res.success && res.data.length > 0) {
+                    if (res.success && res.data && res.data.length > 0) {
                         this.cardTypeList = this.cardTypeList.concat(res.data.map(item => {
                             return {
                                 value : item.id,
                                 label : item.typeName
                             };
                         }));
-                        this.defaultCardType = this.cardTypeList[0].value;
                     } else {
                         this.cardTypeList = [];
                     }

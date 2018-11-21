@@ -111,18 +111,53 @@
 
             // 立即购买
             buyNow ( params ) {
-                ajax.post('buySmsPackage', {
-                    smsPackageId: params.id
+                ajax.post('orderBuySmsPackage', {
+                    smsPackageId: params.id,
+                    payType : this.formData.payType === 'zfb' ? 'alipay' : 'weixin',
                 }).then(res => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
-                        this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        if (res.data) {
+                            this.payNow({
+                                bizId : res.data,
+                                payType : this.formData.payType === 'zfb' ? 'alipay' : 'weixin',
+                                payMoney : this.formData.price
+                            });
+                        } else {
+                            this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                        }
                     } else {
                         this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
                     }
                 })
             },
+
+            /**
+             * 支付接口调用
+             */
+            payNow ({bizId, payType, payMoney}) {
+                ajax.post('getPayQRCodePageForPc', {
+                    bizScene : 'sms',
+                    bizType : 'buy_sms_package',
+                    bizId : bizId,
+                    channelId : payType,
+                    txnAmt : payMoney,
+                    redirectUrl : location.origin + '/#/systemSetting/smsManage/payStatus'
+                }).then(res => {
+                    if (res.success) {
+                        this.$router.replace({
+                            name : 'smsPay',
+                            params : {
+                                payFormData : res.data
+                            }
+                        })
+                        // this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
+                        // this.hide();
+                        // this.$emit('updata-list', { item: this.formData, index: this.index});
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                    }
+                })
+            }
 
         },
     }

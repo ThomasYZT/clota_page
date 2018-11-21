@@ -16,7 +16,7 @@
             <div slot="right-filter" class="right-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd" type="daterange"
+                            type="daterange"
                             :editable="false"
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
@@ -30,7 +30,9 @@
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="getData"
                         style="width:160px" >
-                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
+                        {{ item.label === 'memberTypeAll' ? $t(item.label) : item.label }}
+                    </Option>
                 </Select>
             </div>
         </filterHead>
@@ -87,7 +89,7 @@
                         let time = params[0].data.params.createdTime + ' ' + this.$t(common.getWeekDay(new Date(params[0].data.params.createdTime)));
                         html += time;
                         params.forEach(item => {
-                            let account = item.name + ': ' + (item.data.value ? item.data.value : '0') + ' ';
+                            let account = item.name + ': ' + (item.data.value ? item.data.value.toFixed(2) : '0.00') + ' ';
                             let spot = '<span style="display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' + item.color + ';"></span> ';
                             html += '<p style="height:22px;line-height: 22px">' + spot + account + '</p>';
                         });
@@ -114,13 +116,13 @@
             /**
              * 获取页面数据
              */
-            async getData () {
+            getData () {
                 this.seriesData = [];
                 this.xAxisData = [];
                 this.legendData = [];
                 this.headInfo = [];
                 //会员储值记录报表--会员储值趋势图
-                await ajax.post('listRechargeByDate', {
+                ajax.post('listRechargeByDate', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     cardTypeId : this.filterData.memberType === 'all' ? '' : this.filterData.memberType,
@@ -129,38 +131,31 @@
                         if (res.data && Object.keys(res.data).length > 0) {
                             let data = res.data;
 
-                            //组装seriesDat 每根曲线数据
+                            let isxAxis = false;
                             for (let key in data) {
                                 if (data[key] && data[key].length > 0) {
                                     let _dataOfSeries = [];
                                     data[key].forEach(item => {
+                                        //组装xAxisData 横坐标时间数据
+                                        if (!isxAxis) {
+                                            this.xAxisData.push(item.createdTime);
+                                        }
+                                        //组装seriesData 每根曲线数据
                                         _dataOfSeries.push({
                                             value : item.money,
                                             name : key,
                                             params : item
                                         });
                                     });
+                                    isxAxis = true;
+                                    //组装legendData数据
+                                    this.legendData.push({
+                                        name : key
+                                    });
                                     this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, barSeries));
                                 }
                             }
-
-                            //组装xAxisData 横坐标时间数据
-                            for (let key in data) {
-                                if (data[key] && data[key].length > 0) {
-                                    data[key].forEach(item => {
-                                        this.xAxisData.push(item.createdTime);
-                                    });
-                                    break;
-                                }
-                            }
-
-                            //组装legendData数据
-                            for (let key in data) {
-                                this.legendData.push({
-                                    name : key
-                                });
-                            }
-
+                            this.sumCorpusRecharge();
                         } else {
                             this.seriesData = [];
                             this.xAxisData = [];
@@ -172,8 +167,9 @@
                         this.legendData = [];
                     }
                 });
-
-                await ajax.post('sumCorpusRecharge', {
+            },
+            sumCorpusRecharge () {
+                ajax.post('sumCorpusRecharge', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     cardTypeId : this.filterData.memberType === 'all' ? '' : this.filterData.memberType,

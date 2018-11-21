@@ -55,15 +55,6 @@
                 this.type = type;
             },
         },
-        watch : {
-            $route (newVal) {
-                if (newVal.name === 'memberReport') {
-                    this.$router.push({
-                        name : 'cardSaleReport',
-                    });
-                }
-            }
-        }
     };
 </script>
 

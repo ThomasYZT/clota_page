@@ -85,6 +85,40 @@ export default {
                             isMenu : true
                         },
                     },
+                    smsBuyRecord : {
+                        //系统设置--短信管理--短信模板
+                        path : '/systemSetting/smsManage/smsBuyRecord',
+                        name : 'buyRecord',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/smsBuyRecord.vue'),
+                        meta : {
+                            menuName : 'buyRecord', //lang.config.js 里面的语言键值
+                            _name : 'sms-template',
+                            rightPath : topMenuName + '.' + 'buyRecord',
+                            isMenu : true
+                        },
+                    },
+                    smsPay : {
+                        //系统设置--短信管理--短信支付
+                        path : '/systemSetting/smsManage/smsPay',
+                        name : 'smsPay',
+                        component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/smsPay.vue'),
+                        meta : {
+                            menuName : 'smsPay', //lang.config.js 里面的语言键值
+                            _name : 'sms-template',
+                            rightPath : topMenuName + '.' + 'smsPay',
+                        },
+                    },
+                    payStatus : {
+                        //系统设置--短信管理--支付结果页
+                        path : '/systemSetting/smsManage/payStatus',
+                        name : 'payStatus',
+                        component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/payStatus.vue'),
+                        meta : {
+                            menuName : 'payStatus', //lang.config.js 里面的语言键值
+                            _name : 'sms-template',
+                            rightPath : topMenuName + '.' + 'payStatus',
+                        },
+                    },
                     addSmsTemplate : {
                         //系统设置--短信管理--新增短信模板
                         path : '/systemSetting/smsManage/addSmsTpl',

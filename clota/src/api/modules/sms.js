@@ -15,9 +15,13 @@ export default {
     //修改/新增短信模板
     'updateSmsTemplet': '/sms/updateSmsTemplet',
     //购买短信服务
-    'buySmsPackage': '/sms/buySmsPackage',
+    'orderBuySmsPackage': '/sms/orderBuySmsPackage',
     //获取短信服务包列表
     'getSmsPackageList': '/sms/getSmsPackageList',
+    //短信支付接口
+    'getPayQRCodePageForPc' : '/pay/getPayQRCodePageForPc',
+    //查询购买短信记录
+    'queryPurchaseRecords' : '/sms/queryPurchaseRecords',
 
     /***********************************重置全员密码***********************************/
     //重置员工密码

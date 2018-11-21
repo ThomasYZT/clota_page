@@ -224,6 +224,9 @@
                     this.queryPagedStockChangeRecord({ type : 'in' });
                 } else {
                     this.detail = {};
+                    this.$router.push({
+                        name : 'goodsManage'
+                    })
                 }
             },
             /**

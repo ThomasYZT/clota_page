@@ -3,7 +3,8 @@ export const memberCardHead = [
     {
         title : 'saleDate',
         minWidth : 100,
-        field : 'createdTme'
+        field : 'createdTime',
+        type : 'date'
     },
     {
         title : 'saleChannels',

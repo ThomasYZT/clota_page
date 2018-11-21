@@ -22,14 +22,22 @@
                         :placeholder="$t('selectField', { msg : $t('member-level') })"
                         @on-change="cardTypeChange"
                         style="width:160px">
-                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
+                        {{ item.label === 'memberTypeAll' ? $t('memberTypeAll') : item.label }}
+                    </Option>
                 </Select>
             </template>
         </div>
         <div class="button-wrapper" v-if="$route.name !== 'mutipleChannelReport' && $route.name !=='scoreReport'" >
             <ButtonGroup>
-                <Button @click="selectChange('tendency')" type="default" class="tab-btn" :class="{selected : selectButton === 'tendency'}">{{$t('tendencyChart')}}</Button>
-                <Button @click="selectChange('datasheet')" type="default" class="tab-btn" :class="{selected : selectButton === 'datasheet'}">{{$t('datasheet')}}</Button>
+                <Button @click="selectChange('tendency')"
+                        type="default"
+                        class="tab-btn"
+                        :class="{selected : selectButton === 'tendency'}">{{$t('tendencyChart')}}</Button>
+                <Button @click="selectChange('datasheet')"
+                        type="default"
+                        class="tab-btn"
+                        :class="{selected : selectButton === 'datasheet'}">{{$t('datasheet')}}</Button>
             </ButtonGroup>
         </div>
     </div>
@@ -100,7 +108,7 @@
                 this.$emit('reportChange', data);
             },
             /**
-             *  图标类型切换
+             *  图表类型切换
              *  @param {string} type
              */
             selectChange (type) {
@@ -137,14 +145,17 @@
             },
         },
         created () {
-            if (this.$route && this.$route.params && this.$route.params.selectButton) {
-                this.selectButton = this.$route.params.selectButton;
-            }
             this.getMemberTypeList();
         },
         watch : {
-            $route (newVal) {
-                this.dataReport = newVal.name;
+            $route : {
+                handler (newVal) {
+                    this.dataReport = newVal.name;
+                    if (this.$route && this.$route.params && this.$route.params.selectButton) {
+                        this.selectButton = this.$route.params.selectButton;
+                    }
+                },
+                immediate : true
             }
         }
     };

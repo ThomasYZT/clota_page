@@ -52,6 +52,13 @@
                                     label : item.orgName
                                 };
                             }));
+                        } else {
+                            this.scenicList = [
+                                {
+                                    value : '',
+                                    label : 'allScenic'
+                                }
+                            ];
                         }
                     } else {
                         this.scenicList = [

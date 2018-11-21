@@ -1747,4 +1747,13 @@ export default {
     'MemberSourceTrendChart' : '会员来源趋势图',
     'MembershipTrendChart' : '会员积分趋势图',
     'stockInNum' : '入库数量',
+    'setMealPrice' : '套餐价格',
+    'buyRecord' : '购买记录',
+    'systemStatus' : '系统状态',
+    'adjust' : '调整',
+    'smsPay' : '短信支付',
+    'adjustSysAmount' : '调整短信数量',
+    'failureReason' : '失败原因',
+    'sureToaddSmsAmount' : '确定增加短信数量',
+    'stockInAndstockOutNum' : '入/出库数量',
 }

@@ -12,7 +12,7 @@ export const smsPkgHead = [
         field: 'packageName'
     },
     {
-        title: 'packagePrice',
+        title: 'setMealPrice',
         minWidth: 100,
         field: 'price'
     },

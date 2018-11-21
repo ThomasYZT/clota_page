@@ -14,7 +14,7 @@
                         <span class="field-name">{{$t('telephone')}}：</span>{{accountInfo.telephone}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('location')}}：</span>{{accountInfo.district}}
+                        <span class="field-name">{{$t('location')}}：</span>{{accountInfo.provinceName}} {{accountInfo.cityName}} {{accountInfo.districtName}}
                     </li>
                     <li>
                         <span class="field-name">{{$t('smsProvider')}}：</span>{{accountInfo.smsProvider}}

@@ -8,7 +8,6 @@
             <div slot="left-filter" class="left-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd"
                             type="daterange"
                             :editable="false"
                             :clearable="false"
@@ -22,7 +21,9 @@
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="queryLevelsByCardType"
                         style="width:160px">
-                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
+                        {{ item.label }}
+                    </Option>
                 </Select>
 
                 <!-- 会员级别下拉列表 -->
@@ -31,7 +32,9 @@
                         :placeholder="$t('selectField', { msg : $t('member-level') })"
                         @on-change="getData"
                         style="width:160px">
-                    <Option v-for="item in memberLevellist" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in memberLevellist" :value="item.value" :key="item.value">
+                        {{ item.label === 'memberLevelAll' ? $t(item.label) : item.label }}
+                    </Option>
                 </Select>
             </div>
             <div slot="right-filter" class="right-bar">
@@ -69,7 +72,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.custName | contentFilter}} | {{scope.row.phoneNum | contentFilter}}</span>
+                    <span>{{scope.row.custName | contentFilter}} / {{scope.row.phoneNum | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -148,9 +151,9 @@
             /**
              * 获取页面数据
              */
-            async getData () {
+             getData () {
                 //会员卡销售报表明细
-                await ajax.post('queryPagedCardSaleDetail', {
+                ajax.post('queryPagedCardSaleDetail', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     cardTypeId : this.filterData.memberType === 'all' ? '' : this.filterData.memberType,
@@ -162,13 +165,16 @@
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
+                        this.countCardAndSaleMoney()
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
-                //统计会员卡数量和销售金额
-                await ajax.post('countCardAndSaleMoney', {
+            },
+            //统计会员卡数量和销售金额
+            countCardAndSaleMoney () {
+                ajax.post('countCardAndSaleMoney', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     cardTypeId : this.filterData.memberType === 'all' ? '' : this.filterData.memberType,
@@ -192,7 +198,7 @@
                 this.memberLevellist = [
                     {
                         value : 'all',
-                        label : 'memberTypeAll'
+                        label : 'memberLevelAll'
                     }
                 ];
                 ajax.post('queryLevelsByCardType', {
@@ -205,29 +211,26 @@
                                 label : item.levelDesc
                             };
                         }));
-                        this.getData();
                     } else {
                         this.memberLevellist = [
                             {
                                 value : 'all',
-                                label : 'memberTypeAll'
+                                label : 'memberLevelAll'
                             }
                         ];
                     }
                 });
             }
         },
-        created () {
-            if (this.cardTypeList.length > 0 && this.memberLevellist.length === 1) {
-                this.queryLevelsByCardType();
-            }
-        },
         watch : {
-            cardTypeList (newVal) {
-                if (newVal.length > 0) {
-                    this.filterData.memberType = newVal[0].value;
-                    this.queryLevelsByCardType();
-                }
+            cardTypeList : {
+                handler  (newVal) {
+                    if (newVal.length > 0) {
+                        this.filterData.memberType = newVal[0].value;
+                        this.queryLevelsByCardType();
+                    }
+                },
+                immediate : true
             }
         }
     };

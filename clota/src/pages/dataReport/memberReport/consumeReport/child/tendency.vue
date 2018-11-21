@@ -16,7 +16,7 @@
             <div slot="right-filter" class="right-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd" type="daterange"
+                            type="daterange"
                             :editable="false"
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
@@ -86,15 +86,13 @@
                     if (params && params.length > 0) {
                         let html = '<div class="chart-tooltip">';
                         let time = params[0].data.params.date + ' ' + this.$t(common.getWeekDay(new Date(params[0].data.params.date)));
-                        let statistics = '<p><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#0055B8";></span>' +
-                                         this.$t('consumption') + ' ' + params.reduce((total, cur) => {
-                                             return total + cur.data.value;
-                                         }, 0) + '</br><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#FBC826"></span>' +
-                                         this.$t('consumePeopleNum') + ' ' + params.reduce((total, cur) => {
-                                             return total + cur.data.params.consumerNum;
-                                         }, 0) + '</p>';
-                        html += time + statistics;
-
+                        html += time;
+                        params.forEach(item => {
+                            let spot = '<span style="display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
+                                        item.color + ';"></span> ';
+                            let account = this.$t(item.data.name) + ' ' + item.value.toFixed(2);
+                            html += '<p style="height:22px;line-height: 22px">' + spot + account + '</p>';
+                        });
                         html += '</div>';
                         return html;
                     } else {
@@ -132,37 +130,38 @@
                         if (res.data && Object.keys(res.data).length > 0) {
                             let data = res.data;
 
-                            //组装seriesDat 每根曲线数据
+                            let consumeAmountData = [];
+                            let consumerNumData = [];
+
+                            let isxAxis = false;
                             for (let key in data) {
                                 if (data[key] && data[key].length > 0) {
-                                    let _dataOfSeries = [];
                                     data[key].forEach(item => {
-                                        _dataOfSeries.push({
+                                        //组装xAxisData 横坐标时间数据
+                                        if (!isxAxis) {
+                                            this.xAxisData.push(item.date);
+                                        }
+                                        //组装seriesData数据
+                                        consumeAmountData.push({
                                             value : item.consumeAmount,
-                                            name : key,
+                                            name : 'consumption',
                                             params : item
                                         });
+                                        consumerNumData.push({
+                                            value : item.consumerNum,
+                                            name : 'consumePeopleNum',
+                                            params : item
+                                        })
                                     });
-                                    this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, defaultSeries));
+                                    isxAxis = true;
+                                    //组装legend数据
+                                    this.legendData.push({
+                                        name : key
+                                    });
                                 }
                             }
-
-                            //组装xAxisData 横坐标时间数据
-                            for (let key in data) {
-                                if (data[key] && data[key].length > 0) {
-                                    data[key].forEach(item => {
-                                        this.xAxisData.push(item.date);
-                                    });
-                                    break;
-                                }
-                            }
-
-                            //组装legendData数据
-                            for (let key in data) {
-                                this.legendData.push({
-                                    name : key
-                                });
-                            }
+                            this.seriesData.push(defaultsDeep({ data : consumeAmountData }, defaultSeries));
+                            this.seriesData.push(defaultsDeep({ data : consumerNumData }, defaultSeries));
 
                         } else {
                             this.seriesData = [];

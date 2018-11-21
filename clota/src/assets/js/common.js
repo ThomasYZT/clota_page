@@ -236,7 +236,7 @@ export default {
      */
     getWeekDay (date) {
         if (date) {
-            var week;
+            let week;
             let index = date.getDay();
             switch (index) {
                 case 0:
@@ -261,8 +261,11 @@ export default {
                     week = "Saturday";
                     break;
             }
+
+            return week;
+        } else {
+            return '-';
         }
-        return week;
     }
 };
 

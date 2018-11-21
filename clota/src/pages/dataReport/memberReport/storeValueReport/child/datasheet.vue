@@ -8,7 +8,6 @@
             <div slot="left-filter" class="left-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd"
                             type="daterange"
                             :editable="false"
                             :clearable="false"
@@ -17,21 +16,25 @@
                             style="width: 280px"></DatePicker>
 
                 <!-- 景区下拉列表 -->
-                <span class="label">{{$t('memberType')}}</span>
+                <span class="label">{{$t('scenic')}}</span>
                 <Select v-model="filterData.scenic"
-                        :placeholder="$t('selectField', { msg : $t('memberType') })"
+                        :placeholder="$t('selectField', { msg : $t('scenic') })"
                         @on-change="getData"
                         style="width:160px">
-                    <Option v-for="item in scenicList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in scenicList" :value="item.value" :key="item.value">
+                        {{ item.label === 'allScenic' ? $t(item.label) : item.label }}
+                    </Option>
                 </Select>
 
                 <!-- 会员类别下拉列表 -->
-                <span class="label">{{$t('member-level')}}</span>
+                <span class="label">{{$t('memberType')}}</span>
                 <Select v-model="filterData.cardType"
-                        :placeholder="$t('selectField', { msg : $t('member-level') })"
+                        :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="getData"
                         style="width:160px">
-                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
+                        {{ item.label === 'memberTypeAll' ? $t(item.label) : item.label }}
+                    </Option>
                 </Select>
             </div>
             <div slot="right-filter" class="right-bar">
@@ -143,8 +146,8 @@
             /**
              * 获取页面数据
              */
-            async getData () {
-                await ajax.post('listRechargeDetail', {
+            getData () {
+                ajax.post('listRechargeDetail', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     orgId : this.filterData.scenic === 'all' ? '' : this.filterData.scenic,
@@ -156,14 +159,16 @@
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
+                        this.sumCorpusRecharge();
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
-
-                //统计会员卡数量和销售金额
-                await ajax.post('sumCorpusRecharge', {
+            },
+            //统计会员卡数量和销售金额
+            sumCorpusRecharge () {
+                ajax.post('sumCorpusRecharge', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     orgId : this.filterData.scenic === 'all' ? '' : this.filterData.scenic,

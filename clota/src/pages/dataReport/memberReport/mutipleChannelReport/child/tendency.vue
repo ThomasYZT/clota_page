@@ -16,7 +16,7 @@
             <div slot="right-filter" class="right-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd" type="daterange"
+                            type="daterange"
                             :editable="false"
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
@@ -47,9 +47,7 @@
         props : {
             cardType : {
                 type : String,
-                default () {
-                    return '';
-                }
+                default : ''
             }
         },
         components : {
@@ -76,9 +74,9 @@
                         let html = '<div class="chart-tooltip">';
                         let time = params[0].data.params.createdTime + ' ' + this.$t(common.getWeekDay(new Date(params[0].data.params.createdTime)));
                         let statistics = '<p><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#0055B8;"></span>' +
-                                         this.$t('online') + ' ' + (params[0] ? params[0].data.value : 0) +
+                                         this.$t('online') + ' ' + (params[0] ? params[0].data.value : 0).toFixed(2) +
                                          '</br><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#FBC826";></span>' +
-                                         this.$t('offline') + ' ' + (params[1] ? params[1].data.value : 0) + '</p>';
+                                         this.$t('offline') + ' ' + (params[1] ? params[1].data.value : 0).toFixed(2) + '</p>';
                         html += time + statistics;
                         html += '</div>';
                         return html;
@@ -103,13 +101,13 @@
             /**
              * 获取页面数据
              */
-            async getData () {
+            getData () {
                 this.seriesData = [];
                 this.xAxisData = [];
                 this.legendData = [];
                 this.headInfo = [];
                 //获取会员渠道折线图数据
-                await ajax.post('listCardSourceByDate', {
+                ajax.post('listCardSourceByDate', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     cardTypeId : this.cardType === 'all' ? '' : this.cardType,
@@ -118,38 +116,33 @@
                         if (res.data && Object.keys(res.data).length > 0) {
                             let data = res.data;
 
-                            //组装seriesDat 每根曲线数据
+                            let isxAxis = false;
                             for (let key in data) {
                                 if (data[key] && data[key].length > 0) {
                                     let _dataOfSeries = [];
                                     data[key].forEach(item => {
+
+                                        //组装xAxisData 横坐标时间数据
+                                        if (!isxAxis) {
+                                            this.xAxisData.push(item.createdTime);
+                                        }
+
+                                        //组装seriesDat 每根曲线数据
                                         _dataOfSeries.push({
                                             value : item.quantity,
                                             name : key,
                                             params : item
                                         });
                                     });
+                                    isxAxis = true;
+                                    //组装legend数据
+                                    this.legendData.push({
+                                        name : key
+                                    });
                                     this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, defaultSeries));
                                 }
                             }
-
-                            //组装xAxisData 横坐标时间数据
-                            for (let key in data) {
-                                if (data[key] && data[key].length > 0) {
-                                    data[key].forEach(item => {
-                                        this.xAxisData.push(item.createdTime);
-                                    });
-                                    break;
-                                }
-                            }
-
-                            //组装legendData数据
-                            for (let key in data) {
-                                this.legendData.push({
-                                    name : key
-                                });
-                            }
-
+                            this.countGroupBySource();
                         } else {
                             this.seriesData = [];
                             this.xAxisData = [];
@@ -161,9 +154,10 @@
                         this.legendData = [];
                     }
                 });
-
-                //获取会员来源渠道数据
-                await ajax.post('countGroupBySource', {
+            },
+            //获取会员来源渠道数据
+            countGroupBySource () {
+                ajax.post('countGroupBySource', {
                     cardTypeId : this.cardType === 'all' ? '' : this.cardType
                 }).then(res => {
                     if (res.success) {

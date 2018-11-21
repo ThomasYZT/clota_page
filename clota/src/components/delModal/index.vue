@@ -7,6 +7,7 @@
         :mask-closable="false"
         @on-visible-change="visibleChange"
         class="del-node"
+        :closable="false"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
             <span class="title" >

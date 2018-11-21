@@ -8,7 +8,6 @@
             <div slot="left-filter" class="left-bar">
                 <!-- 日期选择器 -->
                 <DatePicker v-model="filterData.date"
-                            format="yyyy/MM/dd"
                             type="daterange"
                             :editable="false"
                             :clearable="false"
@@ -47,11 +46,11 @@
 
         <div class="statistics">
             <!-- 累计消费 -->
-            <span class="label">{{$t('colonSetting', { key: $t('totalConsume') })}}</span><span class="data">{{totalConsume}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('totalConsume') })}}</span><span class="data">{{totalConsume | moneyFilter | contentFilter}}</span>
             <!-- 累计交易笔数 -->
-            <span class="label">{{$t('colonSetting', { key: $t('totalTradeQuantity') })}}</span><span class="data">{{totalTradeQuantity}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('totalTradeQuantity') })}}</span><span class="data">{{totalTradeQuantity | moneyFilter | contentFilter}}</span>
             <!-- 累计消费人数 -->
-            <span class="label">{{$t('colonSetting', { key: $t('totalConsumePeople') })}}</span><span class="data">{{totalConsumePeople}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('totalConsumePeople') })}}</span><span class="data">{{totalConsumePeople | moneyFilter | contentFilter}}</span>
         </div>
 
         <table-com
@@ -174,9 +173,9 @@
             /**
              * 获取页面数据
              */
-            async getData () {
+            getData () {
                 //获取会员消费数据报表
-                await ajax.post('queryPagedMemberOrderList', {
+                ajax.post('queryPagedMemberOrderList', {
                     startDate : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endDate : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     orgId : this.filterData.orgId === 'all' ? '' : this.filterData.orgId,
@@ -188,14 +187,16 @@
                    if (res.success) {
                        this.tableData = res.data ? res.data.data : [];
                        this.totalCount = res.data ? res.data.totalRow : 0;
+                       this.countTotalMemberConsume();
                    } else {
                        this.tableData = [];
                        this.totalCount = 0;
                    }
                 });
-
-                //统计会员卡数量和销售金额
-                await ajax.post('countTotalMemberConsume', {
+            },
+            //统计会员卡数量和销售金额
+            countTotalMemberConsume () {
+                ajax.post('countTotalMemberConsume', {
                     startDate : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endDate : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     orgId : this.filterData.orgId === 'all' ? '' : this.filterData.orgId,
@@ -203,8 +204,8 @@
                     keyword : this.filterData.keyword,
                 }).then(res => {
                     if (res.success) {
-                        this.totalConsume = res.data > 0 ? res.data.consumeAmount : 0;
-                        this.totalTradeQuantity = res.data > 0 ? res.data.consumeCount : 0;
+                        this.totalConsume = res.data ? res.data.consumeAmount : 0;
+                        this.totalTradeQuantity = res.data ? res.data.consumeCount : 0;
                         this.totalConsumePeople = res.data ? res.data.consumerNum : 0;
                     } else {
                         this.totalConsume = 0;

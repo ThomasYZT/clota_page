@@ -10,7 +10,7 @@
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputField', {field: 'packageName'})"
+                   :placeholder="$t('inputField', {field: $t('packageName')})"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
