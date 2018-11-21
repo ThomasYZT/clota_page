@@ -5,42 +5,42 @@
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('name')}}：</span>{{accountInfo.nickName}}
+                        <span class="field-name">{{$t('name')}}：</span>{{accountInfo.nickName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName}}
+                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('nativePlace')}}：</span>{{accountInfo.provinceName}}
+                        <span class="field-name">{{$t('nativePlace')}}：</span>{{accountInfo.provinceName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('remark')}}：</span>{{accountInfo.descript}}
+                        <span class="field-name">{{$t('remark')}}：</span>{{accountInfo.descript | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('AuthorityInfo')}}：</span>{{accountInfo.descript}}
-                    </li>
-                </ul>
-            </Col>
-            <Col span="8">
-                <ul>
-                    <li>
-                        <span class="field-name">{{$t('gender')}}：</span>{{accountInfo.sex == "male" ? '男' : '女'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('mobilePhone')}}：</span>{{accountInfo.phone}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('nativeAddress')}}：</span>{{accountInfo.address}}
+                        <span class="field-name">{{$t('AuthorityInfo')}}：</span>{{accountInfo.descript | contentFilter}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('departName')}}：</span>{{accountInfo.deptName}}
+                        <span class="field-name">{{$t('gender')}}：</span>{{$t(accountInfo.sex)}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('birthday')}}：</span>{{accountInfo.birthday}}
+                        <span class="field-name">{{$t('mobilePhone')}}：</span>{{accountInfo.phone | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('nativeAddress')}}：</span>{{accountInfo.address | contentFilter}}
+                    </li>
+                </ul>
+            </Col>
+            <Col span="8">
+                <ul>
+                    <li>
+                        <span class="field-name">{{$t('departName')}}：</span>{{accountInfo.deptName | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('birthday')}}：</span>{{accountInfo.birthday | contentFilter}}
                     </li>
                 </ul>
             </Col>

@@ -153,8 +153,8 @@
                 this.addDetailStyle.minWidth = eleParentWidth / 3 + 'px';
                 if (index === 0) {
                     this.getMemberIncreaseDetail({
-                        startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
-                        endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                        startDate : new Date().format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
                     });
                 } else if (index === 1) {
                     this.getMemberIncreaseDetail({
@@ -283,6 +283,7 @@
             box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);
             transition: all 0.3s;
             z-index: 9;
+            @include center_center();
 
             &::before{
                 @include absolute_pos(absolute,-4.5px,0,auto,0);
