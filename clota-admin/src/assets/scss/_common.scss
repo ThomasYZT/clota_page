@@ -17,3 +17,6 @@
     }
 }
 
+.text-overflow-tip{
+    @include overflow_tip();
+}

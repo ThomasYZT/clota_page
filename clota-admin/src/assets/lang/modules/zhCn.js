@@ -288,7 +288,9 @@ export default {
     inputField : '请输入{field}',
     selectField : '请选择{msg}',
     startUsing : '启用',
+    startUsingPlease : '您已启用',
     stopUsing : '停用',
+    stopUsingPlease : '您已停用',
     normal : '开通',
     invalid : '暂停',
     expire : '过期',
@@ -356,6 +358,7 @@ export default {
     accountOPassError : '账号或密码错误',
     'partner.valid' : '有效',
     'partner.invalid' : '无效',
+    'colonSetting' : '{key}：',
 
 
 };

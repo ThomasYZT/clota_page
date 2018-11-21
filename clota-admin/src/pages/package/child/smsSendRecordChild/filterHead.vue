@@ -9,15 +9,20 @@
                 <i-col span="8">
                     <!--订单编号-->
                     <FormItem :label="$t('orderCode')">
-                        <Input v-model="formData.orderNo"/>
+                        <Input v-model.trim="formData.orderNo" @on-enter="search"/>
                     </FormItem>
                 </i-col>
                 <i-col span="8">
                     <!--租户-->
                     <FormItem :label="$t('lessee')">
-                        <Select v-model="formData.orgId" :transfer="true">
+                        <Select v-model="formData.orgId"
+                                :transfer="true"
+                                filterable
+                                @on-change="search">
                             <Option v-for="item in lesseeList"
                                     :value="item.id"
+                                    class="text-overflow-tip"
+                                    v-w-title="item.orgName"
                                     :key="item.id">
                                 {{ item.orgName }}
                             </Option>
@@ -27,7 +32,7 @@
                 <i-col span="8">
                     <!--手机号-->
                     <FormItem :label="$t('mobileNum')">
-                        <Input v-model.trim="formData.phone"/>
+                        <Input v-model.trim="formData.phone" @on-enter="search"/>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -35,7 +40,9 @@
                 <i-col span="8">
                     <!--发送状态-->
                     <FormItem :label="$t('sendStatus')">
-                        <Select v-model="formData.status" :transfer="true">
+                        <Select v-model="formData.status"
+                                :transfer="true"
+                                @on-change="search">
                             <Option v-for="item in sendStatusList"
                                     :value="item.value"
                                     :key="item.value">
@@ -51,14 +58,17 @@
                                     :editable="false"
                                     v-model="formData.sendTime"
                                     :transfer="true"
-                                    style="width: 100%;">
+                                    style="width: 100%;"
+                                    @on-change="search">
                         </DatePicker>
                     </FormItem>
                 </i-col>
                 <i-col span="8">
                     <!--短信供应商-->
                     <FormItem :label="$t('smsProvider')">
-                        <Select v-model="formData.provider" :transfer="true">
+                        <Select v-model="formData.provider"
+                                :transfer="true"
+                                @on-change="search">
                             <Option v-for="item in smsProviderList"
                                     :value="item.provider"
                                     :key="item.provider">

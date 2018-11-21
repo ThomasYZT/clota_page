@@ -8,14 +8,17 @@
             <Row>
                 <i-col span="8">
                     <FormItem label="账号">
-                        <Input v-model="formData.loginName"/>
+                        <Input v-model.trim="formData.loginName"
+                               :placeholder="$t('请输入发售机构名称')"
+                               @on-enter="emitFreshData"/>
                     </FormItem>
                 </i-col>
                 <i-col span="8">
                     <FormItem label="操作类型">
                         <Select v-model="formData.sysOperationScene"
                                 :transfer="true"
-                                :clearable="true">
+                                :clearable="true"
+                                @on-change="emitFreshData">
                             <Option v-for="item in operateType"
                                     :value="item.lable"
                                     :key="item.lable">
@@ -26,8 +29,9 @@
                 </i-col>
                 <i-col span="8">
                     <FormItem label="操作对象">
-                        <Input v-model="formData.sysTargetName"
-                               placeholder="请输入产品名称" />
+                        <Input v-model.trim="formData.sysTargetName"
+                               placeholder="请输入操作对象名称"
+                               @on-enter="emitFreshData"/>
                     </FormItem>
                 </i-col>
             </Row>
@@ -38,7 +42,8 @@
                                     :editable="false"
                                     type="daterange"
                                     :transfer="true"
-                                    style="width: 100%;">
+                                    style="width: 100%;"
+                                    @on-change="emitFreshData">
                         </DatePicker>
                     </FormItem>
                 </i-col>

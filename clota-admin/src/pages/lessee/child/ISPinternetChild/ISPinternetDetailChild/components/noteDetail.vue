@@ -46,7 +46,7 @@
             <li class="list">
                 <div class="info-list1">
                     <span class="info-key">发送状态：</span>
-                    <span class="info-val">{{$t(noteDetail.status) | contentFilter}}</span>
+                    <span class="info-val">{{$t(scope.row.status === 'success' ? 'success' : 'fail')}}</span>
                 </div>
             </li>
             <li class="list">

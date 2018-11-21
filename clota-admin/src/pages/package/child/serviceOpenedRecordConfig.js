@@ -14,22 +14,22 @@ export const serviceOpenHead = [
     },
     {
         title : '操作类型',
-        minWidth : 100,
+        width : 100,
         field : 'runStatus'
     },
     {
         title : '服务开始时间',
-        width : 180,
+        width : 190,
         field : 'startTime'
     },
     {
         title : '开通期限',
-        minWidth : 100,
+        minWidth : 130,
         field : 'term'
     },
     {
         title : '服务到期时间',
-        width : 180,
+        width : 190,
         field : 'endTime'
     },
     {
@@ -39,7 +39,7 @@ export const serviceOpenHead = [
     },
     {
         title : '操作时间',
-        width : 180,
+        width : 190,
         field : 'created_time'
     },
 ];
