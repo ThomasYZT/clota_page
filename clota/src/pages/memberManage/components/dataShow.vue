@@ -283,7 +283,6 @@
             box-shadow: 0 2px 6px 0 rgba(0,0,0,.1);
             transition: all 0.3s;
             z-index: 9;
-            @include center_center();
 
             &::before{
                 @include absolute_pos(absolute,-4.5px,0,auto,0);
