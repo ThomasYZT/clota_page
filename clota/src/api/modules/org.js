@@ -12,8 +12,6 @@ export default {
     'getOrgInfo' : '/organize/getOrgInfo',
     //重置管理账号密码
     'resetAccountPassword' : '/account/resetAccountPassword',
-    //获取短信供应商列表
-    'getSmsProviderList' : '/organize/getSmsProviderList',
     //新增/修改员工 (本接口已停止使用)
     'addEmployee' : '/account/addEmployee',
     //新增/修改员工

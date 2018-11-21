@@ -1741,6 +1741,7 @@ export default {
     'numOfBuyChance' : '累计购买次数',
     'consumeDate' : '消费日期',
     'consumeRecord' : '会员个人消费记录',
+    'consumePeopleNum' : '消费人数',
     'pointAdd' : '积分发放',
     'pointReduce' : '积分消耗',
     'MemberSourceTrendChart' : '会员来源趋势图',
