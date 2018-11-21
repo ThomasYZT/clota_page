@@ -65,4 +65,4 @@ export default {
     'openScenicServices' : 'tenant/openScenicServices.json',
     //指定景区删除服务
     'deleteServices' : 'tenant/deleteServices.json',
-}
+};

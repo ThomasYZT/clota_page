@@ -15,4 +15,4 @@ export default {
     'queryMoreDiskSpaceDate' : 'servers/queryMoreDiskSpaceDate.json',
     //查询日志文件信息
     'queryLog' : 'servers/queryLog.json',
-}
+};

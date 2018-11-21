@@ -8,16 +8,16 @@ import store from '../../store/index';
 import ajax from '../../api/index';
 import Vue from 'vue';
 import i18n from '../lang/lang.config';
-import {validator } from 'klwk-ui';
+import { validator } from 'klwk-ui';
 
 export default {
 
     /**
      * 退出登录(清空本地记录)
      */
-    loginOut() {
+    loginOut () {
         ajax.post('logout').then(res => {
-            if(res.status === 200){
+            if (res.status === 200) {
                 localStorage.removeItem('token');
                 router.push({
                     name : 'login'
@@ -26,7 +26,7 @@ export default {
                     store.commit('updateUserInfo',{});
                     store.commit('updateRouteInfo',null);
                 });
-            }else{
+            } else {
                 Vue.prototype.$Message.error(i18n.messages[i18n.locale]['logoutError']);
             }
         });
@@ -49,25 +49,25 @@ export default {
     /**
      * 获取用户信息
      */
-    getUserInfo() {
+    getUserInfo () {
         let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         let empInfo = userInfo && userInfo.empInfo ? userInfo.empInfo : {};
         let roleType = userInfo && userInfo.roleType ? userInfo.roleType : 'perf_subordinate';
         let defaultCompany = userInfo && userInfo.companys ? userInfo.companys.find(attr => {
-            return attr.id == userInfo.empInfo.companyId
+            return attr.id == userInfo.empInfo.companyId;
         }) : '';
         return {
             userInfo,
             empInfo,
             roleType,
             defaultCompany
-        }
+        };
     },
 
     /**
      * 无模块或菜单功能权限时默认跳转页面
      */
-    goToDefaultPage() {
+    goToDefaultPage () {
 
 
     },
@@ -77,8 +77,8 @@ export default {
      * @param fileName
      * @returns {*}
      */
-    getFileType(fileName) {
-        var extName = fileName.substr(fileName.lastIndexOf(".") + 1);
+    getFileType (fileName) {
+        let extName = fileName.substr(fileName.lastIndexOf(".") + 1);
         switch (extName) {
             case "txt":
                 return 'txt';

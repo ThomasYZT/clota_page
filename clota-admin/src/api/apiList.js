@@ -20,7 +20,7 @@ const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
     // 登录
-    login: 'user/login.json',
+    login : 'user/login.json',
     //登出
     logout : 'user/logout.json',
     //获取验证码
